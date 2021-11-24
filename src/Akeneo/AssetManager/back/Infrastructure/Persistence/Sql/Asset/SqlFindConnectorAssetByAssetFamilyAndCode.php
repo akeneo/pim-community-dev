@@ -22,6 +22,7 @@ use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeyCollectionInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ConnectorAssetHydrator;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
@@ -71,7 +72,7 @@ SQL;
                 'asset_family_identifier' => (string) $assetFamilyIdentifier,
             ]
         );
-        $result = $statement->fetch();
+        $result = $statement->fetchAssociative();
 
         if (empty($result)) {
             return null;
@@ -94,7 +95,7 @@ SQL;
         if (!isset($result['asset_family_identifier'])) {
             throw new \LogicException('The asset should have an asset family identifier');
         }
-        $normalizedAssetFamilyIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
+        $normalizedAssetFamilyIdentifier = Type::getType(Types::STRING)->convertToPHPValue(
             $result['asset_family_identifier'],
             $this->connection->getDatabasePlatform()
         );

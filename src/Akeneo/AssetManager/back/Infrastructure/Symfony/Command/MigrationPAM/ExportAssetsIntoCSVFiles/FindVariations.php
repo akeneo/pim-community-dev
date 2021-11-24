@@ -11,7 +11,6 @@ use Doctrine\DBAL\Driver\Connection;
  */
 class FindVariations
 {
-    /** * @var Connection */
     private Connection $connection;
 
     public function __construct(Connection $connection)

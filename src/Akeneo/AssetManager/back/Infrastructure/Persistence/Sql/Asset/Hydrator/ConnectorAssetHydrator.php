@@ -43,9 +43,9 @@ class ConnectorAssetHydrator
 
     public function hydrate(array $row, ValueKeyCollection $valueKeyCollection, array $attributes): ConnectorAsset
     {
-        $valueCollection = Type::getType(Type::JSON_ARRAY)
+        $valueCollection = Type::getType(Types::JSON)
             ->convertToPHPValue($row['value_collection'], $this->platform);
-        $assetCode = Type::getType(Type::STRING)
+        $assetCode = Type::getType(Types::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
         $createdAt = Type::getType(Types::DATETIME_IMMUTABLE)
             ->convertToPHPValue($row['created_at'], $this->platform);

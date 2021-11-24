@@ -33,7 +33,7 @@ class SqlAverageMaxNumberOfValuesPerAsset
               CEIL(AVG(JSON_LENGTH(value_collection))) AS average
             FROM akeneo_asset_manager_asset;
 SQL;
-        $result = $this->sqlConnection->query($sql)->fetch();
+        $result = $this->sqlConnection->executeQuery($sql)->fetchAssociative();
 
         return new AverageMaxVolumes(
             (int) $result['max'],

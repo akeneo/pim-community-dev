@@ -21,6 +21,7 @@ use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyItemsInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * TODO: think about cursor/es index
@@ -70,7 +71,7 @@ class SqlFindAssetFamilyItems implements FindAssetFamilyItemsInterface
 SQL;
         $statement = $this->sqlConnection->executeQuery($query);
         $results = $statement->fetchAllAssociative();
-        $statement->closeCursor();
+        $statement->free();
 
         return $results;
     }
@@ -82,12 +83,12 @@ SQL;
     ): AssetFamilyItem {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
-        $labels = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($normalizedLabels, $platform);
-        $identifier = Type::getType(Type::STRING)->convertToPHPValue($identifier, $platform);
+        $labels = Type::getType(Types::JSON)->convertToPHPValue($normalizedLabels, $platform);
+        $identifier = Type::getType(Types::STRING)->convertToPHPValue($identifier, $platform);
 
         $image = Image::createEmpty();
         if (null !== $rawFile) {
-            $rawFile = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($rawFile, $platform);
+            $rawFile = Type::getType(Types::JSON)->convertToPHPValue($rawFile, $platform);
             ;
             $file = new FileInfo();
             $file->setKey($rawFile['file_key']);

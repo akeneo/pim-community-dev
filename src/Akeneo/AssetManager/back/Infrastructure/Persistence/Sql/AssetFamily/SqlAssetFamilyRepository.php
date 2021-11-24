@@ -27,6 +27,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -64,7 +65,7 @@ class SqlAssetFamilyRepository implements AssetFamilyRepositoryInterface
         VALUES
             (:identifier, :labels, :attributeAsLabel, :attributeAsMainMedia, :ruleTemplates, :transformations, :namingConvention);
 SQL;
-        $affectedRows = $this->sqlConnection->executeUpdate(
+        $affectedRows = $this->sqlConnection->executeStatement(
             $insert,
             [
                 'identifier' => (string) $assetFamily->getIdentifier(),
@@ -106,7 +107,7 @@ SQL;
             naming_convention = :namingConvention
         WHERE identifier = :identifier;
 SQL;
-        $affectedRows = $this->sqlConnection->executeUpdate(
+        $affectedRows = $this->sqlConnection->executeStatement(
             $update,
             [
                 'identifier' => (string) $assetFamily->getIdentifier(),
@@ -150,8 +151,8 @@ SQL;
             $fetch,
             ['identifier' => (string) $identifier]
         );
-        $result = $statement->fetch();
-        $statement->closeCursor();
+        $result = $statement->fetchAssociative();
+        $statement->free();
 
         if (!$result) {
             throw AssetFamilyNotFoundException::withIdentifier($identifier);
@@ -184,7 +185,7 @@ SQL;
 SQL;
         $statement = $this->sqlConnection->executeQuery($selectAllQuery);
         $results = $statement->fetchAllAssociative();
-        $statement->closeCursor();
+        $statement->free();
 
         foreach ($results as $result) {
             yield $this->hydrateAssetFamily(
@@ -207,7 +208,7 @@ SQL;
         WHERE identifier = :identifier;
 SQL;
 
-        $affectedRows = $this->sqlConnection->executeUpdate(
+        $affectedRows = $this->sqlConnection->executeStatement(
             $sql,
             [
                 'identifier' => $identifier
@@ -226,7 +227,7 @@ SQL;
         FROM akeneo_asset_manager_asset_family
 SQL;
         $statement = $this->sqlConnection->executeQuery($query);
-        $result = $statement->fetch();
+        $result = $statement->fetchAssociative();
 
         return (int) $result['total'];
     }
@@ -244,7 +245,7 @@ SQL;
         $platform = $this->sqlConnection->getDatabasePlatform();
 
         $labels = json_decode($normalizedLabels, true);
-        $identifier = Type::getType(Type::STRING)->convertToPhpValue($identifier, $platform);
+        $identifier = Type::getType(Types::STRING)->convertToPhpValue($identifier, $platform);
         $entityImage = $this->hydrateImage($image);
         $ruleTemplateCollection = $this->hydrateRuleTemplates($normalizedRuleTemplates);
         $transformationCollection = $this->transformationCollectionFactory->fromDatabaseNormalized(

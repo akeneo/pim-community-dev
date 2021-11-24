@@ -23,7 +23,6 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
  */
 class LinkAssetsHandler
 {
-    /** * @var AssetFamilyRepositoryInterface */
     private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
     private ProductLinkRuleLauncherInterface $productLinkRuleLauncher;

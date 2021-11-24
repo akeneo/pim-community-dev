@@ -60,6 +60,6 @@ class SqlFindActivatedLocalesPerChannelsTest extends SqlIntegrationTestCase
 
     private function removeAllLocalesForAllChannels()
     {
-        $this->get('database_connection')->executeUpdate('DELETE FROM pim_catalog_channel_locale;');
+        $this->get('database_connection')->executeStatement('DELETE FROM pim_catalog_channel_locale;');
     }
 }

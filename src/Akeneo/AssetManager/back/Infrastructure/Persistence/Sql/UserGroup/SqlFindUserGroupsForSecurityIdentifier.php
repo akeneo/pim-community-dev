@@ -9,6 +9,7 @@ use Akeneo\AssetManager\Domain\Model\SecurityIdentifier;
 use Akeneo\AssetManager\Domain\Query\UserGroup\FindUserGroupsForSecurityIdentifierInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -57,7 +58,7 @@ SQL;
         $platform = $this->sqlConnection->getDatabasePlatform();
 
         return array_map(function ($normalizedUserGroupIdentifier) use ($platform) {
-            $identifier = Type::getType(Type::INTEGER)->convertToPhpValue(
+            $identifier = Type::getType(Types::INTEGER)->convertToPhpValue(
                 $normalizedUserGroupIdentifier['group_id'],
                 $platform
             );

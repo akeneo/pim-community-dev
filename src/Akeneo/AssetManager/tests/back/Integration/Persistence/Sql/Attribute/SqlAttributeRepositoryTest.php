@@ -512,7 +512,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             :additional_properties
         );
 SQL;
-        $assertRows = $sqlConnection->executeUpdate(
+        $assertRows = $sqlConnection->executeStatement(
             $query,
             [
                 'identifier'                 => (string) $identifier,

@@ -10,6 +10,7 @@ use Akeneo\AssetManager\Domain\Query\Asset\FindSearchableAssetsInterface;
 use Akeneo\AssetManager\Domain\Query\Asset\SearchableAssetItem;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -84,12 +85,12 @@ SQL;
     ): SearchableAssetItem {
         $platform = $this->connection->getDatabasePlatform();
 
-        $identifier = Type::getType(Type::STRING)->convertToPHPValue($identifier, $platform);
-        $assetFamilyIdentifier = Type::getType(Type::STRING)
+        $identifier = Type::getType(Types::STRING)->convertToPHPValue($identifier, $platform);
+        $assetFamilyIdentifier = Type::getType(Types::STRING)
             ->convertToPHPValue($assetFamilyIdentifier, $platform);
-        $code = Type::getType(Type::STRING)->convertToPHPValue($code, $platform);
-        $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($attributeAsLabel, $platform);
-        $updatedAt = Type::getType(Type::DATETIME_IMMUTABLE)->convertToPHPValue($updatedAt, $platform);
+        $code = Type::getType(Types::STRING)->convertToPHPValue($code, $platform);
+        $attributeAsLabel = Type::getType(Types::STRING)->convertToPHPValue($attributeAsLabel, $platform);
+        $updatedAt = Type::getType(Types::DATETIME_IMMUTABLE)->convertToPHPValue($updatedAt, $platform);
 
         $assetItem = new SearchableAssetItem();
         $assetItem->identifier = $identifier;

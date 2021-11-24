@@ -11,7 +11,6 @@ use Doctrine\DBAL\Driver\Connection;
  */
 class FindAssets
 {
-    /** * @var Connection */
     private Connection $connection;
 
     public function __construct(Connection $connection)
@@ -53,7 +52,7 @@ UNION ALL
 SQL;
 
         $stmt = $this->connection->executeQuery($fetchAssetsQuery);
-        while ($row = $stmt->fetch()) {
+        while ($row = $stmt->fetchAssociative()) {
             yield $row;
         }
     }

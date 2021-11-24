@@ -50,7 +50,7 @@ SQL;
         $result = $this->sqlConnection->executeQuery(
             $query,
             ['identifier' => (string) $assetFamilyIdentifier]
-        )->fetchColumn();
+        )->fetchOne();
 
         return is_string($result) ? AssetFamilyIdentifier::fromString($result) : null;
     }

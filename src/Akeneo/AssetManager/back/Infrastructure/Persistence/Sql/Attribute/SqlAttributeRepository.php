@@ -25,6 +25,7 @@ use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\Attrib
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -83,7 +84,7 @@ class SqlAttributeRepository implements AttributeRepositoryInterface
             :additional_properties
         );
 SQL;
-        $affectedRows = $this->sqlConnection->executeUpdate(
+        $affectedRows = $this->sqlConnection->executeStatement(
             $insert,
             [
                 'identifier'                  => $normalizedAttribute['identifier'],
@@ -99,10 +100,10 @@ SQL;
                 'additional_properties'       => json_encode($additionalProperties),
             ],
             [
-                'is_required'       => Type::getType(Type::BOOLEAN),
-                'is_read_only'      => Type::getType(Type::BOOLEAN),
-                'value_per_channel' => Type::getType(Type::BOOLEAN),
-                'value_per_locale'  => Type::getType(Type::BOOLEAN),
+                'is_required'       => Type::getType(Types::BOOLEAN),
+                'is_read_only'      => Type::getType(Types::BOOLEAN),
+                'value_per_channel' => Type::getType(Types::BOOLEAN),
+                'value_per_locale'  => Type::getType(Types::BOOLEAN),
             ]
         );
 
@@ -126,7 +127,7 @@ SQL;
             additional_properties = :additional_properties
         WHERE identifier = :identifier;
 SQL;
-        $affectedRows = $this->sqlConnection->executeUpdate(
+        $affectedRows = $this->sqlConnection->executeStatement(
             $update,
             [
                 'identifier'                  => $normalizedAttribute['identifier'],
@@ -138,10 +139,10 @@ SQL;
                 'additional_properties'       => $additionalProperties,
             ],
             [
-                'is_required'           => Type::getType(Type::BOOLEAN),
-                'is_read_only'          => Type::getType(Type::BOOLEAN),
-                'labels'                => Type::getType(Type::JSON_ARRAY),
-                'additional_properties' => Type::getType(Type::JSON_ARRAY),
+                'is_required'           => Type::getType(Types::BOOLEAN),
+                'is_read_only'          => Type::getType(Types::BOOLEAN),
+                'labels'                => Type::getType(Types::JSON),
+                'additional_properties' => Type::getType(Types::JSON),
             ]
         );
         if ($affectedRows > 1) {
@@ -179,7 +180,7 @@ SQL;
                 'identifier' => $identifier,
             ]
         );
-        $result = $statement->fetch();
+        $result = $statement->fetchAssociative();
 
         if (!$result) {
             throw AttributeNotFoundException::withIdentifier($identifier);
@@ -218,7 +219,7 @@ SQL;
                 'code' => $code
             ]
         );
-        $result = $statement->fetch();
+        $result = $statement->fetchAssociative();
 
         if (!$result) {
             throw AttributeNotFoundException::withAssetFamilyAndAttributeCode($assetFamilyIdentifier, $code);
@@ -283,7 +284,7 @@ SQL;
             $fetch,
             ['asset_family_identifier' => $assetFamilyIdentifier,]
         );
-        $count = $statement->fetchColumn();
+        $count = $statement->fetchOne();
 
         return (int) $count;
     }
@@ -320,7 +321,7 @@ SQL;
         DELETE FROM akeneo_asset_manager_attribute
         WHERE identifier = :identifier;
 SQL;
-        $affectedRows = $this->sqlConnection->executeUpdate(
+        $affectedRows = $this->sqlConnection->executeStatement(
             $sql,
             [
                 'identifier' => $attributeIdentifier,
@@ -354,7 +355,7 @@ SQL;
             WHERE identifier = :identifier
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, ['identifier' => (string) $attributeIdentifier]);
-        $result = $statement->fetch();
+        $result = $statement->fetchAssociative();
         if (false === $result) {
             throw AttributeNotFoundException::withIdentifier($attributeIdentifier);
         }

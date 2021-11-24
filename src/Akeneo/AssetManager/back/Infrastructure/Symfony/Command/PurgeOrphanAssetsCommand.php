@@ -142,7 +142,7 @@ class PurgeOrphanAssetsCommand extends Command
             DELETE FROM `akeneo_asset_manager_file_info_purge` WHERE file_key IN (:fileKeys);
         SQL;
 
-        $this->connection->executeUpdate(
+        $this->connection->executeStatement(
             $sqlQuery,
             [
                 'fileKeys' => $fileKeys,
@@ -207,7 +207,7 @@ class PurgeOrphanAssetsCommand extends Command
             WHERE file_info.storage = 'assetStorage';
         SQL;
 
-        $this->connection->executeUpdate(
+        $this->connection->executeStatement(
             $sqlQuery
         );
     }
@@ -218,7 +218,7 @@ class PurgeOrphanAssetsCommand extends Command
             DROP TABLE IF EXISTS `akeneo_asset_manager_file_info_purge`;
         SQL;
 
-        $this->connection->executeUpdate(
+        $this->connection->executeStatement(
             $sqlQuery
         );
     }

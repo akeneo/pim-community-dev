@@ -79,7 +79,7 @@ class SqlAssetRepository implements AssetRepositoryInterface
             (identifier, code, asset_family_identifier, value_collection, created_at, updated_at)
         VALUES (:identifier, :code, :asset_family_identifier, :value_collection, :created_at, :updated_at);
 SQL;
-        $affectedRows = $this->sqlConnection->executeUpdate(
+        $affectedRows = $this->sqlConnection->executeStatement(
             $insert,
             [
                 'identifier' => (string) $asset->getIdentifier(),
@@ -90,7 +90,7 @@ SQL;
                 'updated_at' => $asset->getUpdatedAt(),
             ],
             [
-                'value_collection' => Type::JSON_ARRAY,
+                'value_collection' => Types::JSON,
                 'created_at' => Types::DATETIME_IMMUTABLE,
                 'updated_at' => Types::DATETIME_IMMUTABLE,
             ]
@@ -114,7 +114,7 @@ SQL;
             updated_at = :updated_at
         WHERE identifier = :identifier;
 SQL;
-        $affectedRows = $this->sqlConnection->executeUpdate(
+        $affectedRows = $this->sqlConnection->executeStatement(
             $update,
             [
                 'identifier' => $asset->getIdentifier(),
@@ -122,7 +122,7 @@ SQL;
                 'updated_at' => $asset->getUpdatedAt(),
             ],
             [
-                'value_collection' => Type::JSON_ARRAY,
+                'value_collection' => Types::JSON,
                 'updated_at' => Types::DATETIME_IMMUTABLE
             ]
         );
@@ -152,7 +152,7 @@ SQL;
                 'asset_family_identifier' => (string) $assetFamilyIdentifier,
             ]
         );
-        $result = $statement->fetch();
+        $result = $statement->fetchAssociative();
 
         if (!$result) {
             throw AssetNotFoundException::withAssetFamilyAndCode($assetFamilyIdentifier, $code);
@@ -193,7 +193,7 @@ SQL;
         DELETE FROM akeneo_asset_manager_asset
         WHERE code IN (:codes) AND asset_family_identifier = :asset_family_identifier;
 SQL;
-        $this->sqlConnection->executeUpdate(
+        $this->sqlConnection->executeStatement(
             $sql,
             [
                 'codes' => $assetCodes,
@@ -224,7 +224,7 @@ SQL;
         DELETE FROM akeneo_asset_manager_asset
         WHERE code = :code AND asset_family_identifier = :asset_family_identifier;
 SQL;
-        $affectedRowsCount = $this->sqlConnection->executeUpdate(
+        $affectedRowsCount = $this->sqlConnection->executeStatement(
             $sql,
             [
                 'code' => (string) $code,
@@ -261,7 +261,7 @@ SQL;
         if (!isset($result['asset_family_identifier'])) {
             throw new \LogicException('The asset should have an asset family identifier');
         }
-        $normalizedAssetFamilyIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
+        $normalizedAssetFamilyIdentifier = Type::getType(Types::STRING)->convertToPHPValue(
             $result['asset_family_identifier'],
             $this->sqlConnection->getDatabasePlatform()
         );

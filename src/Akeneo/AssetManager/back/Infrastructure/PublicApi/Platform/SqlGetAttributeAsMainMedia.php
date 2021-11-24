@@ -45,7 +45,7 @@ SQL;
         $result = $this->connection->executeQuery(
             $sql,
             ['assetFamilyIdentifier' => $assetFamilyCode]
-        )->fetch();
+        )->fetchAssociative();
 
         if (empty($result)) {
             throw new \RuntimeException(sprintf('Asset family "%s" does not exist', $assetFamilyCode));

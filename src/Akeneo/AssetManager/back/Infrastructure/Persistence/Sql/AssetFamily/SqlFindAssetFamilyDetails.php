@@ -29,6 +29,7 @@ use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\Conn
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
@@ -112,7 +113,7 @@ SQL;
         ]);
 
         $result = $statement->fetchAssociative();
-        $statement->closeCursor();
+        $statement->free();
 
         return $result ? $result : [];
     }
@@ -138,8 +139,8 @@ SQL;
         $platform = $this->sqlConnection->getDatabasePlatform();
         $activatedLocales = $this->findActivatedLocales->findAll();
 
-        $labels = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($normalizedLabels, $platform);
-        $identifier = Type::getType(Type::STRING)->convertToPHPValue($identifier, $platform);
+        $labels = Type::getType(Types::JSON)->convertToPHPValue($normalizedLabels, $platform);
+        $identifier = Type::getType(Types::STRING)->convertToPHPValue($identifier, $platform);
 
         $entityImage = Image::createEmpty();
         if (null !== $fileKey && null !== $originalFilename) {

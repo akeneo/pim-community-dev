@@ -155,6 +155,6 @@ class SqlAssetFamilyPermissionRepositoryTest extends SqlIntegrationTestCase
     (10, 'TEST GROUP'),
     (11, 'TEST GROUP 2');
 SQL;
-        $this->get('database_connection')->executeUpdate($insertFakeGroups);
+        $this->get('database_connection')->executeStatement($insertFakeGroups);
     }
 }
