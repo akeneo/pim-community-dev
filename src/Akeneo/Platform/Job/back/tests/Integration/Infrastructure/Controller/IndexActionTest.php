@@ -25,8 +25,8 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->callApiRoute($this->client, self::ROUTE, [], 'POST');
 
         $response = $this->client->getResponse();
-        Assert::assertSame($response->getStatusCode(), Response::HTTP_OK);
-        Assert::assertSame(json_decode($response->getContent(), true)['matches_count'], 2);
+        Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
+        Assert::assertSame(3, json_decode($response->getContent(), true)['matches_count']);
     }
 
     public function test_without_permission_it_returns_only_jobs_for_current_user(): void
@@ -36,7 +36,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
 
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
-        Assert::assertSame(2, json_decode($response->getContent(), true)['matches_count']);
+        Assert::assertSame(1, json_decode($response->getContent(), true)['matches_count']);
     }
 
     public function test_it_returns_a_forbidden_access_when_user_cannot_access_to_process_tracker(): void
