@@ -43,3 +43,6 @@ pim_catalog_volume:
             assets: Assets
     mean: 'Average:'
     max: 'Max:'
+    error:
+        generic_title: Sorry, an error has occured.
+        generic_message: Try again in a few moments.

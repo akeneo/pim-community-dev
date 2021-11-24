@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  FullScreenError,
   PageContent,
   PageHeader,
   PimView,
@@ -11,6 +10,7 @@ import {
 import {Breadcrumb, KeyFigureGrid, SectionTitle} from 'akeneo-design-system';
 import {GetCatalogVolumeInterface, useCatalogVolumeByAxis} from './hooks/useCatalogVolumeByAxis';
 import {CatalogVolumeKeyFigure} from './CatalogVolumeKeyFigure';
+import {CatalogVolumeScreenError} from './component/CatalogVolumeScreenError';
 import styled from 'styled-components';
 
 interface Props {
@@ -28,8 +28,12 @@ const CatalogVolumeMonitoringApp = ({getCatalogVolumes}: Props) => {
 
   const displayContent = () => {
     if (status === 'error') {
-      // TODO: create custom error view
-      return <FullScreenError title={translate('error.exception')} message={translate('error.not_found')} code={404} />;
+      return (
+        <CatalogVolumeScreenError
+          title={translate('error.generic_title')}
+          message={translate('error.generic_message')}
+        />
+      );
     }
 
     return axes.map(axis => (
