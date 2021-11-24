@@ -26,6 +26,7 @@ akeneo_job_process_tracker:
   users:
     label: User
     all: All
+    search: Search
   status:
     label: Status
     all: All
