@@ -176,12 +176,27 @@ jobs:
             name: Restore cache - composer dependency cache
             keys:
                 - backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}
+      - when:
+            condition:
+                not:
+                    equal: [master, << pipeline.git.branch >>]
+            steps:
+                - run:
+                      name: Update composer.json if same branch exists in PIM Onboarder for EE
+                      command: |
+                          curl -H "Authorization: token ${GITHUB_TOKEN}" \
+                              -H 'Accept: application/vnd.github.v3.raw' \
+                              --output /dev/null --silent --head --fail \
+                              -L https://api.github.com/repos/akeneo/pim-onboarder/contents/README.md?ref=${CIRCLE_BRANCH} && \
+                              ONBOARDER_BRANCH="dev-${CIRCLE_BRANCH}" || ONBOARDER_BRANCH="dev-master"
+                              echo "Update Onboarder dependencie to branch ${ONBOARDER_BRANCH}"
+                              sed -i "s#akeneo/pim-onboarder\": \"^5.0.0#akeneo/pim-onboarder\": \"${ONBOARDER_BRANCH}#" composer.json
       - run:
-          name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
-          command: |
-              sudo chown -R 1000:1000 ../project
-              sudo chown -R 1000:1000 ~/.composer
-              sudo chown -R 1000:1000 ~/.cache/
+            name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+            command: |
+                sudo chown -R 1000:1000 ../project
+                sudo chown -R 1000:1000 ~/.composer
+                sudo chown -R 1000:1000 ~/.cache/
       - run:
           name: Install back and front dependencies
           command: make dependencies
@@ -939,21 +954,6 @@ jobs:
       steps:
           - attach_workspace:
                 at: ~/
-          - when:
-                condition:
-                    not:
-                        equal: [master, << pipeline.git.branch >>]
-                steps:
-                    - run:
-                          name: Update composer.json if same branch exists in PIM Onboarder for EE
-                          command: |
-                              curl -H "Authorization: token ${GITHUB_TOKEN}" \
-                                  -H 'Accept: application/vnd.github.v3.raw' \
-                                  --output /dev/null --silent --head --fail \
-                                  -L https://api.github.com/repos/akeneo/pim-onboarder/contents/README.md?ref=${CIRCLE_BRANCH} && \
-                                  ONBOARDER_BRANCH="dev-${CIRCLE_BRANCH}" || ONBOARDER_BRANCH="dev-master"
-                                  echo "Update Onboarder dependencie to branch ${ONBOARDER_BRANCH}"
-                                  sed -i "s#akeneo/pim-onboarder\": \"^5.0.0#akeneo/pim-onboarder\": \"${ONBOARDER_BRANCH}#" composer.json
           - run:
                 name: Change owner on project dir in order to archive the project into the workspace
                 command: |
