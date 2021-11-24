@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi;
 
 use Doctrine\ORM\EntityManager;
@@ -15,11 +17,7 @@ use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInter
  */
 class JobTrackerRepository extends EntityRepository implements DatagridRepositoryInterface
 {
-    /**
-     * @param EntityManager $em
-     * @param string        $class
-     */
-    public function __construct(EntityManager $em, $class)
+    public function __construct(EntityManager $em, string $class)
     {
         parent::__construct($em, $em->getClassMetadata($class));
     }
@@ -42,6 +40,7 @@ class JobTrackerRepository extends EntityRepository implements DatagridRepositor
             ->addSelect('j.jobName AS jobName')
             ->addSelect('e.user AS user')
             ->addSelect('SUM(s.warningCount) as warningCount')
+            ->where('(e.isVisible = 1 OR e.isVisible IS NULL)')
             ->innerJoin('e.jobInstance', 'j')
             ->leftJoin('e.stepExecutions', 's')
             ->groupBy('e.id');
