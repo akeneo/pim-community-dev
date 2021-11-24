@@ -11,13 +11,13 @@ jest.mock('../../hooks/useJobExecutionUsers', () => ({
 test('it opens a dropdown when clicking on the filter', () => {
   renderWithProviders(<UserFilter userFilterValue={[]} onUserFilterChange={jest.fn()} />);
 
-  expect(screen.queryByText('akeneo_job_process_tracker.users.label')).not.toBeInTheDocument();
+  expect(screen.queryByTitle('akeneo_job_process_tracker.users.search')).not.toBeInTheDocument();
 
   userEvent.click(screen.getByText('akeneo_job_process_tracker.users.all'));
 
-  expect(screen.getByText('akeneo_job_process_tracker.users.label')).toBeInTheDocument();
+  expect(screen.getByTitle('akeneo_job_process_tracker.users.search')).toBeInTheDocument();
   userEvent.click(screen.getByTestId('backdrop'));
-  expect(screen.queryByText('akeneo_job_process_tracker.users.label')).not.toBeInTheDocument();
+  expect(screen.queryByTitle('akeneo_job_process_tracker.users.search')).not.toBeInTheDocument();
 });
 
 test('it can select all user', () => {

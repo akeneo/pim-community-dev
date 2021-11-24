@@ -2,6 +2,8 @@
 
 namespace Akeneo\Platform\Job\Domain\Query;
 
+use Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersQuery;
+
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
@@ -12,5 +14,5 @@ interface FindJobUsersInterface
     /**
      * @return string[]
      */
-    public function search(int $page): array;
+    public function search(FindJobUsersQuery $query): array;
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Infrastructure\Controller;
 
+use Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersQuery;
 use Akeneo\Platform\Job\Domain\Query\FindJobUsersInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -48,8 +49,12 @@ class GetJobUsersAction
             return new JsonResponse([$this->security->getUser()->getUserIdentifier()]);
         }
 
-        $page = (int) $request->get('page', 1);
-        $jobUsers = $this->findJobUsers->search($page);
+        $findJobUsersQuery = new FindJobUsersQuery();
+        $findJobUsersQuery->page = (int) $request->get('page', 1);
+        $findJobUsersQuery->size = (int) $request->get('size', 25);
+        $findJobUsersQuery->username = (string) $request->get('username', '');
+
+        $jobUsers = $this->findJobUsers->search($findJobUsersQuery);
 
         return new JsonResponse($jobUsers);
     }

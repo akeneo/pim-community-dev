@@ -23,6 +23,9 @@ akeneo_job_process_tracker:
     compute_family_variant_structure_changes: Compute family variant structure changes
     compute_completeness_of_products_family: Compute completeness of products family
     clean_removed_attribute_job: Cleaning removed attribute values
+  users:
+    label: User
+    all: All
   status:
     label: Status
     all: All

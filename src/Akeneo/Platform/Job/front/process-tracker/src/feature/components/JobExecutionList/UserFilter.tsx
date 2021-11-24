@@ -1,5 +1,5 @@
-import React from 'react';
-import {Checkbox, Dropdown, SwitcherButton, useBooleanState} from 'akeneo-design-system';
+import React, {useState} from 'react';
+import {Checkbox, Dropdown, Search, SwitcherButton, useBooleanState} from 'akeneo-design-system';
 import {useTranslate, Translate} from '@akeneo-pim-community/shared';
 import {useJobExecutionUsers} from '../../hooks/useJobExecutionUsers';
 
@@ -22,6 +22,7 @@ type UserFilterProps = {
 const UserFilter = ({userFilterValue, onUserFilterChange}: UserFilterProps) => {
   const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState(false);
+  const [searchValue, setSearchValue] = useState('');
   const users = useJobExecutionUsers();
 
   return (
@@ -32,7 +33,12 @@ const UserFilter = ({userFilterValue, onUserFilterChange}: UserFilterProps) => {
       {isOpen && (
         <Dropdown.Overlay verticalPosition="down" onClose={close}>
           <Dropdown.Header>
-            <Dropdown.Title>{translate('akeneo_job_process_tracker.users.label')}</Dropdown.Title>
+            <Search
+              onSearchChange={setSearchValue}
+              placeholder={translate('akeneo_job_process_tracker.users.search')}
+              searchValue={searchValue}
+              title={translate('akeneo_job_process_tracker.users.search')}
+            />
           </Dropdown.Header>
           <Dropdown.ItemCollection>
             <Dropdown.Item>
@@ -40,21 +46,25 @@ const UserFilter = ({userFilterValue, onUserFilterChange}: UserFilterProps) => {
               {translate('akeneo_job_process_tracker.users.all')}
             </Dropdown.Item>
             {users &&
-              users.map(user => (
-                <Dropdown.Item key={user}>
-                  <Checkbox
-                    checked={userFilterValue.includes(user)}
-                    onChange={checked => {
-                      if (checked) {
-                        onUserFilterChange([...userFilterValue, user]);
-                      } else {
-                        onUserFilterChange(userFilterValue.filter(userFilterValueType => userFilterValueType !== user));
-                      }
-                    }}
-                  />
-                  {user}
-                </Dropdown.Item>
-              ))}
+              users
+                .filter(user => user.indexOf(searchValue) !== -1)
+                .map(user => (
+                  <Dropdown.Item key={user}>
+                    <Checkbox
+                      checked={userFilterValue.includes(user)}
+                      onChange={checked => {
+                        if (checked) {
+                          onUserFilterChange([...userFilterValue, user]);
+                        } else {
+                          onUserFilterChange(
+                            userFilterValue.filter(userFilterValueType => userFilterValueType !== user)
+                          );
+                        }
+                      }}
+                    />
+                    {user}
+                  </Dropdown.Item>
+                ))}
           </Dropdown.ItemCollection>
         </Dropdown.Overlay>
       )}
