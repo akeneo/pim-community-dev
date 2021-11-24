@@ -399,6 +399,7 @@ pim_system:
   system_navigation: Navigation système
   users_management_navigation: Navigation utilisateurs
   count:
+    product_values: '{0}Vous n''avez aucune valeur produit |{1}Vous avez 1 valeur produit|]1, Inf[Vous avez {{ count }} valeurs produit'
     users: '{0}Vous avez 0 utilisateurs|{1}Vous avez 1 utilisateur|]1, Inf[Vous avez {{ count }} utilisateurs'
     user_groups: '{0}Vous avez 0 groupes d''utilisateurs |{1}Vous avez 1 groupe d''utilisateur|]1, Inf[Vous avez {{ count }} groupes d''utilisateurs'
     roles: '{0}vous avez 0 rôles|{1}Vous avez 1 rôle|]1, Inf[Vous avez {{ count }} rôles'
