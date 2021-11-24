@@ -52,7 +52,6 @@ final class SqlFindAllExistentAssetsForAssetFamilyIdentifiers
 
     /**
      * @param string[] $queryParams
-     * @param string[] $queryStringParams
      * @return array<string, string[]>
      */
     private function batchedQuery(array $queryParams): array
