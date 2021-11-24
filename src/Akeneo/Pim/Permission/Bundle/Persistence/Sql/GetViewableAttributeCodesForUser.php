@@ -25,8 +25,7 @@ use Doctrine\DBAL\Connection;
  */
 class GetViewableAttributeCodesForUser implements GetViewableAttributeCodesForUserInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -56,6 +55,11 @@ SQL;
             'attributeCodes' => $attributeCodes
         ], ['attributeCodes' => Connection::PARAM_STR_ARRAY]);
 
-        return $statement->fetchAll(\PDO::FETCH_COLUMN, 'code');
+        $codes = [];
+        foreach ($statement->fetchAllAssociative() as $row) {
+            $codes[] = $row['code'];
+        }
+
+        return $codes;
     }
 }
