@@ -78,7 +78,9 @@ const LocalePermissionFormProvider: PermissionFormProvider<LocalePermissionState
     }, [readOnly, state]);
 
     useEffect(() => {
-      FetcherRegistry.getFetcher('locale').fetchActivated({filter_locales: false}).then(setActivatedLocales);
+      FetcherRegistry.getFetcher('locale')
+        .fetchActivated({filter_locales: false})
+        .then(setActivatedLocales);
     }, [setActivatedLocales]);
 
     return (
@@ -130,7 +132,9 @@ const LocalePermissionFormProvider: PermissionFormProvider<LocalePermissionState
     const [activatedLocales, setActivatedLocales] = useState<LocaleType[]>([]);
 
     useEffect(() => {
-      FetcherRegistry.getFetcher('locale').fetchActivated({filter_locales: false}).then(setActivatedLocales);
+      FetcherRegistry.getFetcher('locale')
+        .fetchActivated({filter_locales: false})
+        .then(setActivatedLocales);
     }, [setActivatedLocales]);
 
     const getLocales = (localesFromState: string[]) =>
