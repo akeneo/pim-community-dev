@@ -88,7 +88,7 @@ const SettingsIndex = () => {
     router.redirect(router.generate(route));
   };
 
-  if (!canAccessCatalogSettings && !canAccessProductSettings) {
+  if (true) {
     return (
       <FullScreenError
         title={translate('error.exception', {status_code: 403})}

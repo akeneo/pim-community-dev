@@ -1,5 +1,13 @@
 import React from 'react';
-import {PageContent, PageHeader, PimView, Section, useRoute, useTranslate} from '@akeneo-pim-community/shared';
+import {
+  FullScreenError,
+  PageContent,
+  PageHeader,
+  PimView,
+  Section,
+  useRoute,
+  useTranslate,
+} from '@akeneo-pim-community/shared';
 import {Breadcrumb, KeyFigureGrid, SectionTitle} from 'akeneo-design-system';
 import {GetCatalogVolumeInterface, useCatalogVolumeByAxis} from './hooks/useCatalogVolumeByAxis';
 import {CatalogVolumeKeyFigure} from './CatalogVolumeKeyFigure';
@@ -11,7 +19,27 @@ interface Props {
 const CatalogVolumeMonitoringApp = ({getCatalogVolumes}: Props) => {
   const translate = useTranslate();
   const systemHref = useRoute('pim_system_index');
-  const [axes] = useCatalogVolumeByAxis(getCatalogVolumes);
+  const [axes, status] = useCatalogVolumeByAxis(getCatalogVolumes);
+
+  const displayContent = () => {
+    if (status === 'error') {
+      // TODO: create custom error view
+      return <FullScreenError title={translate('error.exception')} message={translate('error.not_found')} code={404} />;
+    }
+
+    return axes.map(axis => (
+      <Section key={axis.name}>
+        <SectionTitle>
+          <SectionTitle.Title>{translate(`pim_catalog_volume.axis.title.${axis.name}`)}</SectionTitle.Title>
+        </SectionTitle>
+        <KeyFigureGrid>
+          {axis.catalogVolumes.map(catalogVolume => {
+            return <CatalogVolumeKeyFigure catalogVolume={catalogVolume} key={catalogVolume.name} />;
+          })}
+        </KeyFigureGrid>
+      </Section>
+    ));
+  };
 
   return (
     <>
@@ -30,20 +58,7 @@ const CatalogVolumeMonitoringApp = ({getCatalogVolumes}: Props) => {
         </PageHeader.UserActions>
         <PageHeader.Title>{translate('pim_menu.item.catalog_volume')}</PageHeader.Title>
       </PageHeader>
-      <PageContent>
-        {axes.map(axis => (
-          <Section key={axis.name}>
-            <SectionTitle>
-              <SectionTitle.Title>{translate(`pim_catalog_volume.axis.title.${axis.name}`)}</SectionTitle.Title>
-            </SectionTitle>
-            <KeyFigureGrid>
-              {axis.catalogVolumes.map(catalogVolume => {
-                return <CatalogVolumeKeyFigure catalogVolume={catalogVolume} key={catalogVolume.name} />;
-              })}
-            </KeyFigureGrid>
-          </Section>
-        ))}
-      </PageContent>
+      <PageContent>{displayContent()}</PageContent>
     </>
   );
 };

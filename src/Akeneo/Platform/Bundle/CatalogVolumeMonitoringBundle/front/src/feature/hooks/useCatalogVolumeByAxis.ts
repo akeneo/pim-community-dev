@@ -6,19 +6,29 @@ interface GetCatalogVolumeInterface {
   (router: Router): Promise<Axis[]>;
 }
 
+type FetchStatus = 'idle' | 'error' | 'fetching' | 'fetched';
+
 const useCatalogVolumeByAxis = (getCatalogVolume: GetCatalogVolumeInterface) => {
   const router = useRouter();
   const [axes, setAxes] = useState<Axis[]>([]);
+  const [status, setStatus] = useState<FetchStatus>('idle');
+
   const fetchAxes = useCallback(async () => {
-    const axisList = await getCatalogVolume(router);
-    setAxes(axisList);
+    setStatus('fetching');
+    try {
+      const axisList = await getCatalogVolume(router);
+      setAxes(axisList);
+      setStatus('fetched');
+    } catch (e) {
+      setStatus('error');
+    }
   }, [getCatalogVolume, router]);
 
   useEffect(() => {
     (async () => fetchAxes())();
   }, [fetchAxes]);
 
-  return [axes] as const;
+  return [axes, status] as const;
 };
 
 export {useCatalogVolumeByAxis};
