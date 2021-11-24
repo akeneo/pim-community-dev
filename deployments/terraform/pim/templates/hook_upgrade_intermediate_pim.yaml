@@ -29,7 +29,7 @@ spec:
         - name: pim-intermediate-upgrader-{{ $upgradeVersion }}
           image: {{ template "pim.imageName" $tplCtx }}:{{ $upgradeVersion }}
           imagePullPolicy: {{ $tplCtx.Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'su www-data -s /bin/bash -c "cd /srv/pim && bin/console doctrine:migration:migrate -vvv --allow-no-migration --no-interaction"']
+          command: ["su", "www-data", "-s", "/bin/bash", "/scripts-dir/hook-upgrade-intermediate-pim.sh"]
           envFrom: [ configMapRef: { name: {{ template "pim.fullName" $tplCtx }}-env } ]
           env:
             - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
@@ -51,6 +51,8 @@ spec:
               subPath: key.json
               readOnly: true
             {{- end }}
+            - name: pim-scripts
+              mountPath: /scripts-dir
       volumes:
         - name: google-cloud-pim-storage-key
           secret:
@@ -66,5 +68,8 @@ spec:
             - key: akobOnboarderKey
               path: key.json
         {{- end }}
+        - name: pim-scripts
+          configMap:
+            name:  pim-scripts
 ---
 {{ end }}

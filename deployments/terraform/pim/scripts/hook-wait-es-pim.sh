@@ -11,10 +11,10 @@ while ! curl --fail "http://elasticsearch-client:9200/_cluster/health?wait_for_s
     COUNTER=$((${COUNTER} + 1))
     if [ ${COUNTER} -gt ${MAX_COUNTER} ]; then
         TIME_WAITED=$(( COUNTER*SLEEP_TIME ))
-        echo "We have been waiting for Elasticsearch for too long: $TIME_WAITED seconds; failing." >&2
+        echo "We have been waiting for Elasticsearch for too long: ${TIME_WAITED} seconds; failing." >&2
         exit 1
     fi;
-    sleep $SLEEP_TIME
+    sleep ${SLEEP_TIME}
 done
 TIME_WAITED=$(( COUNTER*SLEEP_TIME ))
-echo "We have been waiting for Elasticsearch $TIME_WAITED seconds!"
+echo "We have been waiting for Elasticsearch ${TIME_WAITED} seconds!"

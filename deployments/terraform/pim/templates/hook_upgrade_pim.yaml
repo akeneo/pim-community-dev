@@ -31,17 +31,7 @@ spec:
         - name: pim-upgrade
           image: {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command:
-            - 'su'
-            - 'www-data'
-            - '-s'
-            - '/bin/sh'
-            - '-c'
-            - |
-              cd /srv/pim && \
-              bin/console doctrine:migrations:sync-metadata-storage --no-interaction --quiet && \
-              bin/console doctrine:migration:migrate -vvv --allow-no-migration --no-interaction && \
-              bin/console akeneo:elasticsearch:update-total-fields-limit -vvv --no-interaction
+          command: ["su", "www-data", "-s", "/bin/bash", "/scripts-dir/hook-upgrade-pim.sh"]
           envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
           env:
             - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
@@ -63,6 +53,8 @@ spec:
               subPath: key.json
               readOnly: true
             {{- end }}
+            - name: pim-scripts
+              mountPath: /scripts-dir
       volumes:
         - name: google-cloud-pim-storage-key
           secret:
@@ -78,3 +70,6 @@ spec:
             - key: akobOnboarderKey
               path: key.json
         {{- end }}
+        - name: pim-scripts
+          configMap:
+            name:  pim-scripts

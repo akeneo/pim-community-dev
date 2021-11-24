@@ -29,7 +29,7 @@ spec:
         - name: setup-onboarder-database
           image:  {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'su www-data -s /bin/bash -c "cd /srv/pim && bin/console akeneo:onboarder:setup-database --no-table-creation -vvv --no-interaction"']
+          command: ["su", "www-data", "-s", "/bin/bash", "/scripts-dir/hook-setup-onboarder-database.sh"]
           envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
           env:
             - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
@@ -49,6 +49,8 @@ spec:
               mountPath: /var/secrets/google/key.json
               subPath: key.json
               readOnly: true
+            - name: pim-scripts
+              mountPath: /scripts-dir
       volumes:
         - name: google-cloud-pim-storage-key
           secret:
@@ -62,4 +64,7 @@ spec:
             items:
             - key: akobOnboarderKey
               path: key.json
+        - name: pim-scripts
+          configMap:
+            name:  pim-scripts
 {{- end }}
