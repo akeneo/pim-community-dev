@@ -7,6 +7,12 @@ pim_enrich_product_edit:
         id: '[0-9a-f]+'
     methods: [GET, POST]
 
+pim_enrich_product_edit_categories:
+    path: /categories/{id}
+    requirements:
+        id: '[0-9a-f]+'
+    methods: [GET]
+
 pim_enrich_product_toggle_status:
     path: /{id}/toggle-status
     defaults: { _controller: pim_enrich.controller.product:toggleStatusAction }

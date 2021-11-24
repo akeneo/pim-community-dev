@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AssociationColumnsResolver;
+use Akeneo\Tool\Component\Connector\Exception\BusinessArrayConversionException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor;
@@ -271,6 +272,26 @@ class ColumnsMergerSpec extends ObjectBehavior
 
         $mergedRow = ['price' => '10 EUR,12 USD,14 CHF'];
         $this->merge($row)->shouldReturn($mergedRow);
+    }
+
+    public function it_throws_an_exception_when_an_attribute_price_value_is_a_datetime(
+        $fieldExtractor,
+        AttributeInterface $price
+    ) {
+        $row = ['price-USD' => new \DateTimeImmutable('2021-11-22')];
+
+        $attributeInfoUsd = [
+            'attribute' => $price,
+            'locale_code' => null,
+            'scope_code' => null,
+            'price_currency' => 'USD'
+        ];
+        $fieldExtractor->extractColumnInfo('price-USD')->willReturn($attributeInfoUsd);
+
+        $price->getCode()->willReturn('price');
+        $price->getBackendType()->willReturn('prices');
+
+        $this->shouldThrow(BusinessArrayConversionException::class)->during('merge', [$row]);
     }
 
     function it_merges_columns_which_represents_quantified_associations_in_two_columns(

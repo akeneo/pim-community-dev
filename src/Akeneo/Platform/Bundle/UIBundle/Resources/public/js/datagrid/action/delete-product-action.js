@@ -4,6 +4,9 @@ define(['oro/datagrid/delete-action', 'pim/router', 'pim/security-context'], fun
   SecurityContext
 ) {
   return DeleteAction.extend({
+    /** @property {Boolean} */
+    noHref: true,
+
     /**
      * {@inheritdoc}
      */

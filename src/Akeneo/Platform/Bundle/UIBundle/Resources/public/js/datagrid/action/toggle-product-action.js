@@ -1,12 +1,15 @@
 define(['oro/datagrid/ajax-action'], function (AjaxAction) {
   return AjaxAction.extend({
+    /** @property {Boolean} */
+    noHref: true,
+
     /**
      * {@inheritdoc}
      */
     initialize() {
       this.launcherOptions.enabled = this.isEnabled();
 
-      return AjaxAction.prototype.initialize.apply(this, arguments);
+      AjaxAction.prototype.initialize.apply(this, arguments);
     },
 
     /**

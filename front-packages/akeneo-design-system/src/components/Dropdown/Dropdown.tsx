@@ -6,11 +6,7 @@ import {ItemCollection} from './ItemCollection/ItemCollection';
 import {Header} from './Header/Header';
 import {Title} from './Header/Title';
 import {getColor} from '../../theme';
-
-const DropdownContainer = styled.div`
-  position: relative;
-  display: inline-flex;
-`;
+import {Surtitle} from './Surtitle/Surtitle';
 
 const Section = styled.div`
   background: ${getColor('white')};
@@ -22,6 +18,11 @@ const Section = styled.div`
   white-space: nowrap;
   text-transform: uppercase;
   margin-top: 10px;
+`;
+
+const DropdownContainer = styled.div`
+  position: relative;
+  display: inline-flex;
 `;
 
 type DropdownProps = {
@@ -64,5 +65,6 @@ Dropdown.Item = Item;
 Dropdown.Section = Section;
 Dropdown.Title = Title;
 Dropdown.ItemCollection = ItemCollection;
+Dropdown.Surtitle = Surtitle;
 
 export {Dropdown};
