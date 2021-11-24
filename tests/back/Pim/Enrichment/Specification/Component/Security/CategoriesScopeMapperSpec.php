@@ -43,7 +43,7 @@ class CategoriesScopeMapperSpec extends ObjectBehavior
         $this->getAcls('unknown_scope')->shouldReturn([]);
     }
 
-    public function it_provides_message_that_correspond_to_read_categories_scope(): void
+    public function it_provides_message_that_corresponds_to_the_read_categories_scope(): void
     {
         $this->getMessage('read_categories')->shouldReturn([
             'icon' => 'categories',
@@ -52,7 +52,7 @@ class CategoriesScopeMapperSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_provides_message_that_correspond_to_write_categories_scope(): void
+    public function it_provides_message_that_corresponds_to_the_write_categories_scope(): void
     {
         $this->getMessage('write_categories')->shouldReturn([
             'icon' => 'categories',
