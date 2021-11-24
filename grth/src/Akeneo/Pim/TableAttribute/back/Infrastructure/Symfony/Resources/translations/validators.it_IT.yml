@@ -9,6 +9,7 @@ pim_table_configuration:
       column_code_must_be_filled: Il codice colonna deve essere indicato
       option_code_must_be_filled: Il codice opzione deve essere indicato
       invalid_code: Il codice colonna può contenere solo lettere, numeri e underscore
+      not_available_code: Questo codice di colonna non è disponibile
       invalid_option_code: Il codice opzione può contenere solo lettere, numeri e underscore
       too_long_code: "Il codice colonna è troppo lungo: deve essere di 100 caratteri al massimo"
       too_long_label: "L'etichetta della colonna è troppo lunga: deve essere di 250 caratteri al massimo"
