@@ -11,6 +11,7 @@ import {
 import {Breadcrumb, KeyFigureGrid, SectionTitle} from 'akeneo-design-system';
 import {GetCatalogVolumeInterface, useCatalogVolumeByAxis} from './hooks/useCatalogVolumeByAxis';
 import {CatalogVolumeKeyFigure} from './CatalogVolumeKeyFigure';
+import styled from 'styled-components';
 
 interface Props {
   getCatalogVolumes: GetCatalogVolumeInterface;
@@ -20,6 +21,10 @@ const CatalogVolumeMonitoringApp = ({getCatalogVolumes}: Props) => {
   const translate = useTranslate();
   const systemHref = useRoute('pim_system_index');
   const [axes, status] = useCatalogVolumeByAxis(getCatalogVolumes);
+
+  const StyledKeyFigureGrid = styled(KeyFigureGrid)`
+    grid-template-columns: repeat(3, 33%);
+  `;
 
   const displayContent = () => {
     if (status === 'error') {
@@ -32,11 +37,11 @@ const CatalogVolumeMonitoringApp = ({getCatalogVolumes}: Props) => {
         <SectionTitle>
           <SectionTitle.Title>{translate(`pim_catalog_volume.axis.title.${axis.name}`)}</SectionTitle.Title>
         </SectionTitle>
-        <KeyFigureGrid>
+        <StyledKeyFigureGrid>
           {axis.catalogVolumes.map(catalogVolume => {
             return <CatalogVolumeKeyFigure catalogVolume={catalogVolume} key={catalogVolume.name} />;
           })}
-        </KeyFigureGrid>
+        </StyledKeyFigureGrid>
       </Section>
     ));
   };

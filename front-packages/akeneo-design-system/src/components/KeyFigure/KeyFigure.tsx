@@ -74,11 +74,11 @@ const Values = styled.div`
   font-size: 16px;
 `;
 
-const KeyFigure = ({icon, title, children}: KeyFigureProps) => {
+const KeyFigure = ({icon, title, children, ...props}: KeyFigureProps) => {
   const validIcon = isValidElement<IconProps>(icon) && React.cloneElement(icon, {size: 30});
 
   return (
-    <KeyFigureContainer>
+    <KeyFigureContainer {...props}>
       <IconContainer>{validIcon}</IconContainer>
       <ContentContainer>
         <Title>{title}</Title>

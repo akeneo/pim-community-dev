@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {KeyFigure as DsmKeyFigure} from 'akeneo-design-system';
+import {KeyFigure} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {CatalogVolume} from './model/catalog-volume';
 import {useCatalogVolumeIcon} from './hooks/useCatalogVolumeIcon';
@@ -13,24 +13,22 @@ const CatalogVolumeKeyFigure: FC<Props> = ({catalogVolume}) => {
   const icon = useCatalogVolumeIcon(catalogVolume.name);
 
   return (
-    <DsmKeyFigure icon={icon} title={translate(`pim_catalog_volume.axis.${catalogVolume.name}`)}>
+    <KeyFigure icon={icon} title={translate(`pim_catalog_volume.axis.${catalogVolume.name}`)}>
       {catalogVolume.type === 'average_max' ? (
         <>
           {typeof catalogVolume.value === 'object' && catalogVolume.value.average !== undefined && (
-            <DsmKeyFigure.Figure label={translate('pim_catalog_volume.mean')}>
+            <KeyFigure.Figure label={translate('pim_catalog_volume.mean')}>
               {catalogVolume.value.average}
-            </DsmKeyFigure.Figure>
+            </KeyFigure.Figure>
           )}
           {typeof catalogVolume.value === 'object' && catalogVolume.value.max !== undefined && (
-            <DsmKeyFigure.Figure label={translate('pim_catalog_volume.max')}>
-              {catalogVolume.value.max}
-            </DsmKeyFigure.Figure>
+            <KeyFigure.Figure label={translate('pim_catalog_volume.max')}>{catalogVolume.value.max}</KeyFigure.Figure>
           )}
         </>
       ) : (
-        <DsmKeyFigure.Figure>{catalogVolume.value}</DsmKeyFigure.Figure>
+        <KeyFigure.Figure>{catalogVolume.value}</KeyFigure.Figure>
       )}
-    </DsmKeyFigure>
+    </KeyFigure>
   );
 };
 
