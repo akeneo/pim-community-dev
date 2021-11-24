@@ -166,7 +166,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_BAD_REQUEST,
-            '[{"messageTemplate":"pim_reference_entity.record.validation.code.should_be_unique","parameters":{"%reference_entity_identifier%":"designer","%code%":"starck"},"plural":null,"message":"The record code already exists for reference entity \u0022designer\u0022 and record code \u0022starck\u0022","root":{"referenceEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"propertyPath":"code","invalidValue":{"referenceEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]'
+            '[{"messageTemplate":"pim_reference_entity.record.validation.code.should_be_unique","parameters":{"%reference_entity_identifier%":"designer","%code%":"starck"},"plural":null,"message":"The record code already exists for reference entity \u0022designer\u0022 and record code \u0022starck\u0022","root":{"referenceEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"propertyPath":"code","invalidValue":{"referenceEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null,"groups":["other_constraints"]},"cause":null,"code":null}]'
         );
     }
 
@@ -260,13 +260,13 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'invalid-code',
                 'brand',
                 'brand',
-                '[{"messageTemplate":"pim_reference_entity.record.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"referenceEntityIdentifier":"brand","code":"invalid-code","labels":[]},"propertyPath":"code","invalidValue":"invalid-code","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'            ],
+                '[{"messageTemplate":"pim_reference_entity.record.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"referenceEntityIdentifier":"brand","code":"invalid-code","labels":[]},"propertyPath":"code","invalidValue":"invalid-code","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null,"groups":["Default","CreateRecordCommand"]},"cause":null,"code":null}]'            ],
             'Record Identifier is 256 characters long'                                                   => [
                 $longIdentifier,
                 'brand',
                 'brand',
                 sprintf(
-                    '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":"255"},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"referenceEntityIdentifier":"brand","code":"%s","labels":[]},"propertyPath":"code","invalidValue":"%s","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                    '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":"255"},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"referenceEntityIdentifier":"brand","code":"%s","labels":[]},"propertyPath":"code","invalidValue":"%s","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null,"groups":["Default","CreateRecordCommand"]},"cause":null,"code":null}]',
                     $longIdentifier,
                     $longIdentifier,
                     $longIdentifier

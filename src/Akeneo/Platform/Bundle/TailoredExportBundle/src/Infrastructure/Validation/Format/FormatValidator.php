@@ -28,7 +28,7 @@ class FormatValidator extends ConstraintValidator
     private const MAX_TEXT_COUNT = 10;
     private const TEXT_MAX_LENGTH = 255;
 
-    public function validate($format, Constraint $constraint)
+    public function validate($format, Constraint $constraint): void
     {
         $this->context->getValidator()
             ->inContext($this->context)

@@ -1,7 +1,7 @@
 .PHONY: lint-back
 lint-back: #Doc: launch PHPStan for tailored export
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/phpstan.neon.dist
-	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/Platform/Bundle/TailoredExportBundle
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/.php_cs.php src/Akeneo/Platform/Bundle/TailoredExportBundle
 
 .PHONY: coupling-back
 coupling-back: #Doc: launch coupling detector for tailored export

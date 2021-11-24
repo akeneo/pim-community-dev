@@ -70,7 +70,7 @@ class AssetFamilyEditController extends BaseController {
         });
 
         // Not idea, maybe we should discuss about it
-        await this.store.dispatch(updateChannels() as any);
+        await this.store.dispatch(updateChannels(fetcherRegistry.getFetcher('channel')) as any);
         this.store.dispatch(updateActivatedLocales() as any);
         this.store.dispatch(assetFamilyEditionReceived(assetFamilyResult.assetFamily));
         this.store.dispatch(assetFamilyAssetCountUpdated(assetFamilyResult.assetCount));

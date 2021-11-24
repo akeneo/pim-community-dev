@@ -36,7 +36,7 @@ abstract class IntegrationTestCase extends WebTestCase
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
-    protected function get(string $service)
+    protected function get(string $service): ?object
     {
         return self::$container->get($service);
     }
@@ -52,14 +52,14 @@ abstract class IntegrationTestCase extends WebTestCase
         $this->ensureKernelShutdown();
     }
 
-    protected function logAs(string $username)
+    protected function logAs(string $username): void
     {
         $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->get('security.token_storage')->setToken($token);
     }
 
-    protected function assertEntityIsValid($entity)
+    protected function assertEntityIsValid(object $entity): void
     {
         $constraints = $this->get('validator')->validate($entity);
         $this->assertCount(0, $constraints, $constraints->__toString());

@@ -15,7 +15,7 @@ final class InMemoryFindProductModelLabels implements FindProductModelLabelsInte
         string $channel,
         string $locale,
         string $productModelTranslation
-    ) {
+    ): void {
         $this->productModelLabels[$productModelCode][$channel][$locale] = $productModelTranslation;
     }
 

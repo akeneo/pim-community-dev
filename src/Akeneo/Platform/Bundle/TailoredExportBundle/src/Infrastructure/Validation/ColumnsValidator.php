@@ -29,7 +29,7 @@ class ColumnsValidator extends ConstraintValidator
     private const MAX_COLUMN_COUNT = 1000;
     private const TARGET_MAX_LENGTH = 255;
 
-    public function validate($columns, Constraint $constraint)
+    public function validate($columns, Constraint $constraint): void
     {
         if (empty($columns)) {
             return;
@@ -73,7 +73,7 @@ class ColumnsValidator extends ConstraintValidator
         }
     }
 
-    private function validateColumn(ValidatorInterface $validator, $column): void
+    private function validateColumn(ValidatorInterface $validator, array $column): void
     {
         $violations = $validator->validate($column, new Collection([
             'fields' => [

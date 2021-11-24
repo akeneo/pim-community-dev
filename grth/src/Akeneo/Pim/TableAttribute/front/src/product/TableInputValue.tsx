@@ -6,13 +6,14 @@ import {
   getColor,
   IconButton,
   MoreVerticalIcon,
+  Placeholder,
   TableInput,
 } from 'akeneo-design-system';
 import {ColumnCode, ColumnDefinition, TableCell} from '../models';
 import {TableFooter} from './TableFooter';
 import styled from 'styled-components';
 import {TableRowWithId, TableValueWithId, ViolatedCell} from './TableFieldApp';
-import {CenteredHelper, LoadingPlaceholderContainer} from '../shared';
+import {LoadingPlaceholderContainer} from '../shared';
 import {useFetchOptions} from './useFetchOptions';
 import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {CellInputsMapping} from './CellInputs';
@@ -22,7 +23,7 @@ import {useAttributeContext} from '../contexts';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
-const BorderedCenteredHelper = styled(CenteredHelper)`
+const BorderedPlaceholder = styled(Placeholder)`
   border: 1px solid ${getColor('grey', 80)};
   padding-bottom: 20px;
 `;
@@ -334,21 +335,22 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
             </TableInputValueBody>
           </TableInput>
           {isSearching && valueDataPage.length === 0 && (
-            <BorderedCenteredHelper illustration={<AddingValueIllustration />}>
-              {translate('pim_table_attribute.form.product.no_search_result')}
-            </BorderedCenteredHelper>
+            <BorderedPlaceholder
+              illustration={<AddingValueIllustration />}
+              title={translate('pim_table_attribute.form.product.no_search_result')}
+            />
           )}
           {!isSearching && valueDataPage.length === 0 && (
-            <BorderedCenteredHelper illustration={<AddingValueIllustration />}>
-              <CenteredHelper.Title>
-                {translate('pim_table_attribute.form.product.no_rows_title', {
-                  attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
-                })}
-              </CenteredHelper.Title>
+            <BorderedPlaceholder
+              illustration={<AddingValueIllustration />}
+              title={translate('pim_table_attribute.form.product.no_rows_title', {
+                attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
+              })}
+            >
               {readOnly
                 ? translate('pim_table_attribute.form.product.no_rows_subtitle_on_readonly')
                 : translate('pim_table_attribute.form.product.no_rows_subtitle')}
-            </BorderedCenteredHelper>
+            </BorderedPlaceholder>
           )}
           {valueData.length > TABLE_VALUE_ITEMS_PER_PAGE[0] && (
             <TableFooter

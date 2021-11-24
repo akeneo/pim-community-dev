@@ -21,7 +21,7 @@ class TextValueHydratorTest extends AbstractAttributeValueHydratorTest
     /**
      * @test
      */
-    public function it_hydrates_a_string_value_from_product_value()
+    public function it_hydrates_a_string_value_from_product_value(): void
     {
         $expectedValue = new StringValue('my value');
         $productValue = ScalarValue::value('text_attribute_code', 'my value');

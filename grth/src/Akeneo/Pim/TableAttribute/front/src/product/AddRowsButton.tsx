@@ -5,13 +5,13 @@ import {
   Button,
   Checkbox,
   Dropdown,
+  Placeholder,
   Search,
   useBooleanState,
 } from 'akeneo-design-system';
 import {getLabel, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {ColumnCode, SelectOptionCode} from '../models';
 import styled from 'styled-components';
-import {CenteredHelper} from '../shared';
 import {useAttributeContext} from '../contexts';
 import {useFetchOptions} from './useFetchOptions';
 import {useManageOptions} from './useManageOptions';
@@ -128,28 +128,21 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({
                 </Dropdown.Item>
               ))}
               {searchValue === '' && itemsToDisplay.length === 0 && (
-                <CenteredHelper.Container>
-                  <CenteredHelper illustration={<AddingValueIllustration />}>
-                    <CenteredHelper.Title>
-                      {translate('pim_table_attribute.form.product.no_options')}
-                    </CenteredHelper.Title>
-                    {!hasEditPermission &&
-                      translate('pim_table_attribute.form.product.no_add_options_unallowed', {
-                        attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
-                      })}
-                  </CenteredHelper>
-                </CenteredHelper.Container>
+                <Placeholder
+                  illustration={<AddingValueIllustration />}
+                  title={translate('pim_table_attribute.form.product.no_options')}
+                >
+                  {!hasEditPermission &&
+                    translate('pim_table_attribute.form.product.no_add_options_unallowed', {
+                      attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
+                    })}
+                </Placeholder>
               )}
               {searchValue !== '' && itemsToDisplay.length === 0 && (
-                <CenteredHelper.Container>
-                  <CenteredHelper illustration={<AddingValueIllustration />}>
-                    <CenteredHelper.Title>
-                      <CenteredHelper.Title>
-                        {translate('pim_table_attribute.form.product.no_results')}
-                      </CenteredHelper.Title>
-                    </CenteredHelper.Title>
-                  </CenteredHelper>
-                </CenteredHelper.Container>
+                <Placeholder
+                  illustration={<AddingValueIllustration />}
+                  title={translate('pim_table_attribute.form.product.no_results')}
+                />
               )}
             </Dropdown.ItemCollection>
             {hasEditPermission && (

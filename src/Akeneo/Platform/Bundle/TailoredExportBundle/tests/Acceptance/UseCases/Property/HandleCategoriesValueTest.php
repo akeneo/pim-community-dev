@@ -70,7 +70,7 @@ final class HandleCategoriesValueTest extends PropertyTestCase
         ];
     }
 
-    private function loadCategoryLabels()
+    private function loadCategoryLabels(): void
     {
         /** @var InMemoryFindCategoryLabels $categoryLabelsRepository */
         $categoryLabelsRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindCategoryLabelsInterface');

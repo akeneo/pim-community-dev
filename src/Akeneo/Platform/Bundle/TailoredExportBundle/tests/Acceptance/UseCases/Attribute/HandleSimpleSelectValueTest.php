@@ -107,7 +107,7 @@ final class HandleSimpleSelectValueTest extends AttributeTestCase
         ];
     }
 
-    private function loadOptions()
+    private function loadOptions(): void
     {
         /** @var InMemoryFindAttributeOptionLabels $attributeOptionLabelsRepository */
         $attributeOptionLabelsRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterface');

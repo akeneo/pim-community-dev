@@ -21,7 +21,7 @@ class NumberValueHydratorTest extends AbstractAttributeValueHydratorTest
     /**
      * @test
      */
-    public function it_hydrates_a_decimal_number_value_from_product_value()
+    public function it_hydrates_a_decimal_number_value_from_product_value(): void
     {
         $expectedValue = new NumberValue('10.4');
         $productValue = ScalarValue::value('number_attribute_code', 10.4);
@@ -32,7 +32,7 @@ class NumberValueHydratorTest extends AbstractAttributeValueHydratorTest
     /**
      * @test
      */
-    public function it_hydrates_an_integer_number_value_from_product_value()
+    public function it_hydrates_an_integer_number_value_from_product_value(): void
     {
         $expectedValue = new NumberValue('10');
         $productValue = ScalarValue::value('number_attribute_code', 10);

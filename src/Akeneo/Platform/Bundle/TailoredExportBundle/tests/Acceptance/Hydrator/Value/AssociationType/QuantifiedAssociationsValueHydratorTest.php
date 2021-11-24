@@ -23,7 +23,7 @@ class QuantifiedAssociationsValueHydratorTest extends AbstractAssociationTypeVal
     /**
      * @test
      */
-    public function it_hydrates_a_quantified_associations_value_from_empty_product_quantified_associations()
+    public function it_hydrates_a_quantified_associations_value_from_empty_product_quantified_associations(): void
     {
         $product = new Product();
 
@@ -35,7 +35,7 @@ class QuantifiedAssociationsValueHydratorTest extends AbstractAssociationTypeVal
     /**
      * @test
      */
-    public function it_hydrates_a_quantified_associations_value_from_product_quantified_associations()
+    public function it_hydrates_a_quantified_associations_value_from_product_quantified_associations(): void
     {
         $product = new Product();
 

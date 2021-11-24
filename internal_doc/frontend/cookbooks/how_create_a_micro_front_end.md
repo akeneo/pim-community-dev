@@ -50,14 +50,14 @@ For example, the measurement micro-frontend present in the community edition we 
 ## Initialize your project with the custom create react app template
 First you need to clone the project `git@github.com:StevenVAIDIE/create-react-app.git` into `~/dev`
 
-Then you need to run the following command:
+Then you need to run the following command in your project:
 ```
-  yarn create react-app $MICRO_FRONTEND_PATH/$MICRO_FRONTEND_NAME --template file:~/dev/create-react-app/packages/cra-template-typescript
+  yarn create react-app $MICRO_FRONTEND_PATH/$MICRO_FRONTEND_NAME --template file:../../your_workspace/create-react-app/packages/cra-template-typescript
 ```
 
 The script will create all the things you need to develop a micro-frontend in the PIM.
 
-To test it you can launch the following command in `$MICRO_FRONTEND_PATH` directory: `yarn app:start`.
+To test it you can launch the following command in `$MICRO_FRONTEND_PATH` directory: `yarn app:start` or `docker-compose run --rm -p 3000:3000 node yarn --cwd=$MICRO_FRONTEND_PATH/$MICRO_FRONTEND_NAME app:start`.
 
 ## Replace the package name
 Unfortunately it's not possible to create a scoped package with create-react-app (for example: @pim-community/measurement).
@@ -104,4 +104,11 @@ And save in cache the micro-frontend generated lib with the following lines:
             key: micro-frontend-$PROJECT_NAME-{{ checksum "~/$PROJECT_NAME.hash" }}
             paths:
                 - $RELATIVE_PATH_TO_PROJECT_CONTAINING_MICRO_FRONTEND/$PROJECT_NAME
+```
+
+## Add your micro-frontend in the .prettierignore
+
+Add this line in the `.prettierignore`:
+```
+  $MICRO_FRONTEND_PATH/$MICRO_FRONTEND_NAME/**/*
 ```

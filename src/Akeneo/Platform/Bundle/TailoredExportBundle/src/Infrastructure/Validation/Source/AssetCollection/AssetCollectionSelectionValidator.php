@@ -134,7 +134,7 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
     }
 
     private function validateMediaFileSelection(
-        $selection,
+        array $selection,
         string $assetFamilyCode,
         AttributeAsMainMedia $attributeAsMainMedia,
         ValidatorInterface $validator
@@ -171,7 +171,7 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
     }
 
     private function validateMediaLinkSelection(
-        $selection,
+        array $selection,
         string $assetFamilyCode,
         AttributeAsMainMedia $attributeAsMainMedia,
         ValidatorInterface $validator

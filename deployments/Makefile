@@ -553,23 +553,32 @@ test_helm_generated_k8s_files: #Doc Test helm generated templates are K8S compli
 	bash $(DEPLOYMENT_DIR)/bin/test_helm_generated_k8s_files.sh
 
 .PHONY: test_deployment_e2e
-test_deployment_e2e: update-cypress-env #Doc Test srnt (c3po)/grth(r2d2) instances
-	cd $(DEPLOYMENT_DIR)/../ && docker-compose -f docker-compose-cypress.yml run --rm cypress -c baseUrl=`yq r cypress.json 'baseUrl'`,testFiles=deployment/*
+test_deployment_e2e: configure-cypress #Doc Test srnt (c3po)/grth(r2d2) instances
+	cd $(DEPLOYMENT_DIR)/test/e2e/ && docker-compose run --rm cypress -c testFiles=deployment/* --headless --config-file ./config/cypress.$(TYPE).json
 
-update-cypress-env: $(DEPLOYMENT_DIR)/../cypress.env.json update-cypress-env-$(TYPE)
-	yq w -i -j -P $(DEPLOYMENT_DIR)/../cypress.env.json 'PRODUCT_TYPE' $(TYPE)
-	yq w -i -j -P $(DEPLOYMENT_DIR)/../cypress.env.json 'PIM_WEB_LOGIN' ${LOGIN}
-	yq w -i -j -P $(DEPLOYMENT_DIR)/../cypress.env.json 'PIM_WEB_PASSWORD' ${PASSWORD}
-	yq w -i -j -P $(DEPLOYMENT_DIR)/../cypress.env.json 'PIM_VERSION' $(VERSION)
-	yq w -i -j -P $(DEPLOYMENT_DIR)/../cypress.env.json 'DEPLOYMENT_TEST' true
+.PHONY: configure-cypress
+configure-cypress: update-cypress-config get-pim-community-cypress-command
+	@echo "Cypress configuration done"
 
-$(DEPLOYMENT_DIR)/../cypress.env.json:
-	touch $(DEPLOYMENT_DIR)/../cypress.env.json
+update-cypress-config: update-cypress-config-login update-cypress-config-password update-cypress-config-version
 
-update-cypress-env-srnt:
-	yq w -i -j -P $(DEPLOYMENT_DIR)/../cypress.env.json 'CHECK_IMAGE_LOADING' false
-	yq w -i -j -P $(DEPLOYMENT_DIR)/../cypress.json 'baseUrl' https://c3po.demo.cloud.akeneo.com/
+update-cypress-config-login:
+ifneq ($(origin LOGIN),undefined)
+	yq w -i -j -P $(DEPLOYMENT_DIR)/test/e2e/config/cypress.$(TYPE).json 'env.PIM_WEB_LOGIN' ${LOGIN}
+	@echo "PIM login set to ${LOGIN}"
+endif
 
-update-cypress-env-grth:
-	yq w -i -j -P $(DEPLOYMENT_DIR)/../cypress.env.json 'CHECK_IMAGE_LOADING' true
-	yq w -i -j -P $(DEPLOYMENT_DIR)/../cypress.json 'baseUrl' https://r2d2.demo.cloud.akeneo.com/
+update-cypress-config-password:
+ifneq ($(origin PASSWORD),undefined)
+	yq w -i -j -P $(DEPLOYMENT_DIR)/test/e2e/config/cypress.$(TYPE).json 'env.PIM_WEB_PASSWORD' ${PASSWORD}
+	@echo "PIM password set"
+endif
+
+update-cypress-config-version:
+ifneq ($(origin VERSION),undefined)
+	yq w -i -j -P $(DEPLOYMENT_DIR)/test/e2e/config/cypress.$(TYPE).json 'env.PIM_VERSION' ${VERSION}
+	@echo "PIM version set to ${VERSION}"
+endif
+
+get-pim-community-cypress-command:
+	cd $(DEPLOYMENT_DIR)/test/e2e/ && wget https://raw.githubusercontent.com/akeneo/pim-community-dev/master/cypress/support/commands.js -O ./cypress/support/commands.js

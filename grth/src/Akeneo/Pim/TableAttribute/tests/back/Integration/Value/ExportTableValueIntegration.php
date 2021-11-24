@@ -18,7 +18,8 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
-use Box\Spout\Reader\ReaderFactory;
+use Box\Spout\Common\Entity\Row;
+use Box\Spout\Reader\Common\Creator\ReaderFactory;
 use PHPUnit\Framework\Assert;
 
 final class ExportTableValueIntegration extends TestCase
@@ -30,7 +31,7 @@ final class ExportTableValueIntegration extends TestCase
     /** @test */
     public function it_exports_a_table_value_in_csv(): void
     {
-        $csv = $this->jobLauncher->launchExport(static::CSV_EXPORT_JOB_CODE, null, []);
+        $csv = $this->jobLauncher->launchExport(self::CSV_EXPORT_JOB_CODE, null, []);
         $expectedContent = <<<CSV
 sku;categories;enabled;family;groups;nutrition
 toto;master;1;;;"[{""ingredient"":""salt"",""is_allergenic"":false},{""ingredient"":""egg"",""quantity"":2},{""ingredient"":""butter"",""quantity"":25,""is_allergenic"":true}]"
@@ -42,13 +43,14 @@ CSV;
     /** @test */
     public function it_exports_a_table_attribute_in_xlsx(): void
     {
-        $bin = $this->jobLauncher->launchExport(static::XLSX_EXPORT_JOB_CODE, null, [], 'xlsx');
+        $bin = $this->jobLauncher->launchExport(self::XLSX_EXPORT_JOB_CODE, null, [], 'xlsx');
         $tmpfile = \tempnam(\sys_get_temp_dir(), 'test_table');
         \file_put_contents($tmpfile, $bin);
 
-        $reader = ReaderFactory::create('xlsx');
+        $reader = ReaderFactory::createFromType('xlsx');
         $reader->open($tmpfile);
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
+        /** @var Row[] $lines */
         $lines = iterator_to_array($sheet->getRowIterator());
         $reader->close();
         if (\is_file($tmpfile)) {
@@ -60,7 +62,7 @@ CSV;
 
         Assert::assertCount(1, $lines);
         foreach ($lines as $row) {
-            $row = \array_combine($header, $row);
+            $row = \array_combine($header->toArray(), $row->toArray());
             Assert::assertSame($expectedNutritionVlaue, $row['nutrition']);
         }
     }
@@ -76,9 +78,9 @@ CSV;
 
         $this->get(SqlCreateJobInstance::class)->createJobInstance(
             [
-                'code' => static::CSV_EXPORT_JOB_CODE,
+                'code' => self::CSV_EXPORT_JOB_CODE,
                 'label' => 'Test CSV',
-                'job_name' => static::CSV_EXPORT_JOB_CODE,
+                'job_name' => self::CSV_EXPORT_JOB_CODE,
                 'status' => 0,
                 'type' => 'export',
                 'raw_parameters' => 'a:13:{s:8:"filePath";s:38:"/tmp/export_%job_label%_%datetime%.csv";s:9:"delimiter";s:1:";";s:9:"enclosure";s:1:""";s:10:"withHeader";b:1;s:14:"user_to_notify";N;s:21:"is_user_authenticated";b:0;s:16:"decimalSeparator";s:1:".";s:10:"dateFormat";s:10:"yyyy-MM-dd";s:10:"with_media";b:0;s:10:"with_label";b:0;s:17:"header_with_label";b:0;s:11:"file_locale";N;s:7:"filters";a:2:{s:4:"data";a:3:{i:0;a:3:{s:5:"field";s:7:"enabled";s:8:"operator";s:3:"ALL";s:5:"value";N;}i:1;a:3:{s:5:"field";s:10:"categories";s:8:"operator";s:11:"IN CHILDREN";s:5:"value";a:1:{i:0;s:6:"master";}}i:2;a:4:{s:5:"field";s:12:"completeness";s:8:"operator";s:3:"ALL";s:5:"value";i:100;s:7:"context";a:1:{s:7:"locales";a:1:{i:0;s:5:"en_US";}}}}s:9:"structure";a:2:{s:5:"scope";s:9:"ecommerce";s:7:"locales";a:1:{i:0;s:5:"en_US";}}}}',
@@ -86,9 +88,9 @@ CSV;
         );
         $this->get(SqlCreateJobInstance::class)->createJobInstance(
             [
-                'code' => static::XLSX_EXPORT_JOB_CODE,
+                'code' => self::XLSX_EXPORT_JOB_CODE,
                 'label' => 'Test XLSX',
-                'job_name' => static::XLSX_EXPORT_JOB_CODE,
+                'job_name' => self::XLSX_EXPORT_JOB_CODE,
                 'status' => 0,
                 'type' => 'export',
                 'raw_parameters' => 'a:12:{s:8:"filePath";s:39:"/tmp/export_%job_label%_%datetime%.xlsx";s:10:"withHeader";b:1;s:12:"linesPerFile";i:10000;s:14:"user_to_notify";N;s:21:"is_user_authenticated";b:0;s:16:"decimalSeparator";s:1:".";s:10:"dateFormat";s:10:"yyyy-MM-dd";s:10:"with_media";b:1;s:10:"with_label";b:0;s:17:"header_with_label";b:0;s:11:"file_locale";N;s:7:"filters";a:2:{s:4:"data";a:3:{i:0;a:3:{s:5:"field";s:7:"enabled";s:8:"operator";s:3:"ALL";s:5:"value";N;}i:1;a:3:{s:5:"field";s:10:"categories";s:8:"operator";s:11:"IN CHILDREN";s:5:"value";a:1:{i:0;s:6:"master";}}i:2;a:4:{s:5:"field";s:12:"completeness";s:8:"operator";s:3:"ALL";s:5:"value";i:100;s:7:"context";a:1:{s:7:"locales";a:1:{i:0;s:5:"en_US";}}}}s:9:"structure";a:2:{s:5:"scope";s:9:"ecommerce";s:7:"locales";a:1:{i:0;s:5:"en_US";}}}}',
@@ -115,7 +117,7 @@ CSV;
                             ['code' => 'salt'],
                             ['code' => 'egg'],
                             ['code' => 'butter'],
-                        ]
+                        ],
                     ],
                     [
                         'code' => 'quantity',
@@ -163,7 +165,7 @@ CSV;
                             'locale' => null,
                             'scope' => null,
                             'data' => $nutritionValue,
-                        ]
+                        ],
                     ],
                 ],
             ]

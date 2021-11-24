@@ -121,7 +121,7 @@ final class HandleMultiSelectValueTest extends AttributeTestCase
         ];
     }
 
-    private function loadOptions()
+    private function loadOptions(): void
     {
         /** @var InMemoryFindAttributeOptionLabels $attributeOptionLabels */
         $attributeOptionLabels = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterface');

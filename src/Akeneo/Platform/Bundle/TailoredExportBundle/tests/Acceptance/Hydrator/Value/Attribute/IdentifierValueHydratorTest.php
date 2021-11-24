@@ -21,7 +21,7 @@ class IdentifierValueHydratorTest extends AbstractAttributeValueHydratorTest
     /**
      * @test
      */
-    public function it_hydrates_a_string_value_from_product_value()
+    public function it_hydrates_a_string_value_from_product_value(): void
     {
         $expectedValue = new StringValue('an_identifier');
         $productValue = ScalarValue::value('identifier_attribute_code', 'an_identifier');

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Placeholder, Table} from 'akeneo-design-system';
+import {SkeletonPlaceholder, Table} from 'akeneo-design-system';
 import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {Source} from '../../../../models';
 import {useAssociationType, useAttribute} from '../../../../hooks';
@@ -16,7 +16,7 @@ const AttributeSourceRow = ({source, ...rest}: SourceRowProps) => {
     <Table.Row {...rest}>
       <Table.Cell colSpan={2}>
         {isFetching ? (
-          <Placeholder as="span">{source.code}</Placeholder>
+          <SkeletonPlaceholder as="span">{source.code}</SkeletonPlaceholder>
         ) : (
           getLabel(attribute?.labels ?? {}, catalogLocale, source.code)
         )}
@@ -43,7 +43,7 @@ const AssociationTypeSourceRow = ({source, ...rest}: SourceRowProps) => {
     <Table.Row {...rest}>
       <Table.Cell colSpan={2}>
         {isFetching ? (
-          <Placeholder as="span">{source.code}</Placeholder>
+          <SkeletonPlaceholder as="span">{source.code}</SkeletonPlaceholder>
         ) : (
           getLabel(associationType?.labels ?? {}, catalogLocale, source.code)
         )}

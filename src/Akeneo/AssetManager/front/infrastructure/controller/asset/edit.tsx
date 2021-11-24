@@ -61,7 +61,7 @@ class AssetEditController extends BaseController {
       )
       .then(async (assetResult: AssetResult) => {
         this.store = createStore(true, {router, datagridState, translate, notify, userContext})(assetReducer);
-        await this.store.dispatch(updateChannels() as any);
+        await this.store.dispatch(updateChannels(fetcherRegistry.getFetcher('channel')) as any);
         this.store.dispatch(assetEditionReceived(assetResult.asset));
         this.store.dispatch(assetFamilyPermissionChanged(assetResult.permission));
         this.store.dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));

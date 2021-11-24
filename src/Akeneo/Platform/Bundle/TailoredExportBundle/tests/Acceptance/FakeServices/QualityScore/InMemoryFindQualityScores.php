@@ -19,7 +19,7 @@ final class InMemoryFindQualityScores implements FindQualityScoresInterface
 {
     private array $qualityScores;
 
-    public function addQualityScore(string $productIdentifier, array $qualityScore)
+    public function addQualityScore(string $productIdentifier, array $qualityScore): void
     {
         $this->qualityScores[$productIdentifier] = $qualityScore;
     }

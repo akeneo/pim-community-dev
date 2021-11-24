@@ -39,7 +39,7 @@ final class IsValidAttributeValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (null === $value) {
             return;
@@ -133,7 +133,7 @@ final class IsValidAttributeValidator extends ConstraintValidator
         }
     }
 
-    private function validateLocalizableAttribute(Attribute $attribute, ?string $channelCode, ?string $localeCode)
+    private function validateLocalizableAttribute(Attribute $attribute, ?string $channelCode, ?string $localeCode): void
     {
         if (null === $localeCode) {
             $this->context->buildViolation(

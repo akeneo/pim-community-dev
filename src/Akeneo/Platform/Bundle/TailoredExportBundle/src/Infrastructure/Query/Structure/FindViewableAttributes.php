@@ -74,7 +74,7 @@ class FindViewableAttributes implements FindViewableAttributesInterface
         string $localeCode,
         int $limit,
         array $attributeTypes,
-        $currentOffset,
+        int $currentOffset,
         ?string $search
     ): array {
         $flattenAttributes = $this->findFlattenAttributes->execute(
