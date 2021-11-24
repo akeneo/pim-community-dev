@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\ExceptionWithContext;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetEvaluableProductValuesQueryInterface;
@@ -99,10 +100,7 @@ class EvaluatePendingCriteria
             $result = $evaluationService->evaluate($criterionEvaluation, $productValues);
             $criterionEvaluation->end($result);
         } catch (\Exception $exception) {
-            $this->logger->error(
-                'Failed to evaluate criterion {criterion_code} for product id {product_id}',
-                ['criterion_code' => $criterionEvaluation->getCriterionCode(), 'product_id' => $criterionEvaluation->getProductId(), 'message' => $exception->getMessage()]
-            );
+            $this->logCriterionEvaluationError($criterionEvaluation, $exception);
             $criterionEvaluation->flagAsError();
         }
     }
@@ -115,5 +113,23 @@ class EvaluatePendingCriteria
             $criterionEvaluationApplicability = $applicabilityService->evaluateApplicability($productValues);
             $criterionEvaluation->applicabilityEvaluated($criterionEvaluationApplicability);
         }
+    }
+
+    private function logCriterionEvaluationError(Write\CriterionEvaluation $criterionEvaluation, \Exception $exception): void
+    {
+        $context = [
+            'criterion_code' => $criterionEvaluation->getCriterionCode(),
+            'product_id' => $criterionEvaluation->getProductId(),
+            'message' => $exception->getMessage()
+        ];
+
+        if ($exception instanceof ExceptionWithContext) {
+            $context = array_merge($context, $exception->getContext());
+        }
+
+        $this->logger->error(
+            'Failed to evaluate criterion {criterion_code} for product id {product_id}',
+            $context
+        );
     }
 }
