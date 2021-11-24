@@ -42,7 +42,7 @@
     },
     "require": {
         "ext-json": "*",
-        "akeneo/pim-community-dev": "dev-master",
+        "akeneo/pim-community-dev": "dev-BH-859-php8",
         "hslavich/oneloginsaml-bundle": "2.0.*",
         "justinrainbow/json-schema": "^5.2",
         "phpseclib/phpseclib": "2.0.31",
