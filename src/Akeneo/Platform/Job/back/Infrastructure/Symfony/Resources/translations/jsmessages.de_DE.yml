@@ -24,6 +24,7 @@ akeneo_job_process_tracker:
   status:
     label: Status
     all: Alle
+    abandoned: Abgebrochen
     completed: Vollständig
     failed: Fehlgeschlagen
     started: Gestartet
