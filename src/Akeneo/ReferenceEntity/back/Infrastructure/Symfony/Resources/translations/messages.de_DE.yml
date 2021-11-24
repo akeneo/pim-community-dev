@@ -61,5 +61,6 @@ pim_api:
     record:
       create: Referenzen erstellen und aktualisieren
       list: Referenzen auflisten
+      remove: Referenz-Entitäts-Datensätze löschen
   acl_group:
     reference_entity: Referenz Entitäten

@@ -163,6 +163,8 @@ pim_table_attribute:
       no_rows_title: "La tabella {{ attributeLabel }} è vuota."
       no_rows_subtitle: Aggiungi righe per definire nuove proprietà
       no_rows_subtitle_on_readonly: Per modificare questo attributo, vai alla pagina di impostazione degli attributi oppure contatta il tuo amministratore PIM.
+      no_results: Non ci sono risultati
+      no_options: Non ci sono opzioni
       no_add_options_unallowed: Contatta l'amministratore PIM per gestire le opzioni "{{ attributeLabel }}"
       actions:
         delete_row: Elimina questa riga
@@ -170,6 +172,8 @@ pim_table_attribute:
         move_first: Sposta alla prima posizione
         move_last: Sposta all'ultima posizione
       order: Ordina
+      save_options_error: Si è verificato un errore al salvataggio delle opzioni
+      save_options_success: Opzioni aggiornate con successo
   properties:
     data_type:
       text: Testo
@@ -178,6 +182,7 @@ pim_table_attribute:
       select: Seleziona
   validations:
     column_code_must_be_filled: È necessario indicare il codice
+    not_available_code: Questo codice di colonna non è disponibile
     column_data_type_must_be_filled: È necessario indicare il tipo di dati
     invalid_column_code: Il codice colonna può contenere solo lettere, numeri e underscore
     invalid_code: Il codice può contenere solo lettere, numeri e underscore

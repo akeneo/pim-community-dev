@@ -54,5 +54,13 @@ pim_mass_edit:
 akeneo_reference_entity: Entità di riferimento a collegamento singolo
 akeneo_reference_entity_collection: Entità di riferimento a collegamenti multipli
 pim_api:
+  acl:
+    reference_entity:
+      create: Creare e aggiornare entità di riferimento
+      list: Elenco entità di riferimento
+    record:
+      create: Creare e aggiornare i record di entità di riferimento
+      list: Elenco dei record dell'entità di riferimento
+      remove: Elimina tutti i record dell'entità di riferimento
   acl_group:
     reference_entity: Entità riferimenti
