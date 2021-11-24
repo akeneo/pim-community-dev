@@ -7,7 +7,9 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
 use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
-use Akeneo\Tool\Component\Connector\Writer\WriterFactory;
+use Box\Spout\Common\Entity\Row;
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
+use Box\Spout\Writer\Common\Creator\WriterFactory;
 
 final class ImportUserGroupIntegration extends TestCase
 {
@@ -67,13 +69,18 @@ CSV;
     public function it_imports_user_groups_in_xlsx(): void
     {
         $temporaryFile = tempnam(sys_get_temp_dir(), 'test_user_group_import');
-        $writer = WriterFactory::create('xlsx');
+        $writer = WriterFactory::createFromType('xlsx');
         $writer->openToFile($temporaryFile);
-        $writer->addRows([
-            ['name'],
-            ['All'],
-            ['New User Group CSV XLSX'],
-        ]);
+        $writer->addRows(
+            \array_map(
+                fn (array $data): Row => WriterEntityFactory::createRowFromArray($data),
+                [
+                    ['name'],
+                    ['All'],
+                    ['New User Group CSV XLSX'],
+                ]
+            )
+        );
         $writer->close();
 
         $this->jobLauncher->launchImport(static::XLSX_IMPORT_JOB_CODE, file_get_contents($temporaryFile), null, [], [], 'xlsx');

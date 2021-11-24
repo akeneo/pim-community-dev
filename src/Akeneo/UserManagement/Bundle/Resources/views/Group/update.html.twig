@@ -12,7 +12,7 @@
 {% if entityId %}
     {% set breadcrumbs = {
         'entity':      form.vars.value,
-        'indexPath':   path('pim_user_group_index'),
+        'indexPath':   '#%s'|format(path('pim_user_group_index')),
         'indexLabel': 'Groups'|trans,
         'entityTitle': form.vars.value.name
     }

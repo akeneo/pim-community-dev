@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {Placeholder} from 'akeneo-design-system';
+import {SkeletonPlaceholder} from 'akeneo-design-system';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -23,7 +23,9 @@ type Props = {
 };
 
 const Title: FC<Props> = ({children, showPlaceholder}) => {
-  return <Container>{showPlaceholder ? <Placeholder>{children}</Placeholder> : <>{children}</>}</Container>;
+  return (
+    <Container>{showPlaceholder ? <SkeletonPlaceholder>{children}</SkeletonPlaceholder> : <>{children}</>}</Container>
+  );
 };
 
 export {Title};
