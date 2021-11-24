@@ -21,7 +21,7 @@ class BooleanValueHydratorTest extends AbstractAttributeValueHydratorTest
     /**
      * @test
      */
-    public function it_hydrates_a_boolean_value_from_product_value()
+    public function it_hydrates_a_boolean_value_from_product_value(): void
     {
         $this->assertHydratedValueEquals(
             new BooleanValue(true),

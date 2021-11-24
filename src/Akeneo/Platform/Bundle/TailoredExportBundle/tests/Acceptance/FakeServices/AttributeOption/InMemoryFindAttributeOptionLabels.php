@@ -10,7 +10,7 @@ final class InMemoryFindAttributeOptionLabels implements FindAttributeOptionLabe
 {
     private array $attributeLabels = [];
 
-    public function addAttributeLabel(string $attributeCode, string $optionCode, string $locale, string $optionTranslation)
+    public function addAttributeLabel(string $attributeCode, string $optionCode, string $locale, string $optionTranslation): void
     {
         $this->attributeLabels[$attributeCode][$optionCode][$locale] = $optionTranslation;
     }

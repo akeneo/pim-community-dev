@@ -46,7 +46,10 @@
           "targets": "class",
           "defaultOption": null,
           "requiredOptions": [],
-          "payload": null
+          "payload": null,
+          "groups": [
+            "primary_constraints"
+          ]
         },
         "cause": null,
         "code": null

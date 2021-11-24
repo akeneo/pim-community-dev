@@ -10,7 +10,7 @@ final class InMemoryFindCategoryLabels implements FindCategoryLabelsInterface
 {
     private array $categoryLabels = [];
 
-    public function addCategoryLabel(string $categoryCode, string $locale, string $label)
+    public function addCategoryLabel(string $categoryCode, string $locale, string $label): void
     {
         $this->categoryLabels[$categoryCode][$locale] = $label;
     }

@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {AddingValueIllustration, Button, Dropdown, TableInput} from 'akeneo-design-system';
+import {AddingValueIllustration, Button, Dropdown, Placeholder, TableInput} from 'akeneo-design-system';
 import {ColumnCode, SelectOption, SelectOptionCode, TableAttribute} from '../../models';
 import {getLabel, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
-import {CenteredHelper, LoadingPlaceholderContainer} from '../../shared';
+import {LoadingPlaceholderContainer} from '../../shared';
 import {useFetchOptions} from '../useFetchOptions';
 import {CellInput} from './index';
 import {useManageOptions} from '../useManageOptions';
@@ -99,23 +99,22 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
   let BottomHelper = undefined;
   if (searchValue === '' && itemsToDisplay.length === 0) {
     BottomHelper = (
-      <CenteredHelper.Container>
-        <CenteredHelper illustration={<AddingValueIllustration />}>
-          <CenteredHelper.Title>{translate('pim_table_attribute.form.product.no_options')}</CenteredHelper.Title>
-          {!hasEditPermission &&
-            translate('pim_table_attribute.form.product.no_add_options_unallowed', {
-              attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
-            })}
-        </CenteredHelper>
-      </CenteredHelper.Container>
+      <Placeholder
+        illustration={<AddingValueIllustration />}
+        title={translate('pim_table_attribute.form.product.no_options')}
+      >
+        {!hasEditPermission &&
+          translate('pim_table_attribute.form.product.no_add_options_unallowed', {
+            attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
+          })}
+      </Placeholder>
     );
   } else if (searchValue !== '' && itemsToDisplay.length === 0) {
     BottomHelper = (
-      <CenteredHelper.Container>
-        <CenteredHelper illustration={<AddingValueIllustration />}>
-          <CenteredHelper.Title>{translate('pim_table_attribute.form.product.no_results')}</CenteredHelper.Title>
-        </CenteredHelper>
-      </CenteredHelper.Container>
+      <Placeholder
+        illustration={<AddingValueIllustration />}
+        title={translate('pim_table_attribute.form.product.no_results')}
+      />
     );
   }
   if (hasEditPermission) {

@@ -49,7 +49,11 @@
                     "targets": "class",
                     "defaultOption": null,
                     "requiredOptions": [],
-                    "payload": null
+                    "payload": null,
+                    "groups": [
+                        "Default",
+                        "SetAssetFamilyPermissionsCommand"
+                    ]
                 },
                 "cause": null,
                 "code": null

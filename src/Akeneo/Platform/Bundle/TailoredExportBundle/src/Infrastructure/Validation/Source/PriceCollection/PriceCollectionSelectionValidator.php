@@ -40,7 +40,7 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
         $this->findActivatedCurrencies = $findActivatedCurrencies;
     }
 
-    public function validate($selection, Constraint $constraint)
+    public function validate($selection, Constraint $constraint): void
     {
         if (!$constraint instanceof PriceCollectionSelectionConstraint) {
             throw new \InvalidArgumentException('Invalid constraint');

@@ -29,7 +29,7 @@ abstract class AbstractAssociationTypeValueHydratorTest extends KernelTestCase
         SourceValueInterface $expectedValue,
         ProductInterface $product,
         bool $isQuantified
-    ) {
+    ): void {
         $hydratedValue = $this->getHydrator()->hydrate($product, 'X_SELL', $isQuantified);
 
         $this->assertEquals($expectedValue, $hydratedValue);

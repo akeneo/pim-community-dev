@@ -15,6 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\Operation;
 
 use Webmozart\Assert\Assert;
 
+/**
+ * @implements \IteratorAggregate<int, OperationInterface>
+ */
 class OperationCollection implements \IteratorAggregate
 {
     /** @var OperationInterface[] */

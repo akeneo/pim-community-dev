@@ -24,7 +24,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class CodeLabelSelectionValidator extends ConstraintValidator
 {
-    public function validate($selection, Constraint $constraint)
+    public function validate($selection, Constraint $constraint): void
     {
         $validator = $this->context->getValidator();
         $violations = $validator->validate($selection, [

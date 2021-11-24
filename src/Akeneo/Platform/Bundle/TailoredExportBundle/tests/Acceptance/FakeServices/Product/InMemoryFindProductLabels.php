@@ -15,7 +15,7 @@ final class InMemoryFindProductLabels implements FindProductLabelsInterface
         string $channel,
         string $locale,
         string $productTranslation
-    ) {
+    ): void {
         $this->productLabels[$productIdentifier][$channel][$locale] = $productTranslation;
     }
 

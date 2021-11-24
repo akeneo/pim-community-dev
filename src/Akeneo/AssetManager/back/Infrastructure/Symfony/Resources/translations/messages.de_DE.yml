@@ -88,7 +88,11 @@ pim_mass_edit.notification.asset_manager_mass_edit_assets:
   error: Asset Edition fehlgeschlagen
 pim_api:
   acl:
+    asset_family:
+      create: Erstellen und Aktualisieren von Assetfamilien
+      list: Assetfamilien auflisten
     asset:
+      create: Erstellen und Aktualisieren von Assets
       list: Assets auflisten
       remove: Assets löschen
   acl_group:

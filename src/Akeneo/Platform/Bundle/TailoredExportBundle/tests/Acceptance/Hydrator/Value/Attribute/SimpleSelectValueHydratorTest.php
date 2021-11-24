@@ -21,7 +21,7 @@ class SimpleSelectValueHydratorTest extends AbstractAttributeValueHydratorTest
     /**
      * @test
      */
-    public function it_hydrates_a_simple_select_value_from_product_value()
+    public function it_hydrates_a_simple_select_value_from_product_value(): void
     {
         $expectedValue = new SimpleSelectValue('blue');
         $productValue = OptionValue::value('simple_select_attribute_code', 'blue');

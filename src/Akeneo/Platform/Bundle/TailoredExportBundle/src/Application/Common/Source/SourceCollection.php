@@ -15,6 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\Source;
 
 use Webmozart\Assert\Assert;
 
+/**
+ * @implements \IteratorAggregate<int, SourceInterface>
+ */
 class SourceCollection implements \IteratorAggregate
 {
     /** @var SourceInterface[] */

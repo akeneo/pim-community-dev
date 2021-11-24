@@ -16,7 +16,6 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Simple
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SourceConstraintProvider;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class SimpleAssociationTypeSourceValidator extends ConstraintValidator

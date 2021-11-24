@@ -18,7 +18,8 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
-use Box\Spout\Reader\ReaderFactory;
+use Box\Spout\Common\Entity\Row;
+use Box\Spout\Reader\Common\Creator\ReaderFactory;
 use PHPUnit\Framework\Assert;
 
 final class ExportTableAttributeIntegration extends TestCase
@@ -30,7 +31,7 @@ final class ExportTableAttributeIntegration extends TestCase
     /** @test */
     public function it_exports_a_table_attribute_in_csv(): void
     {
-        $csv = $this->jobLauncher->launchExport(static::CSV_EXPORT_JOB_CODE, null, []);
+        $csv = $this->jobLauncher->launchExport(self::CSV_EXPORT_JOB_CODE, null, []);
         $formatted = \array_map(
             fn (string $row): array => \str_getcsv($row, ';'),
             \array_filter(\explode(PHP_EOL, $csv))
@@ -78,14 +79,15 @@ final class ExportTableAttributeIntegration extends TestCase
     /** @test */
     public function it_exports_a_table_attribute_in_xlsx(): void
     {
-        $bin = $this->jobLauncher->launchExport(static::XLSX_EXPORT_JOB_CODE, null, [], 'xlsx');
+        $bin = $this->jobLauncher->launchExport(self::XLSX_EXPORT_JOB_CODE, null, [], 'xlsx');
 
         $tmpfile = \tempnam(\sys_get_temp_dir(), 'test_table');
         \file_put_contents($tmpfile, $bin);
 
-        $reader = ReaderFactory::create('xlsx');
+        $reader = ReaderFactory::createFromType('xlsx');
         $reader->open($tmpfile);
         $sheet = current(iterator_to_array($reader->getSheetIterator()));
+        /** @var Row[] $lines */
         $lines = iterator_to_array($sheet->getRowIterator());
         $reader->close();
         if (\is_file($tmpfile)) {
@@ -121,7 +123,7 @@ final class ExportTableAttributeIntegration extends TestCase
 
         Assert::assertCount(2, $lines);
         foreach ($lines as $row) {
-            $row = \array_combine($header, $row);
+            $row = \array_combine($header->toArray(), $row->toArray());
             if ('nutrition' !== $row['code']) {
                 Assert::assertSame('', $row['table_configuration']);
             } else {
@@ -142,9 +144,9 @@ final class ExportTableAttributeIntegration extends TestCase
 
         $this->get(SqlCreateJobInstance::class)->createJobInstance(
             [
-                'code' => static::CSV_EXPORT_JOB_CODE,
+                'code' => self::CSV_EXPORT_JOB_CODE,
                 'label' => 'Test CSV',
-                'job_name' => static::CSV_EXPORT_JOB_CODE,
+                'job_name' => self::CSV_EXPORT_JOB_CODE,
                 'status' => 0,
                 'type' => 'export',
                 'raw_parameters' => 'a:6:{s:8:"filePath";s:38:"/tmp/export_%job_label%_%datetime%.csv";s:9:"delimiter";s:1:";";s:9:"enclosure";s:1:""";s:10:"withHeader";b:1;s:14:"user_to_notify";N;s:21:"is_user_authenticated";b:0;}',
@@ -152,9 +154,9 @@ final class ExportTableAttributeIntegration extends TestCase
         );
         $this->get(SqlCreateJobInstance::class)->createJobInstance(
             [
-                'code' => static::XLSX_EXPORT_JOB_CODE,
+                'code' => self::XLSX_EXPORT_JOB_CODE,
                 'label' => 'Test XLSX',
-                'job_name' => static::XLSX_EXPORT_JOB_CODE,
+                'job_name' => self::XLSX_EXPORT_JOB_CODE,
                 'status' => 0,
                 'type' => 'export',
                 'raw_parameters' => 'a:5:{s:8:"filePath";s:39:"/tmp/export_%job_label%_%datetime%.xlsx";s:10:"withHeader";b:1;s:12:"linesPerFile";i:10000;s:14:"user_to_notify";N;s:21:"is_user_authenticated";b:0;}',
@@ -188,7 +190,7 @@ final class ExportTableAttributeIntegration extends TestCase
                         'decimals_allowed' => true,
                     ],
                 ],
-            ]
+            ],
         ]);
         $violations = $this->get('validator')->validate($attribute);
         Assert::assertCount(0, $violations, \sprintf('The attribute is not valid: %s', $violations));

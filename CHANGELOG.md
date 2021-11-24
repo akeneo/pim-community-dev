@@ -113,7 +113,9 @@
 - PIM-10143: Add a check for valid media links with redirects
 - PIM-10169: Remove double warning sign when having validation errors on Record edit page
 - PIM-10159: Fix table configuration update when a column is deleted and recreated with a different data type
+- PIM-10170: Launch product link rules when creating asset by import
 - PIM-10166: Prevent Asset Manager thumbnail generation on unsupported mime types
+- PIM-10161: Batch query to retrieve existing asset codes
 
 ## Improvements
 

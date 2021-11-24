@@ -88,7 +88,7 @@ final class HandleGroupsValueTest extends PropertyTestCase
         ];
     }
 
-    private function loadGroupLabels()
+    private function loadGroupLabels(): void
     {
         /** @var InMemoryFindGroupLabels $groupLabelsRepository */
         $groupLabelsRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface');

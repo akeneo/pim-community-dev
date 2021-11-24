@@ -31,7 +31,7 @@ class NumberSourceValidator extends ConstraintValidator
         $this->availableDecimalSeparator = $availableDecimalSeparator;
     }
 
-    public function validate($source, Constraint $constraint)
+    public function validate($source, Constraint $constraint): void
     {
         $validator = $this->context->getValidator();
 

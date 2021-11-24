@@ -1,16 +1,14 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {Button, getColor, getFontSize, useSelection, Modal, useBooleanState} from 'akeneo-design-system';
-import {useTranslate, LocaleCode, ChannelCode} from '@akeneo-pim-community/shared';
+import {useTranslate, LocaleCode, ChannelCode, Channel} from '@akeneo-pim-community/shared';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import FilterCollection, {useFilterViews} from 'akeneoassetmanager/application/component/asset/list/filter-collection';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import Basket from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/basket';
 import {SearchBar} from 'akeneoassetmanager/application/component/asset/list/search-bar';
-import fetchAllChannels from 'akeneoassetmanager/infrastructure/fetcher/channel';
 import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
-import attributeFetcher from 'akeneoassetmanager/infrastructure/fetcher/attribute';
 import {LabelCollection} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {getLabel} from 'pimui/js/i18n';
 import {getAttributeLabel, Attribute as ProductAttribute} from 'akeneoassetmanager/platform/model/structure/attribute';
@@ -18,9 +16,9 @@ import ListAsset, {
   canAddAssetToCollection,
   addAssetsToCollection,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
-import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import MosaicResult from 'akeneoassetmanager/application/component/asset/list/mosaic';
 import {useFetchResult} from 'akeneoassetmanager/application/hooks/grid';
+import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 
 type AssetFamilyIdentifier = string;
 type AssetPickerProps = {
@@ -30,6 +28,22 @@ type AssetPickerProps = {
   productLabels: LabelCollection;
   productAttribute: ProductAttribute;
   onAssetPick: (assetCodes: AssetCode[]) => void;
+  dataProvider: {
+    assetFetcher: {
+      fetchByCode: (
+        assetFamilyIdentifier: AssetFamilyIdentifier,
+        assetCodeCollection: AssetCode[],
+        context: Context
+      ) => Promise<ListAsset[]>;
+      search: (query: Query) => Promise<SearchResult<ListAsset>>;
+    };
+    channelFetcher: {
+      fetchAll: () => Promise<Channel[]>;
+    };
+    assetAttributeFetcher: {
+      fetchAll: (assetFamilyIdentifier: string) => Promise<NormalizedAttribute[]>;
+    };
+  };
 };
 
 const FullModal = styled(Modal)`
@@ -113,23 +127,6 @@ const createQuery = (
   };
 };
 
-const dataProvider = {
-  assetFetcher: {
-    fetchByCode: (assetFamilyIdentifier: AssetFamilyIdentifier, assetCodeCollection: AssetCode[], context: Context) => {
-      return assetFetcher.fetchByCodes(assetFamilyIdentifier, assetCodeCollection, context);
-    },
-    search: (query: Query) => {
-      return assetFetcher.search(query);
-    },
-  },
-  channelFetcher: {
-    fetchAll: fetchAllChannels,
-  },
-  assetAttributeFetcher: {
-    fetchAll: attributeFetcher.fetchAllNormalized,
-  },
-};
-
 const AssetPicker = ({
   assetFamilyIdentifier,
   initialContext,
@@ -137,6 +134,7 @@ const AssetPicker = ({
   excludedAssetCollection,
   productLabels,
   productAttribute,
+  dataProvider,
 }: AssetPickerProps) => {
   const [isOpen, openPicker, closePicker] = useBooleanState(false);
   const [filterCollection, setFilterCollection] = useState<Filter[]>([]);

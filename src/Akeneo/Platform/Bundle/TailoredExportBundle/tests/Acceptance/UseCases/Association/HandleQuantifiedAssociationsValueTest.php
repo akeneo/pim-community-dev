@@ -106,7 +106,7 @@ final class HandleQuantifiedAssociationsValueTest extends AssociationTestCase
         ];
     }
 
-    private function loadAssociatedEntityLabels()
+    private function loadAssociatedEntityLabels(): void
     {
         /** @var InMemoryFindProductLabels $productLabelRepository */
         $productLabelRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindProductLabelsInterface');

@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraint;
 
 class MeasurementConversionOperationConstraint extends Constraint
 {
-    public $attributeCode;
+    public string $attributeCode;
 
     public function validatedBy(): string
     {

@@ -1,5 +1,15 @@
 # 5.0.x
 
+# 5.0.57 (2021-11-08)
+
+# 5.0.56 (2021-11-05)
+
+## Bug fixes
+
+- PIM-10146: Fix missing permission check on product-model update
+
+# 5.0.55 (2021-11-03)
+
 # 5.0.54 (2021-10-29)
 
 ## Bug fixes

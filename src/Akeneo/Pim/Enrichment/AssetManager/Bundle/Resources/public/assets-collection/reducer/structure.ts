@@ -1,7 +1,6 @@
 import {Action} from 'redux';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
 import {Attribute} from 'akeneoassetmanager/platform/model/structure/attribute';
-import fetchAllChannels from 'akeneoassetmanager/infrastructure/fetcher/channel';
 import {Family, FamilyCode} from 'akeneoassetmanager/platform/model/structure/family';
 import {
   familyFetcher,
@@ -133,7 +132,7 @@ export const updateAttributeGroups = () => async (dispatch: any) => {
   dispatch(attributeGroupListUpdated(attributeGroups));
 };
 
-export const updateChannels = () => async (dispatch: any) => {
+export const updateChannels = (fetchAllChannels: () => Promise<Channel[]>) => async (dispatch: any) => {
   const channels = await fetchAllChannels();
   dispatch(channelListUpdated(channels));
 };

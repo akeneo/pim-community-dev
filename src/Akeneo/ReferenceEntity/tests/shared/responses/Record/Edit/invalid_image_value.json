@@ -128,10 +128,12 @@
         "constraint":{
           "targets":"class",
           "defaultOption":null,
-          "requiredOptions":[
-
-          ],
-          "payload":null
+          "requiredOptions":[],
+          "payload":null,
+          "groups": [
+            "Default",
+            "EditRecordCommand"
+          ]
         },
         "cause":null,
         "code":null

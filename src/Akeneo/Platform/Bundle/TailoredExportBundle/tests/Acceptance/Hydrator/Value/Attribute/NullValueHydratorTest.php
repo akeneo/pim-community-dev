@@ -21,7 +21,7 @@ class NullValueHydratorTest extends AbstractAttributeValueHydratorTest
     /**
      * @test
      */
-    public function it_hydrates_a_null_value_from_null()
+    public function it_hydrates_a_null_value_from_null(): void
     {
         $expectedValue = new NullValue();
         $productValue = null;
@@ -32,7 +32,7 @@ class NullValueHydratorTest extends AbstractAttributeValueHydratorTest
     /**
      * @test
      */
-    public function it_hydrates_a_null_value_from_null_product_value()
+    public function it_hydrates_a_null_value_from_null_product_value(): void
     {
         $expectedValue = new NullValue();
         $productValue = ScalarValue::value('an_attribute_code', null);

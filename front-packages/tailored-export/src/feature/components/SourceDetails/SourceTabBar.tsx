@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react';
-import {Pill, Placeholder, TabBar} from 'akeneo-design-system';
+import {Pill, SkeletonPlaceholder, TabBar} from 'akeneo-design-system';
 import {filterErrors, getLabel, useTranslate, useUserContext, ValidationError} from '@akeneo-pim-community/shared';
 import {Source} from '../../models';
 import {useAssociationTypes, useAttributes} from '../../hooks';
@@ -37,13 +37,13 @@ const SourceTabBar = ({sources, currentTab, validationErrors, onTabChange}: Sour
           <TabBar.Tab key={source.uuid} isActive={currentTab === source.uuid} onClick={() => onTabChange(source.uuid)}>
             {'attribute' === source.type &&
               (undefined === attribute && isAttributeFetching ? (
-                <Placeholder as="span">{source.code}</Placeholder>
+                <SkeletonPlaceholder as="span">{source.code}</SkeletonPlaceholder>
               ) : (
                 getLabel(attribute?.labels ?? {}, catalogLocale, source.code)
               ))}
             {'association_type' === source.type &&
               (undefined === associationType && isAssociationTypeFetching ? (
-                <Placeholder as="span">{source.code}</Placeholder>
+                <SkeletonPlaceholder as="span">{source.code}</SkeletonPlaceholder>
               ) : (
                 getLabel(associationType?.labels ?? {}, catalogLocale, source.code)
               ))}

@@ -22,7 +22,8 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
-use Box\Spout\Writer\WriterFactory;
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
+use Box\Spout\Writer\Common\Creator\WriterFactory;
 use PHPUnit\Framework\Assert;
 
 class ImportTableAttributeIntegration extends TestCase
@@ -86,12 +87,12 @@ CSV;
     public function it_imports_table_attributes_from_an_xlsx_file(): void
     {
         $temporaryFile = tempnam(sys_get_temp_dir(), 'test_user_import');
-        $writer = WriterFactory::create('xlsx');
+        $writer = WriterFactory::createFromType('xlsx');
         $writer->openToFile($temporaryFile);
         $writer->addRows(
             [
-                ['code', 'type', 'localizable', 'scopable', 'group', 'unique', 'sort_order', 'table_configuration'],
-                [
+                WriterEntityFactory::createRowFromArray(['code', 'type', 'localizable', 'scopable', 'group', 'unique', 'sort_order', 'table_configuration']),
+                WriterEntityFactory::createRowFromArray([
                     'nutrition',
                     'pim_catalog_table',
                     '0',
@@ -100,8 +101,8 @@ CSV;
                     '0',
                     '5',
                     '[{"code":"ingredients","data_type":"select","labels":{"en_US":"Ingredients"},"options":[{"code":"salt","labels":{"en_US":"Salt"}}]},{"code":"quantity","data_type":"text","labels":{"en_US":"Quantity"}}]',
-                ],
-                [
+                ]),
+                WriterEntityFactory::createRowFromArray([
                     'storage',
                     'pim_catalog_table',
                     '0',
@@ -110,7 +111,7 @@ CSV;
                     '0',
                     '6',
                     '[{"code":"dimension","data_type":"select","labels":{"en_US":"Dimension"}},{"code":"value","data_type":"text","labels":{"en_US":"Value"}}]',
-                ],
+                ]),
             ]
         );
         $writer->close();

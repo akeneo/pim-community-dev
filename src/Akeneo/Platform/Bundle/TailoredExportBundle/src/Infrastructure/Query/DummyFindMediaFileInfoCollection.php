@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Query;
 
-use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\GetMainMediaFileInfoCollectionInterface;
-use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\MediaFileInfo as AssetManagerMediaFileInfo;
 use Akeneo\Platform\TailoredExport\Domain\Query\MediaFileInfo\FindMediaFileInfoCollectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\Query\MediaFileInfo\MediaFileInfo;
 
 /**
  * @author    Benoit Jacquemont <benoitil@akeneo.com>

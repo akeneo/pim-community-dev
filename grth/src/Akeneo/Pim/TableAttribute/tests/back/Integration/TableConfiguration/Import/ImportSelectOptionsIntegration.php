@@ -20,7 +20,8 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
-use Box\Spout\Writer\WriterFactory;
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
+use Box\Spout\Writer\Common\Creator\WriterFactory;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
@@ -74,17 +75,17 @@ CSV;
     public function it_imports_table_attributes_from_an_xlsx_file(): void
     {
         $temporaryFile = tempnam(sys_get_temp_dir(), 'test_user_import');
-        $writer = WriterFactory::create('xlsx');
+        $writer = WriterFactory::createFromType('xlsx');
         $writer->openToFile($temporaryFile);
         $writer->addRows(
             [
-                ['attribute', 'column', 'code', 'label-en_US'],
-                [
+                WriterEntityFactory::createRowFromArray(['attribute', 'column', 'code', 'label-en_US']),
+                WriterEntityFactory::createRowFromArray([
                     'nutrition',
                     'ingredient',
                     'salt',
                     'Salt',
-                ],
+                ]),
             ]
         );
         $writer->close();
