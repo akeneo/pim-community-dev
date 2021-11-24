@@ -52,7 +52,7 @@ class ChannelScopeMapperSpec extends ObjectBehavior
         $this->getAcls('unknown_scope')->shouldReturn([]);
     }
 
-    public function it_provides_message_that_correspond_to_the_read_channel_localization_scope(): void
+    public function it_provides_message_that_corresponds_to_the_read_channel_localization_scope(): void
     {
         $this->getMessage('read_channel_localization')->shouldReturn([
             'icon' => 'channel_localization',
@@ -61,7 +61,7 @@ class ChannelScopeMapperSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_provides_message_that_correspond_to_the_read_channel_settings_scope(): void
+    public function it_provides_message_that_corresponds_to_the_read_channel_settings_scope(): void
     {
         $this->getMessage('read_channel_settings')->shouldReturn([
             'icon' => 'channel_settings',
@@ -70,7 +70,7 @@ class ChannelScopeMapperSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_provides_message_that_correspond_to_the_write_channel_settings_scope(): void
+    public function it_provides_message_that_corresponds_to_the_write_channel_settings_scope(): void
     {
         $this->getMessage('write_channel_settings')->shouldReturn([
             'icon' => 'channel_settings',
