@@ -66,7 +66,7 @@ const LastOperationsWidget = () => {
               const badgeLevel =
                 operation.status === JOB_FAILED
                   ? 'danger'
-                  : operation.warningCount !== null && operation.warningCount !== '0'
+                  : operation.tracking.warning
                   ? 'warning'
                   : 'primary';
               const counter = operation.status === JOB_FAILED ? 1 : operation.warningCount;
