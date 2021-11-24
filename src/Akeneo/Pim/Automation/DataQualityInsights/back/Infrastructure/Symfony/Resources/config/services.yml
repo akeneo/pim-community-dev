@@ -61,7 +61,6 @@ services:
         arguments:
             $checker: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellChecker'
             $globalOffsetCalculator: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\Result\AspellGlobalOffsetCalculator'
-            $logger: '@logger'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellSpellerProvider:
         arguments:

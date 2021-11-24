@@ -67,7 +67,7 @@ class AspellChecker implements TextChecker
         try {
             $source = new TextSource($text);
         } catch (\Throwable $e) {
-            throw new TextCheckFailedException($e->getMessage());
+            throw new TextCheckFailedException($e->getMessage(), 0, $e);
         }
 
         try {
@@ -78,7 +78,7 @@ class AspellChecker implements TextChecker
                 $localeCode
             );
         } catch (PhpSpellerException $e) {
-            throw new TextCheckFailedException($e->getMessage());
+            throw new TextCheckFailedException($e->getMessage(), 0, $e);
         }
     }
 

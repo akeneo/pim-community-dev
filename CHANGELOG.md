@@ -119,6 +119,7 @@
 - PIM-10173: Apply naming convention when importing an asset through flat file
 - PIM-10161: Batch query to retrieve existing asset codes
 - PIM-10176: Batch query to retrieve existing reference entity records
+- PIM-10017: Improve logging in DQI spellcheck
 - PIM-10175: Fix option labels display in asset bulk action
 
 ## Improvements
