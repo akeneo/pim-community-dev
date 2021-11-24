@@ -19,7 +19,6 @@ class FindJobTypesTest extends IntegrationTestCase
     {
         $expectedJobTypes = [
             'import',
-            'export'
         ];
 
         $this->assertEqualsCanonicalizing($expectedJobTypes, $this->getQuery()->visible());
