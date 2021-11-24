@@ -141,6 +141,7 @@
 - PIM-10163: Prefix groups breadcrumb link to avoid 404
 - PIM-10160: Fix AM thumbnail generation when filename is longer than 100 characters
 - PIM-10167: Fix import file - datetime in price attribute break the import
+- PIM-10177: Fix warning level for status badge on last operations
 - PIM-10158: Fix failed migration longtext to json for akeneo_batch_job_execution.raw_parameters du to empty values
 
 ## New features
