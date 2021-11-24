@@ -1,6 +1,8 @@
 free_trial:
   menu:
+    entities: Entités
     proposals: Propositions
+    rules: Règles
     feature_ee_only: Cette fonctionnalité est uniquement disponible sur l'Enterprise Edition
   activity:
     dashboard:
