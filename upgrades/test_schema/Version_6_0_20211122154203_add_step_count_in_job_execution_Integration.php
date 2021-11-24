@@ -11,14 +11,14 @@ use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\Assert;
 
 /**
- * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Version_6_0_20211119154203_add_is_stoppable_in_job_execution_Integration extends TestCase
+class Version_6_0_20211122154203_add_step_count_in_job_execution_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
-    private const MIGRATION_LABEL = '_6_0_20211119154203_add_is_stoppable_in_job_execution';
+    private const MIGRATION_LABEL = '_6_0_20211122154203_add_step_count_in_job_execution';
 
     private Connection $connection;
 
@@ -33,25 +33,17 @@ class Version_6_0_20211119154203_add_is_stoppable_in_job_execution_Integration e
         $this->connection = $this->get('database_connection');
     }
 
-    public function test_it_adds_a_is_stoppable_column_to_the_job_execution_table(): void
+    public function test_it_adds_step_count_column_to_the_job_execution_table(): void
     {
         $this->dropColumnIfExists();
 
-        $nonStoppableJobInstanceId = $this->createJobInstance('xlsx_family_import');
-        $nonStoppableJobExecutionId = $this->createJobExecution($nonStoppableJobInstanceId);
-
-        $stoppableJobInstanceId = $this->createJobInstance('csv_user_group_export');
-        $stoppableJobExecutionId = $this->createJobExecution($stoppableJobInstanceId);
+        $jobInstanceId = $this->createJobInstance('csv_user_group_export');
+        $this->createJobExecution($jobInstanceId);
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
         Assert::assertEquals(true, $this->columnExists());
 
-        $jobExecutions = $this->selectJobExecutions();
-
-        Assert::assertEquals([
-            $nonStoppableJobExecutionId => '0',
-            $stoppableJobExecutionId => '1'
-        ], $jobExecutions);
+        Assert::assertNull($this->selectStepCount());
     }
 
     public function test_migration_is_idempotent(): void
@@ -70,7 +62,7 @@ class Version_6_0_20211119154203_add_is_stoppable_in_job_execution_Integration e
     private function dropColumnIfExists(): void
     {
         if ($this->columnExists()) {
-            $this->connection->executeQuery('ALTER TABLE akeneo_batch_job_execution DROP COLUMN is_stoppable;');
+            $this->connection->executeQuery('ALTER TABLE akeneo_batch_job_execution DROP COLUMN step_count;');
         }
 
         Assert::assertEquals(false, $this->columnExists());
@@ -80,7 +72,7 @@ class Version_6_0_20211119154203_add_is_stoppable_in_job_execution_Integration e
     {
         $columns = $this->connection->getSchemaManager()->listTableColumns('akeneo_batch_job_execution');
 
-        return isset($columns['is_stoppable']);
+        return isset($columns['step_count']);
     }
 
     private function createJobExecution(int $jobInstanceId): int
@@ -97,7 +89,7 @@ class Version_6_0_20211119154203_add_is_stoppable_in_job_execution_Integration e
             ]
         );
 
-        return (int)$this->connection->lastInsertId();
+        return (int) $this->connection->lastInsertId();
     }
 
     private function createJobInstance(string $label): int
@@ -115,13 +107,11 @@ class Version_6_0_20211119154203_add_is_stoppable_in_job_execution_Integration e
             ],
         );
 
-        return (int)$this->connection->lastInsertId();
+        return (int) $this->connection->lastInsertId();
     }
 
-    private function selectJobExecutions(): array
+    private function selectStepCount(): ?int
     {
-        $result = $this->connection->executeQuery('SELECT id, is_stoppable FROM akeneo_batch_job_execution')->fetchAllAssociative();
-
-        return array_column($result, 'is_stoppable', 'id');
+        return $this->connection->executeQuery('SELECT step_count FROM akeneo_batch_job_execution')->fetchOne()['count'] ?? null;
     }
 }

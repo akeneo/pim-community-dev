@@ -47,7 +47,8 @@ final class FixturesJobHelper
         $defaultData = [
             'status' => 1,
             'raw_parameters' => [],
-            'is_stoppable' => true
+            'is_stoppable' => true,
+            'step_count' => 3,
         ];
 
         $this->dbalConnection->insert(
@@ -56,6 +57,7 @@ final class FixturesJobHelper
             [
                 'raw_parameters' => Types::JSON,
                 'is_stoppable' => Types::BOOLEAN,
+                'step_count' => Types::INTEGER,
             ]
         );
 

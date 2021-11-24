@@ -6,6 +6,7 @@ use Akeneo\Tool\Bundle\BatchBundle\EntityManager\PersistedConnectionEntityManage
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Job\JobWithStepsInterface;
 use Akeneo\Tool\Component\Batch\Job\StoppableJobInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -109,6 +110,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
         $jobExecution->setJobInstance($jobInstance);
         $jobExecution->setJobParameters($jobParameters);
         $jobExecution->setIsStoppable($job instanceof StoppableJobInterface && $job->isStoppable());
+        $jobExecution->setStepCount($job instanceof JobWithStepsInterface ? count($job->getSteps()) : null);
 
         $this->updateJobExecution($jobExecution);
 

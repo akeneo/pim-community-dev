@@ -67,6 +67,10 @@ Akeneo\Tool\Component\Batch\Model\JobExecution:
             type: boolean
             column: is_stoppable
             nullable: true
+        stepCount:
+            type: integer
+            column: step_count
+            nullable: true
     oneToMany:
         stepExecutions:
             targetEntity: Akeneo\Tool\Component\Batch\Model\StepExecution
