@@ -176,14 +176,14 @@ class ValueCollectionSpec extends ObjectBehavior
         $localeReference = LocaleReference::noReference();
 
         $this->findValue(ValueKey::create($attributeIdentifier, $channelReference, $localeReference))
-            ->shouldBeNull();
+            ->shouldBe(null);
     }
 
     function it_filters_the_values()
     {
         $this->filter(fn(Value $value) => false)->normalize()->shouldReturn([]);
         $this->filter(fn(Value $value) => !$value->getChannelReference()->isEmpty())->findValue(ValueKey::createFromNormalized('image_designer_fingerprint_mobile_fr_FR'))
-            ->shouldNotBeNull();
+            ->shouldNotBe(null);
     }
 
     function it_checks_if_value_already_exist()

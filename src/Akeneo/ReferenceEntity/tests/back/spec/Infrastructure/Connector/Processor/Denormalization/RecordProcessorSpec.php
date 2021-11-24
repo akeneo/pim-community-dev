@@ -95,7 +95,7 @@ class RecordProcessorSpec extends ObjectBehavior
         $createAndEditRecordCommand = $this->process($item);
 
         $createAndEditRecordCommand->shouldBeAnInstanceOf(CreateAndEditRecordCommand::class);
-        $createAndEditRecordCommand->createRecordCommand->shouldBeNull();
+        $createAndEditRecordCommand->createRecordCommand->shouldBe(null);
         $createAndEditRecordCommand->editRecordCommand->shouldBeAnInstanceOf(EditRecordCommand::class);
     }
 

@@ -281,7 +281,7 @@ class TextAttributeSpec extends ObjectBehavior
         $normalizedAttribute['is_textarea']->shouldBeEqualTo(true);
         $normalizedAttribute['is_rich_text_editor']->shouldBeEqualTo(false);
         $normalizedAttribute['validation_rule']->shouldBeEqualTo('none');
-        $normalizedAttribute['regular_expression']->shouldBeNull();
+        $normalizedAttribute['regular_expression']->shouldBe(null);
     }
 
     function it_updates_the_optional_options_to_default_values_when_changing_the_is_textarea_flag()
@@ -304,7 +304,7 @@ class TextAttributeSpec extends ObjectBehavior
         $normalizedAttribute['is_textarea']->shouldBeEqualTo(false);
         $normalizedAttribute['is_rich_text_editor']->shouldBeEqualTo(false);
         $normalizedAttribute['validation_rule']->shouldBeEqualTo('none');
-        $normalizedAttribute['regular_expression']->shouldBeNull();
+        $normalizedAttribute['regular_expression']->shouldBe(null);
     }
 
     function it_does_not_update_optional_options_if_it_updates_the_is_textarea_flag_to_the_same_value()

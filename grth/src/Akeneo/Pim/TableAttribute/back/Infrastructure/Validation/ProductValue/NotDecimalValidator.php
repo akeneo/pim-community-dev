@@ -23,11 +23,12 @@ final class NotDecimalValidator extends ConstraintValidator
     {
         Assert::isInstanceOf($constraint, NotDecimal::class);
 
-        if (null === $value || !\is_numeric($value)) {
+        if (!is_numeric($value)) {
             return;
         }
+        $numericValue = is_string($value) ? (float) $value : $value;
 
-        if (\floor($value) != $value) {
+        if (floor($numericValue) != $numericValue) {
             $this->context->buildViolation($constraint->message, ['{{ invalid_value }}' => $value])->addViolation();
         }
     }

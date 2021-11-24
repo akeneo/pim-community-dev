@@ -67,7 +67,7 @@ class ProductCalculateActionSpec extends ObjectBehavior
     function it_holds_the_non_round_information()
     {
         $this->isRoundEnabled()->shouldBe(false);
-        $this->getRoundPrecision()->shouldBeNull();
+        $this->getRoundPrecision()->shouldBe(null);
     }
 
     function it_holds_the_round_information()
