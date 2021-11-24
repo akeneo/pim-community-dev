@@ -115,6 +115,7 @@
 - PIM-10159: Fix table configuration update when a column is deleted and recreated with a different data type
 - PIM-10170: Launch product link rules when creating asset by import
 - PIM-10166: Prevent Asset Manager thumbnail generation on unsupported mime types
+- PIM-10172: Fix creation of "id" option code in table attribute
 - PIM-10161: Batch query to retrieve existing asset codes
 
 ## Improvements

@@ -92,7 +92,7 @@ class SqlSelectOptionCollectionRepository implements SelectOptionCollectionRepos
                 <<<SQL
                 INSERT INTO pim_catalog_table_column_select_option (column_id, code, labels)
                 SELECT * FROM (
-                    SELECT table_column.id, :code, :labels
+                    SELECT table_column.id, :code AS code, :labels AS labels
                     FROM pim_catalog_table_column table_column
                         INNER JOIN pim_catalog_attribute attribute ON attribute.id = table_column.attribute_id
                     WHERE table_column.code = :column_code AND attribute.code = :attribute_code
@@ -147,7 +147,7 @@ SQL;
                 <<<SQL
                 INSERT INTO pim_catalog_table_column_select_option (column_id, code, labels)
                 SELECT * FROM (
-                    SELECT table_column.id, :code, :labels
+                    SELECT table_column.id, :code AS code, :labels AS labels
                     FROM pim_catalog_table_column table_column
                         INNER JOIN pim_catalog_attribute attribute ON attribute.id = table_column.attribute_id
                     WHERE table_column.code = :column_code AND attribute.code = :attribute_code

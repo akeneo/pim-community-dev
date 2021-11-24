@@ -70,11 +70,13 @@ final class SqlSelectOptionCollectionRepositoryIntegration extends TestCase
         $this->selectOptionCollectionRepository->save('nutrition', ColumnCode::fromString('ingredients'), SelectOptionCollection::fromNormalized([
             ['code' => 'salt', 'labels' => ['en_US' => 'Salt', 'fr_FR' => 'Sel']],
             ['code' => 'chili', 'labels' => ['en_US' => 'Chili', 'fr_FR' => 'Piment']],
+            ['code' => 'id', 'labels' => ['en_US' => 'Id', 'fr_FR' => 'Id']],
         ]));
         self::assertEqualsCanonicalizing(
             [
                 ['code' => 'salt', 'labels' => ['en_US' => 'Salt', 'fr_FR' => 'Sel']],
                 ['code' => 'chili', 'labels' => ['en_US' => 'Chili', 'fr_FR' => 'Piment']],
+                ['code' => 'id', 'labels' => ['en_US' => 'Id', 'fr_FR' => 'Id']],
             ],
             $this->selectOptionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('ingredients'))->normalize()
         );
@@ -117,6 +119,7 @@ final class SqlSelectOptionCollectionRepositoryIntegration extends TestCase
         $this->selectOptionCollectionRepository->upsert('nutrition', ColumnCode::fromString('ingredients'), SelectOptionCollection::fromNormalized([
             ['code' => 'salt', 'labels' => []],
             ['code' => 'chili', 'labels' => ['en_US' => 'Chili', 'fr_FR' => 'Piment']],
+            ['code' => 'id', 'labels' => ['en_US' => 'Id', 'fr_FR' => 'Id']],
         ]));
         self::assertEqualsCanonicalizing(
             [
@@ -124,6 +127,7 @@ final class SqlSelectOptionCollectionRepositoryIntegration extends TestCase
                 ['code' => 'pepper', 'labels' => ['en_US' => 'Pepper', 'fr_FR' => 'Poivre']],
                 ['code' => 'garlic', 'labels' => ['en_US' => 'Garlic', 'fr_FR' => 'Ail']],
                 ['code' => 'chili', 'labels' => ['en_US' => 'Chili', 'fr_FR' => 'Piment']],
+                ['code' => 'id', 'labels' => ['en_US' => 'Id', 'fr_FR' => 'Id']],
             ],
             $this->selectOptionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('ingredients'))
                                                       ->normalize()
