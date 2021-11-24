@@ -25,6 +25,7 @@ class GetJobTypesActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->callApiRoute($this->client, self::ROUTE);
 
         $expectedJobTypes = [
+            'export',
             'import',
         ];
 

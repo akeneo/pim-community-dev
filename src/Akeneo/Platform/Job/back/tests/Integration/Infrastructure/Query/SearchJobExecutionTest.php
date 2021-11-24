@@ -284,9 +284,9 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $this->loadFixtures();
 
         $query = new SearchJobExecutionQuery();
-        $query->type = ['import'];
+        $query->type = ['export'];
 
-        $this->assertEquals(4, $this->getQuery()->count($query));
+        $this->assertEquals(1, $this->getQuery()->count($query));
     }
 
     /**
@@ -566,7 +566,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $query = new SearchJobExecutionQuery();
         $query->search = 'Import product';
 
-        $this->assertEquals(4, $this->getQuery()->count($query));
+        $this->assertEquals(3, $this->getQuery()->count($query));
     }
 
     private function loadFixtures()
