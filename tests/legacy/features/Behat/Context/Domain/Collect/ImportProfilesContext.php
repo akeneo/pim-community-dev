@@ -3,10 +3,11 @@
 namespace Pim\Behat\Context\Domain\Collect;
 
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Akeneo\Tool\Component\Connector\Writer\WriterFactory;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Box\Spout\Common\Type;
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
+use Box\Spout\Writer\Common\Creator\WriterFactory;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\Domain\ImportExportContext;
 
@@ -37,7 +38,7 @@ class ImportProfilesContext extends ImportExportContext
         @mkdir(dirname($filename), 0777, true);
 
         if (Type::XLSX === $extension) {
-            $writer = WriterFactory::create($extension);
+            $writer = WriterFactory::createFromType($extension);
             $writer->openToFile($filename);
             foreach (explode(PHP_EOL, $string) as $row) {
                 $rowCells = explode(";", $row);
@@ -47,7 +48,7 @@ class ImportProfilesContext extends ImportExportContext
                     }
                 }
 
-                $writer->addRow($rowCells);
+                $writer->addRow(WriterEntityFactory::createRowFromArray($rowCells));
             }
             $writer->close();
         } else {

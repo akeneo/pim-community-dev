@@ -22,7 +22,7 @@ const locales = [
 test('It renders the current locale', () => {
   renderWithProviders(<LocaleSelector values={locales} value={'fr_FR'} />);
 
-  expect(screen.getByText('pim_enrich.entity.locale.plural_label:')).toBeInTheDocument();
+  expect(screen.getByText('pim_common.locale:')).toBeInTheDocument();
   expect(screen.getByText('French (France)')).toBeInTheDocument();
 });
 

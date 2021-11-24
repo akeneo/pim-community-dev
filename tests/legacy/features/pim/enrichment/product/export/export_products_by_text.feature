@@ -22,6 +22,7 @@ Feature: Export products according to text attribute filter
       | SNKRS-1Z | 1       | rangers | summer_collection | This is nice    | Ranger 1Z  |              |               | Nice title |
     And I am logged in as "Julia"
 
+  @skip
   Scenario: Export products by text values
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab

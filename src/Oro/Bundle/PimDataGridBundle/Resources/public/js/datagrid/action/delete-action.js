@@ -24,6 +24,9 @@ define([
 
     confirmModal: undefined,
 
+    /** @property {Boolean} */
+    noHref: false,
+
     /**
      * Initialize view
      *
@@ -113,6 +116,18 @@ define([
       }
 
       messenger.notify('error', '' === message ? __('error.removing.' + this.getEntityHint()) : message);
+    },
+
+    /**
+     * Creates launcher
+     *
+     * @param {Object} options Launcher options
+     * @return {oro.datagrid.ActionLauncher}
+     */
+    createLauncher: function (options) {
+      this.launcherOptions = _.extend({noHref: this.noHref}, this.launcherOptions);
+
+      return ModelAction.prototype.createLauncher.apply(this, arguments);
     },
   });
 });

@@ -138,6 +138,9 @@
 - PIM-10129: Fix error 414 with a long filter list when launching a bulk action and quick export
 - PIM-10139: Fix missing translation key in Italian locale with "change family" mass action
 - PIM-10145: Fix reset password page
+- PIM-10163: Prefix groups breadcrumb link to avoid 404
+- PIM-10160: Fix AM thumbnail generation when filename is longer than 100 characters
+- PIM-10158: Fix failed migration longtext to json for akeneo_batch_job_execution.raw_parameters du to empty values
 
 ## New features
 
@@ -165,6 +168,8 @@ bin/console messenger:consume ui_job import_export_job data_maintenance_job
 - PIM-9929: Improve performances of attribute options list PATCH endpoint when Data Quality Insights is enabled
 - PIM-9877: Optimize DQI dashboard data consolidation
 - PIM-10004: Optimize counting job execution warnings
+- PIM-10142: Block HTTP redirection in Webhook URLs
+- PIM-10144: Don't display Guzzle version in user agent
 
 ## Classes
 

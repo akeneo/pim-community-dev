@@ -14,7 +14,9 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Akeneo\Tool\Component\Connector\Writer\WriterFactory;
+use Box\Spout\Common\Entity\Row;
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
+use Box\Spout\Writer\Common\Creator\WriterFactory;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -95,13 +97,32 @@ final class ImportFamilyIntegration extends TestCase
         self::assertNull($this->getFamily('tractors'));
 
         $temporaryFile = tempnam(sys_get_temp_dir(), 'test_family_import');
-        $writer = WriterFactory::create('xlsx');
+        $writer = WriterFactory::createFromType('xlsx');
         $writer->openToFile($temporaryFile);
-        $writer->addRows([
-            ['code', 'attributes', 'attribute_as_label', 'requirements-mobile', 'requirements-tablet', 'label-en_US'],
-            ['heels', 'sku,name,manufacturer,heel_color', 'sku', 'manufacturer', 'manufacturer,heel_color', 'Heels'],
-            ['tractors', 'sku,name,manufacturer', 'name', 'manufacturer', '', 'Tractor'],
-        ]);
+        $writer->addRows(
+            \array_map(
+                fn (array $data): Row => WriterEntityFactory::createRowFromArray($data),
+                [
+                    [
+                        'code',
+                        'attributes',
+                        'attribute_as_label',
+                        'requirements-mobile',
+                        'requirements-tablet',
+                        'label-en_US'
+                    ],
+                    [
+                        'heels',
+                        'sku,name,manufacturer,heel_color',
+                        'sku',
+                        'manufacturer',
+                        'manufacturer,heel_color',
+                        'Heels'
+                    ],
+                    ['tractors', 'sku,name,manufacturer', 'name', 'manufacturer', '', 'Tractor'],
+                ]
+            )
+        );
         $writer->close();
         $this->jobLauncher->launchImport(static::XLSX_IMPORT_JOB_CODE, file_get_contents($temporaryFile), null, [], [], 'xlsx');
 

@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
-import {Breadcrumb, Placeholder, SectionTitle, useBooleanState} from 'akeneo-design-system';
+import {Breadcrumb, SkeletonPlaceholder, SectionTitle, useBooleanState} from 'akeneo-design-system';
 import {
   FullScreenError,
   PageContent,
@@ -119,7 +119,9 @@ const CategoriesTreePage: FC = () => {
             <Breadcrumb.Step onClick={followCategoriesIndex}>
               {translate('pim_enrich.entity.category.plural_label')}
             </Breadcrumb.Step>
-            <Breadcrumb.Step>{treeLabel || <Placeholder as="span">{treeId}</Placeholder>}</Breadcrumb.Step>
+            <Breadcrumb.Step>
+              {treeLabel || <SkeletonPlaceholder as="span">{treeId}</SkeletonPlaceholder>}
+            </Breadcrumb.Step>
           </Breadcrumb>
         </PageHeader.Breadcrumb>
         <PageHeader.UserActions>
