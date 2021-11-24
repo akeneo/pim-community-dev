@@ -1,11 +1,10 @@
 import {useCallback, useEffect, useState} from 'react';
-import {useRoute, useIsMounted} from '@akeneo-pim-community/shared';
+import {useRoute} from '@akeneo-pim-community/shared';
 import {JobExecutionFilter, JobExecutionTable} from '../models';
 
-const useJobExecutionTable = ({page, size, sort, type, status, search}: JobExecutionFilter) => {
+const useJobExecutionTable = ({page, size, sort, type, status, users, search}: JobExecutionFilter) => {
   const [jobExecutionTable, setJobExecutionTable] = useState<JobExecutionTable | null>(null);
   const route = useRoute('akeneo_job_index_action');
-  const isMounted = useIsMounted();
 
   const searchJobExecution = useCallback(async () => {
     const response = await fetch(route, {
@@ -15,6 +14,7 @@ const useJobExecutionTable = ({page, size, sort, type, status, search}: JobExecu
         sort,
         status,
         type,
+        users,
         search,
       }),
       headers: {
@@ -24,10 +24,8 @@ const useJobExecutionTable = ({page, size, sort, type, status, search}: JobExecu
       method: 'POST',
     });
 
-    if (isMounted()) {
-      setJobExecutionTable(await response.json());
-    }
-  }, [isMounted, route, page, size, sort, type, status, search]);
+    setJobExecutionTable(await response.json());
+  }, [route, page, size, sort, type, status, users, search]);
 
   useEffect(() => {
     searchJobExecution();

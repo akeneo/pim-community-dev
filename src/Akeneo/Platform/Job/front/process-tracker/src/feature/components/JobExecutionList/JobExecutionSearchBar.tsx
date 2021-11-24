@@ -3,12 +3,14 @@ import {useAutoFocus, useDebounce, Search} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {TypeFilter} from './TypeFilter';
 import {StatusFilter} from './StatusFilter';
+import {UserFilter} from './UserFilter';
 import {JobExecutionFilter, JobStatus} from '../../models';
 
 type JobExecutionSearchBarProps = {
   jobExecutionFilter: JobExecutionFilter;
   onStatusFilterChange: (status: JobStatus[]) => void;
   onTypeFilterChange: (types: string[]) => void;
+  onUserFilterChange: (users: string[]) => void;
   onSearchChange: (search: string) => void;
 };
 
@@ -16,6 +18,7 @@ const JobExecutionSearchBar = ({
   jobExecutionFilter,
   onStatusFilterChange,
   onTypeFilterChange,
+  onUserFilterChange,
   onSearchChange,
 }: JobExecutionSearchBarProps) => {
   const translate = useTranslate();
@@ -39,6 +42,7 @@ const JobExecutionSearchBar = ({
     >
       <TypeFilter typeFilterValue={jobExecutionFilter.type} onTypeFilterChange={onTypeFilterChange} />
       <StatusFilter statusFilterValue={jobExecutionFilter.status} onStatusFilterChange={onStatusFilterChange} />
+      <UserFilter userFilterValue={jobExecutionFilter.users} onUserFilterChange={onUserFilterChange} />
     </Search>
   );
 };

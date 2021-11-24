@@ -27,7 +27,6 @@ test('it can select all type', () => {
   userEvent.click(screen.getByText('akeneo_job_process_tracker.type.all'));
 
   expect(handleChange).toHaveBeenCalledWith([]);
-  expect(screen.getByText('akeneo_job_process_tracker.type.all')).toBeInTheDocument();
 });
 
 test('it can select multiple type', () => {
