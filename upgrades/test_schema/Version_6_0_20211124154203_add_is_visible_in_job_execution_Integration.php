@@ -37,10 +37,10 @@ class Version_6_0_20211124154203_add_is_visible_in_job_execution_Integration ext
     {
         $this->dropColumnIfExists();
 
-        $nonVisibleJobInstanceId = $this->createJobInstance('project_calculation');
+        $nonVisibleJobInstanceId = $this->getJobInstanceId('compute_family_variant_structure_changes');
         $nonVisibleJobExecutionId = $this->createJobExecution($nonVisibleJobInstanceId);
 
-        $visibleJobInstanceId = $this->createJobInstance('csv_user_group_export');
+        $visibleJobInstanceId = $this->getJobInstanceId('csv_product_quick_export');
         $visibleJobExecutionId = $this->createJobExecution($visibleJobInstanceId);
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
@@ -58,7 +58,7 @@ class Version_6_0_20211124154203_add_is_visible_in_job_execution_Integration ext
     {
         $this->dropColumnIfExists();
 
-        $jobInstanceId = $this->createJobInstance('an_export');
+        $jobInstanceId = $this->getJobInstanceId('csv_product_quick_export');
         $this->createJobExecution($jobInstanceId);
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
@@ -100,22 +100,12 @@ class Version_6_0_20211124154203_add_is_visible_in_job_execution_Integration ext
         return (int) $this->connection->lastInsertId();
     }
 
-    private function createJobInstance(string $label): int
+    private function getJobInstanceId(string $code): int
     {
-        $this->connection->insert(
-            'akeneo_batch_job_instance',
-            [
-                'label' => $label,
-                'code' => $label,
-                'job_name' => $label,
-                'status' => 0,
-                'connector' => 'Akeneo CSV Connector',
-                'raw_parameters' => serialize([]),
-                'type' => 'export',
-            ],
-        );
-
-        return (int) $this->connection->lastInsertId();
+        return (int) $this->connection->executeQuery(
+            'SELECT id FROM akeneo_batch_job_instance WHERE code = :code',
+            ['code' => $code],
+        )->fetchColumn();
     }
 
     private function selectJobExecutions(): array
