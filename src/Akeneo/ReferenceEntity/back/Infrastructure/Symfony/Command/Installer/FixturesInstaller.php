@@ -198,14 +198,14 @@ SQL;
         $fakeCities = [];
         for ($i = 1; $i < self::NUMBER_OF_FAKE_RECORD_TO_CREATE; $i++) {
             if (0 === ($i % 2000)) {
-                $this->sqlConnection->executeUpdate(sprintf($baseSql, implode($fakeCities, ',')));
+                $this->sqlConnection->executeStatement(sprintf($baseSql, implode(',', $fakeCities)));
                 $fakeCities = [];
             }
             $fakeCities[] = $this->generateFakeCity();
         }
         if (!empty($fakeCities)) {
-            $update = sprintf($baseSql, implode($fakeCities, ','));
-            $this->sqlConnection->executeUpdate($update);
+            $update = sprintf($baseSql, implode(',', $fakeCities));
+            $this->sqlConnection->executeStatement($update);
         }
     }
 

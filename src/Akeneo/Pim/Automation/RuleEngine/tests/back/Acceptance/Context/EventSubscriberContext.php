@@ -25,9 +25,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class EventSubscriberContext implements Context, EventSubscriberInterface
 {
-    private static $skipRulesForEntities = [];
+    private static array $skipRulesForEntities = [];
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             RuleEvents::SKIP => 'addSkipRuleExecution',
@@ -39,12 +39,12 @@ class EventSubscriberContext implements Context, EventSubscriberInterface
      */
     public static function clean(): void
     {
-        static::$skipRulesForEntities = [];
+        self::$skipRulesForEntities = [];
     }
 
     public function addSkipRuleExecution(SkippedSubjectRuleEvent $event): void
     {
-        static::$skipRulesForEntities[] = [
+        self::$skipRulesForEntities[] = [
             'subject' => $event->getSubject()->getIdentifier(),
             'rule' => $event->getDefinition()->getCode(),
             'reasons' => $event->getReasons(),
@@ -53,7 +53,7 @@ class EventSubscriberContext implements Context, EventSubscriberInterface
 
     public static function assertNoSkipExecutionForRuleAndEntity(RuleInterface $rule, $subject): void
     {
-        foreach (static::$skipRulesForEntities as $skipped) {
+        foreach (self::$skipRulesForEntities as $skipped) {
             if ($rule->getCode() === $skipped['rule'] && $subject->getIdentifier() === $skipped['subject']) {
                 throw new \LogicException(sprintf(
                     'The "%s" rule was not executed for the "%s" product for these following reason(s): %s',
