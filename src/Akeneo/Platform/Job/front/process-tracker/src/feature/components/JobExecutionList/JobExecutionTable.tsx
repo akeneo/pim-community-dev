@@ -86,7 +86,7 @@ const JobExecutionTable = ({
           >
             <Table.Cell rowTitle={true}>{jobExecutionRow.job_name}</Table.Cell>
             <Table.Cell>
-              {translate(`pim_import_export.widget.last_operations.job_type.${jobExecutionRow.type}`)}
+              {translate(`akeneo_job_process_tracker.type.${jobExecutionRow.type}`)}
             </Table.Cell>
             <Table.Cell>
               {jobExecutionRow.started_at

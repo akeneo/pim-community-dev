@@ -37,7 +37,7 @@ const JobExecutionList = () => {
   };
 
   const handleSortChange = (sort: JobExecutionFilterSort) => {
-    setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, sort}));
+    setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, page: 1, sort}));
   };
 
   const handleStatusFilterChange = (status: JobStatus[]) => {
