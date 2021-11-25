@@ -101,7 +101,7 @@ const Properties = ({events, attributes, context, form, rights}: StateProps & Di
   const handleDeleteAssetFamily = () => {
     events.onDelete(assetFamily);
     closeDeleteModal();
-  }
+  };
 
   return (
     <>

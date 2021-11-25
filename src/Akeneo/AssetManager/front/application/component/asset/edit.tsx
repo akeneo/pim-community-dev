@@ -94,7 +94,7 @@ const SecondaryActions = ({
   const handleDelete = () => {
     close();
     onDelete();
-  }
+  };
 
   return (
     <Dropdown>
