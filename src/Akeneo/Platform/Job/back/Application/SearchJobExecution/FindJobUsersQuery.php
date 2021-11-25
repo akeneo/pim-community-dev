@@ -9,7 +9,5 @@ namespace Akeneo\Platform\Job\Application\SearchJobExecution;
  */
 class FindJobUsersQuery
 {
-    public int $page = 1;
-    public int $size = 25;
-    public string $username = '';
+    public string $search = '';
 }

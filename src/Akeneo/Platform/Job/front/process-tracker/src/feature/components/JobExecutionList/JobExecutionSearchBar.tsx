@@ -42,7 +42,7 @@ const JobExecutionSearchBar = ({
     >
       <TypeFilter typeFilterValue={jobExecutionFilter.type ?? []} onTypeFilterChange={onTypeFilterChange} />
       <StatusFilter statusFilterValue={jobExecutionFilter.status ?? []} onStatusFilterChange={onStatusFilterChange} />
-      <UserFilter userFilterValue={jobExecutionFilter.users ?? []} onUserFilterChange={onUserFilterChange} />
+      <UserFilter userFilterValue={jobExecutionFilter.user ?? []} onUserFilterChange={onUserFilterChange} />
     </Search>
   );
 };

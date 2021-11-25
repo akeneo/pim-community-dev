@@ -52,7 +52,7 @@ class FindJobUsersTest extends IntegrationTestCase
         ]);
     }
 
-    public function test_it_find_job_users(): void
+    public function test_it_returns_job_users(): void
     {
         $query = new FindJobUsersQuery();
 
@@ -65,23 +65,10 @@ class FindJobUsersTest extends IntegrationTestCase
         $this->assertEqualsCanonicalizing($expectedJobUsers, $this->getQuery()->search($query));
     }
 
-    public function test_it_find_job_users_with_pagination(): void
+    public function test_it_returns_filtered_job_users_on_username(): void
     {
         $query = new FindJobUsersQuery();
-        $query->page = 2;
-        $query->size = 1;
-
-        $expectedJobUsers = [
-            'julia',
-        ];
-
-        $this->assertEqualsCanonicalizing($expectedJobUsers, $this->getQuery()->search($query));
-    }
-
-    public function test_it_find_job_users_by_username(): void
-    {
-        $query = new FindJobUsersQuery();
-        $query->username = 'juli';
+        $query->search = 'juli';
 
         $expectedJobUsers = [
             'julia',

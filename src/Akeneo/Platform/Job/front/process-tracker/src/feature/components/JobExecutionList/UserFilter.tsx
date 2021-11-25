@@ -6,7 +6,7 @@ import {useJobExecutionUsers} from '../../hooks/useJobExecutionUsers';
 const getUserFilterValueLabel = (translate: Translate, userFilterValue: string[]): string => {
   switch (userFilterValue.length) {
     case 0:
-      return translate('akeneo_job_process_tracker.users.all');
+      return translate('akeneo_job_process_tracker.user_filter.all');
     case 1:
       return userFilterValue[0];
     default:
@@ -27,7 +27,7 @@ const UserFilter = ({userFilterValue, onUserFilterChange}: UserFilterProps) => {
 
   return (
     <Dropdown>
-      <SwitcherButton onClick={open} label={translate('akeneo_job_process_tracker.users.label')}>
+      <SwitcherButton onClick={open} label={translate('akeneo_job_process_tracker.user_filter.label')}>
         {getUserFilterValueLabel(translate, userFilterValue)}
       </SwitcherButton>
       {isOpen && (
@@ -35,15 +35,15 @@ const UserFilter = ({userFilterValue, onUserFilterChange}: UserFilterProps) => {
           <Dropdown.Header>
             <Search
               onSearchChange={setSearchValue}
-              placeholder={translate('akeneo_job_process_tracker.users.search')}
+              placeholder={translate('akeneo_job_process_tracker.user_filter.search')}
               searchValue={searchValue}
-              title={translate('akeneo_job_process_tracker.users.search')}
+              title={translate('akeneo_job_process_tracker.user_filter.search')}
             />
           </Dropdown.Header>
           <Dropdown.ItemCollection>
             <Dropdown.Item>
               <Checkbox checked={0 === userFilterValue.length} onChange={() => onUserFilterChange([])} />
-              {translate('akeneo_job_process_tracker.users.all')}
+              {translate('akeneo_job_process_tracker.user_filter.all')}
             </Dropdown.Item>
             {users &&
               users

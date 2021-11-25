@@ -43,3 +43,13 @@ test('It can refresh job execution table', async () => {
 
   expect(global.fetch).toBeCalledTimes(2);
 });
+
+test('It returns job execution table only if hook is mounted', async () => {
+  const {result, unmount} = renderHookWithProviders(() => useJobExecutionTable(getDefaultJobExecutionFilter()));
+
+  unmount();
+
+  const [jobExecutionTable] = result.current;
+
+  expect(jobExecutionTable).toEqual(null);
+});

@@ -6,9 +6,9 @@ import {useJobExecutionTypes} from '../../hooks/useJobExecutionTypes';
 const getStatusFilterValueLabel = (translate: Translate, typeFilterValue: string[]): string => {
   switch (typeFilterValue.length) {
     case 0:
-      return translate('akeneo_job_process_tracker.type.all');
+      return translate('akeneo_job_process_tracker.type_filter.all');
     case 1:
-      return translate(`akeneo_job_process_tracker.type.${typeFilterValue[0]}`);
+      return translate(`akeneo_job_process_tracker.type_filter.${typeFilterValue[0]}`);
     default:
       return translate('pim_common.selected', {itemsCount: typeFilterValue.length}, typeFilterValue.length);
   }
@@ -26,18 +26,18 @@ const TypeFilter = ({typeFilterValue, onTypeFilterChange}: TypeFilterProps) => {
 
   return (
     <Dropdown>
-      <SwitcherButton onClick={open} label={translate('akeneo_job_process_tracker.type.label')}>
+      <SwitcherButton onClick={open} label={translate('akeneo_job_process_tracker.type_filter.label')}>
         {getStatusFilterValueLabel(translate, typeFilterValue)}
       </SwitcherButton>
       {isOpen && (
         <Dropdown.Overlay verticalPosition="down" onClose={close}>
           <Dropdown.Header>
-            <Dropdown.Title>{translate('akeneo_job_process_tracker.type.label')}</Dropdown.Title>
+            <Dropdown.Title>{translate('akeneo_job_process_tracker.type_filter.label')}</Dropdown.Title>
           </Dropdown.Header>
           <Dropdown.ItemCollection>
             <Dropdown.Item>
               <Checkbox checked={0 === typeFilterValue.length} onChange={() => onTypeFilterChange([])} />
-              {translate('akeneo_job_process_tracker.type.all')}
+              {translate('akeneo_job_process_tracker.type_filter.all')}
             </Dropdown.Item>
             {types &&
               types.map(type => (
@@ -52,7 +52,7 @@ const TypeFilter = ({typeFilterValue, onTypeFilterChange}: TypeFilterProps) => {
                       }
                     }}
                   />
-                  {translate(`akeneo_job_process_tracker.type.${type}`)}
+                  {translate(`akeneo_job_process_tracker.type_filter.${type}`)}
                 </Dropdown.Item>
               ))}
           </Dropdown.ItemCollection>

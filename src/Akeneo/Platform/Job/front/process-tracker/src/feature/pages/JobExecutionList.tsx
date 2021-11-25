@@ -48,8 +48,8 @@ const JobExecutionList = () => {
     setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, page: 1, type}));
   };
 
-  const handleUserFilterChange = (users: string[]) => {
-    setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, page: 1, users}));
+  const handleUserFilterChange = (user: string[]) => {
+    setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, page: 1, user}));
   };
 
   const handleSearchChange = useCallback(

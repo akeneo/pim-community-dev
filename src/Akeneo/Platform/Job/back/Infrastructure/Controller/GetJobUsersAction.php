@@ -50,9 +50,7 @@ class GetJobUsersAction
         }
 
         $findJobUsersQuery = new FindJobUsersQuery();
-        $findJobUsersQuery->page = (int) $request->get('page', 1);
-        $findJobUsersQuery->size = (int) $request->get('size', 25);
-        $findJobUsersQuery->username = (string) $request->get('username', '');
+        $findJobUsersQuery->search = (string) $request->get('search', '');
 
         $jobUsers = $this->findJobUsers->search($findJobUsersQuery);
 

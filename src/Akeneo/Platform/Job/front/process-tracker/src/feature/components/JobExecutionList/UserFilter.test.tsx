@@ -11,13 +11,13 @@ jest.mock('../../hooks/useJobExecutionUsers', () => ({
 test('it opens a dropdown when clicking on the filter', () => {
   renderWithProviders(<UserFilter userFilterValue={[]} onUserFilterChange={jest.fn()} />);
 
-  expect(screen.queryByTitle('akeneo_job_process_tracker.users.search')).not.toBeInTheDocument();
+  expect(screen.queryByTitle('akeneo_job_process_tracker.user_filter.search')).not.toBeInTheDocument();
 
-  userEvent.click(screen.getByText('akeneo_job_process_tracker.users.all'));
+  userEvent.click(screen.getByText('akeneo_job_process_tracker.user_filter.all'));
 
-  expect(screen.getByTitle('akeneo_job_process_tracker.users.search')).toBeInTheDocument();
+  expect(screen.getByTitle('akeneo_job_process_tracker.user_filter.search')).toBeInTheDocument();
   userEvent.click(screen.getByTestId('backdrop'));
-  expect(screen.queryByTitle('akeneo_job_process_tracker.users.search')).not.toBeInTheDocument();
+  expect(screen.queryByTitle('akeneo_job_process_tracker.user_filter.search')).not.toBeInTheDocument();
 });
 
 test('it can select all user', () => {
@@ -25,8 +25,8 @@ test('it can select all user', () => {
 
   renderWithProviders(<UserFilter userFilterValue={['peter']} onUserFilterChange={handleChange} />);
 
-  userEvent.click(screen.getByText('akeneo_job_process_tracker.users.label:'));
-  userEvent.click(screen.getByText('akeneo_job_process_tracker.users.all'));
+  userEvent.click(screen.getByText('akeneo_job_process_tracker.user_filter.label:'));
+  userEvent.click(screen.getByText('akeneo_job_process_tracker.user_filter.all'));
 
   expect(handleChange).toHaveBeenCalledWith([]);
 });
@@ -36,7 +36,7 @@ test('it can select multiple user', () => {
 
   renderWithProviders(<UserFilter userFilterValue={['peter']} onUserFilterChange={handleChange} />);
 
-  userEvent.click(screen.getByText('akeneo_job_process_tracker.users.label:'));
+  userEvent.click(screen.getByText('akeneo_job_process_tracker.user_filter.label:'));
   userEvent.click(screen.getByText('admin'));
 
   expect(handleChange).toHaveBeenCalledWith(['peter', 'admin']);
@@ -47,7 +47,7 @@ test('it can unselect a user', () => {
 
   renderWithProviders(<UserFilter userFilterValue={['admin', 'peter']} onUserFilterChange={handleChange} />);
 
-  userEvent.click(screen.getByText('akeneo_job_process_tracker.users.label:'));
+  userEvent.click(screen.getByText('akeneo_job_process_tracker.user_filter.label:'));
   userEvent.click(screen.getByText('admin'));
 
   expect(handleChange).toHaveBeenCalledWith(['peter']);

@@ -42,7 +42,7 @@ final class IndexAction
         }
 
         $this->denyAccessUnlessAclIsGranted();
-        $users = $request->get('users', []);
+        $users = $request->get('user', []);
         if (!$this->securityFacade->isGranted('pim_enrich_job_tracker_view_all_jobs')) {
             $users = [$this->security->getUser()->getUserIdentifier()];
         }

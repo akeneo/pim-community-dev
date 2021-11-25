@@ -6,9 +6,9 @@ import {AVAILABLE_JOB_STATUSES, JobStatus} from '../../models';
 const getStatusFilterValueLabel = (translate: Translate, statusFilterValue: JobStatus[]): string => {
   switch (statusFilterValue.length) {
     case 0:
-      return translate('akeneo_job_process_tracker.status.all');
+      return translate('akeneo_job_process_tracker.status_filter.all');
     case 1:
-      return translate(`akeneo_job_process_tracker.status.${statusFilterValue[0].toLowerCase()}`);
+      return translate(`akeneo_job_process_tracker.status_filter.${statusFilterValue[0].toLowerCase()}`);
     default:
       return translate('pim_common.selected', {itemsCount: statusFilterValue.length}, statusFilterValue.length);
   }
@@ -33,23 +33,23 @@ const StatusFilter = ({statusFilterValue, onStatusFilterChange}: StatusFilterPro
 
   return (
     <Dropdown>
-      <SwitcherButton label={translate('akeneo_job_process_tracker.status.label')} onClick={openDropdown}>
+      <SwitcherButton label={translate('akeneo_job_process_tracker.status_filter.label')} onClick={openDropdown}>
         {getStatusFilterValueLabel(translate, statusFilterValue)}
       </SwitcherButton>
       {isDropdownOpen && (
         <Dropdown.Overlay onClose={closeDropdown}>
           <Dropdown.Header>
-            <Dropdown.Title>{translate('akeneo_job_process_tracker.status.label')}</Dropdown.Title>
+            <Dropdown.Title>{translate('akeneo_job_process_tracker.status_filter.label')}</Dropdown.Title>
           </Dropdown.Header>
           <Dropdown.ItemCollection>
             <Dropdown.Item>
               <Checkbox checked={0 === statusFilterValue.length} onChange={() => onStatusFilterChange([])} />
-              {translate('akeneo_job_process_tracker.status.all')}
+              {translate('akeneo_job_process_tracker.status_filter.all')}
             </Dropdown.Item>
             {AVAILABLE_JOB_STATUSES.map(status => (
               <Dropdown.Item key={status}>
                 <Checkbox checked={statusFilterValue.includes(status)} onChange={handleStatusToggle(status)} />
-                {translate(`akeneo_job_process_tracker.status.${status.toLowerCase()}`)}
+                {translate(`akeneo_job_process_tracker.status_filter.${status.toLowerCase()}`)}
               </Dropdown.Item>
             ))}
           </Dropdown.ItemCollection>

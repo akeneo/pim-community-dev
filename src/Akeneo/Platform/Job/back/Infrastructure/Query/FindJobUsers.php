@@ -15,8 +15,6 @@ use Doctrine\DBAL\Connection;
  */
 class FindJobUsers implements FindJobUsersInterface
 {
-    private const USER_PER_PAGE = 10;
-
     private Connection $connection;
 
     public function __construct(Connection $connection)
@@ -26,18 +24,15 @@ class FindJobUsers implements FindJobUsersInterface
 
     public function search(FindJobUsersQuery $query): array
     {
-        $page = $query->page;
-        $size = $query->size;
-        $username = $query->username;
+        $username = $query->search;
 
         $sql = <<<SQL
-SELECT DISTINCT job_execution.user
-FROM akeneo_batch_job_execution job_execution
-WHERE job_execution.is_visible = 1
-%s
-ORDER BY job_execution.user
-LIMIT :offset, :limit
-SQL;
+            SELECT DISTINCT job_execution.user
+            FROM akeneo_batch_job_execution job_execution
+            WHERE job_execution.is_visible = 1
+            %s
+            ORDER BY job_execution.user
+        SQL;
 
         $wherePart = '';
 
@@ -49,15 +44,7 @@ SQL;
 
         $jobUsers = $this->connection->executeQuery(
             $sql,
-            [
-                'offset' => ($page - 1) * $size,
-                'limit' => $size,
-                'username' => sprintf('%%%s%%', $username),
-            ],
-            [
-                'offset' => \PDO::PARAM_INT,
-                'limit' => \PDO::PARAM_INT,
-            ],
+            ['username' => sprintf('%%%s%%', $username)],
         )->fetchFirstColumn();
 
         return $jobUsers;

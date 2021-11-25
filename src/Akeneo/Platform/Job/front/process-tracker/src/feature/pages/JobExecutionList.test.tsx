@@ -139,8 +139,8 @@ test('it renders the matches job execution count in page header', () => {
 test('it can filter on the job status', () => {
   renderWithProviders(<JobExecutionList />);
 
-  userEvent.click(screen.getByLabelText('akeneo_job_process_tracker.status.label:'));
-  userEvent.click(within(screen.getByRole('listbox')).getByText('akeneo_job_process_tracker.status.started'));
+  userEvent.click(screen.getByLabelText('akeneo_job_process_tracker.status_filter.label:'));
+  userEvent.click(within(screen.getByRole('listbox')).getByText('akeneo_job_process_tracker.status_filter.started'));
 
   expect(screen.getByText('Export job')).toBeInTheDocument();
   expect(screen.queryByText('Import job')).not.toBeInTheDocument();
@@ -149,8 +149,8 @@ test('it can filter on the job status', () => {
 test('it can filter on the job type', () => {
   renderWithProviders(<JobExecutionList />);
 
-  userEvent.click(screen.getByLabelText('akeneo_job_process_tracker.type.label:'));
-  userEvent.click(within(screen.getByRole('listbox')).getByText('akeneo_job_process_tracker.type.import'));
+  userEvent.click(screen.getByLabelText('akeneo_job_process_tracker.type_filter.label:'));
+  userEvent.click(within(screen.getByRole('listbox')).getByText('akeneo_job_process_tracker.type_filter.import'));
 
   expect(screen.getByText('Import job')).toBeInTheDocument();
   expect(screen.queryByText('Export job')).not.toBeInTheDocument();

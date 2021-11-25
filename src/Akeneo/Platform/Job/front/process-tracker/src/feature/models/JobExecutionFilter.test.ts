@@ -12,7 +12,7 @@ test('it can tell if the given filter is the default Job execution filter', () =
       },
       status: [],
       type: [],
-      users: [],
+      user: [],
       search: '',
     })
   ).toEqual(false);
@@ -26,7 +26,7 @@ test('it can tell if the given filter is the default Job execution filter', () =
       },
       status: ['ABANDONED'],
       type: [],
-      users: [],
+      user: [],
       search: '',
     })
   ).toEqual(false);
@@ -40,7 +40,7 @@ test('it can tell if the given filter is the default Job execution filter', () =
       },
       status: [],
       type: ['import'],
-      users: [],
+      user: [],
       search: '',
     })
   ).toEqual(false);
@@ -54,7 +54,7 @@ test('it can tell if the given filter is the default Job execution filter', () =
       },
       status: [],
       type: [],
-      users: ['admin'],
+      user: ['admin'],
       search: '',
     })
   ).toEqual(false);
@@ -68,7 +68,7 @@ test('it can tell if the given filter is the default Job execution filter', () =
       },
       status: [],
       type: [],
-      users: [],
+      user: [],
       search: 'test',
     })
   ).toEqual(false);

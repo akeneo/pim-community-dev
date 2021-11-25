@@ -11,11 +11,11 @@ jest.mock('../../hooks/useJobExecutionTypes', () => ({
 test('it opens a dropdown when clicking on the filter', () => {
   renderWithProviders(<TypeFilter typeFilterValue={[]} onTypeFilterChange={jest.fn()} />);
 
-  expect(screen.queryByText('akeneo_job_process_tracker.type.label')).not.toBeInTheDocument();
+  expect(screen.queryByText('akeneo_job_process_tracker.type_filter.label')).not.toBeInTheDocument();
 
-  userEvent.click(screen.getByText('akeneo_job_process_tracker.type.all'));
+  userEvent.click(screen.getByText('akeneo_job_process_tracker.type_filter.all'));
 
-  expect(screen.getByText('akeneo_job_process_tracker.type.label')).toBeInTheDocument();
+  expect(screen.getByText('akeneo_job_process_tracker.type_filter.label')).toBeInTheDocument();
 });
 
 test('it can select all type', () => {
@@ -23,8 +23,8 @@ test('it can select all type', () => {
 
   renderWithProviders(<TypeFilter typeFilterValue={['export']} onTypeFilterChange={handleChange} />);
 
-  userEvent.click(screen.getByText('akeneo_job_process_tracker.type.export'));
-  userEvent.click(screen.getByText('akeneo_job_process_tracker.type.all'));
+  userEvent.click(screen.getByText('akeneo_job_process_tracker.type_filter.export'));
+  userEvent.click(screen.getByText('akeneo_job_process_tracker.type_filter.all'));
 
   expect(handleChange).toHaveBeenCalledWith([]);
 });
@@ -34,8 +34,8 @@ test('it can select multiple type', () => {
 
   renderWithProviders(<TypeFilter typeFilterValue={['export']} onTypeFilterChange={handleChange} />);
 
-  userEvent.click(screen.getByText('akeneo_job_process_tracker.type.export'));
-  userEvent.click(screen.getByText('akeneo_job_process_tracker.type.mass_edit'));
+  userEvent.click(screen.getByText('akeneo_job_process_tracker.type_filter.export'));
+  userEvent.click(screen.getByText('akeneo_job_process_tracker.type_filter.mass_edit'));
 
   expect(handleChange).toHaveBeenCalledWith(['export', 'mass_edit']);
 });
@@ -46,8 +46,8 @@ test('it can unselect a type', () => {
   renderWithProviders(<TypeFilter typeFilterValue={['export', 'mass_edit']} onTypeFilterChange={handleChange} />);
 
   userEvent.click(screen.getByText('pim_common.selected'));
-  userEvent.click(screen.getByText('akeneo_job_process_tracker.type.export'));
+  userEvent.click(screen.getByText('akeneo_job_process_tracker.type_filter.export'));
 
   expect(handleChange).toHaveBeenCalledWith(['mass_edit']);
-  expect(screen.getByText('akeneo_job_process_tracker.type.mass_edit')).toBeInTheDocument();
+  expect(screen.getByText('akeneo_job_process_tracker.type_filter.mass_edit')).toBeInTheDocument();
 });
