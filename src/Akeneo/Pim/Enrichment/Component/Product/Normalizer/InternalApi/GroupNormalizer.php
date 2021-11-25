@@ -58,7 +58,7 @@ class GroupNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
     {
         $normalizedGroup = $this->groupNormalizer->normalize($group, 'standard', $context);
 
-        $normalizedGroup['products'] = $this->getGroupProductIdentifiers->byGroupId($group->getId());
+        $normalizedGroup['products'] = $this->getGroupProductIdentifiers->fromGroupId($group->getId());
 
         $firstVersion = $this->versionManager->getOldestLogEntry($group);
         $lastVersion = $this->versionManager->getNewestLogEntry($group);

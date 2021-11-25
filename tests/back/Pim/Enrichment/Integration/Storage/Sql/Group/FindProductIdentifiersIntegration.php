@@ -28,9 +28,9 @@ class FindProductIdentifiersIntegration extends TestCase
         $this->givenProductsWithGroup(['product_1', 'product_2'], 'groupA');
         $this->givenAProductWithoutGroup();
 
-        $this->assertEmpty($this->getQuery()->byGroupId($groupB->getId()));
+        $this->assertEmpty($this->getQuery()->fromGroupId($groupB->getId()));
 
-        $productIdentifiers = $this->getQuery()->byGroupId($groupA->getId());
+        $productIdentifiers = $this->getQuery()->fromGroupId($groupA->getId());
         $this->assertEqualsCanonicalizing(['product_1', 'product_2'], $productIdentifiers);
     }
 

@@ -14,7 +14,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
  */
 class GroupProductsHandler
 {
-    private FindProductIdentifiersInterface $getGroupProductIdentifiers;
+    private FindProductIdentifiersInterface $findGroupProductIdentifiers;
     private GroupRepositoryInterface $groupRepository;
     private BulkSaverInterface $productSaver;
     private ProductRepositoryInterface $productRepository;
@@ -22,7 +22,7 @@ class GroupProductsHandler
 
     public function __construct(FindProductIdentifiersInterface $getGroupProductIdentifiers, GroupRepositoryInterface $groupRepository, BulkSaverInterface $productSaver, ProductRepositoryInterface $productRepository)
     {
-        $this->getGroupProductIdentifiers = $getGroupProductIdentifiers;
+        $this->findGroupProductIdentifiers = $getGroupProductIdentifiers;
         $this->groupRepository = $groupRepository;
         $this->productSaver = $productSaver;
         $this->productRepository = $productRepository;
@@ -31,7 +31,7 @@ class GroupProductsHandler
     public function handle(GroupProductsCommand $updateProductsToGroupCommand)
     {
         $currentProductIds = $updateProductsToGroupCommand->productIds();
-        $oldProductIds = $this->getGroupProductIdentifiers->byGroupId($updateProductsToGroupCommand->groupId());
+        $oldProductIds = $this->findGroupProductIdentifiers->fromGroupId($updateProductsToGroupCommand->groupId());
 
         $newProductIds = array_diff($currentProductIds, $oldProductIds);
         $removedProductIds = array_diff($oldProductIds, $currentProductIds);

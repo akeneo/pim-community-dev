@@ -1680,7 +1680,7 @@ class FixturesContext extends BaseFixturesContext
         $groupProducts = [];
         /** @var FindProductIdentifiersInterface $productIdentifiersFinder */
         $productIdentifiersFinder = $this->getContainer()->get('akeneo.pim.enrichment.product.query.find_product_identifiers');
-        $productIds = $productIdentifiersFinder->byGroupId($group->getId());
+        $productIds = $productIdentifiersFinder->fromGroupId($group->getId());
         foreach ($productIds as $productId) {
             $groupProducts[] = $this->getProductRepository()->findOneBy(['identifier'=>$productId]);
         }

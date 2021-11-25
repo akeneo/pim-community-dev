@@ -15,5 +15,5 @@ interface FindProductIdentifiersInterface
      *
      * @return string[] list of product identifiers of the given group.
      */
-    public function byGroupId(int $groupId): array;
+    public function fromGroupId(int $groupId): array;
 }

@@ -27,7 +27,7 @@ class GroupProductsHandlerSpec extends ObjectBehavior
         $group = new Group();
         $product2 = new Product();
 
-        $getGroupProductIdentifiers->byGroupId(1)->willReturn(["productId1"]);
+        $getGroupProductIdentifiers->fromGroupId(1)->willReturn(["productId1"]);
         $groupRepository->find(1)->willReturn($group);
         $productRepository->find("productId2")->willReturn($product2);
         $this->handle($groupProductsCommand);
@@ -40,7 +40,7 @@ class GroupProductsHandlerSpec extends ObjectBehavior
         $group = new Group();
         $product2 = new Product();
 
-        $getGroupProductIdentifiers->byGroupId(1)->willReturn(["productId1","productId2"]);
+        $getGroupProductIdentifiers->fromGroupId(1)->willReturn(["productId1","productId2"]);
         $groupRepository->find(1)->willReturn($group);
         $productRepository->findOneByIdentifier("productId1")->willReturn($product2);
         $this->handle($groupProductsCommand);

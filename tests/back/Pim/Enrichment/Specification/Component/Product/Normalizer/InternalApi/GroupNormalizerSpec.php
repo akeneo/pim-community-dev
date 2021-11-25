@@ -63,7 +63,7 @@ class GroupNormalizerSpec extends ObjectBehavior
 
         $tshirt->getId()->willReturn(12);
 
-        $getGroupProductIdentifiers->byGroupId(12)->willReturn(['product_42', 'product_123']);
+        $getGroupProductIdentifiers->fromGroupId(12)->willReturn(['product_42', 'product_123']);
 
         $this->normalize($tshirt, 'internal_api', $options)->shouldReturn(
             [

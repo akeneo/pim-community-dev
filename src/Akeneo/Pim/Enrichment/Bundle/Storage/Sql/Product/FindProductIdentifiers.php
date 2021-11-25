@@ -24,7 +24,7 @@ class FindProductIdentifiers implements FindProductIdentifiersInterface
     /**
      * @inheritDoc
      */
-    public function byGroupId(int $groupId): array
+    public function fromGroupId(int $groupId): array
     {
         $query = <<<SQL
 SELECT product.identifier 
