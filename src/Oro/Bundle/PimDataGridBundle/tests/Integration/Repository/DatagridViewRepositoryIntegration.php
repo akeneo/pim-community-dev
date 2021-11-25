@@ -96,7 +96,7 @@ class DatagridViewRepositoryIntegration extends TestCase
         $julia = $this->userRepository->findOneBy(['username' => 'julia']);
 
         $publicDatagridView = $this->createDatagridView('view 1', 'product-grid-public', DatagridView::TYPE_PUBLIC, $julia);
-        $privateDatagridView = $this->createDatagridView('view 1', 'product-grid-private', DatagridView::TYPE_PRIVATE, $julia);
+        $this->createDatagridView('view 1', 'product-grid-private', DatagridView::TYPE_PRIVATE, $julia);
         $foundDatagridView = $this->datagridViewRepository->findPublicDatagridViewByLabel('view 1');
 
         Assert::assertSame($publicDatagridView, $foundDatagridView);
@@ -106,7 +106,7 @@ class DatagridViewRepositoryIntegration extends TestCase
     {
         $adminUser = $this->userRepository->findOneBy(['username' => 'admin']);
 
-        $datagridView1 = $this->createDatagridView('view 1', 'product-grid', DatagridView::TYPE_PRIVATE, $adminUser);
+        $this->createDatagridView('view 1', 'product-grid', DatagridView::TYPE_PRIVATE, $adminUser);
         $datagridView2 = $this->createDatagridView('view 2', 'other-grid', DatagridView::TYPE_PRIVATE, $adminUser);
         $foundDatagridView = $this->datagridViewRepository->findPrivateDatagridViewByLabel('view 2', $adminUser);
 
@@ -128,7 +128,7 @@ class DatagridViewRepositoryIntegration extends TestCase
             $view->setOwner($user);
         }
 
-        static::assertCount(0, $this->get('validator')->validate($view));
+        Assert::assertCount(0, $this->get('validator')->validate($view));
         $this->get('pim_datagrid.saver.datagrid_view')->save($view);
 
         return $view;

@@ -125,8 +125,8 @@ const BrandedPath = styled.path`
   fill: ${getColor('brand', 100)};
 `;
 
-const Placeholder = styled.div`
+const SkeletonPlaceholder = styled.div`
   ${placeholderStyle}
 `;
 
-export {color, fontFamily, fontSize, palette, CommonStyle, BrandedPath, Placeholder, placeholderStyle};
+export {color, fontFamily, fontSize, palette, CommonStyle, BrandedPath, SkeletonPlaceholder, placeholderStyle};

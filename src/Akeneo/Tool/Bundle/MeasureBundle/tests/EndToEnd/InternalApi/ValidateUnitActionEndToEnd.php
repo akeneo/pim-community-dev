@@ -89,7 +89,8 @@ class ValidateUnitActionEndToEnd extends WebTestCase
         "defaultOption": null,
         "requiredOptions": [],
         "message": "pim_measurements.validation.unit.code.must_be_unique",
-        "payload": null
+        "payload": null,
+        "groups": ["other_constraints"]
         },
         "cause": null,
         "code": null

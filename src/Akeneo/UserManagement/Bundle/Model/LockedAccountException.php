@@ -16,11 +16,16 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class LockedAccountException extends AuthenticationException
 {
+    /** @var ?array */
+    protected $serialized = null;
+
     public function __construct(int $lockduration)
     {
         parent::__construct("Your account is locked for {$lockduration} minutes after too many authentication attempts.");
+
+        $this->serialized = null;
     }
-    public function getMessageKey()
+    public function getMessageKey(): string
     {
         return $this->getMessage();
     }
