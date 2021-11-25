@@ -6,7 +6,6 @@ import {act} from '@testing-library/react-hooks';
 const expectedFetchedJobExecutionTable: JobExecutionTable = {
   rows: [],
   matches_count: 0,
-  total_count: 0,
 };
 
 beforeEach(() => {
