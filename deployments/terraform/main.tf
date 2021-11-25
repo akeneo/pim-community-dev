@@ -75,7 +75,7 @@ EOF
       http_response=$(curl -s -X DELETE https://api.mailgun.net/v3/domains/${self.triggers.mailgun_domain}/credentials/${self.triggers.mailgun_login_email} \
         -o curl_mailgun_deletion_response.txt \
         -w "%%{http_code}" \
-        --user 'api:${var.mailgun_api_key}' \
+        --user 'api:${self.triggers.mailgun_api_key}' \
         --retry 5 \
         --retry-delay 5 \
         --retry-max-time 40 )
