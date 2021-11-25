@@ -31,7 +31,7 @@ class GetJobTypesActionTest extends ControllerIntegrationTestCase
 
         $response = $this->client->getResponse();
         Assert::assertSame($response->getStatusCode(), Response::HTTP_OK);
-        Assert::assertEqualsCanonicalizing(json_decode($response->getContent(), true), $expectedJobTypes);
+        Assert::assertEqualsCanonicalizing($expectedJobTypes, json_decode($response->getContent(), true));
     }
 
     public function test_it_returns_a_forbidden_access_when_user_cannot_access_to_process_tracker(): void

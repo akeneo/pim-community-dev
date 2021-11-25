@@ -7,7 +7,6 @@ namespace Akeneo\Platform\Job\Infrastructure\Query;
 use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
-use Akeneo\Platform\Job\Infrastructure\Registry\NotVisibleJobsRegistry;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -23,18 +22,14 @@ class SearchJobExecution implements SearchJobExecutionInterface
     const SEARCH_PART_PARAM_SUFFIX = 'search_part';
 
     private Connection $connection;
-    private NotVisibleJobsRegistry $notVisibleJobsRegistry;
 
-    public function __construct(Connection $connection, NotVisibleJobsRegistry $notVisibleJobsRegistry)
+    public function __construct(Connection $connection)
     {
         $this->connection = $connection;
-        $this->notVisibleJobsRegistry = $notVisibleJobsRegistry; #TODO RAC-1013
     }
 
     public function search(SearchJobExecutionQuery $query): array
     {
-        $notVisibleJobsCodes = $this->notVisibleJobsRegistry->getCodes();
-
         $sql = <<<SQL
     WITH job_executions AS (
         SELECT
@@ -49,7 +44,7 @@ class SearchJobExecution implements SearchJobExecutionInterface
             je.step_count
         FROM akeneo_batch_job_execution je
         JOIN akeneo_batch_job_instance ji ON je.job_instance_id = ji.id
-        WHERE ji.code NOT IN (:not_visible_jobs_codes)
+        WHERE (je.is_visible = 1 OR je.is_visible IS NULL)
         %s
         %s
         LIMIT :offset, :limit
@@ -82,12 +77,10 @@ SQL;
         $rawJobExecutions = $this->connection->executeQuery(
             $sql,
             array_merge($queryParams, [
-                'not_visible_jobs_codes' => $notVisibleJobsCodes,
                 'offset' => ($page - 1) * $size,
                 'limit' => $size,
             ]),
             array_merge($queryParamsTypes, [
-                'not_visible_jobs_codes' => Connection::PARAM_STR_ARRAY,
                 'offset' => \PDO::PARAM_INT,
                 'limit' => \PDO::PARAM_INT,
             ]),
@@ -98,13 +91,11 @@ SQL;
 
     public function count(SearchJobExecutionQuery $query): int
     {
-        $notVisibleJobsCodes = $this->notVisibleJobsRegistry->getCodes();
-
         $sql = <<<SQL
     SELECT count(*)
     FROM akeneo_batch_job_execution je
     JOIN akeneo_batch_job_instance ji on je.job_instance_id = ji.id
-    WHERE ji.code NOT IN (:not_visible_jobs_codes)
+    WHERE (je.is_visible = 1 OR je.is_visible IS NULL)
     %s
 SQL;
         $whereSqlPart = $this->buildSqlWherePart($query);
@@ -115,12 +106,8 @@ SQL;
 
         return (int) $this->connection->executeQuery(
             $sql,
-            array_merge($queryParams, [
-                'not_visible_jobs_codes' => $notVisibleJobsCodes,
-            ]),
-            array_merge($queryParamsTypes, [
-                'not_visible_jobs_codes' => Connection::PARAM_STR_ARRAY,
-            ]),
+            $queryParams,
+            $queryParamsTypes,
         )->fetchOne();
     }
 

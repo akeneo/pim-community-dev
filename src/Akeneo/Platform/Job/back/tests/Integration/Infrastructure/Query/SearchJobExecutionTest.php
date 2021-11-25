@@ -241,7 +241,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_does_not_counts_not_visible_job_executions()
+    public function it_does_not_count_not_visible_job_executions()
     {
         $aVisibleJobInstanceId = $this->fixturesJobHelper->createJobInstance([
             'code' => 'a_product_import',
@@ -269,6 +269,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             'start_time' => '2020-01-01T01:00:00+01:00',
             'user' => 'julia',
             'status' => BatchStatus::COMPLETED,
+            'is_visible' => false,
         ]);
 
         $query = new SearchJobExecutionQuery();
@@ -510,7 +511,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_does_not_returns_not_visible_job_executions()
+    public function it_does_not_return_not_visible_job_executions()
     {
         $aNonVisibleJobInstanceId = $this->fixturesJobHelper->createJobInstance([
             'code' => 'prepare_evaluation',
@@ -524,6 +525,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             'start_time' => '2020-01-01T01:00:00+01:00',
             'user' => 'julia',
             'status' => BatchStatus::COMPLETED,
+            'is_visible' => false,
         ]);
 
         $query = new SearchJobExecutionQuery();

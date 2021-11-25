@@ -78,6 +78,7 @@ class JobExecution
     private $rawParameters;
     private ?bool $isStoppable = null;
     private ?int $stepCount = null;
+    private ?bool $isVisible = null;
 
     /**
      * Constructor
@@ -639,7 +640,17 @@ class JobExecution
 
     public function isStoppable(): bool
     {
-        return $this->isStoppable === true;
+        return true === $this->isStoppable;
+    }
+
+    public function setIsVisible(?bool $isVisible): void
+    {
+        $this->isVisible = $isVisible;
+    }
+
+    public function isVisible(): bool
+    {
+        return $this->isVisible ?? true;
     }
 
     public function setStepCount(?int $stepCount): void

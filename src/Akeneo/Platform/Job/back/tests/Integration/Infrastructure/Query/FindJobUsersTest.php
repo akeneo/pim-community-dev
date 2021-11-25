@@ -29,19 +29,20 @@ class FindJobUsersTest extends IntegrationTestCase
 
         $this->fixturesJobHelper->createJobExecution([
             'user' => 'julia',
-            'job_instance_id' => $jobInstances['a_product_import']
+            'job_instance_id' => $jobInstances['a_product_import'],
         ]);
         $this->fixturesJobHelper->createJobExecution([
             'user' => 'julia',
-            'job_instance_id' => $jobInstances['a_product_import']
+            'job_instance_id' => $jobInstances['a_product_import'],
         ]);
         $this->fixturesJobHelper->createJobExecution([
             'user' => 'admin',
-            'job_instance_id' => $jobInstances['a_product_import']
+            'job_instance_id' => $jobInstances['a_product_import'],
         ]);
         $this->fixturesJobHelper->createJobExecution([
             'user' => 'bob',
-            'job_instance_id' => $jobInstances['a_not_visible_job']
+            'job_instance_id' => $jobInstances['a_not_visible_job'],
+            'is_visible' => false,
         ]);
     }
 

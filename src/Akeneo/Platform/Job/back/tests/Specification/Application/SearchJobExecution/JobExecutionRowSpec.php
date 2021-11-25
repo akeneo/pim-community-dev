@@ -22,7 +22,7 @@ class JobExecutionRowSpec extends ObjectBehavior
             15,
             1,
             3,
-            true
+            true,
         );
     }
 
@@ -46,7 +46,7 @@ class JobExecutionRowSpec extends ObjectBehavior
                 'current_step' => 1,
                 'total_step' => 3,
             ],
-            'is_stoppable' => true
+            'is_stoppable' => true,
         ]);
     }
 
@@ -63,7 +63,7 @@ class JobExecutionRowSpec extends ObjectBehavior
             0,
             1,
             1,
-            false
+            false,
         );
 
         $this->normalize()->shouldReturn([
@@ -79,7 +79,7 @@ class JobExecutionRowSpec extends ObjectBehavior
                 'current_step' => 1,
                 'total_step' => 1,
             ],
-            'is_stoppable' => false
+            'is_stoppable' => false,
         ]);
     }
 }

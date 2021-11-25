@@ -60,7 +60,7 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
                 1,
                 1,
                 2,
-                true
+                true,
             ),
         ];
 

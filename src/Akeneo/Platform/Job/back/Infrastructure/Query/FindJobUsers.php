@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Job\Infrastructure\Query;
 
 use Akeneo\Platform\Job\Domain\Query\FindJobUsersInterface;
-use Akeneo\Platform\Job\Infrastructure\Registry\NotVisibleJobsRegistry;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -15,26 +14,22 @@ use Doctrine\DBAL\Connection;
  */
 class FindJobUsers implements FindJobUsersInterface
 {
-    const USER_PER_PAGE = 10;
+    private const USER_PER_PAGE = 10;
 
     private Connection $connection;
-    private NotVisibleJobsRegistry $notVisibleJobsRegistry;
 
-    public function __construct(Connection $connection, NotVisibleJobsRegistry $notVisibleJobsRegistry)
+    public function __construct(Connection $connection)
     {
         $this->connection = $connection;
-        $this->notVisibleJobsRegistry = $notVisibleJobsRegistry; #TODO RAC-1013
     }
 
     public function search(int $page): array
     {
-        $notVisibleJobsCodes = $this->notVisibleJobsRegistry->getCodes();
-
         $sql = <<<SQL
 SELECT DISTINCT je.user
 FROM akeneo_batch_job_execution je
 JOIN akeneo_batch_job_instance ji ON je.job_instance_id = ji.id
-WHERE ji.code NOT IN (:not_visible_jobs_codes)
+WHERE (je.is_visible = 1 OR je.is_visible IS NULL)
 ORDER BY je.user
 LIMIT :offset, :limit
 SQL;
@@ -42,12 +37,10 @@ SQL;
         $jobUsers = $this->connection->executeQuery(
             $sql,
             [
-                'not_visible_jobs_codes' => $notVisibleJobsCodes,
                 'offset' => ($page - 1) * self::USER_PER_PAGE,
                 'limit' => self::USER_PER_PAGE,
             ],
             [
-                'not_visible_jobs_codes' => Connection::PARAM_STR_ARRAY,
                 'offset' => \PDO::PARAM_INT,
                 'limit' => \PDO::PARAM_INT,
             ],

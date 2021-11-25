@@ -13,7 +13,6 @@ use Akeneo\Tool\Component\Batch\Step\StoppableStepInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Implementation of the {@link Job} interface.
@@ -24,38 +23,30 @@ use Symfony\Contracts\EventDispatcher\Event;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface
+class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface, VisibleJobInterface
 {
-    /** @var string */
-    protected $name;
-
-    /* @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /* @var JobRepositoryInterface */
-    protected $jobRepository;
-
-    /** @var array */
-    protected $steps;
-
-    /** @var bool */
-    protected $stoppable;
-
-    /** @var Filesystem */
-    protected $filesystem;
+    protected string $name;
+    protected EventDispatcherInterface $eventDispatcher;
+    protected JobRepositoryInterface $jobRepository;
+    protected array $steps;
+    protected bool $isStoppable;
+    protected bool $isVisible;
+    protected Filesystem $filesystem;
 
     public function __construct(
         string $name,
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
         array $steps = [],
-        bool $stoppable = false
+        bool $isStoppable = false,
+        bool $isVisible = true
     ) {
         $this->name = $name;
         $this->eventDispatcher = $eventDispatcher;
         $this->jobRepository = $jobRepository;
         $this->steps = $steps;
-        $this->stoppable = $stoppable;
+        $this->isStoppable = $isStoppable;
+        $this->isVisible = $isVisible;
         $this->filesystem = new Filesystem();
     }
 
@@ -207,7 +198,12 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface
 
     public function isStoppable(): bool
     {
-        return $this->stoppable;
+        return $this->isStoppable;
+    }
+
+    public function isVisible(): bool
+    {
+        return $this->isVisible;
     }
 
     /**
@@ -271,7 +267,7 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface
 
         try {
             if ($step instanceof StoppableStepInterface) {
-                $step->setStoppable($this->stoppable);
+                $step->setStoppable($this->isStoppable);
             }
 
             $step->execute($stepExecution);

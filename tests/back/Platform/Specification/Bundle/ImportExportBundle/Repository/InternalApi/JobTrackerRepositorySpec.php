@@ -30,6 +30,7 @@ class JobTrackerRepositorySpec extends ObjectBehavior
         $qb->select(Argument::any())->willReturn($qb);
         $qb->from(Argument::cetera())->willReturn($qb);
         $qb->addSelect(Argument::any())->willReturn($qb);
+        $qb->where(Argument::any())->willReturn($qb);
         $qb->innerJoin(Argument::cetera())->willReturn($qb);
         $qb->leftJoin(Argument::cetera())->willReturn($qb);
         $qb->groupBy(Argument::any())->willReturn($qb);

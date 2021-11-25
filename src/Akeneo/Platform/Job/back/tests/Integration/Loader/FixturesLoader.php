@@ -116,10 +116,13 @@ SQL;
             'user' => 'peter',
             'job_instance_id' => $this->jobInstances['a_product_import'],
         ]);
-
         $this->fixturesJobHelper->createJobExecution([
             'user' => 'mary',
             'job_instance_id' => $this->jobInstances['a_product_import'],
+        ]);
+        $this->fixturesJobHelper->createJobExecution([
+            'user' => 'peter',
+            'job_instance_id' => $this->jobInstances['a_product_export'],
         ]);
     }
 }
