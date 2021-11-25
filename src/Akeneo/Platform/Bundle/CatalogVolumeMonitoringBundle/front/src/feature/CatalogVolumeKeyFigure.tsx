@@ -13,22 +13,32 @@ const CatalogVolumeKeyFigure: FC<Props> = ({catalogVolume}) => {
   const icon = useCatalogVolumeIcon(catalogVolume.name);
 
   return (
-    <KeyFigure icon={icon} title={translate(`pim_catalog_volume.axis.${catalogVolume.name}`)}>
-      {catalogVolume.type === 'average_max' ? (
+    <>
+      {catalogVolume.value && (
         <>
-          {typeof catalogVolume.value === 'object' && catalogVolume.value.average !== undefined && (
-            <KeyFigure.Figure label={translate('pim_catalog_volume.mean')}>
-              {catalogVolume.value.average}
-            </KeyFigure.Figure>
+          {catalogVolume.type === 'average_max' && typeof catalogVolume.value === 'object' && (
+            <KeyFigure icon={icon} title={translate(`pim_catalog_volume.axis.${catalogVolume.name}`)}>
+              {catalogVolume.value.average !== undefined && (
+                <KeyFigure.Figure label={translate('pim_catalog_volume.mean')}>
+                  {catalogVolume.value.average}
+                </KeyFigure.Figure>
+              )}
+              {catalogVolume.value.max !== undefined && (
+                <KeyFigure.Figure label={translate('pim_catalog_volume.max')}>
+                  {catalogVolume.value.max}
+                </KeyFigure.Figure>
+              )}
+            </KeyFigure>
           )}
-          {typeof catalogVolume.value === 'object' && catalogVolume.value.max !== undefined && (
-            <KeyFigure.Figure label={translate('pim_catalog_volume.max')}>{catalogVolume.value.max}</KeyFigure.Figure>
+
+          {catalogVolume.type === 'count' && typeof catalogVolume.value !== 'object' && (
+            <KeyFigure icon={icon} title={translate(`pim_catalog_volume.axis.${catalogVolume.name}`)}>
+              <KeyFigure.Figure>{catalogVolume.value}</KeyFigure.Figure>
+            </KeyFigure>
           )}
         </>
-      ) : (
-        <KeyFigure.Figure>{catalogVolume.value}</KeyFigure.Figure>
       )}
-    </KeyFigure>
+    </>
   );
 };
 

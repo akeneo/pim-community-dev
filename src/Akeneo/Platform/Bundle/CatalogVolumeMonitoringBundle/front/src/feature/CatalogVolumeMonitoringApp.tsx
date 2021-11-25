@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  PageContent,
-  PageHeader,
-  PimView,
-  Section,
-  useRoute,
-  useTranslate,
-} from '@akeneo-pim-community/shared';
+import {PageContent, PageHeader, PimView, Section, useRoute, useTranslate} from '@akeneo-pim-community/shared';
 import {Breadcrumb, KeyFigureGrid, SectionTitle} from 'akeneo-design-system';
 import {GetCatalogVolumeInterface, useCatalogVolumeByAxis} from './hooks/useCatalogVolumeByAxis';
 import {CatalogVolumeKeyFigure} from './CatalogVolumeKeyFigure';
