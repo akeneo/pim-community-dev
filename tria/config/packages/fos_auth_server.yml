@@ -1,0 +1,8 @@
+fos_oauth_server:
+    db_driver:                orm
+    client_class:             Akeneo\Tool\Bundle\ApiBundle\Entity\Client
+    access_token_class:       Akeneo\Tool\Bundle\ApiBundle\Entity\AccessToken
+    refresh_token_class:      Akeneo\Tool\Bundle\ApiBundle\Entity\RefreshToken
+    auth_code_class:          Akeneo\Tool\Bundle\ApiBundle\Entity\AuthCode
+    service:
+        user_provider:        pim_user.provider.user_api

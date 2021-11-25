@@ -1,0 +1,48 @@
+liip_imagine:
+    driver: imagick
+    data_loader: flysystem_data_loader
+    filter_sets:
+        cache: ~
+        avatar_med:
+            quality:          95
+            format:           png
+            filters:
+                thumbnail:    { size: [58, 58], mode: outbound }
+                strip:        ~
+
+        preview:
+            quality:          95
+            format:           jpg
+            filters:
+                background:
+                    color: "#ffffff"
+                strip:        ~
+
+        thumbnail:
+            quality:          95
+            format:           png
+            filters:
+                thumbnail:    { size: [320, 320], mode: inset }
+                strip:        ~
+                auto_rotate: ~
+
+        thumbnail_small:
+            quality:          95
+            format:           png
+            filters:
+                auto_rotate: ~
+                thumbnail:    { size: [280, 280], mode: inset }
+                strip:        ~
+        dropdown_select_picture:
+            quality:          95
+            format:           png
+            filters:
+                thumbnail:    { size: [28, 28], mode: outbound }
+                strip:        ~
+
+        pdf_thumbnail:
+            quality:          95
+            format:           png
+            filters:
+                downscale: { max: [320, 240] }
+                strip:        ~

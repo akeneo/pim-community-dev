@@ -1,0 +1,23 @@
+fos_rest:
+    zone:
+        - { path: ^/api }
+        - { path: ^/(?!_profiler|_wdt) }
+    view:
+        failed_validation: HTTP_BAD_REQUEST
+        formats:
+            json: true
+        mime_types:
+            form_data: ['multipart/form-data']
+            akeneo_multi_json: ['application/vnd.akeneo.collection+json']
+    format_listener:
+        rules:
+            - { path: '^/api', priorities: ['json'], fallback_format: json, prefer_extension: true }
+            - { path: '', stop: true }
+    body_listener:
+        decoders:
+            json: fos_rest.decoder.json
+    exception:
+        serializer_error_renderer: true
+        messages:
+            Symfony\Component\HttpKernel\Exception\ConflictHttpException: true
+            Symfony\Component\HttpKernel\Exception\HttpException: true

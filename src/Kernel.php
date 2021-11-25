@@ -48,24 +48,21 @@ class Kernel extends BaseKernel
         $container->addResource(new FileResource($this->getProjectDir() . '/config/bundles.php'));
         $container->setParameter('container.dumper.inline_class_loader', true);
 
-        $eeConfDir = $this->getProjectDir() . '/config';
-        $grthConfDir = $this->getProjectDir() . '/vendor/akeneo/pim-growth-edition/config';
-        $ceConfDir = $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config';
+        $confDir = $this->getProjectDir() . '/config';
 
-        $this->loadPackagesConfigurationExceptSecurityAndMonolog($loader, $ceConfDir);
-        $this->loadPackagesConfigurationExceptSecurityAndMonolog($loader, $grthConfDir);
-        $this->loadPackagesConfiguration($loader, $eeConfDir);
+        $loader->load($confDir . '/{packages}/*.yml', 'glob');
+        $loader->load($confDir . '/{packages}/' . $this->environment . '/**/*.yml', 'glob');
 
-        $this->loadContainerConfiguration($loader, $ceConfDir);
-        $this->loadContainerConfiguration($loader, $grthConfDir);
-        $this->loadContainerConfiguration($loader, $eeConfDir);
+        $loader->load($confDir . '/{services}/*.yml', 'glob');
+        $loader->load($confDir . '/{services}/' . $this->environment . '/**/*.yml', 'glob');
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
-        $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config');
-        $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/vendor/akeneo/pim-growth-edition/config');
-        $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/config');
+        $confDir = $this->getProjectDir() . '/config';
+
+        $routes->import($confDir . '/{routes}/' . $this->environment . '/**/*.yml', '/', 'glob');
+        $routes->import($confDir . '/{routes}/*.yml', '/', 'glob');
     }
 
     /**
@@ -82,47 +79,5 @@ class Kernel extends BaseKernel
     public function getLogDir(): string
     {
         return $this->getProjectDir() . '/var/logs';
-    }
-
-    private function loadRoutesConfiguration(RouteCollectionBuilder $routes, string $confDir): void
-    {
-        $routes->import($confDir . '/{routes}/' . $this->environment . '/**/*.yml', '/', 'glob');
-        $routes->import($confDir . '/{routes}/*.yml', '/', 'glob');
-    }
-
-    private function loadPackagesConfiguration(LoaderInterface $loader, string $confDir): void
-    {
-        $loader->load($confDir . '/{packages}/*.yml', 'glob');
-        $loader->load($confDir . '/{packages}/' . $this->environment . '/**/*.yml', 'glob');
-    }
-
-    /**
-     * "security.yml" is the only configuration file that can not be override
-     * Thus, we don't load it from the Community Edition.
-     * We copied/pasted its content into Enterprise Edition and added what was missing.
-     */
-    private function loadPackagesConfigurationExceptSecurityAndMonolog(LoaderInterface $loader, string $confDir): void
-    {
-        $files = array_merge(
-            glob($confDir . '/{packages}/*.yml', GLOB_BRACE),
-        );
-
-        $excludedConfigFiles = ['security.yml', 'monolog.yml'];
-        $files = array_filter(
-            $files,
-            function ($file) use ($excludedConfigFiles) {
-                return !in_array(basename($file), $excludedConfigFiles);
-            }
-        );
-
-        foreach ($files as $file) {
-            $loader->load($file, 'yaml');
-        }
-    }
-
-    private function loadContainerConfiguration(LoaderInterface $loader, string $confDir): void
-    {
-        $loader->load($confDir . '/{services}/*.yml', 'glob');
-        $loader->load($confDir . '/{services}/' . $this->environment . '/**/*.yml', 'glob');
     }
 }

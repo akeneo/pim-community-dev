@@ -1,3 +1,10 @@
+parameters:
+    comm_panel_api_url: 'http://localhost:8088' # avoid to call the external service in the CI
+
+imports:
+    # Akeneo/Connectivity/Connection
+    - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/tests/Resources/config/services.yml }
+
 services:
     _defaults:
         public: true
@@ -7,6 +14,24 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_legacy_behat_tests.doctrine.connection.connection_closer:
+        class: Akeneo\Test\IntegrationTestsBundle\Doctrine\Connection\ConnectionCloser
+        arguments:
+            - '@doctrine'
+
+    akeneo_legacy_behat_tests.loader.database_schema_handler:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Loader\DatabaseSchemaHandler'
+        arguments:
+            - '@database_connection'
+
+    akeneo_legacy_behat_tests.security.system_user_authenticator:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator'
+        arguments:
+            - '@pim_user.factory.user'
+            - '@pim_user.repository.group'
+            - '@pim_user.repository.role'
+            - '@security.token_storage'
+
     akeneo_legacy_behat_tests.loader.reference_data_loader:
         class: 'Akeneo\Test\IntegrationTestsBundle\Loader\ReferenceDataLoader'
         arguments:
@@ -15,6 +40,70 @@ services:
             - 'AcmeEnterpriseAppBundle'
             - 'AcmeEnterprise\Bundle\AppBundle\Entity\Fabric'
             - 'AcmeEnterprise\Bundle\AppBundle\Entity\Color'
+
+    akeneo_legacy_behat_tests.loader.fixtures_loader:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Loader\FixturesLoader'
+        arguments:
+            - '@kernel'
+            - '@akeneo_legacy_behat_tests.loader.database_schema_handler'
+            - '@akeneo_legacy_behat_tests.security.system_user_authenticator'
+            - '@akeneo_legacy_behat_tests.loader.reference_data_loader'
+            - '@oneup_flysystem.archivist_filesystem'
+            - '@akeneo_batch.job_repository'
+            - '@pim_installer.fixture_loader.job_loader'
+            - '@oro_security.acl.manager'
+            - '@pim_catalog.elasticsearch.indexer.product'
+            - '@pim_catalog.elasticsearch.indexer.product_model'
+            - '@akeneo_elasticsearch.registry.clients'
+            - '@database_connection'
+            - '@akeneo_measure.installer.measurement_installer'
+            - '@messenger.transport.business_event'
+            - '@event_dispatcher'
+            - '@akeneo_integration_tests.launcher.job_launcher'
+            - '%env(APP_DATABASE_HOST)%'
+            - '%env(APP_DATABASE_NAME)%'
+            - '%env(APP_DATABASE_USER)%'
+            - '%env(APP_DATABASE_PASSWORD)%'
+            - '%kernel.cache_dir%/sql-dump/'
+            - '%index_hosts%'
+
+    akeneo_integration_tests.launcher.job_launcher:
+        class: Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher
+        arguments:
+            - '@kernel'
+            - '@database_connection'
+            - !tagged akeneo.pim.tests.pub_sub_queue_status.job
+            - '@logger'
+
+    akeneo_integration_tests.pub_sub_queue_status.ui_job:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_JOB_QUEUE_UI)%'
+            - '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_UI)%'
+        tags:
+            - { name: 'akeneo.pim.tests.pub_sub_queue_status.job' }
+
+    akeneo_integration_tests.pub_sub_queue_status.import_export_job:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_JOB_QUEUE_IMPORT_EXPORT)%'
+            - '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT)%'
+        tags:
+            - { name: 'akeneo.pim.tests.pub_sub_queue_status.job' }
+
+    akeneo_integration_tests.pub_sub_queue_status.data_maintenance_job:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_JOB_QUEUE_DATA_MAINTENANCE)%'
+            - '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE)%'
+        tags:
+            - { name: 'akeneo.pim.tests.pub_sub_queue_status.job' }
 
     akeneo_legacy_behat_tests.loader.ee_fixtures_loader:
         class: 'AkeneoEnterprise\Test\IntegrationTestsBundle\Loader\FixturesLoader'
