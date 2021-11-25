@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Component\Security;
 
-use Akeneo\Tool\Component\Api\Security\ScopeMapperInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -43,7 +43,7 @@ class AssociationTypeScopeMapper implements ScopeMapperInterface
         ],
     ];
 
-    public function getAllScopes(): array
+    public function getScopes(): array
     {
         return [
             self::SCOPE_READ_ASSOCIATION_TYPES,
