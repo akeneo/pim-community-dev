@@ -10,6 +10,7 @@ type Operation = {
   tracking: {
     currentStep: number;
     totalSteps: number;
+    warning: boolean;
   };
   canSeeReport: boolean;
 };

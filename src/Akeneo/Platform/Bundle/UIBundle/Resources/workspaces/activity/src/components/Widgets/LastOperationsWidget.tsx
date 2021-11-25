@@ -64,11 +64,7 @@ const LastOperationsWidget = () => {
           <Table.Body>
             {data.map((operation: Operation) => {
               const badgeLevel =
-                operation.status === JOB_FAILED
-                  ? 'danger'
-                  : operation.warningCount !== null && operation.warningCount !== '0'
-                  ? 'warning'
-                  : 'primary';
+                operation.status === JOB_FAILED ? 'danger' : operation.tracking.warning ? 'warning' : 'primary';
               const counter = operation.status === JOB_FAILED ? 1 : operation.warningCount;
 
               return (
