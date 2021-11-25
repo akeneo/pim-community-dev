@@ -5,25 +5,17 @@ namespace Pim\Upgrade\Schema;
 use Doctrine\DBAL\FetchMode;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @todo @pull-up Do not pull-up this migration in master/6.0 (cf PIM-10179)
  */
 final class Version_5_0_20211125112429_remove_datagrid_view_unique_label extends AbstractMigration
 {
-    private ?ContainerInterface $container;
-
     public function up(Schema $schema) : void
     {
         $this->disableMigrationWarning();
 
-        $databaseNameSql = 'SELECT database()';
-        $databaseName = $this->connection->executeQuery($databaseNameSql)->fetch(FetchMode::COLUMN);
-        if (!is_string($databaseName)) {
-            return;
-        }
+        $databaseName = $this->connection->getParams()['dbname'];
 
         $findConstraintNameSql = <<< SQL
         SELECT DISTINCT CONSTRAINT_NAME
@@ -34,6 +26,7 @@ final class Version_5_0_20211125112429_remove_datagrid_view_unique_label extends
         $uniqueConstraintName = $this->connection->executeQuery($findConstraintNameSql, [
             'database_name' => $databaseName,
         ])->fetch(FetchMode::COLUMN);
+
         if (!is_string($uniqueConstraintName)) {
             return;
         }
