@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\AssetManager\Infrastructure\Security;
 
 use Akeneo\AssetManager\Infrastructure\Security\AssetScopeMapper;
-use Akeneo\Tool\Component\Api\Security\ScopeMapperInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface;
 use PhpSpec\ObjectBehavior;
 
 class AssetScopeMapperSpec extends ObjectBehavior
@@ -18,7 +18,7 @@ class AssetScopeMapperSpec extends ObjectBehavior
 
     public function it_provides_all_scopes(): void
     {
-        $this->getAllScopes()->shouldReturn([
+        $this->getScopes()->shouldReturn([
             'write_asset_families',
             'read_asset_families',
             'write_assets',
