@@ -3,6 +3,7 @@ import {Dropdown} from './Dropdown';
 import {Link, Image, Button} from '../../components';
 import {render, screen, fireEvent} from '../../storybook/test-util';
 import {Checkbox} from '../Checkbox/Checkbox';
+import {Surtitle} from './Surtitle/Surtitle';
 
 test('it renders its children properly', () => {
   render(
@@ -51,6 +52,7 @@ test('it renders selectable item', () => {
   fireEvent.click(screen.getByText('Selectable Item'));
   expect(onChange).toBeCalledTimes(1);
 });
+
 test('it renders Image item', () => {
   render(
     <Dropdown>
@@ -72,6 +74,27 @@ test('it renders Image item', () => {
 
   expect(screen.getByAltText('An image')).toHaveProperty('width', 34);
   expect(screen.getByAltText('An image')).toHaveProperty('height', 34);
+});
+
+test('it renders Surtitle item', () => {
+  render(
+    <Dropdown>
+      <Button>Dropdown</Button>
+      <Dropdown.Overlay verticalPosition="down" onClose={jest.fn()}>
+        <Dropdown.Header>
+          <Dropdown.Title>Elements</Dropdown.Title>
+        </Dropdown.Header>
+        <Dropdown.ItemCollection>
+          <Dropdown.Item data-testid="item_with_surtitle">
+            <Surtitle label="Item label">Item</Surtitle>
+          </Dropdown.Item>
+          <Dropdown.Item>Simple Item</Dropdown.Item>
+        </Dropdown.ItemCollection>
+      </Dropdown.Overlay>
+    </Dropdown>
+  );
+
+  expect(screen.getByTestId('item_with_surtitle')).toHaveStyle({height: '64px'});
 });
 
 test('Dropdown supports ...rest props', () => {

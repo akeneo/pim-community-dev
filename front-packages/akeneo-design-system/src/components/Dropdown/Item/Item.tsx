@@ -6,26 +6,41 @@ import {Checkbox} from '../../../components/Checkbox/Checkbox';
 import {Link} from '../../../components/Link/Link';
 import {Key, Override} from '../../../shared';
 import {LockIcon} from '../../../icons';
+import {Surtitle} from '../Surtitle/Surtitle';
 
 const ItemLabel = styled.span`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   flex: 1;
-  line-height: 34px;
 `;
 
-const ItemContainer = styled.div<{tall: boolean; disabled: boolean; isActive: boolean} & AkeneoThemedProps>`
+const sizeMap = {
+  default: 34,
+  big: 44,
+  bigger: 64,
+};
+
+const ItemContainer = styled.div<
+  {size: 'default' | 'big' | 'bigger'; disabled: boolean; isActive: boolean} & AkeneoThemedProps
+>`
   background: ${getColor('white')};
-  height: ${({tall}) => (tall ? 44 : 34)}px;
-  line-height: ${({tall}) => (tall ? 44 : 34)}px;
-  padding: 0 20px;
+  height: ${({size}) => sizeMap[size]}px;
+  line-height: ${({size}) => sizeMap[size]}px;
+  margin: 0 20px;
   display: flex;
   align-items: center;
   gap: 10px;
   outline-style: none;
   cursor: pointer;
   white-space: nowrap;
+  ${({size}) =>
+    size === 'bigger' &&
+    css`
+      &:not(:last-child) {
+        border-bottom: 1px solid ${getColor('grey', 80)};
+      }
+    `}
 
   &:focus {
     box-shadow: inset 0 0 0 2px ${getColor('blue', 40)};
@@ -89,7 +104,7 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>(
     {children, onKeyDown, disabled = false, isActive = false, onClick, title, ...rest}: ItemProps,
     forwardedRef: Ref<HTMLDivElement>
   ): React.ReactElement => {
-    let tall = false;
+    let size = 'default';
     const actionableRef = useRef<HTMLAnchorElement>(null);
     const handleClick = useCallback(
       (event: SyntheticEvent) => {
@@ -128,7 +143,7 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>(
 
       // Change size of Image children
       if (isValidElement(child) && child.type === Image) {
-        tall = true;
+        if (size === 'default') size = 'big';
 
         return React.cloneElement(child, {
           width: 34,
@@ -162,12 +177,16 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>(
         });
       }
 
+      if (isValidElement(child) && child.type === Surtitle) {
+        size = 'bigger';
+      }
+
       return child;
     });
 
     return (
       <ItemContainer
-        tall={tall}
+        size={size}
         tabIndex={null === actionableRef.current && !disabled ? 0 : -1}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
