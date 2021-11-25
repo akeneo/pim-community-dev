@@ -834,7 +834,7 @@ jobs:
           - run:
                 name: Create adminakeneo user
                 command: |
-                    APP_ENV=behat docker-compose run --rm -u www-data:www-data php bin/console pim:user:create adminakeneo adminakeneo product-team@akeneo.com admin1 admin2 en_US --admin -n
+                    APP_ENV=behat docker-compose run --rm -u www-data:www-data php bin/console pim:user:create adminakeneo Q7sKB5xP2ttc5KnqFPOF1BrOkTRSulmEj528BpJzbDcLbYSHU1 product-team@akeneo.com admin1 admin2 en_US --admin -n
           - run:
                 name: Launch Cypress
                 command: PIM_CONTEXT=test CYPRESS_defaultCommandTimeout=8000 CYPRESS_requestTimeout=10000 make end-to-end-front
@@ -1515,7 +1515,70 @@ jobs:
               command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
               name: Duplicate PROD environment
-              command: make -C deployments/ clone_serenity
+              command: make -C deployments/ clone_saas_instance
+          - run:
+              name: Upgrade the duplicate environment
+              command: |
+                  UPGRADE_STEP_2=true make -C deployments/ create-ci-release-files
+                  UPGRADE_STEP_2=true make -C deployments/ get_mysql_parameters_disk
+                  UPGRADE_STEP_2=true make -C deployments/ deploy
+          - run:
+              name: Production tests on upgraded env
+              command: make -C deployments/ test-prod
+          - run:
+              name: Persist env vars for next jobs
+              command: |
+                echo export SOURCE_PFID=${SOURCE_PFID} >> persisted_env_vars
+                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> persisted_env_vars
+                echo export INSTANCE_NAME=${INSTANCE_NAME} >> persisted_env_vars
+          - run:
+              name: Prepare infrastructure artifacts
+              command: make -C deployments/ prepare-infrastructure-artifacts
+              when: on_fail
+          - store_artifacts:
+              path: ~/artifacts/infra
+          - persist_to_workspace:
+              root: ~/
+              paths:
+                - project/persisted_env_vars
+
+  test_upgrade_from_grth_customer_db:
+      parameters:
+          SOURCE_PFID:
+                type: string
+                default: ""
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployerNext
+      resource_class: medium
+      steps:
+          - attach_workspace:
+                at: ~/
+          - add_ssh_keys
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
+          - run:
+              name: Define value for next steps
+              command: |
+                ssh-keyscan github.com >> ~/.ssh/known_hosts
+                SOURCE_PFID=<< parameters.SOURCE_PFID >>
+                INSTANCE_NAME_PREFIX=pimci-duplic
+                INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-$(echo "${SOURCE_PFID}" | cut -c1-20)-${CIRCLE_BUILD_NUM}
+
+                echo export SOURCE_PFID=${SOURCE_PFID} >> $BASH_ENV
+                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+
+                echo "Source PFID: ${SOURCE_PFID}"
+                echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                echo "Instance name: ${INSTANCE_NAME}"
+                echo "Image tag: ${IMAGE_TAG}"
+          - run:
+              name: DATADOG deployment Livetail logs page
+              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+          - run:
+              name: Duplicate PROD environment
+              command: make -C deployments/ clone_saas_instance
           - run:
               name: Upgrade the duplicate environment
               command: |
@@ -2428,14 +2491,14 @@ workflows:
                     - checkout
 
   nightly-beta:
-      triggers:
+    triggers:
           - schedule:
                 cron: "0 4 * * *"
                 filters:
                     branches:
                         only:
                             - master
-      jobs:
+    jobs:
           - checkout
           - test_helm_generated_k8s_files:
                 name: "[<< matrix.PRODUCT_TYPE >>][<< matrix.CLUSTER_VERSION >>] Test helm generated k8s files"
@@ -2462,6 +2525,16 @@ workflows:
                         SOURCE_PFID: ["srnt-madeira-production", "srnt-petra", "srnt-rdoequipment-prod", "srnt-electrodepot", "srnt-distributionnow-prod"]
                 requires:
                     - test_upgrade_from-<< matrix.SOURCE_PFID >>
+          - build_grth:
+                requires:
+                    - checkout
+          - test_upgrade_from_grth_customer_db:
+                name: test_upgrade_from-<< matrix.SOURCE_PFID >>
+                matrix:
+                    parameters:
+                        SOURCE_PFID: ["grth-sirius-staging"]
+                requires:
+                    - build_grth
 
   hourly_cleanup:
      triggers:

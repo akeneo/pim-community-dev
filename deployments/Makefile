@@ -1,6 +1,5 @@
 # Adapted CircleCi Jobs (CI=true) OR manual run from release dir
 
-
 # Force bash compatibility (Instead of user default shell)
 SHELL := /bin/bash
 
@@ -523,8 +522,14 @@ remove_unused_gcloud_logging_metrics:
 
 .PHONY: clone_serenity
 clone_serenity:
+	echo "DEPRECATED"
 	PRODUCT_REFERENCE_TYPE=serenity_instance MAIN_TF_TEMPLATE=serenity_instance INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files && \
-	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) INSTANCE_NAME=$(INSTANCE_NAME) bash $(DEPLOYMENT_DIR)/bin/clone_serenity.sh
+	SOURCE_PFID=$(SOURCE_PFID) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) bash $(DEPLOYMENT_DIR)/bin/clone_saas_instance.sh
+
+.PHONY: clone_saas_instance
+clone_saas_instance:
+	PRODUCT_REFERENCE_TYPE=$(PRODUCT_REFERENCE_TYPE) MAIN_TF_TEMPLATE=$(PRODUCT_REFERENCE_TYPE) INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files && \
+	SOURCE_PFID=$(SOURCE_PFID) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) BUCKET=$(BUCKET) bash $(DEPLOYMENT_DIR)/bin/clone_saas_instance.sh
 
 .PHONY: clone_flexibility
 clone_flexibility:

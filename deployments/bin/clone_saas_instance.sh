@@ -9,15 +9,23 @@ fi
 if [ "${SOURCE_PED_TAG}" != "" ]; then
       echo "DEPRECATED : prod source version is retrieve by mysql disk pim_version label"
 fi
+if [[ "${TYPE}" == "" ]]; then
+      echo "ERR : You must choose the type of your instance for the duplicate instance"
+      exit 9
+fi
 if [[ "${INSTANCE_NAME}" == "" ]]; then
       echo "ERR : You must choose an instance name for the duplicate instance"
+      exit 9
+fi
+if [[ "${BUCKET}" == "" ]]; then
+      echo "ERR : You must specify the BUCKET directory"
       exit 9
 fi
 
 BINDIR=$(dirname $(readlink -f $0))
 PED_DIR="${BINDIR}/../../"
 
-PFID="srnt-"${INSTANCE_NAME}
+PFID="${TYPE}-"${INSTANCE_NAME}
 SOURCE_INSTANCE_NAME=$(echo ${SOURCE_PFID}| cut -c 6-)
 DESTINATION_PATH=${DESTINATION_PATH:-${PED_DIR}/deployments/instances/${PFID}}
 TARGET_PAPO_PROJECT_CODE=${TARGET_PAPO_PROJECT_CODE:-"NOT_ON_PAPO_${PFID}"}
@@ -25,11 +33,13 @@ DESTINATION_GOOGLE_CLUSTER_ZONE=${DESTINATION_GOOGLE_CLUSTER_ZONE:-"europe-west3
 SOURCE_GOOGLE_PROJECT_ID=${SOURCE_GOOGLE_PROJECT_ID:-"akecld-saas-prod"}
 DESTINATION_GOOGLE_PROJECT_ID="akecld-saas-dev"
 TARGET_DNS_FQDN="${INSTANCE_NAME}.dev.cloud.akeneo.com."
+PIMUSER="adminakeneo"
+PIMPASSWORD="Q7sKB5xP2ttc5KnqFPOF1BrOkTRSulmEj528BpJzbDcLbYSHU1"
 
 echo "- Get mysql and ES disk informations about prod source instance"
 SELF_LINK_MYSQL=$(gcloud --project=${SOURCE_GOOGLE_PROJECT_ID} compute snapshots list --filter="labels.backup-ns=${SOURCE_PFID} AND labels.pvc_name=data-mysql-server-0" --limit=1 --sort-by="~creationTimestamp" --uri)
-MYSQL_SIZE=$(gcloud --project=${SOURCE_GOOGLE_PROJECT_ID} compute snapshots describe ${SELF_LINK_MYSQL} --format=json | jq -r '.diskSizeGb')
 SOURCE_PED_TAG=$(gcloud --project=${SOURCE_GOOGLE_PROJECT_ID} compute snapshots describe $SELF_LINK_MYSQL --format=json | jq -r '.labels.pim_version')
+MYSQL_SIZE=$(gcloud --project=${SOURCE_GOOGLE_PROJECT_ID} compute snapshots describe ${SELF_LINK_MYSQL} --format=json | jq -r '.diskSizeGb')
 SELF_LINK_ES_MASTER_0=$(gcloud --project=${SOURCE_GOOGLE_PROJECT_ID} compute snapshots list --filter="labels.backup-ns=${SOURCE_PFID} AND labels.pvc_name=data-elasticsearch-master-0" --limit=1 --sort-by="~creationTimestamp" --uri)
 SELF_LINK_ES_MASTER_1=$(gcloud --project=${SOURCE_GOOGLE_PROJECT_ID} compute snapshots list --filter="labels.backup-ns=${SOURCE_PFID} AND labels.pvc_name=data-elasticsearch-master-1" --limit=1 --sort-by="~creationTimestamp" --uri)
 ES_MASTER_SIZE=$(gcloud --project=${SOURCE_GOOGLE_PROJECT_ID} compute snapshots describe ${SELF_LINK_ES_MASTER_0} --format=json | jq -r '.diskSizeGb')
@@ -43,7 +53,6 @@ if (($ES_DATA_SIZE < 10)); then
     ES_DATA_SIZE=10
 fi
 
-
 echo "- Upgrade config files"
 yq w -i ${DESTINATION_PATH}/values.yaml pim.hook.installPim.enabled false
 yq w -i ${DESTINATION_PATH}/values.yaml pim.hook.addAdmin.enabled false
@@ -51,16 +60,18 @@ yq w -i ${DESTINATION_PATH}/values.yaml pim.hook.upgradeES.enabled false
 yq w -i ${DESTINATION_PATH}/values.yaml mysql.mysql.resetPassword true
 yq w -i ${DESTINATION_PATH}/values.yaml mysql.mysql.userPassword test
 yq w -i ${DESTINATION_PATH}/values.yaml mysql.mysql.rootPassword test
-yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.email "adminakeneo"
-yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.login "adminakeneo"
-yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.password "adminakeneo"
+yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.email "${PIMUSER}"
+yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.login "${PIMUSER}"
+yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.password "${PIMPASSWORD}"
 yq w -i ${DESTINATION_PATH}/values.yaml mysql.common.persistentDisks[0] "${PFID}-mysql"
+#To run local duplication, UnComment & add prod "mailgun_api_key"
+#yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.mailgun_api_key' "key-coincoin"
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.papo_project_code' "${TARGET_PAPO_PROJECT_CODE}"
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.dns_external' "${TARGET_DNS_FQDN}"
 if [[ ${ACTIVATE_MONITORING} != "false" ]]; then
-  yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim-monitoring.source' "git@github.com:akeneo/pim-enterprise-dev.git//deployments/terraform/monitoring?ref=${SOURCE_PED_TAG}"
+      yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/${BUCKET}/${SOURCE_PED_TAG}//deployments/terraform/monitoring"
 fi
-yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.source' "git@github.com:akeneo/pim-enterprise-dev.git//deployments/terraform?ref=${SOURCE_PED_TAG}"
+yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/${BUCKET}/${SOURCE_PED_TAG}//deployments/terraform"
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.pim_version' "${SOURCE_PED_TAG}"
 # remove the old mysql_disk & mysql_source_snapshot if exit
 yq d -i ${DESTINATION_PATH}/main.tf.json 'module.pim.mysql_disk_name'
@@ -79,6 +90,7 @@ if [[ $CI != "true" ]]; then
 fi
 
 echo "- Run terraform & helm."
+helm3 repo remove akeneo-charts || true
 cd ${PED_DIR}; TF_INPUT_FALSE="-input=false" TF_AUTO_APPROVE="-auto-approve" INSTANCE_NAME=${INSTANCE_NAME}  IMAGE_TAG=${SOURCE_PED_TAG} INSTANCE_NAME_PREFIX=pimci-duplic make -C deployments/ deploy
 
 echo "- Create disk ES disk (delete before if existing)"
@@ -151,7 +163,7 @@ PODSQL=$(kubectl get pods --namespace=${PFID} -l component=mysql | awk '/mysql/ 
 PODPIMWEB=$(kubectl get pods --no-headers --namespace=${PFID} -l component=pim-web | awk 'NR==1{print $1}')
 kubectl exec -it -n ${PFID} ${PODSQL} -- /bin/bash -c 'mysql -u root -p$(cat /mysql_temp/root_password.txt) -D akeneo_pim -e "UPDATE akeneo_connectivity_connection SET webhook_url = NULL, webhook_enabled = 0;"'
 kubectl exec -it -n ${PFID} ${PODSQL} -- /bin/bash -c 'mysql -u root -p$(cat /mysql_temp/root_password.txt) -D akeneo_pim -e "UPDATE oro_user SET email = LOWER(CONCAT(SUBSTRING(CONCAT(\"support+clone_\", REPLACE(username,\"@\",\"_\")), 1, 64), \"@akeneo.com\"));"'
-kubectl exec -it -n ${PFID} ${PODPIMWEB} -- /bin/bash -c 'bin/console pim:user:create adminakeneo adminakeneo product-team@akeneo.com admin1 admin2 en_US --admin -n || echo "WARN: User adminakeneo exists"'
+kubectl exec -it -n ${PFID} ${PODPIMWEB} -- /bin/bash -c 'bin/console pim:user:create '${PIMUSER}' '${PIMPASSWORD}' product-team@akeneo.com admin1 admin2 en_US --admin -n || echo "WARN: User '${PIMUSER}' exists"'
 
 echo "- Check ES indexation"
 (kubectl exec -it -n ${PFID} ${PODPIMWEB} -- /bin/bash -c 'bin/es_sync_checker --only-count') || true
