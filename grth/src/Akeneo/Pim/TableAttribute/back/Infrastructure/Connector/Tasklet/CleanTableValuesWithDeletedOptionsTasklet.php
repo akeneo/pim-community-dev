@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2021 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet;
 
 use Akeneo\Channel\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface;
@@ -28,6 +19,10 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Webmozart\Assert\Assert;
 
+/**
+ * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 final class CleanTableValuesWithDeletedOptionsTasklet implements TaskletInterface
 {
     private const ALL_CHANNELS = '<all_channels>';
@@ -40,6 +35,7 @@ final class CleanTableValuesWithDeletedOptionsTasklet implements TaskletInterfac
     private BulkSaverInterface $productModelSaver;
     private ?StepExecution $stepExecution = null;
     private int $batchSize;
+    private array $channelsAndLocales = [];
 
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -68,7 +64,7 @@ final class CleanTableValuesWithDeletedOptionsTasklet implements TaskletInterfac
         Assert::same($attribute->type(), AttributeTypes::TABLE);
 
         $removedOptionsByColumnCode = $jobParameters->get('removed_options_per_column_code');
-        $channelsAndLocales = $this->getChannelsAndLocales($attribute);
+        $channelsAndLocales = $this->getAttributeChannelsAndLocales($attribute);
 
         foreach (['root_pm', 'sub_pm', 'product'] as $entityType) {
             foreach ($removedOptionsByColumnCode as $columnCode => $removedOptions) {
@@ -176,10 +172,11 @@ final class CleanTableValuesWithDeletedOptionsTasklet implements TaskletInterfac
         }
     }
 
-    private function getChannelsAndLocales(Attribute $attribute): array
+    private function getAttributeChannelsAndLocales(Attribute $attribute): array
     {
         if ($attribute->isScopable() || $attribute->isLocalizable()) {
-            $channelsAndLocales = $this->getChannelCodeWithLocaleCodes->findAll();
+            $channelsAndLocales = $this->getAllLocalesIndexedByChannel();
+
             if ($attribute->isScopable() && $attribute->isLocalizable()) {
                 return $channelsAndLocales;
             } elseif ($attribute->isScopable()) {
@@ -192,5 +189,16 @@ final class CleanTableValuesWithDeletedOptionsTasklet implements TaskletInterfac
         return [
             self::ALL_CHANNELS => [self::ALL_LOCALES],
         ];
+    }
+
+    private function getAllLocalesIndexedByChannel(): array
+    {
+        if ([] === $this->channelsAndLocales) {
+            foreach ($this->getChannelCodeWithLocaleCodes->findAll() as $item) {
+                $this->channelsAndLocales[$item['channelCode']] = $item['localeCodes'];
+            }
+        }
+
+        return $this->channelsAndLocales;
     }
 }

@@ -135,8 +135,14 @@ class CleanTableValuesWithDeletedOptionsTaskletSpec extends ObjectBehavior
     ) {
         $getAttributes->forCode('nutrition')->willReturn($this->createAttribute('nutrition', AttributeTypes::TABLE, true, true));
         $getChannelCodeWithLocaleCodes->findAll()->willReturn([
-            'ecommerce' => ['en_US', 'fr_FR'],
-            'mobile' => ['en_US'],
+            [
+                'channelCode' => 'ecommerce',
+                'localeCodes' => ['en_US', 'fr_FR'],
+            ],
+            [
+                'channelCode' => 'mobile',
+                'localeCodes' => ['en_US'],
+            ],
         ]);
 
         $pqbFactory->create([

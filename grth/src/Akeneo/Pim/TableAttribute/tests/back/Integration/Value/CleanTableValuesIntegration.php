@@ -15,38 +15,30 @@ namespace Akeneo\Pim\TableAttribute\tests\back\Integration\Value;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOptionCode;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
 final class CleanTableValuesIntegration extends TestCase
 {
     private JobLauncher $jobLauncher;
+    private Connection $connection;
 
     /** @test */
     public function cleanTableValuesOnProductAndProductModelAfterRemovingAnOption(): void
     {
-        $this->givenOptionIsRemovedFromTableConfiguration(SelectOptionCode::fromString('egg'));
+        $this->givenOptionsAreRemovedFromTableConfiguration();
         $this->jobLauncher->launchConsumerUntilQueueIsEmpty();
 
-        $test1Product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('test1');
-        Assert::assertNotNull($test1Product);
-        $value = $test1Product->getValue('nutrition');
-        Assert::assertNotNull($value);
-        Assert::assertEqualsCanonicalizing(
-            [['ingredient' => 'salt', 'is_allergenic' => false]],
-            $value->getData()->normalize()
-        );
+        $this->assertJobSuccessful();
 
-        $test2Product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('test2');
-        Assert::assertNotNull($test2Product);
-        Assert::assertNull($test2Product->getValue('nutrition'));
-
-        $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('pm');
-        Assert::assertNotNull($productModel);
-        Assert::assertNull($productModel->getValue('nutrition'));
+        $this->assertProductRawValues('test1', 'nutrition', [['ingredient' => 'salt', 'is_allergenic' => false]]);
+        $this->assertProductRawValues('test2', 'nutrition', null);
+        $this->assertProductModelRawValues('pm', 'nutrition', null);
     }
 
     /**
@@ -57,6 +49,12 @@ final class CleanTableValuesIntegration extends TestCase
         parent::setUp();
 
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
+        $this->connection = $this->get('database_connection');
+
+        $options = \array_map(
+            fn (int $num): array => ['code' => \sprintf('option_%d', $num)],
+            \range(1, 19997)
+        );
 
         $attribute = $this->get('pim_catalog.factory.attribute')->create();
         $this->get('pim_catalog.updater.attribute')->update(
@@ -74,11 +72,14 @@ final class CleanTableValuesIntegration extends TestCase
                         'labels' => [
                             'en_US' => 'Ingredients',
                         ],
-                        'options' => [
-                            ['code' => 'salt'],
-                            ['code' => 'egg'],
-                            ['code' => 'butter'],
-                        ],
+                        'options' => \array_merge(
+                            [
+                                ['code' => 'salt'],
+                                ['code' => 'egg'],
+                                ['code' => 'butter'],
+                            ],
+                            $options
+                        ),
                     ],
                     [
                         'code' => 'quantity',
@@ -106,7 +107,7 @@ final class CleanTableValuesIntegration extends TestCase
             ['ingredient' => 'egg', 'quantity' => 2],
         ]);
         $this->createProduct('test2', [
-            ['ingredient' => 'egg', 'quantity' => 3],
+            ['ingredient' => 'option_19000', 'quantity' => 3],
         ]);
 
         $this->createAttribute([
@@ -145,16 +146,12 @@ final class CleanTableValuesIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function givenOptionIsRemovedFromTableConfiguration(SelectOptionCode $optionCode): void
+    private function givenOptionsAreRemovedFromTableConfiguration(): void
     {
-        $newOptions = \array_filter(
-            [
-                ['code' => 'salt'],
-                ['code' => 'egg'],
-                ['code' => 'butter'],
-            ],
-            static fn (array $option): bool => $option['code'] !== $optionCode->asString()
-        );
+        $newOptions = [
+            ['code' => 'salt'],
+            ['code' => 'butter'],
+        ];
 
         $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('nutrition');
         $this->get('pim_catalog.updater.attribute')->update(
@@ -255,7 +252,7 @@ final class CleanTableValuesIntegration extends TestCase
         $attribute = $this->get('pim_catalog.factory.attribute')->create();
         $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
         $constraints = $this->get('validator')->validate($attribute);
-        self::assertCount(0, $constraints, (string) $constraints);
+        self::assertCount(0, $constraints, (string)$constraints);
         $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 
@@ -271,18 +268,92 @@ final class CleanTableValuesIntegration extends TestCase
         $family = $this->get('pim_catalog.factory.family')->create();
         $this->get('pim_catalog.updater.family')->update($family, $data);
         $constraints = $this->get('validator')->validate($family);
-        self::assertCount(0, $constraints, (string) $constraints);
+        self::assertCount(0, $constraints, (string)$constraints);
         $this->get('pim_catalog.saver.family')->save($family);
     }
 
-    private function createFamilyVariant(array $data = []) : FamilyVariantInterface
+    private function createFamilyVariant(array $data = []): FamilyVariantInterface
     {
         $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
         $this->get('pim_catalog.updater.family_variant')->update($familyVariant, $data);
         $constraints = $this->get('validator')->validate($familyVariant);
-        self::assertCount(0, $constraints, (string) $constraints);
+        self::assertCount(0, $constraints, (string)$constraints);
         $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
 
         return $familyVariant;
+    }
+
+    private function assertJobSuccessful()
+    {
+        $res = $this->connection->executeQuery(
+            <<<SQL
+            SELECT execution.status = 1 AS success
+            FROM akeneo_batch_job_execution execution
+            INNER JOIN akeneo_batch_job_instance instance ON execution.job_instance_id = instance.id
+            WHERE instance.code = 'clean_table_values_following_deleted_options'
+            ORDER BY execution.id DESC LIMIT 1
+        SQL
+        )->fetchOne();
+
+        Assert::assertTrue((bool)$res, 'The cleaning job was not successful');
+    }
+
+    private function assertProductRawValues(string $identifier, string $attributeCode, ?array $expectedValues): void
+    {
+        $actualRawValues = $this->connection->executeQuery(
+            'SELECT raw_values FROM pim_catalog_product WHERE identifier = :identifier',
+            ['identifier' => $identifier]
+        )->fetchOne();
+
+        Assert::assertNotFalse($actualRawValues);
+
+        $this->assertRawValues(
+            \json_decode($actualRawValues, true)[$attributeCode]['<all_channels>']['<all_locales>'] ?? null,
+            $expectedValues
+        );
+    }
+
+    private function assertProductModelRawValues(string $code, string $attributeCode, ?array $expectedValues): void
+    {
+        $actualRawValues = $this->connection->executeQuery(
+            'SELECT raw_values FROM pim_catalog_product_model WHERE code = :code',
+            ['code' => $code]
+        )->fetchOne();
+
+        Assert::assertNotFalse($actualRawValues);
+
+        $this->assertRawValues(
+            \json_decode($actualRawValues, true)[$attributeCode]['<all_channels>']['<all_locales>'] ?? null,
+            $expectedValues
+        );
+    }
+
+    private function assertRawValues(?array $actualRawValues, ?array $expectedValues): void
+    {
+        if (null === $expectedValues) {
+            Assert::assertNull($actualRawValues);
+
+            return;
+        }
+
+        Assert::assertIsArray($actualRawValues);
+        Assert::assertSame(
+            \count($expectedValues),
+            \count($actualRawValues),
+            'The raw values do not have the expected number of rows'
+        );
+
+        foreach ($actualRawValues as $index => $actualRow) {
+            Assert::assertSame(
+                \count($actualRow),
+                \count($expectedValues[$index]),
+                \sprintf('The row with index %d does not have the expected number of cells', $index)
+            );
+            foreach ($actualRow as $columnId => $actualValue) {
+                $code = ColumnId::fromString($columnId)->extractColumnCode()->asString();
+                Assert::assertArrayHasKey($code, $expectedValues[$index]);
+                Assert::assertSame($expectedValues[$index][$code], $actualValue);
+            }
+        }
     }
 }
