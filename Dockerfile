@@ -138,6 +138,7 @@ COPY config config
 COPY public public
 COPY frontend frontend
 COPY src src
+COPY components components
 COPY grth grth
 COPY upgrades upgrades
 COPY front-packages front-packages
@@ -220,6 +221,7 @@ COPY --from=builder --chown=www-data:www-data /srv/pim/bin bin
 COPY --from=builder --chown=www-data:www-data /srv/pim/config config
 COPY --from=builder --chown=www-data:www-data /srv/pim/public public
 COPY --from=builder --chown=www-data:www-data /srv/pim/src src
+COPY --from=builder --chown=www-data:www-data /srv/pim/components components
 COPY --from=builder --chown=www-data:www-data /srv/pim/upgrades upgrades
 COPY --from=builder --chown=www-data:www-data /srv/pim/var/cache/prod var/cache/prod
 COPY --from=builder --chown=www-data:www-data /srv/pim/vendor vendor
