@@ -105,7 +105,7 @@ const UpdaterRow = ({updater, uiLocale, readOnly = false, errors, onChange, onRe
               id={id}
               canEditData={!readOnly}
               channel={updater.channel}
-              locale={updater.locale}
+              locale={updater.locale ?? uiLocale}
               onChange={handleDataChange}
               value={updater}
               invalid={0 < rowErrors.length}
