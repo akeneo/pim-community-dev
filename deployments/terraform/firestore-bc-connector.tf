@@ -4,7 +4,7 @@
 //
 
 resource "google_firestore_document" "placeholder" {
-  count = contains(local.bc_enabled_projects, var.google_project_id) ? 1 : 0
+  count = 1
 
   collection  = local.pfid
   document_id = "placeholder"
@@ -22,7 +22,7 @@ resource "google_firestore_document" "placeholder" {
 //
 
 resource "google_project_iam_member" "firestore_user_iam_member" {
-  count = contains(local.bc_enabled_projects, var.google_project_id) ? 1 : 0
+  count = 1
   role = "roles/datastore.user"
   member = "serviceAccount:${google_service_account.pim_service_account.email}"
 
