@@ -43,7 +43,7 @@ const CatalogVolumeScreenError = ({title, message}: CatalogVolumeScreenErrorProp
   return (
     <Container>
       <Image>
-        <ClientErrorIllustration width="100%" height="100%" />
+        <ClientErrorIllustration width="525px" height="255px" />
       </Image>
       <Title>{title}</Title>
       <Message>{message}</Message>
