@@ -15,7 +15,7 @@ class GroupProductsCommand
     /**
      * @return string
      */
-    public function getGroupId(): string
+    public function groupId(): string
     {
         return $this->groupId;
     }

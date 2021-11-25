@@ -31,13 +31,13 @@ class GroupProductsHandler
     public function handle(GroupProductsCommand $updateProductsToGroupCommand)
     {
         $currentProductIds = $updateProductsToGroupCommand->productIds();
-        $oldProductIds = $this->getGroupProductIdentifiers->byGroupId($updateProductsToGroupCommand->getGroupId());
+        $oldProductIds = $this->getGroupProductIdentifiers->byGroupId($updateProductsToGroupCommand->groupId());
 
         $newProductIds = array_diff($currentProductIds, $oldProductIds);
         $removedProductIds = array_diff($oldProductIds, $currentProductIds);
 
         $productsToUpdate = [];
-        $group = $this->groupRepository->find($updateProductsToGroupCommand->getGroupId());
+        $group = $this->groupRepository->find($updateProductsToGroupCommand->groupId());
 
         foreach ($newProductIds as $newProductId) {
             $dbProduct = $this->productRepository->find($newProductId);
@@ -45,7 +45,7 @@ class GroupProductsHandler
             $productsToUpdate[] = $dbProduct;
         }
         foreach ($removedProductIds as $removedProductId) {
-            $dbProduct = $this->productRepository->find($removedProductId);
+            $dbProduct = $this->productRepository->findOneByIdentifier($removedProductId);
             $dbProduct->removeGroup($group);
             $productsToUpdate[] = $dbProduct;
         }

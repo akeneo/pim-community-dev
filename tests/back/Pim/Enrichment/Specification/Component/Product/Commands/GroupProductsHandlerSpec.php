@@ -34,6 +34,7 @@ class GroupProductsHandlerSpec extends ObjectBehavior
         $productSaver->saveAll([$product2])->shouldHaveBeenCalled();
 
     }
+
     function it_can_propagate_product_removed_group(FindProductIdentifiersInterface $getGroupProductIdentifiers, GroupRepositoryInterface $groupRepository, BulkSaverInterface $productSaver, ProductRepositoryInterface $productRepository) {
         $groupProductsCommand = new GroupProductsCommand(1,["productId2"] );
         $group = new Group();
@@ -41,7 +42,7 @@ class GroupProductsHandlerSpec extends ObjectBehavior
 
         $getGroupProductIdentifiers->byGroupId(1)->willReturn(["productId1","productId2"]);
         $groupRepository->find(1)->willReturn($group);
-        $productRepository->find("productId1")->willReturn($product2);
+        $productRepository->findOneByIdentifier("productId1")->willReturn($product2);
         $this->handle($groupProductsCommand);
         $productSaver->saveAll([$product2])->shouldHaveBeenCalled();
 
