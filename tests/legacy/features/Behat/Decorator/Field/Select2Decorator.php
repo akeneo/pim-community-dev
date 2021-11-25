@@ -38,8 +38,9 @@ class Select2Decorator extends ElementDecorator
                 $result = $widget->find('css', sprintf('.select2-result-label:contains("%s")', $value));
 
                 if (null !== $result && $result->isVisible()) {
-                    $result->click();
-
+                    $this->getSession()->executeScript(
+                        sprintf('$(\'.select2-result-label:contains("%s")\').mouseup();', $value)
+                    );
                     return true;
                 }
 
