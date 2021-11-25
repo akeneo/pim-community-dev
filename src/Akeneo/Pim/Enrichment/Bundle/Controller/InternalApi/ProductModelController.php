@@ -332,7 +332,7 @@ class ProductModelController
         $productModel = $this->findProductModelOr404($id);
         $command = new RemoveProductModelCommand($productModel->getCode());
         $violations = $this->validator->validate($command);
-        if (0 < count($violations)) {
+        if (0 < \count($violations)) {
             // Actually the UI expects only one error message in order to display it as a flash message.
             $firstViolation = $violations[0];
             return new JsonResponse([

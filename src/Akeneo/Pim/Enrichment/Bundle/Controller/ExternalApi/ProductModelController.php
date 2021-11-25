@@ -260,7 +260,7 @@ class ProductModelController
 
         $command = new RemoveProductModelCommand($productModel->getCode());
         $violations = $this->validator->validate($command);
-        if (0 < count($violations)) {
+        if (0 < \count($violations)) {
             return new JsonResponse([
                 'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
                 'messages' => \array_map(

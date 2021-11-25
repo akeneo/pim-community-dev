@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Job;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Command\ProductModel\RemoveProductModelCommand;
+use Akeneo\Pim\Enrichment\Component\Command\ProductModel\RemoveProductModelHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CountVariantProductsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\CountProductModelsAndChildrenProductModelsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
@@ -19,6 +22,7 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Delete products and product models
@@ -31,7 +35,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
 {
     protected ?StepExecution $stepExecution = null;
     protected BulkRemoverInterface $productRemover;
-    protected BulkRemoverInterface $productModelRemover;
+    protected RemoveProductModelHandler $removeProductModelHandler;
     protected ProductQueryBuilderFactoryInterface $pqbFactory;
     protected EntityManagerClearerInterface $cacheClearer;
     protected ObjectFilterInterface $filter;
@@ -40,22 +44,24 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
     private CountVariantProductsInterface $countVariantProducts;
     private JobStopper $jobStopper;
     private JobRepositoryInterface $jobRepository;
+    private ValidatorInterface $validator;
 
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         BulkRemoverInterface $productRemover,
-        BulkRemoverInterface $productModelRemover,
+        RemoveProductModelHandler $removeProductModelHandler,
         EntityManagerClearerInterface $cacheClearer,
         ObjectFilterInterface $filter,
         int $batchSize,
         CountProductModelsAndChildrenProductModelsInterface $countProductModelsAndChildrenProductModels,
         CountVariantProductsInterface $countVariantProducts,
         JobStopper $jobStopper,
-        JobRepositoryInterface $jobRepository
+        JobRepositoryInterface $jobRepository,
+        ValidatorInterface $validator
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->productRemover = $productRemover;
-        $this->productModelRemover = $productModelRemover;
+        $this->removeProductModelHandler = $removeProductModelHandler;
         $this->cacheClearer = $cacheClearer;
         $this->batchSize = $batchSize;
         $this->filter = $filter;
@@ -63,6 +69,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
         $this->countVariantProducts = $countVariantProducts;
         $this->jobStopper = $jobStopper;
         $this->jobRepository = $jobRepository;
+        $this->validator = $validator;
     }
 
     /**
@@ -183,17 +190,47 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
         $productModels = $this->filterProductModels($entities);
 
         $deletedProductsCount = $this->countProductsToDelete($products, $productModels);
-        $deletedProductModelsCount = $this->countProductModelsToDelete($productModels);
 
         $this->productRemover->removeAll($products);
         $this->stepExecution->incrementSummaryInfo('deleted_products', $deletedProductsCount);
         $this->stepExecution->incrementProcessedItems($deletedProductsCount);
 
-        $this->productModelRemover->removeAll($productModels);
-        $this->stepExecution->incrementSummaryInfo('deleted_product_models', $deletedProductModelsCount);
-        $this->stepExecution->incrementProcessedItems($deletedProductModelsCount);
+        $this->deleteProductModels($productModels);
 
         $this->cacheClearer->clear();
+    }
+
+    /**
+     * @param ProductModelInterface[] $productModels
+     */
+    private function deleteProductModels(array $productModels): void
+    {
+        $productModelsToRemove = [];
+        $commandsToExecute = [];
+        $skippedProductModelCount = 0;
+
+        foreach ($productModels as $productModel) {
+            $command = new RemoveProductModelCommand($productModel->getCode());
+            $violations = $this->validator->validate($command);
+            if (0 === \count($violations)) {
+                $productModelsToRemove[] = $productModel;
+                $commandsToExecute[] = $command;
+            } else {
+                $skippedProductModelCount++;
+                foreach ($violations as $violation) {
+                    $this->stepExecution->addWarning($violation->getMessage(), [], new DataInvalidItem($productModel));
+                }
+            }
+        }
+
+        $deletedProductModelsCount = $this->countProductModelsToDelete($productModelsToRemove);
+        foreach ($commandsToExecute as $command) {
+            ($this->removeProductModelHandler)($command);
+        }
+
+        $this->stepExecution->incrementSummaryInfo('deleted_product_models', $deletedProductModelsCount);
+        $this->stepExecution->incrementSummaryInfo('skipped_deleted_product_models', $skippedProductModelCount);
+        $this->stepExecution->incrementProcessedItems($deletedProductModelsCount);
     }
 
     /**
