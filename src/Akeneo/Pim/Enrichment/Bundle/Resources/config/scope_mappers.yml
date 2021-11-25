@@ -1,4 +1,4 @@
 services:
     Akeneo\Pim\Enrichment\Component\Security\ProductScopeMapper:
-      tags:
-        - { name: pim_api.security.scope_mapper, entity: 'products' }
+        tags:
+            - { name: pim_api.security.scope_mapper, entity: 'products' }
