@@ -62,10 +62,7 @@ class GetLastOperations implements GetLastOperationsInterface
                 'step',
                 $qb->expr()->eq('step.job_execution_id', 'execution.id')
             )
-            ->where($qb->expr()->orX(
-                $qb->expr()->isNull('execution.is_visible'),
-                $qb->expr()->eq('execution.is_visible', 1),
-            ))
+            ->where($qb->expr()->eq('execution.is_visible', 1))
             ->groupBy('execution.id')
             ->orderBy('execution.start_time', 'DESC')
             ->setMaxResults(10);

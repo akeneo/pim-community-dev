@@ -26,11 +26,10 @@ class FindJobUsers implements FindJobUsersInterface
     public function search(int $page): array
     {
         $sql = <<<SQL
-SELECT DISTINCT je.user
-FROM akeneo_batch_job_execution je
-JOIN akeneo_batch_job_instance ji ON je.job_instance_id = ji.id
-WHERE (je.is_visible = 1 OR je.is_visible IS NULL)
-ORDER BY je.user
+SELECT DISTINCT job_execution.user
+FROM akeneo_batch_job_execution job_execution
+WHERE job_execution.is_visible = 1
+ORDER BY job_execution.user
 LIMIT :offset, :limit
 SQL;
 

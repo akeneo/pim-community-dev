@@ -48,8 +48,6 @@ class GetLastOperationsSpec extends ObjectBehavior
         $qb->setMaxResults(Argument::cetera())->willReturn($qb);
         $qb->setParameters(Argument::cetera())->willReturn($qb);
 
-        $expr->isNull(Argument::cetera())->willReturn($expr);
-        $expr->orX(Argument::cetera())->willReturn($expr);
         $expr->eq(Argument::cetera())->willReturn('eq');
         $expr->notIn(Argument::cetera())->willReturn('notIn');
 

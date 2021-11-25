@@ -52,7 +52,7 @@ class FindJobUsersTest extends IntegrationTestCase
 
         $expectedJobUsers = [
             'julia',
-            'admin'
+            'admin',
         ];
 
         $this->assertEqualsCanonicalizing($expectedJobUsers, $findJobUsersQuery->search(1));
