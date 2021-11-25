@@ -40,6 +40,56 @@ class ScopeMapperRegistrySpec extends ObjectBehavior
             ->during('__construct', [[new \stdClass()]]);
     }
 
+    public function it_forbids_to_support_a_scope_only_once(): void
+    {
+        $anyScopeMapper = new class implements ScopeMapperInterface {
+            public function getScopes(): array
+            {
+                return ['read_something'];
+            }
+
+            public function getAcls(string $scopeName): array
+            {
+                return [];
+            }
+
+            public function getMessage(string $scopeName): array
+            {
+                return [];
+            }
+
+            public function getLowerHierarchyScopes(string $scopeName): array
+            {
+                return [];
+            }
+        };
+        $anotherScopeMapper = new class implements ScopeMapperInterface {
+            public function getScopes(): array
+            {
+                return ['read_something'];
+            }
+
+            public function getAcls(string $scopeName): array
+            {
+                return [];
+            }
+
+            public function getMessage(string $scopeName): array
+            {
+                return [];
+            }
+
+            public function getLowerHierarchyScopes(string $scopeName): array
+            {
+                return [];
+            }
+        };
+
+        $this
+            ->shouldThrow(\InvalidArgumentException::class)
+            ->during('__construct', [[$anyScopeMapper, $anotherScopeMapper]]);
+    }
+
     public function it_provides_all_scopes(): void
     {
         $this->getAllScopes()->shouldReturn([

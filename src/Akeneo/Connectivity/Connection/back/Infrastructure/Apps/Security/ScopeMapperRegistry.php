@@ -12,11 +12,10 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Security;
 final class ScopeMapperRegistry
 {
     /** @var array<string, ScopeMapperInterface> */
-    private iterable $scopeMappers;
+    private iterable $scopeMappers = [];
 
     public function __construct(iterable $scopeMappers)
     {
-        $scopesToMapper = [];
         foreach ($scopeMappers as $scopeMapper) {
             if (!$scopeMapper instanceof ScopeMapperInterface) {
                 throw new \InvalidArgumentException(
@@ -28,10 +27,18 @@ final class ScopeMapperRegistry
                 );
             }
             foreach ($scopeMapper->getScopes() as $scope) {
-                $scopesToMapper[$scope] = $scopeMapper;
+                if (\array_key_exists($scope, $this->scopeMappers)) {
+                    throw new \InvalidArgumentException(
+                        sprintf(
+                            'The scope "%s" is already supported by the scope mapper "%s".',
+                            $scope,
+                            get_class($this->scopeMappers[$scope])
+                        )
+                    );
+                }
+                $this->scopeMappers[$scope] = $scopeMapper;
             }
         }
-        $this->scopeMappers = $scopesToMapper;
     }
 
     public function getAllScopes(): array
