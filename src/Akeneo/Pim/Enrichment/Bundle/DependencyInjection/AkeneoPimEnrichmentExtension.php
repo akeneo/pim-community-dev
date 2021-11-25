@@ -67,6 +67,7 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('managers.yml');
         $loader->load('models.yml');
         $loader->load('product_grid_category_tree.yml');
+        $loader->load('product_model_handlers.yml');
         $loader->load('product_models.yml');
         $loader->load('product_values.yml');
         $loader->load('query_builders.yml');
