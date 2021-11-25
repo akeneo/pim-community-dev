@@ -17,7 +17,7 @@ pim_table_configuration:
             too_long_option_label: "The option label is too long: it must be 255 characters or less"
             duplicated_column_code: '[0,1]Each column requires a unique code. "%duplicateCodes%" is already used|]1,Inf[Each column requires a unique code. "%duplicateCodes%" are already used'
             column_type_must_be_a_string: The column data type must be a string
-            unknown_data_type: "The column data type is unknown. Please choose one of the following: number, text, select, boolean"
+            unknown_data_type: 'The column data type is unknown. Please choose one of the following: {{ allowed_data_types }}'
             column_label_must_be_a_string: The column label must be a string
             option_label_must_be_a_string: The option label must be a string
             label_locale_does_not_exist_or_is_not_activated: The "{{ locale_code }}" locale doesn't exist or is not activated

@@ -1,3 +1,6 @@
+parameters:
+    pim_catalog_table_allowed_column_datatypes: [ "text", "number", "boolean", "select" ]
+
 services:
     Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsTableAttributeConfiguredValidator:
         tags:
@@ -64,6 +67,12 @@ services:
             - { name: 'validator.constraint_validator' }
 
     Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\TableShouldNotHaveTooManyRowsValidator:
+        tags:
+            - { name: 'validator.constraint_validator' }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ColumnDatatypeValidator:
+        arguments:
+            - '%pim_catalog_table_allowed_column_datatypes%'
         tags:
             - { name: 'validator.constraint_validator' }
 

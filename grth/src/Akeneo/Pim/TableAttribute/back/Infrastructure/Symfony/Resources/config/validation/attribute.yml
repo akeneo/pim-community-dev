@@ -37,9 +37,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                       - Type:
                           type: string
                           message: pim_table_configuration.validation.table_configuration.column_type_must_be_a_string
-                      - Choice:
-                          choices: [ "text", "number", "boolean", "select" ]
-                          message: pim_table_configuration.validation.table_configuration.unknown_data_type
+                      - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ColumnDatatype: ~
                 labels:
                   - Optional:
                       - Type:
@@ -93,6 +91,13 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                           message: The required value is a boolean
                       - NotNull:
                           message: The "is_required_for_completeness" option requires a value
+                reference_entity_code:
+                  - Optional:
+                      - Type:
+                          type: string
+                          message: The required value is a string
+                      - NotNull:
+                          message: The "reference_entity_code" option requires a value
                 options:
                   - Optional:
                       - Type:

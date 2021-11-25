@@ -46,6 +46,7 @@ class AkeneoPimTableAttributeExtension extends Extension
         $loader->load('value_filters.yml');
 
         $this->configureEnterpriseProductEnrichment($container);
+        $this->configureReferenceEntityBundle($container);
     }
 
     private function configureEnterpriseProductEnrichment(ContainerBuilder $container): void
@@ -60,5 +61,17 @@ class AkeneoPimTableAttributeExtension extends Extension
             new FileLocator(__DIR__ . '/../Resources/config/enterprise_product_enrichment')
         );
         $loader->load('jobs.yml');
+    }
+
+    private function configureReferenceEntityBundle(ContainerBuilder $container): void
+    {
+        $bundles = $container->getParameter('kernel.bundles');
+        if (!isset($bundles['AkeneoReferenceEntityBundle'])) {
+            return;
+        }
+
+        $allowedColumnDatatypes = $container->getParameter('pim_catalog_table_allowed_column_datatypes');
+        $allowedColumnDatatypes[] = 'record';
+        $container->setParameter('pim_catalog_table_allowed_column_datatypes', $allowedColumnDatatypes);
     }
 }

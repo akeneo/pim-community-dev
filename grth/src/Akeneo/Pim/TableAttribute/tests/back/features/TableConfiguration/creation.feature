@@ -68,9 +68,15 @@ Feature: Create a table attribute
     When I create a table attribute with a configuration '{"code": "quantity"}'
     Then There is a violation with message: The "data_type" column must be filled
 
+  @only-ge
   Scenario: Cannot create a table configuration having unknown type
     When I create a table attribute with a configuration '{"data_type": "unknown", "code": "quantity"}'
-    Then There is a violation with message: The column data type is unknown. Please choose one of the following: number, text, select, boolean
+    Then There is a violation with message: The column data type is unknown. Please choose one of the following: text, number, boolean, select
+
+  @only-ee
+  Scenario: Cannot create a table configuration having unknown type
+    When I create a table attribute with a configuration '{"data_type": "unknown", "code": "quantity"}'
+    Then There is a violation with message: The column data type is unknown. Please choose one of the following: text, number, boolean, select, record
 
   Scenario: Cannot create a table configuration having invalid type
     When I create a table attribute with a configuration '{"data_type": 1, "code": "quantity"}'
@@ -192,3 +198,24 @@ Feature: Create a table attribute
   Scenario: Cannot create a table configuration with a null "is required for completeness" value
     When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "is_required_for_completeness": null}'
     Then There is a violation with message: The "is_required_for_completeness" option requires a value
+
+  @only-ge
+  Scenario: Cannot create a table configuration with a record column
+    When I create a table attribute with a configuration '{"data_type": "record", "code": "record", "is_required_for_completeness": true, "reference_entity_code": "brands"}'
+    Then There is a violation with message: The column data type is unknown. Please choose one of the following: text, number, boolean, select
+
+  @only-ee
+  Scenario: Can create a table configuration with a record column
+    When I create a table attribute with a configuration '{"data_type": "record", "code": "record", "is_required_for_completeness": true, "reference_entity_code": "brands"}'
+    Then There is no violation
+
+# @TODO : Move record tests to EE
+  @only-ee
+  Scenario: Cannot create a table configuration with a null "reference_entity_code" in a record column
+    When I create a table attribute with a configuration '{"data_type": "record", "code": "record", "is_required_for_completeness": true, "reference_entity_code": null}'
+    Then There is a violation with message: The "reference_entity_code" option requires a value
+
+  @only-ee
+  Scenario: Cannot create a table configuration with an invalid "reference_entity_code" type in a record column
+    When I create a table attribute with a configuration '{"data_type": "record", "code": "record", "is_required_for_completeness": true, "reference_entity_code": 153}'
+    Then There is a violation with message: The required value is a string
