@@ -35,7 +35,6 @@ class JobExecutionTableSpec extends ObjectBehavior
                 ),
             ],
             1,
-            2,
         );
 
         $this->normalize()->shouldReturn([
@@ -57,13 +56,12 @@ class JobExecutionTableSpec extends ObjectBehavior
                 ],
             ],
             'matches_count' => 1,
-            'total_count' => 2,
         ]);
     }
 
     public function it_can_be_constructed_only_with_a_list_of_job_execution_row()
     {
-        $this->beConstructedWith([1], 5, 10);
+        $this->beConstructedWith([1], 5);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 }

@@ -15,22 +15,18 @@ final class JobExecutionTable
 {
     private const ROWS = 'rows';
     private const MATCHES_COUNT = 'matches_count';
-    private const TOTAL_COUNT = 'total_count';
 
     /** @var JobExecutionRow[] */
     public array $rows;
     public int $matchesCount;
-    public int $totalCount;
 
     public function __construct(
         array $jobExecutionRows,
-        int $matchesCount,
-        int $totalCount
+        int $matchesCount
     ) {
         Assert::allIsInstanceOf($jobExecutionRows, JobExecutionRow::class);
         $this->rows = $jobExecutionRows;
         $this->matchesCount = $matchesCount;
-        $this->totalCount = $totalCount;
     }
 
     public function normalize(): array
@@ -38,7 +34,6 @@ final class JobExecutionTable
         return [
             self::ROWS => array_map(static fn (JobExecutionRow $jobItem) => $jobItem->normalize(), $this->rows),
             self::MATCHES_COUNT => $this->matchesCount,
-            self::TOTAL_COUNT => $this->totalCount,
         ];
     }
 }
