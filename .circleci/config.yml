@@ -199,7 +199,7 @@ jobs:
               find vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
               find vendor/akeneo/pim-community-dev/front-packages/measurement -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/measurement.hash
               find vendor/akeneo/pim-community-dev/front-packages/shared -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/shared.hash
-              find front-packages/tailored-export -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/tailored-export.hash
+              find components/tailored-export/front/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/tailored-export.hash
               find vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/front/process-tracker -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/process-tracker.hash
               find vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/catalog-volume-monitoring.hash
               date +%F | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/tailored-export.hash ~/catalog-volume-monitoring.hash ~/process-tracker.hash

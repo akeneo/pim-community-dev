@@ -141,7 +141,6 @@ COPY src src
 COPY components components
 COPY grth grth
 COPY upgrades upgrades
-COPY front-packages front-packages
 COPY composer.json package.json yarn.lock .env tsconfig.json *.js .
 
 ENV APP_ENV=prod

@@ -32,8 +32,8 @@ ci-back: lint-back coupling-back unit-back acceptance-back integration-back
 
 .PHONY: ci-front
 ci-front:
-	$(YARN_RUN) run --cwd=front-packages/tailored-export test:unit:run
-	$(YARN_RUN) run --cwd=front-packages/tailored-export lint:check
+	$(YARN_RUN) run --cwd=components/tailored-export/front test:unit:run
+	$(YARN_RUN) run --cwd=components/tailored-export/front lint:check
 
 .PHONY: ci
 ci: ci-back ci-front
