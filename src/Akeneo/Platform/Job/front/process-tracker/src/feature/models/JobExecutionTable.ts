@@ -19,7 +19,6 @@ type JobExecutionRow = {
 type JobExecutionTable = {
   rows: JobExecutionRow[];
   matches_count: number;
-  total_count: number;
 };
 
 const stoppableStatus = ['STARTING', 'STARTED'];

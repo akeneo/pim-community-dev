@@ -93,7 +93,6 @@ jest.mock('../hooks/useJobExecutionTable', () => ({
     const jobExecutionTable = {
       rows: paginatedRows,
       matches_count: filteredRows.length,
-      total_count: rows.length,
     };
 
     return [jobExecutionTable, () => jobExecutionTable];

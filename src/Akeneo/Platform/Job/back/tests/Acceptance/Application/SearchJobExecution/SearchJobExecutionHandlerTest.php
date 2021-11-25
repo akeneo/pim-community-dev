@@ -9,7 +9,6 @@ use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionTable;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionHandler;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
 use Akeneo\Platform\Job\Test\Acceptance\AcceptanceTestCase;
-use Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryCountJobExecution;
 use Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemorySearchJobExecution;
 
 class SearchJobExecutionHandlerTest extends AcceptanceTestCase
@@ -26,7 +25,7 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
     {
         $query = new SearchJobExecutionQuery();
         $result = $this->getHandler()->search($query);
-        $expectedResult = new JobExecutionTable([], 0, 0);
+        $expectedResult = new JobExecutionTable([], 0);
 
         $this->assertEquals($expectedResult, $result);
     }
@@ -65,21 +64,15 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
             ),
         ];
 
-        $this->getCountJobExecution()->mockResult(3);
         $this->getSearchJobExecution()->mockSearchResult($jobExecutionRows);
 
         $query = new SearchJobExecutionQuery();
         $query->page = 1;
 
         $result = $this->getHandler()->search($query);
-        $expectedResult = new JobExecutionTable($jobExecutionRows, 2, 3);
+        $expectedResult = new JobExecutionTable($jobExecutionRows, 2);
 
         $this->assertEquals($expectedResult, $result);
-    }
-
-    private function getCountJobExecution(): InMemoryCountJobExecution
-    {
-        return $this->get('Akeneo\Platform\Job\Domain\Query\CountJobExecutionInterface');
     }
 
     private function getSearchJobExecution(): InMemorySearchJobExecution
