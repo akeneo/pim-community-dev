@@ -164,9 +164,12 @@ class RecordNormalizerSpec extends ObjectBehavior
     function it_truncates_record_full_text_search(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
         SqlFindSearchableRecords $findSearchableRecords,
-        \Iterator $searchableRecordItemIterator
+        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
+        \DateTimeImmutable $updatedAt
     ) {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $recordIdentifier = RecordIdentifier::fromString('stark');
+        $updatedAt->getTimestamp()->willReturn(1589524960);
+
         $stark = new SearchableRecordItem();
         $stark->identifier = 'designer_stark_fingerprint';
         $stark->referenceEntityIdentifier = 'designer';
@@ -180,25 +183,11 @@ class RecordNormalizerSpec extends ObjectBehavior
                 'data' => 'Bio',
             ],
         ];
+        $stark->updatedAt = \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2020-05-15T10:16:21+0000');
 
-        $coco = new SearchableRecordItem();
-        $coco->identifier = 'designer_coco_fingerprint';
-        $coco->referenceEntityIdentifier = 'designer';
-        $coco->code = 'coco';
-        $coco->labels = ['fr_FR' => 'Coco Chanel'];
-        $coco->values = [
-            'ecommerce' => [
-                'fr_FR' => sprintf("stark %s", str_repeat('é', 32760 / 2)),
-            ],
-            'mobile'    => [
-                'en_US' => sprintf("stark %s", str_repeat('é', 32760 / 2)),
-            ],
-        ];
         $findSearchableRecords
-            ->byReferenceEntityIdentifier($referenceEntityIdentifier)
-            ->willReturn($searchableRecordItemIterator);
-        $searchableRecordItemIterator->valid()->willReturn(true, true, false);
-        $searchableRecordItemIterator->current()->willReturn($stark, $coco);
+            ->byRecordIdentifier($recordIdentifier)
+            ->willReturn($stark);
 
         $findValueKeysToIndexForAllChannelsAndLocales->find(Argument::type(ReferenceEntityIdentifier::class))
             ->willReturn(
@@ -211,7 +200,34 @@ class RecordNormalizerSpec extends ObjectBehavior
                     ],
                 ]
             );
+        $findValueKeysByAttributeType
+            ->find(
+                ReferenceEntityIdentifier::fromString($stark->referenceEntityIdentifier),
+                ['option', 'option_collection', 'record', 'record_collection']
+            )
+            ->willReturn([$stark->referenceEntityIdentifier]);
 
-        $this->normalizeRecordsByReferenceEntity($referenceEntityIdentifier);
+        $normalizedRecord = $this->normalizeRecord($recordIdentifier);
+        $normalizedRecord['identifier']->shouldBeEqualTo('designer_stark_fingerprint');
+        $normalizedRecord['code']->shouldBeEqualTo('stark');
+        $normalizedRecord['reference_entity_code']->shouldBeEqualTo('designer');
+        $normalizedRecord['record_full_text_search']->shouldBeEqualTo(
+            [
+                'ecommerce' => [
+                    'fr_FR' => sprintf("stark %s", str_repeat('é', 32760 / 2)),
+                ],
+                'mobile'    => [
+                    'en_US' => sprintf("stark %s", str_repeat('é', 32760 / 2)),
+                ],
+            ]
+        );
+        $normalizedRecord['complete_value_keys']->shouldBeEqualTo(
+            [
+                'name'                     => true,
+                'description_mobile_en_US' => true,
+            ]
+        );
+
+        $normalizedRecord['updated_at']->shouldBeEqualTo(1589537781);
     }
 }
