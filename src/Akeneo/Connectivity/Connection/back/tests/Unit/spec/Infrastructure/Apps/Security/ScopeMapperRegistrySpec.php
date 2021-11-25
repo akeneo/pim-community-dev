@@ -40,7 +40,7 @@ class ScopeMapperRegistrySpec extends ObjectBehavior
             ->during('__construct', [[new \stdClass()]]);
     }
 
-    public function it_forbids_to_support_a_scope_only_once(): void
+    public function it_forbids_to_support_a_scope_more_than_once(): void
     {
         $anyScopeMapper = new class implements ScopeMapperInterface {
             public function getScopes(): array
