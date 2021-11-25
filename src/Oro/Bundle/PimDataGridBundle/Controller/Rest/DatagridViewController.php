@@ -9,7 +9,6 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\PimDataGridBundle\Manager\DatagridViewManager;
-use Oro\Bundle\PimDataGridBundle\Query\Sql\RemoveUniqueLabelConstraint;
 use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -45,8 +44,6 @@ class DatagridViewController
     protected CollectionFilterInterface $datagridViewFilter;
     protected ObjectUpdaterInterface $updater;
     protected SimpleFactoryInterface $factory;
-    // Pull-up: do not keep this property
-    protected ?RemoveUniqueLabelConstraint $removeLabelUniqueConstraint = null;
 
     public function __construct(
         NormalizerInterface $normalizer,
@@ -59,8 +56,7 @@ class DatagridViewController
         TranslatorInterface $translator,
         CollectionFilterInterface $datagridViewFilter,
         ObjectUpdaterInterface $updater,
-        SimpleFactoryInterface $factory,
-        RemoveUniqueLabelConstraint $removeLabelUniqueConstraint = null
+        SimpleFactoryInterface $factory
     ) {
         $this->normalizer = $normalizer;
         $this->datagridViewRepo = $datagridViewRepo;
@@ -73,7 +69,6 @@ class DatagridViewController
         $this->datagridViewFilter = $datagridViewFilter;
         $this->updater = $updater;
         $this->factory = $factory;
-        $this->removeLabelUniqueConstraint = $removeLabelUniqueConstraint;
     }
 
     /**
@@ -187,14 +182,6 @@ class DatagridViewController
             }
 
             return new JsonResponse($messages, 400);
-        }
-
-        /**
-         * Pull-up master/6.0: remove the if and the call to `removeIfExists()`. It's a workaround to not
-         * create a migration on a released version.
-         */
-        if (null !== $this->removeLabelUniqueConstraint) {
-            $this->removeLabelUniqueConstraint->removeIfExists();
         }
 
         $this->saver->save($datagridView);

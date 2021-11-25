@@ -1,38 +1,24 @@
-<?php
+<?php declare(strict_types=1);
 
-declare(strict_types=1);
+namespace Pim\Upgrade\Schema;
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2021 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-namespace Oro\Bundle\PimDataGridBundle\Query\Sql;
-
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * Pull-up master/6.0: do not pull this class: a migration handles the remove.
+ * @todo @pull-up Do not pull-up this migration in master/6.0 (cf PIM-10179)
  */
-final class RemoveUniqueLabelConstraint
+final class Version_5_0_20211125112429_remove_datagrid_view_unique_label extends AbstractMigration
 {
-    private Connection $connection;
+    private ?ContainerInterface $container;
 
-    public function __construct(Connection $connection)
+    public function up(Schema $schema) : void
     {
-        $this->connection = $connection;
-    }
+        $this->disableMigrationWarning();
 
-    public function removeIfExists(): void
-    {
         $databaseNameSql = 'SELECT database()';
         $databaseName = $this->connection->executeQuery($databaseNameSql)->fetch(FetchMode::COLUMN);
         if (!is_string($databaseName)) {
@@ -54,5 +40,15 @@ final class RemoveUniqueLabelConstraint
 
         $dropIndexSql = sprintf('ALTER TABLE pim_datagrid_view DROP index %s', $uniqueConstraintName);
         $this->connection->executeQuery($dropIndexSql, ['index_name' => $uniqueConstraintName]);
+    }
+
+    public function down(Schema $schema) : void
+    {
+        $this->throwIrreversibleMigrationException();
+    }
+
+    private function disableMigrationWarning(): void
+    {
+        $this->addSql('SELECT 1');
     }
 }

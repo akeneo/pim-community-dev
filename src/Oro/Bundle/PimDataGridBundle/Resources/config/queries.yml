@@ -15,7 +15,3 @@ services:
         arguments:
             - '@database_connection'
             - '@oro_datagrid.configuration.provider.chain'
-
-    Oro\Bundle\PimDataGridBundle\Query\Sql\RemoveUniqueLabelConstraint:
-        arguments:
-            - '@database_connection'
