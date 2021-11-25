@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\ReferenceEntity\Infrastructure\Security;
 
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Security\ReferenceEntityScopeMapper;
-use Akeneo\Tool\Component\Api\Security\ScopeMapperInterface;
 use PhpSpec\ObjectBehavior;
 
 class ReferenceEntityScopeMapperSpec extends ObjectBehavior
@@ -18,7 +18,7 @@ class ReferenceEntityScopeMapperSpec extends ObjectBehavior
 
     public function it_provides_all_scopes(): void
     {
-        $this->getAllScopes()->shouldReturn([
+        $this->getScopes()->shouldReturn([
             'read_entities',
             'write_entities',
             'read_entity_records',
