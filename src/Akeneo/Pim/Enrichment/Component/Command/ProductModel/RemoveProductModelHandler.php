@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Command\ProductModel;
 
-
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Webmozart\Assert\Assert;
 
 final class RemoveProductModelHandler
 {
@@ -36,7 +36,8 @@ final class RemoveProductModelHandler
 
     public function __invoke(RemoveProductModelCommand $command): void
     {
-        $productModel = $this->productModelRepository->find($command->productModelId());
+        $productModel = $this->productModelRepository->findOneByIdentifier($command->productModelCode());
+        Assert::notNull($productModel);
         $this->productModelRemover->remove($productModel);
         $this->productAndProductModelClient->refreshIndex();
     }

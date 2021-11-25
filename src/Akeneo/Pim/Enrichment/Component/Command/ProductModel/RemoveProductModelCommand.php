@@ -15,15 +15,15 @@ namespace Akeneo\Pim\Enrichment\Component\Command\ProductModel;
 
 final class RemoveProductModelCommand
 {
-    private int $productModelId;
+    private string $productModelCode;
 
-    public function __construct(int $productModelId)
+    public function __construct(string $productModelCode)
     {
-        $this->productModelId = $productModelId;
+        $this->productModelCode = $productModelCode;
     }
 
-    public function productModelId(): int
+    public function productModelCode(): string
     {
-        return $this->productModelId;
+        return $this->productModelCode;
     }
 }

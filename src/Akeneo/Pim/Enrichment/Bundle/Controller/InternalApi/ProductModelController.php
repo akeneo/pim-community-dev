@@ -329,8 +329,8 @@ class ProductModelController
             return new RedirectResponse('/');
         }
 
-        $this->findProductModelOr404($id);
-        $command = new RemoveProductModelCommand($id);
+        $productModel = $this->findProductModelOr404($id);
+        $command = new RemoveProductModelCommand($productModel->getCode());
         $violations = $this->validator->validate($command);
         if (0 < count($violations)) {
             // Actually the UI expects only one error message in order to display it as a flash message.
