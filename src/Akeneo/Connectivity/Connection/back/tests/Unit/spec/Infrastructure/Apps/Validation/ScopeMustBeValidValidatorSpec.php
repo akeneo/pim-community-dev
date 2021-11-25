@@ -6,8 +6,8 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation;
 
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\ScopeMustBeValid;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\ScopeMustBeValidValidator;
-use Akeneo\Tool\Component\Api\Security\ScopeMapperInterface;
-use Akeneo\Tool\Component\Api\Security\ScopeMapperRegistry;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
@@ -21,7 +21,7 @@ class ScopeMustBeValidValidatorSpec extends ObjectBehavior
         ScopeMapperInterface $productScopeMapper,
         ExecutionContextInterface $context
     ): void {
-        $productScopeMapper->getAllScopes()->willReturn([
+        $productScopeMapper->getScopes()->willReturn([
             'read_products',
             'write_products',
         ]);

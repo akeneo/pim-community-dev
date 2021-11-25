@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Component\Api\Security;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Security;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -13,7 +14,7 @@ interface ScopeMapperInterface
     /**
      * @return string[]
      */
-    public function getAllScopes(): array;
+    public function getScopes(): array;
 
     /**
      * @return string[]
@@ -27,10 +28,10 @@ interface ScopeMapperInterface
      *      entities: string,
      * }
      */
-    public function getMessage(string $scope): array;
+    public function getMessage(string $scopeName): array;
 
     /**
      * @return string[]
      */
-    public function getLowerHierarchyScopes(string $scope): array;
+    public function getLowerHierarchyScopes(string $scopeName): array;
 }

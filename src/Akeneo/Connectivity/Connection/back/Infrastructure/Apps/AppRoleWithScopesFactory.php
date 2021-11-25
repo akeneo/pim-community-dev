@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps;
 
 use Akeneo\Connectivity\Connection\Application\Apps\AppRoleWithScopesFactoryInterface;
-use Akeneo\Tool\Component\Api\Security\ScopeMapperRegistry;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\UserManagement\Component\Connector\RoleWithPermissions;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
