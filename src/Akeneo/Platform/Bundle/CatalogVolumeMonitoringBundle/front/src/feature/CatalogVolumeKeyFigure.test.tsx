@@ -2,7 +2,7 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {screen} from '@testing-library/react';
 import {CatalogVolumeKeyFigure} from './CatalogVolumeKeyFigure';
-import {AverageMaxValue, CatalogVolume, CounterValue} from './model/catalog-volume';
+import {AverageMaxValue, CatalogVolume} from './model/catalog-volume';
 
 test('it renders key figure of type count', () => {
   const countAttributes: CatalogVolume = {
@@ -28,7 +28,7 @@ test('it does not render key figure of type count when value is an object', () =
 
   renderWithProviders(<CatalogVolumeKeyFigure catalogVolume={countAttributes} />);
 
-  expect(screen.queryByText('count_attributes.axis.average_max_attributes_per_family')).not.toBeInTheDocument();
+  expect(screen.queryByText('count_attributes.axis.count_attributes')).not.toBeInTheDocument();
 });
 
 test('it renders key figure of type average', () => {
