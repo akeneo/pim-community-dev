@@ -184,4 +184,4 @@ if [[ ${LOGGING_METRIC} != "" ]]; then
 fi
 
 echo "6 - Delete namespace"
-kubectl get ns ${PFID} && kubectl delete ns ${PFID} || echo "FAILED : kubectl get ns ${PFID} && kubectl delete ns ${PFID}"
+kubectl delete ns "${PFID}" --ignore-not-found=true

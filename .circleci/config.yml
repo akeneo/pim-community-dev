@@ -1840,6 +1840,16 @@ jobs:
             export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
             make -C deployments/ commit-instance
       - run:
+          name: Persist env vars for next jobs
+          command: |
+            echo export INSTANCE_NAME="${INSTANCE_NAME}" >> persisted_env_vars
+            echo export INSTANCE_NAME_PREFIX="${INSTANCE_NAME_PREFIX}" >> persisted_env_vars
+            echo export DEPLOYMENTS_INSTANCES_DIR="${DEPLOYMENTS_INSTANCES_DIR}" >> persisted_env_vars
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/persisted_env_vars
+      - run:
           name: Prepare infrastructure artifacts
           command: make -C deployments/ prepare-infrastructure-artifacts
           when: on_fail
@@ -1878,6 +1888,33 @@ jobs:
                     echo export DEPLOYMENTS_INSTANCES_DIR=${DEPLOYMENTS_INSTANCES_DIR} >> $BASH_ENV
 
                     TYPE=${TYPE} make -C deployments/ delete_environments_hourly
+
+  delete_pr_environment:
+      parameters:
+        PRODUCT_TYPE:
+          default: ""
+          type: string
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployerNext
+      resource_class: medium
+      steps:
+          - attach_workspace:
+                at: ~/
+          - add_ssh_keys:
+                fingerprints:
+                    - "5f:7b:b3:cb:d4:3d:e2:c2:36:5f:9d:b4:87:86:5f:67"
+                    - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
+          - run:
+                name: Delete environments
+                no_output_timeout: 30m
+                command: |
+                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                    export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                    make -C deployments/ uncommit-instance
+
 
   delete_expired_uptime_check:
       environment:
@@ -2056,13 +2093,28 @@ workflows:
                     parameters:
                         PRODUCT_TYPE: ["srnt", "grth", "tria"]
           - deploy_pr_environment:
-                name: "[<< matrix.PRODUCT_TYPE >>] Deploy pr environment"
+                name: "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment"
                 matrix:
                     parameters:
                         PRODUCT_TYPE: ["srnt", "grth", "tria"]
                 requires:
                     - "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment?"
                     - "[<< matrix.PRODUCT_TYPE >>] Build"
+          - delete_pr_environment?:
+                name: "[<< matrix.PRODUCT_TYPE >>] Delete PR environment?"
+                type: approval
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                requires:
+                    - "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment"
+          - delete_pr_environment:
+                name: "[<< matrix.PRODUCT_TYPE >>] Delete PR environment"
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                requires:
+                    - "[<< matrix.PRODUCT_TYPE >>] Delete PR environment?"
           - build_srnt_dev:
                 requires:
                     - checkout

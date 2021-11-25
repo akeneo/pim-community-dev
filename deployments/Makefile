@@ -369,10 +369,10 @@ ifeq ("$(wildcard $(INSTANCE_DIR)/main.tf.json)","")
 else
 ifeq ($(TYPE),srnt)
 	PIM_VERSION=$(shell yq r "/root/cloud-customers-dev/saas/projects/akecld-saas-dev/europe-west3-a/releases/$(PFID)/main.tf.json" 'module.pim.pim_version'); \
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$${PIM_VERSION}//deployments/terraform"
+	yq w -j -P -i $(INSTANCE_DIR)/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$${PIM_VERSION}//deployments/terraform"
 ifeq ($(ACTIVATE_MONITORING),true)
-	PIM_VERSION=$(shell yq r "${INSTANCE_DIR}/main.tf.json" 'module.pim.pim_version'); \
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$${PIM_VERSION}//deployments/terraform/monitoring"
+	PIM_VERSION=$(shell yq r "$(INSTANCE_DIR)/main.tf.json" 'module.pim.pim_version'); \
+	yq w -j -P -i $(INSTANCE_DIR)/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$${PIM_VERSION}//deployments/terraform/monitoring"
 endif
 endif
 endif
