@@ -20,6 +20,7 @@
   - [Use React portals to share a context between multiple React instances](./cookbooks/working_with_react_portals_and_backbone.md)
 - Micro-frontend
   - [How to create a micro-frontend](./cookbooks/how_create_a_micro_front_end.md)
+  - [How to connect your micro-frontend](./cookbooks/how_to_connect_your_micro_front_end.md)
   - [Development workflow with a micro-frontend](./cookbooks/development_workflow_with_a_micro_frontend.md)
 
 ## Annexes
