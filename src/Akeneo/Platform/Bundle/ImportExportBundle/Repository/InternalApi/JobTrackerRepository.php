@@ -40,7 +40,7 @@ class JobTrackerRepository extends EntityRepository implements DatagridRepositor
             ->addSelect('j.jobName AS jobName')
             ->addSelect('e.user AS user')
             ->addSelect('SUM(s.warningCount) as warningCount')
-            ->where('(e.isVisible = 1 OR e.isVisible IS NULL)')
+            ->where('e.isVisible = 1')
             ->innerJoin('e.jobInstance', 'j')
             ->leftJoin('e.stepExecutions', 's')
             ->groupBy('e.id');

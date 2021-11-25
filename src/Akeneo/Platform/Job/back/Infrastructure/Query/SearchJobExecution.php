@@ -44,7 +44,7 @@ class SearchJobExecution implements SearchJobExecutionInterface
             je.step_count
         FROM akeneo_batch_job_execution je
         JOIN akeneo_batch_job_instance ji ON je.job_instance_id = ji.id
-        WHERE (je.is_visible = 1 OR je.is_visible IS NULL)
+        WHERE je.is_visible = 1
         %s
         %s
         LIMIT :offset, :limit
@@ -95,7 +95,7 @@ SQL;
     SELECT count(*)
     FROM akeneo_batch_job_execution je
     JOIN akeneo_batch_job_instance ji on je.job_instance_id = ji.id
-    WHERE (je.is_visible = 1 OR je.is_visible IS NULL)
+    WHERE je.is_visible = 1
     %s
 SQL;
         $whereSqlPart = $this->buildSqlWherePart($query);
@@ -223,7 +223,7 @@ SQL;
                 (int) $rawJobExecution['warning_count'],
                 $errorCount,
                 (int) $rawJobExecution['current_step_number'] ?? 0,
-                (int) $rawJobExecution['step_count'] ?? 1,
+                (int) $rawJobExecution['step_count'],
                 (bool) $rawJobExecution['is_stoppable']
             );
         }, $rawJobExecutions);

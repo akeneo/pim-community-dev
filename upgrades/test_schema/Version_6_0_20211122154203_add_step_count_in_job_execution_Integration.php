@@ -37,20 +37,30 @@ class Version_6_0_20211122154203_add_step_count_in_job_execution_Integration ext
     {
         $this->dropColumnIfExists();
 
-        $jobInstanceId = $this->createJobInstance('csv_user_group_export');
-        $this->createJobExecution($jobInstanceId);
+        $csvUserGroupImportId = $this->getJobInstanceId('csv_product_quick_export');
+        $this->createJobExecution($csvUserGroupImportId);
+        $cleanRemovedAttributeJobId = $this->getJobInstanceId('clean_removed_attribute_job');
+        $this->createJobExecution($cleanRemovedAttributeJobId);
+        $setAttributeRequirementsId = $this->getJobInstanceId('set_attribute_requirements');
+        $this->createJobExecution($setAttributeRequirementsId);
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
-        Assert::assertEquals(true, $this->columnExists());
 
-        Assert::assertNull($this->selectStepCount());
+        $jobExecutions = $this->selectJobExecutions();
+
+        Assert::assertEquals(true, $this->columnExists());
+        Assert::assertEquals([
+            $csvUserGroupImportId => '2',
+            $cleanRemovedAttributeJobId => '5',
+            $setAttributeRequirementsId => '3',
+        ], $jobExecutions);
     }
 
     public function test_migration_is_idempotent(): void
     {
         $this->dropColumnIfExists();
 
-        $jobInstanceId = $this->createJobInstance('an_export');
+        $jobInstanceId = $this->getJobInstanceId('csv_product_quick_export');
         $this->createJobExecution($jobInstanceId);
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
@@ -86,32 +96,24 @@ class Version_6_0_20211122154203_add_step_count_in_job_execution_Integration ext
             ],
             [
                 'raw_parameters' => Types::JSON,
-            ]
-        );
-
-        return (int) $this->connection->lastInsertId();
-    }
-
-    private function createJobInstance(string $label): int
-    {
-        $this->connection->insert(
-            'akeneo_batch_job_instance',
-            [
-                'label' => $label,
-                'code' => $label,
-                'job_name' => $label,
-                'status' => 0,
-                'connector' => 'Akeneo CSV Connector',
-                'raw_parameters' => serialize([]),
-                'type' => 'export',
             ],
         );
 
         return (int) $this->connection->lastInsertId();
     }
 
-    private function selectStepCount(): ?int
+    private function getJobInstanceId(string $code): int
     {
-        return $this->connection->executeQuery('SELECT step_count FROM akeneo_batch_job_execution')->fetchOne()['count'] ?? null;
+        return (int) $this->connection->executeQuery(
+            'SELECT id FROM akeneo_batch_job_instance WHERE code = :code',
+            ['code' => $code],
+        )->fetchColumn();
+    }
+
+    private function selectJobExecutions(): array
+    {
+        $result = $this->connection->executeQuery('SELECT job_instance_id, step_count FROM akeneo_batch_job_execution')->fetchAllAssociative();
+
+        return array_column($result, 'step_count', 'job_instance_id');
     }
 }

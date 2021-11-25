@@ -50,7 +50,7 @@ class Version_6_0_20211119154203_add_is_stoppable_in_job_execution_Integration e
 
         Assert::assertEquals([
             $nonStoppableJobExecutionId => '0',
-            $stoppableJobExecutionId => '1'
+            $stoppableJobExecutionId => '1',
         ], $jobExecutions);
     }
 
@@ -94,10 +94,10 @@ class Version_6_0_20211119154203_add_is_stoppable_in_job_execution_Integration e
             ],
             [
                 'raw_parameters' => Types::JSON,
-            ]
+            ],
         );
 
-        return (int)$this->connection->lastInsertId();
+        return (int) $this->connection->lastInsertId();
     }
 
     private function createJobInstance(string $label): int
@@ -115,7 +115,7 @@ class Version_6_0_20211119154203_add_is_stoppable_in_job_execution_Integration e
             ],
         );
 
-        return (int)$this->connection->lastInsertId();
+        return (int) $this->connection->lastInsertId();
     }
 
     private function selectJobExecutions(): array

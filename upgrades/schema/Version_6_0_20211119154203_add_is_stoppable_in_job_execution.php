@@ -9,34 +9,7 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version_6_0_20211119154203_add_is_stoppable_in_job_execution extends AbstractMigration
 {
-    const NON_STOPPABLE_JOB = [
-        "asset_manager_link_assets_to_products",
-        "asset_manager_execute_naming_convention",
-        "asset_manager_compute_transformations",
-        "asset_manager_csv_asset_import",
-        "asset_manager_xlsx_asset_import",
-        "akeneo_shared_catalog",
-        "csv_supplier_import",
-        "xlsx_supplier_import",
-        "csv_supplier_user_import",
-        "xlsx_supplier_user_import",
-        "csv_reference_entity_record_export",
-        "xlsx_reference_entity_record_export",
-        "csv_reference_entity_record_import",
-        "xlsx_reference_entity_record_import",
-        "project_calculation",
-        "refresh_project_completeness_calculation",
-        "csv_family_import",
-        "csv_family_variant_import",
-        "xlsx_family_import",
-        "xlsx_family_variant_import",
-        "data_quality_insights_evaluations",
-        "data_quality_insights_periodic_tasks",
-        "remove_completeness_for_channel_and_locale",
-        "clean_removed_attribute_job",
-    ];
-
-    const STOPPABLE_JOB = [
+    private const STOPPABLE_JOB = [
         "csv_user_group_export",
         "xlsx_user_group_export",
         "csv_user_role_export",
@@ -162,19 +135,19 @@ final class Version_6_0_20211119154203_add_is_stoppable_in_job_execution extends
         "reference_entity_mass_delete_records",
     ];
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         $this->skipIf(
             $schema->getTable('akeneo_batch_job_execution')->hasColumn('is_stoppable'),
             'is_stoppable column already exists in akeneo_batch_job_execution'
         );
 
-        $this->addSql("ALTER TABLE akeneo_batch_job_execution ADD is_stoppable TINYINT(1) NULL");
-        $this->addSql("UPDATE akeneo_batch_job_execution SET is_stoppable = 1 WHERE job_instance_id IN (SELECT id FROM akeneo_batch_job_instance WHERE code IN ('" . implode("', '", self::STOPPABLE_JOB) . "'))");
-        $this->addSql("UPDATE akeneo_batch_job_execution SET is_stoppable = 0 WHERE job_instance_id IN (SELECT id FROM akeneo_batch_job_instance WHERE code IN ('" . implode("', '", self::NON_STOPPABLE_JOB) . "'))");
+        $this->addSql("ALTER TABLE akeneo_batch_job_execution ADD is_stoppable TINYINT(1) DEFAULT 0");
+        $this->addSql("UPDATE akeneo_batch_job_execution SET is_stoppable = 1 WHERE job_instance_id IN (SELECT id FROM akeneo_batch_job_instance WHERE code IN ('"
+            . implode("', '", self::STOPPABLE_JOB) . "'))");
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

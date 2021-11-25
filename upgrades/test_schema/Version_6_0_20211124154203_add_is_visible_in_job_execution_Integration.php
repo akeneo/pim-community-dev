@@ -50,7 +50,7 @@ class Version_6_0_20211124154203_add_is_visible_in_job_execution_Integration ext
 
         Assert::assertEquals([
             $nonVisibleJobExecutionId => '0',
-            $visibleJobExecutionId => null,
+            $visibleJobExecutionId => '1',
         ], $jobExecutions);
     }
 

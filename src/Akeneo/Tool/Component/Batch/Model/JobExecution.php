@@ -76,9 +76,9 @@ class JobExecution
 
     /** @var array */
     private $rawParameters;
-    private ?bool $isStoppable = null;
-    private ?int $stepCount = null;
-    private ?bool $isVisible = null;
+    private bool $isStoppable;
+    private int $stepCount;
+    private bool $isVisible;
 
     /**
      * Constructor
@@ -92,6 +92,9 @@ class JobExecution
         $this->createTime = new \DateTime();
         $this->failureExceptions = [];
         $this->rawParameters = [];
+        $this->isStoppable = false;
+        $this->stepCount = 1;
+        $this->isVisible = true;
     }
 
     /**
@@ -633,33 +636,33 @@ class JobExecution
         return $this->rawParameters;
     }
 
-    public function setIsStoppable(?bool $isStoppable): void
+    public function setIsStoppable(bool $isStoppable): void
     {
         $this->isStoppable = $isStoppable;
     }
 
     public function isStoppable(): bool
     {
-        return true === $this->isStoppable;
+        return $this->isStoppable;
     }
 
-    public function setIsVisible(?bool $isVisible): void
+    public function setIsVisible(bool $isVisible): void
     {
         $this->isVisible = $isVisible;
     }
 
     public function isVisible(): bool
     {
-        return $this->isVisible ?? true;
+        return $this->isVisible;
     }
 
-    public function setStepCount(?int $stepCount): void
+    public function setStepCount(int $stepCount): void
     {
         $this->stepCount = $stepCount;
     }
 
     public function getStepCount(): int
     {
-        return $this->stepCount ?? 1;
+        return $this->stepCount;
     }
 }

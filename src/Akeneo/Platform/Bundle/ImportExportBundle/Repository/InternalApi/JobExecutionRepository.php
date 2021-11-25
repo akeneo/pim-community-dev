@@ -44,7 +44,7 @@ class JobExecutionRepository extends EntityRepository implements DatagridReposit
         $qb->innerJoin('e.jobInstance', 'j');
         $qb->leftJoin('e.stepExecutions', 's');
         $qb->andWhere('j.type = :jobType');
-        $qb->andWhere('(e.isVisible = 1 OR e.isVisible IS NULL)');
+        $qb->andWhere('e.isVisible = 1');
 
         $qb->groupBy('e.id');
 
