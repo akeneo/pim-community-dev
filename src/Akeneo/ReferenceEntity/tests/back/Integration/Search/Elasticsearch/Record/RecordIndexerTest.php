@@ -76,7 +76,7 @@ class RecordIndexerTest extends SearchIntegrationTestCase
         $this->searchRecordIndexHelper->resetIndex();
         $this->searchRecordIndexHelper->assertRecordDoesNotExists('designer', 'long_stark');
 
-        $this->recordIndexer->index(RecordIdentifier::fromString('stark_designer_fingerprint'));
+        $this->recordIndexer->index(RecordIdentifier::fromString('long_stark_designer_fingerprint'));
 
         $this->searchRecordIndexHelper->assertRecordExists('designer', 'long_stark');
     }
