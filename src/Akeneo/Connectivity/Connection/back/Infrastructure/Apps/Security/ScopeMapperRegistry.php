@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Component\Api\Security;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Security;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>

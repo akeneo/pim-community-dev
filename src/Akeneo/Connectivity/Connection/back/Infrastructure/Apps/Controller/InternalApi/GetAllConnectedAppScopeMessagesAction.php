@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal
 
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Repository\ConnectedAppRepositoryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
-use Akeneo\Tool\Component\Api\Security\ScopeMapperRegistry;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;

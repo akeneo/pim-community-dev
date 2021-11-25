@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Tool\Component\Api\Security;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Security;
 
-use Akeneo\Tool\Component\Api\Security\ScopeMapperInterface;
-use Akeneo\Tool\Component\Api\Security\ScopeMapperRegistry;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use PhpSpec\ObjectBehavior;
 
 class ScopeMapperRegistrySpec extends ObjectBehavior
