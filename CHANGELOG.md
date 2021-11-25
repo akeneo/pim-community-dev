@@ -116,6 +116,7 @@
 - PIM-10170: Launch product link rules when creating asset by import
 - PIM-10166: Prevent Asset Manager thumbnail generation on unsupported mime types
 - PIM-10172: Fix creation of "id" option code in table attribute
+- PIM-10173: Apply naming convention when importing an asset through flat file
 - PIM-10161: Batch query to retrieve existing asset codes
 - PIM-10176: Batch query to retrieve existing reference entity records
 
