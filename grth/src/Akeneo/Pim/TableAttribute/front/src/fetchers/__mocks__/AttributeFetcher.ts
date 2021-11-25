@@ -1,5 +1,6 @@
 import {Router} from '@akeneo-pim-community/shared';
 import {Attribute, AttributeCode} from '../../models';
+import {AttributeFetcherIndexParams} from '../AttributeFetcher';
 
 const attribute: Attribute = {
   code: 'nutrition',
@@ -58,6 +59,10 @@ const attribute: Attribute = {
   ],
 };
 
+const getAttribute = (overrideAttributes: any) => {
+  return {...attribute, ...overrideAttributes};
+};
+
 const fetchAttribute = async (_router: Router, attributeCode: AttributeCode): Promise<Attribute> => {
   if (attributeCode === 'nutrition') {
     return new Promise(resolve => resolve(attribute));
@@ -66,8 +71,23 @@ const fetchAttribute = async (_router: Router, attributeCode: AttributeCode): Pr
   throw new Error(`Non mocked attribute ${attributeCode}`);
 };
 
+const query = async (_router: Router, _params: AttributeFetcherIndexParams): Promise<Attribute[]> => {
+  return new Promise(resolve =>
+    resolve([
+      attribute,
+      getAttribute({
+        code: 'packaging',
+        labels: {
+          en_US: 'Packaging',
+        },
+      }),
+    ])
+  );
+};
+
 const AttributeFetcher = {
   fetch: fetchAttribute,
+  query: query,
 };
 
 export {AttributeFetcher};
