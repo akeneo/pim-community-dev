@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Security;
 
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Security\ProductScopeMapper;
-use Akeneo\Tool\Component\Api\Security\ScopeMapperInterface;
 use PhpSpec\ObjectBehavior;
 
 class ProductScopeMapperSpec extends ObjectBehavior
@@ -18,7 +18,7 @@ class ProductScopeMapperSpec extends ObjectBehavior
 
     public function it_provides_all_scopes(): void
     {
-        $this->getAllScopes()->shouldReturn([
+        $this->getScopes()->shouldReturn([
             'read_products',
             'write_products',
             'delete_products',
