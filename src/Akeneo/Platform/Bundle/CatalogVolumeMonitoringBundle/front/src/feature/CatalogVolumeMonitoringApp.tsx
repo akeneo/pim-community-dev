@@ -30,8 +30,8 @@ const CatalogVolumeMonitoringApp = ({getCatalogVolumes}: Props) => {
     if (status === 'error') {
       return (
         <CatalogVolumeScreenError
-          title={translate('error.generic_title')}
-          message={translate('error.generic_message')}
+          title={translate('pim_catalog_volume.error.generic_title')}
+          message={translate('pim_catalog_volume.error.generic_message')}
         />
       );
     }
