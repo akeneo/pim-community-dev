@@ -1,4 +1,4 @@
 services:
     Akeneo\ReferenceEntity\Infrastructure\Security\ReferenceEntityScopeMapper:
         tags:
-            - { name: pim_api.security.scope_mapper, entity: 'reference_entity' }
+            - { name: pim_api.security.scope_mapper }
