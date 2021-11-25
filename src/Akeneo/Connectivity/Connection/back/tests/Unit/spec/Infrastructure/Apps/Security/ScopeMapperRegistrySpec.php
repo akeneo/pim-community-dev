@@ -14,13 +14,10 @@ class ScopeMapperRegistrySpec extends ObjectBehavior
         ScopeMapperInterface $productScopes,
         ScopeMapperInterface $catalogStructureScopes
     ): void {
-        $productScopes->getAllScopes()->willReturn(['read_products', 'write_products']);
-        $catalogStructureScopes->getAllScopes()->willReturn(['read_catalog_structure', 'write_catalog_structure']);
+        $productScopes->getScopes()->willReturn(['read_products', 'write_products']);
+        $catalogStructureScopes->getScopes()->willReturn(['read_catalog_structure', 'write_catalog_structure']);
 
-        $this->beConstructedWith([
-            'products' => $productScopes,
-            'catalog_structure' => $catalogStructureScopes,
-        ]);
+        $this->beConstructedWith([$productScopes, $catalogStructureScopes]);
     }
 
     public function it_is_a_scope_mapper_registry(): void
@@ -49,7 +46,7 @@ class ScopeMapperRegistrySpec extends ObjectBehavior
             'read_products',
             'write_products',
             'read_catalog_structure',
-            'write_catalog_structure'
+            'write_catalog_structure',
         ]);
     }
 
@@ -129,33 +126,17 @@ class ScopeMapperRegistrySpec extends ObjectBehavior
             ]);
     }
 
-    public function it_does_not_provide_acl_if_an_unknown_scope_is_given(ScopeMapperInterface $productScopes): void
+    public function it_leads_to_an_error_to_ask_for_acl_of_an_unknown_scope(): void
     {
-        $productScopes->getLowerHierarchyScopes('read_products')->willReturn([]);
-        $productScopes->getAcls('read_products')->willReturn(['pim_api_product_list']);
-
         $this
-            ->getAcls(['product_unknown_scope', 'read_products'])
-            ->shouldReturn(['pim_api_product_list']);
+            ->shouldThrow(new \LogicException('The scope "product_unknown_scope" does not exist.'))
+            ->during('getAcls', [['product_unknown_scope']]);
     }
 
-    public function it_does_not_provide_a_message_if_an_unknown_scope_is_given(ScopeMapperInterface $productScopes): void
+    public function it_leads_to_an_error_to_ask_for_message_of_an_unknown_scope(): void
     {
-        $productScopes->getLowerHierarchyScopes('read_products')->willReturn([]);
-        $productScopes->getMessage('read_products')->willReturn([
-            'icon' => 'read_products_icon',
-            'type' => 'read',
-            'entities' => 'products',
-        ]);
-
         $this
-            ->getMessages(['product_unknown_scope', 'read_products'])
-            ->shouldReturn([
-                [
-                    'icon' => 'read_products_icon',
-                    'type' => 'read',
-                    'entities' => 'products',
-                ],
-            ]);
+            ->shouldThrow(new \LogicException('The scope "product_unknown_scope" does not exist.'))
+            ->during('getMessages', [['product_unknown_scope']]);
     }
 }

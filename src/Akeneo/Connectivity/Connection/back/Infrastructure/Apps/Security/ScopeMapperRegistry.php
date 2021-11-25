@@ -11,16 +11,13 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Security;
  */
 final class ScopeMapperRegistry
 {
-    /** @var array{string: ScopeMapperInterface} */
+    /** @var array<string, ScopeMapperInterface> */
     private iterable $scopeMappers;
-
-    /** @var array{string: string} */
-    private array $scopesToMapper;
 
     public function __construct(iterable $scopeMappers)
     {
         $scopesToMapper = [];
-        foreach ($scopeMappers as $entity => $scopeMapper) {
+        foreach ($scopeMappers as $scopeMapper) {
             if (!$scopeMapper instanceof ScopeMapperInterface) {
                 throw new \InvalidArgumentException(
                     \sprintf(
@@ -30,22 +27,16 @@ final class ScopeMapperRegistry
                     )
                 );
             }
-            foreach ($scopeMapper->getAllScopes() as $scope) {
-                $scopesToMapper[$scope] = $entity;
+            foreach ($scopeMapper->getScopes() as $scope) {
+                $scopesToMapper[$scope] = $scopeMapper;
             }
         }
-        $this->scopeMappers = $scopeMappers;
-        $this->scopesToMapper = $scopesToMapper;
+        $this->scopeMappers = $scopesToMapper;
     }
 
     public function getAllScopes(): array
     {
-        $scopes = [];
-        foreach ($this->scopeMappers as $scopeMapper) {
-            \array_push($scopes, ...$scopeMapper->getAllScopes());
-        }
-
-        return \array_values(\array_unique($scopes));
+        return \array_keys($this->scopeMappers);
     }
 
     /**
@@ -53,6 +44,8 @@ final class ScopeMapperRegistry
      * Filters the scopes by keeping the higher hierarchy scope.
      *
      * @param string[] $scopeList
+     *
+     * @throw \LogicArgumentException if a scope you provide does not exist
      *
      * @return array<
      *     array{
@@ -66,17 +59,14 @@ final class ScopeMapperRegistry
     {
         $lowerScopes = [];
         foreach ($scopeList as $scope) {
-            \array_push($lowerScopes, ...$this->getLowerHierarchyScopes($scope));
+            \array_push($lowerScopes, ...$this->getScopeMapper($scope)->getLowerHierarchyScopes($scope));
         }
 
         $filteredScopes = $this->filterByKeepingHighestLevels(\array_unique($scopeList), $lowerScopes);
 
         $messages = [];
         foreach ($filteredScopes as $scope) {
-            if (null === $scopeMapper = $this->getScopeMapper($scope)) {
-                continue;
-            }
-            $messages[] = $scopeMapper->getMessage($scope);
+            $messages[] = $this->getScopeMapper($scope)->getMessage($scope);
         }
 
         return $messages;
@@ -87,22 +77,21 @@ final class ScopeMapperRegistry
      *
      * @param string[] $scopeList
      *
+     * @throw \LogicArgumentException if a scope you provide does not exist
+     *
      * @return string[]
      */
     public function getAcls(array $scopeList): array
     {
         $fullScopes = $scopeList;
         foreach ($scopeList as $scope) {
-            \array_push($fullScopes, ...$this->getLowerHierarchyScopes($scope));
+            \array_push($fullScopes, ...$this->getScopeMapper($scope)->getLowerHierarchyScopes($scope));
         }
         $fullScopes = \array_unique($fullScopes);
 
         $acls = [];
         foreach ($fullScopes as $scope) {
-            if (null === $scopeMapper = $this->getScopeMapper($scope)) {
-                continue;
-            }
-            \array_push($acls, ...$scopeMapper->getAcls($scope));
+            \array_push($acls, ...$this->getScopeMapper($scope)->getAcls($scope));
         }
 
         return $acls;
@@ -115,26 +104,12 @@ final class ScopeMapperRegistry
         );
     }
 
-    private function getLowerHierarchyScopes(string $scope): array
+    private function getScopeMapper(string $scope): ScopeMapperInterface
     {
-        if (null === $scopeMapper = $this->getScopeMapper($scope)) {
-            return [];
+        if (!\array_key_exists($scope, $this->scopeMappers)) {
+            throw new \LogicException(sprintf('The scope "%s" does not exist.', $scope));
         }
 
-        return $scopeMapper->getLowerHierarchyScopes($scope);
-    }
-
-    private function getScopeMapper(string $scope): ?ScopeMapperInterface
-    {
-        if (!\array_key_exists($scope, $this->scopesToMapper)) {
-            return null;
-        }
-
-        $scopeMapperIndex = $this->scopesToMapper[$scope];
-        if (!\array_key_exists($scopeMapperIndex, $this->scopeMappers)) {
-            return null;
-        }
-
-        return $this->scopeMappers[$scopeMapperIndex];
+        return $this->scopeMappers[$scope];
     }
 }

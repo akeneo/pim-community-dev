@@ -21,7 +21,7 @@ class ScopeMustBeValidValidatorSpec extends ObjectBehavior
         ScopeMapperInterface $productScopeMapper,
         ExecutionContextInterface $context
     ): void {
-        $productScopeMapper->getAllScopes()->willReturn([
+        $productScopeMapper->getScopes()->willReturn([
             'read_products',
             'write_products',
         ]);

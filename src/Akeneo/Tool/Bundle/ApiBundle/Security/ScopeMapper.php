@@ -171,7 +171,7 @@ final class ScopeMapper implements ScopeMapperInterface
     /**
      * @return string[]
      */
-    public function getAllScopes(): array
+    public function getScopes(): array
     {
         return array_keys(self::SCOPE_ACL_MAP);
     }
