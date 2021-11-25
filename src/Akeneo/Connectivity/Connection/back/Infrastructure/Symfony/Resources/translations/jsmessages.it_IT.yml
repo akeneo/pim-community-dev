@@ -139,6 +139,9 @@ akeneo_connectivity.connection:
         invalid: Il tipo di flusso della connessione può essere solo 'Sorgente dati', 'Destinazione dati' o 'Altro'.
       image:
         must_exist: L'immagine non è stata trovata. Si prega di riprovare.
+      type:
+        required: Il tipo di connessione è obbligatorio.
+        too_long: Il tipo di connessione è troppo lungo. Dovrebbe essere al massimo 30 caratteri.
   flow_type:
     data_source: Sorgente dati | Sorgente dati
     data_destination: Destinazione dati | Destinazione dati

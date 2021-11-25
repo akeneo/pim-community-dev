@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller;
 
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
-use Akeneo\Tool\Component\Api\Security\ScopeMapperRegistry;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

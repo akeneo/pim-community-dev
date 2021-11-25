@@ -24,7 +24,7 @@ final class SqlIsCategoryTreeLinkedToChannel implements IsCategoryTreeLinkedToCh
     {
         $sql = <<<SQL
         SELECT EXISTS (
-            SELECT *
+            SELECT id
             FROM pim_catalog_channel
             WHERE category_id = :treeId
         )
