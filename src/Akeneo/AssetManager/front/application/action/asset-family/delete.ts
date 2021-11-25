@@ -18,6 +18,7 @@ export const deleteAssetFamily = (assetFamily: AssetFamily) => async (dispatch: 
     }
 
     dispatch(notifyAssetFamilyWellDeleted());
+    localStorage.removeItem('akeneo.asset_manager.grid.current_asset_family');
     dispatch(redirectToAssetFamilyListItem());
   } catch (error) {
     dispatch(notifyAssetFamilyDeleteFailed());

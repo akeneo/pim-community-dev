@@ -20,6 +20,7 @@ const AttributeTypeIcon = styled.img`
   width: 25px;
   height: 25px;
   margin-right: 10px;
+  vertical-align: middle;
 `;
 
 interface StateProps {

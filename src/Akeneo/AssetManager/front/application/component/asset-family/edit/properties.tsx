@@ -98,6 +98,11 @@ const Properties = ({events, attributes, context, form, rights}: StateProps & Di
   const canEditAssetFamily = isGranted('akeneo_assetmanager_asset_family_edit') && rights.assetFamily.edit;
   const canDeleteAssetFamily = canEditAssetFamily && isGranted('akeneo_assetmanager_asset_family_delete');
 
+  const handleDeleteAssetFamily = () => {
+    events.onDelete(assetFamily);
+    closeDeleteModal();
+  };
+
   return (
     <>
       <Header
@@ -137,7 +142,7 @@ const Properties = ({events, attributes, context, form, rights}: StateProps & Di
       {isDeleteModalOpen && (
         <DeleteModal
           title={translate('pim_asset_manager.asset_family.delete.title')}
-          onConfirm={() => events.onDelete(assetFamily)}
+          onConfirm={handleDeleteAssetFamily}
           onCancel={closeDeleteModal}
         >
           {translate('pim_asset_manager.asset_family.delete.message', {assetFamilyLabel})}

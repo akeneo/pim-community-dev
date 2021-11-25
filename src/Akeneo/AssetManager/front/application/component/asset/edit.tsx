@@ -91,6 +91,11 @@ const SecondaryActions = ({
   const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState();
 
+  const handleDelete = () => {
+    close();
+    onDelete();
+  };
+
   return (
     <Dropdown>
       <IconButton
@@ -112,7 +117,7 @@ const SecondaryActions = ({
               </Dropdown.Item>
             )}
             {canDelete && (
-              <Dropdown.Item onClick={onDelete}>{translate('pim_asset_manager.asset.button.delete')}</Dropdown.Item>
+              <Dropdown.Item onClick={handleDelete}>{translate('pim_asset_manager.asset.button.delete')}</Dropdown.Item>
             )}
           </Dropdown.ItemCollection>
         </Dropdown.Overlay>
