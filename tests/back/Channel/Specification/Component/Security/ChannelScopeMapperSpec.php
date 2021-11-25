@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Channel\Component\Security;
 
 use Akeneo\Channel\Component\Security\ChannelScopeMapper;
-use Akeneo\Tool\Component\Api\Security\ScopeMapperInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface;
 use PhpSpec\ObjectBehavior;
 
 class ChannelScopeMapperSpec extends ObjectBehavior
@@ -18,7 +18,7 @@ class ChannelScopeMapperSpec extends ObjectBehavior
 
     public function it_provides_all_scopes(): void
     {
-        $this->getAllScopes()->shouldReturn([
+        $this->getScopes()->shouldReturn([
             'read_channel_localization',
             'read_channel_settings',
             'write_channel_settings',

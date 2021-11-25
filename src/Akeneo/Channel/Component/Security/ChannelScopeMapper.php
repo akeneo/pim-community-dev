@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Channel\Component\Security;
 
-use Akeneo\Tool\Component\Api\Security\ScopeMapperInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -53,7 +53,7 @@ class ChannelScopeMapper implements ScopeMapperInterface
         ],
     ];
 
-    public function getAllScopes(): array
+    public function getScopes(): array
     {
         return [
             self::SCOPE_READ_CHANNEL_LOCALIZATION,
@@ -71,21 +71,21 @@ class ChannelScopeMapper implements ScopeMapperInterface
         return self::SCOPE_ACL_MAP[$scopeName];
     }
 
-    public function getMessage(string $scope): array
+    public function getMessage(string $scopeName): array
     {
-        if (!\array_key_exists($scope, self::SCOPE_MESSAGE_MAP)) {
+        if (!\array_key_exists($scopeName, self::SCOPE_MESSAGE_MAP)) {
             return [];
         }
 
-        return self::SCOPE_MESSAGE_MAP[$scope];
+        return self::SCOPE_MESSAGE_MAP[$scopeName];
     }
 
-    public function getLowerHierarchyScopes(string $scope): array
+    public function getLowerHierarchyScopes(string $scopeName): array
     {
-        if (!\array_key_exists($scope, self::SCOPE_HIERARCHY)) {
+        if (!\array_key_exists($scopeName, self::SCOPE_HIERARCHY)) {
             return [];
         }
 
-        return self::SCOPE_HIERARCHY[$scope];
+        return self::SCOPE_HIERARCHY[$scopeName];
     }
 }
