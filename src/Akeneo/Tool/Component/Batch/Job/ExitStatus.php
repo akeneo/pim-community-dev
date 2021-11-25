@@ -77,7 +77,7 @@ class ExitStatus
         return $this->exitCode;
     }
 
-    public function getExitDescription(): ?string
+    public function getExitDescription(): string
     {
         return $this->exitDescription;
     }
