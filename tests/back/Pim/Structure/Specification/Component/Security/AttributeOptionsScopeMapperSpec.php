@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Structure\Component\Security;
 
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface;
 use Akeneo\Pim\Structure\Component\Security\AttributeOptionsScopeMapper;
-use Akeneo\Tool\Component\Api\Security\ScopeMapperInterface;
 use PhpSpec\ObjectBehavior;
 
 class AttributeOptionsScopeMapperSpec extends ObjectBehavior
@@ -18,7 +18,7 @@ class AttributeOptionsScopeMapperSpec extends ObjectBehavior
 
     public function it_provides_all_scopes(): void
     {
-        $this->getAllScopes()->shouldReturn([
+        $this->getScopes()->shouldReturn([
             'read_attribute_options',
             'write_attribute_options',
         ]);
