@@ -1342,6 +1342,13 @@ jobs:
           - store_artifacts:
               path: deployment.log
               destination: test_deploy_<<parameters.PRODUCT_TYPE>>_deployment.log
+          - run:
+              name: Remove env on kubernetes
+              command: |
+                  ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                  export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                  make -C deployments/ uncommit-instance
+              when: always
           - persist_to_workspace:
               root: ~/
               paths:
@@ -1406,6 +1413,13 @@ jobs:
               command: |
                   echo export INSTANCE_NAME="${INSTANCE_NAME}" >> persisted_env_vars
                   echo export DEPLOYMENTS_INSTANCES_DIR="${DEPLOYMENTS_INSTANCES_DIR}" >> persisted_env_vars
+        - run:
+            name: Remove env on kubernetes
+            command: |
+                ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                make -C deployments/ uncommit-instance
+            when: on_fail
         - persist_to_workspace:
             root: ~/
             paths:
@@ -1478,6 +1492,13 @@ jobs:
         - store_artifacts:
             path: deployment.log
             destination: test_upgrade_from_last_release_deployment.log
+        - run:
+            name: Remove env on kubernetes
+            command: |
+                ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                make -C deployments/ uncommit-instance
+            when: always
 
   test_upgrade_from_srnt_customer_db:
       parameters:
@@ -1600,6 +1621,13 @@ jobs:
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
+          - run:
+              name: Remove env on kubernetes
+              command: |
+                  ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                  export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                  make -C deployments/ uncommit-instance
+              when: always
           - persist_to_workspace:
               root: ~/
               paths:
@@ -1852,6 +1880,13 @@ jobs:
       - run:
           name: Prepare infrastructure artifacts
           command: make -C deployments/ prepare-infrastructure-artifacts
+          when: on_fail
+      - run:
+          name: Remove env on kubernetes
+          command: |
+              ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+              export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+              make -C deployments/ uncommit-instance
           when: on_fail
       - store_artifacts:
           path: ~/artifacts/infra
