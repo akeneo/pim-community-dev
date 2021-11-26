@@ -10,7 +10,7 @@ use PhpSpec\ObjectBehavior;
 
 class AttributeOptionsScopeMapperSpec extends ObjectBehavior
 {
-    public function it_is_a_attribute_options_scope_mapper(): void
+    public function it_is_an_attribute_options_scope_mapper(): void
     {
         $this->shouldHaveType(AttributeOptionsScopeMapper::class);
         $this->shouldImplement(ScopeMapperInterface::class);
@@ -43,7 +43,7 @@ class AttributeOptionsScopeMapperSpec extends ObjectBehavior
         $this->getAcls('unknown_scope')->shouldReturn([]);
     }
 
-    public function it_provides_message_that_correspond_to_read_attribute_options_scope(): void
+    public function it_provides_message_that_correspond_to_the_read_attribute_options_scope(): void
     {
         $this->getMessage('read_attribute_options')->shouldReturn([
             'icon' => 'attribute_options',
@@ -52,7 +52,7 @@ class AttributeOptionsScopeMapperSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_provides_message_that_correspond_to_write_attribute_options_scope(): void
+    public function it_provides_message_that_correspond_to_the_write_attribute_options_scope(): void
     {
         $this->getMessage('write_attribute_options')->shouldReturn([
             'icon' => 'attribute_options',
