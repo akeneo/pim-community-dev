@@ -2,6 +2,8 @@ pim_title:
   akeneo_job_process_tracker_index: Process tracker
 
 akeneo_job_process_tracker:
+  last_executions:
+    title: Last executions
   job_execution_list:
     search_placeholder: Search by job name
     table:

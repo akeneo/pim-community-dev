@@ -26,5 +26,13 @@ const jobCanBeStopped = (jobExecutionRow: JobExecutionRow): boolean => {
   return jobExecutionRow.is_stoppable && stoppableStatus.includes(jobExecutionRow.status);
 };
 
-export {jobCanBeStopped};
+const canShowJobExecutionDetail = (isGranted: (acl: string) => boolean, jobExecutionRow: JobExecutionRow) => {
+  if (['import', 'export'].includes(jobExecutionRow.type)) {
+    return isGranted(`pim_importexport_${jobExecutionRow.type}_execution_show`);
+  }
+
+  return true;
+};
+
+export {jobCanBeStopped, canShowJobExecutionDetail};
 export type {JobExecutionTable, JobExecutionRow};

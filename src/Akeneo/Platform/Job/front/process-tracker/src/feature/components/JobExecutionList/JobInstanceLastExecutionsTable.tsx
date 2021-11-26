@@ -1,68 +1,49 @@
-import React, {useCallback, MouseEvent} from 'react';
+import React, {MouseEvent} from 'react';
 import {Table} from 'akeneo-design-system';
-import {useDateFormatter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
-import {JobExecutionRow, JobExecutionFilterSort, jobCanBeStopped, canShowJobExecutionDetail} from '../../models';
+import {useDateFormatter, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
+import {JobExecutionRow, jobCanBeStopped, canShowJobExecutionDetail} from '../../models';
 import {JobExecutionStatus} from '../JobExecutionStatus';
-import {useHistory} from 'react-router-dom';
 import {StopJobAction} from '../StopJobAction';
 
-type JobExecutionTableProps = {
+type JobInstanceLastExecutionsTableProps = {
   sticky?: number;
   jobExecutionRows: JobExecutionRow[];
-  onSortChange: (sort: JobExecutionFilterSort) => void;
   onTableRefresh: () => void;
-  currentSort: JobExecutionFilterSort;
 };
 
-const SORTABLE_COLUMN_HEADERS = ['job_name', 'type', 'started_at', 'username', 'status'];
+const COLUMN_HEADERS = ['started_at', 'username', 'status', 'warning_count'];
 
-const JobExecutionTable = ({
+const JobInstanceLastExecutionsTable = ({
   sticky,
   jobExecutionRows,
-  onSortChange,
-  currentSort,
   onTableRefresh,
-}: JobExecutionTableProps) => {
+}: JobInstanceLastExecutionsTableProps) => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
   const dateFormatter = useDateFormatter();
-  const sortDirection = 'ASC' === currentSort.direction ? 'ascending' : 'descending';
-  const history = useHistory();
+  const router = useRouter();
 
-  const handleRowClick = useCallback(
-    (jobExecutionId: number) => (event: MouseEvent<HTMLTableRowElement>) => {
-      const url = `/show/${jobExecutionId}`;
-      if (event.metaKey || event.ctrlKey) {
-        const newTab = window.open(`${window.location.hash}${url}`, '_blank');
-        newTab?.focus();
-        return;
-      }
+  const handleRowClick = (jobExecutionId: number) => (event: MouseEvent<HTMLTableRowElement>) => {
+    const route = router.generate('akeneo_job_process_tracker_details', {id: jobExecutionId});
 
-      history.push(url);
-    },
-    [history]
-  );
+    if (event.metaKey || event.ctrlKey) {
+      const newTab = window.open(`${window.location.hash}${route}`, '_blank');
+      newTab?.focus();
+
+      return;
+    }
+
+    router.redirect(route);
+  };
 
   return (
     <Table>
       <Table.Header sticky={sticky}>
-        {SORTABLE_COLUMN_HEADERS.map(sortableColumnHeader => (
-          <Table.HeaderCell
-            key={sortableColumnHeader}
-            isSortable={true}
-            onDirectionChange={direction => {
-              if ('none' !== direction) {
-                onSortChange({column: sortableColumnHeader, direction: 'ascending' === direction ? 'ASC' : 'DESC'});
-              }
-            }}
-            sortDirection={currentSort.column === sortableColumnHeader ? sortDirection : 'none'}
-          >
+        {COLUMN_HEADERS.map(sortableColumnHeader => (
+          <Table.HeaderCell key={sortableColumnHeader}>
             {translate(`akeneo_job_process_tracker.job_execution_list.table.headers.${sortableColumnHeader}`)}
           </Table.HeaderCell>
         ))}
-        <Table.HeaderCell>
-          {translate(`akeneo_job_process_tracker.job_execution_list.table.headers.warning_count`)}
-        </Table.HeaderCell>
         <Table.HeaderCell />
       </Table.Header>
       <Table.Body>
@@ -75,8 +56,6 @@ const JobExecutionTable = ({
                 : undefined
             }
           >
-            <Table.Cell rowTitle={true}>{jobExecutionRow.job_name}</Table.Cell>
-            <Table.Cell>{translate(`akeneo_job_process_tracker.type.${jobExecutionRow.type}`)}</Table.Cell>
             <Table.Cell>
               {jobExecutionRow.started_at
                 ? dateFormatter(jobExecutionRow.started_at, {
@@ -116,4 +95,4 @@ const JobExecutionTable = ({
   );
 };
 
-export {JobExecutionTable};
+export {JobInstanceLastExecutionsTable};
