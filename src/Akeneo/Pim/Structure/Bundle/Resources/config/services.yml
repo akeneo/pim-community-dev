@@ -93,4 +93,4 @@ services:
 
     Akeneo\Pim\Structure\Component\Security\AssociationTypeScopeMapper:
         tags:
-            - { name: pim_api.security.scope_mapper, entity: 'association_types' }
+            - { name: pim_api.security.scope_mapper }
