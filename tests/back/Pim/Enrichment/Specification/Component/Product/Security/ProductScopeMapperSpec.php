@@ -51,7 +51,7 @@ class ProductScopeMapperSpec extends ObjectBehavior
         $this->getAcls('unknown_scope')->shouldReturn([]);
     }
 
-    public function it_provides_message_that_correspond_to_read_product_scope(): void
+    public function it_provides_message_that_correspond_to_the_read_product_scope(): void
     {
         $this->getMessage('read_products')->shouldReturn([
             'icon' => 'products',
@@ -69,7 +69,7 @@ class ProductScopeMapperSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_provides_message_that_correspond_to_delete_product_scope(): void
+    public function it_provides_message_that_correspond_to_the_delete_product_scope(): void
     {
         $this->getMessage('delete_products')->shouldReturn([
             'icon' => 'products',
