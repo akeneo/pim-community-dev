@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.59 (2021-11-26)
+
 ## Bug fixes
 
 - PIM-10179: Fix migrations on tables job_execution_queue and pim_datagrid_view
