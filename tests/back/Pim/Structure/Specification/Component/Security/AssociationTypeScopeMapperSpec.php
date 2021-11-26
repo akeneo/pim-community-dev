@@ -14,7 +14,7 @@ use PhpSpec\ObjectBehavior;
  */
 class AssociationTypeScopeMapperSpec extends ObjectBehavior
 {
-    public function it_is_a_association_type_scope_mapper(): void
+    public function it_is_an_association_type_scope_mapper(): void
     {
         $this->shouldHaveType(AssociationTypeScopeMapper::class);
         $this->shouldImplement(ScopeMapperInterface::class);
