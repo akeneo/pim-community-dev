@@ -55,5 +55,10 @@
             <exclude>components/tailored-export/back/tests/Integration/Infrastructure/Validation/Source/AssetCollection/AssetCollectionSelectionValidatorTest.php</exclude>
             <exclude>components/tailored-export/back/tests/Integration/Infrastructure/Validation/Source/AssetCollection/AssetCollectionSourceValidatorTest.php</exclude>
         </testsuite>
+
+        <!--@TODO : Maybe move to EE or change test config-->
+        <testsuite name="Table_Attribute_End_To_End_Only_Enterprise">
+            <directory suffix="EndToEnd.php">src/Akeneo/Pim/TableAttribute/tests/back/Enterprise/EndToEnd</directory>
+        </testsuite>
     </testsuites>
 </phpunit>

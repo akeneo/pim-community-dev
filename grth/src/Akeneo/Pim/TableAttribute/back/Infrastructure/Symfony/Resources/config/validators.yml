@@ -72,7 +72,7 @@ services:
 
     Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ColumnDatatypeValidator:
         arguments:
-            - '%pim_catalog_table_allowed_column_datatypes%'
+            $allowedColumnDatatypes: '%pim_catalog_table_allowed_column_datatypes%'
         tags:
             - { name: 'validator.constraint_validator' }
 
