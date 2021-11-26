@@ -37,6 +37,7 @@ pim_api:
     family_variant: Variants familiars
     channel: Canals
     locale: Configuracions regionals
+    product: Productes
     currency: Monedes
     association_type: Tipus d'associació
 pim_user:

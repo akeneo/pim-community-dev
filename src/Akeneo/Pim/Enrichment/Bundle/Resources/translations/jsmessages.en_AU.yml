@@ -290,7 +290,6 @@ pim_enrich.export.product:
   global_settings:
     title: Global settings
 pim_enrich.mass_edit.product:
-  confirm: "{0}You are about to update some products with the following information, please confirm.|{1}You are about to update a product with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} products with the following information, please confirm."
   step:
     select:
       label: Choose products
@@ -313,7 +312,6 @@ pim_enrich.mass_edit.product:
       description: The selected products will be enabled or disabled.
       field: To enable
     edit_common:
-      description: Only the attributes belonging to the families of the selected products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel.
       no_update: Please select at least one field to update
     change_family:
       label: Change family
