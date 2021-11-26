@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {KeyFigure} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {CatalogVolume} from './model/catalog-volume';
 import {useCatalogVolumeIcon} from './hooks/useCatalogVolumeIcon';
 
@@ -10,7 +10,9 @@ type Props = {
 
 const CatalogVolumeKeyFigure: FC<Props> = ({catalogVolume}) => {
   const translate = useTranslate();
+  const userContext = useUserContext();
   const icon = useCatalogVolumeIcon(catalogVolume.name);
+  const userLocale = userContext.get('uiLocale').split('_')[0];
 
   return (
     <>
@@ -20,12 +22,12 @@ const CatalogVolumeKeyFigure: FC<Props> = ({catalogVolume}) => {
             <KeyFigure icon={icon} title={translate(`pim_catalog_volume.axis.${catalogVolume.name}`)}>
               {catalogVolume.value.average !== undefined && (
                 <KeyFigure.Figure label={translate('pim_catalog_volume.mean')}>
-                  {catalogVolume.value.average}
+                  {catalogVolume.value.average.toLocaleString(userLocale, {useGrouping: true})}
                 </KeyFigure.Figure>
               )}
               {catalogVolume.value.max !== undefined && (
                 <KeyFigure.Figure label={translate('pim_catalog_volume.max')}>
-                  {catalogVolume.value.max}
+                  {catalogVolume.value.max.toLocaleString(userLocale, {useGrouping: true})}
                 </KeyFigure.Figure>
               )}
             </KeyFigure>
@@ -33,7 +35,7 @@ const CatalogVolumeKeyFigure: FC<Props> = ({catalogVolume}) => {
 
           {catalogVolume.type === 'count' && typeof catalogVolume.value !== 'object' && (
             <KeyFigure icon={icon} title={translate(`pim_catalog_volume.axis.${catalogVolume.name}`)}>
-              <KeyFigure.Figure>{catalogVolume.value}</KeyFigure.Figure>
+              <KeyFigure.Figure>{catalogVolume.value.toLocaleString(userLocale, {useGrouping: true})}</KeyFigure.Figure>
             </KeyFigure>
           )}
         </>
