@@ -20,7 +20,6 @@ const useCatalogVolumeByAxis = (getCatalogVolume: GetCatalogVolumeInterface) => 
       setAxes(axisList);
       setStatus('fetched');
     } catch (e) {
-      console.log(e);
       setStatus('error');
     }
   }, [getCatalogVolume, router]);
