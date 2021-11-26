@@ -331,7 +331,6 @@ pim_enrich.export.product:
     title: Yleiset asetukset
 pim_enrich.mass_edit.product:
   title: Tuotteiden massamuokkaus
-  confirm: "{0}Olet päivittämässä joitakin tuotteita seuraavilla tiedoilla. Ole hyvä ja vahvista.{1}Olet päivittämässä tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista. ]1, Inf[Olet päivittämässä {{ itemsCount }} tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista."
   step:
     select:
       label: Valitse tuotteet
@@ -357,7 +356,6 @@ pim_enrich.mass_edit.product:
     edit_common:
       label: Muokkaa attribuuttien arvoja
       label_count: "{0}Muokkaa<span class=\"AknFullPage-title--highlight\">tuotteiden attribuuttien arvoja</span>|{1}Muokkaa <span class=\"AknFullPage-title--highlight\">1 tuotteen attribuuttien arvoja</span>|]1, Inf[Muokkaa <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen attribuuttien arvoja</span>"
-      description: Vain attribuutit, jotka kuuluvat valittujen tuotteiden perheisiin muokataan seuraavilla tiedoilla ({{ locale }} / {{ scope }}).
       no_update: Valitse ainakin yksi attribuutti muokattavaksi
     add_attribute_value:
       label: Lisää attribuutin arvoja

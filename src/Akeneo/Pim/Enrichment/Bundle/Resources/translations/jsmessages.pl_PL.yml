@@ -331,7 +331,6 @@ pim_enrich.export.product:
     title: Ustawienia ogólne
 pim_enrich.mass_edit.product:
   title: Działanie zbiorcze produktu
-  confirm: "{0}Zamierzasz zaktualizować niektóre produkty następującymi informacjami, proszę potwierdzić.{1}Masz zamiar zaktualizować produkt następującymi informacjami, proszę potwierdź. ]1, Inf[Zamierzasz zaktualizować {{ itemsCount }} produktów następującymi informacjami, proszę potwierdzić."
   step:
     select:
       label: Wybierz produkty
@@ -357,7 +356,6 @@ pim_enrich.mass_edit.product:
     edit_common:
       label: Edytuj wartości atrybutu
       label_count: "{0}Edytuj wartości atrybutu <span class=\"AknFullPage-title--highlight\">produktów</span>|{1}Edytuj wartości atrybutu <span class=\"AknFullPage-title--highlight\">1 produktu</span>|]1, Inf[Edytuj wartości atrybutu <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span>"
-      description: Tylko atrybuty należące do rodzin wybranych produktów będą edytowane z następującymi danymi dla wersji językowej {{ locale }} i dla kanału {{ scope }}.
       no_update: Wybierz co najmniej jedno pole do aktualizacji
     add_attribute_value:
       label: Dodaj wartości atrybutu

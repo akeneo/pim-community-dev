@@ -331,7 +331,6 @@ pim_enrich.export.product:
     title: Configuración global
 pim_enrich.mass_edit.product:
   title: Acción en masa del producto
-  confirm: "{0}Está a punto de actualizar algunos productos con la siguiente información, por favor confirme.|{1}Está a punto de actualizar un producto con la siguiente información, por favor confirme. |]1, Inf[Estás a punto de actualizar {{ itemsCount }} productos con la siguiente información, por favor confirme."
   step:
     select:
       label: Seleccione los productos
@@ -357,7 +356,6 @@ pim_enrich.mass_edit.product:
     edit_common:
       label: Editar valores de atributo
       label_count: "{0}Editar valores de atributo de algunos <span class=\"AknFullPage-title--highlight\">productos</span>|{1}Editar valores de atributo de <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Editar valores de atributo de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
-      description: Se editarán solo los atributos pertenecientes a las familias de los productos seleccionados con los siguientes datos para el local {{ locale }} y el canal de {{ scope }}.
       no_update: Por favor, seleccione al menos un campo para actualizar
     add_attribute_value:
       label: Añadir valores de atributo

@@ -48,28 +48,30 @@ pim_ui.system_config:
     loading_message.title: S'estan carregant els missatges
 other_actions: Altres accions
 pim_common:
+  association_types: Tipus d'associació
   cancel: Cancel·lar
-  save: Desar
-  delete: Suprimir
-  update: Actualitzar
-  view: Vista
-  edit: Editar
-  created: Creat
-  updated: Actualitzat
-  create: Crear
-  permissions: Permisos
-  properties: Propietats
-  name: Nom
-  remove: Eliminar
-  code: Codi
-  products: Productes
-  product_models: Models de producte
   categories: Categories
+  code: Codi
+  create: Crear
+  created: Creat
+  delete: Suprimir
+  edit: Editar
   enabled: Habilitat
   family: Família
   groups: Grups
-  yes: "Sí"
+  label: Etiqueta
+  name: Nom
   no: "No"
+  permissions: Permisos
+  product_models: Models de producte
+  products: Productes
+  properties: Propietats
+  remove: Eliminar
+  save: Desar
+  update: Actualitzar
+  updated: Actualitzat
+  view: Vista
+  yes: "Sí"
 pim_enrich:
   #ACLs
   acl:
@@ -433,8 +435,14 @@ pim_datagrid:
       label: Grups
     enabled:
       label: Estat
+    scope:
+      label: Canal
     completeness:
       label: Complet
+    created:
+      label: Creat
+    updated:
+      label: Actualitzat
     identifier:
       label: Identificador
 #Versioning / history
@@ -501,7 +509,6 @@ pim_mass_edit:
       success: Esborrat massiu <strong>%label%</strong> ha acabat
 job_execution.summary:
   mass_edited: Editat en massa
-  skip: Omès
   skipped_products: Productes omesos
   skipped_attributes: Atributs omesos
   skipped_families: Famílies omeses
