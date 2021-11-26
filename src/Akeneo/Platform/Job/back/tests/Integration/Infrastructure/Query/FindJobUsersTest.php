@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Integration\Infrastructure\Query;
 
+use Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersInterface;
 use Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersQuery;
-use Akeneo\Platform\Job\Domain\Query\FindJobUsersInterface;
 use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
 
 class FindJobUsersTest extends IntegrationTestCase
@@ -80,6 +80,6 @@ class FindJobUsersTest extends IntegrationTestCase
 
     private function getQuery(): FindJobUsersInterface
     {
-        return $this->get('Akeneo\Platform\Job\Domain\Query\FindJobUsersInterface');
+        return $this->get('Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersInterface');
     }
 }

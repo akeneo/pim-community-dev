@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Platform\Job\Domain\Query;
+namespace Akeneo\Platform\Job\Application\SearchJobExecution;
 
 /**
  * @author Grégoire Houssard <gregoire.houssard@akeneo.com>

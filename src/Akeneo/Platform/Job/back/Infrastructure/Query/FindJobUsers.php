@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Infrastructure\Query;
 
+use Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersInterface;
 use Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersQuery;
-use Akeneo\Platform\Job\Domain\Query\FindJobUsersInterface;
 use Doctrine\DBAL\Connection;
 
 /**

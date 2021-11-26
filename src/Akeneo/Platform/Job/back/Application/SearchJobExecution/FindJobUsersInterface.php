@@ -1,8 +1,6 @@
 <?php
 
-namespace Akeneo\Platform\Job\Domain\Query;
-
-use Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersQuery;
+namespace Akeneo\Platform\Job\Application\SearchJobExecution;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
