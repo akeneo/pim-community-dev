@@ -665,7 +665,7 @@ jobs:
 
   test_database:
       machine:
-          image: ubuntu-1604:201903-01
+          image: ubuntu-2004:202010-01
       resource_class: medium
       parallelism: 1
       steps:
@@ -678,8 +678,8 @@ jobs:
                 name: Start containers
                 command: |
                     docker load -i php-pim-image.tar
-                    APP_ENV=test C='fpm mysql elasticsearch object-storage' make up
-                    vendor/akeneo/pim-community-dev/docker/wait_docker_up.sh
+                    APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
+                    docker/wait_docker_up.sh
           - run:
                 name: Install database
                 command: APP_ENV=dev make database
@@ -2205,10 +2205,9 @@ workflows:
                     - test_back_phpunit
                     - test_back_integration_bounded_contexts
                     - test_back_integration_reference_entities
-          # Uncomment for next GA
-#          - test_database:
-#                requires:
-#                    - build_srnt_dev
+          - test_database:
+                requires:
+                    - build_srnt_dev
           - test_onboarder_bundle:
                 requires:
                     - build_srnt_dev
@@ -2223,8 +2222,7 @@ workflows:
                     - test_back_performance
                     - test_back_behat_legacy
                     - test_onboarder_bundle
-                    # Uncomment for next GA
-#                    - test_database
+                    - test_database
                     - test_back_data_migrations
                     - test_grth
                     - test_tria
