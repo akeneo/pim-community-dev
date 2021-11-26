@@ -10,14 +10,14 @@ interface Props {
   getCatalogVolumes: GetCatalogVolumeInterface;
 }
 
+const StyledKeyFigureGrid = styled(KeyFigureGrid)`
+  grid-template-columns: repeat(3, 33%);
+`;
+
 const CatalogVolumeMonitoringApp = ({getCatalogVolumes}: Props) => {
   const translate = useTranslate();
   const systemHref = useRoute('pim_system_index');
   const [axes, status] = useCatalogVolumeByAxis(getCatalogVolumes);
-
-  const StyledKeyFigureGrid = styled(KeyFigureGrid)`
-    grid-template-columns: repeat(3, 33%);
-  `;
 
   const displayContent = () => {
     if (status === 'error') {
