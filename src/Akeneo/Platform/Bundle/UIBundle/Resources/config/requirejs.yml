@@ -400,11 +400,6 @@ config:
         pim_enrich_grouptype_remove:
           module: pim/controller/template
           aclResourceId: pim_enrich_grouptype_remove
-        pim_enrich_job_tracker_index:
-          module: pim/controller/common/index
-          aclResourceId: pim_enrich_job_tracker_index
-          config:
-            entity: process
         pim_importexport_import_execution_index:
           module: pim/controller/common/index
           aclResourceId: pim_importexport_import_execution_index
@@ -421,9 +416,6 @@ config:
         pim_importexport_export_execution_show:
           module: pim/controller/job-execution
           aclResourceId: pim_importexport_export_execution_show
-        pim_enrich_job_tracker_show:
-          module: pim/controller/job-execution
-          aclResourceId: pim_enrich_job_tracker_index
         oro_config_configuration_system:
           module: pim/controller/system
         pim_enrich_catalog_volume_index:

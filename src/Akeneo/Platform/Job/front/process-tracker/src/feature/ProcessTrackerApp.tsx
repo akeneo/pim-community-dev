@@ -1,10 +1,10 @@
 import React from 'react';
-import {JobExecutionList} from './pages/JobExecutionList';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
+import {JobExecutionList} from './pages/JobExecutionList';
 import {JobExecutionDetail} from './pages/JobExecutionDetail';
 
 const ProcessTrackerApp = () => (
-  <Router basename="/rac-job">
+  <Router basename="/job">
     <Switch>
       <Route path="/show/:jobExecutionId">
         <JobExecutionDetail />

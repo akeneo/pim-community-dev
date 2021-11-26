@@ -1,8 +1,8 @@
 akeneo_job_process_tracker_index:
-  path: /rac-job
+  path: /job
 
 akeneo_job_process_tracker_details:
-  path: /rac-job/show/{id}
+  path: /job/show/{id}
   requirements:
     id: \d+
 
