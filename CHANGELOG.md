@@ -121,6 +121,7 @@
 - PIM-10176: Batch query to retrieve existing reference entity records
 - PIM-10017: Improve logging in DQI spellcheck
 - PIM-10175: Fix option labels display in asset bulk action
+- PIM-10180: Fix PDF Asset thumbnail generation
 
 ## Improvements
 
