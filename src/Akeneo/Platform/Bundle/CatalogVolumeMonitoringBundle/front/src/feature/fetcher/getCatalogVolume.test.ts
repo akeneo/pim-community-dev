@@ -1,9 +1,16 @@
 import {transformVolumesToAxis} from "./catalogVolumeWrapper";
-import fetchMock from "jest-fetch-mock";
 import {getCatalogVolume} from "./getCatalogVolume";
 import {mockedDependencies} from "@akeneo-pim-community/shared";
 
 jest.mock("./catalogVolumeWrapper")
+
+declare global {
+    namespace NodeJS {
+        interface Global {
+            fetch: any;
+        }
+    }
+}
 
 const mockRouter = (relativeUrl: string) => {
     // @ts-ignore
@@ -30,13 +37,17 @@ const volumesResponse = {
 };
 
 beforeEach(() => {
-    fetchMock.resetMocks();
     mockRouter('http://localhost:8080/catalog-volume-monitoring/volumes')
 });
 
 test('get Catalog volume with success', async () => {
     // Given
-    fetchMock.mockResponseOnce(JSON.stringify(volumesResponse), {status: 200});
+    global.fetch = jest.fn(() =>
+        Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve(volumesResponse),
+        })
+    );
 
     // When
     await getCatalogVolume(mockedDependencies.router)
@@ -47,9 +58,13 @@ test('get Catalog volume with success', async () => {
 
 test('get Catalog volume with error', async () => {
     // Given
-    fetchMock.mockResponseOnce(JSON.stringify(volumesResponse), {status: 404});
+    global.fetch = jest.fn().mockImplementation(() => ({
+        ok: false,
+        statusText: 'my error'
+    }));
 
     // Then
-    expect(await getCatalogVolume(mockedDependencies.router)).toThrowError()
+    await expect(getCatalogVolume(mockedDependencies.router)).rejects.toThrowError('my error')
+    expect(transformVolumesToAxis).not.toBeCalled();
 });
 
