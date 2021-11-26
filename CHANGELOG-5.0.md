@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.59 (2021-11-26)
+
 ## Bug fixes
 
 - PIM-10179: Fix PIM database schema reference file
