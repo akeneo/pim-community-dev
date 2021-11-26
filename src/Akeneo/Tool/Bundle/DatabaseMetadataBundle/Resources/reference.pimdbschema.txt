@@ -622,7 +622,7 @@ pim_data_quality_insights_product_score | evaluated_at | NO | date | PRI
 pim_data_quality_insights_product_score | scores | NO | json |
 pim_datagrid_view | id | NO | int | PRI
 pim_datagrid_view | owner_id | YES | int | MUL
-pim_datagrid_view | label | NO | varchar(100) | UNI
+pim_datagrid_view | label | NO | varchar(100) |
 pim_datagrid_view | type | YES | varchar(10) |
 pim_datagrid_view | datagrid_alias | NO | varchar(255) |
 pim_datagrid_view | columns | NO | longtext |
