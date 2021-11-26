@@ -3,6 +3,8 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Job;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelCommand;
+use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Job\DeleteProductsAndProductModelsTasklet;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -11,6 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\CountProductModel
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
@@ -22,31 +25,36 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
 {
     function let(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         BulkRemoverInterface $productRemover,
-        BulkRemoverInterface $productModelRemover,
+        RemoveProductModelHandler $removeProductModelHandler,
         ObjectFilterInterface $filter,
         EntityManagerClearerInterface $cacheClearer,
         CountProductModelsAndChildrenProductModelsInterface $countProductModelsAndChildrenProductModels,
         CountVariantProductsInterface $countVariantProducts,
         JobStopper $jobStopper,
-        JobRepositoryInterface $jobRepository
+        JobRepositoryInterface $jobRepository,
+        ValidatorInterface $validator
     ) {
         $this->beConstructedWith(
             $pqbFactory,
             $productRemover,
-            $productModelRemover,
+            $removeProductModelHandler,
             $cacheClearer,
             $filter,
             2,
             $countProductModelsAndChildrenProductModels,
             $countVariantProducts,
             $jobStopper,
-            $jobRepository
+            $jobRepository,
+            $validator
         );
     }
 
@@ -65,7 +73,7 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
     function it_deletes_products(
         $pqbFactory,
         $productRemover,
-        $productModelRemover,
+        RemoveProductModelHandler $removeProductModelHandler,
         $filter,
         $cacheClearer,
         $countProductModelsAndChildrenProductModels,
@@ -131,7 +139,7 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
 
         $productRemover->removeAll([$product789])->shouldBeCalled();
         $productRemover->removeAll([$product123, $product456])->shouldBeCalled();
-        $productModelRemover->removeAll([])->shouldBeCalled();
+        $removeProductModelHandler->__invoke(Argument::any())->shouldNotBeCalled();
 
         $stepExecution->addSummaryInfo('deleted_products', 0)->shouldBeCalled();
         $stepExecution->addSummaryInfo('deleted_product_models', 0)->shouldBeCalled();
@@ -157,7 +165,7 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
     function it_deletes_product_models(
         $pqbFactory,
         $productRemover,
-        $productModelRemover,
+        RemoveProductModelHandler $removeProductModelHandler,
         $cacheClearer,
         $filter,
         $countProductModelsAndChildrenProductModels,
@@ -175,7 +183,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         ProductModelInterface $productModel123,
         ProductModelInterface $productModel456,
         ProductModelInterface $productModel789,
-        JobStopper $jobStopper
+        JobStopper $jobStopper,
+        ValidatorInterface $validator
     ) {
         $this->setStepExecution($stepExecution);
         $filters = [
@@ -227,8 +236,16 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $countProductModelsAndChildrenProductModels->forProductModelCodes(['product_model_789_code'])->willReturn(2);
         $countProductModelsAndChildrenProductModels->forProductModelCodes(['product_model_123_code', 'product_model_456_code'])->willReturn(1);
 
-        $productModelRemover->removeAll([$productModel123, $productModel456])->shouldBeCalled();
-        $productModelRemover->removeAll([$productModel789])->shouldBeCalled();
+        $removePMCommand1 = new RemoveProductModelCommand('product_model_123_code');
+        $removePMCommand2 = new RemoveProductModelCommand('product_model_456_code');
+        $removePMCommand3 = new RemoveProductModelCommand('product_model_789_code');
+        $validator->validate($removePMCommand1)->shouldBeCalled()->willReturn(new ConstraintViolationList());
+        $validator->validate($removePMCommand2)->shouldBeCalled()->willReturn(new ConstraintViolationList());
+        $validator->validate($removePMCommand3)->shouldBeCalled()->willReturn(new ConstraintViolationList());
+        $removeProductModelHandler->__invoke($removePMCommand1)->shouldBeCalled();
+        $removeProductModelHandler->__invoke($removePMCommand2)->shouldBeCalled();
+        $removeProductModelHandler->__invoke($removePMCommand3)->shouldBeCalled();
+
         $productRemover->removeAll([])->shouldBeCalled();
 
         $stepExecution->addSummaryInfo('deleted_products', 0)->shouldBeCalled();
@@ -255,7 +272,7 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
     function it_deletes_products_and_product_models(
         $pqbFactory,
         $productRemover,
-        $productModelRemover,
+        RemoveProductModelHandler $removeProductModelHandler,
         $cacheClearer,
         $filter,
         $countProductModelsAndChildrenProductModels,
@@ -276,7 +293,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         ProductInterface $product4,
         ProductInterface $product5,
         ProductInterface $product6,
-        JobStopper $jobStopper
+        JobStopper $jobStopper,
+        ValidatorInterface $validator
     ) {
         $this->setStepExecution($stepExecution);
         $filters = [
@@ -343,15 +361,24 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $stepExecution->addSummaryInfo('deleted_product_models', 0)->shouldBeCalled();
 
         $productRemover->removeAll([$product4, $product5])->shouldBeCalled();
-        $productModelRemover->removeAll([])->shouldBeCalled([]);
-
         $productRemover->removeAll([])->shouldBeCalled();
-        $productModelRemover->removeAll([$productModel1, $productModel2])->shouldBeCalled([]);
-
-        $productModelRemover->removeAll([$productModel3])->shouldBeCalled();
         $productRemover->removeAll([$product6])->shouldBeCalled();
 
-        $stepExecution->incrementSummaryInfo('deleted_product_models', 1)->shouldBeCalled();
+        $removePMCommand1 = new RemoveProductModelCommand('product_model_1_code');
+        $removePMCommand2 = new RemoveProductModelCommand('product_model_2_code');
+        $removePMCommand3 = new RemoveProductModelCommand('product_model_3_code');
+        $validator->validate($removePMCommand1)->shouldBeCalled()->willReturn(new ConstraintViolationList());
+        $validator->validate($removePMCommand2)->shouldBeCalled()->willReturn(new ConstraintViolationList());
+        $validator->validate($removePMCommand3)->shouldBeCalled()->willReturn(new ConstraintViolationList([
+            new ConstraintViolation('error_message', null, [], null, null, null),
+        ]));
+        $removeProductModelHandler->__invoke($removePMCommand1)->shouldBeCalled();
+        $removeProductModelHandler->__invoke($removePMCommand2)->shouldBeCalled();
+        $removeProductModelHandler->__invoke($removePMCommand3)->shouldNotBeCalled();
+
+        $stepExecution->incrementSummaryInfo('deleted_product_models', 1)->shouldNotBeCalled();
+        $stepExecution->incrementSummaryInfo('skipped_deleted_product_models', 1)->shouldBeCalled();
+        $stepExecution->addWarning('error_message', [], Argument::type(DataInvalidItem::class))->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('deleted_products', 1)->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo('deleted_product_models', 0)->shouldBeCalled();
@@ -363,7 +390,7 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
 
         $stepExecution->setTotalItems(6)->shouldBeCalledOnce();
         $stepExecution->incrementProcessedItems(2)->shouldBeCalledTimes(2);
-        $stepExecution->incrementProcessedItems(1)->shouldBeCalledTimes(2);
+        $stepExecution->incrementProcessedItems(1)->shouldBeCalledTimes(1);
         $stepExecution->incrementProcessedItems(0);
 
         $cacheClearer->clear()->shouldBeCalledTimes(3);
@@ -376,7 +403,7 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
     function it_deletes_owned_products_and_product_models(
         $pqbFactory,
         $productRemover,
-        $productModelRemover,
+        RemoveProductModelHandler $removeProductModelHandler,
         $cacheClearer,
         $filter,
         $countProductModelsAndChildrenProductModels,
@@ -395,7 +422,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         ProductModelInterface $productModel2,
         ProductInterface $product1,
         ProductInterface $product2,
-        JobStopper $jobStopper
+        JobStopper $jobStopper,
+        ValidatorInterface $validator
     ) {
         $this->setStepExecution($stepExecution);
         $filters = [
@@ -466,13 +494,15 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $countProductModelsAndChildrenProductModels->forProductModelCodes(['product_model_1_code'])->willReturn(1);
 
         $productRemover->removeAll([$product1])->shouldBeCalled();
-        $productModelRemover->removeAll([$productModel1])->shouldBeCalled();
 
         $countVariantProducts->forProductModelCodes([])->willReturn(0);
         $countProductModelsAndChildrenProductModels->forProductModelCodes([])->willReturn(0);
 
-        $productModelRemover->removeAll([])->shouldBeCalled();
         $productRemover->removeAll([])->shouldBeCalled([]);
+
+        $removePMCommand1 = new RemoveProductModelCommand('product_model_1_code');
+        $validator->validate($removePMCommand1)->shouldBeCalled()->willReturn(new ConstraintViolationList());
+        $removeProductModelHandler->__invoke($removePMCommand1)->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo('deleted_product_models', 1)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('deleted_products', 1)->shouldBeCalled();

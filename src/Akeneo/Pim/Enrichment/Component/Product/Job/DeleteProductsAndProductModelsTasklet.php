@@ -229,7 +229,10 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
         }
 
         $this->stepExecution->incrementSummaryInfo('deleted_product_models', $deletedProductModelsCount);
-        $this->stepExecution->incrementSummaryInfo('skipped_deleted_product_models', $skippedProductModelCount);
+        if ($skippedProductModelCount > 0) {
+            $this->stepExecution->incrementSummaryInfo('skipped_deleted_product_models', $skippedProductModelCount);
+        }
+
         $this->stepExecution->incrementProcessedItems($deletedProductModelsCount);
     }
 

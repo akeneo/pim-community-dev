@@ -18,7 +18,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Webmozart\Assert\Assert;
 
-final class RemoveProductModelHandler
+class RemoveProductModelHandler
 {
     private ProductModelRepositoryInterface $productModelRepository;
     private RemoverInterface $productModelRemover;
