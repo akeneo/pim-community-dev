@@ -47,9 +47,11 @@ class ChannelScopeMapperSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_does_not_provide_acl_if_an_unknown_scope_is_given(): void
+    public function it_throws_an_exception_when_trying_to_get_acls_if_an_unknown_scope_is_given(): void
     {
-        $this->getAcls('unknown_scope')->shouldReturn([]);
+        $this
+            ->shouldThrow(new \InvalidArgumentException('The scope "unknown_scope" does not exist.'))
+            ->during('getAcls', ['unknown_scope']);
     }
 
     public function it_provides_message_that_corresponds_to_the_read_channel_localization_scope(): void
@@ -79,9 +81,11 @@ class ChannelScopeMapperSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_does_not_provide_message_if_an_unknown_scope_is_given(): void
+    public function it_throws_an_exception_when_trying_to_get_message_if_an_unknown_scope_is_given(): void
     {
-        $this->getMessage('unknown_scope')->shouldReturn([]);
+        $this
+            ->shouldThrow(new \InvalidArgumentException('The scope "unknown_scope" does not exist.'))
+            ->during('getMessage', ['unknown_scope']);
     }
 
     public function it_provides_lower_hierarchy_scopes_of_the_read_channel_localization_scope(): void
@@ -101,8 +105,10 @@ class ChannelScopeMapperSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_does_not_provide_lower_hierarchy_scopes_for_an_unknown_scope(): void
+    public function it_throws_an_exception_when_trying_to_get_lower_hierarchy_scopes_for_an_unknown_scope(): void
     {
-        $this->getLowerHierarchyScopes('unknown_scope')->shouldReturn([]);
+        $this
+            ->shouldThrow(new \InvalidArgumentException('The scope "unknown_scope" does not exist.'))
+            ->during('getLowerHierarchyScopes', ['unknown_scope']);
     }
 }
