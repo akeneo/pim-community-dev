@@ -26,6 +26,5 @@ pim_catalog_volume:
     count_category_trees: Arbres de categories
     count_variant_products: Variant de productes
     count_product_models: Models de producte
-    warning: Uau! Ha superat un record amb aquest eix! No dubtis a contactar-nos en cas de necessitar ajuda amb aquest tipus de volum.
   mean: 'Dir:'
   max: 'Màxim:'

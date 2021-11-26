@@ -331,7 +331,6 @@ pim_enrich.export.product:
     title: 전역 설정
 pim_enrich.mass_edit.product:
   title: 제품 일괄 작업
-  confirm: "{0}다음 정보로 일부 제품을 업데이트하려고 합니다. 확인해주십시오.|{1}다음 정보로 1개 제품을 업데이트하려고 합니다. 확인해주십시오.|]1, Inf[다음 정보로 {{ itemsCount }}개 제품을 업데이트하려고 합니다. 확인해주십시오."
   step:
     select:
       label: 제품 선택
@@ -357,7 +356,6 @@ pim_enrich.mass_edit.product:
     edit_common:
       label: 특성 값 편집
       label_count: "{0}일부 <span class=\"AknFullPage-title--highlight\">제품</span>의 특성 값 편집|{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span>의 특성 값 편집|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>의 특성 값 편집"
-      description: 선택한 제품의 패밀리에 속하는 특성만 {{ locale }} 로케일 및 {{ scope }} 채널에 대한 다음 데이터를 사용하여 편집됩니다.
       no_update: 업데이트할 필드를 하나 이상 선택하십시오.
     add_attribute_value:
       label: 특성 값 추가

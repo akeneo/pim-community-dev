@@ -1,6 +1,4 @@
 pim_menu:
-  navigation_back:
-    connection: Tornar a connexions
   navigation_block:
     connection: Navegació de connexió
   item:
@@ -8,17 +6,21 @@ pim_menu:
     connection_settings: Connexions
     connection_settings_edit: Configuració de la connexió
     connection_monitoring: Monitorització
+    connect_connection_settings: Configuració de la connexió
 pim_title:
-  akeneo_connectivity_connection_settings_index: Connexions
   akeneo_connectivity_connection_settings_edit: Configuració de la connexió
   akeneo_connectivity_connection_settings_any: Configuració de la connexió
   akeneo_connectivity_connection_audit_index: Panell de connexions
   akeneo_connectivity_connection_audit_any: Panell de connexions
   akeneo_connectivity_connection_error_management_dashboard: Panell de connexions
   akeneo_connectivity_connection_error_management_connection_monitoring: Monitorització de la connexió
-  akeneo_connectivity_connection_webhook_edit: Subscripció d'esdeveniment (BETA)
-  akeneo_connectivity_connection_webhook_regenerate_secret: Subscripció d'esdeveniment (BETA)
+  akeneo_connectivity_connection_settings_redirect: Connexions
 akeneo_connectivity.connection:
+  connect:
+    apps:
+      wizard:
+        progress:
+          permissions: Permisos
   connections: Connexions
   secondary_actions:
     title: Altres accions
@@ -125,9 +127,7 @@ akeneo_connectivity.connection:
     flash:
       success: Connexió eliminada correctament.
   helper:
-    title: '👋 Benvingut a la funció que connectarà correctament el seu PIM!'
     description: Un PIM sense integracions de tercers és inútil, no? Gràcies a les connexions pot indicar tots els fluxos que entraran i sortiran del seu PIM.
-    link: Vol saber més? Descobreix aquí què és una connexió i com treure el màxim partit!
   flow_type_helper:
     message: Quin tipus de flux és?
     link: Et podem ajudar aquí mateix!
@@ -140,10 +140,6 @@ akeneo_connectivity.connection:
     flash:
       extension_not_allowed: Ho sentim, l'arxiu que està intentant pujar no té una extensió permesa.
   dashboard:
-    helper:
-      title: '👋 Benvingut al panell de connexions!'
-      description: Aquí podrà rastrejar tots els fluxos de dades que recull el seu PIM a través de les connexions, i també tots els fluxos de dades que és distribueixen als seus canals amb les connexions.
-      link: Vol saber més? Aquí tens!
     user_survey:
       title: Vols més dades sobre aquest panell?
       content: Els seus comentaris són realment valuosos per a nosaltres. Ajuda'ns a escollir el proper widget responent aquesta enquesta de només una pregunta.
@@ -174,8 +170,6 @@ akeneo_connectivity.connection:
         message: Demana al teu administrador per crear una.
         link: Aprendre més sobre les connexions aquí...
   webhook:
-    title: Subscripció d'esdeveniment (BETA)
-    event_subscription: Subscripció d'esdeveniment (BETA)
     form:
       url: URL
       secret: Secret
@@ -194,6 +188,12 @@ akeneo_connectivity.connection:
       action:
         regenerate: Regenera
       link: Això passarà.
+    event_logs:
+      list:
+        search:
+          all: Tot
+        date_range_filter:
+          all: Tot
   error_management:
     connection_monitoring:
       title: Monitoritzant
@@ -201,7 +201,6 @@ akeneo_connectivity.connection:
         title: '{0} Te {{ count }} error |[1,Inf] Tens {{ count }} errores'
       search_filter:
         placeholder: Cercar un missatge d'error
-        result_count: '{0} Cap resultat |[1,Inf] {{ count }} resultats'
       error_list:
         date_time_column:
           title: Dia i hora
