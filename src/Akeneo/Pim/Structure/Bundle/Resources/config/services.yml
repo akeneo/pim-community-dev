@@ -93,4 +93,4 @@ services:
 
     Akeneo\Pim\Structure\Component\Security\AttirbuteOptionsScopeMapper:
         tags:
-            - { name: pim_api.security.scope_mapper, entity: 'attribute_options' }
+            - { name: pim_api.security.scope_mapper }
