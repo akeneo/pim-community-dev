@@ -81,6 +81,9 @@ yq d -i ${DESTINATION_PATH}/main.tf.json 'module.pim.mysql_disk_size'
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.mysql_source_snapshot' "${SELF_LINK_MYSQL}"
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.mysql_disk_size' "${MYSQL_SIZE}"
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.mysql_disk_name' "${PFID}-mysql"
+
+#TO REMOVE
+yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'terraform.required_version' "= 0.12.25"
 cat ${DESTINATION_PATH}/main.tf.json
 
 if [[ $CI != "true" ]]; then

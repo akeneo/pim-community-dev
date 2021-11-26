@@ -64,6 +64,7 @@ USE_ONBOARDER_CATALOG ?= false
 UPGRADE_STEP_2 ?= false
 BUCKET_PIM_SRC_DIR ?= gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)
 MAIN_TF_TEMPLATE ?= $(PRODUCT_REFERENCE_TYPE)
+COMMIT_TARGET ?= deploy
 
 ifeq ($(CI),true)
 	TF_INPUT_FALSE ?= -input=false
@@ -354,7 +355,7 @@ commit-instance: pull-cloud-customer-dev
 	IMAGE_TAG=$(IMAGE_TAG) $(MAKE) create-ci-release-files
 	IMAGE_TAG=$(IMAGE_TAG) $(MAKE) change-terraform-source-version
 	GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes' \
-	make deploy
+	make $(COMMIT_TARGET)
 	git config --global user.email "pim_ci@akeneo.com"
 	git config --global user.name "pim_ci_instance_creation"
 	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
@@ -522,14 +523,13 @@ remove_unused_gcloud_logging_metrics:
 
 .PHONY: clone_serenity
 clone_serenity:
-	echo "DEPRECATED"
+	@echo "Deprecated"
 	PRODUCT_REFERENCE_TYPE=serenity_instance MAIN_TF_TEMPLATE=serenity_instance INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files && \
 	SOURCE_PFID=$(SOURCE_PFID) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) bash $(DEPLOYMENT_DIR)/bin/clone_saas_instance.sh
 
 .PHONY: clone_saas_instance
 clone_saas_instance:
-	PRODUCT_REFERENCE_TYPE=$(PRODUCT_REFERENCE_TYPE) MAIN_TF_TEMPLATE=$(PRODUCT_REFERENCE_TYPE) INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files && \
-	SOURCE_PFID=$(SOURCE_PFID) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) BUCKET=$(BUCKET) bash $(DEPLOYMENT_DIR)/bin/clone_saas_instance.sh
+	SOURCE_PFID=$(SOURCE_PFID) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) DESTINATION_PATH=$(DEPLOYMENTS_INSTANCES_DIR)/$(PFID) BUCKET=$(BUCKET) bash $(DEPLOYMENT_DIR)/bin/clone_saas_instance.sh
 
 .PHONY: clone_flexibility
 clone_flexibility:
