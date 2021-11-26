@@ -14,7 +14,7 @@ const CatalogVolumeKeyFigure: FC<Props> = ({catalogVolume}) => {
 
   return (
     <>
-      {catalogVolume.value && (
+      {catalogVolume.value !== null && (
         <>
           {catalogVolume.type === 'average_max' && typeof catalogVolume.value === 'object' && (
             <KeyFigure icon={icon} title={translate(`pim_catalog_volume.axis.${catalogVolume.name}`)}>
