@@ -106,7 +106,7 @@ services:
             - '%pim_api.configuration%'
             - '@monolog.logger.pim_api_acl'
             - '@oro_security.security_facade'
-            - '@Akeneo\Pim\Enrichment\Component\Command\ProductModel\RemoveProductModelHandler'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler'
             - '@validator'
 
     pim_api.controller.category:
@@ -212,7 +212,7 @@ services:
             - '@pim_catalog.repository.family_variant'
             - '@pim_enrich.filter.product_model_attribute_filter'
             - '@pim_enrich.filter.product_edit_data'
-            - '@Akeneo\Pim\Enrichment\Component\Command\ProductModel\RemoveProductModelHandler'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler'
             - '@validator'
 
     pim_enrich.controller.rest.group:

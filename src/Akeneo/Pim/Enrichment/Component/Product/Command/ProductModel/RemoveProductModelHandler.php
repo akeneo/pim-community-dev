@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Enrichment\Component\Command\ProductModel;
+namespace Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel;
 
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;

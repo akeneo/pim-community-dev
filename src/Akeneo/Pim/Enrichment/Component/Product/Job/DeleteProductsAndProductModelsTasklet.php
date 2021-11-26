@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Job;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
-use Akeneo\Pim\Enrichment\Component\Command\ProductModel\RemoveProductModelCommand;
-use Akeneo\Pim\Enrichment\Component\Command\ProductModel\RemoveProductModelHandler;
+use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelCommand;
+use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CountVariantProductsInterface;

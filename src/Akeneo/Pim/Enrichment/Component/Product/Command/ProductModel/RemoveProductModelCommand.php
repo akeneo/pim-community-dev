@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Enrichment\Component\Command\ProductModel;
+namespace Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel;
 
 final class RemoveProductModelCommand
 {

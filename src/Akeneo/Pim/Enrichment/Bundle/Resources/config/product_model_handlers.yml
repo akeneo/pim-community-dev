@@ -1,5 +1,5 @@
 services:
-    Akeneo\Pim\Enrichment\Component\Command\ProductModel\RemoveProductModelHandler:
+    Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler:
         arguments:
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.remover.product_model'

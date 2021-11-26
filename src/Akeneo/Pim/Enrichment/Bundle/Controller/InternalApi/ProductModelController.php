@@ -5,8 +5,8 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
-use Akeneo\Pim\Enrichment\Component\Command\ProductModel\RemoveProductModelCommand;
-use Akeneo\Pim\Enrichment\Component\Command\ProductModel\RemoveProductModelHandler;
+use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelCommand;
+use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\EntityWithValuesFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;

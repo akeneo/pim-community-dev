@@ -275,7 +275,7 @@ services:
         arguments:
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
             - '@pim_catalog.remover.product'
-            - '@Akeneo\Pim\Enrichment\Component\Command\ProductModel\RemoveProductModelHandler'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler'
             - '@pim_connector.doctrine.cache_clearer'
             - '@pim_catalog.filter.chained'
             - 100

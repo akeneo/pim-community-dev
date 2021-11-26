@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\ApiAggregatorForProductModelPostSaveEventSubscriber;
-use Akeneo\Pim\Enrichment\Component\Command\ProductModel\RemoveProductModelCommand;
-use Akeneo\Pim\Enrichment\Component\Command\ProductModel\RemoveProductModelHandler;
+use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelCommand;
+use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQueryHandler;
