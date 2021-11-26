@@ -10,8 +10,6 @@ akeneo_referenceentity:
     record:
       create: Crear registre
       edit: Editar els registres
-      delete: Suprimeix un registre
-      delete_all: Suprimeix tots els registres d'entitat
       list_product: Llista de productes per enregistrar
     attribute:
       create: Afegeix un atribut a una entitat de referència
@@ -29,3 +27,6 @@ pim_analytics:
     max_number_of_attributes_per_reference_entity: Nombre màxim d'atributs per entitat de referència
 akeneo_reference_entity: Enllaç simple de l'entitat de referència
 akeneo_reference_entity_collection: Enllaç múltiple d'entitat de referència
+pim_api:
+  acl_group:
+    reference_entity: Entitats de referència

@@ -44,7 +44,6 @@ pim_asset_manager:
     filter:
       title: Filtres de recursos
     basket:
-      title: '{{ assetCount }} actiu seleccionat|{{ assetCount }} actius seleccionats'
       empty_title: La cistella és buida
       remove_one_asset: Eliminar recurs {{ assetName }} de la selecció de recursos
       remove_all_assets: Eliminar tot
@@ -57,7 +56,6 @@ pim_asset_manager:
     download: Baixar
     copy_url: Copiar URL
     error: S'ha produït un error durant el procés de la vista prèvia
-  close: Tancar el modal
   breadcrumb:
     products: Productes
   app:
@@ -122,21 +120,12 @@ pim_asset_manager:
       transformations: Transformacions
       product_link_rules: Regles d'enllaç del producte
     transformations:
-      help:
-        title: 'Benvingut a la seva nova zona de gestió d''actius!'
-        description: 'Aquí pot definir fins a 10 transformacions per família d''actius.'
-        link: 'Si vol, pot profunditzar en les noves transformacions del Gestor d''actius aquí'
       subsection: 'Propietats de transformació'
     product_link_rules:
       product_link_rules_subsection: 'Propietats de les regles d''enllaç del producte'
-      help:
-        title: 'Benvingut a la seva nova zona de gestió d''actius!'
-        description: 'Aquí pot definir fins a 2 regles d''enllaç de producte per família d''actius.'
-        link: 'Si vol profunditzar en la funció de Regles d''enllaç de producte, cliqueu aquí'
       execute_rules:
         confirm_title: Confirmar l'execució
         execute_rules: Executar regles
-        cancel: Cancelar
     properties:
       title: Propietats de les families de recursos
       identifier: Codi
@@ -167,9 +156,6 @@ pim_asset_manager:
       input:
         label: Etiqueta
         code: Codi (requerit)
-      confirm: Desar
-    delete:
-      title: Atribut
     notification:
       create:
         success: Família de recursos creada correctament.
@@ -206,7 +192,6 @@ pim_asset_manager:
       input:
         label: Etiqueta
         create_another: Crear un altre recurs
-      confirm: Desar
     upload:
       retry: Torna-ho a provar
       remove_all: Eliminar tot
@@ -215,6 +200,8 @@ pim_asset_manager:
       cannot_retry: S'ha produït un error al intentar pujar el fitxer.
     delete:
       title: Recurs
+    mass_delete:
+      title: Recursos
     grid:
       search: Cerca a l'etiqueta, el codi i el text dels atributs
       filter:
@@ -268,7 +255,6 @@ pim_asset_manager:
         title: Crear
       input:
         label: Etiqueta
-      confirm: Desar
     edit:
       input:
         asset_type: Família de recursos relacionada (requerit)
@@ -289,12 +275,6 @@ pim_asset_manager:
       sub_title: Families de recursos
       helper:
         title: Traduccions d'etiquetes
-  modal:
-    delete:
-      subtitle: Confirmar l'eliminació
-      button:
-        cancel: Cancel·lar
-        confirm: Suprimir
 pim_enrich:
   confirmation:
     discard_changes: 'Perdreu els canvis a la "{{ entity }}" entitat si sortiu de la pàgina.'

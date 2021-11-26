@@ -31,12 +31,10 @@ teamwork_assistant:
     no_project_create: crear un nou projecte
     description: Descripció
     due_date: Data límit
-    todo: Obert
-    in_progress: En progrés
-    done: Fet
     all_contributors: Tots els col·laboradors
     you: Tú
     display_products: Mostrar productes
+    projects: Projectes
     placeholder:
       contributor_selector: Buscar col·laborador
       project_selector: Buscar projecte

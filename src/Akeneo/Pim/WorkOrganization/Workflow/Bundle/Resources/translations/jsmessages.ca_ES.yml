@@ -11,6 +11,12 @@ pim_datagrid:
   no_results:
     proposal: No hi ha cap proposta per revisar. Intentar canviar els criteris de cerca.
     product_draft: No hi ha cap projecte de producte per revisar. Intentar canviar els criteris de cerca.
+  workflow:
+    status:
+      in_progress: En procés
+      ready: En espera d'aprovació
+    status_message:
+      ready: En espera d'aprovació
 pimee_datagrid:
   cells:
     expand:
@@ -28,23 +34,20 @@ pimee_workflow:
     mass_action_group:
       review:
         label: Acció massiva
-    partial_accept:
-      modal.title: Aprovar informació parcial
-      modal.label: Deixa un comentari (opcional)
-      modal.error: S'ha produït un error, la proposta no ha estat parcialment aprovada
-      modal.success: La proposta ha estat validada de forma parcialment correcta
+    approve:
+      title: Aprovar la proposta
+      success: La proposta s'ha aplicat amb èxit.
+      error: "La proposta no es pot aplicar a causa de l'error següent: {{ error }}"
+    reject:
+      title: Rebutjar la proposta
+    remove:
+      title: Eliminar proposta
     partial_approve:
-      modal:
-        title: Aprovar parcialment els canvis
-        label: Deixa un comentari (opcional)
-        error: S'ha produït un error, la proposta no ha estat parcialment aprovada
-        success: Els canvis han estat aprovats correctament
+      title: Aprovar informació parcial
+      success: La proposta ha estat validada de forma parcialment correcta
     partial_reject:
-      modal:
-        title: Rebutjar canvis parcialment
-        label: Deixa un comentari (opcional)
-        error: S'ha produït un error, la proposta no ha estat rebutjada parcialment
-        success: Els canvis han estat rebutjats correctament
+      title: Rebutjar canvis parcialment
+      success: Els canvis han estat rebutjats correctament
 batch_jobs:
   csv_published_product_export:
     label: Exportació en CSV del producte publicat
@@ -157,13 +160,6 @@ pimee_enrich.entity.published_product:
       label: Desfer la publicació
 pimee_enrich.entity.product_draft:
   flash:
-    approve:
-      success: La proposta s'ha aplicat amb èxit.
-      fail: "La proposta no es pot aplicar a causa de l'error següent: {{ error }}"
-    reject:
-      success: La proposta ha estat rebutjada.
-    remove:
-      success: La proposta ha estat eliminada.
     update:
       success: El projecte de producte s'ha desat correctament
       fail: El projecte de producte no s'ha pogut actualitzar
@@ -173,14 +169,10 @@ pimee_enrich.entity.product_draft:
       skip: L'esborrany del producte no s'ha enviat per la seva aprovació, ja que no s'ha editat cap valor
   module:
     proposal:
-      accept: Acceptar la proposta
-      accept_selected: Acceptar la proposta seleccionada|Acceptar les propostes seleccionades
-      reject: Rebutjar la proposta
-      reject_selected: Rebutjar la proposta seleccionada|Rebutjar les propostes seleccionades
-      remove: Eliminar proposta
-      comment_title: Comenteu la seva proposta (opcional - 255 caràcters màx.)
       comment_chars: caràcters
       confirm: Enviar
+      accept_selected: Acceptar la proposta seleccionada|Acceptar les propostes seleccionades
+      reject_selected: Rebutjar la proposta seleccionada|Rebutjar les propostes seleccionades
     edit:
       discard_changes: Esteu segur que voleu enviar el seu projecte a aprovació sense canvis no desats? Aquests canvis es perdran.
       discard_changes_title: Esteu segur que voleu enviar aquest projecte?
