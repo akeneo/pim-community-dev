@@ -1,5 +1,5 @@
 services:
-  Akeneo\Pim\Enrichment\Component\Product\Commands\GroupProductsHandler:
+  Akeneo\Pim\Enrichment\Component\Product\Command\GroupProductsHandler:
     arguments:
       - '@akeneo.pim.enrichment.product.query.find_product_identifiers'
       - '@pim_catalog.repository.group'

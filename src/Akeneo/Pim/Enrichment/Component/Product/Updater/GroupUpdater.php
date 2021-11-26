@@ -84,7 +84,7 @@ class GroupUpdater implements ObjectUpdaterInterface
             case 'type':
                 $this->setType($group, $data);
                 break;
-                case 'labels':
+            case 'labels':
                 $this->setLabels($group, $data);
                 break;
         }

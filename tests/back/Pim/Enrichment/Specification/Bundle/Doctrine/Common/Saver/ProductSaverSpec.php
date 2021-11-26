@@ -16,11 +16,10 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class ProductSaverSpec extends ObjectBehavior
 {
     function let(
-        ObjectManager                 $objectManager,
-        EventDispatcherInterface      $eventDispatcher,
+        ObjectManager $objectManager,
+        EventDispatcherInterface $eventDispatcher,
         ProductUniqueDataSynchronizer $uniqueDataSynchronizer
-    )
-    {
+    ) {
         $this->beConstructedWith($objectManager, $eventDispatcher, $uniqueDataSynchronizer);
     }
 

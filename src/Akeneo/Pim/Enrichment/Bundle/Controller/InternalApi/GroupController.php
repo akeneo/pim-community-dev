@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Product\Commands\GroupProductsCommand;
-use Akeneo\Pim\Enrichment\Component\Product\Commands\GroupProductsHandler;
+use Akeneo\Pim\Enrichment\Component\Product\Command\GroupProductsCommand;
+use Akeneo\Pim\Enrichment\Component\Product\Command\GroupProductsHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\GroupFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;

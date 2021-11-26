@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Commands;
 
-use Akeneo\Pim\Enrichment\Component\Product\Commands\GroupProductsCommand;
-use Akeneo\Pim\Enrichment\Component\Product\Commands\GroupProductsHandler;
+use Akeneo\Pim\Enrichment\Component\Product\Command\GroupProductsCommand;
+use Akeneo\Pim\Enrichment\Component\Product\Command\GroupProductsHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductIdentifiersInterface;

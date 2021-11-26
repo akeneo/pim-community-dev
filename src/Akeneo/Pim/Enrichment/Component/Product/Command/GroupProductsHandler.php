@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Commands;
+namespace Akeneo\Pim\Enrichment\Component\Product\Command;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductIdentifiersInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
@@ -9,6 +9,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 
 /**
+ * Warning: This handler implementation shows performance limitations due to reuse of \Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface::saveAll
+ * All impacted products are loaded...
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -30,16 +32,16 @@ class GroupProductsHandler
 
     public function handle(GroupProductsCommand $updateProductsToGroupCommand)
     {
-        $currentProductIds = $updateProductsToGroupCommand->productIds();
+        $newProductIds = $updateProductsToGroupCommand->productIds();
         $oldProductIds = $this->findGroupProductIdentifiers->fromGroupId($updateProductsToGroupCommand->groupId());
 
-        $newProductIds = array_diff($currentProductIds, $oldProductIds);
-        $removedProductIds = array_diff($oldProductIds, $currentProductIds);
+        $addedProductIds = array_diff($newProductIds, $oldProductIds);
+        $removedProductIds = array_diff($oldProductIds, $newProductIds);
 
         $productsToUpdate = [];
         $group = $this->groupRepository->find($updateProductsToGroupCommand->groupId());
 
-        foreach ($newProductIds as $newProductId) {
+        foreach ($addedProductIds as $newProductId) {
             $dbProduct = $this->productRepository->find($newProductId);
             $dbProduct->addGroup($group);
             $productsToUpdate[] = $dbProduct;

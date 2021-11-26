@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Commands;
+namespace Akeneo\Pim\Enrichment\Component\Product\Command;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -11,6 +11,12 @@ class GroupProductsCommand
 {
     private string $groupId;
     private array $productIds;
+
+    public function __construct(string $groupId, array $uptodateProductIds)
+    {
+        $this->groupId = $groupId;
+        $this->productIds = $uptodateProductIds;
+    }
 
     /**
      * @return string
@@ -26,11 +32,5 @@ class GroupProductsCommand
     public function productIds(): array
     {
         return $this->productIds;
-    }
-
-    public function __construct(string $groupId, array $uptodateProductIds)
-    {
-        $this->groupId = $groupId;
-        $this->productIds = $uptodateProductIds;
     }
 }
