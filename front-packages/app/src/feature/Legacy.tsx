@@ -30,13 +30,12 @@ const loadStyle = async (styleUrl: string): Promise<void> => {
 
 let legacyForm: null | any = null;
 const loadLegacy = async (element: HTMLDivElement) => {
-  loadStyle('./dist/pim.css');
+  if (null === legacyForm) {
+    loadStyle('./dist/pim.css');
+  }
   await Promise.all([loadScript('./dist/vendor.min.js'), loadScript('./dist/main.min.js')]);
 
-  if (null === legacyForm) {
-    legacyForm = (window as any).pimLegacy.build('pim-app');
-  }
-
+  legacyForm = (window as any).pimLegacy.build('pim-app');
   legacyForm.then((legacyView: any) => {
     legacyView.setElement(element);
     legacyView.render();
