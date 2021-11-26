@@ -96,21 +96,21 @@ class AssetScopeMapper implements ScopeMapperInterface
         return self::SCOPE_ACL_MAP[$scopeName];
     }
 
-    public function getMessage(string $scope): array
+    public function getMessage(string $scopeName): array
     {
-        if (!\array_key_exists($scope, self::SCOPE_MESSAGE_MAP)) {
+        if (!\array_key_exists($scopeName, self::SCOPE_MESSAGE_MAP)) {
             return [];
         }
 
-        return self::SCOPE_MESSAGE_MAP[$scope];
+        return self::SCOPE_MESSAGE_MAP[$scopeName];
     }
 
-    public function getLowerHierarchyScopes(string $scope): array
+    public function getLowerHierarchyScopes(string $scopeName): array
     {
-        if (!\array_key_exists($scope, self::SCOPE_HIERARCHY)) {
+        if (!\array_key_exists($scopeName, self::SCOPE_HIERARCHY)) {
             return [];
         }
 
-        return self::SCOPE_HIERARCHY[$scope];
+        return self::SCOPE_HIERARCHY[$scopeName];
     }
 }

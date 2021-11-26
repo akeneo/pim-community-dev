@@ -10,7 +10,7 @@ use PhpSpec\ObjectBehavior;
 
 class AssetScopeMapperSpec extends ObjectBehavior
 {
-    public function it_is_a_channel_scope_mapper(): void
+    public function it_is_a_asset_scope_mapper(): void
     {
         $this->shouldHaveType(AssetScopeMapper::class);
         $this->shouldImplement(ScopeMapperInterface::class);
