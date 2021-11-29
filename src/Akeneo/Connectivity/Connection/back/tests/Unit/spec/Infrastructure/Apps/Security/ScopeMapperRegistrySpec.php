@@ -124,14 +124,14 @@ class ScopeMapperRegistrySpec extends ObjectBehavior
             ->getMessages(['write_products', 'write_catalog_structure', 'read_products', 'read_catalog_structure'])
             ->shouldReturn([
                 [
-                    'icon' => 'write_products_icon',
-                    'type' => 'write',
-                    'entities' => 'products',
-                ],
-                [
                     'icon' => 'write_catalog_structure_icon',
                     'type' => 'write',
                     'entities' => 'catalog_structure',
+                ],
+                [
+                    'icon' => 'write_products_icon',
+                    'type' => 'write',
+                    'entities' => 'products',
                 ]
             ]);
     }
@@ -163,12 +163,12 @@ class ScopeMapperRegistrySpec extends ObjectBehavior
         $this
             ->getAcls(['write_products', 'write_catalog_structure', 'read_products'])
             ->shouldReturn([
-                'pim_api_product_edit',
+                'pim_api_product_list',
                 'pim_api_attribute_edit',
                 'pim_api_attribute_group_edit',
                 'pim_api_family_edit',
                 'pim_api_family_variant_edit',
-                'pim_api_product_list',
+                'pim_api_product_edit',
                 'pim_api_attribute_list',
                 'pim_api_attribute_group_list',
                 'pim_api_family_list',
