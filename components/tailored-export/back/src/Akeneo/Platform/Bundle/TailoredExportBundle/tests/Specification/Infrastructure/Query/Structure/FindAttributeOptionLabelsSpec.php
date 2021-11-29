@@ -10,9 +10,8 @@ use PhpSpec\ObjectBehavior;
 
 class FindAttributeOptionLabelsSpec extends ObjectBehavior
 {
-    public function let(
-        GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
-    ): void {
+    public function let(GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues): void
+    {
         $this->beConstructedWith($getExistingAttributeOptionsWithValues);
     }
 

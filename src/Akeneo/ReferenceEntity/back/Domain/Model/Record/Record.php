@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Domain\Model\Record;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
+use Closure;
+use DateTimeImmutable;
+use DateTimeZone;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -31,16 +31,16 @@ class Record
     private RecordCode $code;
     private ReferenceEntityIdentifier $referenceEntityIdentifier;
     private ValueCollection $valueCollection;
-    private \DateTimeImmutable $createdAt;
-    private \DateTimeImmutable $updatedAt;
+    private DateTimeImmutable $createdAt;
+    private DateTimeImmutable $updatedAt;
 
     private function __construct(
         RecordIdentifier $identifier,
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         RecordCode $code,
         ValueCollection $valueCollection,
-        \DateTimeImmutable $createdAt,
-        \DateTimeImmutable $updatedAt
+        DateTimeImmutable $createdAt,
+        DateTimeImmutable $updatedAt
     ) {
         $this->identifier = $identifier;
         $this->referenceEntityIdentifier = $referenceEntityIdentifier;
@@ -61,8 +61,8 @@ class Record
             $referenceEntityIdentifier,
             $code,
             $valueCollection,
-            new \DateTimeImmutable('now', new \DateTimeZone('UTC')),
-            new \DateTimeImmutable('now', new \DateTimeZone('UTC'))
+            new DateTimeImmutable('now', new DateTimeZone('UTC')),
+            new DateTimeImmutable('now', new DateTimeZone('UTC'))
         );
     }
 
@@ -71,9 +71,9 @@ class Record
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         RecordCode $code,
         ValueCollection $valueCollection,
-        \DateTimeImmutable $createdAt,
-        \DateTimeImmutable $updatedAt
-    ) {
+        DateTimeImmutable $createdAt,
+        DateTimeImmutable $updatedAt
+    ): self {
         return new self($identifier, $referenceEntityIdentifier, $code, $valueCollection, $createdAt, $updatedAt);
     }
 
@@ -82,12 +82,12 @@ class Record
         return $this->identifier;
     }
 
-    public function getCreatedAt(): \DateTimeImmutable
+    public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function getUpdatedAt(): \DateTimeImmutable
+    public function getUpdatedAt(): DateTimeImmutable
     {
         return $this->updatedAt;
     }
@@ -115,7 +115,7 @@ class Record
     public function setValue(Value $value): void
     {
         $this->valueCollection = $this->valueCollection->setValue($value);
-        $this->updatedAt = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        $this->updatedAt = new DateTimeImmutable('now', new DateTimeZone('UTC'));
     }
 
     public function findValue(ValueKey $valueKey): ?Value
@@ -133,7 +133,7 @@ class Record
         ];
     }
 
-    public function filterValues(\Closure $closure): ValueCollection
+    public function filterValues(Closure $closure): ValueCollection
     {
         return $this->valueCollection->filter($closure);
     }

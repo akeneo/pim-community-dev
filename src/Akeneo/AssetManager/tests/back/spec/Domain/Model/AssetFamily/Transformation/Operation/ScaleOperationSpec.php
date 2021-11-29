@@ -55,7 +55,7 @@ class ScaleOperationSpec extends ObjectBehavior
         $object->beAnInstanceOf(ScaleOperation::class);
         $object->getWidth()->shouldBe(200);
         $object->getHeight()->shouldBe(100);
-        $object->getRatioPercent()->shouldBeNull();
+        $object->getRatioPercent()->shouldBe(null);
 
         $object = $this::create([
             'width' => 200,
@@ -63,7 +63,7 @@ class ScaleOperationSpec extends ObjectBehavior
         ]);
         $object->beAnInstanceOf(ScaleOperation::class);
         $object->getWidth()->shouldBe(200);
-        $object->getHeight()->shouldBeNull();
+        $object->getHeight()->shouldBe(null);
         $object->getRatioPercent()->shouldBe(50);
 
         $object = $this::create([
@@ -71,7 +71,7 @@ class ScaleOperationSpec extends ObjectBehavior
             'ratio' => 50,
         ]);
         $object->beAnInstanceOf(ScaleOperation::class);
-        $object->getWidth()->shouldBeNull();
+        $object->getWidth()->shouldBe(null);
         $object->getHeight()->shouldBe(100);
         $object->getRatioPercent()->shouldBe(50);
     }
@@ -83,23 +83,23 @@ class ScaleOperationSpec extends ObjectBehavior
         ]);
         $object->beAnInstanceOf(ScaleOperation::class);
         $object->getWidth()->shouldBe(200);
-        $object->getHeight()->shouldBeNull();
-        $object->getRatioPercent()->shouldBeNull();
+        $object->getHeight()->shouldBe(null);
+        $object->getRatioPercent()->shouldBe(null);
 
         $object = $this::create([
             'height' => 100,
         ]);
         $object->beAnInstanceOf(ScaleOperation::class);
-        $object->getWidth()->shouldBeNull();
+        $object->getWidth()->shouldBe(null);
         $object->getHeight()->shouldBe(100);
-        $object->getRatioPercent()->shouldBeNull();
+        $object->getRatioPercent()->shouldBe(null);
 
         $object = $this::create([
             'ratio' => 50,
         ]);
         $object->beAnInstanceOf(ScaleOperation::class);
-        $object->getWidth()->shouldBeNull();
-        $object->getHeight()->shouldBeNull();
+        $object->getWidth()->shouldBe(null);
+        $object->getHeight()->shouldBe(null);
         $object->getRatioPercent()->shouldBe(50);
     }
 

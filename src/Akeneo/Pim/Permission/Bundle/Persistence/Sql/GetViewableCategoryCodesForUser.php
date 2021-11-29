@@ -48,6 +48,11 @@ SQL;
             'categoryCodes' => $categoryCodes
         ], ['categoryCodes' => Connection::PARAM_STR_ARRAY]);
 
-        return $statement->fetchAll(\PDO::FETCH_COLUMN, 'code');
+        $codes = [];
+        foreach ($statement->fetchAllAssociative() as $row) {
+            $codes[] = $row['code'];
+        }
+
+        return $codes;
     }
 }

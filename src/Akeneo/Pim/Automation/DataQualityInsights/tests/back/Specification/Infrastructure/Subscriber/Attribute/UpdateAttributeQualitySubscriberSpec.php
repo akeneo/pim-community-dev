@@ -17,8 +17,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\Co
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\Structure\AttributeLabelsSpellingEvaluatedEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\AttributeSpellcheck;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\SpellcheckResultByLocaleCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\AttributeQualityRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
+use DateTimeImmutable;
+use Exception;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
@@ -27,24 +28,23 @@ final class UpdateAttributeQualitySubscriberSpec extends ObjectBehavior
 {
     public function let(
         ConsolidateAttributeQuality $consolidateAttributeQuality,
-        AttributeQualityRepositoryInterface $attributeQualityRepository,
         LoggerInterface $logger
     ) {
-        $this->beConstructedWith($consolidateAttributeQuality, $attributeQualityRepository, $logger);
+        $this->beConstructedWith($consolidateAttributeQuality, $logger);
     }
 
     public function it_does_not_crash_if_an_exception_is_thrown_during_attribute_quality_consolidation(
-          $consolidateAttributeQuality,
-          $logger
+        ConsolidateAttributeQuality $consolidateAttributeQuality,
+        LoggerInterface $logger
     ) {
         $attributeCode = new AttributeCode('color');
         $attributeSpellcheck = new AttributeSpellcheck(
             $attributeCode,
-            new \DateTimeImmutable(),
+            new DateTimeImmutable(),
             new SpellcheckResultByLocaleCollection()
         );
 
-        $consolidateAttributeQuality->byAttributeCode($attributeCode)->willThrow(new \Exception('Fail'));
+        $consolidateAttributeQuality->byAttributeCode($attributeCode)->willThrow(new Exception('Fail'));
         $logger->error(Argument::cetera())->shouldBeCalled();
 
         $this->onAttributeLabelsSpellingEvaluated(new AttributeLabelsSpellingEvaluatedEvent($attributeSpellcheck));

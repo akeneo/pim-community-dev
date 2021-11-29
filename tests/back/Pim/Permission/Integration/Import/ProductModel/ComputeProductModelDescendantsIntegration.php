@@ -111,10 +111,6 @@ CSV;
         $this->loadFixtures();
     }
 
-    /**
-     * @param array $filters
-     * @param array $codes
-     */
     private function assertProductModelIndex(array $filters, array $codes): void
     {
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
@@ -126,7 +122,7 @@ CSV;
         );
         $cursor = $pmqb->execute();
 
-        static::assertEquals($cursor->count(), count($codes));
+        static::assertEquals(count($codes), $cursor->count());
         foreach ($cursor as $productModel) {
             static::assertContains($productModel->getCode(), $codes);
         }

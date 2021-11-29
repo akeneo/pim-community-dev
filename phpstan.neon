@@ -3,7 +3,7 @@ includes:
     - vendor/phpstan/phpstan-webmozart-assert/extension.neon
 parameters:
     reportUnmatchedIgnoredErrors: false
-    excludes_analyse:
+    excludePaths:
         - %currentWorkingDirectory%/src/Akeneo/Pim/Automation/DataQualityInsights/tests
         - %currentWorkingDirectory%/src/Akeneo/Platform/Bundle/TailoredExportBundle
         - %currentWorkingDirectory%/vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/tests

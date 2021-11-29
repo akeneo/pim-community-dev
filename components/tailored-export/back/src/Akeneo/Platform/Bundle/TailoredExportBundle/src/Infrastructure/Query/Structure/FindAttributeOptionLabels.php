@@ -26,12 +26,15 @@ class FindAttributeOptionLabels implements FindAttributeOptionLabelsInterface
         $attributeOptionTranslations = $this->getExistingAttributeOptionsWithValues
             ->fromAttributeCodeAndOptionCodes($optionKeys);
 
-        return array_reduce($optionCodes, function (&$carry, $optionCode) use ($attributeCode, $attributeOptionTranslations, $locale) {
-            $optionKey = sprintf('%s.%s', $attributeCode, $optionCode);
+        return array_reduce(
+            $optionCodes,
+            function ($carry, $optionCode) use ($attributeCode, $attributeOptionTranslations, $locale) {
+                $optionKey = sprintf('%s.%s', $attributeCode, $optionCode);
+                $carry[$optionCode] = $attributeOptionTranslations[$optionKey][$locale] ?? null;
 
-            $carry[$optionCode] = $attributeOptionTranslations[$optionKey][$locale] ?? null;
-
-            return $carry;
-        }, []);
+                return $carry;
+            },
+            []
+        );
     }
 }

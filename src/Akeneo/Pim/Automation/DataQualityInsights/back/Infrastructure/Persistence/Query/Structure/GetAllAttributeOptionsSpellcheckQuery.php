@@ -46,12 +46,24 @@ ORDER BY attribute_code, attribute_option_code
 SQL;
         $query = str_replace('{limit}', $limit > 0 ? sprintf('LIMIT %d', $limit) : '', $query);
 
-        return $this->dbConnection
+        $rows = $this->dbConnection
             ->executeQuery($query, [
                 'attributeCode' => strval($attributeCode),
                 'searchAfterOptionCode' => $searchAfterOptionCode ?? '',
             ])
-            ->fetchAll(\PDO::FETCH_FUNC, [$this, 'format']);
+            ->fetchAllAssociative();
+
+        $options = [];
+        foreach ($rows as $row) {
+            $options[] = $this->format(
+                $row['attribute_code'],
+                $row['attribute_option_code'],
+                $row['evaluated_at'],
+                $row['result']
+            );
+        }
+
+        return $options;
     }
 
     public function format($attribute_code, $attribute_option_code, $evaluated_at, $result)
