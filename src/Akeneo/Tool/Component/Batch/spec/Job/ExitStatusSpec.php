@@ -7,20 +7,6 @@ use PhpSpec\ObjectBehavior;
 
 class ExitStatusSpec extends ObjectBehavior
 {
-    function it_sets_exit_code()
-    {
-        $this->beConstructedWith(ExitStatus::COMPLETED);
-        $this->setExitCode(ExitStatus::STOPPED);
-        $this->getExitCode()->shouldReturn(ExitStatus::STOPPED);
-    }
-
-    function it_sets_unknown_exit_code()
-    {
-        $this->beConstructedWith(ExitStatus::COMPLETED);
-        $this->setExitCode(10);
-        $this->getExitCode()->shouldReturn(ExitStatus::UNKNOWN);
-    }
-
     function it_has_no_description()
     {
         $this->beConstructedWith("10");
@@ -75,15 +61,6 @@ class ExitStatusSpec extends ObjectBehavior
         $this->getExitDescription()->shouldReturn('my other desc');
     }
 
-    function it_adds_exit_code_to_the_same_status()
-    {
-        $this->beConstructedWith(ExitStatus::EXECUTING);
-        $otherStatus = new ExitStatus(ExitStatus::EXECUTING);
-        $anotherStatus = new ExitStatus(ExitStatus::EXECUTING);
-        $this->setExitCode($otherStatus->getExitCode());
-        $this->getExitCode()->shouldReturn($otherStatus->getExitCode());
-    }
-
     function it_adds_exit_description_with_stacktrace()
     {
         $this->beConstructedWith(ExitStatus::EXECUTING);
@@ -104,15 +81,6 @@ class ExitStatusSpec extends ObjectBehavior
         $this->beConstructedWith(ExitStatus::EXECUTING);
         $this->addExitDescription('Foo')->addExitDescription(null);
         $this->getExitDescription()->shouldReturn('Foo');
-    }
-
-    function it_changes_the_exit_code_without_changing_the_exit_description()
-    {
-        $this->beConstructedWith('BAR', 'Bar');
-        $this->setExitCode('FOO');
-
-        $this->getExitCode()->shouldReturn('FOO');
-        $this->getExitDescription()->shouldReturn('Bar');
     }
 
     function it_adds_an_exit_description_to_an_existing_description()

@@ -53,7 +53,8 @@ class ExitStatus
      */
     const STOPPED = "STOPPED";
 
-    protected static $statusSeverity = [
+    /** @var int[] */
+    protected static array $statusSeverity = [
         self::EXECUTING => 1,
         self::COMPLETED => 2,
         self::NOOP      => 3,
@@ -62,56 +63,23 @@ class ExitStatus
         self::UNKNOWN   => 6
     ];
 
-    private $exitCode;
-    private $exitDescription;
+    private string $exitCode;
+    private string $exitDescription = "";
 
-    /**
-     * Constructor
-     *
-     * @param integer $exitCode        Code for the exit status
-     * @param string  $exitDescription Description of the exit status
-     */
-    public function __construct($exitCode = self::UNKNOWN, $exitDescription = "")
+    public function __construct(string $exitCode = self::UNKNOWN, string $exitDescription = "")
     {
         $this->exitCode = $exitCode;
         $this->exitDescription = $exitDescription;
     }
 
-    /**
-     * Getter for the exit code (defaults to blank).
-     *
-     * @return the exit code.
-     */
-    public function getExitCode()
+    public function getExitCode(): string
     {
         return $this->exitCode;
     }
 
-    /**
-     * Getter for the exit description (defaults to blank)
-     *
-     * @return string
-     */
-    public function getExitDescription()
+    public function getExitDescription(): string
     {
         return $this->exitDescription;
-    }
-
-    /**
-     * Set the current status
-     * @param integer $exitCode
-     *
-     * @return ExitStatus
-     */
-    public function setExitCode($exitCode)
-    {
-        if ($exitCode > self::UNKNOWN) {
-            $this->exitCode = self::UNKNOWN;
-        } else {
-            $this->exitCode = $exitCode;
-        }
-
-        return $this;
     }
 
     /**
@@ -133,16 +101,12 @@ class ExitStatus
      * If the input is null just return this.
      *
      * @param ExitStatus $status an {@link ExitStatus} to combine with this one.
-     *
-     * @return ExitStatus a new {@link ExitStatus} combining the current value and the argument provided.
      */
-    public function logicalAnd(ExitStatus $status)
+    public function logicalAnd(ExitStatus $status): self
     {
-        if ($status != null) {
-            $this->addExitDescription($status->exitDescription);
-            if ($this->compareTo($status) < 0) {
-                $this->exitCode = $status->exitCode;
-            }
+        $this->addExitDescription($status->exitDescription);
+        if ($this->compareTo($status) < 0) {
+            $this->exitCode = $status->exitCode;
         }
 
         return $this;
@@ -155,7 +119,7 @@ class ExitStatus
      *
      * @return 1,0,-1 according to the severity and exit code
      */
-    public function compareTo(ExitStatus $status)
+    public function compareTo(ExitStatus $status): int
     {
         if ($status->severity() > $this->severity()) {
             return -1;
@@ -167,12 +131,7 @@ class ExitStatus
         return 0;
     }
 
-    /**
-     * Return the severity of the current status
-     *
-     * @return severity
-     */
-    private function severity()
+    private function severity(): int
     {
         $severity = self::MAX_SEVERITY;
 
@@ -183,22 +142,12 @@ class ExitStatus
         return $severity;
     }
 
-    /**
-     * Return the string representation of the current status
-     *
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('[%s] %s', $this->exitCode, $this->exitDescription);
     }
 
-    /**
-     * Check if this status represents a running process.
-     *
-     * @return boolean true if the exit code is "EXECUTING" or "UNKNOWN"
-     */
-    public function isRunning()
+    public function isRunning(): bool
     {
         return ((self::EXECUTING ===  $this->exitCode) || (self::UNKNOWN === $this->exitCode));
     }
@@ -208,12 +157,10 @@ class ExitStatus
      * already a description present the two will be concatenated with a
      * semicolon.
      *
-     * @param string $description the description to add. Can be an exception.
+     * @param string|\Exception $description the description to add. Can be an exception.
      *                            In this case, the stack trace is used as description
-     *
-     * @return ExitStatus a new {@link ExitStatus} with the same properties but a new exit description
      */
-    public function addExitDescription($description)
+    public function addExitDescription(string|\Exception|null $description): self
     {
         if ($description instanceof \Exception) {
             $description = $description->getTraceAsString();
