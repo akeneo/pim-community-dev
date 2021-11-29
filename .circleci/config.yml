@@ -2064,6 +2064,9 @@ jobs:
 
 workflows:
   pull_request:
+      when:
+          not:
+              equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
       jobs:
           - ready_to_build?:
                 type: approval
@@ -2215,6 +2218,9 @@ workflows:
                     - test_tria
 
   on_demand_deployment_validation:
+    when:
+        not:
+            equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
     jobs:
       - deployment_validation:
           name: "Start test ?"
@@ -2244,6 +2250,9 @@ workflows:
               PFID: ["grth-r2d2"]
 
   on_demand_release:
+    when:
+        not:
+            equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
     jobs:
       - ready_to_build?:
           name: "[<< matrix.PRODUCT_TYPE >>] Release ?"
@@ -2369,13 +2378,10 @@ workflows:
             - "[<< matrix.PRODUCT_TYPE >>] Test deploy"
 
   nightly_srnt_release:
-      triggers:
-          - schedule:
-                cron: "0 2,11 * * *"
-                filters:
-                    branches:
-                        only:
-                            - master
+      when:
+          and:
+              - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+              - equal: [ "nightly_srnt_release", << pipeline.schedule.name >> ]
       jobs:
           - checkout
           - build_srnt_prod:
@@ -2473,13 +2479,10 @@ workflows:
                     - test_upgrade_from_last_release
 
   nightly_grth_release:
-      triggers:
-          - schedule:
-                cron: "0 3,11 * * *"
-                filters:
-                    branches:
-                        only:
-                            - master
+      when:
+          and:
+              - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+              - equal: [ "nightly_grth_release", << pipeline.schedule.name >> ]
       jobs:
           - checkout
           - build_grth:
@@ -2524,13 +2527,10 @@ workflows:
                     - test_upgrade_from_last_release
 
   nightly_tria_release:
-    triggers:
-      - schedule:
-          cron: "0 4,11 * * *"
-          filters:
-            branches:
-              only:
-                - master
+    when:
+        and:
+            - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+            - equal: [ "nightly_tria_release", << pipeline.schedule.name >> ]
     jobs:
       - checkout
       - build_tria:
@@ -2560,13 +2560,10 @@ workflows:
             - test_deploy
 
   nightly_deployments:
-      triggers:
-          - schedule:
-                cron: "30 4 * * *"
-                filters:
-                    branches:
-                        only:
-                            - master
+      when:
+          and:
+              - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+              - equal: [ "nightly_deployments", << pipeline.schedule.name >> ]
       jobs:
           - checkout
           - deploy_srnt_helpdesk_environment:
@@ -2580,13 +2577,10 @@ workflows:
                     - checkout
 
   nightly-beta:
-      triggers:
-          - schedule:
-                cron: "0 4 * * *"
-                filters:
-                    branches:
-                        only:
-                            - master
+      when:
+          and:
+              - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+              - equal: [ "nightly_beta", << pipeline.schedule.name >> ]
       jobs:
           - checkout
           - test_helm_generated_k8s_files:
@@ -2644,13 +2638,10 @@ workflows:
                     - "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
 
   hourly_cleanup:
-     triggers:
-         - schedule:
-               cron: "0 * * * *"
-               filters:
-                   branches:
-                       only:
-                           - master
+     when:
+         and:
+             - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+             - equal: [ "hourly_cleanup", << pipeline.schedule.name >> ]
      jobs:
          - checkout
          - delete_environments_hourly:
@@ -2668,6 +2659,9 @@ workflows:
                - checkout
 
   on_demand_compliancy_checker:
+    when:
+        not:
+            equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
     jobs:
         - ready_to_build?:
             type: approval
