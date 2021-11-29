@@ -34,7 +34,7 @@ type DropdownProps = Override<
      */
     children?: ReactNode;
   }
-  >;
+>;
 
 /**
  * The dropdown shows a list of options that can be used to select, filter or sort content.
