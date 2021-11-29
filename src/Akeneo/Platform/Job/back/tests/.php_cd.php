@@ -24,6 +24,7 @@ $rules = [
     )->in('Akeneo\Platform\Job\Domain'),
     $builder->only(
         [
+            'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
             'Akeneo\Platform\Job\Application',
             'Akeneo\Platform\Job\Domain',
             'Akeneo\Tool',

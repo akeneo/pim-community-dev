@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Job\Infrastructure\Installer;
 
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class JobInstaller implements EventSubscriberInterface
@@ -35,6 +35,6 @@ class JobInstaller implements EventSubscriberInterface
         CREATE INDEX status_idx ON akeneo_batch_job_execution (status);
 SQL;
 
-        $this->connection->exec($sql);
+        $this->connection->executeStatement($sql);
     }
 }
