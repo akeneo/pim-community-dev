@@ -21,13 +21,13 @@ type JobExecutionTable = {
   matches_count: number;
 };
 
-const stoppableStatus = ['STARTING', 'STARTED'];
-const jobCanBeStopped = (jobExecutionRow: JobExecutionRow): boolean => {
-  return jobExecutionRow.is_stoppable && stoppableStatus.includes(jobExecutionRow.status);
-};
+const STOPPABLE_STATUS = ['STARTING', 'STARTED'];
+const jobCanBeStopped = (jobExecutionRow: JobExecutionRow): boolean =>
+  jobExecutionRow.is_stoppable && STOPPABLE_STATUS.includes(jobExecutionRow.status);
 
+const RESTRICTED_JOB_TYPES = ['import', 'export'];
 const canShowJobExecutionDetail = (isGranted: (acl: string) => boolean, jobExecutionRow: JobExecutionRow) => {
-  if (['import', 'export'].includes(jobExecutionRow.type)) {
+  if (RESTRICTED_JOB_TYPES.includes(jobExecutionRow.type)) {
     return isGranted(`pim_importexport_${jobExecutionRow.type}_execution_show`);
   }
 

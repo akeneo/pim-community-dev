@@ -1,23 +1,19 @@
 import React, {MouseEvent} from 'react';
 import {Table} from 'akeneo-design-system';
 import {useDateFormatter, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
-import {JobExecutionRow, jobCanBeStopped, canShowJobExecutionDetail} from '../../models';
-import {JobExecutionStatus} from '../JobExecutionStatus';
-import {StopJobAction} from '../StopJobAction';
+import {JobExecutionRow, jobCanBeStopped, canShowJobExecutionDetail} from '../models';
+import {JobExecutionStatus} from './JobExecutionStatus';
+import {StopJobAction} from './StopJobAction';
 
-type JobInstanceLastExecutionsTableProps = {
+const COLUMN_HEADERS = ['started_at', 'username', 'status', 'warning_count'];
+
+type LastExecutionsTableProps = {
   sticky?: number;
   jobExecutionRows: JobExecutionRow[];
   onTableRefresh: () => void;
 };
 
-const COLUMN_HEADERS = ['started_at', 'username', 'status', 'warning_count'];
-
-const JobInstanceLastExecutionsTable = ({
-  sticky,
-  jobExecutionRows,
-  onTableRefresh,
-}: JobInstanceLastExecutionsTableProps) => {
+const LastExecutionsTable = ({sticky, jobExecutionRows, onTableRefresh}: LastExecutionsTableProps) => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
   const dateFormatter = useDateFormatter();
@@ -95,4 +91,4 @@ const JobInstanceLastExecutionsTable = ({
   );
 };
 
-export {JobInstanceLastExecutionsTable};
+export {LastExecutionsTable};

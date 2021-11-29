@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import {AkeneoIcon, CardIcon, CommonStyle, DownloadIcon, getColor, MainNavigationItem} from 'akeneo-design-system';
 import {ProcessTrackerApp} from './feature/ProcessTrackerApp';
-import {JobInstancePage} from './feature/components/JobExecutionList/JobInstancePage';
+import {JobInstancePage} from './feature/pages/JobInstancePage';
 
 const Container = styled.div`
   display: flex;
@@ -31,8 +31,20 @@ const FakePIM = () => {
   return (
     <Container>
       <Menu>
-        <MainNavigationItem onClick={() => setCurrentPage('process-tracker')} icon={<CardIcon />} active={'process-tracker' === currentPage}>Process tracker</MainNavigationItem>
-        <MainNavigationItem onClick={() => setCurrentPage('job-instance')} icon={<DownloadIcon />} active={'job-instance' === currentPage}>Exports</MainNavigationItem>
+        <MainNavigationItem
+          onClick={() => setCurrentPage('process-tracker')}
+          icon={<CardIcon />}
+          active={'process-tracker' === currentPage}
+        >
+          Process tracker
+        </MainNavigationItem>
+        <MainNavigationItem
+          onClick={() => setCurrentPage('job-instance')}
+          icon={<DownloadIcon />}
+          active={'job-instance' === currentPage}
+        >
+          Exports
+        </MainNavigationItem>
       </Menu>
       <Page>
         {'process-tracker' === currentPage && <ProcessTrackerApp />}

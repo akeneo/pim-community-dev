@@ -1,9 +1,9 @@
 import React, {useCallback, MouseEvent} from 'react';
+import {useHistory} from 'react-router-dom';
 import {Table} from 'akeneo-design-system';
 import {useDateFormatter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {JobExecutionRow, JobExecutionFilterSort, jobCanBeStopped, canShowJobExecutionDetail} from '../../models';
 import {JobExecutionStatus} from '../JobExecutionStatus';
-import {useHistory} from 'react-router-dom';
 import {StopJobAction} from '../StopJobAction';
 
 type JobExecutionTableProps = {
