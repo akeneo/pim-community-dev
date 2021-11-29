@@ -67,9 +67,10 @@ jest.mock('@akeneo-pim-community/shared/lib/hooks/useSecurity', () => ({
 }));
 
 const mockRedirect = jest.fn();
-jest.mock('react-router-dom', () => ({
-  useHistory: () => ({
-    push: mockRedirect,
+jest.mock('@akeneo-pim-community/shared/lib/hooks/useRouter', () => ({
+  useRouter: () => ({
+    generate: (route: string) => route,
+    redirect: mockRedirect,
   }),
 }));
 
@@ -117,7 +118,7 @@ test('it redirects to a job execution details on row click when user can show de
 
   expect(mockRedirect).not.toHaveBeenCalled();
   userEvent.click(screen.getByText('An export'));
-  expect(mockRedirect).toHaveBeenCalledWith('/show/1');
+  expect(mockRedirect).toHaveBeenCalledWith('akeneo_job_process_tracker_details');
 });
 
 test('it redirects to a job execution details on row click when there is no ACL on the job type', () => {
@@ -127,7 +128,7 @@ test('it redirects to a job execution details on row click when there is no ACL 
 
   expect(mockRedirect).not.toHaveBeenCalled();
   userEvent.click(screen.getByText('A quick export'));
-  expect(mockRedirect).toHaveBeenCalledWith('/show/3');
+  expect(mockRedirect).toHaveBeenCalledWith('akeneo_job_process_tracker_details');
 });
 
 test('it does nothing on row click when user cannot show detail execution', () => {
@@ -155,7 +156,7 @@ test('it redirects to a job execution details on row cmd click', () => {
   );
   expect(redirectMock).not.toHaveBeenCalled();
   userEvent.click(screen.getByText('An export'), {metaKey: true});
-  expect(redirectMock).toHaveBeenCalledWith('/show/1');
+  expect(redirectMock).toHaveBeenCalledWith('akeneo_job_process_tracker_details');
 });
 
 test('it can stop a job execution when job execution is stoppable and user have right', async () => {
