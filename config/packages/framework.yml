@@ -25,3 +25,8 @@ framework:
         pools:
             name:
                 adapter: cache.adapter.apcu
+    rate_limiter:
+        authorize_endpoint:
+            policy: 'token_bucket'
+            limit: 5
+            rate: { interval: '15 minutes', amount: 500 }

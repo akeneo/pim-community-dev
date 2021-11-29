@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -23,15 +24,18 @@ class RequestAccessTokenAction
     private FeatureFlag $featureFlag;
     private ValidatorInterface $validator;
     private CreateAccessTokenInterface $createAccessToken;
+    private RateLimiterFactory $authorizeEndpointLimiter;
 
     public function __construct(
         FeatureFlag $featureFlag,
         ValidatorInterface $validator,
-        CreateAccessTokenInterface $createAccessToken
+        CreateAccessTokenInterface $createAccessToken,
+        RateLimiterFactory $authorizeEndpointLimiter
     ) {
         $this->featureFlag = $featureFlag;
         $this->validator = $validator;
         $this->createAccessToken = $createAccessToken;
+        $this->authorizeEndpointLimiter = $authorizeEndpointLimiter;
     }
 
     public function __invoke(Request $request): Response
@@ -39,8 +43,23 @@ class RequestAccessTokenAction
         if (!$this->featureFlag->isEnabled()) {
             throw new NotFoundHttpException();
         }
+
+        $clientId = $request->get('client_id', '');
+
+        $limiter = $this->authorizeEndpointLimiter->create($clientId);
+        $limit = $limiter->consume();
+        $headers = [
+            'X-RateLimit-Remaining' => $limit->getRemainingTokens(),
+            'X-RateLimit-Retry-After' => $limit->getRetryAfter()->getTimestamp(),
+            'X-RateLimit-Limit' => $limit->getLimit(),
+        ];
+
+        if (false === $limit->isAccepted()) {
+            return new Response(null, Response::HTTP_TOO_MANY_REQUESTS, $headers);
+        }
+
         $accessTokenRequest = new AccessTokenRequest(
-            $request->get('client_id', ''),
+            $clientId,
             $request->get('code', ''),
             $request->get('grant_type', ''),
             $request->get('code_identifier', ''),
@@ -50,7 +69,8 @@ class RequestAccessTokenAction
         if ($violations->count() > 0) {
             return new JsonResponse(
                 ['error' => $violations[0]->getMessage()],
-                Response::HTTP_BAD_REQUEST
+                Response::HTTP_BAD_REQUEST,
+                $headers
             );
         }
 
@@ -59,6 +79,6 @@ class RequestAccessTokenAction
             $accessTokenRequest->getAuthorizationCode()
         );
 
-        return new JsonResponse($token, Response::HTTP_OK);
+        return new JsonResponse($token, Response::HTTP_OK, $headers);
     }
 }

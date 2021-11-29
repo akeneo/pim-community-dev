@@ -841,6 +841,9 @@
     "symfony/proxy-manager-bridge": {
         "version": "v4.3.4"
     },
+    "symfony/rate-limiter": {
+        "version": "v5.3.11"
+    },
     "symfony/redis-messenger": {
         "version": "v5.3.7"
     },
