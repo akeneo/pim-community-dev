@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\ApiAggregatorForProductModelPostSaveEventSubscriber;
+use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelCommand;
+use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQueryHandler;
@@ -26,7 +28,6 @@ use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -47,6 +48,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 
@@ -83,7 +85,8 @@ class ProductModelController
     private LoggerInterface $logger;
     private LoggerInterface $apiProductAclLogger;
     private SecurityFacade $security;
-    private RemoverInterface $productModelRemover;
+    private RemoveProductModelHandler $removeProductModelHandler;
+    private ValidatorInterface $validator;
 
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -112,7 +115,8 @@ class ProductModelController
         array $apiConfiguration,
         LoggerInterface $apiProductAclLogger,
         SecurityFacade $security,
-        RemoverInterface $productModelRemover
+        RemoveProductModelHandler $removeProductModelHandler,
+        ValidatorInterface $validator
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->pqbSearchAfterFactory = $pqbSearchAfterFactory;
@@ -140,7 +144,8 @@ class ProductModelController
         $this->apiConfiguration = $apiConfiguration;
         $this->apiProductAclLogger = $apiProductAclLogger;
         $this->security = $security;
-        $this->productModelRemover = $productModelRemover;
+        $this->removeProductModelHandler = $removeProductModelHandler;
+        $this->validator = $validator;
     }
 
     /**
@@ -253,7 +258,20 @@ class ProductModelController
             throw new NotFoundHttpException(\sprintf('Product model "%s" does not exist or you do not have permission to access it.', $code));
         }
 
-        $this->productModelRemover->remove($productModel);
+        $command = new RemoveProductModelCommand($productModel->getCode());
+        $violations = $this->validator->validate($command);
+        if (0 < \count($violations)) {
+            return new JsonResponse([
+                'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'messages' => \array_map(
+                    fn (ConstraintViolationInterface $violation): string => $violation->getMessage(),
+                    \iterator_to_array($violations)
+                ),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        ($this->removeProductModelHandler)($command);
+
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }

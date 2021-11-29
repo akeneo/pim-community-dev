@@ -172,6 +172,7 @@ bin/console messenger:consume ui_job import_export_job data_maintenance_job
 - PIM-10004: Optimize counting job execution warnings
 - PIM-10142: Block HTTP redirection in Webhook URLs
 - PIM-10144: Don't display Guzzle version in user agent
+- PIM-10098: Add a command/handler to remove a product model
 
 ## Classes
 

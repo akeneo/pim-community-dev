@@ -106,7 +106,8 @@ services:
             - '%pim_api.configuration%'
             - '@monolog.logger.pim_api_acl'
             - '@oro_security.security_facade'
-            - '@pim_catalog.remover.product_model'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler'
+            - '@validator'
 
     pim_api.controller.category:
         public: true
@@ -202,7 +203,6 @@ services:
             - '@pim_catalog.comparator.filter.product_model'
             - '@pim_enrich.converter.enrich_to_standard.product_value'
             - '@pim_catalog.updater.product_model'
-            - '@pim_catalog.remover.product_model'
             - '@pim_catalog.validator.product'
             - '@pim_catalog.saver.product_model'
             - '@pim_enrich.normalizer.product_violation'
@@ -213,6 +213,8 @@ services:
             - '@pim_enrich.filter.product_model_attribute_filter'
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@pim_enrich.filter.product_edit_data'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler'
+            - '@validator'
 
     pim_enrich.controller.rest.group:
         public: true

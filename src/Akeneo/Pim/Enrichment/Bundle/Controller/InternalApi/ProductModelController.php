@@ -5,6 +5,8 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelCommand;
+use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\EntityWithValuesFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
@@ -16,7 +18,6 @@ use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
@@ -40,62 +41,26 @@ class ProductModelController
 {
     private const PRODUCT_MODELS_LIMIT = 20;
 
-    /** @var NormalizerInterface */
-    private $normalizer;
-
-    /** @var UserContext */
-    private $userContext;
-
-    /** @var ObjectFilterInterface */
-    private $objectFilter;
-
-    /** @var ProductModelRepositoryInterface */
-    private $productModelRepository;
-
-    /** @var AttributeConverterInterface */
-    private $localizedConverter;
-
-    /** @var EntityWithValuesFilter */
-    private $emptyValuesFilter;
-
-    /** @var ConverterInterface */
-    private $productValueConverter;
-
-    /** @var ObjectUpdaterInterface */
-    private $productModelUpdater;
-
-    /** @var RemoverInterface */
-    private $productModelRemover;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var SaverInterface */
-    private $productModelSaver;
-
-    /** @var NormalizerInterface */
-    private $constraintViolationNormalizer;
-
-    /** @var NormalizerInterface */
-    private $entityWithFamilyVariantNormalizer;
-
-    /** @var SimpleFactoryInterface */
-    private $productModelFactory;
-
-    /** @var NormalizerInterface */
-    private $violationNormalizer;
-
-    /** @var FamilyVariantRepositoryInterface */
-    private $familyVariantRepository;
-
-    /** @var AttributeFilterInterface */
-    private $productModelAttributeFilter;
-
-    /** @var Client */
-    private $productAndProductModelClient;
-
-    /** @var CollectionFilterInterface */
-    private $productEditDataFilter;
+    private NormalizerInterface $normalizer;
+    private UserContext $userContext;
+    private ObjectFilterInterface $objectFilter;
+    private ProductModelRepositoryInterface $productModelRepository;
+    private AttributeConverterInterface $localizedConverter;
+    private EntityWithValuesFilter $emptyValuesFilter;
+    private ConverterInterface $productValueConverter;
+    private ObjectUpdaterInterface $productModelUpdater;
+    private ValidatorInterface $productModelValidator;
+    private SaverInterface $productModelSaver;
+    private NormalizerInterface $constraintViolationNormalizer;
+    private NormalizerInterface $entityWithFamilyVariantNormalizer;
+    private SimpleFactoryInterface $productModelFactory;
+    private NormalizerInterface $violationNormalizer;
+    private FamilyVariantRepositoryInterface $familyVariantRepository;
+    private AttributeFilterInterface $productModelAttributeFilter;
+    private Client $productAndProductModelClient;
+    private CollectionFilterInterface $productEditDataFilter;
+    private RemoveProductModelHandler $removeProductModelHandler;
+    private ValidatorInterface $validator;
 
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
@@ -106,8 +71,7 @@ class ProductModelController
         EntityWithValuesFilter $emptyValuesFilter,
         ConverterInterface $productValueConverter,
         ObjectUpdaterInterface $productModelUpdater,
-        RemoverInterface $productModelRemover,
-        ValidatorInterface $validator,
+        ValidatorInterface $productModelValidator,
         SaverInterface $productModelSaver,
         NormalizerInterface $constraintViolationNormalizer,
         NormalizerInterface $entityWithFamilyVariantNormalizer,
@@ -116,7 +80,9 @@ class ProductModelController
         FamilyVariantRepositoryInterface $familyVariantRepository,
         AttributeFilterInterface $productModelAttributeFilter,
         Client $productAndProductModelClient,
-        CollectionFilterInterface $productEditDataFilter
+        CollectionFilterInterface $productEditDataFilter,
+        RemoveProductModelHandler $removeProductModelHandler,
+        ValidatorInterface $validator
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->normalizer = $normalizer;
@@ -126,8 +92,7 @@ class ProductModelController
         $this->emptyValuesFilter = $emptyValuesFilter;
         $this->productValueConverter = $productValueConverter;
         $this->productModelUpdater = $productModelUpdater;
-        $this->productModelRemover = $productModelRemover;
-        $this->validator = $validator;
+        $this->productModelValidator = $productModelValidator;
         $this->productModelSaver = $productModelSaver;
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
         $this->entityWithFamilyVariantNormalizer = $entityWithFamilyVariantNormalizer;
@@ -137,6 +102,8 @@ class ProductModelController
         $this->productModelAttributeFilter = $productModelAttributeFilter;
         $this->productAndProductModelClient = $productAndProductModelClient;
         $this->productEditDataFilter = $productEditDataFilter;
+        $this->removeProductModelHandler = $removeProductModelHandler;
+        $this->validator = $validator;
     }
 
     /**
@@ -214,7 +181,7 @@ class ProductModelController
 
         $this->productModelUpdater->update($productModel, $content);
 
-        $violations = $this->validator->validate($productModel);
+        $violations = $this->productModelValidator->validate($productModel);
 
         if (count($violations) > 0) {
             $normalizedViolations = $this->normalizeCreateViolations($violations, $productModel);
@@ -248,7 +215,7 @@ class ProductModelController
 
         $this->updateProductModel($productModel, $data);
 
-        $violations = $this->validator->validate($productModel);
+        $violations = $this->productModelValidator->validate($productModel);
         $violations->addAll($this->localizedConverter->getViolations());
 
         if (0 === $violations->count()) {
@@ -358,24 +325,27 @@ class ProductModelController
     }
 
     /**
-     * Remove product model
-     *
-     * @param Request $request
-     * @param int $id
-     *
      * @AclAncestor("pim_enrich_product_model_remove")
-     *
-     * @return Response
      */
-    public function removeAction(Request $request, $id): Response
+    public function removeAction(Request $request, int $id): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
         $productModel = $this->findProductModelOr404($id);
-        $this->productModelRemover->remove($productModel);
+        $command = new RemoveProductModelCommand($productModel->getCode());
+        $violations = $this->validator->validate($command);
+        if (0 < \count($violations)) {
+            // Currently the UI expects only one error message in order to display it as a flash message.
+            $firstViolation = $violations[0];
+            return new JsonResponse([
+                'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'message' => $firstViolation->getMessage(),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
+        ($this->removeProductModelHandler)($command);
         $this->productAndProductModelClient->refreshIndex();
 
         return new JsonResponse();

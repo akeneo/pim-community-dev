@@ -1,0 +1,11 @@
+services:
+    Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler:
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.remover.product_model'
+
+    Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelsHandler:
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.remover.product_model'
+            - '%pim_job_product_batch_size%'
