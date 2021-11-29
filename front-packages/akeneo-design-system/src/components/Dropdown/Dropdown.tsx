@@ -1,4 +1,4 @@
-import React, {Children, cloneElement, isValidElement, ReactNode, useRef} from 'react';
+import React, {Children, cloneElement, HTMLAttributes, isValidElement, ReactNode, useRef} from 'react';
 import styled from 'styled-components';
 import {Overlay} from './Overlay/Overlay';
 import {Item} from './Item/Item';
@@ -7,6 +7,7 @@ import {Header} from './Header/Header';
 import {Title} from './Header/Title';
 import {getColor} from '../../theme';
 import {Surtitle} from './Surtitle/Surtitle';
+import {Override} from '../../shared';
 
 const Section = styled.div`
   background: ${getColor('white')};
@@ -25,12 +26,15 @@ const DropdownContainer = styled.div`
   display: inline-flex;
 `;
 
-type DropdownProps = {
-  /**
-   * The content of the Dropdown.
-   */
-  children?: ReactNode;
-};
+type DropdownProps = Override<
+  HTMLAttributes<HTMLDivElement>,
+  {
+    /**
+     * The content of the Dropdown.
+     */
+    children?: ReactNode;
+  }
+>;
 
 /**
  * The dropdown shows a list of options that can be used to select, filter or sort content.

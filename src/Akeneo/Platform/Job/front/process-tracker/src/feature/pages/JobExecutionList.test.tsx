@@ -1,6 +1,6 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
-import {screen} from '@testing-library/react';
+import {screen, within} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {JobExecutionList} from './JobExecutionList';
 import {JobExecutionFilter, JobExecutionRow} from '../models';
@@ -131,7 +131,7 @@ test('it can filter on the job status', () => {
   renderWithProviders(<JobExecutionList />);
 
   userEvent.click(screen.getByLabelText('akeneo_job_process_tracker.status.label:'));
-  userEvent.click(screen.getByText('akeneo_job_process_tracker.status.started'));
+  userEvent.click(within(screen.getByRole('listbox')).getByText('akeneo_job_process_tracker.status.started'));
 
   expect(screen.getByText('Export job')).toBeInTheDocument();
   expect(screen.queryByText('Import job')).not.toBeInTheDocument();
@@ -141,7 +141,7 @@ test('it can filter on the job type', () => {
   renderWithProviders(<JobExecutionList />);
 
   userEvent.click(screen.getByLabelText('akeneo_job_process_tracker.type.label:'));
-  userEvent.click(screen.getByText('akeneo_job_process_tracker.type.import'));
+  userEvent.click(within(screen.getByRole('listbox')).getByText('akeneo_job_process_tracker.type.import'));
 
   expect(screen.getByText('Import job')).toBeInTheDocument();
   expect(screen.queryByText('Export job')).not.toBeInTheDocument();

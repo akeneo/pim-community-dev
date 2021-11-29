@@ -1,6 +1,6 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
-import {screen, within} from '@testing-library/react';
+import {act, screen, within} from '@testing-library/react';
 import {JobExecutionTable} from './JobExecutionTable';
 import {JobExecutionRow} from 'feature/models/JobExecutionTable';
 import {JobExecutionFilterSort} from 'feature/models';
@@ -84,7 +84,7 @@ test('it renders a Job execution Table', () => {
   );
 
   expect(screen.getByText('An export')).toBeInTheDocument();
-  expect(screen.getByText('pim_import_export.widget.last_operations.job_type.export')).toBeInTheDocument();
+  expect(screen.getByText('akeneo_job_process_tracker.type.export')).toBeInTheDocument();
   expect(screen.getByText('admin')).toBeInTheDocument();
   expect(screen.getByText('pim_import_export.job_status.STARTED 1/2')).toBeInTheDocument();
   expect(screen.getByText('4')).toBeInTheDocument();
@@ -175,7 +175,10 @@ test('it can stop a job execution when job execution is stoppable and user have 
     />
   );
   userEvent.click(within(screen.getAllByRole('row')[1]).getByText('pim_datagrid.action.stop.title'));
-  await userEvent.click(screen.getByText('pim_datagrid.action.stop.confirmation.ok'));
+  await act(async () => {
+    await userEvent.click(screen.getByText('pim_datagrid.action.stop.confirmation.ok'));
+  });
+
   expect(handleTableRefresh).toBeCalled();
 });
 
