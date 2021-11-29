@@ -1,7 +1,6 @@
 import React, {useCallback, MouseEvent} from 'react';
-import {useHistory} from 'react-router-dom';
 import {Table} from 'akeneo-design-system';
-import {useDateFormatter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
+import {useDateFormatter, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {JobExecutionRow, JobExecutionFilterSort, jobCanBeStopped, canShowJobExecutionDetail} from '../../models';
 import {JobExecutionStatus} from '../JobExecutionStatus';
 import {StopJobAction} from '../StopJobAction';
@@ -27,20 +26,22 @@ const JobExecutionTable = ({
   const {isGranted} = useSecurity();
   const dateFormatter = useDateFormatter();
   const sortDirection = 'ASC' === currentSort.direction ? 'ascending' : 'descending';
-  const history = useHistory();
+  const router = useRouter();
 
   const handleRowClick = useCallback(
     (jobExecutionId: number) => (event: MouseEvent<HTMLTableRowElement>) => {
-      const url = `/show/${jobExecutionId}`;
+      const route = router.generate('akeneo_job_process_tracker_details', {id: jobExecutionId});
+
       if (event.metaKey || event.ctrlKey) {
-        const newTab = window.open(`${window.location.hash}${url}`, '_blank');
+        const newTab = window.open(`${window.location.hash}${route}`, '_blank');
         newTab?.focus();
+
         return;
       }
 
-      history.push(url);
+      router.redirect(route);
     },
-    [history]
+    [router]
   );
 
   return (

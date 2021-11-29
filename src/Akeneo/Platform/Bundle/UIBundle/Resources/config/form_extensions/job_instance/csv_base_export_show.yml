@@ -54,10 +54,8 @@ extensions:
                 path: code
                 name: code
 
-    pim-job-instance-csv-base-export-show-grid:
-        module: akeneojob/controller/last-executions
+    pim-job-instance-csv-base-export-show-last-executions:
+        module: akeneojob/controller/job-instance
         parent: pim-job-instance-csv-base-export-show
         position: 100
         targetZone: content
-        config:
-            jobType: export
