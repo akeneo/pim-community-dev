@@ -17,7 +17,7 @@ final class RemoveProductModelsCommand
     private array $removeProductModelCommands;
 
     /** @var ProductModelInterface[]|null */
-    private array $productModels;
+    private ?array $productModels;
 
     /**
      * If the product models are already fetched at some point, you can provide them in second argument. It will
@@ -39,14 +39,18 @@ final class RemoveProductModelsCommand
     }
 
     /**
+     * Use this factory if you don't have the product models in memory
+     *
      * @param RemoveProductModelCommand[] $removeProductModelCommands
      */
-    public static function fromRemoveProductModelCommand(array $removeProductModelCommands): RemoveProductModelsCommand
+    public static function fromRemoveProductModelCommands(array $removeProductModelCommands): RemoveProductModelsCommand
     {
         return new RemoveProductModelsCommand($removeProductModelCommands);
     }
 
     /**
+     * Use this factory if you have the product models in memory
+     *
      * @param ProductModelInterface[] $productModels
      */
     public static function fromProductModels(array $productModels): RemoveProductModelsCommand
