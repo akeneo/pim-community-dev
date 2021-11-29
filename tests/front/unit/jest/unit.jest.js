@@ -14,7 +14,6 @@ const unitConfig = {
     'src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/fetchers',
     'src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/store',
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity',
-    'src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front',
   ],
   moduleNameMapper: {
     '^require-context$': `${__dirname}/../../../../frontend/webpack/require-context.js`,
