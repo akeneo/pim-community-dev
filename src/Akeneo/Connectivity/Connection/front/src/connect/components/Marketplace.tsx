@@ -43,7 +43,11 @@ export const Marketplace: FC<Props> = ({extensions, apps}) => {
         <MarketplaceCard key={extension.id} item={extension} />
     ));
     const appsList = apps.apps.map((app: App) => (
-        <MarketplaceCard key={app.id} item={app} additionalActions={[<ActivateAppButton key={1} id={app.id} />]} />
+        <MarketplaceCard
+            key={app.id}
+            item={app}
+            additionalActions={[<ActivateAppButton key={1} id={app.id} isConnected={app.connected} />]}
+        />
     ));
     const handleScrollTop = () => {
         scrollContainer.scrollTo(0, 0);

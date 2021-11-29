@@ -56,6 +56,7 @@ akeneo_connectivity.connection:
                 read_more: read more
                 more_info: More info
                 connect: Connect
+                connected: Connected
             extensions:
                 title: Connectors
                 total: '{0} No connectors|{1} 1 connector|[2,Inf] {{ total }} connectors'

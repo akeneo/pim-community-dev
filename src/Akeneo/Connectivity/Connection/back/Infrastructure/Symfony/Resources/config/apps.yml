@@ -71,6 +71,10 @@ services:
             - '@akeneo_connectivity.connection.service.apps.client_provider'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RandomCodeGenerator'
 
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAllConnectedAppsPublicIdsQuery:
+        arguments:
+            - '@database_connection'
+
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\DeleteConnectedAppQuery:
         arguments:
             - '@database_connection'
