@@ -61,8 +61,10 @@ class AssetProcessorSpec extends ObjectBehavior
         $normalizedAssetWithoutAssetFamilyIdentifier = ['invalid_family' => 'invalid'];
         $normalizedAssetWithoutCode = ['asset_family_identifier' => 'packshot'];
 
-        $this->shouldThrow(\InvalidArgumentException::class)->during('process', $normalizedAssetWithoutAssetFamilyIdentifier);
-        $this->shouldThrow(\InvalidArgumentException::class)->during('process', $normalizedAssetWithoutCode);
+        $this->shouldThrow(\InvalidArgumentException::class)
+            ->during('process', [$normalizedAssetWithoutAssetFamilyIdentifier]);
+        $this->shouldThrow(\InvalidArgumentException::class)
+            ->during('process', [$normalizedAssetWithoutCode]);
     }
 
     public function it_applies_naming_convention(
