@@ -38,6 +38,7 @@ class AttributeOptionsScopeMapper implements ScopeMapperInterface
     ];
 
     private const SCOPE_HIERARCHY = [
+        self::SCOPE_READ_ATTRIBUTE_OPTIONS => [],
         self::SCOPE_WRITE_ATTRIBUTE_OPTIONS => [
             self::SCOPE_READ_ATTRIBUTE_OPTIONS,
         ],
@@ -54,7 +55,7 @@ class AttributeOptionsScopeMapper implements ScopeMapperInterface
     public function getAcls(string $scopeName): array
     {
         if (!\array_key_exists($scopeName, self::SCOPE_ACL_MAP)) {
-            return [];
+            throw new \InvalidArgumentException(sprintf('The scope "%s" does not exist.', $scopeName));
         }
 
         return self::SCOPE_ACL_MAP[$scopeName];
@@ -63,7 +64,7 @@ class AttributeOptionsScopeMapper implements ScopeMapperInterface
     public function getMessage(string $scopeName): array
     {
         if (!\array_key_exists($scopeName, self::SCOPE_MESSAGE_MAP)) {
-            return [];
+            throw new \InvalidArgumentException(sprintf('The scope "%s" does not exist.', $scopeName));
         }
 
         return self::SCOPE_MESSAGE_MAP[$scopeName];
@@ -72,7 +73,7 @@ class AttributeOptionsScopeMapper implements ScopeMapperInterface
     public function getLowerHierarchyScopes(string $scopeName): array
     {
         if (!\array_key_exists($scopeName, self::SCOPE_HIERARCHY)) {
-            return [];
+            throw new \InvalidArgumentException(sprintf('The scope "%s" does not exist.', $scopeName));
         }
 
         return self::SCOPE_HIERARCHY[$scopeName];
