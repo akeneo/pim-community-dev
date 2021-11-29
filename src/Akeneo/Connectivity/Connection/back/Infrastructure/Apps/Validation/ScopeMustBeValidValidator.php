@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation;
 
-use Akeneo\Tool\Bundle\ApiBundle\Security\ScopeMapperInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -15,11 +15,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ScopeMustBeValidValidator extends ConstraintValidator
 {
-    private ScopeMapperInterface $scopeMapper;
+    private ScopeMapperRegistry $scopeMapperRegistry;
 
-    public function __construct(ScopeMapperInterface $scopeMapper)
+    public function __construct(ScopeMapperRegistry $scopeMapperRegistry)
     {
-        $this->scopeMapper = $scopeMapper;
+        $this->scopeMapperRegistry = $scopeMapperRegistry;
     }
 
     public function validate($value, Constraint $constraint)
@@ -33,7 +33,7 @@ class ScopeMustBeValidValidator extends ConstraintValidator
         }
 
         $scopes = explode(' ', (string) $value);
-        $validScopes = $this->scopeMapper->getAllScopes();
+        $validScopes = $this->scopeMapperRegistry->getAllScopes();
 
         foreach ($scopes as $scope) {
             if (!in_array($scope, $validScopes)) {

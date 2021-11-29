@@ -6,7 +6,8 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation;
 
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\ScopeMustBeValid;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\ScopeMustBeValidValidator;
-use Akeneo\Tool\Bundle\ApiBundle\Security\ScopeMapperInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
@@ -17,10 +18,17 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 class ScopeMustBeValidValidatorSpec extends ObjectBehavior
 {
     public function let(
-        ScopeMapperInterface $scopeMapper,
+        ScopeMapperInterface $productScopeMapper,
         ExecutionContextInterface $context
     ): void {
-        $this->beConstructedWith($scopeMapper);
+        $productScopeMapper->getScopes()->willReturn([
+            'read_products',
+            'write_products',
+        ]);
+        $registry = new ScopeMapperRegistry([
+            'product' => $productScopeMapper->getWrappedObject(),
+        ]);
+        $this->beConstructedWith($registry);
         $this->initialize($context);
     }
 
@@ -29,7 +37,7 @@ class ScopeMustBeValidValidatorSpec extends ObjectBehavior
         $this->shouldHaveType(ScopeMustBeValidValidator::class);
     }
 
-    public function it_throw_if_not_the_excepted_constraint(
+    public function it_throws_if_not_the_excepted_constraint(
         Constraint $constraint
     ): void {
         $this->shouldThrow(UnexpectedTypeException::class)->during('validate', [
@@ -38,33 +46,23 @@ class ScopeMustBeValidValidatorSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_validate_that_the_scope_contains_valid_values(
+    public function it_validates_that_the_scope_contains_valid_values(
         ScopeMustBeValid $constraint,
-        ScopeMapperInterface $scopeMapper,
         ExecutionContextInterface $context
     ): void {
-        $scopeMapper->getAllScopes()->willReturn([
-            'foo',
-            'bar',
-        ]);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
-        $this->validate('foo bar', $constraint);
+        $this->validate('read_products write_products', $constraint);
     }
 
     public function it_adds_a_violation_when_at_least_one_scope_is_unknown(
         ScopeMustBeValid $constraint,
-        ScopeMapperInterface $scopeMapper,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violation
     ): void {
-        $scopeMapper->getAllScopes()->willReturn([
-            'foo',
-            'bar',
-        ]);
         $context->buildViolation(Argument::any())->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
-        $this->validate('foo bar invalid', $constraint);
+        $this->validate('read_products write_products invalid', $constraint);
     }
 }

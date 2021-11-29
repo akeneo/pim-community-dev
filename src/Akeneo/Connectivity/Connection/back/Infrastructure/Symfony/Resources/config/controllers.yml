@@ -107,7 +107,7 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.marketplace.get_app_query'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
-            - '@pim_api.security.scope_mapper'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
 
     akeneo_connectivity.connection.apps.controller.apps.confirm_authorization:
         public: true
@@ -145,7 +145,7 @@ services:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
             - '@oro_security.security_facade'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository'
-            - '@pim_api.security.scope_mapper'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\DeleteAppAction:
         public: true

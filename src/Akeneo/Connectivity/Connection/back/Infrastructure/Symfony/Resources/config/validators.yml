@@ -60,7 +60,7 @@ services:
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\ScopeMustBeValidValidator:
         arguments:
-            - '@pim_api.security.scope_mapper'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
         tags:
             - { name: validator.constraint_validator }
 

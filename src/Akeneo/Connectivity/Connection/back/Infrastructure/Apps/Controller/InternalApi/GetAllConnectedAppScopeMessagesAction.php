@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Repository\ConnectedAppRepositoryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
-use Akeneo\Tool\Bundle\ApiBundle\Security\ScopeMapper;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,18 +24,18 @@ final class GetAllConnectedAppScopeMessagesAction
     private FeatureFlag $featureFlag;
     private SecurityFacade $security;
     private ConnectedAppRepositoryInterface $connectedAppRepository;
-    private ScopeMapper $scopeMapper;
+    private ScopeMapperRegistry $scopeMapperRegistry;
 
     public function __construct(
         FeatureFlag $featureFlag,
         SecurityFacade $security,
         ConnectedAppRepositoryInterface $connectedAppRepository,
-        ScopeMapper $scopeMapper
+        ScopeMapperRegistry $scopeMapperRegistry
     ) {
         $this->featureFlag = $featureFlag;
         $this->security = $security;
         $this->connectedAppRepository = $connectedAppRepository;
-        $this->scopeMapper = $scopeMapper;
+        $this->scopeMapperRegistry = $scopeMapperRegistry;
     }
 
     public function __invoke(Request $request, string $connectionCode): Response
@@ -58,7 +58,7 @@ final class GetAllConnectedAppScopeMessagesAction
             throw new NotFoundHttpException("Connected app with connection code $connectionCode does not exist.");
         }
 
-        $scopeMessages = $this->scopeMapper->getMessages($connectedApp->getScopes());
+        $scopeMessages = $this->scopeMapperRegistry->getMessages($connectedApp->getScopes());
 
         return new JsonResponse($scopeMessages);
     }
