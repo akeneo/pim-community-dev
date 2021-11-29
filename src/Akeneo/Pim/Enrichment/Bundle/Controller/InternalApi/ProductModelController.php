@@ -16,6 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterI
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -56,6 +57,7 @@ class ProductModelController
     private NormalizerInterface $violationNormalizer;
     private FamilyVariantRepositoryInterface $familyVariantRepository;
     private AttributeFilterInterface $productModelAttributeFilter;
+    private Client $productAndProductModelClient;
     private CollectionFilterInterface $productEditDataFilter;
     private RemoveProductModelHandler $removeProductModelHandler;
     private ValidatorInterface $validator;
@@ -77,6 +79,7 @@ class ProductModelController
         NormalizerInterface $violationNormalizer,
         FamilyVariantRepositoryInterface $familyVariantRepository,
         AttributeFilterInterface $productModelAttributeFilter,
+        Client $productAndProductModelClient,
         CollectionFilterInterface $productEditDataFilter,
         RemoveProductModelHandler $removeProductModelHandler,
         ValidatorInterface $validator
@@ -97,6 +100,7 @@ class ProductModelController
         $this->violationNormalizer = $violationNormalizer;
         $this->familyVariantRepository = $familyVariantRepository;
         $this->productModelAttributeFilter = $productModelAttributeFilter;
+        $this->productAndProductModelClient = $productAndProductModelClient;
         $this->productEditDataFilter = $productEditDataFilter;
         $this->removeProductModelHandler = $removeProductModelHandler;
         $this->validator = $validator;
@@ -333,7 +337,7 @@ class ProductModelController
         $command = new RemoveProductModelCommand($productModel->getCode());
         $violations = $this->validator->validate($command);
         if (0 < \count($violations)) {
-            // Actually the UI expects only one error message in order to display it as a flash message.
+            // Currently the UI expects only one error message in order to display it as a flash message.
             $firstViolation = $violations[0];
             return new JsonResponse([
                 'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
@@ -342,6 +346,7 @@ class ProductModelController
         }
 
         ($this->removeProductModelHandler)($command);
+        $this->productAndProductModelClient->refreshIndex();
 
         return new JsonResponse();
     }

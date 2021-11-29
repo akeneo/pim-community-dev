@@ -7,7 +7,6 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Command\ProductM
 use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelCommand;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -15,23 +14,20 @@ class RemoveProductModelHandlerSpec extends ObjectBehavior
 {
     function let(
         ProductModelRepositoryInterface $productModelRepository,
-        RemoverInterface $productModelRemover,
-        Client $productAndProductModelClient
+        RemoverInterface $productModelRemover
     ) {
-        $this->beConstructedWith($productModelRepository, $productModelRemover, $productAndProductModelClient);
+        $this->beConstructedWith($productModelRepository, $productModelRemover);
     }
 
     function it_removes_the_product_model(
         ProductModelRepositoryInterface $productModelRepository,
-        RemoverInterface $productModelRemover,
-        Client $productAndProductModelClient
+        RemoverInterface $productModelRemover
     ) {
         $command = new RemoveProductModelCommand('pm');
         $productModel = new ProductModel();
 
         $productModelRepository->findOneByIdentifier('pm')->willReturn($productModel);
         $productModelRemover->remove($productModel)->shouldBeCalled();
-        $productAndProductModelClient->refreshIndex()->shouldBeCalled();
 
         $this->__invoke($command);
     }

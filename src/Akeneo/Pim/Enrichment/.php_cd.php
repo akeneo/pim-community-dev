@@ -260,8 +260,6 @@ $rules = [
         'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
 
         'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
-
-        'Akeneo\Tool\Bundle\ElasticsearchBundle\Client',
     ])->in('Akeneo\Pim\Enrichment\Component'),
 ];
 

@@ -211,6 +211,7 @@ services:
             - '@pim_enrich.normalizer.violation'
             - '@pim_catalog.repository.family_variant'
             - '@pim_enrich.filter.product_model_attribute_filter'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@pim_enrich.filter.product_edit_data'
             - '@Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler'
             - '@validator'
