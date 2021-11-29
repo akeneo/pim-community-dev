@@ -906,6 +906,9 @@ jobs:
 workflows:
   version: 2
   pull_request:
+      when:
+          not:
+              equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
       jobs:
           - ready_to_build?:
                 type: approval
@@ -1039,14 +1042,10 @@ workflows:
                     - test_back_behat_legacy_ce
 
   nightly:
-      triggers:
-          - schedule:
-                cron: "0 11,23 * * *"
-                filters:
-                    branches:
-                        only:
-                            - master
-
+      when:
+          and:
+              - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+              - equal: [ "nightly_master", << pipeline.schedule.name >> ]
       jobs:
           - checkout_ce
           - build_dev:
@@ -1076,13 +1075,10 @@ workflows:
                     - build_dev
 
   weekly_octopus_code_quality:
-    triggers:
-        - schedule:
-            cron: "0 0 * * 0"
-            filters:
-              branches:
-                only:
-                    - master
+    when:
+        and:
+            - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+            - equal: [ "weekly_octopus_code_quality", << pipeline.schedule.name >> ]
     jobs:
       - checkout_ce
       - build_dev:
@@ -1094,6 +1090,9 @@ workflows:
             - build_dev
 
   on_demand:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
         jobs:
           - ready_to_build?:
                 type: approval
