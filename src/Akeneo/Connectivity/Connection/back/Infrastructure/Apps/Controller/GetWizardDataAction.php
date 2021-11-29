@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller;
 
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
-use Akeneo\Tool\Bundle\ApiBundle\Security\ScopeMapper;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,16 +21,16 @@ class GetWizardDataAction
 {
     private GetAppQueryInterface $getAppQuery;
     private AppAuthorizationSessionInterface $appAuthorizationSession;
-    private ScopeMapper $scopeMapper;
+    private ScopeMapperRegistry $scopeMapperRegistry;
 
     public function __construct(
         GetAppQueryInterface $getAppQuery,
         AppAuthorizationSessionInterface $appAuthorizationSession,
-        ScopeMapper $scopeMapper
+        ScopeMapperRegistry $scopeMapperRegistry
     ) {
         $this->getAppQuery = $getAppQuery;
         $this->appAuthorizationSession = $appAuthorizationSession;
-        $this->scopeMapper = $scopeMapper;
+        $this->scopeMapperRegistry = $scopeMapperRegistry;
     }
 
     public function __invoke(Request $request, string $clientId): Response
@@ -49,7 +49,7 @@ class GetWizardDataAction
             throw new NotFoundHttpException("Invalid app identifier");
         }
 
-        $scopeMessages = $this->scopeMapper->getMessages($appAuthorization->getScopeList());
+        $scopeMessages = $this->scopeMapperRegistry->getMessages($appAuthorization->getScopeList());
 
         return new JsonResponse([
             'appName' => $app->getName(),

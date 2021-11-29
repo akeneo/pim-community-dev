@@ -80,22 +80,4 @@ class RequestAppAuthorizationHandlerIntegration extends TestCase
         $this->expectExceptionMessage('akeneo_connectivity.connection.connect.apps.constraint.response_type.must_be_code');
         $this->handler->handle($command);
     }
-
-    public function test_it_throws_when_the_scopes_are_not_valid()
-    {
-        $this->createOAuth2Client([
-            'marketplacePublicAppId' => 'e4d35502-08c9-40b4-a378-05d4cb255862',
-        ]);
-
-        $command = new RequestAppAuthorizationCommand(
-            'e4d35502-08c9-40b4-a378-05d4cb255862',
-            'code',
-            'foo bar',
-            '',
-        );
-
-        $this->expectException(InvalidAppAuthorizationRequest::class);
-        $this->expectExceptionMessage('akeneo_connectivity.connection.connect.apps.constraint.scope.must_be_valid');
-        $this->handler->handle($command);
-    }
 }

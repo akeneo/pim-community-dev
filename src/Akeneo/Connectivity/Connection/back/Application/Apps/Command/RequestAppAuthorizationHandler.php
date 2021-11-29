@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -17,25 +18,32 @@ final class RequestAppAuthorizationHandler
 {
     private ValidatorInterface $validator;
     private AppAuthorizationSessionInterface $session;
+    private ScopeMapperRegistry $scopeMapper;
 
     public function __construct(
         ValidatorInterface $validator,
-        AppAuthorizationSessionInterface $session
+        AppAuthorizationSessionInterface $session,
+        ScopeMapperRegistry $scopeMapper
     ) {
         $this->validator = $validator;
         $this->session = $session;
+        $this->scopeMapper = $scopeMapper;
     }
 
     public function handle(RequestAppAuthorizationCommand $command): void
     {
         $violations = $this->validator->validate($command);
-        if (count($violations) > 0) {
+        if (\count($violations) > 0) {
             throw new InvalidAppAuthorizationRequest($violations);
         }
 
+        $supportedScopes = $this->scopeMapper->getAllScopes();
+        $requestedScopes = \explode(' ', $command->getScope());
+        $allowedScopes = \array_intersect($requestedScopes, $supportedScopes);
+
         $authorization = AppAuthorization::createFromRequest(
             $command->getClientId(),
-            $command->getScope(),
+            \implode(' ', $allowedScopes),
             $command->getRedirectUri(),
             $command->getState(),
         );

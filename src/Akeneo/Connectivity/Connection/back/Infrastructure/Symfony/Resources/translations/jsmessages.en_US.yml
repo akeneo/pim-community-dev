@@ -56,6 +56,7 @@ akeneo_connectivity.connection:
                 read_more: read more
                 more_info: More info
                 connect: Connect
+                connected: Connected
             extensions:
                 title: Connectors
                 total: '{0} No connectors|{1} 1 connector|[2,Inf] {{ total }} connectors'
@@ -164,8 +165,6 @@ akeneo_connectivity.connection:
                 response_type:
                     not_blank: The response_type is required.
                     must_be_code: The response_type must be "code".
-                scope:
-                    must_be_valid: The scopes are not valid.
                 redirect_uri:
                     not_blank: The redirect_uri is required.
                     must_be_url: The redirect_uri is not a valid url.

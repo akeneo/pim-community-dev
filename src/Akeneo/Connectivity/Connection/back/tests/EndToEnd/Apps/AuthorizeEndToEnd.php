@@ -67,7 +67,7 @@ class AuthorizeEndToEnd extends WebTestCase
         Assert::assertEquals('/#/connect/apps/authorize?error=akeneo_connectivity.connection.connect.apps.constraint.client_id.not_blank', $response->getTargetUrl());
     }
 
-    public function test_it_is_redirected_to_the_wizard_when_authorizing_an_app(): void
+    public function test_it_is_redirected_to_the_wizard_without_unknown_scopes_when_authorizing_an_app(): void
     {
         $this->featureFlagMarketplaceActivate->enable();
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
@@ -83,6 +83,7 @@ class AuthorizeEndToEnd extends WebTestCase
                 'response_type' => 'code',
                 'redirect_uri' => 'http://shopware.example.com/callback',
                 'state' => 'foo',
+                'scope' => 'read_catalog_structure SOME_UNKNOWN_SCOPE write_categories'
             ]
         );
         $response = $this->client->getResponse();
@@ -95,7 +96,7 @@ class AuthorizeEndToEnd extends WebTestCase
         Assert::assertNotEmpty($authorizationInSession);
         Assert::assertEquals([
             'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
-            'scope' => '',
+            'scope' => 'read_catalog_structure write_categories',
             'redirect_uri' => 'http://shopware.example.com/callback',
             'state' => 'foo',
         ], json_decode($authorizationInSession, true));

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps;
 
 use Akeneo\Connectivity\Connection\Application\Apps\AppRoleWithScopesFactoryInterface;
-use Akeneo\Tool\Bundle\ApiBundle\Security\ScopeMapper;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\UserManagement\Component\Connector\RoleWithPermissions;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
@@ -19,16 +19,16 @@ final class AppRoleWithScopesFactory implements AppRoleWithScopesFactoryInterfac
 {
     private const APP_ROLE_TYPE = 'app';
 
-    private ScopeMapper $scopeMapper;
+    private ScopeMapperRegistry $scopeMapperRegistry;
     private SimpleFactoryInterface $roleFactory;
     private RoleWithPermissionsSaver $roleWithPermissionsSaver;
 
     public function __construct(
-        ScopeMapper $scopeMapper,
+        ScopeMapperRegistry $scopeMapperRegistry,
         SimpleFactoryInterface $roleFactory,
         RoleWithPermissionsSaver $roleWithPermissionsSaver
     ) {
-        $this->scopeMapper = $scopeMapper;
+        $this->scopeMapperRegistry = $scopeMapperRegistry;
         $this->roleFactory = $roleFactory;
         $this->roleWithPermissionsSaver = $roleWithPermissionsSaver;
     }
@@ -45,12 +45,9 @@ final class AppRoleWithScopesFactory implements AppRoleWithScopesFactoryInterfac
             'action:pim_api_overall_access' => true,
         ];
 
-        foreach ($scopes as $scope) {
-            $acls = $this->scopeMapper->getAcls($scope);
-
-            foreach ($acls as $acl) {
-                $permissions[sprintf('action:%s', $acl)] = true;
-            }
+        $acls = $this->scopeMapperRegistry->getAcls($scopes);
+        foreach ($acls as $acl) {
+            $permissions[sprintf('action:%s', $acl)] = true;
         }
 
         $roleWithPermissions = RoleWithPermissions::createFromRoleAndPermissions($role, $permissions);

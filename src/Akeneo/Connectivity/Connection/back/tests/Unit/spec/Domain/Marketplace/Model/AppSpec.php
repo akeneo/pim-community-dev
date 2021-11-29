@@ -51,6 +51,7 @@ class AppSpec extends ObjectBehavior
             'certified' => false,
             'activate_url' => 'https:\/\/fake.shopify.akeneo.com\/activate',
             'callback_url' => 'https:\/\/fake.shopify.akeneo.com\/oauth2\/callback',
+            'connected' => false,
         ]);
     }
 
@@ -70,6 +71,7 @@ class AppSpec extends ObjectBehavior
             'certified' => false,
             'activate_url' => 'https:\/\/fake.shopify.akeneo.com\/activate',
             'callback_url' => 'https:\/\/fake.shopify.akeneo.com\/oauth2\/callback',
+            'connected' => false,
         ]);
     }
 
@@ -89,6 +91,7 @@ class AppSpec extends ObjectBehavior
             'certified' => false,
             'activate_url' => 'https:\/\/fake.shopify.akeneo.com\/activate?pim_url=http%3A%2F%2Fmy-akeneo.test',
             'callback_url' => 'https:\/\/fake.shopify.akeneo.com\/oauth2\/callback',
+            'connected' => false,
         ]);
     }
 }
