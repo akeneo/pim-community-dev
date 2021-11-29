@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Apps\Persistence\Query;
 
-use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection;
-use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
-use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAllConnectedAppsPublicIdsQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Test\Integration\Configuration;
@@ -32,13 +27,8 @@ class GetAllConnectedAppsPublicIdsQueryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->repository = $this->get(DbalConnectedAppRepository::class);
         $this->query = $this->get(GetAllConnectedAppsPublicIdsQuery::class);
         $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
-        $this->createConnection = $this->get(CreateConnection::class);
-        $this->clientProvider = $this->get('akeneo_connectivity.connection.service.apps.client_provider');
-        $this->createUserGroup = $this->get('akeneo_connectivity.connection.service.user.create_user_group');
-        $this->createUser = $this->get('akeneo_connectivity.connection.service.user.create_user');
     }
 
     public function test_it_returns_nothing_when_no_connected_app_exists()
