@@ -16,6 +16,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\WriteSelectOptionCollection;
 use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\LRUCache;
 
@@ -33,7 +34,7 @@ final class LruCachedSelectOptionCollectionRepository implements SelectOptionCol
     public function save(
         string $attributeCode,
         ColumnCode $columnCode,
-        SelectOptionCollection $selectOptionCollection
+        WriteSelectOptionCollection $selectOptionCollection
     ): void {
         $this->selectOptionCollectionRepository->save($attributeCode, $columnCode, $selectOptionCollection);
         $this->clearCache();

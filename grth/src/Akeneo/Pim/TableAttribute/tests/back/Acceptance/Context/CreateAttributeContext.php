@@ -17,6 +17,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\WriteSelectOptionCollection;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
 use Akeneo\Test\Common\Structure\Attribute\Builder;
 use Akeneo\Test\Pim\TableAttribute\Acceptance\InMemory\InMemorySelectOptionCollectionRepository;
@@ -262,7 +263,9 @@ final class CreateAttributeContext implements Context
             $this->collectionRepository->save(
                 $row['attribute_code'],
                 ColumnCode::fromString($row['column_code']),
-                SelectOptionCollection::fromNormalized(\json_decode($row['options'], true))
+                WriteSelectOptionCollection::fromReadSelectOptionCollection(
+                    SelectOptionCollection::fromNormalized(\json_decode($row['options'], true))
+                )
             );
         }
     }

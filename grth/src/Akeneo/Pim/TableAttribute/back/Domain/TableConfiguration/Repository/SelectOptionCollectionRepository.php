@@ -15,10 +15,15 @@ namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\WriteSelectOptionCollection;
 
 interface SelectOptionCollectionRepository
 {
-    public function save(string $attributeCode, ColumnCode $columnCode, SelectOptionCollection $selectOptionCollection): void;
+    public function save(
+        string $attributeCode,
+        ColumnCode $columnCode,
+        WriteSelectOptionCollection $selectOptionCollection
+    ): void;
 
     public function getByColumn(string $attributeCode, ColumnCode $columnCode): SelectOptionCollection;
 

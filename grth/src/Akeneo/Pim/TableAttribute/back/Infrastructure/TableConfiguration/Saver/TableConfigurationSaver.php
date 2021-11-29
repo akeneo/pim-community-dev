@@ -21,11 +21,12 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionC
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfigurationUpdater;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\WriteSelectOptionCollection;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 
 class TableConfigurationSaver implements SaverInterface
@@ -34,17 +35,20 @@ class TableConfigurationSaver implements SaverInterface
     private SelectOptionCollectionRepository $optionCollectionRepository;
     private ColumnFactory $columnFactory;
     private TableConfigurationUpdater $tableConfigurationUpdater;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         TableConfigurationRepository $tableConfigurationRepository,
         SelectOptionCollectionRepository $optionCollectionRepository,
         ColumnFactory $columnFactory,
-        TableConfigurationUpdater $tableConfigurationUpdater
+        TableConfigurationUpdater $tableConfigurationUpdater,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->tableConfigurationRepository = $tableConfigurationRepository;
         $this->optionCollectionRepository = $optionCollectionRepository;
         $this->columnFactory = $columnFactory;
         $this->tableConfigurationUpdater = $tableConfigurationUpdater;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function save($attribute, array $options = []): void
@@ -70,11 +74,23 @@ class TableConfigurationSaver implements SaverInterface
                 }
 
                 Assert::isArray($rawColumnDefinition['options'] ?? []);
+                $selectOptionCollection = $this->optionCollectionRepository->getByColumn(
+                    $attribute->getCode(),
+                    ColumnCode::fromString($rawColumnDefinition['code'])
+                );
+                $writeSelectOptionCollection = WriteSelectOptionCollection::fromReadSelectOptionCollection(
+                    $selectOptionCollection
+                );
+                $columnCode = ColumnCode::fromString($rawColumnDefinition['code']);
+                $writeSelectOptionCollection->update($attribute->getCode(), $columnCode, $rawColumnDefinition['options'] ?? []);
                 $this->optionCollectionRepository->save(
                     $attribute->getCode(),
-                    ColumnCode::fromString($rawColumnDefinition['code']),
-                    SelectOptionCollection::fromNormalized($rawColumnDefinition['options'] ?? [])
+                    $columnCode,
+                    $writeSelectOptionCollection
                 );
+                foreach ($writeSelectOptionCollection->releaseEvents() as $event) {
+                    $this->eventDispatcher->dispatch($event);
+                }
             }
         }
     }

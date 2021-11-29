@@ -42,5 +42,21 @@ class AkeneoPimTableAttributeExtension extends Extension
         $loader->load('twig.yml');
         $loader->load('validators.yml');
         $loader->load('value_filters.yml');
+
+        $this->configureEnterpriseProductEnrichment($container);
+    }
+
+    private function configureEnterpriseProductEnrichment(ContainerBuilder $container): void
+    {
+        $bundles = $container->getParameter('kernel.bundles');
+        if (!isset($bundles['AkeneoPimEnterpriseProductEnrichmentBundle'])) {
+            return;
+        }
+
+        $loader =  new YamlFileLoader(
+            $container,
+            new FileLocator(__DIR__ . '/../Resources/config/enterprise_product_enrichment')
+        );
+        $loader->load('jobs.yml');
     }
 }

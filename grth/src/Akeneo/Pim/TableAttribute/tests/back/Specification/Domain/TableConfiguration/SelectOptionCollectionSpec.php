@@ -22,6 +22,7 @@ class SelectOptionCollectionSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(SelectOptionCollection::class);
+        $this->shouldImplement(\IteratorAggregate::class);
     }
 
     function it_can_be_instantiated_with_no_option()
