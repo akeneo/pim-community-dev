@@ -1,3 +1,3 @@
-FROM cypress/included:7.6.0
+FROM cypress/included:8.7.0
 
-RUN npm i @testing-library/cypress
+RUN npm install @testing-library/cypress --save-dev
