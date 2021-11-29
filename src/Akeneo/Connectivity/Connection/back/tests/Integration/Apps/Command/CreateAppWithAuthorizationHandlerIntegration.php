@@ -17,7 +17,6 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Component\Model\Group;
@@ -212,11 +211,14 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
 
     private function assertPermissionsGrantedFromScopes(array $permissions, array $scopes)
     {
-        foreach ($scopes as $scope) {
-            $acls = $this->scopeMapperRegistry->getAcls($scope);
-            foreach ($acls as $acl) {
-                Assert::assertTrue($permissions["action:$acl"], "Missing ACL for $acl on scope $scope");
-            }
+        $acls = $this->scopeMapperRegistry->getAcls($scopes);
+
+        foreach ($acls as $acl) {
+            $action = sprintf('action:%s', $acl);
+            Assert::assertTrue(
+                $permissions[$action],
+                sprintf('ACL %s was not granted for the scopes "%s"', $acl, implode(' ', $scopes))
+            );
         }
     }
 }

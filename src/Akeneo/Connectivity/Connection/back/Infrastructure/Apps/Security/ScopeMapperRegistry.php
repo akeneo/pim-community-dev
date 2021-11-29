@@ -67,6 +67,8 @@ final class ScopeMapperRegistry
      */
     public function getMessages(array $scopeList): array
     {
+        \sort($scopeList);
+
         $lowerScopes = [];
         foreach ($scopeList as $scope) {
             \array_push($lowerScopes, ...$this->getScopeMapper($scope)->getLowerHierarchyScopes($scope));
@@ -93,6 +95,8 @@ final class ScopeMapperRegistry
      */
     public function getAcls(array $scopeList): array
     {
+        \sort($scopeList);
+
         $fullScopes = $scopeList;
         foreach ($scopeList as $scope) {
             \array_push($fullScopes, ...$this->getScopeMapper($scope)->getLowerHierarchyScopes($scope));
