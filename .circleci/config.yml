@@ -176,18 +176,7 @@ jobs:
             name: Restore cache - composer dependency cache
             keys:
                 - backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}
-      - when:
-            condition:
-                not:
-                    equal: [master, << pipeline.git.branch >>]
-            steps:
-                - run:
-                      name: Update composer.json if same branch exists in PIM Onboarder for EE
-                      command: |
-                              git ls-remote --exit-code --heads git@github.com:akeneo/pim-onboarder.git ${CIRCLE_BRANCH} && \
-                              ONBOARDER_BRANCH="dev-${CIRCLE_BRANCH}" || ONBOARDER_BRANCH="dev-master"
-                              echo "Update Onboarder dependency to branch ${ONBOARDER_BRANCH}"
-                              sed -i "s#akeneo/pim-onboarder\": \"^5.0.0#akeneo/pim-onboarder\": \"${ONBOARDER_BRANCH}#" composer.json
+      - change_pim_onboarder_branch_steps
       - run:
             name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
             command: |
@@ -306,6 +295,7 @@ jobs:
           - add_ssh_keys:
               fingerprints:
                   - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+          - change_pim_onboarder_branch_steps
           - connector_bigcommerce_checkout_steps
           - set_gcloud_config_dev
           - run:
@@ -2798,3 +2788,22 @@ commands:
                   echo ${CONNECTOR_BC_BRANCH} > back/VERSION
                   pwd
                   echo `git rev-parse --short HEAD`
+
+  change_pim_onboarder_branch_steps:
+      description: "Change Onboarder dependency if same branch exists"
+      steps:
+          - when:
+                condition:
+                    not:
+                        equal: [master, << pipeline.git.branch >>]
+                steps:
+                    - run:
+                          name: Update composer.json if same branch exists in PIM Onboarder for EE
+                          command: |
+                              curl -H "Authorization: token ${GITHUB_TOKEN}" \
+                                  -H 'Accept: application/vnd.github.v3.raw' \
+                                  --output /dev/null --silent --head --fail \
+                                  -L https://api.github.com/repos/akeneo/pim-onboarder/contents/README.md?ref=${CIRCLE_BRANCH} && \
+                                  ONBOARDER_BRANCH="dev-${CIRCLE_BRANCH}" || ONBOARDER_BRANCH="dev-master"
+                                  echo "Update Onboarder dependencie to branch ${ONBOARDER_BRANCH}"
+                                  sed -i "s#akeneo/pim-onboarder\": \"^5.0.0#akeneo/pim-onboarder\": \"${ONBOARDER_BRANCH}#" composer.json
