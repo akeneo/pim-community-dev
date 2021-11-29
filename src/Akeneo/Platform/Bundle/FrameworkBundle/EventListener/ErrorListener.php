@@ -65,7 +65,7 @@ class ErrorListener extends SymfonyErrorListener
         }
     }
 
-    protected function logException(\Throwable $exception, string $message): void
+    protected function logException(\Throwable $exception, string $message, string $logLevel = null): void
     {
         $this->logExceptionWithContext($exception, $message);
     }
