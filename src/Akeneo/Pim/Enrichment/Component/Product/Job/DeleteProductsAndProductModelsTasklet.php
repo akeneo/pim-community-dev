@@ -6,7 +6,8 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Job;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelCommand;
-use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler;
+use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelsCommand;
+use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelsHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CountVariantProductsInterface;
@@ -35,7 +36,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
 {
     protected ?StepExecution $stepExecution = null;
     protected BulkRemoverInterface $productRemover;
-    protected RemoveProductModelHandler $removeProductModelHandler;
+    protected RemoveProductModelsHandler $removeProductModelsHandler;
     protected ProductQueryBuilderFactoryInterface $pqbFactory;
     protected EntityManagerClearerInterface $cacheClearer;
     protected ObjectFilterInterface $filter;
@@ -49,7 +50,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         BulkRemoverInterface $productRemover,
-        RemoveProductModelHandler $removeProductModelHandler,
+        RemoveProductModelsHandler $removeProductModelsHandler,
         EntityManagerClearerInterface $cacheClearer,
         ObjectFilterInterface $filter,
         int $batchSize,
@@ -61,7 +62,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->productRemover = $productRemover;
-        $this->removeProductModelHandler = $removeProductModelHandler;
+        $this->removeProductModelsHandler = $removeProductModelsHandler;
         $this->cacheClearer = $cacheClearer;
         $this->batchSize = $batchSize;
         $this->filter = $filter;
@@ -190,50 +191,27 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
         $productModels = $this->filterProductModels($entities);
 
         $deletedProductsCount = $this->countProductsToDelete($products, $productModels);
+        $deletedProductModelsCount = $this->countProductModelsToDelete($productModels);
 
         $this->productRemover->removeAll($products);
         $this->stepExecution->incrementSummaryInfo('deleted_products', $deletedProductsCount);
         $this->stepExecution->incrementProcessedItems($deletedProductsCount);
 
-        $this->deleteProductModels($productModels);
-
-        $this->cacheClearer->clear();
-    }
-
-    /**
-     * @param ProductModelInterface[] $productModels
-     */
-    private function deleteProductModels(array $productModels): void
-    {
-        $productModelsToRemove = [];
-        $commandsToExecute = [];
-        $skippedProductModelCount = 0;
-
-        foreach ($productModels as $productModel) {
-            $command = new RemoveProductModelCommand($productModel->getCode());
-            $violations = $this->validator->validate($command);
-            if (0 === \count($violations)) {
-                $productModelsToRemove[] = $productModel;
-                $commandsToExecute[] = $command;
-            } else {
-                $skippedProductModelCount++;
-                foreach ($violations as $violation) {
-                    $this->stepExecution->addWarning($violation->getMessage(), [], new DataInvalidItem($productModel));
-                }
+        $command = RemoveProductModelsCommand::fromProductModels($productModels);
+        $violations = $this->validator->validate($command);
+        if (0 < \count($violations)) {
+            foreach ($violations as $violation) {
+                $this->stepExecution->addWarning($violation->getMessage(), [], new DataInvalidItem($productModels));
             }
-        }
-
-        $deletedProductModelsCount = $this->countProductModelsToDelete($productModelsToRemove);
-        foreach ($commandsToExecute as $command) {
-            ($this->removeProductModelHandler)($command);
-        }
-
-        $this->stepExecution->incrementSummaryInfo('deleted_product_models', $deletedProductModelsCount);
-        if ($skippedProductModelCount > 0) {
-            $this->stepExecution->incrementSummaryInfo('skipped_deleted_product_models', $skippedProductModelCount);
+            $this->stepExecution->incrementSummaryInfo('skipped_deleted_product_models', $deletedProductModelsCount);
+        } else {
+            ($this->removeProductModelsHandler)($command);
+            $this->stepExecution->incrementSummaryInfo('deleted_product_models', $deletedProductModelsCount);
         }
 
         $this->stepExecution->incrementProcessedItems($deletedProductModelsCount);
+
+        $this->cacheClearer->clear();
     }
 
     /**
