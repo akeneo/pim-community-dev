@@ -58,10 +58,6 @@ class Version_6_0_20211124163100_add_index_to_improve_search_on_job_execution_In
 
     private function dropIndexesIfExists(): void
     {
-        if ($this->indexExist('started_time_idx')) {
-            $this->connection->executeQuery('ALTER TABLE akeneo_batch_job_execution DROP INDEX started_time_idx;');
-        }
-
         if ($this->indexExist('user_idx')) {
             $this->connection->executeQuery('ALTER TABLE akeneo_batch_job_execution DROP INDEX user_idx;');
         }
@@ -75,7 +71,7 @@ class Version_6_0_20211124163100_add_index_to_improve_search_on_job_execution_In
 
     private function indexesExist(): bool
     {
-        return $this->indexExist('started_time_idx') && $this->indexExist('user_idx') && $this->indexExist('status_idx');
+        return $this->indexExist('user_idx') && $this->indexExist('status_idx');
     }
 
     private function indexExist(string $indexName): bool
