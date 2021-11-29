@@ -38,7 +38,7 @@ class Version_6_0_20211124163100_add_index_to_improve_search_on_job_execution_In
         $this->connection = $this->get('database_connection');
     }
 
-    public function test_it_adds_a_new_type_column_to_the_connection_table(): void
+    public function test_it_adds_new_indexes_on_job_execution_table(): void
     {
         $this->dropIndexesIfExists();
 
@@ -75,7 +75,7 @@ class Version_6_0_20211124163100_add_index_to_improve_search_on_job_execution_In
 
     private function indexesExist(): bool
     {
-        return $this->indexExist('started_time_idx') && $this->indexExist('IDX_USER') && $this->indexExist('IDX_STATUS');
+        return $this->indexExist('started_time_idx') && $this->indexExist('user_idx') && $this->indexExist('status_idx');
     }
 
     private function indexExist(string $indexName): bool
