@@ -29,7 +29,7 @@
     <testsuites>
         <testsuite name="PIM_Integration_Test">
             <directory suffix="Integration.php">src</directory>
-            <directory suffix="Integration.php">tests/back</directory>
+            <directory suffix="Integration.php">tests/back/Integration</directory>
         </testsuite>
 
         <testsuite name="PIM_Migration_Test">
@@ -57,6 +57,11 @@
         </testsuite>
 
         <!--@TODO : Maybe move to EE or change test config-->
+        <testsuite name="Table_Attribute_Integration_Only_Enterprise">
+            <directory suffix="Integration.php">src</directory>
+            <directory suffix="Integration.php">tests/back/Enterprise/Integration</directory>
+        </testsuite>
+
         <testsuite name="Table_Attribute_End_To_End_Only_Enterprise">
             <directory suffix="EndToEnd.php">src/Akeneo/Pim/TableAttribute/tests/back/Enterprise/EndToEnd</directory>
         </testsuite>
