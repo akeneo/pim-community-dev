@@ -36,15 +36,19 @@ class ColumnView extends BaseView {
     });
 
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', () => {
-      this.getRoot().trigger('pim_enrich:form:form-tabs:remove-error', this.getTabCode());
+      this.getRoot().trigger('pim_enrich:form:form-tabs:remove-errors');
       this.setValidationErrors([]);
     });
 
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', event => {
       this.setValidationErrors(event.response.normalized_errors);
 
-      if (filterErrors(this.validationErrors, '[columns]').length > 0) {
-        this.getRoot().trigger('pim_enrich:form:form-tabs:add-error', this.getTabCode());
+      const errors = filterErrors(this.validationErrors, '[columns]');
+      if (errors.length > 0) {
+        this.getRoot().trigger('pim_enrich:form:form-tabs:add-errors', {
+          tabCode: this.getTabCode(),
+          errors,
+        });
       }
     });
 

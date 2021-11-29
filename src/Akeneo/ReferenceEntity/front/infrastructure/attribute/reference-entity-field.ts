@@ -21,7 +21,7 @@ class ReferenceEntityField extends (BaseField as {new (config: any): any}) {
     this.events = {
       'change select': function(event: any) {
         this.errors = [];
-        this.getRoot().trigger('pim_enrich:form:form-tabs:remove-error', this.getTabCode());
+        this.getRoot().trigger('pim_enrich:form:form-tabs:remove-errors');
         this.updateModel(this.getFieldValue(event.target));
         this.getRoot().render();
       },
