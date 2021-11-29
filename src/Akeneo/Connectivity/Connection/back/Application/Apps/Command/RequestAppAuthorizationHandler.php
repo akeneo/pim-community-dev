@@ -37,12 +37,13 @@ final class RequestAppAuthorizationHandler
             throw new InvalidAppAuthorizationRequest($violations);
         }
 
+        $supportedScopes = $this->scopeMapper->getAllScopes();
         $requestedScopes = \explode(' ', $command->getScope());
-        $matchingScopes = \array_intersect($requestedScopes, $this->scopeMapper->getAllScopes());
+        $allowedScopes = \array_intersect($requestedScopes, $supportedScopes);
 
         $authorization = AppAuthorization::createFromRequest(
             $command->getClientId(),
-            \implode(' ', $matchingScopes),
+            \implode(' ', $allowedScopes),
             $command->getRedirectUri(),
             $command->getState(),
         );
