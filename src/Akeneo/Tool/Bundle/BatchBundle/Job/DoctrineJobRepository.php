@@ -199,8 +199,20 @@ SQL;
         $statement->bindValue('item', $warning->getItem(), 'array');
         $statement->execute();
 
+        $this->incrementWarningCount($stepExecution->getId());
+
         if ($stepExecution->getWarnings() instanceof PersistentCollection) {
             $stepExecution->getWarnings()->setInitialized(false);
         }
+    }
+
+    private function incrementWarningCount(int $stepExecutionId): void
+    {
+        $sqlQuery = <<<SQL
+    UPDATE akeneo_batch_step_execution
+    SET warning_count = warning_count + 1
+    WHERE id = :step_execution_id
+SQL;
+        $this->jobManager->getConnection()->executeQuery($sqlQuery, ['step_execution_id' => $stepExecutionId]);
     }
 }
