@@ -1,0 +1,7 @@
+services:
+    Akeneo\Pim\WorkOrganization\Workflow\Bundle\Validation\ProductModel\IsNotRelatedToAPublishedProductValidator:
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pimee_workflow.repository.published_product'
+        tags:
+            - { name: 'validator.constraint_validator' }

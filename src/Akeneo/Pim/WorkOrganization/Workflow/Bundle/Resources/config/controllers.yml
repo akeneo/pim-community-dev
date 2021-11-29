@@ -202,7 +202,6 @@ services:
             - '@pim_catalog.comparator.filter.product_model'
             - '@pim_enrich.converter.enrich_to_standard.product_value'
             - '@pim_catalog.updater.product_model'
-            - '@pim_catalog.remover.product_model'
             - '@pim_catalog.validator.product_model'
             - '@pimee_workflow.saver.product_model_delegating'
             - '@pim_enrich.normalizer.product_violation'
@@ -213,6 +212,8 @@ services:
             - '@pim_enrich.filter.product_model_attribute_filter'
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@pim_enrich.filter.product_edit_data'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler'
+            - '@validator'
 
     pimee_workflow.controller.published_product_grid:
         public: true

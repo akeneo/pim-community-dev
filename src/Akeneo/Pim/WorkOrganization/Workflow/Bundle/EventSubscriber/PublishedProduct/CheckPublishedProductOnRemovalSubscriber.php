@@ -16,7 +16,6 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
@@ -33,31 +32,18 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Check some pre remove events and forbid deletion if the entity is linked to a published product
+ * Warning: Prefer to use a Remove command for your object, then add a validation checking the object can be removed.
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
 class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterface
 {
-    /** @var PublishedProductRepositoryInterface */
-    protected $publishedRepository;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    protected $queryBuilderFactory;
-
-    /** @var ChannelRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
-
+    protected PublishedProductRepositoryInterface $publishedRepository;
+    protected ProductQueryBuilderFactoryInterface $queryBuilderFactory;
+    protected ChannelRepositoryInterface $channelRepository;
+    protected LocaleRepositoryInterface $localeRepository;
     private TranslatorInterface $translator;
 
-    /**
-     * @param PublishedProductRepositoryInterface $publishedRepository
-     * @param ProductQueryBuilderFactoryInterface $queryBuilderFactory
-     * @param ChannelRepositoryInterface          $channelRepository
-     * @param LocaleRepositoryInterface           $localeRepository
-     */
     public function __construct(
         PublishedProductRepositoryInterface $publishedRepository,
         ProductQueryBuilderFactoryInterface $queryBuilderFactory,
@@ -85,8 +71,6 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
     /**
      * Check if the family is linked to a published product
      *
-     * @param GenericEvent $event
-     *
      * @throws PublishedProductConsistencyException
      */
     public function preRemove(GenericEvent $event)
@@ -101,23 +85,19 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
 
         if ($subject instanceof ProductInterface) {
             $message = 'pimee_workflow.check_removal.product_error';
-        } elseif ($subject instanceof ProductModelInterface) {
-            $message = 'pimee_workflow.check_removal.product_model_error';
         }
 
         /*
-         * @fixme See PIM-10098. It should not be the responsibility of this subscriber to translate the error message.
-         *        But it would requires the study of a global solution for this kind of problem
+         * It should not be the responsibility of this subscriber to format a translated message.
+         * Prefer to validate the Remove command instead (see class comment)
          */
         throw new PublishedProductConsistencyException($this->translator->trans($message));
     }
 
     /**
      * @param mixed $subject
-     *
-     * @return bool
      */
-    private function isSubjectRelatedToPublished($subject)
+    private function isSubjectRelatedToPublished($subject): bool
     {
         if (!is_object($subject)) {
             return false;
@@ -159,20 +139,9 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
             return null !== $this->publishedRepository->findOneByOriginalProduct($subject);
         }
 
-        if ($subject instanceof ProductModelInterface) {
-            return $this->publishedRepository->countPublishedVariantProductsForProductModel($subject) > 0;
-        }
-
         return false;
     }
 
-    /**
-     * Count published products for a specific family
-     *
-     * @param FamilyInterface $family
-     *
-     * @return int
-     */
     private function countPublishedProductsForFamily(FamilyInterface $family): int
     {
         $productQb = $this->queryBuilderFactory->create();
@@ -181,13 +150,6 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
         return $productQb->execute()->count();
     }
 
-    /**
-     * Count published products for a specific category
-     *
-     * @param CategoryInterface $category
-     *
-     * @return int
-     */
     private function countPublishedProductsForCategory(CategoryInterface $category): int
     {
         $productQb = $this->queryBuilderFactory->create();
@@ -196,13 +158,6 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
         return $productQb->execute()->count();
     }
 
-    /**
-     * Count published products for a specific attribute
-     *
-     * @param GroupInterface $group
-     *
-     * @return int
-     */
     private function countPublishedProductsForGroup(GroupInterface $group): int
     {
         $productQb = $this->queryBuilderFactory->create();
@@ -211,13 +166,6 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
         return $productQb->execute()->count();
     }
 
-    /**
-     * Count published products for a specific attribute option
-     *
-     * @param AttributeOptionInterface $option
-     *
-     * @return int
-     */
     private function countPublishedProductsForAttributeOption(AttributeOptionInterface $option): int
     {
         $count = 0;
@@ -248,11 +196,6 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
         return $count;
     }
 
-    /**
-     * @param AttributeInterface $attribute
-     *
-     * @return int
-     */
     private function countPublishedProductsForNonLocalizableAttribute(AttributeInterface $attribute): int
     {
         if ($attribute->isScopable()) {
@@ -275,11 +218,6 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
         return $count;
     }
 
-    /**
-     * @param AttributeInterface $attribute
-     *
-     * @return int
-     */
     private function countPublishedProductsForLocalizableAttribute(AttributeInterface $attribute): int
     {
         $count = 0;

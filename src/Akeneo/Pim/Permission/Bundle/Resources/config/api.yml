@@ -125,7 +125,8 @@ services:
             - '%pim_api.configuration%'
             - '@monolog.logger.pim_api_acl'
             - '@oro_security.security_facade'
-            - '@pim_catalog.remover.product_model'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler'
+            - '@validator'
 
     akeneo.pim.enrichment.use_cases.validator.validate_granted_search_locale:
         class: Akeneo\Pim\Permission\Component\Api\UseCase\Validator\ValidateGrantedSearchLocale
