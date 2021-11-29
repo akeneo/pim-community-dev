@@ -13,7 +13,7 @@ type LastExecutionsTableProps = {
   onTableRefresh: () => void;
 };
 
-const LastExecutionsTable = ({sticky, jobExecutionRows, onTableRefresh}: LastExecutionsTableProps) => {
+const LastExecutionTable = ({sticky, jobExecutionRows, onTableRefresh}: LastExecutionsTableProps) => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
   const dateFormatter = useDateFormatter();
@@ -91,4 +91,4 @@ const LastExecutionsTable = ({sticky, jobExecutionRows, onTableRefresh}: LastExe
   );
 };
 
-export {LastExecutionsTable};
+export {LastExecutionTable};

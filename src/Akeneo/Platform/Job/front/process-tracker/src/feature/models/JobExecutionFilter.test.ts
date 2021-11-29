@@ -4,38 +4,56 @@ test('it can tell if the given filter is the default Job execution filter', () =
   expect(isDefaultJobExecutionFilter(getDefaultJobExecutionFilter())).toEqual(true);
   expect(
     isDefaultJobExecutionFilter({
-      size: 25,
+      ...getDefaultJobExecutionFilter(),
+      size: 24,
+    })
+  ).toEqual(false);
+  expect(
+    isDefaultJobExecutionFilter({
+      ...getDefaultJobExecutionFilter(),
+      sort: {
+        column: 'status',
+        direction: 'DESC',
+      },
+    })
+  ).toEqual(false);
+  expect(
+    isDefaultJobExecutionFilter({
+      ...getDefaultJobExecutionFilter(),
+      sort: {
+        column: 'started_at',
+        direction: 'ASC',
+      },
+    })
+  ).toEqual(false);
+  expect(
+    isDefaultJobExecutionFilter({
+      ...getDefaultJobExecutionFilter(),
       page: 2,
-      sort: {
-        column: 'started_at',
-        direction: 'DESC',
-      },
-      status: [],
-      type: [],
     })
   ).toEqual(false);
   expect(
     isDefaultJobExecutionFilter({
-      size: 25,
-      page: 1,
-      sort: {
-        column: 'started_at',
-        direction: 'DESC',
-      },
+      ...getDefaultJobExecutionFilter(),
       status: ['ABANDONED'],
-      type: [],
     })
   ).toEqual(false);
   expect(
     isDefaultJobExecutionFilter({
-      size: 25,
-      page: 1,
-      sort: {
-        column: 'started_at',
-        direction: 'DESC',
-      },
-      status: [],
+      ...getDefaultJobExecutionFilter(),
       type: ['import'],
+    })
+  ).toEqual(false);
+  expect(
+    isDefaultJobExecutionFilter({
+      ...getDefaultJobExecutionFilter(),
+      search: 'My search',
+    })
+  ).toEqual(false);
+  expect(
+    isDefaultJobExecutionFilter({
+      ...getDefaultJobExecutionFilter(),
+      code: ['csv_product_export'],
     })
   ).toEqual(false);
 });

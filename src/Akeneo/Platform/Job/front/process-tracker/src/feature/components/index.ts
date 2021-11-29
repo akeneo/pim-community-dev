@@ -1,3 +1,3 @@
 export * from './JobExecutionList';
 export * from './JobExecutionStatus';
-export * from './LastExecutionsTable';
+export * from './LastExecutionTable';

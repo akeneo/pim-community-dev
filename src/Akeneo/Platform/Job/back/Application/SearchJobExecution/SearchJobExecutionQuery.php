@@ -16,5 +16,6 @@ class SearchJobExecutionQuery
     public array $users = [];
     public array $type = [];
     public array $status = [];
+    public array $code = [];
     public string $search = '';
 }

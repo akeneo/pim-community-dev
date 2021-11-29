@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import {AkeneoIcon, CardIcon, CommonStyle, DownloadIcon, getColor, MainNavigationItem} from 'akeneo-design-system';
+import {CardIcon, CommonStyle, DownloadIcon, getColor, MainNavigationItem} from 'akeneo-design-system';
 import {ProcessTrackerApp} from './feature/ProcessTrackerApp';
-import {JobInstancePage} from './feature/pages/JobInstancePage';
+import {JobInstanceDetail} from './feature/pages/JobInstanceDetail';
 
 const Container = styled.div`
   display: flex;
@@ -48,7 +48,7 @@ const FakePIM = () => {
       </Menu>
       <Page>
         {'process-tracker' === currentPage && <ProcessTrackerApp />}
-        {'job-instance' === currentPage && <JobInstancePage />}
+        {'job-instance' === currentPage && <JobInstanceDetail code="csv_product_export" type="export"/>}
       </Page>
     </Container>
   );
