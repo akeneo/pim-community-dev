@@ -17,11 +17,15 @@ interface ScopeMapperInterface
     public function getScopes(): array;
 
     /**
+     * @throw \InvalidArgumentException if the given scope does not exist.
+     *
      * @return string[]
      */
     public function getAcls(string $scopeName): array;
 
     /**
+     * @throw \InvalidArgumentException if the given scope does not exist.
+     *
      * @return array{
      *      icon: string,
      *      type: string,
@@ -31,6 +35,8 @@ interface ScopeMapperInterface
     public function getMessage(string $scopeName): array;
 
     /**
+     * @throw \InvalidArgumentException if the given scope does not exist.
+     *
      * @return string[]
      */
     public function getLowerHierarchyScopes(string $scopeName): array;

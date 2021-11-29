@@ -20,7 +20,7 @@ final class ScopeMapperRegistry
             if (!$scopeMapper instanceof ScopeMapperInterface) {
                 throw new \InvalidArgumentException(
                     \sprintf(
-                        '%s needs only %s',
+                        '%s must implement %s',
                         self::class,
                         ScopeMapperInterface::class
                     )
@@ -41,6 +41,9 @@ final class ScopeMapperRegistry
         }
     }
 
+    /**
+     * @return string[]
+     */
     public function getAllScopes(): array
     {
         return \array_keys($this->scopeMappers);
@@ -52,7 +55,7 @@ final class ScopeMapperRegistry
      *
      * @param string[] $scopeList
      *
-     * @throw \LogicArgumentException if a scope you provide does not exist
+     * @throw \LogicArgumentException if the given scope does not exist
      *
      * @return array<
      *     array{
@@ -84,7 +87,7 @@ final class ScopeMapperRegistry
      *
      * @param string[] $scopeList
      *
-     * @throw \LogicArgumentException if a scope you provide does not exist
+     * @throw \LogicArgumentException if the given scope does not exist
      *
      * @return string[]
      */
