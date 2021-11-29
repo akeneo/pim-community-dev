@@ -292,6 +292,36 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
+    public function it_returns_filtered_job_executions_on_code(): void
+    {
+        $this->loadFixtures();
+
+        $query = new SearchJobExecutionQuery();
+        $query->code = ['a_product_export'];
+        $query->size = 10;
+
+        $expectedJobExecutions = [
+            new JobExecutionRow(
+                $this->jobExecutionIds[3],
+                'A product export',
+                'export',
+                null,
+                null,
+                'STARTING',
+                0,
+                0,
+                0,
+                3,
+                true,
+            ),
+        ];
+
+        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_ordered_by_job_name_job_executions()
     {
         $this->loadFixtures();
