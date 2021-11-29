@@ -7,7 +7,7 @@ namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
-use Akeneo\Tool\Bundle\ApiBundle\Security\ScopeMapperInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -18,12 +18,12 @@ final class RequestAppAuthorizationHandler
 {
     private ValidatorInterface $validator;
     private AppAuthorizationSessionInterface $session;
-    private ScopeMapperInterface $scopeMapper;
+    private ScopeMapperRegistry $scopeMapper;
 
     public function __construct(
         ValidatorInterface $validator,
         AppAuthorizationSessionInterface $session,
-        ScopeMapperInterface $scopeMapper
+        ScopeMapperRegistry $scopeMapper
     ) {
         $this->validator = $validator;
         $this->session = $session;
