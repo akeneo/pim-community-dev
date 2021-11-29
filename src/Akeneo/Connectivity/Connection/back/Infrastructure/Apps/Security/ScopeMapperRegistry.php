@@ -114,7 +114,7 @@ final class ScopeMapperRegistry
     private function filterByKeepingHighestLevels(array $scopeList, array $lowerLevelScopes): array
     {
         return \array_values(
-            \array_filter($scopeList, fn(string $scope) => !\in_array($scope, $lowerLevelScopes))
+            \array_filter($scopeList, fn (string $scope) => !\in_array($scope, $lowerLevelScopes))
         );
     }
 
