@@ -95,6 +95,10 @@ services:
         tags:
             - { name: pim_api.security.scope_mapper }
 
+    Akeneo\Pim\Structure\Component\Security\AttributeOptionsScopeMapper:
+        tags:
+            - { name: pim_api.security.scope_mapper }
+
     Akeneo\Pim\Structure\Component\Security\AssociationTypeScopeMapper:
         tags:
             - { name: pim_api.security.scope_mapper }
