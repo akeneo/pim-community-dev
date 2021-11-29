@@ -30,8 +30,8 @@ final class RemoveProductModelsCommand
     private function __construct(array $removeProductModelCommands, array $productModels = null)
     {
         Assert::allIsInstanceOf($removeProductModelCommands, RemoveProductModelCommand::class);
-        if (0 < \count($productModels)) {
-            Assert::allIsInstanceOf($productModels, ProductModelInterface::class);
+        if (null !== $productModels) {
+            Assert::allImplementsInterface($productModels, ProductModelInterface::class);
         }
 
         $this->removeProductModelCommands = $removeProductModelCommands;
@@ -55,7 +55,7 @@ final class RemoveProductModelsCommand
      */
     public static function fromProductModels(array $productModels): RemoveProductModelsCommand
     {
-        Assert::allIsInstanceOf($productModels, ProductModelInterface::class);
+        Assert::allImplementsInterface($productModels, ProductModelInterface::class);
         $subCommands = \array_map(
             static fn (ProductModelInterface $productModel): RemoveProductModelCommand => new RemoveProductModelCommand(
                 $productModel->getCode()
@@ -75,7 +75,7 @@ final class RemoveProductModelsCommand
     }
 
     /**
-     * @return ProductModelInterface[]
+     * @return ProductModelInterface[]|null
      */
     public function productModels(): ?array
     {

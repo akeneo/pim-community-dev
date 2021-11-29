@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Job;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelCommand;
 use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelsCommand;
 use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelsHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -197,18 +196,21 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
         $this->stepExecution->incrementSummaryInfo('deleted_products', $deletedProductsCount);
         $this->stepExecution->incrementProcessedItems($deletedProductsCount);
 
-        $command = RemoveProductModelsCommand::fromProductModels($productModels);
-        $violations = $this->validator->validate($command);
-        if (0 < \count($violations)) {
-            foreach ($violations as $violation) {
-                $this->stepExecution->addWarning($violation->getMessage(), [], new DataInvalidItem($productModels));
+        if ([] !== $productModels) {
+            $command = RemoveProductModelsCommand::fromProductModels($productModels);
+            $violations = $this->validator->validate($command);
+            if (0 < \count($violations)) {
+                foreach ($violations as $violation) {
+                    $this->stepExecution->addWarning($violation->getMessage(), [], new DataInvalidItem($productModels));
+                }
+                $this->stepExecution->incrementSummaryInfo('skipped_deleted_product_models', $deletedProductModelsCount);
+                $deletedProductModelsCount = 0;
+            } else {
+                ($this->removeProductModelsHandler)($command);
             }
-            $this->stepExecution->incrementSummaryInfo('skipped_deleted_product_models', $deletedProductModelsCount);
-        } else {
-            ($this->removeProductModelsHandler)($command);
-            $this->stepExecution->incrementSummaryInfo('deleted_product_models', $deletedProductModelsCount);
         }
 
+        $this->stepExecution->incrementSummaryInfo('deleted_product_models', $deletedProductModelsCount);
         $this->stepExecution->incrementProcessedItems($deletedProductModelsCount);
 
         $this->cacheClearer->clear();
