@@ -34,6 +34,8 @@ pim_import_export:
       error: Import <strong>%label%</strong> fehlgeschlagen
       warning: Import <strong>%label%</strong> mit Warnmeldungen fertiggestellt
       success: Import <strong>%label%</strong> fertiggestellt
+      warnings:
+        xlsx_cell_date_conversion_error: Kann Zelle "{cellName}" nicht mit Datumsformat in Attribut des Typs {attributeType} konvertieren
   list: Wählen Sie einen Auftrag
   job_profile:
     tab:
