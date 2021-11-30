@@ -7,7 +7,7 @@ namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatT
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableBooleanTranslator;
-use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValueTranslatorInterface;
+use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValueTranslator;
 use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 use PhpSpec\ObjectBehavior;
@@ -43,7 +43,7 @@ class TableBooleanTranslatorSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(TableBooleanTranslator::class);
-        $this->shouldImplement(TableValueTranslatorInterface::class);
+        $this->shouldImplement(TableValueTranslator::class);
     }
 
     function it_supports_boolean_columns()

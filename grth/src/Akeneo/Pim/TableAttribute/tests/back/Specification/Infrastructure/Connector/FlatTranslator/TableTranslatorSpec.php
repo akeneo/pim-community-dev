@@ -12,7 +12,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigur
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableTranslator;
-use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValueTranslatorInterface;
+use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValueTranslator;
 use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use PhpSpec\ObjectBehavior;
 
@@ -20,8 +20,8 @@ class TableTranslatorSpec extends ObjectBehavior
 {
     function let(
         TableConfigurationRepository $tableConfigurationRepository,
-        TableValueTranslatorInterface $selectValueTranslator,
-        TableValueTranslatorInterface $booleanValueTranslator
+        TableValueTranslator $selectValueTranslator,
+        TableValueTranslator $booleanValueTranslator
     ) {
         $selectValueTranslator->getSupportedColumnDataType()->willReturn(SelectColumn::DATATYPE);
         $booleanValueTranslator->getSupportedColumnDataType()->willReturn(BooleanColumn::DATATYPE);
@@ -43,8 +43,8 @@ class TableTranslatorSpec extends ObjectBehavior
 
     function it_translates_the_columns_and_the_cell_values(
         TableConfigurationRepository $tableConfigurationRepository,
-        TableValueTranslatorInterface $selectValueTranslator,
-        TableValueTranslatorInterface $booleanValueTranslator
+        TableValueTranslator $selectValueTranslator,
+        TableValueTranslator $booleanValueTranslator
     ) {
         $ingredientColumn = SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => [
             'en_US' => 'Ingredient US',
@@ -101,7 +101,7 @@ class TableTranslatorSpec extends ObjectBehavior
 
     function it_translates_the_columns_with_duplicate(
         TableConfigurationRepository $tableConfigurationRepository,
-        TableValueTranslatorInterface $selectValueTranslator
+        TableValueTranslator $selectValueTranslator
     ) {
         $ingredientColumn = SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => [
             'en_US' => 'Ingredient US',

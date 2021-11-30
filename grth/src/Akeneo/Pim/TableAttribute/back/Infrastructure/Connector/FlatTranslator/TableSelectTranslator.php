@@ -18,7 +18,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 
-final class TableSelectTranslator implements TableValueTranslatorInterface
+final class TableSelectTranslator implements TableValueTranslator
 {
     private SelectOptionCollectionRepository $selectOptionCollectionRepository;
 

@@ -15,7 +15,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
 
-interface TableValueTranslatorInterface
+interface TableValueTranslator
 {
     public function getSupportedColumnDataType(): string;
 

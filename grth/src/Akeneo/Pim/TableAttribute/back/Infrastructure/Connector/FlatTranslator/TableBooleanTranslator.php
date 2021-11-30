@@ -18,7 +18,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
 use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 
-final class TableBooleanTranslator implements TableValueTranslatorInterface
+final class TableBooleanTranslator implements TableValueTranslator
 {
     private LabelTranslatorInterface $labelTranslator;
     private array $trueLocalized = [];

@@ -9,7 +9,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableSelectTranslator;
-use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValueTranslatorInterface;
+use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValueTranslator;
 use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use PhpSpec\ObjectBehavior;
 
@@ -29,7 +29,7 @@ class TableSelectTranslatorSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(TableSelectTranslator::class);
-        $this->shouldImplement(TableValueTranslatorInterface::class);
+        $this->shouldImplement(TableValueTranslator::class);
     }
 
     function it_supports_select_columns()

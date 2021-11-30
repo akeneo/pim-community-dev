@@ -23,12 +23,12 @@ use Webmozart\Assert\Assert;
 final class TableTranslator implements FlatAttributeValueTranslatorInterface
 {
     private TableConfigurationRepository $tableConfigurationRepository;
-    /** @var iterable<TableValueTranslatorInterface> */
+    /** @var iterable<TableValueTranslator> */
     private iterable $tableValueTranslators;
     private array $columnLabelsByAttributeCodeAndLocaleCode = [];
 
     /**
-     * @param iterable<TableValueTranslatorInterface> $tableValueTranslators
+     * @param iterable<TableValueTranslator> $tableValueTranslators
      */
     public function __construct(
         TableConfigurationRepository $tableConfigurationRepository,
@@ -36,7 +36,7 @@ final class TableTranslator implements FlatAttributeValueTranslatorInterface
     ) {
         $this->tableConfigurationRepository = $tableConfigurationRepository;
         foreach ($tableValueTranslators as $tableValueTranslator) {
-            Assert::isInstanceOf($tableValueTranslator, TableValueTranslatorInterface::class);
+            Assert::isInstanceOf($tableValueTranslator, TableValueTranslator::class);
             $this->tableValueTranslators[$tableValueTranslator->getSupportedColumnDataType()] = $tableValueTranslator;
         }
     }
