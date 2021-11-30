@@ -641,6 +641,19 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $this->assertEquals(3, $this->getQuery()->count($query));
     }
 
+    /**
+     * @test
+     */
+    public function it_returns_job_execution_count_filtered_by_job_instance_code()
+    {
+        $this->loadFixtures();
+
+        $query = new SearchJobExecutionQuery();
+        $query->code = ['a_product_export'];
+
+        $this->assertEquals(1, $this->getQuery()->count($query));
+    }
+
     private function loadFixtures()
     {
         $aProductImportJobInstanceId = $this->fixturesJobHelper->createJobInstance([

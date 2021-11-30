@@ -25,13 +25,9 @@ const STOPPABLE_STATUS = ['STARTING', 'STARTED'];
 const jobCanBeStopped = (jobExecutionRow: JobExecutionRow): boolean =>
   jobExecutionRow.is_stoppable && STOPPABLE_STATUS.includes(jobExecutionRow.status);
 
-const RESTRICTED_JOB_TYPES = ['import', 'export'];
+const JOB_TYPES_WITH_ACL = {'import': 'pim_importexport_import_execution_show', 'export': 'pim_importexport_export_execution_show'};
 const canShowJobExecutionDetail = (isGranted: (acl: string) => boolean, jobExecutionRow: JobExecutionRow) => {
-  if (RESTRICTED_JOB_TYPES.includes(jobExecutionRow.type)) {
-    return isGranted(`pim_importexport_${jobExecutionRow.type}_execution_show`);
-  }
-
-  return true;
+  return JOB_TYPES_WITH_ACL[jobExecutionRow.type] && isGranted(JOB_TYPES_WITH_ACL[jobExecutionRow.type]);
 };
 
 export {jobCanBeStopped, canShowJobExecutionDetail};

@@ -1,4 +1,4 @@
-import {jobCanBeStopped, JobExecutionRow} from './JobExecutionTable';
+import {canShowJobExecutionDetail, jobCanBeStopped, JobExecutionRow} from './JobExecutionTable';
 
 const jobExecutionRow: JobExecutionRow = {
   job_execution_id: 1,
@@ -29,3 +29,11 @@ test('it can tell if the job can be stopped', () => {
   expect(jobCanBeStopped({...jobExecutionRow, status: 'COMPLETED'})).toBe(false);
   expect(jobCanBeStopped({...jobExecutionRow, status: 'UNKNOWN'})).toBe(false);
 });
+
+test('it can tell if user can show job execution detail', () => {
+  const isGranted = (acl: string) => acl === 'pim_importexport_export_execution_show';
+
+  expect(canShowJobExecutionDetail(isGranted, jobExecutionRow)).toBe(true);
+  expect(canShowJobExecutionDetail(isGranted, {...jobExecutionRow, type: 'import'})).toBe(false);
+  expect(canShowJobExecutionDetail(isGranted, {...jobExecutionRow, type: 'quick_export'})).toBe(false);
+})

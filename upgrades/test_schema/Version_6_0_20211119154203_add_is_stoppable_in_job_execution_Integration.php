@@ -11,8 +11,8 @@ use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\Assert;
 
 /**
- * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class Version_6_0_20211119154203_add_is_stoppable_in_job_execution_Integration extends TestCase
 {

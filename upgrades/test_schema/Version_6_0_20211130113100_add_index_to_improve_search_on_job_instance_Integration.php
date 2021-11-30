@@ -10,8 +10,8 @@ use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
 /**
- * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class Version_6_0_20211130113100_add_index_to_improve_search_on_job_instance_Integration extends TestCase
 {
