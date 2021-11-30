@@ -6,14 +6,8 @@ namespace Pim\Upgrade\Schema\Tests;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -38,38 +32,38 @@ class Version_6_0_20211130113100_add_index_to_improve_search_on_job_instance_Int
         $this->connection = $this->get('database_connection');
     }
 
-    public function test_it_adds_new_indexes_on_job_execution_table(): void
+    public function test_it_adds_new_index_on_job_execution_table(): void
     {
-        $this->dropIndexIfExist('code_idx');
+        $this->dropIndexIfExists('code_idx');
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
-        Assert::assertTrue($this->indexExist('code_idx'));
+        Assert::assertTrue($this->indexExists('code_idx'));
     }
 
     public function test_migration_is_idempotent(): void
     {
-        $this->dropIndexIfExist('code_idx');
+        $this->dropIndexIfExists('code_idx');
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
-        Assert::assertTrue($this->indexExist('code_idx'));
+        Assert::assertTrue($this->indexExists('code_idx'));
     }
 
-    private function dropIndexIfExist(string $indexName): void
+    private function dropIndexIfExists(string $indexName): void
     {
-        if ($this->indexExist($indexName)) {
+        if ($this->indexExists($indexName)) {
             $this->connection->executeQuery(sprintf('ALTER TABLE akeneo_batch_job_instance DROP INDEX %s;', $indexName));
         }
 
-        Assert::assertEquals(false, $this->indexExist($indexName));
+        Assert::assertEquals(false, $this->indexExists($indexName));
     }
 
-    private function indexExist(string $indexName): bool
+    private function indexExists(string $indexName): bool
     {
-        $indexes = $this->connection->executeQuery('SHOW INDEX FROM akeneo_batch_job_instance')->fetchAllAssociative();
-        $indexIndexedByName = array_column($indexes, null, 'Key_name');
+        $indices = $this->connection->executeQuery('SHOW INDEX FROM akeneo_batch_job_instance')->fetchAllAssociative();
+        $indicesIndexedByName = array_column($indices, null, 'Key_name');
 
-        return isset($indexIndexedByName[$indexName]);
+        return array_key_exists($indexName, $indicesIndexedByName);
     }
 }
