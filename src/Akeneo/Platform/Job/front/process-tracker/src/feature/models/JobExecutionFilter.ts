@@ -15,6 +15,7 @@ type JobExecutionFilter = {
   status: JobStatus[];
   user: string[];
   search: string;
+  code: string[];
 };
 
 const getDefaultJobExecutionFilter = (): JobExecutionFilter => ({
@@ -25,15 +26,26 @@ const getDefaultJobExecutionFilter = (): JobExecutionFilter => ({
   status: [],
   user: [],
   search: '',
+  code: [],
 });
 
-const isDefaultJobExecutionFilter = ({page, size, sort, type, status, user, search}: JobExecutionFilter): boolean =>
+const isDefaultJobExecutionFilter = ({
+  page,
+  size,
+  sort,
+  type,
+  status,
+  search,
+  user,
+  code,
+}: JobExecutionFilter): boolean =>
   1 === page &&
   ITEMS_PER_PAGE === size &&
   'started_at' === sort.column &&
   'DESC' === sort.direction &&
   0 === status.length &&
   0 === type.length &&
+  0 === code.length &&
   0 === user.length &&
   '' === search;
 

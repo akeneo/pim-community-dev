@@ -11,3 +11,4 @@ config:
 
   paths:
     akeneojob/controller/process-tracker: akeneojob/bridge/controller/process-tracker.tsx
+    akeneojob/controller/job-instance: akeneojob/bridge/controller/job-instance.tsx

@@ -118,9 +118,14 @@ SQL;
         $status = $query->status;
         $user = $query->user;
         $search = $query->search;
+        $code = $query->code;
 
         if (!empty($type)) {
             $sqlWhereParts[] = 'ji.type IN (:type)';
+        }
+
+        if (!empty($code)) {
+            $sqlWhereParts[] = 'ji.code IN (:code)';
         }
 
         if (!empty($status)) {
@@ -149,6 +154,7 @@ SQL;
             'type' => $query->type,
             'status' => array_map(static fn (string $status) => $statusLabels[$status], $query->status),
             'user' => $query->user,
+            'code' => $query->code,
         ];
 
         $searchParts = explode(' ', $query->search);
@@ -166,6 +172,7 @@ SQL;
             'type' => Connection::PARAM_STR_ARRAY,
             'status' => Connection::PARAM_STR_ARRAY,
             'user' => Connection::PARAM_STR_ARRAY,
+            'code' => Connection::PARAM_STR_ARRAY,
         ];
     }
 

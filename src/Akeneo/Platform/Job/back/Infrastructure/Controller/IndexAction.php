@@ -57,6 +57,7 @@ final class IndexAction
         $searchJobExecutionQuery->user = $user;
         $searchJobExecutionQuery->status = $request->get('status', []);
         $searchJobExecutionQuery->search = $request->get('search', '');
+        $searchJobExecutionQuery->code = $request->get('code', []);
 
         $jobExecutionTable = $this->searchJobExecutionHandler->search($searchJobExecutionQuery);
 
