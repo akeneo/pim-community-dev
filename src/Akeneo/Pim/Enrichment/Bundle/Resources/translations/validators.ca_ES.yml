@@ -40,7 +40,6 @@ pim_catalog:
     attribute_does_not_belong_to_family: 'L''atribut "%attribute%" no pertany a la família "%family%"'
     variant_product_invalid_family: 'La variant de la família de producte ha de ser igual que el seu pare'
     php_int_max_reached: 'El nombre màxim ha de ser inferior a %php_int_max%.'
-    not_null_family: La família no pot ser "nul" perquè el seu producte amb l'identificador "%sku%" és una variant de producte.
     variant_product_has_parent: 'La variant de producte "%variant_product%" ha de tenir un pare'
     invalid_variant_product_parent: 'La variant de producte %variant_product% no pot tenir model de producte %product_model% com a pare (aquest model de producte només pot tenir un altre model de producte com a fill)'
     modified_variant_axis_value: 'Els variants d''eixos "%variant_axis%" no poden ser modificats, "%provided_value%" donats'
@@ -77,7 +76,6 @@ pim_catalog:
     301: Aquest camp s'espera un àmbit i una configuració regional vàlids.
     302: Aquest camp espera un àmbit vàlid.
     303: Aquest camp espera un format vàlid d'associació.
-    pim_immutable_product_validator: L'identificador ja està utilitzat per un altre producte
     pim_immutable_product_model_validator: El codi ja està utilitzat per un altre model de producte.
 mass_edit:
   edit_common_attributes:

@@ -40,7 +40,7 @@
         }
     },
     "require": {
-        "php": "7.4.*",
+        "php": "8.0.*",
         "ext-apcu": "*",
         "ext-bcmath": "*",
         "ext-curl": ">=7.0",
@@ -49,7 +49,6 @@
         "ext-gd": ">=2.0",
         "ext-imagick": "*",
         "ext-intl": "*",
-        "ext-json": "*",
         "ext-mbstring": "*",
         "ext-pdo": "*",
         "ext-xml": "*",
@@ -92,6 +91,7 @@
         "sensio/framework-extra-bundle": "^5.4",
         "symfony/acl-bundle": "^2.1.0",
         "symfony/asset": "^5.3",
+        "symfony/cache": "^5.4",
         "symfony/config": "^5.3",
         "symfony/dependency-injection": "^5.3",
         "symfony/dotenv": "^5.3",

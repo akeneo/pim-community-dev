@@ -47,9 +47,9 @@ class StepExecutionSpec extends ObjectBehavior
         $this->getStatus()->getValue()->shouldReturn(BatchStatus::COMPLETED);
     }
 
-    function it_sets_exist_status(ExitStatus $exitStatus)
+    function it_sets_exist_status()
     {
-        $this->setExitStatus($exitStatus)->shouldReturn($this);
+        $this->setExitStatus(new ExitStatus(ExitStatus::NOOP, "foo"))->shouldReturn($this);
     }
 
     function it_adds_a_failure_exception()
