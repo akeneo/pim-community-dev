@@ -13,8 +13,6 @@ akeneo_assetmanager:
     asset:
       create: Crear un recurs
       edit: Editar recursos
-      delete: Eliminar un recurs
-      delete_all: Eliminar tots els recursos
       list_product: Llista de d'enllaços de productes de recursos
     attribute:
       create: Afegir un atribut a una família de recursos

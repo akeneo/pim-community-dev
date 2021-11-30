@@ -2,25 +2,24 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AssociationType;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
-use Akeneo\Pim\Structure\Component\Model\Family;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Model\AssociationType;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\PublishedProductConsistencyException;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -337,30 +336,6 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(new PublishedProductConsistencyException(self::ENTITY_ERROR_MESSAGE))
-            ->duringPreRemove($event);
-    }
-
-    function it_checks_if_the_product_model_is_linked_to_a_published_product(
-        $publishedRepository,
-        GenericEvent $event
-    ) {
-        $productModel = new ProductModel();
-        $event->getSubject()->willReturn($productModel);
-        $publishedRepository->countPublishedVariantProductsForProductModel($productModel)->willReturn(0);
-
-        $this->preRemove($event);
-    }
-
-    function it_throws_an_exception_if_the_product_model_is_linked_to_a_published_product(
-        $publishedRepository,
-        GenericEvent $event
-    ) {
-        $productModel = new ProductModel();
-        $event->getSubject()->willReturn($productModel);
-        $publishedRepository->countPublishedVariantProductsForProductModel($productModel)->willReturn(1);
-
-        $this
-            ->shouldThrow(new PublishedProductConsistencyException(self::PRODUCT_MODEL_ERROR_MESSAGE))
             ->duringPreRemove($event);
     }
 }

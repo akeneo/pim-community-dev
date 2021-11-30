@@ -12,22 +12,6 @@ pimee_workflow:
     status:
       label: Estat
       working_copy: Còpia de treball
-      in_progress: En procés
-      ready: En espera d'aprovació
-      can_be_partially_reviewed: Es pot revisar parcialment
-      can_not_be_approved: No es pot revisar
-      can_not_be_deleted: No es pot suprimir
-    status_message:
-      can_be_partially_reviewed: Només podeu revisar aquesta proposta parcialment perquè alguns canvis fan referència a valors que no pots editar. Contacta amb l'administrador per canviar els teus permisos.
-      can_not_be_approved: No pots revisar aquesta proposta perquè tots els canvis fan referència a valors que no pots editar. Contacta amb l'administrador per canviar els teus permisos.
-      can_not_be_deleted: No pots eliminar aquesta proposta perquè tots els canvis fan referència a valors que no pots editar. Contacta amb l'administrador per canviar els teus permisos.
-      in_progress: Aquesta proposta està actualment en procés i encara no s'ha enviat.
-    action:
-      approve: Aprovar-ho tot
-      refuse: Rebutjar-ho tot
-      remove: Eliminar
-      partial_approve: Aprovar canvis a l'atribut %attribute% del producte %product%
-      partial_reject: Refusar canvis a l'atribut %attribute% del producte %product%
     notification:
       partial_approve: '%owner% ha acceptat el/s valor/s per a %attributes% pel producte %product%'
       partial_approve_number: '%owner% ha acceptat els valors pels atributs %attributes_count% pel producte %product%'
@@ -51,9 +35,6 @@ pimee_workflow:
     individual_import: '%author.firstname% %author.lastname% ha enviat propostes a revisar de la tasca d''importació'
     generic_import: Teniu propostes per revisar de la tasca d'importació
     original_value: Original
-    new_value: Nou
-    no_diff: El valor "%value%" és el mateix entre la proposta i la còpia de treball.
-    draft_in_progress: Un projecte està en marxa per %author% i per a aquest producte.
   published_product:
     index: Productes publicats
     title: Producte publicat

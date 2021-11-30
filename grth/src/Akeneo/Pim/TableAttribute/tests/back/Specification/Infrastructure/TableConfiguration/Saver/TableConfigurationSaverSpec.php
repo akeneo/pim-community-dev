@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\TableConfigurat
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event\SelectOptionWasDeleted;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
@@ -17,11 +18,14 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfigurationUpdate
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOptionCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\WriteSelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Saver\TableConfigurationSaver;
 use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class TableConfigurationSaverSpec extends ObjectBehavior
 {
@@ -29,9 +33,16 @@ class TableConfigurationSaverSpec extends ObjectBehavior
         TableConfigurationRepository $tableConfigurationRepository,
         SelectOptionCollectionRepository $optionCollectionRepository,
         ColumnFactory $columnFactory,
-        TableConfigurationUpdater $tableConfigurationUpdater
+        TableConfigurationUpdater $tableConfigurationUpdater,
+        EventDispatcher $eventDispatcher
     ) {
-        $this->beConstructedWith($tableConfigurationRepository, $optionCollectionRepository, $columnFactory, $tableConfigurationUpdater);
+        $this->beConstructedWith(
+            $tableConfigurationRepository,
+            $optionCollectionRepository,
+            $columnFactory,
+            $tableConfigurationUpdater,
+            $eventDispatcher
+        );
     }
 
     function it_is_initializable()
@@ -131,6 +142,7 @@ class TableConfigurationSaverSpec extends ObjectBehavior
         TableConfigurationRepository $tableConfigurationRepository,
         SelectOptionCollectionRepository $optionCollectionRepository,
         ColumnFactory $columnFactory,
+        EventDispatcher $eventDispatcher,
         AttributeInterface $attribute
     ) {
         $aNumberId = ColumnIdGenerator::generateAsString('a_number');
@@ -162,8 +174,24 @@ class TableConfigurationSaverSpec extends ObjectBehavior
 
         $tableConfigurationRepository->save('nutrition', Argument::type(TableConfiguration::class))->shouldBeCalled();
 
-        $optionCollectionRepository->save('nutrition', ColumnCode::fromString('ingredients'), SelectOptionCollection::fromNormalized($column1['options']))->shouldBeCalled();
-        $optionCollectionRepository->save('nutrition', ColumnCode::fromString('quantity'), SelectOptionCollection::fromNormalized($column2['options']))->shouldBeCalled();
+        $ingredientSelectOption = SelectOptionCollection::fromNormalized([['code' => 'pepper']]);
+        $optionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('ingredients'))->willReturn($ingredientSelectOption);
+        $optionCollectionRepository->save(
+            'nutrition',
+            ColumnCode::fromString('ingredients'),
+            WriteSelectOptionCollection::fromReadSelectOptionCollection(SelectOptionCollection::fromNormalized($column1['options']))
+        )->shouldBeCalled();
+        $deletedPepperEvent = new SelectOptionWasDeleted('nutrition', ColumnCode::fromString('ingredients'), SelectOptionCode::fromString('pepper'));
+        $eventDispatcher->dispatch($deletedPepperEvent)->shouldBeCalledOnce()->willReturn($deletedPepperEvent);
+
+        $quantitySelectOption = SelectOptionCollection::fromNormalized($column2['options']);
+        $optionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('quantity'))->willReturn($quantitySelectOption);
+        $optionCollectionRepository->save(
+            'nutrition',
+            ColumnCode::fromString('quantity'),
+            WriteSelectOptionCollection::fromReadSelectOptionCollection(SelectOptionCollection::fromNormalized($column2['options']))
+        )->shouldBeCalled();
+
         $optionCollectionRepository->save('nutrition', ColumnCode::fromString('a_number'), Argument::any())->shouldNotBeCalled();
         $optionCollectionRepository->save('nutrition', ColumnCode::fromString('is_allergenic'), Argument::any())->shouldNotBeCalled();
 

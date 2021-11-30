@@ -49,7 +49,7 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
     /**
      * {@inheritdoc}
      */
-    public function findProductIdentifiers(ProjectInterface $project, $status, $username)
+    public function findProductIdentifiers(ProjectInterface $project, $status, $username): array
     {
         switch ($status) {
             case ProjectCompletenessFilter::CONTRIBUTOR_TODO:

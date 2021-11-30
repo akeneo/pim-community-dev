@@ -234,3 +234,11 @@ batch_jobs:
     xlsx_table_attribute_options_export.label: Table attribute select options export in XLSX
     csv_table_attribute_options_import.label: Table attribute select options import in CSV
     xlsx_table_attribute_options_import.label: Table attribute select options import in XLSX
+    csv_product_table_values_export.label: Product table values export in CSV
+    xlsx_product_table_values_export.label: Product table values export in XLSX
+    csv_product_model_table_values_export.label: Product model table values export in CSV
+    xlsx_product_model_table_values_export.label: Product model table values export in XLSX
+    csv_product_table_values_import.label: Product table values import in CSV
+    xlsx_product_table_values_import.label: Product table values import in XLSX
+    csv_product_model_table_values_import.label: Product model table values import in CSV
+    xlsx_product_model_table_values_import.label: Product model table values import in XLSX

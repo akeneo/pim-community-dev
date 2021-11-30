@@ -22,7 +22,7 @@ locals {
   mailgun_login_name              = format("%s-%s", local.pfid, var.google_project_id)
   mailgun_login_email             = "${local.mailgun_login_name}@${var.mailgun_domain}"
   monitoring_authentication_token = var.monitoring_authentication_token != "" ? var.monitoring_authentication_token : random_string.monitoring_authentication_token.result
-  bc_enabled_projects             = [ "akecld-saas-dev" ]
+  bc_enabled_projects             = [ "akecld-saas-dev", "akecld-saas-demo", "akecld-saas-preprod" ]
 }
 
 resource "random_string" "mailgun_password" {
@@ -75,7 +75,7 @@ EOF
       http_response=$(curl -s -X DELETE https://api.mailgun.net/v3/domains/${self.triggers.mailgun_domain}/credentials/${self.triggers.mailgun_login_email} \
         -o curl_mailgun_deletion_response.txt \
         -w "%%{http_code}" \
-        --user 'api:${var.mailgun_api_key}' \
+        --user 'api:${self.triggers.mailgun_api_key}' \
         --retry 5 \
         --retry-delay 5 \
         --retry-max-time 40 )

@@ -29,16 +29,7 @@ spec:
         - name: import-onboarder-suppliers
           image:  {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command:
-            - 'su'
-            - 'www-data'
-            - '-s'
-            - '/bin/sh'
-            - '-c'
-            - |
-              cd /srv/pim && \
-              bin/console --quiet akeneo:batch:job csv_supplier_user_import -c "{\"filePath\": \"/srv/pim/vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/setup/supplier_users.csv\"}" && \
-              bin/console --quiet akeneo:batch:job csv_supplier_import -c "{\"filePath\": \"/srv/pim/vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/setup/suppliers.csv\"}"
+          command: ["su", "www-data", "-s", "/bin/bash", "/scripts-dir/hook-import-onboarder-suppliers.sh"]
           envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
           env:
             - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
@@ -58,6 +49,8 @@ spec:
               mountPath: /var/secrets/google/key.json
               subPath: key.json
               readOnly: true
+            - name: pim-scripts
+              mountPath: /scripts-dir
       volumes:
         - name: google-cloud-pim-storage-key
           secret:
@@ -71,4 +64,7 @@ spec:
             items:
             - key: akobOnboarderKey
               path: key.json
+        - name: pim-scripts
+          configMap:
+            name:  pim-scripts
 {{- end }}

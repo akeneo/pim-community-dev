@@ -32,29 +32,19 @@ class AspellChecker implements TextChecker
 {
     const DEFAULT_ENCODING = 'UTF-8';
 
-    /** @var SpellerProviderInterface */
-    private $spellerProvider;
-
-    /** @var string */
-    private $encoding;
-
-    /** @var AspellGlobalOffsetCalculator */
-    private $globalOffsetCalculator;
-
-    private $textCheckerDictionaryRepository;
-
-    private $lineNumberCalculator;
+    private SpellerProviderInterface $spellerProvider;
+    private AspellGlobalOffsetCalculator $globalOffsetCalculator;
+    private TextCheckerDictionaryRepository $textCheckerDictionaryRepository;
+    private AspellLineNumberCalculator $lineNumberCalculator;
 
     public function __construct(
         SpellerProviderInterface $spellerProvider,
         AspellGlobalOffsetCalculator $globalOffsetCalculator,
         AspellLineNumberCalculator $lineNumberCalculator,
-        TextCheckerDictionaryRepository $textCheckerDictionaryRepository,
-        string $encoding = self::DEFAULT_ENCODING
+        TextCheckerDictionaryRepository $textCheckerDictionaryRepository
     ) {
         $this->spellerProvider = $spellerProvider;
         $this->globalOffsetCalculator = $globalOffsetCalculator;
-        $this->encoding = $encoding;
         $this->textCheckerDictionaryRepository = $textCheckerDictionaryRepository;
         $this->lineNumberCalculator = $lineNumberCalculator;
     }
@@ -67,7 +57,7 @@ class AspellChecker implements TextChecker
         try {
             $source = new TextSource($text);
         } catch (\Throwable $e) {
-            throw new TextCheckFailedException($e->getMessage());
+            throw new TextCheckFailedException($e->getMessage(), 0, $e);
         }
 
         try {
@@ -78,7 +68,7 @@ class AspellChecker implements TextChecker
                 $localeCode
             );
         } catch (PhpSpellerException $e) {
-            throw new TextCheckFailedException($e->getMessage());
+            throw new TextCheckFailedException($e->getMessage(), 0, $e);
         }
     }
 

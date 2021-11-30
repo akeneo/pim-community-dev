@@ -15,7 +15,10 @@ namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOptionCode;
 
-final class SelectOptionCollection
+/**
+ * @phpstan-implements \IteratorAggregate<string, SelectOption>
+ */
+final class SelectOptionCollection implements \IteratorAggregate
 {
     public const MAX_OPTIONS = 20000;
 
@@ -74,5 +77,13 @@ final class SelectOptionCollection
     public function getByCode(string $optionCode): ?SelectOption
     {
         return $this->options[\strtolower($optionCode)] ?? null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIterator(): \Traversable
+    {
+        return new \ArrayIterator($this->options);
     }
 }

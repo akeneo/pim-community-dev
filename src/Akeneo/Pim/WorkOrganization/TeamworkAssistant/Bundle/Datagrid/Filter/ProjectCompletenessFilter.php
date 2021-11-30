@@ -104,10 +104,6 @@ class ProjectCompletenessFilter extends OroChoiceFilter
         $username = $this->tokenStorage->getToken()->getUsername();
         $productIdentifiers = $this->projectCompletenessRepo->findProductIdentifiers($project, $data['value'], $username);
 
-        // If the user has access to zero product in the project, we have to return "no result". So we add an
-        // "always-false" filter by looking for products with "identifier = null"
-        $productIdentifiers = $productIdentifiers ?? [null];
-
         $this->util->applyFilter(
             $datasource,
             $this->attributeRepository->getIdentifierCode(),

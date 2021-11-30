@@ -81,31 +81,18 @@ spec:
       containers:
         - name: activate-es-snapshot-repository
           image: eu.gcr.io/akeneo-ci/dev-images/curl-jq:v20211022140934
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
+          command: ["bash", "/scripts-dir/hook-activate-es-snapshots.sh"]
+          envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
           env:
-            - name: APP_INDEX_HOSTS
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ template "pim.fullName" . }}-env
-                  key: APP_INDEX_HOSTS
-            - name: REPOSITORY
-              value: {{ .Values.elasticsearch.snapshots.repository }}
-          command:
-          - bash
-          - -c
-          - |
-            #!/bin/bash
-            set -euo pipefail
-
-            curl -sf -X POST "${APP_INDEX_HOSTS}/_nodes/reload_secure_settings?pretty"
-
-            curl -sf -X PUT "${APP_INDEX_HOSTS}/_snapshot/${REPOSITORY}?pretty" -H 'Content-Type: application/json' -d'
-            {
-              "type": "gcs",
-                "settings": {
-                   "bucket": "{{ .Values.pim.storage.bucketName }}-es",
-                   "base_path": "{{ .Values.elasticsearch.snapshots.folder }}"
-                }
-            }
-            '
+            - { name: BUCKET_NAME, value: {{ printf "%s-es" .Values.pim.storage.bucketName | quote }} }
+            - { name: REPOSITORY, value: {{ .Values.elasticsearch.snapshots.repository | quote }} }
+            - { name: SNAPSHOTS_FOLDER, value: {{ .Values.elasticsearch.snapshots.folder | quote }} }
+          volumeMounts:
+            - name: pim-scripts
+              mountPath: /scripts-dir
+      volumes:
+        - name: pim-scripts
+          configMap:
+            name:  pim-scripts
 {{- end }}

@@ -38,5 +38,6 @@ deployments/instances
 deployments/logs
 deployments/terraform/pim/Chart.yaml
 deployments/terraform/pim/Chart.lock
+deployments/cloud-customers-dev
 /pim-enterprise-cloud
 connectors/*

@@ -25,8 +25,8 @@
                 "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/back"
             ],
             "AkeneoEnterprise\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
-            "Akeneo\\Platform\\TailoredExport\\": "src/Akeneo/Platform/Bundle/TailoredExportBundle/src/",
             "Akeneo\\FreeTrial\\": ["vendor/akeneo/pim-community-dev/src/Akeneo/FreeTrial/back"],
+            "Akeneo\\Platform\\TailoredExport\\": "components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/src/",
             "Akeneo\\Pim\\TableAttribute\\": "src/Akeneo/Pim/TableAttribute/back"
         },
         "exclude-from-classmap": [
@@ -61,12 +61,11 @@
             "Akeneo\\Onboarder\\Test\\": "vendor/akeneo/pim-onboarder/tests/",
             "AkeneoEnterprise\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
             "spec\\Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/tests/back/spec",
-            "Akeneo\\Platform\\TailoredExport\\Test\\": "src/Akeneo/Platform/Bundle/TailoredExportBundle/tests",
+            "Akeneo\\Platform\\TailoredExport\\Test\\": "components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests",
             "Akeneo\\Test\\Pim\\TableAttribute\\": "vendor/akeneo/pim-growth-edition/src/Akeneo/Pim/TableAttribute/tests/back"
         }
     },
     "require": {
-        "ext-json": "*",
         "akeneo/pim-growth-edition": "*@dev",
         "akeneo/pim-community-dev": "dev-master",
         "akeneo/pim-onboarder": "^5.0.0",
@@ -92,16 +91,16 @@
         "league/flysystem-aws-s3-v3": "^2.0",
         "liuggio/fastest": "1.8.*",
         "mcustiel/phiremock": "2.1.1",
-        "phpspec/phpspec": "~7.0.0",
-        "phpspec/prophecy": "~1.12.1",
-        "phpstan/phpstan": "^0.12.97",
+        "phpspec/phpspec": "^7.1.0",
+        "phpspec/prophecy": "^1.14.0",
+        "phpstan/phpstan": "^0.12.99",
         "phpstan/phpstan-symfony": "^0.12.44",
-        "phpstan/phpstan-webmozart-assert": "^0.12.7",
+        "phpstan/phpstan-webmozart-assert": "^0.12.16",
         "phpunit/phpunit": "^9.5",
         "sebastian/exporter": "^4.0.0",
         "sensiolabs/behat-page-object-extension": "^2.3.3",
-        "symfony/debug-bundle": "^5.3",
-        "symfony/web-profiler-bundle": "^5.3"
+        "symfony/debug-bundle": "^5.4.0",
+        "symfony/web-profiler-bundle": "^5.4.0"
     },
     "repositories": {
         "onboarder-extension": {

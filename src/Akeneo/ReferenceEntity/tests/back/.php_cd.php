@@ -9,6 +9,9 @@ $builder = new RuleBuilder();
 
 $rules = [
     $builder->only([
+        'Closure',
+        'DateTimeImmutable',
+        'DateTimeZone',
         'Akeneo\Tool\Component',
         'Webmozart\Assert\Assert',
         'Symfony\Component\EventDispatcher\Event',

@@ -51,13 +51,13 @@ class ThumbnailOperationSpec extends ObjectBehavior
         ]);
         $object->beAnInstanceOf(ThumbnailOperation::class);
         $object->getWidth()->shouldBe(200);
-        $object->getHeight()->shouldBeNull();
+        $object->getHeight()->shouldBe(null);
 
         $object = $this::create([
             'height' => 100,
         ]);
         $object->beAnInstanceOf(ThumbnailOperation::class);
-        $object->getWidth()->shouldBeNull();
+        $object->getWidth()->shouldBe(null);
         $object->getHeight()->shouldBe(100);
     }
 

@@ -230,3 +230,11 @@ batch_jobs:
   xlsx_table_attribute_options_export.label: Tabellen-Attribut-Auswahloptionen Export in XLSX
   csv_table_attribute_options_import.label: Tabellenattribut-Auswahloptionen importieren in CSV
   xlsx_table_attribute_options_import.label: Tabellen-Attribut-Auswahloptionen importieren in XLSX
+  csv_product_table_values_export.label: Produkttabellen-Werte als CSV-Export
+  xlsx_product_table_values_export.label: Produkttabellen-Werte exportieren in XLSX
+  csv_product_model_table_values_export.label: Produktmodelltabellenwerte als CSV-Export
+  xlsx_product_model_table_values_export.label: Produktmodelltabellenwerte exportieren in XLSX
+  csv_product_table_values_import.label: Produkttabellen-Werte importieren in CSV
+  xlsx_product_table_values_import.label: Produkttabellen-Werte aus XLSX-Datei importieren
+  csv_product_model_table_values_import.label: Werte der Produktmodelltabelle als CSV-Datei importieren
+  xlsx_product_model_table_values_import.label: Werte der Produktmodelltabelle in XLSX importieren

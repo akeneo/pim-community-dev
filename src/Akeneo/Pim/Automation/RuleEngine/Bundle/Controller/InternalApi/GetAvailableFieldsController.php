@@ -53,7 +53,7 @@ final class GetAvailableFieldsController
 
         $options = $request->get('options', []);
         $search = $request->get('search');
-        $limit = $options['limit'] ?? static::LIMIT_DEFAULT;
+        $limit = (int) ($options['limit'] ?? self::LIMIT_DEFAULT);
         $page = $options['page'] ?? 1;
         $offset = ($page - 1) * $limit;
 

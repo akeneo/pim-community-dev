@@ -133,7 +133,7 @@ echo "3 - Removing shared state files"
 # I'm sorry for that, but it's the max time communicate by google to apply consistent between list and delete operation on versionning bucket. See: https://cloud.google.com/storage/docs/object-versioning
 sleep 30
 
-gsutil rm -r gs://akecld-terraform${TF_BUCKET}/saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${PFID}
+gsutil rm -r gs://akecld-terraform${TF_BUCKET}/saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${PFID} || echo "FAILED : gsutil rm -r gs://akecld-terraform${TF_BUCKET}/saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${PFID}"
 
 echo "4 - Delete PD, PVC and PV"
 # Check disk still exist
@@ -184,4 +184,4 @@ if [[ ${LOGGING_METRIC} != "" ]]; then
 fi
 
 echo "6 - Delete namespace"
-kubectl get ns ${PFID} && kubectl delete ns ${PFID}
+kubectl delete ns "${PFID}" --ignore-not-found=true

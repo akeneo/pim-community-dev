@@ -24,6 +24,7 @@ akeneo_onboarder_nice_to_have_attribute | BASE TABLE
 akeneo_onboarder_pre_ref_product | BASE TABLE
 akeneo_onboarder_retailer_contact | BASE TABLE
 akeneo_onboarder_supplier | BASE TABLE
+akeneo_onboarder_supplier_contact | BASE TABLE
 akeneo_onboarder_supplier_family | BASE TABLE
 akeneo_onboarder_supplier_has_catalog_locale | BASE TABLE
 akeneo_onboarder_supplier_user | BASE TABLE
@@ -254,6 +255,7 @@ akeneo_connectivity_connection | auditable | NO | tinyint(1) |
 akeneo_connectivity_connection | webhook_url | YES | varchar(255) |
 akeneo_connectivity_connection | webhook_secret | YES | varchar(255) |
 akeneo_connectivity_connection | webhook_enabled | NO | tinyint(1) |
+akeneo_connectivity_connection | type | NO | varchar(30) |
 akeneo_connectivity_connection_audit_error | connection_code | NO | varchar(100) | PRI
 akeneo_connectivity_connection_audit_error | error_datetime | NO | datetime | PRI
 akeneo_connectivity_connection_audit_error | error_count | NO | int |
@@ -302,6 +304,8 @@ akeneo_onboarder_supplier | id | NO | int | PRI
 akeneo_onboarder_supplier | code | NO | varchar(50) | UNI
 akeneo_onboarder_supplier | sort_order | NO | int |
 akeneo_onboarder_supplier | name | NO | varchar(255) |
+akeneo_onboarder_supplier_contact | supplier_id | NO | varchar(36) | MUL
+akeneo_onboarder_supplier_contact | user_id | NO | varchar(36) | PRI
 akeneo_onboarder_supplier_family | supplier_id | NO | int | PRI
 akeneo_onboarder_supplier_family | family_id | NO | int | PRI
 akeneo_onboarder_supplier_has_catalog_locale | supplier_id | NO | char(36) | PRI
@@ -362,13 +366,15 @@ messenger_messages | queue_name | NO | varchar(255) | MUL
 messenger_messages | created_at | NO | datetime |
 messenger_messages | available_at | NO | datetime | MUL
 messenger_messages | delivered_at | YES | datetime | MUL
-migration_versions | version | NO | varchar(255) | PRI
+migration_versions | version | NO | varchar(190) | PRI
+migration_versions | executed_at | YES | datetime |
+migration_versions | execution_time | YES | int |
 oro_access_group | id | NO | smallint | PRI
 oro_access_group | name | NO | varchar(255) | UNI
 oro_access_role | id | NO | smallint | PRI
 oro_access_role | role | NO | varchar(255) | UNI
 oro_access_role | label | NO | varchar(255) |
-oro_access_role | type | YES | varchar(30) |
+oro_access_role | type | NO | varchar(30) |
 oro_config | id | NO | int | PRI
 oro_config | entity | YES | varchar(255) | MUL
 oro_config | record_id | YES | int |
@@ -641,7 +647,7 @@ pim_catalog_table_column | data_type | NO | varchar(20) |
 pim_catalog_table_column | column_order | NO | int |
 pim_catalog_table_column | validations | NO | json |
 pim_catalog_table_column | labels | NO | json |
-pim_catalog_table_column_select_option | column_id | NO | varchar(64) | PRI
+pim_catalog_table_column_select_option | column_id | NO | varchar(137) | PRI
 pim_catalog_table_column_select_option | code | NO | varchar(100) | PRI
 pim_catalog_table_column_select_option | labels | NO | json |
 pim_catalog_variant_attribute_set_has_attributes | variant_attribute_set_id | NO | int | PRI
@@ -855,7 +861,6 @@ pimee_workflow_published_product_completeness_missing_attribute | completeness_i
 pimee_workflow_published_product_completeness_missing_attribute | missing_attribute_id | NO | int | PRI
 supplier | id | NO | char(36) | PRI
 supplier | logo_id | YES | int | UNI
-supplier | supplier_referent_id | NO | varchar(36) | UNI
 supplier | ui_locale_id | NO | int | MUL
 supplier | catalog_locale_id | NO | int | MUL
 supplier | code | NO | varchar(255) | UNI

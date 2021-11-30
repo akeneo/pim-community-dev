@@ -14,12 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\MultipleTextsChecker;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\TextCheckFailedException;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\Result\AspellGlobalOffsetCalculator;
-use Psr\Log\LoggerInterface;
 
 class AspellMultipleChecker implements MultipleTextsChecker
 {
@@ -31,17 +29,12 @@ class AspellMultipleChecker implements MultipleTextsChecker
     /** @var AspellGlobalOffsetCalculator */
     private $globalOffsetCalculator;
 
-    /** @var LoggerInterface */
-    private $logger;
-
     public function __construct(
         AspellChecker $checker,
-        AspellGlobalOffsetCalculator $globalOffsetCalculator,
-        LoggerInterface $logger
+        AspellGlobalOffsetCalculator $globalOffsetCalculator
     ) {
         $this->checker = $checker;
         $this->globalOffsetCalculator = $globalOffsetCalculator;
-        $this->logger = $logger;
     }
 
     public function check(array $texts, LocaleCode $localeCode): array
@@ -52,28 +45,9 @@ class AspellMultipleChecker implements MultipleTextsChecker
 
         list('mapping' => $mapping, 'text' => $text) = $this->assembleTexts($texts);
 
-        $rawResults = $this->doCheck($text, $localeCode);
+        $rawResults = $this->checker->check($text, $localeCode);
 
         return $this->recomposeResults($rawResults, $mapping);
-    }
-
-    private function doCheck(string $text, LocaleCode $localeCode): TextCheckResultCollection
-    {
-        try {
-            $this->logger->debug('Multiple spellcheck: check spelling', [
-                'text' => $text,
-                'locale' => strval($localeCode),
-            ]);
-            return $this->checker->check($text, $localeCode);
-        } catch (TextCheckFailedException $e) {
-            $this->logger->error('Multiple spellcheck: check failed', [
-                'text' => $text,
-                'locale' => strval($localeCode),
-                'error' => $e->getMessage()
-            ]);
-
-            throw $e;
-        }
     }
 
     private function assembleTexts(array $texts): array

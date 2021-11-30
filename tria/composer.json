@@ -60,15 +60,15 @@
         "league/flysystem-memory": "^2.0",
         "liuggio/fastest": "1.8.*",
         "mcustiel/phiremock": "2.1.1",
-        "phpspec/phpspec": "~7.0.0",
-        "phpspec/prophecy": "v1.12.1",
-        "phpstan/phpstan": "^0.12",
+        "phpspec/phpspec": "^7.1.0",
+        "phpspec/prophecy": "^1.14.0",
+        "phpstan/phpstan": "^0.12.99",
         "phpstan/phpstan-symfony": "^0.12.44",
-        "phpstan/phpstan-webmozart-assert": "^0.12.7",
+        "phpstan/phpstan-webmozart-assert": "^0.12.16",
         "phpunit/phpunit": "^9.5",
         "sebastian/exporter": "^4.0.0",
-        "symfony/debug-bundle": "^5.3",
-        "symfony/web-profiler-bundle": "^5.3"
+        "symfony/debug-bundle": "^5.4.0",
+        "symfony/web-profiler-bundle": "^5.4.0"
     },
     "repositories": {
         "grth": {

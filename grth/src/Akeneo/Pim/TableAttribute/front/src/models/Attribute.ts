@@ -1,10 +1,11 @@
 import {TableConfiguration} from './TableConfiguration';
 
 export type AttributeCode = string;
+export type AttributeType = string;
 
 export type Attribute = {
   code: AttributeCode;
-  type: string;
+  type: AttributeType;
   group: string;
   unique: boolean;
   useable_as_grid_filter: boolean;
@@ -38,7 +39,5 @@ export type Attribute = {
   meta: {id: number} & {[key: string]: any};
   table_configuration?: TableConfiguration;
 };
-
-export type AttributeType = string;
 
 export type TableAttribute = Attribute & {table_configuration: TableConfiguration};

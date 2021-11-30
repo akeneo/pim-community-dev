@@ -16,6 +16,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\WriteSelectOptionCollection;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use Akeneo\Test\Pim\TableAttribute\Integration\TableConfiguration\Controller\ControllerIntegrationTestCase;
@@ -175,7 +176,7 @@ final class GetSelectOptionsControllerIntegration extends ControllerIntegrationT
         $this->get(SelectOptionCollectionRepository::class)->save(
             'nutrition',
             ColumnCode::fromString('ingredients'),
-            $optionCollection
+            WriteSelectOptionCollection::fromReadSelectOptionCollection($optionCollection)
         );
 
         $this->get('pim_connector.doctrine.cache_clearer')->clear();

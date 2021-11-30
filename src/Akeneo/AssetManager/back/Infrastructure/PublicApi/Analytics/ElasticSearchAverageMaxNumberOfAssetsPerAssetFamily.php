@@ -46,7 +46,7 @@ class ElasticSearchAverageMaxNumberOfAssetsPerAssetFamily
 
         return new AverageMaxVolumes(
             (int) $response['aggregations']['max_asset_by_family']['value'],
-            (int) ceil($response['aggregations']['avg_asset_by_family']['value'])
+            (int) ceil($response['aggregations']['avg_asset_by_family']['value'] ?? 0)
         );
     }
 }

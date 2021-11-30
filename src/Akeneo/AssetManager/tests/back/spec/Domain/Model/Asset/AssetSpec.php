@@ -121,7 +121,7 @@ class AssetSpec extends ObjectBehavior
             TextData::fromString('Philippe Stark')
         );
 
-        $this->findValue($valueKey)->shouldBeNull();
+        $this->findValue($valueKey)->shouldBe(null);
 
         $this->setValue($value);
 
@@ -277,6 +277,6 @@ class AssetSpec extends ObjectBehavior
         $this->filterValues(fn (Value $value) => false)->normalize()->shouldReturn([]);
         $this->filterValues(fn (Value $value) => true)
             ->findValue(ValueKey::createFromNormalized('description_designer_fingerprint_ecommerce_fr_FR'))
-            ->shouldNotBeNull();
+            ->shouldNotBe(null);
     }
 }

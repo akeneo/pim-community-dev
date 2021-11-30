@@ -1,6 +1,6 @@
 describe('edit product sanity check', () => {
   it('User can enrich the first product of the products grid', () => {
-    cy.login('adminakeneo', 'adminakeneo');
+    cy.login('adminakeneo', 'Q7sKB5xP2ttc5KnqFPOF1BrOkTRSulmEj528BpJzbDcLbYSHU1');
     cy.goToProductsGrid();
     cy.selectFirstProductInDatagrid();
     cy.findFirstTextField()

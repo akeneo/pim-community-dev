@@ -52,6 +52,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class AssetIndexerTest extends SearchIntegrationTestCase
 {
     private const STARK_ASSET_IDENTIFIER = 'stark_designer_fingerprint';
+    private const LONG_STARK_ASSET_IDENTIFIER = 'long_stark_designer_fingerprint';
     private const COCO_ASSET_IDENTIFIER = 'coco_designer_fingerprint';
 
     private AssetIndexerInterface $assetIndexer;
@@ -85,20 +86,37 @@ class AssetIndexerTest extends SearchIntegrationTestCase
     /**
      * @test
      */
+    public function it_indexes_one_asset_with_a_long_name()
+    {
+        $this->searchAssetIndexHelper->resetIndex();
+        $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'long_stark');
+
+        $this->assetIndexer->index(AssetIdentifier::fromString(self::LONG_STARK_ASSET_IDENTIFIER));
+        $this->indexAssetsEventAggregator->flushEvents();
+
+        $this->searchAssetIndexHelper->assertAssetExists('designer', 'long_stark');
+    }
+
+    /**
+     * @test
+     */
     public function it_indexes_multiple_assets_by_identifiers()
     {
         $this->searchAssetIndexHelper->resetIndex();
         $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'stark');
+        $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'long_stark');
         $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'coco');
 
         $this->assetIndexer->indexByAssetIdentifiers(
             [
                 AssetIdentifier::fromString(self::STARK_ASSET_IDENTIFIER),
+                AssetIdentifier::fromString(self::LONG_STARK_ASSET_IDENTIFIER),
                 AssetIdentifier::fromString(self::COCO_ASSET_IDENTIFIER),
             ]
         );
 
         $this->searchAssetIndexHelper->assertAssetExists('designer', 'stark');
+        $this->searchAssetIndexHelper->assertAssetExists('designer', 'long_stark');
         $this->searchAssetIndexHelper->assertAssetExists('designer', 'coco');
     }
 
@@ -109,11 +127,13 @@ class AssetIndexerTest extends SearchIntegrationTestCase
     {
         $this->searchAssetIndexHelper->resetIndex();
         $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'stark');
+        $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'long_stark');
         $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'coco');
 
         $this->assetIndexer->indexByAssetFamily(AssetFamilyIdentifier::fromString('designer'));
 
         $this->searchAssetIndexHelper->assertAssetExists('designer', 'stark');
+        $this->searchAssetIndexHelper->assertAssetExists('designer', 'long_stark');
         $this->searchAssetIndexHelper->assertAssetExists('designer', 'coco');
     }
 
@@ -126,7 +146,7 @@ class AssetIndexerTest extends SearchIntegrationTestCase
 
         $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'stark');
         $this->searchAssetIndexHelper->assertAssetExists('designer', 'coco');
-        Assert::assertCount(1, $this->searchAssetIndexHelper->findAssetsByAssetFamily('designer'));
+        Assert::assertCount(2, $this->searchAssetIndexHelper->findAssetsByAssetFamily('designer'));
         Assert::assertCount(1, $this->searchAssetIndexHelper->findAssetsByAssetFamily('another_asset_family'));
     }
 
@@ -135,9 +155,10 @@ class AssetIndexerTest extends SearchIntegrationTestCase
      */
     public function it_deletes_multiple_assets_by_asset_family_and_codes()
     {
-        $this->assetIndexer->removeByAssetFamilyIdentifierAndCodes('designer', ['stark', 'coco']);
+        $this->assetIndexer->removeByAssetFamilyIdentifierAndCodes('designer', ['stark', 'long_stark', 'coco']);
 
         $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'stark');
+        $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'long_stark');
         $this->searchAssetIndexHelper->assertAssetDoesNotExists('designer', 'coco');
         Assert::assertCount(0, $this->searchAssetIndexHelper->findAssetsByAssetFamily('designer'));
         Assert::assertCount(1, $this->searchAssetIndexHelper->findAssetsByAssetFamily('another_asset_family'));
@@ -264,6 +285,43 @@ class AssetIndexerTest extends SearchIntegrationTestCase
                         ChannelReference::noReference(),
                         LocaleReference::noReference(),
                         TextData::fromString('Philippe stark')
+                    ),
+                    Value::create(
+                        AttributeIdentifier::create('designer', 'image', 'fingerprint'),
+                        ChannelReference::noReference(),
+                        LocaleReference::noReference(),
+                        FileData::createFromNormalize(
+                            [
+                                'filePath'         => 'f/r/z/a/oihdaozijdoiaaodoaoiaidjoaihd',
+                                'originalFilename' => 'file.gif',
+                                'size'             => 1024,
+                                'mimeType'         => 'image/gif',
+                                'extension'        => 'gif',
+                                'updatedAt'        => '2019-11-22T15:16:21+0000',
+                            ]
+                        )
+                    ),
+                ])
+            )
+        );
+
+        $assetRepository->create(
+            Asset::create(
+                AssetIdentifier::fromString(self::LONG_STARK_ASSET_IDENTIFIER),
+                AssetFamilyIdentifier::fromString('designer'),
+                AssetCode::fromString('long_stark'),
+                ValueCollection::fromValues([
+                    Value::create(
+                        AttributeIdentifier::fromString('label_designer_fingerprint'),
+                        ChannelReference::noReference(),
+                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                        TextData::fromString('Philippe Starck')
+                    ),
+                    Value::create(
+                        AttributeIdentifier::create('designer', 'name', 'fingerprint'),
+                        ChannelReference::noReference(),
+                        LocaleReference::noReference(),
+                        TextData::fromString(str_repeat('Philippe stark', 30000))
                     ),
                     Value::create(
                         AttributeIdentifier::create('designer', 'image', 'fingerprint'),

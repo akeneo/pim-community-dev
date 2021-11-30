@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\MultipleTex
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\TextCheckFailedException;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Attribute;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValues;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
@@ -96,12 +97,12 @@ class EvaluateSpelling implements EvaluateCriterionInterface
             return;
         }
 
-        try {
-            $values = $this->filterProductValuesForSpelling->getFilteredProductValues($productValues);
+        $values = $this->filterProductValuesForSpelling->getFilteredProductValues($productValues);
 
+        try {
             $attributesRates = $this->evaluateAttributesRates($channelCode, $localeCode, $values);
         } catch (TextCheckFailedException $exception) {
-            $this->logger->error('An error occurred during spelling evaluation', ['error_code' => 'error_during_spelling_evaluation', 'error_message' => $exception->getMessage()]);
+            $this->logTextCheckError($exception, $channelCode, $localeCode, $values);
             $evaluationResult->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::error());
             return;
         }
@@ -242,5 +243,21 @@ class EvaluateSpelling implements EvaluateCriterionInterface
     private function isTextComingFromWord(string $text): bool
     {
         return strpos($text, '<w:WordDocument>') !== false;
+    }
+
+    private function logTextCheckError(TextCheckFailedException $exception, ChannelCode $channelCode, LocaleCode $localeCode, array $productValues): void
+    {
+        $formattedValues = array_map(fn (ProductValues $productValues) => [
+            'attribute' => \strval($productValues->getAttribute()->getCode()),
+            'data' => $productValues->getValueByChannelAndLocale($channelCode, $localeCode)
+        ], $productValues);
+
+        $this->logger->error('An error occurred during spelling evaluation', [
+            'error_code' => 'error_during_spelling_evaluation',
+            'exception' => $exception->getPrevious() ?? $exception,
+            'channel' => strval($channelCode),
+            'locale' => strval($localeCode),
+            'product_values' => $formattedValues,
+        ]);
     }
 }

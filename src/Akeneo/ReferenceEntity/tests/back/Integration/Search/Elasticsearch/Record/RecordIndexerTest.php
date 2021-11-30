@@ -71,15 +71,30 @@ class RecordIndexerTest extends SearchIntegrationTestCase
     /**
      * @test
      */
+    public function it_indexes_one_record_with_long_name()
+    {
+        $this->searchRecordIndexHelper->resetIndex();
+        $this->searchRecordIndexHelper->assertRecordDoesNotExists('designer', 'long_stark');
+
+        $this->recordIndexer->index(RecordIdentifier::fromString('long_stark_designer_fingerprint'));
+
+        $this->searchRecordIndexHelper->assertRecordExists('designer', 'long_stark');
+    }
+
+    /**
+     * @test
+     */
     public function it_indexes_by_reference_entity()
     {
         $this->searchRecordIndexHelper->resetIndex();
         $this->searchRecordIndexHelper->assertRecordDoesNotExists('designer', 'stark');
+        $this->searchRecordIndexHelper->assertRecordDoesNotExists('designer', 'long_stark');
         $this->searchRecordIndexHelper->assertRecordDoesNotExists('designer', 'coco');
 
         $this->recordIndexer->indexByReferenceEntity(ReferenceEntityIdentifier::fromString('designer'));
 
         $this->searchRecordIndexHelper->assertRecordExists('designer', 'stark');
+        $this->searchRecordIndexHelper->assertRecordExists('designer', 'long_stark');
         $this->searchRecordIndexHelper->assertRecordExists('designer', 'coco');
     }
 
@@ -93,7 +108,7 @@ class RecordIndexerTest extends SearchIntegrationTestCase
 
         $this->searchRecordIndexHelper->assertRecordDoesNotExists('designer', 'stark');
         $this->searchRecordIndexHelper->assertRecordExists('designer', 'coco');
-        Assert::assertCount(1, $this->searchRecordIndexHelper->findRecordsByReferenceEntity('designer'));
+        Assert::assertCount(2, $this->searchRecordIndexHelper->findRecordsByReferenceEntity('designer'));
         Assert::assertCount(1, $this->searchRecordIndexHelper->findRecordsByReferenceEntity('another_reference_entity'));
     }
 
@@ -105,6 +120,7 @@ class RecordIndexerTest extends SearchIntegrationTestCase
         $this->recordIndexer->removeByReferenceEntityIdentifier('designer');
 
         $this->searchRecordIndexHelper->assertRecordDoesNotExists('designer', 'stark');
+        $this->searchRecordIndexHelper->assertRecordDoesNotExists('designer', 'long_stark');
         $this->searchRecordIndexHelper->assertRecordDoesNotExists('designer', 'coco');
         Assert::assertCount(0, $this->searchRecordIndexHelper->findRecordsByReferenceEntity('designer'));
         Assert::assertCount(1, $this->searchRecordIndexHelper->findRecordsByReferenceEntity('another_reference_entity'));
@@ -224,6 +240,42 @@ class RecordIndexerTest extends SearchIntegrationTestCase
                         ChannelReference::noReference(),
                         LocaleReference::noReference(),
                         TextData::fromString('Philippe stark')
+                    ),
+                    Value::create(
+                        AttributeIdentifier::create('designer', 'image', 'fingerprint'),
+                        ChannelReference::noReference(),
+                        LocaleReference::noReference(),
+                        FileData::createFromNormalize(
+                            [
+                                'filePath'         => 'f/r/z/a/oihdaozijdoiaaodoaoiaidjoaihd',
+                                'originalFilename' => 'file.gif',
+                                'size'             => 1024,
+                                'mimeType'         => 'image/gif',
+                                'extension'        => 'gif',
+                            ]
+                        )
+                    ),
+                ])
+            )
+        );
+
+        $recordRepository->create(
+            Record::create(
+                RecordIdentifier::fromString('long_stark_designer_fingerprint'),
+                ReferenceEntityIdentifier::fromString('designer'),
+                RecordCode::fromString('long_stark'),
+                ValueCollection::fromValues([
+                    Value::create(
+                        AttributeIdentifier::fromString('label_designer_fingerprint'),
+                        ChannelReference::noReference(),
+                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                        TextData::fromString('Philippe Starck')
+                    ),
+                    Value::create(
+                        AttributeIdentifier::create('designer', 'name', 'fingerprint'),
+                        ChannelReference::noReference(),
+                        LocaleReference::noReference(),
+                        TextData::fromString(str_repeat('Philippe stark', 30000))
                     ),
                     Value::create(
                         AttributeIdentifier::create('designer', 'image', 'fingerprint'),

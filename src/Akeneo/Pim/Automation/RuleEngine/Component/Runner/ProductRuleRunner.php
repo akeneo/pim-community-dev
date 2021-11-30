@@ -53,16 +53,13 @@ class ProductRuleRunner implements DryRunnerInterface
     /**
      * {@inheritdoc}
      */
-    public function run(RuleDefinitionInterface $definition, array $options = [])
+    public function run(RuleDefinitionInterface $definition, array $options = []): void
     {
         $options = $this->resolveOptions($options);
         $rule = $this->loadRule($definition, $options);
         $this->checkRuleIsEnabled($rule);
-
         $subjectSet = $this->selector->select($rule);
-        if (!empty($subjectSet)) {
-            $this->applier->apply($rule, $subjectSet);
-        }
+        $this->applier->apply($rule, $subjectSet);
     }
 
     /**

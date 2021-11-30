@@ -30,11 +30,11 @@
     "less": "node $npm_package_config_styles",
     "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js",
     "generate-asset-manager-models": "node $npm_package_config_source/frontend/build/json-schema-to-typescript.js src/Akeneo/AssetManager/definitions/ public/bundles/akeneoassetmanager/infrastructure/model/",
-    "tailored-export:build": "yarn --cwd=front-packages/tailored-export lib:build",
+    "tailored-export:build": "yarn --cwd=components/tailored-export/front lib:build",
     "generate-models": "yarn generate-asset-manager-models && yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models",
     "packages:build": "yarn --cwd=$npm_package_config_source packages:build && yarn enterprise-packages:build",
-    "packages:unit": "yarn --cwd=$npm_package_config_source packages:unit && yarn --cwd=front-packages/tailored-export test:unit:run",
-    "packages:lint:check": "yarn --cwd=front-packages/tailored-export lint:check",
+    "packages:unit": "yarn --cwd=$npm_package_config_source packages:unit && yarn --cwd=components/tailored-export/front test:unit:run",
+    "packages:lint:check": "yarn --cwd=components/tailored-export/front lint:check",
     "enterprise-packages:build": "yarn tailored-export:build",
     "dsm:build": "yarn --cwd=$npm_package_config_source dsm:build"
   },
@@ -73,7 +73,7 @@
     "jest/**/ip-regex": "2.1.0"
   },
   "workspaces": [
-    "front-packages/tailored-export",
+    "components/tailored-export/front",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/front/process-tracker",
     "vendor/akeneo/pim-community-dev",
     "vendor/akeneo/pim-community-dev/front-packages/shared",

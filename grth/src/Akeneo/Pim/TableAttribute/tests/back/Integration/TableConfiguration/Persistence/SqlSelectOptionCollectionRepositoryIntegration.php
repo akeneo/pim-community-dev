@@ -15,6 +15,7 @@ namespace Akeneo\Test\Pim\TableAttribute\Integration\TableConfiguration\Persiste
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\WriteSelectOptionCollection;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -67,14 +68,16 @@ final class SqlSelectOptionCollectionRepositoryIntegration extends TestCase
     /** @test */
     public function it_saves_option_collection(): void
     {
-        $this->selectOptionCollectionRepository->save('nutrition', ColumnCode::fromString('ingredients'), SelectOptionCollection::fromNormalized([
+        $this->selectOptionCollectionRepository->save('nutrition', ColumnCode::fromString('ingredients'), WriteSelectOptionCollection::fromReadSelectOptionCollection(SelectOptionCollection::fromNormalized([
             ['code' => 'salt', 'labels' => ['en_US' => 'Salt', 'fr_FR' => 'Sel']],
             ['code' => 'chili', 'labels' => ['en_US' => 'Chili', 'fr_FR' => 'Piment']],
-        ]));
+            ['code' => 'id', 'labels' => ['en_US' => 'Id', 'fr_FR' => 'Id']],
+        ])));
         self::assertEqualsCanonicalizing(
             [
                 ['code' => 'salt', 'labels' => ['en_US' => 'Salt', 'fr_FR' => 'Sel']],
                 ['code' => 'chili', 'labels' => ['en_US' => 'Chili', 'fr_FR' => 'Piment']],
+                ['code' => 'id', 'labels' => ['en_US' => 'Id', 'fr_FR' => 'Id']],
             ],
             $this->selectOptionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('ingredients'))->normalize()
         );
@@ -84,11 +87,11 @@ final class SqlSelectOptionCollectionRepositoryIntegration extends TestCase
     /** @test */
     public function it_saves_option_collection_with_case_insensitive(): void
     {
-        $this->selectOptionCollectionRepository->save('NUTrition', ColumnCode::fromString('ingREDIENTS'), SelectOptionCollection::fromNormalized([
+        $this->selectOptionCollectionRepository->save('NUTrition', ColumnCode::fromString('ingREDIENTS'), WriteSelectOptionCollection::fromReadSelectOptionCollection(SelectOptionCollection::fromNormalized([
             ['code' => 'SALT', 'labels' => ['en_US' => 'Salt', 'fr_FR' => 'Sel']],
             ['code' => 'PEpper', 'labels' => ['en_US' => 'Pepper', 'fr_FR' => 'Poivre', 'de_DE' => 'Pfeffer']],
             ['code' => 'CHILI', 'labels' => ['en_US' => 'Chili', 'fr_FR' => 'Piment']],
-        ]));
+        ])));
         self::assertEqualsCanonicalizing(
             [
                 ['code' => 'salt', 'labels' => ['en_US' => 'Salt', 'fr_FR' => 'Sel']],
@@ -103,7 +106,11 @@ final class SqlSelectOptionCollectionRepositoryIntegration extends TestCase
     /** @test */
     public function it_removes_the_select_options(): void
     {
-        $this->selectOptionCollectionRepository->save('nutrition', ColumnCode::fromString('ingredients'), SelectOptionCollection::empty());
+        $this->selectOptionCollectionRepository->save(
+            'nutrition',
+            ColumnCode::fromString('ingredients'),
+            WriteSelectOptionCollection::fromReadSelectOptionCollection(SelectOptionCollection::empty())
+        );
         self::assertEqualsCanonicalizing(
             [],
             $this->selectOptionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('ingredients'))->normalize()
@@ -117,6 +124,7 @@ final class SqlSelectOptionCollectionRepositoryIntegration extends TestCase
         $this->selectOptionCollectionRepository->upsert('nutrition', ColumnCode::fromString('ingredients'), SelectOptionCollection::fromNormalized([
             ['code' => 'salt', 'labels' => []],
             ['code' => 'chili', 'labels' => ['en_US' => 'Chili', 'fr_FR' => 'Piment']],
+            ['code' => 'id', 'labels' => ['en_US' => 'Id', 'fr_FR' => 'Id']],
         ]));
         self::assertEqualsCanonicalizing(
             [
@@ -124,6 +132,7 @@ final class SqlSelectOptionCollectionRepositoryIntegration extends TestCase
                 ['code' => 'pepper', 'labels' => ['en_US' => 'Pepper', 'fr_FR' => 'Poivre']],
                 ['code' => 'garlic', 'labels' => ['en_US' => 'Garlic', 'fr_FR' => 'Ail']],
                 ['code' => 'chili', 'labels' => ['en_US' => 'Chili', 'fr_FR' => 'Piment']],
+                ['code' => 'id', 'labels' => ['en_US' => 'Id', 'fr_FR' => 'Id']],
             ],
             $this->selectOptionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('ingredients'))
                                                       ->normalize()

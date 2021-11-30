@@ -160,4 +160,74 @@ class RecordNormalizerSpec extends ObjectBehavior
 
         $this->normalizeRecordsByReferenceEntity($referenceEntityIdentifier);
     }
+
+    function it_truncates_record_full_text_search(
+        FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
+        SqlFindSearchableRecords $findSearchableRecords,
+        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
+        \DateTimeImmutable $updatedAt
+    ) {
+        $recordIdentifier = RecordIdentifier::fromString('stark');
+        $updatedAt->getTimestamp()->willReturn(1589524960);
+
+        $stark = new SearchableRecordItem();
+        $stark->identifier = 'designer_stark_fingerprint';
+        $stark->referenceEntityIdentifier = 'designer';
+        $stark->code = 'stark';
+        $stark->labels = ['fr_FR' => 'Philippe Stark'];
+        $stark->values = [
+            'name'                     => [
+                'data' => str_repeat('é', 40000),
+            ],
+            'description_mobile_en_US' => [
+                'data' => 'Bio',
+            ],
+        ];
+        $stark->updatedAt = \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2020-05-15T10:16:21+0000');
+
+        $findSearchableRecords
+            ->byRecordIdentifier($recordIdentifier)
+            ->willReturn($stark);
+
+        $findValueKeysToIndexForAllChannelsAndLocales->find(Argument::type(ReferenceEntityIdentifier::class))
+            ->willReturn(
+                [
+                    'ecommerce' => [
+                        'fr_FR' => ['name'],
+                    ],
+                    'mobile'    => [
+                        'en_US' => ['name'],
+                    ],
+                ]
+            );
+        $findValueKeysByAttributeType
+            ->find(
+                ReferenceEntityIdentifier::fromString($stark->referenceEntityIdentifier),
+                ['option', 'option_collection', 'record', 'record_collection']
+            )
+            ->willReturn([$stark->referenceEntityIdentifier]);
+
+        $normalizedRecord = $this->normalizeRecord($recordIdentifier);
+        $normalizedRecord['identifier']->shouldBeEqualTo('designer_stark_fingerprint');
+        $normalizedRecord['code']->shouldBeEqualTo('stark');
+        $normalizedRecord['reference_entity_code']->shouldBeEqualTo('designer');
+        $normalizedRecord['record_full_text_search']->shouldBeEqualTo(
+            [
+                'ecommerce' => [
+                    'fr_FR' => sprintf("stark %s", str_repeat('é', 32760 / 2)),
+                ],
+                'mobile'    => [
+                    'en_US' => sprintf("stark %s", str_repeat('é', 32760 / 2)),
+                ],
+            ]
+        );
+        $normalizedRecord['complete_value_keys']->shouldBeEqualTo(
+            [
+                'name'                     => true,
+                'description_mobile_en_US' => true,
+            ]
+        );
+
+        $normalizedRecord['updated_at']->shouldBeEqualTo(1589537781);
+    }
 }

@@ -64,7 +64,7 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
 
   removeErrors(): void {
     if (this.violations.length) {
-      this.getRoot().trigger('pim_enrich:form:form-tabs:remove-error', this.code);
+      this.getRoot().trigger('pim_enrich:form:form-tabs:remove-errors');
     }
     this.violations = [];
   }
@@ -90,8 +90,12 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
       return false;
     };
 
-    if (event.response.some(violation => isATableConfigurationViolation(violation.path))) {
-      this.getRoot().trigger('pim_enrich:form:form-tabs:add-error', this.code);
+    const errors = event.response.filter(violation => isATableConfigurationViolation(violation.path));
+    if (errors.length) {
+      this.getRoot().trigger('pim_enrich:form:form-tabs:add-errors', {
+        tabCode: this.code,
+        errors,
+      });
       this.getRoot().trigger('pim_enrich:form:form-tabs:change', this.code);
     }
   }

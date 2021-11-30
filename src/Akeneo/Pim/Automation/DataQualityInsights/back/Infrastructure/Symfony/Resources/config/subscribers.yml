@@ -8,7 +8,6 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\InstallAssetsSubscriber:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\FileSystemAssetsInstaller'
-            - '@database_connection'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -56,7 +55,6 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Attribute\UpdateAttributeQualitySubscriber:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\ConsolidateAttributeQuality'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeQualityRepository'
             - '@logger'
         tags:
             - { name: kernel.event_subscriber }

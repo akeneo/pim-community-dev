@@ -29,7 +29,7 @@ spec:
         - name: pim-free-trial-setup-sso
           image:  {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'su www-data -s /bin/bash -c "cd /srv/pim && php bin/console --quiet akeneo:free-trial:setup-sso"']
+          command: ["su", "www-data", "-s", "/bin/bash", "/scripts-dir/hook-pim-setup-trial-sso.sh"]
           envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
           env:
             - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
@@ -45,6 +45,8 @@ spec:
               mountPath: /var/secrets/google/srnt.json
               subPath: srnt.json
               readOnly: true
+            - name: pim-scripts
+              mountPath: /scripts-dir
       volumes:
         - name: google-cloud-pim-storage-key
           secret:
@@ -52,4 +54,7 @@ spec:
             items:
             - key: srntPimStorageKey
               path: srnt.json
+        - name: pim-scripts
+          configMap:
+            name:  pim-scripts
 {{- end }}

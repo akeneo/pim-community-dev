@@ -103,7 +103,7 @@ class RecordSpec extends ObjectBehavior
         );
         $this->equals($anotherRecord)->shouldReturn(false);
     }
-    
+
      function it_sets_a_value_to_the_value_collection()
      {
          $valueKey = ValueKey::create(
@@ -117,7 +117,7 @@ class RecordSpec extends ObjectBehavior
              LocaleReference::noReference(),
              TextData::fromString('Philippe Stark')
          );
-         $this->findValue($valueKey)->shouldBeNull();
+         $this->findValue($valueKey)->shouldBe(null);
 
          $this->setValue($value);
 
@@ -158,6 +158,6 @@ class RecordSpec extends ObjectBehavior
          $this->filterValues(function(Value $value){ return false;})->normalize()->shouldReturn([]);
          $this->filterValues(function(Value $value){ return true;})
              ->findValue(ValueKey::createFromNormalized('description_designer_fingerprint_ecommerce_fr_FR'))
-             ->shouldNotBeNull();
+             ->shouldNotBe(null);
      }
 }

@@ -7,6 +7,7 @@ config:
         oro/datafilter/table-filter: akeneopimtableattribute/legacy/table-filter
         oro/datagrid/table-cell: akeneopimtableattribute/legacy/table-cell
         pim/table-attribute/product/filter-values-provider: akeneopimtableattribute/legacy/filter-values-provider
+        pim/table-attribute/attribute/attribute-selector: akeneopimtableattribute/legacy/attribute-selector
 
     config:
         pim/attribute-edit-form/type-specific-form-registry:

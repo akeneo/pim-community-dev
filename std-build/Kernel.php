@@ -62,16 +62,13 @@ class Kernel extends BaseKernel
 
         $baseEnv = $this->getBaseEnv($this->environment);
 
-        $ceConfDir = $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config';
         $eeConfDir = $this->getProjectDir() . '/vendor/akeneo/pim-enterprise-dev/config';
         $projectConfDir = $this->getProjectDir() . '/config';
 
-        $this->loadAkeneoCommunityPackagesConfiguration($loader, $ceConfDir);
         $this->loadAkeneoEnterprisePackagesConfiguration($loader, $eeConfDir, $projectConfDir, $baseEnv);
 
         $this->loadPackagesConfiguration($loader, $projectConfDir, $this->environment);
 
-        $this->loadServicesConfiguration($loader, $ceConfDir, $baseEnv);
         $this->loadServicesConfiguration($loader, $eeConfDir, $baseEnv);
         $this->loadServicesConfiguration($loader, $projectConfDir, $this->environment);
     }
@@ -80,11 +77,6 @@ class Kernel extends BaseKernel
     {
         $baseEnv = $this->getBaseEnv($this->environment);
 
-        $this->loadRoutesConfiguration(
-            $routes,
-            $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config',
-            $baseEnv
-        );
         $this->loadRoutesConfiguration(
             $routes,
             $this->getProjectDir() . '/vendor/akeneo/pim-enterprise-dev/config',
@@ -119,26 +111,6 @@ class Kernel extends BaseKernel
     {
         $loader->load($confDir . '/{packages}/*.yml', 'glob');
         $loader->load($confDir . '/{packages}/' . $environment . '/*.yml', 'glob');
-    }
-
-    /**
-     * Load default package configuration from CE root packages config
-     * - security configuration doesn't support multiple loads
-     */
-    private function loadAkeneoCommunityPackagesConfiguration(
-        LoaderInterface $loader,
-        string $confDir
-    ): void {
-        $files = array_filter(
-            glob($confDir . '/packages/*.yml'),
-            function ($file) {
-                return 'security.yml' !== basename($file);
-            }
-        );
-
-        foreach ($files as $file) {
-            $loader->load($file, 'yaml');
-        }
     }
 
     /**

@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\TableConfigurat
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\WriteSelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\LruCachedSelectOptionCollectionRepository;
 use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
 use PhpSpec\ObjectBehavior;
@@ -28,10 +29,11 @@ class LruCachedSelectOptionCollectionRepositorySpec extends ObjectBehavior
         SelectOptionCollectionRepository $selectOptionCollectionRepository
     ) {
         $optionCollection = SelectOptionCollection::fromNormalized([['code' => 'foo'], ['code' => 'bar']]);
+        $writeOptionCollection = WriteSelectOptionCollection::fromReadSelectOptionCollection($optionCollection);
         $columnCode = ColumnCode::fromString('ingredient');
-        $selectOptionCollectionRepository->save('nutrition', $columnCode, $optionCollection)->shouldBeCalled();
+        $selectOptionCollectionRepository->save('nutrition', $columnCode, $writeOptionCollection)->shouldBeCalled();
 
-        $this->save('nutrition', $columnCode, $optionCollection);
+        $this->save('nutrition', $columnCode, $writeOptionCollection);
 
         $selectOptionCollectionRepository->getByColumn('nutrition', $columnCode)->shouldBeCalled()->willReturn(
             $optionCollection

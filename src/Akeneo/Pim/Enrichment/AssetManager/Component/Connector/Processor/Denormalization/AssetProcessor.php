@@ -16,6 +16,9 @@ namespace Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Processor\Denor
 use Akeneo\AssetManager\Application\Asset\CreateAndEditAsset\CreateAndEditAssetCommand;
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\Connector\EditAssetCommandFactory;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand;
+use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Connector\EditAssetCommandFactory as NamingConventionEditAssetCommandFactory;
+use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Exception\NamingConventionException;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetExistsInterface;
@@ -24,7 +27,9 @@ use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Tool\Component\Batch\Item\NonBlockingWarningAggregatorInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Model\Warning;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Exception\InvalidItemFromViolationsException;
 use Akeneo\Tool\Component\FileStorage\Exception\InvalidFile;
@@ -33,28 +38,32 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 
-final class AssetProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
+final class AssetProcessor implements ItemProcessorInterface, StepExecutionAwareInterface, NonBlockingWarningAggregatorInterface
 {
     private EditAssetCommandFactory $editAssetCommandFactory;
     private AssetExistsInterface $assetExists;
     private ValidatorInterface $validator;
     private FindMediaFileAttributeCodesInterface $findMediaFileAttributeCodes;
     private FileStorerInterface $fileStorer;
+    private NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory;
     private ?StepExecution $stepExecution = null;
     private array $indexedImageAttributeCodes = [];
+    private array $nonBlockingWarnings = [];
 
     public function __construct(
         EditAssetCommandFactory $editAssetCommandFactory,
         AssetExistsInterface $assetExists,
         ValidatorInterface $validator,
         FindMediaFileAttributeCodesInterface $findMediaFileAttributeCodes,
-        FileStorerInterface $fileStorer
+        FileStorerInterface $fileStorer,
+        NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory
     ) {
         $this->editAssetCommandFactory = $editAssetCommandFactory;
         $this->assetExists = $assetExists;
         $this->validator = $validator;
         $this->findMediaFileAttributeCodes = $findMediaFileAttributeCodes;
         $this->fileStorer = $fileStorer;
+        $this->namingConventionEditAssetCommandFactory = $namingConventionEditAssetCommandFactory;
     }
 
     /**
@@ -91,7 +100,7 @@ final class AssetProcessor implements ItemProcessorInterface, StepExecutionAware
             }
         }
 
-        $editAssetCommand = $this->editAssetCommandFactory->create($assetFamilyIdentifier, $item);
+        $editAssetCommand = $this->createEditAssetCommand($assetFamilyIdentifier, $item);
         $violations = $this->validator->validate($editAssetCommand);
         if ($violations->count() > 0) {
             $this->skipItemWithConstraintViolations($item, $violations);
@@ -106,6 +115,14 @@ final class AssetProcessor implements ItemProcessorInterface, StepExecutionAware
         }
 
         return $createAndEditAssetCommand;
+    }
+
+    public function flushNonBlockingWarnings(): array
+    {
+        $nonBlockingWarnings = $this->nonBlockingWarnings;
+        $this->nonBlockingWarnings = [];
+
+        return $nonBlockingWarnings;
     }
 
     private function storeMedia(array $item, string $assetFamilyIdentifier): array
@@ -180,5 +197,36 @@ final class AssetProcessor implements ItemProcessorInterface, StepExecutionAware
             0,
             $previousException
         );
+    }
+
+    private function createEditAssetCommand(AssetFamilyIdentifier $assetFamilyIdentifier, array $normalizedAsset): EditAssetCommand
+    {
+        $editAssetCommand = $this->editAssetCommandFactory->create($assetFamilyIdentifier, $normalizedAsset);
+
+        try {
+            $nameConventionEditAssetCommand = $this->namingConventionEditAssetCommandFactory->create(
+                $normalizedAsset,
+                $assetFamilyIdentifier
+            );
+
+            $namingConventionEditAssetCommands = $nameConventionEditAssetCommand->editAssetValueCommands;
+        } catch (NamingConventionException $e) {
+            if ($e->namingConventionAbortOnError()) {
+                $this->skipItemWithMessage($normalizedAsset, $e->getMessage(), $e);
+            }
+
+            $this->nonBlockingWarnings[] = new Warning(
+                $this->stepExecution,
+                'Naming convention was not applied due to the following reason: "%error_message%"',
+                ['%error_message%' => $e->getMessage()],
+                $normalizedAsset
+            );
+
+            $namingConventionEditAssetCommands = [];
+        }
+
+        $editAssetCommand->editAssetValueCommands = array_merge($editAssetCommand->editAssetValueCommands, $namingConventionEditAssetCommands);
+
+        return $editAssetCommand;
     }
 }

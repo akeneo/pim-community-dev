@@ -46,7 +46,12 @@ class PdfLoader implements LoaderInterface
             return $this->defaultImageProvider->getImageBinary(MediaLinkPdfGenerator::DEFAULT_IMAGE);
         }
 
+        $mimeType = 'application/pdf';
+        $format = 'pdf';
+
         if ($file instanceof BinaryInterface) {
+            $mimeType = $file->getMimeType();
+            $format = $file->getFormat();
             $file = $file->getContent();
         }
 
@@ -59,6 +64,6 @@ class PdfLoader implements LoaderInterface
         $content = $imagick->getImageBlob();
         $imagick->destroy();
 
-        return new Binary($content, 'image/png', 'png');
+        return new Binary($content, $mimeType, $format);
     }
 }

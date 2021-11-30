@@ -16,7 +16,6 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\At
 use Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\ConsolidateAttributeQuality;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\Structure\AttributeLabelsSpellingEvaluatedEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\Structure\AttributeOptionLabelsSpellingEvaluatedEvent;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\AttributeLocaleQuality;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\AttributeQualityRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Psr\Log\LoggerInterface;
@@ -25,22 +24,17 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 final class UpdateAttributeQualitySubscriber implements EventSubscriberInterface
 {
     private ConsolidateAttributeQuality $consolidateAttributeQuality;
-
-    private AttributeQualityRepositoryInterface $attributeQualityRepository;
-
     private LoggerInterface $logger;
 
     public function __construct(
         ConsolidateAttributeQuality $consolidateAttributeQuality,
-        AttributeQualityRepositoryInterface $attributeQualityRepository,
         LoggerInterface $logger
     ) {
-        $this->attributeQualityRepository = $attributeQualityRepository;
         $this->logger = $logger;
         $this->consolidateAttributeQuality = $consolidateAttributeQuality;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             AttributeLabelsSpellingEvaluatedEvent::class => 'onAttributeLabelsSpellingEvaluated',

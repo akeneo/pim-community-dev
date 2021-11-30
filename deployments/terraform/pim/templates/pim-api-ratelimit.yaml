@@ -7,6 +7,6 @@ spec:
   rateLimit:
     average: {{ .Values.pim.api.ratelimit.average }}
     burst: {{ .Values.pim.api.ratelimit.burst }}
-    sourcecriterion:
-      requesthost: true
+    sourceCriterion:
+      requestHost: true
 {{- end }}

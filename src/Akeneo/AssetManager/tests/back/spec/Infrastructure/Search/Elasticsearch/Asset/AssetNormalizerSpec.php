@@ -212,4 +212,88 @@ class AssetNormalizerSpec extends ObjectBehavior
         $normalizedAssets[1]['asset_family_code']->shouldBeEqualTo('designer');
         $normalizedAssets[1]['updated_at']->shouldBeEqualTo($coco->updatedAt->getTimestamp());
     }
+
+    function it_truncates_asset_full_text_search_of_a_normalized_asset(
+        FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
+        SqlFindSearchableAssets $findSearchableAssets,
+        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
+        \DateTimeImmutable $updatedAt,
+        FindActivatedLocalesInterface $findActivatedLocales
+    ) {
+        $assetIdentifier = AssetIdentifier::fromString('stark');
+        $updatedAt->getTimestamp()->willReturn(1_589_524_960);
+
+        $stark = new SearchableAssetItem();
+        $stark->identifier = 'designer_stark_fingerprint';
+        $stark->assetFamilyIdentifier = 'designer';
+        $stark->code = 'stark';
+        $stark->labels = ['fr_FR' => 'Philippe Stark'];
+        $stark->values = [
+            'name'                     => [
+                'data' => str_repeat('é', 40000),
+            ],
+            'description_mobile_en_US' => [
+                'data' => 'Bio',
+            ],
+            'tags' => [
+                'data' => ['industrial', 'street furniture']
+            ]
+        ];
+        $stark->updatedAt = \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2020-05-15T10:16:21+0000');
+
+        $findSearchableAssets
+            ->byAssetIdentifier($assetIdentifier)
+            ->willReturn($stark);
+
+        $findActivatedLocales->findAll()->shouldBeCalledOnce()->willReturn(['en_US', 'fr_FR', 'de_DE']);
+        $findValueKeysToIndexForAllChannelsAndLocales->find(Argument::type(AssetFamilyIdentifier::class))
+            ->willReturn(
+                [
+                    'ecommerce' => [
+                        'fr_FR' => ['name'],
+                    ],
+                    'mobile'    => [
+                        'en_US' => ['name'],
+                    ],
+                ]
+            );
+        $findValueKeysByAttributeType
+            ->find(
+                AssetFamilyIdentifier::fromString($stark->assetFamilyIdentifier),
+                ['option', 'option_collection']
+            )
+            ->willReturn(['tags']);
+
+        $normalizedAsset = $this->normalizeAsset($assetIdentifier);
+        $normalizedAsset['identifier']->shouldBeEqualTo('designer_stark_fingerprint');
+        $normalizedAsset['code']->shouldBeEqualTo('stark');
+        $normalizedAsset['asset_family_code']->shouldBeEqualTo('designer');
+        $normalizedAsset['asset_family_code']->shouldBeEqualTo('designer');
+        $normalizedAsset['values']->shouldBeEqualTo([
+            'tags' => ['industrial', 'street furniture'],
+        ]);
+        $normalizedAsset['asset_full_text_search']->shouldBeEqualTo([
+                'ecommerce' => [
+                    'fr_FR' => sprintf("stark %s", str_repeat('é', 32760 / 2)),
+                ],
+                'mobile'    => [
+                    'en_US' => sprintf("stark %s", str_repeat('é', 32760 / 2)),
+                ],
+            ]
+        );
+        $normalizedAsset['asset_code_label_search']->shouldBeLike([
+                'fr_FR' => 'stark Philippe Stark',
+                'en_US' => 'stark',
+                'de_DE' => 'stark',
+            ]
+        );
+        $normalizedAsset['complete_value_keys']->shouldBeEqualTo([
+                'name'                     => true,
+                'description_mobile_en_US' => true,
+                'tags' => true,
+            ]
+        );
+
+        $normalizedAsset['updated_at']->shouldBeEqualTo(1_589_537_781);
+    }
 }

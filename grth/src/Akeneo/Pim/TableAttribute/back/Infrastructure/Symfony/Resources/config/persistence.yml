@@ -18,6 +18,7 @@ services:
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository'
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory'
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfigurationUpdater'
+            - '@event_dispatcher'
 
     Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\SqlTableConfigurationRepository:
         arguments:

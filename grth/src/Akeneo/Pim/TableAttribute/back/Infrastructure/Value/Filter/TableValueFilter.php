@@ -56,7 +56,12 @@ final class TableValueFilter extends AbstractAttributeFilter
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
 
-        $this->checkLocaleAndChannel($attribute, $locale, $channel);
+        if ($data !== []) {
+            // If data is empty, we search on the entire table. In this case we allow to search
+            // for all locale and scope, even if the attribute is localizable/scopable
+            $this->checkLocaleAndChannel($attribute, $locale, $channel);
+        }
+
         $attributePath = \sprintf('table_values.%s', $attribute->getCode());
 
         $value = $data['value'] ?? null;
@@ -123,6 +128,7 @@ final class TableValueFilter extends AbstractAttributeFilter
                         'filter' => $filters,
                     ],
                 ],
+                'ignore_unmapped' => true,
             ],
         ];
 

@@ -168,7 +168,7 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
     {
         $categoryAccessTable = $this->_class->table['name'];
 
-        $pdo = $this->_em->getConnection()->getWrappedConnection();
+        $pdo = $this->_em->getConnection();
         $stmt = $pdo->prepare(
             sprintf(
                 "SELECT ca.category_id
@@ -184,9 +184,8 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
 
         $userId = $user->getId();
         $stmt->bindParam('user_id', $userId);
-        $stmt->execute();
 
-        $ids = $stmt->fetchAll(\PDO::FETCH_COLUMN, 'ca.id');
+        $ids = $stmt->executeQuery()->fetchFirstColumn();
 
         return array_map('intval', $ids);
     }

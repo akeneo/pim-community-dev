@@ -30,7 +30,7 @@ spec:
         - name: push-catalog-to-onboarder
           image:  {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'export HOME=/var/www && su www-data -s /bin/bash -c "bin/console akeneo:synchronization:push-catalog-to-onboarder -vvv"']
+          command: ["su", "www-data", "-s", "/bin/bash", "/scripts-dir/hook-push-catalog-to-onboarder.sh"]
           envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
           env:
             - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
@@ -50,6 +50,8 @@ spec:
               mountPath: /var/secrets/google/key.json
               subPath: key.json
               readOnly: true
+            - name: pim-scripts
+              mountPath: /scripts-dir
       volumes:
         - name: google-cloud-pim-storage-key
           secret:
@@ -63,4 +65,7 @@ spec:
             items:
             - key: akobOnboarderKey
               path: key.json
+        - name: pim-scripts
+          configMap:
+            name:  pim-scripts
 {{- end }}

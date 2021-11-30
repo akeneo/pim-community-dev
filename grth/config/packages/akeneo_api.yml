@@ -1,0 +1,41 @@
+pim_api:
+    pagination:
+        limit_max: '%api_pagination_limit_max%'
+        limit_by_default: '%api_pagination_limit_by_default%'
+    input:
+        buffer_size: '%api_input_buffer_size%'
+        max_resources_number: '%api_input_max_resources_number%'
+    content_type_negotiator:
+        rules:
+            -
+                path: '^/api/rest/v\d+/media-files'
+                methods: ['POST']
+                content_types: ['multipart/form-data']
+                priority: 10
+            -
+                path: '^/api/rest/v\d+/(products|families|categories|attributes|attribute-groups|channels|association-types|product-models)$'
+                methods: ['PATCH']
+                content_types: ['application/vnd.akeneo.collection+json']
+                priority: 20
+            -
+                path: '^/api/rest/v\d+/families/.+/variants$'
+                methods: ['PATCH']
+                content_types: ['application/vnd.akeneo.collection+json']
+                priority: 20
+            -
+                path: '^/api/rest/v\d+/attributes/.+/options$'
+                methods: ['PATCH']
+                content_types: ['application/vnd.akeneo.collection+json']
+                priority: 20
+            -
+                path: '^/api/oauth/v\d+/token'
+                content_types: ['application/json', 'application/x-www-form-urlencoded']
+                priority: 30
+            -
+                path: '^/api'
+                content_types: ['application/json']
+                priority: 40
+            -
+                path: ''
+                stop: true
+                priority: 100

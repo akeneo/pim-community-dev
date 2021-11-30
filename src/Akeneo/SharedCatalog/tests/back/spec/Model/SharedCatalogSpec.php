@@ -126,7 +126,7 @@ class SharedCatalogSpec extends ObjectBehavior
             []
         );
 
-        $this->getDefaultScope()->shouldBeNull();
+        $this->getDefaultScope()->shouldBe(null);
     }
 
     public function it_can_return_the_pqb_filters()

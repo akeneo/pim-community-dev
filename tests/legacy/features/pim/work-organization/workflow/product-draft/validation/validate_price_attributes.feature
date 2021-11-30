@@ -63,5 +63,5 @@ Feature: Validate price attributes of a draft
     And I save the product
     Then I should see validation error "The tax attribute requires a number, and the submitted bar value is not."
     Then I should see validation error "The tax attribute requires a number, and the submitted qux value is not."
-    Then I should see validation error "The tax attribute requires an equal or greater than 10 value."
+    Then I should see validation error "The tax attribute requires an equal or lesser than 100 value."
     And there should be 3 error in the "Product information" tab
