@@ -1,6 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {screen, waitFor, waitForElement} from '@testing-library/react';
+import {screen, waitFor} from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
 import {renderWithProviders, historyMock, MockFetchResponses, mockFetchResponses} from '../../../test-utils';
 import {ConnectedAppsListPage} from '@src/connect/pages/ConnectedAppsListPage';
@@ -61,7 +61,7 @@ test('The connected apps list page renders with 2 connected apps card', async ()
     });
 
     renderWithProviders(<ConnectedAppsListPage />);
-    await waitForElement(() => screen.getByText('App A'));
+    await waitFor(() => screen.getByText('App A'));
 
     expect(screen.queryByText('pim_menu.tab.connect')).toBeInTheDocument();
     expect(screen.queryAllByText('pim_menu.item.connected_apps')).toHaveLength(2);
@@ -111,7 +111,7 @@ test('The connected apps list page renders without connected apps', async () => 
     });
 
     renderWithProviders(<ConnectedAppsListPage />);
-    await waitForElement(() =>
+    await waitFor(() =>
         screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty')
     );
 

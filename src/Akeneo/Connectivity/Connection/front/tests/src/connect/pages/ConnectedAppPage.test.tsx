@@ -1,6 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {screen, waitFor, waitForElement} from '@testing-library/react';
+import {screen, waitFor} from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
 import {renderWithProviders, historyMock, MockFetchResponses, mockFetchResponses} from '../../../test-utils';
 import {ConnectedAppPage} from '@src/connect/pages/ConnectedAppPage';
@@ -75,7 +75,7 @@ test('The connected app page renders with internal api errors', async () => {
     });
 
     renderWithProviders(<ConnectedAppPage />);
-    await waitForElement(() =>
+    await waitFor(() =>
         screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.not_found')
     );
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {act, screen, waitFor, waitForElement} from '@testing-library/react';
+import {act, screen, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {historyMock, mockFetchResponses, MockFetchResponses, renderWithProviders} from '../../../../test-utils';
 import {AppWizardWithSteps} from '@src/connect/components/AppWizardWithSteps/AppWizardWithSteps';
@@ -89,7 +89,7 @@ test('The step wizard renders without error', async () => {
     });
     renderWithProviders(<AppWizardWithSteps clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
 
-    await waitForElement(() => screen.getByAltText('MyApp'));
+    await waitFor(() => screen.getByAltText('MyApp'));
     expect(screen.queryByAltText('MyApp')).toBeInTheDocument();
     expect(screen.queryByText('authorizations-component')).toBeInTheDocument();
     expect(screen.queryByText('permissions-component')).not.toBeInTheDocument();
@@ -112,7 +112,7 @@ test('The wizard redirect to the marketplace when closed', async () => {
     });
 
     renderWithProviders(<AppWizardWithSteps clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
-    await waitForElement(() => screen.getByAltText('MyApp'));
+    await waitFor(() => screen.getByAltText('MyApp'));
 
     act(() => {
         userEvent.click(screen.getByTitle('akeneo_connectivity.connection.connect.apps.wizard.action.cancel'));
@@ -136,7 +136,7 @@ test('The wizard renders steps and is able to navigate between steps', async () 
         ...fetchAppWizardDataResponses,
     });
     renderWithProviders(<AppWizardWithSteps clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
-    await waitForElement(() => screen.getByAltText('MyApp'));
+    await waitFor(() => screen.getByAltText('MyApp'));
 
     assertAuthorizationsScreen();
 
@@ -436,7 +436,7 @@ const assertPermissionsSummaryScreen = () => {
 };
 
 const navigateToSummaryAndClickConfirm = async () => {
-    await waitForElement(() => screen.getByAltText('MyApp'));
+    await waitFor(() => screen.getByAltText('MyApp'));
 
     act(() => {
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next'));

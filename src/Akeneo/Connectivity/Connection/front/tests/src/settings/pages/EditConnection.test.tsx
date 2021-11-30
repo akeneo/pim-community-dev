@@ -2,7 +2,7 @@ import {ConnectionsProvider} from '@src/settings/connections-context';
 import {EditConnection} from '@src/settings/pages/EditConnection';
 import {WrongCredentialsCombinationsProvider} from '@src/settings/wrong-credentials-combinations-context';
 import {UserContext} from '@src/shared/user';
-import {act, fireEvent, screen, waitFor, waitForElement} from '@testing-library/react';
+import {act, fireEvent, screen, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {createMemoryHistory} from 'history';
 import React, {PropsWithChildren} from 'react';
