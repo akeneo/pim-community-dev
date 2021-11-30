@@ -36,4 +36,4 @@ test('it can tell if user can show job execution detail', () => {
   expect(canShowJobExecutionDetail(isGranted, jobExecutionRow)).toBe(true);
   expect(canShowJobExecutionDetail(isGranted, {...jobExecutionRow, type: 'import'})).toBe(false);
   expect(canShowJobExecutionDetail(isGranted, {...jobExecutionRow, type: 'quick_export'})).toBe(false);
-})
+});
