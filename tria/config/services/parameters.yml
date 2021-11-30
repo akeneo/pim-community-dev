@@ -1,4 +1,4 @@
 parameters:
     pim_ce_dev_src_folder_location: '%kernel.project_dir%/vendor/akeneo/pim-community-dev'
-    pim_ge_dev_src_folder_location: '%kernel.project_dir%/grth'
+    pim_ge_dev_src_folder_location: '%kernel.project_dir%/vendor/akeneo/pim-growth-edition'
     monitoring_authentication_token: '%env(MONITORING_AUTHENTICATION_TOKEN)%'

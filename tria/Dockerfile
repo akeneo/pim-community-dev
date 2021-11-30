@@ -169,7 +169,7 @@ RUN mkdir var && \
     find . -type d -name node_modules | xargs rm -rf && \
     rm -rf public/test_dist && \
     (test -d vendor/akeneo/pim-community-dev/upgrades/schema/ && cp vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema/ || true) && \
-    (test -d grth/upgrades/schema/ && cp grth/upgrades/schema/* upgrades/schema/ || true)
+    (test -d vendor/akeneo/pim-growth-edition/upgrades/schema/ && cp vendor/akeneo/pim-growth-edition/upgrades/schema/* upgrades/schema/ || true)
 
 #
 # Intermediate images to install BigCommerce Connector
