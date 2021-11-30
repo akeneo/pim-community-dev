@@ -580,3 +580,10 @@ services:
             - '@pim_catalog.saver.product'
             - '@pim_catalog.saver.product_model'
             - '%pim_job_product_batch_size%'
+
+    # Translators
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableTranslator:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
+        tags:
+            - { name: pim_enrich.connector.flat_translators.attribute_value }
