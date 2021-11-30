@@ -37,6 +37,7 @@ $rules = [
         'JsonSchema\Validator',
         'PDO',
         'Akeneo\UserManagement\Component\Model\GroupInterface', // Because of an EventSubscriber on UserGroup deletion
+        'Akeneo\UserManagement\Component\Model\Group', // For a constant usage
         'Liip\ImagineBundle',
         'Psr\Log\LoggerInterface', //Use logger in command
         // TODO: reference entities should not depend on PIM
