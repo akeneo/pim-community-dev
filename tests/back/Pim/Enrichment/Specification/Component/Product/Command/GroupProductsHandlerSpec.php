@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Commands;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Command;
 
 use Akeneo\Pim\Enrichment\Component\Product\Command\GroupProductsCommand;
 use Akeneo\Pim\Enrichment\Component\Product\Command\GroupProductsHandler;

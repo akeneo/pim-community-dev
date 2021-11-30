@@ -34,10 +34,10 @@ class ProductSaverSpec extends ObjectBehavior
     }
 
     function it_saves_a_new_product(
-        ObjectManager                 $objectManager,
-        EventDispatcherInterface      $eventDispatcher,
+        ObjectManager $objectManager,
+        EventDispatcherInterface $eventDispatcher,
         ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
-        ProductInterface              $product
+        ProductInterface $product
     )
     {
         $product->isDirty()->willReturn(true);
@@ -61,10 +61,10 @@ class ProductSaverSpec extends ObjectBehavior
     }
 
     function it_saves_an_existing_product(
-        ObjectManager                 $objectManager,
-        EventDispatcherInterface      $eventDispatcher,
+        ObjectManager $objectManager,
+        EventDispatcherInterface $eventDispatcher,
         ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
-        ProductInterface              $product
+        ProductInterface $product
     )
     {
         $product->isDirty()->willReturn(true);
@@ -87,12 +87,11 @@ class ProductSaverSpec extends ObjectBehavior
     }
 
     function it_does_not_save_an_unchanged_product(
-        ObjectManager                 $objectManager,
-        EventDispatcherInterface      $eventDispatcher,
+        ObjectManager $objectManager,
+        EventDispatcherInterface $eventDispatcher,
         ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
-        ProductInterface              $product
-    )
-    {
+        ProductInterface $product
+    ) {
         $product->isDirty()->willReturn(false);
 
         $uniqueDataSynchronizer->synchronize($product)->shouldNotBeCalled();
