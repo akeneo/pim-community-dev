@@ -220,6 +220,7 @@ COPY --from=builder --chown=www-data:www-data /srv/pim/bin bin
 COPY --from=builder --chown=www-data:www-data /srv/pim/config config
 COPY --from=builder --chown=www-data:www-data /srv/pim/public public
 COPY --from=builder --chown=www-data:www-data /srv/pim/src src
+COPY --from=builder --chown=www-data:www-data /srv/pim/grth/src/Akeneo grth/src/Akeneo
 COPY --from=builder --chown=www-data:www-data /srv/pim/components components
 COPY --from=builder --chown=www-data:www-data /srv/pim/upgrades upgrades
 COPY --from=builder --chown=www-data:www-data /srv/pim/var/cache/prod var/cache/prod
