@@ -159,7 +159,7 @@ test('it can filter on the job type', () => {
 test('it can filter on the job users', () => {
   renderWithProviders(<JobExecutionList />);
 
-  userEvent.click(screen.getByLabelText('akeneo_job_process_tracker.users.label:'));
+  userEvent.click(screen.getByLabelText('akeneo_job_process_tracker.user_filter.label:'));
   userEvent.click(screen.getAllByText('admin')[screen.getAllByText('admin').length - 1]);
 
   expect(screen.getByText('Import job')).toBeInTheDocument();
