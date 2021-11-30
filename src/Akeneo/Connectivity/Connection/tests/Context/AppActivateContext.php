@@ -182,7 +182,11 @@ SQL;
         Assert::assertEquals([
             'access_token',
             'token_type',
+            'scope',
         ], array_keys($payload));
+
+        Assert::assertEquals('bearer', $payload['token_type']);
+        Assert::assertEquals('read_catalog_structure read_products', $payload['scope']);
     }
 
     private function getCreatedAuthorizationCode(): ?string
