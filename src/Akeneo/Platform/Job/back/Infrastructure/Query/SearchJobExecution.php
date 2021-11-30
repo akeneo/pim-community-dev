@@ -13,6 +13,12 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 
 /**
+ * TODO: Should we extract this class into multiple classes ?
+ *  - To manage filters: instead of managing both at the same time in private classes buildQueryParams and buildQueryParamsTypes ?
+ *      - TypeFilter class: responsible for handling type filter
+ *      - StatusFilter class: responsible for handling the Status filtering
+ *  - To manage JobExecutionRow hydration in a dedicated class too
+ *
  * @author Grégoire Houssard <gregoire.houssard@akeneo.com>
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
@@ -30,6 +36,11 @@ class SearchJobExecution implements SearchJobExecutionInterface
 
     public function search(SearchJobExecutionQuery $query): array
     {
+        // I'd split this public into 2 private for clarity,
+        // the body of this function becomes:
+        // $sql = $this->buildSqlQuery($query);
+        // return $this->fetchJobExecutionRow($sql);
+
         $sql = <<<SQL
     WITH job_executions AS (
         SELECT

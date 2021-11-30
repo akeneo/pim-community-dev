@@ -187,3 +187,11 @@ test('it can change page', () => {
   expect(screen.queryByText('Export job')).not.toBeInTheDocument();
   expect(screen.getByText('Mass edit')).toBeInTheDocument();
 });
+
+// missing test when pagination is changed
+// missing test when type filter is changed
+
+// should we test that when changing a filter:
+//  - the grid updates
+//  - the count updates
+//  - the pagination does not change (?)
