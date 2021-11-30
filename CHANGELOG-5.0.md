@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.60 (2021-11-30)
+
 ## Bug fixes
 
 - PIM-10181: Sign logout SSO request
