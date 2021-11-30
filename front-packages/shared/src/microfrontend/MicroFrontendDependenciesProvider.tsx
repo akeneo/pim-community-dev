@@ -131,8 +131,8 @@ const MicroFrontendDependenciesProvider = ({
       security: {isGranted: (acl: string) => securityContext[acl] === true},
       router: {
         generate: generateUrl,
-        redirect: (route: string, _options?: object) => document.location = `/#${route}`,
-        redirectToRoute: (route: string, _parameters?: object) => document.location = route,
+        redirect: (_fragment: string, _options?: object) => console.info('Not implemented'),
+        redirectToRoute: (_route: string, _parameters?: object) => console.info('Not implemented'),
       },
       translate: (id: string, placeholders = {}) => {
         const message = translations.messages[`jsmessages:${id}`] ?? id;
