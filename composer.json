@@ -83,7 +83,7 @@
         "league/flysystem": "^2.0",
         "league/flysystem-memory": "^2.0",
         "liip/imagine-bundle": "2.6.1",
-        "monolog/monolog": "1.25.5",
+        "monolog/monolog": "2.3.5",
         "ocramius/proxy-manager": "2.11.1",
         "oneup/flysystem-bundle": "^4.0.0",
         "psr/event-dispatcher": "^1.0.0",
