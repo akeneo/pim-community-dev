@@ -4,6 +4,20 @@
 
 - PIM-10147: Make timezones offset dynamic with summer/winter time change in user interface settings
 
+# 5.0.60 (2021-11-30)
+
+# 5.0.59 (2021-11-26)
+
+## Bug fixes
+
+- PIM-10179: Fix migrations on tables job_execution_queue and pim_datagrid_view
+
+# 5.0.58 (2021-11-23)
+
+## Bug fixes
+
+- PIM-10162: Not all locales are displayed when using compare/translate feature on product
+
 # 5.0.57 (2021-11-08)
 
 ## Bug fixes
