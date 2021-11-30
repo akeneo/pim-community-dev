@@ -2,7 +2,6 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {act, screen, within} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {JobExecutionList} from './JobExecutionList';
 import {JobExecutionFilter, JobExecutionRow} from '../models';
 import {JobInstanceDetail} from './JobInstanceDetail';
 
