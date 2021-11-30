@@ -59,7 +59,6 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
             throw new ObjectNotFoundException(\sprintf('Product identifiers "%s" were not found.', \implode(',', $diffIdentifiers)));
         }
 
-        $platform = $this->connection->getDatabasePlatform();
         $rows = $this->createValueCollectionInBatchFromRows($rows);
 
         $context = ['value_collections' => \array_map(
@@ -74,6 +73,7 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
             );
         }
 
+        $platform = $this->connection->getDatabasePlatform();
         foreach ($rows as $row) {
             $productIdentifier = (string) $row['identifier'];
             $rawValues = $row['raw_values'];
@@ -293,7 +293,7 @@ SQL;
 
     private function calculateAttributeCodeAncestors(array $rows): array
     {
-        return array_map(function (array $row) {
+        return \array_map(static function (array $row) {
             if (null === $row['family_variant_code']) {
                 $row['attribute_codes_of_ancestor'] = [];
 
@@ -323,7 +323,7 @@ SQL;
      */
     private function calculateAttributeCodeForOwnLevel(array $rows): array
     {
-        return array_map(function (array $row) {
+        return \array_map(static function (array $row) {
             $attributesInProduct = \json_decode($row['attribute_codes_in_product_raw_values'], true);
             $attributeCodesAtVariantProductLevel = \json_decode($row['attribute_codes_at_variant_product_level'], true);
             $attributeCodesInFamily = \json_decode($row['attribute_codes_in_family'], true);
@@ -331,9 +331,9 @@ SQL;
             if (null === $row['family_code']) {
                 $row['attribute_codes_for_this_level'] = $attributesInProduct;
             } elseif (null !== $row['family_variant_code']) {
-                $row['attribute_codes_for_this_level'] = array_values(array_unique(array_merge($attributeCodesAtVariantProductLevel, $attributesInProduct)));
+                $row['attribute_codes_for_this_level'] = \array_values(\array_unique([...$attributeCodesAtVariantProductLevel, ...$attributesInProduct]));
             } else {
-                $row['attribute_codes_for_this_level'] = array_values(array_unique(array_merge($attributesInProduct, $attributeCodesInFamily)));
+                $row['attribute_codes_for_this_level'] = \array_values(\array_unique([...$attributesInProduct, ...$attributeCodesInFamily]));
             }
 
             return $row;
@@ -346,15 +346,17 @@ SQL;
      * @param array $rows [
      *          [
      *              'identifier' => 'foo',
-     *              'raw_values' => ['attribute' => ['channel' => ['locale' => 'data' ]]]
+     *              'raw_values' => '{"attribute":{"channel":{"locale":"data"}}},
+     *              ... => ...,
      *          ]
      *        ]
      *
      * @return array [
      *          'foo' => [
      *              'identifier' => 'foo',
-     *              'raw_values' => ['attribute' => ['channel' => ['locale' => 'data' ]]]
-     *              'values' => ValueCollection(...)
+     *              'raw_values' => ['attribute' => ['channel' => ['locale' => 'data' ]]],
+     *              'values' => ValueCollection(...),
+     *              ... => ...
      *          ]
      *        ]
      */
@@ -366,12 +368,12 @@ SQL;
             $rowsIndexedByProductIdentifier[$row['identifier']] = $row;
         }
 
-        $rawValuesCollection = [];
-        foreach ($rowsIndexedByProductIdentifier as $identifier => $rowIndexedByProductIdentifier) {
-            $rawValuesCollection[$identifier] = $rowIndexedByProductIdentifier['raw_values'];
-        }
-
-        $valueCollections = $this->readValueCollectionFactory->createMultipleFromStorageFormat($rawValuesCollection);
+        $valueCollections = $this->readValueCollectionFactory->createMultipleFromStorageFormat(
+            \array_map(
+                static fn (array $row): array => $row['raw_values'],
+                $rowsIndexedByProductIdentifier
+            )
+        );
         foreach ($valueCollections as $identifier => $valueCollection) {
             $rowsIndexedByProductIdentifier[$identifier]['values'] = $valueCollection;
         }
