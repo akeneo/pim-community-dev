@@ -38,13 +38,17 @@ define([
       });
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.render.bind(this));
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', () => {
-        this.getRoot().trigger('pim_enrich:form:form-tabs:remove-error', this.getTabCode());
+        this.getRoot().trigger('pim_enrich:form:form-tabs:remove-errors');
       });
 
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', event => {
         const validationErrors = event.response.normalized_errors;
-        if (filterErrors(validationErrors, '[filters]').length > 0) {
-          this.getRoot().trigger('pim_enrich:form:form-tabs:add-error', this.getTabCode());
+        const errors = filterErrors(validationErrors, '[filters]');
+        if (errors.length > 0) {
+          this.getRoot().trigger('pim_enrich:form:form-tabs:add-errors', {
+            tabCode: this.getTabCode(),
+            errors,
+          });
         }
       });
 

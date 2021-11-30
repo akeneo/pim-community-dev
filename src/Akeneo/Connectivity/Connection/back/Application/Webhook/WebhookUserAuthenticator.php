@@ -35,7 +35,7 @@ class WebhookUserAuthenticator
 
         $roles = array_map('strval', $user->getRoles());
 
-        $this->tokenStorage->setToken(new UsernamePasswordToken($user, null, 'main', $roles));
+        $this->tokenStorage->setToken(new UsernamePasswordToken($user, 'main', $roles));
 
         return $user;
     }
