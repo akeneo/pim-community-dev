@@ -17,14 +17,6 @@ services:
             - '@validator'
             - '@pim_user.saver.user'
 
-    akeneo_connectivity.connection.service.user.create_user_group:
-        class: Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUserGroup
-        arguments:
-            - '@pim_user.factory.group'
-            - '@pim_user.updater.group'
-            - '@pim_user.saver.group'
-            - '@validator'
-
     akeneo_connectivity.connection.service.user.delete_user:
         class: Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUser
         arguments:

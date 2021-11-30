@@ -200,6 +200,9 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
         Assert::assertTrue($userGroups->exists(function (int $index, Group $group) {
             return $group->getName() === User::GROUP_DEFAULT;
         }), 'User do not have default user group');
+        Assert::assertTrue($userGroups->exists(function (int $index, Group $group) {
+            return $group->getType() === 'app' && $group->getName() !== User::GROUP_DEFAULT;
+        }), 'The user group created is not of type "app"');
 
         $userRoles = $foundUser->getRoles();
         Assert::assertCount(1, $userRoles, 'User do not have exactly 1 role');

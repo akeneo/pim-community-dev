@@ -34,6 +34,9 @@ class DeleteUserRoleIntegration extends TestCase
         $this->userRoleLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.user_role_loader');
     }
 
+    /**
+     * @group ce
+     */
     public function test_it_deletes_an_user_role()
     {
         $this->userRoleLoader->create([

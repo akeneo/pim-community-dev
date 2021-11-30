@@ -108,7 +108,7 @@ services:
             - '@akeneo_connectivity.connection.fixtures.enrichment.user_role_loader'
             - '@fos_oauth_server.storage'
             - '@akeneo_connectivity.connection.service.apps.client_provider'
-            - '@akeneo_connectivity.connection.service.user.create_user_group'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup'
             - '@akeneo_connectivity.connection.service.user.create_user'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp'
