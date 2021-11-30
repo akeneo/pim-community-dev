@@ -142,5 +142,10 @@
     "minimum-stability": "stable",
     "config": {
         "sort-packages": true
+    },
+    "extra": {
+        "symfony": {
+            "require": "5.4.*"
+        }
     }
 }
