@@ -51,8 +51,7 @@ class ResetHandler
         $user
             ->setPlainPassword($this->form->getData()->getPlainPassword())
             ->setConfirmationToken(null)
-            ->setPasswordRequestedAt(null)
-            ->setEnabled(true);
+            ->setPasswordRequestedAt(null);
 
         $this->manager->updateUser($user);
     }
