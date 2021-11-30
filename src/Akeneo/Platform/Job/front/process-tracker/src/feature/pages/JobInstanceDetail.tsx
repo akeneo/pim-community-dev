@@ -18,6 +18,7 @@ const JobInstanceDetail = ({code, type}: JobInstanceDetailProps) => {
       status: [],
       size: 25,
       search: '',
+      user: [],
       type: [type],
       code: [code],
     }),
