@@ -331,7 +331,7 @@ pim_enrich.export.product:
     title: Globale Einstellungen
 pim_enrich.mass_edit.product:
   title: Produkt-Massenaktion
-  confirm: "{0}Sie sind dabei, einige Produkte mit den folgenden Informationen zu aktualisieren, bitte bestätigen.{1}Sie sind dabei, ein Produkt mit den folgenden Informationen zu aktualisieren, bitte bestätigen. ]1, Inf[Sie sind dabei, {{ itemsCount }} Produkte mit den folgenden Informationen zu aktualisieren, bitte bestätigen."
+  confirm: "{0}Sie sind dabei, einige Produkte mit den folgenden Informationen zu aktualisieren, die alten Werte werden ersetzt. Bitte bestätigen.|{1}Sie sind dabei, ein Produkt mit den folgenden Informationen zu aktualisieren, die alten Werte werden ersetzt. Bitte bestätigen.|]1, Inf[Sie sind dabei, {{ itemsCount }} Produkte mit den folgenden Informationen zu aktualisieren, die früheren Werte werden ersetzt. Bitte bestätigen."
   step:
     select:
       label: Produkte auswählen
@@ -357,7 +357,7 @@ pim_enrich.mass_edit.product:
     edit_common:
       label: Attributwerte bearbeiten
       label_count: "{0}Bearbeite Attributwerte einiger <span class=\"AknFullPage-title--highlight\">Produkte</span>|{1}Attributwerte von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|]1, Inf [Attributwerte von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten bearbeiten</span>"
-      description: Nur die Attribute, die zu den Produktfamilien der ausgewählten Produkte gehören, werden mit den folgenden Daten für das Gebietsschema {{ locale }} und dem {{ scope }} Ausgabekanal bearbeitet.
+      description: Nur die Attribute, die zu den Familien der ausgewählten Produkte gehören, werden mit den folgenden Daten für die {{ locale }} Gebietsschema und den {{ scope }} Kanal bearbeitet. Die alten Werte werden ersetzt.
       no_update: Bitte wählen Sie mindestens ein Feld aus, das Sie aktualisieren möchten
     add_attribute_value:
       label: Attributwerte hinzufügen

@@ -162,6 +162,7 @@ pim_common:
   created: Creat
   delete: Suprimir
   done: Fet
+  duplicate: Duplicat
   edit: Editar
   entity_updated: Hi ha canvis sense guardar.
   export: Exportació
@@ -174,6 +175,7 @@ pim_common:
   less_than: Menys de
   loading: Carregant...
   media_upload: Arrossegar i deixar per carrgar o feu clic aquí
+  more_actions: Més accions
   more_than: Més de
   next: Següent
   "no": "No"
@@ -181,6 +183,8 @@ pim_common:
   not_available: N/D
   now: Ara
   ok: OK
+  open: Obre
+  no_result: No s'han trobat resultats
   permissions: Permisos
   previous: Anterior
   properties: Propietats
@@ -211,8 +215,20 @@ pim_common:
     DOES NOT CONTAIN: No conté
     STARTS WITH: S'inicia amb
     ENDS WITH: Acaba amb
+    IN: A la llista
+    "NOT IN": Fora de llista
+  channel: Canal
+  locale: Local
+  categories: Categories
+  family_variant: Variants familiars
+  enabled: Activat
+  family: Família
+  parent: Pare
+  groups: Grups
+  products: Productes
+  product_models: Models de producte
+  more: Més
 error:
-  exception: Oh no! S'ha produït un error de {{ status_code }}...
   forbidden: Prohibit. No té permís per accedir a aquesta pàgina
 alert:
   attribute_option:
@@ -240,8 +256,6 @@ pim_enrich.entity.fallback:
       discard_changes: Perdreu els canvis a la {{ entity }} si sortiu de la pàgina.
       discard_changes_title: Estàs segur?
 pim_enrich.entity.job_execution:
-  page_title:
-    index: "]-Inf, 1]{{ count }} operació|]1, Inf[{{ count }} operacions"
   module:
     create:
       upload: Deixeu anar el fitxer {{ type }} aquí, o clic per buscar en el disc
@@ -259,8 +273,8 @@ pim_title:
   pim_enrich_catalog_volume_index: Seguiment del volum del catàleg
   pim_enrich_categorytree_index: Arbres de categories
   pim_enrich_categorytree_create: Arbres de categories | Crear
-  pim_enrich_categorytree_edit: Arbre de categoria {{ category.label }} | Editar
   pim_enrich_categorytree_create_tree: Arbres de categories | Crear
+  pim_enrich_categorytree_tree: Arbre de categoria {{ category.label }} | Editar
   pim_enrich_attribute_index: Atributs
   pim_enrich_attribute_create: Atributs | Crear
   pim_enrich_attribute_edit: Atribut {{ attribute.label }} | Editar
@@ -287,6 +301,8 @@ pim_title:
   pim_enrich_job_tracker_show: Seguiment del procés | Mostrar tasca
   pim_enrich_mass_edit_action: Edició massiva
   pim_analytics_system_info_index: Informació del sistema
+  pim_settings_index: Preferències
+  pim_system_index: Sistema
 pim_menu:
   tab:
     activity: Activitat
@@ -302,7 +318,6 @@ pim_menu:
     attribute_group: Grups d'atribut
     channel: Canals
     currency: Monedes
-    dashboard: Panell de contol
     family: Famílies
     group: Grups
     group_type: Tipus de grup
@@ -323,7 +338,8 @@ pim_menu:
     activity: Activitat de navegació
     system: Sistema de navegació
     user: Navegació de gestió d'usuaris
-    settings: Navegació de configuració
+    settings:
+      collapsed_label: Navegació de configuració
     product: Navegació de producte
     product_infos: Informació del Producte
   user:
@@ -335,3 +351,6 @@ pim_notification:
     export: Exportació
     quick_export: Exportació ràpida
     mass_edit: Edició massiva
+pim_system:
+  system_navigation: Sistema de navegació
+  users_management_navigation: Navegació de gestió d'usuaris

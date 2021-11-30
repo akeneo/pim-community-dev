@@ -141,6 +141,7 @@
 - PIM-10163: Prefix groups breadcrumb link to avoid 404
 - PIM-10160: Fix AM thumbnail generation when filename is longer than 100 characters
 - PIM-10167: Fix import file - datetime in price attribute break the import
+- PIM-10177: Fix warning level for status badge on last operations
 - PIM-10158: Fix failed migration longtext to json for akeneo_batch_job_execution.raw_parameters du to empty values
 
 ## New features
@@ -171,6 +172,7 @@ bin/console messenger:consume ui_job import_export_job data_maintenance_job
 - PIM-10004: Optimize counting job execution warnings
 - PIM-10142: Block HTTP redirection in Webhook URLs
 - PIM-10144: Don't display Guzzle version in user agent
+- PIM-10098: Add a command/handler to remove a product model
 
 ## Classes
 

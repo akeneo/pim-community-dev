@@ -50,7 +50,6 @@ class ItemStepSpec extends ObjectBehavior
         $repository,
         StepExecution $execution,
         BatchStatus $status,
-        ExitStatus $exitStatus,
         JobStopper $jobStopper
     ) {
         $execution->getStatus()->willReturn($status);
@@ -80,8 +79,8 @@ class ItemStepSpec extends ObjectBehavior
         $dispatcher->dispatch(Argument::any(), EventInterface::ITEM_STEP_AFTER_BATCH)->shouldBeCalled();
         $jobStopper->isStopping($execution)->willReturn(false);
 
+        $exitStatus = new ExitStatus(ExitStatus::COMPLETED, "");
         $execution->getExitStatus()->willReturn($exitStatus);
-        $exitStatus->getExitCode()->willReturn(ExitStatus::COMPLETED);
         $repository->updateStepExecution($execution)->shouldBeCalledTimes(5);
         $execution->isTerminateOnly()->willReturn(false);
 
@@ -102,7 +101,6 @@ class ItemStepSpec extends ObjectBehavior
         $repository,
         StepExecution $execution,
         BatchStatus $status,
-        ExitStatus $exitStatus,
         JobStopper $jobStopper
     ) {
         $execution->getStatus()->willReturn($status);
@@ -138,8 +136,8 @@ class ItemStepSpec extends ObjectBehavior
         $processor->process(null)->shouldNotBeCalled();
         $writer->write(['p4'])->shouldNotBeCalled();
 
+        $exitStatus = new ExitStatus(ExitStatus::COMPLETED, "");
         $execution->getExitStatus()->willReturn($exitStatus);
-        $exitStatus->getExitCode()->willReturn(ExitStatus::COMPLETED);
         $repository->updateStepExecution($execution)->shouldBeCalledTimes(5);
         $execution->isTerminateOnly()->willReturn(false);
 
@@ -160,7 +158,6 @@ class ItemStepSpec extends ObjectBehavior
         DoctrineJobRepository $repository,
         StepExecution $execution,
         BatchStatus $status,
-        ExitStatus $exitStatus,
         JobStopper $jobStopper
     ) {
         $execution->getStatus()->willReturn($status);
@@ -188,7 +185,7 @@ class ItemStepSpec extends ObjectBehavior
         $processor->process(null)->shouldNotBeCalled();
         $writer->write(['p4'])->shouldBeCalled();
 
-        $exitStatus->getExitCode()->willReturn(ExitStatus::COMPLETED);
+        $exitStatus = new ExitStatus(ExitStatus::COMPLETED, "");
         $execution->getExitStatus()->willReturn($exitStatus);
         $repository->updateStepExecution($execution)->shouldBeCalledTimes(5);
         $execution->isTerminateOnly()->willReturn(false);

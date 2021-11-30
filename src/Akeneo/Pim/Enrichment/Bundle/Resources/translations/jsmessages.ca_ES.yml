@@ -1,6 +1,7 @@
 pim_notification:
   types:
     settings: Preferències
+    mass_delete: Supressió
 flash:
   comment:
     create:
@@ -60,7 +61,6 @@ pim_enrich.entity.product:
     history:
       version: Versió
       author: Autor/a
-      logged_at: Connectat a
       from: Des de
       modified: Modificat
       old_value: Valor antic
@@ -106,7 +106,6 @@ pim_enrich.entity.product:
         quantity: 'Quantitat:'
       search:
         placeholder: Cercar etiqueta o identificador
-      no_result: Ho sentim, no hi ha cap resultat de la cerca.
       no_data: No hi ha productes associats.
       remove: Treure associació
       edit: Editar producte
@@ -166,7 +165,6 @@ pim_enrich.entity.product_model:
     variant_axis:
       label: 'eix de variant'
       create: Afegir nou
-      create_label: "Afegir un nou {{ axes }}"
       required_label: '(eix variant)'
     completeness:
       variant_product: "[]-Inf, 1]{{ complete }} / {{ total }} variant de producte |] 1, Inf [{{ complete }} / {{ total }} variants de productes"
@@ -280,12 +278,10 @@ pim_enrich.export.product:
   global_settings:
     title: Configuració global
 pim_enrich.mass_edit.product:
-  title: Acció en massa dels productes
   step:
     select:
       label: Triar productes
     choose:
-      title: Accions en massa dels productes
       label_count: "]0, Inf[Selecciona l'acció"
     configure:
       label: Configurar
@@ -303,12 +299,7 @@ pim_enrich.mass_edit.product:
       description: Els productes seleccionats seran activats o desactivats.
       field: Per activar
     edit_common:
-      label: Editar valor dels atributs
-      description: Només els atributs que pertanyen a les famílies de productes seleccionats s'editaran amb les següents dades per {{ locale }} local i el {{ scope }} canal.
       no_update: Si us plau, seleccioneu almenys un camp per actualitzar
-    add_attribute_value:
-      label: Afegir valor dels atributs
-      description: Només els atributs multivalor pertanyents a les famílies dels productes s'editaran amb les següents dades per la localització {{ locale }} i el canal {{ scope }}. Els valors d'atributs s'afegeixen, mantenint els valors anteriors.
     change_family:
       label: Canviar família
       description: La família dels productes seleccionats es canviarà per la família escollida
@@ -323,6 +314,7 @@ pim_enrich.mass_edit.product:
     move_to_category:
       label: Moure entre categories
       description: Els productes es classificaran en les següents categories. Es perd la classificació existent.
+      no_update: Si us plau, selecciona una categoria
     remove_from_category:
       label: Eliminar de les categories
       description: Els productes s'eliminaran de les següents categories.
@@ -332,7 +324,6 @@ pim_enrich.mass_edit.product:
       description: El model de producte seleccionat reunirà els productes i permetrà l'enriquiment de les propietats en comú.
       no_update: Si us plau, seleccioneu un model de producte abans de continuar
     associate_to_product_and_product_model:
-      label: Associa
       description: Els productes seleccionats a la quadrícula s'associaran als productes seleccionats i models de producte per el tipus d'associació escollit
       validate: Si us plau, afegiu una associació abans de seguir amb el següent pas
     change_parent_product_model:
@@ -409,7 +400,6 @@ pim_datagrid:
       label: Actualitzat el
     identifier:
       label: Identificador
-  search: Cercar a {{ label }}
 batch_jobs:
   add_association:
     label: Associa
@@ -468,3 +458,6 @@ batch_jobs:
     quick_export.label: Exportació ràpida de producte en XSLX
     quick_export_product_model.label: Exportació ràpida del model de producte en XSLX
     perform.label: Exportació ràpida de producte en XSLX
+  default_steps:
+    delete_products_and_product_models: Esborrar productes i models de productes
+    remove_completeness_for_channel_and_locale: Esborrar la completitud del canal i locals

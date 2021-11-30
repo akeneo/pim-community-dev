@@ -1,8 +1,10 @@
 #Job labels
 batch_jobs:
   default_steps:
+    import: Importar
     validation: Validació d'arxiu
     import_associations: Importar associacions
+    import_model_associations: Importar associacions
     import_root_product_model: Importar el model de producte base
     import_sub_product_model: Importar el model de subproducte
     compute_data_related_to_family_root_product_models: Calcular les dades dels models de producte de base
@@ -37,6 +39,10 @@ batch_jobs:
   csv_family_variant_export:
     label: Exportar variant de família a CSV
     export.label: Exportar variant de família
+  csv_user_group_export:
+    export.label: Exportar grup d'usuaris
+  csv_user_export:
+    export.label: Exportació d'usuaris
   csv_product_import:
     label: Importar producte en CSV
     import.label: Importar productes
@@ -143,3 +149,5 @@ batch_jobs:
   xlsx_group_type_import:
     label: Importació de tipus de grup en XLSX
     import.label: Importació de tipus de grup
+  xlsx_user_import:
+    import.label: Importació d'usuaris

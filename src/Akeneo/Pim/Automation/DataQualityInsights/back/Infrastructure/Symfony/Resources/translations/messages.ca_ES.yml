@@ -10,6 +10,5 @@ akeneo_data_quality_insights:
     filter_label:
       quality_score: Puntuació de qualitat
       enrichment_quality: Qualitat d'enriquiment
-      images_quality: Qualitat de les imatges
 Enrichment: Enriquiment
 Quality Score: Puntuació de qualitat

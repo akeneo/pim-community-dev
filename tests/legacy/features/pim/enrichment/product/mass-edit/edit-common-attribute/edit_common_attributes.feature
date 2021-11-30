@@ -54,7 +54,7 @@ Feature: Edit common attributes of many products at once
     And the english localizable value name of "sneakers" should be "boots"
     And 3 events of type "product.updated" should have been raised
 
-  @critical @skip
+  @critical
   Scenario: Successfully update many multi-valued values at once
     Given I am on the products grid
     And I select rows boots and sneakers
