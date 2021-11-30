@@ -275,7 +275,7 @@ services:
         arguments:
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
             - '@pim_catalog.remover.product'
-            - '@pim_catalog.remover.product_model'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelsHandler'
             - '@pim_connector.doctrine.cache_clearer'
             - '@pim_catalog.filter.chained'
             - 100
@@ -283,6 +283,7 @@ services:
             - '@akeneo.pim.enrichment.product_model.query.count_variant_products'
             - '@akeneo_batch.job.job_stopper'
             - '@akeneo_batch.job_repository'
+            - '@validator'
 
     # CSV Quick Export steps ------------------------------------------------------------------------------------------
     pim_enrich.step.csv_product.quick_export:

@@ -122,7 +122,7 @@ jobs:
                   command: |
                       ls php-pim-image.tar && docker load -i php-pim-image.tar
                       ls php-pim-image.tar || make php-image-dev
-                      ls php-pim-image.tar || docker save -o php-pim-image.tar akeneo/pim-dev/php:7.4
+                      ls php-pim-image.tar || docker save -o php-pim-image.tar akeneo/pim-dev/php:8.0
               - save_cache:
                   name: Save PHP docker image cache
                   key: php-docker-image-{{ checksum "~/php-docker-image.hash" }}
@@ -134,8 +134,8 @@ jobs:
               - run:
                   name: Save the CE image as a tar
                   command: |
-                      docker pull akeneo/pim-php-dev:master
-                      docker save -o php-pim-image.tar akeneo/pim-php-dev:master
+                      docker pull akeneo/pim-php-dev:6.0
+                      docker save -o php-pim-image.tar akeneo/pim-php-dev:6.0
       - run:
           name: Setup tests results folder and log folder
           command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.cache/Cypress ~/.composer
@@ -955,6 +955,9 @@ jobs:
 workflows:
   version: 2
   pull_request:
+      when:
+          not:
+              equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
       jobs:
           - ready_to_build?:
                 type: approval
@@ -1024,14 +1027,10 @@ workflows:
                     - test_back_data_migrations_ce
 
   nightly:
-      triggers:
-          - schedule:
-                cron: "0 11,23 * * *"
-                filters:
-                    branches:
-                        only:
-                            - master
-
+      when:
+          and:
+              - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+              - equal: [ "nightly_master", << pipeline.schedule.name >> ]
       jobs:
           - checkout_ce
           - build_dev:
@@ -1061,13 +1060,10 @@ workflows:
                     - build_dev
 
   weekly_octopus_code_quality:
-    triggers:
-        - schedule:
-            cron: "0 0 * * 0"
-            filters:
-              branches:
-                only:
-                    - master
+    when:
+        and:
+            - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+            - equal: [ "weekly_octopus_code_quality", << pipeline.schedule.name >> ]
     jobs:
       - checkout_ce
       - build_dev:
@@ -1079,6 +1075,9 @@ workflows:
             - build_dev
 
   on_demand:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
         jobs:
           - ready_to_build?:
                 type: approval

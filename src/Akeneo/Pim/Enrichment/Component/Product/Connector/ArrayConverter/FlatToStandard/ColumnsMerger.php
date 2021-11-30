@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Component\Connector\Exception\BusinessArrayConversionException;
 
 /**
  * Merge columns for single value that can be provided in many columns like prices and metric
@@ -58,6 +59,15 @@ class ColumnsMerger
                 if (AttributeTypes::BACKEND_TYPE_METRIC === $attribute->getBackendType()) {
                     $collectedMetrics = $this->collectMetricData($collectedMetrics, $attributeInfos, $fieldValue);
                 } elseif (AttributeTypes::BACKEND_TYPE_PRICE === $attribute->getBackendType()) {
+                    // For XLSX import, the value could be already converted to a DateTime object (cf PIM-10167)
+                    if ($fieldValue instanceof \DateTimeInterface) {
+                        throw new BusinessArrayConversionException(
+                            "Can not convert cell {$fieldName} with date format to attribute of type date",
+                            "pim_import_export.notification.import.warnings.xlsx_cell_date_conversion_error",
+                            ['{cellName}' => $fieldName, '{attributeType}' => 'price']
+                        );
+                    }
+
                     $collectedPrices = $this->collectPriceData($collectedPrices, $attributeInfos, $fieldValue);
                 } else {
                     $resultRow[$fieldName] = $fieldValue;

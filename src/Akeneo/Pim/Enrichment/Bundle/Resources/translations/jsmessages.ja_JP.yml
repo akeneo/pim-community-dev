@@ -331,7 +331,6 @@ pim_enrich.export.product:
     title: グローバル設定
 pim_enrich.mass_edit.product:
   title: 商品一括操作
-  confirm: "{0}次の情報をともなう商品を数点更新します。ご確認ください。|{1}次の情報をともなう商品を1点更新します。ご確認ください。|]1, Inf[次の情報をともなう商品を{{ itemsCount }}点更新します。ご確認ください。"
   step:
     select:
       label: 商品を選択
@@ -357,7 +356,6 @@ pim_enrich.mass_edit.product:
     edit_common:
       label: 属性値を編集
       label_count: "{0}一部の<span class=\"AknFullPage-title--highlight\">商品</span>の属性値を編集|{1}1つの<span class=\"AknFullPage-title--highlight\">商品</span>の属性値を編集|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}つの商品</span>の属性値を編集"
-      description: 選択した商品のファミリーに属する属性のみが、{{ locale }}ロケールならびに{{ scope }}チャンネルで編集されます
       no_update: アップデートするフィールドを1つ以上選択してください
     add_attribute_value:
       label: 属性値を追加

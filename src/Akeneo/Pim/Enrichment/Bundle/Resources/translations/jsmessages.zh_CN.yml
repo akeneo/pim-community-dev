@@ -331,7 +331,6 @@ pim_enrich.export.product:
     title: 全局设置
 pim_enrich.mass_edit.product:
   title: 产品批量操作
-  confirm: "{0}您即将更新一些产品的以下信息，请确认。{1}您即将更新一件产品的以下信息，请确认。|]1, Inf[您即将更新 {{ itemsCount }} 件产品的以下信息，请确认。"
   step:
     select:
       label: 选择产品
@@ -357,7 +356,6 @@ pim_enrich.mass_edit.product:
     edit_common:
       label: 编辑属性值
       label_count: "{0}编辑一些<span class=\"AknFullPage-title--highlight\">产品</span>的属性值|{1}编辑<span class=\"AknFullPage-title--highlight\"> 1 件产品</span>的属性值|]1, Inf[编辑 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品的属性值</span>"
-      description: 只有属于所选产品品类的属性将被编辑，其中包含 {{ locale }} 区域和 {{ scope }} 渠道的以下数据。
       no_update: 请选择至少一个要更新的字段。
     add_attribute_value:
       label: 添加属性值

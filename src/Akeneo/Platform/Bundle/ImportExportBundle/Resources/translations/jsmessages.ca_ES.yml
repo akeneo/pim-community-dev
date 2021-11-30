@@ -143,7 +143,6 @@ pim_import_export:
       file_path: Ruta de l'arxiu
   widget:
     last_operations:
-      empty: No s'han trobat operacions
       date: Data
       profile_name: Nom del perfil
       details: Detalls
@@ -214,3 +213,4 @@ pim_title:
   pim_importexport_import_profile_show: Importar perfil {{ job.label }} | Mostrar
   pim_importexport_import_execution_index: Importar històric d'execucions
   pim_importexport_import_execution_show: Importar execucions | Detalls
+

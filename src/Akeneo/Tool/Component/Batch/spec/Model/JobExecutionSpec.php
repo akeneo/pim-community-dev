@@ -54,8 +54,9 @@ class JobExecutionSpec extends ObjectBehavior
         $this->getStatus()->getValue()->shouldReturn(BatchStatus::COMPLETED);
     }
 
-    function it_sets_exist_status(ExitStatus $exitStatus)
+    function it_sets_exist_status()
     {
+        $exitStatus = new ExitStatus(ExitStatus::NOOP, "My description");
         $this->setExitStatus($exitStatus)->shouldReturn($this);
     }
 

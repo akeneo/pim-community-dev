@@ -342,7 +342,7 @@ pim_enrich.export.product:
 
 pim_enrich.mass_edit.product:
     title: Product bulk action
-    confirm: "{0}You are about to update some products with the following information, please confirm.|{1}You are about to update a product with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} products with the following information, please confirm."
+    confirm: "{0}You are about to update some products with the following information, the former values will be replaced. Please confirm.|{1}You are about to update a product with the following information, the former values will be replaced. Please confirm.|]1, Inf[You are about to update {{ itemsCount }} products with the following information, the former values will be replaced. Please confirm."
     step:
         select:
             label: Choose products
@@ -368,7 +368,7 @@ pim_enrich.mass_edit.product:
         edit_common:
             label: Edit attribute values
             label_count: "{0}Edit attribute values of some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Edit attribute values of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Edit attribute values of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
-            description: Only the attributes belonging to the families of the selected products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel.
+            description: Only the attributes belonging to the families of the selected products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel. The former values will be replaced.
             no_update: Please select at least one field to update
         add_attribute_value:
             label: Add attribute values
