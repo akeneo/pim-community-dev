@@ -3,7 +3,6 @@ import {Breadcrumb, TabBar, useTabBar} from 'akeneo-design-system';
 import {Translate, useTranslate} from '../../../shared/translate';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
 import {useRouter} from '../../../shared/router/use-router';
-import {useMediaUrlGenerator} from '../../../settings/use-media-url-generator';
 import {ApplyButton, DropdownLink, PageContent, PageHeader, SecondaryActionsDropdownButton} from '../../../common';
 import {UserButtons} from '../../../shared/user';
 import {ConnectedAppSettings} from './ConnectedAppSettings';
@@ -27,7 +26,6 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
     const notify = useNotify();
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
     const connectedAppsListHref = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps')}`;
-    const generateMediaUrl = useMediaUrlGenerator();
     const [providers, permissions, setPermissions] = usePermissionsFormProviders(connectedApp.user_group_name);
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState<boolean>(false);
     const [activeTab, setActiveTab] = useSessionStorageState(settingsTabName, 'pim_connectedApp_activeTab');
@@ -138,7 +136,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                 ]}
                 userButtons={<UserButtons />}
                 state={<FormState />}
-                imageSrc={generateMediaUrl(connectedApp.logo, 'thumbnail')}
+                imageSrc={connectedApp.logo}
             >
                 {connectedApp.name}
             </PageHeader>
