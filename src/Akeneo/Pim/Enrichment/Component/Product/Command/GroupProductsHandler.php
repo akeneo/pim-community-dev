@@ -3,6 +3,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Command;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductIdentifiersInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -20,14 +22,16 @@ class GroupProductsHandler
     private GroupRepositoryInterface $groupRepository;
     private BulkSaverInterface $productSaver;
     private ProductRepositoryInterface $productRepository;
+    private int $batchSize;
 
 
-    public function __construct(FindProductIdentifiersInterface $getGroupProductIdentifiers, GroupRepositoryInterface $groupRepository, BulkSaverInterface $productSaver, ProductRepositoryInterface $productRepository)
+    public function __construct(FindProductIdentifiersInterface $getGroupProductIdentifiers, GroupRepositoryInterface $groupRepository, BulkSaverInterface $productSaver, ProductRepositoryInterface $productRepository, int $batchSize)
     {
         $this->findGroupProductIdentifiers = $getGroupProductIdentifiers;
         $this->groupRepository = $groupRepository;
         $this->productSaver = $productSaver;
         $this->productRepository = $productRepository;
+        $this->batchSize = $batchSize;
     }
 
     public function handle(GroupProductsCommand $updateProductsToGroupCommand)
@@ -38,20 +42,36 @@ class GroupProductsHandler
         $addedProductIds = array_diff($newProductIds, $oldProductIds);
         $removedProductIds = array_diff($oldProductIds, $newProductIds);
 
-        $productsToUpdate = [];
         $group = $this->groupRepository->find($updateProductsToGroupCommand->groupId());
 
-        foreach ($addedProductIds as $newProductId) {
-            $dbProduct = $this->productRepository->find($newProductId);
-            $dbProduct->addGroup($group);
-            $productsToUpdate[] = $dbProduct;
-        }
-        foreach ($removedProductIds as $removedProductId) {
-            $dbProduct = $this->productRepository->findOneByIdentifier($removedProductId);
-            $dbProduct->removeGroup($group);
-            $productsToUpdate[] = $dbProduct;
-        }
+        $this->batchProductExecution(
+            $group,
+            $addedProductIds,
+            function (GroupInterface $group, Product $product) {
+                $product->addGroup($group);
+            }
+        );
 
-        $this->productSaver->saveAll($productsToUpdate);
+        $this->batchProductExecution(
+            $group,
+            $removedProductIds,
+            function (GroupInterface $group, Product $product) {
+                $product->removeGroup($group);
+            }
+        );
+    }
+
+    protected function batchProductExecution($group, array $productIds, \Closure $addGroup)
+    {
+        $batchedProductIdsList = \array_chunk($productIds, $this->batchSize);
+        foreach ($batchedProductIdsList as $productIdList) {
+            $batchedProducts = [];
+            foreach ($productIdList as $productId) {
+                $product = $this->productRepository->findOneByIdentifier($productId);
+                $addGroup($group, $product);
+                $batchedProducts[]=$product;
+            }
+            $this->productSaver->saveAll($batchedProducts);
+        }
     }
 }

@@ -5,3 +5,4 @@ services:
       - '@pim_catalog.repository.group'
       - '@pim_catalog.saver.product'
       - '@pim_catalog.repository.product'
+      - '%pim_job_product_batch_size%'
