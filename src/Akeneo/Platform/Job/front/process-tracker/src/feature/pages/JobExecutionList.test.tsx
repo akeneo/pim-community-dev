@@ -77,12 +77,12 @@ beforeEach(() => {
 });
 
 jest.mock('../hooks/useJobExecutionTable', () => ({
-  useJobExecutionTable: ({page, size, sort, type, users, status}: JobExecutionFilter) => {
+  useJobExecutionTable: ({page, size, sort, type, user, status}: JobExecutionFilter) => {
     const filteredRows = rows.filter(
       row =>
         (0 === type.length || type.includes(row.type)) &&
         (0 === status.length || status.includes(row.status)) &&
-        (0 === users.length || users.includes(row.username ?? ''))
+        (0 === user.length || user.includes(row.username ?? ''))
     );
 
     const paginatedRows = filteredRows
@@ -118,7 +118,7 @@ jest.mock('../models/JobExecutionFilter', () => ({
     sort: {column: 'job_name', direction: 'ASC'},
     status: [],
     type: [],
-    users: [],
+    user: [],
     search: '',
   }),
 }));

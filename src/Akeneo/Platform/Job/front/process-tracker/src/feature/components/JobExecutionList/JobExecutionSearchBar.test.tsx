@@ -12,6 +12,7 @@ test('It displays a search input with an initialized value', () => {
       onTypeFilterChange={jest.fn()}
       onSearchChange={jest.fn()}
       onStatusFilterChange={jest.fn()}
+      onUserFilterChange={jest.fn()}
     />
   );
 
@@ -28,6 +29,7 @@ test('It triggers the onSearchChange when the search field changes', () => {
       onTypeFilterChange={jest.fn()}
       onSearchChange={handleSearchChange}
       onStatusFilterChange={jest.fn()}
+      onUserFilterChange={jest.fn()}
     />
   );
 
@@ -51,6 +53,7 @@ test('It triggers the onSearchChange when the search field is emptied', () => {
       onTypeFilterChange={jest.fn()}
       onSearchChange={handleSearchChange}
       onStatusFilterChange={jest.fn()}
+      onUserFilterChange={jest.fn()}
     />
   );
 
