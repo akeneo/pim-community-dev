@@ -119,7 +119,7 @@ FROM akeneo_connectivity_connected_app
 WHERE name = :name
 SQL;
 
-            return $connection->fetchAssoc($query, [
+            return $connection->fetchAssociative($query, [
                 'name' => $name,
             ]) ?: null;
         }, sprintf('Connected app "%s" not found', $name));
@@ -177,7 +177,7 @@ JOIN akeneo_connectivity_connected_app ON akeneo_connectivity_connected_app.conn
 WHERE akeneo_connectivity_connected_app.id = :id
 SQL;
 
-        return $connection->fetchAssoc($query, [
+        return $connection->fetchAssociative($query, [
             'id' => $this->connectedApp['id'],
         ]) ?: [];
     }
@@ -223,7 +223,7 @@ JOIN akeneo_connectivity_connected_app ON akeneo_connectivity_connected_app.conn
 WHERE akeneo_connectivity_connected_app.id = :id
 SQL;
 
-        return $connection->fetchAssoc($query, [
+        return $connection->fetchAssociative($query, [
             'id' => $this->connectedApp['id'],
         ]) ?: [];
     }
