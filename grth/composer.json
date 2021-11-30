@@ -10,6 +10,9 @@
         }
     ],
     "autoload": {
+        "psr-0": {
+            "": "src/"
+        },
         "psr-4": {
             "Akeneo\\Pim\\TableAttribute\\": "src/Akeneo/Pim/TableAttribute/back",
             "Akeneo\\Platform\\": [

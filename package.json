@@ -74,6 +74,7 @@
   },
   "workspaces": [
     "components/tailored-export/front",
+    "grth/src/Akeneo/Pim/TableAttribute/front",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/front/process-tracker",
     "vendor/akeneo/pim-community-dev",
     "vendor/akeneo/pim-community-dev/front-packages/shared",
@@ -84,7 +85,6 @@
     "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Bundle/Resources/workspaces/enrichment",
     "src/Akeneo/Pim/Automation/DataQualityInsights/front",
     "src/Akeneo/Pim/Automation/RuleEngine/front",
-    "vendor/akeneo/pim-growth-edition/src/Akeneo/Pim/TableAttribute/front",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/front",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Structure/Bundle/Resources/workspaces/settings-ui",
     "src/Akeneo/Pim/Structure/Bundle/Resources/workspaces/settings-ui",
