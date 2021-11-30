@@ -44,7 +44,7 @@ GOOGLE_CLUSTER_ZONE ?= europe-west3-a
 GOOGLE_CLUSTER_NAME ?= $(GOOGLE_CLUSTER_ZONE)
 GOOGLE_MANAGED_ZONE_DNS ?= $(ENV_NAME).cloud.akeneo.com
 GOOGLE_MANAGED_ZONE_NAME ?= $(ENV_NAME)-cloud-akeneo-com
-CLUSTER_DNS_NAME ?= europe-west3-a-akecld-saas-$(ENV_NAME).$(ENV_NAME).cloud.akeneo.com.
+CLUSTER_DNS_NAME ?= $(GOOGLE_CLUSTER_ZONE)-akecld-saas-$(ENV_NAME).$(ENV_NAME).cloud.akeneo.com.
 GOOGLE_STORAGE_lOCATION ?= eu
 REGISTRY ?= eu.gcr.io
 HELM_REPO_PROD := akeneo-charts
@@ -369,7 +369,7 @@ ifeq ("$(wildcard $(INSTANCE_DIR)/main.tf.json)","")
 	make create-ci-release-files
 else
 ifeq ($(TYPE),srnt)
-	PIM_VERSION=$(shell yq r "/root/cloud-customers-dev/saas/projects/akecld-saas-dev/europe-west3-a/releases/$(PFID)/main.tf.json" 'module.pim.pim_version'); \
+	PIM_VERSION=$(shell yq r "$(INSTANCE_DIR)/main.tf.json" 'module.pim.pim_version'); \
 	yq w -j -P -i $(INSTANCE_DIR)/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$${PIM_VERSION}//deployments/terraform"
 ifeq ($(ACTIVATE_MONITORING),true)
 	PIM_VERSION=$(shell yq r "$(INSTANCE_DIR)/main.tf.json" 'module.pim.pim_version'); \

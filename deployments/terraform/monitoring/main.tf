@@ -10,6 +10,6 @@ provider "google" {
 }
 
 locals {
-  type = "${var.types[var.product_reference_type]}"
+  type = var.types[var.product_reference_type]
   pfid = "${local.type}-${var.instance_name}"
 }
