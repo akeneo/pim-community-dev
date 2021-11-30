@@ -47,6 +47,12 @@ test('it can tell if the given filter is the default Job execution filter', () =
   expect(
     isDefaultJobExecutionFilter({
       ...getDefaultJobExecutionFilter(),
+      user: ['admin'],
+    })
+  ).toEqual(false);
+  expect(
+    isDefaultJobExecutionFilter({
+      ...getDefaultJobExecutionFilter(),
       search: 'My search',
     })
   ).toEqual(false);

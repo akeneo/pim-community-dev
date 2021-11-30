@@ -229,6 +229,48 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
+    public function it_returns_filtered_job_executions_on_user(): void
+    {
+        $this->loadFixtures();
+
+        $query = new SearchJobExecutionQuery();
+        $query->user = ['peter', 'julia'];
+
+        $expectedJobExecutions = [
+            new JobExecutionRow(
+                $this->jobExecutionIds[1],
+                'A product import',
+                'import',
+                new \DateTimeImmutable('2020-01-02T01:00:00+01:00'),
+                'peter',
+                'STARTED',
+                0,
+                2,
+                1,
+                3,
+                true,
+            ),
+            new JobExecutionRow(
+                $this->jobExecutionIds[0],
+                'A product import',
+                'import',
+                new \DateTimeImmutable('2020-01-01T01:00:00+01:00'),
+                'julia',
+                'COMPLETED',
+                4,
+                0,
+                3,
+                3,
+                false,
+            ),
+        ];
+
+        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_job_execution_count_related_to_query()
     {
         $this->loadFixtures();

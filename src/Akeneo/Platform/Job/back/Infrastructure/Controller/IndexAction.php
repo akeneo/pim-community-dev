@@ -42,9 +42,9 @@ final class IndexAction
         }
 
         $this->denyAccessUnlessAclIsGranted();
-        $users = $request->get('users', []);
+        $user = $request->get('user', []);
         if (!$this->securityFacade->isGranted('pim_enrich_job_tracker_view_all_jobs')) {
-            $users = [$this->security->getUser()->getUserIdentifier()];
+            $user = [$this->security->getUser()->getUserIdentifier()];
         }
 
         $searchJobExecutionQuery = new SearchJobExecutionQuery();
@@ -54,7 +54,7 @@ final class IndexAction
         $searchJobExecutionQuery->sortColumn = $sort['column'] ?? 'started_at';
         $searchJobExecutionQuery->sortDirection = $sort['direction'] ?? 'DESC';
         $searchJobExecutionQuery->type = $request->get('type', []);
-        $searchJobExecutionQuery->users = $users;
+        $searchJobExecutionQuery->user = $user;
         $searchJobExecutionQuery->status = $request->get('status', []);
         $searchJobExecutionQuery->search = $request->get('search', '');
         $searchJobExecutionQuery->code = $request->get('code', []);

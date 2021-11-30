@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Infrastructure\Query;
 
-use Akeneo\Platform\Job\Domain\Query\FindJobUsersInterface;
+use Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersInterface;
+use Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersQuery;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -14,8 +15,6 @@ use Doctrine\DBAL\Connection;
  */
 class FindJobUsers implements FindJobUsersInterface
 {
-    private const USER_PER_PAGE = 10;
-
     private Connection $connection;
 
     public function __construct(Connection $connection)
@@ -23,26 +22,29 @@ class FindJobUsers implements FindJobUsersInterface
         $this->connection = $connection;
     }
 
-    public function search(int $page): array
+    public function search(FindJobUsersQuery $query): array
     {
+        $username = $query->search;
+
         $sql = <<<SQL
-SELECT DISTINCT job_execution.user
-FROM akeneo_batch_job_execution job_execution
-WHERE job_execution.is_visible = 1
-ORDER BY job_execution.user
-LIMIT :offset, :limit
-SQL;
+            SELECT DISTINCT job_execution.user
+            FROM akeneo_batch_job_execution job_execution
+            WHERE job_execution.is_visible = 1
+            %s
+            ORDER BY job_execution.user
+        SQL;
+
+        $wherePart = '';
+
+        if (!empty($username)) {
+            $wherePart = 'AND job_execution.user LIKE :username';
+        }
+
+        $sql = sprintf($sql, $wherePart);
 
         $jobUsers = $this->connection->executeQuery(
             $sql,
-            [
-                'offset' => ($page - 1) * self::USER_PER_PAGE,
-                'limit' => self::USER_PER_PAGE,
-            ],
-            [
-                'offset' => \PDO::PARAM_INT,
-                'limit' => \PDO::PARAM_INT,
-            ],
+            ['username' => sprintf('%%%s%%', $username)],
         )->fetchFirstColumn();
 
         return $jobUsers;

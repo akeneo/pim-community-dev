@@ -13,6 +13,7 @@ type JobExecutionFilter = {
   sort: JobExecutionFilterSort;
   type: string[];
   status: JobStatus[];
+  user: string[];
   search: string;
   code: string[];
 };
@@ -23,11 +24,21 @@ const getDefaultJobExecutionFilter = (): JobExecutionFilter => ({
   sort: {column: 'started_at', direction: 'DESC'},
   type: [],
   status: [],
+  user: [],
   search: '',
   code: [],
 });
 
-const isDefaultJobExecutionFilter = ({page, size, sort, type, status, search, code}: JobExecutionFilter): boolean =>
+const isDefaultJobExecutionFilter = ({
+  page,
+  size,
+  sort,
+  type,
+  status,
+  search,
+  user,
+  code,
+}: JobExecutionFilter): boolean =>
   1 === page &&
   ITEMS_PER_PAGE === size &&
   'started_at' === sort.column &&
@@ -35,6 +46,7 @@ const isDefaultJobExecutionFilter = ({page, size, sort, type, status, search, co
   0 === status.length &&
   0 === type.length &&
   0 === code.length &&
+  0 === user.length &&
   '' === search;
 
 export type {JobExecutionFilter, JobExecutionFilterSort};

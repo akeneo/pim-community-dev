@@ -7,11 +7,11 @@ import {StatusFilter} from './StatusFilter';
 test('it opens a dropdown when clicking on the filter', () => {
   renderWithProviders(<StatusFilter statusFilterValue={[]} onStatusFilterChange={jest.fn()} />);
 
-  expect(screen.queryByText('akeneo_job_process_tracker.status.label')).not.toBeInTheDocument();
+  expect(screen.queryByText('akeneo_job_process_tracker.status_filter.label')).not.toBeInTheDocument();
 
-  userEvent.click(screen.getByText('akeneo_job_process_tracker.status.all'));
+  userEvent.click(screen.getByText('akeneo_job_process_tracker.status_filter.all'));
 
-  expect(screen.getByText('akeneo_job_process_tracker.status.label')).toBeInTheDocument();
+  expect(screen.getByText('akeneo_job_process_tracker.status_filter.label')).toBeInTheDocument();
 });
 
 test('it can select all status', () => {
@@ -19,11 +19,11 @@ test('it can select all status', () => {
 
   renderWithProviders(<StatusFilter statusFilterValue={['COMPLETED']} onStatusFilterChange={handleChange} />);
 
-  userEvent.click(screen.getByText('akeneo_job_process_tracker.status.completed'));
-  userEvent.click(screen.getByText('akeneo_job_process_tracker.status.all'));
+  userEvent.click(screen.getByText('akeneo_job_process_tracker.status_filter.completed'));
+  userEvent.click(screen.getByText('akeneo_job_process_tracker.status_filter.all'));
 
   expect(handleChange).toHaveBeenCalledWith([]);
-  expect(screen.getByText('akeneo_job_process_tracker.status.all')).toBeInTheDocument();
+  expect(screen.getByText('akeneo_job_process_tracker.status_filter.all')).toBeInTheDocument();
 });
 
 test('it can select multiple status', () => {
@@ -31,8 +31,8 @@ test('it can select multiple status', () => {
 
   renderWithProviders(<StatusFilter statusFilterValue={['COMPLETED']} onStatusFilterChange={handleChange} />);
 
-  userEvent.click(screen.getByText('akeneo_job_process_tracker.status.completed'));
-  userEvent.click(screen.getByText('akeneo_job_process_tracker.status.abandoned'));
+  userEvent.click(screen.getByText('akeneo_job_process_tracker.status_filter.completed'));
+  userEvent.click(screen.getByText('akeneo_job_process_tracker.status_filter.abandoned'));
 
   expect(handleChange).toHaveBeenCalledWith(['COMPLETED', 'ABANDONED']);
 });
@@ -45,8 +45,8 @@ test('it can unselect a status', () => {
   );
 
   userEvent.click(screen.getByText('pim_common.selected'));
-  userEvent.click(screen.getByText('akeneo_job_process_tracker.status.abandoned'));
+  userEvent.click(screen.getByText('akeneo_job_process_tracker.status_filter.abandoned'));
 
   expect(handleChange).toHaveBeenCalledWith(['COMPLETED']);
-  expect(screen.getByText('akeneo_job_process_tracker.status.completed')).toBeInTheDocument();
+  expect(screen.getByText('akeneo_job_process_tracker.status_filter.completed')).toBeInTheDocument();
 });
