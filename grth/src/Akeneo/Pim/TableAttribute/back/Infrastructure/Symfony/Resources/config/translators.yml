@@ -1,0 +1,19 @@
+services:
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableTranslator:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
+            - !tagged_iterator pim_table_attribute.translator.value_translator
+        tags:
+            - { name: pim_enrich.connector.flat_translators.attribute_value }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableBooleanTranslator:
+        arguments:
+            - '@pim_catalog.localization.translator.label'
+        tags:
+            - { name: pim_table_attribute.translator.value_translator}
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableSelectTranslator:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository'
+        tags:
+            - { name: pim_table_attribute.translator.value_translator}

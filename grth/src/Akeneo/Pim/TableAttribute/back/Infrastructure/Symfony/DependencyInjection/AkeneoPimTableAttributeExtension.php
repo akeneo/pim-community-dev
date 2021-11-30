@@ -40,6 +40,7 @@ class AkeneoPimTableAttributeExtension extends Extension
         $loader->load('persistence.yml');
         $loader->load('providers.yml');
         $loader->load('queries.yml');
+        $loader->load('translators.yml');
         $loader->load('twig.yml');
         $loader->load('validators.yml');
         $loader->load('value_filters.yml');

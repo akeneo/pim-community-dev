@@ -2,49 +2,62 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2021 Akeneo SAS (https://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue\FlatAttributeValueTranslatorInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableTranslator;
+use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValueTranslatorInterface;
 use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use PhpSpec\ObjectBehavior;
 
-final class TableTranslatorSpec extends ObjectBehavior
+class TableTranslatorSpec extends ObjectBehavior
 {
-    function let(TableConfigurationRepository $tableConfigurationRepository)
-    {
-        $this->beConstructedWith($tableConfigurationRepository);
+    function let(
+        TableConfigurationRepository $tableConfigurationRepository,
+        TableValueTranslatorInterface $selectValueTranslator,
+        TableValueTranslatorInterface $booleanValueTranslator
+    ) {
+        $selectValueTranslator->getSupportedColumnDataType()->willReturn(SelectColumn::DATATYPE);
+        $booleanValueTranslator->getSupportedColumnDataType()->willReturn(BooleanColumn::DATATYPE);
+        $this->beConstructedWith($tableConfigurationRepository, [$selectValueTranslator, $booleanValueTranslator]);
     }
 
     function it_is_initializable()
     {
         $this->shouldHaveType(TableTranslator::class);
+        $this->shouldImplement(FlatAttributeValueTranslatorInterface::class);
     }
 
-    function it_translates_the_columns(TableConfigurationRepository $tableConfigurationRepository)
+    function it_supports_only_table_attribute()
     {
+        $this->supports(AttributeTypes::TABLE, 'foo')->shouldReturn(true);
+        $this->supports(AttributeTypes::TABLE, 'bar')->shouldReturn(true);
+        $this->supports(AttributeTypes::TEXT, 'bar')->shouldReturn(false);
+    }
+
+    function it_translates_the_columns_and_the_cell_values(
+        TableConfigurationRepository $tableConfigurationRepository,
+        TableValueTranslatorInterface $selectValueTranslator,
+        TableValueTranslatorInterface $booleanValueTranslator
+    ) {
+        $ingredientColumn = SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => [
+            'en_US' => 'Ingredient US',
+        ]]);
+        $quantityColumn = NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity', 'labels' => [
+            'fr_FR' => 'Quantité',
+            'en_US' => 'Quantity',
+        ]]);
+        $allergenicColumn = BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'allergenic']);
         $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => [
-                'en_US' => 'Ingredient US',
-            ]]),
-            NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity', 'labels' => [
-                'fr_FR' => 'Quantité',
-                'en_US' => 'Quantity',
-            ]]),
-            BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'allergenic']),
+            $ingredientColumn,
+            $quantityColumn,
+            $allergenicColumn,
         ]));
 
         $table1 = \json_encode([
@@ -52,35 +65,49 @@ final class TableTranslatorSpec extends ObjectBehavior
             ['ingredient' => 'pepper', 'quantity' => 10],
         ]);
         $table2 = \json_encode([
-            ['ingredient' => 'salt', 'quantity' => 12],
+            ['ingredient' => 'salt', 'quantity' => 12, 'allergenic' => true],
         ]);
+
+        $selectValueTranslator->translate('nutrition', $ingredientColumn, 'en_US', 'sugar')->willReturn('Sugar');
+        $selectValueTranslator->translate('nutrition', $ingredientColumn, 'en_US', 'pepper')->willReturn('Pepper');
+        $selectValueTranslator->translate('nutrition', $ingredientColumn, 'en_US', 'salt')->willReturn(null);
+        $booleanValueTranslator->translate('nutrition', $allergenicColumn, 'en_US', true)->willReturn('True');
 
         $this->translate('nutrition', [], [$table1, $table2], 'en_US')->shouldBe([
             \json_encode([
-                ['Ingredient US' => 'sugar', 'Quantity' => 50],
-                ['Ingredient US' => 'pepper', 'Quantity' => 10],
-            ]),
+                ['Ingredient US' => 'Sugar', 'Quantity' => 50],
+                ['Ingredient US' => 'Pepper', 'Quantity' => 10],
+            ], JSON_UNESCAPED_UNICODE),
             \json_encode([
-                ['Ingredient US' => 'salt', 'Quantity' => 12],
-            ]),
+                ['allergenic' => 'True', 'Ingredient US' => 'salt', 'Quantity' => 12],
+            ], JSON_UNESCAPED_UNICODE),
         ]);
+
+        $selectValueTranslator->translate('nutrition', $ingredientColumn, 'fr_FR', 'sugar')->willReturn('Sucre');
+        $selectValueTranslator->translate('nutrition', $ingredientColumn, 'fr_FR', 'pepper')->willReturn('Poivre');
+        $selectValueTranslator->translate('nutrition', $ingredientColumn, 'fr_FR', 'salt')->willReturn('Sel');
+        $booleanValueTranslator->translate('nutrition', $allergenicColumn, 'fr_FR', true)->willReturn('Vrai');
+
         $this->translate('nutrition', [], [$table1, $table2], 'fr_FR')->shouldBe([
             \json_encode([
-                ['ingredient' => 'sugar', 'Quantité' => 50],
-                ['ingredient' => 'pepper', 'Quantité' => 10],
-            ]),
+                ['ingredient' => 'Sucre', 'Quantité' => 50],
+                ['ingredient' => 'Poivre', 'Quantité' => 10],
+            ], JSON_UNESCAPED_UNICODE),
             \json_encode([
-                ['ingredient' => 'salt', 'Quantité' => 12],
-            ]),
+                ['ingredient' => 'Sel', 'allergenic' => 'Vrai', 'Quantité' => 12],
+            ], JSON_UNESCAPED_UNICODE),
         ]);
     }
 
-    function it_translates_the_columns_with_duplicate(TableConfigurationRepository $tableConfigurationRepository)
-    {
+    function it_translates_the_columns_with_duplicate(
+        TableConfigurationRepository $tableConfigurationRepository,
+        TableValueTranslatorInterface $selectValueTranslator
+    ) {
+        $ingredientColumn = SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => [
+            'en_US' => 'Ingredient US',
+        ]]);
         $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => [
-                'en_US' => 'Ingredient US',
-            ]]),
+            $ingredientColumn,
             NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity', 'labels' => [
                 'fr_FR' => 'Quantité',
                 'en_US' => 'Quantity',
@@ -96,11 +123,14 @@ final class TableTranslatorSpec extends ObjectBehavior
             ['ingredient' => 'pepper', 'quantity' => 10],
         ]);
 
+        $selectValueTranslator->translate('nutrition', $ingredientColumn, 'en_US', 'sugar')->willReturn('Sugar');
+        $selectValueTranslator->translate('nutrition', $ingredientColumn, 'en_US', 'pepper')->willReturn('Pepper');
+
         $this->translate('nutrition', [], [$table1], 'en_US')->shouldBe([
             \json_encode([
-                ['Ingredient US' => 'sugar', 'Quantity--quantity' => 50, 'Quantity--other_quantity' => 20],
-                ['Ingredient US' => 'pepper', 'Quantity--quantity' => 10],
-            ]),
+                ['Ingredient US' => 'Sugar', 'Quantity--quantity' => 50, 'Quantity--other_quantity' => 20],
+                ['Ingredient US' => 'Pepper', 'Quantity--quantity' => 10],
+            ], JSON_UNESCAPED_UNICODE),
         ]);
     }
 }
