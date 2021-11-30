@@ -1,0 +1,9 @@
+parameters:
+  env(FLAG_PRODUCTS_BULK_ACTIONS_ENABLED): 0
+
+services:
+  akeneo_products_bulk_actions.feature:
+    class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+    arguments:
+      - '%env(bool:FLAG_PRODUCTS_BULK_ACTIONS_ENABLED)%'
+    public: true
