@@ -55,9 +55,7 @@ define([
      */
     resetValidationErrors: function () {
       if (Object.entries(this.errors).length >= 0) {
-        this.getRoot().trigger(
-          'pim_enrich:form:form-tabs:remove-errors',
-        );
+        this.getRoot().trigger('pim_enrich:form:form-tabs:remove-errors');
         this.errors = {};
       }
     },

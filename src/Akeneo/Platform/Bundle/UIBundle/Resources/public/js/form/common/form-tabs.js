@@ -175,7 +175,7 @@ define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/template/form/form-
 
     removeError: function () {
       let dirty = false;
-      this.tabs.forEach((tab) => {
+      this.tabs.forEach(tab => {
         if (tab.fieldErrors.length) {
           tab.fieldErrors = [];
           dirty = true;
