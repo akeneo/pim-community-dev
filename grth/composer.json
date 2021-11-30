@@ -70,8 +70,8 @@
         "phpunit/phpunit": "^9.5",
         "sebastian/exporter": "^4.0.0",
         "sensiolabs/behat-page-object-extension": "^2.3.3",
-        "symfony/debug-bundle": "^5.3",
-        "symfony/web-profiler-bundle": "^5.3"
+        "symfony/debug-bundle": "^5.4.0",
+        "symfony/web-profiler-bundle": "^5.4.0"
     },
     "minimum-stability": "stable",
     "config": {
