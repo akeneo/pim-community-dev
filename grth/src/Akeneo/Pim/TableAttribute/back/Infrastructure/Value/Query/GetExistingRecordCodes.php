@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Value\Query;
 
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ReferenceEntityIdentifier;
-
 interface GetExistingRecordCodes
 {
     /**
-     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
-     * @param string[] $recordCodes
-     * @return string[]
+     * @param array<string, string[]> $recordCodes
+     * @return array<string, string[]>
      */
-    public function fromReferenceEntityIdentifierAndRecordCodes(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array;
+    public function fromReferenceEntityIdentifierAndRecordCodes(array $recordCodes): array;
 }

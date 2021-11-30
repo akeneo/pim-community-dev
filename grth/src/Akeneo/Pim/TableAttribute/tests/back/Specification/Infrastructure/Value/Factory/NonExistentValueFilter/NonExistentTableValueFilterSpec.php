@@ -13,7 +13,6 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ReferenceEntityIdentifier;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\Factory\NonExistentValueFilter\NonExistentTableValueFilter;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\GetExistingRecordCodes;
 use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
@@ -21,7 +20,7 @@ use PhpSpec\ObjectBehavior;
 
 class NonExistentTableValueFilterSpec extends ObjectBehavior
 {
-    const COLUMNID_RECORDB = 'recordB_d39d3c48-46e6-4744-8196-56e08563fd46';
+    const COLUMNID_RECORDBRAND = 'brand_d39d3c48-46e6-4744-8196-56e08563fd46';
 
     function let(
         TableConfigurationRepository $tableConfigurationRepository,
@@ -33,8 +32,8 @@ class NonExistentTableValueFilterSpec extends ObjectBehavior
                 SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
                 SelectColumn::fromNormalized(['id' => ColumnIdGenerator::supplier(), 'code' => 'supplier']),
-                RecordColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'recordA', 'reference_entity_identifier' => 'reference_entityA']),
-                RecordColumn::fromNormalized(['id' => self::COLUMNID_RECORDB, 'code' => 'recordB', 'reference_entity_identifier' => 'reference_entityB']),
+                RecordColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'origin', 'reference_entity_identifier' => 'record']),
+                RecordColumn::fromNormalized(['id' => self::COLUMNID_RECORDBRAND, 'code' => 'brand', 'reference_entity_identifier' => 'brand']),
             ])
         );
 
@@ -65,14 +64,14 @@ class NonExistentTableValueFilterSpec extends ObjectBehavior
                                         [
                                             ColumnIdGenerator::ingredient() => 'sugar',
                                             ColumnIdGenerator::quantity() => 5,
-                                            ColumnIdGenerator::record() => 'recordA',
-                                            self::COLUMNID_RECORDB => 'recordB'
+                                            ColumnIdGenerator::record() => 'france',
+                                            self::COLUMNID_RECORDBRAND => 'mars'
                                         ],
                                         [
                                             ColumnIdGenerator::ingredient() => 'salt',
                                             ColumnIdGenerator::quantity() => 10,
-                                            ColumnIdGenerator::record() => 'unknownRecordA',
-                                            self::COLUMNID_RECORDB => 'unknownRecordB'
+                                            ColumnIdGenerator::record() => 'unknownRecord',
+                                            self::COLUMNID_RECORDBRAND => 'france'
                                         ],
                                     ],
                                 ],
@@ -83,14 +82,13 @@ class NonExistentTableValueFilterSpec extends ObjectBehavior
             ]
         );
 
-        $referenceEntityA = ReferenceEntityIdentifier::fromString('reference_entityA');
-        $getExistingRecordCodes->fromReferenceEntityIdentifierAndRecordCodes($referenceEntityA, ['recordA', 'unknownRecordA'])->shouldBeCalledOnce()->willReturn(
-            ['RECordA']
-        );
-
-        $referenceEntityB = ReferenceEntityIdentifier::fromString('reference_entityB');
-        $getExistingRecordCodes->fromReferenceEntityIdentifierAndRecordCodes($referenceEntityB, ['recordB', 'unknownRecordB'])->shouldBeCalledOnce()->willReturn(
-            ['RECOrdB']
+        $getExistingRecordCodes->fromReferenceEntityIdentifierAndRecordCodes(
+            [
+                'record' => ['france', 'unknownRecord'],
+                'brand' => ['mars', 'france'],
+            ]
+        )->shouldBeCalledOnce()->willReturn(
+            ['record' => ['FRAnce'], 'brand' => ['MArs']]
         );
 
         /** @var OnGoingFilteredRawValues $filteredCollection */
@@ -107,8 +105,8 @@ class NonExistentTableValueFilterSpec extends ObjectBehavior
                                         [
                                             ColumnIdGenerator::ingredient() => 'SUgar',
                                             ColumnIdGenerator::quantity() => 5,
-                                            ColumnIdGenerator::record() => 'RECordA',
-                                            self::COLUMNID_RECORDB => 'RECOrdB',
+                                            ColumnIdGenerator::record() => 'FRAnce',
+                                            self::COLUMNID_RECORDBRAND => 'MArs',
                                         ],
                                         [
                                             ColumnIdGenerator::ingredient() => 'salt',
@@ -130,7 +128,7 @@ class NonExistentTableValueFilterSpec extends ObjectBehavior
     ) {
         $tableConfigurationRepository->getByAttributeCode('food_composition')->willReturn(
             TableConfiguration::fromColumnDefinitions([
-                RecordColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'recordA', 'reference_entity_identifier' => 'reference_entityA', 'is_required_for_completeness' => true]),
+                RecordColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'origin', 'reference_entity_identifier' => 'record', 'is_required_for_completeness' => true]),
                 SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
                 ])
@@ -146,7 +144,7 @@ class NonExistentTableValueFilterSpec extends ObjectBehavior
                                 '<all_channels>' => [
                                     '<all_locales>' => [
                                         [
-                                            ColumnIdGenerator::record() => 'recordA',
+                                            ColumnIdGenerator::record() => 'france',
                                             ColumnIdGenerator::ingredient() => 'sugar',
                                             ColumnIdGenerator::quantity() => 5
                                         ],
@@ -165,7 +163,7 @@ class NonExistentTableValueFilterSpec extends ObjectBehavior
                                 '<all_channels>' => [
                                     '<all_locales>' => [
                                         [
-                                            ColumnIdGenerator::record() => 'unknownRecord',
+                                            ColumnIdGenerator::record() => 'otherUnknownRecord',
                                             ColumnIdGenerator::ingredient() => 'sugar',
                                             ColumnIdGenerator::quantity() => 5
                                         ],
@@ -178,14 +176,12 @@ class NonExistentTableValueFilterSpec extends ObjectBehavior
             ]
         );
 
-        $referenceEntityA = ReferenceEntityIdentifier::fromString('reference_entityA');
-        $getExistingRecordCodes->fromReferenceEntityIdentifierAndRecordCodes($referenceEntityA, ['recordA', 'unknownRecord'])->shouldBeCalledOnce()->willReturn(
-            ['RECordA']
+        $getExistingRecordCodes->fromReferenceEntityIdentifierAndRecordCodes(['record' => ['france', 'unknownRecord']])->shouldBeCalledOnce()->willReturn(
+            ['record' => ['FRAnce']]
         );
 
-        $referenceEntityA = ReferenceEntityIdentifier::fromString('reference_entityA');
-        $getExistingRecordCodes->fromReferenceEntityIdentifierAndRecordCodes($referenceEntityA, ['unknownRecord'])->shouldBeCalledOnce()->willReturn(
-            []
+        $getExistingRecordCodes->fromReferenceEntityIdentifierAndRecordCodes(['record' => ['otherUnknownRecord']])->shouldBeCalledOnce()->willReturn(
+            ['record' => []]
         );
 
         /** @var OnGoingFilteredRawValues $filteredCollection */
@@ -200,7 +196,7 @@ class NonExistentTableValueFilterSpec extends ObjectBehavior
                                 '<all_channels>' => [
                                     '<all_locales>' => [
                                         [
-                                            ColumnIdGenerator::record() => 'RECordA',
+                                            ColumnIdGenerator::record() => 'FRAnce',
                                             ColumnIdGenerator::ingredient() => 'SUgar',
                                             ColumnIdGenerator::quantity() => 5
                                         ],

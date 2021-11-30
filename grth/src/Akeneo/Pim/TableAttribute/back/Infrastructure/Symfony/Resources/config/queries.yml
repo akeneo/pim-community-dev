@@ -29,3 +29,7 @@ services:
     arguments:
       - '@akeneo.pim.enrichment.product.query.count_product_models_with_removed_attribute_decorated'
 
+  Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\GetExistingRecordCodes:
+    class: Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\SqlGetExistingRecordCodes
+    arguments:
+      - '@database_connection'
