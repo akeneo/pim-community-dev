@@ -1,6 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {screen, wait, waitForElement} from '@testing-library/react';
+import {screen, waitFor, waitForElement} from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
 import {renderWithProviders, historyMock, MockFetchResponses, mockFetchResponses} from '../../../test-utils';
 import {ConnectedAppPage} from '@src/connect/pages/ConnectedAppPage';
@@ -57,7 +57,7 @@ test('The connected app page renders with a connected app', async () => {
     });
 
     renderWithProviders(<ConnectedAppPage />);
-    await wait(() => expect(ConnectedAppContainer).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(ConnectedAppContainer).toHaveBeenCalledTimes(1));
 
     expect(ConnectedAppContainer).toHaveBeenCalledWith({connectedApp: connectedApp}, {});
 });

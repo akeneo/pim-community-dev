@@ -1,6 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {screen, wait, waitForElement} from '@testing-library/react';
+import {screen, waitFor, waitForElement} from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
 import {renderWithProviders, historyMock, MockFetchResponses, mockFetchResponses} from '../../../test-utils';
 import {ConnectedAppsListPage} from '@src/connect/pages/ConnectedAppsListPage';
@@ -165,7 +165,7 @@ test('The connected apps list page renders with internal api errors', async () =
             <ConnectedAppsListPage />
         </NotifyContext.Provider>
     );
-    await wait(() => expect(notify).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(notify).toHaveBeenCalledTimes(1));
 
     expect(notify).toBeCalledWith(
         NotificationLevel.ERROR,

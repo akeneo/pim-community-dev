@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {act, screen, wait} from '@testing-library/react';
+import {act, screen, waitFor} from '@testing-library/react';
 import {renderWithProviders} from '../../../../test-utils';
 import {ConnectedAppContainer} from '@src/connect/components/ConnectedApp/ConnectedAppContainer';
 import {ConnectedAppSettings} from '@src/connect/components/ConnectedApp/ConnectedAppSettings';
@@ -192,7 +192,7 @@ test('The connected app container saves permissions', async () => {
         </NotifyContext.Provider>
     );
 
-    await wait(() => {
+    await waitFor(() => {
         expect(ConnectedAppSettings).toHaveBeenCalled();
     });
 
@@ -200,7 +200,7 @@ test('The connected app container saves permissions', async () => {
 
     navigateToPermissionsAndFillTheFormAndSave();
 
-    await wait(() => {
+    await waitFor(() => {
         expect(notify).toHaveBeenCalledTimes(1);
     });
 
@@ -249,7 +249,7 @@ test('The connected app container notifies errors when saving permissions', asyn
         </NotifyContext.Provider>
     );
 
-    await wait(() => {
+    await waitFor(() => {
         expect(ConnectedAppSettings).toHaveBeenCalled();
     });
 
@@ -257,7 +257,7 @@ test('The connected app container notifies errors when saving permissions', asyn
 
     navigateToPermissionsAndFillTheFormAndSave();
 
-    await wait(() => {
+    await waitFor(() => {
         expect(notify).toHaveBeenCalledTimes(2);
     });
 

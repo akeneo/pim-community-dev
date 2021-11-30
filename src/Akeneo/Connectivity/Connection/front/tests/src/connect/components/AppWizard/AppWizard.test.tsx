@@ -1,6 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {act, screen, wait, waitForElement} from '@testing-library/react';
+import {act, screen, waitFor, waitForElement} from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
 import {mockFetchResponses, MockFetchResponses, renderWithProviders, historyMock} from '../../../../test-utils';
 import {AppWizard} from '@src/connect/components/AppWizard/AppWizard';
@@ -104,13 +104,13 @@ test('The wizard display a notification and redirects on success', async done =>
             <AppWizard clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />
         </NotifyContext.Provider>
     );
-    await waitForElement(() => screen.getByAltText('MyApp'));
+    await waitFor(() => screen.getByAltText('MyApp'));
 
     act(() => {
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm'));
     });
 
-    await wait(() => {
+    await waitFor(() => {
         expect(notify).toHaveBeenCalledTimes(1);
     });
 

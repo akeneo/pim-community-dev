@@ -1,6 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {act, screen, wait, waitForElement} from '@testing-library/react';
+import {act, screen, waitFor, waitForElement} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {historyMock, mockFetchResponses, MockFetchResponses, renderWithProviders} from '../../../../test-utils';
 import {AppWizardWithSteps} from '@src/connect/components/AppWizardWithSteps/AppWizardWithSteps';
@@ -195,7 +195,7 @@ test('The wizard notifies of the error on app confirm ', async () => {
 
     await navigateToSummaryAndClickConfirm();
 
-    await wait(() => expect(notify).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(notify).toHaveBeenCalledTimes(1));
 
     expect(notify).toBeCalledWith(
         NotificationLevel.ERROR,
@@ -255,7 +255,7 @@ test('The wizard saves app and permissions on confirm', async () => {
 
     await navigateToSummaryAndClickConfirm();
 
-    await wait(() => {
+    await waitFor(() => {
         expect(notify).toHaveBeenCalledTimes(1);
         expect(providerSave).toHaveBeenCalledTimes(2);
     });
@@ -347,7 +347,7 @@ test('The wizard saves app but have some failing permissions on confirm', async 
 
     await navigateToSummaryAndClickConfirm();
 
-    await wait(() => {
+    await waitFor(() => {
         expect(notify).toHaveBeenCalledTimes(3);
         expect(providerSave).toHaveBeenCalledTimes(4);
     });
