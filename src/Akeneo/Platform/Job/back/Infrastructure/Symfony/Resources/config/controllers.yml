@@ -12,7 +12,7 @@ services:
         class: 'Akeneo\Platform\Job\Infrastructure\Controller\GetJobTypesAction'
         public: true
         arguments:
-            - '@Akeneo\Platform\Job\Domain\Query\FindJobTypesInterface'
+            - '@Akeneo\Platform\Job\Application\SearchJobExecution\FindJobTypesInterface'
             - '@oro_security.security_facade'
 
     akeneo.job.controller.get_job_users_action:
@@ -21,4 +21,4 @@ services:
         arguments:
             - '@security.helper'
             - '@oro_security.security_facade'
-            - '@Akeneo\Platform\Job\Domain\Query\FindJobUsersInterface'
+            - '@Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersInterface'

@@ -47,4 +47,14 @@ class GetJobUsersActionTest extends ControllerIntegrationTestCase
         Assert::assertSame($response->getStatusCode(), Response::HTTP_OK);
         Assert::assertEqualsCanonicalizing(json_decode($response->getContent(), true), $expectedJobUsers);
     }
+
+    public function test_it_returns_a_forbidden_access_when_user_cannot_access_to_users_list(): void
+    {
+        $this->logAs('betty');
+
+        $this->webClientHelper->callApiRoute($this->client, self::ROUTE, [], 'GET');
+
+        $response = $this->client->getResponse();
+        Assert::assertSame($response->getStatusCode(), Response::HTTP_FORBIDDEN);
+    }
 }

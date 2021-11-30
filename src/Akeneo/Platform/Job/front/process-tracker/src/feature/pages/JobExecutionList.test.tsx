@@ -60,7 +60,7 @@ const rows: JobExecutionRow[] = [
     },
     error_count: 2,
     type: 'mass-edit',
-    username: 'admin',
+    username: 'peter',
     warning_count: 5,
     job_name: 'Mass edit',
     status: 'ABANDONED',
@@ -77,9 +77,12 @@ beforeEach(() => {
 });
 
 jest.mock('../hooks/useJobExecutionTable', () => ({
-  useJobExecutionTable: ({page, size, sort, type, status}: JobExecutionFilter) => {
+  useJobExecutionTable: ({page, size, sort, type, users, status}: JobExecutionFilter) => {
     const filteredRows = rows.filter(
-      row => (0 === type.length || type.includes(row.type)) && (0 === status.length || status.includes(row.status))
+      row =>
+        (0 === type.length || type.includes(row.type)) &&
+        (0 === status.length || status.includes(row.status)) &&
+        (0 === users.length || users.includes(row.username ?? ''))
     );
 
     const paginatedRows = filteredRows
@@ -103,6 +106,10 @@ jest.mock('../hooks/useJobExecutionTypes', () => ({
   useJobExecutionTypes: (): string[] => ['import', 'export', 'mass_edit'],
 }));
 
+jest.mock('../hooks/useJobExecutionUsers', () => ({
+  useJobExecutionUsers: (): string[] => ['admin', 'peter'],
+}));
+
 jest.mock('../models/JobExecutionFilter', () => ({
   ...jest.requireActual('../models/JobExecutionFilter'),
   getDefaultJobExecutionFilter: () => ({
@@ -111,6 +118,8 @@ jest.mock('../models/JobExecutionFilter', () => ({
     sort: {column: 'job_name', direction: 'ASC'},
     status: [],
     type: [],
+    users: [],
+    search: '',
   }),
 }));
 
@@ -130,8 +139,8 @@ test('it renders the matches job execution count in page header', () => {
 test('it can filter on the job status', () => {
   renderWithProviders(<JobExecutionList />);
 
-  userEvent.click(screen.getByLabelText('akeneo_job_process_tracker.status.label:'));
-  userEvent.click(within(screen.getByRole('listbox')).getByText('akeneo_job_process_tracker.status.started'));
+  userEvent.click(screen.getByLabelText('akeneo_job_process_tracker.status_filter.label:'));
+  userEvent.click(within(screen.getByRole('listbox')).getByText('akeneo_job_process_tracker.status_filter.started'));
 
   expect(screen.getByText('Export job')).toBeInTheDocument();
   expect(screen.queryByText('Import job')).not.toBeInTheDocument();
@@ -140,11 +149,23 @@ test('it can filter on the job status', () => {
 test('it can filter on the job type', () => {
   renderWithProviders(<JobExecutionList />);
 
-  userEvent.click(screen.getByLabelText('akeneo_job_process_tracker.type.label:'));
-  userEvent.click(within(screen.getByRole('listbox')).getByText('akeneo_job_process_tracker.type.import'));
+  userEvent.click(screen.getByLabelText('akeneo_job_process_tracker.type_filter.label:'));
+  userEvent.click(within(screen.getByRole('listbox')).getByText('akeneo_job_process_tracker.type_filter.import'));
 
   expect(screen.getByText('Import job')).toBeInTheDocument();
   expect(screen.queryByText('Export job')).not.toBeInTheDocument();
+});
+
+test('it can filter on the job users', () => {
+  renderWithProviders(<JobExecutionList />);
+
+  userEvent.click(screen.getByLabelText('akeneo_job_process_tracker.user_filter.label:'));
+  userEvent.click(screen.getAllByText('admin')[screen.getAllByText('admin').length - 1]);
+
+  expect(screen.getByText('Import job')).toBeInTheDocument();
+  expect(screen.getByText('Export job')).toBeInTheDocument();
+  expect(screen.getByText('Another import job')).toBeInTheDocument();
+  expect(screen.queryByText('Mass edit')).not.toBeInTheDocument();
 });
 
 test('it can sort on the job name', () => {

@@ -1,10 +1,10 @@
 services:
-    Akeneo\Platform\Job\Domain\Query\FindJobTypesInterface:
+    Akeneo\Platform\Job\Application\SearchJobExecution\FindJobTypesInterface:
         class: Akeneo\Platform\Job\Infrastructure\Query\FindJobTypes
         arguments:
             - '@database_connection'
 
-    Akeneo\Platform\Job\Domain\Query\FindJobUsersInterface:
+    Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersInterface:
         class: Akeneo\Platform\Job\Infrastructure\Query\FindJobUsers
         arguments:
             - '@database_connection'

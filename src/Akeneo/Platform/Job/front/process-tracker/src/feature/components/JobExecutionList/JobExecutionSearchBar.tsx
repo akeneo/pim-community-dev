@@ -3,12 +3,14 @@ import {useAutoFocus, useDebounce, Search} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {TypeFilter} from './TypeFilter';
 import {StatusFilter} from './StatusFilter';
+import {UserFilter} from './UserFilter';
 import {JobExecutionFilter, JobStatus} from '../../models';
 
 type JobExecutionSearchBarProps = {
   jobExecutionFilter: JobExecutionFilter;
   onStatusFilterChange: (status: JobStatus[]) => void;
   onTypeFilterChange: (types: string[]) => void;
+  onUserFilterChange: (users: string[]) => void;
   onSearchChange: (search: string) => void;
 };
 
@@ -16,10 +18,11 @@ const JobExecutionSearchBar = ({
   jobExecutionFilter,
   onStatusFilterChange,
   onTypeFilterChange,
+  onUserFilterChange,
   onSearchChange,
 }: JobExecutionSearchBarProps) => {
   const translate = useTranslate();
-  const [userSearch, setUserSearch] = useState<string>(jobExecutionFilter.search);
+  const [userSearch, setUserSearch] = useState<string>(jobExecutionFilter.search ?? '');
   const debouncedUserSearch = useDebounce(userSearch, 250);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -37,8 +40,9 @@ const JobExecutionSearchBar = ({
       searchValue={userSearch}
       onSearchChange={setUserSearch}
     >
-      <TypeFilter typeFilterValue={jobExecutionFilter.type} onTypeFilterChange={onTypeFilterChange} />
-      <StatusFilter statusFilterValue={jobExecutionFilter.status} onStatusFilterChange={onStatusFilterChange} />
+      <TypeFilter typeFilterValue={jobExecutionFilter.type ?? []} onTypeFilterChange={onTypeFilterChange} />
+      <StatusFilter statusFilterValue={jobExecutionFilter.status ?? []} onStatusFilterChange={onStatusFilterChange} />
+      <UserFilter userFilterValue={jobExecutionFilter.user ?? []} onUserFilterChange={onUserFilterChange} />
     </Search>
   );
 };

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Integration\Infrastructure\Query;
 
+use Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersInterface;
+use Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersQuery;
 use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
 
 class FindJobUsersTest extends IntegrationTestCase
@@ -36,6 +38,10 @@ class FindJobUsersTest extends IntegrationTestCase
             'job_instance_id' => $jobInstances['a_product_import'],
         ]);
         $this->fixturesJobHelper->createJobExecution([
+            'user' => 'julien',
+            'job_instance_id' => $jobInstances['a_product_import'],
+        ]);
+        $this->fixturesJobHelper->createJobExecution([
             'user' => 'admin',
             'job_instance_id' => $jobInstances['a_product_import'],
         ]);
@@ -46,15 +52,34 @@ class FindJobUsersTest extends IntegrationTestCase
         ]);
     }
 
-    public function test_it_find_job_users(): void
+    public function test_it_returns_job_users(): void
     {
-        $findJobUsersQuery = $this->get('Akeneo\Platform\Job\Domain\Query\FindJobUsersInterface');
+        $query = new FindJobUsersQuery();
+
+        $expectedJobUsers = [
+            'admin',
+            'julia',
+            'julien',
+        ];
+
+        $this->assertEqualsCanonicalizing($expectedJobUsers, $this->getQuery()->search($query));
+    }
+
+    public function test_it_returns_filtered_job_users_on_username(): void
+    {
+        $query = new FindJobUsersQuery();
+        $query->search = 'juli';
 
         $expectedJobUsers = [
             'julia',
-            'admin',
+            'julien',
         ];
 
-        $this->assertEqualsCanonicalizing($expectedJobUsers, $findJobUsersQuery->search(1));
+        $this->assertEqualsCanonicalizing($expectedJobUsers, $this->getQuery()->search($query));
+    }
+
+    private function getQuery(): FindJobUsersInterface
+    {
+        return $this->get('Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersInterface');
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Infrastructure\Controller;
 
-use Akeneo\Platform\Job\Domain\Query\FindJobTypesInterface;
+use Akeneo\Platform\Job\Application\SearchJobExecution\FindJobTypesInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
