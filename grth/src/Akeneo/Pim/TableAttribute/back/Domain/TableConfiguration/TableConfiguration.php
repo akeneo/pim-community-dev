@@ -125,6 +125,13 @@ final class TableConfiguration
         ));
     }
 
+    public function getRecordColumns(): array{
+        return \array_values(\array_filter(
+            $this->columnDefinitions,
+            fn (ColumnDefinition $columnDefinition): bool => $columnDefinition instanceof RecordColumn
+        ));
+    }
+
     public function getValidations(ColumnCode $columnCode): ?ValidationCollection
     {
         foreach ($this->columnDefinitions as $columnDefinition) {

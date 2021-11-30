@@ -6,27 +6,35 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonE
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\RecordColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ReferenceEntityIdentifier;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\Factory\NonExistentValueFilter\NonExistentTableValueFilter;
+use Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\GetExistingRecordCodes;
 use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use PhpSpec\ObjectBehavior;
 
 class NonExistentTableValueFilterSpec extends ObjectBehavior
 {
+    const COLUMNID_RECORDB = 'recordB_d39d3c48-46e6-4744-8196-56e08563fd46';
+
     function let(
         TableConfigurationRepository $tableConfigurationRepository,
-        SelectOptionCollectionRepository $selectOptionCollectionRepository
+        SelectOptionCollectionRepository $selectOptionCollectionRepository,
+        GetExistingRecordCodes $getExistingRecordCodes
     ) {
         $tableConfigurationRepository->getByAttributeCode('food_composition')->willReturn(
             TableConfiguration::fromColumnDefinitions([
                 SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
                 SelectColumn::fromNormalized(['id' => ColumnIdGenerator::supplier(), 'code' => 'supplier']),
+                RecordColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'recordA', 'reference_entity_identifier' => 'reference_entityA']),
+                RecordColumn::fromNormalized(['id' => self::COLUMNID_RECORDB, 'code' => 'recordB', 'reference_entity_identifier' => 'reference_entityB']),
             ])
         );
 
@@ -40,7 +48,178 @@ class NonExistentTableValueFilterSpec extends ObjectBehavior
                 ['code' => 'AKENEO'],
             ]));
 
-        $this->beConstructedWith($tableConfigurationRepository, $selectOptionCollectionRepository);
+        $this->beConstructedWith($tableConfigurationRepository, $selectOptionCollectionRepository, $getExistingRecordCodes);
+    }
+
+    function it_filters_non_existent_reference_entity_records(GetExistingRecordCodes $getExistingRecordCodes)
+    {
+        $ongoingFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType(
+            [
+                AttributeTypes::TABLE => [
+                    'food_composition' => [
+                        [
+                            'identifier' => 'product_B',
+                            'values' => [
+                                '<all_channels>' => [
+                                    '<all_locales>' => [
+                                        [
+                                            ColumnIdGenerator::ingredient() => 'sugar',
+                                            ColumnIdGenerator::quantity() => 5,
+                                            ColumnIdGenerator::record() => 'recordA',
+                                            self::COLUMNID_RECORDB => 'recordB'
+                                        ],
+                                        [
+                                            ColumnIdGenerator::ingredient() => 'salt',
+                                            ColumnIdGenerator::quantity() => 10,
+                                            ColumnIdGenerator::record() => 'unknownRecordA',
+                                            self::COLUMNID_RECORDB => 'unknownRecordB'
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ]
+        );
+
+        $referenceEntityA = ReferenceEntityIdentifier::fromString('reference_entityA');
+        $getExistingRecordCodes->fromReferenceEntityIdentifierAndRecordCodes($referenceEntityA, ['recordA', 'unknownRecordA'])->shouldBeCalledOnce()->willReturn(
+            ['RECordA']
+        );
+
+        $referenceEntityB = ReferenceEntityIdentifier::fromString('reference_entityB');
+        $getExistingRecordCodes->fromReferenceEntityIdentifierAndRecordCodes($referenceEntityB, ['recordB', 'unknownRecordB'])->shouldBeCalledOnce()->willReturn(
+            ['RECOrdB']
+        );
+
+        /** @var OnGoingFilteredRawValues $filteredCollection */
+        $filteredCollection = $this->filter($ongoingFilteredRawValues);
+        $filteredCollection->filteredRawValuesCollectionIndexedByType()->shouldBeLike(
+            [
+                AttributeTypes::TABLE => [
+                    'food_composition' => [
+                        [
+                            'identifier' => 'product_B',
+                            'values' => [
+                                '<all_channels>' => [
+                                    '<all_locales>' => [
+                                        [
+                                            ColumnIdGenerator::ingredient() => 'SUgar',
+                                            ColumnIdGenerator::quantity() => 5,
+                                            ColumnIdGenerator::record() => 'RECordA',
+                                            self::COLUMNID_RECORDB => 'RECOrdB',
+                                        ],
+                                        [
+                                            ColumnIdGenerator::ingredient() => 'salt',
+                                            ColumnIdGenerator::quantity() => 10,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ]
+        );
+    }
+
+    function it_filters_rows_with_unknown_first_column_record_value(
+        TableConfigurationRepository $tableConfigurationRepository,
+        GetExistingRecordCodes $getExistingRecordCodes
+    ) {
+        $tableConfigurationRepository->getByAttributeCode('food_composition')->willReturn(
+            TableConfiguration::fromColumnDefinitions([
+                RecordColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'recordA', 'reference_entity_identifier' => 'reference_entityA', 'is_required_for_completeness' => true]),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
+                ])
+        );
+
+        $ongoingFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType(
+            [
+                AttributeTypes::TABLE => [
+                    'food_composition' => [
+                        [
+                            'identifier' => 'product_A',
+                            'values' => [
+                                '<all_channels>' => [
+                                    '<all_locales>' => [
+                                        [
+                                            ColumnIdGenerator::record() => 'recordA',
+                                            ColumnIdGenerator::ingredient() => 'sugar',
+                                            ColumnIdGenerator::quantity() => 5
+                                        ],
+                                        [
+                                            ColumnIdGenerator::record() => 'unknownRecord',
+                                            ColumnIdGenerator::ingredient() => 'salt',
+                                            ColumnIdGenerator::quantity() => 10
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        [
+                            'identifier' => 'product_B',
+                            'values' => [
+                                '<all_channels>' => [
+                                    '<all_locales>' => [
+                                        [
+                                            ColumnIdGenerator::record() => 'unknownRecord',
+                                            ColumnIdGenerator::ingredient() => 'sugar',
+                                            ColumnIdGenerator::quantity() => 5
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ]
+        );
+
+        $referenceEntityA = ReferenceEntityIdentifier::fromString('reference_entityA');
+        $getExistingRecordCodes->fromReferenceEntityIdentifierAndRecordCodes($referenceEntityA, ['recordA', 'unknownRecord'])->shouldBeCalledOnce()->willReturn(
+            ['RECordA']
+        );
+
+        $referenceEntityA = ReferenceEntityIdentifier::fromString('reference_entityA');
+        $getExistingRecordCodes->fromReferenceEntityIdentifierAndRecordCodes($referenceEntityA, ['unknownRecord'])->shouldBeCalledOnce()->willReturn(
+            []
+        );
+
+        /** @var OnGoingFilteredRawValues $filteredCollection */
+        $filteredCollection = $this->filter($ongoingFilteredRawValues);
+        $filteredCollection->filteredRawValuesCollectionIndexedByType()->shouldBeLike(
+            [
+                AttributeTypes::TABLE => [
+                    'food_composition' => [
+                        [
+                            'identifier' => 'product_A',
+                            'values' => [
+                                '<all_channels>' => [
+                                    '<all_locales>' => [
+                                        [
+                                            ColumnIdGenerator::record() => 'RECordA',
+                                            ColumnIdGenerator::ingredient() => 'SUgar',
+                                            ColumnIdGenerator::quantity() => 5
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        [
+                            'identifier' => 'product_B',
+                            'values' => [
+                                '<all_channels>' => [
+                                    '<all_locales>' => [],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ]
+        );
     }
 
     function it_is_initializable()
