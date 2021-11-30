@@ -54,7 +54,7 @@ class MassEditNotificationFactory extends AbstractNotificationFactory implements
             ->setType($status)
             ->setMessage(sprintf('pim_mass_edit.notification.%s.%s', $type, $status))
             ->setMessageParams(['%label%' => $jobExecution->getJobInstance()->getLabel()])
-            ->setRoute('pim_enrich_job_tracker_show')
+            ->setRoute('akeneo_job_process_tracker_details')
             ->setRouteParams(['id' => $jobExecution->getId()])
             ->setContext(['actionType' => $type]);
 
