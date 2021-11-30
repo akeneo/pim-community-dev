@@ -108,6 +108,9 @@ $rules = [
             'Oro\Bundle\PimFilterBundle\Form\Type\UnstructuredType',
             'Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository',
             'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface',
+            'Akeneo\Tool\Component\Localization\LabelTranslatorInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue\FlatAttributeValueTranslatorInterface',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];

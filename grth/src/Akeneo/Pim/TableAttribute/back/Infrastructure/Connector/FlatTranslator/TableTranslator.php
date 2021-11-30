@@ -71,6 +71,9 @@ final class TableTranslator implements FlatAttributeValueTranslatorInterface
         return $values;
     }
 
+    /**
+     * @return array<string, string>
+     */
     private function getIndexedColumnLabels(string $attributeCode, string $localeCode): array
     {
         $key = \sprintf('%s-%s', $attributeCode, $localeCode);

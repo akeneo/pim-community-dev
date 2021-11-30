@@ -52,7 +52,7 @@ final class TableBooleanTranslator implements TableValueTranslatorInterface
             );
         }
 
-        return match($value) {
+        return match ($value) {
             '1', true => $this->trueLocalized[$localeCode],
             '0', false => $this->falseLocalized[$localeCode],
             default => \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, (string) $value),
