@@ -48,7 +48,7 @@ const FakePIM = () => {
       </Menu>
       <Page>
         {'process-tracker' === currentPage && <ProcessTrackerApp />}
-        {'job-instance' === currentPage && <JobInstanceDetail code="csv_product_export" type="export"/>}
+        {'job-instance' === currentPage && <JobInstanceDetail code="csv_product_export" type="export" />}
       </Page>
     </Container>
   );

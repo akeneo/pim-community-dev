@@ -12,7 +12,15 @@ type JobInstanceDetailProps = {
 const JobInstanceDetail = ({code, type}: JobInstanceDetailProps) => {
   const translate = useTranslate();
   const filter = useMemo(
-    () => ({page: 1, sort: {column: 'started_at', direction: 'DESC'}, status: [], size: 25, search: '', type: [type], code: [code]}),
+    () => ({
+      page: 1,
+      sort: {column: 'started_at', direction: 'DESC'},
+      status: [],
+      size: 25,
+      search: '',
+      type: [type],
+      code: [code],
+    }),
     [code, type]
   );
 

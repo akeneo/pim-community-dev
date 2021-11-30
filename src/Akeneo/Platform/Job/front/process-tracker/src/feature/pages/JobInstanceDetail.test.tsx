@@ -4,7 +4,7 @@ import {act, screen, within} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {JobExecutionList} from './JobExecutionList';
 import {JobExecutionFilter, JobExecutionRow} from '../models';
-import {JobInstanceDetail} from "./JobInstanceDetail";
+import {JobInstanceDetail} from './JobInstanceDetail';
 
 const rows: JobExecutionRow[] = [
   {
@@ -88,7 +88,7 @@ beforeEach(() => mockRefresh.mockClear());
 
 test('it display the last job instance execution', () => {
   renderWithProviders(<JobInstanceDetail code="csv_product_export" type="export" />);
-  expect(screen.queryByRole('table')).toBeInTheDocument()
+  expect(screen.queryByRole('table')).toBeInTheDocument();
 
   expect(screen.getByText('01/01/2020, 12:00 AM')).toBeInTheDocument();
   expect(screen.getByText('pim_import_export.job_status.STARTED 1/2')).toBeInTheDocument();
@@ -129,7 +129,7 @@ test('it display a message when no job execution is found', async () => {
 
   renderWithProviders(<JobInstanceDetail code="not_executed_export" type="export" />);
 
-  expect(screen.getByText('pim_common.no_result')).toBeInTheDocument()
+  expect(screen.getByText('pim_common.no_result')).toBeInTheDocument();
 });
 
 test('it display nothing when the job is not fetched yet', async () => {
@@ -139,6 +139,6 @@ test('it display nothing when the job is not fetched yet', async () => {
 
   renderWithProviders(<JobInstanceDetail code="loading_export" type="export" />);
 
-  expect(screen.queryByText('pim_common.no_result')).not.toBeInTheDocument()
-  expect(screen.queryByRole('table')).not.toBeInTheDocument()
+  expect(screen.queryByText('pim_common.no_result')).not.toBeInTheDocument();
+  expect(screen.queryByRole('table')).not.toBeInTheDocument();
 });
