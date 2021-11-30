@@ -18,7 +18,10 @@ define([
   'oro/mediator',
   'pimdatagrid/datagrid/quickexport/component/QuickExportConfigurator',
   'pim/user-context',
-], function (_, __, Backbone, groupTemplate, BaseForm, mediator, {QuickExportConfigurator}, UserContext) {
+  'pim/feature-flags',
+  '@akeneo-pim-community/bulk-actions',
+  'pim/form-builder',
+], function (_, __, Backbone, groupTemplate, BaseForm, mediator, {QuickExportConfigurator}, UserContext, FeatureFlags, {BulkActionsLauncher}, FormBuilder) {
   const ActionsPanel = BaseForm.extend({
     appendToGrid: false,
 
@@ -76,6 +79,26 @@ define([
         return undefined !== launcher.getGroup();
       });
 
+      console.log(simpleLaunchers);
+
+      if (FeatureFlags.isEnabled('products_bulk_actions')) {
+        //simpleLaunchers.shift();
+        FormBuilder.build('pim-mass-product-edit').then(form => {
+          const container = document.createElement('div');
+          this.renderReact(BulkActionsLauncher, {
+            bulkActions: this.getBulkActions(form.extensions),
+            parent: form,
+            formData: {
+              filters: [{"field":"id","operator":"IN","value":["product_1207"],"context":{"locale":"en_US","scope":"ecommerce"}}],
+              jobInstanceCode: null,
+              actions: [],
+              itemsCount: 1,
+            },
+          }, container);
+          this.$el.append(container);
+        })
+      }
+
       if (simpleLaunchers.length) {
         _.each(simpleLaunchers, launcher => {
           this.$el.append(launcher.render().$el);
@@ -91,6 +114,22 @@ define([
       }
 
       return this;
+    },
+
+    getBulkActions: function (extensions) {
+      return _.chain(extensions)
+          .filter(function (extension) {
+            return extension.options.config.label !== undefined;
+          })
+          .map(function (extension) {
+            return {
+              extensionCode: extension.code,
+              code: extension.getCode(),
+              label: extension.getLabel(),
+              icon: extension.getIcon(),
+            };
+          })
+          .value();
     },
 
     /**

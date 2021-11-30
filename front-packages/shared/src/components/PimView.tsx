@@ -6,6 +6,8 @@ import {View} from '../DependenciesProvider.type';
 type Props = {
   viewName: string;
   className?: string;
+  parent?: any;
+  data?: any;
 };
 
 const StyledPimView = styled.div<{rendered: boolean}>`
@@ -14,7 +16,7 @@ const StyledPimView = styled.div<{rendered: boolean}>`
   transition: opacity 0.5s linear;
 `;
 
-const PimView = ({viewName, className}: Props) => {
+const PimView = ({viewName, className, parent, data}: Props) => {
   const el = useRef<HTMLDivElement>(null);
   const [view, setView] = useState<View | null>(null);
 
@@ -27,6 +29,12 @@ const PimView = ({viewName, className}: Props) => {
 
     viewBuilder.build(viewName).then(view => {
       if (isMounted()) {
+        if (parent && data) {
+          //@ts-ignore
+          view.setParent(parent);
+          //@ts-ignore
+          view.setData(data);
+        }
         view.setElement(el.current).render();
         setView(view);
       }
