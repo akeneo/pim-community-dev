@@ -46,6 +46,21 @@ final class TableTranslator implements FlatAttributeValueTranslatorInterface
         return AttributeTypes::TABLE === $attributeType;
     }
 
+    /**
+     * Translate multiple json values
+     *
+     * @param string[] $values, for example:
+     *  [
+     *      '[{"ingredient":"salt","is_allergenic":"1"}, ...]'
+     *      '[{"ingredient":"salt","is_allergenic":"0"}, ...]'
+     *  ]
+     * @return string[], for example:
+     *  [
+     *      '[{"Ingredient":"Salt","[is_allergenic]":"Yes"}, ...]'
+     *      '[{"Ingredient":"Salt","[is_allergenic]":"No"}, ...]'
+     *  ]
+     *
+     */
     public function translate(string $attributeCode, array $properties, array $values, string $locale): array
     {
         $indexedColumnLabels = $this->getIndexedColumnLabels($attributeCode, $locale);
