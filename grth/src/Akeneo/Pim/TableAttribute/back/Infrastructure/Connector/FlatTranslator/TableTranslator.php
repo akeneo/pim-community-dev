@@ -53,12 +53,9 @@ final class TableTranslator implements FlatAttributeValueTranslatorInterface
             $decodedValue = \json_decode($value, true);
             foreach ($decodedValue as $index => $row) {
                 foreach ($row as $columnCode => $cellValue) {
-                    $newKey = $columnCode;
-                    if (\array_key_exists($columnCode, $indexedColumnLabels)) {
-                        $newKey = $indexedColumnLabels[$columnCode];
-                        unset($decodedValue[$index][$columnCode]);
-                    }
-
+                    $newKey = $indexedColumnLabels[$columnCode]
+                        ?? \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $columnCode);
+                    unset($decodedValue[$index][$columnCode]);
                     $decodedValue[$index][$newKey] = $this->translateValue(
                         $attributeCode,
                         $columnCode,
@@ -82,10 +79,10 @@ final class TableTranslator implements FlatAttributeValueTranslatorInterface
             $indexedLabels = [];
             foreach ($tableConfiguration->columnIds() as $columnId) {
                 $column = $tableConfiguration->getColumn($columnId);
-                $indexedLabels[$column->code()->asString()] = $column->labels()->getLabel($localeCode);
+                $indexedLabels[$column->code()->asString()] = $column->labels()->getLabel($localeCode)
+                    ?? \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $column->code()->asString());
             }
 
-            $indexedLabels = \array_filter($indexedLabels);
             $duplicatedLabels = \array_diff_key($indexedLabels, \array_unique($indexedLabels));
             if ([] !== $duplicatedLabels) {
                 foreach ($indexedLabels as $stringCode => $label) {

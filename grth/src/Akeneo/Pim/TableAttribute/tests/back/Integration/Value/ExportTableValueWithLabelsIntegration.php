@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\TableAttribute\Integration\Value;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -22,28 +23,43 @@ use Box\Spout\Common\Entity\Row;
 use Box\Spout\Reader\Common\Creator\ReaderFactory;
 use PHPUnit\Framework\Assert;
 
-final class ExportTableValueIntegration extends TestCase
+final class ExportTableValueWithLabelsIntegration extends TestCase
 {
     private const CSV_EXPORT_JOB_CODE = 'csv_product_export';
     private const XLSX_EXPORT_JOB_CODE = 'xlsx_product_export';
     private JobLauncher $jobLauncher;
 
     /** @test */
-    public function it_exports_a_table_value_in_csv(): void
+    public function it_exports_a_table_value_with_labels_in_en_us_in_csv(): void
     {
-        $csv = $this->jobLauncher->launchExport(self::CSV_EXPORT_JOB_CODE, null, []);
+        $config = ['header_with_label' => true, 'with_label' => true, 'withHeader' => true, 'file_locale' => 'en_US'];
+        $csv = $this->jobLauncher->launchExport(self::CSV_EXPORT_JOB_CODE, null, $config);
         $expectedContent = <<<CSV
-sku;categories;enabled;family;groups;nutrition
-toto;master;1;;;"[{""ingredient"":""salt"",""is_allergenic"":false},{""ingredient"":""egg"",""quantity"":2},{""ingredient"":""butter"",""quantity"":25,""is_allergenic"":true}]"
+SKU;Categories;Enabled;Family;Groups;Nutrition
+toto;"Master catalog";Yes;;;"[{""Ingredients"":""Salt"",""Is allergenic"":""No""},{""Ingredients"":""[egg]"",""Quantity"":2},{""Ingredients"":""[butter]"",""Quantity"":25,""Is allergenic"":""Yes""}]"
 
 CSV;
         Assert::assertSame($expectedContent, $csv);
     }
 
     /** @test */
-    public function it_exports_a_table_attribute_in_xlsx(): void
+    public function it_exports_a_table_value_with_labels_in_fr_fr_in_csv(): void
     {
-        $bin = $this->jobLauncher->launchExport(self::XLSX_EXPORT_JOB_CODE, null, [], 'xlsx');
+        $config = ['header_with_label' => true, 'with_label' => true, 'withHeader' => true, 'file_locale' => 'fr_FR'];
+        $csv = $this->jobLauncher->launchExport(self::CSV_EXPORT_JOB_CODE, null, $config);
+        $expectedContent = <<<CSV
+[sku];Catégories;Activé;Famille;Groupes;[nutrition]
+toto;[master];Oui;;;"[{""Ingredients"":""Sel"",""[is_allergenic]"":""Non""},{""Ingredients"":""[egg]"",""Quantité"":2},{""Ingredients"":""[butter]"",""Quantité"":25,""[is_allergenic]"":""Oui""}]"
+
+CSV;
+        Assert::assertSame($expectedContent, $csv);
+    }
+
+    /** @test */
+    public function it_exports_a_table_attribute_in_en_us_in_xlsx(): void
+    {
+        $config = ['header_with_label' => true, 'with_label' => true, 'withHeader' => true, 'file_locale' => 'en_US'];
+        $bin = $this->jobLauncher->launchExport(self::XLSX_EXPORT_JOB_CODE, null, $config, 'xlsx');
         $tmpfile = \tempnam(\sys_get_temp_dir(), 'test_table');
         \file_put_contents($tmpfile, $bin);
 
@@ -58,12 +74,12 @@ CSV;
         }
         $header = \array_shift($lines);
 
-        $expectedNutritionValue = '[{"ingredient":"salt","is_allergenic":false},{"ingredient":"egg","quantity":2},{"ingredient":"butter","quantity":25,"is_allergenic":true}]';
+        $expectedNutritionValue = '[{"Ingredients":"Salt","Is allergenic":"No"},{"Ingredients":"[egg]","Quantity":2},{"Ingredients":"[butter]","Quantity":25,"Is allergenic":"Yes"}]';
 
         Assert::assertCount(1, $lines);
         foreach ($lines as $row) {
             $row = \array_combine($header->toArray(), $row->toArray());
-            Assert::assertSame($expectedNutritionValue, $row['nutrition']);
+            Assert::assertSame($expectedNutritionValue, $row['Nutrition']);
         }
     }
 
@@ -97,6 +113,14 @@ CSV;
             ]
         );
 
+        $this->createChannel([
+            'code' => 'mobile',
+            'category_tree' => 'master',
+            'currencies' => ['USD'],
+            'locales' => ['en_US', 'fr_FR'],
+            'labels' => [],
+        ]);
+
         $attribute = $this->get('pim_catalog.factory.attribute')->create();
         $this->get('pim_catalog.updater.attribute')->update(
             $attribute,
@@ -106,15 +130,17 @@ CSV;
                 'group' => 'other',
                 'localizable' => false,
                 'scopable' => false,
+                'labels' => ['en_US' => 'Nutrition'],
                 'table_configuration' => [
                     [
                         'code' => 'ingredient',
                         'data_type' => 'select',
                         'labels' => [
                             'en_US' => 'Ingredients',
+                            'fr_FR' => 'Ingredients',
                         ],
                         'options' => [
-                            ['code' => 'salt'],
+                            ['code' => 'salt', 'labels' => ['en_US' => 'Salt', 'fr_FR' => 'Sel']],
                             ['code' => 'egg'],
                             ['code' => 'butter'],
                         ],
@@ -124,6 +150,7 @@ CSV;
                         'data_type' => 'number',
                         'labels' => [
                             'en_US' => 'Quantity',
+                            'fr_FR' => 'Quantité',
                         ],
                     ],
                     [
@@ -150,6 +177,19 @@ CSV;
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    private function createChannel(array $data = []): ChannelInterface
+    {
+        $channel = $this->get('pim_catalog.factory.channel')->create();
+        $this->get('pim_catalog.updater.channel')->update($channel, $data);
+
+        $errors = $this->get('validator')->validate($channel);
+        Assert::assertCount(0, $errors, $errors->__toString());
+
+        $this->get('pim_catalog.saver.channel')->save($channel);
+
+        return $channel;
     }
 
     private function createProduct(string $identifier, array $nutritionValue): void

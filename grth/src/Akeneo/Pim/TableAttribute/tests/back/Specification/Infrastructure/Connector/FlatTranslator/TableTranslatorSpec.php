@@ -79,7 +79,7 @@ class TableTranslatorSpec extends ObjectBehavior
                 ['Ingredient US' => 'Pepper', 'Quantity' => 10],
             ], JSON_UNESCAPED_UNICODE),
             \json_encode([
-                ['allergenic' => 'True', 'Ingredient US' => 'salt', 'Quantity' => 12],
+                ['Ingredient US' => 'salt', 'Quantity' => 12, '[allergenic]' => 'True'],
             ], JSON_UNESCAPED_UNICODE),
         ]);
 
@@ -90,11 +90,11 @@ class TableTranslatorSpec extends ObjectBehavior
 
         $this->translate('nutrition', [], [$table1, $table2], 'fr_FR')->shouldBe([
             \json_encode([
-                ['ingredient' => 'Sucre', 'Quantité' => 50],
-                ['ingredient' => 'Poivre', 'Quantité' => 10],
+                ['[ingredient]' => 'Sucre', 'Quantité' => 50],
+                ['[ingredient]' => 'Poivre', 'Quantité' => 10],
             ], JSON_UNESCAPED_UNICODE),
             \json_encode([
-                ['ingredient' => 'Sel', 'allergenic' => 'Vrai', 'Quantité' => 12],
+                ['[ingredient]' => 'Sel', 'Quantité' => 12, '[allergenic]' => 'Vrai'],
             ], JSON_UNESCAPED_UNICODE),
         ]);
     }
