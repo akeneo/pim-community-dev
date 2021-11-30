@@ -14,20 +14,25 @@
             "": "src/"
         },
         "psr-4": {
-            "Pim\\Upgrade\\": "upgrades/",
-            "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/back",
             "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/back",
             "Akeneo\\Connectivity\\Connection\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back",
-            "Akeneo\\Platform\\CommunicationChannel\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back",
-            "Akeneo\\Platform\\Job\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/back",
+            "Akeneo\\FreeTrial\\": "vendor/akeneo/pim-community-dev/src/Akeneo/FreeTrial/back",
             "Akeneo\\Pim\\Automation\\DataQualityInsights\\": [
                 "src/Akeneo/Pim/Automation/DataQualityInsights/back",
                 "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/back"
             ],
-            "AkeneoEnterprise\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
-            "Akeneo\\FreeTrial\\": ["vendor/akeneo/pim-community-dev/src/Akeneo/FreeTrial/back"],
+            "Akeneo\\Pim\\TableAttribute\\": "grth/src/Akeneo/Pim/TableAttribute/back",
+            "Akeneo\\Platform\\": [
+                "src/Akeneo/Platform",
+                "grth/src/Akeneo/Platform",
+                "vendor/akeneo/pim-community-dev/src/Akeneo/Platform"
+            ],
+            "Akeneo\\Platform\\CommunicationChannel\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back",
+            "Akeneo\\Platform\\Job\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/back",
             "Akeneo\\Platform\\TailoredExport\\": "components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/src/",
-            "Akeneo\\Pim\\TableAttribute\\": "src/Akeneo/Pim/TableAttribute/back"
+            "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/back",
+            "AkeneoEnterprise\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
+            "Pim\\Upgrade\\": "upgrades/"
         },
         "exclude-from-classmap": [
             "vendor/akeneo/pim-community-dev/src/Kernel.php"
@@ -62,18 +67,18 @@
             "AkeneoEnterprise\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
             "spec\\Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/tests/back/spec",
             "Akeneo\\Platform\\TailoredExport\\Test\\": "components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests",
-            "Akeneo\\Test\\Pim\\TableAttribute\\": "vendor/akeneo/pim-growth-edition/src/Akeneo/Pim/TableAttribute/tests/back"
+            "Akeneo\\Test\\Pim\\TableAttribute\\": "grth/src/Akeneo/Pim/TableAttribute/tests/back"
         }
     },
     "require": {
-        "akeneo/pim-growth-edition": "*@dev",
         "akeneo/pim-community-dev": "dev-master",
-        "akeneo/pim-onboarder": "^5.0.0",
-        "justinrainbow/json-schema": "^5.2",
-        "league/flysystem-google-cloud-storage": "^2.0",
-        "phpseclib/phpseclib": "2.0.31",
-        "grpc/grpc": "1.30.0",
-        "mekras/php-speller": "^2.1.4"
+        "akeneo/pim-onboarder": "^5.0.6",
+        "grpc/grpc": "^1.30.0",
+        "hslavich/oneloginsaml-bundle": "2.0.*",
+        "justinrainbow/json-schema": "^5.2.11",
+        "league/flysystem-google-cloud-storage": "^2.3.0",
+        "mekras/php-speller": "^2.1.4",
+        "phpseclib/phpseclib": "2.0.31"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "^0.7.0",
