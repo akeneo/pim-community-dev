@@ -77,7 +77,7 @@ const JobExecutionTable = ({
             }
           >
             <Table.Cell rowTitle={true}>{jobExecutionRow.job_name}</Table.Cell>
-            <Table.Cell>{translate(`akeneo_job_process_tracker.type.${jobExecutionRow.type}`)}</Table.Cell>
+            <Table.Cell>{translate(`akeneo_job_process_tracker.type_filter.${jobExecutionRow.type}`)}</Table.Cell>
             <Table.Cell>
               {jobExecutionRow.started_at
                 ? dateFormatter(jobExecutionRow.started_at, {

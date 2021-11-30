@@ -85,7 +85,7 @@ test('it renders a Job execution Table', () => {
   );
 
   expect(screen.getByText('An export')).toBeInTheDocument();
-  expect(screen.getByText('akeneo_job_process_tracker.type.export')).toBeInTheDocument();
+  expect(screen.getByText('akeneo_job_process_tracker.type_filter.export')).toBeInTheDocument();
   expect(screen.getByText('admin')).toBeInTheDocument();
   expect(screen.getByText('pim_import_export.job_status.STARTED 1/2')).toBeInTheDocument();
   expect(screen.getByText('4')).toBeInTheDocument();
