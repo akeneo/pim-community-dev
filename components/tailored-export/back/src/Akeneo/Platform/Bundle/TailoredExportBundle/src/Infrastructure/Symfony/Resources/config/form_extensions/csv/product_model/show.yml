@@ -57,19 +57,8 @@ extensions:
                 path: code
                 name: code
 
-    pim-job-instance-csv-tailored-product-model-export-show-subsection:
-        module: pim/form/common/subsection
+    pim-job-instance-csv-tailored-product-model-export-show-last-executions:
+        module: akeneojob/controller/job-instance
         parent: pim-job-instance-csv-tailored-product-model-export-show
+        position: 100
         targetZone: content
-        config:
-            title: pim_import_export.form.job_instance.subsection.last_executions
-
-    pim-job-instance-csv-tailored-product-model-export-show-grid:
-        module: pim/job/common/grid
-        parent: pim-job-instance-csv-tailored-product-model-export-show-subsection
-        position: 1000
-        targetZone: content
-        config:
-            alias: last-export-executions-grid
-            metadata:
-                jobType: export
