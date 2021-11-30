@@ -91,6 +91,7 @@
         "sensio/framework-extra-bundle": "^5.4",
         "symfony/acl-bundle": "^2.1.0",
         "symfony/asset": "^5.3",
+        "symfony/cache": "^5.4",
         "symfony/config": "^5.3",
         "symfony/dependency-injection": "^5.3",
         "symfony/dotenv": "^5.3",
