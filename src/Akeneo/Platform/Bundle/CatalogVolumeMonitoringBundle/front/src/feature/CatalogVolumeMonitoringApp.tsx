@@ -14,6 +14,10 @@ const StyledKeyFigureGrid = styled(KeyFigureGrid)`
   grid-template-columns: repeat(3, 33%);
 `;
 
+const KeyFiguresContainer = styled.div`
+  margin-bottom: 40px;
+`;
+
 const CatalogVolumeMonitoringApp = ({getCatalogVolumes}: Props) => {
   const translate = useTranslate();
   const systemHref = useRoute('pim_system_index');
@@ -29,18 +33,22 @@ const CatalogVolumeMonitoringApp = ({getCatalogVolumes}: Props) => {
       );
     }
 
-    return axes.map(axis => (
-      <Section key={axis.name}>
-        <SectionTitle>
-          <SectionTitle.Title>{translate(`pim_catalog_volume.axis.title.${axis.name}`)}</SectionTitle.Title>
-        </SectionTitle>
-        <StyledKeyFigureGrid>
-          {axis.catalogVolumes.map(catalogVolume => {
-            return <CatalogVolumeKeyFigure catalogVolume={catalogVolume} key={catalogVolume.name} />;
-          })}
-        </StyledKeyFigureGrid>
-      </Section>
-    ));
+    return (
+      <KeyFiguresContainer>
+        {axes.map(axis => (
+          <Section key={axis.name}>
+            <SectionTitle>
+              <SectionTitle.Title>{translate(`pim_catalog_volume.axis.title.${axis.name}`)}</SectionTitle.Title>
+            </SectionTitle>
+            <StyledKeyFigureGrid>
+              {axis.catalogVolumes.map(catalogVolume => {
+                return <CatalogVolumeKeyFigure catalogVolume={catalogVolume} key={catalogVolume.name} />;
+              })}
+            </StyledKeyFigureGrid>
+          </Section>
+        ))}
+      </KeyFiguresContainer>
+    );
   };
 
   return (
