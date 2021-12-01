@@ -9,6 +9,7 @@ const Field = styled.div`
     display: flex;
     align-items: center;
     gap: 10px;
+    max-width: 460px;
 `;
 
 type Option = {
