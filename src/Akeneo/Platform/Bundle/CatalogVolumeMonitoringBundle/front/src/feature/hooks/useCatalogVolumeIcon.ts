@@ -15,7 +15,6 @@ import {
 } from 'akeneo-design-system';
 
 const iconsMapping: {[volumeName: string]: any} = {
-  // fixme icon name type?
   count_attributes: TagIcon,
   count_categories: FolderIcon,
   count_category_trees: FoldersIcon,
