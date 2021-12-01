@@ -9,4 +9,5 @@ export type ConnectedApp = {
     categories: string[];
     certified: boolean;
     partner: string | null;
+    activate_url?: string;
 };

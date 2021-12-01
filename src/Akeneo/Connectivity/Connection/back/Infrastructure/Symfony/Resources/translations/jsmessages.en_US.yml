@@ -83,6 +83,7 @@ akeneo_connectivity.connection:
                 card:
                     developed_by: Developed by
                     manage_app: Manage app
+                    open_app: Open App
                 flash:
                     error: Sorry, an error occured while fetching the connected apps list.
             edit:
