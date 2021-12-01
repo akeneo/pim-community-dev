@@ -14,7 +14,8 @@
             "": "src/"
         },
         "psr-4": {
-            "Akeneo\\Pim\\TableAttribute\\": "src/Akeneo/Pim/TableAttribute/back"
+            "Akeneo\\Pim\\TableAttribute\\": "src/Akeneo/Pim/TableAttribute/back",
+            "Akeneo\\Platform\\": "src/Akeneo/Platform"
         },
         "exclude-from-classmap": [
             "vendor/akeneo/pim-community-dev/src/Kernel.php"
@@ -22,8 +23,7 @@
     },
     "autoload-dev": {
         "psr-0": {
-            "Context": "vendor/akeneo/pim-community-dev/tests/legacy/features/",
-            "": "tests/legacy/features/"
+            "Context": "vendor/akeneo/pim-community-dev/tests/legacy/features/"
         },
         "psr-4": {
             "Pim\\Behat\\": "vendor/akeneo/pim-community-dev/tests/legacy/features/Behat",

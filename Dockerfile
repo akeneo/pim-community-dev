@@ -168,7 +168,7 @@ RUN mkdir var && \
     find . -type d -name node_modules | xargs rm -rf && \
     rm -rf public/test_dist && \
     (test -d vendor/akeneo/pim-community-dev/upgrades/schema/ && cp vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema/ || true) && \
-    (test -d vendor/akeneo/pim-growth-edition/upgrades/schema/ && cp vendor/akeneo/pim-growth-edition/upgrades/schema/* upgrades/schema/ || true) && \
+    (test -d grth/upgrades/schema/ && cp grth/upgrades/schema/* upgrades/schema/ || true) && \
     (test -d vendor/akeneo/pim-onboarder/upgrades/schema/ && cp vendor/akeneo/pim-onboarder/upgrades/schema/* upgrades/schema/ || true)
 
 #
@@ -220,6 +220,7 @@ COPY --from=builder --chown=www-data:www-data /srv/pim/bin bin
 COPY --from=builder --chown=www-data:www-data /srv/pim/config config
 COPY --from=builder --chown=www-data:www-data /srv/pim/public public
 COPY --from=builder --chown=www-data:www-data /srv/pim/src src
+COPY --from=builder --chown=www-data:www-data /srv/pim/grth/src/Akeneo grth/src/Akeneo
 COPY --from=builder --chown=www-data:www-data /srv/pim/components components
 COPY --from=builder --chown=www-data:www-data /srv/pim/upgrades upgrades
 COPY --from=builder --chown=www-data:www-data /srv/pim/var/cache/prod var/cache/prod
