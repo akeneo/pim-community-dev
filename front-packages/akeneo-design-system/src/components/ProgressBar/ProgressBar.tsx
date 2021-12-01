@@ -151,7 +151,7 @@ type ProgressBarProps = {
  */
 const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
   (
-    {level, percent, title = '', progressLabel = '', light = false, size = 'small', ...rest}: ProgressBarProps,
+    {level, percent, title, progressLabel, light = false, size = 'small', ...rest}: ProgressBarProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
     const labelId = useId('label_');
@@ -175,12 +175,12 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
 
     return (
       <ProgressBarContainer ref={forwardedRef} {...rest}>
-        {(title?.length > 0 || progressLabel?.length > 0) && (
+        {(title || progressLabel) && (
           <Header>
-            <Title title={title} id={labelId} htmlFor={progressBarId}>
+            {title && (<Title title={title} id={labelId} htmlFor={progressBarId}>
               {title}
-            </Title>
-            <ProgressLabel title={progressLabel}>{progressLabel}</ProgressLabel>
+            </Title>)}
+            {progressLabel && <ProgressLabel title={progressLabel}>{progressLabel}</ProgressLabel>}
           </Header>
         )}
         <ProgressBarBackground id={progressBarId} role="progressbar" {...progressBarProps} size={size}>
