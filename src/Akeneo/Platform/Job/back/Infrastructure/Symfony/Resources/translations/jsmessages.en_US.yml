@@ -1,5 +1,6 @@
 pim_title:
   akeneo_job_process_tracker_index: Process tracker
+  akeneo_job_process_tracker_details: Process tracker | Show job
 
 akeneo_job_process_tracker:
   last_executions:

@@ -14,7 +14,7 @@ jest.mock('./pages/JobExecutionDetail', () => ({
 
 test('it renders job execution list', () => {
   const history = createHashHistory();
-  history.push('/rac-job');
+  history.push('/job');
 
   renderWithProviders(<ProcessTrackerApp />);
 
@@ -23,7 +23,7 @@ test('it renders job execution list', () => {
 
 test('it renders job execution detail', () => {
   const history = createHashHistory();
-  history.push('/rac-job/show/9999');
+  history.push('/job/show/9999');
 
   renderWithProviders(<ProcessTrackerApp />);
 

@@ -5,7 +5,7 @@ extensions:
     aclResourceId: pim_enrich_job_tracker_index
     position: 120
     config:
-      title: Process Tracker Revamp
+      title: pim_menu.item.job_tracker
       to: akeneo_job_process_tracker_index
 
   pim-process-tracker-user-navigation:

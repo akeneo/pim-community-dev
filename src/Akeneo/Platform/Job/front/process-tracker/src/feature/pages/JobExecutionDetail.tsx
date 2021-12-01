@@ -98,7 +98,7 @@ const JobExecutionDetail = () => {
   const showProfileIsVisible = jobTypeWithProfile.includes(jobExecution?.jobInstance.type || '');
 
   const dashboardHref = useRoute('pim_dashboard_index');
-  const jobTrackerHref = useRoute('pim_enrich_job_tracker_index');
+  const jobTrackerHref = useRoute('akeneo_job_process_tracker_index');
   const downloadLogHref = useRoute('pim_importexport_export_execution_download_log', {
     id: jobExecutionId,
   });
