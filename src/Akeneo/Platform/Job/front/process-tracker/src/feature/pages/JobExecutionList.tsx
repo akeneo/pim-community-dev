@@ -19,7 +19,6 @@ const JobExecutionList = () => {
   const translate = useTranslate();
 
   const [jobExecutionFilter, setJobExecutionFilter] = useStoredJobExecutionFilter();
-  console.log(jobExecutionFilter);
   const [jobExecutionTable, refreshJobExecutionTable] = useJobExecutionTable(jobExecutionFilter);
   const matchesCount = jobExecutionTable === null ? 0 : jobExecutionTable.matches_count;
 
