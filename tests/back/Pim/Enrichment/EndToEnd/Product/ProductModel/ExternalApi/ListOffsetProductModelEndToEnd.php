@@ -27,9 +27,9 @@ class ListOffsetProductModelEndToEnd extends AbstractProductModelTestCase
     "items_count"  : 6,
     "_embedded"    : {
         "items": [
-            {$standardizedProducts['sweat']},
-            {$standardizedProducts['shoes']},
-            {$standardizedProducts['tshirt']}
+            {$standardizedProducts['handbag']},
+            {$standardizedProducts['hat']},
+            {$standardizedProducts['shoes']}
         ]
     }
 }
@@ -59,9 +59,9 @@ JSON;
     "items_count"  : 6,
     "_embedded"    : {
         "items": [
+            {$standardizedProducts['sweat']},
             {$standardizedProducts['trousers']},
-            {$standardizedProducts['hat']},
-            {$standardizedProducts['handbag']}
+            {$standardizedProducts['tshirt']}
         ]
     }
 }
@@ -175,12 +175,12 @@ JSON;
     "items_count"  : 6,
     "_embedded"    : {
         "items": [
-            {$standardizedProductModels['sweat']},
-            {$standardizedProductModels['shoes']},
-            {$standardizedProductModels['tshirt']},
-            {$standardizedProductModels['trousers']},
+            {$standardizedProductModels['handbag']},
             {$standardizedProductModels['hat']},
-            {$standardizedProductModels['handbag']}
+            {$standardizedProductModels['shoes']},
+            {$standardizedProductModels['sweat']},
+            {$standardizedProductModels['trousers']},
+            {$standardizedProductModels['tshirt']}
         ]
     }
 }
