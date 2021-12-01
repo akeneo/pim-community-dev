@@ -63,6 +63,35 @@ final class JobExecutionRow
             'tracking' => [
                 'current_step' => $this->currentStep,
                 'total_step' => $this->totalStep,
+                'steps' => [
+                    [
+                        'has_error' => false,
+                        'has_warning' => false,
+                        'is_trackable' => true,
+                        'duration' => 34,
+                        'processed_items' => 10,
+                        'total_items' => 10,
+                        'status' => 'COMPLETED',
+                    ],
+                    [
+                        'has_error' => false,
+                        'has_warning' => true,
+                        'is_trackable' => true,
+                        'duration' => 34,
+                        'processed_items' => 2,
+                        'total_items' => 10,
+                        'status' => 'STARTED',
+                    ],
+                    [
+                        'has_error' => false,
+                        'has_warning' => false,
+                        'is_trackable' => true,
+                        'duration' => 34,
+                        'processed_items' => 0,
+                        'total_items' => 10,
+                        'status' => 'STARTING',
+                    ],
+                ],
             ],
             'is_stoppable' => $this->isStoppable,
         ];

@@ -1,4 +1,11 @@
 import {JobStatus} from './JobStatus';
+import {StepExecutionRowTracking} from './StepExecutionRowTracking';
+
+type JobExecutionRowTracking = {
+  current_step: number;
+  total_step: number;
+  steps: StepExecutionRowTracking[];
+};
 
 type JobExecutionRow = {
   job_execution_id: number;
@@ -9,10 +16,7 @@ type JobExecutionRow = {
   status: JobStatus;
   warning_count: number;
   error_count: number;
-  tracking: {
-    current_step: number;
-    total_step: number;
-  };
+  tracking: JobExecutionRowTracking;
   is_stoppable: boolean;
 };
 

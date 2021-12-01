@@ -3,6 +3,17 @@ import {Table} from 'akeneo-design-system';
 import {useDateFormatter, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {JobExecutionRow, JobExecutionFilterSort, jobCanBeStopped, canShowJobExecutionDetail} from '../../models';
 import {JobExecutionStatus, StopJobAction} from '../common';
+import {ProgressCell} from './ProgressCell';
+
+const COLUMN_HEADERS = [
+  {name: 'job_name', isSortable: true},
+  {name: 'type', isSortable: true},
+  {name: 'started_at', isSortable: true},
+  {name: 'username', isSortable: true},
+  {name: 'progress', isSortable: false},
+  {name: 'status', isSortable: true},
+  {name: 'warning_count', isSortable: false},
+];
 
 type JobExecutionTableProps = {
   sticky?: number;
@@ -11,8 +22,6 @@ type JobExecutionTableProps = {
   onTableRefresh: () => void;
   currentSort: JobExecutionFilterSort;
 };
-
-const SORTABLE_COLUMN_HEADERS = ['job_name', 'type', 'started_at', 'username', 'status'];
 
 const JobExecutionTable = ({
   sticky,
@@ -46,23 +55,24 @@ const JobExecutionTable = ({
   return (
     <Table>
       <Table.Header sticky={sticky}>
-        {SORTABLE_COLUMN_HEADERS.map(sortableColumnHeader => (
+        {COLUMN_HEADERS.map(({name, isSortable}) => (
           <Table.HeaderCell
-            key={sortableColumnHeader}
-            isSortable={true}
-            onDirectionChange={direction => {
-              if ('none' !== direction) {
-                onSortChange({column: sortableColumnHeader, direction: 'ascending' === direction ? 'ASC' : 'DESC'});
-              }
-            }}
-            sortDirection={currentSort.column === sortableColumnHeader ? sortDirection : 'none'}
+            key={name}
+            isSortable={isSortable}
+            onDirectionChange={
+              isSortable
+                ? direction => {
+                    if ('none' !== direction) {
+                      onSortChange({column: name, direction: 'ascending' === direction ? 'ASC' : 'DESC'});
+                    }
+                  }
+                : undefined
+            }
+            sortDirection={isSortable ? (currentSort.column === name ? sortDirection : 'none') : undefined}
           >
-            {translate(`akeneo_job_process_tracker.job_execution_list.table.headers.${sortableColumnHeader}`)}
+            {translate(`akeneo_job_process_tracker.job_execution_list.table.headers.${name}`)}
           </Table.HeaderCell>
         ))}
-        <Table.HeaderCell>
-          {translate(`akeneo_job_process_tracker.job_execution_list.table.headers.warning_count`)}
-        </Table.HeaderCell>
         <Table.HeaderCell />
       </Table.Header>
       <Table.Body>
@@ -89,6 +99,7 @@ const JobExecutionTable = ({
                 : '-'}
             </Table.Cell>
             <Table.Cell>{jobExecutionRow.username}</Table.Cell>
+            <ProgressCell jobExecutionRow={jobExecutionRow} />
             <Table.Cell>
               <JobExecutionStatus
                 status={jobExecutionRow.status}

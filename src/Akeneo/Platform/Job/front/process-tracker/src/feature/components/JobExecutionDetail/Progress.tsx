@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Level, ProgressBar} from 'akeneo-design-system';
-import {StepExecutionTracking} from '../../models';
+import {Level, ProgressBar, ProgressBarPercent} from 'akeneo-design-system';
+import {StepExecutionTracking} from '../../models/JobExecutionDetail';
 import {Translate, useTranslate} from '@akeneo-pim-community/shared';
 import {formatSecondsIntl} from '../../tools/intl-duration';
 
@@ -20,7 +20,7 @@ const guessStepExecutionTrackingLevel = (step: StepExecutionTracking): Level => 
   return 'primary';
 };
 
-const getStepExecutionTrackingPercent = (step: StepExecutionTracking): number | 'indeterminate' => {
+const getStepExecutionTrackingPercent = (step: StepExecutionTracking): ProgressBarPercent => {
   if (step.status === 'STARTING') return 0;
 
   if (step.status === 'COMPLETED') return 100;

@@ -24,6 +24,7 @@ akeneo_job_process_tracker:
         type: Type
         started_at: Started at
         username: Username
+        progress: Progress
         status: Status
         warning_count: Warnings
   type_filter:
