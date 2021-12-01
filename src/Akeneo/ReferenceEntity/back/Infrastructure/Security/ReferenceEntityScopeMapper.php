@@ -11,43 +11,43 @@ use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInter
  */
 class ReferenceEntityScopeMapper implements ScopeMapperInterface
 {
-    private const SCOPE_READ_ENTITIES = 'read_entities';
-    private const SCOPE_WRITE_ENTITIES = 'write_entities';
-    private const SCOPE_READ_ENTITY_RECORDS = 'read_entity_records';
-    private const SCOPE_WRITE_ENTITY_RECORDS = 'write_entity_records';
+    private const SCOPE_READ_REFERENCE_ENTITIES = 'read_reference_entities';
+    private const SCOPE_WRITE_REFERENCE_ENTITIES = 'write_reference_entities';
+    private const SCOPE_READ_REFERENCE_ENTITY_RECORDS = 'read_reference_entity_records';
+    private const SCOPE_WRITE_REFERENCE_ENTITY_RECORDS = 'write_reference_entity_records';
 
     private const SCOPE_ACL_MAP = [
-        self::SCOPE_READ_ENTITIES => [
+        self::SCOPE_READ_REFERENCE_ENTITIES => [
             'pim_api_reference_entity_list',
         ],
-        self::SCOPE_WRITE_ENTITIES => [
+        self::SCOPE_WRITE_REFERENCE_ENTITIES => [
             'pim_api_reference_entity_edit',
         ],
-        self::SCOPE_READ_ENTITY_RECORDS => [
+        self::SCOPE_READ_REFERENCE_ENTITY_RECORDS => [
             'pim_api_reference_entity_record_list',
         ],
-        self::SCOPE_WRITE_ENTITY_RECORDS => [
+        self::SCOPE_WRITE_REFERENCE_ENTITY_RECORDS => [
             'pim_api_reference_entity_record_edit',
         ],
     ];
 
     private const SCOPE_MESSAGE_MAP = [
-        self::SCOPE_READ_ENTITIES => [
+        self::SCOPE_READ_REFERENCE_ENTITIES => [
             'icon' => 'reference_entity',
             'type' => 'view',
             'entities' => 'reference_entity',
         ],
-        self::SCOPE_WRITE_ENTITIES => [
+        self::SCOPE_WRITE_REFERENCE_ENTITIES => [
             'icon' => 'reference_entity',
             'type' => 'edit',
             'entities' => 'reference_entity',
         ],
-        self::SCOPE_READ_ENTITY_RECORDS => [
+        self::SCOPE_READ_REFERENCE_ENTITY_RECORDS => [
             'icon' => 'reference_entity_record',
             'type' => 'view',
             'entities' => 'reference_entity_record',
         ],
-        self::SCOPE_WRITE_ENTITY_RECORDS => [
+        self::SCOPE_WRITE_REFERENCE_ENTITY_RECORDS => [
             'icon' => 'reference_entity_record',
             'type' => 'edit',
             'entities' => 'reference_entity_record',
@@ -55,23 +55,23 @@ class ReferenceEntityScopeMapper implements ScopeMapperInterface
     ];
 
     private const SCOPE_HIERARCHY = [
-        self::SCOPE_READ_ENTITIES => [],
-        self::SCOPE_WRITE_ENTITIES => [
-            self::SCOPE_READ_ENTITIES,
+        self::SCOPE_READ_REFERENCE_ENTITIES => [],
+        self::SCOPE_WRITE_REFERENCE_ENTITIES => [
+            self::SCOPE_READ_REFERENCE_ENTITIES,
         ],
-        self::SCOPE_READ_ENTITY_RECORDS => [],
-        self::SCOPE_WRITE_ENTITY_RECORDS => [
-            self::SCOPE_READ_ENTITY_RECORDS,
+        self::SCOPE_READ_REFERENCE_ENTITY_RECORDS => [],
+        self::SCOPE_WRITE_REFERENCE_ENTITY_RECORDS => [
+            self::SCOPE_READ_REFERENCE_ENTITY_RECORDS,
         ],
     ];
 
     public function getScopes(): array
     {
         return [
-            self::SCOPE_READ_ENTITIES,
-            self::SCOPE_WRITE_ENTITIES,
-            self::SCOPE_READ_ENTITY_RECORDS,
-            self::SCOPE_WRITE_ENTITY_RECORDS,
+            self::SCOPE_READ_REFERENCE_ENTITIES,
+            self::SCOPE_WRITE_REFERENCE_ENTITIES,
+            self::SCOPE_READ_REFERENCE_ENTITY_RECORDS,
+            self::SCOPE_WRITE_REFERENCE_ENTITY_RECORDS,
         ];
     }
 
