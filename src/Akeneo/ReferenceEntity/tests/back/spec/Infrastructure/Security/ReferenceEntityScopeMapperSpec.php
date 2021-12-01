@@ -19,37 +19,37 @@ class ReferenceEntityScopeMapperSpec extends ObjectBehavior
     public function it_provides_all_scopes(): void
     {
         $this->getScopes()->shouldReturn([
-            'read_entities',
-            'write_entities',
-            'read_entity_records',
-            'write_entity_records',
+            'read_reference_entities',
+            'write_reference_entities',
+            'read_reference_entity_records',
+            'write_reference_entity_records',
         ]);
     }
 
-    public function it_provides_acls_that_correspond_to_the_read_entities_scope(): void
+    public function it_provides_acls_that_correspond_to_the_read_reference_entities_scope(): void
     {
-        $this->getAcls('read_entities')->shouldReturn([
+        $this->getAcls('read_reference_entities')->shouldReturn([
             'pim_api_reference_entity_list',
         ]);
     }
 
-    public function it_provides_acls_that_correspond_to_the_write_entities_scope(): void
+    public function it_provides_acls_that_correspond_to_the_write_reference_entities_scope(): void
     {
-        $this->getAcls('write_entities')->shouldReturn([
+        $this->getAcls('write_reference_entities')->shouldReturn([
             'pim_api_reference_entity_edit',
         ]);
     }
 
-    public function it_provides_acls_that_correspond_to_the_read_entity_records_scope(): void
+    public function it_provides_acls_that_correspond_to_the_read_reference_entity_records_scope(): void
     {
-        $this->getAcls('read_entity_records')->shouldReturn([
+        $this->getAcls('read_reference_entity_records')->shouldReturn([
             'pim_api_reference_entity_record_list',
         ]);
     }
 
-    public function it_provides_acls_that_correspond_to_the_write_entity_records_scope(): void
+    public function it_provides_acls_that_correspond_to_the_write_reference_entity_records_scope(): void
     {
-        $this->getAcls('write_entity_records')->shouldReturn([
+        $this->getAcls('write_reference_entity_records')->shouldReturn([
             'pim_api_reference_entity_record_edit',
         ]);
     }
@@ -61,36 +61,36 @@ class ReferenceEntityScopeMapperSpec extends ObjectBehavior
             ->during('getAcls', ['unknown_scope']);
     }
 
-    public function it_provides_message_that_corresponds_to_the_read_entities_scope(): void
+    public function it_provides_message_that_corresponds_to_the_read_reference_entities_scope(): void
     {
-        $this->getMessage('read_entities')->shouldReturn([
+        $this->getMessage('read_reference_entities')->shouldReturn([
             'icon' => 'reference_entity',
             'type' => 'view',
             'entities' => 'reference_entity',
         ]);
     }
 
-    public function it_provides_message_that_corresponds_to_the_write_entities_scope(): void
+    public function it_provides_message_that_corresponds_to_the_write_reference_entities_scope(): void
     {
-        $this->getMessage('write_entities')->shouldReturn([
+        $this->getMessage('write_reference_entities')->shouldReturn([
             'icon' => 'reference_entity',
             'type' => 'edit',
             'entities' => 'reference_entity',
         ]);
     }
 
-    public function it_provides_message_that_corresponds_to_the_read_entity_records_scope(): void
+    public function it_provides_message_that_corresponds_to_the_read_reference_entity_records_scope(): void
     {
-        $this->getMessage('read_entity_records')->shouldReturn([
+        $this->getMessage('read_reference_entity_records')->shouldReturn([
             'icon' => 'reference_entity_record',
             'type' => 'view',
             'entities' => 'reference_entity_record',
         ]);
     }
 
-    public function it_provides_message_that_corresponds_to_the_write_entity_records_scope(): void
+    public function it_provides_message_that_corresponds_to_the_write_reference_entity_records_scope(): void
     {
-        $this->getMessage('write_entity_records')->shouldReturn([
+        $this->getMessage('write_reference_entity_records')->shouldReturn([
             'icon' => 'reference_entity_record',
             'type' => 'edit',
             'entities' => 'reference_entity_record',
@@ -104,27 +104,27 @@ class ReferenceEntityScopeMapperSpec extends ObjectBehavior
             ->during('getMessage', ['unknown_scope']);
     }
 
-    public function it_provides_lower_hierarchy_scopes_of_the_read_entities_scope(): void
+    public function it_provides_lower_hierarchy_scopes_of_the_read_reference_entities_scope(): void
     {
-        $this->getLowerHierarchyScopes('read_entities')->shouldReturn([]);
+        $this->getLowerHierarchyScopes('read_reference_entities')->shouldReturn([]);
     }
 
-    public function it_provides_lower_hierarchy_scopes_of_the_write_entities_scope(): void
+    public function it_provides_lower_hierarchy_scopes_of_the_write_reference_entities_scope(): void
     {
-        $this->getLowerHierarchyScopes('write_entities')->shouldReturn([
-            'read_entities',
+        $this->getLowerHierarchyScopes('write_reference_entities')->shouldReturn([
+            'read_reference_entities',
         ]);
     }
 
-    public function it_provides_lower_hierarchy_scopes_of_the_read_entity_records_scope(): void
+    public function it_provides_lower_hierarchy_scopes_of_the_read_reference_entity_records_scope(): void
     {
-        $this->getLowerHierarchyScopes('read_entity_records')->shouldReturn([]);
+        $this->getLowerHierarchyScopes('read_reference_entity_records')->shouldReturn([]);
     }
 
-    public function it_provides_lower_hierarchy_scopes_of_the_write_entity_records_scope(): void
+    public function it_provides_lower_hierarchy_scopes_of_the_write_reference_entity_records_scope(): void
     {
-        $this->getLowerHierarchyScopes('write_entity_records')->shouldReturn([
-            'read_entity_records',
+        $this->getLowerHierarchyScopes('write_reference_entity_records')->shouldReturn([
+            'read_reference_entity_records',
         ]);
     }
 
