@@ -29,11 +29,8 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlAttributeExists implements AttributeExistsInterface
 {
-    private Connection $sqlConnection;
-
-    public function __construct(Connection $sqlConnection)
+    public function __construct(private Connection $sqlConnection)
     {
-        $this->sqlConnection = $sqlConnection;
     }
 
     public function withIdentifier(AttributeIdentifier $identifier): bool

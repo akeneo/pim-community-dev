@@ -18,18 +18,8 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class RecordDeletedEvent extends Event
 {
-    private RecordIdentifier $recordIdentifier;
-    private RecordCode $recordCode;
-    private ReferenceEntityIdentifier $referenceEntityIdentifier;
-
-    public function __construct(
-        RecordIdentifier $recordIdentifier,
-        RecordCode $recordCode,
-        ReferenceEntityIdentifier $referenceEntityIdentifier
-    ) {
-        $this->recordIdentifier = $recordIdentifier;
-        $this->recordCode = $recordCode;
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+    public function __construct(private RecordIdentifier $recordIdentifier, private RecordCode $recordCode, private ReferenceEntityIdentifier $referenceEntityIdentifier)
+    {
     }
 
     public function getRecordIdentifier(): RecordIdentifier

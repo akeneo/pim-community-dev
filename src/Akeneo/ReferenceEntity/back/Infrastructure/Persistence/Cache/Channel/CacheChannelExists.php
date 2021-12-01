@@ -22,13 +22,11 @@ use Akeneo\ReferenceEntity\Domain\Query\Channel\ChannelExistsInterface;
  */
 class CacheChannelExists implements ChannelExistsInterface
 {
-    private ChannelExistsInterface $channelExists;
     /** @var array<string, bool> */
     private array $channels = [];
 
-    public function __construct(ChannelExistsInterface $channelExists)
+    public function __construct(private ChannelExistsInterface $channelExists)
     {
-        $this->channelExists = $channelExists;
     }
 
     public function exists(ChannelIdentifier $channelIdentifier): bool

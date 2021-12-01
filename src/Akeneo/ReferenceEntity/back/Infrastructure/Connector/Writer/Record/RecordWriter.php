@@ -27,14 +27,10 @@ use Webmozart\Assert\Assert;
  */
 final class RecordWriter implements ItemWriterInterface, StepExecutionAwareInterface
 {
-    private CreateRecordHandler $createRecordHandler;
-    private EditRecordHandler $editRecordHandler;
     private ?StepExecution $stepExecution = null;
 
-    public function __construct(CreateRecordHandler $createRecordHandler, EditRecordHandler $editRecordHandler)
+    public function __construct(private CreateRecordHandler $createRecordHandler, private EditRecordHandler $editRecordHandler)
     {
-        $this->createRecordHandler = $createRecordHandler;
-        $this->editRecordHandler = $editRecordHandler;
     }
 
     /**

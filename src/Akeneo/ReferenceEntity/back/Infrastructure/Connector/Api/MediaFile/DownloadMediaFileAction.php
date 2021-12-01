@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\MediaFile;
 
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\MediaFileNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\MediaFileRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
@@ -31,18 +32,11 @@ class DownloadMediaFileAction
 {
     private const FILE_STORAGE_ALIAS = 'catalogStorage';
 
-    private MediaFileRepositoryInterface $mediaFileRepository;
-    private FilesystemProvider $filesystemProvider;
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        MediaFileRepositoryInterface $mediaFileRepository,
-        FilesystemProvider $filesystemProvider,
-        SecurityFacade $securityFacade
+        private MediaFileRepositoryInterface $mediaFileRepository,
+        private FilesystemProvider $filesystemProvider,
+        private SecurityFacade $securityFacade
     ) {
-        $this->mediaFileRepository = $mediaFileRepository;
-        $this->filesystemProvider = $filesystemProvider;
-        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(string $fileCode): Response

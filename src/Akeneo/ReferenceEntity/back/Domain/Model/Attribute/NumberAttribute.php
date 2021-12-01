@@ -24,8 +24,6 @@ use Webmozart\Assert\Assert;
 class NumberAttribute extends AbstractAttribute
 {
     public const ATTRIBUTE_TYPE = 'number';
-
-    private AttributeDecimalsAllowed $decimalsAllowed;
     private AttributeLimit $minValue;
     private AttributeLimit $maxValue;
 
@@ -38,7 +36,7 @@ class NumberAttribute extends AbstractAttribute
         AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
-        AttributeDecimalsAllowed $decimalsAllowed,
+        private AttributeDecimalsAllowed $decimalsAllowed,
         AttributeLimit $minValue,
         AttributeLimit $maxValue
     ) {
@@ -54,7 +52,6 @@ class NumberAttribute extends AbstractAttribute
         );
 
         $this->checkMinIsLessThanMax($minValue, $maxValue);
-        $this->decimalsAllowed = $decimalsAllowed;
         $this->minValue = $minValue;
         $this->maxValue = $maxValue;
     }

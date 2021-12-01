@@ -20,32 +20,7 @@ namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
  */
 class EditRecordCommand
 {
-    /** @var string */
-    public $referenceEntityIdentifier;
-
-    /** @var string */
-    public $code;
-
-    /** @var array */
-    public $labels = [];
-
-    /** @var string[]|null */
-    public $image;
-
-    /** @var array */
-    public $editRecordValueCommands = [];
-
-    public function __construct(
-        string $referenceEntityIdentifier,
-        string $code,
-        array $labels,
-        ?array $image,
-        array $editRecordValueCommands
-    ) {
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
-        $this->code = $code;
-        $this->labels = $labels;
-        $this->image = $image;
-        $this->editRecordValueCommands = $editRecordValueCommands;
+    public function __construct(public string $referenceEntityIdentifier, public string $code, public array $labels, public ?array $image, public array $editRecordValueCommands)
+    {
     }
 }

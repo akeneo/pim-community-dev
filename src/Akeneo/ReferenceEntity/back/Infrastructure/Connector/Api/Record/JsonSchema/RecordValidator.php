@@ -23,13 +23,8 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 class RecordValidator
 {
-    private RecordPropertiesValidator $recordPropertiesValidator;
-    private RecordValuesValidator $recordValuesValidator;
-
-    public function __construct(RecordPropertiesValidator $recordPropertiesValidator, RecordValuesValidator $recordValuesValidator)
+    public function __construct(private RecordPropertiesValidator $recordPropertiesValidator, private RecordValuesValidator $recordValuesValidator)
     {
-        $this->recordPropertiesValidator = $recordPropertiesValidator;
-        $this->recordValuesValidator = $recordValuesValidator;
     }
 
     /**

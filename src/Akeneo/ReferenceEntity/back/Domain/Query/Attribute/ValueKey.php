@@ -27,7 +27,7 @@ use Webmozart\Assert\Assert;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class ValueKey
+class ValueKey implements \Stringable
 {
     private string $key;
 

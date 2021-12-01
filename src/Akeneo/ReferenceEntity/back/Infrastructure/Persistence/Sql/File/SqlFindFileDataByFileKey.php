@@ -20,11 +20,8 @@ use Doctrine\DBAL\Types\Types;
 
 class SqlFindFileDataByFileKey implements FindFileDataByFileKeyInterface
 {
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private Connection $connection)
     {
-        $this->connection = $connection;
     }
 
     public function find(string $fileKey): ?array

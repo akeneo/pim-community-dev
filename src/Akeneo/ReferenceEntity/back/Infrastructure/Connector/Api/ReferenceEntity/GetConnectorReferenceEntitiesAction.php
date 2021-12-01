@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity;
 
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Limit;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
@@ -34,23 +35,15 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 class GetConnectorReferenceEntitiesAction
 {
     private Limit $limit;
-    private FindConnectorReferenceEntityItemsInterface $findConnectorReferenceEntityItems;
-    private PaginatorInterface $halPaginator;
-    private AddHalDownloadLinkToReferenceEntityImage $addHalDownloadLinkToImage;
-    private SecurityFacade $securityFacade;
 
     public function __construct(
-        FindConnectorReferenceEntityItemsInterface $findConnectorReferenceEntityItems,
-        PaginatorInterface $halPaginator,
-        AddHalDownloadLinkToReferenceEntityImage $addHalDownloadLinkToImage,
+        private FindConnectorReferenceEntityItemsInterface $findConnectorReferenceEntityItems,
+        private PaginatorInterface $halPaginator,
+        private AddHalDownloadLinkToReferenceEntityImage $addHalDownloadLinkToImage,
         int $limit,
-        SecurityFacade $securityFacade
+        private SecurityFacade $securityFacade
     ) {
-        $this->findConnectorReferenceEntityItems = $findConnectorReferenceEntityItems;
         $this->limit = new Limit($limit);
-        $this->halPaginator = $halPaginator;
-        $this->addHalDownloadLinkToImage = $addHalDownloadLinkToImage;
-        $this->securityFacade = $securityFacade;
     }
 
     /**

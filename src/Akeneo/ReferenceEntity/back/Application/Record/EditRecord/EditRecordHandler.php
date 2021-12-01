@@ -32,22 +32,11 @@ class EditRecordHandler
 {
     private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
 
-    private ValueUpdaterRegistryInterface $valueUpdaterRegistry;
-    private RecordRepositoryInterface $recordRepository;
-    private FileStorerInterface $storer;
-
-    public function __construct(
-        ValueUpdaterRegistryInterface $valueUpdaterRegistry,
-        RecordRepositoryInterface $recordRepository,
-        FileStorerInterface $storer
-    ) {
-        $this->valueUpdaterRegistry = $valueUpdaterRegistry;
-        $this->recordRepository = $recordRepository;
-        $this->storer = $storer;
+    public function __construct(private ValueUpdaterRegistryInterface $valueUpdaterRegistry, private RecordRepositoryInterface $recordRepository, private FileStorerInterface $storer)
+    {
     }
 
     /**
-     * @param EditRecordCommand $editRecordCommand
      *
      * @throws FileRemovalException
      * @throws FileTransferException

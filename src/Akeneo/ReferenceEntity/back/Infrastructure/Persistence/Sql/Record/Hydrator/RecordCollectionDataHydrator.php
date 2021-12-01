@@ -25,11 +25,8 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
  */
 class RecordCollectionDataHydrator implements DataHydratorInterface
 {
-    private FindCodesByIdentifiersInterface $findCodesByIdentifiers;
-
-    public function __construct(FindCodesByIdentifiersInterface $findCodesByIdentifiers)
+    public function __construct(private FindCodesByIdentifiersInterface $findCodesByIdentifiers)
     {
-        $this->findCodesByIdentifiers = $findCodesByIdentifiers;
     }
 
     public function supports(AbstractAttribute $attribute): bool

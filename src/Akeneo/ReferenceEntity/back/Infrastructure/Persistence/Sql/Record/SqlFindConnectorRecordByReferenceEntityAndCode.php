@@ -30,21 +30,8 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlFindConnectorRecordByReferenceEntityAndCode implements FindConnectorRecordByReferenceEntityAndCodeInterface
 {
-    private Connection $connection;
-    private FindValueKeyCollectionInterface $findValueKeyCollection;
-    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
-    private ConnectorRecordHydrator $recordHydrator;
-
-    public function __construct(
-        Connection $connection,
-        ConnectorRecordHydrator $hydrator,
-        FindValueKeyCollectionInterface $findValueKeyCollection,
-        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
-    ) {
-        $this->connection = $connection;
-        $this->findValueKeyCollection = $findValueKeyCollection;
-        $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
-        $this->recordHydrator = $hydrator;
+    public function __construct(private Connection $connection, private ConnectorRecordHydrator $recordHydrator, private FindValueKeyCollectionInterface $findValueKeyCollection, private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier)
+    {
     }
 
     public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): ?ConnectorRecord

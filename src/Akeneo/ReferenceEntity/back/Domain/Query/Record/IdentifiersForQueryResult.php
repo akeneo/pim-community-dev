@@ -28,15 +28,11 @@ class IdentifiersForQueryResult
 
     /** @var string[] */
     public array $identifiers;
-    public int $matchesCount;
-    public ?string $lastSortValue;
 
-    public function __construct(array $identifiers, int $matchesCount, ?string $lastSortValue)
+    public function __construct(array $identifiers, public int $matchesCount, public ?string $lastSortValue)
     {
         Assert::allString($identifiers);
         $this->identifiers = $identifiers;
-        $this->matchesCount = $matchesCount;
-        $this->lastSortValue = $lastSortValue;
     }
 
     public function normalize(): array

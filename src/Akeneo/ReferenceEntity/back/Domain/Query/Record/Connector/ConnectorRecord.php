@@ -23,14 +23,11 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
  */
 class ConnectorRecord
 {
-    private RecordCode $code;
-    /** @var array<string, array> */
-    private array $normalizedValues;
-
-    public function __construct(RecordCode $code, array $normalizedValues)
+    /**
+     * @param array<string, mixed[]> $normalizedValues
+     */
+    public function __construct(private RecordCode $code, private array $normalizedValues)
     {
-        $this->code = $code;
-        $this->normalizedValues = $normalizedValues;
     }
 
     public function normalize(): array

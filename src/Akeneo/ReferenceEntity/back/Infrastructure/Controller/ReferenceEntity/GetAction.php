@@ -29,18 +29,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class GetAction
 {
-    private FindReferenceEntityDetailsInterface $findOneReferenceEntityQuery;
-    private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
-    private TokenStorageInterface $tokenStorage;
-
-    public function __construct(
-        FindReferenceEntityDetailsInterface $findOneReferenceEntityQuery,
-        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
-        TokenStorageInterface $tokenStorage
-    ) {
-        $this->findOneReferenceEntityQuery = $findOneReferenceEntityQuery;
-        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
-        $this->tokenStorage = $tokenStorage;
+    public function __construct(private FindReferenceEntityDetailsInterface $findOneReferenceEntityQuery, private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler, private TokenStorageInterface $tokenStorage)
+    {
     }
 
     public function __invoke(string $identifier): JsonResponse

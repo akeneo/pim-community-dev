@@ -32,15 +32,8 @@ use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
  */
 class CreateRecordHandler
 {
-    private RecordRepositoryInterface $recordRepository;
-    private FindReferenceEntityAttributeAsLabelInterface $findAttributeAsLabel;
-
-    public function __construct(
-        RecordRepositoryInterface $recordRepository,
-        FindReferenceEntityAttributeAsLabelInterface $findAttributeAsLabel
-    ) {
-        $this->recordRepository = $recordRepository;
-        $this->findAttributeAsLabel = $findAttributeAsLabel;
+    public function __construct(private RecordRepositoryInterface $recordRepository, private FindReferenceEntityAttributeAsLabelInterface $findAttributeAsLabel)
+    {
     }
 
     public function __invoke(CreateRecordCommand $createRecordCommand): void

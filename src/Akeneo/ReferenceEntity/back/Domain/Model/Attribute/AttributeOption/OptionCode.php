@@ -10,7 +10,7 @@ use Webmozart\Assert\Assert;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class OptionCode
+class OptionCode implements \Stringable
 {
     public const REGULAR_EXPRESSION = '/^[a-zA-Z0-9_]+$/';
 

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\MediaFile;
 
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Akeneo\Tool\Component\FileStorage\Exception\InvalidFile;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -30,18 +31,12 @@ use Symfony\Component\Routing\RouterInterface;
 class UploadMediaFileAction
 {
     public const FILE_STORAGE_ALIAS = 'catalogStorage';
-    private FileStorerInterface $fileStorer;
-    private RouterInterface $router;
-    private SecurityFacade $securityFacade;
 
     public function __construct(
-        FileStorerInterface $fileStorer,
-        RouterInterface $router,
-        SecurityFacade $securityFacade
+        private FileStorerInterface $fileStorer,
+        private RouterInterface $router,
+        private SecurityFacade $securityFacade
     ) {
-        $this->fileStorer = $fileStorer;
-        $this->router = $router;
-        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request): Response

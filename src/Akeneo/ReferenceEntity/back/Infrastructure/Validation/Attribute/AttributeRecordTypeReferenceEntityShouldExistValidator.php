@@ -22,11 +22,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class AttributeRecordTypeReferenceEntityShouldExistValidator extends ConstraintValidator
 {
-    private ReferenceEntityExistsInterface $referenceEntityExists;
-
-    public function __construct(ReferenceEntityExistsInterface $referenceEntityExists)
+    public function __construct(private ReferenceEntityExistsInterface $referenceEntityExists)
     {
-        $this->referenceEntityExists = $referenceEntityExists;
     }
 
     public function validate($command, Constraint $constraint)
@@ -52,7 +49,7 @@ class AttributeRecordTypeReferenceEntityShouldExistValidator extends ConstraintV
             throw new \InvalidArgumentException(sprintf(
                 'Expected argument to be of class "%s", "%s" given',
                 AbstractCreateAttributeCommand::class,
-                get_class($command)
+                $command::class
             ));
         }
     }

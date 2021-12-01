@@ -32,17 +32,10 @@ use Webmozart\Assert\Assert;
 final class Record implements ArrayConverterInterface
 {
     public const DIRECTORY_PATH_OPTION_KEY = 'directory_path';
-
-    private FieldsRequirementChecker $fieldsChecker;
-    private FindAttributesDetailsInterface $findAttributeDetails;
     private array $cachedAttributes = [];
 
-    public function __construct(
-        FieldsRequirementChecker $fieldsChecker,
-        FindAttributesDetailsInterface $findAttributeDetails
-    ) {
-        $this->fieldsChecker = $fieldsChecker;
-        $this->findAttributeDetails = $findAttributeDetails;
+    public function __construct(private FieldsRequirementChecker $fieldsChecker, private FindAttributesDetailsInterface $findAttributeDetails)
+    {
     }
 
     /**

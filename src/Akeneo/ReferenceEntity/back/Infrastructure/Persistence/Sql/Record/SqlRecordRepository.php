@@ -40,30 +40,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class SqlRecordRepository implements RecordRepositoryInterface
 {
-    private Connection $sqlConnection;
-    private RecordHydratorInterface $recordHydrator;
-    private FindValueKeyCollectionInterface $findValueKeyCollection;
-    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
-    private EventDispatcherInterface $eventDispatcher;
-    private FindIdentifiersByReferenceEntityAndCodesInterface $findIdentifiersByReferenceEntityAndCodes;
-    private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType;
-
-    public function __construct(
-        Connection $sqlConnection,
-        RecordHydratorInterface $recordHydrator,
-        FindValueKeyCollectionInterface $findValueKeyCollection,
-        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
-        EventDispatcherInterface $eventDispatcher,
-        FindIdentifiersByReferenceEntityAndCodesInterface $findIdentifiersByReferenceEntityAndCodes,
-        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType
-    ) {
-        $this->sqlConnection = $sqlConnection;
-        $this->recordHydrator = $recordHydrator;
-        $this->findValueKeyCollection = $findValueKeyCollection;
-        $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->findIdentifiersByReferenceEntityAndCodes = $findIdentifiersByReferenceEntityAndCodes;
-        $this->findValueKeysByAttributeType = $findValueKeysByAttributeType;
+    public function __construct(private Connection $sqlConnection, private RecordHydratorInterface $recordHydrator, private FindValueKeyCollectionInterface $findValueKeyCollection, private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier, private EventDispatcherInterface $eventDispatcher, private FindIdentifiersByReferenceEntityAndCodesInterface $findIdentifiersByReferenceEntityAndCodes, private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType)
+    {
     }
 
     public function count(): int

@@ -26,12 +26,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ReferenceEntityShouldNotBeLinkedToAnyProductAttributeValidator extends ConstraintValidator
 {
-    private ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface $referenceEntityIsLinkedToProductAttributes;
-
-    public function __construct(
-        ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface $referenceEntityIsLinkedToProductAttributes
-    ) {
-        $this->referenceEntityIsLinkedToProductAttributes = $referenceEntityIsLinkedToProductAttributes;
+    public function __construct(private ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface $referenceEntityIsLinkedToProductAttributes)
+    {
     }
 
     public function validate($command, Constraint $constraint): void
@@ -51,7 +47,7 @@ class ReferenceEntityShouldNotBeLinkedToAnyProductAttributeValidator extends Con
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
                     DeleteReferenceEntityCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

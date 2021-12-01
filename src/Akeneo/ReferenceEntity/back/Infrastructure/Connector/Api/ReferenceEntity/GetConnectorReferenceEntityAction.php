@@ -2,6 +2,7 @@
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity;
 
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorReferenceEntityByReferenceEntityIdentifierInterface;
@@ -14,18 +15,11 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class GetConnectorReferenceEntityAction
 {
-    private FindConnectorReferenceEntityByReferenceEntityIdentifierInterface $findConnectorReferenceEntity;
-    private AddHalDownloadLinkToReferenceEntityImage $addHalLinksToReferenceEntityImage;
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        FindConnectorReferenceEntityByReferenceEntityIdentifierInterface $findConnectorReferenceEntity,
-        AddHalDownloadLinkToReferenceEntityImage $addHalLinksToImageValues,
-        SecurityFacade $securityFacade
+        private FindConnectorReferenceEntityByReferenceEntityIdentifierInterface $findConnectorReferenceEntity,
+        private AddHalDownloadLinkToReferenceEntityImage $addHalLinksToReferenceEntityImage,
+        private SecurityFacade $securityFacade
     ) {
-        $this->findConnectorReferenceEntity = $findConnectorReferenceEntity;
-        $this->addHalLinksToReferenceEntityImage = $addHalLinksToImageValues;
-        $this->securityFacade = $securityFacade;
     }
 
     /**

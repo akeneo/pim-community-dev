@@ -14,11 +14,8 @@ use Akeneo\Tool\Component\Console\CommandLauncher;
  */
 class IndexByReferenceEntityInBackground implements IndexByReferenceEntityInBackgroundInterface
 {
-    private CommandLauncher $commandLauncher;
-
-    public function __construct(CommandLauncher $commandLauncher)
+    public function __construct(private CommandLauncher $commandLauncher)
     {
-        $this->commandLauncher = $commandLauncher;
     }
 
     public function execute(ReferenceEntityIdentifier $referenceEntityIdentifier): void

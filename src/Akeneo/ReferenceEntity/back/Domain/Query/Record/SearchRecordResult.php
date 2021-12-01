@@ -29,15 +29,11 @@ class SearchRecordResult
 
     /** @var RecordItem[] */
     public array $items;
-    public int $matchesCount;
-    public int $totalCount;
 
-    public function __construct(array $recordItems, int $matchesCount, int $totalCount)
+    public function __construct(array $recordItems, public int $matchesCount, public int $totalCount)
     {
         Assert::allIsInstanceOf($recordItems, RecordItem::class);
         $this->items = $recordItems;
-        $this->matchesCount = $matchesCount;
-        $this->totalCount = $totalCount;
     }
 
     public function normalize(): array

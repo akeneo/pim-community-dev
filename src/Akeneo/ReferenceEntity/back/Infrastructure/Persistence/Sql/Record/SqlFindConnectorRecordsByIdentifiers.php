@@ -30,21 +30,8 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlFindConnectorRecordsByIdentifiers implements FindConnectorRecordsByIdentifiersInterface
 {
-    private Connection $sqlConnection;
-    private FindValueKeyCollectionInterface $findValueKeyCollection;
-    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
-    private ConnectorRecordHydrator $recordHydrator;
-
-    public function __construct(
-        Connection $connection,
-        ConnectorRecordHydrator $hydrator,
-        FindValueKeyCollectionInterface $findValueKeyCollection,
-        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
-    ) {
-        $this->sqlConnection = $connection;
-        $this->findValueKeyCollection = $findValueKeyCollection;
-        $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
-        $this->recordHydrator = $hydrator;
+    public function __construct(private Connection $sqlConnection, private ConnectorRecordHydrator $recordHydrator, private FindValueKeyCollectionInterface $findValueKeyCollection, private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier)
+    {
     }
 
     /**

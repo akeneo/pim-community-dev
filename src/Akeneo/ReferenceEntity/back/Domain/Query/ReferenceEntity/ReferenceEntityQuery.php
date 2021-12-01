@@ -23,15 +23,8 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 class ReferenceEntityQuery
 {
-    private int $size;
-    private ?ReferenceEntityIdentifier $searchAfterIdentifier;
-
-    private function __construct(
-        int $size,
-        ?ReferenceEntityIdentifier $searchAfterIdentifier
-    ) {
-        $this->size = $size;
-        $this->searchAfterIdentifier = $searchAfterIdentifier;
+    private function __construct(private int $size, private ?ReferenceEntityIdentifier $searchAfterIdentifier)
+    {
     }
 
     public static function createPaginatedQuery(

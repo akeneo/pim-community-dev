@@ -20,15 +20,8 @@ use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityPermissionRepository
  */
 class CanEditReferenceEntityQueryHandler
 {
-    private ReferenceEntityPermissionRepositoryInterface $referenceEntityPermissionRepository;
-    private FindUserGroupsForSecurityIdentifierInterface $findUserGroupsForSecurityIdentifier;
-
-    public function __construct(
-        ReferenceEntityPermissionRepositoryInterface $referenceEntityPermissionRepository,
-        FindUserGroupsForSecurityIdentifierInterface $findUserGroupsForSecurityIdentifier
-    ) {
-        $this->referenceEntityPermissionRepository = $referenceEntityPermissionRepository;
-        $this->findUserGroupsForSecurityIdentifier = $findUserGroupsForSecurityIdentifier;
+    public function __construct(private ReferenceEntityPermissionRepositoryInterface $referenceEntityPermissionRepository, private FindUserGroupsForSecurityIdentifierInterface $findUserGroupsForSecurityIdentifier)
+    {
     }
 
     public function __invoke(CanEditReferenceEntityQuery $query): bool

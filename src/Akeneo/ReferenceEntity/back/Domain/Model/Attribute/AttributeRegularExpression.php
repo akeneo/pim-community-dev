@@ -8,7 +8,7 @@ namespace Akeneo\ReferenceEntity\Domain\Model\Attribute;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class AttributeRegularExpression
+class AttributeRegularExpression implements \Stringable
 {
     public const EMPTY = null;
 

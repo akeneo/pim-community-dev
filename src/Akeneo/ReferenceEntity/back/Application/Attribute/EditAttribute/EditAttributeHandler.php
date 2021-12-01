@@ -16,15 +16,8 @@ use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
  */
 class EditAttributeHandler
 {
-    private AttributeRepositoryInterface $attributeRepository;
-    private AttributeUpdaterRegistryInterface $attributeUpdaterRegistry;
-
-    public function __construct(
-        AttributeUpdaterRegistryInterface $attributeUpdaterRegistry,
-        AttributeRepositoryInterface $attributeRepository
-    ) {
-        $this->attributeUpdaterRegistry = $attributeUpdaterRegistry;
-        $this->attributeRepository = $attributeRepository;
+    public function __construct(private AttributeUpdaterRegistryInterface $attributeUpdaterRegistry, private AttributeRepositoryInterface $attributeRepository)
+    {
     }
 
     public function __invoke(EditAttributeCommand $editCommand): void

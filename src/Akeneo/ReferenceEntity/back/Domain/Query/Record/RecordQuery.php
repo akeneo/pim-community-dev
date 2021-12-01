@@ -32,34 +32,18 @@ class RecordQuery
 
     /** @var array<{field: string, operator:string, value: string}> */
     private array $filters;
-    private ChannelReference $channel;
-    private LocaleReference $locale;
     private string $paginationMethod;
-    private ?int $size;
-    private ?int $page;
-    private ?RecordCode $searchAfterCode;
-
-    /**
-     * If defined, the record values will be filtered by the given channel.
-     * The values without channel will not be filtered.
-     */
-    private ChannelReference $channelReferenceValuesFilter;
-
-    /**
-     * To filter the values by locales. The values without locale will not be filtered.
-     */
-    private LocaleIdentifierCollection $localeIdentifiersValuesFilter;
 
     private function __construct(
-        ChannelReference $channel,
-        LocaleReference $locale,
+        private ChannelReference $channel,
+        private LocaleReference $locale,
         array $filters,
-        ChannelReference $channelReferenceValuesFilter,
-        LocaleIdentifierCollection $localeIdentifiersValuesFilter,
+        private ChannelReference $channelReferenceValuesFilter,
+        private LocaleIdentifierCollection $localeIdentifiersValuesFilter,
         string $paginationMethod,
-        int $size,
-        ?int $page,
-        ?RecordCode $searchAfterCode
+        private ?int $size,
+        private ?int $page,
+        private ?RecordCode $searchAfterCode
     ) {
         foreach ($filters as $filter) {
             if (!(array_key_exists('field', $filter) &&
@@ -72,18 +56,8 @@ class RecordQuery
         if (!in_array($paginationMethod, [self::PAGINATE_USING_OFFSET, self::PAGINATE_USING_SEARCH_AFTER])) {
             throw new \InvalidArgumentException(sprintf('"%s" is not a supported pagination method', $paginationMethod));
         }
-
-        $this->channel = $channel;
-        $this->locale  = $locale;
         $this->filters = $filters;
-        $this->page    = $page;
-        $this->size    = $size;
-
-        $this->searchAfterCode  = $searchAfterCode;
         $this->paginationMethod = $paginationMethod;
-
-        $this->channelReferenceValuesFilter  = $channelReferenceValuesFilter;
-        $this->localeIdentifiersValuesFilter = $localeIdentifiersValuesFilter;
     }
 
     public static function createFromNormalized(array $normalizedQuery): RecordQuery

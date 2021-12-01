@@ -24,9 +24,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 interface FindIdentifiersByReferenceEntityAndCodesInterface
 {
     /**
-     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
      * @param RecordCode[]              $recordCodes
-     *
      * @return RecordIdentifier[]
      */
     public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array;

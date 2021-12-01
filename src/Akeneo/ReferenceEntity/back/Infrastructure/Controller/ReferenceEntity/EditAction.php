@@ -33,24 +33,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditAction
 {
-    private EditReferenceEntityHandler $editReferenceEntityHandler;
-    private Serializer $serializer;
-    private ValidatorInterface $validator;
-    private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
-    private TokenStorageInterface $tokenStorage;
-
-    public function __construct(
-        EditReferenceEntityHandler $editReferenceEntityHandler,
-        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
-        TokenStorageInterface $tokenStorage,
-        Serializer $serializer,
-        ValidatorInterface $validator
-    ) {
-        $this->editReferenceEntityHandler = $editReferenceEntityHandler;
-        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
-        $this->tokenStorage = $tokenStorage;
-        $this->serializer = $serializer;
-        $this->validator = $validator;
+    public function __construct(private EditReferenceEntityHandler $editReferenceEntityHandler, private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler, private TokenStorageInterface $tokenStorage, private Serializer $serializer, private ValidatorInterface $validator)
+    {
     }
 
     public function __invoke(Request $request): Response

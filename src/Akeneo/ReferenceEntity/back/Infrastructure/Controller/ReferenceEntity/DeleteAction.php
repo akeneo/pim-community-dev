@@ -36,27 +36,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class DeleteAction
 {
-    private SecurityFacade $securityFacade;
-    private NormalizerInterface $normalizer;
-    private ValidatorInterface $validator;
-    private DeleteReferenceEntityHandler $deleteReferenceEntityHandler;
-    private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
-    private TokenStorageInterface $tokenStorage;
-
-    public function __construct(
-        SecurityFacade $securityFacade,
-        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
-        TokenStorageInterface $tokenStorage,
-        NormalizerInterface $normalizer,
-        ValidatorInterface $validator,
-        DeleteReferenceEntityHandler $deleteReferenceEntityHandler
-    ) {
-        $this->securityFacade = $securityFacade;
-        $this->normalizer = $normalizer;
-        $this->validator = $validator;
-        $this->deleteReferenceEntityHandler = $deleteReferenceEntityHandler;
-        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
-        $this->tokenStorage = $tokenStorage;
+    public function __construct(private SecurityFacade $securityFacade, private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler, private TokenStorageInterface $tokenStorage, private NormalizerInterface $normalizer, private ValidatorInterface $validator, private DeleteReferenceEntityHandler $deleteReferenceEntityHandler)
+    {
     }
 
     public function __invoke(Request $request, string $identifier): Response
@@ -80,7 +61,7 @@ class DeleteAction
 
         try {
             ($this->deleteReferenceEntityHandler)($command);
-        } catch (ReferenceEntityNotFoundException $e) {
+        } catch (ReferenceEntityNotFoundException) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 

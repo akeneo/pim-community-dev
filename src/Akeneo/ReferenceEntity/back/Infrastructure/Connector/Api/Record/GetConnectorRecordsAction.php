@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record;
 
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchConnectorRecord;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
@@ -43,33 +44,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class GetConnectorRecordsAction
 {
-    private ReferenceEntityExistsInterface $referenceEntityExists;
     private Limit $limit;
-    private SearchConnectorRecord $searchConnectorRecord;
-    private PaginatorInterface $halPaginator;
-    private AddHalDownloadLinkToRecordImages $addHalLinksToImageValues;
-    private ValidatorInterface $validator;
-    private SearchFiltersValidator $searchFiltersValidator;
-    private SecurityFacade $securityFacade;
 
     public function __construct(
-        ReferenceEntityExistsInterface $referenceEntityExists,
-        SearchConnectorRecord $searchConnectorRecord,
-        PaginatorInterface $halPaginator,
-        AddHalDownloadLinkToRecordImages $addHalLinksToImageValues,
+        private ReferenceEntityExistsInterface $referenceEntityExists,
+        private SearchConnectorRecord $searchConnectorRecord,
+        private PaginatorInterface $halPaginator,
+        private AddHalDownloadLinkToRecordImages $addHalLinksToImageValues,
         int $limit,
-        ValidatorInterface $validator,
-        SearchFiltersValidator $searchFiltersValidator,
-        SecurityFacade $securityFacade
+        private ValidatorInterface $validator,
+        private SearchFiltersValidator $searchFiltersValidator,
+        private SecurityFacade $securityFacade
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
-        $this->searchConnectorRecord = $searchConnectorRecord;
         $this->limit = new Limit($limit);
-        $this->halPaginator = $halPaginator;
-        $this->addHalLinksToImageValues = $addHalLinksToImageValues;
-        $this->validator = $validator;
-        $this->searchFiltersValidator = $searchFiltersValidator;
-        $this->securityFacade = $securityFacade;
     }
 
     /**

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record;
 
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\Connector\EditRecordCommandFactory;
@@ -42,42 +43,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateOrUpdateRecordsAction
 {
-    private ReferenceEntityExistsInterface $referenceEntityExists;
-    private RecordExistsInterface $recordExists;
-    private EditRecordCommandFactory $editRecordCommandFactory;
-    private EditRecordHandler $editRecordHandler;
-    private CreateRecordHandler $createRecordHandler;
-    private ValidatorInterface $recordDataValidator;
-    private ViolationNormalizer $violationNormalizer;
-    private RecordValidator $recordStructureValidator;
-    private RecordListValidator $recordListValidator;
-    private int $maximumRecordsPerRequest;
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        ReferenceEntityExistsInterface $referenceEntityExists,
-        RecordExistsInterface $recordExists,
-        EditRecordCommandFactory $editRecordCommandFactory,
-        EditRecordHandler $editRecordHandler,
-        CreateRecordHandler $createRecordHandler,
-        ValidatorInterface $recordDataValidator,
-        ViolationNormalizer $violationNormalizer,
-        RecordValidator $recordStructureValidator,
-        RecordListValidator $recordListValidator,
-        int $maximumRecordsPerRequest,
-        SecurityFacade $securityFacade
+        private ReferenceEntityExistsInterface $referenceEntityExists,
+        private RecordExistsInterface $recordExists,
+        private EditRecordCommandFactory $editRecordCommandFactory,
+        private EditRecordHandler $editRecordHandler,
+        private CreateRecordHandler $createRecordHandler,
+        private ValidatorInterface $recordDataValidator,
+        private ViolationNormalizer $violationNormalizer,
+        private RecordValidator $recordStructureValidator,
+        private RecordListValidator $recordListValidator,
+        private int $maximumRecordsPerRequest,
+        private SecurityFacade $securityFacade
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
-        $this->recordExists = $recordExists;
-        $this->editRecordCommandFactory = $editRecordCommandFactory;
-        $this->editRecordHandler = $editRecordHandler;
-        $this->createRecordHandler = $createRecordHandler;
-        $this->recordDataValidator = $recordDataValidator;
-        $this->violationNormalizer = $violationNormalizer;
-        $this->recordStructureValidator = $recordStructureValidator;
-        $this->recordListValidator = $recordListValidator;
-        $this->maximumRecordsPerRequest = $maximumRecordsPerRequest;
-        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier): Response

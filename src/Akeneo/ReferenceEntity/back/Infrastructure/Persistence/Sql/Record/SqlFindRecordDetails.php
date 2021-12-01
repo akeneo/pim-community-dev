@@ -31,24 +31,8 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlFindRecordDetails implements FindRecordDetailsInterface
 {
-    private Connection $sqlConnection;
-    private RecordDetailsHydratorInterface $recordDetailsHydrator;
-    private GenerateEmptyValuesInterface $generateEmptyValues;
-    private FindValueKeyCollectionInterface $findValueKeyCollection;
-    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
-
-    public function __construct(
-        Connection $sqlConnection,
-        RecordDetailsHydratorInterface $recordDetailsHydrator,
-        GenerateEmptyValuesInterface $generateEmptyValues,
-        FindValueKeyCollectionInterface $findValueKeyCollection,
-        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
-    ) {
-        $this->sqlConnection = $sqlConnection;
-        $this->recordDetailsHydrator = $recordDetailsHydrator;
-        $this->generateEmptyValues = $generateEmptyValues;
-        $this->findValueKeyCollection = $findValueKeyCollection;
-        $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
+    public function __construct(private Connection $sqlConnection, private RecordDetailsHydratorInterface $recordDetailsHydrator, private GenerateEmptyValuesInterface $generateEmptyValues, private FindValueKeyCollectionInterface $findValueKeyCollection, private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier)
+    {
     }
 
     /**

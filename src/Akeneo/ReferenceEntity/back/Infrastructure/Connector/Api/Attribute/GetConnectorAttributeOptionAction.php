@@ -11,6 +11,7 @@
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
 
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
@@ -25,18 +26,11 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class GetConnectorAttributeOptionAction
 {
-    private FindConnectorAttributeOptionInterface $findConnectorAttributeOptionQuery;
-    private ReferenceEntityExistsInterface $referenceEntityExists;
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        FindConnectorAttributeOptionInterface $findConnectorAttributeOptionQuery,
-        ReferenceEntityExistsInterface $referenceEntityExists,
-        SecurityFacade $securityFacade
+        private FindConnectorAttributeOptionInterface $findConnectorAttributeOptionQuery,
+        private ReferenceEntityExistsInterface $referenceEntityExists,
+        private SecurityFacade $securityFacade
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
-        $this->findConnectorAttributeOptionQuery = $findConnectorAttributeOptionQuery;
-        $this->securityFacade = $securityFacade;
     }
 
     /**

@@ -15,11 +15,8 @@ use Webmozart\Assert\Assert;
  */
 class ValueCollection implements \IteratorAggregate
 {
-    private array $values;
-
-    private function __construct(array $values)
+    private function __construct(private array $values)
     {
-        $this->values = $values;
     }
 
     public function normalize(): array

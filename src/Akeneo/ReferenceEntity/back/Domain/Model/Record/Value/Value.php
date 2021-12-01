@@ -13,21 +13,8 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
  */
 class Value
 {
-    private AttributeIdentifier $attributeIdentifier;
-    private ChannelReference $channelReference;
-    private LocaleReference $localeReference;
-    private ValueDataInterface $data;
-
-    private function __construct(
-        AttributeIdentifier $attributeIdentifier,
-        ChannelReference $channelReference,
-        LocaleReference $localeReference,
-        ValueDataInterface $data
-    ) {
-        $this->attributeIdentifier = $attributeIdentifier;
-        $this->channelReference = $channelReference;
-        $this->localeReference = $localeReference;
-        $this->data = $data;
+    private function __construct(private AttributeIdentifier $attributeIdentifier, private ChannelReference $channelReference, private LocaleReference $localeReference, private ValueDataInterface $data)
+    {
     }
 
     public static function create(

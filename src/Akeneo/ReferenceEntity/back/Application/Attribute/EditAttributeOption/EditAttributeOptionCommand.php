@@ -15,27 +15,7 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttributeOption;
 
 class EditAttributeOptionCommand
 {
-    /**@var string */
-    public $referenceEntityIdentifier;
-
-    /**@var string */
-    public $attributeCode;
-
-    /**@var string */
-    public $optionCode;
-
-    /** @var array|null */
-    public $labels;
-
-    public function __construct(
-        string $referenceEntityIdentifier,
-        string $attributeCode,
-        string $optionCode,
-        ?array $labels
-    ) {
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
-        $this->attributeCode = $attributeCode;
-        $this->optionCode = $optionCode;
-        $this->labels = $labels;
+    public function __construct(public string $referenceEntityIdentifier, public string $attributeCode, public string $optionCode, public ?array $labels)
+    {
     }
 }

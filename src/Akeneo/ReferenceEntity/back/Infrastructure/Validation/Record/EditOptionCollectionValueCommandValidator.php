@@ -48,7 +48,7 @@ class EditOptionCollectionValueCommandValidator extends ConstraintValidator
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
                     EditOptionCollectionValueCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

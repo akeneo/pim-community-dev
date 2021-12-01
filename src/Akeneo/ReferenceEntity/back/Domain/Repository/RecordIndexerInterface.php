@@ -10,8 +10,6 @@ interface RecordIndexerInterface
 {
     /**
      * Indexes multiple records
-     *
-     * @param RecordIdentifier $recordIdentifier
      */
     public function index(RecordIdentifier $recordIdentifier);
 

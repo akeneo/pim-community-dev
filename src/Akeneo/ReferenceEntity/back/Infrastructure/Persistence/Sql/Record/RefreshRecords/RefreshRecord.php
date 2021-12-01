@@ -14,11 +14,8 @@ use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
  */
 class RefreshRecord
 {
-    private RecordRepositoryInterface $recordRepository;
-
-    public function __construct(RecordRepositoryInterface $recordRepository)
+    public function __construct(private RecordRepositoryInterface $recordRepository)
     {
-        $this->recordRepository = $recordRepository;
     }
 
     public function refresh(RecordIdentifier $recordIdentifier): void

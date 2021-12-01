@@ -22,11 +22,9 @@ use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsI
 class CacheFindActivatedLocalesPerChannels implements FindActivatedLocalesPerChannelsInterface
 {
     private ?array $activatedLocalesPerChannels = null;
-    private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels;
 
-    public function __construct(FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels)
+    public function __construct(private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels)
     {
-        $this->findActivatedLocalesPerChannels = $findActivatedLocalesPerChannels;
     }
 
     public function findAll(): array

@@ -24,15 +24,8 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
 {
-    private Client $recordClient;
-    private RecordQueryBuilderInterface $recordQueryBuilder;
-
-    public function __construct(
-        Client $recordClient,
-        RecordQueryBuilderInterface $recordQueryBuilder
-    ) {
-        $this->recordClient = $recordClient;
-        $this->recordQueryBuilder = $recordQueryBuilder;
+    public function __construct(private Client $recordClient, private RecordQueryBuilderInterface $recordQueryBuilder)
+    {
     }
 
     /**
@@ -49,8 +42,6 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
     }
 
     /**
-     * @param array $matches
-     *
      * @return string[]
      */
     private function getIdentifiers(array $matches): array

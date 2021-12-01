@@ -14,11 +14,9 @@ use Doctrine\DBAL\Connection;
 class SqlAverageMaxNumberOfValuesPerRecord
 {
     private const VOLUME_NAME = 'average_max_number_of_values_per_record';
-    private Connection $sqlConnection;
 
-    public function __construct(Connection $sqlConnection)
+    public function __construct(private Connection $sqlConnection)
     {
-        $this->sqlConnection = $sqlConnection;
     }
 
     public function fetch(): AverageMaxVolumes

@@ -15,14 +15,11 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterSerializerPass implements CompilerPassInterface
 {
-    protected string $serializerServiceId;
-
     /** @staticvar integer The default priority for services */
     public const DEFAULT_PRIORITY = 100;
 
-    public function __construct(string $serializerServiceId)
+    public function __construct(protected string $serializerServiceId)
     {
-        $this->serializerServiceId = $serializerServiceId;
     }
 
     /**
@@ -32,7 +29,7 @@ class RegisterSerializerPass implements CompilerPassInterface
     {
         if (!$container->hasDefinition($this->serializerServiceId)) {
             throw new \LogicException(
-                sprintf('Resolver "%s" is called on an incorrect serializer service id', get_class($this))
+                sprintf('Resolver "%s" is called on an incorrect serializer service id', $this::class)
             );
         }
 

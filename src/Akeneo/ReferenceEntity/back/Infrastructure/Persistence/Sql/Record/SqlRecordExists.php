@@ -28,11 +28,8 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlRecordExists implements RecordExistsInterface
 {
-    private Connection $sqlConnection;
-
-    public function __construct(Connection $sqlConnection)
+    public function __construct(private Connection $sqlConnection)
     {
-        $this->sqlConnection = $sqlConnection;
     }
 
     public function withIdentifier(RecordIdentifier $recordIdentifier): bool

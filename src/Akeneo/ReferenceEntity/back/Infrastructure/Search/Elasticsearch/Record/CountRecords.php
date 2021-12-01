@@ -14,11 +14,8 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 class CountRecords implements CountRecordsInterface
 {
-    private Client $recordClient;
-
-    public function __construct(Client $recordClient)
+    public function __construct(private Client $recordClient)
     {
-        $this->recordClient = $recordClient;
     }
 
     public function forReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): int

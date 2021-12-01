@@ -25,18 +25,8 @@ use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
  */
 class CreateAttributeHandler
 {
-    private AttributeRepositoryInterface $attributeRepository;
-    private AttributeFactoryRegistryInterface $attributeFactoryRegistry;
-    private FindAttributeNextOrderInterface $attributeNextOrder;
-
-    public function __construct(
-        AttributeFactoryRegistryInterface $attributeFactoryRegistry,
-        AttributeRepositoryInterface $attributeRepository,
-        FindAttributeNextOrderInterface $attributeNextOrder
-    ) {
-        $this->attributeRepository = $attributeRepository;
-        $this->attributeFactoryRegistry = $attributeFactoryRegistry;
-        $this->attributeNextOrder = $attributeNextOrder;
+    public function __construct(private AttributeFactoryRegistryInterface $attributeFactoryRegistry, private AttributeRepositoryInterface $attributeRepository, private FindAttributeNextOrderInterface $attributeNextOrder)
+    {
     }
 
     public function __invoke(AbstractCreateAttributeCommand $command): void

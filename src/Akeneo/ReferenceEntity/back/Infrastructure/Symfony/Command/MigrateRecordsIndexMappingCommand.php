@@ -37,23 +37,13 @@ final class MigrateRecordsIndexMappingCommand extends Command
     public const CONFIGURATION_CODE = 'records_index_mapping_migration_%s';
     protected static $defaultName = 'akeneo:reference-entity:migrate-records-index-mapping';
 
-    private IndexMigrationIsDoneInterface $indexMigrationIsDone;
-    private MigrateIndexWithoutDowntimeHandlerInterface $migrateIndexWithoutDowntimeHandler;
-    private Loader $configurationLoader;
-    private string $recordIndexAlias;
-
     public function __construct(
-        IndexMigrationIsDoneInterface $indexMigrationIsDone,
-        MigrateIndexWithoutDowntimeHandlerInterface $migrateIndexWithoutDowntimeHandler,
-        Loader $configurationLoader,
-        string $recordIndexAlias
+        private IndexMigrationIsDoneInterface $indexMigrationIsDone,
+        private MigrateIndexWithoutDowntimeHandlerInterface $migrateIndexWithoutDowntimeHandler,
+        private Loader $configurationLoader,
+        private string $recordIndexAlias
     ) {
         parent::__construct(self::$defaultName);
-
-        $this->indexMigrationIsDone = $indexMigrationIsDone;
-        $this->migrateIndexWithoutDowntimeHandler = $migrateIndexWithoutDowntimeHandler;
-        $this->configurationLoader = $configurationLoader;
-        $this->recordIndexAlias = $recordIndexAlias;
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int

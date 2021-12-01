@@ -19,7 +19,7 @@ use Webmozart\Assert\Assert;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class AttributeCode
+class AttributeCode implements \Stringable
 {
     public const RESERVED_CODES = ['code', 'label', 'image'];
 

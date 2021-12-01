@@ -19,9 +19,7 @@ interface FindValueKeysToIndexForAllChannelsAndLocalesInterface
      *   'mobile' => [ ... ]
      * ]
      *
-     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
      *
-     * @return array
      */
     public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array;
 }

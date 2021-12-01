@@ -22,12 +22,7 @@ use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditReco
  */
 final class CreateAndEditRecordCommand
 {
-    public ?CreateRecordCommand $createRecordCommand;
-    public EditRecordCommand $editRecordCommand;
-
-    public function __construct(?CreateRecordCommand $createRecordCommand, EditRecordCommand $editRecordCommand)
+    public function __construct(public ?CreateRecordCommand $createRecordCommand, public EditRecordCommand $editRecordCommand)
     {
-        $this->createRecordCommand = $createRecordCommand;
-        $this->editRecordCommand = $editRecordCommand;
     }
 }

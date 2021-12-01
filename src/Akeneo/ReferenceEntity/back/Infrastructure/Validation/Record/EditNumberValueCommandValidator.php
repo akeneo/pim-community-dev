@@ -51,7 +51,7 @@ class EditNumberValueCommandValidator extends ConstraintValidator
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
                     EditNumberValueCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

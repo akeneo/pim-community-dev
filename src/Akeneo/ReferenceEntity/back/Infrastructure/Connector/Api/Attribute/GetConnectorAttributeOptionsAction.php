@@ -11,6 +11,7 @@
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
 
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeExistsInterface;
@@ -25,24 +26,13 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class GetConnectorAttributeOptionsAction
 {
-    private FindConnectorAttributeOptionsInterface $findConnectorAttributeOptionsQuery;
-    private ReferenceEntityExistsInterface $referenceEntityExists;
-    private AttributeExistsInterface $attributeExists;
-    private AttributeSupportsOptions $attributeSupportsOptions;
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        FindConnectorAttributeOptionsInterface $findConnectorAttributeOptionsQuery,
-        ReferenceEntityExistsInterface $referenceEntityExists,
-        AttributeExistsInterface $attributeExists,
-        AttributeSupportsOptions $attributeSupportsOptions,
-        SecurityFacade $securityFacade
+        private FindConnectorAttributeOptionsInterface $findConnectorAttributeOptionsQuery,
+        private ReferenceEntityExistsInterface $referenceEntityExists,
+        private AttributeExistsInterface $attributeExists,
+        private AttributeSupportsOptions $attributeSupportsOptions,
+        private SecurityFacade $securityFacade
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
-        $this->findConnectorAttributeOptionsQuery = $findConnectorAttributeOptionsQuery;
-        $this->attributeExists = $attributeExists;
-        $this->attributeSupportsOptions = $attributeSupportsOptions;
-        $this->securityFacade = $securityFacade;
     }
 
     /**

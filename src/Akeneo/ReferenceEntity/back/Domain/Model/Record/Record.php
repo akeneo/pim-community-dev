@@ -27,27 +27,8 @@ use DateTimeZone;
  */
 class Record
 {
-    private RecordIdentifier $identifier;
-    private RecordCode $code;
-    private ReferenceEntityIdentifier $referenceEntityIdentifier;
-    private ValueCollection $valueCollection;
-    private DateTimeImmutable $createdAt;
-    private DateTimeImmutable $updatedAt;
-
-    private function __construct(
-        RecordIdentifier $identifier,
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        RecordCode $code,
-        ValueCollection $valueCollection,
-        DateTimeImmutable $createdAt,
-        DateTimeImmutable $updatedAt
-    ) {
-        $this->identifier = $identifier;
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
-        $this->code = $code;
-        $this->valueCollection = $valueCollection;
-        $this->createdAt = $createdAt;
-        $this->updatedAt = $updatedAt;
+    private function __construct(private RecordIdentifier $identifier, private ReferenceEntityIdentifier $referenceEntityIdentifier, private RecordCode $code, private ValueCollection $valueCollection, private DateTimeImmutable $createdAt, private DateTimeImmutable $updatedAt)
+    {
     }
 
     public static function create(

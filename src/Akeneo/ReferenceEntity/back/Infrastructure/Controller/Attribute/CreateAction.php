@@ -36,30 +36,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateAction
 {
-    private CreateAttributeHandler $createAttributeHandler;
-    private SecurityFacade $securityFacade;
-    private NormalizerInterface $normalizer;
-    private ValidatorInterface $validator;
-    private CreateAttributeCommandFactoryRegistryInterface $attributeCommandFactoryRegistry;
-    private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
-    private TokenStorageInterface $tokenStorage;
-
-    public function __construct(
-        CreateAttributeHandler $createAttributeHandler,
-        CreateAttributeCommandFactoryRegistryInterface $attributeCommandFactoryRegistry,
-        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
-        TokenStorageInterface $tokenStorage,
-        NormalizerInterface $normalizer,
-        ValidatorInterface $validator,
-        SecurityFacade $securityFacade
-    ) {
-        $this->createAttributeHandler = $createAttributeHandler;
-        $this->normalizer = $normalizer;
-        $this->validator = $validator;
-        $this->securityFacade = $securityFacade;
-        $this->attributeCommandFactoryRegistry = $attributeCommandFactoryRegistry;
-        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
-        $this->tokenStorage = $tokenStorage;
+    public function __construct(private CreateAttributeHandler $createAttributeHandler, private CreateAttributeCommandFactoryRegistryInterface $attributeCommandFactoryRegistry, private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler, private TokenStorageInterface $tokenStorage, private NormalizerInterface $normalizer, private ValidatorInterface $validator, private SecurityFacade $securityFacade)
+    {
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier): Response

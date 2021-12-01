@@ -2,6 +2,7 @@
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
 
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -23,21 +24,12 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class GetConnectorReferenceEntityAttributesAction
 {
-    private FindConnectorAttributesByReferenceEntityIdentifierInterface $findConnectorReferenceEntityAttributes;
-    private ReferenceEntityExistsInterface $referenceEntityExists;
-    private AddHalSelfLinkToNormalizedConnectorAttribute $addHalSelfLinkToNormalizedConnectorAttribute;
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        FindConnectorAttributesByReferenceEntityIdentifierInterface $findConnectorReferenceEntityAttributes,
-        ReferenceEntityExistsInterface $referenceEntityExists,
-        AddHalSelfLinkToNormalizedConnectorAttribute $addHalSelfLinkToNormalizedConnectorAttribute,
-        SecurityFacade $securityFacade
+        private FindConnectorAttributesByReferenceEntityIdentifierInterface $findConnectorReferenceEntityAttributes,
+        private ReferenceEntityExistsInterface $referenceEntityExists,
+        private AddHalSelfLinkToNormalizedConnectorAttribute $addHalSelfLinkToNormalizedConnectorAttribute,
+        private SecurityFacade $securityFacade
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
-        $this->findConnectorReferenceEntityAttributes = $findConnectorReferenceEntityAttributes;
-        $this->addHalSelfLinkToNormalizedConnectorAttribute = $addHalSelfLinkToNormalizedConnectorAttribute;
-        $this->securityFacade = $securityFacade;
     }
 
     /**
