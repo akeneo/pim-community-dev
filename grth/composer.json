@@ -15,10 +15,7 @@
         },
         "psr-4": {
             "Akeneo\\Pim\\TableAttribute\\": "src/Akeneo/Pim/TableAttribute/back",
-            "Akeneo\\Platform\\": [
-                "src/Akeneo/Platform",
-                "vendor/akeneo/pim-community-dev/src/Akeneo/Platform"
-            ]
+            "Akeneo\\Platform\\": "src/Akeneo/Platform"
         },
         "exclude-from-classmap": [
             "vendor/akeneo/pim-community-dev/src/Kernel.php"
