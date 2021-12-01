@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\MediaFile;
 
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\MediaFileNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\MediaFileRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;

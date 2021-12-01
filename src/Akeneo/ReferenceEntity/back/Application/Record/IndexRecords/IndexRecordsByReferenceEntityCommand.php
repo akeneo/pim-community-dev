@@ -13,7 +13,6 @@ class IndexRecordsByReferenceEntityCommand
     public function __construct(
         /** string $referenceEntity */
         public string $referenceEntityIdentifier
-    )
-    {
+    ) {
     }
 }
