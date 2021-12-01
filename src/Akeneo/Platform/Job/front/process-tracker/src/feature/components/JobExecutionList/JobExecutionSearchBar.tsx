@@ -22,7 +22,7 @@ const JobExecutionSearchBar = ({
   onSearchChange,
 }: JobExecutionSearchBarProps) => {
   const translate = useTranslate();
-  const [userSearch, setUserSearch] = useState<string>(jobExecutionFilter.search ?? '');
+  const [userSearch, setUserSearch] = useState<string>(jobExecutionFilter.search);
   const debouncedUserSearch = useDebounce(userSearch, 250);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -40,9 +40,9 @@ const JobExecutionSearchBar = ({
       searchValue={userSearch}
       onSearchChange={setUserSearch}
     >
-      <TypeFilter typeFilterValue={jobExecutionFilter.type ?? []} onTypeFilterChange={onTypeFilterChange} />
-      <StatusFilter statusFilterValue={jobExecutionFilter.status ?? []} onStatusFilterChange={onStatusFilterChange} />
-      <UserFilter userFilterValue={jobExecutionFilter.user ?? []} onUserFilterChange={onUserFilterChange} />
+      <TypeFilter typeFilterValue={jobExecutionFilter.type} onTypeFilterChange={onTypeFilterChange} />
+      <StatusFilter statusFilterValue={jobExecutionFilter.status} onStatusFilterChange={onStatusFilterChange} />
+      <UserFilter userFilterValue={jobExecutionFilter.user} onUserFilterChange={onUserFilterChange} />
     </Search>
   );
 };
