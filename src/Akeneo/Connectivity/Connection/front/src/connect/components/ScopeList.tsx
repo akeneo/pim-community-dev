@@ -12,6 +12,8 @@ import {
     ProductIcon,
     ShopIcon,
     CheckRoundIcon,
+    EntityIcon,
+    AssetsIcon,
     AkeneoThemedProps,
     FontSize,
 } from 'akeneo-design-system';
@@ -42,6 +44,10 @@ const iconsMap: {[key: string]: React.ElementType} = {
     channel_localization: LocaleIcon,
     association_types: AssociateIcon,
     products: ProductIcon,
+    reference_entity: EntityIcon,
+    reference_entity_record: EntityIcon,
+    asset_families: AssetsIcon,
+    assets: AssetsIcon,
 };
 
 interface Props {
