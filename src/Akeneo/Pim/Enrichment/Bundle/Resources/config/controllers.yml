@@ -85,7 +85,6 @@ services:
             - '@pim_api.repository.channel'
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.search_after_hal_paginator'
-            - '@pim_api.security.primary_key_encrypter'
             - '@pim_api.updater.product_model'
             - '@pim_catalog.factory.product_model'
             - '@pim_catalog.saver.product_model'
