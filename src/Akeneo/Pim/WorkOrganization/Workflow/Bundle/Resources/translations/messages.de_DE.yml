@@ -64,7 +64,6 @@ pimee_workflow:
         fourth: Bestätigen
   check_removal:
     product_error: Ein veröffentlichtes Produkt kann nicht entfernt werden
-    product_model_error: Dieses Produktmodell hat ein Variantenprodukt, das veröffentlicht wurde. Bitte nehmen Sie die Veröffentlichung zurück Sie es und versuchen Sie es erneut.
     entity_error: Entitäten, die mit veröffentlichten Produkten verbunden sind, können nicht entfernt werden.
 btn:
   publish: Veröffentlichen

@@ -64,7 +64,6 @@ pimee_workflow:
         fourth: Bevestig
   check_removal:
     product_error: Niet mogelijk om een gepubliceerd product te verwijderen
-    product_model_error: Dit productmodel heeft een productvariatie die gepubliceerd is. Maak de publicatie ongedaan en probeer het opnieuw.
     entity_error: Entiteiten die aan gepubliceerde producten zijn gekoppeld, kunnen niet worden verwijderd.
 btn:
   publish: Publiceren

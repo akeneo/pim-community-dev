@@ -46,6 +46,7 @@ function downloadArtifacts() {
     BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${RELEASE_BUCKET}/${OLDEST_RELEASE}/deployments/ ~/zdd_compliancy_checker/${OLDEST_RELEASE}/deployments
     rm -rf ~/zdd_compliancy_checker/${OLDEST_RELEASE}/deployments/deployments/bin
     rm -rf ~/zdd_compliancy_checker/${OLDEST_RELEASE}/deployments/deployments/terraform/pim/templates/tests
+    rm -rf ~/zdd_compliancy_checker/${OLDEST_RELEASE}/deployments/deployments/Makefile
 
     # Download the target release Docker image and Terraform modules
     mkdir -p ~/zdd_compliancy_checker/${TARGET_RELEASE}/upgrades
@@ -58,6 +59,7 @@ function downloadArtifacts() {
     BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${RELEASE_BUCKET}/${TARGET_RELEASE}/deployments/ ~/zdd_compliancy_checker/${TARGET_RELEASE}/deployments
     rm -rf ~/zdd_compliancy_checker/${TARGET_RELEASE}/deployments/deployments/bin
     rm -rf ~/zdd_compliancy_checker/${TARGET_RELEASE}/deployments/deployments/terraform/pim/templates/tests
+    rm -rf ~/zdd_compliancy_checker/${TARGET_RELEASE}/deployments/deployments/Makefile
 }
 
 function getDiff() {
@@ -139,7 +141,7 @@ case $ZCC_CONTEXT in
 
         echo -en "\n\n - Differences in upgrades between the oldest release in production & the next release to deploy :\n\n"
         getDiff "${SOURCE}/upgrades" "${TARGET}/upgrades"
-        
+
         exit $?
         ;;
 esac

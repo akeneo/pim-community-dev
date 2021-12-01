@@ -64,7 +64,6 @@ pimee_workflow:
         fourth: 확인
   check_removal:
     product_error: 게시된 제품을 제거할 수 없습니다
-    product_model_error: 이 제품 모델에 게시된 변형 제품이 있습니다. 해당 제품의 게시를 취소하고 다시 시도하십시오.
     entity_error: 게시된 제품에 연결된 엔터티는 제거할 수 없습니다.
 btn:
   publish: 게시

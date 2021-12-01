@@ -9,12 +9,16 @@ aliases:
       GOOGLE_PROJECT_ID: "akecld-saas-dev"
       GOOGLE_COMPUTE_ZONE: "europe-west3-a"
       CLUSTER_NAME: "europe-west3-a"
+      GOOGLE_COMPUTE_ZONE_NEXT: "europe-west3-b"
+      CLUSTER_NAME_NEXT: "europe-west3-b"
 
   - &envVarsDeployPreprod
       ENV_NAME: "preprod"
       GOOGLE_PROJECT_ID: "akecld-saas-preprod"
       GOOGLE_COMPUTE_ZONE: "europe-west3-a"
       CLUSTER_NAME: "europe-west3-a"
+      GOOGLE_COMPUTE_ZONE_NEXT: "europe-west3-b"
+      CLUSTER_NAME_NEXT: "europe-west3-b"
 
   - &slack-fail-post-step
       post-steps:
@@ -55,8 +59,8 @@ jobs:
   checkout:
     parameters:
       PRODUCT_TYPE:
-        default: ""
         type: string
+        default: ""
     docker:
       - image: alpine/git
     resource_class: small
@@ -1157,9 +1161,9 @@ jobs:
   ##################
   ui_sanity_checks:
       parameters:
-          SOURCE_PFID:
-                type: string
-                default: ""
+        SOURCE_PFID:
+          type: string
+          default: ""
       machine:
           image: ubuntu-2004:202010-01
       resource_class: large
@@ -1217,11 +1221,14 @@ jobs:
   test_helm_generated_k8s_files:
       parameters:
         PRODUCT_TYPE:
-          default: "srnt"
           type: string
+          default: "srnt"
         CLUSTER_VERSION:
-            type: string
-            default: ""
+          type: string
+          default: ""
+        CLUSTER_NEXT:
+          type: boolean
+          default: false
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
@@ -1229,6 +1236,11 @@ jobs:
       steps:
           - attach_workspace:
                 at: ~/
+          - when:
+              condition:
+                equal: [true, << parameters.CLUSTER_NEXT >> ]
+              steps:
+                - modify_cluster
           - set_gcloud_config_dev
           - run:
               name: Define value for next steps
@@ -1250,8 +1262,8 @@ jobs:
   test_cronjobs_existence:
       parameters:
         PRODUCT_TYPE:
-          default: "srnt"
           type: string
+          default: "srnt"
       environment:
         <<: *envVarsDeployDev
       machine:
@@ -1273,8 +1285,11 @@ jobs:
   test_deploy:
       parameters:
         PRODUCT_TYPE:
-          default: "srnt"
           type: string
+          default: "srnt"
+        CLUSTER_NEXT:
+          type: boolean
+          default: false
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
@@ -1285,6 +1300,11 @@ jobs:
           - add_ssh_keys:
                 fingerprints:
                     - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+          - when:
+              condition:
+                equal: [true, << parameters.CLUSTER_NEXT >> ]
+              steps:
+                - modify_cluster
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
@@ -1343,8 +1363,11 @@ jobs:
   test_deploy_last_release:
     parameters:
       PRODUCT_TYPE:
-        default: "srnt"
         type: string
+        default: "srnt"
+      CLUSTER_NEXT:
+        type: boolean
+        default: false
     environment:
         <<: *envVarsDeployDev
     <<: *dockerCloudDeployerCurrent
@@ -1355,6 +1378,11 @@ jobs:
         - add_ssh_keys:
               fingerprints:
                   - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+        - when:
+              condition:
+                equal: [true, << parameters.CLUSTER_NEXT >> ]
+              steps:
+                - modify_cluster
         - set_gcloud_config_dev
         - restore_persisted_env_vars
         - run:
@@ -1413,8 +1441,11 @@ jobs:
   test_upgrade_from_last_release:
     parameters:
       PRODUCT_TYPE:
-        default: "srnt"
         type: string
+        default: "srnt"
+      CLUSTER_NEXT:
+        type: boolean
+        default: false
     environment:
         <<: *envVarsDeployDev
     <<: *dockerJenkinsCloudDeployer
@@ -1423,6 +1454,11 @@ jobs:
         - attach_workspace:
             at: ~/
         - add_ssh_keys
+        - when:
+            condition:
+              equal: [true, << parameters.CLUSTER_NEXT >> ]
+            steps:
+              - modify_cluster
         - set_gcloud_config_dev
         - restore_persisted_env_vars
         - run:
@@ -1487,12 +1523,12 @@ jobs:
 
   test_clone_from_customer_db:
       parameters:
-          PRODUCT_TYPE:
-              default: "srnt"
-              type: string
-          SOURCE_PFID:
-              default: ""
-              type: string
+        PRODUCT_TYPE:
+          type: string
+          default: "srnt"
+        SOURCE_PFID:
+          type: string
+          default: ""
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
@@ -1559,12 +1595,12 @@ jobs:
 
   test_upgrade_from_customer_db:
       parameters:
-          PRODUCT_TYPE:
-              default: "srnt"
-              type: string
-          SOURCE_PFID:
-              default: ""
-              type: string
+        PRODUCT_TYPE:
+          type: string
+          default: "srnt"
+        SOURCE_PFID:
+          type: string
+          default: ""
       environment:
           <<: *envVarsDeployDev
       <<: *dockerJenkinsCloudDeployer
@@ -1645,8 +1681,8 @@ jobs:
   release:
     parameters:
       PRODUCT_TYPE:
-        default: "srnt"
         type: string
+        default: "srnt"
     environment:
       <<: *envVarsDeployDev
     machine:
@@ -1816,8 +1852,8 @@ jobs:
   deploy_pr_environment:
     parameters:
       PRODUCT_TYPE:
-        default: "srnt"
         type: string
+        default: "srnt"
     environment:
         <<: *envVarsDeployDev
     <<: *dockerCloudDeployerNext
@@ -1902,8 +1938,8 @@ jobs:
   delete_environments_hourly:
       parameters:
         PRODUCT_TYPE:
-          default: ""
           type: string
+          default: ""
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
@@ -1931,8 +1967,8 @@ jobs:
   delete_pr_environment:
       parameters:
         PRODUCT_TYPE:
-          default: ""
           type: string
+          default: ""
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
@@ -1990,8 +2026,8 @@ jobs:
   zdd_compliancy_diff:
       parameters:
         PRODUCT_TYPE:
-          default: "srnt"
           type: string
+          default: "srnt"
       environment:
           <<: *envVarsDeployDev
       machine:
@@ -2017,11 +2053,11 @@ jobs:
   zdd_compliancy_checker:
       parameters:
         PRODUCT_TYPE:
+          type: string
           default: "srnt"
-          type: string
         CONTEXT:
-          default: "diff_infra"
           type: string
+          default: "diff_infra"
       machine:
           image: ubuntu-2004:202010-01
       resource_class: medium
@@ -2037,11 +2073,11 @@ jobs:
   post_deployment_e2e_validation:
       parameters:
         PRODUCT_TYPE:
+          type: string
           default: "srnt"
-          type: string
         PFID:
-          default: "srnt-c3po"
           type: string
+          default: "srnt-c3po"
       machine:
           image: ubuntu-2004:202010-01
       resource_class: medium
@@ -2637,6 +2673,56 @@ workflows:
                 requires:
                     - "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
 
+  nightly_next_cluster:
+    when:
+        and:
+            - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+            - equal: [ "nightly_next_cluster", << pipeline.schedule.name >> ]
+    jobs:
+      - checkout
+      - test_helm_generated_k8s_files:
+          name: "[<< matrix.PRODUCT_TYPE >>] Test helm generated k8s files"
+          matrix:
+            parameters:
+              PRODUCT_TYPE: ["srnt"]
+              CLUSTER_NEXT: [true]
+          requires:
+            - checkout
+      - build_srnt_prod:
+          requires:
+            - "[srnt] Test helm generated k8s files"
+      - test_cronjobs_existence:
+          name: "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+          matrix:
+            parameters:
+              PRODUCT_TYPE: ["srnt"]
+          requires:
+            - build_srnt_prod
+      - test_deploy:
+          name: "[<< matrix.PRODUCT_TYPE >>] Test deploy"
+          matrix:
+            parameters:
+              PRODUCT_TYPE: ["srnt"]
+              CLUSTER_NEXT: [true]
+          requires:
+            - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+      - test_deploy_last_release:
+          name: "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
+          matrix:
+            parameters:
+              PRODUCT_TYPE: ["srnt"]
+              CLUSTER_NEXT: [true]
+          requires:
+            - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+      - test_upgrade_from_last_release:
+          name: "[<< matrix.PRODUCT_TYPE >>] Test upgrade from last release"
+          matrix:
+            parameters:
+              PRODUCT_TYPE: ["srnt"]
+              CLUSTER_NEXT: [true]
+          requires:
+            - "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
+
   hourly_cleanup:
      when:
          and:
@@ -2726,6 +2812,19 @@ commands:
             echo "Persisted env vars:"
             cat persisted_env_vars
             cat persisted_env_vars >> $BASH_ENV
+
+  modify_cluster:
+    description: "Modify cluster version if needed"
+    steps:
+      - run:
+          name: Modify cluster version
+          command: |
+            GOOGLE_COMPUTE_ZONE=${GOOGLE_COMPUTE_ZONE_NEXT}
+            CLUSTER_NAME=${CLUSTER_NAME_NEXT}
+            GOOGLE_CLUSTER_ZONE=${CLUSTER_NAME_NEXT}
+            echo export GOOGLE_COMPUTE_ZONE=${GOOGLE_COMPUTE_ZONE} >> $BASH_ENV
+            echo export CLUSTER_NAME=${CLUSTER_NAME} >> $BASH_ENV
+            echo export GOOGLE_CLUSTER_ZONE=${GOOGLE_CLUSTER_ZONE} >> $BASH_ENV
 
   install_yq:
     description: "Install yq"
