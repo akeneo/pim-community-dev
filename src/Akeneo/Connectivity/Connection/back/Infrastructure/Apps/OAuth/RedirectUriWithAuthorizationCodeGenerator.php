@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
 
+use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthenticationUser;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
 
@@ -13,21 +14,26 @@ use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
  */
 class RedirectUriWithAuthorizationCodeGenerator implements RedirectUriWithAuthorizationCodeGeneratorInterface
 {
-    private AuthorizationCodeGeneratorInterface $authorizationCodeGenerator;
-
-    public function __construct(AuthorizationCodeGeneratorInterface $authorizationCodeGenerator)
+    public function __construct(private AuthorizationCodeGeneratorInterface $authorizationCodeGenerator)
     {
-        $this->authorizationCodeGenerator = $authorizationCodeGenerator;
     }
 
     public function generate(
         AppAuthorization $appAuthorization,
-        AppConfirmation $appConfirmation
+        AppConfirmation $appConfirmation,
+        AppAuthenticationUser $appAuthenticationUser
     ): string {
+        $userId = $appAuthenticationUser->getPimUserId();
         $redirectUri = $appAuthorization->getRedirectUri();
-        $state = $appAuthorization->getState();
+        $scope = $appAuthorization->getScopeList()->toScopeString();
 
-        $code = $this->authorizationCodeGenerator->generate($appConfirmation, $redirectUri);
+        $code = $this->authorizationCodeGenerator->generate(
+            $appConfirmation,
+            $userId,
+            $redirectUri,
+            $scope
+        );
+        $state = $appAuthorization->getState();
 
         return $this->appendQueryParams($redirectUri, [
             'code' => $code,

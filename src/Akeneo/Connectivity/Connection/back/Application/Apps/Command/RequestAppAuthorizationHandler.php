@@ -7,8 +7,8 @@ namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
+use Akeneo\Connectivity\Connection\Domain\Apps\ScopeFilterInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -17,21 +17,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class RequestAppAuthorizationHandler
 {
-    private ValidatorInterface $validator;
-    private AppAuthorizationSessionInterface $session;
-    private ScopeMapperRegistry $scopeMapper;
-    private GetAppQueryInterface $getAppQuery;
-
     public function __construct(
-        ValidatorInterface $validator,
-        AppAuthorizationSessionInterface $session,
-        ScopeMapperRegistry $scopeMapper,
-        GetAppQueryInterface $getAppQuery
+        private ValidatorInterface $validator,
+        private AppAuthorizationSessionInterface $session,
+        private ScopeFilterInterface $scopeFilter,
+        private GetAppQueryInterface $getAppQuery
     ) {
-        $this->validator = $validator;
-        $this->session = $session;
-        $this->scopeMapper = $scopeMapper;
-        $this->getAppQuery = $getAppQuery;
     }
 
     public function handle(RequestAppAuthorizationCommand $command): void
@@ -46,13 +37,9 @@ final class RequestAppAuthorizationHandler
             throw new \ErrorException('App should exists when validating the authorization wizard');
         }
 
-        $supportedScopes = $this->scopeMapper->getAllScopes();
-        $requestedScopes = \explode(' ', $command->getScope());
-        $allowedScopes = \array_intersect($requestedScopes, $supportedScopes);
-
         $authorization = AppAuthorization::createFromRequest(
             $command->getClientId(),
-            \implode(' ', $allowedScopes),
+            $this->scopeFilter->filterAllowedScopes($command->getScope()),
             $app->getCallbackUrl(),
             $command->getState(),
         );

@@ -40,6 +40,10 @@ security:
             pattern:                        ^/connect/apps/v1/oauth2/token
             security:                       false
 
+        jwt_public_key:
+            pattern:                        ^/connect/apps/jwt-public-key
+            security:                       false
+
         api_index:
             pattern:                        ^/api/rest/v1$
             security:                       false

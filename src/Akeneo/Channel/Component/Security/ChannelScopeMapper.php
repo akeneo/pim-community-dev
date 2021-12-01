@@ -55,13 +55,18 @@ class ChannelScopeMapper implements ScopeMapperInterface
         ],
     ];
 
-    public function getScopes(): array
+    public function getAuthorizationScopes(): array
     {
         return [
             self::SCOPE_READ_CHANNEL_LOCALIZATION,
             self::SCOPE_READ_CHANNEL_SETTINGS,
             self::SCOPE_WRITE_CHANNEL_SETTINGS,
         ];
+    }
+
+    public function getAuthenticationScopes(): array
+    {
+        return [];
     }
 
     public function getAcls(string $scopeName): array

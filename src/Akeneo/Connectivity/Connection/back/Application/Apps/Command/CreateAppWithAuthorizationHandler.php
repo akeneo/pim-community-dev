@@ -85,7 +85,8 @@ final class CreateAppWithAuthorizationHandler
             throw new \LogicException('The user group should have a name, got null.');
         }
 
-        $role = $this->appRoleWithScopesFactory->createRole($appId, $appAuthorization->getScopeList());
+        // @TODO Question, should the role include authentication scopes?
+        $role = $this->appRoleWithScopesFactory->createRole($appId, $appAuthorization->getScopeList()->getScopes());
         if (null === $role->getRole()) {
             throw new \LogicException('The user role should have a role code, like ROLE_*, got null.');
         }
@@ -108,7 +109,7 @@ final class CreateAppWithAuthorizationHandler
 
         $this->createApp->execute(
             $marketplaceApp,
-            $appAuthorization->getScopeList(),
+            $appAuthorization->getScopeList()->getScopes(),
             $connection->code(),
             $group->getName()
         );
