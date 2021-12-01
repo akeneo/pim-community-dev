@@ -105,7 +105,7 @@ pim_enrich.entity.association_type:
       success: Le type d'association est créé avec succès
     delete:
       success: Le type d'association a été supprimé avec succès
-      fail: Ce type d'association est utilisé par au moins un produit. Pour le supprimer, merci de retirer les liaisons de chaque produit concerné.
+      fail: Impossible de supprimer ce type d'association
   page_title:
     index: "]-Inf, 1]{{ count }} type d'association|]1, Inf[{{ count }} types d'association"
   module:
