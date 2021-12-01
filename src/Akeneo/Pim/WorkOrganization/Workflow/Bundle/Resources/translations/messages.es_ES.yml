@@ -64,7 +64,6 @@ pimee_workflow:
         fourth: Confirmación
   check_removal:
     product_error: Imposible eliminar un producto publicado
-    product_model_error: Este modelo de producto tiene una variante de producto que ha sido publicada. Despublíquela y vuelva a intentarlo.
     entity_error: Las entidades vinculadas a productos publicados no se pueden eliminar.
 btn:
   publish: Publicar

@@ -64,7 +64,6 @@ pimee_workflow:
         fourth: 确认
   check_removal:
     product_error: 无法移除已发布的产品
-    product_model_error: 该产品模型有一个已发布的变型产品。请取消发布然后重试。
     entity_error: 无法移除与已发布产品相关联的实体。
 btn:
   publish: 发布
