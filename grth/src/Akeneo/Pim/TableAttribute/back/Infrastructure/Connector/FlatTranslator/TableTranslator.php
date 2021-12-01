@@ -17,14 +17,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeVa
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
-use Webmozart\Assert\Assert;
 
 final class TableTranslator implements FlatAttributeValueTranslatorInterface
 {
     private TableConfigurationRepository $tableConfigurationRepository;
-    /** @var iterable<TableValueTranslator> */
-    private iterable $tableValueTranslators;
+    private TableValueTranslatorRegistry $tableValueTranslatorRegistry;
     private array $columnLabelsByAttributeCodeAndLocaleCode = [];
 
     /**
@@ -32,13 +29,10 @@ final class TableTranslator implements FlatAttributeValueTranslatorInterface
      */
     public function __construct(
         TableConfigurationRepository $tableConfigurationRepository,
-        iterable $tableValueTranslators
+        TableValueTranslatorRegistry $tableValueTranslatorRegistry
     ) {
         $this->tableConfigurationRepository = $tableConfigurationRepository;
-        foreach ($tableValueTranslators as $tableValueTranslator) {
-            Assert::isInstanceOf($tableValueTranslator, TableValueTranslator::class);
-            $this->tableValueTranslators[$tableValueTranslator->getSupportedColumnDataType()] = $tableValueTranslator;
-        }
+        $this->tableValueTranslatorRegistry = $tableValueTranslatorRegistry;
     }
 
     public function supports(string $attributeType, string $columnName): bool
@@ -75,7 +69,7 @@ final class TableTranslator implements FlatAttributeValueTranslatorInterface
                     $label = $indexedColumnLabels[$columnCode]
                         ?? \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $columnCode);
                     unset($decodedValue[$index][$columnCode]);
-                    $decodedValue[$index][$label] = $this->translateValue(
+                    $decodedValue[$index][$label] = $this->tableValueTranslatorRegistry->translate(
                         $attributeCode,
                         $columnCode,
                         $locale,
@@ -123,25 +117,5 @@ final class TableTranslator implements FlatAttributeValueTranslatorInterface
         }
 
         return $this->columnLabelsByAttributeCodeAndLocaleCode[$key];
-    }
-
-    private function translateValue(
-        string $attributeCode,
-        string $columnCode,
-        string $localeCode,
-        mixed $cellValue
-    ): mixed {
-        $tableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($attributeCode);
-        $column = $tableConfiguration->getColumnByCode(ColumnCode::fromString($columnCode));
-        if (null === $column) {
-            return $cellValue;
-        }
-
-        $valueTranslator = $this->tableValueTranslators[$column->dataType()->asString()] ?? null;
-
-        return null !== $valueTranslator
-            ? $valueTranslator->translate($attributeCode, $column, $localeCode, $cellValue)
-            : $cellValue
-            ;
     }
 }

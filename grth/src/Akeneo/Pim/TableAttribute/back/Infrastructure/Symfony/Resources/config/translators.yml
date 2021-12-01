@@ -1,8 +1,13 @@
 services:
-    Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableTranslator:
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValueTranslatorRegistry:
         arguments:
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
             - !tagged_iterator pim_table_attribute.translator.value_translator
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableTranslator:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValueTranslatorRegistry'
         tags:
             - { name: pim_enrich.connector.flat_translators.attribute_value }
 
@@ -17,3 +22,8 @@ services:
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository'
         tags:
             - { name: pim_table_attribute.translator.value_translator}
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValuesTranslator:
+        class: Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValuesTranslator
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValueTranslatorRegistry'

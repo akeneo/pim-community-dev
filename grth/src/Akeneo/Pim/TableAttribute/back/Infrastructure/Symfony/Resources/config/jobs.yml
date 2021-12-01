@@ -198,7 +198,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_table_attribute.reader.database.product.table_values'
             - '@pim_table_attribute.processor.normalization.product_table_values'
-            - '@pim_table_attribute.writer.table_values.file.csv'
+            - '@pim_table_attribute.writer.table_values_with_label.file.csv'
             - 1000
             - '@akeneo_batch.job.job_stopper'
 
@@ -210,7 +210,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_table_attribute.reader.database.product.table_values'
             - '@pim_table_attribute.processor.normalization.product_table_values'
-            - '@pim_table_attribute.writer.table_values.file.xlsx'
+            - '@pim_table_attribute.writer.table_values_with_label.file.xlsx'
             - 1000
             - '@akeneo_batch.job.job_stopper'
 
@@ -436,12 +436,24 @@ services:
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_table_attribute.writer.file.select_options.flat_item_buffer_flusher'
 
+    pim_table_attribute.writer.table_values_with_label.file.csv:
+        class: Akeneo\Pim\TableAttribute\Infrastructure\Connector\Writer\File\TableValuesWriter
+        arguments:
+            - '@pim_table_attribute.writer.table_values.file.csv'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValuesTranslator'
+
     pim_table_attribute.writer.table_values.file.csv:
         class: Akeneo\Tool\Component\Connector\Writer\File\Csv\Writer
         arguments:
             - '@pim_connector.array_converter.dummy'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_table_attribute.writer.file.table_values.flat_item_buffer_flusher'
+
+    pim_table_attribute.writer.table_values_with_label.file.xlsx:
+        class: Akeneo\Pim\TableAttribute\Infrastructure\Connector\Writer\File\TableValuesWriter
+        arguments:
+            - '@pim_table_attribute.writer.table_values.file.xlsx'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValuesTranslator'
 
     pim_table_attribute.writer.table_values.file.xlsx:
         class: Akeneo\Tool\Component\Connector\Writer\File\Xlsx\Writer
