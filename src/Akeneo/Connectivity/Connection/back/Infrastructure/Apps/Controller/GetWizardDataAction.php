@@ -19,18 +19,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class GetWizardDataAction
 {
-    private GetAppQueryInterface $getAppQuery;
-    private AppAuthorizationSessionInterface $appAuthorizationSession;
-    private ScopeMapperRegistry $scopeMapperRegistry;
-
     public function __construct(
-        GetAppQueryInterface $getAppQuery,
-        AppAuthorizationSessionInterface $appAuthorizationSession,
-        ScopeMapperRegistry $scopeMapperRegistry
+        private GetAppQueryInterface $getAppQuery,
+        private AppAuthorizationSessionInterface $appAuthorizationSession,
+        private ScopeMapperRegistry $scopeMapperRegistry
     ) {
-        $this->getAppQuery = $getAppQuery;
-        $this->appAuthorizationSession = $appAuthorizationSession;
-        $this->scopeMapperRegistry = $scopeMapperRegistry;
     }
 
     public function __invoke(Request $request, string $clientId): Response
@@ -49,12 +42,13 @@ class GetWizardDataAction
             throw new NotFoundHttpException("Invalid app identifier");
         }
 
-        $scopeMessages = $this->scopeMapperRegistry->getMessages($appAuthorization->getScopeList());
+        $scopeMessages = $this->scopeMapperRegistry->getMessages($appAuthorization->getScopeList()->getScopes());
 
         return new JsonResponse([
             'appName' => $app->getName(),
             'appLogo' => $app->getLogo(),
             'scopeMessages' => $scopeMessages,
+            // @TODO add authenticationScopeMessages
         ]);
     }
 }

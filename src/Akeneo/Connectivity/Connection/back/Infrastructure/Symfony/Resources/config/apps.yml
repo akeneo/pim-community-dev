@@ -68,7 +68,17 @@ services:
             - '@fos_oauth_server.storage.default'
             - '@akeneo_connectivity.connection.service.apps.client_provider'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RandomCodeGenerator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAppConfirmationQuery'
+            - '@pim_user.repository.user'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateJsonWebToken'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetConnectedAppScopesQuery'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateJsonWebToken:
+        arguments:
+            - '@akeneo_connectivity.connection.clock'
+            - '@pim_framework.service.pim_url'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAsymmetricKeysQuery'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup:
         arguments:
@@ -87,9 +97,21 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUserGroup'
             - '@Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUserRole'
 
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetUserConsentedAuthenticationScopesQuery'
+            - '@pim_user.repository.user'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider:
+        arguments:
+            - '@security.token_storage'
+
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry:
         arguments:
             - !tagged_iterator pim_api.security.scope_mapper
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\OpenIdScopeMapper:
+        tags: ['pim_api.security.scope_mapper']
 
     # queries
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAllConnectedAppsPublicIdsQuery:
@@ -109,5 +131,17 @@ services:
             - '@database_connection'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetConnectedAppScopesQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetUserConsentedAuthenticationScopesQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\CreateUserConsentQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAsymmetricKeysQuery:
         arguments:
             - '@database_connection'

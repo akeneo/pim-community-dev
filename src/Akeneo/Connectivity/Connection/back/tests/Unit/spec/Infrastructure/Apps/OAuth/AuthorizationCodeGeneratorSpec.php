@@ -45,20 +45,22 @@ class AuthorizationCodeGeneratorSpec extends ObjectBehavior
     ): void {
         $code = 'MjE3NTE3YjQ0MzcwYTU1YjZlZjRhMzZiZGQwOWZmMDhlMmFkMzIxNmM5YjhiYjg2M2QwMjg4ZGIzZjE5ZjAzMg';
         $appId = '2ef7885a-4951-4d5a-bd28-1a8988b9476e';
-        $userId = 1;
+        $appUserId = 3;
         $userGroup = 'my_user_group';
         $fosClientId = 2;
         $appConfirmation = AppConfirmation::create(
             $appId,
-            $userId,
+            $appUserId,
             $userGroup,
             $fosClientId,
         );
         $redirectUri = 'https://foo.example.com/oauth/callback';
         $timestamp = 1634572000;
+        $pimUserId = 1;
+        $scope = 'openid email';
 
         $randomCodeGenerator->generate()->willReturn($code);
-        $userRepository->find($userId)->willReturn($user);
+        $userRepository->find($pimUserId)->willReturn($user);
         $clientManager->findClientBy(['id' => $fosClientId])->willReturn($client);
         $clock->now()->willReturn($now);
         $now->getTimestamp()->willReturn($timestamp);
@@ -68,10 +70,11 @@ class AuthorizationCodeGeneratorSpec extends ObjectBehavior
             $client,
             $user,
             $redirectUri,
-            $timestamp + 30
+            $timestamp + 30,
+            $scope
         )
             ->shouldBeCalled();
 
-        $this->generate($appConfirmation, $redirectUri)->shouldReturn($code);
+        $this->generate($appConfirmation, $pimUserId, $redirectUri, $scope)->shouldReturn($code);
     }
 }

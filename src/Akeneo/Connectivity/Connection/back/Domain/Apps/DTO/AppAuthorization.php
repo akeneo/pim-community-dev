@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\Apps\DTO;
 
+use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
+
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -71,12 +73,9 @@ class AppAuthorization
         ];
     }
 
-    /**
-     * @return string[]
-     */
-    public function getScopeList(): array
+    public function getScopeList(): ScopeList
     {
-        return empty($this->scope) ? [] : explode(' ', $this->scope);
+        return ScopeList::fromScopeString($this->scope);
     }
 
     public function getState(): ?string

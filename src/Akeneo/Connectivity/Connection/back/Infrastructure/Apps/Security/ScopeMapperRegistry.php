@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Security;
 
+use Akeneo\Connectivity\Connection\Domain\Apps\ScopeFilterInterface;
+
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ScopeMapperRegistry
+final class ScopeMapperRegistry implements ScopeFilterInterface
 {
-    /** @var array<string, ScopeMapperInterface> */
-    private iterable $scopeMappers = [];
-
-    public function __construct(iterable $scopeMappers)
+    /**
+     * @param array<string,ScopeMapperInterface> $scopeMappers
+     */
+    public function __construct(private iterable $scopeMappers = [])
     {
         foreach ($scopeMappers as $scopeMapper) {
             if (!$scopeMapper instanceof ScopeMapperInterface) {
@@ -26,7 +28,9 @@ final class ScopeMapperRegistry
                     )
                 );
             }
-            foreach ($scopeMapper->getScopes() as $scope) {
+
+            $scopes = [...$scopeMapper->getAuthorizationScopes(), ...$scopeMapper->getAuthenticationScopes()];
+            foreach ($scopes as $scope) {
                 if (\array_key_exists($scope, $this->scopeMappers)) {
                     throw new \InvalidArgumentException(
                         sprintf(
@@ -41,12 +45,28 @@ final class ScopeMapperRegistry
         }
     }
 
-    /**
-     * @return string[]
-     */
-    public function getAllScopes(): array
+    public function filterAllowedScopes(string $requestedScope): string
     {
-        return \array_keys($this->scopeMappers);
+        $supportedScopes = \array_keys($this->scopeMappers);
+        $allowedScopes = \array_intersect(\explode(' ', $requestedScope), $supportedScopes);
+
+        return \implode(' ', $allowedScopes);
+    }
+
+    public function filterAuthenticationScopes(array $scopes): array
+    {
+        $authenticationScopes = [];
+        foreach ($this->scopeMappers as $scopeMapper) {
+            $authenticationScopes  = array_merge(
+                $authenticationScopes,
+                array_intersect(
+                    $scopeMapper->getAuthenticationScopes(),
+                    $scopes
+                )
+            );
+        }
+
+        return $authenticationScopes;
     }
 
     /**

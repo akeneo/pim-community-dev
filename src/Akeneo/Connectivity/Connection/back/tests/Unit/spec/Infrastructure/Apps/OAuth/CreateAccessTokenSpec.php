@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAccessTokenInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetConnectedAppScopesQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateAccessToken;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateJsonWebToken;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RandomCodeGeneratorInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use OAuth2\IOAuth2GrantCode;
 use OAuth2\Model\IOAuth2AuthCode;
 use PhpSpec\ObjectBehavior;
@@ -20,9 +24,22 @@ class CreateAccessTokenSpec extends ObjectBehavior
         IOAuth2GrantCode $storage,
         ClientProviderInterface $clientProvider,
         RandomCodeGeneratorInterface $randomCodeGenerator,
+        GetAppConfirmationQueryInterface $appConfirmationQuery,
+        UserRepositoryInterface $userRepository,
+        AppAuthenticationUserProvider $appAuthenticationUserProvider,
+        CreateJsonWebToken $createJsonWebToken,
         GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery
     ): void {
-        $this->beConstructedWith($storage, $clientProvider, $randomCodeGenerator, $getConnectedAppScopesQuery);
+        $this->beConstructedWith(
+            $storage,
+            $clientProvider,
+            $randomCodeGenerator,
+            $appConfirmationQuery,
+            $userRepository,
+            $appAuthenticationUserProvider,
+            $createJsonWebToken,
+            $getConnectedAppScopesQuery
+        );
     }
 
     public function it_is_a_create_access_token(): void

@@ -8,9 +8,15 @@ use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInter
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\CreateUserConsentQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
+use Akeneo\Connectivity\Connection\Domain\Clock;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Psr\Log\LoggerInterface;
@@ -27,36 +33,24 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ConfirmAuthorizationAction
 {
-    private CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler;
-    private FeatureFlag $featureFlag;
-    private GetAppConfirmationQueryInterface $getAppConfirmationQuery;
-    private SecurityFacade $security;
-    private ViolationListNormalizer $violationListNormalizer;
-    private LoggerInterface $logger;
-    private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator;
-    private AppAuthorizationSessionInterface $appAuthorizationSession;
-
     public function __construct(
-        CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler,
-        FeatureFlag $featureFlag,
-        GetAppConfirmationQueryInterface $getAppConfirmationQuery,
-        ViolationListNormalizer $violationListNormalizer,
-        SecurityFacade $security,
-        LoggerInterface $logger,
-        RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
-        AppAuthorizationSessionInterface $appAuthorizationSession
+        private CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler,
+        private FeatureFlag $featureFlag,
+        private GetAppConfirmationQueryInterface $getAppConfirmationQuery,
+        private ViolationListNormalizer $violationListNormalizer,
+        private SecurityFacade $security,
+        private LoggerInterface $logger,
+        private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
+        private AppAuthorizationSessionInterface $appAuthorizationSession,
+        private AppAuthenticationUserProvider $appAuthenticationUserProvider,
+        private CreateUserConsentQueryInterface $createUserConsentQuery,
+        private Clock $clock,
+        private ScopeMapperRegistry $scopeMapperRegistry,
+        private ConnectedPimUserProvider $connectedPimUserProvider
     ) {
-        $this->createAppWithAuthorizationHandler = $createAppWithAuthorizationHandler;
-        $this->featureFlag = $featureFlag;
-        $this->getAppConfirmationQuery = $getAppConfirmationQuery;
-        $this->violationListNormalizer = $violationListNormalizer;
-        $this->security = $security;
-        $this->logger = $logger;
-        $this->redirectUriWithAuthorizationCodeGenerator = $redirectUriWithAuthorizationCodeGenerator;
-        $this->appAuthorizationSession = $appAuthorizationSession;
     }
 
-    public function __invoke(Request $request, string $clientId): Response
+    public function __invoke(Request $request, string $clientId, bool $hasUserAuthenticationConsent = true): Response
     {
         if (!$this->featureFlag->isEnabled()) {
             throw new NotFoundHttpException();
@@ -73,7 +67,9 @@ class ConfirmAuthorizationAction
         try {
             $this->createAppWithAuthorizationHandler->handle(new CreateAppWithAuthorizationCommand($clientId));
         } catch (InvalidAppAuthorizationRequest $exception) {
-            $this->logger->warning(sprintf('App activation failed with validation error "%s"', $exception->getMessage()));
+            $this->logger->warning(
+                sprintf('App activation failed with validation error "%s"', $exception->getMessage())
+            );
 
             return new JsonResponse([
                 'errors' => $this->violationListNormalizer->normalize($exception->getConstraintViolationList()),
@@ -90,7 +86,27 @@ class ConfirmAuthorizationAction
             throw new \LogicException('The connected app should have been created');
         }
 
-        $redirectUrl = $this->redirectUriWithAuthorizationCodeGenerator->generate($appAuthorization, $appConfirmation);
+        $appAuthenticationUser = $this->appAuthenticationUserProvider->getAppAuthenticationUser(
+            $appConfirmation->getAppId(),
+            $this->connectedPimUserProvider->getCurrentUserId()
+        );
+
+        $scopes = ScopeList::fromScopeString($appAuthorization->scope);
+        if ($scopes->hasScopeOpenId() && $hasUserAuthenticationConsent) {
+            $authenticationScopes = $this->scopeMapperRegistry->filterAuthenticationScopes($scopes->getScopes());
+            $this->createUserConsentQuery->execute(
+                $appAuthenticationUser->getPimUserId(),
+                $appConfirmation->getAppId(),
+                $authenticationScopes,
+                $this->clock->now()
+            );
+        }
+
+        $redirectUrl = $this->redirectUriWithAuthorizationCodeGenerator->generate(
+            $appAuthorization,
+            $appConfirmation,
+            $appAuthenticationUser
+        );
 
         return new JsonResponse([
             'appId' => $appConfirmation->getAppId(),
