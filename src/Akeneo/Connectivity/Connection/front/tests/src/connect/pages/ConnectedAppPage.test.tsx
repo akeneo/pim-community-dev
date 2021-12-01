@@ -75,9 +75,7 @@ test('The connected app page renders with internal api errors', async () => {
     });
 
     renderWithProviders(<ConnectedAppPage />);
-    await waitFor(() =>
-        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.not_found')
-    );
+    await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.not_found'));
 
     expect(screen.queryByText('error.exception', {exact: false})).toBeInTheDocument();
     expect(

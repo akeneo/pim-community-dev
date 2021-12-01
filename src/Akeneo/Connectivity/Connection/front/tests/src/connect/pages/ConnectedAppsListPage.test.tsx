@@ -111,9 +111,7 @@ test('The connected apps list page renders without connected apps', async () => 
     });
 
     renderWithProviders(<ConnectedAppsListPage />);
-    await waitFor(() =>
-        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty')
-    );
+    await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty'));
 
     expect(screen.queryByText('pim_menu.tab.connect')).toBeInTheDocument();
     expect(screen.queryAllByText('pim_menu.item.connected_apps')).toHaveLength(2);

@@ -12,9 +12,7 @@ beforeEach(() => {
 
 test('No connected apps section renders', async () => {
     renderWithProviders(<NoConnectedApps />);
-    await waitFor(() =>
-        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty')
-    );
+    await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty'));
 
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty')

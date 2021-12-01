@@ -85,9 +85,7 @@ test('The connected apps list renders with 2 connected apps card', async () => {
 
 test('The connected apps list renders without connected apps', async () => {
     renderWithProviders(<ConnectedAppsContainer connectedApps={[]} />);
-    await waitFor(() =>
-        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty')
-    );
+    await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty'));
 
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.title', {exact: false})
