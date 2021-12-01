@@ -1,7 +1,6 @@
 import React, {useCallback} from 'react';
 import {AttributesIllustration, Breadcrumb, Pagination} from 'akeneo-design-system';
 import {
-  useStorageState,
   useTranslate,
   useRoute,
   PimView,
@@ -12,23 +11,15 @@ import {
 } from '@akeneo-pim-community/shared';
 import {useJobExecutionTable} from '../hooks';
 import {JobExecutionSearchBar, JobExecutionTable} from '../components';
-import {
-  getDefaultJobExecutionFilter,
-  isDefaultJobExecutionFilter,
-  JobExecutionFilter,
-  JobExecutionFilterSort,
-  JobStatus,
-} from '../models';
-
-const FILTER_LOCAL_STORAGE_KEY = 'process-tracker.filters';
+import {isDefaultJobExecutionFilter, JobExecutionFilterSort, JobStatus} from '../models';
+import {useStoredJobExecutionFilter} from '../hooks/useStoredJobExecutionFilter';
 
 const JobExecutionList = () => {
   const activityHref = useRoute('pim_dashboard_index');
   const translate = useTranslate();
-  const [jobExecutionFilter, setJobExecutionFilter] = useStorageState<JobExecutionFilter>(
-    getDefaultJobExecutionFilter(),
-    FILTER_LOCAL_STORAGE_KEY
-  );
+
+  const [jobExecutionFilter, setJobExecutionFilter] = useStoredJobExecutionFilter();
+  console.log(jobExecutionFilter);
   const [jobExecutionTable, refreshJobExecutionTable] = useJobExecutionTable(jobExecutionFilter);
   const matchesCount = jobExecutionTable === null ? 0 : jobExecutionTable.matches_count;
 
