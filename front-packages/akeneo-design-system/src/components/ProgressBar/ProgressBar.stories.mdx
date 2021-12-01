@@ -121,3 +121,27 @@ One of the most important rules in UI / UX design is visibility of system state.
     }}
   </Story>
 </Canvas>
+
+## Variation on header
+
+<Canvas>
+  <Story name="Header">
+    {args => {
+      return (
+        <>
+          <div>
+            <ProgressBar level="primary" percent={10} />
+          </div>
+          <br/>
+          <div>
+            <ProgressBar level="primary" percent={10} title="Title without progress label"/>
+          </div>
+          <div>
+            <ProgressBar level="primary" percent={10} progressLabel="Progress label without title"/>
+          </div>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
