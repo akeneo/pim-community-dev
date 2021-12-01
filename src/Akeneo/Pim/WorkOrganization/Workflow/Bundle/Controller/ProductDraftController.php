@@ -134,7 +134,7 @@ class ProductDraftController
 
         return new JsonResponse(
             [
-                'route'  => 'pim_enrich_job_tracker_show',
+                'route'  => 'akeneo_job_process_tracker_details',
                 'params' => ['id' => $jobExecution->getId()],
             ]
         );
@@ -166,7 +166,7 @@ class ProductDraftController
 
         return new JsonResponse(
             [
-                'route'  => 'pim_enrich_job_tracker_show',
+                'route'  => 'akeneo_job_process_tracker_details',
                 'params' => ['id' => $jobExecution->getId()],
             ]
         );
