@@ -10,9 +10,11 @@ namespace Akeneo\ReferenceEntity\Application\Record\IndexRecords;
  */
 class IndexRecordsByReferenceEntityCommand
 {
-    public function __construct(
-        /** string $referenceEntity */
-        public string $referenceEntityIdentifier
-    ) {
+    /** string $referenceEntity */
+    public $referenceEntityIdentifier;
+
+    public function __construct(string $referenceEntityIdentifier)
+    {
+        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
     }
 }

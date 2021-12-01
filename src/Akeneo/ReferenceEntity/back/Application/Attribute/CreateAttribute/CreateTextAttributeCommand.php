@@ -19,6 +19,21 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute;
  */
 class CreateTextAttributeCommand extends AbstractCreateAttributeCommand
 {
+    /** @var int */
+    public $maxLength;
+
+    /** @var bool */
+    public $isTextarea;
+
+    /** @var bool */
+    public $isRichTextEditor;
+
+    /** @var string|null */
+    public $validationRule;
+
+    /** @var string|null */
+    public $regularExpression;
+
     public function __construct(
         string $referenceEntityIdentifier,
         string $code,
@@ -26,11 +41,11 @@ class CreateTextAttributeCommand extends AbstractCreateAttributeCommand
         bool $isRequired,
         bool $valuePerChannel,
         bool $valuePerLocale,
-        public ?int $maxLength,
-        public bool $isTextarea,
-        public bool $isRichTextEditor,
-        public ?string $validationRule,
-        public ?string $regularExpression
+        ?int $maxLength,
+        bool $isTextarea,
+        bool $isRichTextEditor,
+        ?string $validationRule,
+        ?string $regularExpression
     ) {
         parent::__construct(
             $referenceEntityIdentifier,
@@ -40,5 +55,11 @@ class CreateTextAttributeCommand extends AbstractCreateAttributeCommand
             $valuePerChannel,
             $valuePerLocale
         );
+
+        $this->maxLength = $maxLength;
+        $this->isTextarea = $isTextarea;
+        $this->isRichTextEditor = $isRichTextEditor;
+        $this->validationRule = $validationRule;
+        $this->regularExpression = $regularExpression;
     }
 }

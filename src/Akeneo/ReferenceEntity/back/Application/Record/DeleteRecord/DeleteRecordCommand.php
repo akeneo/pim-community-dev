@@ -18,7 +18,15 @@ namespace Akeneo\ReferenceEntity\Application\Record\DeleteRecord;
  */
 class DeleteRecordCommand
 {
-    public function __construct(public string $recordCode, public string $referenceEntityIdentifier)
+    /** @var string */
+    public $recordCode;
+
+    /** @var string */
+    public $referenceEntityIdentifier;
+
+    public function __construct(string $recordCode, string $referenceEntityIdentifier)
     {
+        $this->recordCode = $recordCode;
+        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
     }
 }

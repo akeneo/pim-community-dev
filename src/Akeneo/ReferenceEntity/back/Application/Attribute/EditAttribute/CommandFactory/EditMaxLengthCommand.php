@@ -19,8 +19,13 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFact
  */
 class EditMaxLengthCommand extends AbstractEditAttributeCommand
 {
-    public function __construct(string $identifier, public ?int $maxLength)
+    /** @var int|null */
+    public $maxLength;
+
+    public function __construct(string $identifier, ?int $maxLength)
     {
         parent::__construct($identifier);
+
+        $this->maxLength = $maxLength;
     }
 }

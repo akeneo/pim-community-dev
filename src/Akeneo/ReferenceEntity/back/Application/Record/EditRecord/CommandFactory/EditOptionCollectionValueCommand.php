@@ -23,8 +23,13 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
  */
 class EditOptionCollectionValueCommand extends AbstractEditValueCommand
 {
-    public function __construct(OptionCollectionAttribute $attribute, ?string $channel, ?string $locale, public array $optionCodes)
+    /** @var string[] */
+    public $optionCodes;
+
+    public function __construct(OptionCollectionAttribute $attribute, ?string $channel, ?string $locale, array $optionCodes)
     {
         parent::__construct($attribute, $channel, $locale);
+
+        $this->optionCodes = $optionCodes;
     }
 }

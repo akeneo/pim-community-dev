@@ -20,8 +20,13 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
  */
 class EditTextValueCommand extends AbstractEditValueCommand
 {
-    public function __construct(TextAttribute $attribute, ?string $channel, ?string $locale, public string $text)
+    /** @var string */
+    public $text;
+
+    public function __construct(TextAttribute $attribute, ?string $channel, ?string $locale, string $text)
     {
         parent::__construct($attribute, $channel, $locale);
+
+        $this->text = $text;
     }
 }

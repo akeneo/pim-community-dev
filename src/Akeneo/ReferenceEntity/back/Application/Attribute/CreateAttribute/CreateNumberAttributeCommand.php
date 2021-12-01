@@ -19,6 +19,15 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute;
  */
 class CreateNumberAttributeCommand extends AbstractCreateAttributeCommand
 {
+    /** @var bool */
+    public $decimalsAllowed;
+
+    /** @var string|null */
+    public $minValue;
+
+    /** @var string|null */
+    public $maxValue;
+
     public function __construct(
         string $referenceEntityIdentifier,
         string $code,
@@ -26,9 +35,9 @@ class CreateNumberAttributeCommand extends AbstractCreateAttributeCommand
         bool $isRequired,
         bool $valuePerChannel,
         bool $valuePerLocale,
-        public bool $decimalsAllowed,
-        public ?string $minValue,
-        public ?string $maxValue
+        bool $decimalsAllowed,
+        ?string $minValue,
+        ?string $maxValue
     ) {
         parent::__construct(
             $referenceEntityIdentifier,
@@ -38,5 +47,9 @@ class CreateNumberAttributeCommand extends AbstractCreateAttributeCommand
             $valuePerChannel,
             $valuePerLocale
         );
+
+        $this->decimalsAllowed = $decimalsAllowed;
+        $this->minValue = $minValue;
+        $this->maxValue = $maxValue;
     }
 }

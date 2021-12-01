@@ -12,7 +12,15 @@ namespace Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\SetPermis
  */
 class SetReferenceEntityPermissionsCommand
 {
-    public function __construct(public string $referenceEntityIdentifier, public array $permissionsByUserGroup)
+    /** @var string */
+    public $referenceEntityIdentifier;
+
+    /** @var SetUserGroupPermissionCommand[] */
+    public $permissionsByUserGroup = [];
+
+    public function __construct(string $referenceEntityIdentifier, array $permissionsByUserGroup)
     {
+        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $this->permissionsByUserGroup = $permissionsByUserGroup;
     }
 }

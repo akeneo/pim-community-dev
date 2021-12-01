@@ -13,7 +13,19 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
  */
 class AbstractEditValueCommand
 {
-    public function __construct(public AbstractAttribute $attribute, public ?string $channel, public ?string $locale)
+    /** @var AbstractAttribute */
+    public $attribute;
+
+    /** @var string|null */
+    public $channel;
+
+    /** @var string|null */
+    public $locale;
+
+    public function __construct(AbstractAttribute $attribute, ?string $channel, ?string $locale)
     {
+        $this->attribute = $attribute;
+        $this->channel = $channel;
+        $this->locale = $locale;
     }
 }

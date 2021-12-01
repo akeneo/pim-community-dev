@@ -28,8 +28,18 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\SearchRecordResult;
  */
 class SearchRecord
 {
-    public function __construct(private FindIdentifiersForQueryInterface $findIdentifiersForQuery, private FindRecordItemsForIdentifiersAndQueryInterface $findRecordItemsForIdentifiersAndQuery, private CountRecordsInterface $countRecords)
-    {
+    private FindIdentifiersForQueryInterface $findIdentifiersForQuery;
+    private FindRecordItemsForIdentifiersAndQueryInterface $findRecordItemsForIdentifiersAndQuery;
+    private CountRecordsInterface $countRecords;
+
+    public function __construct(
+        FindIdentifiersForQueryInterface $findIdentifiersForQuery,
+        FindRecordItemsForIdentifiersAndQueryInterface $findRecordItemsForIdentifiersAndQuery,
+        CountRecordsInterface $countRecords
+    ) {
+        $this->findIdentifiersForQuery = $findIdentifiersForQuery;
+        $this->findRecordItemsForIdentifiersAndQuery = $findRecordItemsForIdentifiersAndQuery;
+        $this->countRecords = $countRecords;
     }
 
     public function __invoke(RecordQuery $query): SearchRecordResult

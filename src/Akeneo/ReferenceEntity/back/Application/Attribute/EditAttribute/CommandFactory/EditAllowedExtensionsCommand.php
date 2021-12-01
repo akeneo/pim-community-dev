@@ -19,8 +19,13 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFact
  */
 class EditAllowedExtensionsCommand extends AbstractEditAttributeCommand
 {
-    public function __construct(string $identifier, public array $allowedExtensions)
+    /** @var array */
+    public $allowedExtensions;
+
+    public function __construct(string $identifier, array $allowedExtensions)
     {
         parent::__construct($identifier);
+
+        $this->allowedExtensions = $allowedExtensions;
     }
 }

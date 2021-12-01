@@ -19,7 +19,11 @@ namespace Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEnti
  */
 class DeleteReferenceEntityCommand
 {
-    public function __construct(public string $identifier)
+    /** @var string */
+    public $identifier;
+
+    public function __construct(string $identifier)
     {
+        $this->identifier = $identifier;
     }
 }

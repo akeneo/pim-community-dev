@@ -18,7 +18,11 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\DeleteAttribute;
  */
 class DeleteAttributeCommand
 {
-    public function __construct(public string $attributeIdentifier)
+    /** @var string */
+    public $attributeIdentifier;
+
+    public function __construct(string $attributeIdentifier)
     {
+        $this->attributeIdentifier = $attributeIdentifier;
     }
 }
