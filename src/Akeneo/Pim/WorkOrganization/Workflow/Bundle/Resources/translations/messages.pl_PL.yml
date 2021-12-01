@@ -64,7 +64,6 @@ pimee_workflow:
         fourth: Potwierdź
   check_removal:
     product_error: Nie można usunąć opublikowanego produktu.
-    product_model_error: Ten model produktu jest dostępny w wariancie, który został opublikowany. Cofnij jego publikację i spróbuj ponownie.
     entity_error: Nie można usunąć obiektów powiązanych z opublikowanymi produktami.
 btn:
   publish: Opublikuj
