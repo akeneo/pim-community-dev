@@ -61,6 +61,7 @@ $rules = [
         'Psr\Http\Message\RequestInterface',
         'Psr\Http\Message\ResponseInterface',
         'Psr\Http\Message\UriInterface',
+        'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
 
         // TODO: asset families should not depend on PIM
         'Akeneo\Pim\Enrichment\AssetManager\Component',
