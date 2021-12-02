@@ -12,7 +12,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigur
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableTranslator;
-use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValueTranslatorRegistry;
+use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableValueTranslatorRegistry;
 use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use PhpSpec\ObjectBehavior;
 

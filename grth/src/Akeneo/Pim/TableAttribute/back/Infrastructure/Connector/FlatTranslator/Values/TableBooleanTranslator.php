@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator;
+namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;

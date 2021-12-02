@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator;
+namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
-use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableSelectTranslator;
-use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValueTranslator;
+use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableSelectTranslator;
+use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableValueTranslator;
 use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use PhpSpec\ObjectBehavior;
 

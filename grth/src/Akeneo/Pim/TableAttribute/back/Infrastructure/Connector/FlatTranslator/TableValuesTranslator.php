@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator;
 
+use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableValueTranslatorRegistry;
+
 class TableValuesTranslator
 {
     private TableValueTranslatorRegistry $tableValueTranslatorRegistry;
 
-    /**
-     * @param iterable<TableValueTranslator> $tableValueTranslators
-     */
     public function __construct(TableValueTranslatorRegistry $tableValueTranslatorRegistry)
     {
         $this->tableValueTranslatorRegistry = $tableValueTranslatorRegistry;

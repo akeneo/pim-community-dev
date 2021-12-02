@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeVa
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
+use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableValueTranslatorRegistry;
 
 final class TableTranslator implements FlatAttributeValueTranslatorInterface
 {
@@ -24,9 +25,6 @@ final class TableTranslator implements FlatAttributeValueTranslatorInterface
     private TableValueTranslatorRegistry $tableValueTranslatorRegistry;
     private array $columnLabelsByAttributeCodeAndLocaleCode = [];
 
-    /**
-     * @param iterable<TableValueTranslator> $tableValueTranslators
-     */
     public function __construct(
         TableConfigurationRepository $tableConfigurationRepository,
         TableValueTranslatorRegistry $tableValueTranslatorRegistry

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator;
+namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
-use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableBooleanTranslator;
-use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValueTranslator;
+use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableBooleanTranslator;
+use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableValueTranslator;
 use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 use PhpSpec\ObjectBehavior;

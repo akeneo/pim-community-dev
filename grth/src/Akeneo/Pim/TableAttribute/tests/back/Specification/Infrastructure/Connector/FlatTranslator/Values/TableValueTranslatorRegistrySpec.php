@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator;
+namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
-use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValueTranslator;
-use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValueTranslatorRegistry;
+use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableValueTranslator;
+use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableValueTranslatorRegistry;
 use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use PhpSpec\ObjectBehavior;
 
