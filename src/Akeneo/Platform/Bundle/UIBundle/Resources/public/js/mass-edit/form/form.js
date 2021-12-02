@@ -17,7 +17,9 @@ define([
   'oro/loading-mask',
   'pim/template/mass-edit/form',
   'pim/analytics',
-], function ($, _, __, router, Routing, messenger, BaseForm, LoadingMask, template, analytics) {
+  'pim/feature-flags',
+  '@akeneo-pim-community/bulk-actions',
+], function ($, _, __, router, Routing, messenger, BaseForm, LoadingMask, template, analytics, FeatureFlags, {BulkActionsLauncher}) {
   return BaseForm.extend({
     template: _.template(template),
     currentStep: 'choose',
@@ -68,29 +70,49 @@ define([
       }
 
       const itemsCount = this.getFormData().itemsCount;
-      this.$el.html(
-        this.template({
-          currentStep: this.currentStep,
-          currentStepNumber: currentStepNumber,
-          currentOperation: this.getCurrentOperation(),
-          label: step.getLabel(),
-          description: step.getDescription(),
-          title: step.getTitle(),
-          labelCount: step.getLabelCount(),
-          confirm: __(this.config.confirm, {itemsCount}, itemsCount),
-          previousLabel: __('pim_common.previous'),
-          nextLabel: __('pim_common.next'),
-          confirmLabel: __('pim_common.confirm'),
-          selectActionLabel: __('pim_datagrid.mass_action.default.select_action'),
-          illustrationClass: step.getIllustrationClass(),
-          __: __,
-        })
-      );
 
-      this.$('.step').empty().append(step.$el);
-      // We need to have the step in the DOM as soon as possible for extensions that call render() and
-      // postRender()
-      step.render();
+      if (FeatureFlags.isEnabled('products_bulk_actions')) {
+        const container = document.createElement('div');
+        this.renderReact(
+            BulkActionsLauncher, {
+              getStep: () => step,
+              currentStep: this.currentStep,
+              itemsCount,
+              formData: this.getFormData(),
+              closeModal: () => router.redirectToRoute(this.config.backRoute),
+              selectBulkAction: this.selectBulkAction.bind(this),
+              confirmBulkAction: this.confirmBulkAction.bind(this),
+              submitBulkAction: this.submitBulkAction.bind(this),
+              chooseBulkAction: this.chooseBulkAction.bind(this),
+            },
+            container
+        );
+        this.$el.append(container);
+      } else {
+        this.$el.html(
+            this.template({
+              currentStep: this.currentStep,
+              currentStepNumber: currentStepNumber,
+              currentOperation: this.getCurrentOperation(),
+              label: step.getLabel(),
+              description: step.getDescription(),
+              title: step.getTitle(),
+              labelCount: step.getLabelCount(),
+              confirm: __(this.config.confirm, {itemsCount}, itemsCount),
+              previousLabel: __('pim_common.previous'),
+              nextLabel: __('pim_common.next'),
+              confirmLabel: __('pim_common.confirm'),
+              selectActionLabel: __('pim_datagrid.mass_action.default.select_action'),
+              illustrationClass: step.getIllustrationClass(),
+              __: __,
+            })
+        );
+
+        this.$('.step').empty().append(step.$el);
+        // We need to have the step in the DOM as soon as possible for extensions that call render() and
+        // postRender()
+        step.render();
+      }
 
       this.delegateEvents();
     },
@@ -124,22 +146,6 @@ define([
       return _.filter(this.extensions, function (extension) {
         return extension.targetZone === 'choose';
       })[0];
-    },
-
-    /**
-     * The the porvided extension as the current one
-     *
-     * @param {object} operation
-     */
-    setCurrentOperation: function (operation) {
-      var data = this.getFormData();
-
-      data.operation = operation;
-      data.jobInstanceCode = this.getOperationExtension(operation).getJobInstanceCode();
-
-      this.setData(data);
-
-      this.render();
     },
 
     /**
@@ -241,6 +247,92 @@ define([
 
           break;
       }
+    },
+
+    selectBulkAction: function (bulkActionCode) {
+      analytics.track('grid:mass-edit:action-step', {
+        name: 'configure',
+      });
+
+      const formExtension = this.getOperationExtension(bulkActionCode);
+
+      let data = this.getFormData();
+      data.operation = bulkActionCode;
+      data.jobInstanceCode = formExtension.getJobInstanceCode();
+      this.setData(data);
+
+      if ('choose' === this.currentStep) {
+        formExtension.reset();
+      }
+      this.currentStep = 'configure';
+      formExtension.setReadOnly(false);
+
+      this.render();
+    },
+
+    confirmBulkAction: function () {
+      analytics.track('grid:mass-edit:action-step', {
+        name: 'configure',
+      });
+
+      var operationView = this.getOperationExtension(this.getCurrentOperation());
+
+      var loadingMask = new LoadingMask();
+      loadingMask.render().$el.appendTo(this.getRoot().$el).show();
+      operationView
+          .validate()
+          .then(isValid => {
+            if (isValid) {
+              operationView.setReadOnly(true);
+              this.currentStep = 'confirm';
+              this.render();
+              this.getRoot().trigger('mass-edit:action:confirm');
+            }
+          })
+          .always(() => {
+            loadingMask.hide().$el.remove();
+          });
+    },
+
+    submitBulkAction: function () {
+      analytics.track('grid:mass-edit:action-step', {
+        name: 'configure',
+      });
+
+      const loadingMask = new LoadingMask();
+      loadingMask.render().$el.appendTo(this.getRoot().$el).show();
+
+      $.ajax({
+        method: 'POST',
+        contentType: 'application/json',
+        url: Routing.generate('pim_enrich_mass_edit_rest_launch'),
+        data: JSON.stringify(this.getFormData()),
+      })
+          .then(() => {
+            router.redirectToRoute(this.config.backRoute);
+
+            messenger.notify(
+                'success',
+                __(this.config.launchedLabel, {
+                  operation: this.getOperationExtension(this.getCurrentOperation()).getLabel(),
+                })
+            );
+          })
+          .fail(() => {
+            messenger.notify('error', __(this.config.launchErrorLabel));
+          })
+          .always(() => {
+            loadingMask.hide().$el.remove();
+          });
+    },
+
+    chooseBulkAction: function () {
+      analytics.track('grid:mass-edit:action-step', {
+        name: 'configure',
+      });
+
+      this.currentStep = 'choose';
+      this.render();
     },
 
     /**

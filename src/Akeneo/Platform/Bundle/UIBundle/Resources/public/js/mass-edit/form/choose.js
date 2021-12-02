@@ -54,7 +54,7 @@ define([
     updateOperation: function (event) {
       const code = $(event.target).closest('.operation').data('code');
 
-      this.getParent().setCurrentOperation(code);
+      this.getParent().selectBulkAction(code);
       this.render();
 
       analytics.track('grid:mass-edit:item-chosen', {
