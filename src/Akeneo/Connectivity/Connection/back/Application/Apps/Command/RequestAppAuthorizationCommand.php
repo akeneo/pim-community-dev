@@ -13,20 +13,17 @@ final class RequestAppAuthorizationCommand
     private string $clientId;
     private string $responseType;
     private string $scope;
-    private string $redirectUri;
     private ?string $state;
 
     public function __construct(
         string $clientId,
         string $responseType,
         string $scope,
-        string $redirectUri,
         ?string $state = null
     ) {
         $this->clientId = $clientId;
         $this->responseType = $responseType;
         $this->scope = $scope;
-        $this->redirectUri = $redirectUri;
         $this->state = $state;
     }
 
@@ -43,11 +40,6 @@ final class RequestAppAuthorizationCommand
     public function getScope(): string
     {
         return $this->scope;
-    }
-
-    public function getRedirectUri(): string
-    {
-        return $this->redirectUri;
     }
 
     public function getState(): ?string
