@@ -21,8 +21,9 @@ const ProgressCell = ({jobExecutionRow}: ProgressCellProps) => {
   return (
     <Table.Cell>
       <Container>
-        {jobExecutionRow.tracking.steps.map(step => (
+        {jobExecutionRow.tracking.steps.map((step, index) => (
           <ProgressBar
+            key={index}
             level={getStepExecutionRowTrackingLevel(step)}
             percent={getStepExecutionRowTrackingPercent(step)}
           />
