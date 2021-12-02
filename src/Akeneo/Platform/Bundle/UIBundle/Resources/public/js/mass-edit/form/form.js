@@ -69,19 +69,6 @@ define([
           ? this.getChooseExtension()
           : this.getOperationExtension(this.getCurrentOperation());
 
-      var currentStepNumber;
-      switch (this.currentStep) {
-        case 'configure':
-          currentStepNumber = 1;
-          break;
-        case 'confirm':
-          currentStepNumber = 2;
-          break;
-        default:
-          currentStepNumber = 0;
-          break;
-      }
-
       const itemsCount = this.getFormData().itemsCount;
 
       if (FeatureFlags.isEnabled('products_bulk_actions')) {
@@ -93,6 +80,7 @@ define([
             currentStep: this.currentStep,
             itemsCount,
             formData: this.getFormData(),
+            setData: (data) => {this.setData(data)},
             closeModal: () => router.redirectToRoute(this.config.backRoute),
             selectBulkAction: this.selectBulkAction.bind(this),
             confirmBulkAction: this.confirmBulkAction.bind(this),
@@ -103,6 +91,19 @@ define([
         );
         this.$el.append(container);
       } else {
+        var currentStepNumber;
+        switch (this.currentStep) {
+          case 'configure':
+            currentStepNumber = 1;
+            break;
+          case 'confirm':
+            currentStepNumber = 2;
+            break;
+          default:
+            currentStepNumber = 0;
+            break;
+        }
+
         this.$el.html(
           this.template({
             currentStep: this.currentStep,

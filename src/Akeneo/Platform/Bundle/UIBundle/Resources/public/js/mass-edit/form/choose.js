@@ -54,6 +54,7 @@ define([
     updateOperation: function (event) {
       const code = $(event.target).closest('.operation').data('code');
 
+      //depending on the products_bulk_actions feature flag, we need to call selectBulkAction or selectBulkAction
       this.getParent().selectBulkAction(code);
       this.render();
 

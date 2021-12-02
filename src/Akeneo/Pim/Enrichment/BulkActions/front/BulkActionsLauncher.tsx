@@ -1,7 +1,9 @@
 import * as React from 'react';
 import {FC, useEffect, useRef} from 'react';
-import {Button, Helper, Modal} from 'akeneo-design-system';
+import {Button, Helper, Modal, ProductsIllustration} from 'akeneo-design-system';
 import {useTranslate, View} from "@akeneo-pim-community/shared";
+import {ChangeStatus} from "./BulkActions/ChangeStatus";
+import * as DSM from 'akeneo-design-system';
 
 enum Steps {
   Choose = 'choose',
@@ -12,12 +14,14 @@ enum Steps {
 type FormData = {
   operation: string;
   itemsCount: number;
+  actions: any;
 }
 
 type Props = {
   getStep: () => View;
   currentStep: Steps;
   formData: FormData;
+  setData: (data: any) => void;
   closeModal: () => void;
   selectBulkAction: (bulkActionCode: string) => void;
   confirmBulkAction: () => void;
@@ -25,7 +29,14 @@ type Props = {
   chooseBulkAction: () => void;
 };
 
-const BulkActionsLauncher: FC<Props> = ({getStep, currentStep, formData, closeModal, selectBulkAction, confirmBulkAction, submitBulkAction, chooseBulkAction}) => {
+const bulkActionsComponentsMapping = {
+  'change_status': {
+    component: ChangeStatus,
+    getIllustration: () => <ProductsIllustration/>,
+  },
+};
+
+const BulkActionsLauncher: FC<Props> = ({getStep, currentStep, formData, setData, closeModal, selectBulkAction, confirmBulkAction, submitBulkAction, chooseBulkAction}) => {
   const translate = useTranslate();
   const stepRef = useRef<HTMLDivElement>(null);
 
@@ -35,8 +46,18 @@ const BulkActionsLauncher: FC<Props> = ({getStep, currentStep, formData, closeMo
     }
   }, []);
 
+  const onConfigureBulkAction = (bulkActionData: any) => {
+    const newFormData = {...formData, actions: bulkActionData};
+    setData(newFormData);
+  };
+
+  let modalIllustration = undefined;
+  if (formData.operation && bulkActionsComponentsMapping.hasOwnProperty(formData.operation)) {
+    modalIllustration = bulkActionsComponentsMapping[formData.operation].getIllustration();
+  }
+
   return (
-    <Modal closeTitle={'Close modal'} onClose={closeModal}>
+    <Modal closeTitle={'Close modal'} onClose={closeModal} illustration={modalIllustration}>
       <Modal.SectionTitle color="brand">PRODUCTS BULK ACTIONS</Modal.SectionTitle>
       <Modal.Title>Select your action</Modal.Title>
 
@@ -56,7 +77,7 @@ const BulkActionsLauncher: FC<Props> = ({getStep, currentStep, formData, closeMo
         currentStep === Steps.Confirm &&
           <>
             <Modal.TopLeftButtons>
-                <Button level="tertiary" onClick={() => selectBulkAction(formData.operation)}>Next step</Button>
+                <Button level="tertiary" onClick={() => selectBulkAction(formData.operation)}>Previous step</Button>
             </Modal.TopLeftButtons>
             <Helper level="warning">
               {translate('pim_enrich.mass_edit.product.confirm', {itemsCount: formData.itemsCount}, formData.itemsCount)}
@@ -65,7 +86,19 @@ const BulkActionsLauncher: FC<Props> = ({getStep, currentStep, formData, closeMo
           </>
       }
 
-      <div ref={stepRef}/>
+      {formData.operation ?
+        (bulkActionsComponentsMapping.hasOwnProperty(formData.operation) ?
+          React.createElement(
+            bulkActionsComponentsMapping[formData.operation].component, {
+              configureBulkAction: onConfigureBulkAction,
+              defaultValue: formData.actions[0],
+              readOnly: currentStep === Steps.Confirm,
+            }
+          ) :
+          <div ref={stepRef}/>
+        ) :
+        <div ref={stepRef}/>
+      }
 
       <div className="AknFullPage-bottom">
         <div className="AknSteps">
