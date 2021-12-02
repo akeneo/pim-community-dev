@@ -44,7 +44,7 @@ class SuccessLargeAndOrderedListPublishedProductEndToEnd extends AbstractPublish
             $standardizedPublishedProducts[] = $this->getStandardizedPublishedProduct($publishedProduct->getIdentifier());
         }
         $standardizedPublishedProducts = implode(',', $standardizedPublishedProducts);
-        $lastEncryptedId = rawurlencode($this->getEncryptedId(end($this->publishedProducts)->getIdentifier()));
+        $lastProductIdentifier = end($this->publishedProducts)->getIdentifier();
 
         $client = $this->createAuthenticatedClient();
 
@@ -54,7 +54,7 @@ class SuccessLargeAndOrderedListPublishedProductEndToEnd extends AbstractPublish
     "_links": {
         "self"  : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit={$this->getListSize()}"},
         "first" : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit={$this->getListSize()}"},
-        "next" : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit={$this->getListSize()}&search_after={$lastEncryptedId}"}
+        "next" : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit={$this->getListSize()}&search_after={$lastProductIdentifier}"}
     },
     "_embedded"    : {
 		"items": [
