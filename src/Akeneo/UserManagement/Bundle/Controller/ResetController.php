@@ -75,7 +75,7 @@ class ResetController extends AbstractController
         $username = $request->request->get('username');
         $user = $this->userManager->findUserByUsernameOrEmail($username);
 
-        if (null === $user) {
+        if (null === $user || false === $user->isEnabled()) {
             return [];
         }
 
@@ -143,7 +143,7 @@ class ResetController extends AbstractController
     {
         $user = $this->userManager->findUserByConfirmationToken($token);
 
-        if (null === $user) {
+        if (null === $user || false === $user->isEnabled()) {
             throw $this->createNotFoundException(
                 sprintf('The user with "confirmation token" does not exist for value "%s"', $token)
             );
