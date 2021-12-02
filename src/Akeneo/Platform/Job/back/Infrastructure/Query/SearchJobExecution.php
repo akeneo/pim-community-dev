@@ -7,7 +7,7 @@ namespace Akeneo\Platform\Job\Infrastructure\Query;
 use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
-use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Platform\Job\Domain\Model\JobStatus;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
@@ -148,11 +148,9 @@ SQL;
 
     private function buildQueryParams(SearchJobExecutionQuery $query): array
     {
-        $statusLabels = BatchStatus::getAllLabels();
-
         $queryParams = [
             'type' => $query->type,
-            'status' => array_map(static fn (string $status) => $statusLabels[$status], $query->status),
+            'status' => array_map(static fn (string $status) => JobStatus::fromLabel($status)->getStatus(), $query->status),
             'user' => $query->user,
             'code' => $query->code,
         ];
@@ -226,7 +224,7 @@ SQL;
                 $rawJobExecution['type'],
                 $startTime,
                 $rawJobExecution['user'],
-                (string) new BatchStatus((int) $rawJobExecution['status']),
+                JobStatus::fromStatus((int) $rawJobExecution['status'])->getLabel(),
                 (int) $rawJobExecution['warning_count'],
                 $errorCount,
                 (int) $rawJobExecution['current_step_number'] ?? 0,

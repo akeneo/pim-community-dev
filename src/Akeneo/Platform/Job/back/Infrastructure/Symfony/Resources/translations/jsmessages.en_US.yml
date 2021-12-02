@@ -36,8 +36,8 @@ akeneo_job_process_tracker:
     abandoned: Abandoned
     completed: Completed
     failed: Failed
-    started: Started
     starting: Starting
     stopped: Stopped
     stopping: Stopping
     unknown: Unknown
+    in_progress: In progress
