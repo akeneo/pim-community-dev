@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {useRoute, useIsMounted, useDocumentVisibility} from '@akeneo-pim-community/shared';
 import {JobExecutionFilter, JobExecutionTable} from '../models';
 
@@ -9,57 +9,52 @@ const useJobExecutionTable = ({page, size, sort, type, status, code, user, searc
   const route = useRoute('akeneo_job_index_action');
   const isMounted = useIsMounted();
   const isDocumentVisible = useDocumentVisibility();
-  const [isFetching, setIsFetching] = useState<boolean>(false);
+  const isFetching = useRef<boolean>(false);
 
   const searchJobExecution = useCallback(async () => {
-    console.log('is fetching', isFetching);
-    if (isFetching) return;
+    if (isFetching.current) return;
 
-    console.log('is mounted', isMounted());
+    isFetching.current = true;
+    const response = await fetch(route, {
+      body: JSON.stringify({
+        page: page.toString(),
+        size: size.toString(),
+        sort,
+        status,
+        type,
+        user,
+        search,
+        code,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      method: 'POST',
+    });
 
+    isFetching.current = false;
+    const jobExecutionTable = await response.json();
     if (isMounted()) {
-      setIsFetching(true);
-
-      const response = await fetch(route, {
-        body: JSON.stringify({
-          page: page.toString(),
-          size: size.toString(),
-          sort,
-          status,
-          type,
-          user,
-          search,
-          code,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-        method: 'POST',
-      });
-
-      setIsFetching(false);
-      setJobExecutionTable(await response.json());
+      setJobExecutionTable(jobExecutionTable);
     }
-  }, [isMounted, isFetching, route, page, size, sort, type, status, search, user, code]);
+  }, [isMounted, route, page, size, sort, type, status, search, user, code]);
 
   useEffect(() => {
-    searchJobExecution();
+    void searchJobExecution();
   }, [searchJobExecution]);
 
-  // useEffect(() => {
-  //   if (!isDocumentVisible) {
-  //     return;
-  //   }
-  //
-  //   const interval = setInterval(() => {
-  //     searchJobExecution();
-  //   }, AUTO_REFRESH_FREQUENCY);
-  //
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, [isDocumentVisible, isFetching, searchJobExecution, page, size, sort, type, status, search, user, code]);
+  useEffect(() => {
+    if (!isDocumentVisible) return;
+
+    const interval = setInterval(() => {
+      void searchJobExecution();
+    }, AUTO_REFRESH_FREQUENCY);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [isDocumentVisible, searchJobExecution, page, size, sort, type, status, search, user, code]);
 
   return [jobExecutionTable, searchJobExecution] as const;
 };
