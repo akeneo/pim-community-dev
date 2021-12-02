@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator;
 
-final class TableValuesTranslator
+class TableValuesTranslator
 {
     private TableValueTranslatorRegistry $tableValueTranslatorRegistry;
 

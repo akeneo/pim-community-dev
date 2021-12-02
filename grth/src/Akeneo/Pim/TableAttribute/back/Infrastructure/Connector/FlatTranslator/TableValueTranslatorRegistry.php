@@ -17,7 +17,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigur
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Webmozart\Assert\Assert;
 
-final class TableValueTranslatorRegistry
+class TableValueTranslatorRegistry
 {
     private TableConfigurationRepository $tableConfigurationRepository;
     /** @var iterable<TableValueTranslator> */

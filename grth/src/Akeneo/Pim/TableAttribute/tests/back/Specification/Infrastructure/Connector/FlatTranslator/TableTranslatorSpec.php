@@ -12,7 +12,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigur
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableTranslator;
-use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValueTranslator;
+use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValueTranslatorRegistry;
 use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use PhpSpec\ObjectBehavior;
 
@@ -20,12 +20,9 @@ class TableTranslatorSpec extends ObjectBehavior
 {
     function let(
         TableConfigurationRepository $tableConfigurationRepository,
-        TableValueTranslator $selectValueTranslator,
-        TableValueTranslator $booleanValueTranslator
+        TableValueTranslatorRegistry $tableValueTranslatorRegistry
     ) {
-        $selectValueTranslator->getSupportedColumnDataType()->willReturn(SelectColumn::DATATYPE);
-        $booleanValueTranslator->getSupportedColumnDataType()->willReturn(BooleanColumn::DATATYPE);
-        $this->beConstructedWith($tableConfigurationRepository, [$selectValueTranslator, $booleanValueTranslator]);
+        $this->beConstructedWith($tableConfigurationRepository, $tableValueTranslatorRegistry);
     }
 
     function it_is_initializable()
@@ -43,8 +40,7 @@ class TableTranslatorSpec extends ObjectBehavior
 
     function it_translates_the_columns_and_the_cell_values(
         TableConfigurationRepository $tableConfigurationRepository,
-        TableValueTranslator $selectValueTranslator,
-        TableValueTranslator $booleanValueTranslator
+        TableValueTranslatorRegistry $tableValueTranslatorRegistry
     ) {
         $ingredientColumn = SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => [
             'en_US' => 'Ingredient US',
@@ -68,10 +64,13 @@ class TableTranslatorSpec extends ObjectBehavior
             ['ingredient' => 'salt', 'quantity' => 12, 'allergenic' => true],
         ]);
 
-        $selectValueTranslator->translate('nutrition', $ingredientColumn, 'en_US', 'sugar')->willReturn('Sugar');
-        $selectValueTranslator->translate('nutrition', $ingredientColumn, 'en_US', 'pepper')->willReturn('Pepper');
-        $selectValueTranslator->translate('nutrition', $ingredientColumn, 'en_US', 'salt')->willReturn('[salt]');
-        $booleanValueTranslator->translate('nutrition', $allergenicColumn, 'en_US', true)->willReturn('Oui');
+        $tableValueTranslatorRegistry->translate('nutrition', 'ingredient', 'en_US', 'sugar')->willReturn('Sugar');
+        $tableValueTranslatorRegistry->translate('nutrition', 'quantity', 'en_US', 50)->willReturn(50);
+        $tableValueTranslatorRegistry->translate('nutrition', 'ingredient', 'en_US', 'pepper')->willReturn('Pepper');
+        $tableValueTranslatorRegistry->translate('nutrition', 'quantity', 'en_US', 10)->willReturn(10);
+        $tableValueTranslatorRegistry->translate('nutrition', 'ingredient', 'en_US', 'salt')->willReturn('[salt]');
+        $tableValueTranslatorRegistry->translate('nutrition', 'quantity', 'en_US', 12)->willReturn(12);
+        $tableValueTranslatorRegistry->translate('nutrition', 'allergenic', 'en_US', true)->willReturn('Oui');
 
         $this->translate('nutrition', [], [$table1, $table2], 'en_US')->shouldBe([
             \json_encode([
@@ -83,10 +82,13 @@ class TableTranslatorSpec extends ObjectBehavior
             ], JSON_UNESCAPED_UNICODE),
         ]);
 
-        $selectValueTranslator->translate('nutrition', $ingredientColumn, 'fr_FR', 'sugar')->willReturn('Sucre');
-        $selectValueTranslator->translate('nutrition', $ingredientColumn, 'fr_FR', 'pepper')->willReturn('Poivre');
-        $selectValueTranslator->translate('nutrition', $ingredientColumn, 'fr_FR', 'salt')->willReturn('Sel');
-        $booleanValueTranslator->translate('nutrition', $allergenicColumn, 'fr_FR', true)->willReturn('Vrai');
+        $tableValueTranslatorRegistry->translate('nutrition', 'ingredient', 'fr_FR', 'sugar')->willReturn('Sucre');
+        $tableValueTranslatorRegistry->translate('nutrition', 'quantity', 'fr_FR', 50)->willReturn(50);
+        $tableValueTranslatorRegistry->translate('nutrition', 'ingredient', 'fr_FR', 'pepper')->willReturn('Poivre');
+        $tableValueTranslatorRegistry->translate('nutrition', 'quantity', 'fr_FR', 10)->willReturn(10);
+        $tableValueTranslatorRegistry->translate('nutrition', 'ingredient', 'fr_FR', 'salt')->willReturn('Sel');
+        $tableValueTranslatorRegistry->translate('nutrition', 'quantity', 'fr_FR', 12)->willReturn(12);
+        $tableValueTranslatorRegistry->translate('nutrition', 'allergenic', 'fr_FR', true)->willReturn('Vrai');
 
         $this->translate('nutrition', [], [$table1, $table2], 'fr_FR')->shouldBe([
             \json_encode([
@@ -101,7 +103,7 @@ class TableTranslatorSpec extends ObjectBehavior
 
     function it_translates_the_columns_with_duplicate(
         TableConfigurationRepository $tableConfigurationRepository,
-        TableValueTranslator $selectValueTranslator
+        TableValueTranslatorRegistry $tableValueTranslatorRegistry
     ) {
         $ingredientColumn = SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => [
             'en_US' => 'Ingredient US',
@@ -123,8 +125,11 @@ class TableTranslatorSpec extends ObjectBehavior
             ['ingredient' => 'pepper', 'quantity' => 10],
         ]);
 
-        $selectValueTranslator->translate('nutrition', $ingredientColumn, 'en_US', 'sugar')->willReturn('Sugar');
-        $selectValueTranslator->translate('nutrition', $ingredientColumn, 'en_US', 'pepper')->willReturn('Pepper');
+        $tableValueTranslatorRegistry->translate('nutrition', 'ingredient', 'en_US', 'sugar')->willReturn('Sugar');
+        $tableValueTranslatorRegistry->translate('nutrition', 'quantity', 'en_US', 50)->willReturn(50);
+        $tableValueTranslatorRegistry->translate('nutrition', 'other_quantity', 'en_US', 20)->willReturn(20);
+        $tableValueTranslatorRegistry->translate('nutrition', 'ingredient', 'en_US', 'pepper')->willReturn('Pepper');
+        $tableValueTranslatorRegistry->translate('nutrition', 'quantity', 'en_US', 10)->willReturn(10);
 
         $this->translate('nutrition', [], [$table1], 'en_US')->shouldBe([
             \json_encode([
