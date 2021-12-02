@@ -14,8 +14,9 @@ use Doctrine\DBAL\Connection;
  */
 class FindAllRecordIdentifiers implements SelectRecordIdentifiersInterface
 {
-    public function __construct(private Connection $sqlConnection)
-    {
+    public function __construct(
+        private Connection $sqlConnection
+    ) {
     }
 
     public function fetch(): \Iterator

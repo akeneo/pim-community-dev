@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -26,8 +27,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditRecordValueCommandsValidator extends ConstraintValidator
 {
-    public function __construct(private ValidatorInterface $validator)
-    {
+    public function __construct(
+        private ValidatorInterface $validator
+    ) {
     }
 
     public function validate($editRecordCommand, Constraint $constraint)

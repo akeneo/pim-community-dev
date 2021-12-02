@@ -22,8 +22,9 @@ use Doctrine\DBAL\Connection;
  */
 class SqlRecordsExists
 {
-    public function __construct(private Connection $sqlConnection)
-    {
+    public function __construct(
+        private Connection $sqlConnection
+    ) {
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Onboarder;
@@ -9,12 +10,13 @@ namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Onboarder;
  */
 final class RecordLabels
 {
-    /** @var array<string, string> */
-    private array $labels;
-
-    public function __construct(private string $identifier, array $labels, private string $code, private string $referenceEntityIdentifier)
-    {
-        $this->labels = $labels;
+    /** @param array<string, string> $labels */
+    public function __construct(
+        private string $identifier,
+        private array $labels,
+        private string $code,
+        private string $referenceEntityIdentifier
+    ) {
     }
 
     public function getIdentifier(): string
@@ -31,7 +33,7 @@ final class RecordLabels
     {
         return $this->code;
     }
-    
+
     public function getReferenceEntityIdentifier(): string
     {
         return $this->referenceEntityIdentifier;

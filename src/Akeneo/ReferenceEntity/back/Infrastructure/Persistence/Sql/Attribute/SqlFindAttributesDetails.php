@@ -25,8 +25,10 @@ use Doctrine\DBAL\Connection;
  */
 class SqlFindAttributesDetails implements FindAttributesDetailsInterface
 {
-    public function __construct(private Connection $sqlConnection, private InactiveLabelFilter $inactiveLabelFilter)
-    {
+    public function __construct(
+        private Connection $sqlConnection,
+        private InactiveLabelFilter $inactiveLabelFilter
+    ) {
     }
 
     /**

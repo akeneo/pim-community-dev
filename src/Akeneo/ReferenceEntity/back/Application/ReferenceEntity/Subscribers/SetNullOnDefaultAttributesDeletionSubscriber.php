@@ -25,9 +25,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class SetNullOnDefaultAttributesDeletionSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private ReferenceEntityRepositoryInterface $referenceEntityRepository)
-    {
+    public function __construct(
+        private ReferenceEntityRepositoryInterface $referenceEntityRepository
+    ) {
     }
+
     /**
      * {@inheritdoc}
      */

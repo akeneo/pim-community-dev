@@ -30,8 +30,9 @@ class Record extends AbstractSimpleArrayConverter
     /** @var AbstractAttribute[] */
     private array $cachedAttributes = [];
 
-    public function __construct(private AttributeRepositoryInterface $attributeRepository)
-    {
+    public function __construct(
+        private AttributeRepositoryInterface $attributeRepository
+    ) {
     }
 
     protected function convertProperty($property, $data, array $convertedItem, array $options)

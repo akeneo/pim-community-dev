@@ -86,7 +86,7 @@ class ImageAttribute extends AbstractAttribute
         );
     }
 
-    public function hasMaxFileSizeLimit():bool
+    public function hasMaxFileSizeLimit(): bool
     {
         return $this->maxFileSize->hasLimit();
     }

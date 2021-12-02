@@ -28,8 +28,9 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlFindImageAttributeCodes implements FindImageAttributeCodesInterface
 {
-    public function __construct(private Connection $sqlConnection)
-    {
+    public function __construct(
+        private Connection $sqlConnection
+    ) {
     }
 
     /**

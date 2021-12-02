@@ -28,8 +28,10 @@ class RecordReader implements ItemReaderInterface, InitializableInterface, StepE
     private \Iterator $identifiers;
     private bool $firstRead;
 
-    public function __construct(private FindRecordIdentifiersByReferenceEntityInterface $findRecordIdentifiers, private RecordRepositoryInterface $recordRepository)
-    {
+    public function __construct(
+        private FindRecordIdentifiersByReferenceEntityInterface $findRecordIdentifiers,
+        private RecordRepositoryInterface $recordRepository
+    ) {
     }
 
     public function initialize()

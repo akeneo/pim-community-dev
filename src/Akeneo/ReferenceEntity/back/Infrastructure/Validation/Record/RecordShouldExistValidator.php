@@ -19,8 +19,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class RecordShouldExistValidator extends ConstraintValidator
 {
-    public function __construct(private RecordExistsInterface $recordExists)
-    {
+    public function __construct(
+        private RecordExistsInterface $recordExists
+    ) {
     }
 
     public function validate($command, Constraint $constraint)

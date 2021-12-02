@@ -35,8 +35,12 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class MassDeleteAction
 {
-    public function __construct(private MassDeleteRecordsHandler $massDeleteRecordsHandler, private SecurityFacade $securityFacade, private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler, private TokenStorageInterface $tokenStorage)
-    {
+    public function __construct(
+        private MassDeleteRecordsHandler $massDeleteRecordsHandler,
+        private SecurityFacade $securityFacade,
+        private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        private TokenStorageInterface $tokenStorage
+    ) {
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier): Response

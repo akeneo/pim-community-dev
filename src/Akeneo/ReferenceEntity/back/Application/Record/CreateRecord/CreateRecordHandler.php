@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -32,8 +33,10 @@ use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
  */
 class CreateRecordHandler
 {
-    public function __construct(private RecordRepositoryInterface $recordRepository, private FindReferenceEntityAttributeAsLabelInterface $findAttributeAsLabel)
-    {
+    public function __construct(
+        private RecordRepositoryInterface $recordRepository,
+        private FindReferenceEntityAttributeAsLabelInterface $findAttributeAsLabel
+    ) {
     }
 
     public function __invoke(CreateRecordCommand $createRecordCommand): void

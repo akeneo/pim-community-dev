@@ -18,8 +18,9 @@ class RegisterSerializerPass implements CompilerPassInterface
     /** @staticvar integer The default priority for services */
     public const DEFAULT_PRIORITY = 100;
 
-    public function __construct(protected string $serializerServiceId)
-    {
+    public function __construct(
+        protected string $serializerServiceId
+    ) {
     }
 
     /**

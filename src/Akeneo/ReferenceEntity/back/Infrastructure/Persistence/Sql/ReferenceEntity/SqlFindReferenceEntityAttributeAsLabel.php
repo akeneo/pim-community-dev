@@ -20,8 +20,9 @@ use Doctrine\DBAL\Connection;
 
 class SqlFindReferenceEntityAttributeAsLabel implements FindReferenceEntityAttributeAsLabelInterface
 {
-    public function __construct(private Connection $sqlConnection)
-    {
+    public function __construct(
+        private Connection $sqlConnection
+    ) {
     }
 
     public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeAsLabelReference

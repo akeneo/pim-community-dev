@@ -25,8 +25,9 @@ class CacheChannelExists implements ChannelExistsInterface
     /** @var array<string, bool> */
     private array $channels = [];
 
-    public function __construct(private ChannelExistsInterface $channelExists)
-    {
+    public function __construct(
+        private ChannelExistsInterface $channelExists
+    ) {
     }
 
     public function exists(ChannelIdentifier $channelIdentifier): bool

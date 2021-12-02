@@ -23,8 +23,9 @@ class FilterRecordsByCompletenessValidator extends ConstraintValidator
 {
     private ?array $activatedLocalesPerChannels = null;
 
-    public function __construct(private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels)
-    {
+    public function __construct(
+        private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels
+    ) {
     }
 
     /**

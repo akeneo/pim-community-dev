@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -29,8 +30,11 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class GetAction
 {
-    public function __construct(private FindReferenceEntityDetailsInterface $findOneReferenceEntityQuery, private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler, private TokenStorageInterface $tokenStorage)
-    {
+    public function __construct(
+        private FindReferenceEntityDetailsInterface $findOneReferenceEntityQuery,
+        private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        private TokenStorageInterface $tokenStorage
+    ) {
     }
 
     public function __invoke(string $identifier): JsonResponse

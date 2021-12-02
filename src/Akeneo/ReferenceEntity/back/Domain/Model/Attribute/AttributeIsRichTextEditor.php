@@ -10,8 +10,9 @@ namespace Akeneo\ReferenceEntity\Domain\Model\Attribute;
  */
 class AttributeIsRichTextEditor
 {
-    private function __construct(private bool $isRichTextEditor)
-    {
+    private function __construct(
+        private bool $isRichTextEditor
+    ) {
     }
 
     public static function fromBoolean(bool $isRichTextEditor): self

@@ -19,8 +19,10 @@ class SqlFindValueKeysToIndexForAllChannelsAndLocales implements FindValueKeysTo
 {
     private array $cachedResult = [];
 
-    public function __construct(private Connection $sqlConnection, private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels)
-    {
+    public function __construct(
+        private Connection $sqlConnection,
+        private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels
+    ) {
     }
 
     public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array

@@ -24,8 +24,10 @@ use Webmozart\Assert\Assert;
 
 class AppendAttributeOptionHandler
 {
-    public function __construct(private GetAttributeIdentifierInterface $getAttributeIdentifier, private AttributeRepositoryInterface $attributeRepository)
-    {
+    public function __construct(
+        private GetAttributeIdentifierInterface $getAttributeIdentifier,
+        private AttributeRepositoryInterface $attributeRepository
+    ) {
     }
 
     public function __invoke(AppendAttributeOptionCommand $command): void

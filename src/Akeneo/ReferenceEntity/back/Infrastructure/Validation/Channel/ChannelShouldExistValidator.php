@@ -26,8 +26,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ChannelShouldExistValidator extends ConstraintValidator
 {
-    public function __construct(private ChannelExistsInterface $channelExists)
-    {
+    public function __construct(
+        private ChannelExistsInterface $channelExists
+    ) {
     }
 
     /**

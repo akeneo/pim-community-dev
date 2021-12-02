@@ -44,8 +44,13 @@ final class RecordProcessor implements ItemProcessorInterface, StepExecutionAwar
     /** @var array<string, AttributeCode> */
     private array $indexedImageAttributeCodes = [];
 
-    public function __construct(private EditRecordCommandFactory $editRecordCommandFactory, private RecordExistsInterface $recordExists, private ValidatorInterface $validator, private FindImageAttributeCodesInterface $findImageAttributeCodes, private FileStorerInterface $fileStorer)
-    {
+    public function __construct(
+        private EditRecordCommandFactory $editRecordCommandFactory,
+        private RecordExistsInterface $recordExists,
+        private ValidatorInterface $validator,
+        private FindImageAttributeCodesInterface $findImageAttributeCodes,
+        private FileStorerInterface $fileStorer
+    ) {
     }
 
     /**

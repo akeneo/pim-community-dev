@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -22,8 +23,9 @@ use Doctrine\DBAL\Connection;
  */
 class SqlFindExistingRecordCodes implements FindExistingRecordCodesInterface
 {
-    public function __construct(private Connection $sqlConnection)
-    {
+    public function __construct(
+        private Connection $sqlConnection
+    ) {
     }
 
     public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array

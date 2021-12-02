@@ -30,8 +30,9 @@ class ValidateAttributePropertiesImmutability
         'reference_entity_code',
     ];
 
-    public function __construct(private FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttribute)
-    {
+    public function __construct(
+        private FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttribute
+    ) {
     }
 
     /**

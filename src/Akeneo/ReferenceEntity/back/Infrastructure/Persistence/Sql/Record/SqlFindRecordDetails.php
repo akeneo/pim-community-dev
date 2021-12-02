@@ -31,8 +31,13 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlFindRecordDetails implements FindRecordDetailsInterface
 {
-    public function __construct(private Connection $sqlConnection, private RecordDetailsHydratorInterface $recordDetailsHydrator, private GenerateEmptyValuesInterface $generateEmptyValues, private FindValueKeyCollectionInterface $findValueKeyCollection, private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier)
-    {
+    public function __construct(
+        private Connection $sqlConnection,
+        private RecordDetailsHydratorInterface $recordDetailsHydrator,
+        private GenerateEmptyValuesInterface $generateEmptyValues,
+        private FindValueKeyCollectionInterface $findValueKeyCollection,
+        private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
+    ) {
     }
 
     /**

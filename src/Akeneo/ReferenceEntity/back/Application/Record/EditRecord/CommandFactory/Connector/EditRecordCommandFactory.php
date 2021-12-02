@@ -24,8 +24,10 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentif
  */
 class EditRecordCommandFactory
 {
-    public function __construct(private EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry, private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier)
-    {
+    public function __construct(
+        private EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry,
+        private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
+    ) {
     }
 
     public function create(ReferenceEntityIdentifier $referenceEntityIdentifier, array $normalizedRecord): EditRecordCommand

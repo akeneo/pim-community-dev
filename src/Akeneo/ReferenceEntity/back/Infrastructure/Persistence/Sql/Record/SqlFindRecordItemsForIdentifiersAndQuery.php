@@ -28,8 +28,10 @@ use Doctrine\DBAL\Connection;
  */
 class SqlFindRecordItemsForIdentifiersAndQuery implements FindRecordItemsForIdentifiersAndQueryInterface
 {
-    public function __construct(private Connection $sqlConnection, private BulkRecordItemHydrator $bulkRecordItemHydrator)
-    {
+    public function __construct(
+        private Connection $sqlConnection,
+        private BulkRecordItemHydrator $bulkRecordItemHydrator
+    ) {
     }
 
     public function find(array $identifiers, RecordQuery $query): array

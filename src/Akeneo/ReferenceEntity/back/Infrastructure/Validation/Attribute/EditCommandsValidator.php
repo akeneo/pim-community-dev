@@ -19,8 +19,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditCommandsValidator extends ConstraintValidator
 {
-    public function __construct(private ValidatorInterface $validator)
-    {
+    public function __construct(
+        private ValidatorInterface $validator
+    ) {
     }
 
     public function validate($editCommand, Constraint $constraint)

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -36,8 +37,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class DeleteAction
 {
-    public function __construct(private DeleteRecordHandler $deleteRecordHandler, private SecurityFacade $securityFacade, private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler, private TokenStorageInterface $tokenStorage, private RecordIndexerInterface $recordIndexer, private ValidatorInterface $validator, private NormalizerInterface $normalizer)
-    {
+    public function __construct(
+        private DeleteRecordHandler $deleteRecordHandler,
+        private SecurityFacade $securityFacade,
+        private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        private TokenStorageInterface $tokenStorage,
+        private RecordIndexerInterface $recordIndexer,
+        private ValidatorInterface $validator,
+        private NormalizerInterface $normalizer
+    ) {
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier, string $recordCode): Response

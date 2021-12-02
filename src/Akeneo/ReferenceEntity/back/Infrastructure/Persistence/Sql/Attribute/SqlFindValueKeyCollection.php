@@ -24,8 +24,9 @@ class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
     /** @var array<string, ValueKeyCollection> */
     private array $cachedResult = [];
 
-    public function __construct(private Connection $sqlConnection)
-    {
+    public function __construct(
+        private Connection $sqlConnection
+    ) {
     }
 
     public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): ValueKeyCollection

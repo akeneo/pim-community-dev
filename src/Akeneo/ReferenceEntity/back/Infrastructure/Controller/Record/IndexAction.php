@@ -30,8 +30,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class IndexAction
 {
-    public function __construct(private SearchRecord $searchRecord)
-    {
+    public function __construct(
+        private SearchRecord $searchRecord
+    ) {
     }
 
     /**

@@ -45,7 +45,7 @@ class AttributeAllowedExtensions
         $this->allowedExtensions = $allowedExtensions;
     }
 
-    public static function fromList(array $allowedExtensions) : self
+    public static function fromList(array $allowedExtensions): self
     {
         return new self($allowedExtensions);
     }

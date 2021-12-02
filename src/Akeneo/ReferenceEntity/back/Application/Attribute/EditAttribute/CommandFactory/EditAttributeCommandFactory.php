@@ -10,8 +10,9 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFact
  */
 class EditAttributeCommandFactory implements EditAttributeCommandFactoryInterface
 {
-    public function __construct(private EditAttributeCommandFactoryRegistryInterface $editAttributeCommandFactoryRegistry)
-    {
+    public function __construct(
+        private EditAttributeCommandFactoryRegistryInterface $editAttributeCommandFactoryRegistry
+    ) {
     }
 
     public function supports(array $normalizedCommand): bool

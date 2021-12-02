@@ -31,8 +31,11 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class GetAction
 {
-    public function __construct(private FindRecordDetailsInterface $findRecordDetailsQuery, private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler, private TokenStorageInterface $tokenStorage)
-    {
+    public function __construct(
+        private FindRecordDetailsInterface $findRecordDetailsQuery,
+        private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        private TokenStorageInterface $tokenStorage
+    ) {
     }
 
     public function __invoke(string $referenceEntityIdentifier, string $recordCode): JsonResponse

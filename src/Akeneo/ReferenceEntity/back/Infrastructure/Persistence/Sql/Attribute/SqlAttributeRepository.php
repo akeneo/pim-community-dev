@@ -36,8 +36,11 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class SqlAttributeRepository implements AttributeRepositoryInterface
 {
-    public function __construct(private Connection $sqlConnection, private AttributeHydratorRegistry $attributeHydratorRegistry, private EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        private Connection $sqlConnection,
+        private AttributeHydratorRegistry $attributeHydratorRegistry,
+        private EventDispatcherInterface $eventDispatcher
+    ) {
     }
 
     public function create(AbstractAttribute $attribute): void

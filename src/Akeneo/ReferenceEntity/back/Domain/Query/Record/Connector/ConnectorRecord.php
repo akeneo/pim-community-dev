@@ -26,15 +26,17 @@ class ConnectorRecord
     /**
      * @param array<string, mixed[]> $normalizedValues
      */
-    public function __construct(private RecordCode $code, private array $normalizedValues)
-    {
+    public function __construct(
+        private RecordCode $code,
+        private array $normalizedValues
+    ) {
     }
 
     public function normalize(): array
     {
         return [
             'code' => $this->code->normalize(),
-            'values' => empty($this->normalizedValues) ? (object) []: $this->normalizedValues,
+            'values' => empty($this->normalizedValues) ? (object) [] : $this->normalizedValues,
         ];
     }
 

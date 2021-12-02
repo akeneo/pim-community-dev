@@ -18,8 +18,9 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlFindSearchableRecords implements FindSearchableRecordsInterface
 {
-    public function __construct(private Connection $connection)
-    {
+    public function __construct(
+        private Connection $connection
+    ) {
     }
 
     public function byRecordIdentifier(RecordIdentifier $recordIdentifier): ?SearchableRecordItem

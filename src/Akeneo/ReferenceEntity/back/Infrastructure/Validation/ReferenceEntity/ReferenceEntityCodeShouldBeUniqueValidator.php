@@ -28,8 +28,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ReferenceEntityCodeShouldBeUniqueValidator extends ConstraintValidator
 {
-    public function __construct(private ReferenceEntityExistsInterface $referenceEntityExists)
-    {
+    public function __construct(
+        private ReferenceEntityExistsInterface $referenceEntityExists
+    ) {
     }
 
     public function validate($command, Constraint $constraint): void

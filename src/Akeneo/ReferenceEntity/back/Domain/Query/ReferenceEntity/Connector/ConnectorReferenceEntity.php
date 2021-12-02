@@ -23,8 +23,11 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 class ConnectorReferenceEntity
 {
-    public function __construct(private ReferenceEntityIdentifier $identifier, private LabelCollection $labelCollection, private Image $image)
-    {
+    public function __construct(
+        private ReferenceEntityIdentifier $identifier,
+        private LabelCollection $labelCollection,
+        private Image $image
+    ) {
     }
 
     public function normalize(): array

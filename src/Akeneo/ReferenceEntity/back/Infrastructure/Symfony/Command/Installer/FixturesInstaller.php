@@ -21,8 +21,12 @@ class FixturesInstaller
     private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
     private const NUMBER_OF_FAKE_RECORD_TO_CREATE = 10000;
 
-    public function __construct(private Connection $sqlConnection, private FileStorerInterface $storer, private Client $recordClient, private CommandLauncher $commandLauncher)
-    {
+    public function __construct(
+        private Connection $sqlConnection,
+        private FileStorerInterface $storer,
+        private Client $recordClient,
+        private CommandLauncher $commandLauncher
+    ) {
     }
 
     public function createSchema(): void

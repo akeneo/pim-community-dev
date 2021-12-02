@@ -27,8 +27,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ReferenceEntityShouldNotBeLinkedToAnyReferenceEntityAttributeValidator extends ConstraintValidator
 {
-    public function __construct(private ReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttributeInterface $isLinkedToAtLeastOneReferenceEntityAttribute)
-    {
+    public function __construct(
+        private ReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttributeInterface $isLinkedToAtLeastOneReferenceEntityAttribute
+    ) {
     }
 
     public function validate($command, Constraint $constraint): void

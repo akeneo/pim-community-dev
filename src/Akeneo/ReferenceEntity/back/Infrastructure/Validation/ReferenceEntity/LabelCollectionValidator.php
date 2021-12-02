@@ -31,8 +31,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class LabelCollectionValidator extends ConstraintValidator
 {
-    public function __construct(private FindActivatedLocalesByIdentifiersInterface $findActivatedLocales)
-    {
+    public function __construct(
+        private FindActivatedLocalesByIdentifiersInterface $findActivatedLocales
+    ) {
     }
 
     /**

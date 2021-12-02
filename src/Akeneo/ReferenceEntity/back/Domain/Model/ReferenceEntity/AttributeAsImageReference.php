@@ -26,8 +26,9 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
  */
 class AttributeAsImageReference
 {
-    private function __construct(private ?AttributeIdentifier $identifier)
-    {
+    private function __construct(
+        private ?AttributeIdentifier $identifier
+    ) {
     }
 
     public static function fromAttributeIdentifier(AttributeIdentifier $identifier): self

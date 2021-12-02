@@ -18,8 +18,11 @@ class RecordCursor implements CursorInterface
     private ?array $items = null;
     private ?string $searchAfterCode = null;
 
-    public function __construct(private RecordQueryBuilderInterface $queryBuilder, private Client $recordClient, private RecordQuery $recordQuery)
-    {
+    public function __construct(
+        private RecordQueryBuilderInterface $queryBuilder,
+        private Client $recordClient,
+        private RecordQuery $recordQuery
+    ) {
     }
 
     /**

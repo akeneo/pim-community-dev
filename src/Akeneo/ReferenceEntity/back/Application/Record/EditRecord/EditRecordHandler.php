@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -32,8 +33,11 @@ class EditRecordHandler
 {
     private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
 
-    public function __construct(private ValueUpdaterRegistryInterface $valueUpdaterRegistry, private RecordRepositoryInterface $recordRepository, private FileStorerInterface $storer)
-    {
+    public function __construct(
+        private ValueUpdaterRegistryInterface $valueUpdaterRegistry,
+        private RecordRepositoryInterface $recordRepository,
+        private FileStorerInterface $storer
+    ) {
     }
 
     /**

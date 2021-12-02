@@ -24,8 +24,16 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 abstract class AbstractAttribute
 {
-    protected function __construct(protected AttributeIdentifier $identifier, protected ReferenceEntityIdentifier $referenceEntityIdentifier, protected AttributeCode $code, protected LabelCollection $labelCollection, protected AttributeOrder $order, protected AttributeIsRequired $isRequired, protected AttributeValuePerChannel $valuePerChannel, protected AttributeValuePerLocale $valuePerLocale)
-    {
+    protected function __construct(
+        protected AttributeIdentifier $identifier,
+        protected ReferenceEntityIdentifier $referenceEntityIdentifier,
+        protected AttributeCode $code,
+        protected LabelCollection $labelCollection,
+        protected AttributeOrder $order,
+        protected AttributeIsRequired $isRequired,
+        protected AttributeValuePerChannel $valuePerChannel,
+        protected AttributeValuePerLocale $valuePerLocale
+    ) {
     }
 
     public function getIdentifier(): AttributeIdentifier

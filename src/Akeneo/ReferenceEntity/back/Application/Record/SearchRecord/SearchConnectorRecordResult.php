@@ -18,18 +18,16 @@ use Webmozart\Assert\Assert;
 
 final class SearchConnectorRecordResult
 {
-    /** @var ConnectorRecord[] */
-    private array $records;
-
     /**
      * @param ConnectorRecord[] $records
      */
-    private function __construct(array $records, private ?string $lastSortValue)
-    {
-        $this->records = $records;
+    private function __construct(
+        private array $records,
+        private ?string $lastSortValue
+    ) {
     }
 
-    public static function createFromSearchAfterQuery(array $records, ?string $lastSortValue)
+    public static function createFromSearchAfterQuery(array $records, ?string $lastSortValue): self
     {
         Assert::allIsInstanceOf($records, ConnectorRecord::class);
 

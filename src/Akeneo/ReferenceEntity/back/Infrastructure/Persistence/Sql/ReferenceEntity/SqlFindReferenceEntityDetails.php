@@ -34,8 +34,11 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlFindReferenceEntityDetails implements FindReferenceEntityDetailsInterface
 {
-    public function __construct(private Connection $sqlConnection, private FindAttributesDetailsInterface $findAttributesDetails, private FindActivatedLocalesInterface $findActivatedLocales)
-    {
+    public function __construct(
+        private Connection $sqlConnection,
+        private FindAttributesDetailsInterface $findAttributesDetails,
+        private FindActivatedLocalesInterface $findActivatedLocales
+    ) {
     }
 
     /**

@@ -30,9 +30,6 @@ class TextAttribute extends AbstractAttribute
     private AttributeRegularExpression $regularExpression;
     private AttributeIsRichTextEditor $isRichTextEditor;
 
-    /**
-     * TextAttribute constructor.
-     */
     protected function __construct(
         AttributeIdentifier $identifier,
         ReferenceEntityIdentifier $referenceEntityIdentifier,

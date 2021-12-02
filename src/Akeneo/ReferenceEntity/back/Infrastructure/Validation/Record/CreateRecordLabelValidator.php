@@ -34,8 +34,11 @@ use Webmozart\Assert\Assert;
  */
 final class CreateRecordLabelValidator extends ConstraintValidator
 {
-    public function __construct(private FindReferenceEntityAttributeAsLabelInterface $findAttributeAsLabel, private FindAttributesIndexedByIdentifierInterface $sqlFindAttributesIndexedByIdentifier, private EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry)
-    {
+    public function __construct(
+        private FindReferenceEntityAttributeAsLabelInterface $findAttributeAsLabel,
+        private FindAttributesIndexedByIdentifierInterface $sqlFindAttributesIndexedByIdentifier,
+        private EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry
+    ) {
     }
 
     public function validate($command, Constraint $constraint)

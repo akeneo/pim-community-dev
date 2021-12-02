@@ -20,8 +20,9 @@ use Doctrine\DBAL\Connection;
 
 class SqlFindAttributeNextOrder implements FindAttributeNextOrderInterface
 {
-    public function __construct(private Connection $sqlConnection)
-    {
+    public function __construct(
+        private Connection $sqlConnection
+    ) {
     }
 
     public function withReferenceEntityIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): AttributeOrder

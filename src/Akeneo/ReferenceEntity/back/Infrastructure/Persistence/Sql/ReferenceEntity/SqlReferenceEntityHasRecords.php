@@ -26,8 +26,9 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlReferenceEntityHasRecords implements ReferenceEntityHasRecordsInterface
 {
-    public function __construct(private Connection $sqlConnection)
-    {
+    public function __construct(
+        private Connection $sqlConnection
+    ) {
     }
 
     public function hasRecords(ReferenceEntityIdentifier $identifier): bool

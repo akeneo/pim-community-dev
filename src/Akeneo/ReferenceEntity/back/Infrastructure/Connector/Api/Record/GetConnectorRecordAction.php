@@ -35,8 +35,7 @@ class GetConnectorRecordAction
         private FindConnectorRecordByReferenceEntityAndCodeInterface $findConnectorRecord,
         private ReferenceEntityExistsInterface $referenceEntityExists,
         private AddHalDownloadLinkToRecordImages $addHalLinksToImageValues,
-        private SecurityFacade $securityFacade
-    ) {
+        private SecurityFacade $securityFacade    ) {
     }
 
     /**

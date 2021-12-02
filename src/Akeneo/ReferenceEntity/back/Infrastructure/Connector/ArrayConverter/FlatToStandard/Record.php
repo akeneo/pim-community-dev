@@ -34,8 +34,10 @@ final class Record implements ArrayConverterInterface
     public const DIRECTORY_PATH_OPTION_KEY = 'directory_path';
     private array $cachedAttributes = [];
 
-    public function __construct(private FieldsRequirementChecker $fieldsChecker, private FindAttributesDetailsInterface $findAttributeDetails)
-    {
+    public function __construct(
+        private FieldsRequirementChecker $fieldsChecker,
+        private FindAttributesDetailsInterface $findAttributeDetails
+    ) {
     }
 
     /**

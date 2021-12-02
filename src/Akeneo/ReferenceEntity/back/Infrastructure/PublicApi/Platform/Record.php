@@ -15,12 +15,11 @@ namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Platform;
 
 class Record
 {
-    /** @var array<string, string> */
-    private array $labels;
-
-    public function __construct(private string $code, array $labels)
-    {
-        $this->labels = $labels;
+    /** @param array<string, string> $labels */
+    public function __construct(
+        private string $code,
+        private array $labels
+    ) {
     }
 
     public function getCode(): string

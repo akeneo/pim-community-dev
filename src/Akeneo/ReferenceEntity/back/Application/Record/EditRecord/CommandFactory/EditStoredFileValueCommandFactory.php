@@ -23,8 +23,9 @@ use Akeneo\ReferenceEntity\Domain\Query\File\FindFileDataByFileKeyInterface;
  */
 class EditStoredFileValueCommandFactory implements EditValueCommandFactoryInterface
 {
-    public function __construct(private FindFileDataByFileKeyInterface $findFileData)
-    {
+    public function __construct(
+        private FindFileDataByFileKeyInterface $findFileData
+    ) {
     }
 
     public function supports(AbstractAttribute $attribute, array $normalizedValue): bool

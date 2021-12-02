@@ -42,8 +42,15 @@ class ConnectorAttribute
     /**
      * @param array<string, string> $additionalProperties
      */
-    public function __construct(private AttributeCode $code, private LabelCollection $labelCollection, private string $type, private AttributeValuePerLocale $valuePerLocale, private AttributeValuePerChannel $valuePerChannel, private AttributeIsRequired $isRequired, private array $additionalProperties)
-    {
+    public function __construct(
+        private AttributeCode $code,
+        private LabelCollection $labelCollection,
+        private string $type,
+        private AttributeValuePerLocale $valuePerLocale,
+        private AttributeValuePerChannel $valuePerChannel,
+        private AttributeIsRequired $isRequired,
+        private array $additionalProperties
+    ) {
     }
 
     public function mapAttributeType(string $type)

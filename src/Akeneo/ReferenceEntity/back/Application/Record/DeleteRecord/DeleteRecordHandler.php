@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -22,8 +23,9 @@ use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
  */
 class DeleteRecordHandler
 {
-    public function __construct(private RecordRepositoryInterface $recordRepository)
-    {
+    public function __construct(
+        private RecordRepositoryInterface $recordRepository
+    ) {
     }
 
     public function __invoke(DeleteRecordCommand $deleteRecordCommand): void

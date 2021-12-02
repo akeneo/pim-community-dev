@@ -40,7 +40,7 @@ class AttributeMaxLength
         $this->maxLength = $maxLength;
     }
 
-    public static function fromInteger(int $maxLength) : self
+    public static function fromInteger(int $maxLength): self
     {
         return new self($maxLength);
     }

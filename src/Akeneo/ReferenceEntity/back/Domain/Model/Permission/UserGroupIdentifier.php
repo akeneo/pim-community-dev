@@ -19,8 +19,9 @@ namespace Akeneo\ReferenceEntity\Domain\Model\Permission;
  */
 class UserGroupIdentifier
 {
-    private function __construct(private int $identifier)
-    {
+    private function __construct(
+        private int $identifier
+    ) {
     }
 
     public static function fromInteger(int $identifier): self

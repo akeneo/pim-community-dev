@@ -10,8 +10,9 @@ namespace Akeneo\ReferenceEntity\Domain\Model\Attribute;
  */
 class AttributeIsTextarea
 {
-    private function __construct(private bool $isTextarea)
-    {
+    private function __construct(
+        private bool $isTextarea
+    ) {
     }
 
     public static function fromBoolean(bool $isTextarea): self

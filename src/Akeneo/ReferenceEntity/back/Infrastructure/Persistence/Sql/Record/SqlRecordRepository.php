@@ -40,8 +40,15 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class SqlRecordRepository implements RecordRepositoryInterface
 {
-    public function __construct(private Connection $sqlConnection, private RecordHydratorInterface $recordHydrator, private FindValueKeyCollectionInterface $findValueKeyCollection, private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier, private EventDispatcherInterface $eventDispatcher, private FindIdentifiersByReferenceEntityAndCodesInterface $findIdentifiersByReferenceEntityAndCodes, private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType)
-    {
+    public function __construct(
+        private Connection $sqlConnection,
+        private RecordHydratorInterface $recordHydrator,
+        private FindValueKeyCollectionInterface $findValueKeyCollection,
+        private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
+        private EventDispatcherInterface $eventDispatcher,
+        private FindIdentifiersByReferenceEntityAndCodesInterface $findIdentifiersByReferenceEntityAndCodes,
+        private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType
+    ) {
     }
 
     public function count(): int

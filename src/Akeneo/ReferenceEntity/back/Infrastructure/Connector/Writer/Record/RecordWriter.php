@@ -29,8 +29,10 @@ final class RecordWriter implements ItemWriterInterface, StepExecutionAwareInter
 {
     private ?StepExecution $stepExecution = null;
 
-    public function __construct(private CreateRecordHandler $createRecordHandler, private EditRecordHandler $editRecordHandler)
-    {
+    public function __construct(
+        private CreateRecordHandler $createRecordHandler,
+        private EditRecordHandler $editRecordHandler
+    ) {
     }
 
     /**

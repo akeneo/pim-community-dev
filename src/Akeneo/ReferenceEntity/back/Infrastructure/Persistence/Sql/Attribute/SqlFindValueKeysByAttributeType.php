@@ -28,8 +28,9 @@ class SqlFindValueKeysByAttributeType implements FindValueKeysByAttributeTypeInt
     /** @var array<string, string> */
     private array $cachedResult = [];
 
-    public function __construct(private Connection $sqlConnection)
-    {
+    public function __construct(
+        private Connection $sqlConnection
+    ) {
     }
 
     /**

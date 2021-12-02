@@ -22,8 +22,9 @@ use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
  */
 class DeleteRecordsHandler
 {
-    public function __construct(private RecordRepositoryInterface $recordRepository)
-    {
+    public function __construct(
+        private RecordRepositoryInterface $recordRepository
+    ) {
     }
 
     public function __invoke(DeleteRecordsCommand $deleteRecordsCommand): void

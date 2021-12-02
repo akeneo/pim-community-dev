@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -33,8 +34,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditAction
 {
-    public function __construct(private EditReferenceEntityHandler $editReferenceEntityHandler, private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler, private TokenStorageInterface $tokenStorage, private Serializer $serializer, private ValidatorInterface $validator)
-    {
+    public function __construct(
+        private EditReferenceEntityHandler $editReferenceEntityHandler,
+        private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        private TokenStorageInterface $tokenStorage,
+        private Serializer $serializer,
+        private ValidatorInterface $validator
+    ) {
     }
 
     public function __invoke(Request $request): Response

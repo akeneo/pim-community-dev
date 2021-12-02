@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Subscribers;
@@ -16,8 +17,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class RefreshRecordsSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private CommandLauncher $commandLauncher)
-    {
+    public function __construct(
+        private CommandLauncher $r
+    ) {
     }
 
     /**

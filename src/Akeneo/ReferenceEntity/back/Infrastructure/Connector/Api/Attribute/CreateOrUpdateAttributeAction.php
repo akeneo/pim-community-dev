@@ -44,8 +44,7 @@ class CreateOrUpdateAttributeAction
         private AttributeCreationValidator $jsonSchemaCreateValidator,
         private AttributeEditionValidator $jsonSchemaEditValidator,
         private ValidateAttributePropertiesImmutability $validateAttributePropertiesImmutability,
-        private SecurityFacade $securityFacade
-    ) {
+        private SecurityFacade $securityFacade    ) {
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier, string $attributeCode): Response

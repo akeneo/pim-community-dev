@@ -19,8 +19,9 @@ namespace Akeneo\ReferenceEntity\Domain\Model\Attribute;
  */
 class AttributeDecimalsAllowed
 {
-    private function __construct(private bool $value)
-    {
+    private function __construct(
+        private bool $value
+    ) {
     }
 
     public static function fromBoolean(bool $decimalsAllowed): self

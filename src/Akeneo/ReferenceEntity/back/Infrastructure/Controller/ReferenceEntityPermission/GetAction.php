@@ -17,8 +17,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class GetAction
 {
-    public function __construct(private FindReferenceEntityPermissionsDetailsInterface $findReferenceEntityPermissionsDetails)
-    {
+    public function __construct(
+        private FindReferenceEntityPermissionsDetailsInterface $findReferenceEntityPermissionsDetails
+    ) {
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier): JsonResponse

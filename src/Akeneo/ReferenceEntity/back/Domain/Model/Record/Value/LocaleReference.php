@@ -19,8 +19,9 @@ use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
  */
 class LocaleReference
 {
-    private function __construct(private ?LocaleIdentifier $identifier)
-    {
+    private function __construct(
+        private ?LocaleIdentifier $identifier
+    ) {
     }
 
     public static function fromLocaleIdentifier(LocaleIdentifier $identifier): self

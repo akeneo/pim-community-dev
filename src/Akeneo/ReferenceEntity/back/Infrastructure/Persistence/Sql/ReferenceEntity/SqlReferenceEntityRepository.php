@@ -34,8 +34,10 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class SqlReferenceEntityRepository implements ReferenceEntityRepositoryInterface
 {
-    public function __construct(private Connection $sqlConnection, private EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        private Connection $sqlConnection,
+        private EventDispatcherInterface $eventDispatcher
+    ) {
     }
 
     /**

@@ -24,8 +24,9 @@ use Webmozart\Assert\Assert;
  */
 class RecordCollectionConnectorValueTransformer implements ConnectorValueTransformerInterface
 {
-    public function __construct(private FindCodesByIdentifiersInterface $findCodesByIdentifiers)
-    {
+    public function __construct(
+        private FindCodesByIdentifiersInterface $findCodesByIdentifiers
+    ) {
     }
 
     public function supports(AbstractAttribute $attribute): bool

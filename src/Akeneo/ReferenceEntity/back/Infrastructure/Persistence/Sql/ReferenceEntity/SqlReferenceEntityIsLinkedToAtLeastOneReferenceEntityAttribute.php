@@ -25,8 +25,9 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttribute implements ReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttributeInterface
 {
-    public function __construct(private Connection $sqlConnection)
-    {
+    public function __construct(
+        private Connection $sqlConnection
+    ) {
     }
 
     public function isLinked(ReferenceEntityIdentifier $identifier): bool

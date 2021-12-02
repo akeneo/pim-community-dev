@@ -40,8 +40,17 @@ class RecordDetails
 
     private const DATE_FORMAT = 'c';
 
-    public function __construct(public RecordIdentifier $identifier, public ReferenceEntityIdentifier $referenceEntityIdentifier, public RecordCode $code, public LabelCollection $labels, public \DateTimeImmutable $createdAt, public \DateTimeImmutable $updatedAt, public Image $image, public array $values, public bool $isAllowedToEdit)
-    {
+    public function __construct(
+        public RecordIdentifier $identifier,
+        public ReferenceEntityIdentifier $referenceEntityIdentifier,
+        public RecordCode $code,
+        public LabelCollection $labels,
+        public \DateTimeImmutable $createdAt,
+        public \DateTimeImmutable $updatedAt,
+        public Image $image,
+        public array $values,
+        public bool $isAllowedToEdit
+    ) {
     }
 
     public function normalize(): array

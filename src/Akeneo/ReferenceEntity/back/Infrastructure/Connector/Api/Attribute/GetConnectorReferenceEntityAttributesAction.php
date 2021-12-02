@@ -27,8 +27,7 @@ class GetConnectorReferenceEntityAttributesAction
         private FindConnectorAttributesByReferenceEntityIdentifierInterface $findConnectorReferenceEntityAttributes,
         private ReferenceEntityExistsInterface $referenceEntityExists,
         private AddHalSelfLinkToNormalizedConnectorAttribute $addHalSelfLinkToNormalizedConnectorAttribute,
-        private SecurityFacade $securityFacade
-    ) {
+        private SecurityFacade $securityFacade    ) {
     }
 
     /**

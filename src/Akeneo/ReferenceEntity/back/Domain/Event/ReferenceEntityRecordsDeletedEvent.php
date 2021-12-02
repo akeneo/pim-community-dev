@@ -16,8 +16,9 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class ReferenceEntityRecordsDeletedEvent extends Event
 {
-    public function __construct(private ReferenceEntityIdentifier $referenceEntityIdentifier)
-    {
+    public function __construct(
+        private ReferenceEntityIdentifier $referenceEntityIdentifier
+    ) {
     }
 
     public function getReferenceEntityIdentifier(): ReferenceEntityIdentifier

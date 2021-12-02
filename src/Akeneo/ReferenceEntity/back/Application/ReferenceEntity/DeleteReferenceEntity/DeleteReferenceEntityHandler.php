@@ -22,8 +22,9 @@ use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
  */
 class DeleteReferenceEntityHandler
 {
-    public function __construct(private ReferenceEntityRepositoryInterface $referenceEntityRepository)
-    {
+    public function __construct(
+        private ReferenceEntityRepositoryInterface $referenceEntityRepository
+    ) {
     }
 
     public function __invoke(DeleteReferenceEntityCommand $deleteReferenceEntityCommand): void

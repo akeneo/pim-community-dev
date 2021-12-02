@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Onboarder;
@@ -11,8 +12,9 @@ use Doctrine\DBAL\Connection;
  */
 class FindAllRecordLabels
 {
-    public function __construct(private Connection $sqlConnection)
-    {
+    public function __construct(
+        private Connection $sqlConnection
+    ) {
     }
 
     public function find(): \Iterator

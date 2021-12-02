@@ -12,8 +12,9 @@ use Doctrine\DBAL\Connection;
  */
 class SqlAverageMaxNumberOfAttributesPerReferenceEntity
 {
-    public function __construct(private Connection $sqlConnection)
-    {
+    public function __construct(
+        private Connection $sqlConnection
+    ) {
     }
 
     public function fetch(): AverageMaxVolumes

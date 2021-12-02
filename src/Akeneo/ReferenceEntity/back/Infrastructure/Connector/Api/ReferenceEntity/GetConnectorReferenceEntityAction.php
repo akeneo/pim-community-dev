@@ -17,8 +17,7 @@ class GetConnectorReferenceEntityAction
     public function __construct(
         private FindConnectorReferenceEntityByReferenceEntityIdentifierInterface $findConnectorReferenceEntity,
         private AddHalDownloadLinkToReferenceEntityImage $addHalLinksToReferenceEntityImage,
-        private SecurityFacade $securityFacade
-    ) {
+        private SecurityFacade $securityFacade    ) {
     }
 
     /**

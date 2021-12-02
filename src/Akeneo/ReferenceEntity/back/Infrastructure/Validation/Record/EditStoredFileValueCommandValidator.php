@@ -35,8 +35,9 @@ use Symfony\Component\Validator\Validation;
  */
 class EditStoredFileValueCommandValidator extends ConstraintValidator
 {
-    public function __construct(private FileExistsInterface $fileExists)
-    {
+    public function __construct(
+        private FileExistsInterface $fileExists
+    ) {
     }
 
     public function validate($command, Constraint $constraint)

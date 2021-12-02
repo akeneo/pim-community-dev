@@ -23,8 +23,9 @@ use Doctrine\DBAL\Types\Types;
 
 class SqlGetAttributeIdentifier implements GetAttributeIdentifierInterface
 {
-    public function __construct(private Connection $sqlConnection)
-    {
+    public function __construct(
+        private Connection $sqlConnection
+    ) {
     }
 
     public function withReferenceEntityAndCode(

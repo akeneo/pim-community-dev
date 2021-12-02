@@ -34,8 +34,11 @@ class RecordNormalizer implements RecordNormalizerInterface
     private const VALUES_FIELD = 'values';
     private const ES_TERM_MAX_LENGTH = 32766;
 
-    public function __construct(private FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales, private SqlFindSearchableRecords $findSearchableRecords, private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType)
-    {
+    public function __construct(
+        private FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
+        private SqlFindSearchableRecords $findSearchableRecords,
+        private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType
+    ) {
     }
 
     public function normalizeRecord(RecordIdentifier $recordIdentifier): array

@@ -19,8 +19,9 @@ use Symfony\Component\Routing\Router;
 
 class AddHalSelfLinkToNormalizedConnectorAttribute
 {
-    public function __construct(private Router $router)
-    {
+    public function __construct(
+        private Router $router
+    ) {
     }
 
     public function __invoke(string $referenceEntityIdentifier, array $normalizedAttribute): array

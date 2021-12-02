@@ -28,8 +28,11 @@ use Symfony\Component\Validator\Validation;
  */
 class EditValueCommandValidator extends ConstraintValidator
 {
-    public function __construct(private ChannelExistsInterface $channelExists, private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels, private FindActivatedLocalesByIdentifiersInterface $findActivatedLocalesByIdentifiers)
-    {
+    public function __construct(
+        private ChannelExistsInterface $channelExists,
+        private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels,
+        private FindActivatedLocalesByIdentifiersInterface $findActivatedLocalesByIdentifiers
+    ) {
     }
 
     public function validate($command, Constraint $constraint)

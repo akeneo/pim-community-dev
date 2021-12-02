@@ -17,8 +17,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class RemoveRecordFromIndexSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private RecordIndexerInterface $recordIndexer)
-    {
+    public function __construct(
+        private RecordIndexerInterface $recordIndexer
+    ) {
     }
 
     /**

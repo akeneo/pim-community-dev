@@ -32,8 +32,12 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class DeleteAction
 {
-    public function __construct(private DeleteAttributeHandler $deleteAttributeHandler, private SecurityFacade $securityFacade, private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler, private TokenStorageInterface $tokenStorage)
-    {
+    public function __construct(
+        private DeleteAttributeHandler $deleteAttributeHandler,
+        private SecurityFacade $securityFacade,
+        private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        private TokenStorageInterface $tokenStorage
+    ) {
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier, string $attributeIdentifier): Response

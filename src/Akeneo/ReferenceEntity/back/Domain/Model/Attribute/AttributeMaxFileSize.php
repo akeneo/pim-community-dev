@@ -41,7 +41,7 @@ class AttributeMaxFileSize
         $this->maxFileSize = $maxFileSize;
     }
 
-    public static function fromString(string $maxFileSize) : self
+    public static function fromString(string $maxFileSize): self
     {
         return new self($maxFileSize);
     }

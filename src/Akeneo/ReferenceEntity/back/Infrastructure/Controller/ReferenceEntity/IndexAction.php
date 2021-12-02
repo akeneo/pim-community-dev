@@ -25,8 +25,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class IndexAction
 {
-    public function __construct(private FindReferenceEntityItemsInterface $findReferenceEntitiesQuery)
-    {
+    public function __construct(
+        private FindReferenceEntityItemsInterface $findReferenceEntitiesQuery
+    ) {
     }
 
     /**

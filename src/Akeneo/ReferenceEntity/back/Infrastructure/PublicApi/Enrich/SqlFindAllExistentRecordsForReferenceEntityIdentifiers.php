@@ -23,8 +23,9 @@ final class SqlFindAllExistentRecordsForReferenceEntityIdentifiers
 {
     private const BATCH_SIZE = 200;
 
-    public function __construct(private Connection $connection)
-    {
+    public function __construct(
+        private Connection $connection
+    ) {
     }
 
     public function forReferenceEntityIdentifiersAndRecordCodes(array $referenceEntityIdentifiersToCodes): array

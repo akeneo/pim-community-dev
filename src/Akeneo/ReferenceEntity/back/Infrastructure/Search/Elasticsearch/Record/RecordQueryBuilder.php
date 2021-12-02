@@ -25,8 +25,12 @@ class RecordQueryBuilder implements RecordQueryBuilderInterface
 {
     private const ATTRIBUTE_FILTER_FIELD = 'values.';
 
-    public function __construct(private FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale, private GetValueKeyForAttributeChannelAndLocaleInterface $getValueKeyForAttributeChannelAndLocale, private AttributeRepositoryInterface $attributeRepository, private FindIdentifiersByReferenceEntityAndCodesInterface $findIdentifiersByReferenceEntityAndCodes)
-    {
+    public function __construct(
+        private FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale,
+        private GetValueKeyForAttributeChannelAndLocaleInterface $getValueKeyForAttributeChannelAndLocale,
+        private AttributeRepositoryInterface $attributeRepository,
+        private FindIdentifiersByReferenceEntityAndCodesInterface $findIdentifiersByReferenceEntityAndCodes
+    ) {
     }
 
     public function buildFromQuery(RecordQuery $recordQuery, $source): array

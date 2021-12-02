@@ -28,8 +28,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class IndexAction
 {
-    public function __construct(private FindAttributesDetailsInterface $findAttributesDetails, private ReferenceEntityExistsInterface $referenceEntityExists)
-    {
+    public function __construct(
+        private FindAttributesDetailsInterface $findAttributesDetails,
+        private ReferenceEntityExistsInterface $referenceEntityExists
+    ) {
     }
 
     public function __invoke(string $referenceEntityIdentifier): JsonResponse

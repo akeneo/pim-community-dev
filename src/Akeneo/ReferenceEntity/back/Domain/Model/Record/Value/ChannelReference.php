@@ -19,8 +19,9 @@ use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
  */
 class ChannelReference
 {
-    private function __construct(private ?ChannelIdentifier $identifier)
-    {
+    private function __construct(
+        private ?ChannelIdentifier $identifier
+    ) {
     }
 
     public static function fromChannelIdentifier(ChannelIdentifier $identifier): self

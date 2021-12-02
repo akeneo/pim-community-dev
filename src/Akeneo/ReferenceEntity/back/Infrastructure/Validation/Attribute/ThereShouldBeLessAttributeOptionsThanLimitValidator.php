@@ -26,8 +26,11 @@ use Symfony\Component\Validator\Validation;
 
 class ThereShouldBeLessAttributeOptionsThanLimitValidator extends ConstraintValidator
 {
-    public function __construct(private GetAttributeIdentifierInterface $getAttributeIdentifier, private AttributeRepositoryInterface $attributeRepository, private int $attributeOptionsLimit)
-    {
+    public function __construct(
+        private GetAttributeIdentifierInterface $getAttributeIdentifier,
+        private AttributeRepositoryInterface $attributeRepository,
+        private int $attributeOptionsLimit
+    ) {
     }
 
     public function validate($command, Constraint $constraint): void

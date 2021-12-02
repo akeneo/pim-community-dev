@@ -26,8 +26,9 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlReferenceEntityExists implements ReferenceEntityExistsInterface
 {
-    public function __construct(private Connection $sqlConnection)
-    {
+    public function __construct(
+        private Connection $sqlConnection
+    ) {
     }
 
     public function withIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): bool

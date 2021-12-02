@@ -11,8 +11,10 @@ namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics;
  */
 class AverageMaxVolumes
 {
-    public function __construct(private int $maxVolume, private int $averageVolume)
-    {
+    public function __construct(
+        private int $maxVolume,
+        private int $averageVolume
+    ) {
     }
 
     public function getMaxVolume(): int

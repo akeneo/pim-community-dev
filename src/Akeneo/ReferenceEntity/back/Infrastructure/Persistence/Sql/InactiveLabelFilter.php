@@ -8,8 +8,9 @@ class InactiveLabelFilter
 {
     private ?array $activatedLocalesCache = null;
 
-    public function __construct(private FindActivatedLocalesInterface $findActivatedLocales)
-    {
+    public function __construct(
+        private FindActivatedLocalesInterface $findActivatedLocales
+    ) {
     }
 
     public function filter(array $labels): array

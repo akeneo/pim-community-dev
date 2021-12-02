@@ -40,8 +40,17 @@ class MassDeleteRecordsTasklet implements TaskletInterface, TrackableTaskletInte
 {
     private ?StepExecution $stepExecution = null;
 
-    public function __construct(private DeleteRecordsHandler $deleteRecordsHandler, private RecordQueryBuilderInterface $recordQueryBuilder, private Client $recordClient, private JobRepositoryInterface $jobRepository, private RecordIndexerInterface $recordIndexer, private JobStopper $jobStopper, private ValidatorInterface $validator, private FindRecordsUsedAsProductVariantAxisInterface $findRecordsUsedAsProductVariantAxis, private int $batchSize)
-    {
+    public function __construct(
+        private DeleteRecordsHandler $deleteRecordsHandler,
+        private RecordQueryBuilderInterface $recordQueryBuilder,
+        private Client $recordClient,
+        private JobRepositoryInterface $jobRepository,
+        private RecordIndexerInterface $recordIndexer,
+        private JobStopper $jobStopper,
+        private ValidatorInterface $validator,
+        private FindRecordsUsedAsProductVariantAxisInterface $findRecordsUsedAsProductVariantAxis,
+        private int $batchSize
+    ) {
     }
 
     public function setStepExecution(StepExecution $stepExecution): void

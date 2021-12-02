@@ -24,8 +24,9 @@ use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
  */
 class CreateReferenceEntityHandler
 {
-    public function __construct(private ReferenceEntityRepositoryInterface $referenceEntityRepository)
-    {
+    public function __construct(
+        private ReferenceEntityRepositoryInterface $referenceEntityRepository
+    ) {
     }
 
     public function __invoke(CreateReferenceEntityCommand $createReferenceEntityCommand): void

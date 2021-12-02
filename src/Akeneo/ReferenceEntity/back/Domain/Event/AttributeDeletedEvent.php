@@ -15,8 +15,10 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class AttributeDeletedEvent extends Event
 {
-    public function __construct(public ReferenceEntityIdentifier $referenceEntityIdentifier, public AttributeIdentifier $attributeIdentifier)
-    {
+    public function __construct(
+        public ReferenceEntityIdentifier $referenceEntityIdentifier,
+        public AttributeIdentifier $attributeIdentifier
+    ) {
     }
 
     public function getReferenceEntityIdentifier(): ReferenceEntityIdentifier

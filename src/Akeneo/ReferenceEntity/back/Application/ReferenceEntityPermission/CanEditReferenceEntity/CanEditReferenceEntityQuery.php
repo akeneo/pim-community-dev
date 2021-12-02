@@ -10,7 +10,9 @@ namespace Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditRe
  */
 class CanEditReferenceEntityQuery
 {
-    public function __construct(public string $referenceEntityIdentifier, public string $securityIdentifier)
-    {
+    public function __construct(
+        public string $referenceEntityIdentifier,
+        public string $securityIdentifier
+    ) {
     }
 }
