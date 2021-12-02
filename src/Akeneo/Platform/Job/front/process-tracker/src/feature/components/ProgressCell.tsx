@@ -1,11 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {ProgressBar, Table} from 'akeneo-design-system';
-import {JobExecutionRow} from '../../models';
-import {
-  getStepExecutionRowTrackingLevel,
-  getStepExecutionRowTrackingPercent,
-} from '../../models/StepExecutionRowTracking';
+import {JobExecutionRow, getStepExecutionRowTrackingLevel, getStepExecutionRowTrackingPercent} from '../models';
 
 const Container = styled.div`
   display: grid;

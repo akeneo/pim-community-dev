@@ -6,6 +6,7 @@ const jobExecutionRow: JobExecutionRow = {
   tracking: {
     total_step: 2,
     current_step: 1,
+    steps: [],
   },
   error_count: 2,
   type: 'export',

@@ -13,6 +13,7 @@ const rows: JobExecutionRow[] = [
     tracking: {
       total_step: 2,
       current_step: 1,
+      steps: [],
     },
     error_count: 2,
     type: 'export',
@@ -28,6 +29,7 @@ const rows: JobExecutionRow[] = [
     tracking: {
       total_step: 3,
       current_step: 2,
+      steps: [],
     },
     error_count: 2,
     type: 'import',
@@ -43,6 +45,7 @@ const rows: JobExecutionRow[] = [
     tracking: {
       total_step: 1,
       current_step: 1,
+      steps: [],
     },
     error_count: 2,
     type: 'quick_export',

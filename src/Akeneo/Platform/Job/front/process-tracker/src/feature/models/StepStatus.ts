@@ -12,4 +12,3 @@ const AVAILABLE_STEP_STATUSES = [
 type StepStatus = typeof AVAILABLE_STEP_STATUSES[number];
 
 export type {StepStatus};
-export {AVAILABLE_STEP_STATUSES};

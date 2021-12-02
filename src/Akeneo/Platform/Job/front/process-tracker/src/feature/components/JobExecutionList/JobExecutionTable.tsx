@@ -3,7 +3,7 @@ import {Table} from 'akeneo-design-system';
 import {useDateFormatter, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {JobExecutionRow, JobExecutionFilterSort, jobCanBeStopped, canShowJobExecutionDetail} from '../../models';
 import {JobExecutionStatus, StopJobAction} from '../common';
-import {ProgressCell} from './ProgressCell';
+import {ProgressCell} from '../ProgressCell';
 
 const COLUMN_HEADERS = [
   {name: 'job_name', isSortable: true},
