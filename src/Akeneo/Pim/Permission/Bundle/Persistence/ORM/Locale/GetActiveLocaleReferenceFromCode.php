@@ -36,7 +36,7 @@ FROM pim_catalog_locale
 WHERE code = :code AND is_activated = 1
 SQL;
 
-        $id = $this->connection->fetchColumn($query, [
+        $id = $this->connection->fetchOne($query, [
             'code' => $code,
         ]) ?: null;
 

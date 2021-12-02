@@ -37,7 +37,7 @@ WHERE default_permissions IS NOT NULL
 AND JSON_EXTRACT(default_permissions, :path) = TRUE
 SQL;
 
-        $results = $this->connection->fetchAssoc($query, [
+        $results = $this->connection->fetchAssociative($query, [
             'path' => sprintf('$.%s', $permission),
         ]) ?: [];
 

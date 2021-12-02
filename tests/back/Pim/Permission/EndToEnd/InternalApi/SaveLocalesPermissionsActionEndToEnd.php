@@ -45,7 +45,7 @@ class SaveLocalesPermissionsActionEndToEnd extends WebTestCase
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
             ],
-            json_encode([
+            \json_encode([
                 'user_group' => 'Redactor',
                 'permissions' => [
                     'edit' => [
@@ -85,11 +85,11 @@ SELECT default_permissions
 FROM oro_access_group
 WHERE name = :name
 SQL;
-        $result = $this->connection->fetchColumn($query, [
+        $result = $this->connection->fetchOne($query, [
             'name' => $name,
         ]);
 
-        return json_decode($result, true) ?? [];
+        return \json_decode($result, true) ?? [];
     }
 
     private function getLocaleAccessFor(string $localeCode): ?array
@@ -107,7 +107,7 @@ WHERE pim_catalog_locale.code = :locale_code
 LIMIT 1
 SQL;
 
-        $permissions = $this->connection->fetchAssoc($query, [
+        $permissions = $this->connection->fetchAssociative($query, [
             'user_group_name' => 'Redactor',
             'locale_code' => $localeCode,
         ]) ?: null;
@@ -116,6 +116,6 @@ SQL;
             return null;
         }
 
-        return array_map(fn (int $permissionFlag): bool => (bool) $permissionFlag, $permissions);
+        return \array_map(fn (int $permissionFlag): bool => (bool) $permissionFlag, $permissions);
     }
 }

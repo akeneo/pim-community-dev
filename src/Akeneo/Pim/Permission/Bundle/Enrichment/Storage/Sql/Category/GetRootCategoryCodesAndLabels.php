@@ -35,7 +35,7 @@ ORDER BY COALESCE(category_label.label, category.code)
 LIMIT :limit OFFSET :offset;
 SQL;
 
-        return $this->connection->fetchAll(
+        return $this->connection->fetchAllAssociative(
             $query,
             [
                 'search' => '%'.$search.'%',

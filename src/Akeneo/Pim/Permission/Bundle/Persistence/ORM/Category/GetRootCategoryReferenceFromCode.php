@@ -39,7 +39,7 @@ WHERE code = :code
 AND parent_id IS NULL
 SQL;
 
-        $id = $this->connection->fetchColumn($query, [
+        $id = $this->connection->fetchOne($query, [
             'code' => $code,
         ]) ?: null;
 
