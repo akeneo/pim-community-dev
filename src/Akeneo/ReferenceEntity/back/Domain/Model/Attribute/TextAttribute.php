@@ -25,10 +25,6 @@ use Webmozart\Assert\Assert;
 class TextAttribute extends AbstractAttribute
 {
     public const ATTRIBUTE_TYPE = 'text';
-    private AttributeIsTextarea $isTextarea;
-    private AttributeValidationRule $validationRule;
-    private AttributeRegularExpression $regularExpression;
-    private AttributeIsRichTextEditor $isRichTextEditor;
 
     protected function __construct(
         AttributeIdentifier $identifier,
@@ -40,10 +36,10 @@ class TextAttribute extends AbstractAttribute
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
         private AttributeMaxLength $maxLength,
-        AttributeIsTextarea $isTextarea,
-        AttributeValidationRule $validationRule,
-        AttributeRegularExpression $regularExpression,
-        AttributeIsRichTextEditor $isRichTextEditor
+        private AttributeIsTextarea $isTextarea,
+        private AttributeValidationRule $validationRule,
+        private AttributeRegularExpression $regularExpression,
+        private AttributeIsRichTextEditor $isRichTextEditor
     ) {
         if ($isTextarea->isYes()) {
             Assert::true(
@@ -69,10 +65,6 @@ class TextAttribute extends AbstractAttribute
             $valuePerChannel,
             $valuePerLocale
         );
-        $this->isTextarea = $isTextarea;
-        $this->validationRule = $validationRule;
-        $this->regularExpression = $regularExpression;
-        $this->isRichTextEditor = $isRichTextEditor;
     }
 
     public static function createText(

@@ -27,13 +27,12 @@ class SearchRecordResult
     private const MATCHES_COUNT = 'matches_count';
     private const TOTAL_COUNT = 'total_count';
 
-    /** @var RecordItem[] */
-    public array $items;
-
-    public function __construct(array $recordItems, public int $matchesCount, public int $totalCount)
-    {
-        Assert::allIsInstanceOf($recordItems, RecordItem::class);
-        $this->items = $recordItems;
+    public function __construct(
+        public array $items,
+        public int $matchesCount,
+        public int $totalCount
+    ) {
+        Assert::allIsInstanceOf($items, RecordItem::class);
     }
 
     public function normalize(): array

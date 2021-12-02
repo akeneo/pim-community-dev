@@ -21,10 +21,9 @@ use Webmozart\Assert\Assert;
  */
 class ReferenceEntityIdentifier implements \Stringable
 {
-    private string $identifier;
-
-    private function __construct(string $identifier)
-    {
+    private function __construct(
+        private string $identifier
+    ) {
         Assert::stringNotEmpty($identifier, 'Reference entity identifier cannot be empty');
         Assert::maxLength(
             $identifier,
@@ -42,8 +41,6 @@ class ReferenceEntityIdentifier implements \Stringable
                 $identifier
             )
         );
-
-        $this->identifier = $identifier;
     }
 
     public static function fromString(string $identifier): self

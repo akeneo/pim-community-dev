@@ -30,17 +30,14 @@ class RecordQuery
     private const PAGINATE_USING_OFFSET = 'offset';
     private const PAGINATE_USING_SEARCH_AFTER = 'search_after';
 
-    /** @var array<{field: string, operator:string, value: string}> */
-    private array $filters;
-    private string $paginationMethod;
-
+    /** @param array<{field: string, operator:string, value: string}> $filters */
     private function __construct(
         private ChannelReference $channel,
         private LocaleReference $locale,
-        array $filters,
+        private array $filters,
         private ChannelReference $channelReferenceValuesFilter,
         private LocaleIdentifierCollection $localeIdentifiersValuesFilter,
-        string $paginationMethod,
+        private string $paginationMethod,
         private ?int $size,
         private ?int $page,
         private ?RecordCode $searchAfterCode
@@ -56,7 +53,6 @@ class RecordQuery
         if (!in_array($paginationMethod, [self::PAGINATE_USING_OFFSET, self::PAGINATE_USING_SEARCH_AFTER])) {
             throw new \InvalidArgumentException(sprintf('"%s" is not a supported pagination method', $paginationMethod));
         }
-        $this->filters = $filters;
         $this->paginationMethod = $paginationMethod;
     }
 

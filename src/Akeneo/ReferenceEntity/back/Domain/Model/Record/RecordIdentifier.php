@@ -21,10 +21,9 @@ use Webmozart\Assert\Assert;
  */
 class RecordIdentifier implements \Stringable
 {
-    private string $identifier;
-
-    private function __construct(string $identifier)
-    {
+    private function __construct(
+        private string $identifier
+    ) {
         Assert::stringNotEmpty($identifier, 'Record identifier cannot be empty');
         Assert::maxLength(
             $identifier,
@@ -42,8 +41,6 @@ class RecordIdentifier implements \Stringable
                 $identifier
             )
         );
-
-        $this->identifier = $identifier;
     }
 
     public static function create(string $referenceEntityIdentifier, string $code, string $fingerprint): self

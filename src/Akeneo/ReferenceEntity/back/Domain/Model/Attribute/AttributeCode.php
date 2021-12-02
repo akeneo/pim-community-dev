@@ -23,10 +23,9 @@ class AttributeCode implements \Stringable
 {
     public const RESERVED_CODES = ['code', 'label', 'image'];
 
-    private string $code;
-
-    private function __construct(string $code)
-    {
+    private function __construct(
+        private string $code
+    ) {
         Assert::stringNotEmpty($code, 'Attribute code cannot be empty');
         Assert::maxLength(
             $code,
@@ -38,8 +37,6 @@ class AttributeCode implements \Stringable
             '/^[a-zA-Z0-9_]+$/',
             sprintf('Attribute code may contain only letters, numbers and underscores. "%s" given', $code)
         );
-
-        $this->code = $code;
     }
 
     public static function fromString(string $code): self

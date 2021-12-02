@@ -25,11 +25,10 @@ class AttributeAllowedExtensions
     public const ALL_ALLOWED = [];
     public const VALID_EXTENSIONS = ['gif', 'jfif', 'jif', 'jpeg', 'jpg', 'pdf', 'png', 'psd', 'tif', 'tiff'];
 
-    /** @var string[] */
-    private array $allowedExtensions;
-
-    private function __construct(array $allowedExtensions)
-    {
+    /** @param string[] $allowedExtensions */
+    private function __construct(
+        private array $allowedExtensions
+    ) {
         array_walk($allowedExtensions, function ($allowedExtension) {
             Assert::string($allowedExtension, 'Expected allowed extension to be a string');
             Assert::true(
@@ -41,8 +40,6 @@ class AttributeAllowedExtensions
                 )
             );
         });
-
-        $this->allowedExtensions = $allowedExtensions;
     }
 
     public static function fromList(array $allowedExtensions): self

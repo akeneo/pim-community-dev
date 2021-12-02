@@ -29,13 +29,10 @@ use Webmozart\Assert\Assert;
  */
 class ValueKey implements \Stringable
 {
-    private string $key;
-
-    private function __construct(string $key)
-    {
+    private function __construct(
+        private string $key
+    ) {
         Assert::notEmpty($key, 'Key should not be empty');
-
-        $this->key = $key;
     }
 
     public static function create(

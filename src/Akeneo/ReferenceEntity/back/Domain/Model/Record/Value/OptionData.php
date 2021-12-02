@@ -21,13 +21,10 @@ use Webmozart\Assert\Assert;
  */
 class OptionData implements ValueDataInterface
 {
-    private string $optionCode;
-
-    private function __construct(string $optionCode)
-    {
+    private function __construct(
+        private string $optionCode
+    ) {
         Assert::stringNotEmpty($optionCode, 'Option code should be a non empty string');
-
-        $this->optionCode = $optionCode;
     }
 
     public function normalize(): string

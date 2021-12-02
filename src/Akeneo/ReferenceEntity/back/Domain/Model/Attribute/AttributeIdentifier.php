@@ -21,9 +21,7 @@ use Webmozart\Assert\Assert;
  */
 class AttributeIdentifier implements \Stringable
 {
-    private string $identifier;
-
-    private function __construct(string $identifier)
+    private function __construct(private string $identifier)
     {
         Assert::stringNotEmpty($identifier, 'Attribute identifier cannot be empty');
         Assert::maxLength(
@@ -42,8 +40,6 @@ class AttributeIdentifier implements \Stringable
                 $identifier
             )
         );
-
-        $this->identifier = $identifier;
     }
 
     public static function fromString(string $identifier): self
