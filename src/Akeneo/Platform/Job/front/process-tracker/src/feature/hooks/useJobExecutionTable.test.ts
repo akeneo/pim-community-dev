@@ -53,3 +53,37 @@ test('It returns job execution table only if hook is mounted', async () => {
 
   expect(jobExecutionTable).toEqual(null);
 });
+
+test.only('It does not fetch a job execution table while the previous fetch is not finished', async () => {
+  global.fetch = jest.fn().mockImplementation(
+    async () =>
+      new Promise(resolve =>
+        setTimeout(
+          () =>
+            resolve({
+              ok: true,
+              json: async () => expectedFetchedJobExecutionTable,
+            }),
+          1500
+        )
+      )
+  );
+
+  const filter = getDefaultJobExecutionFilter();
+
+  const {result, waitForNextUpdate} = renderHookWithProviders(() => useJobExecutionTable(filter));
+  await act(async () => {
+    await waitForNextUpdate();
+  });
+
+  expect(global.fetch).toHaveBeenCalledTimes(1);
+
+  const [jobExecutionTable, refreshJobExecutionTable] = result.current;
+  expect(jobExecutionTable).toEqual(expectedFetchedJobExecutionTable);
+  expect(refreshJobExecutionTable).not.toBeNull();
+
+  await act(async () => {
+    await refreshJobExecutionTable();
+  });
+  expect(global.fetch).toHaveBeenCalledTimes(1);
+});
