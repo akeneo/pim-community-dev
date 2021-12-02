@@ -16,6 +16,7 @@ namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\IsRequiredForCompleteness;
 use Webmozart\Assert\Assert;
 
 abstract class AbstractColumnDefinition implements ColumnDefinition
@@ -27,19 +28,22 @@ abstract class AbstractColumnDefinition implements ColumnDefinition
     protected ColumnDataType $dataType;
     protected LabelCollection $labels;
     protected ValidationCollection $validations;
+    protected IsRequiredForCompleteness $isRequiredForCompleteness;
 
     final protected function __construct(
         ColumnId $id,
         ColumnCode $code,
         ColumnDataType $dataType,
         LabelCollection $labels,
-        ValidationCollection $validations
+        ValidationCollection $validations,
+        IsRequiredForCompleteness $isRequiredForCompleteness
     ) {
         $this->id = $id;
         $this->code = $code;
         $this->dataType = $dataType;
         $this->labels = $labels;
         $this->validations = $validations;
+        $this->isRequiredForCompleteness = $isRequiredForCompleteness;
     }
 
     public function id(): ColumnId
@@ -67,6 +71,11 @@ abstract class AbstractColumnDefinition implements ColumnDefinition
         return $this->validations;
     }
 
+    public function isRequiredForCompleteness(): IsRequiredForCompleteness
+    {
+        return $this->isRequiredForCompleteness;
+    }
+
     /**
      * @param array<string, mixed> $normalized
      */
@@ -81,7 +90,8 @@ abstract class AbstractColumnDefinition implements ColumnDefinition
             ColumnCode::fromString($normalized['code']),
             $dataType,
             LabelCollection::fromNormalized($normalized['labels'] ?? []),
-            ValidationCollection::fromNormalized($dataType, $normalized['validations'] ?? [])
+            ValidationCollection::fromNormalized($dataType, $normalized['validations'] ?? []),
+            IsRequiredForCompleteness::fromBoolean($normalized['is_required_for_completeness'] ?? false)
         );
     }
 
@@ -93,6 +103,7 @@ abstract class AbstractColumnDefinition implements ColumnDefinition
             'data_type' => $this->dataType->asString(),
             'labels' => $this->labels->normalize(),
             'validations' => $this->validations->normalize(),
+            'is_required_for_completeness' => $this->isRequiredForCompleteness->asBoolean(),
         ];
     }
 }

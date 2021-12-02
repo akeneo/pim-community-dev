@@ -34,7 +34,8 @@ abstract class AbstractAttributeApiTestCase extends ApiTestCase
                     "en_US":"Ingredients",
                     "fr_FR":"Ingrédients"
                 },
-                "options": [{"code": "sugar", "labels": {"en_US": "Sugar", "fr_FR": "Sucre"}}]
+                "options": [{"code": "sugar", "labels": {"en_US": "Sugar", "fr_FR": "Sucre"}}],
+                "is_required_for_completeness": true
             },
             {
                 "code": "quantity",

@@ -40,7 +40,8 @@ final class UpdateAttributeEndToEnd extends AbstractAttributeApiTestCase
             },
             {
                 "code": "quantity",
-                "data_type": "text"
+                "data_type": "text",
+                "is_required_for_completeness": true
             }
         ]
     }
@@ -61,6 +62,7 @@ JSON;
             "fr_FR" => "Ingraydients",
             "de_DE" => "Zutat",
         ], $decoded['table_configuration'][0]['labels']);
+        self::assertTrue($decoded['table_configuration'][1]['is_required_for_completeness']);
     }
 
     public function testItUpdatesATableConfigurationWhenChangingAColumnDatatype(): void

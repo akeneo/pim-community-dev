@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2021 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2021 Akeneo SAS (https://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Webmozart\Assert\Assert;
 
-class ColumnFactory
+class TableConfigurationFactory
 {
     /** @var array<string, string> */
     private array $columnDefinitionMapping;
@@ -32,9 +33,25 @@ class ColumnFactory
     }
 
     /**
+     * @param array<int, array<string, mixed>> $normalized
+     */
+    public function createFromNormalized(array $normalized): TableConfiguration
+    {
+        Assert::notEmpty($normalized);
+        $normalized[\array_key_first($normalized)]['is_required_for_completeness'] = true;
+
+        return TableConfiguration::fromColumnDefinitions(
+            \array_values(\array_map(
+                fn (array $row): ColumnDefinition => $this->createColumnDefinitionFromNormalized($row),
+                $normalized
+            ))
+        );
+    }
+
+    /**
      * @param array<string, mixed> $normalized
      */
-    public function createFromNormalized(array $normalized): ColumnDefinition
+    private function createColumnDefinitionFromNormalized(array $normalized): ColumnDefinition
     {
         Assert::keyExists($normalized, 'data_type');
         Assert::string($normalized['data_type']);

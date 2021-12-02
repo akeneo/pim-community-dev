@@ -184,3 +184,11 @@ Feature: Create a table attribute
     Given 50 table attributes
     When I create a table attribute with a valid configuration
     Then There is a violation with message: You have reached the maximum number of table attributes within your PIM (50)
+
+  Scenario: Cannot create a table configuration with a bad "is_required_for_completeness" value
+    When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "is_required_for_completeness": "bad"}'
+    Then There is a violation with message: The required value is a boolean
+
+  Scenario: Cannot create a table configuration with a null "is required for completeness" value
+    When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "is_required_for_completeness": null}'
+    Then There is a violation with message: The "is_required_for_completeness" option requires a value

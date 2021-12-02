@@ -39,7 +39,7 @@ const nutritionTemplateEn: TemplateVariation = {
         {code: 'protein', labels: {}},
         {code: 'salt', labels: {}},
       ],
-      validations: [],
+      validations: {},
     },
     {
       code: 'per_100g',

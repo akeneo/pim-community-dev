@@ -1,0 +1,6 @@
+services:
+  Akeneo\Pim\TableAttribute\Infrastructure\Family\Sql\TableSqlGetRequiredAttributesMasks:
+    arguments:
+      - '@database_connection'
+    tags:
+      - { name: akeneo.pim.structure.query.get_required_attributes_masks_per_attribute_type }

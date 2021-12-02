@@ -24,7 +24,6 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 
 final class SqlTableConfigurationRepositoryIntegration extends TestCase
 {
@@ -52,6 +51,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
                     ['code' => 'sugar'],
                     ['code' => 'salt', 'labels' => ['en_US' => 'Salt', 'fr_FR' => 'Sel']],
                 ],
+                'is_required_for_completeness' => true,
             ]),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'is_allergenic']),
@@ -67,15 +67,18 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         self::assertSame(0, (int)$rows[0]['column_order']);
         self::assertSame('ingredient', $rows[0]['code']);
         self::assertSame('select', $rows[0]['data_type']);
+        self::assertSame('1', $rows[0]['is_required_for_completeness']);
         self::assertSame(ColumnIdGenerator::ingredient(), $rows[0]['id']);
         self::assertSame(1, (int)$rows[1]['column_order']);
         self::assertSame('quantity', $rows[1]['code']);
         self::assertSame('text', $rows[1]['data_type']);
+        self::assertSame('0', $rows[1]['is_required_for_completeness']);
         self::assertSame(ColumnIdGenerator::quantity(), $rows[1]['id']);
         self::assertSame('text', $rows[2]['data_type']);
         self::assertSame('is_allergenic', $rows[2]['code']);
         self::assertSame(ColumnIdGenerator::isAllergenic(), $rows[2]['id']);
         self::assertSame(2, (int)$rows[2]['column_order']);
+        self::assertSame('0', $rows[2]['is_required_for_completeness']);
     }
 
     /** @test */
@@ -215,8 +218,8 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
     public function it_fetches_a_table_configuration_by_attribute_code(): void
     {
         $sql = <<<SQL
-        INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order, labels, validations)
-        VALUES (:id, :attribute_id, :code, :data_type, :column_order, :labels, :validations)
+        INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order, labels, validations, is_required_for_completeness)
+        VALUES (:id, :attribute_id, :code, :data_type, :column_order, :labels, :validations, :is_required_for_completeness)
         SQL;
         $this->connection->executeQuery(
             $sql,
@@ -228,6 +231,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
                 'column_order' => 0,
                 'labels' => \json_encode(['en_US' => 'Ingredient', 'fr_FR' => 'Ingrédient']),
                 'validations' => '{}',
+                'is_required_for_completeness' => '1',
             ]
         );
         $this->connection->executeQuery(
@@ -240,6 +244,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
                 'column_order' => 1,
                 'labels' => '{}',
                 'validations' => \json_encode(['max_length' => 90]),
+                'is_required_for_completeness' => '0',
             ]
         );
 
@@ -270,6 +275,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
                     'data_type' => 'select',
                     'labels' => ['en_US' => 'Ingredient', 'fr_FR' => 'Ingrédient'],
                     'validations' => (object)[],
+                    'is_required_for_completeness' => true,
                 ],
                 [
                     'id' => ColumnIdGenerator::quantity(),
@@ -277,6 +283,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
                     'data_type' => 'text',
                     'labels' => (object)[],
                     'validations' => ['max_length' => 90],
+                    'is_required_for_completeness' => false,
                 ],
             ],
             $result->normalize()

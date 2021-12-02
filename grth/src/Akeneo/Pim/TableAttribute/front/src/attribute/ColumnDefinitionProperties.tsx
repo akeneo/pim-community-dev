@@ -1,5 +1,5 @@
 import React from 'react';
-import {Field, Helper, SectionTitle, TextInput} from 'akeneo-design-system';
+import {Checkbox, Field, Helper, SectionTitle, TextInput, Link} from 'akeneo-design-system';
 import {getLabel, Locale, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
 import {ColumnCode, ColumnDefinition, TableAttribute} from '../models';
 import {ColumnDefinitionWithId} from './TableStructureApp';
@@ -43,6 +43,10 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
     onChange(selectedColumn as ColumnDefinitionWithId);
   };
 
+  const handleRequiredForCompleteness = (checked: boolean) => {
+    onChange({...selectedColumn, is_required_for_completeness: checked});
+  };
+
   const specificProperties = () => {
     const TypeSpecificProperties = columnDefinitionPropertiesMapping[selectedColumn.data_type]?.default;
     return (
@@ -64,6 +68,7 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
       })
     );
   }
+  const isFirstColumn = attribute.table_configuration[0].code === selectedColumn.code;
 
   return (
     <div>
@@ -98,6 +103,27 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
           />
         </Field>
         {specificProperties()}
+      </FieldsList>
+      <SectionTitle title={translate(`pim_table_attribute.form.attribute.completeness`)}>
+        <SectionTitle.Title>{translate(`pim_table_attribute.form.attribute.completeness`)}</SectionTitle.Title>
+      </SectionTitle>
+      <Helper level='info'>
+        {translate('pim_table_attribute.form.attribute.completeness_helper_text')}{' '}
+        <Link
+          href='https://help.akeneo.com/pim/serenity/articles/manage-multidimensional-data-in-a-table.html#what-about-the-completeness'
+          target='_blank'
+        >
+          {translate('pim_table_attribute.form.attribute.completeness_helper_link')}
+        </Link>
+      </Helper>
+      <FieldsList>
+        <Checkbox
+          checked={isFirstColumn || !!selectedColumn.is_required_for_completeness}
+          onChange={handleRequiredForCompleteness}
+          readOnly={isFirstColumn}
+        >
+          {translate(`pim_table_attribute.form.attribute.required_for_completeness`)}
+        </Checkbox>
       </FieldsList>
       <SectionTitle title={translate('pim_table_attribute.form.attribute.labels')}>
         <SectionTitle.Title>{translate('pim_table_attribute.form.attribute.labels')}</SectionTitle.Title>

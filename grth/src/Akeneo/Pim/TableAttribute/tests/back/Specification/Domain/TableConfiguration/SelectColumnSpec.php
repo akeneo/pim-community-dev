@@ -8,6 +8,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValidationCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\IsRequiredForCompleteness;
 use PhpSpec\ObjectBehavior;
 
 class SelectColumnSpec extends ObjectBehavior
@@ -56,6 +57,30 @@ class SelectColumnSpec extends ObjectBehavior
         $this->labels()->normalize()->shouldReturn(['en_US' => 'Ingredient', 'fr_FR' => 'Ingrédient']);
     }
 
+    function it_is_not_required_for_completeness()
+    {
+        $this->isRequiredForCompleteness()->shouldHaveType(IsRequiredForCompleteness::class);
+        $this->isRequiredForCompleteness()->asBoolean()->shouldReturn(false);
+    }
+
+    function it_is_required_for_completeness()
+    {
+        $this->beConstructedThrough(
+            'fromNormalized',
+            [
+                [
+                    'id' => 'ingredient_cf30d88f-38c9-4c01-9821-4b39a5e3c224',
+                    'code' => 'ingredient',
+                    'validations' => [],
+                    'is_required_for_completeness' => true,
+                ],
+            ]
+        );
+
+        $this->isRequiredForCompleteness()->shouldHaveType(IsRequiredForCompleteness::class);
+        $this->isRequiredForCompleteness()->asBoolean()->shouldReturn(true);
+    }
+
     function it_returns_the_validations()
     {
         $this->beConstructedThrough(
@@ -81,6 +106,7 @@ class SelectColumnSpec extends ObjectBehavior
                 'data_type' => 'select',
                 'labels' => ['en_US' => 'Ingredient', 'fr_FR' => 'Ingrédient'],
                 'validations' => (object)[],
+                'is_required_for_completeness' => false,
             ]
         );
     }

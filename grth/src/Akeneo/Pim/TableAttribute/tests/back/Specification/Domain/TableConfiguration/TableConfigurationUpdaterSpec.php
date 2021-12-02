@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
@@ -30,14 +30,14 @@ class TableConfigurationUpdaterSpec extends ObjectBehavior
 {
     function let(TableConfigurationRepository $tableConfigurationRepository)
     {
-        $columnFactory = new ColumnFactory([
+        $tableConfigurationFactory = new TableConfigurationFactory([
             TextColumn::DATATYPE => TextColumn::class,
             SelectColumn::DATATYPE => SelectColumn::class,
             BooleanColumn::DATATYPE => BooleanColumn::class,
             NumberColumn::DATATYPE => NumberColumn::class,
         ]);
 
-        $this->beConstructedWith($tableConfigurationRepository, $columnFactory);
+        $this->beConstructedWith($tableConfigurationRepository, $tableConfigurationFactory);
     }
 
     function it_is_a_table_configuration_updater()
@@ -68,6 +68,7 @@ class TableConfigurationUpdaterSpec extends ObjectBehavior
                 'data_type' => SelectColumn::DATATYPE,
                 'labels' => (object)[],
                 'validations' => (object)[],
+                'is_required_for_completeness' => true,
             ],
             [
                 'id' => 'description_affb18c7-bd86-460d-98e5-c5bd0eb499ef',
@@ -75,6 +76,7 @@ class TableConfigurationUpdaterSpec extends ObjectBehavior
                 'data_type' => TextColumn::DATATYPE,
                 'labels' => (object)[],
                 'validations' => (object)[],
+                'is_required_for_completeness' => false,
             ],
             [
                 'id' => 'quantity_99decf93-3121-461c-8e3c-539d175ca40b',
@@ -82,6 +84,7 @@ class TableConfigurationUpdaterSpec extends ObjectBehavior
                 'data_type' => NumberColumn::DATATYPE,
                 'labels' => (object)[],
                 'validations' => (object)[],
+                'is_required_for_completeness' => false,
             ],
         ]);
     }
@@ -113,6 +116,7 @@ class TableConfigurationUpdaterSpec extends ObjectBehavior
                 'data_type' => SelectColumn::DATATYPE,
                 'labels' => (object)[],
                 'validations' => (object)[],
+                'is_required_for_completeness' => true,
             ],
             [
                 'id' => 'description_affb18c7-bd86-460d-98e5-c5bd0eb499ef',
@@ -120,6 +124,7 @@ class TableConfigurationUpdaterSpec extends ObjectBehavior
                 'data_type' => TextColumn::DATATYPE,
                 'labels' => (object)[],
                 'validations' => (object)[],
+                'is_required_for_completeness' => false,
             ],
         ]);
     }
@@ -161,6 +166,7 @@ class TableConfigurationUpdaterSpec extends ObjectBehavior
                 'data_type' => SelectColumn::DATATYPE,
                 'labels' => (object)[],
                 'validations' => (object)[],
+                'is_required_for_completeness' => true,
             ],
             [
                 'id' => 'is_allergenic_affb18c7-bd86-460d-98e5-c5bd0eb499ee',
@@ -168,6 +174,7 @@ class TableConfigurationUpdaterSpec extends ObjectBehavior
                 'data_type' => BooleanColumn::DATATYPE,
                 'labels' => ['en_US' => 'Allergenic'],
                 'validations' => (object)[],
+                'is_required_for_completeness' => false,
             ],
             [
                 'id' => 'description_affb18c7-bd86-460d-98e5-c5bd0eb499ef',
@@ -175,6 +182,7 @@ class TableConfigurationUpdaterSpec extends ObjectBehavior
                 'data_type' => TextColumn::DATATYPE,
                 'labels' => (object)[],
                 'validations' => (object)[],
+                'is_required_for_completeness' => false,
             ],
             [
                 'id' => 'quantity_11decf11-1111-111c-1e1c-111d111ca11b',
@@ -182,6 +190,7 @@ class TableConfigurationUpdaterSpec extends ObjectBehavior
                 'data_type' => TextColumn::DATATYPE,
                 'labels' => (object)[],
                 'validations' => ['max_length' => 50],
+                'is_required_for_completeness' => false,
             ]
         ]);
     }

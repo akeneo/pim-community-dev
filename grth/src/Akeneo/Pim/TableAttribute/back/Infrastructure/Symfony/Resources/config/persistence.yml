@@ -10,20 +10,20 @@ services:
     Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfigurationUpdater:
         arguments:
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
-            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory'
 
     Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Saver\TableConfigurationSaver:
         arguments:
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository'
-            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory'
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfigurationUpdater'
             - '@event_dispatcher'
 
     Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\SqlTableConfigurationRepository:
         arguments:
             - '@database_connection'
-            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory'
 
     Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository:
         class: Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\LruCachedTableConfigurationRepository

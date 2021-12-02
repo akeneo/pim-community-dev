@@ -40,7 +40,7 @@ class ImportTableAttributeIntegration extends TestCase
     {
         $csv = <<<CSV
 code;type;localizable;scopable;group;unique;sort_order;table_configuration
-nutrition;pim_catalog_table;0;0;other;0;2;[{"code":"ingredients","data_type":"select","labels":{"en_US":"Ingredients"},"options":[{"code":"salt","labels":{"en_US":"Salt"}}]},{"code":"quantity","data_type":"text","labels":{"en_US":"Quantity"},"validations":{"max_length":50}}]
+nutrition;pim_catalog_table;0;0;other;0;2;[{"code":"ingredients","data_type":"select","labels":{"en_US":"Ingredients"},"options":[{"code":"salt","labels":{"en_US":"Salt"}}]},{"code":"quantity","data_type":"text","labels":{"en_US":"Quantity"},"validations":{"max_length":50},"is_required_for_completeness":true}]
 storage;pim_catalog_table;0;0;other;0;3;[{"code":"dimension","data_type":"select","labels":{"en_US":"Dimension"}},{"code":"value","data_type":"text","labels":{"en_US":"Value"}}]
 CSV;
         $this->jobLauncher->launchImport(self::CSV_IMPORT_JOB_CODE, $csv);
@@ -49,8 +49,8 @@ CSV;
         Assert::assertNotNull($nutritionAttribute);
         Assert::assertEqualsCanonicalizing(
             [
-                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients'], 'validations' => (object) []],
-                ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity'], 'validations' => ['max_length' => 50]],
+                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients'], 'validations' => (object) [], 'is_required_for_completeness' => true],
+                ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity'], 'validations' => ['max_length' => 50], 'is_required_for_completeness' => true],
             ],
             $this->getRawTableConfigurationWithoutIds($nutritionAttribute)
         );
@@ -68,8 +68,8 @@ CSV;
         Assert::assertSame(AttributeTypes::TABLE, $storageAttribute->getType());
         Assert::assertEqualsCanonicalizing(
             [
-                ['code' => 'dimension', 'data_type' => 'select', 'labels' => ['en_US' => 'Dimension'], 'validations' => (object) []],
-                ['code' => 'value', 'data_type' => 'text', 'labels' => ['en_US' => 'Value'], 'validations' => (object) []],
+                ['code' => 'dimension', 'data_type' => 'select', 'labels' => ['en_US' => 'Dimension'], 'validations' => (object) [], 'is_required_for_completeness' => true],
+                ['code' => 'value', 'data_type' => 'text', 'labels' => ['en_US' => 'Value'], 'validations' => (object) [], 'is_required_for_completeness' => false],
             ],
             $this->getRawTableConfigurationWithoutIds($storageAttribute)
         );
@@ -110,7 +110,7 @@ CSV;
                     'other',
                     '0',
                     '6',
-                    '[{"code":"dimension","data_type":"select","labels":{"en_US":"Dimension"}},{"code":"value","data_type":"text","labels":{"en_US":"Value"}}]',
+                    '[{"code":"dimension","data_type":"select","labels":{"en_US":"Dimension"}},{"code":"value","data_type":"text","labels":{"en_US":"Value"},"is_required_for_completeness":true}]',
                 ]),
             ]
         );
@@ -129,8 +129,8 @@ CSV;
         Assert::assertNotNull($nutritionAttribute);
         Assert::assertEqualsCanonicalizing(
             [
-                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients'], 'validations' => (object) []],
-                ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity'], 'validations' => (object) []],
+                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients'], 'validations' => (object) [], 'is_required_for_completeness' => true],
+                ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity'], 'validations' => (object) [], 'is_required_for_completeness' => false],
             ],
             $this->getRawTableConfigurationWithoutIds($nutritionAttribute)
         );
@@ -148,8 +148,8 @@ CSV;
         Assert::assertSame(AttributeTypes::TABLE, $storageAttribute->getType());
         Assert::assertEqualsCanonicalizing(
             [
-                ['code' => 'dimension', 'data_type' => 'select', 'labels' => ['en_US' => 'Dimension'], 'validations' => (object) []],
-                ['code' => 'value', 'data_type' => 'text', 'labels' => ['en_US' => 'Value'], 'validations' => (object) []],
+                ['code' => 'dimension', 'data_type' => 'select', 'labels' => ['en_US' => 'Dimension'], 'validations' => (object) [], 'is_required_for_completeness' => true],
+                ['code' => 'value', 'data_type' => 'text', 'labels' => ['en_US' => 'Value'], 'validations' => (object) [], 'is_required_for_completeness' => true],
             ],
             $this->getRawTableConfigurationWithoutIds($storageAttribute)
         );

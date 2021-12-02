@@ -29,6 +29,8 @@ final class ValidationFactory
         'text' => [
             MaxLengthValidation::KEY => MaxLengthValidation::class,
         ],
+        'boolean' => [],
+        'select' => [],
     ];
 
     /**

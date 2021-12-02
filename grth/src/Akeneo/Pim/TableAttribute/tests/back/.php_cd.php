@@ -39,6 +39,7 @@ $rules = [
             'Doctrine\Common\EventSubscriber',
             'Doctrine\DBAL\Connection',
             'Doctrine\DBAL\FetchMode',
+            'Doctrine\DBAL\Types',
             'Doctrine\ORM\EntityManagerInterface',
             'Doctrine\ORM\Event\LifecycleEventArgs',
             'Doctrine\ORM\Events',

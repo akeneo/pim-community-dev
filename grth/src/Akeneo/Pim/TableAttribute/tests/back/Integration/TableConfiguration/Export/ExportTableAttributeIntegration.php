@@ -47,6 +47,7 @@ final class ExportTableAttributeIntegration extends TestCase
                         'en_US' => 'Ingredients',
                     ],
                     'validations' => [],
+                    'is_required_for_completeness' => true,
                     'options' => [],
                 ],
                 [
@@ -60,6 +61,7 @@ final class ExportTableAttributeIntegration extends TestCase
                         'max' => 200,
                         'decimals_allowed' => true,
                     ],
+                    'is_required_for_completeness' => true,
                 ],
             ]
         );
@@ -104,6 +106,7 @@ final class ExportTableAttributeIntegration extends TestCase
                         'en_US' => 'Ingredients',
                     ],
                     'validations' => [],
+                    'is_required_for_completeness' => true,
                     'options' => [],
                 ],
                 [
@@ -117,6 +120,7 @@ final class ExportTableAttributeIntegration extends TestCase
                         'max' => 200,
                         'decimals_allowed' => true,
                     ],
+                    'is_required_for_completeness' => true,
                 ],
             ]
         );
@@ -189,6 +193,7 @@ final class ExportTableAttributeIntegration extends TestCase
                         'max' => 200,
                         'decimals_allowed' => true,
                     ],
+                    'is_required_for_completeness' => true,
                 ],
             ],
         ]);
