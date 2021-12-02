@@ -30,7 +30,7 @@ abstract class AbstractColumnDefinition implements ColumnDefinition
     protected ValidationCollection $validations;
     protected IsRequiredForCompleteness $isRequiredForCompleteness;
 
-    final protected function __construct(
+    protected function __construct(
         ColumnId $id,
         ColumnCode $code,
         ColumnDataType $dataType,
@@ -85,6 +85,7 @@ abstract class AbstractColumnDefinition implements ColumnDefinition
         Assert::keyExists($normalized, 'code');
         $dataType = ColumnDataType::fromString(static::DATATYPE);
 
+        /* @phpstan-ignore-next-line */
         return new static(
             ColumnId::fromString($normalized['id']),
             ColumnCode::fromString($normalized['code']),

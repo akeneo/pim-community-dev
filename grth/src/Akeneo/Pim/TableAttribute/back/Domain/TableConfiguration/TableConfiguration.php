@@ -45,7 +45,7 @@ final class TableConfiguration
         $columnDefinitions = array_values($columnDefinitions);
         Assert::allIsInstanceOf($columnDefinitions, ColumnDefinition::class);
         Assert::minCount($columnDefinitions, 2);
-        Assert::isInstanceOf($columnDefinitions[0], SelectColumn::class, 'The first column should have "select" type');
+        Assert::isInstanceOfAny($columnDefinitions[0], [SelectColumn::class, RecordColumn::class], 'The first column has an invalid type');
 
         $codes = \array_map(
             fn (ColumnDefinition $definition): string => strtolower($definition->code()->asString()),

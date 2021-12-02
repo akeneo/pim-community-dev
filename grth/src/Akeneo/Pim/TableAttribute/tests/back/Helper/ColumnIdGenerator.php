@@ -61,4 +61,9 @@ final class ColumnIdGenerator
     {
         return 'width_d39d3c48-46e6-4744-8196-56e08563fd46';
     }
+
+    public static function record(): string
+    {
+        return 'record_d39d3c48-46e6-4744-8196-56e08563fd46';
+    }
 }

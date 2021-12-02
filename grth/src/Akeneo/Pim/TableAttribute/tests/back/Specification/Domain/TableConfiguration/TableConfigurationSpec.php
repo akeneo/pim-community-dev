@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\RecordColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
@@ -99,15 +100,25 @@ class TableConfigurationSpec extends ObjectBehavior
             ->shouldBe(null);
     }
 
-    function it_must_have_a_select_column_as_first_column()
+    function it_must_have_a_select_or_record_column_as_first_column()
     {
         $this->beConstructedThrough('fromColumnDefinitions', [[
             NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
             SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
         ]]);
 
-        $this->shouldThrow(new \InvalidArgumentException('The first column should have "select" type'))
+        $this->shouldThrow(new \InvalidArgumentException('The first column has an invalid type'))
             ->duringInstantiation();
+    }
+
+    function it_can_be_created_with_record_column_as_first_column()
+    {
+        $this->beConstructedThrough('fromColumnDefinitions', [[
+            RecordColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'record', 'reference_entity_identifier' => 'entity']),
+            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+        ]]);
+
+        $this->getFirstColumnId()->shouldBeLike(ColumnId::fromString(ColumnIdGenerator::record()));
     }
 
     function it_returns_column_by_id()

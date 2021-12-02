@@ -16,6 +16,7 @@ namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Fact
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\RecordColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
@@ -33,6 +34,7 @@ class TableConfigurationFactorySpec extends ObjectBehavior
             'number' => NumberColumn::class,
             'boolean' => BooleanColumn::class,
             'select' => SelectColumn::class,
+            'record' => RecordColumn::class,
         ]);
     }
 
@@ -63,6 +65,14 @@ class TableConfigurationFactorySpec extends ObjectBehavior
                 'labels' => [],
                 'is_required_for_completeness' => true,
             ],
+            [
+                'id' => ColumnIdGenerator::record(),
+                'data_type' => 'record',
+                'code' => 'record',
+                'labels' => [],
+                'is_required_for_completeness' => true,
+                'reference_entity_identifier' => 'entity'
+            ],
         ]);
         $tableConfiguration->shouldHaveType(TableConfiguration::class);
 
@@ -83,6 +93,10 @@ class TableConfigurationFactorySpec extends ObjectBehavior
         $isAllergenicColumn->id()->shouldBeLike(ColumnId::fromString(ColumnIdGenerator::isAllergenic()));
         $isAllergenicColumn->code()->shouldBeLike(ColumnCode::fromString('is_allergenic'));
         $isAllergenicColumn->isRequiredForCompleteness()->asBoolean()->shouldBe(true);
+
+        $recordColumn = $tableConfiguration->getColumn(ColumnId::fromString(ColumnIdGenerator::record()));
+        $recordColumn->shouldHaveType(RecordColumn::class);
+        $recordColumn->referenceEntityIdentifier()->asString()->shouldReturn('entity');
     }
 
     function it_always_set_the_first_column_as_required_for_completeness()

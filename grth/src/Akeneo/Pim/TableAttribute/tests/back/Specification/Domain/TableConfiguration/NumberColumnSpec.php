@@ -32,7 +32,7 @@ class NumberColumnSpec extends ObjectBehavior
         $this->shouldHaveType(NumberColumn::class);
     }
 
-    function it_is_a_text_column()
+    function it_is_a_number_column()
     {
         $this->dataType()->shouldHaveType(ColumnDataType::class);
         $this->dataType()->asString()->shouldBe('number');
