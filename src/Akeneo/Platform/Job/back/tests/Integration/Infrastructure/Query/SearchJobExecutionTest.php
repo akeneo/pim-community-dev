@@ -654,36 +654,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $this->assertEquals(1, $this->getQuery()->count($query));
     }
 
-    /**
-     * @test
-     */
-    public function it_throws_exception_when_page_is_greater_than_50(): void
-    {
-        $this->loadFixtures();
-
-        $query = new SearchJobExecutionQuery();
-        $query->page = 51;
-
-        $this->expectExceptionMessage('The page number can not be greater than 50');
-        $this->getQuery()->search($query);
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_exception_when_page_is_greater_than_50_and_at_least_one_filter_is_set(): void
-    {
-        $this->loadFixtures();
-
-        $query = new SearchJobExecutionQuery();
-        $query->type = ['export'];
-        $query->size = 1;
-        $query->page = 51;
-
-        $this->expectExceptionMessage('The page number can not be greater than 50');
-        $this->getQuery()->search($query);
-    }
-
     private function loadFixtures()
     {
         $aProductImportJobInstanceId = $this->fixturesJobHelper->createJobInstance([
