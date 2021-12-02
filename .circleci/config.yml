@@ -874,7 +874,7 @@ jobs:
 
   test_database:
       machine:
-          image: ubuntu-1604:201903-01
+          image: ubuntu-2004:202010-01
       parallelism: 1
       steps:
           - attach_workspace:
@@ -886,7 +886,7 @@ jobs:
                 name: Start containers
                 command: |
                     docker load -i php-pim-image.tar
-                    APP_ENV=test C='fpm mysql elasticsearch object-storage' make up
+                    APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
                     docker/wait_docker_up.sh
           - run:
                 name: Install database
@@ -942,10 +942,9 @@ workflows:
           - delete_pr_environment:
                 requires:
                     - delete_pr_environment?
-          # Uncomment for next GA
-#          - test_database:
-#                requires:
-#                    - build_dev
+          - test_database:
+                requires:
+                    - build_dev
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -1022,15 +1021,13 @@ workflows:
                     - test_back_static_and_acceptance_ce
                     - test_front_static_acceptance_and_integration_ce
                     - test_back_phpunit_ce
-
           - pull_request_success:
                 requires:
                     - test_back_behat_legacy
                     - test_back_performance
                     - test_back_data_migrations
                     - test_onboarder_bundle
-                    # Uncomment for next GA
-#                    - test_database
+                    - test_database
                     - test_back_behat_legacy_ce
 
   nightly:
