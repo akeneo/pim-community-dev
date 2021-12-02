@@ -24,5 +24,5 @@ interface TableValueTranslator
         ColumnDefinition $column,
         string $localeCode,
         mixed $value
-    ): mixed;
+    ): string;
 }

@@ -70,7 +70,7 @@ class TableTranslatorSpec extends ObjectBehavior
 
         $selectValueTranslator->translate('nutrition', $ingredientColumn, 'en_US', 'sugar')->willReturn('Sugar');
         $selectValueTranslator->translate('nutrition', $ingredientColumn, 'en_US', 'pepper')->willReturn('Pepper');
-        $selectValueTranslator->translate('nutrition', $ingredientColumn, 'en_US', 'salt')->willReturn(null);
+        $selectValueTranslator->translate('nutrition', $ingredientColumn, 'en_US', 'salt')->willReturn('[salt]');
         $booleanValueTranslator->translate('nutrition', $allergenicColumn, 'en_US', true)->willReturn('Oui');
 
         $this->translate('nutrition', [], [$table1, $table2], 'en_US')->shouldBe([
@@ -79,7 +79,7 @@ class TableTranslatorSpec extends ObjectBehavior
                 ['Ingredient US' => 'Pepper', 'Quantity' => 10],
             ], JSON_UNESCAPED_UNICODE),
             \json_encode([
-                ['Ingredient US' => 'salt', 'Quantity' => 12, '[allergenic]' => 'Oui'],
+                ['Ingredient US' => '[salt]', 'Quantity' => 12, '[allergenic]' => 'Oui'],
             ], JSON_UNESCAPED_UNICODE),
         ]);
 

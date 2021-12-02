@@ -34,7 +34,7 @@ final class TableBooleanTranslator implements TableValueTranslator
         return BooleanColumn::DATATYPE;
     }
 
-    public function translate(string $attributeCode, ColumnDefinition $column, string $localeCode, mixed $value): mixed
+    public function translate(string $attributeCode, ColumnDefinition $column, string $localeCode, mixed $value): string
     {
         if (!\array_key_exists($localeCode, $this->trueLocalized)) {
             $this->trueLocalized[$localeCode] = $this->labelTranslator->translate(
@@ -53,8 +53,8 @@ final class TableBooleanTranslator implements TableValueTranslator
         }
 
         return match ($value) {
-            '1', true => $this->trueLocalized[$localeCode],
-            '0', false => $this->falseLocalized[$localeCode],
+            true => $this->trueLocalized[$localeCode],
+            false => $this->falseLocalized[$localeCode],
             default => \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, (string) $value),
         };
     }

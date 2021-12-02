@@ -65,6 +65,10 @@ final class TableTranslator implements FlatAttributeValueTranslatorInterface
     {
         $indexedColumnLabels = $this->getIndexedColumnLabels($attributeCode, $locale);
         foreach ($values as $key => $value) {
+            if ('' === $value) {
+                continue;
+            }
+
             $decodedValue = \json_decode($value, true);
             foreach ($decodedValue as $index => $row) {
                 foreach ($row as $columnCode => $cellValue) {
@@ -136,7 +140,7 @@ final class TableTranslator implements FlatAttributeValueTranslatorInterface
         $valueTranslator = $this->tableValueTranslators[$column->dataType()->asString()] ?? null;
 
         return null !== $valueTranslator
-            ? $valueTranslator->translate($attributeCode, $column, $localeCode, $cellValue) ?? $cellValue
+            ? $valueTranslator->translate($attributeCode, $column, $localeCode, $cellValue)
             : $cellValue
             ;
     }
