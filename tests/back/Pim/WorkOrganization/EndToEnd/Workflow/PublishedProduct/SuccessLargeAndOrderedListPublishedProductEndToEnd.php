@@ -29,11 +29,9 @@ class SuccessLargeAndOrderedListPublishedProductEndToEnd extends AbstractPublish
             $product = $this->createProduct($identifier, []);
             $publishedProduct = $this->publishProduct($product);
 
-            $this->publishedProducts[$publishedProduct->getId()] = $publishedProduct;
+            $this->publishedProducts[$publishedProduct->getIdentifier()] = $publishedProduct;
         }
-        // the API will return products sorted alphabetical by MySQL ID, and that's what we expect
-        // for instance, if we have 100 products
-        // 1, 10, 100, 11, 12, 13, 14, 15, 16, 17, 18, 19, 2, 20, 21...
+        
         ksort($this->publishedProducts, SORT_STRING);
     }
 
