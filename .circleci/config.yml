@@ -2604,7 +2604,7 @@ workflows:
                 requires:
                     - checkout
 
-  nightly-beta:
+  nightly_beta:
       when:
           and:
               - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
