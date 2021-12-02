@@ -27,7 +27,6 @@ $rules = [
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
             'Akeneo\Platform\Job\Application',
             'Akeneo\Platform\Job\Domain',
-            'Akeneo\Tool',
             'Doctrine\DBAL\Connection',
             'Doctrine\DBAL\Types',
             'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',

@@ -34,7 +34,7 @@ const JobExecutionStatus = ({
   const translate = useTranslate();
 
   let label = translate(`pim_import_export.job_status.${status}`);
-  if (status === 'STARTING' || status === 'STARTED') {
+  if (status === 'STARTING' || status === 'IN_PROGRESS') {
     label = `${label} ${currentStep}/${totalSteps}`;
   }
 

@@ -7,8 +7,8 @@ namespace Akeneo\Platform\Job\Test\Integration\Infrastructure\Query;
 use \Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface;
 use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
+use Akeneo\Platform\Job\Domain\Model\JobStatus;
 use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
-use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 
 class SearchJobExecutionTest extends IntegrationTestCase
 {
@@ -37,7 +37,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'import',
                 new \DateTimeImmutable('2020-01-02T00:00:00+00:00'),
                 'peter',
-                'STARTED',
+                'IN_PROGRESS',
                 0,
                 2,
                 1,
@@ -188,7 +188,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'import',
                 new \DateTimeImmutable('2020-01-02T00:00:00+00:00'),
                 'peter',
-                'STARTED',
+                'IN_PROGRESS',
                 0,
                 2,
                 1,
@@ -243,7 +243,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'import',
                 new \DateTimeImmutable('2020-01-02T01:00:00+01:00'),
                 'peter',
-                'STARTED',
+                'IN_PROGRESS',
                 0,
                 2,
                 1,
@@ -303,14 +303,14 @@ class SearchJobExecutionTest extends IntegrationTestCase
             'job_instance_id' => $aVisibleJobInstanceId,
             'start_time' => '2020-01-01T01:00:00+01:00',
             'user' => 'julia',
-            'status' => BatchStatus::COMPLETED,
+            'status' => JobStatus::COMPLETED,
         ]);
 
         $this->fixturesJobHelper->createJobExecution([
             'job_instance_id' => $aNonVisibleJobInstanceId,
             'start_time' => '2020-01-01T01:00:00+01:00',
             'user' => 'julia',
-            'status' => BatchStatus::COMPLETED,
+            'status' => JobStatus::COMPLETED,
             'is_visible' => false,
         ]);
 
@@ -511,7 +511,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'import',
                 new \DateTimeImmutable('2020-01-02T00:00:00+00:00'),
                 'peter',
-                'STARTED',
+                'IN_PROGRESS',
                 0,
                 2,
                 1,
@@ -596,7 +596,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             'job_instance_id' => $aNonVisibleJobInstanceId,
             'start_time' => '2020-01-01T01:00:00+01:00',
             'user' => 'julia',
-            'status' => BatchStatus::COMPLETED,
+            'status' => JobStatus::COMPLETED,
             'is_visible' => false,
         ]);
 
@@ -681,7 +681,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             'job_instance_id' => $aProductImportJobInstanceId,
             'start_time' => '2020-01-01T01:00:00+01:00',
             'user' => 'julia',
-            'status' => BatchStatus::COMPLETED,
+            'status' => JobStatus::COMPLETED,
             'is_stoppable' => false,
         ]);
 
@@ -689,19 +689,19 @@ class SearchJobExecutionTest extends IntegrationTestCase
             'job_instance_id' => $aProductImportJobInstanceId,
             'start_time' => '2020-01-02T01:00:00+01:00',
             'user' => 'peter',
-            'status' => BatchStatus::STARTED,
+            'status' => JobStatus::IN_PROGRESS,
         ]);
 
         $this->jobExecutionIds[] = $this->fixturesJobHelper->createJobExecution([
             'job_instance_id' => $aProductImportJobInstanceId,
             'start_time' => null,
-            'status' => BatchStatus::STARTING,
+            'status' => JobStatus::STARTING,
         ]);
 
         $this->jobExecutionIds[] = $this->fixturesJobHelper->createJobExecution([
             'job_instance_id' => $aProductExportJobInstanceId,
             'start_time' => null,
-            'status' => BatchStatus::STARTING,
+            'status' => JobStatus::STARTING,
         ]);
 
         $this->fixturesJobHelper->createStepExecution([
