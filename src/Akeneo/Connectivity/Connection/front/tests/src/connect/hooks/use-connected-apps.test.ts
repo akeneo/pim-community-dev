@@ -21,7 +21,7 @@ test('it returns an empty list if the feature flag is disabled', () => {
     expect(result.current).toEqual([]);
 });
 
-test('it notify if there it cannot retrieve connected apps', async () => {
+test('it notifies if it cannot retrieve connected apps', async () => {
     (useFeatureFlags as jest.Mock).mockImplementation(() => ({isEnabled: () => true}));
     (useNotify as jest.Mock).mockImplementation(() => notify);
 
@@ -49,7 +49,7 @@ test('it does not fetch the marketplace apps if there is no connected apps', asy
     expect(result.current).toEqual([]);
 });
 
-test('it does not fails if it cannot retrieve marketplace apps', async () => {
+test('it does not fail if it cannot retrieve marketplace apps', async () => {
     (useFeatureFlags as jest.Mock).mockImplementation(() => ({isEnabled: () => true}));
 
     const connectedApp = {
@@ -81,7 +81,7 @@ test('it does not fails if it cannot retrieve marketplace apps', async () => {
     expect(result.current).toEqual([connectedApp]);
 });
 
-test('it fetch connected apps', async () => {
+test('it fetches connected apps', async () => {
     (useFeatureFlags as jest.Mock).mockImplementation(() => ({isEnabled: () => true}));
 
     const connectedApp = {

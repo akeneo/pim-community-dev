@@ -41,17 +41,19 @@ export const useConnectedApps = (): ConnectedApp[] | null | false => {
 
             try {
                 const apps = await fetchApps();
-                setConnectedApps(connectedApps =>
-                    !connectedApps
-                        ? connectedApps
-                        : connectedApps.map(connectedApp => {
-                              const app = apps.apps.find(app => app.id === connectedApp.id);
-                              return {
-                                  ...connectedApp,
-                                  activate_url: app?.activate_url || undefined,
-                              };
-                          })
-                );
+                setConnectedApps(state => {
+                    if (state === null || state === false) {
+                        return state;
+                    }
+
+                    return state.map(connectedApp => {
+                        const app = apps.apps.find(app => app.id === connectedApp.id);
+                        return {
+                            ...connectedApp,
+                            activate_url: app?.activate_url || undefined,
+                        };
+                    });
+                });
             } catch (e) {
                 return;
             }
