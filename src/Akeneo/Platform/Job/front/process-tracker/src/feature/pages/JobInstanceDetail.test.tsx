@@ -18,7 +18,7 @@ const rows: JobExecutionRow[] = [
     username: 'admin',
     warning_count: 4,
     job_name: 'An product export',
-    status: 'STARTED',
+    status: 'IN_PROGRESS',
     is_stoppable: true,
   },
   {
@@ -90,19 +90,19 @@ test('it display the last job instance execution', () => {
   expect(screen.queryByRole('table')).toBeInTheDocument();
 
   expect(screen.getByText('01/01/2020, 12:00 AM')).toBeInTheDocument();
-  expect(screen.getByText('pim_import_export.job_status.STARTED 1/2')).toBeInTheDocument();
+  expect(screen.getByText('akeneo_job.job_status.IN_PROGRESS 1/2')).toBeInTheDocument();
   expect(screen.getByText('4')).toBeInTheDocument();
 
   expect(screen.getByText('01/02/2020, 12:00 AM')).toBeInTheDocument();
-  expect(screen.getByText('pim_import_export.job_status.COMPLETED')).toBeInTheDocument();
+  expect(screen.getByText('akeneo_job.job_status.COMPLETED')).toBeInTheDocument();
   expect(screen.getByText('8')).toBeInTheDocument();
 
   expect(screen.getByText('01/03/2020, 12:00 AM')).toBeInTheDocument();
-  expect(screen.getByText('pim_import_export.job_status.STOPPING')).toBeInTheDocument();
+  expect(screen.getByText('akeneo_job.job_status.STOPPING')).toBeInTheDocument();
   expect(screen.getByText('-')).toBeInTheDocument();
 
   expect(screen.getByText('01/04/2020, 12:00 AM')).toBeInTheDocument();
-  expect(screen.getByText('pim_import_export.job_status.ABANDONED')).toBeInTheDocument();
+  expect(screen.getByText('akeneo_job.job_status.ABANDONED')).toBeInTheDocument();
   expect(screen.getByText('5')).toBeInTheDocument();
 });
 

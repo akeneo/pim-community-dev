@@ -18,7 +18,7 @@ const rows: JobExecutionRow[] = [
     username: 'admin',
     warning_count: 4,
     job_name: 'Export job',
-    status: 'STARTED',
+    status: 'IN_PROGRESS',
     is_stoppable: true,
   },
   {
@@ -119,6 +119,7 @@ jest.mock('../models/JobExecutionFilter', () => ({
     status: [],
     type: [],
     user: [],
+    code: [],
     search: '',
   }),
 }));
@@ -140,7 +141,9 @@ test('it can filter on the job status', () => {
   renderWithProviders(<JobExecutionList />);
 
   userEvent.click(screen.getByLabelText('akeneo_job_process_tracker.status_filter.label:'));
-  userEvent.click(within(screen.getByRole('listbox')).getByText('akeneo_job_process_tracker.status_filter.started'));
+  userEvent.click(
+    within(screen.getByRole('listbox')).getByText('akeneo_job_process_tracker.status_filter.in_progress')
+  );
 
   expect(screen.getByText('Export job')).toBeInTheDocument();
   expect(screen.queryByText('Import job')).not.toBeInTheDocument();
