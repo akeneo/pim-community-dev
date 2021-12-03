@@ -31,6 +31,7 @@ aliases:
             webhook: $SLACK_NIGHTLY_STATUS
             fail_only: false
 
+
 jobs:
   checkout_ee:
     machine:
