@@ -18,10 +18,14 @@ use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\Tab
 class TableValuesTranslator
 {
     private TableValueTranslatorRegistry $tableValueTranslatorRegistry;
+    private AttributeColumnTranslator $attributeColumnTranslator;
 
-    public function __construct(TableValueTranslatorRegistry $tableValueTranslatorRegistry)
-    {
+    public function __construct(
+        TableValueTranslatorRegistry $tableValueTranslatorRegistry,
+        AttributeColumnTranslator $attributeColumnTranslator
+    ) {
         $this->tableValueTranslatorRegistry = $tableValueTranslatorRegistry;
+        $this->attributeColumnTranslator = $attributeColumnTranslator;
     }
 
     public function translate(array $items, string $localeCode, bool $headerWithLabel): array
@@ -49,7 +53,7 @@ class TableValuesTranslator
 
             $item[$key] = match ($key) {
                 'product', 'product_model' => $value,
-                'attribute' => $value, // TODO translate ? Quid des locales/channels?
+                'attribute' => $this->attributeColumnTranslator->translate($value, $localeCode),
                 default => $this->tableValueTranslatorRegistry->translate($attributeCode, $key, $localeCode, $value),
             };
         }

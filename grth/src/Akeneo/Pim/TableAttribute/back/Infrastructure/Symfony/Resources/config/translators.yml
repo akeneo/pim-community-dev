@@ -27,3 +27,11 @@ services:
         class: Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValuesTranslator
         arguments:
             - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableValueTranslatorRegistry'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\AttributeColumnTranslator'
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\AttributeColumnTranslator:
+        class: Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\AttributeColumnTranslator
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@pim_catalog.localization.translator.language'
+            - '@akeneo.pim.structure.query.get_channel_translations'
