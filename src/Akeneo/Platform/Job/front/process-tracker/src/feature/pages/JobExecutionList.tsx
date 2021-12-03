@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {AttributesIllustration, Breadcrumb, Pagination} from 'akeneo-design-system';
+import {AttributesIllustration, Breadcrumb, Helper, Pagination} from 'akeneo-design-system';
 import {
   useTranslate,
   useRoute,
@@ -11,8 +11,10 @@ import {
 } from '@akeneo-pim-community/shared';
 import {useJobExecutionTable} from '../hooks';
 import {JobExecutionSearchBar, JobExecutionTable} from '../components';
-import {isDefaultJobExecutionFilter, JobExecutionFilterSort, JobStatus} from '../models';
+import {isDefaultJobExecutionFilter, JobExecutionFilterSort, JobStatus, hasOneFilterSet} from '../models';
 import {useStoredJobExecutionFilter} from '../hooks/useStoredJobExecutionFilter';
+
+const MAX_PAGE_WITHOUT_FILTER = 50;
 
 const JobExecutionList = () => {
   const activityHref = useRoute('pim_dashboard_index');
@@ -20,7 +22,14 @@ const JobExecutionList = () => {
 
   const [jobExecutionFilter, setJobExecutionFilter] = useStoredJobExecutionFilter();
   const [jobExecutionTable, refreshJobExecutionTable] = useJobExecutionTable(jobExecutionFilter);
-  const matchesCount = jobExecutionTable === null ? 0 : jobExecutionTable.matches_count;
+  const matchesCount =
+    jobExecutionTable === null
+      ? 0
+      : hasOneFilterSet(jobExecutionFilter)
+      ? jobExecutionTable.matches_count
+      : MAX_PAGE_WITHOUT_FILTER * jobExecutionFilter.size;
+  const displayPaginationWarning =
+    !hasOneFilterSet(jobExecutionFilter) && MAX_PAGE_WITHOUT_FILTER === jobExecutionFilter.page;
 
   const handlePageChange = (page: number) => {
     setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, page}));
@@ -84,15 +93,20 @@ const JobExecutionList = () => {
             />
             {0 < matchesCount && (
               <>
+                {displayPaginationWarning && (
+                  <Helper level="warning" sticky={44}>
+                    {translate('akeneo_job_process_tracker.max_page_without_filter_helper')}
+                  </Helper>
+                )}
                 <Pagination
-                  sticky={44}
+                  sticky={displayPaginationWarning ? 88 : 44}
                   itemsPerPage={jobExecutionFilter.size}
                   currentPage={jobExecutionFilter.page}
                   totalItems={matchesCount}
                   followPage={handlePageChange}
                 />
                 <JobExecutionTable
-                  sticky={jobExecutionFilter.size < matchesCount ? 88 : 44}
+                  sticky={jobExecutionFilter.size < matchesCount ? (displayPaginationWarning ? 132 : 88) : 44}
                   jobExecutionRows={jobExecutionTable.rows}
                   onSortChange={handleSortChange}
                   onTableRefresh={refreshJobExecutionTable}
