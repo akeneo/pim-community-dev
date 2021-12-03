@@ -201,21 +201,21 @@ Feature: Create a table attribute
 
   @only-ge
   Scenario: Cannot create a table configuration with a record column
-    When I create a table attribute with a configuration '{"data_type": "record", "code": "record", "is_required_for_completeness": true, "reference_entity_code": "brands"}'
+    When I create a table attribute with a configuration '{"data_type": "record", "code": "record", "is_required_for_completeness": true, "reference_entity_identifier": "brands"}'
     Then There is a violation with message: The column data type is unknown. Please choose one of the following: text, number, boolean, select
 
   @only-ee
   Scenario: Can create a table configuration with a record column
-    When I create a table attribute with a configuration '{"data_type": "record", "code": "record", "is_required_for_completeness": true, "reference_entity_code": "brands"}'
+    When I create a table attribute with a configuration '{"data_type": "record", "code": "record", "is_required_for_completeness": true, "reference_entity_identifier": "brands"}'
     Then There is no violation
 
 # @TODO : Move record tests to EE
   @only-ee
-  Scenario: Cannot create a table configuration with a null "reference_entity_code" in a record column
-    When I create a table attribute with a configuration '{"data_type": "record", "code": "record", "is_required_for_completeness": true, "reference_entity_code": null}'
-    Then There is a violation with message: The "reference_entity_code" option requires a value
+  Scenario: Cannot create a table configuration with a null "reference_entity_identifier" in a record column
+    When I create a table attribute with a configuration '{"data_type": "record", "code": "record", "is_required_for_completeness": true, "reference_entity_identifier": null}'
+    Then There is a violation with message: The "reference_entity_identifier" option requires a value
 
   @only-ee
-  Scenario: Cannot create a table configuration with an invalid "reference_entity_code" type in a record column
-    When I create a table attribute with a configuration '{"data_type": "record", "code": "record", "is_required_for_completeness": true, "reference_entity_code": 153}'
+  Scenario: Cannot create a table configuration with an invalid "reference_entity_identifier" type in a record column
+    When I create a table attribute with a configuration '{"data_type": "record", "code": "record", "is_required_for_completeness": true, "reference_entity_identifier": 153}'
     Then There is a violation with message: The required value is a string

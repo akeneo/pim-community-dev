@@ -91,13 +91,13 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                           message: The required value is a boolean
                       - NotNull:
                           message: The "is_required_for_completeness" option requires a value
-                reference_entity_code:
+                reference_entity_identifier:
                   - Optional:
                       - Type:
                           type: string
                           message: The required value is a string
                       - NotNull:
-                          message: The "reference_entity_code" option requires a value
+                          message: The "reference_entity_identifier" option requires a value
                 options:
                   - Optional:
                       - Type:

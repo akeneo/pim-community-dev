@@ -36,7 +36,7 @@ final class CreateAttributeEndToEnd extends AbstractAttributeApiTestCase
             {
                 "code": "record",
                 "data_type": "record",
-                "reference_entity_code": "entity"
+                "reference_entity_identifier": "entity"
             }
         ]
     }
@@ -69,7 +69,7 @@ JSON;
                 'labels' => [],
                 'validations' => [],
                 'is_required_for_completeness' => false,
-                'reference_entity_code' => 'entity',
+                'reference_entity_identifier' => 'entity',
             ]
         ], $decoded['table_configuration']);
     }
