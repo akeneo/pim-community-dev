@@ -68,10 +68,7 @@ export const useConfirmHandler = (
             translate('akeneo_connectivity.connection.connect.apps.wizard.flash.success')
         );
 
-        await new Promise(r => setTimeout(r, 2000));
-
-        // window.location.assign(redirectUrl);
-        window.location.assign('http://yell-extension-t2omu7tdaq-uc.a.run.app/success');
+        window.location.assign(redirectUrl);
     }, [confirmAuthorization, notify, translate, providers, permissions, notifyPermissionProviderError]);
 
     return {
