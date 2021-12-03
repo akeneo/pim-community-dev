@@ -55,7 +55,8 @@ jobs:
           command: |
               mkdir -p tmp
               export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-              git clone --branch v0 git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
+              CONNECTOR_BC_BRANCH=$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags git@github.com:akeneo/bigcommerce-connector.git 'v*' | tail -n1 | cut -d'/' -f3)
+              git clone --branch $CONNECTOR_BC_BRANCH git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
       - run:
           name: Require proper dev CE branch
           command: |
