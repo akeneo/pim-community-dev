@@ -23,7 +23,7 @@ use Akeneo\ReferenceEntity\Domain\Repository\AttributeNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Ramsey\Uuid\Uuid;

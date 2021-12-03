@@ -51,7 +51,7 @@ class SqlFindReferenceEntityDetails implements FindReferenceEntityDetailsInterfa
     /**
      * {@inheritdoc}
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function find(ReferenceEntityIdentifier $identifier): ?ReferenceEntityDetails
     {
@@ -102,7 +102,7 @@ SQL;
     }
 
     /**
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     private function hydrateReferenceEntityDetails(
         string $identifier,
