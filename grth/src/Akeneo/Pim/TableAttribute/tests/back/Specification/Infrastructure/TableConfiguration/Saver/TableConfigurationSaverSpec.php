@@ -8,6 +8,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event\SelectOptionWasDeleted;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\RecordColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
@@ -40,6 +41,7 @@ class TableConfigurationSaverSpec extends ObjectBehavior
             SelectColumn::DATATYPE => SelectColumn::class,
             BooleanColumn::DATATYPE => BooleanColumn::class,
             NumberColumn::DATATYPE => NumberColumn::class,
+            RecordColumn::DATATYPE => RecordColumn::class,
         ]);
 
         $this->beConstructedWith(
@@ -115,11 +117,11 @@ class TableConfigurationSaverSpec extends ObjectBehavior
         AttributeInterface $attribute
     ) {
         $existingTableConfiguration = TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
             BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'is_allergenic']),
         ]);
         $updatedTableConfiguration = TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'description']),
         ]);
         $rawTableConfiguration = [

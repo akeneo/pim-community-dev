@@ -78,25 +78,34 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
         );
 
         foreach ($tableConfiguration->normalize() as $columnOrder => $columnDefinition) {
+            $properties = [];
+
+            if (\array_key_exists('reference_entity_identifier', $columnDefinition)) {
+                $properties['reference_entity_identifier'] = $columnDefinition['reference_entity_identifier'];
+            }
+
+            $insertValues = [
+                'column_id' => $columnDefinition['id'],
+                'attribute_code' => $attributeCode,
+                'code' => $columnDefinition['code'],
+                'data_type' => $columnDefinition['data_type'],
+                'column_order' => $columnOrder,
+                'labels' => \json_encode($columnDefinition['labels']),
+                'validations' => \json_encode($columnDefinition['validations']),
+                'is_required_for_completeness' => $columnDefinition['is_required_for_completeness'] ? 1 : 0,
+                'properties' => \json_encode((object) $properties),
+            ];
+
             $this->connection->executeQuery(
                 <<<SQL
-                INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order, labels, validations, is_required_for_completeness)
+                INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order, labels, validations, is_required_for_completeness, properties)
                 SELECT * FROM (
-                    SELECT :column_id, attribute.id as attribute_id, :code as column_code, :data_type as data_type, :column_order AS column_order, :labels AS labels, :validations as validations, :is_required_for_completeness as is_required_for_completeness
+                    SELECT :column_id, attribute.id as attribute_id, :code as column_code, :data_type as data_type, :column_order AS column_order, :labels AS labels, :validations as validations, :is_required_for_completeness as is_required_for_completeness, :properties as properties
                     FROM pim_catalog_attribute AS attribute WHERE code = :attribute_code
                 ) AS newvalues
-                ON DUPLICATE KEY UPDATE column_order = newvalues.column_order, labels = newvalues.labels, validations = newvalues.validations, is_required_for_completeness = newvalues.is_required_for_completeness
+                ON DUPLICATE KEY UPDATE column_order = newvalues.column_order, labels = newvalues.labels, validations = newvalues.validations, is_required_for_completeness = newvalues.is_required_for_completeness, properties = newvalues.properties
                 SQL,
-                [
-                    'column_id' => $columnDefinition['id'],
-                    'attribute_code' => $attributeCode,
-                    'code' => $columnDefinition['code'],
-                    'data_type' => $columnDefinition['data_type'],
-                    'column_order' => $columnOrder,
-                    'labels' => \json_encode($columnDefinition['labels']),
-                    'validations' => \json_encode($columnDefinition['validations']),
-                    'is_required_for_completeness' => $columnDefinition['is_required_for_completeness'] ? 1 : 0,
-                ]
+                $insertValues
             );
         }
     }
@@ -112,7 +121,8 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
                 column_order,
                 table_column.labels,
                 validations,
-                is_required_for_completeness
+                is_required_for_completeness,
+                table_column.properties
             FROM pim_catalog_table_column table_column
                 INNER JOIN pim_catalog_attribute attribute ON attribute.id = table_column.attribute_id
             WHERE attribute.code = :attributeCode
@@ -131,14 +141,23 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
 
         return $this->tableConfigurationFactory->createFromNormalized(
             array_map(
-                fn (array $row): array => [
-                    'id' => $row['id'],
-                    'code' => $row['code'],
-                    'data_type' => $row['data_type'],
-                    'labels' => \json_decode($row['labels'], true),
-                    'validations' => \json_decode($row['validations'], true),
-                    'is_required_for_completeness' => Type::getType(Types::BOOLEAN)->convertToPhpValue($row['is_required_for_completeness'], $platform),
-                ],
+                function (array $row) use ($platform): array {
+                    $data = [
+                        'id' => $row['id'],
+                        'code' => $row['code'],
+                        'data_type' => $row['data_type'],
+                        'labels' => \json_decode($row['labels'], true),
+                        'validations' => \json_decode($row['validations'], true),
+                        'is_required_for_completeness' => Type::getType(Types::BOOLEAN)->convertToPhpValue($row['is_required_for_completeness'], $platform),
+                    ];
+
+                    $properties = \json_decode($row['properties'], true);
+                    if (\array_key_exists('reference_entity_identifier', $properties)) {
+                        $data['reference_entity_identifier'] = $properties['reference_entity_identifier'];
+                    }
+
+                    return $data;
+                },
                 $results
             )
         );

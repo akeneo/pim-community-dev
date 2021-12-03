@@ -27,7 +27,7 @@ class LruCachedTableConfigurationRepositorySpec extends ObjectBehavior
     {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions(
             [
-                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient']]),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient'], 'is_required_for_completeness' => true]),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity', 'labels' => ['en_US' => 'Quantity']]),
             ]
         );
@@ -41,7 +41,7 @@ class LruCachedTableConfigurationRepositorySpec extends ObjectBehavior
     ) {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions(
             [
-                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient']]),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient'], 'is_required_for_completeness' => true]),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity', 'labels' => ['en_US' => 'Quantity']]),
             ]
         );
@@ -55,13 +55,13 @@ class LruCachedTableConfigurationRepositorySpec extends ObjectBehavior
     ) {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions(
             [
-                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient']]),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient'], 'is_required_for_completeness' => true]),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity', 'labels' => ['en_US' => 'Quantity']]),
             ]
         );
         $otherTableConfiguration = TableConfiguration::fromColumnDefinitions(
             [
-                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('package'), 'code' => 'package']),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('package'), 'code' => 'package', 'is_required_for_completeness' => true]),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('width'), 'code' => 'width']),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('height'), 'code' => 'height']),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('depth'), 'code' => 'depth']),
@@ -81,7 +81,7 @@ class LruCachedTableConfigurationRepositorySpec extends ObjectBehavior
     ) {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions(
             [
-                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient']]),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient'], 'is_required_for_completeness' => true]),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity', 'labels' => ['en_US' => 'Quantity']]),
             ]
         );

@@ -39,6 +39,7 @@ final class TableConfiguration
 
     /**
      * @param array<int, ColumnDefinition> $columnDefinitions
+     * @internal
      */
     public static function fromColumnDefinitions(array $columnDefinitions): self
     {
@@ -46,6 +47,7 @@ final class TableConfiguration
         Assert::allIsInstanceOf($columnDefinitions, ColumnDefinition::class);
         Assert::minCount($columnDefinitions, 2);
         Assert::isInstanceOfAny($columnDefinitions[0], [SelectColumn::class, RecordColumn::class], 'The first column has an invalid type');
+        Assert::true($columnDefinitions[0]->isRequiredForCompleteness()->asBoolean());
 
         $codes = \array_map(
             fn (ColumnDefinition $definition): string => strtolower($definition->code()->asString()),

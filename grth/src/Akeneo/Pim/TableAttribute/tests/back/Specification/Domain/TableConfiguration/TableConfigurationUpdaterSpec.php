@@ -16,6 +16,7 @@ namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\RecordColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
@@ -35,6 +36,7 @@ class TableConfigurationUpdaterSpec extends ObjectBehavior
             SelectColumn::DATATYPE => SelectColumn::class,
             BooleanColumn::DATATYPE => BooleanColumn::class,
             NumberColumn::DATATYPE => NumberColumn::class,
+            RecordColumn::DATATYPE => RecordColumn::class,
         ]);
 
         $this->beConstructedWith($tableConfigurationRepository, $tableConfigurationFactory);
@@ -51,12 +53,12 @@ class TableConfigurationUpdaterSpec extends ObjectBehavior
             ->willReturn(ColumnId::fromString('quantity_99decf93-3121-461c-8e3c-539d175ca40b'));
 
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['id' => 'ingredient_cf30d88f-38c9-4c01-9821-4b39a5e3c224', 'code' => 'ingredient']),
+            SelectColumn::fromNormalized(['id' => 'ingredient_cf30d88f-38c9-4c01-9821-4b39a5e3c224', 'code' => 'ingredient', 'is_required_for_completeness' => true]),
             TextColumn::fromNormalized(['id' => 'description_affb18c7-bd86-460d-98e5-c5bd0eb499ef', 'code' => 'description']),
         ]);
 
         $newTableConfiguration = $this->update($tableConfiguration, [
-            ['code' => 'ingredient', 'data_type' => SelectColumn::DATATYPE],
+            ['code' => 'ingredient', 'data_type' => SelectColumn::DATATYPE, 'is_required_for_completeness' => true],
             ['code' => 'description', 'data_type' => TextColumn::DATATYPE],
             ['code' => 'quantity', 'data_type' => NumberColumn::DATATYPE],
         ]);
@@ -93,7 +95,7 @@ class TableConfigurationUpdaterSpec extends ObjectBehavior
     {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
             SelectColumn::fromNormalized(
-                ['id' => 'ingredient_cf30d88f-38c9-4c01-9821-4b39a5e3c224', 'code' => 'ingredient']
+                ['id' => 'ingredient_cf30d88f-38c9-4c01-9821-4b39a5e3c224', 'code' => 'ingredient', 'is_required_for_completeness' => true]
             ),
             TextColumn::fromNormalized(
                 ['id' => 'description_affb18c7-bd86-460d-98e5-c5bd0eb499ef', 'code' => 'description']
@@ -104,7 +106,7 @@ class TableConfigurationUpdaterSpec extends ObjectBehavior
         ]);
 
         $newTableConfiguration = $this->update($tableConfiguration, [
-            ['code' => 'ingredient', 'data_type' => SelectColumn::DATATYPE],
+            ['code' => 'ingredient', 'data_type' => SelectColumn::DATATYPE, 'is_required_for_completeness' => true],
             ['code' => 'description', 'data_type' => TextColumn::DATATYPE],
         ]);
 
@@ -133,7 +135,7 @@ class TableConfigurationUpdaterSpec extends ObjectBehavior
     {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
             SelectColumn::fromNormalized(
-                ['id' => 'ingredient_cf30d88f-38c9-4c01-9821-4b39a5e3c224', 'code' => 'ingredient']
+                ['id' => 'ingredient_cf30d88f-38c9-4c01-9821-4b39a5e3c224', 'code' => 'ingredient', 'is_required_for_completeness' => true]
             ),
             TextColumn::fromNormalized(
                 ['id' => 'description_affb18c7-bd86-460d-98e5-c5bd0eb499ef', 'code' => 'description']
@@ -152,7 +154,7 @@ class TableConfigurationUpdaterSpec extends ObjectBehavior
             ->willReturn(ColumnId::fromString('quantity_11decf11-1111-111c-1e1c-111d111ca11b'));
 
         $newTableConfiguration = $this->update($tableConfiguration, [
-            ['code' => 'ingredient', 'data_type' => SelectColumn::DATATYPE],
+            ['code' => 'ingredient', 'data_type' => SelectColumn::DATATYPE, 'is_required_for_completeness' => true],
             ['code' => 'is_allergenic', 'data_type' => BooleanColumn::DATATYPE, 'labels' => ['en_US' => 'Allergenic']],
             ['code' => 'description', 'data_type' => TextColumn::DATATYPE],
             ['code' => 'quantity', 'data_type' => TextColumn::DATATYPE, 'validations' => ['max_length' => 50]]

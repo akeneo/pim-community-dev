@@ -48,7 +48,8 @@ final class InitSchemaSubscriber implements EventSubscriberInterface
             column_order int not null,
             validations json not null default ('{}'),
             labels json not null default ('{}'),
-            is_required_for_completeness tinyint(1) not null
+            is_required_for_completeness tinyint(1) not null,
+            properties json not null default ('{}')
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         ALTER TABLE pim_catalog_table_column
             ADD CONSTRAINT pim_catalog_table_column_pk PRIMARY KEY (id);

@@ -648,6 +648,7 @@ pim_catalog_table_column | column_order | NO | int |
 pim_catalog_table_column | validations | NO | json |
 pim_catalog_table_column | labels | NO | json |
 pim_catalog_table_column | is_required_for_completeness | NO | tinyint(1) |
+pim_catalog_table_column | properties | NO | json |
 pim_catalog_table_column_select_option | column_id | NO | varchar(137) | PRI
 pim_catalog_table_column_select_option | code | NO | varchar(100) | PRI
 pim_catalog_table_column_select_option | labels | NO | json |

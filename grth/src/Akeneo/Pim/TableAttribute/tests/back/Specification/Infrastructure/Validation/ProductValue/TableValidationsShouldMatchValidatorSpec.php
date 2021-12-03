@@ -89,7 +89,7 @@ final class TableValidationsShouldMatchValidatorSpec extends ObjectBehavior
 
         $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(
             TableConfiguration::fromColumnDefinitions([
-                SelectColumn::fromNormalized(['code' => 'ingredient', 'id' => ColumnIdGenerator::ingredient()]),
+                SelectColumn::fromNormalized(['code' => 'ingredient', 'id' => ColumnIdGenerator::ingredient(), 'is_required_for_completeness' => true]),
                 NumberColumn::fromNormalized(['code' => 'quantity', 'validations' => ['min' => 5, 'max' => 50, 'decimals_allowed' => false], 'id' => ColumnIdGenerator::quantity()]),
                 TextColumn::fromNormalized(['code' => 'description', 'validations' => ['max_length' => 15], 'id' => ColumnIdGenerator::description()]),
                 TextColumn::fromNormalized(['code' => 'useless_description', 'validations' => ['max_length' => 1], 'id' => ColumnIdGenerator::generateAsString('useless_description')]),
@@ -144,7 +144,7 @@ final class TableValidationsShouldMatchValidatorSpec extends ObjectBehavior
 
         $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(
             TableConfiguration::fromColumnDefinitions([
-                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
                 NumberColumn::fromNormalized(['id' => $quantityWithValidationId, 'code' => 'quantity_without_validation']),
                 NumberColumn::fromNormalized(['id' => $quantityWithoutDecimalAllowedId, 'code' => 'quantity_with_decimals_allowed', 'validations' => ['decimals_allowed' => true]]),
             ])
@@ -178,7 +178,7 @@ final class TableValidationsShouldMatchValidatorSpec extends ObjectBehavior
 
         $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(
             TableConfiguration::fromColumnDefinitions([
-                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
                 TextColumn::fromNormalized(['id' => $textWithDefaultValidationId, 'code' => 'text_with_default_validation']),
                 TextColumn::fromNormalized(['id' => $textWithMaxLengthId, 'code' => 'text_with_max_length', 'validations' => ['max_length' => 5]]),
             ])

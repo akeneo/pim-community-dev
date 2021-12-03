@@ -36,7 +36,7 @@ class TableProductValueRendererSpec extends ObjectBehavior
         $environment = new Environment($loader->getWrappedObject());
         $aqrId = ColumnIdGenerator::generateAsString('aqr');
         $rawTableConfiguration = [
-            ['id' => ColumnIdGenerator::ingredient(), 'data_type' => 'select', 'code' => 'ingredient'],
+            ['id' => ColumnIdGenerator::ingredient(), 'data_type' => 'select', 'code' => 'ingredient', 'is_required_for_completeness' => true],
             ['id' => ColumnIdGenerator::quantity(), 'data_type' => 'number', 'code' => 'quantity'],
             ['id' => ColumnIdGenerator::isAllergenic(), 'data_type' => 'boolean', 'code' => 'is_allergenic'],
             ['id' => ColumnIdGenerator::description(), 'data_type' => 'text', 'code' => 'description'],
@@ -50,7 +50,7 @@ class TableProductValueRendererSpec extends ObjectBehavior
 
         $tableConfigurationFactory->createFromNormalized($rawTableConfiguration)->shouldBeCalled()->willReturn(
             TableConfiguration::fromColumnDefinitions([
-                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'data_type' => 'select', 'code' => 'ingredient']),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'data_type' => 'select', 'code' => 'ingredient', 'is_required_for_completeness' => true]),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'data_type' => 'number', 'code' => 'quantity']),
                 BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'data_type' => 'boolean', 'code' => 'is_allergenic']),
                 TextColumn::fromNormalized(['id' => ColumnIdGenerator::description(), 'data_type' => 'text', 'code' => 'description']),

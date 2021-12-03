@@ -66,7 +66,7 @@ final class FirstColumnCodeCannotBeChangedValidatorSpec extends ObjectBehavior
         $attributeToValidate->getCode()->willReturn('table');
         $tableConfigurationRepository->getByAttributeCode('table')->willReturn(
             TableConfiguration::fromColumnDefinitions([
-                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
             ])
         );
@@ -91,7 +91,7 @@ final class FirstColumnCodeCannotBeChangedValidatorSpec extends ObjectBehavior
 
         $tableConfigurationRepository->getByAttributeCode('table')->willReturn(
             TableConfiguration::fromColumnDefinitions([
-                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
             ])
         );
@@ -172,7 +172,7 @@ final class FirstColumnCodeCannotBeChangedValidatorSpec extends ObjectBehavior
         $attributeToValidate->getCode()->willReturn('table');
         $tableConfigurationRepository->getByAttributeCode('table')->willReturn(
             TableConfiguration::fromColumnDefinitions([
-                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
             ])
         );

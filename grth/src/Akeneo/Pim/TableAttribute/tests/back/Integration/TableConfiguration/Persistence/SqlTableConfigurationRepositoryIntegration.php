@@ -15,6 +15,7 @@ namespace Akeneo\Test\Pim\TableAttribute\Integration\TableConfiguration\Persiste
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\RecordColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
@@ -55,6 +56,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
             ]),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'is_allergenic']),
+            RecordColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'record', 'reference_entity_identifier' => 'entity']),
         ]);
         $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
 
@@ -63,7 +65,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
             ['attribute_id' => $this->tableAttributeId]
         )->fetchAllAssociative();
 
-        self::assertCount(3, $rows);
+        self::assertCount(4, $rows);
         self::assertSame(0, (int)$rows[0]['column_order']);
         self::assertSame('ingredient', $rows[0]['code']);
         self::assertSame('select', $rows[0]['data_type']);
@@ -79,15 +81,20 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         self::assertSame(ColumnIdGenerator::isAllergenic(), $rows[2]['id']);
         self::assertSame(2, (int)$rows[2]['column_order']);
         self::assertSame('0', $rows[2]['is_required_for_completeness']);
+        self::assertSame(ColumnIdGenerator::record(), $rows[3]['id']);
+        self::assertSame(3, (int)$rows[3]['column_order']);
+        self::assertSame('0', $rows[3]['is_required_for_completeness']);
+        self::assertSame('{"reference_entity_identifier": "entity"}', $rows[3]['properties']);
     }
 
     /** @test */
     public function it_updates_a_table_configuration(): void
     {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
             BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'is_allergenic']),
+            RecordColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'record', 'reference_entity_identifier' => 'entity']),
         ]);
         $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
 
@@ -96,11 +103,11 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
             ['attribute_id' => $this->tableAttributeId]
         )->fetchFirstColumn();
 
-        self::assertCount(3, $ids);
+        self::assertCount(4, $ids);
         [$ingredientId, $quantityId,] = $ids;
 
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['id' => $ingredientId, 'code' => 'ingredient']),
+            SelectColumn::fromNormalized(['id' => $ingredientId, 'code' => 'ingredient', 'is_required_for_completeness' => true]),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('aqr'), 'code' => 'aqr']),
             TextColumn::fromNormalized(['id' => $quantityId, 'code' => 'quantity']),
         ]);
@@ -123,7 +130,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
     public function it_updates_a_table_configuration_with_case_insensitive(): void
     {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
             BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'isAllergenic']),
         ]);
@@ -140,7 +147,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         self::assertContains(ColumnIdGenerator::isAllergenic(), $ids);
 
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'INGredients']),
+            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'INGredients', 'is_required_for_completeness' => true]),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('aqr'), 'code' => 'aqr']),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'QUANTITY']),
         ]);
@@ -166,7 +173,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
     {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions(
             [
-                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('select'), 'code' => 'select']),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('select'), 'code' => 'select', 'is_required_for_completeness' => true]),
                 TextColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('text'), 'code' => 'text']),
                 BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('boolean'), 'code' => 'boolean']),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::generateAsString('number'), 'code' => 'number']),
@@ -187,14 +194,14 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
     {
         $priceId = ColumnIdGenerator::generateAsString('price');
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
             TextColumn::fromNormalized(['id' => $priceId, 'code' => 'price']),
         ]);
         $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
 
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
             TextColumn::fromNormalized(['id' => $priceId, 'code' => 'price']),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
         ]);
@@ -218,8 +225,8 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
     public function it_fetches_a_table_configuration_by_attribute_code(): void
     {
         $sql = <<<SQL
-        INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order, labels, validations, is_required_for_completeness)
-        VALUES (:id, :attribute_id, :code, :data_type, :column_order, :labels, :validations, :is_required_for_completeness)
+        INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order, labels, validations, is_required_for_completeness, properties)
+        VALUES (:id, :attribute_id, :code, :data_type, :column_order, :labels, :validations, :is_required_for_completeness, :properties)
         SQL;
         $this->connection->executeQuery(
             $sql,
@@ -232,6 +239,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
                 'labels' => \json_encode(['en_US' => 'Ingredient', 'fr_FR' => 'Ingrédient']),
                 'validations' => '{}',
                 'is_required_for_completeness' => '1',
+                'properties' => '{}',
             ]
         );
         $this->connection->executeQuery(
@@ -245,6 +253,21 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
                 'labels' => '{}',
                 'validations' => \json_encode(['max_length' => 90]),
                 'is_required_for_completeness' => '0',
+                'properties' => '{}',
+            ]
+        );
+        $this->connection->executeQuery(
+            $sql,
+            [
+                'id' => ColumnIdGenerator::record(),
+                'attribute_id' => $this->tableAttributeId,
+                'code' => 'record',
+                'data_type' => 'record',
+                'column_order' => 2,
+                'labels' => '{}',
+                'validations' => '{}',
+                'is_required_for_completeness' => '0',
+                'properties' => \json_encode(['reference_entity_identifier' => 'entity']),
             ]
         );
 
@@ -285,6 +308,16 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
                     'validations' => ['max_length' => 90],
                     'is_required_for_completeness' => false,
                 ],
+                [
+                    'id' => ColumnIdGenerator::record(),
+                    'code' => 'record',
+                    'data_type' => 'record',
+                    'labels' => (object)[],
+                    'validations' => (object) [],
+                    'is_required_for_completeness' => false,
+                    'reference_entity_identifier' => 'entity',
+                ],
+
             ],
             $result->normalize()
         );
