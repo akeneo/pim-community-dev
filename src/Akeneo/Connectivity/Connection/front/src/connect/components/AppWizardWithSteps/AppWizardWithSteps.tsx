@@ -1,6 +1,6 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
 import {useHistory} from 'react-router';
-import {Button, Modal, useProgress, ProgressIndicator} from 'akeneo-design-system';
+import {Button, Modal, ProgressIndicator, useProgress, CodingIllustration} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {Permissions} from './Permissions';
 import {PermissionsSummary} from './PermissionsSummary';
@@ -10,8 +10,9 @@ import {useFetchAppWizardData} from '../../hooks/use-fetch-app-wizard-data';
 import {useTranslate} from '../../../shared/translate';
 import {PermissionFormProvider, usePermissionFormRegistry} from '../../../shared/permission-form-registry';
 import {useConfirmAuthorization} from '../../hooks/use-confirm-authorization';
-import {NotificationLevel, useNotify} from '../../../shared/notify';
+import {useNotify} from '../../../shared/notify';
 import {PermissionsByProviderKey} from '../../../model/Apps/permissions-by-provider-key';
+import {useConfirmHandler} from './useConfirmHandler';
 
 const Content = styled.div`
     display: grid;
@@ -43,6 +44,19 @@ const ProgressIndicatorContainer = styled(ProgressIndicator)`
     height: 70px;
     position: fixed;
     bottom: 20px;
+`;
+const FullScreen = styled.div`
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    z-index: 900;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 `;
 
 interface Props {
@@ -80,59 +94,21 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
         (providerKey: string, providerPermissions: object) => {
             setPermissions(state => ({...state, [providerKey]: providerPermissions}));
         },
-        [setPermissions]
+        [setPermissions],
     );
 
-    const notifyPermissionProviderError = useCallback(
-        (entity: string): void => {
-            notify(
-                NotificationLevel.ERROR,
-                translate('akeneo_connectivity.connection.connect.apps.flash.permissions_error.description'),
-                {
-                    titleMessage: translate(
-                        'akeneo_connectivity.connection.connect.apps.flash.permissions_error.title',
-                        {
-                            entity: entity,
-                        }
-                    ),
-                }
-            );
-        },
-        [notify, translate]
-    );
-
-    const handleConfirm = useCallback(async () => {
-        let userGroup;
-        let redirectUrl;
-
-        try {
-            ({userGroup, redirectUrl} = await confirmAuthorization());
-        } catch (e) {
-            notify(
-                NotificationLevel.ERROR,
-                translate('akeneo_connectivity.connection.connect.apps.wizard.flash.error')
-            );
-            return;
-        }
-
-        for (const provider of providers) {
-            try {
-                await provider.save(userGroup, permissions[provider.key]);
-            } catch {
-                notifyPermissionProviderError(provider.label);
-            }
-        }
-
-        notify(
-            NotificationLevel.SUCCESS,
-            translate('akeneo_connectivity.connection.connect.apps.wizard.flash.success')
-        );
-
-        window.location.assign(redirectUrl);
-    }, [confirmAuthorization, notify, translate, providers, permissions, notifyPermissionProviderError]);
+    const {confirm, processing} = useConfirmHandler(clientId, providers, permissions);
 
     if (wizardData === null) {
         return null;
+    }
+
+    if (processing) {
+        return (
+            <FullScreen>
+                <CodingIllustration width={300}/>
+            </FullScreen>
+        );
     }
 
     return (
@@ -157,7 +133,7 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
                 </StyledActionButton>
             )}
             {isCurrent('summary') && (
-                <StyledActionButton onClick={handleConfirm}>
+                <StyledActionButton onClick={confirm}>
                     {translate('akeneo_connectivity.connection.connect.apps.wizard.action.confirm')}
                 </StyledActionButton>
             )}

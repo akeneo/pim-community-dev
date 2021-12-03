@@ -1,0 +1,81 @@
+import {useCallback, useState} from 'react';
+import {NotificationLevel, useNotify} from '../../../shared/notify';
+import {useTranslate} from '../../../shared/translate';
+import {useConfirmAuthorization} from '../../hooks/use-confirm-authorization';
+import {PermissionFormProvider} from '../../../shared/permission-form-registry';
+import {PermissionsByProviderKey} from '../../../model/Apps/permissions-by-provider-key';
+
+type Result = {
+  confirm: () => Promise<void>;
+  processing: boolean;
+};
+
+export const useConfirmHandler = (
+    clientId: string,
+    providers: PermissionFormProvider<any>[],
+    permissions: PermissionsByProviderKey
+): Result => {
+    const notify = useNotify();
+    const translate = useTranslate();
+    const confirmAuthorization = useConfirmAuthorization(clientId);
+    const [processing, setProcessing] = useState<boolean>(false);
+
+    const notifyPermissionProviderError = useCallback(
+        (entity: string): void => {
+            notify(
+                NotificationLevel.ERROR,
+                translate('akeneo_connectivity.connection.connect.apps.flash.permissions_error.description'),
+                {
+                    titleMessage: translate(
+                        'akeneo_connectivity.connection.connect.apps.flash.permissions_error.title',
+                        {
+                            entity: entity,
+                        }
+                    ),
+                }
+            );
+        },
+        [notify, translate]
+    );
+
+    const handleConfirm = useCallback(async () => {
+        let userGroup;
+        let redirectUrl;
+
+        setProcessing(true);
+
+        try {
+            ({userGroup, redirectUrl} = await confirmAuthorization());
+        } catch (e) {
+            notify(
+                NotificationLevel.ERROR,
+                translate('akeneo_connectivity.connection.connect.apps.wizard.flash.error')
+            );
+            setProcessing(false);
+            return;
+        }
+
+        for (const provider of providers) {
+            try {
+                await provider.save(userGroup, permissions[provider.key]);
+            } catch {
+                notifyPermissionProviderError(provider.label);
+            }
+        }
+
+        notify(
+            NotificationLevel.SUCCESS,
+            translate('akeneo_connectivity.connection.connect.apps.wizard.flash.success')
+        );
+
+        await new Promise(r => setTimeout(r, 2000));
+
+        // window.location.assign(redirectUrl);
+        window.location.assign('http://yell-extension-t2omu7tdaq-uc.a.run.app/success');
+    }, [confirmAuthorization, notify, translate, providers, permissions, notifyPermissionProviderError]);
+
+    return {
+        confirm: handleConfirm,
+        processing: processing,
+    };
+};
