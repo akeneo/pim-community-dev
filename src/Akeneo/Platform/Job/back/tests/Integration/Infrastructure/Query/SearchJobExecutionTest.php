@@ -671,7 +671,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_does_not_throw_exception_when_page_is_greater_than_50_and_filters_are_set(): void
+    public function it_does_not_throw_exception_when_page_is_greater_than_50_and_at_least_one_filter_is_set(): void
     {
         $this->loadFixtures();
 
