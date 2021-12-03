@@ -23,7 +23,7 @@ const Connect = styled.h3`
 
 const AppTitle = styled.h2`
     color: ${getColor('grey', 140)};
-    font-size: 28px;
+    font-size: ${getFontSize('title')};
     font-weight: normal;
     line-height: 28px;
     margin: 0;
