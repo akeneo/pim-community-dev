@@ -26,5 +26,4 @@ pim_catalog_volume:
     count_category_trees: カテゴリツリー
     count_variant_products: バリエーション商品
     count_product_models: 商品モデル
-  mean: '平均:'
   max: '最大:'
