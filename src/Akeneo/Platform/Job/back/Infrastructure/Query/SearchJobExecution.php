@@ -36,6 +36,7 @@ class SearchJobExecution implements SearchJobExecutionInterface
 
     public function search(SearchJobExecutionQuery $query): array
     {
+        // TODO: RAC-1102
         // I'd split this public into 2 private for clarity,
         // the body of this function becomes:
         // $sql = $this->buildSqlQuery($query);
