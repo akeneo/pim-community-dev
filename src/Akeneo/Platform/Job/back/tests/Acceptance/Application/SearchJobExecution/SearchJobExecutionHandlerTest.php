@@ -75,6 +75,61 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
         $this->assertEquals($expectedResult, $result);
     }
 
+    /**
+     * @test
+     */
+    public function it_throws_invalid_argument_exception_when_sort_column_is_not_supported()
+    {
+        $query = new SearchJobExecutionQuery();
+        $query->sortColumn = 'invalid_column';
+
+        $this->expectExceptionObject(new \InvalidArgumentException('Sort column "invalid_column" is not supported'));
+
+        $this->getHandler()->search($query);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_invalid_argument_exception_when_sort_direction_is_not_supported()
+    {
+        $query = new SearchJobExecutionQuery();
+        $query->sortDirection = 'DASC';
+
+        $this->expectExceptionObject(new \InvalidArgumentException('Sort direction "DASC" is not supported'));
+
+        $this->getHandler()->search($query);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_exception_when_page_is_greater_than_50_and_no_filter(): void
+    {
+        $query = new SearchJobExecutionQuery();
+        $query->page = 51;
+
+        $this->expectExceptionObject(new \InvalidArgumentException('Page can not be greater than 50 when no filter are set'));
+
+        $this->getHandler()->search($query);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_throw_exception_when_page_is_greater_than_50_and_at_least_one_filter_is_set(): void
+    {
+        $query = new SearchJobExecutionQuery();
+        $query->type = ['export'];
+        $query->page = 51;
+
+        $result = $this->getHandler()->search($query);
+
+        $expectedResult = new JobExecutionTable([], 0);
+
+        $this->assertEquals($expectedResult, $result);
+    }
+
     private function getSearchJobExecution(): InMemorySearchJobExecution
     {
         return $this->get('Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface');

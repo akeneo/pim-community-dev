@@ -21,9 +21,26 @@ final class SearchJobExecutionHandler
 
     public function search(SearchJobExecutionQuery $query): JobExecutionTable
     {
+        $this->validateQuery($query);
+
         $jobExecutionRows = $this->findJobExecutionRowsForQuery->search($query);
         $matchesCount = $this->findJobExecutionRowsForQuery->count($query);
 
         return new JobExecutionTable($jobExecutionRows, $matchesCount);
+    }
+
+    private function validateQuery(SearchJobExecutionQuery $query): void
+    {
+        if (!in_array($query->sortColumn, SearchJobExecutionQuery::$supportedSortColumns)) {
+            throw new \InvalidArgumentException(sprintf('Sort column "%s" is not supported', $query->sortColumn));
+        }
+
+        if (!in_array($query->sortDirection, SearchJobExecutionQuery::$supportedSortDirections)) {
+            throw new \InvalidArgumentException(sprintf('Sort direction "%s" is not supported', $query->sortDirection));
+        }
+
+        if (!$query->hasOneFilterSet() && SearchJobExecutionQuery::MAX_PAGE_WITHOUT_FILTER < $query->page) {
+            throw new \InvalidArgumentException('Page can not be greater than 50 when no filter are set');
+        }
     }
 }

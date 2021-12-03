@@ -607,30 +607,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
     /**
      * @test
      */
-    public function it_throws_invalid_argument_exception_when_sort_column_is_not_supported()
-    {
-        $query = new SearchJobExecutionQuery();
-        $query->sortColumn = 'invalid_column';
-
-        $this->expectExceptionObject(new \InvalidArgumentException(sprintf('Sort column "%s" is not supported', $query->sortColumn)));
-        $this->getQuery()->search($query);
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_invalid_argument_exception_when_sort_direction_is_not_supported()
-    {
-        $query = new SearchJobExecutionQuery();
-        $query->sortDirection = 'DASC';
-
-        $this->expectExceptionObject(new \InvalidArgumentException(sprintf('Sort direction "%s" is not supported', $query->sortDirection)));
-        $this->getQuery()->search($query);
-    }
-
-    /**
-     * @test
-     */
     public function it_returns_job_execution_count_filtered_by_search()
     {
         $this->loadFixtures();
@@ -652,37 +628,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $query->code = ['a_product_export'];
 
         $this->assertEquals(1, $this->getQuery()->count($query));
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_exception_when_page_is_greater_than_50_and_no_filter(): void
-    {
-        $this->loadFixtures();
-
-        $query = new SearchJobExecutionQuery();
-        $query->page = 51;
-
-        $this->expectExceptionMessage('The page number can not be greater than 50 when no filter are set');
-        $this->getQuery()->search($query);
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_throw_exception_when_page_is_greater_than_50_and_at_least_one_filter_is_set(): void
-    {
-        $this->loadFixtures();
-
-        $query = new SearchJobExecutionQuery();
-        $query->type = ['export'];
-        $query->size = 1;
-        $query->page = 51;
-
-        $expectedJobExecutions = [];
-
-        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
     }
 
     private function loadFixtures()

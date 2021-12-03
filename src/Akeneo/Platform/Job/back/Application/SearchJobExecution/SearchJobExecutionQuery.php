@@ -11,6 +11,21 @@ namespace Akeneo\Platform\Job\Application\SearchJobExecution;
  */
 class SearchJobExecutionQuery
 {
+    public const MAX_PAGE_WITHOUT_FILTER = 50;
+
+    public static array $supportedSortColumns = [
+        'job_name',
+        'type',
+        'started_at',
+        'username',
+        'status',
+    ];
+
+    public static array $supportedSortDirections = [
+        'ASC',
+        'DESC',
+    ];
+
     public int $page = 1;
     public int $size = 25;
     public string $sortColumn = 'started_at';
