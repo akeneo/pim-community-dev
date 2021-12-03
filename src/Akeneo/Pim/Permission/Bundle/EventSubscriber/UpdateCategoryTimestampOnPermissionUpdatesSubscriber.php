@@ -27,12 +27,17 @@ class UpdateCategoryTimestampOnPermissionUpdatesSubscriber implements EventSubsc
         return [
             StorageEvents::POST_SAVE => 'updateCategoryTimestamp',
             StorageEvents::POST_REMOVE => 'updateCategoryTimestamp',
+            StorageEvents::POST_SAVE_ALL => 'updateCategoriesTimestamp',
         ];
     }
 
     public function updateCategoryTimestamp(GenericEvent $event)
     {
         if ($event->hasArgument('is_installation') && $event->getArgument('is_installation')) {
+            return;
+        }
+
+        if ($event->hasArgument('unitary') && false === $event->getArgument('unitary')) {
             return;
         }
 
@@ -50,5 +55,36 @@ class UpdateCategoryTimestampOnPermissionUpdatesSubscriber implements EventSubsc
         $category->setUpdated(new \DateTime('now', new \DateTimeZone('UTC')));
 
         $this->categorySaver->save($category);
+    }
+
+    public function updateCategoriesTimestamp(GenericEvent $event)
+    {
+        if ($event->hasArgument('is_installation') && $event->getArgument('is_installation')) {
+            return;
+        }
+
+        if ($event->hasArgument('unitary') && true === $event->getArgument('unitary')) {
+            return;
+        }
+
+        $subjects = $event->getSubject();
+        $accesses = array_filter($subjects, function ($subject) {
+            return $subject instanceof ProductCategoryAccess && $subject->getCategory() instanceof CategoryInterface;
+        });
+        $categories = array_map(function(ProductCategoryAccess $access) {
+            return $access->getCategory();
+        }, $accesses);
+
+        if (empty($categories)) {
+            return;
+        }
+
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+
+        foreach ($categories as $category) {
+            $category->setUpdated($now);
+        }
+
+        $this->categorySaver->saveAll($categories);
     }
 }

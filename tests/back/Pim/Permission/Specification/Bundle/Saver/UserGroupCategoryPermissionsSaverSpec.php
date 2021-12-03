@@ -14,6 +14,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
 {
@@ -83,6 +84,9 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
         $categoryAccessManager->grantAccess($categoryA, $group, Attributes::OWN_PRODUCTS)->shouldBeCalled();
         $categoryAccessManager->grantAccess($categoryB, $group, Attributes::OWN_PRODUCTS)->shouldBeCalled();
         $categoryAccessManager->grantAccess($categoryC, $group, Attributes::OWN_PRODUCTS)->shouldBeCalled();
+        $categoryAccessManager->updateChildrenAccesses($categoryA, [$group], [$group], [$group], [], [], [])->shouldBeCalled();
+        $categoryAccessManager->updateChildrenAccesses($categoryB, [$group], [$group], [$group], [], [], [])->shouldBeCalled();
+        $categoryAccessManager->updateChildrenAccesses($categoryC, [$group], [$group], [$group], [], [], [])->shouldBeCalled();
 
         $this->save('Redactor', [
             'own' => [
@@ -121,6 +125,9 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
         $categoryAccessManager->grantAccess($categoryA, $group, Attributes::VIEW_ITEMS)->shouldBeCalled();
         $categoryAccessManager->grantAccess($categoryB, $group, Attributes::VIEW_ITEMS)->shouldBeCalled();
         $categoryAccessManager->grantAccess($categoryC, $group, Attributes::VIEW_ITEMS)->shouldBeCalled();
+        $categoryAccessManager->updateChildrenAccesses($categoryA, [$group], [], [], [], [], [])->shouldBeCalled();
+        $categoryAccessManager->updateChildrenAccesses($categoryB, [$group], [], [], [], [], [])->shouldBeCalled();
+        $categoryAccessManager->updateChildrenAccesses($categoryC, [$group], [], [], [], [], [])->shouldBeCalled();
 
         $this->save('Redactor', [
             'own' => [
@@ -152,6 +159,7 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
         $groupSaver->save($group)->shouldNotBeCalled();
 
         $categoryAccessManager->grantAccess($categoryA, $group, Attributes::OWN_PRODUCTS)->shouldBeCalled();
+        $categoryAccessManager->updateChildrenAccesses($categoryA, [$group], [$group], [$group], [], [], [])->shouldBeCalled();
 
         $this->save('Redactor', [
             'own' => [
@@ -196,6 +204,9 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
         $categoryAccessManager->grantAccess($categoryA, $group, Attributes::OWN_PRODUCTS)->shouldBeCalled();
         $categoryAccessManager->grantAccess($categoryB, $group, Attributes::VIEW_ITEMS)->shouldBeCalled();
         $categoryAccessManager->grantAccess($categoryC, $group, Attributes::VIEW_ITEMS)->shouldBeCalled();
+        $categoryAccessManager->updateChildrenAccesses($categoryA, [$group], [$group], [$group], [], [], [])->shouldBeCalled();
+        $categoryAccessManager->updateChildrenAccesses($categoryB, [$group], [], [], [], [], [])->shouldBeCalled();
+        $categoryAccessManager->updateChildrenAccesses($categoryC, [$group], [], [], [], [], [])->shouldBeCalled();
 
         $this->save('Redactor', [
             'own' => [
@@ -233,6 +244,8 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
 
         $categoryAccessManager->grantAccess($categoryA, $group, Attributes::EDIT_ITEMS)->shouldBeCalled();
         $categoryAccessManager->grantAccess($categoryB, $group, Attributes::VIEW_ITEMS)->shouldBeCalled();
+        $categoryAccessManager->updateChildrenAccesses($categoryA, [$group], [$group], [], [], [], [])->shouldBeCalled();
+        $categoryAccessManager->updateChildrenAccesses($categoryB, [$group], [], [], [], [], [])->shouldBeCalled();
 
         $this->save('Redactor', [
             'own' => [
@@ -270,7 +283,8 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
         $groupSaver->save($group)->shouldNotBeCalled();
         $getCategoriesAccessesWithHighestLevel->execute(42)->willReturn(['category_a' => Attributes::OWN_PRODUCTS]);
 
-        $categoryAccessManager->grantAccess($categoryA, $group, Attributes::OWN_PRODUCTS)->shouldNotBeCalled();
+        $categoryAccessManager->grantAccess(Argument::cetera())->shouldNotBeCalled();
+        $categoryAccessManager->updateChildrenAccesses(Argument::cetera())->shouldNotBeCalled();
 
         $this->save('Redactor', [
             'own' => [
@@ -310,6 +324,7 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
         $getCategoriesAccessesWithHighestLevel->execute(42)->willReturn(['category_a' => Attributes::OWN_PRODUCTS]);
 
         $categoryAccessManager->revokeGroupAccess($categoryA, $group)->shouldBeCalled();
+        $categoryAccessManager->updateChildrenAccesses($categoryA, [], [], [], [$group], [$group], [$group])->shouldBeCalled();
 
         $this->save('Redactor', [
             'own' => [
@@ -343,6 +358,7 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
         $getCategoriesAccessesWithHighestLevel->execute(42)->willReturn(['category_a' => Attributes::OWN_PRODUCTS]);
 
         $categoryAccessManager->grantAccess($categoryA, $group, Attributes::VIEW_ITEMS)->shouldBeCalled();
+        $categoryAccessManager->updateChildrenAccesses($categoryA, [], [], [], [], [$group], [$group])->shouldBeCalled();
 
         $this->save('Redactor', [
             'own' => [
@@ -392,6 +408,8 @@ class UserGroupCategoryPermissionsSaverSpec extends ObjectBehavior
 
         $categoryAccessManager->grantAccess($categoryB, $group, Attributes::EDIT_ITEMS)->shouldBeCalled();
         $categoryAccessManager->grantAccess($categoryC, $group, Attributes::VIEW_ITEMS)->shouldBeCalled();
+        $categoryAccessManager->updateChildrenAccesses($categoryB, [], [], [], [], [], [$group])->shouldBeCalled();
+        $categoryAccessManager->updateChildrenAccesses($categoryC, [], [], [], [], [$group], [])->shouldBeCalled();
 
         $this->save('Redactor', [
             'own' => [
