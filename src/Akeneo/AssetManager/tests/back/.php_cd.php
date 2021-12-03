@@ -68,6 +68,7 @@ $rules = [
         'Akeneo\Pim\Structure\Component',
         'Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes',
         'Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery',
+        'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
     ])->in('Akeneo\AssetManager\Infrastructure'),
 ];
 
