@@ -156,6 +156,10 @@ akeneo_connectivity.connection:
                     channel_settings: channels
                     association_types: association types
                     products: products and product models
+                    reference_entity: reference entities
+                    reference_entity_record: reference entity records
+                    asset_families: asset families
+                    assets: assets
             error:
                 sub_text: Please contact the app developer or Akeneo support
             constraint:
