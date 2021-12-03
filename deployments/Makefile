@@ -365,15 +365,15 @@ ifeq ("$(wildcard $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json)","")
 	make create-ci-release-files
 	cp -r $(INSTANCE_DIR) $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)
 else
-	cp -r $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR) $(INSTANCE_DIR)
 ifeq ($(TYPE),srnt)
-	PIM_VERSION=$(shell yq r "$(INSTANCE_DIR)/main.tf.json" 'module.pim.pim_version'); \
-	yq w -j -P -i $(INSTANCE_DIR)/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$${PIM_VERSION}//deployments/terraform"
+	PIM_VERSION=$(shell yq r "$(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json" 'module.pim.pim_version'); \
+	yq w -j -P -i $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$${PIM_VERSION}//deployments/terraform"
 ifeq ($(ACTIVATE_MONITORING),true)
-	PIM_VERSION=$(shell yq r "$(INSTANCE_DIR)/main.tf.json" 'module.pim.pim_version'); \
-	yq w -j -P -i $(INSTANCE_DIR)/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$${PIM_VERSION}//deployments/terraform/monitoring"
+	PIM_VERSION=$(shell yq r "$(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json" 'module.pim.pim_version'); \
+	yq w -j -P -i $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$${PIM_VERSION}//deployments/terraform/monitoring"
 endif
 endif
+	cp -r $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR) $(INSTANCE_DIR)
 endif
 	make delete
 	rm -rf $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)
