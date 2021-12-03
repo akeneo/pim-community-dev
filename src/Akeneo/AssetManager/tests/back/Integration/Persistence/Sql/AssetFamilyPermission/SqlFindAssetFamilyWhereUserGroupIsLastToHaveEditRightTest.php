@@ -71,7 +71,7 @@ class SqlFindAssetFamilyWhereUserGroupIsLastToHaveEditRightTest extends SqlInteg
     (12, 'Security Agent'),
     (13, 'IT support');
 SQL;
-        $this->get('database_connection')->executeUpdate($insertFakeUserGroups);
+        $this->get('database_connection')->executeStatement($insertFakeUserGroups);
 
         /**
          *  Here is the permission fixture set:

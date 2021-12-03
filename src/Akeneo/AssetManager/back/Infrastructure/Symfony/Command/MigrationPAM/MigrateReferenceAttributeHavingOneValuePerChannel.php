@@ -152,7 +152,7 @@ class MigrateReferenceAttributeHavingOneValuePerChannel extends Command
                 $sqlAssetUpdate = <<<SQL
             UPDATE akeneo_asset_manager_asset SET value_collection = :value_collection WHERE identifier = :asset_identifier;
 SQL;
-                $this->writeConnection->executeUpdate(
+                $this->writeConnection->executeStatement(
                     $sqlAssetUpdate,
                     [
                         'value_collection' => $asset['value_collection'],
@@ -200,7 +200,7 @@ SQL;
             ['asset_family_identifier' => \PDO::PARAM_STR]
         );
 
-        while ($asset = $stmt->fetch()) {
+        while ($asset = $stmt->fetchAssociative()) {
             yield $asset;
         }
     }

@@ -20,6 +20,7 @@ use Akeneo\AssetManager\Domain\Query\Attribute\FindMediaFileAttributeCodesInterf
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
@@ -63,7 +64,7 @@ SQL;
         $result = $statement->fetchAllAssociative();
 
         return array_map(function ($row) {
-            $stringAttributeCode = Type::getType(Type::STRING)->convertToPHPValue(
+            $stringAttributeCode = Type::getType(Types::STRING)->convertToPHPValue(
                 $row['code'],
                 $this->platform
             );

@@ -120,7 +120,7 @@ SQL;
         );
 
         $results = $statement->fetchAllAssociative();
-        $statement->closeCursor();
+        $statement->free();
 
         $platform = $this->sqlConnection->getDatabasePlatform();
 

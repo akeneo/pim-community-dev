@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
@@ -64,6 +65,6 @@ SQL;
         $platform = $this->sqlConnection->getDatabasePlatform();
         $results = $statement->fetchAllAssociative();
 
-        return array_map(fn ($result) => Type::getType(Type::STRING)->convertToPhpValue($result['code'], $platform), $results);
+        return array_map(fn ($result) => Type::getType(Types::STRING)->convertToPhpValue($result['code'], $platform), $results);
     }
 }

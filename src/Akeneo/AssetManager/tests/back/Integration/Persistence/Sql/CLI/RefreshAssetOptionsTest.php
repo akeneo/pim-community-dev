@@ -264,7 +264,7 @@ class RefreshAssetOptionsTest extends SqlIntegrationTestCase
                 'identifier' => $this->currentAssetIdentifier->normalize(),
             ]
         );
-        $result = $statement->fetch(\PDO::FETCH_COLUMN);
+        $result = $statement->fetchOne();
         $values = json_decode($result, true);
 
         if (!isset($values[$this->currentAttributeIdentifier->normalize()])) {

@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -50,7 +51,7 @@ SQL;
         $results = $statement->fetchAllAssociative();
 
         return array_map(
-            fn (array $row) => Type::getType(Type::STRING)->convertToPHPValue(
+            fn (array $row) => Type::getType(Types::STRING)->convertToPHPValue(
                 $row['locales_codes'],
                 $this->platform
             ),

@@ -40,7 +40,7 @@ class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
     }
 
     /**
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     private function fetch(ReferenceEntityIdentifier $referenceEntityIdentifier): ValueKeyCollection
     {

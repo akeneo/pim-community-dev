@@ -85,7 +85,6 @@ class LinkAssetsContext implements Context
 
     private ProductLinkRuleLauncherSpy $productLinkRuleLauncherSpy;
 
-    /** * @var LinkAssetHandler */
     private LinkAssetHandler $linkAssetHandler;
 
     private LinkAssetsHandler $linkMultipleAssetHandler;

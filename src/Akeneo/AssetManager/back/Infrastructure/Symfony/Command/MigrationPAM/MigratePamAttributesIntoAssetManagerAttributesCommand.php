@@ -74,7 +74,7 @@ FROM pim_catalog_attribute
 WHERE attribute_type='pim_assets_collection'
 SQL;
         $statement = $this->connection->executeQuery($sqlCount);
-        $count = (int) $statement->fetchColumn();
+        $count = (int) $statement->fetchOne();
 
         $sql = <<<SQL
 UPDATE pim_catalog_attribute 
@@ -104,7 +104,7 @@ SQL;
             ['attributeCodes' => $attributeCodes],
             ['attributeCodes' => Connection::PARAM_STR_ARRAY]
         );
-        $count = (int) $statement->fetchColumn();
+        $count = (int) $statement->fetchOne();
 
         $sql = <<<SQL
 UPDATE pim_catalog_attribute 
@@ -113,7 +113,7 @@ WHERE (attribute_type='pim_assets_collection' OR attribute_type='pim_catalog_ass
 AND code IN (:attributeCodes)
 SQL;
 
-        $this->connection->executeUpdate(
+        $this->connection->executeStatement(
             $sql,
             [
                 'attributeCodes' => $attributeCodes,

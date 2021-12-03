@@ -19,6 +19,7 @@ use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionTy
 use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetSingleLinkType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -58,7 +59,7 @@ SQL;
         );
 
         $results = $statement->fetchAllAssociative();
-        $statement->closeCursor();
+        $statement->free();
 
         return $results;
     }
@@ -70,7 +71,7 @@ SQL;
         $linkedAssets = [];
 
         foreach ($results as $result) {
-            $properties = Type::getType(Type::TARRAY)->convertToPhpValue($result['properties'], $platform);
+            $properties = Type::getType(Types::ARRAY)->convertToPhpValue($result['properties'], $platform);
             $linkedAssets[] = $properties['reference_data_name'];
         }
 

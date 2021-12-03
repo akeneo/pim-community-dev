@@ -13,6 +13,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyPermissionRepositoryInterfa
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 class SqlAssetFamilyPermissionRepository implements AssetFamilyPermissionRepositoryInterface
 {
@@ -41,7 +42,7 @@ class SqlAssetFamilyPermissionRepository implements AssetFamilyPermissionReposit
                 DELETE FROM akeneo_asset_manager_asset_family_permissions
                 WHERE asset_family_identifier = :asset_family_identifier;
 SQL;
-            $connection->executeUpdate(
+            $connection->executeStatement(
                 $deleteSql,
                 [
                     'asset_family_identifier' => $assetFamilyIdentifier
@@ -55,7 +56,7 @@ SQL;
                     VALUES 
                         (:asset_family_identifier, :user_group_identifier, :right_level);
 SQL;
-                $affectedRows = $this->sqlConnection->executeUpdate(
+                $affectedRows = $this->sqlConnection->executeStatement(
                     $insertSql,
                     $normalizedPermission
                 );
@@ -95,9 +96,9 @@ SQL;
         if (false !== $rows) {
             return array_map(
                 function (array $normalizedUserGroupPermission) use ($platform) {
-                    $userGroupIdentifier = Type::getType(Type::INTEGER)
+                    $userGroupIdentifier = Type::getType(Types::INTEGER)
                         ->convertToPhpValue($normalizedUserGroupPermission['user_group_identifier'], $platform);
-                    $rightLevel = Type::getType(Type::STRING)
+                    $rightLevel = Type::getType(Types::STRING)
                         ->convertToPhpValue($normalizedUserGroupPermission['right_level'], $platform);
 
                     return UserGroupPermission::create(

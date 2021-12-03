@@ -47,7 +47,7 @@ class SqlReferenceEntityRepository implements ReferenceEntityRepositoryInterface
 
     /**
      * @throws \RuntimeException
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function create(ReferenceEntity $referenceEntity): void
     {
@@ -81,7 +81,7 @@ SQL;
 
     /**
      * @throws \RuntimeException
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function update(ReferenceEntity $referenceEntity): void
     {

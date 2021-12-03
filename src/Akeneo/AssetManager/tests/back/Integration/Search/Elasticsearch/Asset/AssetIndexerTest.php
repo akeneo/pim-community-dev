@@ -57,8 +57,7 @@ class AssetIndexerTest extends SearchIntegrationTestCase
 
     private AssetIndexerInterface $assetIndexer;
 
-    /** * @var IndexAssetEventAggregator */
-    private $indexAssetsEventAggregator;
+    private IndexAssetEventAggregator $indexAssetsEventAggregator;
 
     public function setUp(): void
     {

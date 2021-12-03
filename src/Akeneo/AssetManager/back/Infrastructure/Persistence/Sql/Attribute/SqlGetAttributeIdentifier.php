@@ -19,6 +19,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 class SqlGetAttributeIdentifier implements GetAttributeIdentifierInterface
 {
@@ -43,7 +44,7 @@ SQL;
             'asset_family_identifier' => $assetFamilyIdentifier,
         ]);
         $platform = $this->sqlConnection->getDatabasePlatform();
-        $result = $statement->fetch();
+        $result = $statement->fetchAssociative();
 
         if (!isset($result['identifier'])) {
             throw new \LogicException(
@@ -55,7 +56,7 @@ SQL;
             );
         }
 
-        $identifier = Type::getType(Type::TEXT)->convertToPhpValue($result['identifier'], $platform);
+        $identifier = Type::getType(Types::TEXT)->convertToPhpValue($result['identifier'], $platform);
 
         return AttributeIdentifier::fromString($identifier);
     }

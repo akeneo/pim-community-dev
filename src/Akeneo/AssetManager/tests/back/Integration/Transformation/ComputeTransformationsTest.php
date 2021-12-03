@@ -306,7 +306,7 @@ class ComputeTransformationsTest extends SqlIntegrationTestCase
             new File(self::SUPPORTED_FILE_FILENAME)
         );
 
-        $this->get('database_connection')->executeUpdate(
+        $this->get('database_connection')->executeStatement(
             <<<SQL
 REPLACE INTO akeneo_batch_job_instance (code, label, job_name, status, connector, raw_parameters, type)
 VALUES (

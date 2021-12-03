@@ -41,7 +41,7 @@ SQL;
                 'attribute_code' => (string) $attributeCode
             ]
         );
-        $result = $statement->fetch(PDO::FETCH_COLUMN);
+        $result = $statement->fetchOne();
 
         if (false === $result) {
             throw AttributeNotFoundException::withAssetFamilyAndAttributeCode($assetFamilyIdentifier, $attributeCode);

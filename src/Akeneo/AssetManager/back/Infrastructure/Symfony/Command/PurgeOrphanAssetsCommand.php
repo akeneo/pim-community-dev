@@ -91,7 +91,7 @@ class PurgeOrphanAssetsCommand extends Command
             INSERT `akeneo_asset_manager_file_info_purge` SELECT * FROM `akeneo_file_storage_file_info` WHERE storage='assetStorage';
         SQL;
 
-        $this->connection->exec($sqlQuery);
+        $this->connection->executeStatement($sqlQuery);
     }
 
     private function removeAllFilesFromPurgeTable()
@@ -142,7 +142,7 @@ class PurgeOrphanAssetsCommand extends Command
             DELETE FROM `akeneo_asset_manager_file_info_purge` WHERE file_key IN (:fileKeys);
         SQL;
 
-        $this->connection->executeUpdate(
+        $this->connection->executeStatement(
             $sqlQuery,
             [
                 'fileKeys' => $fileKeys,
@@ -164,7 +164,7 @@ class PurgeOrphanAssetsCommand extends Command
             $sqlQuery
         );
 
-        return (int) $statement->fetchColumn();
+        return (int) $statement->fetchOne();
     }
 
     private function removeFileFromStorage(OutputInterface $output)
@@ -207,7 +207,7 @@ class PurgeOrphanAssetsCommand extends Command
             WHERE file_info.storage = 'assetStorage';
         SQL;
 
-        $this->connection->executeUpdate(
+        $this->connection->executeStatement(
             $sqlQuery
         );
     }
@@ -218,7 +218,7 @@ class PurgeOrphanAssetsCommand extends Command
             DROP TABLE IF EXISTS `akeneo_asset_manager_file_info_purge`;
         SQL;
 
-        $this->connection->executeUpdate(
+        $this->connection->executeStatement(
             $sqlQuery
         );
     }
