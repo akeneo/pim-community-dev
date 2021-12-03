@@ -68,17 +68,35 @@ const rows: JobExecutionRow[] = [
   },
 ];
 
+let mockUseManyRows = false;
+const mockManyRows: JobExecutionRow[] = [];
+for (let i = 1; i <= 51; i++) {
+  mockManyRows.push({
+    job_execution_id: i,
+    started_at: '2020-01-01T00:00:00+00:00',
+    tracking: {
+      total_step: 2,
+      current_step: 1,
+    },
+    error_count: 2,
+    type: 'export',
+    username: 'admin',
+    warning_count: 4,
+    job_name: `Job ${i}`,
+    status: 'IN_PROGRESS',
+    is_stoppable: true,
+  });
+}
+
 jest.mock('@akeneo-pim-community/shared/lib/components/PimView', () => ({
   PimView: () => <></>,
 }));
 
-beforeEach(() => {
-  localStorage.clear();
-});
-
 jest.mock('../hooks/useJobExecutionTable', () => ({
   useJobExecutionTable: ({page, size, sort, type, user, status}: JobExecutionFilter) => {
-    const filteredRows = rows.filter(
+    const rowsToFilter = mockUseManyRows ? mockManyRows : rows;
+
+    const filteredRows = rowsToFilter.filter(
       row =>
         (0 === type.length || type.includes(row.type)) &&
         (0 === status.length || status.includes(row.status)) &&
@@ -110,11 +128,13 @@ jest.mock('../hooks/useJobExecutionUsers', () => ({
   useJobExecutionUsers: (): string[] => ['admin', 'peter'],
 }));
 
+let mockedSize: number = 3;
+
 jest.mock('../models/JobExecutionFilter', () => ({
   ...jest.requireActual('../models/JobExecutionFilter'),
   getDefaultJobExecutionFilter: () => ({
     page: 1,
-    size: 3,
+    size: mockedSize,
     sort: {column: 'job_name', direction: 'ASC'},
     status: [],
     type: [],
@@ -123,6 +143,12 @@ jest.mock('../models/JobExecutionFilter', () => ({
     search: '',
   }),
 }));
+
+beforeEach(() => {
+  localStorage.clear();
+  mockUseManyRows = false;
+  mockedSize = 3;
+});
 
 test('it renders a breadcrumb', () => {
   renderWithProviders(<JobExecutionList />);
@@ -189,4 +215,41 @@ test('it can change page', () => {
   expect(screen.queryByText('Import job')).not.toBeInTheDocument();
   expect(screen.queryByText('Export job')).not.toBeInTheDocument();
   expect(screen.getByText('Mass edit')).toBeInTheDocument();
+});
+
+test('it prints a warning when no filter is set and page is 50', () => {
+  mockedSize = 1;
+  mockUseManyRows = true;
+
+  renderWithProviders(<JobExecutionList />);
+
+  userEvent.click(screen.getByTitle('No. 50'));
+
+  expect(screen.getByText('akeneo_job_process_tracker.max_page_without_filter_helper')).toBeInTheDocument();
+});
+
+test('it does not display next pagination button when no filter is set and page is 50', () => {
+  mockedSize = 1;
+  mockUseManyRows = true;
+
+  renderWithProviders(<JobExecutionList />);
+
+  expect(screen.queryByTitle('No. 51')).not.toBeInTheDocument();
+});
+
+test('it doest not print a warning when filter is set and page is 50', () => {
+  mockedSize = 1;
+  mockUseManyRows = true;
+
+  renderWithProviders(<JobExecutionList />);
+
+  userEvent.click(screen.getByLabelText('akeneo_job_process_tracker.user_filter.label:'));
+  userEvent.click(screen.getAllByText('admin')[screen.getAllByText('admin').length - 1]);
+
+  for (let i = 2; i <= 50; i++) {
+    userEvent.click(screen.getByTitle(`No. ${i}`));
+  }
+
+  expect(screen.queryByText('akeneo_job_process_tracker.max_page_without_filter_helper')).not.toBeInTheDocument();
+  expect(screen.queryByTitle('No. 51')).toBeInTheDocument();
 });
