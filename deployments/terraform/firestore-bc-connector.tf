@@ -1,10 +1,10 @@
-// 
+//
 // FIRESTORE COLLECTION
 //
 //
 
 resource "google_firestore_document" "placeholder" {
-  count = 1
+  count = local.type != "tria" ? 1 : 0
 
   collection  = local.pfid
   document_id = "placeholder"
@@ -22,7 +22,7 @@ resource "google_firestore_document" "placeholder" {
 //
 
 resource "google_project_iam_member" "firestore_user_iam_member" {
-  count = 1
+  count = local.type != "tria" ? 1 : 0
   role = "roles/datastore.user"
   member = "serviceAccount:${google_service_account.pim_service_account.email}"
 

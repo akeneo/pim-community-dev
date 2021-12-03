@@ -3,7 +3,7 @@
 //
 
 resource "google_pubsub_topic" "connector_bigcommerce" {
-  count = 1
+  count = local.type != "tria" ? 1 : 0
   name = "${local.pfid}-connector-bigcommerce"
 
   labels = {
@@ -18,7 +18,7 @@ resource "google_pubsub_topic" "connector_bigcommerce" {
 //
 
 resource "google_pubsub_subscription" "connector_bigcommerce" {
-  count = 1
+  count = local.type != "tria" ? 1 : 0
   name  = "${local.pfid}-connector-bigcommerce"
   topic = google_pubsub_topic.connector_bigcommerce[0].name
 
@@ -46,7 +46,7 @@ resource "google_pubsub_subscription" "connector_bigcommerce" {
 // reads. It gives rights to the same service account: PIM.
 
 resource "google_pubsub_topic_iam_member" "pubsub_publisher_connector_bigcommerce" {
-  count = 1
+  count = local.type != "tria" ? 1 : 0
   topic  = google_pubsub_topic.connector_bigcommerce[0].name
   role   = "roles/pubsub.publisher"
   member = "serviceAccount:${google_service_account.pim_service_account.email}"
@@ -58,7 +58,7 @@ resource "google_pubsub_topic_iam_member" "pubsub_publisher_connector_bigcommerc
 }
 
 resource "google_pubsub_subscription_iam_member" "pubsub_subscriber_connector_bigcommerce" {
-  count = 1
+  count = local.type != "tria" ? 1 : 0
   subscription = google_pubsub_subscription.connector_bigcommerce[0].name
   role         = "roles/pubsub.subscriber"
   member       = "serviceAccount:${google_service_account.pim_service_account.email}"
