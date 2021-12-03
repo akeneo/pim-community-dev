@@ -41,13 +41,11 @@ class GetJobUsersAction
             return new RedirectResponse('/');
         }
 
-        if (!$this->securityFacade->isGranted('pim_enrich_job_tracker_index')) {
-            throw new AccessDeniedHttpException('Access forbidden. You are not allowed to list job users.');
-        }
-
         if (!$this->securityFacade->isGranted('pim_enrich_job_tracker_view_all_jobs')) {
             return new JsonResponse([$this->security->getUser()->getUserIdentifier()]);
         }
+
+        $this->denyAccessUnlessAclIsGranted();
 
         $findJobUsersQuery = new FindJobUsersQuery();
         $findJobUsersQuery->search = (string) $request->get('search', '');
@@ -55,5 +53,12 @@ class GetJobUsersAction
         $jobUsers = $this->findJobUsers->search($findJobUsersQuery);
 
         return new JsonResponse($jobUsers);
+    }
+
+    private function denyAccessUnlessAclIsGranted(): void
+    {
+        if (!$this->securityFacade->isGranted('pim_enrich_job_tracker_index')) {
+            throw new AccessDeniedHttpException('Access forbidden. You are not allowed to list job types.');
+        }
     }
 }

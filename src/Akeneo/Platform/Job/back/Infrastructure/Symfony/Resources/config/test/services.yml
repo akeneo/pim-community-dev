@@ -1,5 +1,4 @@
 services:
-    # Is this service definition file loaded in the prod kernel ?
     Akeneo\Platform\Job\Test\Integration\Loader\FixturesLoader:
         arguments:
             - '@database_connection'

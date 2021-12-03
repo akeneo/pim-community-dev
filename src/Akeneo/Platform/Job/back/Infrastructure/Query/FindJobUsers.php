@@ -24,13 +24,20 @@ class FindJobUsers implements FindJobUsersInterface
 
     public function search(FindJobUsersQuery $query): array
     {
+        $sql = $this->createSqlQuery($query);
+
+        return $this->fetchUsers($sql, $query);
+    }
+
+    private function createSqlQuery(FindJobUsersQuery $query): string
+    {
         $username = $query->search;
 
         $sql = <<<SQL
             SELECT DISTINCT job_execution.user
             FROM akeneo_batch_job_execution job_execution
             WHERE job_execution.is_visible = 1
-            %s
+            %%%s%%
             ORDER BY job_execution.user
         SQL;
 
@@ -42,9 +49,14 @@ class FindJobUsers implements FindJobUsersInterface
 
         $sql = sprintf($sql, $wherePart);
 
+        return $sql;
+    }
+
+    private function fetchUsers(string $sql, FindJobUsersQuery $query): array
+    {
         $jobUsers = $this->connection->executeQuery(
             $sql,
-            ['username' => sprintf('%%%s%%', $username)],
+            ['username' => $query->search],
         )->fetchFirstColumn();
 
         return $jobUsers;

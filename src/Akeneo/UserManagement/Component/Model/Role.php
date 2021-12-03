@@ -14,7 +14,7 @@ class Role implements RoleInterface
     protected ?int $id = null;
     protected ?string $role = null;
     protected ?string $label = null;
-    protected ?string $type = self::TYPE_DEFAULT;
+    protected string $type = self::TYPE_DEFAULT;
 
     public function __construct(?string $role = null)
     {
