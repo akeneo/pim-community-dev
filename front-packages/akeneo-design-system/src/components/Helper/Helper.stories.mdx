@@ -130,14 +130,19 @@ non fermentum diam nisl sit amet erat. `}
   <Story name="Sticky">
     {args => {
       return (
-        <>
-          <Helper {...args} sticky={44} level="info">
-            This is a sticky Helper.
+        <Scrollable height={100}>
+          <Helper {...args} level="info" sticky={44}>
+            This is a sticky helper.
           </Helper>
-          <Helper {...args} level="danger">
-            This one is not sticky.
-          </Helper>
-        </>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.Suspendisse lectus tortor,
+          dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.Suspendisse lectus tortor,
+          dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.Suspendisse lectus tortor,
+          dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.Suspendisse lectus tortor,
+          dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.
+        </Scrollable>
       );
     }}
   </Story>
