@@ -81,7 +81,7 @@ const getLinkColor = (level: Level, inline: boolean) => {
   }
 };
 
-const Container = styled.div<{level: Level; inline: boolean, sticky?: number} & AkeneoThemedProps>`
+const Container = styled.div<{level: Level; inline: boolean; sticky?: number} & AkeneoThemedProps>`
   display: flex;
   font-weight: 400;
   padding-right: 20px;
@@ -93,7 +93,7 @@ const Container = styled.div<{level: Level; inline: boolean, sticky?: number} & 
       min-height: 44px;
       background-color: ${getBackgroundColor(props.level)};
     `}
-    
+
   ${({sticky}) =>
     undefined !== sticky &&
     css`
