@@ -49,5 +49,9 @@ const isDefaultJobExecutionFilter = ({
   0 === user.length &&
   '' === search;
 
+const hasOneFilterSet = ({type, status, search, code, user}: JobExecutionFilter): boolean => {
+  return 0 < type.length || 0 < status.length || '' !== search || 0 < code.length || 0 < user.length;
+};
+
 export type {JobExecutionFilter, JobExecutionFilterSort};
-export {getDefaultJobExecutionFilter, isDefaultJobExecutionFilter};
+export {getDefaultJobExecutionFilter, isDefaultJobExecutionFilter, hasOneFilterSet};

@@ -124,6 +124,25 @@ non fermentum diam nisl sit amet erat. `}
   </Story>
 </Canvas>
 
+## Sticky
+
+<Canvas>
+  <Story name="Sticky">
+    {args => {
+      return (
+        <>
+          <Helper {...args} sticky={44} level="info">
+            This is a sticky Helper.
+          </Helper>
+          <Helper {...args} level="danger">
+            This one is not sticky.
+          </Helper>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
 ## With custom Icon
 
 <Canvas>
