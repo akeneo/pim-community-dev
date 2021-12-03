@@ -20,4 +20,13 @@ class SearchJobExecutionQuery
     public array $status = [];
     public array $code = [];
     public string $search = '';
+
+    public function hasOneFilterSet(): bool
+    {
+        return !empty($this->user) ||
+            !empty($this->type) ||
+            !empty($this->status) ||
+            !empty($this->code) ||
+            !empty($this->search);
+    }
 }
