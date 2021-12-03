@@ -13,6 +13,7 @@ final class Version_6_0_20211124163100_add_index_to_improve_search_on_job_execut
 
         $this->addSql('CREATE INDEX user_idx ON akeneo_batch_job_execution (user)');
         $this->addSql('CREATE INDEX status_idx ON akeneo_batch_job_execution (status)');
+        $this->addSql('CREATE INDEX start_time_idx ON akeneo_batch_job_execution (start_time)');
     }
 
     public function down(Schema $schema) : void
@@ -27,7 +28,8 @@ final class Version_6_0_20211124163100_add_index_to_improve_search_on_job_execut
 
         return isset(
             $indexesIndexedByName['user_idx'],
-            $indexesIndexedByName['status_idx']
+            $indexesIndexedByName['status_idx'],
+            $indexesIndexedByName['start_time_idx']
         );
     }
 }

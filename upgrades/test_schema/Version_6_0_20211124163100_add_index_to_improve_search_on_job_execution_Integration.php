@@ -60,12 +60,16 @@ class Version_6_0_20211124163100_add_index_to_improve_search_on_job_execution_In
             $this->connection->executeQuery('ALTER TABLE akeneo_batch_job_execution DROP INDEX status_idx;');
         }
 
+        if ($this->indexExists('start_time_idx')) {
+            $this->connection->executeQuery('ALTER TABLE akeneo_batch_job_execution DROP INDEX start_time_idx;');
+        }
+
         Assert::assertEquals(false, $this->indexesExists());
     }
 
     private function indexesExists(): bool
     {
-        return $this->indexExists('user_idx') && $this->indexExists('status_idx');
+        return $this->indexExists('user_idx') && $this->indexExists('status_idx') && $this->indexExists('start_time_idx');
     }
 
     private function indexExists(string $indexName): bool

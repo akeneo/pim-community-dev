@@ -4,7 +4,7 @@ const ITEMS_PER_PAGE = 25;
 
 type JobExecutionFilterSort = {
   column: string;
-  direction: string;
+  direction: 'ASC' | 'DESC';
 };
 
 type JobExecutionFilter = {
@@ -18,10 +18,14 @@ type JobExecutionFilter = {
   code: string[];
 };
 
+const getDefaultJobExecutionFilterSort = (): JobExecutionFilterSort => {
+  return {column: 'id', direction: 'DESC'};
+}
+
 const getDefaultJobExecutionFilter = (): JobExecutionFilter => ({
   page: 1,
   size: ITEMS_PER_PAGE,
-  sort: {column: 'started_at', direction: 'DESC'},
+  sort: getDefaultJobExecutionFilterSort(),
   type: [],
   status: [],
   user: [],
@@ -29,20 +33,9 @@ const getDefaultJobExecutionFilter = (): JobExecutionFilter => ({
   code: [],
 });
 
-const isDefaultJobExecutionFilter = ({
-  page,
-  size,
-  sort,
-  type,
-  status,
-  search,
-  user,
-  code,
-}: JobExecutionFilter): boolean =>
+const isDefaultJobExecutionFilter = ({page, size, type, status, search, user, code}: JobExecutionFilter): boolean =>
   1 === page &&
   ITEMS_PER_PAGE === size &&
-  'started_at' === sort.column &&
-  'DESC' === sort.direction &&
   0 === status.length &&
   0 === type.length &&
   0 === code.length &&
@@ -50,4 +43,4 @@ const isDefaultJobExecutionFilter = ({
   '' === search;
 
 export type {JobExecutionFilter, JobExecutionFilterSort};
-export {getDefaultJobExecutionFilter, isDefaultJobExecutionFilter};
+export {getDefaultJobExecutionFilter, getDefaultJobExecutionFilterSort, isDefaultJobExecutionFilter};

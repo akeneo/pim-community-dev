@@ -3,6 +3,7 @@ import {AttributesIllustration, SectionTitle} from 'akeneo-design-system';
 import {NoDataSection, NoDataTitle, Section, useTranslate} from '@akeneo-pim-community/shared';
 import {useJobExecutionTable} from '../hooks';
 import {LastExecutionTable} from '../components';
+import {JobExecutionFilter} from '../models';
 
 type JobInstanceDetailProps = {
   code: string;
@@ -11,10 +12,10 @@ type JobInstanceDetailProps = {
 
 const JobInstanceDetail = ({code, type}: JobInstanceDetailProps) => {
   const translate = useTranslate();
-  const filter = useMemo(
+  const filter = useMemo<JobExecutionFilter>(
     () => ({
       page: 1,
-      sort: {column: 'started_at', direction: 'DESC'},
+      sort: {column: 'id', direction: 'DESC'},
       status: [],
       size: 25,
       search: '',

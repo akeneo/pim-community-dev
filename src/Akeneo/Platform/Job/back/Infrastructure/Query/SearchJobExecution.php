@@ -184,25 +184,15 @@ SQL;
             throw new \InvalidArgumentException(sprintf('Sort direction "%s" is not supported', $query->sortDirection));
         }
 
-        switch ($query->sortColumn) {
-            case 'job_name':
-                $orderByColumn = "ji.label $sortDirection";
-                break;
-            case 'type':
-                $orderByColumn = "ji.type $sortDirection";
-                break;
-            case 'started_at':
-                $orderByColumn = "ISNULL(je.start_time) $sortDirection, je.start_time $sortDirection";
-                break;
-            case 'username':
-                $orderByColumn = "je.user $sortDirection";
-                break;
-            case 'status':
-                $orderByColumn = "je.status $sortDirection";
-                break;
-            default:
-                throw new \InvalidArgumentException(sprintf('Sort column "%s" is not supported', $query->sortColumn));
-        }
+        $orderByColumn = match ($query->sortColumn) {
+            'id' => "je.id $sortDirection",
+            'job_name' => "ji.label $sortDirection",
+            'type' => "ji.type $sortDirection",
+            'started_at' => "je.start_time $sortDirection",
+            'username' => "je.user $sortDirection",
+            'status' => "je.status $sortDirection",
+            default => throw new \InvalidArgumentException(sprintf('Sort column "%s" is not supported', $query->sortColumn)),
+        };
 
         return sprintf('ORDER BY %s', $orderByColumn);
     }

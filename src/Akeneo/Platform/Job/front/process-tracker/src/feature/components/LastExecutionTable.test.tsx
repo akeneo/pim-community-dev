@@ -123,7 +123,7 @@ test('it redirects to a job execution details on row cmd click', () => {
   renderWithProviders(<LastExecutionTable jobExecutionRows={rows} onTableRefresh={jest.fn()} />);
   expect(redirectMock).not.toHaveBeenCalled();
   userEvent.click(screen.getByText('01/02/2020, 12:00 AM'), {metaKey: true});
-  expect(redirectMock).toHaveBeenCalledWith('akeneo_job_process_tracker_details');
+  expect(redirectMock).toHaveBeenCalledWith('#akeneo_job_process_tracker_details');
 });
 
 test('it can stop a job execution when job execution is stoppable and user have right', async () => {
