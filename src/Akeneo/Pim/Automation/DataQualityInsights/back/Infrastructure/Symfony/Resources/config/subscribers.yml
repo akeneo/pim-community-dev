@@ -15,7 +15,7 @@ services:
         class: Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber\AssetsInstaller
         arguments:
             - '@filesystem'
-            - '%kernel.project_dir%/src/Akeneo/Pim/Automation/DataQualityInsights/front/src'
+            - '%pim_ee_dev_src_folder_location%/src/Akeneo/Pim/Automation/DataQualityInsights/front/src'
             - '%kernel.project_dir%/public/bundles/akeneodataqualityinsights-react'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\CreateEvaluationCriteriaOnProductIgnoredWordSubscriber:
