@@ -3,7 +3,7 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {WarningHelper} from './WarningHelper';
-import {Warning} from '../../models/JobExecutionDetail';
+import {Warning} from '../../../models';
 
 const warning: Warning = {
   reason: 'reason',

@@ -23,13 +23,9 @@ import {
   MoreIcon,
   useBooleanState,
 } from 'akeneo-design-system';
-import {Status} from '../components/Status';
-import {StopJobAction} from '../components/StopJobAction';
-import {Progress} from '../components/Progress';
-import {ShowProfile} from '../components/ShowProfile';
-import {getDownloadLinks, JobExecution} from '../models/JobExecutionDetail';
+import {Progress, SummaryTable, ShowProfile, StopJobAction, JobExecutionStatus} from '../components';
+import {getDownloadLinks, JobExecution} from '../models';
 import {useJobExecution} from '../hooks/useJobExecution';
-import {SummaryTable} from '../components/summary/SummaryTable';
 
 const Container = styled.div`
   display: flex;
@@ -44,6 +40,13 @@ const Refreshing = styled.span`
   font-style: italic;
   color: ${getColor('grey', 100)};
   text-align: right;
+`;
+
+const StatusContainer = styled.div`
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 `;
 
 const canDownloadLog = ({isGranted}: Security, jobExecution: JobExecution | null) => {
@@ -232,7 +235,19 @@ const JobExecutionDetail = () => {
         </PageHeader.Actions>
         <PageHeader.Title>{jobExecution?.jobInstance.label ?? jobExecutionId}</PageHeader.Title>
         <PageHeader.Content>
-          {jobExecution && <Status tracking={jobExecution.tracking} />}
+          {jobExecution && (
+            <StatusContainer>
+              {translate('pim_common.status')}
+              <JobExecutionStatus
+                data-testid="job-status"
+                status={jobExecution.tracking.status}
+                currentStep={jobExecution.tracking.currentStep}
+                totalSteps={jobExecution.tracking.totalSteps}
+                hasWarning={jobExecution.tracking.warning}
+                hasError={jobExecution.tracking.error}
+              />
+            </StatusContainer>
+          )}
           {jobExecution?.tracking && <Progress jobStatus={jobExecution?.status} steps={jobExecution.tracking.steps} />}
         </PageHeader.Content>
       </PageHeader>

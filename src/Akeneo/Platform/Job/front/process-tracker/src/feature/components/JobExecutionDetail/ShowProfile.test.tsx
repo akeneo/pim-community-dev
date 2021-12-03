@@ -2,7 +2,7 @@ import React from 'react';
 import {screen} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {ShowProfile} from './ShowProfile';
-import {JobInstance} from '../models/JobExecutionDetail';
+import {JobInstance} from '../../models';
 
 const importJobInstance: JobInstance = {
   code: 'csv_attribute_import',
