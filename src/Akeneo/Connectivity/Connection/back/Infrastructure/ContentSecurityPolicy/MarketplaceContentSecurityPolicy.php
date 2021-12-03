@@ -15,7 +15,7 @@ final class MarketplaceContentSecurityPolicy implements ContentSecurityPolicyPro
     public function getContentSecurityPolicy(): array
     {
         return [
-            'img-src' => ["marketplace.akeneo.com"],
+            'img-src' => ["marketplace.akeneo.com", "www.stevensegallery.com"],
         ];
     }
 }
