@@ -96,7 +96,7 @@ class RecordsShouldExistValidatorSpec extends ObjectBehavior
                         'designers' === $collaborator->normalize();
                 }),
                 ['starck', 'dyson']
-            )->shouldBeCalled()->willReturn(['starck', 'dyson']);
+            )->shouldBeCalled()->willReturn(['STARCK', 'dyson']);
 
         $findExistingRecordCodes
             ->find(
@@ -106,8 +106,8 @@ class RecordsShouldExistValidatorSpec extends ObjectBehavior
                             'color' === $collaborator->normalize();
                     }
                 ),
-                ['red', 'blue']
-            )->shouldBeCalled()->willReturn(['red', 'blue']);
+                ['RED', 'blue']
+            )->shouldBeCalled()->willReturn(['red', 'BLUE']);
 
         $context->buildViolation(Argument::any(), Argument::any())->shouldNotBeCalled();
 
@@ -125,8 +125,16 @@ class RecordsShouldExistValidatorSpec extends ObjectBehavior
                         [RecordCode::fromString('dyson'), RecordCode::fromString('starck')],
                         'fr_FR'
                     ),
-                    ReferenceEntityValue::localizableValue('main_color', RecordCode::fromString('red'), 'en_US'),
-                    ReferenceEntityValue::localizableValue('main_color', RecordCode::fromString('blue'), 'fr_FR'),
+                    ReferenceEntityValue::localizableValue(
+                        'main_color',
+                        RecordCode::fromString('RED'),
+                        'en_US'
+                    ),
+                    ReferenceEntityValue::localizableValue(
+                        'main_color',
+                        RecordCode::fromString('blue'),
+                        'fr_FR'
+                    ),
                 ]
             ),
             new RecordsShouldExist()
