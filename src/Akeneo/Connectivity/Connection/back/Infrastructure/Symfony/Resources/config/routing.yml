@@ -11,6 +11,11 @@ akeneo_connectivity_connection_connect_apps_v1_token:
   controller: akeneo_connectivity.connection.public.controller.apps.token
   methods: [ POST ]
 
+akeneo_connectivity_connection_update_fake_web_marketplace:
+    path: '/connect/apps/update-fake-web-marketplace'
+    controller: akeneo_connectivity.connection.public.controller.apps.update_fake_web_marketplace
+    methods: [ GET, POST ]
+
 # Internal API
 
 akeneo_connectivity_connection_error_management_rest:

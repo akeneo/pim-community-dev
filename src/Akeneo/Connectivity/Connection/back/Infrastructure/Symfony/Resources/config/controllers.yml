@@ -93,6 +93,12 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAppConfirmationQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGenerator'
 
+    akeneo_connectivity.connection.public.controller.apps.update_fake_web_marketplace:
+        public: true
+        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\UpdateFakeWebMarketplaceAction
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
+
     akeneo_connectivity.connection.public.controller.apps.token:
         public: true
         class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\RequestAccessTokenAction

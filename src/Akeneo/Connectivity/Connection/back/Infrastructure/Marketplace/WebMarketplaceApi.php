@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
+use Doctrine\DBAL\Connection;
 use GuzzleHttp\ClientInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,17 +21,20 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
     private LoggerInterface $logger;
     private string $fixturePath;
     private FeatureFlag $fakeAppsFeatureFlag;
+    private Connection $dbConnection;
 
     public function __construct(
         ClientInterface $client,
         WebMarketplaceAliasesInterface $webMarketplaceAliases,
         LoggerInterface $logger,
-        FeatureFlag $fakeAppsFeatureFlag
+        FeatureFlag $fakeAppsFeatureFlag,
+        Connection $dbConnection
     ) {
         $this->client = $client;
         $this->webMarketplaceAliases = $webMarketplaceAliases;
         $this->logger = $logger;
         $this->fakeAppsFeatureFlag = $fakeAppsFeatureFlag;
+        $this->dbConnection = $dbConnection;
     }
 
     public function getExtensions(int $offset = 0, int $limit = 10): array
@@ -54,7 +58,17 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
     public function getApps(int $offset = 0, int $limit = 10): array
     {
         if ($this->fakeAppsFeatureFlag->isEnabled()) {
-            return json_decode(file_get_contents($this->fixturePath . 'marketplace-data-apps.json'), true);
+            $sql = <<<SQL
+SELECT `values` FROM pim_configuration WHERE code = 'fake-web-marketplace-json' LIMIT 1;
+SQL;
+
+            $fakeWebMarketplaceJson = $this->dbConnection->executeQuery($sql)->fetchOne();
+            $fakeWebMarketplaceJson = false === $fakeWebMarketplaceJson
+                ? '{"total": 0, "offset": 0, "limit": 120, "items": []}'
+                : $fakeWebMarketplaceJson
+            ;
+
+            return json_decode($fakeWebMarketplaceJson, true);
         }
 
         $edition = $this->webMarketplaceAliases->getEdition();
