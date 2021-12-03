@@ -73,7 +73,7 @@ class UpdateCategoryTimestampOnPermissionUpdatesSubscriber implements EventSubsc
             return $subject instanceof ProductCategoryAccess && $subject->getCategory() instanceof CategoryInterface;
         });
         /** @var CategoryInterface[] $categories */
-        $categories = array_map(function(ProductCategoryAccess $access) {
+        $categories = array_map(function (ProductCategoryAccess $access) {
             return $access->getCategory();
         }, $accesses);
 
