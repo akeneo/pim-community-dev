@@ -14,7 +14,7 @@ use Akeneo\AssetManager\Domain\Model\Permission\UserGroupIdentifier;
 use Akeneo\AssetManager\Domain\Model\Permission\UserGroupPermission;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyPermissionRepositoryInterface;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as DBALException;
 use PHPUnit\Framework\Assert;
 
 class SqlAssetFamilyPermissionRepositoryTest extends SqlIntegrationTestCase
