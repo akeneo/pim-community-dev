@@ -23,14 +23,14 @@ const jobExecution: JobExecution = {
   tracking: {
     error: false,
     warning: false,
-    status: 'STARTED',
+    status: 'IN_PROGRESS',
     currentStep: 1,
     totalSteps: 1,
     steps: [
       {
         jobName: 'csv_product_export',
         stepName: 'export',
-        status: 'STARTED',
+        status: 'IN_PROGRESS',
         isTrackable: true,
         hasWarning: false,
         hasError: false,
@@ -119,7 +119,7 @@ test('it renders the job execution detail page', () => {
   renderWithProviders(<JobExecutionDetail />);
   expect(screen.getByText('pim_menu.tab.activity')).toBeInTheDocument();
   expect(screen.getByText('pim_menu.item.job_tracker')).toBeInTheDocument();
-  expect(screen.getByText('pim_import_export.job_status.STARTED 1/1')).toBeInTheDocument();
+  expect(screen.getByText('akeneo_job.job_status.IN_PROGRESS 1/1')).toBeInTheDocument();
 });
 
 test('it renders the job execution export detail page', () => {
@@ -128,7 +128,7 @@ test('it renders the job execution export detail page', () => {
   renderWithProviders(<JobExecutionDetail />);
   expect(screen.getByText('pim_menu.tab.activity')).toBeInTheDocument();
   expect(screen.getByText('pim_menu.item.job_tracker')).toBeInTheDocument();
-  expect(screen.getByText('pim_import_export.job_status.STARTED 1/1')).toBeInTheDocument();
+  expect(screen.getByText('akeneo_job.job_status.IN_PROGRESS 1/1')).toBeInTheDocument();
 });
 
 test('it renders the job execution import detail page', () => {
@@ -137,7 +137,7 @@ test('it renders the job execution import detail page', () => {
   renderWithProviders(<JobExecutionDetail />);
   expect(screen.getByText('pim_menu.tab.activity')).toBeInTheDocument();
   expect(screen.getByText('pim_menu.item.job_tracker')).toBeInTheDocument();
-  expect(screen.getByText('pim_import_export.job_status.STARTED 1/1')).toBeInTheDocument();
+  expect(screen.getByText('akeneo_job.job_status.IN_PROGRESS 1/1')).toBeInTheDocument();
 });
 
 test('it stops the job execution', () => {

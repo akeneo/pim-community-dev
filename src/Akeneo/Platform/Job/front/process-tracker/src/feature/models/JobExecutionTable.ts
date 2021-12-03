@@ -21,7 +21,7 @@ type JobExecutionTable = {
   matches_count: number;
 };
 
-const STOPPABLE_STATUS = ['STARTING', 'STARTED'];
+const STOPPABLE_STATUS = ['STARTING', 'IN_PROGRESS'];
 const jobCanBeStopped = (jobExecutionRow: JobExecutionRow): boolean =>
   jobExecutionRow.is_stoppable && STOPPABLE_STATUS.includes(jobExecutionRow.status);
 
