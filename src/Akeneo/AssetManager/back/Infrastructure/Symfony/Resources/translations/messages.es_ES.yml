@@ -87,5 +87,13 @@ pim_mass_edit.notification.asset_manager_mass_edit_assets:
   success: Activos editados con éxito
   error: Edición de activos fallida
 pim_api:
+  acl:
+    asset_family:
+      create: Crear y actualizar familias de activos
+      list: Listar familias de activos
+    asset:
+      create: Crear y actualizar recursos
+      list: Listar activos
+      remove: Eliminar recursos
   acl_group:
     asset: Recursos
