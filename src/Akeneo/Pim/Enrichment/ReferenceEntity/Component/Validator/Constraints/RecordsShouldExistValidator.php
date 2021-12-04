@@ -73,7 +73,10 @@ final class RecordsShouldExistValidator extends ConstraintValidator
             $refEntity = $this->getReferenceEntityName($attributeCode);
 
             if ($value instanceof ReferenceEntityValueInterface) {
-                if (!in_array($value->getData()->__toString(), $existingRecordCodes[$refEntity])) {
+                if (!in_array(
+                    mb_strtolower($value->getData()->__toString()),
+                    array_map('mb_strtolower', $existingRecordCodes[$refEntity])
+                )) {
                     $this->context->buildViolation(
                         $constraint->message,
                         [
@@ -86,11 +89,11 @@ final class RecordsShouldExistValidator extends ConstraintValidator
                 $notExistingRecordCodes = array_diff(
                     array_map(
                         function (RecordCode $recordcode): string {
-                            return $recordcode->__toString();
+                            return mb_strtolower($recordcode->__toString());
                         },
                         $value->getData()
                     ),
-                    $existingRecordCodes[$refEntity]
+                    array_map('mb_strtolower', $existingRecordCodes[$refEntity])
                 );
                 if (!empty($notExistingRecordCodes)) {
                     $this->context->buildViolation(
