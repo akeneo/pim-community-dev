@@ -1,0 +1,34 @@
+pim_title:
+  akeneo_job_process_tracker_index: プロセストラッカー
+akeneo_job_process_tracker:
+  job_execution_list:
+    table:
+      headers:
+        job_name: ジョブ
+        type: タイプ
+        started_at: 開始日時
+        username: ユーザー名
+        status: ステータス
+        warnings: 警告
+  type:
+    label: タイプ
+    all: すべて
+    quick_export: クイックエクスポート
+    import: インポート
+    export: エクスポート
+    mass_edit: 一括編集
+    mass_delete: 一括削除
+    compute_family_variant_structure_changes: ファミリーバリエーション構造の変更を計算
+    compute_completeness_of_products_family: 商品ファミリーの完全性を計算
+    clean_removed_attribute_job: 削除された属性値を消去中
+  status:
+    label: ステータス
+    all: すべて
+    abandoned: 破棄
+    completed: 完了
+    failed: 失敗
+    started: 開始
+    starting: 開始中
+    stopped: 停止
+    stopping: 停止中
+    unknown: 不明
