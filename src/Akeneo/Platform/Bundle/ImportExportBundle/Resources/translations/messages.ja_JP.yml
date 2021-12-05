@@ -34,6 +34,8 @@ pim_import_export:
       error: <strong>%label%</strong> のインポートが失敗しました
       warning: <strong>%label%</strong> のインポートがいくつかのエラーにより終了しました
       success: <strong>%label%</strong> のインポートが完了しました
+      warnings:
+        xlsx_cell_date_conversion_error: 日付フォーマットのセル "{cellName}" を{attributeType}型の属性に変換できません
   list: ジョブを選択
   job_profile:
     tab:

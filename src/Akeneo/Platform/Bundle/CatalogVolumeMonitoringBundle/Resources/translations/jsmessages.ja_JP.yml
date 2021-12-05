@@ -26,4 +26,23 @@ pim_catalog_volume:
     count_category_trees: カテゴリツリー
     count_variant_products: バリエーション商品
     count_product_models: 商品モデル
+    count_product_and_product_model_values: 商品値
+    average_max_product_and_product_model_values: 商品ごとの商品値
+    count_reference_entity: 参照エンティティ
+    average_max_records_per_reference_entity: 参照エンティティごとの記録
+    average_max_attributes_per_reference_entity: 参照エンティティごとの属性
+    count_asset_family: アセットファミリー
+    average_max_assets_per_asset_family: アセットファミリーごとのアセット
+    average_max_attributes_per_asset_family: アセットファミリーごとの属性
+    title:
+      product: 商品
+      catalog: カタログ
+      product_structure: 商品の構造
+      variant_modeling: バリエーションモデリング
+      reference_entities: 参照エンティティ
+      assets: アセット
+  mean: '平均:'
   max: '最大:'
+  error:
+    generic_title: 申し訳ありませんが、エラーが発生しました。
+    generic_message: しばらくしてからもう一度お試しください。
