@@ -9,6 +9,7 @@ pim_table_configuration:
       column_code_must_be_filled: 列コー​​ドを入力する必要があります
       option_code_must_be_filled: オプションコードを入力する必要があります
       invalid_code: 列コー​​ドには、文字、数字、アンダースコアのみを使用できます
+      not_available_code: この列コー​​ドは使用できません
       invalid_option_code: オプションコー​​ドには、文字、数字、アンダースコアのみを使用できます
       too_long_code: "列コードが長すぎます。100 文字以下にする必要があります"
       too_long_label: "列ラベルが長すぎます。250 文字以下にする必要があります"

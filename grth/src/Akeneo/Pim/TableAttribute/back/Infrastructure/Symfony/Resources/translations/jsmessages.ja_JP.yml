@@ -155,6 +155,10 @@ pim_table_attribute:
       please_try_again: もう一度やり直してください
       first_column_type_helper: テーブルの最初の列は常に選択の列タイプです。
       discard_changes: このページから移動すると選択オプションに対する変更が失われます
+      completeness: 完全性
+      required_for_completeness: 完全性のために必要
+      completeness_helper_text: "テーブル属性の完全性がどう機能するのかを理解するには、"
+      completeness_helper_link: ヘルプセンターをご覧ください。
     product:
       items_per_page: ページあたりのアイテム数
       current_items: "{{ minItem }}-{{ maxItem }} / {{ itemCount }}"
@@ -163,6 +167,8 @@ pim_table_attribute:
       no_rows_title: "{{ attributeLabel }} テーブルが空です。"
       no_rows_subtitle: 新しいプロパティを定義する行を追加
       no_rows_subtitle_on_readonly: この属性を編集できるようにするには、属性設定ページに移動するか、PIM管理者に連絡してください。
+      no_results: 結果がありません
+      no_options: オプションがありません
       no_add_options_unallowed: '"{{ attributeLabel }}" オプションを管理するには、PIM管理者に連絡してください'
       actions:
         delete_row: この行を削除
@@ -170,6 +176,8 @@ pim_table_attribute:
         move_first: 最初の位置に移動
         move_last: 最後の位置に移動
       order: 注文
+      save_options_error: オプションの保存中にエラーが発生しました
+      save_options_success: オプションが正常に更新されました
   properties:
     data_type:
       text: テキスト
@@ -178,6 +186,7 @@ pim_table_attribute:
       select: 選択
   validations:
     column_code_must_be_filled: コードを入力する必要があります
+    not_available_code: この列コー​​ドは使用できません
     column_data_type_must_be_filled: データタイプを入力する必要があります
     invalid_column_code: 列コー​​ドには、文字、数字、アンダースコアのみを使用できます
     invalid_code: コー​​ドには、文字、数字、アンダースコアのみを使用できます
@@ -215,6 +224,7 @@ pim_table_attribute:
     select_your_row: 行を選択
     select_your_operator: 演算子を選択
     select_your_value: 値を選択
+    any_row: すべての行
 pim_enrich:
   entity:
     attribute:
@@ -226,3 +236,11 @@ batch_jobs:
   xlsx_table_attribute_options_export.label: テーブル属性選択オプションをXLSX形式でエクスポート
   csv_table_attribute_options_import.label: テーブル属性選択オプションをCSV形式でインポート
   xlsx_table_attribute_options_import.label: テーブル属性選択オプションをXLSX形式でインポート
+  csv_product_table_values_export.label: 商品テーブル値をCSV形式でエクスポート
+  xlsx_product_table_values_export.label: 商品テーブル値をXLSX形式でエクスポート
+  csv_product_model_table_values_export.label: 商品モデルのテーブル値をCSV形式でエクスポート
+  xlsx_product_model_table_values_export.label: 商品モデルのテーブル値をXLSX形式でエクスポート
+  csv_product_table_values_import.label: 商品のテーブル値をCSV形式でインポート
+  xlsx_product_table_values_import.label: 商品のテーブル値をXLSX形式でインポート
+  csv_product_model_table_values_import.label: 商品モデルのテーブル値をCSV形式でインポート
+  xlsx_product_model_table_values_import.label: 商品モデルのテーブル値をXLSX形式でインポート

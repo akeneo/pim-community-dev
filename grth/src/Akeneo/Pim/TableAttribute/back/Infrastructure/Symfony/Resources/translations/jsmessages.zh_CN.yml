@@ -155,6 +155,10 @@ pim_table_attribute:
       please_try_again: 请再试一次
       first_column_type_helper: 表的第一列始终为“选择”列类型。
       discard_changes: 如果离开此页面，将会丢失对选择选项的更改。
+      completeness: 完成度
+      required_for_completeness: 完成度必填
+      completeness_helper_text: "要探索完成度如何用于表属性，"
+      completeness_helper_link: 请查看我们的“帮助中心”。
     product:
       items_per_page: 每页项目数
       current_items: "{{ minItem }}-{{ maxItem }}/{{ itemCount }}"
@@ -163,6 +167,7 @@ pim_table_attribute:
       no_rows_title: "您的 {{ attributeLabel }} 表为空。"
       no_rows_subtitle: 添加行以定义新属性
       no_rows_subtitle_on_readonly: 要编辑此属性，请前往属性设置页面或联系您的 PIM 管理员。
+      no_options: 没有选项
       no_add_options_unallowed: 联系您的 PIM 管理员来管理"{{ attributeLabel }}"选项
       actions:
         delete_row: 删除此行
@@ -170,6 +175,8 @@ pim_table_attribute:
         move_first: 移动到第一个位置
         move_last: 移动到最后一个位置
       order: 顺序
+      save_options_error: 保存选项时发生错误
+      save_options_success: 选项已成功更新
   properties:
     data_type:
       text: 文本
@@ -178,6 +185,7 @@ pim_table_attribute:
       select: 选择
   validations:
     column_code_must_be_filled: 必须填写代码
+    not_available_code: 此列代码不可用
     column_data_type_must_be_filled: 必须填写数据类型
     invalid_column_code: 列代码只能包含字母、数字和下划线
     invalid_code: 代码只能包含字母、数字和下划线
@@ -227,3 +235,11 @@ batch_jobs:
   xlsx_table_attribute_options_export.label: 以 XLSX 导出表属性选择选项
   csv_table_attribute_options_import.label: 以 CSV 导入表属性选择选项
   xlsx_table_attribute_options_import.label: 以 XLSX 导入表属性选择选项
+  csv_product_table_values_export.label: 以 CSV 格式导出产品表值
+  xlsx_product_table_values_export.label: 以 XLSX 格式导出产品表值
+  csv_product_model_table_values_export.label: 以 CSV 格式导出产品模型表值
+  xlsx_product_model_table_values_export.label: 以 XLSX 格式导出产品模型表值
+  csv_product_table_values_import.label: 以 CSV 格式导入产品表值
+  xlsx_product_table_values_import.label: 以 XLSX 格式导入产品表值
+  csv_product_model_table_values_import.label: 以 CSV 格式导入产品模型表值
+  xlsx_product_model_table_values_import.label: 以 XLSX 格式导入产品模型表值

@@ -54,5 +54,13 @@ pim_mass_edit:
 akeneo_reference_entity: 参照エンティティの単一のリンク
 akeneo_reference_entity_collection: 参照エンティティの複数のリンク
 pim_api:
+  acl:
+    reference_entity:
+      create: 参照エンティティを作成して更新
+      list: 参照エンティティを一覧表示
+    record:
+      create: 参照エンティティの記録を作成して更新
+      list: 参照エンティティの記録を一覧表示
+      remove: 参照エンティティの記録を削除
   acl_group:
     reference_entity: 参照エンティティ

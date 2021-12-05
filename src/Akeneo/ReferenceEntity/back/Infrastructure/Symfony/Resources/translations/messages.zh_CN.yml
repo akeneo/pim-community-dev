@@ -54,5 +54,13 @@ pim_mass_edit:
 akeneo_reference_entity: 参考实体单个链接
 akeneo_reference_entity_collection: 参考实体多个链接
 pim_api:
+  acl:
+    reference_entity:
+      create: 创建和更新参考实体
+      list: 列出参考实体
+    record:
+      create: 创建和更新参考实体记录
+      list: 列出参考实体记录
+      remove: 删除参考实体记录
   acl_group:
     reference_entity: 参考实体
