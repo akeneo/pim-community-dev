@@ -1697,12 +1697,6 @@ jobs:
       - set_gcloud_config_dev
       - restore_persisted_env_vars
       - run:
-          name: Rename release if not on master
-          command: |
-            if [ "${CIRCLE_BRANCH}" != "master" ]; then
-                echo export RELEASE_NAME=RC-${RELEASE_NAME} >> $BASH_ENV
-            fi
-      - run:
           name: Push Terraform modules to GCS
           command: |
             BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${TYPE_LONG}-edition-dev/${IMAGE_TAG} gs://akecld-terraform-modules/${TYPE_LONG}-edition-dev/${RELEASE_NAME}
