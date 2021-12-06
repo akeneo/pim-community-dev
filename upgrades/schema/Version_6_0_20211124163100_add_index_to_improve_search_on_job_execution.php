@@ -29,7 +29,7 @@ final class Version_6_0_20211124163100_add_index_to_improve_search_on_job_execut
         return isset(
             $indexesIndexedByName['user_idx'],
             $indexesIndexedByName['status_idx'],
-            $indexesIndexedByName['start_time_idx']
+            $indexesIndexedByName['start_time_idx'],
         );
     }
 }

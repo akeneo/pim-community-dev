@@ -185,11 +185,11 @@ SQL;
         }
 
         $orderByColumn = match ($query->sortColumn) {
-            'job_name' => "ji.label $sortDirection",
-            'type' => "ji.type $sortDirection",
-            'started_at' => "je.start_time $sortDirection",
-            'username' => "je.user $sortDirection",
-            'status' => "je.status $sortDirection",
+            'job_name' => sprintf("ji.label %s", $sortDirection),
+            'type' => sprintf("ji.type %s", $sortDirection),
+            'started_at' => sprintf("je.start_time %s", $sortDirection),
+            'username' => sprintf("je.user %s", $sortDirection),
+            'status' => sprintf("je.status %s", $sortDirection),
             default => throw new \InvalidArgumentException(sprintf('Sort column "%s" is not supported', $query->sortColumn)),
         };
 
