@@ -21,10 +21,9 @@ class GroupUpdaterSpec extends ObjectBehavior
 {
     function let(
         GroupTypeRepositoryInterface $groupTypeRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        ProductQueryBuilderFactoryInterface $pqbFactory
+        AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->beConstructedWith($groupTypeRepository, $attributeRepository, $pqbFactory);
+        $this->beConstructedWith($groupTypeRepository, $attributeRepository);
     }
 
     function it_is_initializable()
@@ -53,7 +52,6 @@ class GroupUpdaterSpec extends ObjectBehavior
     function it_updates_a_group(
         $groupTypeRepository,
         $attributeRepository,
-        $pqbFactory,
         GroupInterface $group,
         GroupTypeInterface $type,
         GroupTranslation $translatable,
@@ -65,24 +63,12 @@ class GroupUpdaterSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('color')->willReturn($attributeColor);
         $attributeRepository->findOneByIdentifier('size')->willReturn($attributeSize);
 
-        $addedProduct = (new Product())->setIdentifier('foo');
-        $productAlreadyInGroup = (new Product())->setIdentifier('bar');
-        $removedProduct = (new Product())->setIdentifier('ziggy');
-
-        $pqbFactory->create()->willReturn($pqb);
-        $pqb->addFilter('identifier', 'IN', ['foo'])->shouldBeCalled();
-        $pqb->execute()->willReturn([$addedProduct]);
-
         $group->getTranslation()->willReturn($translatable);
         $translatable->setLabel('T-shirt super beau')->shouldBeCalled();
         $group->setCode('mycode')->shouldBeCalled();
         $group->setLocale('fr_FR')->shouldBeCalled();
         $group->setType($type)->shouldBeCalled();
         $group->getId()->willReturn(null);
-
-        $group->removeProduct($removedProduct)->shouldBeCalled();
-        $group->addProduct($addedProduct)->shouldBeCalled();
-        $group->getProducts()->willReturn([$removedProduct, $productAlreadyInGroup]);
 
         $values = [
             'code'     => 'mycode',

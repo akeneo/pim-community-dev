@@ -18,6 +18,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductIdentifiersInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
@@ -1674,10 +1676,17 @@ class FixturesContext extends BaseFixturesContext
     {
         $group = $this->getProductGroup($group);
         $this->refresh($group);
-        $groupProducts = $group->getProducts();
+
+        $groupProducts = [];
+        /** @var FindProductIdentifiersInterface $productIdentifiersFinder */
+        $productIdentifiersFinder = $this->getContainer()->get('akeneo.pim.enrichment.product.query.find_product_identifiers');
+        $productIds = $productIdentifiersFinder->fromGroupId($group->getId());
+        foreach ($productIds as $productId) {
+            $groupProducts[] = $this->getProductRepository()->findOneBy(['identifier'=>$productId]);
+        }
 
         foreach ($this->listToArray($products) as $sku) {
-            if (!$groupProducts->contains($this->getProduct($sku))) {
+            if (!in_array($this->getProduct($sku), $groupProducts)) {
                 throw new \Exception(
                     sprintf('Group "%s" doesn\'t contain product "%s"', $group->getCode(), $sku)
                 );
