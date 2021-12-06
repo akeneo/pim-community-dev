@@ -156,7 +156,7 @@ test('it redirects to a job execution details on row cmd click', () => {
   );
   expect(redirectMock).not.toHaveBeenCalled();
   userEvent.click(screen.getByText('An export'), {metaKey: true});
-  expect(redirectMock).toHaveBeenCalledWith('akeneo_job_process_tracker_details');
+  expect(redirectMock).toHaveBeenCalledWith('#akeneo_job_process_tracker_details');
 });
 
 test('it can stop a job execution when job execution is stoppable and user have right', async () => {

@@ -4,7 +4,7 @@ const ITEMS_PER_PAGE = 25;
 
 type JobExecutionFilterSort = {
   column: string;
-  direction: string;
+  direction: 'ASC' | 'DESC';
 };
 
 type JobExecutionFilter = {
@@ -29,20 +29,9 @@ const getDefaultJobExecutionFilter = (): JobExecutionFilter => ({
   code: [],
 });
 
-const isDefaultJobExecutionFilter = ({
-  page,
-  size,
-  sort,
-  type,
-  status,
-  search,
-  user,
-  code,
-}: JobExecutionFilter): boolean =>
+const isDefaultJobExecutionFilter = ({page, size, type, status, search, user, code}: JobExecutionFilter): boolean =>
   1 === page &&
   ITEMS_PER_PAGE === size &&
-  'started_at' === sort.column &&
-  'DESC' === sort.direction &&
   0 === status.length &&
   0 === type.length &&
   0 === code.length &&

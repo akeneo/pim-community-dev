@@ -11,24 +11,6 @@ test('it can tell if the given filter is the default Job execution filter', () =
   expect(
     isDefaultJobExecutionFilter({
       ...getDefaultJobExecutionFilter(),
-      sort: {
-        column: 'status',
-        direction: 'DESC',
-      },
-    })
-  ).toEqual(false);
-  expect(
-    isDefaultJobExecutionFilter({
-      ...getDefaultJobExecutionFilter(),
-      sort: {
-        column: 'started_at',
-        direction: 'ASC',
-      },
-    })
-  ).toEqual(false);
-  expect(
-    isDefaultJobExecutionFilter({
-      ...getDefaultJobExecutionFilter(),
       page: 2,
     })
   ).toEqual(false);
@@ -62,4 +44,26 @@ test('it can tell if the given filter is the default Job execution filter', () =
       code: ['csv_product_export'],
     })
   ).toEqual(false);
+});
+
+test('it did not care about the sort to tell if the given filter is the default Job execution filter', () => {
+  expect(
+    isDefaultJobExecutionFilter({
+      ...getDefaultJobExecutionFilter(),
+      sort: {
+        column: 'status',
+        direction: 'DESC',
+      },
+    })
+  ).toEqual(true);
+
+  expect(
+    isDefaultJobExecutionFilter({
+      ...getDefaultJobExecutionFilter(),
+      sort: {
+        column: 'started_at',
+        direction: 'ASC',
+      },
+    })
+  ).toEqual(true);
 });

@@ -32,41 +32,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
 
         $expectedJobExecutions = [
             new JobExecutionRow(
-                $this->jobExecutionIds[2],
-                'A product import',
-                'import',
-                null,
-                null,
-                'STARTING',
-                0,
-                0,
-                0,
-                3,
-                true,
-            ),
-            new JobExecutionRow(
-                $this->jobExecutionIds[3],
-                'A product export',
-                'export',
-                null,
-                null,
-                'STARTING',
-                0,
-                0,
-                0,
-                3,
-                true,
-            ),
-        ];
-
-        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
-
-        $query = new SearchJobExecutionQuery();
-        $query->size = 2;
-        $query->page = 2;
-
-        $expectedJobExecutions = [
-            new JobExecutionRow(
                 $this->jobExecutionIds[1],
                 'A product import',
                 'import',
@@ -91,6 +56,41 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 3,
                 3,
                 false,
+            ),
+        ];
+
+        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+
+        $query = new SearchJobExecutionQuery();
+        $query->size = 2;
+        $query->page = 2;
+
+        $expectedJobExecutions = [
+            new JobExecutionRow(
+                $this->jobExecutionIds[2],
+                'A product import',
+                'import',
+                null,
+                null,
+                'STARTING',
+                0,
+                0,
+                0,
+                3,
+                true,
+            ),
+            new JobExecutionRow(
+                $this->jobExecutionIds[3],
+                'A product export',
+                'export',
+                null,
+                null,
+                'STARTING',
+                0,
+                0,
+                0,
+                3,
+                true,
             ),
         ];
 
@@ -183,19 +183,6 @@ class SearchJobExecutionTest extends IntegrationTestCase
 
         $expectedJobExecutions = [
             new JobExecutionRow(
-                $this->jobExecutionIds[2],
-                'A product import',
-                'import',
-                null,
-                null,
-                'STARTING',
-                0,
-                0,
-                0,
-                3,
-                true,
-            ),
-            new JobExecutionRow(
                 $this->jobExecutionIds[1],
                 'A product import',
                 'import',
@@ -220,6 +207,19 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 3,
                 3,
                 false,
+            ),
+            new JobExecutionRow(
+                $this->jobExecutionIds[2],
+                'A product import',
+                'import',
+                null,
+                null,
+                'STARTING',
+                0,
+                0,
+                0,
+                3,
+                true,
             ),
         ];
 
@@ -463,28 +463,28 @@ class SearchJobExecutionTest extends IntegrationTestCase
 
         $expectedJobExecutions = [
             new JobExecutionRow(
-                $this->jobExecutionIds[0],
+                $this->jobExecutionIds[2],
                 'A product import',
                 'import',
-                new \DateTimeImmutable('2020-01-01T00:00:00+00:00'),
-                'julia',
-                'COMPLETED',
-                4,
+                null,
+                null,
+                'STARTING',
+                0,
+                0,
                 0,
                 3,
-                3,
-                false,
+                true,
             ),
             new JobExecutionRow(
-                $this->jobExecutionIds[1],
-                'A product import',
-                'import',
-                new \DateTimeImmutable('2020-01-02T00:00:00+00:00'),
-                'peter',
-                'STARTED',
+                $this->jobExecutionIds[3],
+                'A product export',
+                'export',
+                null,
+                null,
+                'STARTING',
                 0,
-                2,
-                1,
+                0,
+                0,
                 3,
                 true,
             ),

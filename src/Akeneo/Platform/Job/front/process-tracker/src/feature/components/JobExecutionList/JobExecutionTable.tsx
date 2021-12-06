@@ -33,7 +33,7 @@ const JobExecutionTable = ({
       const route = router.generate('akeneo_job_process_tracker_details', {id: jobExecutionId});
 
       if (event.metaKey || event.ctrlKey) {
-        const newTab = window.open(`${window.location.hash}${route}`, '_blank');
+        const newTab = window.open(`#${route}`, '_blank');
         newTab?.focus();
 
         return;
