@@ -1,14 +1,3 @@
-const AVAILABLE_STEP_STATUSES = [
-  'ABANDONED',
-  'COMPLETED',
-  'FAILED',
-  'STARTED',
-  'STARTING',
-  'STOPPED',
-  'STOPPING',
-  'UNKNOWN',
-] as const;
-
-type StepStatus = typeof AVAILABLE_STEP_STATUSES[number];
+type StepStatus = 'ABANDONED' | 'COMPLETED' | 'FAILED' | 'STARTED' | 'STARTING' | 'STOPPED' | 'STOPPING' | 'UNKNOWN';
 
 export type {StepStatus};
