@@ -16,6 +16,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Symfony\Component\Validator\Exception\MissingOptionsException;
+
 $ignoreServiceIds = [
     'onelogin_auth', // execute a database request in the constructor in EE
 ];
@@ -69,6 +71,9 @@ function checkServicesInstantiability(ContainerInterface $container, ConsoleOutp
             if ($service instanceof \ProxyManager\Proxy\VirtualProxyInterface) {
                 $service->initializeProxy();
             }
+        } catch (MissingOptionsException $moe) {
+            // At this stage, it's normal that Validation constraint we try to instantiate
+            // may fail with this exception as they are expecting options
         } catch (\Throwable $t) {
             $nonInstantiableServices[$serviceId] = ["error_type" => get_class($t), "error_message" => $t->getMessage()];
         }

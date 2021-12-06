@@ -35,7 +35,7 @@ class AverageMaxLocalizableAndScopableAttributesPerFamilySpec extends ObjectBeha
         $connection->executeQuery(Argument::type('string'))->willReturn($statement);
         $statement->fetchAssociative()->willReturn(['average' => '5', 'max' => '10']);
         $this->fetch()->shouldBeLike(
-            new AverageMaxVolumes(10, 5, 15, 'average_max_localizable_and_scopable_attributes_per_family')
+            new AverageMaxVolumes(10, 5, 'average_max_localizable_and_scopable_attributes_per_family')
         );
     }
 }

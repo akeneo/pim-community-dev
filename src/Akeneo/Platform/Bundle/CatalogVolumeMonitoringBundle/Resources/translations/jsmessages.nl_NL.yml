@@ -26,5 +26,4 @@ pim_catalog_volume:
     count_category_trees: Categorie boomstructuren
     count_variant_products: Variant products
     count_product_models: Productmodels
-  mean: 'Gemiddelde:'
   max: 'Max:'

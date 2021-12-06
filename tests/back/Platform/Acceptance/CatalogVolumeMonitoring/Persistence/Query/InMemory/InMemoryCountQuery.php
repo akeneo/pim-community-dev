@@ -17,9 +17,6 @@ class InMemoryCountQuery implements CountQuery
     /** @var int */
     private $volume;
 
-    /** @var int*/
-    private $limit;
-
     /** @var string */
     private $volumeName;
 
@@ -30,7 +27,6 @@ class InMemoryCountQuery implements CountQuery
     {
         $this->volumeName = $volumeName;
         $this->volume = -1;
-        $this->limit = -1;
     }
 
     /**
@@ -38,7 +34,7 @@ class InMemoryCountQuery implements CountQuery
      */
     public function fetch(): CountVolume
     {
-        return new CountVolume($this->volume, $this->limit, $this->volumeName);
+        return new CountVolume($this->volume, $this->volumeName);
     }
 
     /**
@@ -47,13 +43,5 @@ class InMemoryCountQuery implements CountQuery
     public function setVolume(int $volume): void
     {
         $this->volume = $volume;
-    }
-
-    /**
-     * @param int $limit
-     */
-    public function setLimit(int $limit): void
-    {
-        $this->limit = $limit;
     }
 }

@@ -19,7 +19,6 @@ class CountCategoriesIntegration extends QueryTestCase
         //in minimal catalog we have one category
         Assert::assertEquals(9, $volume->getVolume());
         Assert::assertEquals('count_categories', $volume->getVolumeName());
-        Assert::assertEquals(false, $volume->hasWarning());
     }
 
     /**

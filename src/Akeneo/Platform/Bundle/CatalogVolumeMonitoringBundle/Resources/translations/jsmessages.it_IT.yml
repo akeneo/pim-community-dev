@@ -26,5 +26,4 @@ pim_catalog_volume:
     count_category_trees: Albero della categoria
     count_variant_products: Prodotti varianti
     count_product_models: Modelli di prodotto
-  mean: 'Medio:'
   max: 'Massimo:'

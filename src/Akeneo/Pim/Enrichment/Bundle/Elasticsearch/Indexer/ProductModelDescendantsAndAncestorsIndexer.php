@@ -24,17 +24,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerI
  */
 class ProductModelDescendantsAndAncestorsIndexer
 {
-    /** @var ProductIndexerInterface */
-    private $productIndexer;
-
-    /** @var ProductModelIndexerInterface */
-    private $productModelIndexer;
-
-    /** @var GetDescendantVariantProductIdentifiers */
-    private $getDescendantVariantProductIdentifiers;
-
-    /** @var GetAncestorAndDescendantProductModelCodes */
-    private $getAncestorAndDescendantProductModelCodes;
+    private ProductIndexerInterface $productIndexer;
+    private ProductModelIndexerInterface $productModelIndexer;
+    private GetDescendantVariantProductIdentifiers $getDescendantVariantProductIdentifiers;
+    private GetAncestorAndDescendantProductModelCodes $getAncestorAndDescendantProductModelCodes;
 
     public function __construct(
         ProductIndexerInterface $productIndexer,
@@ -64,7 +57,7 @@ class ProductModelDescendantsAndAncestorsIndexer
             ->fromProductModelCodes($productModelCodes)
         ;
         $this->productModelIndexer->indexFromProductModelCodes(
-            array_unique(array_merge($productModelCodes, $ancestorAndDescendantsProductModelCodes))
+            \array_unique(\array_merge($productModelCodes, $ancestorAndDescendantsProductModelCodes))
         );
 
         $variantProductIdentifiers = $this->getDescendantVariantProductIdentifiers->fromProductModelCodes(

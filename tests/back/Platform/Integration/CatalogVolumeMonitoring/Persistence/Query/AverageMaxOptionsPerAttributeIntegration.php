@@ -22,7 +22,6 @@ class AverageMaxOptionsPerAttributeIntegration extends QueryTestCase
         Assert::assertEquals(8, $volume->getMaxVolume());
         Assert::assertEquals(5, $volume->getAverageVolume());
         Assert::assertEquals('average_max_options_per_attribute', $volume->getVolumeName());
-        Assert::assertEquals(false, $volume->hasWarning());
     }
 
     /**
