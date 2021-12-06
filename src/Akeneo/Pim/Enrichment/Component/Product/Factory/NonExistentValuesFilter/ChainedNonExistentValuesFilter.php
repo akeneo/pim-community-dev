@@ -7,7 +7,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilte
 use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\TransformRawValuesCollections;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * The implementation of this non existent filter uses a pivot format internally.
@@ -24,31 +23,24 @@ class ChainedNonExistentValuesFilter implements ChainedNonExistentValuesFilterIn
     private iterable $nonExistentValueFilters;
     private EmptyValuesCleaner $emptyValuesCleaner;
     private TransformRawValuesCollections $transformRawValuesCollections;
-    private IdentifiableObjectRepositoryInterface $localeRepository;
-    private IdentifiableObjectRepositoryInterface $channelRepository;
 
     public function __construct(
         iterable $nonExistentValueFilters,
         EmptyValuesCleaner $emptyValuesCleaner,
-        TransformRawValuesCollections $transformRawValuesCollections,
-        IdentifiableObjectRepositoryInterface $localeRepository,
-        IdentifiableObjectRepositoryInterface $channelRepository
+        TransformRawValuesCollections $transformRawValuesCollections
     ) {
         $this->nonExistentValueFilters = $nonExistentValueFilters;
         $this->emptyValuesCleaner = $emptyValuesCleaner;
         $this->transformRawValuesCollections = $transformRawValuesCollections;
-        $this->localeRepository = $localeRepository;
-        $this->channelRepository = $channelRepository;
     }
 
     public function filterAll(array $rawValuesCollection): array
     {
         $rawValueCollectionsIndexedByType = $this->transformRawValuesCollections->toValueCollectionsIndexedByType($rawValuesCollection);
-
         $onGoingFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType($rawValueCollectionsIndexedByType);
 
         /** @var OnGoingFilteredRawValues $result */
-        $result = array_reduce(
+        $result = \array_reduce(
             $this->iterableToArray($this->nonExistentValueFilters),
             function (OnGoingFilteredRawValues $onGoingFilteredRawValues, NonExistentValuesFilter $obsoleteValuesFilter): OnGoingFilteredRawValues {
                 try {
@@ -62,18 +54,13 @@ class ChainedNonExistentValuesFilter implements ChainedNonExistentValuesFilterIn
 
         $filteredRawValuesCollectionIndexedByType = $result->addFilteredValuesIndexedByType($result->nonFilteredRawValuesCollectionIndexedByType());
         $filteredRawValuesCollection = $this->emptyValuesCleaner->cleanAllValues($filteredRawValuesCollectionIndexedByType->toRawValueCollection());
-        $filteredRawValuesCollection = $this->removeValuesWithNonExistentLocaleChannel($filteredRawValuesCollection);
-        $filteredRawValuesCollection = $this->addIdentifiersWithOnlyUnknownAttributes($rawValuesCollection, $filteredRawValuesCollection);
 
-        return $filteredRawValuesCollection;
+        return $this->addIdentifiersWithOnlyUnknownAttributes($rawValuesCollection, $filteredRawValuesCollection);
     }
 
     private function iterableToArray(iterable $iterable): array
     {
-        $array = [];
-        array_push($array, ...$iterable);
-
-        return $array;
+        return \is_array($iterable) ? $iterable : \iterator_to_array($iterable);
     }
 
     /**
@@ -83,34 +70,8 @@ class ChainedNonExistentValuesFilter implements ChainedNonExistentValuesFilterIn
      */
     private function addIdentifiersWithOnlyUnknownAttributes(array $rawValuesCollection, array $filteredRawValuesCollection): array
     {
-        $emptyRawValuesCollection = array_fill_keys(array_keys($rawValuesCollection), []);
+        $emptyRawValuesCollection = \array_fill_keys(\array_keys($rawValuesCollection), []);
 
         return $filteredRawValuesCollection + $emptyRawValuesCollection;
-    }
-
-    private function removeValuesWithNonExistentLocaleChannel(array $rawValuesCollection)
-    {
-        $filteredRawValuesCollection = [];
-
-        foreach ($rawValuesCollection as $identifier => $rawValues) {
-            foreach ($rawValues as $attributeCode => $channelValues) {
-                foreach ($channelValues as $channelCode => $localeValues) {
-                    $channel = '<all_channels>' !== $channelCode ? $this->channelRepository->findOneByIdentifier($channelCode) : null;
-
-                    foreach ($localeValues as $localeCode => $data) {
-                        $locale = '<all_locales>' !== $localeCode ? $this->localeRepository->findOneByIdentifier($localeCode) : null;
-
-                        if (
-                            ($channelCode === '<all_channels>' || $channel !== null) &&
-                            ($localeCode === '<all_locales>' || ($locale !== null && $locale->isActivated()))
-                        ) {
-                            $filteredRawValuesCollection[$identifier][$attributeCode][$channelCode][$localeCode] = $data;
-                        }
-                    }
-                }
-            }
-        }
-
-        return $filteredRawValuesCollection;
     }
 }
