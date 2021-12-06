@@ -6,7 +6,7 @@ import {
   getStepExecutionRowTrackingLevel,
   getStepExecutionRowTrackingPercent,
   getStepExecutionRowTrackingProgressLabel,
-} from '../models';
+} from '../../models';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
 const Container = styled.div`

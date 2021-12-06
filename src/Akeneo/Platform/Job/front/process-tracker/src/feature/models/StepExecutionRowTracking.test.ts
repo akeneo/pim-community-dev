@@ -4,9 +4,6 @@ import {
   getStepExecutionRowTrackingProgressLabel,
   StepExecutionRowTracking,
 } from './StepExecutionRowTracking';
-import {StepStatus} from './StepStatus';
-
-const startedStatus: StepStatus = 'STARTED';
 
 const stepTracking: StepExecutionRowTracking = {
   error_count: 0,
@@ -14,7 +11,7 @@ const stepTracking: StepExecutionRowTracking = {
   is_trackable: true,
   processed_items: 2,
   total_items: 10,
-  status: startedStatus,
+  status: 'STARTED',
   duration: 42,
 };
 

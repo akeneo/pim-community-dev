@@ -2,8 +2,7 @@ import React, {MouseEvent} from 'react';
 import {Table} from 'akeneo-design-system';
 import {useDateFormatter, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {JobExecutionRow, jobCanBeStopped, canShowJobExecutionDetail} from '../models';
-import {JobExecutionStatus, StopJobAction} from './common';
-import {ProgressCell} from './ProgressCell';
+import {JobExecutionStatus, StopJobAction, ProgressCell} from './common';
 
 const COLUMN_HEADERS = ['started_at', 'username', 'progress', 'status', 'warning_count'];
 
