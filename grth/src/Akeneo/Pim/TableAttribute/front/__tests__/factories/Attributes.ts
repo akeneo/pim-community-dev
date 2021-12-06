@@ -1,7 +1,7 @@
-import {TableAttribute} from '../../src/models';
+import {DataType, TableAttribute} from '../../src/models';
 import {getComplexTableConfiguration} from './TableConfiguration';
 
-const getComplexTableAttribute: () => TableAttribute = () => {
+const getComplexTableAttribute: (firstColumnType?: DataType) => TableAttribute = (firstColumnType = 'select') => {
   return {
     code: 'nutrition',
     labels: {
@@ -40,7 +40,7 @@ const getComplexTableAttribute: () => TableAttribute = () => {
     validation_regexp: null,
     validation_rule: null,
     wysiwyg_enabled: null,
-    table_configuration: getComplexTableConfiguration(),
+    table_configuration: getComplexTableConfiguration(firstColumnType),
   };
 };
 

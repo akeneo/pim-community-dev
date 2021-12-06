@@ -3,14 +3,14 @@ import React, {useEffect, useState} from 'react';
 import {SelectInput} from 'akeneo-design-system';
 import {ReferenceEntityRepository} from '../repositories';
 import {getLabel, useRouter, useUserContext} from '@akeneo-pim-community/shared';
-import {ReferenceEntity, ReferenceEntityIdentifier} from '../models';
+import {ReferenceEntity, ReferenceEntityIdentifierOrCode} from '../models';
 
 type ReferenceEntitySelectorProps = {
   placeholder?: string;
   emptyResultLabel: string;
   disabled?: boolean;
-  value?: ReferenceEntityIdentifier;
-  onChange: (value?: ReferenceEntityIdentifier) => void;
+  value?: ReferenceEntityIdentifierOrCode;
+  onChange: (value?: ReferenceEntityIdentifierOrCode) => void;
   openLabel: string;
   clearLabel: string;
 };
@@ -38,27 +38,25 @@ const ReferenceEntitySelector = ({
   const handleChange = (newValue: string | null) => onChange(newValue ?? undefined);
 
   return (
-    <>
-      <SelectInput
-        disabled={disabled}
-        emptyResultLabel={emptyResultLabel}
-        onChange={handleChange}
-        placeholder={placeholder}
-        value={value || null}
-        openLabel={openLabel}
-        clearLabel={clearLabel}
-        clearable={true}
-      >
-        {(referenceEntities || []).map((referenceEntity: ReferenceEntity) => {
-          const label = getLabel(referenceEntity.labels, catalogLocale, referenceEntity.identifier);
-          return (
-            <SelectInput.Option key={referenceEntity.identifier} title={label} value={referenceEntity.identifier}>
-              {label}
-            </SelectInput.Option>
-          );
-        })}
-      </SelectInput>
-    </>
+    <SelectInput
+      disabled={disabled}
+      emptyResultLabel={emptyResultLabel}
+      onChange={handleChange}
+      placeholder={placeholder}
+      value={value || null}
+      openLabel={openLabel}
+      clearLabel={clearLabel}
+      clearable={true}
+    >
+      {(referenceEntities || []).map((referenceEntity: ReferenceEntity) => {
+        const label = getLabel(referenceEntity.labels, catalogLocale, referenceEntity.identifier);
+        return (
+          <SelectInput.Option key={referenceEntity.identifier} title={label} value={referenceEntity.identifier}>
+            {label}
+          </SelectInput.Option>
+        );
+      })}
+    </SelectInput>
   );
 };
 
