@@ -39,7 +39,6 @@ use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
-use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
@@ -116,9 +115,6 @@ class ProductController
     /** @var StreamResourceResponse */
     protected $partialUpdateStreamResource;
 
-    /** @var PrimaryKeyEncrypter */
-    protected $primaryKeyEncrypter;
-
     /** @var array */
     protected $apiConfiguration;
 
@@ -192,7 +188,6 @@ class ProductController
         UrlGeneratorInterface $router,
         FilterInterface $emptyValuesFilter,
         StreamResourceResponse $partialUpdateStreamResource,
-        PrimaryKeyEncrypter $primaryKeyEncrypter,
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductBuilderInterface $variantProductBuilder,
         AttributeFilterInterface $productAttributeFilter,
@@ -229,7 +224,6 @@ class ProductController
         $this->router = $router;
         $this->emptyValuesFilter = $emptyValuesFilter;
         $this->partialUpdateStreamResource = $partialUpdateStreamResource;
-        $this->primaryKeyEncrypter = $primaryKeyEncrypter;
         $this->fromSizePqbFactory = $fromSizePqbFactory;
         $this->variantProductBuilder = $variantProductBuilder;
         $this->apiConfiguration = $apiConfiguration;
@@ -876,7 +870,7 @@ class ProductController
             $parameters = [
                 'query_parameters' => $queryParameters,
                 'search_after' => [
-                    'next' => false !== $lastProduct ? $this->primaryKeyEncrypter->encrypt($lastProduct->id()) : null,
+                    'next' => false !== $lastProduct ? $lastProduct->identifier() : null,
                     'self' => $query->searchAfter,
                 ],
                 'list_route_name' => 'pim_api_product_list',

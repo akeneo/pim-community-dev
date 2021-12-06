@@ -22,7 +22,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
-use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -34,7 +33,6 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $channelRepository,
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
-        PrimaryKeyEncrypter $primaryKeyEncrypter,
         GetConnectorProducts $getConnectorProducts,
         GetConnectorProducts $getConnectorProductsWithOptions,
         EventDispatcherInterface $eventDispatcher,
@@ -47,7 +45,6 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             new ApplyProductSearchQueryParametersToPQB($channelRepository->getWrappedObject()),
             $fromSizePqbFactory,
             $searchAfterPqbFactory,
-            $primaryKeyEncrypter,
             $getConnectorProducts,
             $getConnectorProductsWithOptions,
             $eventDispatcher,
@@ -77,7 +74,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             'from' => 2856
         ])->shouldBeCalled()->willReturn($pqb);
 
-        $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
+        $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
         $connectorProduct1 = new ConnectorProduct(
             1,
@@ -144,7 +141,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             'from' => 2856
         ])->shouldBeCalled()->willReturn($pqb);
 
-        $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
+        $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
         $connectorProduct1 = new ConnectorProduct(
             1,
@@ -194,7 +191,6 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
     function it_gets_connector_products_with_search_after_method(
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
-        PrimaryKeyEncrypter $primaryKeyEncrypter,
         ProductQueryBuilderInterface $pqb,
         GetConnectorProducts $getConnectorProducts
     ) {
@@ -204,15 +200,13 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $query->searchAfter = '69';
         $query->userId = 1;
 
-        $primaryKeyEncrypter->decrypt('69')->shouldBeCalled()->willReturn('encoded69');
-
         $searchAfterPqbFactory->create([
             'limit' => 42,
-            'search_after_unique_key' => 'product_encoded69',
-            'search_after' => ['product_encoded69']
+            'search_after_unique_key' => '69',
+            'search_after' => ['69']
         ])->shouldBeCalled()->willReturn($pqb);
 
-        $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
+        $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
         $connectorProduct1 = new ConnectorProduct(
             1,
@@ -283,7 +277,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             'limit' => 42
         ])->shouldBeCalled()->willReturn($pqb);
 
-        $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
+        $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
         $pqb->addFilter('categories', 'IN CHILDREN', ['master'], ['locale' => null, 'scope' => null])->shouldBeCalled();
 
         $getConnectorProducts
@@ -313,7 +307,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             'limit' => 42
         ])->shouldBeCalled()->willReturn($pqb);
 
-        $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
+        $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
         $getConnectorProducts
             ->fromProductQueryBuilder($pqb, 1, null, null, ['en_US', 'fr_FR'])
@@ -342,7 +336,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             'limit' => 42
         ])->shouldBeCalled()->willReturn($pqb);
 
-        $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
+        $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
         $getConnectorProducts
             ->fromProductQueryBuilder($pqb, 1, null, 'tablet', ['en_US', 'fr_FR'])
@@ -356,7 +350,6 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
     function it_dispatches_a_read_products_event_when_querying_products(
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
-        PrimaryKeyEncrypter $primaryKeyEncrypter,
         ProductQueryBuilderInterface $pqb,
         GetConnectorProducts $getConnectorProducts,
         EventDispatcherInterface $eventDispatcher
@@ -367,15 +360,13 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $query->searchAfter = '69';
         $query->userId = 1;
 
-        $primaryKeyEncrypter->decrypt('69')->shouldBeCalled()->willReturn('encoded69');
-
         $searchAfterPqbFactory->create([
             'limit' => 42,
-            'search_after_unique_key' => 'product_encoded69',
-            'search_after' => ['product_encoded69']
+            'search_after_unique_key' => '69',
+            'search_after' => ['69']
         ])->shouldBeCalled()->willReturn($pqb);
 
-        $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
+        $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
         $connectorProduct = new ConnectorProduct(
             5,
@@ -409,7 +400,6 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
     function it_add_quality_scores_to_products_if_option_is_activated(
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
-        PrimaryKeyEncrypter $primaryKeyEncrypter,
         ProductQueryBuilderInterface $pqb,
         GetConnectorProducts $getConnectorProducts,
         GetProductsWithQualityScoresInterface $getProductsWithQualityScores
@@ -421,15 +411,13 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $query->userId = 1;
         $query->withQualityScores = 'true';
 
-        $primaryKeyEncrypter->decrypt('69')->shouldBeCalled()->willReturn('encoded69');
-
         $searchAfterPqbFactory->create([
             'limit' => 42,
-            'search_after_unique_key' => 'product_encoded69',
-            'search_after' => ['product_encoded69']
+            'search_after_unique_key' => '69',
+            'search_after' => ['69']
         ])->shouldBeCalled()->willReturn($pqb);
 
-        $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
+        $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
         $connectorProduct = new ConnectorProduct(
             5,
@@ -467,7 +455,6 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
     function it_adds_completenesses_to_products_if_option_is_activated(
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
-        PrimaryKeyEncrypter $primaryKeyEncrypter,
         ProductQueryBuilderInterface $pqb,
         GetConnectorProducts $getConnectorProducts,
         GetProductsWithCompletenessesInterface $getProductsWithCompletenesses
@@ -479,15 +466,13 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $query->userId = 1;
         $query->withCompletenesses = 'true';
 
-        $primaryKeyEncrypter->decrypt('69')->shouldBeCalled()->willReturn('encoded69');
-
         $searchAfterPqbFactory->create([
             'limit' => 42,
-            'search_after_unique_key' => 'product_encoded69',
-            'search_after' => ['product_encoded69']
+            'search_after_unique_key' => '69',
+            'search_after' => ['69']
         ])->shouldBeCalled()->willReturn($pqb);
 
-        $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
+        $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
         $connectorProduct = new ConnectorProduct(
             5,
