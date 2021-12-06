@@ -2,8 +2,8 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {act, screen, within} from '@testing-library/react';
 import {JobExecutionTable} from './JobExecutionTable';
-import {JobExecutionRow} from 'feature/models/JobExecutionTable';
-import {JobExecutionFilterSort} from 'feature/models';
+import {JobExecutionFilterSort, JobExecutionRow} from '../../models';
+
 import userEvent from '@testing-library/user-event';
 
 const rows: JobExecutionRow[] = [

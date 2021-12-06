@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import {Helper, Link} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {Warning} from '../../models/JobExecutionDetail';
+import {Warning} from '../../../models';
 import {InnerTable} from './InnerTable';
 
 const SpacedTable = styled(InnerTable)`

@@ -2,7 +2,7 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {screen} from '@testing-library/react';
 import {SummaryTable} from './SummaryTable';
-import {JobExecution} from '../../models/JobExecutionDetail';
+import {JobExecution} from '../../../models';
 
 const jobExecution: JobExecution = {
   jobInstance: {

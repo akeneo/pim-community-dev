@@ -4,7 +4,7 @@ import {Table, Badge, Helper, Level} from 'akeneo-design-system';
 import {Translate, useTranslate} from '@akeneo-pim-community/shared';
 import {InnerTable} from './InnerTable';
 import {WarningHelper} from './WarningHelper';
-import {JobExecution, StepExecution} from '../../models/JobExecutionDetail';
+import {JobExecution, StepExecution} from '../../../models';
 
 const SpacedTable = styled(Table)`
   margin-bottom: 40px;

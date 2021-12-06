@@ -1,6 +1,6 @@
 import {formatSecondsIntl} from './intl-duration';
 
-const translate = (key: string, _params: any, count: number) => {
+const translate = (key: string, _params?: {[name: string]: string | number}, count?: number) => {
   switch (key) {
     case 'duration.days':
       return `${count} day(s)`;

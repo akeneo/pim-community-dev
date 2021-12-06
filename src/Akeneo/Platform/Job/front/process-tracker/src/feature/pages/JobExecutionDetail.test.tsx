@@ -2,7 +2,7 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {screen} from '@testing-library/react';
 import {JobExecutionDetail} from './JobExecutionDetail';
-import {JobExecution} from '../models/JobExecutionDetail';
+import {JobExecution} from '../models';
 import {useParams} from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 
@@ -84,6 +84,8 @@ jest.mock('../hooks/useJobExecution', () => ({
           () => {},
           false,
         ];
+      default:
+        return [null, null, () => {}, false];
     }
   },
 }));
@@ -95,7 +97,7 @@ jest.mock('@akeneo-pim-community/shared/lib/components/PimView', () => ({
 }));
 
 const mockStopJobExecution = jest.fn();
-jest.mock('../components/StopJobAction', () => ({
+jest.mock('../components/common/StopJobAction', () => ({
   StopJobAction: ({onStop}: {onStop: () => void}) => (
     <div
       onClick={() => {

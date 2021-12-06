@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Level, ProgressBar} from 'akeneo-design-system';
-import {StepExecutionTracking} from '../models/JobExecutionDetail';
+import {StepExecutionTracking} from '../../models';
 import {Translate, useTranslate} from '@akeneo-pim-community/shared';
-import {formatSecondsIntl} from '../tools/intl-duration';
+import {formatSecondsIntl} from '../../tools/intl-duration';
 
 const Container = styled.div`
   display: grid;
