@@ -228,16 +228,7 @@ test('it prints a warning when no filter is set and page is 50', () => {
   expect(screen.getByText('akeneo_job_process_tracker.max_page_without_filter_helper')).toBeInTheDocument();
 });
 
-test('it does not display next pagination button when no filter is set and page is 50', () => {
-  mockedSize = 1;
-  mockUseManyRows = true;
-
-  renderWithProviders(<JobExecutionList />);
-
-  expect(screen.queryByTitle('No. 51')).not.toBeInTheDocument();
-});
-
-test('it doest not print a warning when filter is set and page is 50', () => {
+test('it prints a warning when filter is set and page is 50', () => {
   mockedSize = 1;
   mockUseManyRows = true;
 
@@ -246,10 +237,16 @@ test('it doest not print a warning when filter is set and page is 50', () => {
   userEvent.click(screen.getByLabelText('akeneo_job_process_tracker.user_filter.label:'));
   userEvent.click(screen.getAllByText('admin')[screen.getAllByText('admin').length - 1]);
 
-  for (let i = 2; i <= 50; i++) {
-    userEvent.click(screen.getByTitle(`No. ${i}`));
-  }
+  userEvent.click(screen.getByTitle('No. 50'));
 
-  expect(screen.queryByText('akeneo_job_process_tracker.max_page_without_filter_helper')).not.toBeInTheDocument();
-  expect(screen.queryByTitle('No. 51')).toBeInTheDocument();
+  expect(screen.getByText('akeneo_job_process_tracker.max_page_without_filter_helper')).toBeInTheDocument();
+});
+
+test('it does not display next pagination button when page is 50', () => {
+  mockedSize = 1;
+  mockUseManyRows = true;
+
+  renderWithProviders(<JobExecutionList />);
+
+  expect(screen.queryByTitle('No. 51')).not.toBeInTheDocument();
 });

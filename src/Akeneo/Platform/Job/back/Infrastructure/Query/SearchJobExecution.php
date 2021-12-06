@@ -72,8 +72,8 @@ SQL;
         $queryParamsTypes = $this->buildQueryParamsTypes();
 
         $page = $query->page;
-        if (!$query->hasOneFilterSet() && $page > 50) {
-            throw new \InvalidArgumentException('The page number can not be greater than 50 when no filter are set');
+        if ($page > 50) {
+            throw new \InvalidArgumentException('The page number can not be greater than 50');
         }
         $size = $query->size;
 

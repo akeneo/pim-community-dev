@@ -11,7 +11,7 @@ import {
 } from '@akeneo-pim-community/shared';
 import {useJobExecutionTable} from '../hooks';
 import {JobExecutionSearchBar, JobExecutionTable} from '../components';
-import {isDefaultJobExecutionFilter, JobExecutionFilterSort, JobStatus, hasOneFilterSet} from '../models';
+import {isDefaultJobExecutionFilter, JobExecutionFilterSort, JobStatus} from '../models';
 import {useStoredJobExecutionFilter} from '../hooks/useStoredJobExecutionFilter';
 
 const MAX_PAGE_WITHOUT_FILTER = 50;
@@ -22,14 +22,8 @@ const JobExecutionList = () => {
 
   const [jobExecutionFilter, setJobExecutionFilter] = useStoredJobExecutionFilter();
   const [jobExecutionTable, refreshJobExecutionTable] = useJobExecutionTable(jobExecutionFilter);
-  const matchesCount =
-    jobExecutionTable === null
-      ? 0
-      : hasOneFilterSet(jobExecutionFilter)
-      ? jobExecutionTable.matches_count
-      : MAX_PAGE_WITHOUT_FILTER * jobExecutionFilter.size;
-  const displayPaginationWarning =
-    !hasOneFilterSet(jobExecutionFilter) && MAX_PAGE_WITHOUT_FILTER === jobExecutionFilter.page;
+  const matchesCount = jobExecutionTable === null ? 0 : jobExecutionTable.matches_count;
+  const displayPaginationWarning = MAX_PAGE_WITHOUT_FILTER === jobExecutionFilter.page;
 
   const handlePageChange = (page: number) => {
     setJobExecutionFilter(jobExecutionFilter => ({...jobExecutionFilter, page}));
@@ -102,7 +96,7 @@ const JobExecutionList = () => {
                   sticky={displayPaginationWarning ? 88 : 44}
                   itemsPerPage={jobExecutionFilter.size}
                   currentPage={jobExecutionFilter.page}
-                  totalItems={matchesCount}
+                  totalItems={Math.min(matchesCount, MAX_PAGE_WITHOUT_FILTER * jobExecutionFilter.size)}
                   followPage={handlePageChange}
                 />
                 <JobExecutionTable
