@@ -8,3 +8,4 @@ akeneo_feature_flag:
         - { feature: 'communication_channel', service: 'akeneo_communication_channel.feature' }
         - { feature: 'control_volume_monitoring_new_page', service: 'akeneo_control_volume_monitoring_new_page.feature' }
         - { feature: 'onboarder_new_menu', service: 'pim.onboarder_new_menu.feature' }
+        - { feature: 'reference_entity', service: 'akeneo_referenceentity.feature_flag' }
