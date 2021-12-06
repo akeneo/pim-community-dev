@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Bundle\Saver;
 
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetAllRootCategoriesCodes;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetCategoriesAccessesWithHighestLevel;
@@ -268,7 +269,24 @@ class UserGroupCategoryPermissionsSaver
                 continue;
             }
             $this->categoryAccessManager->revokeGroupAccess($category, $group);
+
+            $this->revokeChildrenAccesses($category, $group);
         }
+    }
+
+    private function revokeChildrenAccesses(
+        CategoryInterface $root,
+        GroupInterface $group
+    ): void {
+        $this->categoryAccessManager->updateChildrenAccesses(
+            $root,
+            [],
+            [],
+            [],
+            [$group],
+            [$group],
+            [$group],
+        );
     }
 
     /**
@@ -289,7 +307,62 @@ class UserGroupCategoryPermissionsSaver
                     continue;
                 }
                 $this->categoryAccessManager->grantAccess($category, $group, $newLevel);
+
+                $this->updateChildrenAccesses($category, $group, $existingLevel, $newLevel);
             }
         }
+    }
+
+    private function updateChildrenAccesses(
+        CategoryInterface $root,
+        GroupInterface $group,
+        ?string $existingLevel,
+        string $newLevel
+    ): void {
+        $existingLevels = $existingLevel === null ? [] : $this->getAllLevelsFromHighestAccessLevel($existingLevel);
+        $newLevels = $this->getAllLevelsFromHighestAccessLevel($newLevel);
+
+        $addToView = in_array(Attributes::VIEW_ITEMS, $newLevels) && !in_array(Attributes::VIEW_ITEMS, $existingLevels);
+        $addToEdit = in_array(Attributes::EDIT_ITEMS, $newLevels) && !in_array(Attributes::EDIT_ITEMS, $existingLevels);
+        $addToOwn = in_array(Attributes::OWN_PRODUCTS, $newLevels) && !in_array(Attributes::OWN_PRODUCTS, $existingLevels);
+        $removeFromView = !in_array(Attributes::VIEW_ITEMS, $newLevels) && in_array(Attributes::VIEW_ITEMS, $existingLevels);
+        $removeFromEdit = !in_array(Attributes::EDIT_ITEMS, $newLevels) && in_array(Attributes::EDIT_ITEMS, $existingLevels);
+        $removeFromOwn = !in_array(Attributes::OWN_PRODUCTS, $newLevels) && in_array(Attributes::OWN_PRODUCTS, $existingLevels);
+
+        $this->categoryAccessManager->updateChildrenAccesses(
+            $root,
+            $addToView ? [$group] : [],
+            $addToEdit ? [$group] : [],
+            $addToOwn ? [$group] : [],
+            $removeFromView ? [$group] : [],
+            $removeFromEdit ? [$group] : [],
+            $removeFromOwn ? [$group] : [],
+        );
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getAllLevelsFromHighestAccessLevel(string $level): array
+    {
+        switch ($level) {
+            case Attributes::OWN_PRODUCTS:
+                return [
+                    Attributes::OWN_PRODUCTS,
+                    Attributes::EDIT_ITEMS,
+                    Attributes::VIEW_ITEMS,
+                ];
+            case Attributes::EDIT_ITEMS:
+                return [
+                    Attributes::EDIT_ITEMS,
+                    Attributes::VIEW_ITEMS,
+                ];
+            case Attributes::VIEW_ITEMS:
+                return [
+                    Attributes::VIEW_ITEMS,
+                ];
+        }
+
+        throw new \LogicException('Unsupported access level');
     }
 }
