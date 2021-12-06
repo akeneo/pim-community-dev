@@ -21,7 +21,7 @@ unit-back: $(PIM_SRC_PATH)/var/tests/phpspec community-unit-back #Doc: launch al
 	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-unit-back
 ifeq ($(CI),true)
 	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > $(PIM_SRC_PATH)/var/tests/phpspec/specs.xml
-	cd $(PIM_SRC_PATH) && vendor/akeneo/pim-community-dev/.circleci/find_non_executed_phpspec.sh
+	$(DOCKER_COMPOSE) run -T -u www-data --rm php vendor/akeneo/pim-community-dev/.circleci/find_non_executed_phpspec.sh
 else
 	${PHP_RUN} vendor/bin/phpspec run
 endif

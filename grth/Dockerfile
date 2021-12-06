@@ -138,6 +138,7 @@ COPY grth/config config
 COPY grth/public public
 COPY grth/frontend frontend
 COPY grth/src src
+COPY components components
 COPY grth/upgrades upgrades
 COPY grth/front-packages front-packages
 COPY grth/composer.json grth/package.json grth/yarn.lock grth/.env grth/tsconfig.json grth/*.js .
@@ -217,10 +218,12 @@ COPY --from=builder --chown=www-data:www-data /srv/pim/bin bin
 COPY --from=builder --chown=www-data:www-data /srv/pim/config config
 COPY --from=builder --chown=www-data:www-data /srv/pim/public public
 COPY --from=builder --chown=www-data:www-data /srv/pim/src src
+COPY --from=builder --chown=www-data:www-data /srv/pim/components components
 COPY --from=builder --chown=www-data:www-data /srv/pim/upgrades upgrades
 COPY --from=builder --chown=www-data:www-data /srv/pim/var/cache/prod var/cache/prod
 COPY --from=builder --chown=www-data:www-data /srv/pim/vendor vendor
-COPY --from=builder --chown=www-data:www-data /srv/pim/.env.local.php /srv/pim/composer.lock .
+COPY --from=builder --chown=www-data:www-data /srv/pim/.env.local.php .
+COPY --from=builder --chown=www-data:www-data /srv/pim/composer.lock .
 
 # Copy big commerce connector
 COPY --from=builder-bigcommerceconnector-back --chown=www-data:www-data /srv/pim/tmp/build-connector/back connectors/bigcommerce/back

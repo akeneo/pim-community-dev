@@ -15,9 +15,19 @@ import {filterErrors, Channel, ValidationError} from '@akeneo-pim-community/shar
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+
 const __ = require('oro/translator');
 const fetcherRegistry = require('pim/fetcher-registry');
+
+let assetFamilyFetcher = {
+  fetch: (_identifier: string) => {
+    return Promise.resolve({assetFamily: {attributes: [], attributeAsMainMedia: '', identifier: ''}});
+  }
+};
+
+try {
+  assetFamilyFetcher = require('akeneoassetmanager/infrastructure/fetcher/asset-family');
+} catch (err) {}
 
 class ColumnView extends BaseView {
   public config: any;

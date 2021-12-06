@@ -1033,10 +1033,10 @@ jobs:
                 echo export TYPE=${TYPE} >> $BASH_ENV
           - run:
               name: Setup tests results folder and log folder
-              command: mkdir -p ${TYPE}/var/tests/phpspec ${TYPE}/var/tests/csfixer ${TYPE}/var/logs ${TYPE}/var/tests/screenshots ~/.cache/yarn ~/.composer
+              command: mkdir -p ${TYPE}/var/tests/phpspec ${TYPE}/var/tests/csfixer ${TYPE}/var/logs ${TYPE}/var/tests/screenshots ~/.cache/yarn ~/.composer ~/.cache/Cypress
           - run:
               name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
-              command: sudo chown -R 1000:1000 ~/project ~/.cache/yarn ~/.composer
+              command: sudo chown -R 1000:1000 ~/project ~/.cache ~/.composer
           - run:
               name: Load php image
               command: docker load -i php-pim-image.tar
@@ -1071,6 +1071,9 @@ jobs:
                 name: PhpUnit Migration
                 command: PIM_CONTEXT=test make migration-back
           - run:
+                name: Tailored Export Back Tests
+                command: PIM_CONTEXT=tailored-export make ci-back
+          - run:
                 name: Install assets & css
                 command: make assets css
           - run:
@@ -1088,6 +1091,9 @@ jobs:
           - run:
               name: Front unit tests
               command: PIM_CONTEXT=test make unit-front
+          - run:
+              name: Tailored Export Front Tests
+              command: PIM_CONTEXT=tailored-export make ci-front
           - store_test_results:
                 path: ${TYPE}/var/tests
           - store_artifacts:
