@@ -712,7 +712,7 @@ jobs:
           - run:
               name: Define value for next steps
               command: |
-                INSTANCE_NAME_PREFIX=pimci-pr
+                INSTANCE_NAME_PREFIX=octopus-pr
                 INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${CIRCLE_PULL_REQUEST##*/}
                 ACTIVATE_MONITORING=true
                 DEPLOYMENTS_INSTANCES_DIR=/root/cloud-customers-dev/saas/projects/${GOOGLE_PROJECT_ID}/${CLUSTER_NAME}/releases
