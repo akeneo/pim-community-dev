@@ -72,10 +72,10 @@ final class TableTranslator implements FlatAttributeValueTranslatorInterface
             $decodedValue = \json_decode($value, true);
             foreach ($decodedValue as $index => $row) {
                 foreach ($row as $columnCode => $cellValue) {
-                    $newKey = $indexedColumnLabels[$columnCode]
+                    $label = $indexedColumnLabels[$columnCode]
                         ?? \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $columnCode);
                     unset($decodedValue[$index][$columnCode]);
-                    $decodedValue[$index][$newKey] = $this->translateValue(
+                    $decodedValue[$index][$label] = $this->translateValue(
                         $attributeCode,
                         $columnCode,
                         $locale,
