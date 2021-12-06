@@ -49,15 +49,15 @@ final class TableTranslator implements FlatAttributeValueTranslatorInterface
     /**
      * Translate multiple json values
      *
-     * @param string[] $values, for example:
+     * @param string[] $values for example:
      *  [
-     *      '[{"ingredient":"salt","is_allergenic":"1"}, ...]'
-     *      '[{"ingredient":"salt","is_allergenic":"0"}, ...]'
+     *      '[{"ingredient":"salt","is_allergenic":true}, ...]'
+     *      '[{"ingredient":"sugar","is_allergenic":false}, ...]'
      *  ]
-     * @return string[], for example:
+     * @return string[] for example:
      *  [
      *      '[{"Ingredient":"Salt","[is_allergenic]":"Yes"}, ...]'
-     *      '[{"Ingredient":"Salt","[is_allergenic]":"No"}, ...]'
+     *      '[{"Ingredient":"[sugar]","[is_allergenic]":"No"}, ...]'
      *  ]
      *
      */
