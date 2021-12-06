@@ -11,7 +11,7 @@ class SearchJobExecutionQuery
 {
     public int $page = 1;
     public int $size = 25;
-    public string $sortColumn = 'id';
+    public string $sortColumn = 'started_at';
     public string $sortDirection = 'DESC';
     public array $user = [];
     public array $type = [];

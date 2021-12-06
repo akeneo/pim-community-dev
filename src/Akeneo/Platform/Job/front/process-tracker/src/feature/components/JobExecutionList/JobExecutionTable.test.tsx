@@ -3,7 +3,7 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {act, screen, within} from '@testing-library/react';
 import {JobExecutionTable} from './JobExecutionTable';
 import {JobExecutionRow} from 'feature/models/JobExecutionTable';
-import {getDefaultJobExecutionFilterSort, JobExecutionFilterSort} from 'feature/models';
+import {JobExecutionFilterSort} from 'feature/models';
 import userEvent from '@testing-library/user-event';
 
 const rows: JobExecutionRow[] = [
@@ -109,26 +109,6 @@ test('it can sort a Job execution Table', () => {
   userEvent.click(screen.getByText('akeneo_job_process_tracker.job_execution_list.table.headers.job_name'));
 
   expect(handleSortChange).toBeCalledWith({column: 'job_name', direction: 'ASC'});
-});
-
-test('it reset sort when user click on descending column sorted', () => {
-  const handleSortChange = jest.fn();
-
-  renderWithProviders(
-    <JobExecutionTable
-      jobExecutionRows={rows}
-      onSortChange={handleSortChange}
-      currentSort={{
-        column: 'job_name',
-        direction: 'DESC',
-      }}
-      onTableRefresh={jest.fn()}
-    />
-  );
-
-  userEvent.click(screen.getByText('akeneo_job_process_tracker.job_execution_list.table.headers.job_name'));
-
-  expect(handleSortChange).toBeCalledWith(getDefaultJobExecutionFilterSort());
 });
 
 test('it redirects to a job execution details on row click when user can show detail execution', () => {

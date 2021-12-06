@@ -1,13 +1,7 @@
 import React, {useCallback, MouseEvent} from 'react';
 import {Table} from 'akeneo-design-system';
 import {useDateFormatter, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
-import {
-  JobExecutionRow,
-  JobExecutionFilterSort,
-  jobCanBeStopped,
-  canShowJobExecutionDetail,
-  getDefaultJobExecutionFilterSort
-} from '../../models';
+import {JobExecutionRow, JobExecutionFilterSort, jobCanBeStopped, canShowJobExecutionDetail} from '../../models';
 import {JobExecutionStatus} from '../JobExecutionStatus';
 import {StopJobAction} from '../StopJobAction';
 
@@ -58,12 +52,6 @@ const JobExecutionTable = ({
             key={sortableColumnHeader}
             isSortable={true}
             onDirectionChange={direction => {
-              if (currentSort.column === sortableColumnHeader && currentSort.direction === 'DESC') {
-                onSortChange(getDefaultJobExecutionFilterSort());
-
-                return;
-              }
-
               if ('none' !== direction) {
                 onSortChange({column: sortableColumnHeader, direction: 'ascending' === direction ? 'ASC' : 'DESC'});
               }

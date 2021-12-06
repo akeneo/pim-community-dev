@@ -15,7 +15,7 @@ const JobInstanceDetail = ({code, type}: JobInstanceDetailProps) => {
   const filter = useMemo<JobExecutionFilter>(
     () => ({
       page: 1,
-      sort: {column: 'id', direction: 'DESC'},
+      sort: {column: 'started_at', direction: 'DESC'},
       status: [],
       size: 25,
       search: '',

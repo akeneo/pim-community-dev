@@ -185,7 +185,6 @@ SQL;
         }
 
         $orderByColumn = match ($query->sortColumn) {
-            'id' => "je.id $sortDirection",
             'job_name' => "ji.label $sortDirection",
             'type' => "ji.type $sortDirection",
             'started_at' => "je.start_time $sortDirection",

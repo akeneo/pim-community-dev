@@ -67,5 +67,3 @@ test('it did not care about the sort to tell if the given filter is the default 
     })
   ).toEqual(true);
 });
-
-
