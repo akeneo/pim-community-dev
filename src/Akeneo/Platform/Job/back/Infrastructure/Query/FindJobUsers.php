@@ -44,7 +44,7 @@ class FindJobUsers implements FindJobUsersInterface
         $wherePart = '';
 
         if (!empty($username)) {
-            $wherePart = 'AND job_execution.user LIKE %:username%';
+            $wherePart = 'AND job_execution.user LIKE :username';
         }
 
         $sql = sprintf($sql, $wherePart);
@@ -56,7 +56,7 @@ class FindJobUsers implements FindJobUsersInterface
     {
         $jobUsers = $this->connection->executeQuery(
             $sql,
-            ['username' => $query->search],
+            ['username' => sprintf('%%%s%%', $query->search)],
         )->fetchFirstColumn();
 
         return $jobUsers;
