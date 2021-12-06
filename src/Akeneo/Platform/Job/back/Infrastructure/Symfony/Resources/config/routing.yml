@@ -8,7 +8,7 @@ akeneo_job_process_tracker_details:
 
 akeneo_job_index_action:
   path: /rest/process-tracker
-  defaults: { _controller: akeneo.job.controller.index_action }
+  defaults: { _controller: akeneo.job.controller.get_job_execution_action }
   methods: [POST]
 
 akeneo_job_get_job_types_action:

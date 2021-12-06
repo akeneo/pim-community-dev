@@ -24,6 +24,13 @@ class FindJobUsers implements FindJobUsersInterface
 
     public function search(FindJobUsersQuery $query): array
     {
+        $sql = $this->createSqlQuery($query);
+
+        return $this->fetchUsers($sql, $query);
+    }
+
+    private function createSqlQuery(FindJobUsersQuery $query): string
+    {
         $username = $query->search;
 
         $sql = <<<SQL
@@ -42,9 +49,14 @@ class FindJobUsers implements FindJobUsersInterface
 
         $sql = sprintf($sql, $wherePart);
 
+        return $sql;
+    }
+
+    private function fetchUsers(string $sql, FindJobUsersQuery $query): array
+    {
         $jobUsers = $this->connection->executeQuery(
             $sql,
-            ['username' => sprintf('%%%s%%', $username)],
+            ['username' => sprintf('%%%s%%', $query->search)],
         )->fetchFirstColumn();
 
         return $jobUsers;

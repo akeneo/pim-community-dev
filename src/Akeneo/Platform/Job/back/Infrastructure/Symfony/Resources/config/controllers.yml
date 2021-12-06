@@ -1,6 +1,6 @@
 services:
-    akeneo.job.controller.index_action:
-        class: 'Akeneo\Platform\Job\Infrastructure\Controller\IndexAction'
+    akeneo.job.controller.get_job_execution_action:
+        class: 'Akeneo\Platform\Job\Infrastructure\Controller\GetJobExecutionAction'
         public: true
         arguments:
             - '@security.helper'
