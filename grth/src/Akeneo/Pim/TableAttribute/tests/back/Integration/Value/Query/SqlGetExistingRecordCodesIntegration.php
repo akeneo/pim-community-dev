@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\TableAttribute\tests\back\Integration\Value\Query;
 
+use Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\GetExistingRecordCodes;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\SqlGetExistingRecordCodes;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
@@ -9,6 +10,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlRecordRepository;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlReferenceEntityRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -19,7 +22,7 @@ class SqlGetExistingRecordCodesIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->sqlGetExistingRecordCodes = $this->get('Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\GetExistingRecordCodes');
+        $this->sqlGetExistingRecordCodes = $this->get(GetExistingRecordCodes::class);
 
         $referenceEntity = ReferenceEntity::create(
             ReferenceEntityIdentifier::fromString('brand'),
@@ -27,9 +30,9 @@ class SqlGetExistingRecordCodesIntegration extends TestCase
             Image::createEmpty()
         );
 
-        $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity')->create($referenceEntity);
+        $this->get(SqlReferenceEntityRepository::class)->create($referenceEntity);
 
-        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
+        $recordRepository = $this->get(SqlRecordRepository::class);
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
         $recordCode1 = RecordCode::fromString('Ferrari');

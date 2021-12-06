@@ -125,7 +125,11 @@ final class TableConfiguration
         ));
     }
 
-    public function getRecordColumns(): array{
+    /**
+     * @return RecordColumn[]
+     */
+    public function getRecordColumns(): array
+    {
         return \array_values(\array_filter(
             $this->columnDefinitions,
             fn (ColumnDefinition $columnDefinition): bool => $columnDefinition instanceof RecordColumn

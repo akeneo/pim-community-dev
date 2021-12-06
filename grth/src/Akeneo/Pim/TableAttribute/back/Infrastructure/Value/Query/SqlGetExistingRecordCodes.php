@@ -3,8 +3,6 @@
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Value\Query;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\Exception as DriverException;
-use Doctrine\DBAL\Exception as DBALException;
 
 class SqlGetExistingRecordCodes implements GetExistingRecordCodes
 {
@@ -52,5 +50,4 @@ class SqlGetExistingRecordCodes implements GetExistingRecordCodes
             return $results;
         }, []);
     }
-
 }
