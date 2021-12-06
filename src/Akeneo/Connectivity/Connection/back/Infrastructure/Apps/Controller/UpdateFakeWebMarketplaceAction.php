@@ -36,7 +36,7 @@ SQL;
         $jsonEditor = $this->getDoctrine()->getConnection()->executeQuery($sql)->fetchOne();
         $jsonEditor = false === $jsonEditor ? self::EMPTY_JSON : $jsonEditor;
 
-        return $this->render('update-fake-web-marketplace.html.twig', [
+        return $this->render('@PimUI/marketplace/update-fake-web-marketplace.html.twig', [
             'jsonEditor' => json_encode(json_decode($jsonEditor),  JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES),
         ]);
     }
