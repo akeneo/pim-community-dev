@@ -37,14 +37,14 @@ class FindJobUsers implements FindJobUsersInterface
             SELECT DISTINCT job_execution.user
             FROM akeneo_batch_job_execution job_execution
             WHERE job_execution.is_visible = 1
-            %%%s%%
+            %s
             ORDER BY job_execution.user
         SQL;
 
         $wherePart = '';
 
         if (!empty($username)) {
-            $wherePart = 'AND job_execution.user LIKE :username';
+            $wherePart = 'AND job_execution.user LIKE %:username%';
         }
 
         $sql = sprintf($sql, $wherePart);

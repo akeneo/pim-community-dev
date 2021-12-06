@@ -13,11 +13,12 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 
 /**
- * TODO: Should we extract this class into multiple classes ?
+ * TODO: RAC-1103
+ * Should we extract this class into multiple classes ?
  *  - To manage filters: instead of managing both at the same time in private classes buildQueryParams and buildQueryParamsTypes ?
  *      - TypeFilter class: responsible for handling type filter
  *      - StatusFilter class: responsible for handling the Status filtering
- *  - To manage JobExecutionRow hydration in a dedicated class too
+ *  - To manage JobExecutionRow hydration in a dedicated class too (if possible)
  *
  * @author Grégoire Houssard <gregoire.houssard@akeneo.com>
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)

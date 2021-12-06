@@ -3,7 +3,8 @@
 namespace Akeneo\Platform\Job\Application\SearchJobExecution;
 
 /**
- * Maybe this is just another read usecase ? How about ?
+ * TODO: RAC-1103
+ * Maybe this is just another read usecase ? How about:
  * - We move this object in Application/SearchUsers/SearchUsersQuery
  * - Add the Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersInterface in there
  *

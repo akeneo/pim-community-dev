@@ -41,11 +41,11 @@ class GetJobUsersAction
             return new RedirectResponse('/');
         }
 
+        $this->denyAccessUnlessAclIsGranted();
+
         if (!$this->securityFacade->isGranted('pim_enrich_job_tracker_view_all_jobs')) {
             return new JsonResponse([$this->security->getUser()->getUserIdentifier()]);
         }
-
-        $this->denyAccessUnlessAclIsGranted();
 
         $findJobUsersQuery = new FindJobUsersQuery();
         $findJobUsersQuery->search = (string) $request->get('search', '');
