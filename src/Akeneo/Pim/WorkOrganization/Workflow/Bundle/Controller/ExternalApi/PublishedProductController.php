@@ -30,7 +30,6 @@ use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
 use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
-use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
@@ -76,9 +75,6 @@ class PublishedProductController
     /** @var ParameterValidatorInterface */
     protected $parameterValidator;
 
-    /** @var  PrimaryKeyEncrypter */
-    protected $primaryKeyEncrypter;
-
     /** @var array */
     protected $apiConfiguration;
 
@@ -97,7 +93,6 @@ class PublishedProductController
      * @param PaginatorInterface                    $searchAfterPaginator
      * @param PaginatorInterface                    $offsetPaginator
      * @param ParameterValidatorInterface           $parameterValidator
-     * @param PrimaryKeyEncrypter                   $primaryKeyEncrypter
      * @param array                                 $apiConfiguration
      */
     public function __construct(
@@ -112,7 +107,6 @@ class PublishedProductController
         PaginatorInterface $searchAfterPaginator,
         PaginatorInterface $offsetPaginator,
         ParameterValidatorInterface $parameterValidator,
-        PrimaryKeyEncrypter $primaryKeyEncrypter,
         array $apiConfiguration
     ) {
         $this->searchAfterPqbFactory = $searchAfterPqbFactory;
@@ -125,7 +119,6 @@ class PublishedProductController
         $this->searchAfterPaginator = $searchAfterPaginator;
         $this->offsetPaginator = $offsetPaginator;
         $this->parameterValidator = $parameterValidator;
-        $this->primaryKeyEncrypter = $primaryKeyEncrypter;
         $this->apiConfiguration = $apiConfiguration;
         $this->queryParametersChecker = $queryParametersChecker;
     }
@@ -316,12 +309,9 @@ class PublishedProductController
         array $normalizerOptions
     ): array {
         $pqbOptions = ['limit' => (int) $queryParameters['limit']];
-        $searchParameterCrypted = null;
         if (isset($queryParameters['search_after'])) {
-            $searchParameterCrypted = $queryParameters['search_after'];
-            $searchParameterDecrypted = $this->primaryKeyEncrypter->decrypt($queryParameters['search_after']);
-            $pqbOptions['search_after_unique_key'] = $searchParameterDecrypted;
-            $pqbOptions['search_after'] = [$searchParameterDecrypted];
+            $pqbOptions['search_after_unique_key'] = $queryParameters['search_after'];
+            $pqbOptions['search_after'] = [$queryParameters['search_after']];
         }
         $pqb = $this->searchAfterPqbFactory->create($pqbOptions);
 
@@ -337,7 +327,7 @@ class PublishedProductController
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
 
-        $pqb->addSorter('id', Directions::ASCENDING);
+        $pqb->addSorter('identifier', Directions::ASCENDING);
         $publishedProductCursor = $pqb->execute();
 
         $publishedProducts = [];
@@ -352,8 +342,8 @@ class PublishedProductController
         $parameters = [
             'query_parameters'    => $queryParameters,
             'search_after'        => [
-                'next' => false !== $lastPublishedProduct ? $this->primaryKeyEncrypter->encrypt($lastPublishedProduct->getId()) : null,
-                'self' => $searchParameterCrypted,
+                'next' => false !== $lastPublishedProduct ? $lastPublishedProduct->getIdentifier() : null,
+                'self' => $queryParameters['search_after'] ?? null,
             ],
             'list_route_name'     => 'pimee_api_published_product_list',
             'item_route_name'     => 'pimee_api_published_product_get',

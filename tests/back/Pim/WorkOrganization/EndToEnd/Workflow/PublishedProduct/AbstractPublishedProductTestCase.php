@@ -173,25 +173,6 @@ JSON;
     }
 
     /**
-     * @param string $publishedProductIdentifier
-     *
-     * @return string
-     */
-    protected function getEncryptedId(string $publishedProductIdentifier): string
-    {
-        $user = $this->get('pim_user.provider.user')->loadUserByUsername('admin');
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->get('security.token_storage')->setToken($token);
-
-        $encrypter = $this->get('pim_api.security.primary_key_encrypter');
-        $publishedProductRepository = $this->get('pimee_workflow.repository.published_product');
-
-        $product = $publishedProductRepository->findOneByIdentifier($publishedProductIdentifier);
-
-        return $encrypter->encrypt($product->getId());
-    }
-
-    /**
      * @param string $productIdentifier
      */
     protected function assertProductNotDeleted(string $productIdentifier): void
