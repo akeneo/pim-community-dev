@@ -1,4 +1,4 @@
-import {getDefaultJobExecutionFilter, isDefaultJobExecutionFilter, hasOneFilterSet} from './JobExecutionFilter';
+import {getDefaultJobExecutionFilter, isDefaultJobExecutionFilter} from './JobExecutionFilter';
 
 test('it can tell if the given filter is the default Job execution filter', () => {
   expect(isDefaultJobExecutionFilter(getDefaultJobExecutionFilter())).toEqual(true);
@@ -66,14 +66,4 @@ test('it did not care about the sort to tell if the given filter is the default 
       },
     })
   ).toEqual(true);
-});
-
-test('it can tell if the given filter has at least one filter set', () => {
-  expect(hasOneFilterSet(getDefaultJobExecutionFilter())).toEqual(false);
-  expect(hasOneFilterSet({...getDefaultJobExecutionFilter(), code: ['a_job']})).toEqual(true);
-});
-
-test('it can tell if the given filter has at least one filter set', () => {
-  expect(hasOneFilterSet(getDefaultJobExecutionFilter())).toEqual(false);
-  expect(hasOneFilterSet({...getDefaultJobExecutionFilter(), code: ['a_job']})).toEqual(true);
 });
