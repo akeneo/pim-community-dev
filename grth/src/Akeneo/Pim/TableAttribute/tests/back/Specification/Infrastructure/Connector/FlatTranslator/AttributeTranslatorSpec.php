@@ -8,11 +8,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTransla
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Channel\GetChannelTranslations;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\AttributeColumnTranslator;
+use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\AttributeTranslator;
 use Akeneo\Tool\Component\Localization\LanguageTranslator;
 use PhpSpec\ObjectBehavior;
 
-class AttributeColumnTranslatorSpec extends ObjectBehavior
+class AttributeTranslatorSpec extends ObjectBehavior
 {
     function let(
         AttributeRepositoryInterface $attributeRepository,
@@ -24,7 +24,7 @@ class AttributeColumnTranslatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(AttributeColumnTranslator::class);
+        $this->shouldHaveType(AttributeTranslator::class);
     }
 
     function it_translates_an_attribute_column(AttributeRepositoryInterface $attributeRepository)

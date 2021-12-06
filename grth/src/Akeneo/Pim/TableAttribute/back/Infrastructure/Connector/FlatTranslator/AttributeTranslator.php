@@ -18,7 +18,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\Channel\GetChannelTranslation
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Localization\LanguageTranslator;
 
-class AttributeColumnTranslator
+class AttributeTranslator
 {
     private AttributeRepositoryInterface $attributeRepository;
     private LanguageTranslator $languageTranslator;

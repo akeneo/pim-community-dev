@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator;
 
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
-use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\AttributeColumnTranslator;
+use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\AttributeTranslator;
+use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableColumnTranslator;
 use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValuesTranslator;
 use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableValueTranslatorRegistry;
-use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use PhpSpec\ObjectBehavior;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -20,23 +15,25 @@ final class TableValuesTranslatorSpec extends ObjectBehavior
 {
     function let(
         TableValueTranslatorRegistry $tableValueTranslatorRegistry,
-        AttributeColumnTranslator $attributeColumnTranslator,
-        TableConfigurationRepository $tableConfigurationRepository,
+        AttributeTranslator $attributeTranslator,
+        TableColumnTranslator $tableColumnTranslator,
         TranslatorInterface $translator
     ) {
-        $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient']]),
-            NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
-            BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'is_allergenic', 'labels' => ['en_US' => 'Is allergenic']]),
-        ]));
         $translator->trans('pim_table.export_with_label.product', [], null, 'en_US')->willReturn('Product');
         $translator->trans('pim_table.export_with_label.product_model', [], null, 'en_US')->willReturn('Product model');
         $translator->trans('pim_table.export_with_label.attribute', [], null, 'en_US')->willReturn('Attribute');
 
+        $tableColumnTranslator->getTableColumnLabels('nutrition', 'en_US', ['Product', 'Product model', 'Attribute'])
+            ->willReturn([
+                'ingredient' => 'Ingredient',
+                'quantity' => '[quantity]',
+                'is_allergenic' => 'Is allergenic',
+            ]);
+
         $this->beConstructedWith(
             $tableValueTranslatorRegistry,
-            $attributeColumnTranslator,
-            $tableConfigurationRepository,
+            $attributeTranslator,
+            $tableColumnTranslator,
             $translator
         );
     }
@@ -48,7 +45,7 @@ final class TableValuesTranslatorSpec extends ObjectBehavior
 
     function it_translates_attribute_values(
         TableValueTranslatorRegistry $tableValueTranslatorRegistry,
-        AttributeColumnTranslator $attributeColumnTranslator
+        AttributeTranslator $attributeTranslator
     ) {
         $items = [
             [
@@ -72,7 +69,7 @@ final class TableValuesTranslatorSpec extends ObjectBehavior
         $tableValueTranslatorRegistry->translate('nutrition', 'ingredient', 'en_US', 'sugar')->willReturn('Sugar');
         $tableValueTranslatorRegistry->translate('nutrition', 'quantity', 'en_US', 5)->willReturn(5);
 
-        $attributeColumnTranslator->translate('nutrition-fr_FR-eco', 'en_US')->willReturn('Nutrition (Français, ecommerce)');
+        $attributeTranslator->translate('nutrition-fr_FR-eco', 'en_US')->willReturn('Nutrition (Français, ecommerce)');
 
         $this->translate($items, 'en_US', false)->shouldReturn([
             [
@@ -94,7 +91,7 @@ final class TableValuesTranslatorSpec extends ObjectBehavior
 
     function it_translates_attribute_values_with_headers(
         TableValueTranslatorRegistry $tableValueTranslatorRegistry,
-        AttributeColumnTranslator $attributeColumnTranslator
+        AttributeTranslator $attributeTranslator
     ) {
         $items = [
             [
@@ -118,7 +115,7 @@ final class TableValuesTranslatorSpec extends ObjectBehavior
         $tableValueTranslatorRegistry->translate('nutrition', 'ingredient', 'en_US', 'sugar')->willReturn('Sugar');
         $tableValueTranslatorRegistry->translate('nutrition', 'quantity', 'en_US', 5)->willReturn(5);
 
-        $attributeColumnTranslator->translate('nutrition-fr_FR-eco', 'en_US')->willReturn('Nutrition (Français, ecommerce)');
+        $attributeTranslator->translate('nutrition-fr_FR-eco', 'en_US')->willReturn('Nutrition (Français, ecommerce)');
 
         $this->translate($items, 'en_US', true)->shouldReturn([
             [

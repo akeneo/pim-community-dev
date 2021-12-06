@@ -14,29 +14,25 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableValueTranslatorRegistry;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TableValuesTranslator
 {
     private TableValueTranslatorRegistry $tableValueTranslatorRegistry;
-    private AttributeColumnTranslator $attributeColumnTranslator;
-    private TableConfigurationRepository $tableConfigurationRepository;
+    private AttributeTranslator $attributeTranslator;
+    private TableColumnTranslator $tableColumnTranslator;
     private TranslatorInterface $translator;
-    private array $cachedColumnTranslations = [];
 
     public function __construct(
         TableValueTranslatorRegistry $tableValueTranslatorRegistry,
-        AttributeColumnTranslator $attributeColumnTranslator,
-        TableConfigurationRepository $tableConfigurationRepository,
+        AttributeTranslator $attributeTranslator,
+        TableColumnTranslator $tableColumnTranslator,
         TranslatorInterface $translator
     ) {
         $this->tableValueTranslatorRegistry = $tableValueTranslatorRegistry;
-        $this->attributeColumnTranslator = $attributeColumnTranslator;
-        $this->tableConfigurationRepository = $tableConfigurationRepository;
+        $this->attributeTranslator = $attributeTranslator;
+        $this->tableColumnTranslator = $tableColumnTranslator;
         $this->translator = $translator;
     }
 
@@ -49,26 +45,32 @@ class TableValuesTranslator
             $items[$index] = $this->translateItem($item, $localeCode);
         }
 
-        if (!$headerWithLabel) {
-            return $items;
-        }
+        return $headerWithLabel ? $this->translateWithHeaderLabel($items, $localeCode, $attributeCodes) : $items;
+    }
+    
+    private function translateWithHeaderLabel(array $items, string $localeCode, array $attributeCodes): array
+    {
+        $extraColumnTranslations = [
+            'product' => $this->translator->trans('pim_table.export_with_label.product', [], null, $localeCode),
+            'product_model' => $this->translator->trans('pim_table.export_with_label.product_model', [], null, $localeCode),
+            'attribute' => $this->translator->trans('pim_table.export_with_label.attribute', [], null, $localeCode),
+        ];
 
         $newItems = [];
         foreach ($items as $index => $item) {
-            $tableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($attributeCodes[$index]);
+            $tableColumnLabels = $this->tableColumnTranslator->getTableColumnLabels(
+                $attributeCodes[$index],
+                $localeCode,
+                \array_values($extraColumnTranslations)
+            );
 
             $newItem = [];
             foreach ($item as $column => $value) {
-                // @TODO: handle doublons in the translations
-                if (!\in_array($column, $this->cachedColumnTranslations)) {
-                    $this->cachedColumnTranslations[$column] = $this->translateColumn(
-                        $tableConfiguration,
-                        $column,
-                        $localeCode
-                    );
-                }
-
-                $newItem[$this->cachedColumnTranslations[$column]] = $value;
+                $label = \array_key_exists($column, $extraColumnTranslations)
+                    ? $extraColumnTranslations[$column]
+                    : ($tableColumnLabels[$column] ?? \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $column))
+                ;
+                $newItem[$label] = $value;
             }
 
             $newItems[] = $newItem;
@@ -89,36 +91,11 @@ class TableValuesTranslator
 
             $item[$column] = match ($column) {
                 'product', 'product_model' => $value,
-                'attribute' => $this->attributeColumnTranslator->translate($value, $localeCode),
-                // @TODO: handle doublons in the key
+                'attribute' => $this->attributeTranslator->translate($value, $localeCode),
                 default => $this->tableValueTranslatorRegistry->translate($attributeCode, $column, $localeCode, $value),
             };
         }
 
         return $item;
-    }
-
-    private function translateColumn(
-        TableConfiguration $tableConfiguration,
-        string $columnName,
-        string $localeCode
-    ): string {
-        if (\in_array($columnName, ['product', 'product_model', 'attribute'])) {
-            return $this->translator->trans(
-                \sprintf('pim_table.export_with_label.%s', $columnName),
-                [],
-                null,
-                $localeCode
-            );
-        }
-
-        // @TODO: handle doublons in the key
-        $column = $tableConfiguration->getColumnByCode(ColumnCode::fromString($columnName));
-        if (null === $column) {
-            return \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $columnName);
-        }
-
-        return $column->labels()->getLabel($localeCode)
-            ?? \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $columnName);
     }
 }

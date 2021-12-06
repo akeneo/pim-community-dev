@@ -16,21 +16,19 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue\FlatAttributeValueTranslatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableValueTranslatorRegistry;
 
 final class TableTranslator implements FlatAttributeValueTranslatorInterface
 {
-    private TableConfigurationRepository $tableConfigurationRepository;
     private TableValueTranslatorRegistry $tableValueTranslatorRegistry;
-    private array $columnLabelsByAttributeCodeAndLocaleCode = [];
+    private TableColumnTranslator $tableColumnTranslator;
 
     public function __construct(
-        TableConfigurationRepository $tableConfigurationRepository,
-        TableValueTranslatorRegistry $tableValueTranslatorRegistry
+        TableValueTranslatorRegistry $tableValueTranslatorRegistry,
+        TableColumnTranslator $tableColumnTranslator
     ) {
-        $this->tableConfigurationRepository = $tableConfigurationRepository;
         $this->tableValueTranslatorRegistry = $tableValueTranslatorRegistry;
+        $this->tableColumnTranslator = $tableColumnTranslator;
     }
 
     public function supports(string $attributeType, string $columnName): bool
@@ -55,7 +53,7 @@ final class TableTranslator implements FlatAttributeValueTranslatorInterface
      */
     public function translate(string $attributeCode, array $properties, array $values, string $locale): array
     {
-        $indexedColumnLabels = $this->getIndexedColumnLabels($attributeCode, $locale);
+        $indexedColumnLabels = $this->tableColumnTranslator->getTableColumnLabels($attributeCode, $locale);
         foreach ($values as $key => $value) {
             if ('' === $value) {
                 continue;
@@ -80,40 +78,5 @@ final class TableTranslator implements FlatAttributeValueTranslatorInterface
         }
 
         return $values;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    private function getIndexedColumnLabels(string $attributeCode, string $localeCode): array
-    {
-        $key = \sprintf('%s-%s', $attributeCode, $localeCode);
-        if (!\array_key_exists($key, $this->columnLabelsByAttributeCodeAndLocaleCode)) {
-            $tableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($attributeCode);
-            $indexedLabels = [];
-            foreach ($tableConfiguration->columnIds() as $columnId) {
-                $column = $tableConfiguration->getColumn($columnId);
-                $indexedLabels[$column->code()->asString()] = $column->labels()->getLabel($localeCode)
-                    ?? \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $column->code()->asString());
-            }
-
-            $duplicatedLabels = \array_diff_key($indexedLabels, \array_unique($indexedLabels));
-            if ([] !== $duplicatedLabels) {
-                foreach ($indexedLabels as $stringCode => $label) {
-                    if (\in_array($label, $duplicatedLabels)) {
-                        $indexedLabels[$stringCode] = \sprintf(
-                            '%s%s%s',
-                            $label,
-                            FlatTranslatorInterface::COLUMN_CODE_AND_TRANSLATION_SEPARATOR,
-                            $stringCode
-                        );
-                    }
-                }
-            }
-
-            $this->columnLabelsByAttributeCodeAndLocaleCode[$key] = $indexedLabels;
-        }
-
-        return $this->columnLabelsByAttributeCodeAndLocaleCode[$key];
     }
 }
