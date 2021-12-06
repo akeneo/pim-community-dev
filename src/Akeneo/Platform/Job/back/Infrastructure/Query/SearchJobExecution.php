@@ -72,9 +72,6 @@ SQL;
         $queryParamsTypes = $this->buildQueryParamsTypes();
 
         $page = $query->page;
-        if ($page > 50) {
-            throw new \InvalidArgumentException('The page number can not be greater than 50');
-        }
         $size = $query->size;
 
         $rawJobExecutions = $this->connection->executeQuery(
@@ -181,17 +178,13 @@ SQL;
     {
         $sortDirection = $query->sortDirection;
 
-        if (!in_array($sortDirection, ['ASC', 'DESC'])) {
-            throw new \InvalidArgumentException(sprintf('Sort direction "%s" is not supported', $query->sortDirection));
-        }
-
         $orderByColumn = match ($query->sortColumn) {
             'job_name' => sprintf("ji.label %s", $sortDirection),
             'type' => sprintf("ji.type %s", $sortDirection),
             'started_at' => sprintf("je.start_time %s", $sortDirection),
             'username' => sprintf("je.user %s", $sortDirection),
             'status' => sprintf("je.status %s", $sortDirection),
-            default => throw new \InvalidArgumentException(sprintf('Sort column "%s" is not supported', $query->sortColumn)),
+            default => throw new \InvalidArgumentException(sprintf('Unknown sort column "%s"', $query->sortColumn)),
         };
 
         return sprintf('ORDER BY %s', $orderByColumn);
