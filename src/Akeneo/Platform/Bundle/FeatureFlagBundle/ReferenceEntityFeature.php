@@ -11,9 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Application;
-
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
+namespace Akeneo\Platform\Bundle\FeatureFlagBundle;
 
 class ReferenceEntityFeature implements FeatureFlag
 {

@@ -139,4 +139,4 @@ services:
 
     # Feature flag service
     akeneo_referenceentity.feature_flag:
-        class: 'Akeneo\ReferenceEntity\Infrastructure\Application\ReferenceEntityFeature'
+        class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\ReferenceEntityFeature'
