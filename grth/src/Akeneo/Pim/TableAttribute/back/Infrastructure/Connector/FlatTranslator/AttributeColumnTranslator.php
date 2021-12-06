@@ -14,24 +14,24 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Channel\GetChannelTranslations;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Localization\LanguageTranslator;
 
 class AttributeColumnTranslator
 {
-    private GetAttributes $getAttributes;
+    private AttributeRepositoryInterface $attributeRepository;
     private LanguageTranslator $languageTranslator;
     private GetChannelTranslations $getChannelTranslations;
     private array $localeTranslationCache = [];
     private array $channelTranslationCache = [];
 
     public function __construct(
-        GetAttributes $getAttributes,
+        AttributeRepositoryInterface $attributeRepository,
         LanguageTranslator $languageTranslator,
         GetChannelTranslations $getChannelTranslations
     ) {
-        $this->getAttributes = $getAttributes;
+        $this->attributeRepository = $attributeRepository;
         $this->languageTranslator = $languageTranslator;
         $this->getChannelTranslations = $getChannelTranslations;
     }
@@ -40,10 +40,13 @@ class AttributeColumnTranslator
     {
         $attributeParts = \explode('-', $column);
         $attributeCode = $attributeParts[0];
-        $attribute = $this->getAttributes->forCode($attributeCode);
 
-        $attributeLabel = $attribute->availableLocaleCodes()[$localeCode]
-            ?? \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $attributeCode);
+        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+        $translation = $attribute->getTranslation($localeCode);
+        $attributeLabel = null !== $translation && null !== $translation->getLabel()
+            ? $translation->getLabel()
+            : \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $attributeCode)
+        ;
 
         if ($attribute->isLocalizable() && $attribute->isScopable()) {
             return \sprintf(

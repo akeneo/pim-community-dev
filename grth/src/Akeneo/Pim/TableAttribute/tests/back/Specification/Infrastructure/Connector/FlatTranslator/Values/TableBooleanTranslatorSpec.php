@@ -67,6 +67,14 @@ class TableBooleanTranslatorSpec extends ObjectBehavior
         $this->translate('nutrition', $booleanColumn, 'fr_FR', false)->shouldReturn('Non');
     }
 
+    function it_translates_string_values()
+    {
+        $booleanColumn = BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'is_allergenic']);
+
+        $this->translate('nutrition', $booleanColumn, 'en_US', '1')->shouldReturn('Yes');
+        $this->translate('nutrition', $booleanColumn, 'en_US', '0')->shouldReturn('No');
+    }
+
     function it_translates_unknown_value()
     {
         $booleanColumn = BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'is_allergenic']);

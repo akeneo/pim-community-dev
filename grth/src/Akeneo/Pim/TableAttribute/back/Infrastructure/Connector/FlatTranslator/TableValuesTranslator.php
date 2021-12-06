@@ -18,26 +18,26 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigur
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableValueTranslatorRegistry;
-use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TableValuesTranslator
 {
     private TableValueTranslatorRegistry $tableValueTranslatorRegistry;
     private AttributeColumnTranslator $attributeColumnTranslator;
     private TableConfigurationRepository $tableConfigurationRepository;
-    private LabelTranslatorInterface $labelTranslator;
+    private TranslatorInterface $translator;
     private array $cachedColumnTranslations = [];
 
     public function __construct(
         TableValueTranslatorRegistry $tableValueTranslatorRegistry,
         AttributeColumnTranslator $attributeColumnTranslator,
         TableConfigurationRepository $tableConfigurationRepository,
-        LabelTranslatorInterface $labelTranslator
+        TranslatorInterface $translator
     ) {
         $this->tableValueTranslatorRegistry = $tableValueTranslatorRegistry;
         $this->attributeColumnTranslator = $attributeColumnTranslator;
         $this->tableConfigurationRepository = $tableConfigurationRepository;
-        $this->labelTranslator = $labelTranslator;
+        $this->translator = $translator;
     }
 
     public function translate(array $items, string $localeCode, bool $headerWithLabel): array
@@ -104,10 +104,11 @@ class TableValuesTranslator
         string $localeCode
     ): string {
         if (\in_array($columnName, ['product', 'product_model', 'attribute'])) {
-            return $this->labelTranslator->translate(
-                $columnName,
-                $localeCode,
-                \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $columnName)
+            return $this->translator->trans(
+                \sprintf('pim_table.export_with_label.%s', $columnName),
+                [],
+                null,
+                $localeCode
             );
         }
 
