@@ -32,4 +32,4 @@ Feature: Activate an OAuth2 client application in the PIM
       | pim_api_attribute_group_edit | false   |
       | pim_api_family_edit          | false   |
       | pim_api_family_variant_edit  | false   |
-    And it has an authorization code
+    And it can exchange the authorization code for a token
