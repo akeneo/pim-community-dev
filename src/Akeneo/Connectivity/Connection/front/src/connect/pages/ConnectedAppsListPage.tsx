@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC} from 'react';
 import {Breadcrumb} from 'akeneo-design-system';
 import {useTranslate} from '../../shared/translate';
 import {PageContent, PageHeader} from '../../common';
@@ -6,36 +6,13 @@ import {UserButtons} from '../../shared/user';
 import {useRouter} from '../../shared/router/use-router';
 import {ConnectedAppsContainerIsLoading} from '../components/ConnectedApps/ConnectedAppsContainerIsLoading';
 import {ConnectedAppsContainer} from '../components/ConnectedApps/ConnectedAppsContainer';
-import {ConnectedApp} from '../../model/Apps/connected-app';
-import {useFetchConnectedApps} from '../hooks/use-fetch-connected-apps';
-import {useFeatureFlags} from '../../shared/feature-flags';
-import {NotificationLevel, useNotify} from '../../shared/notify';
+import {useConnectedApps} from '../hooks/use-connected-apps';
 
 export const ConnectedAppsListPage: FC = () => {
     const translate = useTranslate();
     const generateUrl = useRouter();
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
-    const featureFlag = useFeatureFlags();
-    const fetchConnectedApps = useFetchConnectedApps();
-    const notify = useNotify();
-    const [connectedApps, setConnectedApps] = useState<ConnectedApp[] | null | false>(null);
-
-    useEffect(() => {
-        if (!featureFlag.isEnabled('marketplace_activate')) {
-            setConnectedApps([]);
-            return;
-        }
-
-        fetchConnectedApps()
-            .then(setConnectedApps)
-            .catch(() => {
-                setConnectedApps(false);
-                notify(
-                    NotificationLevel.ERROR,
-                    translate('akeneo_connectivity.connection.connect.connected_apps.list.flash.error')
-                );
-            });
-    }, [fetchConnectedApps]);
+    const connectedApps = useConnectedApps();
 
     const breadcrumb = (
         <Breadcrumb>

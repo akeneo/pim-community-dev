@@ -22,6 +22,7 @@ test('The connected app card renders', async () => {
         categories: ['category A1', 'category A2'],
         certified: false,
         partner: 'partner A',
+        activate_url: 'http://www.example.com/activate',
     };
 
     renderWithProviders(<ConnectedAppCard item={item} />);
@@ -35,5 +36,8 @@ test('The connected app card renders', async () => {
     expect(screen.queryByText('category A2')).toBeNull();
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.open_app')
     ).toBeInTheDocument();
 });

@@ -59,7 +59,6 @@ class AuthorizeAction
             $clientId,
             $request->query->get('response_type', ''),
             $request->query->get('scope', ''),
-            $request->query->get('redirect_uri', ''),
             $request->query->get('state', null),
         );
 

@@ -10,6 +10,7 @@ use Context\Spin\SpinCapableTrait;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
@@ -148,18 +149,47 @@ SQL;
     }
 
     /**
-     * @Then it has an authorization code
+     * @Then it can exchange the authorization code for a token
      */
-    public function itHasAnAuthorizationCode()
+    public function itCanExchangeTheAuthorizationCodeForAToken()
     {
+        if ($this->connectedApp === null) {
+            throw new \LogicException('There is no connected app in the Context');
+        }
+
         $code = $this->getCreatedAuthorizationCode();
 
-        if (empty($code)) {
-            throw new \LogicException('Unable to find an authorization code');
-        }
+        $client = new KernelBrowser($this->getKernel());
+        $client->request(
+            'POST',
+            '/connect/apps/v1/oauth2/token',
+            [
+                'client_id' => $this->connectedApp['id'],
+                'code' => $code,
+                'code_identifier' => 'foo',
+                'code_challenge' => 'bar',
+                'grant_type' => 'authorization_code',
+            ],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/x-www-form-urlencoded',
+            ],
+        );
+
+        $response = $client->getResponse();
+        $payload = json_decode($response->getContent(), true);
+
+        Assert::assertEquals([
+            'access_token',
+            'token_type',
+            'scope',
+        ], array_keys($payload));
+
+        Assert::assertEquals('bearer', $payload['token_type']);
+        Assert::assertEquals('read_catalog_structure read_products', $payload['scope']);
     }
 
-    private function getCreatedAuthorizationCode(): array
+    private function getCreatedAuthorizationCode(): ?string
     {
         if ($this->connectedApp === null) {
             throw new \LogicException('There is no connected app in the Context');
@@ -177,9 +207,9 @@ JOIN akeneo_connectivity_connected_app ON akeneo_connectivity_connected_app.conn
 WHERE akeneo_connectivity_connected_app.id = :id
 SQL;
 
-        return $connection->fetchAssociative($query, [
+        return $connection->fetchOne($query, [
             'id' => $this->connectedApp['id'],
-        ]) ?: [];
+        ]) ?: null;
     }
 
     private function assertRoleAclsAreGranted(array $roles, array $acls): void

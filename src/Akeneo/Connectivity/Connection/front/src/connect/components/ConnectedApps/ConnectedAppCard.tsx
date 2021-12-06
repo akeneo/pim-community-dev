@@ -124,6 +124,9 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
                 <Button ghost level='tertiary' href={connectedAppUrl}>
                     {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')}
                 </Button>
+                <Button level='secondary' href={item.activate_url} disabled={!item.activate_url} target='_blank'>
+                    {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.open_app')}
+                </Button>
             </Actions>
         </CardContainer>
     );

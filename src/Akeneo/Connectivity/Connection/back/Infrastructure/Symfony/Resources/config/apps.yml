@@ -25,6 +25,7 @@ services:
             - '@validator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
+            - '@akeneo_connectivity.connection.marketplace.get_app_query'
 
     Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp:
         arguments:
