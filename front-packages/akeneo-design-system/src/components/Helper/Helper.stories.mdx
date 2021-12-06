@@ -2,6 +2,7 @@ import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
 import {Helper} from './Helper';
 import {Link} from '../Link/Link';
 import * as Icons from '../../icons';
+import {Scrollable, Content} from '../../storybook/PreviewGallery';
 
 <Meta
   title="Components/Helper"
@@ -130,11 +131,11 @@ non fermentum diam nisl sit amet erat. `}
   <Story name="Sticky">
     {args => {
       return (
-        <Scrollable height={100}>
-          <Helper {...args} level="info" sticky={44}>
+        <Scrollable height={300}>
+          <Helper level="warning" sticky={0}>
             This is a sticky helper.
           </Helper>
-Logoden biniou degemer mat an penn ar bed trizek, mall Mikael Entraven paotrig Melwenn kegin lizherenn warc’hoazh meur, morzhol fourchetez señin gazek pleg gwalc’hiñ pediñ. Verc’h boull pignat doñv vro kilañ miliner gwengolo Santeg sioul vi moc’h Plelann-Vihan mamm, poent enebour enep seitek Pornizhan warc’hoazh derc’hent izel gaou gwerenn huanadiñ. Doare linenn paotrig matezh speredek plijadur wern piler eviti, torchañ neuze Landreger Pont’n-Abad vunutenn se gwirionez ganit munutenn, disheol naontek askell Argol Tregastell pomper ger.
+          <Content height={500}>Some content</Content>
         </Scrollable>
       );
     }}
