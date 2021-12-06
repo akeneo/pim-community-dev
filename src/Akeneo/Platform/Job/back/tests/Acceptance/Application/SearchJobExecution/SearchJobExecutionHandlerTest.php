@@ -109,7 +109,7 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
         $query = new SearchJobExecutionQuery();
         $query->page = 51;
 
-        $this->expectExceptionObject(new \InvalidArgumentException('Page can not be greater than 50 when no filter are set'));
+        $this->expectExceptionObject(new \InvalidArgumentException('Page can not be greater than 50'));
 
         $this->getHandler()->search($query);
     }
@@ -117,17 +117,15 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function it_does_not_throw_exception_when_page_is_greater_than_50_and_at_least_one_filter_is_set(): void
+    public function it_throws_exception_when_page_is_greater_than_50_and_at_least_one_filter_is_set(): void
     {
         $query = new SearchJobExecutionQuery();
         $query->type = ['export'];
         $query->page = 51;
 
-        $result = $this->getHandler()->search($query);
+        $this->expectExceptionObject(new \InvalidArgumentException('Page can not be greater than 50'));
 
-        $expectedResult = new JobExecutionTable([], 0);
-
-        $this->assertEquals($expectedResult, $result);
+        $this->getHandler()->search($query);
     }
 
     private function getSearchJobExecution(): InMemorySearchJobExecution

@@ -68,17 +68,21 @@ final class IndexAction
         $searchJobExecutionQuery->sortColumn = $sort['column'] ?? 'started_at';
         $searchJobExecutionQuery->sortDirection = $sort['direction'] ?? 'DESC';
 
-        $user = $request->get('user', []);
-        if (!$this->securityFacade->isGranted('pim_enrich_job_tracker_view_all_jobs')) {
-            $user = [$this->security->getUser()->getUserIdentifier()];
-        }
-        $searchJobExecutionQuery->user = $user;
-
+        $searchJobExecutionQuery->user = $this->getUserFilter($request);
         $searchJobExecutionQuery->type = $request->get('type', []);
         $searchJobExecutionQuery->status = $request->get('status', []);
         $searchJobExecutionQuery->search = $request->get('search', '');
         $searchJobExecutionQuery->code = $request->get('code', []);
 
         return $searchJobExecutionQuery;
+    }
+
+    private function getUserFilter(Request $request): array
+    {
+        $user = $request->get('user', []);
+        if (!$this->securityFacade->isGranted('pim_enrich_job_tracker_view_all_jobs')) {
+            $user = [$this->security->getUser()->getUserIdentifier()];
+        }
+        return $user;
     }
 }

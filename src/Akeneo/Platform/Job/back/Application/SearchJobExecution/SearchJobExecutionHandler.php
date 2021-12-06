@@ -39,7 +39,7 @@ final class SearchJobExecutionHandler
             throw new \InvalidArgumentException(sprintf('Sort direction "%s" is not supported', $query->sortDirection));
         }
 
-        if (!$query->hasOneFilterSet() && SearchJobExecutionQuery::MAX_PAGE_WITHOUT_FILTER < $query->page) {
+        if (SearchJobExecutionQuery::MAX_PAGE_WITHOUT_FILTER < $query->page) {
             throw new \InvalidArgumentException('Page can not be greater than 50 when no filter are set');
         }
     }
