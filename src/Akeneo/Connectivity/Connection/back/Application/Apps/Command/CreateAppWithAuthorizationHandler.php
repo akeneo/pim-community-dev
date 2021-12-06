@@ -11,6 +11,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectionInte
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface;
 use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
+use Akeneo\Connectivity\Connection\Domain\Apps\ScopeFilterInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
@@ -22,36 +23,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class CreateAppWithAuthorizationHandler
 {
-    private ValidatorInterface $validator;
-    private AppAuthorizationSessionInterface $session;
-    private GetAppQueryInterface $getAppQuery;
-    private CreateConnectionInterface $createConnection;
-    private CreateUserInterface $createUser;
-    private CreateUserGroupInterface $createUserGroup;
-    private AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory;
-    private ClientProviderInterface $clientProvider;
-    private CreateConnectedAppInterface $createApp;
-
     public function __construct(
-        ValidatorInterface $validator,
-        AppAuthorizationSessionInterface $session,
-        GetAppQueryInterface $getAppQuery,
-        CreateUserInterface $createUser,
-        CreateUserGroupInterface $createUserGroup,
-        CreateConnectionInterface $createConnection,
-        AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory,
-        ClientProviderInterface $clientProvider,
-        CreateConnectedAppInterface $createApp
+        private ValidatorInterface $validator,
+        private AppAuthorizationSessionInterface $session,
+        private GetAppQueryInterface $getAppQuery,
+        private CreateUserInterface $createUser,
+        private CreateUserGroupInterface $createUserGroup,
+        private CreateConnectionInterface $createConnection,
+        private AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory,
+        private ClientProviderInterface $clientProvider,
+        private CreateConnectedAppInterface $createApp,
+        private ScopeFilterInterface $scopeFilter
     ) {
-        $this->validator = $validator;
-        $this->session = $session;
-        $this->getAppQuery = $getAppQuery;
-        $this->createUser = $createUser;
-        $this->createUserGroup = $createUserGroup;
-        $this->createConnection = $createConnection;
-        $this->appRoleWithScopesFactory = $appRoleWithScopesFactory;
-        $this->clientProvider = $clientProvider;
-        $this->createApp = $createApp;
     }
 
     public function handle(CreateAppWithAuthorizationCommand $command): void
@@ -85,8 +68,8 @@ final class CreateAppWithAuthorizationHandler
             throw new \LogicException('The user group should have a name, got null.');
         }
 
-        // @TODO Question, should the role include authentication scopes?
-        $role = $this->appRoleWithScopesFactory->createRole($appId, $appAuthorization->getScopeList()->getScopes());
+        $authorizationScopes = $this->scopeFilter->filterAuthorizationScopes($appAuthorization->getScopeList());
+        $role = $this->appRoleWithScopesFactory->createRole($appId, $authorizationScopes->getScopes());
         if (null === $role->getRole()) {
             throw new \LogicException('The user role should have a role code, like ROLE_*, got null.');
         }

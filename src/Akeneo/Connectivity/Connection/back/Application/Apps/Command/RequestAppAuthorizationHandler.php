@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInter
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
 use Akeneo\Connectivity\Connection\Domain\Apps\ScopeFilterInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -37,9 +38,11 @@ final class RequestAppAuthorizationHandler
             throw new \ErrorException('App should exists when validating the authorization wizard');
         }
 
+        $allowedScopes = $this->scopeFilter->filterAllowedScopes(ScopeList::fromScopeString($command->getScope()));
+
         $authorization = AppAuthorization::createFromRequest(
             $command->getClientId(),
-            $this->scopeFilter->filterAllowedScopes($command->getScope()),
+            $allowedScopes->toScopeString(),
             $app->getCallbackUrl(),
             $command->getState(),
         );

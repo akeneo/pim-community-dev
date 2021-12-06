@@ -11,6 +11,7 @@ use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthenticationUser;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\ScopeFilterInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider;
@@ -36,7 +37,8 @@ class AuthorizeAction
         private GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
         private AppAuthenticationUserProvider $appAuthenticationUserProvider,
-        private ConnectedPimUserProvider $connectedPimUserProvider
+        private ConnectedPimUserProvider $connectedPimUserProvider,
+        private ScopeFilterInterface $scopeFilter
     ) {
     }
 
@@ -76,8 +78,11 @@ class AuthorizeAction
 
             // @TODO might loop if it decline the app => redirect on pim, with error ?
 
-            $requestedScopes = ScopeList::fromScopeString($scope);
-            if ($requestedScopes->hasScopeOpenId() && false === $requestedScopes->equals($appAuthenticationUser->getConsentedAuthenticationScopes())) {
+            $requestedAuthenticationScopes = $this->scopeFilter->filterAuthenticationScopes(ScopeList::fromScopeString($scope));
+            if (
+                $requestedAuthenticationScopes->hasScopeOpenId()
+                && false === $appAuthenticationUser->getConsentedAuthenticationScopes()->equals($requestedAuthenticationScopes)
+            ) {
                 // @TODO triggers the authentication step 'akeneo_connectivity_connection_connect_apps_authenticate'
                 throw new \LogicException("Not implemented");
             }

@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAccessTokenInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetConnectedAppScopesQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\ScopeFilterInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
@@ -30,7 +31,8 @@ class CreateAccessToken implements CreateAccessTokenInterface
         private UserRepositoryInterface $userRepository,
         private AppAuthenticationUserProvider $appAuthenticationUserProvider,
         private CreateJsonWebToken $createJsonWebToken,
-        private GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery
+        private GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
+        private ScopeFilterInterface $scopeFilter
     ) {
     }
 
@@ -39,11 +41,10 @@ class CreateAccessToken implements CreateAccessTokenInterface
      */
     public function create(string $appId, string $code): array
     {
-
         $client = $this->getClient($appId);
         $appUser = $this->getAppUser($appId);
 
-        $scopes = ScopeList::fromScopes($this->getConnectedAppScopesQuery->execute($appId));
+        $scopes = $this->scopeFilter->filterAuthorizationScopes(ScopeList::fromScopes($this->getConnectedAppScopesQuery->execute($appId)));
         $jwt = null;
 
         $authCode = $this->getAuthCode($code);
@@ -62,7 +63,7 @@ class CreateAccessToken implements CreateAccessTokenInterface
 
         $token = $this->randomCodeGenerator->generate();
         $scope = $scopes->toScopeString();
-        $this->storage->createAccessToken($token, $client, $appUser, PHP_INT_MAX, $scope);
+        $this->storage->createAccessToken($token, $client, $appUser, null, $scope);
         $this->storage->markAuthCodeAsUsed($code);
 
         $accessToken = [

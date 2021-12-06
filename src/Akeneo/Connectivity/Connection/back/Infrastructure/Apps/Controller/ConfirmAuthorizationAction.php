@@ -10,13 +10,13 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthori
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\CreateUserConsentQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\ScopeFilterInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Domain\Clock;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Psr\Log\LoggerInterface;
@@ -45,7 +45,7 @@ class ConfirmAuthorizationAction
         private AppAuthenticationUserProvider $appAuthenticationUserProvider,
         private CreateUserConsentQueryInterface $createUserConsentQuery,
         private Clock $clock,
-        private ScopeMapperRegistry $scopeMapperRegistry,
+        private ScopeFilterInterface $scopeFilter,
         private ConnectedPimUserProvider $connectedPimUserProvider
     ) {
     }
@@ -93,11 +93,11 @@ class ConfirmAuthorizationAction
 
         $scopes = ScopeList::fromScopeString($appAuthorization->scope);
         if ($scopes->hasScopeOpenId() && $hasUserAuthenticationConsent) {
-            $authenticationScopes = $this->scopeMapperRegistry->filterAuthenticationScopes($scopes->getScopes());
+            $authenticationScopes = $this->scopeFilter->filterAuthenticationScopes($scopes);
             $this->createUserConsentQuery->execute(
                 $appAuthenticationUser->getPimUserId(),
                 $appConfirmation->getAppId(),
-                $authenticationScopes,
+                $authenticationScopes->getScopes(),
                 $this->clock->now()
             );
         }
