@@ -13,8 +13,11 @@ use Doctrine\DBAL\Connection;
  */
 class GetUserConsentedAuthenticationScopesQuery implements GetUserConsentedAuthenticationScopesQueryInterface
 {
-    public function __construct(private Connection $connection)
+    private Connection $connection;
+
+    public function __construct(Connection $connection)
     {
+        $this->connection = $connection;
     }
 
     public function execute(int $userId, string $appId): array

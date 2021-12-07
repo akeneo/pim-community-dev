@@ -14,8 +14,11 @@ use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
  */
 class RedirectUriWithAuthorizationCodeGenerator implements RedirectUriWithAuthorizationCodeGeneratorInterface
 {
-    public function __construct(private AuthorizationCodeGeneratorInterface $authorizationCodeGenerator)
+    private AuthorizationCodeGeneratorInterface $authorizationCodeGenerator;
+
+    public function __construct(AuthorizationCodeGeneratorInterface $authorizationCodeGenerator)
     {
+        $this->authorizationCodeGenerator = $authorizationCodeGenerator;
     }
 
     public function generate(

@@ -9,10 +9,17 @@ final class ScopeList
     private const SCOPE_OPENID = 'openid';
 
     /**
+     * @var string[]
+     */
+    private array $scopes;
+
+    /**
      * @param array<string> $scopes
      */
-    private function __construct(private array $scopes)
+    private function __construct(array $scopes)
     {
+        sort($this->scopes);
+        $this->scopes = $scopes;
     }
 
     /**
@@ -60,13 +67,11 @@ final class ScopeList
 
     public function toScopeString(): string
     {
-        sort($this->scopes);
-
         return implode(' ', $this->scopes);
     }
 
     public function equals(self $scopes): bool
     {
-        return count(array_diff($this->scopes, $scopes->scopes)) === 0;
+        return $this->toScopeString() === $scopes->toScopeString();
     }
 }

@@ -16,10 +16,15 @@ use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
  */
 class AppAuthenticationUserProvider
 {
+    private GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery;
+    private UserRepositoryInterface $userRepository;
+
     public function __construct(
-        private GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
-        private UserRepositoryInterface $userRepository
+        GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
+        UserRepositoryInterface $userRepository
     ) {
+        $this->getUserConsentedAuthenticationScopesQuery = $getUserConsentedAuthenticationScopesQuery;
+        $this->userRepository = $userRepository;
     }
 
     public function getAppAuthenticationUser(string $appId, int $pimUserId): AppAuthenticationUser

@@ -14,8 +14,11 @@ use Doctrine\DBAL\Types\Types;
  */
 class CreateUserConsentQuery implements CreateUserConsentQueryInterface
 {
-    public function __construct(private Connection $connection)
+    private Connection $connection;
+
+    public function __construct(Connection $connection)
     {
+        $this->connection = $connection;
     }
 
     public function execute(int $userId, string $appId, array $authenticationScopes, \DateTimeImmutable $consentDate): void
@@ -28,7 +31,7 @@ class CreateUserConsentQuery implements CreateUserConsentQueryInterface
         $this->connection->executeQuery($query, [
             'userId' => $userId,
             'appId' => $appId,
-            'scopes' => $authenticationScopes,
+            'scopes' => array_values($authenticationScopes),
             'consentDate' => $consentDate,
         ], [
             'userId' => Types::INTEGER,

@@ -20,13 +20,24 @@ class AuthorizationCodeGenerator implements AuthorizationCodeGeneratorInterface
 {
     private const AUTH_CODE_LIFETIME = 30; // 30 seconds
 
+    private ClientManagerInterface $clientManager;
+    private UserRepositoryInterface $userRepository;
+    private IOAuth2GrantCode $storage;
+    private RandomCodeGeneratorInterface $randomCodeGenerator;
+    private Clock $clock;
+
     public function __construct(
-        private ClientManagerInterface $clientManager,
-        private UserRepositoryInterface $userRepository,
-        private IOAuth2GrantCode $storage,
-        private RandomCodeGeneratorInterface $randomCodeGenerator,
-        private Clock $clock
+        ClientManagerInterface $clientManager,
+        UserRepositoryInterface $userRepository,
+        IOAuth2GrantCode $storage,
+        RandomCodeGeneratorInterface $randomCodeGenerator,
+        Clock $clock
     ) {
+        $this->clientManager = $clientManager;
+        $this->userRepository = $userRepository;
+        $this->storage = $storage;
+        $this->randomCodeGenerator = $randomCodeGenerator;
+        $this->clock = $clock;
     }
 
     public function generate(

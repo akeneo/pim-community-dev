@@ -33,21 +33,48 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ConfirmAuthorizationAction
 {
+    private CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler;
+    private FeatureFlag $featureFlag;
+    private GetAppConfirmationQueryInterface $getAppConfirmationQuery;
+    private ViolationListNormalizer $violationListNormalizer;
+    private SecurityFacade $security;
+    private LoggerInterface $logger;
+    private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator;
+    private AppAuthorizationSessionInterface $appAuthorizationSession;
+    private AppAuthenticationUserProvider $appAuthenticationUserProvider;
+    private CreateUserConsentQueryInterface $createUserConsentQuery;
+    private Clock $clock;
+    private ScopeFilterInterface $scopeFilter;
+    private ConnectedPimUserProvider $connectedPimUserProvider;
+
     public function __construct(
-        private CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler,
-        private FeatureFlag $featureFlag,
-        private GetAppConfirmationQueryInterface $getAppConfirmationQuery,
-        private ViolationListNormalizer $violationListNormalizer,
-        private SecurityFacade $security,
-        private LoggerInterface $logger,
-        private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
-        private AppAuthorizationSessionInterface $appAuthorizationSession,
-        private AppAuthenticationUserProvider $appAuthenticationUserProvider,
-        private CreateUserConsentQueryInterface $createUserConsentQuery,
-        private Clock $clock,
-        private ScopeFilterInterface $scopeFilter,
-        private ConnectedPimUserProvider $connectedPimUserProvider
+        CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler,
+        FeatureFlag $featureFlag,
+        GetAppConfirmationQueryInterface $getAppConfirmationQuery,
+        ViolationListNormalizer $violationListNormalizer,
+        SecurityFacade $security,
+        LoggerInterface $logger,
+        RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
+        AppAuthorizationSessionInterface $appAuthorizationSession,
+        AppAuthenticationUserProvider $appAuthenticationUserProvider,
+        CreateUserConsentQueryInterface $createUserConsentQuery,
+        Clock $clock,
+        ScopeFilterInterface $scopeFilter,
+        ConnectedPimUserProvider $connectedPimUserProvider
     ) {
+        $this->createAppWithAuthorizationHandler = $createAppWithAuthorizationHandler;
+        $this->featureFlag = $featureFlag;
+        $this->getAppConfirmationQuery = $getAppConfirmationQuery;
+        $this->violationListNormalizer = $violationListNormalizer;
+        $this->security = $security;
+        $this->logger = $logger;
+        $this->redirectUriWithAuthorizationCodeGenerator = $redirectUriWithAuthorizationCodeGenerator;
+        $this->appAuthorizationSession = $appAuthorizationSession;
+        $this->appAuthenticationUserProvider = $appAuthenticationUserProvider;
+        $this->createUserConsentQuery = $createUserConsentQuery;
+        $this->clock = $clock;
+        $this->scopeFilter = $scopeFilter;
+        $this->connectedPimUserProvider = $connectedPimUserProvider;
     }
 
     public function __invoke(Request $request, string $clientId, bool $hasUserAuthenticationConsent = true): Response

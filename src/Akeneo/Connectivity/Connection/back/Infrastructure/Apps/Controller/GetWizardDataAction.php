@@ -19,11 +19,18 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class GetWizardDataAction
 {
+    private GetAppQueryInterface $getAppQuery;
+    private AppAuthorizationSessionInterface $appAuthorizationSession;
+    private ScopeMapperRegistry $scopeMapperRegistry;
+
     public function __construct(
-        private GetAppQueryInterface $getAppQuery,
-        private AppAuthorizationSessionInterface $appAuthorizationSession,
-        private ScopeMapperRegistry $scopeMapperRegistry
+        GetAppQueryInterface $getAppQuery,
+        AppAuthorizationSessionInterface $appAuthorizationSession,
+        ScopeMapperRegistry $scopeMapperRegistry
     ) {
+        $this->getAppQuery = $getAppQuery;
+        $this->appAuthorizationSession = $appAuthorizationSession;
+        $this->scopeMapperRegistry = $scopeMapperRegistry;
     }
 
     public function __invoke(Request $request, string $clientId): Response

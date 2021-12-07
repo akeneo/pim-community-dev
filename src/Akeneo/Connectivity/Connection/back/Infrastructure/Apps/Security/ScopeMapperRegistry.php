@@ -15,9 +15,9 @@ use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 final class ScopeMapperRegistry implements ScopeFilterInterface
 {
     /**
-     * @param array<string,ScopeMapperInterface> $scopeMappers
+     * @var array<string,ScopeMapperInterface> $scopeMappers
      */
-    private $scopeMappers = [];
+    private array $scopeMappers = [];
 
     public function __construct(iterable $scopeMappers)
     {

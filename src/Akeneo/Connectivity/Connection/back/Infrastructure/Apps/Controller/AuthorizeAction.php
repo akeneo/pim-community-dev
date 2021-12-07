@@ -29,17 +29,36 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class AuthorizeAction
 {
+    private RequestAppAuthorizationHandler $handler;
+    private RouterInterface $router;
+    private FeatureFlag $featureFlag;
+    private AppAuthorizationSessionInterface $appAuthorizationSession;
+    private GetAppConfirmationQueryInterface $getAppConfirmationQuery;
+    private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator;
+    private AppAuthenticationUserProvider $appAuthenticationUserProvider;
+    private ConnectedPimUserProvider $connectedPimUserProvider;
+    private ScopeFilterInterface $scopeFilter;
+
     public function __construct(
-        private RequestAppAuthorizationHandler $handler,
-        private RouterInterface $router,
-        private FeatureFlag $featureFlag,
-        private AppAuthorizationSessionInterface $appAuthorizationSession,
-        private GetAppConfirmationQueryInterface $getAppConfirmationQuery,
-        private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
-        private AppAuthenticationUserProvider $appAuthenticationUserProvider,
-        private ConnectedPimUserProvider $connectedPimUserProvider,
-        private ScopeFilterInterface $scopeFilter
+        RequestAppAuthorizationHandler $handler,
+        RouterInterface $router,
+        FeatureFlag $featureFlag,
+        AppAuthorizationSessionInterface $appAuthorizationSession,
+        GetAppConfirmationQueryInterface $getAppConfirmationQuery,
+        RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
+        AppAuthenticationUserProvider $appAuthenticationUserProvider,
+        ConnectedPimUserProvider $connectedPimUserProvider,
+        ScopeFilterInterface $scopeFilter
     ) {
+        $this->handler = $handler;
+        $this->router = $router;
+        $this->featureFlag = $featureFlag;
+        $this->appAuthorizationSession = $appAuthorizationSession;
+        $this->getAppConfirmationQuery = $getAppConfirmationQuery;
+        $this->redirectUriWithAuthorizationCodeGenerator = $redirectUriWithAuthorizationCodeGenerator;
+        $this->appAuthenticationUserProvider = $appAuthenticationUserProvider;
+        $this->connectedPimUserProvider = $connectedPimUserProvider;
+        $this->scopeFilter = $scopeFilter;
     }
 
     public function __invoke(Request $request): Response
@@ -83,8 +102,9 @@ class AuthorizeAction
                 $requestedAuthenticationScopes->hasScopeOpenId()
                 && false === $appAuthenticationUser->getConsentedAuthenticationScopes()->equals($requestedAuthenticationScopes)
             ) {
-                // @TODO triggers the authentication step 'akeneo_connectivity_connection_connect_apps_authenticate'
-                throw new \LogicException("Not implemented");
+                // @TODO triggers the consent step 'akeneo_connectivity_connection_connect_apps_authenticate'
+                echo 'Display consent modal!';
+                die;
             }
 
             return $this->createAuthorizedResponse($appConfirmation, $appAuthenticationUser);

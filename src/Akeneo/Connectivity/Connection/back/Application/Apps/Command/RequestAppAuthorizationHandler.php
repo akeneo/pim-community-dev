@@ -18,12 +18,21 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class RequestAppAuthorizationHandler
 {
+    private ValidatorInterface $validator;
+    private AppAuthorizationSessionInterface $session;
+    private ScopeFilterInterface $scopeFilter;
+    private GetAppQueryInterface $getAppQuery;
+
     public function __construct(
-        private ValidatorInterface $validator,
-        private AppAuthorizationSessionInterface $session,
-        private ScopeFilterInterface $scopeFilter,
-        private GetAppQueryInterface $getAppQuery
+        ValidatorInterface $validator,
+        AppAuthorizationSessionInterface $session,
+        ScopeFilterInterface $scopeFilter,
+        GetAppQueryInterface $getAppQuery
     ) {
+        $this->validator = $validator;
+        $this->session = $session;
+        $this->scopeFilter = $scopeFilter;
+        $this->getAppQuery = $getAppQuery;
     }
 
     public function handle(RequestAppAuthorizationCommand $command): void

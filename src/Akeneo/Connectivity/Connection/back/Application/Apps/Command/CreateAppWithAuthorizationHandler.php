@@ -23,18 +23,39 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class CreateAppWithAuthorizationHandler
 {
+    private ValidatorInterface $validator;
+    private AppAuthorizationSessionInterface $session;
+    private GetAppQueryInterface $getAppQuery;
+    private CreateUserInterface $createUser;
+    private CreateUserGroupInterface $createUserGroup;
+    private CreateConnectionInterface $createConnection;
+    private AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory;
+    private ClientProviderInterface $clientProvider;
+    private CreateConnectedAppInterface $createApp;
+    private ScopeFilterInterface $scopeFilter;
+
     public function __construct(
-        private ValidatorInterface $validator,
-        private AppAuthorizationSessionInterface $session,
-        private GetAppQueryInterface $getAppQuery,
-        private CreateUserInterface $createUser,
-        private CreateUserGroupInterface $createUserGroup,
-        private CreateConnectionInterface $createConnection,
-        private AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory,
-        private ClientProviderInterface $clientProvider,
-        private CreateConnectedAppInterface $createApp,
-        private ScopeFilterInterface $scopeFilter
+        ValidatorInterface $validator,
+        AppAuthorizationSessionInterface $session,
+        GetAppQueryInterface $getAppQuery,
+        CreateUserInterface $createUser,
+        CreateUserGroupInterface $createUserGroup,
+        CreateConnectionInterface $createConnection,
+        AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory,
+        ClientProviderInterface $clientProvider,
+        CreateConnectedAppInterface $createApp,
+        ScopeFilterInterface $scopeFilter
     ) {
+        $this->validator = $validator;
+        $this->session = $session;
+        $this->getAppQuery = $getAppQuery;
+        $this->createUser = $createUser;
+        $this->createUserGroup = $createUserGroup;
+        $this->createConnection = $createConnection;
+        $this->appRoleWithScopesFactory = $appRoleWithScopesFactory;
+        $this->clientProvider = $clientProvider;
+        $this->createApp = $createApp;
+        $this->scopeFilter = $scopeFilter;
     }
 
     public function handle(CreateAppWithAuthorizationCommand $command): void

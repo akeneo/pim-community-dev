@@ -23,17 +23,36 @@ use OAuth2\Model\IOAuth2AuthCode;
  */
 class CreateAccessToken implements CreateAccessTokenInterface
 {
+    private IOAuth2GrantCode $storage;
+    private ClientProviderInterface $clientProvider;
+    private RandomCodeGeneratorInterface $randomCodeGenerator;
+    private GetAppConfirmationQueryInterface $appConfirmationQuery;
+    private UserRepositoryInterface $userRepository;
+    private AppAuthenticationUserProvider $appAuthenticationUserProvider;
+    private CreateJsonWebToken $createJsonWebToken;
+    private GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery;
+    private ScopeFilterInterface $scopeFilter;
+
     public function __construct(
-        private IOAuth2GrantCode $storage,
-        private ClientProviderInterface $clientProvider,
-        private RandomCodeGeneratorInterface $randomCodeGenerator,
-        private GetAppConfirmationQueryInterface $appConfirmationQuery,
-        private UserRepositoryInterface $userRepository,
-        private AppAuthenticationUserProvider $appAuthenticationUserProvider,
-        private CreateJsonWebToken $createJsonWebToken,
-        private GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
-        private ScopeFilterInterface $scopeFilter
+        IOAuth2GrantCode $storage,
+        ClientProviderInterface $clientProvider,
+        RandomCodeGeneratorInterface $randomCodeGenerator,
+        GetAppConfirmationQueryInterface $appConfirmationQuery,
+        UserRepositoryInterface $userRepository,
+        AppAuthenticationUserProvider $appAuthenticationUserProvider,
+        CreateJsonWebToken $createJsonWebToken,
+        GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
+        ScopeFilterInterface $scopeFilter
     ) {
+        $this->storage = $storage;
+        $this->clientProvider = $clientProvider;
+        $this->randomCodeGenerator = $randomCodeGenerator;
+        $this->appConfirmationQuery = $appConfirmationQuery;
+        $this->userRepository = $userRepository;
+        $this->appAuthenticationUserProvider = $appAuthenticationUserProvider;
+        $this->createJsonWebToken = $createJsonWebToken;
+        $this->getConnectedAppScopesQuery = $getConnectedAppScopesQuery;
+        $this->scopeFilter = $scopeFilter;
     }
 
     /**
@@ -63,6 +82,8 @@ class CreateAccessToken implements CreateAccessTokenInterface
 
         $token = $this->randomCodeGenerator->generate();
         $scope = $scopes->toScopeString();
+
+        /* @phpstan-ignore-next-line */
         $this->storage->createAccessToken($token, $client, $appUser, null, $scope);
         $this->storage->markAuthCodeAsUsed($code);
 
@@ -103,11 +124,12 @@ class CreateAccessToken implements CreateAccessTokenInterface
     private function getAppUser(string $appId): UserInterface
     {
         $appConfirmation = $this->appConfirmationQuery->execute($appId);
+        $appUserId = $appConfirmation->getUserId();
 
         /** @var UserInterface|null */
-        $appUser = $this->userRepository->find($appConfirmation->getUserId());
+        $appUser = $this->userRepository->find($appUserId);
         if (null === $appUser) {
-            throw new \LogicException();
+            throw new \LogicException(sprintf('User %s not found', $appUserId));
         }
 
         return $appUser;

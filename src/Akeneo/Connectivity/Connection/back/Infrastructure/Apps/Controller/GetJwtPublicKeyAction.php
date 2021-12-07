@@ -14,8 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GetJwtPublicKeyAction
 {
-    public function __construct(private GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery)
+    private GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery;
+
+    public function __construct(GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery)
     {
+        $this->getAsymmetricKeysQuery = $getAsymmetricKeysQuery;
     }
 
     public function __invoke(Request $request): Response

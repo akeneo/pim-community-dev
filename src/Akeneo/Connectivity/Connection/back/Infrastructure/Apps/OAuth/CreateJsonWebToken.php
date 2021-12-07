@@ -24,14 +24,20 @@ class CreateJsonWebToken
     private Key $privateKey;
     private Key $publicKey;
 
+    private Clock $clock;
+    private PimUrl $pimUrl;
+
     public function __construct(
-        private Clock $clock,
-        private PimUrl $pimUrl,
+        Clock $clock,
+        PimUrl $pimUrl,
         GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery
     ) {
         ['public_key' => $publicKey, 'private_key' => $privateKey] = $getAsymmetricKeysQuery->execute();
         $this->privateKey = InMemory::plainText($privateKey);
         $this->publicKey = InMemory::plainText($publicKey);
+
+        $this->clock = $clock;
+        $this->pimUrl = $pimUrl;
     }
 
     public function create(string $clientId, AppAuthenticationUser $appAuthenticationUser): string
