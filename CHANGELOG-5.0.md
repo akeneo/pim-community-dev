@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10253: [BACKPORT PIM-10190] Fix "Label" column shows the code in attribute rules tab
+
 # 5.0.71 (2022-02-01)
 
 # 5.0.70 (2022-02-01)
