@@ -5,7 +5,7 @@ import {
   JobExecutionRow,
   getStepExecutionRowTrackingLevel,
   getStepExecutionRowTrackingPercent,
-  getStepExecutionRowTrackingProgressLabel,
+  getJobExecutionRowTrackingProgressLabel,
 } from '../../models';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
@@ -25,10 +25,9 @@ type ProgressCellProps = {
 
 const ProgressCell = ({jobExecutionRow}: ProgressCellProps) => {
   const translate = useTranslate();
-  const currentStep = jobExecutionRow.tracking.steps[jobExecutionRow.tracking.current_step - 1];
 
   return (
-    <Table.Cell title={getStepExecutionRowTrackingProgressLabel(translate, jobExecutionRow, currentStep)}>
+    <Table.Cell title={getJobExecutionRowTrackingProgressLabel(translate, jobExecutionRow)}>
       <Container>
         {[...Array(jobExecutionRow.tracking.total_step)].map((_, stepIndex) => {
           if ('STARTING' === jobExecutionRow.status) {

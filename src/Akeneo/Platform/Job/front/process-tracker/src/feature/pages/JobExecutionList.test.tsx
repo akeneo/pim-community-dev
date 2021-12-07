@@ -81,6 +81,7 @@ for (let i = 1; i <= 51; i++) {
     tracking: {
       total_step: 2,
       current_step: 1,
+      steps: [],
     },
     error_count: 2,
     type: 'export',

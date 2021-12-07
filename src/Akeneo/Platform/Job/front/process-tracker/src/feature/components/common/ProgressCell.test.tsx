@@ -36,7 +36,7 @@ const jobExecutionRow: JobExecutionRow = {
   username: 'admin',
   warning_count: 4,
   job_name: 'An export',
-  status: 'STARTED',
+  status: 'IN_PROGRESS',
   is_stoppable: true,
 };
 
@@ -51,6 +51,9 @@ test('it displays a job execution progress cell', () => {
     </table>
   );
 
-  expect(screen.getAllByRole('progressbar')).toHaveLength(2);
+  const [firstStepProgressBar, secondStepProgressBar] = screen.getAllByRole('progressbar');
+
+  expect(firstStepProgressBar).toHaveAttribute('aria-valuenow', '100');
+  expect(secondStepProgressBar).toHaveAttribute('aria-valuenow', '20');
   expect(screen.getByTitle('akeneo_job_process_tracker.tracking.in_progress')).toBeInTheDocument();
 });

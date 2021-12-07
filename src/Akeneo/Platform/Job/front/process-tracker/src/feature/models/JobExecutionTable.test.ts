@@ -1,4 +1,20 @@
-import {canShowJobExecutionDetail, jobCanBeStopped, JobExecutionRow} from './JobExecutionTable';
+import {
+  canShowJobExecutionDetail,
+  jobCanBeStopped,
+  JobExecutionRow,
+  getJobExecutionRowTrackingProgressLabel,
+} from './JobExecutionTable';
+import {StepExecutionRowTracking} from './StepExecutionRowTracking';
+
+const stepTracking: StepExecutionRowTracking = {
+  error_count: 0,
+  warning_count: 0,
+  is_trackable: true,
+  processed_items: 2,
+  total_items: 10,
+  status: 'IN_PROGRESS',
+  duration: 42,
+};
 
 const jobExecutionRow: JobExecutionRow = {
   job_execution_id: 1,
@@ -6,7 +22,7 @@ const jobExecutionRow: JobExecutionRow = {
   tracking: {
     total_step: 2,
     current_step: 1,
-    steps: [],
+    steps: [stepTracking],
   },
   error_count: 2,
   type: 'export',
@@ -37,4 +53,37 @@ test('it can tell if user can show job execution detail', () => {
   expect(canShowJobExecutionDetail(isGranted, jobExecutionRow)).toBe(true);
   expect(canShowJobExecutionDetail(isGranted, {...jobExecutionRow, type: 'import'})).toBe(false);
   expect(canShowJobExecutionDetail(isGranted, {...jobExecutionRow, type: 'quick_export'})).toBe(true);
+});
+
+const fakeTranslate = (key: string): string => key;
+
+test('it can get the label for a given job execution row tracking', () => {
+  expect(getJobExecutionRowTrackingProgressLabel(fakeTranslate, jobExecutionRow)).toEqual(
+    'akeneo_job_process_tracker.tracking.in_progress'
+  );
+
+  expect(getJobExecutionRowTrackingProgressLabel(fakeTranslate, {...jobExecutionRow, status: 'FAILED'})).toEqual(
+    'akeneo_job_process_tracker.tracking.untrackable'
+  );
+
+  expect(
+    getJobExecutionRowTrackingProgressLabel(fakeTranslate, {
+      ...jobExecutionRow,
+      tracking: {...jobExecutionRow.tracking, steps: [{...stepTracking, total_items: 0}]},
+    })
+  ).toEqual('akeneo_job_process_tracker.tracking.estimating');
+
+  expect(
+    getJobExecutionRowTrackingProgressLabel(fakeTranslate, {
+      ...jobExecutionRow,
+      tracking: {...jobExecutionRow.tracking, steps: [{...stepTracking, status: 'COMPLETED'}]},
+    })
+  ).toEqual('akeneo_job_process_tracker.tracking.completed');
+
+  expect(
+    getJobExecutionRowTrackingProgressLabel(fakeTranslate, {
+      ...jobExecutionRow,
+      tracking: {...jobExecutionRow.tracking, steps: [{...stepTracking, status: 'STARTING'}]},
+    })
+  ).toEqual('akeneo_job_process_tracker.tracking.not_started');
 });

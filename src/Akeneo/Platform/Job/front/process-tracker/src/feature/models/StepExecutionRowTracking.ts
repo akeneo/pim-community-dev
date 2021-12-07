@@ -1,8 +1,5 @@
 import {Level, ProgressBarPercent} from 'akeneo-design-system';
-import {Translate} from '@akeneo-pim-community/shared';
-import {formatSecondsIntl} from '../tools/intl-duration';
 import {StepStatus} from './StepStatus';
-import {JobExecutionRow} from './JobExecutionTable';
 
 type StepExecutionRowTracking = {
   error_count: number;
@@ -12,47 +9,6 @@ type StepExecutionRowTracking = {
   total_items: number;
   status: StepStatus;
   duration: number;
-};
-
-const getStepExecutionRowTrackingProgressLabel = (
-  translate: Translate,
-  jobExecutionRow: JobExecutionRow,
-  step?: StepExecutionRowTracking
-): string => {
-  if (undefined === step || 'STARTING' === step.status) {
-    return translate('akeneo_job_process_tracker.tracking.not_started');
-  }
-
-  switch (step.status) {
-    case 'IN_PROGRESS':
-      if (!step.is_trackable || 'FAILED' === jobExecutionRow.status) {
-        return translate('akeneo_job_process_tracker.tracking.untrackable');
-      }
-
-      if (step.total_items === 0 || step.processed_items === 0) {
-        return translate('akeneo_job_process_tracker.tracking.estimating');
-      }
-
-      const percentProcessed = (step.processed_items * 100) / step.total_items;
-      const durationProjection = Math.round((step.duration * 100) / percentProcessed);
-      const durationLeft = durationProjection - step.duration;
-
-      return translate('akeneo_job_process_tracker.tracking.in_progress', {
-        duration: formatSecondsIntl(translate, durationLeft),
-      });
-    case 'ABANDONED':
-    case 'COMPLETED':
-    case 'FAILED':
-    case 'STOPPED':
-    case 'STOPPING':
-    case 'UNKNOWN':
-    default:
-      const totalDuration = jobExecutionRow.tracking.steps.reduce((total, step) => total + step.duration, 0);
-
-      return translate('akeneo_job_process_tracker.tracking.completed', {
-        duration: formatSecondsIntl(translate, totalDuration),
-      });
-  }
 };
 
 const getStepExecutionRowTrackingLevel = ({warning_count, error_count}: StepExecutionRowTracking): Level => {
@@ -84,5 +40,5 @@ const getStepExecutionRowTrackingPercent = (step: StepExecutionRowTracking): Pro
   return (step.processed_items * 100) / step.total_items;
 };
 
-export {getStepExecutionRowTrackingLevel, getStepExecutionRowTrackingProgressLabel, getStepExecutionRowTrackingPercent};
+export {getStepExecutionRowTrackingLevel, getStepExecutionRowTrackingPercent};
 export type {StepExecutionRowTracking};

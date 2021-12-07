@@ -1,3 +1,5 @@
+import {Translate} from '@akeneo-pim-community/shared';
+import {formatSecondsIntl} from '../tools/intl-duration';
 import {JobStatus} from './JobStatus';
 import {StepExecutionRowTracking} from './StepExecutionRowTracking';
 
@@ -37,5 +39,44 @@ const JOB_TYPES_WITH_ACL = {
 const canShowJobExecutionDetail = (isGranted: (acl: string) => boolean, jobExecutionRow: JobExecutionRow): boolean =>
   jobExecutionRow.type in JOB_TYPES_WITH_ACL ? isGranted(JOB_TYPES_WITH_ACL[jobExecutionRow.type]) : true;
 
-export {jobCanBeStopped, canShowJobExecutionDetail};
+const getJobExecutionRowTrackingProgressLabel = (translate: Translate, jobExecutionRow: JobExecutionRow): string => {
+  const step = jobExecutionRow.tracking.steps[jobExecutionRow.tracking.current_step - 1] ?? null;
+
+  if (null === step || 'STARTING' === step.status) {
+    return translate('akeneo_job_process_tracker.tracking.not_started');
+  }
+
+  switch (step.status) {
+    case 'IN_PROGRESS':
+      if (!step.is_trackable || 'FAILED' === jobExecutionRow.status) {
+        return translate('akeneo_job_process_tracker.tracking.untrackable');
+      }
+
+      if (step.total_items === 0 || step.processed_items === 0) {
+        return translate('akeneo_job_process_tracker.tracking.estimating');
+      }
+
+      const percentProcessed = (step.processed_items * 100) / step.total_items;
+      const durationProjection = Math.round((step.duration * 100) / percentProcessed);
+      const durationLeft = durationProjection - step.duration;
+
+      return translate('akeneo_job_process_tracker.tracking.in_progress', {
+        duration: formatSecondsIntl(translate, durationLeft),
+      });
+    case 'ABANDONED':
+    case 'COMPLETED':
+    case 'FAILED':
+    case 'STOPPED':
+    case 'STOPPING':
+    case 'UNKNOWN':
+    default:
+      const totalDuration = jobExecutionRow.tracking.steps.reduce((total, step) => total + step.duration, 0);
+
+      return translate('akeneo_job_process_tracker.tracking.completed', {
+        duration: formatSecondsIntl(translate, totalDuration),
+      });
+  }
+};
+
+export {jobCanBeStopped, canShowJobExecutionDetail, getJobExecutionRowTrackingProgressLabel};
 export type {JobExecutionTable, JobExecutionRow};
