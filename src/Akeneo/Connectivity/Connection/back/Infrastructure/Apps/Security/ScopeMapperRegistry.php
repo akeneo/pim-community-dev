@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Security;
 
-use Akeneo\Connectivity\Connection\Domain\Apps\ScopeFilterInterface;
-use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
-
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ScopeMapperRegistry implements ScopeFilterInterface
+final class ScopeMapperRegistry
 {
     /**
      * @var array<string,ScopeMapperInterface> $scopeMappers
@@ -48,38 +45,30 @@ final class ScopeMapperRegistry implements ScopeFilterInterface
         }
     }
 
-    public function filterAllowedScopes(ScopeList $requestedScopes): ScopeList
+    /**
+     * @return string[]
+     */
+    public function getAuthorizationScopes(): array
     {
-        $supportedScopes = \array_keys($this->scopeMappers);
-        $allowedScopes = \array_intersect($requestedScopes->getScopes(), $supportedScopes);
-
-        return ScopeList::fromScopes($allowedScopes);
-    }
-
-    public function filterAuthorizationScopes(ScopeList $scopes): ScopeList
-    {
-        $authorizationScopes = [];
+        $scopes = [];
         foreach ($this->scopeMappers as $scopeMapper) {
-            array_push($authorizationScopes, ...$scopeMapper->getAuthorizationScopes());
+            $scopes = array_merge($scopes, $scopeMapper->getAuthorizationScopes());
         }
 
-        return ScopeList::fromScopes(array_intersect(
-            array_unique($authorizationScopes),
-            $scopes->getScopes()
-        ));
+        return array_unique($scopes);
     }
 
-    public function filterAuthenticationScopes(ScopeList $scopes): ScopeList
+    /**
+     * @return string[]
+     */
+    public function getAuthenticationScopes(): array
     {
-        $authenticationScopes = [];
+        $scopes = [];
         foreach ($this->scopeMappers as $scopeMapper) {
-            array_push($authenticationScopes, ...$scopeMapper->getAuthenticationScopes());
+            $scopes = array_merge($scopes, $scopeMapper->getAuthorizationScopes());
         }
 
-        return ScopeList::fromScopes(array_intersect(
-            array_unique($authenticationScopes),
-            $scopes->getScopes()
-        ));
+        return array_unique($scopes);
     }
 
     /**

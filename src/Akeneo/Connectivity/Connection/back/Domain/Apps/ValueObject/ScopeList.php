@@ -6,8 +6,6 @@ namespace Akeneo\Connectivity\Connection\Domain\Apps\ValueObject;
 
 final class ScopeList
 {
-    private const SCOPE_OPENID = 'openid';
-
     /**
      * @var string[]
      */
@@ -18,8 +16,8 @@ final class ScopeList
      */
     private function __construct(array $scopes)
     {
+        $this->scopes = array_unique($scopes);
         sort($this->scopes);
-        $this->scopes = $scopes;
     }
 
     /**
@@ -47,22 +45,15 @@ final class ScopeList
 
     /**
      * Return a new ScopeList with the added scopes.
-     *
-     * @param array<string> $scopes
      */
-    public function addScopes(array $scopes): self
+    public function addScopes(self $scopes): self
     {
-        return self::fromScopes(array_merge($this->scopes, $scopes));
+        return self::fromScopes(array_unique(array_merge($this->scopes, $scopes->scopes)));
     }
 
     public function hasScope(string $scope): bool
     {
         return in_array($scope, $this->scopes);
-    }
-
-    public function hasScopeOpenId(): bool
-    {
-        return $this->hasScope(self::SCOPE_OPENID);
     }
 
     public function toScopeString(): string

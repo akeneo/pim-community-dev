@@ -19,7 +19,6 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\AppRoleWithScopesFactory'
             - '@akeneo_connectivity.connection.service.apps.client_provider'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
 
     Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler:
         arguments:
@@ -74,7 +73,6 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateJsonWebToken'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetConnectedAppScopesQuery'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateJsonWebToken:
         arguments:

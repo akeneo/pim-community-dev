@@ -7,15 +7,12 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller;
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler;
-use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthenticationUser;
-use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
-use Akeneo\Connectivity\Connection\Domain\Apps\ScopeFilterInterface;
-use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\OpenIdScopeMapper;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +34,6 @@ class AuthorizeAction
     private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator;
     private AppAuthenticationUserProvider $appAuthenticationUserProvider;
     private ConnectedPimUserProvider $connectedPimUserProvider;
-    private ScopeFilterInterface $scopeFilter;
 
     public function __construct(
         RequestAppAuthorizationHandler $handler,
@@ -48,7 +44,6 @@ class AuthorizeAction
         RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
         AppAuthenticationUserProvider $appAuthenticationUserProvider,
         ConnectedPimUserProvider $connectedPimUserProvider,
-        ScopeFilterInterface $scopeFilter
     ) {
         $this->handler = $handler;
         $this->router = $router;
@@ -58,7 +53,6 @@ class AuthorizeAction
         $this->redirectUriWithAuthorizationCodeGenerator = $redirectUriWithAuthorizationCodeGenerator;
         $this->appAuthenticationUserProvider = $appAuthenticationUserProvider;
         $this->connectedPimUserProvider = $connectedPimUserProvider;
-        $this->scopeFilter = $scopeFilter;
     }
 
     public function __invoke(Request $request): Response
@@ -95,19 +89,28 @@ class AuthorizeAction
                 $this->connectedPimUserProvider->getCurrentUserId()
             );
 
-            // @TODO might loop if it decline the app => redirect on pim, with error ?
+            $appAuthorization = $this->appAuthorizationSession->getAppAuthorization($clientId);
+            if (null === $appAuthorization) {
+                throw new \LogicException('There is no active app authorization in session');
+            }
 
-            $requestedAuthenticationScopes = $this->scopeFilter->filterAuthenticationScopes(ScopeList::fromScopeString($scope));
             if (
-                $requestedAuthenticationScopes->hasScopeOpenId()
-                && false === $appAuthenticationUser->getConsentedAuthenticationScopes()->equals($requestedAuthenticationScopes)
+                $appAuthorization->getAuthenticationScopes()->hasScope(OpenIdScopeMapper::SCOPE_OPENID)
+                && false === $appAuthenticationUser->getConsentedAuthenticationScopes()->equals($appAuthorization->getAuthenticationScopes())
             ) {
+                // @TODO might loop if it decline the app => redirect on pim, with error ?
                 // @TODO triggers the consent step 'akeneo_connectivity_connection_connect_apps_authenticate'
                 echo 'Display consent modal!';
                 die;
             }
 
-            return $this->createAuthorizedResponse($appConfirmation, $appAuthenticationUser);
+            $redirectUrl = $this->redirectUriWithAuthorizationCodeGenerator->generate(
+                $appAuthorization,
+                $appConfirmation,
+                $appAuthenticationUser
+            );
+
+            return new RedirectResponse($redirectUrl);
         }
 
         return new RedirectResponse(
@@ -115,23 +118,5 @@ class AuthorizeAction
                 'client_id' => $command->getClientId(),
             ])
         );
-    }
-
-    private function createAuthorizedResponse(AppConfirmation $appConfirmation, AppAuthenticationUser $appAuthenticationUser): Response
-    {
-        $clientId = $appConfirmation->getAppId();
-
-        $appAuthorization = $this->appAuthorizationSession->getAppAuthorization($clientId);
-        if (null === $appAuthorization) {
-            throw new \LogicException('There is no active app authorization in session');
-        }
-
-        $redirectUrl = $this->redirectUriWithAuthorizationCodeGenerator->generate(
-            $appAuthorization,
-            $appConfirmation,
-            $appAuthenticationUser
-        );
-
-        return new RedirectResponse($redirectUrl);
     }
 }

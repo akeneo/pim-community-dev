@@ -10,7 +10,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Security;
  */
 final class OpenIdScopeMapper implements ScopeMapperInterface
 {
-    private const SCOPE_OPENID = 'openid';
+    public const SCOPE_OPENID = 'openid';
     public const SCOPE_PROFILE = 'profile';
     public const SCOPE_EMAIL = 'email';
 

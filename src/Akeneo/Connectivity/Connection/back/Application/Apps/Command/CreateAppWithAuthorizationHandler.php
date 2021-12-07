@@ -11,7 +11,6 @@ use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectionInte
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface;
 use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
-use Akeneo\Connectivity\Connection\Domain\Apps\ScopeFilterInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
@@ -32,7 +31,6 @@ final class CreateAppWithAuthorizationHandler
     private AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory;
     private ClientProviderInterface $clientProvider;
     private CreateConnectedAppInterface $createApp;
-    private ScopeFilterInterface $scopeFilter;
 
     public function __construct(
         ValidatorInterface $validator,
@@ -44,7 +42,6 @@ final class CreateAppWithAuthorizationHandler
         AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory,
         ClientProviderInterface $clientProvider,
         CreateConnectedAppInterface $createApp,
-        ScopeFilterInterface $scopeFilter
     ) {
         $this->validator = $validator;
         $this->session = $session;
@@ -55,7 +52,6 @@ final class CreateAppWithAuthorizationHandler
         $this->appRoleWithScopesFactory = $appRoleWithScopesFactory;
         $this->clientProvider = $clientProvider;
         $this->createApp = $createApp;
-        $this->scopeFilter = $scopeFilter;
     }
 
     public function handle(CreateAppWithAuthorizationCommand $command): void
@@ -89,8 +85,7 @@ final class CreateAppWithAuthorizationHandler
             throw new \LogicException('The user group should have a name, got null.');
         }
 
-        $authorizationScopes = $this->scopeFilter->filterAuthorizationScopes($appAuthorization->getScopeList());
-        $role = $this->appRoleWithScopesFactory->createRole($appId, $authorizationScopes->getScopes());
+        $role = $this->appRoleWithScopesFactory->createRole($appId, $appAuthorization->getAuthorizationScopes()->getScopes());
         if (null === $role->getRole()) {
             throw new \LogicException('The user role should have a role code, like ROLE_*, got null.');
         }
@@ -113,7 +108,7 @@ final class CreateAppWithAuthorizationHandler
 
         $this->createApp->execute(
             $marketplaceApp,
-            $appAuthorization->getScopeList()->getScopes(),
+            $appAuthorization->getAllScopes()->getScopes(),
             $connection->code(),
             $group->getName()
         );

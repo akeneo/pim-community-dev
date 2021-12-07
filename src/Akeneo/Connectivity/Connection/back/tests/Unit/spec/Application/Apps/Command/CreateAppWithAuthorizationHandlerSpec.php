@@ -194,7 +194,6 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
         $clientProvider->findClientByAppId('an_app_id')->willReturn($client);
         $createUserGroup->execute(Argument::any())->willReturn($userGroup);
         $userGroup->getName()->willReturn('foo');
-        $appAuthorization->getScopeList()->willReturn(ScopeList::fromScopes([]));
         $appRoleWithScopesFactory->createRole('an_app_id', [])->willReturn($role);
         $role->getRole()->willReturn(null);
 
@@ -219,7 +218,8 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
         GroupInterface $userGroup,
         RoleInterface $role,
         User $user,
-        ConnectionWithCredentials $connection
+        ConnectionWithCredentials $connection,
+        ScopeFilterInterface $scopeFilter
     ): void {
         $command = new CreateAppWithAuthorizationCommand('an_app_id');
 
@@ -232,7 +232,9 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
         $clientProvider->findClientByAppId('an_app_id')->willReturn($client);
         $createUserGroup->execute(Argument::any())->willReturn($userGroup);
         $userGroup->getName()->willReturn('a_group');
-        $appAuthorization->getScopeList()->willReturn(ScopeList::fromScopes(['a_scope']));
+        $scopes = ScopeList::fromScopes(['a_scope']);
+        $appAuthorization->getScopeList()->willReturn($scopes);
+        $scopeFilter->filterAuthorizationScopes($scopes)->willReturn($scopes);
         $appRoleWithScopesFactory->createRole('an_app_id', ['a_scope'])->willReturn($role);
         $role->getRole()->willReturn('ROLE_APP');
         $createUser->execute(Argument::any(), Argument::any(), Argument::any(), ['a_group'], ['ROLE_APP'])->willReturn($user);

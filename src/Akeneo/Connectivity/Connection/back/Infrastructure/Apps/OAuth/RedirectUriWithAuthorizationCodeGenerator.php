@@ -28,13 +28,13 @@ class RedirectUriWithAuthorizationCodeGenerator implements RedirectUriWithAuthor
     ): string {
         $userId = $appAuthenticationUser->getPimUserId();
         $redirectUri = $appAuthorization->getRedirectUri();
-        $scope = $appAuthorization->getScopeList()->toScopeString();
+        $scopes = $appAuthorization->getAllScopes();
 
         $code = $this->authorizationCodeGenerator->generate(
             $appConfirmation,
             $userId,
             $redirectUri,
-            $scope
+            $scopes->toScopeString()
         );
         $state = $appAuthorization->getState();
 

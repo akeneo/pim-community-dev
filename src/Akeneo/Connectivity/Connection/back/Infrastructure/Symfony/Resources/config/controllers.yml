@@ -94,7 +94,6 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGenerator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
 
     akeneo_connectivity.connection.public.controller.apps.token:
         public: true
@@ -127,7 +126,6 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\CreateUserConsentQuery'
             - '@akeneo_connectivity.connection.clock'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider'
 
     akeneo_connectivity.connection.internal_api.controller.apps.get_all_connected_apps:
