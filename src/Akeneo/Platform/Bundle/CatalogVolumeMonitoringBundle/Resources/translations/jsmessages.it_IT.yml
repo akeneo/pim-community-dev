@@ -26,4 +26,23 @@ pim_catalog_volume:
     count_category_trees: Albero della categoria
     count_variant_products: Prodotti varianti
     count_product_models: Modelli di prodotto
+    count_product_and_product_model_values: Valori di prodotto
+    average_max_product_and_product_model_values: Valori di prodotto per prodotti
+    count_reference_entity: Entità di riferimento
+    average_max_records_per_reference_entity: Registri per entità di riferimento
+    average_max_attributes_per_reference_entity: Attributi per entità di riferimento
+    count_asset_family: Famiglie di asset
+    average_max_assets_per_asset_family: Asset per famiglia di asset
+    average_max_attributes_per_asset_family: Attributi per famiglia di asset
+    title:
+      product: Prodotto
+      catalog: Catalogo
+      product_structure: Struttura prodotto
+      variant_modeling: Modellazione variante
+      reference_entities: Entità di riferimento
+      assets: Asset
+  mean: 'Media:'
   max: 'Massimo:'
+  error:
+    generic_title: Spiacenti, si è verificato un errore.
+    generic_message: Riprova tra poco.

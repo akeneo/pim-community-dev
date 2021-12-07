@@ -34,6 +34,8 @@ pim_import_export:
       error: Import <strong>%label%</strong> mislukt
       warning: Import <strong>%label%</strong> met enkele waarschuwingen beëindigd
       success: Import <strong>%label%</strong> beëindigd
+      warnings:
+        xlsx_cell_date_conversion_error: Kan cel "{cellName}" niet converteren met datumformaat naar attribuut van type {attributeType}
   list: Selecteer een taak
   job_profile:
     tab:
