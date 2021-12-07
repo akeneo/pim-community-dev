@@ -33,33 +33,17 @@ class Version_6_0_20211207154203_add_is_trackable_in_step_execution_Integration 
         $this->connection = $this->get('database_connection');
     }
 
-    public function test_it_adds_a_is_trackable_column_to_the_job_execution_table(): void
+    public function test_it_adds_a_is_trackable_column_to_the_step_execution_table(): void
     {
         $this->dropColumnIfExists();
 
-        $nonVisibleJobInstanceId = $this->getJobInstanceId('compute_family_variant_structure_changes');
-        $nonVisibleJobExecutionId = $this->createJobExecution($nonVisibleJobInstanceId);
-
-        $visibleJobInstanceId = $this->getJobInstanceId('csv_product_quick_export');
-        $visibleJobExecutionId = $this->createJobExecution($visibleJobInstanceId);
-
         $this->reExecuteMigration(self::MIGRATION_LABEL);
         Assert::assertEquals(true, $this->columnExists());
-
-        $jobExecutions = $this->selectJobExecutions();
-
-        Assert::assertEquals([
-            $nonVisibleJobExecutionId => '0',
-            $visibleJobExecutionId => '1',
-        ], $jobExecutions);
     }
 
     public function test_migration_is_idempotent(): void
     {
         $this->dropColumnIfExists();
-
-        $jobInstanceId = $this->getJobInstanceId('csv_product_quick_export');
-        $this->createJobExecution($jobInstanceId);
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
         $this->reExecuteMigration(self::MIGRATION_LABEL);
@@ -70,7 +54,7 @@ class Version_6_0_20211207154203_add_is_trackable_in_step_execution_Integration 
     private function dropColumnIfExists(): void
     {
         if ($this->columnExists()) {
-            $this->connection->executeQuery('ALTER TABLE akeneo_batch_job_execution DROP COLUMN is_trackable;');
+            $this->connection->executeQuery('ALTER TABLE akeneo_batch_step_execution DROP COLUMN is_trackable;');
         }
 
         Assert::assertEquals(false, $this->columnExists());
@@ -78,40 +62,8 @@ class Version_6_0_20211207154203_add_is_trackable_in_step_execution_Integration 
 
     private function columnExists(): bool
     {
-        $columns = $this->connection->getSchemaManager()->listTableColumns('akeneo_batch_job_execution');
+        $columns = $this->connection->getSchemaManager()->listTableColumns('akeneo_batch_step_execution');
 
-        return isset($columns['is_trackable']);
-    }
-
-    private function createJobExecution(int $jobInstanceId): int
-    {
-        $this->connection->insert(
-            'akeneo_batch_job_execution',
-            [
-                'job_instance_id' => $jobInstanceId,
-                'status' => 1,
-                'raw_parameters' => [],
-            ],
-            [
-                'raw_parameters' => Types::JSON,
-            ],
-        );
-
-        return (int) $this->connection->lastInsertId();
-    }
-
-    private function getJobInstanceId(string $code): int
-    {
-        return (int) $this->connection->executeQuery(
-            'SELECT id FROM akeneo_batch_job_instance WHERE code = :code',
-            ['code' => $code],
-        )->fetchColumn();
-    }
-
-    private function selectJobExecutions(): array
-    {
-        $result = $this->connection->executeQuery('SELECT id, is_trackable FROM akeneo_batch_job_execution')->fetchAllAssociative();
-
-        return array_column($result, 'is_trackable', 'id');
+        return array_key_exists('is_trackable', $columns);
     }
 }
