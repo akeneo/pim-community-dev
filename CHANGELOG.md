@@ -124,6 +124,7 @@
 - PIM-10180: Fix PDF Asset thumbnail generation
 - PIM-10183: Fix reference entity validation
 - PIM-10149: Fix group product page OOM (remove group to products association)
+- PIM-10186: No thumbnail generation for assets with filenames longer than 100 characters
 
 ## Improvements
 
