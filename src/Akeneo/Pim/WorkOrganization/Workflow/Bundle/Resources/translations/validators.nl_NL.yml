@@ -1,0 +1,3 @@
+pimee_workflow:
+  check_removal:
+    product_model_error: Dit productmodel heeft een product dat gepubliceerd is. Verwijder de publicatie en probeer het opnieuw.

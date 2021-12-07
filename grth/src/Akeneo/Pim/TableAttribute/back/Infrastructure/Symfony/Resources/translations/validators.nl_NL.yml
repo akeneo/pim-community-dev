@@ -9,6 +9,7 @@ pim_table_configuration:
       column_code_must_be_filled: De kolomcode moet worden ingevuld
       option_code_must_be_filled: De optiecode moet worden ingevuld
       invalid_code: De kolomcode mag alleen letters, cijfers en onderstrepingstekens bevatten
+      not_available_code: Deze kolomcode is niet beschikbaar
       invalid_option_code: De optiecode kan alleen letters, cijfers en onderstrepingstekens bevatten
       too_long_code: "De kolomcode is te lang: deze moet 100 tekens of minder zijn"
       too_long_label: "Het kolomlabel is te lang: het moet 250 tekens of minder zijn"

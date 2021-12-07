@@ -1,0 +1,3 @@
+pimee_workflow:
+  check_removal:
+    product_model_error: Questo modello prodotto ha un prodotto variante che è stato pubblicato. Annulla la pubblicazione e riprova.
