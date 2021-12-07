@@ -41,7 +41,6 @@ use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
-use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateOrUpdateAttributeOptionContext implements Context
@@ -66,16 +65,13 @@ class CreateOrUpdateAttributeOptionContext implements Context
 
     private SecurityFacadeStub $securityFacade;
 
-    private TestLogger $apiAclLogger;
-
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
         AttributeRepositoryInterface $attributeRepository,
         InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
-        SecurityFacadeStub $securityFacade,
-        TestLogger $apiAclLogger
+        SecurityFacadeStub $securityFacade
     ) {
         $this->assetFamilyRepository = $assetFamilyRepository;
         $this->clientFactory = $clientFactory;
@@ -83,7 +79,6 @@ class CreateOrUpdateAttributeOptionContext implements Context
         $this->attributeRepository = $attributeRepository;
         $this->activatedLocales = $activatedLocales;
         $this->securityFacade = $securityFacade;
-        $this->apiAclLogger = $apiAclLogger;
     }
 
     /**
@@ -482,16 +477,9 @@ class CreateOrUpdateAttributeOptionContext implements Context
      */
     public function thePimNotifiesTheConnectorAboutMissingPermissionsForCollectingTheUsaAttributeOptionOfTheSalesAreaAttributeOfTheBrandAssetFamilyFromTheErpToSynchronizeItWithThePim()
     {
-        /**
-         * TODO CXP-922: Assert 403 instead of success & remove logger assertion
-         */
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
             self::REQUEST_CONTRACT_DIR . 'forbidden_usa_attribute_option_creation.json'
-        );
-        Assert::assertTrue(
-            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_asset_family_edit"'),
-            'Expected warning not found in the logs.'
         );
     }
 }

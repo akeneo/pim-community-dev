@@ -13,7 +13,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.media_file'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_assets_context:
         class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\GetConnectorAssetsContext
@@ -30,7 +29,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_activated_locales_per_channels'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.date'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.tests.back.integration.connector.distribute.not_found_asset_family_context:
         class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\NotFoundAssetFamilyContext
@@ -47,7 +45,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_asset_family_by_asset_family_identifier'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
         tags:
         - { name: fob.context_service }
 
@@ -59,7 +56,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_asset_family_items'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
         tags:
         - { name: fob.context_service }
 
@@ -80,7 +76,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.job.product_link_rule_launcher'
             - '@akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_identifiers_launcher'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.tests.back.integration.connector.collect.delete_asset_context:
         class: Akeneo\AssetManager\Integration\Connector\Api\Context\Collect\DeleteAssetContext
@@ -97,7 +92,6 @@ services:
             - '@akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_attributes_context:
         class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\GetConnectorAttributesContext
@@ -108,7 +102,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_attribute_context:
         class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\GetConnectorAttributeContext
@@ -119,7 +112,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_attribute_option_context:
         class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\GetConnectorAttributeOptionContext
@@ -130,7 +122,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.tests.back.integration.connector.collect.create_or_update_asset_family_context:
         class: Akeneo\AssetManager\Integration\Connector\Api\Context\Collect\CreateOrUpdateAssetFamilyContext
@@ -145,7 +136,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.get_asset_collection_type_adapter'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_attribute_options_context:
         class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\GetConnectorAttributeOptionsContext
@@ -156,7 +146,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.tests.back.integration.connector.collect.create_or_update_attribute_context:
         class: Akeneo\AssetManager\Integration\Connector\Api\Context\Collect\CreateOrUpdateAttributeContext
@@ -168,7 +157,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_connector_attribute_by_identifier_and_code'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'
 
     akeneo_assetmanager.tests.back.integration.connector.collection.create_or_update_attribute_option_context:
         class: Akeneo\AssetManager\Integration\Connector\Api\Context\Collect\CreateOrUpdateAttributeOptionContext
@@ -179,4 +167,3 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
             - '@oro_security.security_facade'
-            - '@monolog.logger.pim_api_acl'

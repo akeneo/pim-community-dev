@@ -15,11 +15,10 @@
         }
     },
     "response": {
-        "status": 201,
-        "body": "",
-        "headers": {
-            "Location": "http://localhost/api/rest/v1/asset-media-files/in/memory/files/Kartell.jpg",
-            "Asset-media-file-code": "in/memory/files/Kartell.jpg"
+        "status": 403,
+        "body": {
+            "code": 403,
+            "message": "Access forbidden. You are not allowed to create or update assets."
         }
     }
 }

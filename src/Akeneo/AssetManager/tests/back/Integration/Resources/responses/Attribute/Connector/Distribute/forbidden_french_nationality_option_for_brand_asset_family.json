@@ -9,12 +9,10 @@
     }
   },
   "response": {
-    "status": 200,
+    "status": 403,
     "body": {
-      "code": "french",
-      "labels": {
-        "fr_FR": "Francais"
-      }
+      "code": 403,
+      "message": "Access forbidden. You are not allowed to list asset families."
     }
   }
 }
