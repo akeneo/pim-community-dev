@@ -58,5 +58,15 @@
         <testsuite name="PIM_Performance_Test">
             <directory suffix="Performance.php">tests/back</directory>
         </testsuite>
+
+        <testsuite name="Table_Attribute_Integration_EE">
+            <directory suffix="Integration.php">grth/src/Akeneo/Pim/TableAttribute/tests/back/Integration</directory>
+            <directory suffix="Integration.php">grth/src/Akeneo/Pim/TableAttribute/tests/back/Enterprise/Integration</directory>
+        </testsuite>
+
+        <testsuite name="Table_Attribute_End_To_End_EE">
+            <directory suffix="EndToEnd.php">grth/src/Akeneo/Pim/TableAttribute/tests/back/EndToEnd</directory>
+            <directory suffix="EndToEnd.php">grth/src/Akeneo/Pim/TableAttribute/tests/back/Enterprise/EndToEnd</directory>
+        </testsuite>
     </testsuites>
 </phpunit>

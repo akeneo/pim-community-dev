@@ -209,7 +209,6 @@ Feature: Create a table attribute
     When I create a table attribute with a configuration '{"data_type": "record", "code": "record", "is_required_for_completeness": true, "reference_entity_identifier": "brands"}'
     Then There is no violation
 
-# @TODO : Move record tests to EE
   @only-ee
   Scenario: Cannot create a table configuration with a null "reference_entity_identifier" in a record column
     When I create a table attribute with a configuration '{"data_type": "record", "code": "record", "is_required_for_completeness": true, "reference_entity_identifier": null}'
