@@ -10,6 +10,7 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepInterface;
 use Akeneo\Tool\Component\Batch\Step\StoppableStepInterface;
+use Akeneo\Tool\Component\Batch\Step\TrackableStepInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -268,6 +269,11 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         try {
             if ($step instanceof StoppableStepInterface) {
                 $step->setStoppable($this->isStoppable);
+            }
+
+            if ($step instanceof TrackableStepInterface) {
+                $stepExecution->setIsTrackable(true);
+                $this->jobRepository->updateStepExecution($stepExecution);
             }
 
             $step->execute($stepExecution);

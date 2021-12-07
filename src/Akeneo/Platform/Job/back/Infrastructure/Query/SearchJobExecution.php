@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Infrastructure\Query;
 
+use Akeneo\Platform\Job\Application\SearchJobExecution\ClockInterface;
 use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
+use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRowTracking;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
+use Akeneo\Platform\Job\Application\SearchJobExecution\StepExecutionRowTracking;
 use Akeneo\Platform\Job\Domain\Model\JobStatus;
+use Akeneo\Platform\Job\Domain\Model\StepStatus;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
@@ -26,13 +30,12 @@ use Doctrine\DBAL\Types\Types;
  */
 class SearchJobExecution implements SearchJobExecutionInterface
 {
-    const SEARCH_PART_PARAM_SUFFIX = 'search_part';
+    private const SEARCH_PART_PARAM_SUFFIX = 'search_part';
 
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
-    {
-        $this->connection = $connection;
+    public function __construct(
+        private Connection $connection,
+        private ClockInterface $clock
+    ) {
     }
 
     public function search(SearchJobExecutionQuery $query): array
@@ -64,13 +67,19 @@ class SearchJobExecution implements SearchJobExecutionInterface
     )
 
     SELECT
-       je.*,
-       SUM(IFNULL(se.warning_count, 0)) AS warning_count,
-       COUNT(se.job_execution_id) AS current_step_number,
-       JSON_MERGE(
-            JSON_ARRAYAGG(IFNULL(se.failure_exceptions, 'a:0:{}')),
-            JSON_ARRAYAGG(IFNULL(se.errors, 'a:0:{}'))
-      ) as errors
+        je.*,
+        SUM(IFNULL(se.warning_count, 0)) AS warning_count,
+        COUNT(se.job_execution_id) AS current_step_number,
+        JSON_ARRAYAGG(JSON_OBJECT(
+            'start_time', se.start_time,
+            'end_time', se.end_time,
+            'warning_count', se.warning_count,
+            'errors', JSON_ARRAY(IFNULL(se.failure_exceptions, 'a:0:{}'), IFNULL(se.errors, 'a:0:{}')),
+            'total_items', JSON_EXTRACT(se.tracking_data, '$.totalItems'),
+            'processed_items', JSON_EXTRACT(se.tracking_data, '$.processedItems'),
+            'status', se.status,
+            'is_trackable', se.is_trackable
+        )) AS steps
     FROM job_executions je
     LEFT JOIN akeneo_batch_step_execution se ON je.id = se.job_execution_id
     GROUP BY je.id
@@ -208,13 +217,8 @@ SQL;
         $platform = $this->connection->getDatabasePlatform();
 
         return array_map(function (array $rawJobExecution) use ($platform): JobExecutionRow {
-            $errors = json_decode($rawJobExecution['errors'], true); // TODO revalidate that currently the errors are here
-            $errorCount = 0;
-            foreach ($errors as $error) {
-                $errorCount += count(unserialize($error));
-            }
-
             $startTime = Type::getType(Types::DATETIME_IMMUTABLE)->convertToPHPValue($rawJobExecution['start_time'], $platform);
+            $tracking = $this->buildTracking($rawJobExecution);
 
             return new JobExecutionRow(
                 (int) $rawJobExecution['id'],
@@ -224,11 +228,67 @@ SQL;
                 $rawJobExecution['user'],
                 JobStatus::fromStatus((int) $rawJobExecution['status'])->getLabel(),
                 (int) $rawJobExecution['warning_count'],
-                $errorCount,
-                (int) $rawJobExecution['current_step_number'] ?? 0,
-                (int) $rawJobExecution['step_count'],
-                (bool) $rawJobExecution['is_stoppable']
+                $tracking->getErrorCount(),
+                (bool) $rawJobExecution['is_stoppable'],
+                $tracking,
             );
         }, $rawJobExecutions);
+    }
+
+    private function buildTracking(array $rawJobExecution): JobExecutionRowTracking
+    {
+        $currentStepNumber = (int) $rawJobExecution['current_step_number'] ?? 0;
+        $stepCount = (int) $rawJobExecution['step_count'];
+
+        if (0 === $currentStepNumber) {
+            return new JobExecutionRowTracking(
+                $currentStepNumber,
+                $stepCount,
+                [],
+            );
+        }
+
+        $steps = array_map(function ($step) {
+            $startTime = $step['start_time'] ? \DateTimeImmutable::createFromFormat('Y-m-d H:i:s.u', $step['start_time']) : null;
+            $endTime = $step['end_time'] ? \DateTimeImmutable::createFromFormat('Y-m-d H:i:s.u', $step['end_time']) : null;
+            $errorCount = array_reduce(
+                $step['errors'],
+                static fn (int $errorCount, string $error) => $errorCount + count(unserialize($error)),
+                0,
+            );
+            $status = StepStatus::fromStatus((int) $step['status']);
+            $duration = $this->computeDuration($status, $startTime, $endTime);
+
+            return new StepExecutionRowTracking(
+                $duration,
+                (int) $step['warning_count'],
+                $errorCount,
+                (int) $step['total_items'],
+                (int) $step['processed_items'],
+                (bool) $step['is_trackable'],
+                $status,
+            );
+        }, json_decode($rawJobExecution['steps'], true));
+
+        return new JobExecutionRowTracking(
+            $currentStepNumber,
+            $stepCount,
+            $steps,
+        );
+    }
+
+    private function computeDuration(StepStatus $status, ?\DateTimeImmutable $startTime, ?\DateTimeImmutable $endTime): int
+    {
+        $now = $this->clock->now();
+        if ($status->getStatus() === StepStatus::STARTING || null === $startTime) {
+            return 0;
+        }
+
+        $duration = $now->getTimestamp() - $startTime->getTimestamp();
+        if (null !== $endTime) {
+            $duration = $endTime->getTimestamp() - $startTime->getTimestamp();
+        }
+
+        return $duration;
     }
 }
