@@ -108,7 +108,7 @@ final class CreateAppWithAuthorizationHandler
 
         $this->createApp->execute(
             $marketplaceApp,
-            $appAuthorization->getAllScopes()->getScopes(),
+            $appAuthorization->getAuthorizationScopes()->getScopes(),
             $connection->code(),
             $group->getName()
         );

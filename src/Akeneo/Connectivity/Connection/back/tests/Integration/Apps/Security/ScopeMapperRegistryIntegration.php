@@ -42,7 +42,7 @@ class ScopeMapperRegistryIntegration extends TestCase
      */
     public function test_it_retrieves_all_authorization_scopes()
     {
-        $scopes = $this->scopeMapperRegistry->getAuthorizationScopes();
+        $scopes = $this->scopeMapperRegistry->getAllScopes();
         \sort($scopes);
 
         $this->assertEquals([
@@ -140,7 +140,7 @@ class ScopeMapperRegistryIntegration extends TestCase
             ],
         ];
 
-        $scopes = $this->scopeMapperRegistry->getAuthorizationScopes();
+        $scopes = $this->scopeMapperRegistry->getAllScopes();
 
         foreach ($scopes as $scope) {
             $acls = $this->scopeMapperRegistry->getAcls([$scope]);

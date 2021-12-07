@@ -110,9 +110,6 @@ services:
         arguments:
             - !tagged_iterator pim_api.security.scope_mapper
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\OpenIdScopeMapper:
-        tags: ['pim_api.security.scope_mapper']
-
     # queries
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAllConnectedAppsPublicIdsQuery:
         arguments:

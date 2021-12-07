@@ -14,12 +14,7 @@ interface ScopeMapperInterface
     /**
      * @return string[]
      */
-    public function getAuthorizationScopes(): array;
-
-    /**
-     * @return string[]
-     */
-    public function getAuthenticationScopes(): array;
+    public function getScopes(): array;
 
     /**
      * @throw \InvalidArgumentException if the given scope does not exist.

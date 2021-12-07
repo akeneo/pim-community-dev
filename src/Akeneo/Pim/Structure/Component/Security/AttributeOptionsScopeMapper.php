@@ -44,17 +44,12 @@ class AttributeOptionsScopeMapper implements ScopeMapperInterface
         ],
     ];
 
-    public function getAuthorizationScopes(): array
+    public function getScopes(): array
     {
         return [
             self::SCOPE_READ_ATTRIBUTE_OPTIONS,
             self::SCOPE_WRITE_ATTRIBUTE_OPTIONS,
         ];
-    }
-
-    public function getAuthenticationScopes(): array
-    {
-        return [];
     }
 
     public function getAcls(string $scopeName): array

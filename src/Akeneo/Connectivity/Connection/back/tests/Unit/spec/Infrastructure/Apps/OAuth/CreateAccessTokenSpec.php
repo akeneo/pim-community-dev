@@ -71,7 +71,6 @@ class CreateAccessTokenSpec extends ObjectBehavior
         $userRepository->find(1)
             ->willReturn($appUser);
 
-        $authCode->getData()->willReturn([]);
         $authCode->getScope()->willReturn('delete_products');
         $token = [
             'access_token' => 'generated_token_123',
@@ -82,8 +81,9 @@ class CreateAccessTokenSpec extends ObjectBehavior
         $storage->createAccessToken(
             'generated_token_123',
             $client,
-            [],
-            null
+            $appUser,
+            null,
+            'scope1 scope2'
         )->shouldBeCalled();
         $storage->markAuthCodeAsUsed('auth_code_1234')->shouldBeCalled();
 

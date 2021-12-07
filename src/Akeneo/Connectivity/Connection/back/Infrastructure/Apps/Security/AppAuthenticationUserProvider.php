@@ -32,7 +32,14 @@ class AppAuthenticationUserProvider
         $user = $this->getUser($pimUserId);
         $consentedAuthenticationScopes = ScopeList::fromScopes($this->getUserConsentedAuthenticationScopesQuery->execute($pimUserId, $appId));
 
-        return new AppAuthenticationUser($pimUserId, $appId, $consentedAuthenticationScopes, $user->getEmail(), $user->getFirstName(), $user->getLastName());
+        return new AppAuthenticationUser(
+            $pimUserId,
+            $appId,
+            $consentedAuthenticationScopes,
+            $user->getEmail(),
+            $user->getFirstName(),
+            $user->getLastName()
+        );
     }
 
     private function getUser(int $id): UserInterface

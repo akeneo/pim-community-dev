@@ -43,17 +43,12 @@ class AssociationTypeScopeMapper implements ScopeMapperInterface
         ],
     ];
 
-    public function getAuthorizationScopes(): array
+    public function getScopes(): array
     {
         return [
             self::SCOPE_READ_ASSOCIATION_TYPES,
             self::SCOPE_WRITE_ASSOCIATION_TYPES,
         ];
-    }
-
-    public function getAuthenticationScopes(): array
-    {
-        return [];
     }
 
     public function getAcls(string $scopeName): array

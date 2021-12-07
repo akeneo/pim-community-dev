@@ -8,15 +8,14 @@ use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInter
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
+use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\CreateUserConsentQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
-use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Domain\Clock;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\OpenIdScopeMapper;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Psr\Log\LoggerInterface;
@@ -110,13 +109,14 @@ class ConfirmAuthorizationAction
             throw new \LogicException('The connected app should have been created');
         }
 
+        // @TODO Command to save consent
         $appAuthenticationUser = $this->appAuthenticationUserProvider->getAppAuthenticationUser(
             $appConfirmation->getAppId(),
             $this->connectedPimUserProvider->getCurrentUserId()
         );
 
         $authenticationScopes = $appAuthorization->getAuthenticationScopes();
-        if ($authenticationScopes->hasScope(OpenIdScopeMapper::SCOPE_OPENID) && $hasUserAuthenticationConsent) {
+        if ($authenticationScopes->hasScope(AuthenticationScope::SCOPE_OPENID) && $hasUserAuthenticationConsent) {
             $this->createUserConsentQuery->execute(
                 $appAuthenticationUser->getPimUserId(),
                 $appConfirmation->getAppId(),

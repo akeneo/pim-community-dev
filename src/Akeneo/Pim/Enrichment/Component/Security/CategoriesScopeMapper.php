@@ -44,17 +44,12 @@ class CategoriesScopeMapper implements ScopeMapperInterface
         ],
     ];
 
-    public function getAuthorizationScopes(): array
+    public function getScopes(): array
     {
         return [
             self::SCOPE_READ_CATEGORIES,
             self::SCOPE_WRITE_CATEGORIES,
         ];
-    }
-
-    public function getAuthenticationScopes(): array
-    {
-        return [];
     }
 
     public function getAcls(string $scopeName): array

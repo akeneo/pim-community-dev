@@ -8,11 +8,11 @@ use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInter
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
+use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\OpenIdScopeMapper;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -102,7 +102,7 @@ class AuthorizeAction
         );
 
         if (
-            $appAuthorization->getAuthenticationScopes()->hasScope(OpenIdScopeMapper::SCOPE_OPENID)
+            $appAuthorization->getAuthenticationScopes()->hasScope(AuthenticationScope::SCOPE_OPENID)
             && false === $appAuthenticationUser->getConsentedAuthenticationScopes()->equals($appAuthorization->getAuthenticationScopes())
         ) {
             // @TODO might loop if it decline the app => redirect on pim, with error ?

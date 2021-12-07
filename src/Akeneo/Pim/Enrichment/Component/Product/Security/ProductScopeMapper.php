@@ -56,18 +56,13 @@ class ProductScopeMapper implements ScopeMapperInterface
         ],
     ];
 
-    public function getAuthorizationScopes(): array
+    public function getScopes(): array
     {
         return [
             self::SCOPE_READ_PRODUCTS,
             self::SCOPE_WRITE_PRODUCTS,
             self::SCOPE_DELETE_PRODUCTS,
         ];
-    }
-
-    public function getAuthenticationScopes(): array
-    {
-        return [];
     }
 
     public function getAcls(string $scopeName): array

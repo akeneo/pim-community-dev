@@ -51,17 +51,12 @@ class CatalogStructureScopeMapper implements ScopeMapperInterface
         ],
     ];
 
-    public function getAuthorizationScopes(): array
+    public function getScopes(): array
     {
         return [
             self::SCOPE_READ_CATALOG_STRUCTURE,
             self::SCOPE_WRITE_CATALOG_STRUCTURE,
         ];
-    }
-
-    public function getAuthenticationScopes(): array
-    {
-        return [];
     }
 
     public function getAcls(string $scopeName): array

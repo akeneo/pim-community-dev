@@ -82,7 +82,7 @@ class AuthorizeEndToEnd extends WebTestCase
                 'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
                 'response_type' => 'code',
                 'state' => 'foo',
-                'scope' => 'read_catalog_structure SOME_UNKNOWN_SCOPE write_categories'
+                'scope' => 'read_catalog_structure SOME_UNKNOWN_SCOPE write_categories openid profile'
             ]
         );
         $response = $this->client->getResponse();
@@ -95,7 +95,8 @@ class AuthorizeEndToEnd extends WebTestCase
         Assert::assertNotEmpty($authorizationInSession);
         Assert::assertEquals([
             'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
-            'scope' => 'read_catalog_structure write_categories',
+            'authorization_scope' => 'read_catalog_structure write_categories',
+            'authentication_scope' => 'openid profile',
             'redirect_uri' => 'http://shopware.example.com/callback',
             'state' => 'foo',
         ], json_decode($authorizationInSession, true));

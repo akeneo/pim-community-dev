@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthenticationUser;
+use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAsymmetricKeysQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Clock;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\OpenIdScopeMapper;
 use Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Key;
@@ -60,15 +60,15 @@ class CreateJsonWebToken
             ->expiresAt($now->modify('+1 hour'));
 
         $consentedAuthenticationScopes = $appAuthenticationUser->getConsentedAuthenticationScopes();
-        if (false === $consentedAuthenticationScopes->hasScope(OpenIdScopeMapper::SCOPE_OPENID)) {
+        if (false === $consentedAuthenticationScopes->hasScope(AuthenticationScope::SCOPE_OPENID)) {
             throw new \LogicException('OpenID must be consented to create a JWT');
         }
-        if ($consentedAuthenticationScopes->hasScope(OpenIdScopeMapper::SCOPE_PROFILE)) {
+        if ($consentedAuthenticationScopes->hasScope(AuthenticationScope::SCOPE_PROFILE)) {
             $jwtTokenBuilder
                 ->withClaim('firstname', $appAuthenticationUser->getFirstname())
                 ->withClaim('lastname', $appAuthenticationUser->getLastname());
         }
-        if ($consentedAuthenticationScopes->hasScope(OpenIdScopeMapper::SCOPE_EMAIL)) {
+        if ($consentedAuthenticationScopes->hasScope(AuthenticationScope::SCOPE_EMAIL)) {
             $jwtTokenBuilder
                 ->withClaim('email', $appAuthenticationUser->getEmail());
         }

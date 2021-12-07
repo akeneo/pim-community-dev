@@ -14,8 +14,8 @@ class ScopeMapperRegistrySpec extends ObjectBehavior
         ScopeMapperInterface $productScopes,
         ScopeMapperInterface $catalogStructureScopes
     ): void {
-        $productScopes->getAuthorizationScopes()->willReturn(['read_products', 'write_products']);
-        $catalogStructureScopes->getAuthorizationScopes()->willReturn(['read_catalog_structure', 'write_catalog_structure']);
+        $productScopes->getScopes()->willReturn(['read_products', 'write_products']);
+        $catalogStructureScopes->getScopes()->willReturn(['read_catalog_structure', 'write_catalog_structure']);
 
         $this->beConstructedWith([$productScopes, $catalogStructureScopes]);
     }
@@ -44,7 +44,7 @@ class ScopeMapperRegistrySpec extends ObjectBehavior
     {
         $anyScopeMapper = new class implements ScopeMapperInterface
         {
-            public function getAuthorizationScopes(): array
+            public function getScopes(): array
             {
                 return ['read_something'];
             }
@@ -66,7 +66,7 @@ class ScopeMapperRegistrySpec extends ObjectBehavior
         };
         $anotherScopeMapper = new class implements ScopeMapperInterface
         {
-            public function getAuthorizationScopes(): array
+            public function getScopes(): array
             {
                 return ['read_something'];
             }
@@ -94,7 +94,7 @@ class ScopeMapperRegistrySpec extends ObjectBehavior
 
     public function it_provides_all_scopes(): void
     {
-        $this->getAuthorizationScopes()->shouldReturn([
+        $this->getAllScopes()->shouldReturn([
             'read_products',
             'write_products',
             'read_catalog_structure',

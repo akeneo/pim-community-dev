@@ -59,7 +59,7 @@ class RequestAccessTokenActionEndToEnd extends WebTestCase
         Assert::assertArrayHasKey('token_type', $content);
         Assert::assertEquals('bearer', $content['token_type']);
         Assert::assertArrayHasKey('scope', $content);
-        Assert::assertEquals('write_catalog_structure delete_products read_association_types', $content['scope']);
+        Assert::assertEquals('delete_products read_association_types write_catalog_structure', $content['scope']);
     }
 
     public function test_to_get_a_bad_request_if_the_request_is_wrong(): void

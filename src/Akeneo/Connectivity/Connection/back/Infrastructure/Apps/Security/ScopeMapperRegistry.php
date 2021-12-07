@@ -11,10 +11,8 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Security;
  */
 final class ScopeMapperRegistry
 {
-    /**
-     * @var array<string,ScopeMapperInterface> $scopeMappers
-     */
-    private array $scopeMappers = [];
+    /** @var array<string, ScopeMapperInterface> */
+    private iterable $scopeMappers = [];
 
     public function __construct(iterable $scopeMappers)
     {
@@ -28,9 +26,7 @@ final class ScopeMapperRegistry
                     )
                 );
             }
-
-            $scopes = [...$scopeMapper->getAuthorizationScopes(), ...$scopeMapper->getAuthenticationScopes()];
-            foreach ($scopes as $scope) {
+            foreach ($scopeMapper->getScopes() as $scope) {
                 if (\array_key_exists($scope, $this->scopeMappers)) {
                     throw new \InvalidArgumentException(
                         sprintf(
@@ -48,27 +44,9 @@ final class ScopeMapperRegistry
     /**
      * @return string[]
      */
-    public function getAuthorizationScopes(): array
+    public function getAllScopes(): array
     {
-        $scopes = [];
-        foreach ($this->scopeMappers as $scopeMapper) {
-            $scopes = array_merge($scopes, $scopeMapper->getAuthorizationScopes());
-        }
-
-        return array_unique($scopes);
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getAuthenticationScopes(): array
-    {
-        $scopes = [];
-        foreach ($this->scopeMappers as $scopeMapper) {
-            $scopes = array_merge($scopes, $scopeMapper->getAuthenticationScopes());
-        }
-
-        return array_unique($scopes);
+        return \array_keys($this->scopeMappers);
     }
 
     /**
