@@ -9,20 +9,22 @@ const jobExecutionRow: JobExecutionRow = {
   started_at: '2020-01-01T00:00:00+00:00',
   tracking: {
     total_step: 2,
-    current_step: 1,
+    current_step: 2,
     steps: [
       {
-        has_error: false,
-        has_warning: false,
-        is_trackable: false,
+        error_count: 0,
+        warning_count: 0,
+        duration: 22,
+        is_trackable: true,
         processed_items: 10,
         total_items: 10,
         status: 'COMPLETED',
       },
       {
-        has_error: true,
-        has_warning: false,
-        is_trackable: false,
+        error_count: 2,
+        warning_count: 0,
+        duration: 22,
+        is_trackable: true,
         processed_items: 2,
         total_items: 10,
         status: 'STARTED',
@@ -50,4 +52,5 @@ test('it displays a job execution progress cell', () => {
   );
 
   expect(screen.getAllByRole('progressbar')).toHaveLength(2);
+  expect(screen.getByTitle('akeneo_job_process_tracker.tracking.in_progress')).toBeInTheDocument();
 });

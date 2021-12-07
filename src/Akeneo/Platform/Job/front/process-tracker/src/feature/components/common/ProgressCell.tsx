@@ -30,23 +30,23 @@ const ProgressCell = ({jobExecutionRow}: ProgressCellProps) => {
   return (
     <Table.Cell title={getStepExecutionRowTrackingProgressLabel(translate, jobExecutionRow.status, currentStep)}>
       <Container>
-        {'STARTING' === jobExecutionRow.status ? (
-          <ProgressBar percent="indeterminate" level="primary" />
-        ) : (
-          [...Array(jobExecutionRow.tracking.total_step)].map((_, stepIndex) => {
-            const step = jobExecutionRow.tracking.steps[stepIndex];
+        {[...Array(jobExecutionRow.tracking.total_step)].map((_, stepIndex) => {
+          if ('STARTING' === jobExecutionRow.status) {
+            return <ProgressBar key={stepIndex} percent="indeterminate" level="primary" />;
+          }
 
-            return undefined !== step ? (
-              <ProgressBar
-                key={stepIndex}
-                level={getStepExecutionRowTrackingLevel(step)}
-                percent={getStepExecutionRowTrackingPercent(step)}
-              />
-            ) : (
-              <ProgressBar key={stepIndex} level="primary" percent={0} />
-            );
-          })
-        )}
+          const step = jobExecutionRow.tracking.steps[stepIndex] ?? null;
+
+          return null === step ? (
+            <ProgressBar key={stepIndex} level="primary" percent={0} />
+          ) : (
+            <ProgressBar
+              key={stepIndex}
+              level={getStepExecutionRowTrackingLevel(step)}
+              percent={getStepExecutionRowTrackingPercent(step)}
+            />
+          );
+        })}
       </Container>
     </Table.Cell>
   );

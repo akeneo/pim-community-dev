@@ -19,7 +19,7 @@ const getStepExecutionRowTrackingProgressLabel = (
   jobStatus: JobStatus,
   step?: StepExecutionRowTracking
 ): string => {
-  if (undefined === step || step.status === 'STARTING') {
+  if (undefined === step || 'STARTING' === step.status) {
     return translate('akeneo_job_process_tracker.tracking.not_started');
   }
 
@@ -54,8 +54,8 @@ const getStepExecutionRowTrackingProgressLabel = (
 };
 
 const getStepExecutionRowTrackingLevel = ({warning_count, error_count}: StepExecutionRowTracking): Level => {
-  if (0 < warning_count) return 'warning';
   if (0 < error_count) return 'danger';
+  if (0 < warning_count) return 'warning';
 
   return 'primary';
 };
