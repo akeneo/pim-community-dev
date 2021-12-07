@@ -1,0 +1,12 @@
+services:
+    Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionHandler:
+        arguments:
+            - '@Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface'
+
+    Akeneo\Platform\Job\Application\SearchJobUsers\SearchJobUsersHandler:
+        arguments:
+            - '@Akeneo\Platform\Job\Application\SearchJobUsers\SearchJobUsersInterface'
+
+    Akeneo\Platform\Job\Application\FindJobTypes\FindJobTypesHandler:
+        arguments:
+            - '@Akeneo\Platform\Job\Application\FindJobTypes\FindJobTypesInterface'

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Infrastructure\Query;
 
-use Akeneo\Platform\Job\Application\SearchJobExecution\FindJobTypesInterface;
+use Akeneo\Platform\Job\Application\FindJobTypes\FindJobTypesInterface;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -14,11 +14,9 @@ use Doctrine\DBAL\Connection;
  */
 class FindJobTypes implements FindJobTypesInterface
 {
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
-    {
-        $this->connection = $connection;
+    public function __construct(
+        private Connection $connection
+    ) {
     }
 
     public function visible(): array

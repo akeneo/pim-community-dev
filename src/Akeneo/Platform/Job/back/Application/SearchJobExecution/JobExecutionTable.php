@@ -18,15 +18,13 @@ final class JobExecutionTable
 
     /** @var JobExecutionRow[] */
     public array $rows;
-    public int $matchesCount;
 
     public function __construct(
         array $jobExecutionRows,
-        int $matchesCount
+        public int $matchesCount
     ) {
         Assert::allIsInstanceOf($jobExecutionRows, JobExecutionRow::class);
         $this->rows = $jobExecutionRows;
-        $this->matchesCount = $matchesCount;
     }
 
     public function normalize(): array

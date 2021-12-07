@@ -11,12 +11,9 @@ namespace Akeneo\Platform\Job\Application\SearchJobExecution;
  */
 final class SearchJobExecutionHandler
 {
-    private SearchJobExecutionInterface $findJobExecutionRowsForQuery;
-
     public function __construct(
-        SearchJobExecutionInterface $findJobExecutionRowsForQuery
+        private SearchJobExecutionInterface $findJobExecutionRowsForQuery
     ) {
-        $this->findJobExecutionRowsForQuery = $findJobExecutionRowsForQuery;
     }
 
     public function search(SearchJobExecutionQuery $query): JobExecutionTable

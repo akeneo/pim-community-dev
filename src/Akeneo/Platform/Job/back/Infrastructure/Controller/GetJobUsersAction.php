@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Infrastructure\Controller;
 
-use Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersInterface;
-use Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersQuery;
+use Akeneo\Platform\Job\Application\SearchJobUsers\SearchJobUsersHandler;
+use Akeneo\Platform\Job\Application\SearchJobUsers\SearchJobUsersQuery;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -21,18 +21,11 @@ use Symfony\Component\Security\Core\Security;
  */
 class GetJobUsersAction
 {
-    private Security $security;
-    private SecurityFacade $securityFacade;
-    private FindJobUsersInterface $findJobUsers;
-
     public function __construct(
-        Security $security,
-        SecurityFacade $securityFacade,
-        FindJobUsersInterface $findJobUsers
+        private Security $security,
+        private SecurityFacade $securityFacade,
+        private SearchJobUsersHandler $searchJobUsersHandler
     ) {
-        $this->security = $security;
-        $this->securityFacade = $securityFacade;
-        $this->findJobUsers = $findJobUsers;
     }
 
     public function __invoke(Request $request): Response
@@ -47,10 +40,10 @@ class GetJobUsersAction
             return new JsonResponse([$this->security->getUser()->getUserIdentifier()]);
         }
 
-        $findJobUsersQuery = new FindJobUsersQuery();
-        $findJobUsersQuery->search = (string) $request->get('search', '');
+        $searchJobUsersQuery = new SearchJobUsersQuery();
+        $searchJobUsersQuery->search = (string) $request->get('search', '');
 
-        $jobUsers = $this->findJobUsers->search($findJobUsersQuery);
+        $jobUsers = $this->searchJobUsersHandler->search($searchJobUsersQuery);
 
         return new JsonResponse($jobUsers);
     }

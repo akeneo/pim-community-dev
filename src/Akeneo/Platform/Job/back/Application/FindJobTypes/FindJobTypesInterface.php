@@ -1,6 +1,8 @@
 <?php
 
-namespace Akeneo\Platform\Job\Application\SearchJobExecution;
+declare(strict_types=1);
+
+namespace Akeneo\Platform\Job\Application\FindJobTypes;
 
 /**
  * @author Grégoire Houssard <gregoire.houssard@akeneo.com>

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Infrastructure\Controller;
 
-use Akeneo\Platform\Job\Application\SearchJobExecution\FindJobTypesInterface;
+use Akeneo\Platform\Job\Application\FindJobTypes\FindJobTypesHandler;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,13 +19,10 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
  */
 class GetJobTypesAction
 {
-    private FindJobTypesInterface $findJobTypes;
-    private SecurityFacade $securityFacade;
-
-    public function __construct(FindJobTypesInterface $findJobTypes, SecurityFacade $securityFacade)
-    {
-        $this->findJobTypes = $findJobTypes;
-        $this->securityFacade = $securityFacade;
+    public function __construct(
+        private FindJobTypesHandler $findJobTypesHandler,
+        private SecurityFacade $securityFacade
+    ) {
     }
 
     public function __invoke(Request $request): Response
@@ -35,7 +32,7 @@ class GetJobTypesAction
         }
 
         $this->denyAccessUnlessAclIsGranted();
-        $jobTypes = $this->findJobTypes->visible();
+        $jobTypes = $this->findJobTypesHandler->find();
 
         return new JsonResponse($jobTypes);
     }

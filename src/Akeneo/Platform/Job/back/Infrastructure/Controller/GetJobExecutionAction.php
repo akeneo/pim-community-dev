@@ -21,18 +21,11 @@ use Symfony\Component\Security\Core\Security;
  */
 final class GetJobExecutionAction
 {
-    private Security $security;
-    private SecurityFacade $securityFacade;
-    private SearchJobExecutionHandler $searchJobExecutionHandler;
-
     public function __construct(
-        Security $security,
-        SecurityFacade $securityFacade,
-        SearchJobExecutionHandler $searchJobExecutionHandler
+        private Security $security,
+        private SecurityFacade $securityFacade,
+        private SearchJobExecutionHandler $searchJobExecutionHandler
     ) {
-        $this->security = $security;
-        $this->securityFacade = $securityFacade;
-        $this->searchJobExecutionHandler = $searchJobExecutionHandler;
     }
 
     public function __invoke(Request $request): Response

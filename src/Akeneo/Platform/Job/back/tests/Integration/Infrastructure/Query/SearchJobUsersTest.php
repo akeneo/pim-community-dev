@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Integration\Infrastructure\Query;
 
-use Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersInterface;
-use Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersQuery;
+use Akeneo\Platform\Job\Application\SearchJobUsers\SearchJobUsersInterface;
+use Akeneo\Platform\Job\Application\SearchJobUsers\SearchJobUsersQuery;
 use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
 
-class FindJobUsersTest extends IntegrationTestCase
+class SearchJobUsersTest extends IntegrationTestCase
 {
     protected function setUp(): void
     {
@@ -54,7 +54,7 @@ class FindJobUsersTest extends IntegrationTestCase
 
     public function test_it_returns_job_users(): void
     {
-        $query = new FindJobUsersQuery();
+        $query = new SearchJobUsersQuery();
 
         $expectedJobUsers = [
             'admin',
@@ -67,7 +67,7 @@ class FindJobUsersTest extends IntegrationTestCase
 
     public function test_it_returns_filtered_job_users_on_username(): void
     {
-        $query = new FindJobUsersQuery();
+        $query = new SearchJobUsersQuery();
         $query->search = 'juli';
 
         $expectedJobUsers = ['julia', 'julien'];
@@ -75,8 +75,8 @@ class FindJobUsersTest extends IntegrationTestCase
         $this->assertEqualsCanonicalizing($expectedJobUsers, $this->getQuery()->search($query));
     }
 
-    private function getQuery(): FindJobUsersInterface
+    private function getQuery(): SearchJobUsersInterface
     {
-        return $this->get('Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersInterface');
+        return $this->get('Akeneo\Platform\Job\Application\SearchJobUsers\SearchJobUsersInterface');
     }
 }
