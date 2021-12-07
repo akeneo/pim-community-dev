@@ -65,7 +65,7 @@ final class ScopeMapperRegistry
     {
         $scopes = [];
         foreach ($this->scopeMappers as $scopeMapper) {
-            $scopes = array_merge($scopes, $scopeMapper->getAuthorizationScopes());
+            $scopes = array_merge($scopes, $scopeMapper->getAuthenticationScopes());
         }
 
         return array_unique($scopes);

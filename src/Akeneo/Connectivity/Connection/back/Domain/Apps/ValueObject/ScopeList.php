@@ -46,9 +46,9 @@ final class ScopeList
     /**
      * Return a new ScopeList with the added scopes.
      */
-    public function addScopes(self $scopes): self
+    public function addScopes(self $scopeList): self
     {
-        return self::fromScopes(array_unique(array_merge($this->scopes, $scopes->scopes)));
+        return self::fromScopes(array_unique(array_merge($this->scopes, $scopeList->scopes)));
     }
 
     public function hasScope(string $scope): bool
@@ -61,8 +61,8 @@ final class ScopeList
         return implode(' ', $this->scopes);
     }
 
-    public function equals(self $scopes): bool
+    public function equals(self $scopeList): bool
     {
-        return $this->toScopeString() === $scopes->toScopeString();
+        return $this->toScopeString() === $scopeList->toScopeString();
     }
 }

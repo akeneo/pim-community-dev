@@ -81,42 +81,42 @@ class AuthorizeAction
             );
         }
 
-        // Check if the App is already authorized
-        $appConfirmation = $this->getAppConfirmationQuery->execute($clientId);
-        if (null !== $appConfirmation) {
-            $appAuthenticationUser = $this->appAuthenticationUserProvider->getAppAuthenticationUser(
-                $appConfirmation->getAppId(),
-                $this->connectedPimUserProvider->getCurrentUserId()
-            );
-
-            $appAuthorization = $this->appAuthorizationSession->getAppAuthorization($clientId);
-            if (null === $appAuthorization) {
-                throw new \LogicException('There is no active app authorization in session');
-            }
-
-            if (
-                $appAuthorization->getAuthenticationScopes()->hasScope(OpenIdScopeMapper::SCOPE_OPENID)
-                && false === $appAuthenticationUser->getConsentedAuthenticationScopes()->equals($appAuthorization->getAuthenticationScopes())
-            ) {
-                // @TODO might loop if it decline the app => redirect on pim, with error ?
-                // @TODO triggers the consent step 'akeneo_connectivity_connection_connect_apps_authenticate'
-                echo 'Display consent modal!';
-                die;
-            }
-
-            $redirectUrl = $this->redirectUriWithAuthorizationCodeGenerator->generate(
-                $appAuthorization,
-                $appConfirmation,
-                $appAuthenticationUser
-            );
-
-            return new RedirectResponse($redirectUrl);
+        $appAuthorization = $this->appAuthorizationSession->getAppAuthorization($clientId);
+        if (null === $appAuthorization) {
+            throw new \LogicException('There is no active app authorization in session');
         }
 
-        return new RedirectResponse(
-            '/#' . $this->router->generate('akeneo_connectivity_connection_connect_apps_authorize', [
-                'client_id' => $command->getClientId(),
-            ])
+        // Check if the App is authorized
+        $appConfirmation = $this->getAppConfirmationQuery->execute($clientId);
+        if (null === $appConfirmation) {
+            return new RedirectResponse(
+                '/#' . $this->router->generate('akeneo_connectivity_connection_connect_apps_authorize', [
+                    'client_id' => $command->getClientId(),
+                ])
+            );
+        }
+
+        $appAuthenticationUser = $this->appAuthenticationUserProvider->getAppAuthenticationUser(
+            $appConfirmation->getAppId(),
+            $this->connectedPimUserProvider->getCurrentUserId()
         );
+
+        if (
+            $appAuthorization->getAuthenticationScopes()->hasScope(OpenIdScopeMapper::SCOPE_OPENID)
+            && false === $appAuthenticationUser->getConsentedAuthenticationScopes()->equals($appAuthorization->getAuthenticationScopes())
+        ) {
+            // @TODO might loop if it decline the app => redirect on pim, with error ?
+            // @TODO triggers the consent step 'akeneo_connectivity_connection_connect_apps_authenticate'
+            echo 'Display consent modal!';
+            die;
+        }
+
+        $redirectUrl = $this->redirectUriWithAuthorizationCodeGenerator->generate(
+            $appAuthorization,
+            $appConfirmation,
+            $appAuthenticationUser
+        );
+
+        return new RedirectResponse($redirectUrl);
     }
 }
