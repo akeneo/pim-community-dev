@@ -26,8 +26,8 @@ FROM pim_catalog_category
 WHERE parent_id IS NULL
 SQL;
 
-        $results = $this->connection->fetchAll($query) ?: [];
+        $results = $this->connection->fetchAllAssociative($query) ?: [];
 
-        return array_map(fn ($row) => $row['code'], $results);
+        return \array_map(fn ($row) => $row['code'], $results);
     }
 }

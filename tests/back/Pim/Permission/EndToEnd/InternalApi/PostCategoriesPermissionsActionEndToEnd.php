@@ -77,11 +77,11 @@ SELECT default_permissions
 FROM oro_access_group
 WHERE name = :name
 SQL;
-        $result = $this->connection->fetchColumn($query, [
+        $result = $this->connection->fetchOne($query, [
             'name' => $name,
         ]);
 
-        return json_decode($result, true) ?? [];
+        return \json_decode($result, true) ?? [];
     }
 
     private function getCategoryAccessByUserGroup(string $userGroupName, string $categoryCode): ?array
@@ -95,7 +95,7 @@ WHERE oag.name = :user_group_name
 AND pcc.code = :category_code
 SQL;
 
-        $permissions = $this->connection->fetchAssoc($query, [
+        $permissions = $this->connection->fetchAssociative($query, [
             'user_group_name' => $userGroupName,
             'category_code' => $categoryCode,
         ]) ?: null;
@@ -104,7 +104,7 @@ SQL;
             return null;
         }
 
-        return array_map(fn($v) => (bool) $v, $permissions);
+        return \array_map(fn($v) => (bool) $v, $permissions);
     }
 
     protected function getConfiguration(): Configuration

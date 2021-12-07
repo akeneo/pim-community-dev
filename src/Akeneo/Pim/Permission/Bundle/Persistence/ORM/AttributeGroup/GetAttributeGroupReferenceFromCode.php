@@ -36,7 +36,7 @@ FROM pim_catalog_attribute_group
 WHERE code = :code
 SQL;
 
-        $id = $this->connection->fetchColumn($query, [
+        $id = $this->connection->fetchOne($query, [
             'code' => $code,
         ]) ?: null;
 

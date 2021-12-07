@@ -17,6 +17,7 @@ $rules = [
         'Symfony\Component\EventDispatcher\Event',
         'Symfony\Contracts',
     ])->in('Akeneo\ReferenceEntity\Domain'),
+
     $builder->only([
         'Akeneo\ReferenceEntity\Domain',
         'Akeneo\Tool\Component',
@@ -26,6 +27,7 @@ $rules = [
         'Symfony\Contracts',
         'Webmozart\Assert\Assert',
     ])->in('Akeneo\ReferenceEntity\Application'),
+
     $builder->only([
         'Akeneo\ReferenceEntity\Application',
         'Akeneo\ReferenceEntity\Domain',

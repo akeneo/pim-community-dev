@@ -71,12 +71,12 @@ WHERE name = :user_group_name
 LIMIT 1
 SQL;
 
-        $row = $this->connection->fetchAssoc($query, [
+        $row = $this->connection->fetchAssociative($query, [
             'user_group_name' => $userGroupName,
         ]);
 
         if (false !== $row && null !== $row['default_permissions']) {
-            $defaultPermissions = json_decode($row['default_permissions'], true);
+            $defaultPermissions = \json_decode($row['default_permissions'], true);
 
             $permissions['edit']['all'] = $defaultPermissions['attribute_group_edit'] ?: false;
             $permissions['view']['all'] = $defaultPermissions['attribute_group_view'] ?: false;
@@ -108,7 +108,7 @@ JOIN oro_access_group ON oro_access_group.id = pimee_security_attribute_group_ac
 WHERE oro_access_group.name = :user_group_name
 SQL;
 
-        $rows = $this->connection->fetchAll($query, [
+        $rows = $this->connection->fetchAllAssociative($query, [
             'user_group_name' => $userGroupName,
         ]) ?: [];
 

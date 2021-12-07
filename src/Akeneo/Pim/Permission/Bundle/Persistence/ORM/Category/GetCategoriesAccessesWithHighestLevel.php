@@ -31,7 +31,7 @@ JOIN pim_catalog_category ON pim_catalog_category.id = pimee_security_product_ca
 WHERE user_group_id = :user_group_id
 SQL;
 
-        $rows = $this->connection->fetchAll($query, [
+        $rows = $this->connection->fetchAllAssociative($query, [
             'user_group_id' => $groupId,
         ]) ?: [];
 

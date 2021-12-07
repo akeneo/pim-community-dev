@@ -83,12 +83,12 @@ WHERE name = :user_group_name
 LIMIT 1
 SQL;
 
-        $row = $this->connection->fetchAssoc($query, [
+        $row = $this->connection->fetchAssociative($query, [
             'user_group_name' => $userGroupName,
         ]);
 
         if (false !== $row && null !== $row['default_permissions']) {
-            $defaultPermissions = json_decode($row['default_permissions'], true);
+            $defaultPermissions = \json_decode($row['default_permissions'], true);
 
             $permissions['own']['all'] = $defaultPermissions['category_own'] ?: false;
             $permissions['edit']['all'] = $defaultPermissions['category_edit'] ?: false;
@@ -127,7 +127,7 @@ WHERE oro_access_group.name = :user_group_name
 AND pim_catalog_category.parent_id IS NULL
 SQL;
 
-        $rows = $this->connection->fetchAll($query, [
+        $rows = $this->connection->fetchAllAssociative($query, [
             'user_group_name' => $userGroupName,
         ]) ?: [];
 

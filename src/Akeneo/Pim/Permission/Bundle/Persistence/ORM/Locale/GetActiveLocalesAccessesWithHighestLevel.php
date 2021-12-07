@@ -34,7 +34,7 @@ WHERE
   AND pim_catalog_locale.is_activated = 1
 SQL;
 
-        $rows = $this->connection->fetchAll($query, [
+        $rows = $this->connection->fetchAllAssociative($query, [
             'user_group_id' => $groupId,
         ]) ?: [];
 

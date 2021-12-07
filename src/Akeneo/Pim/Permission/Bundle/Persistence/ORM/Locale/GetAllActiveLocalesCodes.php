@@ -22,8 +22,8 @@ class GetAllActiveLocalesCodes
     {
         $query = 'SELECT code FROM pim_catalog_locale WHERE is_activated = 1';
 
-        $results = $this->connection->fetchAll($query) ?: [];
+        $results = $this->connection->fetchAllAssociative($query) ?: [];
 
-        return array_map(fn (array $row): string => $row['code'], $results);
+        return \array_map(fn (array $row): string => $row['code'], $results);
     }
 }
