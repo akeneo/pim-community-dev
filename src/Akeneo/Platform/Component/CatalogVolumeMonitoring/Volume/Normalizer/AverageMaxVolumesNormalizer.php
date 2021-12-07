@@ -28,7 +28,6 @@ class AverageMaxVolumesNormalizer
                     'average' => $data->getAverageVolume(),
                     'max' => $data->getMaxVolume(),
                 ],
-                'has_warning' => $data->hasWarning(),
                 'type' => self::VOLUME_TYPE
             ]
         ];

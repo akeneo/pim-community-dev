@@ -331,6 +331,7 @@ pim_enrich.export.product:
     title: Algemene instellingen
 pim_enrich.mass_edit.product:
   title: Bulkactie voor producten
+  confirm: "{0}U staat op het punt een aantal producten met de volgende informatie te updaten, de oude waarden zullen worden vervangen. Graag bevestigen.|{1}U staat op het punt een product bij te werken met de volgende informatie, de vroegere waarden zullen worden vervangen. Graag bevestigen.|]1, Inf[U staat op het punt om {{ itemsCount }} producten met de volgende informatie bij te werken, de oude waarden zullen worden vervangen. Graag bevestigen."
   step:
     select:
       label: Kies producten
@@ -356,6 +357,7 @@ pim_enrich.mass_edit.product:
     edit_common:
       label: Attribuutwaarden bewerken
       label_count: "{0}Bewerk de attribuutwaarden van enkele <span class=\"AknFullPage-title--highlight\">producten</span>|{1}Bewerk de attribuutwaarden van <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Bewerk de attribuutwaarden van <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span>"
+      description: Alleen de attributen die behoren tot de families van de geselecteerde producten worden gewijzigd met de volgende informatie voor de {{ locale }} lokale en het {{ scope }} kanaal. De oude waarden zullen worden vervangen.
       no_update: Selecteer ten minste één veld om te updaten
     add_attribute_value:
       label: Attribuutwaarden toevoegen

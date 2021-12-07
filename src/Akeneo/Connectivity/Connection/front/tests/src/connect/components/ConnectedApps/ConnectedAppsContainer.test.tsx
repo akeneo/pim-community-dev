@@ -1,6 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {screen, waitForElement} from '@testing-library/react';
+import {screen, waitFor} from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
 import {renderWithProviders, historyMock, MockFetchResponses, mockFetchResponses} from '../../../../test-utils';
 import {ConnectedAppsContainer} from '@src/connect/components/ConnectedApps/ConnectedAppsContainer';
@@ -47,7 +47,7 @@ test('The connected apps list renders with 2 connected apps card', async () => {
     ];
 
     renderWithProviders(<ConnectedAppsContainer connectedApps={connectedApps} />);
-    await waitForElement(() => screen.getByText('App A'));
+    await waitFor(() => screen.getByText('App A'));
 
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.title', {exact: false})
@@ -85,9 +85,7 @@ test('The connected apps list renders with 2 connected apps card', async () => {
 
 test('The connected apps list renders without connected apps', async () => {
     renderWithProviders(<ConnectedAppsContainer connectedApps={[]} />);
-    await waitForElement(() =>
-        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty')
-    );
+    await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty'));
 
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.title', {exact: false})

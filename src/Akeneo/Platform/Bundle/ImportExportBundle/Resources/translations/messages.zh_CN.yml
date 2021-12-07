@@ -34,6 +34,8 @@ pim_import_export:
       error: 导入 <strong>%label%</strong> 失败
       warning: 导入 <strong>%label%</strong> 完成，但有一些警告
       success: 导入 <strong>%label%</strong> 完成
+      warnings:
+        xlsx_cell_date_conversion_error: 无法将具有日期格式的单元格 "{cellName}" 转换为 {attributeType} 类型的属性
   list: 选择作业
   job_profile:
     tab:

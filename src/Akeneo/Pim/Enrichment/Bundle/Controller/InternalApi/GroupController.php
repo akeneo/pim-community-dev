@@ -2,7 +2,13 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Command\GroupProductsCommand;
+use Akeneo\Pim\Enrichment\Component\Product\Command\GroupProductsHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\GroupFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductIdentifiersInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
@@ -10,6 +16,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Doctrine\ORM\EntityManager;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -65,19 +72,9 @@ class GroupController
     /** @var NormalizerInterface */
     protected $constraintViolationNormalizer;
 
-    /**
-     * @param GroupRepositoryInterface   $groupRepository
-     * @param ProductRepositoryInterface $productRepository
-     * @param NormalizerInterface        $normalizer
-     * @param UserContext                $userContext
-     * @param ObjectUpdaterInterface     $updater
-     * @param ValidatorInterface         $validator
-     * @param NormalizerInterface        $violationNormalizer
-     * @param SaverInterface             $saver
-     * @param RemoverInterface           $remover
-     * @param GroupFactory               $groupFactory
-     * @param NormalizerInterface        $constraintViolationNormalizer
-     */
+    protected GroupProductsHandler $groupProductsHandler;
+
+
     public function __construct(
         GroupRepositoryInterface $groupRepository,
         ProductRepositoryInterface $productRepository,
@@ -89,7 +86,8 @@ class GroupController
         SaverInterface $saver,
         RemoverInterface $remover,
         GroupFactory $groupFactory,
-        NormalizerInterface $constraintViolationNormalizer
+        NormalizerInterface $constraintViolationNormalizer,
+        GroupProductsHandler $groupProductsHandler
     ) {
         $this->groupRepository = $groupRepository;
         $this->productRepository = $productRepository;
@@ -102,6 +100,7 @@ class GroupController
         $this->remover = $remover;
         $this->groupFactory = $groupFactory;
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
+        $this->groupProductsHandler = $groupProductsHandler;
     }
 
     /**
@@ -194,6 +193,10 @@ class GroupController
         }
 
         $this->saver->save($group);
+
+        if (array_key_exists('products', $data)) {
+            $this->groupProductsHandler->handle(new GroupProductsCommand($group->getId(), $data['products']));
+        }
 
         return new JsonResponse($this->normalizer->normalize(
             $group,

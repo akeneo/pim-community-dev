@@ -24,13 +24,10 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 class ProductModelIndexer implements ProductModelIndexerInterface
 {
     private const PRODUCT_MODEL_IDENTIFIER_PREFIX = 'product_model_';
-    private const BATCH_SIZE = 1000;
+    private const BATCH_SIZE = 500;
 
-    /** @var Client */
-    private $productAndProductModelClient;
-
-    /** @var GetElasticsearchProductModelProjectionInterface */
-    private $getElasticsearchProductModelProjection;
+    private Client $productAndProductModelClient;
+    private GetElasticsearchProductModelProjectionInterface $getElasticsearchProductModelProjection;
 
     public function __construct(
         Client $productAndProductModelClient,
@@ -69,7 +66,7 @@ class ProductModelIndexer implements ProductModelIndexerInterface
                 $this->getElasticsearchProductModelProjection->fromProductModelCodes($productModelCodesChunk);
 
             $normalizedProductModelProjections = (
-                function (iterable $projections): iterable {
+                static function (iterable $projections): iterable {
                     foreach ($projections as $productModelCode => $projection) {
                         yield $productModelCode => $projection->toArray();
                     }

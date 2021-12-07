@@ -34,6 +34,6 @@ class AverageMaxCategoriesInOneCategorySpec extends ObjectBehavior
     {
         $connection->executeQuery(Argument::type('string'))->willReturn($statement);
         $statement->fetchAssociative()->willReturn(['average' => '4', 'max' => '10']);
-        $this->fetch()->shouldBeLike(new AverageMaxVolumes(10, 4, -1, 'average_max_categories_in_one_category'));
+        $this->fetch()->shouldBeLike(new AverageMaxVolumes(10, 4, 'average_max_categories_in_one_category'));
     }
 }

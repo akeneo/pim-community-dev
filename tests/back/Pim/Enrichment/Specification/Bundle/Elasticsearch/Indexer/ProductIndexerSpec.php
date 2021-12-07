@@ -75,15 +75,15 @@ class ProductIndexerSpec extends ObjectBehavior
         Client $productAndProductModelIndexClient,
         GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
     ) {
-        $identifiers = $this->getRangeIdentifiers(1, 3002);
+        $identifiers = $this->getRangeIdentifiers(1, 1502);
 
-        $getElasticsearchProductProjection->fromProductIdentifiers($this->getRangeIdentifiers(1, 1000))
+        $getElasticsearchProductProjection->fromProductIdentifiers($this->getRangeIdentifiers(1, 500))
             ->willYield([$this->getElasticSearchProjection('identifier_1')]);
-        $getElasticsearchProductProjection->fromProductIdentifiers($this->getRangeIdentifiers(1001, 2000))
+        $getElasticsearchProductProjection->fromProductIdentifiers($this->getRangeIdentifiers(501, 1000))
             ->willYield([$this->getElasticSearchProjection('identifier_2')]);
-        $getElasticsearchProductProjection->fromProductIdentifiers($this->getRangeIdentifiers(2001, 3000))
+        $getElasticsearchProductProjection->fromProductIdentifiers($this->getRangeIdentifiers(1001, 1500))
             ->willYield([$this->getElasticSearchProjection('identifier_3')]);
-        $getElasticsearchProductProjection->fromProductIdentifiers($this->getRangeIdentifiers(3001, 3002))
+        $getElasticsearchProductProjection->fromProductIdentifiers($this->getRangeIdentifiers(1501, 1502))
             ->willYield([$this->getElasticSearchProjection('identifier_4')]);
 
         $productAndProductModelIndexClient->bulkIndexes(

@@ -1,0 +1,34 @@
+pim_title:
+  akeneo_job_process_tracker_index: Seguimiento de procesos
+akeneo_job_process_tracker:
+  job_execution_list:
+    table:
+      headers:
+        job_name: Trabajo
+        type: Tipo
+        started_at: Ejecutado el
+        username: Nombre de usuario
+        status: Estado
+        warnings: Advertencias
+  type:
+    label: Tipo
+    all: Todo
+    quick_export: Exportación rápida
+    import: Importar
+    export: Exportar
+    mass_edit: Edición en masa
+    mass_delete: Eliminar en masa
+    compute_family_variant_structure_changes: Calcular los cambios de estructura de las variantes de la familia
+    compute_completeness_of_products_family: Calcular la completitud de la familia de productos
+    clean_removed_attribute_job: Limpiando valores de atributos eliminados
+  status:
+    label: Estado
+    all: Todo
+    abandoned: Abandonado
+    completed: Completado
+    failed: Fallido
+    started: Iniciado
+    starting: Iniciando
+    stopped: Detenido
+    stopping: Deteniendo
+    unknown: Desconocido

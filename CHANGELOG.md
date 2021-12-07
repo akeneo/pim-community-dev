@@ -143,6 +143,9 @@
 - PIM-10167: Fix import file - datetime in price attribute break the import
 - PIM-10177: Fix warning level for status badge on last operations
 - PIM-10158: Fix failed migration longtext to json for akeneo_batch_job_execution.raw_parameters du to empty values
+- PIM-10155: Decrease batch size during indexation of products and product models
+- PIM-10182: Search_after uses identifiers/codes instead of encrypted Mysql ids in external API
+- PIM-10149: Fix group product page OOM (remove group to products association)
 
 ## New features
 

@@ -139,6 +139,9 @@ akeneo_connectivity.connection:
         invalid: 接続フロータイプは「data_source」「data_destination」「その他」が可能です。
       image:
         must_exist: 画像が検出されませんでした。もう一度やり直してください。
+      type:
+        required: 接続タイプは必須項目です。
+        too_long: 接続タイプが長すぎます。30文字以下にする必要があります。
   flow_type:
     data_source: データソース | データソース
     data_destination: データの行先 | データの行先

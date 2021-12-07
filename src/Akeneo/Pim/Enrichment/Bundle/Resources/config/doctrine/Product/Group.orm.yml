@@ -22,10 +22,6 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Group:
                     referencedColumnName: id
                     nullable: false
             orphanRemoval: false
-    manyToMany:
-        products:
-            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
-            mappedBy: groups
     oneToMany:
         translations:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslationInterface

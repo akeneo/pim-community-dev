@@ -39,7 +39,7 @@ class AggregatedAverageMaxProductAndProductModelValuesSpec extends ObjectBehavio
             ]
         );
 
-        $this->fetch()->shouldBeLike(new AverageMaxVolumes(12, 7, 10, 'average_max_product_and_product_model_values'));
+        $this->fetch()->shouldBeLike(new AverageMaxVolumes(12, 7, 'average_max_product_and_product_model_values'));
     }
 
     function it_fetches_an_average_max_with_empty_values_if_no_aggregated_volume_has_been_found(
@@ -49,6 +49,6 @@ class AggregatedAverageMaxProductAndProductModelValuesSpec extends ObjectBehavio
         $connection->executeQuery(Argument::type('string'))->willReturn($statement);
         $statement->fetchAssociative()->willReturn(null);
 
-        $this->fetch()->shouldBeLike(new AverageMaxVolumes(0, 0, 10, 'average_max_product_and_product_model_values'));
+        $this->fetch()->shouldBeLike(new AverageMaxVolumes(0, 0, 'average_max_product_and_product_model_values'));
     }
 }

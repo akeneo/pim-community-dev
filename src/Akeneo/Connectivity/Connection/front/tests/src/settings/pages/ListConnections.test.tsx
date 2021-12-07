@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/extend-expect';
-import {waitForElement} from '@testing-library/react';
+import {waitFor} from '@testing-library/react';
 import React from 'react';
 import {MemoryRouter} from 'react-router-dom';
 import {ConnectionsProvider} from '@src/settings/connections-context';
@@ -59,7 +59,7 @@ describe('testing ListConnections page', () => {
             'akeneo_connectivity_connection_rest_wrong_credentials_combination_list'
         );
 
-        await waitForElement(() => [
+        await waitFor(() => [
             getByText('Franklin'),
             getByText('DAM'),
             getByText('akeneo_connectivity.connection.flow_type.data_source'),

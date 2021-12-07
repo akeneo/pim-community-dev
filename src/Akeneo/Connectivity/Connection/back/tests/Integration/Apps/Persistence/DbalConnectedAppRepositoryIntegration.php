@@ -166,7 +166,7 @@ FROM akeneo_connectivity_connected_app
 WHERE id = :id
 SQL;
 
-        $row = $this->connection->fetchAssoc($query, [
+        $row = $this->connection->fetchAssociative($query, [
             'id' => $id,
         ]);
 

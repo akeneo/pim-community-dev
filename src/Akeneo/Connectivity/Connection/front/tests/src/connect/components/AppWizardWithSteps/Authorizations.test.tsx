@@ -1,6 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {render, screen, waitForElement} from '@testing-library/react';
+import {render, screen, waitFor} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {Authorizations} from '@src/connect/components/AppWizardWithSteps/Authorizations';
@@ -14,7 +14,7 @@ test('The authorizations step renders without error', async () => {
             <Authorizations appName={'MyApp'} scopeMessages={[]} />
         </ThemeProvider>
     );
-    await waitForElement(() => screen.getByText('akeneo_connectivity.connection.connect.apps.title'));
+    await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.apps.title'));
     expect(screen.queryByText('akeneo_connectivity.connection.connect.apps.title')).toBeInTheDocument();
     expect(screen.queryByText('ScopeListContainerComponent')).toBeInTheDocument();
 });

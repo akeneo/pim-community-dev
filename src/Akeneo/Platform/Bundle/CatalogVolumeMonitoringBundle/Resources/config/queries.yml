@@ -3,7 +3,6 @@ services:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxAttributesPerFamily'
         arguments:
             - '@database_connection'
-            - '%average_max_attributes_per_family_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.average_max_query }
 
@@ -11,25 +10,21 @@ services:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxScopableAttributesPerFamily'
         arguments:
             - '@database_connection'
-            - '%average_max_scopable_attributes_per_family_limit%'
 
     pim_volume_monitoring.persistence.query.average_max_localizable_attributes_per_family:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxLocalizableAttributesPerFamily'
         arguments:
             - '@database_connection'
-            - '%average_max_localizable_attributes_per_family_limit%'
 
     pim_volume_monitoring.persistence.query.average_max_localizable_and_scopable_attributes_per_family:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxLocalizableAndScopableAttributesPerFamily'
         arguments:
             - '@database_connection'
-            - '%average_max_localizable_and_scopable_attributes_per_family_limit%'
 
     pim_volume_monitoring.persistence.query.average_max_options_per_attribute:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxOptionsPerAttribute'
         arguments:
             - '@database_connection'
-            - '%average_max_options_per_attribute_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.average_max_query_to_aggregate }
 
@@ -37,7 +32,6 @@ services:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AggregatedAverageMaxOptionsPerAttribute'
         arguments:
             - '@database_connection'
-            - '%average_max_options_per_attribute_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.average_max_query }
 
@@ -45,7 +39,6 @@ services:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxProductValues'
         arguments:
             - '@database_connection'
-            - '%average_max_product_values_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.average_max_query_to_aggregate }
 
@@ -53,7 +46,6 @@ services:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxProductModelValues'
         arguments:
             - '@database_connection'
-            - '%average_max_product_model_values_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.average_max_query_to_aggregate }
 
@@ -61,7 +53,6 @@ services:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AggregatedAverageMaxProductAndProductModelValues'
         arguments:
             - '@database_connection'
-            - '%average_max_product_model_values_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.average_max_query }
 
@@ -69,25 +60,21 @@ services:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxProductValuesPerFamily'
         arguments:
             - '@database_connection'
-            - '%average_max_product_values_per_family_limit%'
 
     pim_volume_monitoring.persistence.query.average_max_categories_in_one_category:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxCategoriesInOneCategory'
         arguments:
             - '@database_connection'
-            - '%average_max_categories_in_one_category_limit%'
 
     pim_volume_monitoring.persistence.query.average_max_category_levels:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxCategoryLevels'
         arguments:
             - '@database_connection'
-            - '%average_max_category_levels_limit%'
 
     pim_volume_monitoring.persistence.query.count_attributes:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountAttributes'
         arguments:
             - '@database_connection'
-            - '%count_attributes_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
 
@@ -95,13 +82,11 @@ services:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountUseableAsGridFilterAttributes'
         arguments:
             - '@database_connection'
-            - '%count_useable_as_grid_filter_attributes_limit%'
 
     pim_volume_monitoring.persistence.query.count_categories:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountCategories'
         arguments:
             - '@database_connection'
-            - '%count_categories_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
 
@@ -109,7 +94,6 @@ services:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountCategoryTrees'
         arguments:
             - '@database_connection'
-            - '%count_category_trees_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
 
@@ -117,7 +101,6 @@ services:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountChannels'
         arguments:
             - '@database_connection'
-            - '%count_channels_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
 
@@ -125,7 +108,6 @@ services:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountFamilies'
         arguments:
             - '@database_connection'
-            - '%count_families_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
 
@@ -133,7 +115,6 @@ services:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountLocales'
         arguments:
             - '@database_connection'
-            - '%count_locales_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
 
@@ -141,7 +122,6 @@ services:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountLocalizableAndScopableAttributes'
         arguments:
             - '@database_connection'
-            - '%count_localizable_and_scopable_attributes_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
 
@@ -149,7 +129,6 @@ services:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountLocalizableAttributes'
         arguments:
             - '@database_connection'
-            - '%count_localizable_attributes_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
 
@@ -157,7 +136,6 @@ services:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountScopableAttributes'
         arguments:
             - '@database_connection'
-            - '%count_scopable_attributes_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
 
@@ -165,7 +143,6 @@ services:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Elasticsearch\CountProducts'
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
-            - '%count_products_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
             - { name: pim_volume_monitoring.persistence.count_query_to_aggregate }
@@ -174,7 +151,6 @@ services:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Elasticsearch\CountProductModels'
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
-            - '%count_product_models_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
             - { name: pim_volume_monitoring.persistence.count_query_to_aggregate }
@@ -183,7 +159,6 @@ services:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Elasticsearch\CountVariantProducts'
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
-            - '%count_variant_products_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
 
@@ -191,7 +166,6 @@ services:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountProductValues'
         arguments:
             - '@database_connection'
-            - '%count_product_values_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query_to_aggregate }
 
@@ -199,7 +173,6 @@ services:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountProductModelValues'
         arguments:
             - '@database_connection'
-            - '%count_product_model_values_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query_to_aggregate }
 
@@ -207,7 +180,6 @@ services:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AggregatedCountProductAndProductModelValues'
         arguments:
             - '@database_connection'
-            - '%count_product_and_product_model_values_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
 
@@ -215,4 +187,3 @@ services:
         class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountUsers'
         arguments:
             - '@database_connection'
-            - '%count_users_limit%'

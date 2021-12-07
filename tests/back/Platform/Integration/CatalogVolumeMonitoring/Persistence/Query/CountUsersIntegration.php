@@ -21,7 +21,6 @@ class CountUsersIntegration extends QueryTestCase
 
         Assert::assertEquals(4, $volume->getVolume());
         Assert::assertEquals('count_users', $volume->getVolumeName());
-        Assert::assertEquals(false, $volume->hasWarning());
     }
 
     /**

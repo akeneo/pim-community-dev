@@ -139,6 +139,9 @@ akeneo_connectivity.connection:
         invalid: Verbindingsstroomtype kan alleen 'databron', 'datadoel' of 'andere' zijn.
       image:
         must_exist: De afbeelding is niet gevonden. Probeer het opnieuw.
+      type:
+        required: Verbindingstype is vereist.
+        too_long: Verbindingstype is te lang. Het moet 30 tekens of minder bevatten.
   flow_type:
     data_source: Gegevensbron | Gegevensbronnen
     data_destination: Gegevensdoel | Gegevensdoelen

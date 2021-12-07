@@ -28,9 +28,6 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var BulkSaverInterface */
-    protected $productSaver;
-
     /** @var VersionContext */
     protected $versionContext;
 
@@ -40,9 +37,6 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
-    /** @var ProductQueryBuilderFactoryInterface */
-    protected $productQueryBuilderFactory;
-
     /** @var BulkObjectDetacherInterface */
     protected $detacher;
 
@@ -51,30 +45,24 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
 
     /**
      * @param ObjectManager                       $objectManager
-     * @param BulkSaverInterface                  $productSaver
      * @param VersionContext                      $versionContext
      * @param SavingOptionsResolverInterface      $optionsResolver
      * @param EventDispatcherInterface            $eventDispatcher
-     * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
      * @param BulkObjectDetacherInterface         $detacher
      * @param string                              $productClassName
      */
     public function __construct(
         ObjectManager $objectManager,
-        BulkSaverInterface $productSaver,
         VersionContext $versionContext,
         SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher,
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         BulkObjectDetacherInterface $detacher,
         $productClassName
     ) {
         $this->objectManager = $objectManager;
-        $this->productSaver = $productSaver;
         $this->versionContext = $versionContext;
         $this->optionsResolver = $optionsResolver;
         $this->eventDispatcher = $eventDispatcher;
-        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
         $this->detacher = $detacher;
         $this->productClassName = $productClassName;
     }
@@ -90,7 +78,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
 
         $this->eventDispatcher->dispatch(new GenericEvent($group, $options), StorageEvents::PRE_SAVE);
 
-        $this->persistGroupAndSaveAssociatedProducts($group);
+        $this->persistGroup($group);
 
         $this->objectManager->flush();
 
@@ -115,7 +103,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
 
             $this->eventDispatcher->dispatch(new GenericEvent($group, $options), StorageEvents::PRE_SAVE);
 
-            $this->persistGroupAndSaveAssociatedProducts($group);
+            $this->persistGroup($group);
         }
 
         $this->objectManager->flush();
@@ -125,39 +113,6 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         }
 
         $this->eventDispatcher->dispatch(new GenericEvent($groups, $options), StorageEvents::POST_SAVE_ALL);
-    }
-
-    /**
-     * Save associated products updated by the variant group update
-     * Only removed and added products will be saved.
-     *
-     * @todo Find a better solution than a database query to determine what are the products that have been removed or added
-     *       (it will certainly cause a BC-break)
-     */
-    protected function saveAssociatedProducts(GroupInterface $group)
-    {
-        $productsToUpdate = [];
-        foreach ($group->getProducts() as $product) {
-            $productsToUpdate[$product->getId()] = $product;
-        }
-
-        if (null !== $group->getId()) {
-            $pqb = $this->productQueryBuilderFactory->create();
-            $pqb->addFilter('groups', Operators::IN_LIST, [$group->getCode()]);
-            $oldProducts = $pqb->execute();
-            foreach ($oldProducts as $oldProduct) {
-                if (!isset($productsToUpdate[$oldProduct->getId()])) {
-                    $oldProduct->removeGroup($group);
-                    $productsToUpdate[$oldProduct->getId()] = $oldProduct;
-                } else {
-                    unset($productsToUpdate[$oldProduct->getId()]);
-                }
-            }
-        }
-
-        if (!empty($productsToUpdate)) {
-            $this->productSaver->saveAll(array_values($productsToUpdate));
-        }
     }
 
     protected function validateGroup($group)
@@ -172,7 +127,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         }
     }
 
-    protected function persistGroupAndSaveAssociatedProducts(GroupInterface $group)
+    protected function persistGroup(GroupInterface $group)
     {
         $context = $this->productClassName;
         $this->versionContext->addContextInfo(
@@ -180,9 +135,6 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
             $context
         );
         $this->objectManager->persist($group);
-
-        $this->saveAssociatedProducts($group);
-
         $this->versionContext->unsetContextInfo($context);
     }
 }

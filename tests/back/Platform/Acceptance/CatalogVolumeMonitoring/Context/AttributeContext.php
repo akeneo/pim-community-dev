@@ -37,16 +37,6 @@ final class AttributeContext implements Context
     }
 
     /**
-     * @Given the limit of the number of attributes is set to :limit
-     *
-     * @param int $limit
-     */
-    public function theLimitOfTheNumberOfAttributesIsSetTo(int $limit): void
-    {
-        $this->inMemoryQuery->setLimit($limit);
-    }
-
-    /**
      * @Then the report returns that the number of attributes is :numberOfAttributes
      *
      * @param int $numberOfAttributes
@@ -56,25 +46,5 @@ final class AttributeContext implements Context
         $volumes = $this->reportContext->getVolumes();
 
         Assert::eq($numberOfAttributes, $volumes['count_attributes']['value']);
-    }
-
-    /**
-     * @Then the report warns the users that the number of attributes is high
-     */
-    public function theReportWarnsTheUsersThatTheNumberOfAttributesIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::true($volumes['count_attributes']['has_warning']);
-    }
-
-    /**
-     * @Then the report does not warn the users that the number of attributes is high
-     */
-    public function theReportDoesNotWarnTheUsersThatTheNumberOfAttributesIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::false($volumes['count_attributes']['has_warning']);
     }
 }

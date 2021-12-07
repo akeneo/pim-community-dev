@@ -34,6 +34,6 @@ class CountProductModelValuesSpec extends ObjectBehavior
     {
         $connection->executeQuery(Argument::type('string'))->willReturn($statement);
         $statement->fetchAssociative()->willReturn(['sum_product_model_values' => '4']);
-        $this->fetch()->shouldBeLike(new CountVolume(4, 12, 'count_product_model_values'));
+        $this->fetch()->shouldBeLike(new CountVolume(4, 'count_product_model_values'));
     }
 }
