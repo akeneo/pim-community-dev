@@ -20,6 +20,7 @@ config:
                 select: '@akeneopimtableattribute/attribute/ColumDefinitionProperties/SelectProperties'
                 number: '@akeneopimtableattribute/attribute/ColumDefinitionProperties/NumberProperties'
                 text: '@akeneopimtableattribute/attribute/ColumDefinitionProperties/TextProperties'
+                record: '@akeneopimtableattribute/attribute/ColumDefinitionProperties/RecordProperties'
             data_types:
                 select:
                     useable_as_first_column: true
@@ -29,6 +30,9 @@ config:
                     useable_as_first_column: false
                 boolean:
                     useable_as_first_column: false
+                record:
+                    useable_as_first_column: true
+                    flag: 'reference_entity'
 
         pim/table-attribute/product/table-field:
             cell_inputs:

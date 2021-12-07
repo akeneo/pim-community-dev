@@ -155,11 +155,13 @@ pim_table_attribute:
             no_options: No options found
             please_try_again: Please try again
             first_column_type_helper: The first column of a Table is always a Select column type.
+            first_column_type_helper_with_record: The first column of a Table is always a Select or Record column type.
             discard_changes: You will lose changes to the select options if you leave the page.
             completeness: Completeness
             required_for_completeness: Required for completeness
             completeness_helper_text: "To discover how completeness works for a table attribute,"
             completeness_helper_link: check out our help center.
+            reference_entity: Reference entity
 
         product:
             items_per_page: Items per page
@@ -186,6 +188,7 @@ pim_table_attribute:
             number: Number
             boolean: Yes/No
             select: Select
+            record: Reference entity
     validations:
         column_code_must_be_filled: The code must be filled
         not_available_code: This column code is not available
