@@ -155,6 +155,10 @@ pim_table_attribute:
       please_try_again: Per favore, riprova
       first_column_type_helper: La prima colonna di una Tabella è sempre una colonna di tipo Seleziona.
       discard_changes: Se lasci la pagina perderai le modifiche alle opzioni di selezione.
+      completeness: Completamento
+      required_for_completeness: Richiesto per il completamento
+      completeness_helper_text: "Per scoprire come funziona il completamento per un attributo di tabella,"
+      completeness_helper_link: consulta il nostro Help Center.
     product:
       items_per_page: Elementi per pagina
       current_items: "{{ minItem }}-{{ maxItem }} di {{ itemCount }}"
@@ -232,3 +236,11 @@ batch_jobs:
   xlsx_table_attribute_options_export.label: Esportazione in XLSX delle opzioni degli attributi tabella
   csv_table_attribute_options_import.label: Importazione da CSV delle opzioni degli attributi tabella
   xlsx_table_attribute_options_import.label: Importazione da XLSX delle opzioni degli attributi tabella
+  csv_product_table_values_export.label: Esportazione valori di tabella prodotti in CSV
+  xlsx_product_table_values_export.label: Esportazione valori di tabella prodotti in XLSX
+  csv_product_model_table_values_export.label: Esportazione valori di tabella modelli prodotto in CSV
+  xlsx_product_model_table_values_export.label: Esportazione valori di tabella modelli prodotto in XLSX
+  csv_product_table_values_import.label: Importazione valori di tabella prodotti in CSV
+  xlsx_product_table_values_import.label: Importazione valori di tabella prodotti in XLSX
+  csv_product_model_table_values_import.label: Importazione valori di tabella modelli prodotto in CSV
+  xlsx_product_model_table_values_import.label: Importazione valori di tabella modelli prodotto in XLSX

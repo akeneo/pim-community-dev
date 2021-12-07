@@ -155,6 +155,10 @@ pim_table_attribute:
       please_try_again: Probeer nog eens
       first_column_type_helper: De eerste kolom van een tabel is altijd een kolomtype selecteren.
       discard_changes: Als u deze pagina verlaat verliest u de wijzigingen aan de geselecteerde opties.
+      completeness: Volledigheid
+      required_for_completeness: Vereist voor volledigheid
+      completeness_helper_text: "Om te ontdekken hoe volledigheid werkt voor een tabelattribuut,"
+      completeness_helper_link: bekijk ons hulpcentrum
     product:
       items_per_page: Items per pagina
       current_items: "{{ minItem }}-{{ maxItem }} van {{ itemCount }}"
@@ -163,6 +167,8 @@ pim_table_attribute:
       no_rows_title: "Uw {{ attributeLabel }} tabel is leeg."
       no_rows_subtitle: Voeg rijen toe om nieuwe eigenschappen te definiëren.
       no_rows_subtitle_on_readonly: Om dit attribuut te kunnen bewerken, ga naar de attribuut-instelling pagina of neem contact op met uw PIM-beheerder.
+      no_results: Er zijn geen resultaten
+      no_options: Er zijn geen opties
       no_add_options_unallowed: Neem contact op met uw PIM beheerder om de "{{ attributeLabel }}" opties te beheren
       actions:
         delete_row: Deze rij verwijderen
@@ -170,6 +176,8 @@ pim_table_attribute:
         move_first: Verplaats naar de eerste positie
         move_last: Verplaats naar laatste positie
       order: Volgorde
+      save_options_error: Er is een fout opgetreden tijdens het opslaan van de opties
+      save_options_success: Opties succesvol bijgewerkt
   properties:
     data_type:
       text: Tekst
@@ -178,6 +186,7 @@ pim_table_attribute:
       select: Selecteer
   validations:
     column_code_must_be_filled: De code moet worden ingevuld
+    not_available_code: Deze kolomcode is niet beschikbaar
     column_data_type_must_be_filled: Het gegevenstype moet ingevuld worden
     invalid_column_code: De kolomcode mag alleen letters, cijfers en onderstrepingstekens bevatten
     invalid_code: De code mag alleen letters, cijfers en onderstrepingstekens bevatten
@@ -227,3 +236,11 @@ batch_jobs:
   xlsx_table_attribute_options_export.label: Tabel attribuut optiesselectie exporteren in XLSX
   csv_table_attribute_options_import.label: Tabel attribuut optiesselectie importeren in CSV
   xlsx_table_attribute_options_import.label: Tabel attribuut optiesselectie importeren in XLSX
+  csv_product_table_values_export.label: Producttabelwaarden exporteren in CSV
+  xlsx_product_table_values_export.label: Producttabelwaarden exporteren in XLSX
+  csv_product_model_table_values_export.label: Productmodeltabelwaarden exporteren in CSV
+  xlsx_product_model_table_values_export.label: Productmodeltabelwaarden exporteren in XLSX
+  csv_product_table_values_import.label: Producttabelwaarden importeren in CSV
+  xlsx_product_table_values_import.label: Producttabelwaarden importeren in XLSX
+  csv_product_model_table_values_import.label: Productmodeltabelwaarden exporteren in CSV
+  xlsx_product_model_table_values_import.label: Productmodeltabelwaarden importeren in XLSX

@@ -87,5 +87,13 @@ pim_mass_edit.notification.asset_manager_mass_edit_assets:
   success: De assets zijn bewerkt
   error: Het bewerken van de assets is mislukt
 pim_api:
+  acl:
+    asset_family:
+      create: Maken en bijwerken van asset families
+      list: Maak een lijst van asset-families
+    asset:
+      create: Maken en bijwerken van assets
+      list: Maak een lijst van assets
+      remove: Verwijder assets
   acl_group:
     asset: Assets
