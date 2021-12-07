@@ -18,7 +18,7 @@ test('it shows the progress of a job', () => {
         {
           jobName: 'csv_product_export',
           stepName: 'export',
-          status: 'STARTED',
+          status: 'IN_PROGRESS',
           isTrackable: false,
           hasWarning: false,
           hasError: false,
@@ -29,7 +29,7 @@ test('it shows the progress of a job', () => {
         {
           jobName: 'csv_product_export',
           stepName: 'export',
-          status: 'STARTED',
+          status: 'IN_PROGRESS',
           isTrackable: true,
           hasWarning: false,
           hasError: false,
@@ -40,7 +40,7 @@ test('it shows the progress of a job', () => {
         {
           jobName: 'csv_product_export',
           stepName: 'export',
-          status: 'STARTED',
+          status: 'IN_PROGRESS',
           isTrackable: true,
           hasWarning: false,
           hasError: false,
@@ -51,7 +51,7 @@ test('it shows the progress of a job', () => {
         {
           jobName: 'csv_product_export',
           stepName: 'export',
-          status: 'STARTED',
+          status: 'IN_PROGRESS',
           isTrackable: true,
           hasWarning: false,
           hasError: false,

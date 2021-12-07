@@ -2,6 +2,7 @@ import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
 import {Helper} from './Helper';
 import {Link} from '../Link/Link';
 import * as Icons from '../../icons';
+import {Scrollable, Content} from '../../storybook/PreviewGallery';
 
 <Meta
   title="Components/Helper"
@@ -119,6 +120,23 @@ non fermentum diam nisl sit amet erat. `}
             There is a success. <Link href="#">Link</Link>
           </Helper>
         </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Sticky
+
+<Canvas>
+  <Story name="Sticky">
+    {args => {
+      return (
+        <Scrollable height={300}>
+          <Helper level="warning" sticky={0}>
+            This is a sticky helper.
+          </Helper>
+          <Content height={500}>Some content</Content>
+        </Scrollable>
       );
     }}
   </Story>

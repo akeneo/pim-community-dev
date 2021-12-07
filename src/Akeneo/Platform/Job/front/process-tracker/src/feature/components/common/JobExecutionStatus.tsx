@@ -33,8 +33,8 @@ const JobExecutionStatus = ({
   const level = badgeLevel(status, hasError, hasWarning);
   const translate = useTranslate();
 
-  let label = translate(`pim_import_export.job_status.${status}`);
-  if (status === 'STARTING' || status === 'STARTED') {
+  let label = translate(`akeneo_job.job_status.${status}`);
+  if (status === 'STARTING' || status === 'IN_PROGRESS') {
     label = `${label} ${currentStep}/${totalSteps}`;
   }
 
