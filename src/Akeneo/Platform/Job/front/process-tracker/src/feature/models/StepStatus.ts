@@ -1,3 +1,11 @@
-type StepStatus = 'ABANDONED' | 'COMPLETED' | 'FAILED' | 'STARTED' | 'STARTING' | 'STOPPED' | 'STOPPING' | 'UNKNOWN';
+type StepStatus =
+  | 'ABANDONED'
+  | 'COMPLETED'
+  | 'FAILED'
+  | 'IN_PROGRESS'
+  | 'STARTING'
+  | 'STOPPED'
+  | 'STOPPING'
+  | 'UNKNOWN';
 
 export type {StepStatus};

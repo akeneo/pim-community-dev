@@ -2,7 +2,7 @@ import {Level, ProgressBarPercent} from 'akeneo-design-system';
 import {Translate} from '@akeneo-pim-community/shared';
 import {formatSecondsIntl} from '../tools/intl-duration';
 import {StepStatus} from './StepStatus';
-import {JobStatus} from './JobStatus';
+import {JobExecutionRow} from './JobExecutionTable';
 
 type StepExecutionRowTracking = {
   error_count: number;
@@ -16,7 +16,7 @@ type StepExecutionRowTracking = {
 
 const getStepExecutionRowTrackingProgressLabel = (
   translate: Translate,
-  jobStatus: JobStatus,
+  jobExecutionRow: JobExecutionRow,
   step?: StepExecutionRowTracking
 ): string => {
   if (undefined === step || 'STARTING' === step.status) {
@@ -24,8 +24,8 @@ const getStepExecutionRowTrackingProgressLabel = (
   }
 
   switch (step.status) {
-    case 'STARTED':
-      if (!step.is_trackable || 'FAILED' === jobStatus) {
+    case 'IN_PROGRESS':
+      if (!step.is_trackable || 'FAILED' === jobExecutionRow.status) {
         return translate('akeneo_job_process_tracker.tracking.untrackable');
       }
 
@@ -47,8 +47,10 @@ const getStepExecutionRowTrackingProgressLabel = (
     case 'STOPPING':
     case 'UNKNOWN':
     default:
+      const totalDuration = jobExecutionRow.tracking.steps.reduce((total, step) => total + step.duration, 0);
+
       return translate('akeneo_job_process_tracker.tracking.completed', {
-        duration: formatSecondsIntl(translate, step.duration),
+        duration: formatSecondsIntl(translate, totalDuration),
       });
   }
 };
@@ -71,7 +73,7 @@ const getStepExecutionRowTrackingPercent = (step: StepExecutionRowTracking): Pro
       case 'FAILED':
       case 'ABANDONED':
         return 100;
-      case 'STARTED':
+      case 'IN_PROGRESS':
       case 'STOPPING':
       case 'UNKNOWN':
       default:

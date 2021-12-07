@@ -1,8 +1,8 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
-import {JobExecutionRow} from '../models';
 import {ProgressCell} from './ProgressCell';
+import {JobExecutionRow} from '../../models';
 
 const jobExecutionRow: JobExecutionRow = {
   job_execution_id: 1,
@@ -27,7 +27,7 @@ const jobExecutionRow: JobExecutionRow = {
         is_trackable: true,
         processed_items: 2,
         total_items: 10,
-        status: 'STARTED',
+        status: 'IN_PROGRESS',
       },
     ],
   },
