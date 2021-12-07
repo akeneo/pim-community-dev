@@ -48,7 +48,7 @@ jobs:
           name: Checkout EE branch if it exists, or master otherwise
           command: |
             cd /home/circleci/project
-            git checkout ${CIRCLE_BRANCH} || git checkout activate-feature-branch
+            git checkout ${CIRCLE_BRANCH} || git checkout master
             echo "Current commit: $(git rev-parse --short HEAD)"
       - run:
           name: BIG COMMERCE CONNECTOR - Checkout BigCommerce Connector
@@ -203,7 +203,7 @@ jobs:
           command: make front-packages
       - run:
           name: Build Javascript
-          command: make javascript-dev-strict
+          command: make javascript-dev
       - run:
             name: Change owner on project dir after installing when there is no cache
             command: sudo chmod -R 777 ../project ~/.cache ~/.composer
@@ -309,55 +309,6 @@ jobs:
           - run:
                 name: PhpUnit End to end
                 command: PIM_CONTEXT=test make end-to-end-back
-          - store_test_results:
-                path: var/tests/phpunit
-          - store_artifacts:
-                path: var/tests/phpunit
-          - store_artifacts:
-                path: var/logs
-
-  test_connectivity:
-      machine:
-          image: ubuntu-2004:202101-01
-      steps:
-          - attach_workspace:
-                at: ~/
-          -   run:
-                name: Create yarn cache folder
-                command: mkdir -p  ~/.cache/yarn
-          -   run:
-                name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
-                command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
-          - run:
-                name: Start containers
-                command: |
-                    docker load -i php-pim-image.tar
-                    APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
-                    docker/wait_docker_up.sh
-          - run:
-                name: Lint front
-                command: make connectivity-connection-lint-front
-          - run:
-                name: Unit front
-                command: make connectivity-connection-unit-front
-          - run:
-                name: Coupling back
-                command: make connectivity-connection-coupling-back
-          - run:
-                name: Lint back
-                command: make connectivity-connection-lint-back
-          - run:
-                name: Unit back
-                command: make connectivity-connection-unit-back
-          - run:
-                name: Install database
-                command: APP_ENV=test make database
-          - run:
-                name: Integration back
-                command: make connectivity-connection-integration-back
-          - run:
-                name: End to end back
-                command: make connectivity-connection-e2e-back
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:
@@ -968,9 +919,16 @@ workflows:
           - checkout_ee:
                 requires:
                     - ready_to_build?
+          - build_dev:
+                path_to_front_packages: vendor/akeneo/pim-community-dev/front-packages
+                requires:
+                    - checkout_ee
           - build_prod:
                 requires:
                     - checkout_ee
+          - test_deploy:
+                requires:
+                    - build_prod
           - deploy_pr_environment?:
                 type: approval
                 filters:
@@ -996,9 +954,31 @@ workflows:
 #          - test_database:
 #                requires:
 #                    - build_dev
-          - test_connectivity:
+          - test_back_static_and_acceptance:
                 requires:
-                    - build_dev_ce
+                    - build_dev
+          - test_front_static_acceptance_and_integration:
+                requires:
+                    - build_dev
+          - test_back_phpunit:
+                requires:
+                    - build_dev
+          - test_back_performance:
+                requires:
+                    - build_dev
+          - test_onboarder_bundle:
+                requires:
+                    - build_dev
+          - test_back_data_migrations:
+                requires:
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
+                    - test_back_phpunit
+          - test_back_behat_legacy:
+                requires:
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
+                    - test_back_phpunit
           - ready_to_build_only_ce?:
                 type: approval
                 filters:
@@ -1013,18 +993,53 @@ workflows:
                 is_ee_built: false
                 requires:
                     - checkout_ce
+          - cypress_sanity_checks:
+                name: cypress_sanity_checks_ce
+                requires:
+                  - build_dev_ce
+          - marketplace_activate_e2e?:
+                type: approval
+                filters:
+                    branches:
+                        ignore:
+                            - master
           - marketplace_activate_e2e:
                 name: marketplace_activate_e2e_ce
+                requires:
+                  - marketplace_activate_e2e?
+                  - build_dev_ce
+          - test_back_static_and_acceptance:
+                name: test_back_static_and_acceptance_ce
+                requires:
+                    - build_dev_ce
+          - test_front_static_acceptance_and_integration:
+                name: test_front_static_acceptance_and_integration_ce
+                requires:
+                    - build_dev_ce
+          - test_back_phpunit:
+                name: test_back_phpunit_ce
                 requires:
                     - build_dev_ce
           - test_back_data_migrations:
                 name: test_back_data_migrations_ce
                 requires:
-                    - build_dev_ce
+                    - test_back_phpunit_ce
+          - test_back_behat_legacy:
+                name: test_back_behat_legacy_ce
+                requires:
+                    - test_back_static_and_acceptance_ce
+                    - test_front_static_acceptance_and_integration_ce
+                    - test_back_phpunit_ce
+
           - pull_request_success:
                 requires:
-                    - test_connectivity
-                    - test_back_data_migrations_ce
+                    - test_back_behat_legacy
+                    - test_back_performance
+                    - test_back_data_migrations
+                    - test_onboarder_bundle
+                    # Uncomment for next GA
+#                    - test_database
+                    - test_back_behat_legacy_ce
 
   nightly:
       when:
