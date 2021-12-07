@@ -28,7 +28,7 @@ class IdentifiersForQueryResult
 
     /** @param string[] */
     public function __construct(
-        private array $identifiers,
+        public array $identifiers,
         public int $matchesCount,
         public ?string $lastSortValue
     ) {
