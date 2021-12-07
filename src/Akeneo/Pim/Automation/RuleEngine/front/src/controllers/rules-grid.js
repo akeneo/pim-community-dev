@@ -5,7 +5,7 @@
  */
 'use strict';
 
-define(['underscore', 'pim/form', 'pim/common/grid'], function(_, BaseForm, Grid) {
+define(['underscore', 'pim/form', 'pim/common/grid', 'pim/user-context'], function(_, BaseForm, Grid, UserContext) {
   return BaseForm.extend({
     grid: null,
 
@@ -24,6 +24,7 @@ define(['underscore', 'pim/form', 'pim/common/grid'], function(_, BaseForm, Grid
         this.grid = new Grid('rule-grid', {
           resourceName: this.config.resourceName,
           resourceId: this.getFormData().meta.id,
+          localeCode: UserContext.get('catalogLocale')
         });
       }
 
