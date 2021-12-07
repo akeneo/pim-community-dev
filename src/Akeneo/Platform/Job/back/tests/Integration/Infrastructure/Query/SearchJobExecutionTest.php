@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Integration\Infrastructure\Query;
 
-use \Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface;
 use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
+use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRowTracking;
+use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
+use Akeneo\Platform\Job\Application\SearchJobExecution\StepExecutionTracking;
 use Akeneo\Platform\Job\Domain\Model\Status;
 use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
 
 class SearchJobExecutionTest extends IntegrationTestCase
 {
     private array $jobExecutionIds;
+    private array $stepExecutionIds;
 
     protected function setUp(): void
     {
@@ -37,12 +40,20 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'import',
                 new \DateTimeImmutable('2020-01-02T00:00:00+00:00'),
                 'peter',
-                'IN_PROGRESS',
-                0,
-                2,
-                1,
-                3,
+                Status::fromLabel('IN_PROGRESS'),
                 true,
+                new JobExecutionRowTracking(1, 3, [
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[3],
+                        0,
+                        0,
+                        2,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                ])
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[0],
@@ -50,12 +61,40 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'import',
                 new \DateTimeImmutable('2020-01-01T00:00:00+00:00'),
                 'julia',
-                'COMPLETED',
-                4,
-                0,
-                3,
-                3,
+                Status::fromLabel('COMPLETED'),
                 false,
+                new JobExecutionRowTracking(3, 3, [
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[0],
+                        0,
+                        2,
+                        0,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[1],
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[2],
+                        0,
+                        2,
+                        0,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                ]),
             ),
         ];
 
@@ -72,12 +111,9 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'import',
                 null,
                 null,
-                'STARTING',
-                0,
-                0,
-                0,
-                3,
+                Status::fromLabel('STARTING'),
                 true,
+                new JobExecutionRowTracking(0, 3, [])
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[3],
@@ -85,12 +121,9 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'export',
                 null,
                 null,
-                'STARTING',
-                0,
-                0,
-                0,
-                3,
+                Status::fromLabel('STARTING'),
                 true,
+                new JobExecutionRowTracking(0, 3, [])
             ),
         ];
 
@@ -115,12 +148,9 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'export',
                 null,
                 null,
-                'STARTING',
-                0,
-                0,
-                0,
-                3,
+                Status::fromLabel('STARTING'),
                 true,
+                new JobExecutionRowTracking(0, 3, [])
             ),
         ];
 
@@ -145,12 +175,9 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'import',
                 null,
                 null,
-                'STARTING',
-                0,
-                0,
-                0,
-                3,
+                Status::fromLabel('STARTING'),
                 true,
+                new JobExecutionRowTracking(0, 3, [])
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[3],
@@ -158,12 +185,9 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'export',
                 null,
                 null,
-                'STARTING',
-                0,
-                0,
-                0,
-                3,
+                Status::fromLabel('STARTING'),
                 true,
+                new JobExecutionRowTracking(0, 3, [])
             ),
         ];
 
@@ -188,12 +212,20 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'import',
                 new \DateTimeImmutable('2020-01-02T00:00:00+00:00'),
                 'peter',
-                'IN_PROGRESS',
-                0,
-                2,
-                1,
-                3,
+                Status::fromLabel('IN_PROGRESS'),
                 true,
+                new JobExecutionRowTracking(1, 3, [
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[3],
+                        0,
+                        0,
+                        2,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                ])
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[0],
@@ -201,12 +233,40 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'import',
                 new \DateTimeImmutable('2020-01-01T00:00:00+00:00'),
                 'julia',
-                'COMPLETED',
-                4,
-                0,
-                3,
-                3,
+                Status::fromLabel('COMPLETED'),
                 false,
+                new JobExecutionRowTracking(3, 3, [
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[0],
+                        0,
+                        2,
+                        0,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[1],
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[2],
+                        0,
+                        2,
+                        0,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                ])
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[2],
@@ -214,12 +274,9 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'import',
                 null,
                 null,
-                'STARTING',
-                0,
-                0,
-                0,
-                3,
+                Status::fromLabel('STARTING'),
                 true,
+                new JobExecutionRowTracking(0, 3, [])
             ),
         ];
 
@@ -243,12 +300,20 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'import',
                 new \DateTimeImmutable('2020-01-02T01:00:00+01:00'),
                 'peter',
-                'IN_PROGRESS',
-                0,
-                2,
-                1,
-                3,
+                Status::fromLabel('IN_PROGRESS'),
                 true,
+                new JobExecutionRowTracking(1, 3, [
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[3],
+                        0,
+                        0,
+                        2,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                ])
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[0],
@@ -256,12 +321,40 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'import',
                 new \DateTimeImmutable('2020-01-01T01:00:00+01:00'),
                 'julia',
-                'COMPLETED',
-                4,
-                0,
-                3,
-                3,
+                Status::fromLabel('COMPLETED'),
                 false,
+                new JobExecutionRowTracking(3, 3, [
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[0],
+                        0,
+                        2,
+                        0,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[1],
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[2],
+                        0,
+                        2,
+                        0,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                ])
             ),
         ];
 
@@ -349,12 +442,9 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'export',
                 null,
                 null,
-                'STARTING',
-                0,
-                0,
-                0,
-                3,
+                Status::fromLabel('STARTING'),
                 true,
+                new JobExecutionRowTracking(0, 3, [])
             ),
         ];
 
@@ -380,12 +470,9 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'export',
                 null,
                 null,
-                'STARTING',
-                0,
-                0,
-                0,
-                3,
+                Status::fromLabel('STARTING'),
                 true,
+                new JobExecutionRowTracking(0, 3, [])
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[0],
@@ -393,12 +480,40 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'import',
                 new \DateTimeImmutable('2020-01-01T00:00:00+00:00'),
                 'julia',
-                'COMPLETED',
-                4,
-                0,
-                3,
-                3,
+                Status::fromLabel('COMPLETED'),
                 false,
+                new JobExecutionRowTracking(3, 3, [
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[0],
+                        0,
+                        2,
+                        0,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[1],
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[2],
+                        0,
+                        2,
+                        0,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                ])
             ),
         ];
 
@@ -424,12 +539,9 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'export',
                 null,
                 null,
-                'STARTING',
-                0,
-                0,
-                0,
-                3,
+                Status::fromLabel('STARTING'),
                 true,
+                new JobExecutionRowTracking(0, 3, [])
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[0],
@@ -437,12 +549,40 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'import',
                 new \DateTimeImmutable('2020-01-01T00:00:00+00:00'),
                 'julia',
-                'COMPLETED',
-                4,
-                0,
-                3,
-                3,
+                Status::fromLabel('COMPLETED'),
                 false,
+                new JobExecutionRowTracking(3, 3, [
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[0],
+                        0,
+                        2,
+                        0,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[1],
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[2],
+                        0,
+                        2,
+                        0,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                ])
             ),
         ];
 
@@ -468,12 +608,9 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'import',
                 null,
                 null,
-                'STARTING',
-                0,
-                0,
-                0,
-                3,
+                Status::fromLabel('STARTING'),
                 true,
+                new JobExecutionRowTracking(0, 3, [])
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[3],
@@ -481,12 +618,9 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'export',
                 null,
                 null,
-                'STARTING',
-                0,
-                0,
-                0,
-                3,
+                Status::fromLabel('STARTING'),
                 true,
+                new JobExecutionRowTracking(0, 3, [])
             ),
         ];
 
@@ -511,12 +645,20 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'import',
                 new \DateTimeImmutable('2020-01-02T00:00:00+00:00'),
                 'peter',
-                'IN_PROGRESS',
-                0,
-                2,
-                1,
-                3,
+                Status::fromLabel('IN_PROGRESS'),
                 true,
+                new JobExecutionRowTracking(1, 3, [
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[3],
+                        0,
+                        0,
+                        2,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                ])
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[0],
@@ -524,12 +666,40 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'import',
                 new \DateTimeImmutable('2020-01-01T00:00:00+00:00'),
                 'julia',
-                'COMPLETED',
-                4,
-                0,
-                3,
-                3,
+                Status::fromLabel('COMPLETED'),
                 false,
+                new JobExecutionRowTracking(3, 3, [
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[0],
+                        0,
+                        2,
+                        0,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[1],
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[2],
+                        0,
+                        2,
+                        0,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                ])
             ),
         ];
 
@@ -555,12 +725,40 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'import',
                 new \DateTimeImmutable('2020-01-01T00:00:00+00:00'),
                 'julia',
-                'COMPLETED',
-                4,
-                0,
-                3,
-                3,
+                Status::fromLabel('COMPLETED'),
                 false,
+                new JobExecutionRowTracking(3, 3, [
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[0],
+                        0,
+                        2,
+                        0,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[1],
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                    new StepExecutionTracking(
+                        $this->stepExecutionIds[2],
+                        0,
+                        2,
+                        0,
+                        0,
+                        0,
+                        false,
+                        Status::fromLabel('STARTING'),
+                    ),
+                ])
             ),
             new JobExecutionRow(
                 $this->jobExecutionIds[2],
@@ -568,12 +766,9 @@ class SearchJobExecutionTest extends IntegrationTestCase
                 'import',
                 null,
                 null,
-                'STARTING',
-                0,
-                0,
-                0,
-                3,
+                Status::fromLabel('STARTING'),
                 true,
+                new JobExecutionRowTracking(0, 3, [])
             ),
         ];
 
@@ -680,21 +875,21 @@ class SearchJobExecutionTest extends IntegrationTestCase
             'status' => Status::STARTING,
         ]);
 
-        $this->fixturesJobHelper->createStepExecution([
+        $this->stepExecutionIds[] = $this->fixturesJobHelper->createStepExecution([
             'job_execution_id' => $this->jobExecutionIds[0],
             'warning_count' => 2,
         ]);
 
-        $this->fixturesJobHelper->createStepExecution([
+        $this->stepExecutionIds[] = $this->fixturesJobHelper->createStepExecution([
             'job_execution_id' => $this->jobExecutionIds[0],
         ]);
 
-        $this->fixturesJobHelper->createStepExecution([
+        $this->stepExecutionIds[] = $this->fixturesJobHelper->createStepExecution([
             'job_execution_id' => $this->jobExecutionIds[0],
             'warning_count' => 2,
         ]);
 
-        $this->fixturesJobHelper->createStepExecution([
+        $this->stepExecutionIds[] = $this->fixturesJobHelper->createStepExecution([
             'job_execution_id' => $this->jobExecutionIds[1],
             'errors' => [
                 'an_error' => 'a backtrace',

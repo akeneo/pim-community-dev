@@ -34,6 +34,11 @@ final class StepExecutionTracking
         return $this->errorCount;
     }
 
+    public function getWarningCount(): int
+    {
+        return $this->warningCount;
+    }
+
     public function normalize(): array
     {
         return [

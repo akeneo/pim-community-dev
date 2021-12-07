@@ -10,7 +10,8 @@ use PhpSpec\ObjectBehavior;
 
 class StepExecutionTrackingSpec extends ObjectBehavior
 {
-    public function let(): void {
+    public function let(): void
+    {
         $this->beConstructedWith(
             1,
             10,
@@ -50,5 +51,10 @@ class StepExecutionTrackingSpec extends ObjectBehavior
     public function it_returns_error_count()
     {
         $this->getErrorCount()->shouldReturn(0);
+    }
+
+    public function it_returns_warning_count()
+    {
+        $this->getWarningCount()->shouldReturn(0);
     }
 }

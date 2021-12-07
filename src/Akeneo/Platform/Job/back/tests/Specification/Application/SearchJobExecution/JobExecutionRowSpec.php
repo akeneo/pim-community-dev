@@ -20,8 +20,6 @@ class JobExecutionRowSpec extends ObjectBehavior
             new \DateTimeImmutable('2021-11-02T11:20:27+02:00'),
             'admin',
             Status::fromLabel('COMPLETED'),
-            10,
-            15,
             true,
             new JobExecutionRowTracking(1, 3, [])
         );
@@ -41,8 +39,8 @@ class JobExecutionRowSpec extends ObjectBehavior
             'started_at' => '2021-11-02T11:20:27+02:00',
             'username' => 'admin',
             'status' => 'COMPLETED',
-            'warning_count' => 10,
-            'error_count' => 15,
+            'warning_count' => 0,
+            'error_count' => 0,
             'tracking' => [
                 'current_step' => 1,
                 'total_step' => 3,
@@ -61,8 +59,6 @@ class JobExecutionRowSpec extends ObjectBehavior
             null,
             null,
             Status::fromLabel('COMPLETED'),
-            5,
-            0,
             false,
             new JobExecutionRowTracking(1, 1, [])
         );
@@ -74,7 +70,7 @@ class JobExecutionRowSpec extends ObjectBehavior
             'started_at' => null,
             'username' => null,
             'status' => 'COMPLETED',
-            'warning_count' => 5,
+            'warning_count' => 0,
             'error_count' => 0,
             'tracking' => [
                 'current_step' => 1,

@@ -20,8 +20,6 @@ final class JobExecutionRow
         private ?\DateTimeImmutable $startedAt,
         private ?string $username,
         private Status $status,
-        private int $warningCount,
-        private int $errorCount,
         private bool $isStoppable,
         private JobExecutionRowTracking $tracking
     ) {
@@ -36,8 +34,8 @@ final class JobExecutionRow
             'started_at' => $this->startedAt ? $this->startedAt->format(DATE_ATOM) : null,
             'username' => $this->username,
             'status' => $this->status->getLabel(),
-            'warning_count' => $this->warningCount,
-            'error_count' => $this->errorCount,
+            'warning_count' => $this->tracking->getWarningCount(),
+            'error_count' => $this->tracking->getErrorCount(),
             'tracking' => $this->tracking->normalize(),
             'is_stoppable' => $this->isStoppable,
         ];

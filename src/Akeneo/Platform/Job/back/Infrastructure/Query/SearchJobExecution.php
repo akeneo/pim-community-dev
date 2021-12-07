@@ -66,7 +66,6 @@ class SearchJobExecution implements SearchJobExecutionInterface
     )
     SELECT
         je.*,
-        SUM(IFNULL(se.warning_count, 0)) AS warning_count,
         COUNT(se.job_execution_id) AS current_step_number,
         JSON_ARRAYAGG(JSON_OBJECT(
             'id', se.id,
@@ -226,8 +225,6 @@ SQL;
                 $startTime,
                 $rawJobExecution['user'],
                 Status::fromStatus((int) $rawJobExecution['status']),
-                (int) $rawJobExecution['warning_count'],
-                $tracking->getErrorCount(),
                 (bool) $rawJobExecution['is_stoppable'],
                 $tracking,
             );

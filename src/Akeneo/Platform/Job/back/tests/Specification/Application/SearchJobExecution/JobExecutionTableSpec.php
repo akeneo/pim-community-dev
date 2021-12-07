@@ -29,8 +29,6 @@ class JobExecutionTableSpec extends ObjectBehavior
                     new \DateTimeImmutable('2021-11-02T11:20:27+02:00'),
                     'admin',
                     Status::fromLabel('COMPLETED'),
-                    10,
-                    0,
                     true,
                     new JobExecutionRowTracking(1, 2, []),
                 ),
@@ -47,7 +45,7 @@ class JobExecutionTableSpec extends ObjectBehavior
                     'started_at' => '2021-11-02T11:20:27+02:00',
                     'username' => 'admin',
                     'status' => 'COMPLETED',
-                    'warning_count' => 10,
+                    'warning_count' => 0,
                     'error_count' => 0,
                     'tracking' => [
                         'current_step' => 1,

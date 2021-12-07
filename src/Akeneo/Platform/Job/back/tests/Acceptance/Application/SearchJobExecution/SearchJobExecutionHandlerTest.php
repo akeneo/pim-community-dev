@@ -45,10 +45,8 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
                 new \DateTimeImmutable('2020-01-02T00:00:00+00:00'),
                 'admin',
                 Status::fromLabel('COMPLETED'),
-                3,
-                0,
                 false,
-                new JobExecutionRowTracking(1,2, []),
+                new JobExecutionRowTracking(1, 2, []),
             ),
             new JobExecutionRow(
                 2,
@@ -57,10 +55,8 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
                 new \DateTimeImmutable('2020-01-03T00:00:00+00:00'),
                 'admin',
                 Status::fromLabel('FAILED'),
-                4,
-                1,
                 true,
-                new JobExecutionRowTracking(1,2, []),
+                new JobExecutionRowTracking(1, 2, []),
             ),
         ];
 

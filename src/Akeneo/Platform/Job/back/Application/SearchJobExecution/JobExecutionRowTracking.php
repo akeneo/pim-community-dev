@@ -30,6 +30,15 @@ final class JobExecutionRowTracking
         );
     }
 
+    public function getWarningCount(): int
+    {
+        return array_reduce(
+            $this->steps,
+            static fn (int $count, StepExecutionTracking $step) => $count + $step->getWarningCount(),
+            0,
+        );
+    }
+
     public function normalize(): array
     {
         return [

@@ -11,7 +11,8 @@ use PhpSpec\ObjectBehavior;
 
 class JobExecutionRowTrackingSpec extends ObjectBehavior
 {
-    public function let(): void  {
+    public function let(): void
+    {
         $firstStepExecutionTracking = new StepExecutionTracking(
             1,
             10,
@@ -72,8 +73,14 @@ class JobExecutionRowTrackingSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_returns_error_count() {
+    public function it_returns_error_count()
+    {
         $this->getErrorCount()->shouldReturn(3);
+    }
+
+    public function it_returns_warning_count()
+    {
+        $this->getWarningCount()->shouldReturn(2);
     }
 
     public function it_can_be_constructed_only_with_a_list_of_step_execution_tracking()
