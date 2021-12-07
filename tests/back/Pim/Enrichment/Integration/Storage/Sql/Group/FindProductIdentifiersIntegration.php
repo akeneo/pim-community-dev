@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Group;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetGroupProductIdentifiers;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductIdentifiersInterface;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;
 
@@ -13,7 +13,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SqlGetGroupProductIdentifiersIntegration extends TestCase
+class FindProductIdentifiersIntegration extends TestCase
 {
     protected function getConfiguration()
     {
@@ -28,15 +28,15 @@ class SqlGetGroupProductIdentifiersIntegration extends TestCase
         $this->givenProductsWithGroup(['product_1', 'product_2'], 'groupA');
         $this->givenAProductWithoutGroup();
 
-        $this->assertEmpty($this->getQuery()->byGroupId($groupB->getId()));
+        $this->assertEmpty($this->getQuery()->fromGroupId($groupB->getId()));
 
-        $productIdentifiers = $this->getQuery()->byGroupId($groupA->getId());
+        $productIdentifiers = $this->getQuery()->fromGroupId($groupA->getId());
         $this->assertEqualsCanonicalizing(['product_1', 'product_2'], $productIdentifiers);
     }
 
-    private function getQuery(): GetGroupProductIdentifiers
+    private function getQuery(): FindProductIdentifiersInterface
     {
-        return $this->get('akeneo.pim.enrichment.group.query.get_group_product_identifiers');
+        return $this->get('akeneo.pim.enrichment.product.query.find_product_identifiers');
     }
 
     private function givenAGroup(string $groupCode): GroupInterface

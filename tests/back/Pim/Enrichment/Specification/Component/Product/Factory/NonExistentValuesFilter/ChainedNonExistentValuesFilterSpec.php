@@ -26,26 +26,8 @@ final class ChainedNonExistentValuesFilterSpec extends ObjectBehavior
     public function let(
         NonExistentValuesFilter $filter1,
         NonExistentValuesFilter $filter2,
-        GetAttributes $getAttributes,
-        IdentifiableObjectRepositoryInterface $localeRepository,
-        IdentifiableObjectRepositoryInterface $channelRepository
+        GetAttributes $getAttributes
     ) {
-        $ecommerce = new Channel();
-
-        $enUS = new Locale();
-        $enUS->setCode('en_US');
-        $enUS->addChannel($ecommerce);
-
-        $deDE = new Locale();
-        $deDE->setCode('de_DE');
-
-        $localeRepository->findOneByIdentifier('en_US')->willReturn($enUS);
-        $localeRepository->findOneByIdentifier('de_DE')->willReturn($deDE);
-        $localeRepository->findOneByIdentifier('fr_FR')->willReturn(null);
-
-        $channelRepository->findOneByIdentifier('ecommerce')->willReturn($ecommerce);
-        $channelRepository->findOneByIdentifier('tablet')->willReturn(null);
-
         $description = new Attribute('description', AttributeTypes::TEXTAREA, [], true, true, null, null, false, 'textarea', []);
         $color = new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, null, false, 'option', []);
 
@@ -57,9 +39,7 @@ final class ChainedNonExistentValuesFilterSpec extends ObjectBehavior
         $this->beConstructedWith(
             [$filter1, $filter2],
             new EmptyValuesCleaner(),
-            new TransformRawValuesCollections($getAttributes->getWrappedObject()),
-            $localeRepository,
-            $channelRepository
+            new TransformRawValuesCollections($getAttributes->getWrappedObject())
         );
     }
 
@@ -178,105 +158,5 @@ final class ChainedNonExistentValuesFilterSpec extends ObjectBehavior
         $filter2->filter($ongoingRawValues)->willReturn($ongoingRawValues);
 
         $this->filterAll($rawValuesCollection)->shouldBeLike(['productA' => []]);
-    }
-
-    function it_filters_unknown_channel(
-        NonExistentValuesFilter $filter1,
-        NonExistentValuesFilter $filter2
-    ) {
-        $rawValuesCollection = [
-            'productA' => [
-                'description' => [
-                    'ecommerce' => [
-                        '<all_locales>' => 'bar'
-                    ],
-                    'tablet' => [
-                        '<all_locales>' => 'foo'
-                    ]
-                ]
-            ]
-        ];
-
-        $nonFilterRawValues = [
-            AttributeTypes::TEXTAREA => [
-                'description' => [
-                    [
-                        'identifier' => 'productA',
-                        'values' => [
-                            'ecommerce' => [
-                                '<all_locales>' => 'bar'
-                            ],
-                            'tablet' => [
-                                '<all_locales>' => 'foo'
-                            ]
-                        ],
-                        'properties' => []
-                    ]
-                ]
-            ]
-        ];
-
-        $ongoingRawValues = new OnGoingFilteredRawValues([], $nonFilterRawValues);
-        $filter1->filter($ongoingRawValues)->willReturn($ongoingRawValues);
-        $filter2->filter($ongoingRawValues)->willReturn($ongoingRawValues);
-
-        $this->filterAll($rawValuesCollection)->shouldBeLike([
-            'productA' => [
-                'description' => [
-                    'ecommerce' => [
-                        '<all_locales>' => 'bar'
-                    ]
-                ]
-            ]
-        ]);
-    }
-
-    function it_filters_unknown_and_deactivated_locales(
-        NonExistentValuesFilter $filter1,
-        NonExistentValuesFilter $filter2
-    ) {
-        $rawValuesCollection = [
-            'productA' => [
-                'description' => [
-                    'ecommerce' => [
-                        'en_US' => 'bar',
-                        'fr_FR' => 'foo',
-                        'de_DE' => 'baz',
-                    ]
-                ]
-            ]
-        ];
-
-        $nonFilterRawValues = [
-            AttributeTypes::TEXTAREA => [
-                'description' => [
-                    [
-                        'identifier' => 'productA',
-                        'values' => [
-                            'ecommerce' => [
-                                'en_US' => 'bar',
-                                'fr_FR' => 'foo',
-                                'de_DE' => 'baz',
-                            ]
-                        ],
-                        'properties' => []
-                    ]
-                ]
-            ]
-        ];
-
-        $ongoingRawValues = new OnGoingFilteredRawValues([], $nonFilterRawValues);
-        $filter1->filter($ongoingRawValues)->willReturn($ongoingRawValues);
-        $filter2->filter($ongoingRawValues)->willReturn($ongoingRawValues);
-
-        $this->filterAll($rawValuesCollection)->shouldBeLike([
-            'productA' => [
-                'description' => [
-                    'ecommerce' => [
-                        'en_US' => 'bar'
-                    ]
-                ]
-            ]
-        ]);
     }
 }

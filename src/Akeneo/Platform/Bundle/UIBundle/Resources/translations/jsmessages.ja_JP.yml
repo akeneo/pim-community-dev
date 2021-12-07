@@ -211,6 +211,7 @@ pim_common:
     search: 検索...
     no_match: 一致が見つかりません
     load_more: 他の結果を読み込み中です…
+  selected: "{0}選択なし|{1}1個を選択済み|]1, Inf[{{ itemsCount }}個を選択済み"
   status: ステータス
   to: 終了
   type: タイプ

@@ -211,6 +211,7 @@ pim_common:
     search: Buscar...
     no_match: No se encontraron coincidencias
     load_more: Cargando más resultados...
+  selected: "{0}Ninguno seleccionado|{1}Uno seleccionado|]1, Inf[{{ itemsCount }} seleccionado"
   status: Estado
   to: hasta
   type: Tipo

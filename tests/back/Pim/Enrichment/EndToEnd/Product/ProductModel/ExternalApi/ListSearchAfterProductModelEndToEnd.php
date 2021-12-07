@@ -18,20 +18,20 @@ class ListSearchAfterProductModelEndToEnd extends AbstractProductModelTestCase
         $responseBody = json_decode($client->getResponse()->getContent(), true);
         $this->assertLink($responseBody, 'first', null);
         $this->assertLink($responseBody, 'self', null);
+        $this->assertLink($responseBody, 'next', 'shoes');
+        $this->assertItems($responseBody, ['handbag', 'hat', 'shoes']);
+
+        $this->followLink($client, 'next');
+        $responseBody = json_decode($client->getResponse()->getContent(), true);
+        $this->assertLink($responseBody, 'first', null);
+        $this->assertLink($responseBody, 'self', 'shoes');
         $this->assertLink($responseBody, 'next', 'tshirt');
-        $this->assertItems($responseBody, ['sweat', 'shoes', 'tshirt']);
+        $this->assertItems($responseBody, ['sweat', 'trousers', 'tshirt']);
 
         $this->followLink($client, 'next');
         $responseBody = json_decode($client->getResponse()->getContent(), true);
         $this->assertLink($responseBody, 'first', null);
         $this->assertLink($responseBody, 'self', 'tshirt');
-        $this->assertLink($responseBody, 'next', 'handbag');
-        $this->assertItems($responseBody, ['trousers', 'hat', 'handbag']);
-
-        $this->followLink($client, 'next');
-        $responseBody = json_decode($client->getResponse()->getContent(), true);
-        $this->assertLink($responseBody, 'first', null);
-        $this->assertLink($responseBody, 'self', 'handbag');
         $this->assertLinkDoesNotExist($responseBody, 'next');
         $this->assertItems($responseBody, []);
 
@@ -39,8 +39,8 @@ class ListSearchAfterProductModelEndToEnd extends AbstractProductModelTestCase
         $responseBody = json_decode($client->getResponse()->getContent(), true);
         $this->assertLink($responseBody, 'first', null);
         $this->assertLink($responseBody, 'self', null);
-        $this->assertLink($responseBody, 'next', 'tshirt');
-        $this->assertItems($responseBody, ['sweat', 'shoes', 'tshirt']);
+        $this->assertLink($responseBody, 'next', 'shoes');
+        $this->assertItems($responseBody, ['handbag', 'hat', 'shoes']);
     }
 
     private function followLink(KernelBrowser $client, string $type): void
@@ -66,7 +66,7 @@ class ListSearchAfterProductModelEndToEnd extends AbstractProductModelTestCase
             Assert::assertArrayNotHasKey('search_after', $output);
         } else {
             Assert::assertArrayHasKey('search_after', $output);
-            Assert::assertSame($this->getEncryptedId($searchAfter), $output['search_after']);
+            Assert::assertSame($searchAfter, $output['search_after']);
         }
     }
 
@@ -94,24 +94,5 @@ class ListSearchAfterProductModelEndToEnd extends AbstractProductModelTestCase
         }
 
         return urldecode($responseBody['_links'][$type]['href']);
-    }
-
-    /**
-     * @param string $productModelIdentifier
-
-     * @return string
-     */
-    private function getEncryptedId($productModelIdentifier)
-    {
-        $encrypter = $this->get('pim_api.security.primary_key_encrypter');
-
-        $productModelId = $this->get('database_connection')->fetchColumn(
-            'SELECT id from pim_catalog_product_model where code = :code',
-            [
-                'code' => $productModelIdentifier,
-            ]
-        );
-
-        return $encrypter->encrypt($productModelId);
     }
 }

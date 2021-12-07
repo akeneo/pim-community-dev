@@ -68,7 +68,6 @@ services:
                 - 'akeneo_reference_entity_collection'
                 - 'pim_catalog_asset_collection'
                 - 'pim_assets_collection'
-                - 'pim_catalog_table'
         tags:
             - { name: akeneo.pim.structure.query.get_required_attributes_masks_per_attribute_type }
 

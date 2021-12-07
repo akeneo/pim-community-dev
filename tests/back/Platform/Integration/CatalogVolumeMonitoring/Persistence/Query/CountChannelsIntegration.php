@@ -19,7 +19,6 @@ class CountChannelsIntegration extends QueryTestCase
         //in minimal catalogue we have one channel
         Assert::assertEquals(5, $volume->getVolume());
         Assert::assertEquals('count_channels', $volume->getVolumeName());
-        Assert::assertEquals(true, $volume->hasWarning());
     }
 
     /**

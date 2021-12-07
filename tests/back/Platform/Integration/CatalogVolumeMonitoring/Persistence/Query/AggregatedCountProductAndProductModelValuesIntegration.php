@@ -28,6 +28,5 @@ class AggregatedCountProductAndProductModelValuesIntegration extends TestCase
 
         $this->assertEquals('count_product_and_product_model_values', $volume->getVolumeName());
         $this->assertEquals(58, $volume->getVolume());
-        $this->assertFalse($volume->hasWarning());
     }
 }

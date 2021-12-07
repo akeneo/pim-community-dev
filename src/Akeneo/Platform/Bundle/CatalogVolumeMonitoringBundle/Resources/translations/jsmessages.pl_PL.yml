@@ -26,5 +26,4 @@ pim_catalog_volume:
     count_category_trees: Drzewo kategorii
     count_variant_products: Produkty wariantowe
     count_product_models: Model produktu
-  mean: 'Średnio:'
   max: 'Maksimum:'

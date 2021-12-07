@@ -67,4 +67,4 @@ Feature: Edit a user
     And I save the user
     And I reload the page
     And I visit the "Interfaces" tab
-    Then I should see the text "Panama EST (UTC-05:00)"
+    Then I should see the text "Panama (UTC-05:00)"
