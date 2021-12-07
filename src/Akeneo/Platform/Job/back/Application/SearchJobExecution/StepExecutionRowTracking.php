@@ -13,6 +13,7 @@ use Akeneo\Platform\Job\Domain\Model\StepStatus;
 final class StepExecutionRowTracking
 {
     public function __construct(
+        private int $id,
         private int $duration,
         private int $warningCount,
         private int $errorCount,
@@ -23,6 +24,11 @@ final class StepExecutionRowTracking
     ) {
     }
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
     public function getErrorCount(): int
     {
         return $this->errorCount;
@@ -31,6 +37,7 @@ final class StepExecutionRowTracking
     public function normalize(): array
     {
         return [
+            'id' => $this->id,
             'duration' => $this->duration,
             'warning_count' => $this->warningCount,
             'error_count' => $this->errorCount,

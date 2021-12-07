@@ -65,12 +65,12 @@ class SearchJobExecution implements SearchJobExecutionInterface
         %s
         LIMIT :offset, :limit
     )
-
     SELECT
         je.*,
         SUM(IFNULL(se.warning_count, 0)) AS warning_count,
         COUNT(se.job_execution_id) AS current_step_number,
         JSON_ARRAYAGG(JSON_OBJECT(
+            'id', se.id,
             'start_time', se.start_time,
             'end_time', se.end_time,
             'warning_count', se.warning_count,
@@ -260,6 +260,7 @@ SQL;
             $duration = $this->computeDuration($status, $startTime, $endTime);
 
             return new StepExecutionRowTracking(
+                (int) $step['id'],
                 $duration,
                 (int) $step['warning_count'],
                 $errorCount,
@@ -269,6 +270,11 @@ SQL;
                 $status,
             );
         }, json_decode($rawJobExecution['steps'], true));
+
+        usort(
+            $steps,
+            static fn (StepExecutionRowTracking $step1, StepExecutionRowTracking $step2) => $step1->getId() <=> $step2->getId(),
+        );
 
         return new JobExecutionRowTracking(
             $currentStepNumber,
