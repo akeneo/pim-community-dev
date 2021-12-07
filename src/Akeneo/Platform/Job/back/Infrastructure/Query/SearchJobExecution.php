@@ -7,7 +7,7 @@ namespace Akeneo\Platform\Job\Infrastructure\Query;
 use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
-use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Platform\Job\Domain\Model\JobStatus;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
@@ -161,11 +161,9 @@ SQL;
 
     private function buildQueryParams(SearchJobExecutionQuery $query): array
     {
-        $statusLabels = BatchStatus::getAllLabels();
-
         $queryParams = [
             'type' => $query->type,
-            'status' => array_map(static fn (string $status) => $statusLabels[$status], $query->status),
+            'status' => array_map(static fn (string $status) => JobStatus::fromLabel($status)->getStatus(), $query->status),
             'user' => $query->user,
             'code' => $query->code,
         ];
@@ -193,17 +191,13 @@ SQL;
     {
         $sortDirection = $query->sortDirection;
 
-        if (!in_array($sortDirection, ['ASC', 'DESC'])) {
-            throw new \InvalidArgumentException(sprintf('Sort direction "%s" is not supported', $query->sortDirection));
-        }
-
         $orderByColumn = match ($query->sortColumn) {
             'job_name' => sprintf("ji.label %s", $sortDirection),
             'type' => sprintf("ji.type %s", $sortDirection),
             'started_at' => sprintf("je.start_time %s", $sortDirection),
             'username' => sprintf("je.user %s", $sortDirection),
             'status' => sprintf("je.status %s", $sortDirection),
-            default => throw new \InvalidArgumentException(sprintf('Sort column "%s" is not supported', $query->sortColumn)),
+            default => throw new \InvalidArgumentException(sprintf('Unknown sort column "%s"', $query->sortColumn)),
         };
 
         return sprintf('ORDER BY %s', $orderByColumn);
@@ -228,7 +222,7 @@ SQL;
                 $rawJobExecution['type'],
                 $startTime,
                 $rawJobExecution['user'],
-                (string) new BatchStatus((int) $rawJobExecution['status']),
+                JobStatus::fromStatus((int) $rawJobExecution['status'])->getLabel(),
                 (int) $rawJobExecution['warning_count'],
                 $errorCount,
                 (int) $rawJobExecution['current_step_number'] ?? 0,

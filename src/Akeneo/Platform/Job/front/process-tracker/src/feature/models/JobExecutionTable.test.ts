@@ -12,7 +12,7 @@ const jobExecutionRow: JobExecutionRow = {
   username: 'admin',
   warning_count: 4,
   job_name: 'An export',
-  status: 'STARTED',
+  status: 'IN_PROGRESS',
   is_stoppable: true,
 };
 

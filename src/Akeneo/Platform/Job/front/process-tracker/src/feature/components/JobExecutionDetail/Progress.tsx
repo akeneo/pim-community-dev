@@ -31,7 +31,7 @@ const getStepExecutionTrackingPercent = (step: StepExecutionTracking): number | 
       case 'FAILED':
       case 'ABANDONED':
         return 100;
-      case 'STARTED':
+      case 'IN_PROGRESS':
       case 'STOPPING':
       case 'UNKNOWN':
       default:
@@ -59,7 +59,7 @@ const getStepExecutionTrackingProgressLabel = (
   switch (step.status) {
     case 'STARTING':
       return translate('pim_import_export.tracking.not_started');
-    case 'STARTED':
+    case 'IN_PROGRESS':
       if (!step.isTrackable || 'Failed' === jobStatus) {
         return translate('pim_import_export.tracking.untrackable');
       }

@@ -2,6 +2,17 @@ pim_title:
   akeneo_job_process_tracker_index: Process tracker
   akeneo_job_process_tracker_details: Process tracker | Show job
 
+akeneo_job:
+  job_status:
+    COMPLETED: Completed
+    STARTING: Starting
+    STOPPING: Stopping
+    STOPPED: Stopped
+    FAILED: Failed
+    ABANDONED: Abandoned
+    UNKNOWN: Unknown
+    IN_PROGRESS: In progress
+
 akeneo_job_process_tracker:
   last_executions:
     title: Last executions
@@ -36,8 +47,10 @@ akeneo_job_process_tracker:
     abandoned: Abandoned
     completed: Completed
     failed: Failed
-    started: Started
     starting: Starting
     stopped: Stopped
     stopping: Stopping
     unknown: Unknown
+    in_progress: In progress
+  max_page_without_filter_helper:
+    In order to show you the most relevant results, please refine your search.
