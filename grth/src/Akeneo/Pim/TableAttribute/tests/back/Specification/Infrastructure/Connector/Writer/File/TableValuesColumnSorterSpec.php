@@ -29,7 +29,7 @@ class TableValuesColumnSorterSpec extends ObjectBehavior
     function it_sorts_columns(TableConfigurationRepository $tableConfigurationRepository)
     {
         $tableAttribute = TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
             NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity', 'validations' => ['min' => 5, 'max' => 20]]),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::description(), 'code' => 'description', 'validations' => ['max_length' => 50]]),
         ]);

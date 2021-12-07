@@ -36,7 +36,7 @@ class SelectOptionsShouldExistValidatorSpec extends ObjectBehavior
             SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'options' => [
                 ['code' => 'salt'],
                 ['code' => 'sugar'],
-            ]]),
+            ], 'is_required_for_completeness' => true]),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
             SelectColumn::fromNormalized(['id' => ColumnIdGenerator::supplier(), 'code' => 'supplier', 'options' => [
                 ['code' => 'Akeneo'],

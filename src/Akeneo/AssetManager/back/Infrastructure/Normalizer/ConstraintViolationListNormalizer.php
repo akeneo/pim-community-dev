@@ -24,7 +24,6 @@ use Symfony\Component\Validator\ConstraintViolationList;
  */
 class ConstraintViolationListNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    /** * @var NormalizerInterface */
     private NormalizerInterface $normalizer;
 
     public function __construct(NormalizerInterface $normalizer)

@@ -50,10 +50,11 @@ REGISTRY ?= eu.gcr.io
 HELM_REPO_PROD := akeneo-charts
 PIM_ROOT_DIR ?= $(realpath $(DEPLOYMENT_DIR)/..)
 DEPLOYMENTS_INSTANCES_DIR ?= $(DEPLOYMENT_DIR)/instances
-CLOUD_CUSTOMERS_DEV_DIR ?= /root/cloud-customers-dev
-OPERATIONS_TOOLS_DIR ?= /root/operation-tools
+INSTANCE_DIR := $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
+CLOUD_CUSTOMERS_DEV_DIR ?= $(DEPLOYMENT_DIR)/cloud-customers-dev
+INSTANCE_CLOUD_CUSTOMERS_DEV_DIR ?= $(CLOUD_CUSTOMERS_DEV_DIR)/saas/projects/akecld-saas-dev/$(GOOGLE_CLUSTER_ZONE)/releases/$(PFID)
+OPERATIONS_TOOLS_DIR ?= $(DEPLOYMENT_DIR)/operation-tools
 OPERATIONS_TOOLS_BRANCH ?= master
-INSTANCE_DIR ?= $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
 MYSQL_DISK_SIZE ?= 10
 MYSQL_DISK_DESCRIPTION ?=
 MYSQL_SOURCE_SNAPSHOT ?=
@@ -64,7 +65,6 @@ USE_ONBOARDER_CATALOG ?= false
 UPGRADE_STEP_2 ?= false
 BUCKET_PIM_SRC_DIR ?= gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)
 MAIN_TF_TEMPLATE ?= $(PRODUCT_REFERENCE_TYPE)
-COMMIT_TARGET ?= deploy
 
 ifeq ($(CI),true)
 	TF_INPUT_FALSE ?= -input=false
@@ -351,37 +351,35 @@ pull-cloud-customer-dev: $(CLOUD_CUSTOMERS_DEV_DIR)
 
 .PHONY: commit-instance
 commit-instance: pull-cloud-customer-dev
-	mkdir -p $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
-	IMAGE_TAG=$(IMAGE_TAG) $(MAKE) create-ci-release-files
-	IMAGE_TAG=$(IMAGE_TAG) $(MAKE) change-terraform-source-version
-	GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes' \
-	make $(COMMIT_TARGET)
+	cp -r $(INSTANCE_DIR) $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)
 	git config --global user.email "pim_ci@akeneo.com"
 	git config --global user.name "pim_ci_instance_creation"
-	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
+	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)
 	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -m "Created instance $(PFID)" && git push) || \
 	bash $(DEPLOYMENT_DIR)/bin/pull_push_loop.sh $(CLOUD_CUSTOMERS_DEV_DIR)
 
 .PHONY: uncommit-instance
 uncommit-instance: pull-cloud-customer-dev
 	# Check if files were previously commited
-ifeq ("$(wildcard $(INSTANCE_DIR)/main.tf.json)","")
+ifeq ("$(wildcard $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json)","")
 	make create-ci-release-files
+	cp -r $(INSTANCE_DIR) $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)
 else
 ifeq ($(TYPE),srnt)
-	PIM_VERSION=$(shell yq r "$(INSTANCE_DIR)/main.tf.json" 'module.pim.pim_version'); \
-	yq w -j -P -i $(INSTANCE_DIR)/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$${PIM_VERSION}//deployments/terraform"
+	PIM_VERSION=$(shell yq r "$(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json" 'module.pim.pim_version'); \
+	yq w -j -P -i $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$${PIM_VERSION}//deployments/terraform"
 ifeq ($(ACTIVATE_MONITORING),true)
-	PIM_VERSION=$(shell yq r "$(INSTANCE_DIR)/main.tf.json" 'module.pim.pim_version'); \
-	yq w -j -P -i $(INSTANCE_DIR)/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$${PIM_VERSION}//deployments/terraform/monitoring"
+	PIM_VERSION=$(shell yq r "$(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json" 'module.pim.pim_version'); \
+	yq w -j -P -i $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/$${PIM_VERSION}//deployments/terraform/monitoring"
 endif
 endif
+	cp -r $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR) $(INSTANCE_DIR)
 endif
 	make delete
-	rm -rf $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
+	rm -rf $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)
 	git config --global user.email "pim_ci@akeneo.com"
 	git config --global user.name "pim_ci_instance_deletion"
-	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
+	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)
 	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -m "Deleted instance $(PFID)" && git push) || \
 	bash $(DEPLOYMENT_DIR)/bin/pull_push_loop.sh $(CLOUD_CUSTOMERS_DEV_DIR)
 
@@ -529,7 +527,8 @@ clone_serenity:
 
 .PHONY: clone_saas_instance
 clone_saas_instance:
-	SOURCE_PFID=$(SOURCE_PFID) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) DESTINATION_PATH=$(DEPLOYMENTS_INSTANCES_DIR)/$(PFID) BUCKET=$(BUCKET) bash $(DEPLOYMENT_DIR)/bin/clone_saas_instance.sh
+	TYPE=$(TYPE) INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files
+	SOURCE_PFID=$(SOURCE_PFID) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) DESTINATION_PATH=$(INSTANCE_DIR) BUCKET=$(BUCKET) bash $(DEPLOYMENT_DIR)/bin/clone_saas_instance.sh
 
 .PHONY: clone_flexibility
 clone_flexibility:

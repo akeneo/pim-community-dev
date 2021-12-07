@@ -24,8 +24,6 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 class LinkAssetHandler
 {
     private ProductLinkRuleLauncherInterface $productLinkRuleLauncher;
-
-    /** * @var AssetFamilyRepositoryInterface */
     private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
     public function __construct(

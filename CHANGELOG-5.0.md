@@ -1,5 +1,21 @@
 # 5.0.x
 
+# 5.0.61 (2021-12-02)
+
+# 5.0.60 (2021-11-30)
+
+## Bug fixes
+
+- PIM-10181: Sign logout SSO request
+
+# 5.0.59 (2021-11-26)
+
+## Bug fixes
+
+- PIM-10179: Fix PIM database schema reference file
+
+# 5.0.58 (2021-11-23)
+
 # 5.0.57 (2021-11-08)
 
 # 5.0.56 (2021-11-05)

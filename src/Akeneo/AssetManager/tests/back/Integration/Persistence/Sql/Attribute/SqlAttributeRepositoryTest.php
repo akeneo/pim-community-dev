@@ -51,7 +51,7 @@ use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\EventDispatcher\EventDispatcherMock;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as DBALException;
 
 class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
 {
@@ -512,7 +512,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             :additional_properties
         );
 SQL;
-        $assertRows = $sqlConnection->executeUpdate(
+        $assertRows = $sqlConnection->executeStatement(
             $query,
             [
                 'identifier'                 => (string) $identifier,

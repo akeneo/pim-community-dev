@@ -38,7 +38,11 @@ class ValidationShouldMatchColumnTypeValidatorSpec extends ObjectBehavior
     ) {
         $context->buildViolation(
             Argument::type('string'),
-            ['{{ expected }}' => 'max_length', '{{ given }}' => 'min', '{{ columnType }}' => 'text']
+            [
+                '{{ expected }}' => 'max_length',
+                '{{ given }}' => 'min',
+                '{{ columnType }}' => 'text'
+            ]
         )->shouldBeCalled()->willReturn($violationBuilder);
 
         $violationBuilder->atPath('validations')->shouldBeCalled()->willReturn($violationBuilder);

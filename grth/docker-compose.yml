@@ -14,6 +14,7 @@ services:
       ASPELL_BINARY_PATH: '${ASPELL_BINARY_PATH:-aspell}'
     volumes:
       - './:/srv/pim'
+      - '../components:/srv/pim/components'
       - '${HOST_COMPOSER_HOME:-~/.composer}:/var/www/.composer'
     working_dir: '/srv/pim'
     command: 'php'
@@ -35,6 +36,7 @@ services:
       ASPELL_BINARY_PATH: '${ASPELL_BINARY_PATH:-aspell}'
     volumes:
       - './:/srv/pim'
+      - '../components:/srv/pim/components'
       - './docker/fpm.conf:/etc/php/8.0/fpm/pool.d/zzz-akeneo.conf'
     working_dir: '/srv/pim'
     command: 'php-fpm -F'
@@ -45,16 +47,19 @@ services:
     image: 'akeneo/node:12'
     environment:
       YARN_CACHE_FOLDER: '/home/node/.yarn'
+      CYPRESS_CACHE_FOLDER: '/home/node/.cypress'
       PUPPETEER_DOWNLOAD_HOST: 'http://storage.googleapis.com'
     volumes:
       - './:/srv/pim'
+      - '../components:/srv/pim/components'
       - '${HOST_YARN_CACHE_FOLDER:-~/.cache/yarn}:/home/node/.yarn'
+      - '${HOST_CYPRESS_CACHE_FOLDER:-~/.cache/Cypress}:/home/node/.cypress'
     working_dir: '/srv/pim'
     networks:
       - 'pim'
 
   selenium:
-    image: 'selenium/standalone-chrome-debug:3'
+    image: 'selenium/standalone-chrome-debug:3.141.59'
     volumes:
       - './:/srv/pim:ro'
       - '/dev/shm:/dev/shm'
@@ -75,6 +80,7 @@ services:
       - '${DOCKER_PORT_HTTPS:-8443}:443'
     volumes:
       - './:/srv/pim:ro'
+      - '../components:/srv/pim/components:ro'
       - './docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
       - './docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro'
       - './docker/server.crt:/usr/local/apache2/conf/server.crt:ro'

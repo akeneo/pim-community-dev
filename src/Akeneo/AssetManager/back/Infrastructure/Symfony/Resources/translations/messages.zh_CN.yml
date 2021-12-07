@@ -87,5 +87,13 @@ pim_mass_edit.notification.asset_manager_mass_edit_assets:
   success: 资产已成功编辑
   error: 资产编辑失败
 pim_api:
+  acl:
+    asset_family:
+      create: 创建和更新资产品类
+      list: 列出资产品类
+    asset:
+      create: 创建和更新资产
+      list: 列出资产
+      remove: 删除资产
   acl_group:
     asset: 资产

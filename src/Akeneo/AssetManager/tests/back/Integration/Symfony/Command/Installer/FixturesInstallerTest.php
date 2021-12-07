@@ -64,7 +64,7 @@ DROP TABLE akeneo_asset_manager_asset_family;
 DROP TABLE akeneo_asset_manager_asset_family_permissions;
 SET FOREIGN_KEY_CHECKS = 1;
 SQL;
-        $this->sqlConnection->executeUpdate($dropSchema);
+        $this->sqlConnection->executeStatement($dropSchema);
         $this->assetClient->resetIndex();
     }
 

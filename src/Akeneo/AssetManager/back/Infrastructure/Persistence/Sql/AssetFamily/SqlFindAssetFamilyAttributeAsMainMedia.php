@@ -38,8 +38,8 @@ SQL;
             'identifier' => (string) $assetFamilyIdentifier,
         ]);
 
-        $attributeAsMainMedia = $statement->fetchColumn();
-        $statement->closeCursor();
+        $attributeAsMainMedia = $statement->fetchOne();
+        $statement->free();
 
         return false === $attributeAsMainMedia ?
             AttributeAsMainMediaReference::noReference() :

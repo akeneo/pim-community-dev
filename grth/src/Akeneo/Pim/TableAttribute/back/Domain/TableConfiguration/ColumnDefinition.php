@@ -16,6 +16,7 @@ namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\IsRequiredForCompleteness;
 
 interface ColumnDefinition
 {
@@ -24,6 +25,7 @@ interface ColumnDefinition
     public function dataType(): ColumnDataType;
     public function labels(): LabelCollection;
     public function validations(): ValidationCollection;
+    public function isRequiredForCompleteness(): IsRequiredForCompleteness;
     /** @return array<string, mixed> */
     public function normalize(): array;
 }

@@ -21,6 +21,10 @@ use Akeneo\Platform\TailoredExport\Domain\Query\AssetCollection\MediaFileAsMainM
 use Akeneo\Platform\TailoredExport\Domain\Query\AssetCollection\MediaLinkAsMainMedia;
 use PhpSpec\ObjectBehavior;
 
+/**
+ * @require Akeneo\AssetManager\Infrastructure\PublicApi\Platform\GetAttributeAsMainMediaInterface
+ */
+
 class FindAssetMainMediaAttributeSpec extends ObjectBehavior
 {
     public function let(GetAttributeAsMainMediaInterface $getAttributeAsMainMedia): void

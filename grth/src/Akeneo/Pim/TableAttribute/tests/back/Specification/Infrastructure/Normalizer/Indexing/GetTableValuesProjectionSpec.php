@@ -19,13 +19,13 @@ class GetTableValuesProjectionSpec extends ObjectBehavior
     {
         $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(
             TableConfiguration::fromColumnDefinitions([
-                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
             ])
         );
         $tableConfigurationRepository->getByAttributeCode('packaging')->willReturn(
             TableConfiguration::fromColumnDefinitions([
-                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::parcel(), 'code' => 'parcel']),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::parcel(), 'code' => 'parcel', 'is_required_for_completeness' => true]),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::width(), 'code' => 'width']),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::length(), 'code' => 'length']),
             ])

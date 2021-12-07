@@ -21,6 +21,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -35,13 +36,13 @@ class TextAttributeHydrator extends AbstractAttributeHydrator
 
     public function convertAdditionalProperties(AbstractPlatform $platform, array $row): array
     {
-        $row['is_textarea'] = Type::getType(Type::BOOLEAN)->convertToPhpValue($row['additional_properties']['is_textarea'], $platform);
-        $row['max_length'] = Type::getType(Type::INTEGER)->convertToPhpValue($row['additional_properties']['max_length'], $platform);
+        $row['is_textarea'] = Type::getType(Types::BOOLEAN)->convertToPhpValue($row['additional_properties']['is_textarea'], $platform);
+        $row['max_length'] = Type::getType(Types::INTEGER)->convertToPhpValue($row['additional_properties']['max_length'], $platform);
         if (true === $row['additional_properties']['is_textarea']) {
-            $row['is_rich_text_editor'] = Type::getType(Type::BOOLEAN)->convertToPhpValue($row['additional_properties']['is_rich_text_editor'], $platform);
+            $row['is_rich_text_editor'] = Type::getType(Types::BOOLEAN)->convertToPhpValue($row['additional_properties']['is_rich_text_editor'], $platform);
         } else {
-            $row['validation_rule'] = Type::getType(Type::STRING)->convertToPhpValue($row['additional_properties']['validation_rule'], $platform);
-            $row['regular_expression'] = Type::getType(Type::STRING)->convertToPhpValue($row['additional_properties']['regular_expression'], $platform);
+            $row['validation_rule'] = Type::getType(Types::STRING)->convertToPhpValue($row['additional_properties']['validation_rule'], $platform);
+            $row['regular_expression'] = Type::getType(Types::STRING)->convertToPhpValue($row['additional_properties']['regular_expression'], $platform);
         }
 
         return $row;

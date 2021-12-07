@@ -27,6 +27,7 @@ use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\ValuesDecoder;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -62,12 +63,12 @@ class AssetItemHydrator implements AssetItemHydratorInterface
 
     public function hydrate(array $row, AssetQuery $query, array $context = []): AssetItem
     {
-        $identifier = Type::getType(Type::STRING)->convertToPHPValue($row['identifier'], $this->platform);
-        $assetFamilyIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
+        $identifier = Type::getType(Types::STRING)->convertToPHPValue($row['identifier'], $this->platform);
+        $assetFamilyIdentifier = Type::getType(Types::STRING)->convertToPHPValue(
             $row['asset_family_identifier'],
             $this->platform
         );
-        $code = Type::getType(Type::STRING)->convertToPHPValue($row['code'], $this->platform);
+        $code = Type::getType(Types::STRING)->convertToPHPValue($row['code'], $this->platform);
 
         $indexedAttributes = $this->findAttributesIndexedByIdentifier->find(
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier)
@@ -75,9 +76,9 @@ class AssetItemHydrator implements AssetItemHydratorInterface
         $valueCollection = ValuesDecoder::decode($row['value_collection']);
         $valueCollection = $this->hydrateValues($valueCollection, $indexedAttributes, $context);
 
-        $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
+        $attributeAsLabel = Type::getType(Types::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
         $labels = $this->getLabels($valueCollection, $attributeAsLabel);
-        $attributeAsMainMediaIdentifier = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_main_media'], $this->platform);
+        $attributeAsMainMediaIdentifier = Type::getType(Types::STRING)->convertToPHPValue($row['attribute_as_main_media'], $this->platform);
         $images = $this->getImages($query, $valueCollection, $attributeAsMainMediaIdentifier);
 
         $assetItem = new AssetItem();

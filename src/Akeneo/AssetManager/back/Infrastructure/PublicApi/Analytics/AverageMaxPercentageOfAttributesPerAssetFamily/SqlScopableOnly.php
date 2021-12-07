@@ -34,7 +34,7 @@ FROM (
   GROUP BY asset_family_identifier
 ) AS rec;
 SQL;
-        $result = $this->sqlConnection->query($sql)->fetch();
+        $result = $this->sqlConnection->executeQuery($sql)->fetchAssociative();
 
         return new AverageMaxVolumes(
             (int) $result['max'],

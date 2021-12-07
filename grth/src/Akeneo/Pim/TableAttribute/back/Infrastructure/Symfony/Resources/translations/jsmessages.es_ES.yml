@@ -155,6 +155,10 @@ pim_table_attribute:
       please_try_again: Inténtelo de nuevo
       first_column_type_helper: La primera columna de una tabla es siempre un tipo de columna Select.
       discard_changes: Perderá los cambios en las opciones de selección si abandona la página.
+      completeness: Integridad
+      required_for_completeness: Necesarios para la integridad
+      completeness_helper_text: "Para descubrir cómo funciona la integridad para un atributo de tabla,"
+      completeness_helper_link: consulte nuestro centro de ayuda.
     product:
       items_per_page: Elementos por página
       current_items: "{{ minItem }}-{{ maxItem }} de {{ itemCount }}"
@@ -163,6 +167,8 @@ pim_table_attribute:
       no_rows_title: "Su tabla {{ attributeLabel }} está vacía."
       no_rows_subtitle: Añada filas para definir nuevas propiedades
       no_rows_subtitle_on_readonly: Para poder editar este atributo, vaya a la página de configuración de atributos o póngase en contacto con el administrador de PIM.
+      no_results: No hay resultados
+      no_options: No hay opciones
       no_add_options_unallowed: Póngase en contacto con el administrador de PIM para administrar las opciones de «{{ attributeLabel }}»
       actions:
         delete_row: Eliminar esta fila
@@ -170,6 +176,8 @@ pim_table_attribute:
         move_first: Mover a la primera posición
         move_last: Mover a la última posición
       order: Orden
+      save_options_error: Ocurrió un error mientras se guardaban las opciones
+      save_options_success: Opciones actualizadas correctamente
   properties:
     data_type:
       text: Texto
@@ -178,6 +186,7 @@ pim_table_attribute:
       select: Seleccionar
   validations:
     column_code_must_be_filled: Debe rellenar el código
+    not_available_code: Este código de columna no está disponible
     column_data_type_must_be_filled: Debe rellenar el tipo de datos
     invalid_column_code: El código de columna solo puede contener letras, números y guiones bajos
     invalid_code: El código solo puede contener letras, números y guiones bajos
@@ -215,6 +224,7 @@ pim_table_attribute:
     select_your_row: Seleccione su fila
     select_your_operator: Seleccione su operador
     select_your_value: Seleccione su valor
+    any_row: Cualquier fila
 pim_enrich:
   entity:
     attribute:
@@ -226,3 +236,11 @@ batch_jobs:
   xlsx_table_attribute_options_export.label: Exportar opciones de selección de atributos de tabla en XLSX
   csv_table_attribute_options_import.label: Importar opciones de selección de atributos de tabla en CSV
   xlsx_table_attribute_options_import.label: Importar opciones de selección de atributos de tabla en XLSX
+  csv_product_table_values_export.label: Exportar valores de tabla de productos en CSV
+  xlsx_product_table_values_export.label: Exportar valores de tabla de productos en XLSX
+  csv_product_model_table_values_export.label: Exportar valores de tabla modelo de producto en CSV
+  xlsx_product_model_table_values_export.label: Exportar valores de tabla de modelo de producto en XLSX
+  csv_product_table_values_import.label: Importar valores de tabla de productos en CSV
+  xlsx_product_table_values_import.label: Importar valores de tabla de productos en XLSX
+  csv_product_model_table_values_import.label: Importar valores de tabla modelo de producto en CSV
+  xlsx_product_model_table_values_import.label: Importar valores de la tabla modelo de producto en XLSX

@@ -19,7 +19,6 @@ services:
         class: Akeneo\Pim\Enrichment\AssetManager\Bundle\CatalogVolumeMonitoring\CountAssetFamilies
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.analytics.count_asset_families'
-            - '%asset_family_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
 
@@ -27,7 +26,6 @@ services:
         class: Akeneo\Pim\Enrichment\AssetManager\Bundle\CatalogVolumeMonitoring\AverageMaxNumberOfAssetsPerAssetFamily
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_number_of_assets_per_asset_family'
-            - '%asset_manager_asset_limit_per_asset_family%'
         tags:
             - { name: pim_volume_monitoring.persistence.average_max_query }
 
@@ -35,6 +33,5 @@ services:
         class: Akeneo\Pim\Enrichment\AssetManager\Bundle\CatalogVolumeMonitoring\AverageMaxNumberOfAttributesPerAssetFamily
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_number_of_attributes_per_asset_family'
-            - '%asset_family_maximum_attribute%'
         tags:
             - { name: pim_volume_monitoring.persistence.average_max_query }

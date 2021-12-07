@@ -112,14 +112,6 @@ services:
       - { name: validator.constraint_validator, alias: 'akeneo.tailored_export.validation.locale_should_be_active' }
     public: true
 
-  Akeneo\Platform\TailoredExport\Infrastructure\Validation\IsValidAssetAttributeValidator:
-    arguments:
-      - '@akeneo_assetmanager.infrastructure.persistence.query.platform.get_attribute_as_main_media_public_api'
-      - '@pim_channel.query.cache.channel_exists_with_locale'
-    tags:
-      - { name: validator.constraint_validator }
-    public: true
-
   akeneo.tailored_export.validation.locale_should_be_active:
     class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActiveValidator'
     arguments:

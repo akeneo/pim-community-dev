@@ -128,6 +128,6 @@ SQL;
         ('test/image_1.jpg', 'image_1.jpg', 'image/jpeg', 295739, 'jpg', '4d78843ea9e6c93b8677b80cb926c9c74c17aa6e', '%s'),
         ('test/image_2.jpg', 'image_2.jpg', 'image/jpeg', 97573, 'jpg', '61e3f10aad1db6bfa7d2eff35fee97d377dec01d', '%s');
 SQL;
-        $this->sqlConnection->executeUpdate(sprintf($imagesQuery, Storage::FILE_STORAGE_ALIAS, Storage::FILE_STORAGE_ALIAS));
+        $this->sqlConnection->executeStatement(sprintf($imagesQuery, Storage::FILE_STORAGE_ALIAS, Storage::FILE_STORAGE_ALIAS));
     }
 }

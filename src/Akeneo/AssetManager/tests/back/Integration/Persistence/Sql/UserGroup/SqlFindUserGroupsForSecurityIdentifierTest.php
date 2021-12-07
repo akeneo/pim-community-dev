@@ -59,12 +59,12 @@ class SqlFindUserGroupsForSecurityIdentifierTest extends SqlIntegrationTestCase
 INSERT INTO `oro_access_group` (`id`, `name`)
 VALUES (1, 'IT support'), (2, 'Catalog Manager');
 SQL;
-            $connection->executeUpdate($insertUserGroups);
+            $connection->executeStatement($insertUserGroups);
             $insertUserBelongingToGroup = <<<SQL
 INSERT INTO `oro_user_access_group` (`user_id`, `group_id`)
 VALUES (1, 1), (1, 2);
 SQL;
-            $connection->executeUpdate($insertUserBelongingToGroup);
+            $connection->executeStatement($insertUserBelongingToGroup);
         });
     }
 }

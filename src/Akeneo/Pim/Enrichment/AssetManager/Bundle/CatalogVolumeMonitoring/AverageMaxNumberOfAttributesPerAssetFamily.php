@@ -20,15 +20,10 @@ class AverageMaxNumberOfAttributesPerAssetFamily implements AverageMaxQuery
     /** @var SqlAverageMaxNumberOfAttributesPerAssetFamily */
     private $averageMaxNumberOfAttributesPerAssetFamily;
 
-    /** @var int */
-    private $limit;
-
     public function __construct(
-        SqlAverageMaxNumberOfAttributesPerAssetFamily $averageMaxNumberOfAttributesPerAssetFamily,
-        int $limit
+        SqlAverageMaxNumberOfAttributesPerAssetFamily $averageMaxNumberOfAttributesPerAssetFamily
     ) {
         $this->averageMaxNumberOfAttributesPerAssetFamily = $averageMaxNumberOfAttributesPerAssetFamily;
-        $this->limit = $limit;
     }
 
     public function fetch(): AverageMaxVolumes
@@ -37,7 +32,6 @@ class AverageMaxNumberOfAttributesPerAssetFamily implements AverageMaxQuery
         $result = new AverageMaxVolumes(
             $volume->getMaxVolume(),
             $volume->getAverageVolume(),
-            $this->limit,
             self::VOLUME_NAME
         );
 

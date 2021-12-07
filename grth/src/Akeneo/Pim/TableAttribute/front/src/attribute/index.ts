@@ -9,3 +9,4 @@ export * from './ManageOptionsModal';
 export * from './ManageOptionsRow';
 export * from './TableStructureApp';
 export * from './TwoColumnsLayout';
+export * from './ReferenceEntitySelector';

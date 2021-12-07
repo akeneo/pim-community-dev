@@ -1055,12 +1055,12 @@ JSON;
     },
     "_embedded" : {
         "items" : [
-            {$standardizedPublishedProducts['simple']},
             {$standardizedPublishedProducts['localizable']},
-            {$standardizedPublishedProducts['scopable']},
             {$standardizedPublishedProducts['localizable_and_scopable']},
             {$standardizedPublishedProducts['product_china']},
-            {$standardizedPublishedProducts['product_without_category2']}
+            {$standardizedPublishedProducts['product_without_category2']},
+            {$standardizedPublishedProducts['scopable']},
+            {$standardizedPublishedProducts['simple']}
         ]
     }
 }
@@ -1074,25 +1074,19 @@ JSON;
         $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
 
-        $id = [
-            'simple' => $this->encodeStringWithSymfonyUrlGeneratorCompatibility($this->getEncryptedId('simple')),
-            'localizable' => $this->encodeStringWithSymfonyUrlGeneratorCompatibility($this->getEncryptedId('localizable')),
-            'localizable_and_scopable' => $this->encodeStringWithSymfonyUrlGeneratorCompatibility($this->getEncryptedId('localizable_and_scopable')),
-        ];
-
-        $client->request('GET', sprintf('api/rest/v1/published-products?pagination_type=search_after&limit=3&search_after=%s', $id['simple']));
+        $client->request('GET', sprintf('api/rest/v1/published-products?pagination_type=search_after&limit=3&search_after=%s', 'localizable_and_scopable'));
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit=3&search_after={$id['simple']}"},
+        "self"  : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit=3&search_after=localizable_and_scopable"},
         "first" : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit=3"},
-        "next"  : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit=3&search_after={$id['localizable_and_scopable']}"}
+        "next"  : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit=3&search_after=scopable"}
     },
     "_embedded"    : {
         "items" : [
-            {$standardizedPublishedProducts['localizable']},
-            {$standardizedPublishedProducts['scopable']},
-            {$standardizedPublishedProducts['localizable_and_scopable']}
+            {$standardizedPublishedProducts['product_china']},
+            {$standardizedPublishedProducts['product_without_category2']},
+            {$standardizedPublishedProducts['scopable']}
         ]
     }
 }
@@ -1106,20 +1100,18 @@ JSON;
         $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
 
-        $scopableEncryptedId = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($this->getEncryptedId('scopable'));
-
-        $client->request('GET', sprintf('api/rest/v1/published-products?pagination_type=search_after&limit=4&search_after=%s', $scopableEncryptedId));
+        $client->request('GET', sprintf('api/rest/v1/published-products?pagination_type=search_after&limit=4&search_after=%s', 'product_china'));
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit=4&search_after={$scopableEncryptedId}"},
+        "self"  : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit=4&search_after=product_china"},
         "first" : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit=4"}
     },
     "_embedded"    : {
         "items" : [
-            {$standardizedPublishedProducts['localizable_and_scopable']},
-            {$standardizedPublishedProducts['product_china']},
-            {$standardizedPublishedProducts['product_without_category2']}
+            {$standardizedPublishedProducts['product_without_category2']},
+            {$standardizedPublishedProducts['scopable']},
+            {$standardizedPublishedProducts['simple']}
         ]
     }
 }

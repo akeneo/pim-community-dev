@@ -31,6 +31,7 @@ export type TextColumnDefinition = {
   labels: LabelCollection;
   data_type: 'text';
   validations: TextColumnValidation;
+  is_required_for_completeness?: boolean;
 };
 
 export type NumberColumnDefinition = {
@@ -38,6 +39,7 @@ export type NumberColumnDefinition = {
   labels: LabelCollection;
   data_type: 'number';
   validations: NumberColumnValidation;
+  is_required_for_completeness?: boolean;
 };
 
 export type BooleanColumnDefinition = {
@@ -45,6 +47,7 @@ export type BooleanColumnDefinition = {
   labels: LabelCollection;
   data_type: 'boolean';
   validations: BooleanColumnValidation;
+  is_required_for_completeness?: boolean;
 };
 
 export type SelectColumnDefinition = {
@@ -52,6 +55,7 @@ export type SelectColumnDefinition = {
   labels: LabelCollection;
   data_type: 'select';
   validations: SelectColumnValidation;
+  is_required_for_completeness?: boolean;
   options?: SelectOption[];
 };
 

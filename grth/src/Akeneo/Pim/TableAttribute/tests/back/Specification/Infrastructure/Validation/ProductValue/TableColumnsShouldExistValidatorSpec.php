@@ -48,7 +48,7 @@ class TableColumnsShouldExistValidatorSpec extends ObjectBehavior
     ) {
         $tableConfigurationRepository->getByAttributeCode('nutrition')->shouldBeCalled()->willReturn(
             TableConfiguration::fromColumnDefinitions([
-                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
             ])
         );
@@ -77,7 +77,7 @@ class TableColumnsShouldExistValidatorSpec extends ObjectBehavior
         $tableConfigurationRepository->getByAttributeCode('nutrition')->shouldBeCalled()->willReturn(
             TableConfiguration::fromColumnDefinitions(
                 [
-                    SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                    SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
                     NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
                 ]
             )

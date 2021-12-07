@@ -17,6 +17,8 @@ imports:
     - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance/Resources/config/queries.yml }
     # AkeneoJobBundle
     - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/back/tests/Acceptance/Resources/config/services.yml }
+    # Tailored Exports
+    - { resource: ../../../components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/Acceptance/Resources/config/services.yml }
     # Table Attribute
     - { resource: ../../../src/Akeneo/Pim/TableAttribute/tests/back/Acceptance/Resources/config/services.yml }
 

@@ -4,9 +4,10 @@ namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\PdfGeneration\R
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
@@ -19,14 +20,14 @@ use Twig\Loader\LoaderInterface;
 class TableProductValueRendererSpec extends ObjectBehavior
 {
     function let(
-        ColumnFactory $columnFactory,
+        TableConfigurationFactory $tableConfigurationFactory,
         TranslatorInterface $translator
     ) {
-        $this->beConstructedWith($columnFactory, $translator);
+        $this->beConstructedWith($tableConfigurationFactory, $translator);
     }
 
     function it_renders_a_table(
-        ColumnFactory $columnFactory,
+        TableConfigurationFactory $tableConfigurationFactory,
         TranslatorInterface $translator,
         AttributeInterface $attribute,
         TableValue $value,
@@ -34,36 +35,28 @@ class TableProductValueRendererSpec extends ObjectBehavior
     ) {
         $environment = new Environment($loader->getWrappedObject());
         $aqrId = ColumnIdGenerator::generateAsString('aqr');
+        $rawTableConfiguration = [
+            ['id' => ColumnIdGenerator::ingredient(), 'data_type' => 'select', 'code' => 'ingredient', 'is_required_for_completeness' => true],
+            ['id' => ColumnIdGenerator::quantity(), 'data_type' => 'number', 'code' => 'quantity'],
+            ['id' => ColumnIdGenerator::isAllergenic(), 'data_type' => 'boolean', 'code' => 'is_allergenic'],
+            ['id' => ColumnIdGenerator::description(), 'data_type' => 'text', 'code' => 'description'],
+            ['id' => $aqrId, 'data_type' => 'select', 'code' => 'aqr'],
+        ];
+
         $attribute
             ->getRawTableConfiguration()
             ->shouldBeCalled()
-            ->willReturn([
-                ['id' => ColumnIdGenerator::ingredient(), 'data_type' => 'select', 'code' => 'ingredient'],
-                ['id' => ColumnIdGenerator::quantity(), 'data_type' => 'number', 'code' => 'quantity'],
-                ['id' => ColumnIdGenerator::isAllergenic(), 'data_type' => 'boolean', 'code' => 'is_allergenic'],
-                ['id' => ColumnIdGenerator::description(), 'data_type' => 'text', 'code' => 'description'],
-                ['id' => $aqrId, 'data_type' => 'select', 'code' => 'aqr']
-            ]);
-        $columnFactory
-            ->createFromNormalized(['id' => ColumnIdGenerator::ingredient(), 'data_type' => 'select', 'code' => 'ingredient'])
-            ->shouldBeCalled()
-            ->willReturn(SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'data_type' => 'select', 'code' => 'ingredient']));
-        $columnFactory
-            ->createFromNormalized(['id' => ColumnIdGenerator::quantity(), 'data_type' => 'number', 'code' => 'quantity'])
-            ->shouldBeCalled()
-            ->willReturn(NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'data_type' => 'number', 'code' => 'quantity']));
-        $columnFactory
-            ->createFromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'data_type' => 'boolean', 'code' => 'is_allergenic'])
-            ->shouldBeCalled()
-            ->willReturn(BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'data_type' => 'boolean', 'code' => 'is_allergenic']));
-        $columnFactory
-            ->createFromNormalized(['id' => ColumnIdGenerator::description(), 'data_type' => 'text', 'code' => 'description'])
-            ->shouldBeCalled()
-            ->willReturn(TextColumn::fromNormalized(['id' => ColumnIdGenerator::description(), 'data_type' => 'text', 'code' => 'description']));
-        $columnFactory
-            ->createFromNormalized(['id' => $aqrId, 'data_type' => 'select', 'code' => 'aqr'])
-            ->shouldBeCalled()
-            ->willReturn(SelectColumn::fromNormalized(['id' => $aqrId, 'data_type' => 'select', 'code' => 'aqr']));
+            ->willReturn($rawTableConfiguration);
+
+        $tableConfigurationFactory->createFromNormalized($rawTableConfiguration)->shouldBeCalled()->willReturn(
+            TableConfiguration::fromColumnDefinitions([
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'data_type' => 'select', 'code' => 'ingredient', 'is_required_for_completeness' => true]),
+                NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'data_type' => 'number', 'code' => 'quantity']),
+                BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'data_type' => 'boolean', 'code' => 'is_allergenic']),
+                TextColumn::fromNormalized(['id' => ColumnIdGenerator::description(), 'data_type' => 'text', 'code' => 'description']),
+                SelectColumn::fromNormalized(['id' => $aqrId, 'data_type' => 'select', 'code' => 'aqr']),
+            ])
+        );
 
         $value
             ->getData()

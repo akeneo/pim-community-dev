@@ -6,3 +6,9 @@ suites:
         spec_path: src/Akeneo/Pim/TableAttribute/tests/back
         src_path: src/Akeneo/Pim/TableAttribute/back
         spec_prefix: Specification
+    TableAttributeTest:
+        namespace: Akeneo\Test\Pim\TableAttribute\Acceptance
+        psr4_prefix: Akeneo\Test\Pim\TableAttribute\Acceptance
+        spec_path: src/Akeneo/Pim/TableAttribute/tests/back/Acceptance
+        src_path: src/Akeneo/Pim/TableAttribute/tests/back/Acceptance
+        spec_prefix: Specification

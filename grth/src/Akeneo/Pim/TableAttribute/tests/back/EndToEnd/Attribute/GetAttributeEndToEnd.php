@@ -35,6 +35,7 @@ final class GetAttributeEndToEnd extends AbstractAttributeApiTestCase
                     "fr_FR" => "Ingrédients",
                 ],
                 'validations' => [],
+                'is_required_for_completeness' => true,
             ],
             [
                 'code' => 'quantity',
@@ -43,6 +44,7 @@ final class GetAttributeEndToEnd extends AbstractAttributeApiTestCase
                 'validations' => [
                     'max_length' => 100,
                 ],
+                'is_required_for_completeness' => false,
             ],
         ], $decoded['table_configuration']);
     }
@@ -66,6 +68,7 @@ final class GetAttributeEndToEnd extends AbstractAttributeApiTestCase
                     "fr_FR" => "Ingrédients",
                 ],
                 'validations' => [],
+                'is_required_for_completeness' => true,
                 'options' => [['code' => 'sugar', 'labels' => ['en_US' => 'Sugar', 'fr_FR' => 'Sucre']]],
             ],
             [
@@ -75,6 +78,7 @@ final class GetAttributeEndToEnd extends AbstractAttributeApiTestCase
                 'validations' => [
                     'max_length' => 100,
                 ],
+                'is_required_for_completeness' => false,
             ],
         ], $decoded['table_configuration']);
     }

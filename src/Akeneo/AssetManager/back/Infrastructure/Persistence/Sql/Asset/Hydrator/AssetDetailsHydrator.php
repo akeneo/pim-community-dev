@@ -58,14 +58,14 @@ class AssetDetailsHydrator implements AssetDetailsHydratorInterface
         ValueKeyCollection $valueKeyCollection,
         array $attributes
     ): AssetDetails {
-        $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
-        $attributeAsMainMedia = Type::getType(Type::STRING)->convertToPHPValue($row['attribute_as_main_media'], $this->platform);
-        $valueCollection = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($row['value_collection'], $this->platform);
-        $assetIdentifier = Type::getType(Type::STRING)
+        $attributeAsLabel = Type::getType(Types::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
+        $attributeAsMainMedia = Type::getType(Types::STRING)->convertToPHPValue($row['attribute_as_main_media'], $this->platform);
+        $valueCollection = Type::getType(Types::JSON)->convertToPHPValue($row['value_collection'], $this->platform);
+        $assetIdentifier = Type::getType(Types::STRING)
             ->convertToPHPValue($row['identifier'], $this->platform);
-        $assetFamilyIdentifier = Type::getType(Type::STRING)
+        $assetFamilyIdentifier = Type::getType(Types::STRING)
             ->convertToPHPValue($row['asset_family_identifier'], $this->platform);
-        $assetCode = Type::getType(Type::STRING)
+        $assetCode = Type::getType(Types::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
         $createdAt = Type::getType(Types::DATETIME_IMMUTABLE)
             ->convertToPHPValue($row['created_at'], $this->platform);

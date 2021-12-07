@@ -35,7 +35,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\EventDispatcher\EventDispatcherMock;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as DBALException;
 use PHPUnit\Framework\Assert;
 
 class SqlAssetRepositoryTest extends SqlIntegrationTestCase

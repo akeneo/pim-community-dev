@@ -69,7 +69,7 @@ SQL;
             'code' => (string) $assetCode,
         ]);
         $result = $statement->fetchAssociative();
-        $statement->closeCursor();
+        $statement->free();
 
         return $result ? $result : [];
     }

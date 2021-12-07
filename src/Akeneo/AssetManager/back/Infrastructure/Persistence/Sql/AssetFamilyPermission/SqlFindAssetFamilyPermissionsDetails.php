@@ -11,6 +11,7 @@ use Akeneo\AssetManager\Domain\Query\AssetFamilyPermission\PermissionDetails;
 use Akeneo\UserManagement\Component\Model\Group;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * If there are no permissions set for the asset family, then this query function returns an empty list.
@@ -89,14 +90,14 @@ SQL;
         $rightLevel = empty($normalizedPermissionDetails) ? RightLevel::EDIT : RightLevel::VIEW;
 
         $platform = $this->sqlConnection->getDatabasePlatform();
-        $userGroupIdentifier = Type::getType(Type::INTEGER)
+        $userGroupIdentifier = Type::getType(Types::INTEGER)
             ->convertToPhpValue($userGroup['user_group_identifier'], $platform);
 
         foreach ($normalizedPermissionDetails as $normalizedPermissionDetail) {
-            $searchedUserGroup = Type::getType(Type::INTEGER)
+            $searchedUserGroup = Type::getType(Types::INTEGER)
                 ->convertToPhpValue($normalizedPermissionDetail['user_group_identifier'], $platform);
             if ($userGroupIdentifier === $searchedUserGroup) {
-                $rightLevel = Type::getType(Type::STRING)
+                $rightLevel = Type::getType(Types::STRING)
                     ->convertToPhpValue($normalizedPermissionDetail['right_level'], $platform);
             }
         }
@@ -108,9 +109,9 @@ SQL;
     {
         $platform = $this->sqlConnection->getDatabasePlatform();
         $permissionDetails = new PermissionDetails();
-        $permissionDetails->userGroupIdentifier = Type::getType(Type::INTEGER)
+        $permissionDetails->userGroupIdentifier = Type::getType(Types::INTEGER)
             ->convertToPhpValue($userGroup['user_group_identifier'], $platform);
-        $permissionDetails->userGroupName = Type::getType(Type::STRING)
+        $permissionDetails->userGroupName = Type::getType(Types::STRING)
             ->convertToPhpValue($userGroup['user_group_name'], $platform);
         $permissionDetails->rightLevel = $rightLevel;
 

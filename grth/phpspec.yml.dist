@@ -1,3 +1,6 @@
+extensions:
+  Akeneo\SkipExampleExtension: ~
+
 suites:
   ## Platform BC
   Platform:
@@ -13,4 +16,19 @@ suites:
     psr4_prefix: Akeneo\Pim\TableAttribute
     spec_path: src/Akeneo/Pim/TableAttribute/tests/back
     src_path: src/Akeneo/Pim/TableAttribute/back
+    spec_prefix: Specification
+
+  TableAttributeAcceptanceTest:
+    namespace: Akeneo\Test\Pim\TableAttribute\Acceptance
+    psr4_prefix: Akeneo\Test\Pim\TableAttribute\Acceptance
+    spec_path: src/Akeneo/Pim/TableAttribute/tests/back/Acceptance
+    src_path: src/Akeneo/Pim/TableAttribute/tests/back/Acceptance
+    spec_prefix: Specification
+
+  ## Tailored export context
+  TailoredExport:
+    namespace: Akeneo\Platform\TailoredExport
+    psr4_prefix: Akeneo\Platform\TailoredExport
+    spec_path: components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests
+    src_path: components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/src
     spec_prefix: Specification

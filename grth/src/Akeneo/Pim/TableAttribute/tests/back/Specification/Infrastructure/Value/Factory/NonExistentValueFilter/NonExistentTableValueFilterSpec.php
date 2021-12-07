@@ -24,7 +24,7 @@ class NonExistentTableValueFilterSpec extends ObjectBehavior
     ) {
         $tableConfigurationRepository->getByAttributeCode('food_composition')->willReturn(
             TableConfiguration::fromColumnDefinitions([
-                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
                 SelectColumn::fromNormalized(['id' => ColumnIdGenerator::supplier(), 'code' => 'supplier']),
             ])

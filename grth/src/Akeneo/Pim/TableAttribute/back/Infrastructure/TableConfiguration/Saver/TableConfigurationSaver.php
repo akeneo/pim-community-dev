@@ -15,8 +15,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Saver;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
@@ -33,20 +32,20 @@ class TableConfigurationSaver implements SaverInterface
 {
     private TableConfigurationRepository $tableConfigurationRepository;
     private SelectOptionCollectionRepository $optionCollectionRepository;
-    private ColumnFactory $columnFactory;
+    private TableConfigurationFactory $tableConfigurationFactory;
     private TableConfigurationUpdater $tableConfigurationUpdater;
     private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         TableConfigurationRepository $tableConfigurationRepository,
         SelectOptionCollectionRepository $optionCollectionRepository,
-        ColumnFactory $columnFactory,
+        TableConfigurationFactory $tableConfigurationFactory,
         TableConfigurationUpdater $tableConfigurationUpdater,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->tableConfigurationRepository = $tableConfigurationRepository;
         $this->optionCollectionRepository = $optionCollectionRepository;
-        $this->columnFactory = $columnFactory;
+        $this->tableConfigurationFactory = $tableConfigurationFactory;
         $this->tableConfigurationUpdater = $tableConfigurationUpdater;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -105,17 +104,15 @@ class TableConfigurationSaver implements SaverInterface
                 $attribute->getRawTableConfiguration()
             );
         } catch (TableConfigurationNotFoundException $e) {
-            return TableConfiguration::fromColumnDefinitions(
+            return $this->tableConfigurationFactory->createFromNormalized(
                 array_map(
-                    fn (array $rawColumnDefinition): ColumnDefinition => $this->columnFactory->createFromNormalized(
-                        array_merge(
-                            $rawColumnDefinition,
-                            [
-                                'id' => $this->tableConfigurationRepository->getNextIdentifier(
-                                    ColumnCode::fromString($rawColumnDefinition['code'])
-                                )->asString(),
-                            ]
-                        )
+                    fn (array $rawColumnDefinition): array => array_merge(
+                        $rawColumnDefinition,
+                        [
+                            'id' => $this->tableConfigurationRepository->getNextIdentifier(
+                                ColumnCode::fromString($rawColumnDefinition['code'])
+                            )->asString(),
+                        ]
                     ),
                     $attribute->getRawTableConfiguration()
                 )

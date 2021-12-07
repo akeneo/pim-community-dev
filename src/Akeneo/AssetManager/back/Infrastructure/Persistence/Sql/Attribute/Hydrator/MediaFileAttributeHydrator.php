@@ -20,6 +20,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -35,7 +36,7 @@ class MediaFileAttributeHydrator extends AbstractAttributeHydrator
     public function convertAdditionalProperties(AbstractPlatform $platform, array $row): array
     {
         $row['allowed_extensions'] = $row['additional_properties']['allowed_extensions'];
-        $row['max_file_size'] = Type::getType(Type::STRING)->convertToPHPValue($row['additional_properties']['max_file_size'], $platform);
+        $row['max_file_size'] = Type::getType(Types::STRING)->convertToPHPValue($row['additional_properties']['max_file_size'], $platform);
         $row['media_type'] = $row['additional_properties']['media_type'];
 
         return $row;

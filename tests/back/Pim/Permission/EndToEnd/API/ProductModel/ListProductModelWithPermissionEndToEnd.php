@@ -42,8 +42,8 @@ class ListProductModelWithPermissionEndToEnd extends ApiTestCase
         sort($codes);
 
         $expectedCodes = [
+            'shoes_own',
             'shoes_view',
-            'tshirt_view',
             'sweat_edit',
             'colored_shoes_view',
             'colored_tshirt_view',

@@ -4,6 +4,7 @@
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\ErrorHandler\Debug;
+use Symfony\Component\Console\Output\NullOutput;
 
 if (false === in_array(\PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
     echo 'Warning: The console should be invoked via the CLI version of PHP, not the '.\PHP_SAPI.' SAPI'.\PHP_EOL;
@@ -30,4 +31,11 @@ if ($_SERVER['APP_DEBUG']) {
 
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
 $application = new Application($kernel);
-$application->run($input);
+
+$output = null;
+if($kernel->getEnvironment() === 'prod' && in_array("--quiet", $argv))
+{
+    $output = new NullOutput();
+}
+
+$application->run($input, $output);

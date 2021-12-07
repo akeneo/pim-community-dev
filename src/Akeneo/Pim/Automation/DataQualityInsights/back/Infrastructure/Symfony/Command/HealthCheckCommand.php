@@ -538,7 +538,7 @@ WHERE status = 'pending'
 SQL
         );
 
-        $result = $stmt->fetch();
+        $result = $stmt->fetchAssociative();
 
         $delay = 0;
 

@@ -8,6 +8,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValidationCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\IsRequiredForCompleteness;
 use PhpSpec\ObjectBehavior;
 
 class NumberColumnSpec extends ObjectBehavior
@@ -31,7 +32,7 @@ class NumberColumnSpec extends ObjectBehavior
         $this->shouldHaveType(NumberColumn::class);
     }
 
-    function it_is_a_text_column()
+    function it_is_a_number_column()
     {
         $this->dataType()->shouldHaveType(ColumnDataType::class);
         $this->dataType()->asString()->shouldBe('number');
@@ -53,6 +54,30 @@ class NumberColumnSpec extends ObjectBehavior
     {
         $this->labels()->shouldHaveType(LabelCollection::class);
         $this->labels()->normalize()->shouldReturn(['en_US' => 'Quantities', 'fr_FR' => 'Quantités']);
+    }
+
+    function it_is_not_required_for_completeness()
+    {
+        $this->isRequiredForCompleteness()->shouldHaveType(IsRequiredForCompleteness::class);
+        $this->isRequiredForCompleteness()->asBoolean()->shouldReturn(false);
+    }
+
+    function it_is_required_for_completeness()
+    {
+        $this->beConstructedThrough(
+            'fromNormalized',
+            [
+                [
+                    'id' => 'quantity_cf30d88f-38c9-4c01-9821-4b39a5e3c224',
+                    'code' => 'number',
+                    'validations' => ['min' => 5],
+                    'is_required_for_completeness' => true,
+                ],
+            ]
+        );
+
+        $this->isRequiredForCompleteness()->shouldHaveType(IsRequiredForCompleteness::class);
+        $this->isRequiredForCompleteness()->asBoolean()->shouldReturn(true);
     }
 
     function it_returns_the_validations()
@@ -83,6 +108,7 @@ class NumberColumnSpec extends ObjectBehavior
                 'code' => 'quantities',
                 'labels' => ['en_US' => 'Quantities', 'fr_FR' => 'Quantités'],
                 'validations' => (object)[],
+                'is_required_for_completeness' => false,
             ]
         );
     }

@@ -38,12 +38,14 @@ final class GetAttributeListEndToEnd extends AbstractAttributeApiTestCase
                 'data_type' => 'select',
                 'labels' => ['en_US' => 'Ingredients'],
                 'validations' => [],
+                'is_required_for_completeness' => true,
             ],
             [
                 'code' => 'quantity',
                 'data_type' => 'text',
                 'labels' => ['en_US' => 'Quantity'],
                 'validations' => ['max_length' => 100],
+                'is_required_for_completeness' => false,
             ],
         ], $nutritionTableConfiguration['table_configuration']);
 
@@ -56,12 +58,14 @@ final class GetAttributeListEndToEnd extends AbstractAttributeApiTestCase
                 'data_type' => 'select',
                 'labels' => ['en_US' => 'Unity'],
                 'validations' => [],
+                'is_required_for_completeness' => true,
             ],
             [
                 'code' => 'value',
                 'data_type' => 'number',
                 'labels' => ['en_US' => 'Value'],
                 'validations' => [],
+                'is_required_for_completeness' => false,
             ],
         ], $dimensionTableConfiguration['table_configuration']);
     }
@@ -86,6 +90,7 @@ final class GetAttributeListEndToEnd extends AbstractAttributeApiTestCase
                 'data_type' => 'select',
                 'labels' => ['en_US' => 'Ingredients'],
                 'validations' => [],
+                'is_required_for_completeness' => true,
                 'options' => [
                     ['code' => 'salt', 'labels' => []],
                     ['code' => 'sugar', 'labels' => []],
@@ -96,6 +101,7 @@ final class GetAttributeListEndToEnd extends AbstractAttributeApiTestCase
                 'data_type' => 'text',
                 'labels' => ['en_US' => 'Quantity'],
                 'validations' => ['max_length' => 100],
+                'is_required_for_completeness' => false,
             ],
         ], $nutritionTableConfiguration['table_configuration']);
 
@@ -108,6 +114,7 @@ final class GetAttributeListEndToEnd extends AbstractAttributeApiTestCase
                 'data_type' => 'select',
                 'labels' => ['en_US' => 'Unity'],
                 'validations' => [],
+                'is_required_for_completeness' => true,
                 'options' => [
                     ['code' => 'width', 'labels' => []],
                     ['code' => 'height', 'labels' => []],
@@ -118,6 +125,7 @@ final class GetAttributeListEndToEnd extends AbstractAttributeApiTestCase
                 'data_type' => 'number',
                 'labels' => ['en_US' => 'Value'],
                 'validations' => [],
+                'is_required_for_completeness' => false,
             ],
         ], $dimensionTableConfiguration['table_configuration']);
     }

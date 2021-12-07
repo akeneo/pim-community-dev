@@ -15,8 +15,7 @@ namespace Akeneo\Test\Pim\TableAttribute\Acceptance\InMemory;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
@@ -28,12 +27,12 @@ use Ramsey\Uuid\Uuid;
 class InMemoryTableConfigurationRepository implements TableConfigurationRepository
 {
     private AttributeRepositoryInterface $attributeRepository;
-    private ColumnFactory $columnFactory;
+    private TableConfigurationFactory $tableConfigurationFactory;
 
-    public function __construct(AttributeRepositoryInterface $attributeRepository, ColumnFactory $columnFactory)
+    public function __construct(AttributeRepositoryInterface $attributeRepository, TableConfigurationFactory $tableConfigurationFactory)
     {
         $this->attributeRepository = $attributeRepository;
-        $this->columnFactory = $columnFactory;
+        $this->tableConfigurationFactory = $tableConfigurationFactory;
     }
 
     public function getNextIdentifier(ColumnCode $columnCode): ColumnId
@@ -57,20 +56,17 @@ class InMemoryTableConfigurationRepository implements TableConfigurationReposito
             throw TableConfigurationNotFoundException::forAttributeCode($attributeCode);
         }
 
-        return TableConfiguration::fromColumnDefinitions(
+        return $this->tableConfigurationFactory->createFromNormalized(
             array_map(
-                function (array $row): ColumnDefinition {
-                    $row['id'] ??= ColumnIdGenerator::generateAsString($row['code']);
-                    return $this->columnFactory->createFromNormalized(
-                        [
-                            'id' => $row['id'],
-                            'code' => $row['code'],
-                            'data_type' => $row['data_type'],
-                            'labels' => $row['labels'] ?? [],
-                            'validations' => $row['validations'] ?? [],
-                        ]
-                    );
-                },
+                fn (array $row): array => [
+                    'id' => $row['id'] ?? ColumnIdGenerator::generateAsString($row['code']),
+                    'code' => $row['code'],
+                    'data_type' => $row['data_type'],
+                    'labels' => $row['labels'] ?? [],
+                    'validations' => $row['validations'] ?? [],
+                    'is_required_for_completeness' => $row['is_required_for_completeness'] ?? false,
+                    'reference_entity_identifier' => $row['reference_entity_identifier'] ?? null,
+                ],
                 $attribute->getRawTableConfiguration()
             )
         );

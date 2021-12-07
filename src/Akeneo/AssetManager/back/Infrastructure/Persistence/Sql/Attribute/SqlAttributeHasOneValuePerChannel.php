@@ -22,6 +22,7 @@ use Akeneo\AssetManager\Domain\Query\Attribute\AttributeHasOneValuePerChannelInt
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -58,6 +59,6 @@ SQL;
             throw AttributeNotFoundException::withAssetFamilyAndAttributeCode($assetFamilyIdentifier, $attributeCode);
         }
 
-        return Type::getType(Type::BOOLEAN)->convertToPhpValue($result['value_per_channel'], $platform);
+        return Type::getType(Types::BOOLEAN)->convertToPhpValue($result['value_per_channel'], $platform);
     }
 }

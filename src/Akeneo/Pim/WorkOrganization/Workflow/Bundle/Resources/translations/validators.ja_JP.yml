@@ -1,0 +1,3 @@
+pimee_workflow:
+  check_removal:
+    product_model_error: この商品モデルには、公開済のバリエーション商品があります。非公開にしてから、もう一度お試しください。

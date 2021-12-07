@@ -122,6 +122,8 @@
 - PIM-10017: Improve logging in DQI spellcheck
 - PIM-10175: Fix option labels display in asset bulk action
 - PIM-10180: Fix PDF Asset thumbnail generation
+- PIM-10183: Fix reference entity validation
+- PIM-10149: Fix group product page OOM (remove group to products association)
 
 ## Improvements
 

@@ -54,5 +54,13 @@ pim_mass_edit:
 akeneo_reference_entity: Referentie entiteit enkele link
 akeneo_reference_entity_collection: Referentie entiteit meerdere links
 pim_api:
+  acl:
+    reference_entity:
+      create: Aanmaken en bijwerken van referentie-entiteiten
+      list: Lijst van referentie-entiteiten
+    record:
+      create: Aanmaken en bijwerken van referentie-entiteits-records.
+      list: Lijst referentie-entiteits-records
+      remove: Verwijder referentie-entiteitsrecords
   acl_group:
     reference_entity: Referentie-entiteiten

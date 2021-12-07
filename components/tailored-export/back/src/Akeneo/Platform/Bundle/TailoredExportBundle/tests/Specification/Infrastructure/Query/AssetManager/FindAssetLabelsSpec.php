@@ -17,6 +17,9 @@ use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslatio
 use Akeneo\Platform\TailoredExport\Infrastructure\Query\AssetManager\FindAssetLabels;
 use PhpSpec\ObjectBehavior;
 
+/**
+ * @require Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslationInterface
+ */
 class FindAssetLabelsSpec extends ObjectBehavior
 {
     public function let(

@@ -80,12 +80,12 @@ class EvaluateSpellingSpec extends ObjectBehavior
 
         $textareaValues = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
             'ecommerce' => [
-                'en_US' => '<p>Typos hapen. </p>',
-                'fr_FR' => '<p>Les fautes de frappe arrivent. </p>',
-                'it_IT' => '<p>I refusi accadono. </p>',
+                'en_US' => '<p>Typos hapen.</p>',
+                'fr_FR' => '<p>Les fautes de frappe arrivent.</p>',
+                'it_IT' => '<p>I refusi accadono.</p>',
             ],
             'print' => [
-                'en_US' => '<p>Typos happen. </p>',
+                'en_US' => 'Typos happen.',
                 'fr_FR' => '',
                 'it_IT' => 'I refusi accadono.',
             ],
@@ -131,15 +131,15 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $textCheckResultTextPrintEn->count()->willReturn(1);
 
         $textChecker
-            ->check(['a_text' => 'Typos happen.', 'a_textarea' => '<p>Typos hapen. </p>'], $localeEn)
+            ->check(['a_text' => 'Typos happen.', 'a_textarea' => 'Typos hapen.'], $localeEn)
             ->willReturn(['a_text' => $textCheckResultTextEcommerceEn, 'a_textarea' => $textCheckResultTextareaEcommerceEn]);
 
         $textChecker
-            ->check(['a_text' => 'Les fautes de frappe arrivent', 'a_textarea' => '<p>Les fautes de frappe arrivent. </p>'], $localeFr)
+            ->check(['a_text' => 'Les fautes de frappe arrivent', 'a_textarea' => 'Les fautes de frappe arrivent.'], $localeFr)
             ->willReturn(['a_text' => $textCheckResultTextEcommerceFR, 'a_textarea' => $textCheckResultTextareaEcommerceFr]);
 
         $textChecker
-            ->check(['a_text' => 'Typos hapen.', 'a_textarea' => '<p>Typos happen. </p>'], $localeEn)
+            ->check(['a_text' => 'Typos hapen.', 'a_textarea' => 'Typos happen.'], $localeEn)
             ->willReturn(['a_text' => $textCheckResultTextPrintEn, 'a_textarea' => $textCheckResultTextareaPrintEn]);
 
         $expectedEvaluationResult = (new Write\CriterionEvaluationResult())

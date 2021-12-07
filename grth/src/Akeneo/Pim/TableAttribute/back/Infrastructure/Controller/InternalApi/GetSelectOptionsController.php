@@ -15,11 +15,9 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Controller\InternalApi;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -30,16 +28,16 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 final class GetSelectOptionsController
 {
     private AttributeRepositoryInterface $attributeRepository;
-    private ColumnFactory $columnFactory;
+    private TableConfigurationFactory $tableConfigurationFactory;
     private SelectOptionCollectionRepository $optionCollectionRepository;
 
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
-        ColumnFactory $columnFactory,
+        TableConfigurationFactory $tableConfigurationFactory,
         SelectOptionCollectionRepository $optionCollectionRepository
     ) {
         $this->attributeRepository = $attributeRepository;
-        $this->columnFactory = $columnFactory;
+        $this->tableConfigurationFactory = $tableConfigurationFactory;
         $this->optionCollectionRepository = $optionCollectionRepository;
     }
 
@@ -63,11 +61,8 @@ final class GetSelectOptionsController
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $tableConfiguration = TableConfiguration::fromColumnDefinitions(
-            array_map(
-                fn (array $row): ColumnDefinition => $this->columnFactory->createFromNormalized($row),
-                $attribute->getRawTableConfiguration()
-            )
+        $tableConfiguration = $this->tableConfigurationFactory->createFromNormalized(
+            $attribute->getRawTableConfiguration()
         );
 
         $column = $tableConfiguration->getColumnByCode(ColumnCode::fromString($columnCode));

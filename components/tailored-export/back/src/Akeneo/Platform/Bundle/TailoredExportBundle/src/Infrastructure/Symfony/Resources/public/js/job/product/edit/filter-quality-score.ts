@@ -16,7 +16,12 @@ const _ = require('underscore');
 const BaseFilter = require('pim/filter/filter');
 const mediator = require('oro/mediator');
 const fetcherRegistry = require('pim/fetcher-registry');
-import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+
+let assetFamilyFetcher = {
+  fetch: (_identifier: string) => {
+    return Promise.resolve({assetFamily: {attributes: [], attributeAsMainMedia: '', identifier: ''}});
+  }
+};
 
 class FilterQualityScore extends BaseFilter {
   private validationErrors: ValidationError[] = [];

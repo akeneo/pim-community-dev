@@ -39,7 +39,7 @@ final class CellDataTypesShouldMatchValidatorSpec extends ObjectBehavior
 
         $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(
             TableConfiguration::fromColumnDefinitions([
-                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
+                SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
                 BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'isAllergen']),
             ])

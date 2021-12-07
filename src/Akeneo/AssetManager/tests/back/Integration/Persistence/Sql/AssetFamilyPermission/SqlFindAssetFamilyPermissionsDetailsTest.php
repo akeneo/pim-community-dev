@@ -109,7 +109,7 @@ class SqlFindAssetFamilyPermissionsDetailsTest extends SqlIntegrationTestCase
     (11, 'IT support', 'default'),
     (12, 'DO NOT SHOW', 'do_not_show');
 SQL;
-        $this->get('database_connection')->executeUpdate($insertFakeGroups);
+        $this->get('database_connection')->executeStatement($insertFakeGroups);
 
         $assetFamilyPermission = AssetFamilyPermission::create(
             AssetFamilyIdentifier::fromString('designer'),
@@ -146,6 +146,6 @@ SQL;
  VALUES
     (13, 'New user group');
 SQL;
-        $this->get('database_connection')->executeUpdate($insertNewUserGroup);
+        $this->get('database_connection')->executeStatement($insertNewUserGroup);
     }
 }

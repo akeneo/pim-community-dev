@@ -7,9 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -18,22 +16,19 @@ use Webmozart\Assert\Assert;
 
 class TableProductValueRenderer implements ProductValueRenderer
 {
-    private ColumnFactory $columnFactory;
+    private TableConfigurationFactory $tableConfigurationFactory;
     private TranslatorInterface $translator;
 
-    public function __construct(ColumnFactory $columnFactory, TranslatorInterface $translator)
+    public function __construct(TableConfigurationFactory $tableConfigurationFactory, TranslatorInterface $translator)
     {
-        $this->columnFactory = $columnFactory;
+        $this->tableConfigurationFactory = $tableConfigurationFactory;
         $this->translator = $translator;
     }
 
     public function render(Environment $environment, AttributeInterface $attribute, ?ValueInterface $value, string $localeCode): ?string
     {
-        $tableConfiguration = TableConfiguration::fromColumnDefinitions(
-            array_map(
-                fn (array $row): ColumnDefinition => $this->columnFactory->createFromNormalized($row),
-                $attribute->getRawTableConfiguration()
-            )
+        $tableConfiguration = $this->tableConfigurationFactory->createFromNormalized(
+            $attribute->getRawTableConfiguration()
         );
 
         $table = $value->getData();

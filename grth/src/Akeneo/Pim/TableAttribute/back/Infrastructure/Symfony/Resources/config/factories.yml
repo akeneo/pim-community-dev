@@ -1,14 +1,15 @@
 services:
-    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory:
+    Akeneo\Pim\TableAttribute\Infrastructure\Value\Factory\TableValueFactory:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
+        tags:
+            - { name: 'akeneo.pim.enrichment.factory.product_value' }
+
+    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory:
         arguments:
             -
                 text: Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn
                 number: Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn
                 boolean: Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn
                 select: Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn
-
-    Akeneo\Pim\TableAttribute\Infrastructure\Value\Factory\TableValueFactory:
-        arguments:
-            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
-        tags:
-            - { name: 'akeneo.pim.enrichment.factory.product_value' }
+                record: Akeneo\Pim\TableAttribute\Domain\TableConfiguration\RecordColumn

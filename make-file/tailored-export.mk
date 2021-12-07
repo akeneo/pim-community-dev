@@ -1,6 +1,6 @@
 .PHONY: lint-back
 lint-back: #Doc: launch PHPStan for tailored export
-	$(PHP_RUN) vendor/bin/phpstan analyse --configuration components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/phpstan.neon.dist
+	$(PHP_RUN) vendor/bin/phpstan analyse --configuration components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/phpstan-ee.neon
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle
 
 .PHONY: coupling-back
@@ -22,9 +22,9 @@ endif
 .PHONY: acceptance-back
 acceptance-back: #Doc: launch PHPUnit acceptance tests for tailored export
 ifeq ($(CI),true)
-	APP_ENV=test_fake $(PHP_RUN) vendor/bin/phpunit -c components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests --log-junit var/tests/phpunit/phpunit_$$(uuidgen).xml --testsuite TailoredExport_Acceptance_Test
+	APP_ENV=test_fake $(PHP_RUN) vendor/bin/phpunit -c components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/phpunit-ee.xml --log-junit var/tests/phpunit/phpunit_$$(uuidgen).xml --testsuite TailoredExport_Acceptance_Test
 else
-	APP_ENV=test_fake $(PHP_RUN) vendor/bin/phpunit -c components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests --testsuite TailoredExport_Acceptance_Test $(O)
+	APP_ENV=test_fake $(PHP_RUN) vendor/bin/phpunit -c components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/phpunit-ee.xml --testsuite TailoredExport_Acceptance_Test $(O)
 endif
 
 .PHONY: ci-back

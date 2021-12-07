@@ -79,9 +79,9 @@ endif
 .PHONY: growth-unit-back
 growth-unit-back: var/tests/phpspec #Doc: launch PHPSpec for PIM grth
 ifeq ($(CI),true)
-	$(DOCKER_COMPOSE) run -T -u www-data --rm php sh -c "cd vendor/akeneo/pim-growth-edition && php ../vendor/bin/phpspec run --config=src/Akeneo/Pim/TableAttribute/tests/back/phpspec.yml.dist --format=junit > ../var/tests/phpspec/specs-ge.xml"
+	$(DOCKER_COMPOSE) run -T -u www-data --rm php sh -c "cd grth && php ../vendor/bin/phpspec run --config=src/Akeneo/Pim/TableAttribute/tests/back/phpspec.yml.dist --format=junit > ../var/tests/phpspec/specs-ge.xml"
 else
-	$(DOCKER_COMPOSE) run -u www-data --rm php sh -c "cd vendor/akeneo/pim-growth-edition && php ../vendor/bin/phpspec run --config=src/Akeneo/Pim/TableAttribute/tests/back/phpspec.yml.dist"
+	$(DOCKER_COMPOSE) run -u www-data --rm php sh -c "cd grth && php ../vendor/bin/phpspec run --config=src/Akeneo/Pim/TableAttribute/tests/back/phpspec.yml.dist"
 endif
 
 .PHONY: unit-front
@@ -101,7 +101,7 @@ acceptance-back: var/tests/behat growth-acceptance-back #Doc: launch Behat accep
 
 .PHONY: growth-acceptance-back
 growth-acceptance-back: var/tests/behat #Doc: launch Behat acceptance tests for growth
-	${PHP_RUN} vendor/bin/behat --config vendor/akeneo/pim-growth-edition/src/Akeneo/Pim/TableAttribute/tests/back/behat.yml --no-interaction --format=progress --strict
+	${PHP_RUN} vendor/bin/behat --config grth/src/Akeneo/Pim/TableAttribute/tests/back/behat.yml --no-interaction --format=progress --strict
 
 .PHONY: acceptance-front
 acceptance-front: MAX_RANDOM_LATENCY_MS=100 $(YARN_RUN) acceptance run acceptance ./tests/features #Doc: launch YARN acceptance

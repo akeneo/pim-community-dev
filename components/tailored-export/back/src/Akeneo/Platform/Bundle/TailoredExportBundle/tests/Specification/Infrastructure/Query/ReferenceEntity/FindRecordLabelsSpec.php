@@ -17,6 +17,9 @@ use Akeneo\Platform\TailoredExport\Infrastructure\Query\ReferenceEntity\FindReco
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslationsInterface;
 use PhpSpec\ObjectBehavior;
 
+/**
+ * @require Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslationsInterface
+ */
 class FindRecordLabelsSpec extends ObjectBehavior
 {
     public function let(

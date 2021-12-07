@@ -52,7 +52,7 @@ SQL;
             [
                 'identifier' => (string)$assetFamilyIdentifier,
             ]
-        )->fetchColumn();
+        )->fetchOne();
 
         if (false === $normalizedTransformations) {
             throw AssetFamilyNotFoundException::withIdentifier($assetFamilyIdentifier);

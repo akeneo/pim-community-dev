@@ -9,6 +9,7 @@ pim_table_configuration:
       column_code_must_be_filled: 必须填写列代码
       option_code_must_be_filled: 必须填写选项代码
       invalid_code: 列代码只能包含字母、数字和下划线
+      not_available_code: 此列代码不可用
       invalid_option_code: 选项代码只能包含字母、数字和下划线
       too_long_code: "列代码过长：其不得超过 100 个字符"
       too_long_label: "列标签过长：其不得超过 250 个字符"

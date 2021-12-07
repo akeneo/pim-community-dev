@@ -125,8 +125,65 @@ class RecordsShouldExistValidatorSpec extends ObjectBehavior
                         [RecordCode::fromString('dyson'), RecordCode::fromString('starck')],
                         'fr_FR'
                     ),
-                    ReferenceEntityValue::localizableValue('main_color', RecordCode::fromString('red'), 'en_US'),
-                    ReferenceEntityValue::localizableValue('main_color', RecordCode::fromString('blue'), 'fr_FR'),
+                    ReferenceEntityValue::localizableValue(
+                        'main_color',
+                        RecordCode::fromString('red'),
+                        'en_US'
+                    ),
+                    ReferenceEntityValue::localizableValue(
+                        'main_color',
+                        RecordCode::fromString('blue'),
+                        'fr_FR'
+                    ),
+                ]
+            ),
+            new RecordsShouldExist()
+        );
+    }
+
+    function it_does_not_build_any_violation_because_of_case_sensitivity(
+        FindExistingRecordCodesInterface $findExistingRecordCodes,
+        ExecutionContextInterface $context
+    ) {
+        $findExistingRecordCodes
+            ->find(
+                Argument::that(function($collaborator) {
+                    return $collaborator instanceof ReferenceEntityIdentifier &&
+                        'designers' === $collaborator->normalize();
+                }),
+                ['DYSON', 'starck']
+            )->shouldBeCalled()->willReturn(['STARCK', 'dyson']);
+
+        $findExistingRecordCodes
+            ->find(
+                Argument::that(function ($collaborator) {
+                    return $collaborator instanceof ReferenceEntityIdentifier &&
+                        'color' === $collaborator->normalize();
+                }),
+                ['red', 'BLUE']
+            )->shouldBeCalled()->willReturn(['RED', 'blue']);
+
+        $context->buildViolation(Argument::any(), Argument::any())->shouldNotBeCalled();
+
+        $this->validate(
+            new WriteValueCollection(
+                [
+                    ScalarValue::value('name', 'My great product'),
+                    ReferenceEntityCollectionValue::localizableValue(
+                        'designers',
+                        [RecordCode::fromString('DYSON'), RecordCode::fromString('starck')],
+                        'fr_FR'
+                    ),
+                    ReferenceEntityValue::localizableValue(
+                        'main_color',
+                        RecordCode::fromString('red'),
+                        'en_US'
+                    ),
+                    ReferenceEntityValue::localizableValue(
+                        'main_color',
+                        RecordCode::fromString('BLUE'),
+                        'fr_FR'
+                    ),
                 ]
             ),
             new RecordsShouldExist()

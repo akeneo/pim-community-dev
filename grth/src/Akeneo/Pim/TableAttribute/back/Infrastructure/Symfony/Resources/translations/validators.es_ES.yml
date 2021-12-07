@@ -9,6 +9,7 @@ pim_table_configuration:
       column_code_must_be_filled: Debe rellenar el código de columna
       option_code_must_be_filled: Debe rellenar el código de opción
       invalid_code: El código de columna solo puede contener letras, números y guiones bajos
+      not_available_code: Este código de columna no está disponible
       invalid_option_code: El código de opción solo puede contener letras, números y guiones bajos
       too_long_code: "El código de columna es demasiado largo: debe tener 100 caracteres o menos"
       too_long_label: "La etiqueta de columna es demasiado larga: debe tener 250 caracteres o menos"

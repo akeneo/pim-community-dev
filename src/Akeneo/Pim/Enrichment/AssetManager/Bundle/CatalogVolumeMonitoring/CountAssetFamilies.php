@@ -20,19 +20,15 @@ class CountAssetFamilies implements CountQuery
     /** @var SqlCountAssetFamilies */
     private $sqlCountAssetFamilies;
 
-    /** @var int */
-    private $limit;
-
-    public function __construct(SqlCountAssetFamilies $sqlCountAssetFamilies, int $limit)
+    public function __construct(SqlCountAssetFamilies $sqlCountAssetFamilies)
     {
         $this->sqlCountAssetFamilies = $sqlCountAssetFamilies;
-        $this->limit = $limit;
     }
 
     public function fetch(): CountVolume
     {
         $volume = $this->sqlCountAssetFamilies->fetch();
-        $result = new CountVolume($volume->getVolume(), $this->limit, self::VOLUME_NAME);
+        $result = new CountVolume($volume->getVolume(), self::VOLUME_NAME);
 
         return $result;
     }

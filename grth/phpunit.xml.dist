@@ -48,5 +48,12 @@
             <directory suffix="EndToEnd.php">src/Akeneo/Pim/TableAttribute/tests/back/EndToEnd</directory>
         </testsuite>
 
+        <testsuite name="TailoredExport_Integration_Test">
+            <directory>components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/Integration</directory>
+            <exclude>components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/Integration/Infrastructure/Controller/GetRecordsControllerIntegrationTest.php</exclude>
+            <exclude>components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/Integration/Infrastructure/Query/FindViewableAttributesIntegrationTest.php</exclude>
+            <exclude>components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/Integration/Infrastructure/Validation/Source/AssetCollection/AssetCollectionSelectionValidatorTest.php</exclude>
+            <exclude>components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/Integration/Infrastructure/Validation/Source/AssetCollection/AssetCollectionSourceValidatorTest.php</exclude>
+        </testsuite>
     </testsuites>
 </phpunit>

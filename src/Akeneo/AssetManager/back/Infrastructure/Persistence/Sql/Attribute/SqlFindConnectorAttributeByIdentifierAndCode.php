@@ -69,7 +69,7 @@ SQL;
             ]
         );
 
-        $result = $statement->fetch();
+        $result = $statement->fetchAssociative();
 
         if (!$result) {
             return null;

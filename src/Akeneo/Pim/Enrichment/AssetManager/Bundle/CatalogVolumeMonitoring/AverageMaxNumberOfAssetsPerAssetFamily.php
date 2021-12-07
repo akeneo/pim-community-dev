@@ -18,14 +18,11 @@ class AverageMaxNumberOfAssetsPerAssetFamily implements AverageMaxQuery
     private const VOLUME_NAME = 'average_max_assets_per_asset_family';
 
     private ElasticSearchAverageMaxNumberOfAssetsPerAssetFamily $averageMaxNumberOfAssetsPerAssetFamily;
-    private int $limit;
 
     public function __construct(
-        ElasticSearchAverageMaxNumberOfAssetsPerAssetFamily $averageMaxNumberOfAssetsPerAssetFamily,
-        int $limit
+        ElasticSearchAverageMaxNumberOfAssetsPerAssetFamily $averageMaxNumberOfAssetsPerAssetFamily
     ) {
         $this->averageMaxNumberOfAssetsPerAssetFamily = $averageMaxNumberOfAssetsPerAssetFamily;
-        $this->limit = $limit;
     }
 
     public function fetch(): AverageMaxVolumes
@@ -34,7 +31,6 @@ class AverageMaxNumberOfAssetsPerAssetFamily implements AverageMaxQuery
         $result = new AverageMaxVolumes(
             $volume->getMaxVolume(),
             $volume->getAverageVolume(),
-            $this->limit,
             self::VOLUME_NAME
         );
 

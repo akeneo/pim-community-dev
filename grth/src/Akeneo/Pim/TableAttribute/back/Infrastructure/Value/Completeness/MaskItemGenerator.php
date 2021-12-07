@@ -18,20 +18,67 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 final class MaskItemGenerator implements MaskItemGeneratorForAttributeType
 {
+    /**
+     * {@inheritDoc}
+     */
     public function forRawValue(string $attributeCode, string $channelCode, string $localeCode, $value): array
     {
-        return [
-            sprintf(
-                '%s-%s-%s',
+        if ([] === $value) {
+            return [];
+        }
+
+        $counts = [];
+        $max = 0;
+        foreach ($value as $row) {
+            foreach (\array_keys($row) as $columnId) {
+                $counts[$columnId] = 1 + ($counts[$columnId] ?? 0);
+                $max = \max($max, $counts[$columnId]);
+            }
+        }
+
+        $filledColumnIds = \array_keys(\array_filter(
+            $counts,
+            static fn (int $count): bool => $count === $max
+        ));
+        \sort($filledColumnIds);
+
+        $result = [];
+        foreach ($this->getFilledColumnsCombinations($filledColumnIds) as $combination) {
+            $result[] = \sprintf(
+                '%s-%s-%s-%s',
                 $attributeCode,
+                join('-', $combination),
                 $channelCode,
                 $localeCode
-            ),
-        ];
+            );
+        };
+
+        return $result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function supportedAttributeTypes(): array
     {
         return [AttributeTypes::TABLE];
+    }
+
+    /**
+     * @param string[] $columnIds
+     * @return array<int, string[]>
+     */
+    private function getFilledColumnsCombinations(array $columnIds): array
+    {
+        $combinations = [[]];
+
+        foreach ($columnIds as $filledColumn) {
+            foreach ($combinations as $combination) {
+                $combinations[] = \array_merge($combination, [$filledColumn]);
+            }
+        }
+        unset($combinations[0]);
+
+        return $combinations;
     }
 }

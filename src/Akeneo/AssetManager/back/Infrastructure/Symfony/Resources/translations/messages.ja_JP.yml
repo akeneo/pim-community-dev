@@ -87,5 +87,13 @@ pim_mass_edit.notification.asset_manager_mass_edit_assets:
   success: アセットは正常に編集されました
   error: アセットの編集に失敗しました
 pim_api:
+  acl:
+    asset_family:
+      create: アセットファミリーを作成して更新
+      list: アセットファミリーを一覧表示
+    asset:
+      create: アセットを作成して更新
+      list: アセットを一覧表示
+      remove: アセットを削除
   acl_group:
     asset: アセット

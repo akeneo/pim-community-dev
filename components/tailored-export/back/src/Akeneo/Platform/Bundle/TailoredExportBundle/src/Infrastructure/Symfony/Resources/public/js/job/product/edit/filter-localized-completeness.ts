@@ -17,7 +17,12 @@ const __ = require('oro/translator');
 const mediator = require('oro/mediator');
 const BaseFilter = require('pim/filter/filter');
 const fetcherRegistry = require('pim/fetcher-registry');
-import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+
+let assetFamilyFetcher = {
+  fetch: (_identifier: string) => {
+    return Promise.resolve({assetFamily: {attributes: [], attributeAsMainMedia: '', identifier: ''}});
+  }
+};
 
 class FilterLocalizedCompleteness extends BaseFilter {
   private validationErrors: ValidationError[] = [];

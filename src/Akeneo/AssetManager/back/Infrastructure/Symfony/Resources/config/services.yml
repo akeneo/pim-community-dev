@@ -16,7 +16,7 @@ services:
         class: Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber\AssetsInstaller
         arguments:
             - '@filesystem'
-            - '%kernel.project_dir%/src/Akeneo/AssetManager/front'
+            - '%pim_ee_dev_src_folder_location%/src/Akeneo/AssetManager/front'
             - '%kernel.project_dir%/public/bundles/akeneoassetmanager'
 
     akeneo_assetmanager.event_subscriber.installer:

@@ -45,11 +45,11 @@ class AssetHydrator implements AssetHydratorInterface
         ValueKeyCollection $valueKeyCollection,
         array $attributes
     ): Asset {
-        $assetIdentifier = Type::getType(Type::STRING)
+        $assetIdentifier = Type::getType(Types::STRING)
             ->convertToPHPValue($row['identifier'], $this->platform);
-        $assetFamilyIdentifier = Type::getType(Type::STRING)
+        $assetFamilyIdentifier = Type::getType(Types::STRING)
             ->convertToPHPValue($row['asset_family_identifier'], $this->platform);
-        $assetCode = Type::getType(Type::STRING)
+        $assetCode = Type::getType(Types::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
         $valueCollection = json_decode($row['value_collection'], true);
         $createdAt = Type::getType(Types::DATETIME_IMMUTABLE)->convertToPHPValue($row['created_at'], $this->platform);

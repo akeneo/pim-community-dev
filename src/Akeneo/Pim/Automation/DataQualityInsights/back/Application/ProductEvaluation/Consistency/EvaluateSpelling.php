@@ -209,7 +209,7 @@ class EvaluateSpelling implements EvaluateCriterionInterface
                 continue;
             }
 
-            $values[strval($attributeCode)] = $productValue;
+            $values[strval($attributeCode)] = $this->cleanHtmlTags($productValue);
             $weights[strval($attributeCode)] = $this->getFaultWeight($attribute);
         }
 
@@ -217,6 +217,17 @@ class EvaluateSpelling implements EvaluateCriterionInterface
             'values' => $values,
             'weights' => $weights,
         ];
+    }
+
+    private function cleanHtmlTags(string $value): string
+    {
+        /**
+         * We don't use strip_tags or Aspell HTML mode to avoid truncating the text when there's a non escaped HTML special char
+         * cf PLG-672
+         */
+        $cleanedValue = preg_replace('/<[^<]+?>/', '', $value);
+
+        return \is_string($cleanedValue) ? $cleanedValue : $value;
     }
 
     private function computeSpellcheckResult(array $results, array $weights): array

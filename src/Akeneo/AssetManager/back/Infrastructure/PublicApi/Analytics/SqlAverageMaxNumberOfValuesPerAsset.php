@@ -17,12 +17,9 @@ class SqlAverageMaxNumberOfValuesPerAsset
     /** @var Connection */
     private $sqlConnection;
 
-    private int $limit;
-
-    public function __construct(Connection $sqlConnection, int $limit)
+    public function __construct(Connection $sqlConnection)
     {
         $this->sqlConnection = $sqlConnection;
-        $this->limit = $limit;
     }
 
     public function fetch(): AverageMaxVolumes
@@ -33,12 +30,11 @@ class SqlAverageMaxNumberOfValuesPerAsset
               CEIL(AVG(JSON_LENGTH(value_collection))) AS average
             FROM akeneo_asset_manager_asset;
 SQL;
-        $result = $this->sqlConnection->query($sql)->fetch();
+        $result = $this->sqlConnection->executeQuery($sql)->fetchAssociative();
 
         return new AverageMaxVolumes(
             (int) $result['max'],
             (int) $result['average'],
-            $this->limit,
             self::VOLUME_NAME
         );
     }

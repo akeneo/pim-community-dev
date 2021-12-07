@@ -25,7 +25,7 @@ class SqlCountAssetFamilies
             SELECT COUNT(*) as count
             FROM akeneo_asset_manager_asset_family;
 SQL;
-        $result = $this->sqlConnection->query($sql)->fetch();
+        $result = $this->sqlConnection->executeQuery($sql)->fetchAssociative();
 
         return new CountVolume((int) $result['count']);
     }

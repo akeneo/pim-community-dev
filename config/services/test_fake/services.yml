@@ -44,7 +44,7 @@ imports:
 
     - { resource: ../../../vendor/akeneo/pim-community-dev/config/services/test/test_services.yml }
     # Table Attribute
-    - { resource: ../../../vendor/akeneo/pim-growth-edition/src/Akeneo/Pim/TableAttribute/tests/back/Acceptance/Resources/config/services.yml }
+    - { resource: ../../../grth/src/Akeneo/Pim/TableAttribute/tests/back/Acceptance/Resources/config/services.yml }
 
 
 services:

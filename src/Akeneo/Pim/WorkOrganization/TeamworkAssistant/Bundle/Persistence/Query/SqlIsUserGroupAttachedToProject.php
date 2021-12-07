@@ -42,7 +42,7 @@ final class SqlIsUserGroupAttachedToProject implements IsUserGroupAttachedToProj
 
         $platform = $this->connection->getDatabasePlatform();
         $result = $statement->fetchAssociative();
-        $statement->closeCursor();
+        $statement->free();
 
         return Type::getType(Types::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
     }
