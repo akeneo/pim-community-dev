@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Job\Test\Acceptance\Application\SearchJobExecution;
 
 use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
+use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRowTracking;
 use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionTable;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionHandler;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
+use Akeneo\Platform\Job\Domain\Model\Status;
 use Akeneo\Platform\Job\Test\Acceptance\AcceptanceTestCase;
 use Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemorySearchJobExecution;
 
@@ -42,12 +44,11 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
                 'export',
                 new \DateTimeImmutable('2020-01-02T00:00:00+00:00'),
                 'admin',
-                'COMPLETED',
+                Status::fromLabel('COMPLETED'),
                 3,
                 0,
-                1,
-                2,
-                false
+                false,
+                new JobExecutionRowTracking(1,2, []),
             ),
             new JobExecutionRow(
                 2,
@@ -55,12 +56,11 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
                 'export',
                 new \DateTimeImmutable('2020-01-03T00:00:00+00:00'),
                 'admin',
-                'FAILED',
+                Status::fromLabel('FAILED'),
                 4,
                 1,
-                1,
-                2,
                 true,
+                new JobExecutionRowTracking(1,2, []),
             ),
         ];
 
