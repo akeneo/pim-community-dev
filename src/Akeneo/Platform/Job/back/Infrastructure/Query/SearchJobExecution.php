@@ -9,9 +9,8 @@ use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
 use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRowTracking;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
-use Akeneo\Platform\Job\Application\SearchJobExecution\StepExecutionRowTracking;
-use Akeneo\Platform\Job\Domain\Model\JobStatus;
-use Akeneo\Platform\Job\Domain\Model\StepStatus;
+use Akeneo\Platform\Job\Application\SearchJobExecution\StepExecutionTracking;
+use Akeneo\Platform\Job\Domain\Model\Status;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
@@ -172,7 +171,7 @@ SQL;
     {
         $queryParams = [
             'type' => $query->type,
-            'status' => array_map(static fn (string $status) => JobStatus::fromLabel($status)->getStatus(), $query->status),
+            'status' => array_map(static fn (string $status) => Status::fromLabel($status)->getStatus(), $query->status),
             'user' => $query->user,
             'code' => $query->code,
         ];
@@ -226,7 +225,7 @@ SQL;
                 $rawJobExecution['type'],
                 $startTime,
                 $rawJobExecution['user'],
-                JobStatus::fromStatus((int) $rawJobExecution['status'])->getLabel(),
+                Status::fromStatus((int) $rawJobExecution['status']),
                 (int) $rawJobExecution['warning_count'],
                 $tracking->getErrorCount(),
                 (bool) $rawJobExecution['is_stoppable'],
@@ -256,10 +255,10 @@ SQL;
                 static fn (int $errorCount, string $error) => $errorCount + count(unserialize($error)),
                 0,
             );
-            $status = StepStatus::fromStatus((int) $step['status']);
+            $status = Status::fromStatus((int) $step['status']);
             $duration = $this->computeDuration($status, $startTime, $endTime);
 
-            return new StepExecutionRowTracking(
+            return new StepExecutionTracking(
                 (int) $step['id'],
                 $duration,
                 (int) $step['warning_count'],
@@ -273,7 +272,7 @@ SQL;
 
         usort(
             $steps,
-            static fn (StepExecutionRowTracking $step1, StepExecutionRowTracking $step2) => $step1->getId() <=> $step2->getId(),
+            static fn (StepExecutionTracking $step1, StepExecutionTracking $step2) => $step1->getId() <=> $step2->getId(),
         );
 
         return new JobExecutionRowTracking(
@@ -283,10 +282,10 @@ SQL;
         );
     }
 
-    private function computeDuration(StepStatus $status, ?\DateTimeImmutable $startTime, ?\DateTimeImmutable $endTime): int
+    private function computeDuration(Status $status, ?\DateTimeImmutable $startTime, ?\DateTimeImmutable $endTime): int
     {
         $now = $this->clock->now();
-        if ($status->getStatus() === StepStatus::STARTING || null === $startTime) {
+        if ($status->getStatus() === Status::STARTING || null === $startTime) {
             return 0;
         }
 

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Application\SearchJobExecution;
 
-use Akeneo\Platform\Job\Domain\Model\StepStatus;
+use Akeneo\Platform\Job\Domain\Model\Status;
 
 /**
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class StepExecutionRowTracking
+final class StepExecutionTracking
 {
     public function __construct(
         private int $id,
@@ -20,7 +20,7 @@ final class StepExecutionRowTracking
         private int $totalItems,
         private int $processedItems,
         private bool $isTrackable,
-        private StepStatus $status,
+        private Status $status,
     ) {
     }
 

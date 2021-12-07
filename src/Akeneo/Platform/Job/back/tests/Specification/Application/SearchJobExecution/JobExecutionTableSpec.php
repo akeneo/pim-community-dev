@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\Job\Application\SearchJobExecution;
 
 use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
+use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRowTracking;
 use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionTable;
+use Akeneo\Platform\Job\Domain\Model\Status;
 use PhpSpec\ObjectBehavior;
 
 class JobExecutionTableSpec extends ObjectBehavior
@@ -26,12 +28,11 @@ class JobExecutionTableSpec extends ObjectBehavior
                     'export',
                     new \DateTimeImmutable('2021-11-02T11:20:27+02:00'),
                     'admin',
-                    'COMPLETED',
+                    Status::fromLabel('COMPLETED'),
                     10,
                     0,
-                    1,
-                    2,
                     true,
+                    new JobExecutionRowTracking(1, 2, []),
                 ),
             ],
             1,
@@ -51,6 +52,7 @@ class JobExecutionTableSpec extends ObjectBehavior
                     'tracking' => [
                         'current_step' => 1,
                         'total_step' => 2,
+                        'steps' => [],
                     ],
                     'is_stoppable' => true,
                 ],
