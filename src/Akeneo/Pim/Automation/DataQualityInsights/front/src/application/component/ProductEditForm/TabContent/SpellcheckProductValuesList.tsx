@@ -15,11 +15,11 @@ import {
   useProduct,
 } from '../../../../infrastructure';
 import {EditorElement} from '../../../helper';
-import ActiveHighlightsOnFocus from '../../Common/HighlightableContent/ActiveHighlightsOnFocus';
 import withPortal from '../../Common/Decorator/withPortal';
 import {isSimpleProduct, isVariantProduct} from '@akeneo-pim-community/data-quality-insights/src/application/helper';
 import fetchProductModelIgnoreTextIssue from '../../../../infrastructure/fetcher/ProductEditForm/Spellcheck/fetchProductModelIgnoreTextIssue';
 import applySuggestionOnContent from '../../../helper/ProductEditForm/Spellcheck/applySuggestionOnContent';
+import ActiveHighlightsOnLoad from "../../Common/HighlightableContent/ActiveHighlightsOnLoad";
 
 const SPELLCHECK_PRODUCT_VALUE_ELEMENT_BASE_ID = 'product-value-spellcheck';
 const SPELLCHECK_PRODUCT_VALUE_ELEMENT_CONTAINER_ID = 'product-value-spellcheck-container';
@@ -79,7 +79,7 @@ const SpellcheckProductValuesList: FC = () => {
       {Object.entries(elements).map(([key, {locale, element}]) => (
         <SpellcheckContentContextProvider key={key} locale={locale} element={element}>
           <SpellcheckElement baseId={SPELLCHECK_PRODUCT_VALUE_ELEMENT_BASE_ID}>
-            <ActiveHighlightsOnFocus />
+            <ActiveHighlightsOnLoad />
             <UpdateHighlightsOnInputChange />
             <SpellcheckPopoverDisclosure element={element} {...popoverState} />
           </SpellcheckElement>
