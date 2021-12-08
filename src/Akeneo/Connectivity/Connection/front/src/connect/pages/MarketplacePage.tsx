@@ -58,6 +58,9 @@ export const MarketplacePage: FC = () => {
         return null;
     }
 
+    const isLoading = null === extensions || null === apps;
+    const isUnreachable = false === extensions || false === apps;
+
     const breadcrumb = (
         <Breadcrumb>
             <Breadcrumb.Step href={dashboardHref}>{translate('pim_menu.tab.connect')}</Breadcrumb.Step>
@@ -72,11 +75,9 @@ export const MarketplacePage: FC = () => {
             </PageHeader>
 
             <PageContent>
-                {null === extensions || (null === apps && <MarketplaceIsLoading />)}
-                {false === extensions && false === apps && <UnreachableMarketplace />}
-                {false !== extensions && null !== extensions && false !== apps && null !== apps && (
-                    <Marketplace extensions={extensions} apps={apps} />
-                )}
+                {isLoading && <MarketplaceIsLoading />}
+                {isUnreachable && <UnreachableMarketplace />}
+                {!!extensions && !!apps && <Marketplace extensions={extensions} apps={apps} />}
             </PageContent>
         </>
     );

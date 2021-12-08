@@ -8,7 +8,7 @@ namespace Akeneo\Connectivity\Connection\Domain\Apps\DTO;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class AppAuthorization
+class AppAuthorization
 {
     public string $clientId;
     public string $scope;
@@ -74,8 +74,18 @@ final class AppAuthorization
     /**
      * @return string[]
      */
-    public function scopeList(): array
+    public function getScopeList(): array
     {
         return empty($this->scope) ? [] : explode(' ', $this->scope);
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function getRedirectUri(): string
+    {
+        return $this->redirectUri;
     }
 }

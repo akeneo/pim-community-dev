@@ -23,6 +23,16 @@ services:
             - '@pim_user.repository.user'
             - '@pim_user.remover.user'
 
+    Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUserGroup:
+        arguments:
+            - '@pim_user.repository.group'
+            - '@pim_user.remover.user_group'
+
+    Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUserRole:
+        arguments:
+            - '@pim_user.repository.role'
+            - '@pim_user.remover.role'
+
     akeneo_connectivity.connection.service.client.regenerate_client_secret:
         class: Akeneo\Connectivity\Connection\Infrastructure\Client\Fos\FosRegenerateClientSecret
         arguments:

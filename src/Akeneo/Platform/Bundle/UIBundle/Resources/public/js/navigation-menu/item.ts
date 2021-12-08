@@ -9,6 +9,7 @@ type ItemConfig = {
     title: string;
     to: string;
     disabled?: boolean;
+    new?: boolean;
   };
 };
 
@@ -35,6 +36,7 @@ class Item extends BaseForm {
       position: this.position,
       routeParams: this.getRouteParams(),
       disabled: this.config.disabled,
+      new: this.config.new,
     });
 
     return super.configure();

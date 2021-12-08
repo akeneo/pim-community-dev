@@ -3,6 +3,7 @@
 namespace Akeneo\UserManagement\Bundle\Controller\Rest;
 
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
+use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -41,7 +42,7 @@ class UserGroupController
                     'default' => 'All' === $group->getName()
                 ]
             ];
-        }, $this->groupRepository->findAll());
+        }, $this->groupRepository->findBy(['type' => Group::TYPE_DEFAULT]));
 
         return new JsonResponse($userGroups);
     }

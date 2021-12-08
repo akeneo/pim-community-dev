@@ -59,4 +59,8 @@ const Header = styled.header`
     padding: 40px 40px 20px;
     background: white;
     z-index: 10;
+
+    .AknImage-display {
+        max-width: 100%;
+    }
 `;

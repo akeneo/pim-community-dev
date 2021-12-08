@@ -6,8 +6,11 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\M
 
 use Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator;
 use Akeneo\Connectivity\Connection\Application\Marketplace\MarketplaceAnalyticsGenerator;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\GetAllAppsResult;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAllAppsQueryInterface;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,17 +26,23 @@ final class GetAllApps
     private GetAllAppsQueryInterface $getAllAppsQuery;
     private MarketplaceAnalyticsGenerator $marketplaceAnalyticsGenerator;
     private UserContext $userContext;
+    private LoggerInterface $logger;
+    private FeatureFlag $activateFeatureFlag;
 
     public function __construct(
         AppUrlGenerator $appUrlGenerator,
         GetAllAppsQueryInterface $getAllAppsQuery,
         MarketplaceAnalyticsGenerator $marketplaceAnalyticsGenerator,
-        UserContext $userContext
+        UserContext $userContext,
+        LoggerInterface $logger,
+        FeatureFlag $activateFeatureFlag
     ) {
         $this->appUrlGenerator = $appUrlGenerator;
         $this->getAllAppsQuery = $getAllAppsQuery;
         $this->marketplaceAnalyticsGenerator = $marketplaceAnalyticsGenerator;
         $this->userContext = $userContext;
+        $this->logger = $logger;
+        $this->activateFeatureFlag = $activateFeatureFlag;
     }
 
     public function __invoke(Request $request): Response
@@ -41,7 +50,18 @@ final class GetAllApps
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        $result = $this->getAllAppsQuery->execute();
+
+        if (!$this->activateFeatureFlag->isEnabled()) {
+            return new JsonResponse(GetAllAppsResult::create(0, [])->normalize());
+        }
+
+        try {
+            $result = $this->getAllAppsQuery->execute();
+        } catch (\Exception $e) {
+            $this->logger->error(sprintf('unable to retrieve the list of apps, got error "%s"', $e->getMessage()));
+
+            return new Response(null, Response::HTTP_NO_CONTENT);
+        }
 
         $username = $this->userContext->getUser()->getUsername();
         $analyticsQueryParameters = $this->marketplaceAnalyticsGenerator->getExtensionQueryParameters($username);

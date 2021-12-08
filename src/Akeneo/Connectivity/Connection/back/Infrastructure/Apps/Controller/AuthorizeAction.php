@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller;
 
+use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,15 +27,24 @@ class AuthorizeAction
     private RequestAppAuthorizationHandler $handler;
     private RouterInterface $router;
     private FeatureFlag $featureFlag;
+    private AppAuthorizationSessionInterface $appAuthorizationSession;
+    private GetAppConfirmationQueryInterface $getAppConfirmationQuery;
+    private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator;
 
     public function __construct(
         RequestAppAuthorizationHandler $handler,
         RouterInterface $router,
-        FeatureFlag $featureFlag
+        FeatureFlag $featureFlag,
+        AppAuthorizationSessionInterface $appAuthorizationSession,
+        GetAppConfirmationQueryInterface $getAppConfirmationQuery,
+        RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator
     ) {
         $this->handler = $handler;
         $this->router = $router;
         $this->featureFlag = $featureFlag;
+        $this->appAuthorizationSession = $appAuthorizationSession;
+        $this->getAppConfirmationQuery = $getAppConfirmationQuery;
+        $this->redirectUriWithAuthorizationCodeGenerator = $redirectUriWithAuthorizationCodeGenerator;
     }
 
     public function __invoke(Request $request): Response
@@ -40,11 +53,12 @@ class AuthorizeAction
             throw new NotFoundHttpException();
         }
 
+        $clientId = $request->query->get('client_id', '');
+
         $command = new RequestAppAuthorizationCommand(
-            $request->query->get('client_id', ''),
+            $clientId,
             $request->query->get('response_type', ''),
             $request->query->get('scope', ''),
-            $request->query->get('redirect_uri', ''),
             $request->query->get('state', null),
         );
 
@@ -56,8 +70,28 @@ class AuthorizeAction
             ]));
         }
 
+        // Check if the App is already authorized
+        $appConfirmation = $this->getAppConfirmationQuery->execute($clientId);
+        if (null !== $appConfirmation) {
+            return $this->createAuthorizedResponse($appConfirmation);
+        }
+
         return new RedirectResponse('/#' . $this->router->generate('akeneo_connectivity_connection_connect_apps_authorize', [
             'client_id' => $command->getClientId(),
         ]));
+    }
+
+    private function createAuthorizedResponse(AppConfirmation $appConfirmation): Response
+    {
+        $clientId = $appConfirmation->getAppId();
+
+        $appAuthorization = $this->appAuthorizationSession->getAppAuthorization($clientId);
+        if (null === $appAuthorization) {
+            throw new \LogicException('There is no active app authorization in session');
+        }
+
+        $redirectUrl = $this->redirectUriWithAuthorizationCodeGenerator->generate($appAuthorization, $appConfirmation);
+
+        return new RedirectResponse($redirectUrl);
     }
 }

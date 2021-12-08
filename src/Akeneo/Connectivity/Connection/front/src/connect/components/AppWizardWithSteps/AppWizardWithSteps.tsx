@@ -1,12 +1,17 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useCallback, useEffect, useState} from 'react';
 import {useHistory} from 'react-router';
 import {Button, Modal, useProgress, ProgressIndicator} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {Permissions} from './Permissions';
+import {PermissionsSummary} from './PermissionsSummary';
 import {Authorizations} from './Authorizations';
 import {AppWizardData} from '../../../model/Apps/wizard-data';
 import {useFetchAppWizardData} from '../../hooks/use-fetch-app-wizard-data';
 import {useTranslate} from '../../../shared/translate';
+import {PermissionFormProvider, usePermissionFormRegistry} from '../../../shared/permission-form-registry';
+import {useConfirmAuthorization} from '../../hooks/use-confirm-authorization';
+import {NotificationLevel, useNotify} from '../../../shared/notify';
+import {PermissionsByProviderKey} from '../../../model/Apps/permissions-by-provider-key';
 
 const Content = styled.div`
     display: grid;
@@ -18,11 +23,12 @@ const LogoContainer = styled.div`
     padding-right: 40px;
 `;
 const Logo = styled.img`
-    width: 220px;
-    height: 220px;
+    margin: auto;
+    max-height: 220px;
+    max-width: 220px;
 `;
 
-const AllowAndNextButton = styled(Button)`
+const StyledActionButton = styled(Button)`
     position: fixed;
     top: 40px;
     right: 40px;
@@ -46,17 +52,84 @@ interface Props {
 export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
     const translate = useTranslate();
     const history = useHistory();
+    const notify = useNotify();
     const [wizardData, setWizardData] = useState<AppWizardData | null>(null);
     const fetchWizardData = useFetchAppWizardData(clientId);
-    const steps: string[] = ['authorizations', 'permissions', 'well_done'];
+    const steps: string[] = ['authorizations', 'permissions', 'summary'];
     const [isCurrent, next, previous] = useProgress(steps);
+
+    const permissionFormRegistry = usePermissionFormRegistry();
+    const [providers, setProviders] = useState<PermissionFormProvider<any>[]>([]);
+    const [permissions, setPermissions] = useState<PermissionsByProviderKey>({});
+
+    const confirmAuthorization = useConfirmAuthorization(clientId);
+
+    useEffect(() => {
+        permissionFormRegistry.all().then(providers => setProviders(providers));
+    }, []);
+
     useEffect(() => {
         fetchWizardData().then(setWizardData);
     }, [fetchWizardData]);
 
-    const redirectToMarketplace = () => {
+    const redirectToMarketplace = useCallback(() => {
         history.push('/connect/marketplace');
-    };
+    }, [history]);
+
+    const handleSetProviderPermissions = useCallback(
+        (providerKey: string, providerPermissions: object) => {
+            setPermissions(state => ({...state, [providerKey]: providerPermissions}));
+        },
+        [setPermissions]
+    );
+
+    const notifyPermissionProviderError = useCallback(
+        (entity: string): void => {
+            notify(
+                NotificationLevel.ERROR,
+                translate('akeneo_connectivity.connection.connect.apps.flash.permissions_error.description'),
+                {
+                    titleMessage: translate(
+                        'akeneo_connectivity.connection.connect.apps.flash.permissions_error.title',
+                        {
+                            entity: entity,
+                        }
+                    ),
+                }
+            );
+        },
+        [notify, translate]
+    );
+
+    const handleConfirm = useCallback(async () => {
+        let userGroup;
+        let redirectUrl;
+
+        try {
+            ({userGroup, redirectUrl} = await confirmAuthorization());
+        } catch (e) {
+            notify(
+                NotificationLevel.ERROR,
+                translate('akeneo_connectivity.connection.connect.apps.wizard.flash.error')
+            );
+            return;
+        }
+
+        for (const provider of providers) {
+            try {
+                await provider.save(userGroup, permissions[provider.key]);
+            } catch {
+                notifyPermissionProviderError(provider.label);
+            }
+        }
+
+        notify(
+            NotificationLevel.SUCCESS,
+            translate('akeneo_connectivity.connection.connect.apps.wizard.flash.success')
+        );
+
+        window.location.assign(redirectUrl);
+    }, [confirmAuthorization, notify, translate, providers, permissions, notifyPermissionProviderError]);
 
     if (wizardData === null) {
         return null;
@@ -72,11 +145,22 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
                     {translate('akeneo_connectivity.connection.connect.apps.wizard.action.previous')}
                 </PreviousButton>
             )}
-            <AllowAndNextButton onClick={next}>
-                {isCurrent('authorizations')
-                    ? translate('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next')
-                    : translate('akeneo_connectivity.connection.connect.apps.wizard.action.next')}
-            </AllowAndNextButton>
+
+            {isCurrent('authorizations') && (
+                <StyledActionButton onClick={next}>
+                    {translate('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next')}
+                </StyledActionButton>
+            )}
+            {isCurrent('permissions') && (
+                <StyledActionButton onClick={next}>
+                    {translate('akeneo_connectivity.connection.connect.apps.wizard.action.next')}
+                </StyledActionButton>
+            )}
+            {isCurrent('summary') && (
+                <StyledActionButton onClick={handleConfirm}>
+                    {translate('akeneo_connectivity.connection.connect.apps.wizard.action.confirm')}
+                </StyledActionButton>
+            )}
 
             <Content>
                 <LogoContainer>
@@ -85,7 +169,17 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
                 {isCurrent('authorizations') && (
                     <Authorizations appName={wizardData.appName} scopeMessages={wizardData.scopeMessages} />
                 )}
-                {isCurrent('permissions') && <Permissions />}
+                {isCurrent('permissions') && (
+                    <Permissions
+                        appName={wizardData.appName}
+                        providers={providers}
+                        setProviderPermissions={handleSetProviderPermissions}
+                        permissions={permissions}
+                    />
+                )}
+                {isCurrent('summary') && (
+                    <PermissionsSummary appName={wizardData.appName} providers={providers} permissions={permissions} />
+                )}
             </Content>
 
             <ProgressIndicatorContainer>

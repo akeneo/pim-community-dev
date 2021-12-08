@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {Button, getColor, getFontSize, Modal} from 'akeneo-design-system';
 import {useHistory} from 'react-router';
@@ -6,6 +6,8 @@ import {useFetchAppWizardData} from '../../hooks/use-fetch-app-wizard-data';
 import {useTranslate} from '../../../shared/translate';
 import {AppWizardData} from '../../../model/Apps/wizard-data';
 import {ScopeListContainer} from './ScopeListContainer';
+import {useConfirmAuthorization} from '../../hooks/use-confirm-authorization';
+import {NotificationLevel, useNotify} from '../../../shared/notify';
 
 const Content = styled.div`
     display: grid;
@@ -58,17 +60,35 @@ interface Props {
 
 export const AppWizard: FC<Props> = ({clientId}) => {
     const translate = useTranslate();
+    const notify = useNotify();
     const history = useHistory();
     const [wizardData, setWizardData] = useState<AppWizardData | null>(null);
     const fetchWizardData = useFetchAppWizardData(clientId);
+    const confirmAuthorization = useConfirmAuthorization(clientId);
 
     useEffect(() => {
         fetchWizardData().then(setWizardData);
     }, [fetchWizardData]);
 
-    const redirectToMarketplace = () => {
+    const redirectToMarketplace = useCallback(() => {
         history.push('/connect/marketplace');
-    };
+    }, [history]);
+
+    const handleConfirm = useCallback(async () => {
+        try {
+            const {redirectUrl} = await confirmAuthorization();
+            notify(
+                NotificationLevel.SUCCESS,
+                translate('akeneo_connectivity.connection.connect.apps.wizard.flash.success')
+            );
+            window.location.assign(redirectUrl);
+        } catch (e) {
+            notify(
+                NotificationLevel.ERROR,
+                translate('akeneo_connectivity.connection.connect.apps.wizard.flash.error')
+            );
+        }
+    }, [confirmAuthorization, notify, translate]);
 
     if (wizardData === null) {
         return null;
@@ -92,7 +112,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
                         <ActionButton level={'tertiary'} onClick={redirectToMarketplace}>
                             {translate('akeneo_connectivity.connection.connect.apps.wizard.action.cancel')}
                         </ActionButton>
-                        <ActionButton>
+                        <ActionButton onClick={handleConfirm}>
                             {translate('akeneo_connectivity.connection.connect.apps.wizard.action.confirm')}
                         </ActionButton>
                     </Actions>

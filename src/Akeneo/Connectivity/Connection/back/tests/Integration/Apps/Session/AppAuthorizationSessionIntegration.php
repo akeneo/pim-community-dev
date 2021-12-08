@@ -20,7 +20,6 @@ class AppAuthorizationSessionIntegration extends TestCase
     {
         $appAuthorization = AppAuthorization::createFromNormalized([
             'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
-            'response_type' => 'code',
             'redirect_uri' => 'http://shopware.example.com/callback',
             'scope' => 'read_catalog_structure write_products',
             'state' => 'foo',
@@ -43,7 +42,6 @@ class AppAuthorizationSessionIntegration extends TestCase
             '_app_auth_90741597-54c5-48a1-98da-a68e7ee0a715',
             json_encode([
                 'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
-                'response_type' => 'code',
                 'redirect_uri' => 'http://shopware.example.com/callback',
                 'scope' => 'read_catalog_structure write_products',
                 'state' => 'foo',

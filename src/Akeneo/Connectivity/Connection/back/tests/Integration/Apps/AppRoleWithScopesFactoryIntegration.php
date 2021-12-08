@@ -50,6 +50,7 @@ class AppRoleWithScopesFactoryIntegration extends TestCase
 
         $this->assertRoleIsPersisted($role);
         $this->assertRoleAcls($role->getRole(), [
+            'pim_api_overall_access' => true,
             'pim_api_product_list' => true,
             'pim_api_product_edit' => true,
             'pim_api_product_remove' => false,

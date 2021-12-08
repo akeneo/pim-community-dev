@@ -1,7 +1,13 @@
 import React, {Children, FC} from 'react';
 import {AppIllustration, getColor, getFontSize, SectionTitle} from 'akeneo-design-system';
-import {Grid as CardGrid} from './MarketplaceCard';
 import styled from 'styled-components';
+
+const CardGrid = styled.section`
+    margin: 20px 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(300px, 1fr));
+    gap: 20px;
+`;
 
 const EmptyContainer = styled.section`
     text-align: center;
@@ -19,7 +25,7 @@ type Props = {
     emptyMessage: string;
 };
 
-export const Section: FC<Props> = ({title, information, emptyMessage, children}) => {
+const Section: FC<Props> = ({title, information, emptyMessage, children}) => {
     return (
         <>
             <SectionTitle>
@@ -38,3 +44,5 @@ export const Section: FC<Props> = ({title, information, emptyMessage, children})
         </>
     );
 };
+
+export {Section, CardGrid};

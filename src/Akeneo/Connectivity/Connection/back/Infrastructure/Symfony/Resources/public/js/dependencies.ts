@@ -5,6 +5,7 @@ const messenger = require('oro/messenger');
 const userContext = require('pim/user-context');
 const securityContext = require('pim/security-context');
 const featureFlags = require('pim/feature-flags');
+const permissionFormRegistry = require('pim/permission-form-registry').default;
 
 export const dependencies = {
   router,
@@ -16,4 +17,5 @@ export const dependencies = {
     isGranted: securityContext.isGranted.bind(securityContext),
   },
   featureFlags,
+  permissionFormRegistry: permissionFormRegistry,
 };

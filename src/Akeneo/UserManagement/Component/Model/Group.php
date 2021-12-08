@@ -12,6 +12,8 @@ use Doctrine\Common\Collections\Collection;
  */
 class Group implements GroupInterface
 {
+    public const TYPE_DEFAULT = 'default';
+
     /** @var integer */
     protected $id;
 
@@ -20,6 +22,9 @@ class Group implements GroupInterface
 
     /** @var ArrayCollection */
     protected $roles;
+
+    protected ?array $defaultPermissions = null;
+    protected string $type = self::TYPE_DEFAULT;
 
     /**
      * @param string $name [optional] Group name
@@ -159,6 +164,31 @@ class Group implements GroupInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getDefaultPermissions(): ?array
+    {
+        return $this->defaultPermissions;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultPermissions(array $defaultPermissions): void
+    {
+        $this->defaultPermissions = $defaultPermissions;
+    }
+
+    public function setDefaultPermission(string $permission, bool $granted): void
+    {
+        if (null === $this->defaultPermissions) {
+            $this->defaultPermissions = [];
+        }
+
+        $this->defaultPermissions[$permission] = $granted;
+    }
+
+    /**
      * Return the group name field
      *
      * @return string
@@ -166,5 +196,15 @@ class Group implements GroupInterface
     public function __toString(): string
     {
         return (string) $this->name;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): void
+    {
+        $this->type = $type;
     }
 }

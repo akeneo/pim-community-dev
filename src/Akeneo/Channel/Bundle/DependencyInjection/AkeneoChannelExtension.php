@@ -30,6 +30,7 @@ class AkeneoChannelExtension extends Extension
         $loader->load('job_defaults.yml');
         $loader->load('job_constraints.yml');
         $loader->load('queries.yml');
+        $loader->load('scope_mappers.yml');
         $loader->load('services.yml');
         $loader->load('steps.yml');
         $loader->load('validators.yml');

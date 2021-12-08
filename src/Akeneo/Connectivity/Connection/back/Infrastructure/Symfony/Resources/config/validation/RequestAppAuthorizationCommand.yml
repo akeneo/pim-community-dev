@@ -11,11 +11,3 @@ Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationC
       - IdenticalTo:
           value: code
           message: akeneo_connectivity.connection.connect.apps.constraint.response_type.must_be_code
-    scope:
-      - Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\ScopeMustBeValid:
-          message: akeneo_connectivity.connection.connect.apps.constraint.scope.must_be_valid
-    redirectUri:
-      - NotBlank:
-          message: akeneo_connectivity.connection.connect.apps.constraint.redirect_uri.not_blank
-      - Url:
-          message: akeneo_connectivity.connection.connect.apps.constraint.redirect_uri.must_be_url

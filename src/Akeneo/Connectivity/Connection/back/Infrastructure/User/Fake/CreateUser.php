@@ -22,7 +22,7 @@ class CreateUser implements CreateUserInterface
         $this->userPermissionsRepository = $userPermissionsRepository;
     }
 
-    public function execute(string $username, string $firstname, string $lastname): User
+    public function execute(string $username, string $firstname, string $lastname, ?array $groups = null, ?array $roles = null): User
     {
         $user = new User(42, 'magento_app', 'pwd_app');
 

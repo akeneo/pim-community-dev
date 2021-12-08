@@ -70,6 +70,22 @@ services:
             - '@validator'
             - '@pim_catalog.saver.category'
 
+    akeneo_connectivity.connection.fixtures.enrichment.user_group_loader:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserGroupLoader'
+        arguments:
+            - '@pim_user.factory.group'
+            - '@pim_user.updater.group'
+            - '@validator'
+            - '@pim_user.saver.group'
+
+    akeneo_connectivity.connection.fixtures.enrichment.user_role_loader:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserRoleLoader'
+        arguments:
+            - '@pim_user.factory.role'
+            - '@pim_user.updater.role'
+            - '@validator'
+            - '@pim_user.saver.role'
+
     akeneo_connectivity.connection.fixtures.webhook_loader:
         class: Akeneo\Connectivity\Connection\Tests\CatalogBuilder\WebhookLoader
         arguments:
@@ -84,3 +100,17 @@ services:
         class: Akeneo\Connectivity\Connection\Tests\CatalogBuilder\EventsApiRequestCountLoader
         arguments:
             - '@database_connection'
+
+    akeneo_connectivity.connection.fixtures.connected_app_loader:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader'
+        arguments:
+            - '@database_connection'
+            - '@akeneo_connectivity.connection.fixtures.enrichment.user_role_loader'
+            - '@fos_oauth_server.storage'
+            - '@akeneo_connectivity.connection.service.apps.client_provider'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup'
+            - '@akeneo_connectivity.connection.service.user.create_user'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp'
+            - '@pim_user.repository.user'
+            - '@pim_connector.doctrine.cache_clearer'

@@ -1,5 +1,6 @@
 parameters:
     env(FLAG_MARKETPLACE_ACTIVATE_ENABLED): 0
+    env(FLAG_MARKETPLACE_FAKE_APPS_ENABLED): 0
     env(FLAG_CONNECT_APP_WITH_PERMISSIONS_ENABLED): 0
 
 services:
@@ -7,6 +8,12 @@ services:
         class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
         arguments:
             - '%env(bool:FLAG_MARKETPLACE_ACTIVATE_ENABLED)%'
+        public: true
+
+    akeneo_connectivity.connection.marketplace_fake_apps.feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+        arguments:
+            - '%env(bool:FLAG_MARKETPLACE_FAKE_APPS_ENABLED)%'
         public: true
 
     akeneo_connectivity.connection.connect_app_with_permissions.feature:

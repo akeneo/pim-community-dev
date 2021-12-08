@@ -69,6 +69,8 @@ services:
             - '@akeneo_connectivity.connection.marketplace.get_all_apps_query'
             - '@akeneo_connectivity.connection.marketplace.analytics_generator'
             - '@pim_user.context.user'
+            - '@logger'
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
 
     akeneo_connectivity.connection.internal_api.controller.apps.get_app_activate_url:
         public: true
@@ -87,6 +89,17 @@ services:
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler'
             - '@router'
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAppConfirmationQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGenerator'
+
+    akeneo_connectivity.connection.public.controller.apps.token:
+        public: true
+        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\RequestAccessTokenAction
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@validator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateAccessToken'
 
     akeneo_connectivity.connection.public.controller.apps.get_wizard_data:
         public: true
@@ -94,4 +107,50 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.marketplace.get_app_query'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
-            - '@pim_api.security.scope_mapper'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
+
+    akeneo_connectivity.connection.apps.controller.apps.confirm_authorization:
+        public: true
+        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\ConfirmAuthorizationAction
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler'
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAppConfirmationQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer'
+            - '@oro_security.security_facade'
+            - '@logger'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGenerator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
+
+    akeneo_connectivity.connection.internal_api.controller.apps.get_all_connected_apps:
+        public: true
+        class: 'Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetAllConnectedAppsAction'
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository'
+
+    akeneo_connectivity.connection.internal_api.controller.apps.get_connected_app:
+        public: true
+        class: 'Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetConnectedAppAction'
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository'
+
+    akeneo_connectivity.connection.internal_api.controller.apps.connected_app.get_all_scope_messages:
+        public: true
+        class: 'Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetAllConnectedAppScopeMessagesAction'
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\DeleteAppAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler'

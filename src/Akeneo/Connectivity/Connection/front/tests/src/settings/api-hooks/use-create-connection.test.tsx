@@ -1,6 +1,5 @@
 import React, {PropsWithChildren} from 'react';
 import {FlowType} from '@src/model/flow-type.enum';
-import {useUpdateConnection} from '@src/settings/api-hooks/use-update-connection';
 import {ok, err} from '@src/shared/fetch-result/result';
 import {NotificationLevel, NotifyContext} from '@src/shared/notify';
 import {act, renderHook} from '@testing-library/react-hooks';
