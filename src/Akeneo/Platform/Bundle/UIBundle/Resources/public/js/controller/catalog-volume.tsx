@@ -8,14 +8,10 @@ import BaseView = require('pimui/js/view/base');
 import {CatalogVolumeMonitoringApp, getCatalogVolume} from '@akeneo-pim-community/catalog-volume-monitoring';
 
 const mediator = require('oro/mediator');
-const featureFlags = require('pim/feature-flags');
 const FormBuilder = require('pim/form-builder');
 const Routing = require('routing');
-const translate = require('oro/translator');
-const Error = require('pim/error');
 
 class CatalogVolumeController extends ReactController {
-  private formPromise: JQueryPromise<BaseView> | null;
 
   reactElementToMount() {
     return (
@@ -32,26 +28,10 @@ class CatalogVolumeController extends ReactController {
   }
 
   renderRoute() {
-    if (featureFlags.isEnabled('control_volume_monitoring_new_page')) {
       mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-system'});
       mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-system-catalog-volume'});
 
-      return super.renderRoute();
-    }
-
-    // return old CVM
-    this.formPromise = this.renderForm().fail(response => {
-      const message =
-        response && response.responseJSON
-          ? response.responseJSON.message
-          : translate('pim_enrich.entity.fallback.generic_error');
-      const status = response && response.status ? response.status : 500;
-
-      const errorView = new Error(message, status);
-      errorView.setElement(this.$el).render();
-    });
-
-    return jQuery.Deferred().resolve(this.formPromise);
+    return super.renderRoute();
   }
 
   renderForm(): JQueryPromise<BaseView> {
@@ -68,22 +48,6 @@ class CatalogVolumeController extends ReactController {
 
       return form;
     });
-  }
-
-  remove() {
-    if (!featureFlags.isEnabled('control_volume_monitoring_new_page')) {
-      if (null === this.formPromise) {
-        return;
-      }
-
-      this.formPromise.then(form => {
-        if (form && typeof form.shutdown === 'function') {
-          form.shutdown();
-        }
-      });
-    }
-
-    super.remove();
   }
 }
 
