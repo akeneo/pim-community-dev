@@ -147,6 +147,7 @@
 - PIM-10155: Decrease batch size during indexation of products and product models
 - PIM-10182: Search_after uses identifiers/codes instead of encrypted Mysql ids in external API
 - PIM-10149: Fix group product page OOM (remove group to products association)
+- PIM-10193: fix TypeError(implode(): Argument #2 () must be of type ?array, string given)
 
 ## New features
 
