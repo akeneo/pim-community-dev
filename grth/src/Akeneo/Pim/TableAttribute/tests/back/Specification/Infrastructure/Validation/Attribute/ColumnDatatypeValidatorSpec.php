@@ -47,7 +47,14 @@ class ColumnDatatypeValidatorSpec extends ObjectBehavior
         $this->validate("number", new ColumnDatatype());
     }
 
-    function it_throws_an_exception_when_datatype_is_invalid(
+    function it_does_nothing_when_datatype_is_not_a_string(ExecutionContextInterface $executionContext)
+    {
+        $executionContext->buildViolation(Argument::any())->shouldNotBeCalled();
+
+        $this->validate(['toto'], new ColumnDatatype());
+    }
+
+    function it_adds_a_violation_when_datatype_is_invalid(
         ExecutionContextInterface $executionContext,
         ConstraintViolationBuilderInterface $constraintViolationBuilder
     ) {

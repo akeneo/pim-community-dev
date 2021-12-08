@@ -15,6 +15,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Webmozart\Assert\Assert;
 
 class ColumnDatatypeValidator extends ConstraintValidator
 {
@@ -27,6 +28,11 @@ class ColumnDatatypeValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint): void
     {
+        Assert::isInstanceOf($constraint, ColumnDatatype::class);
+        if (!is_string($value)) {
+            return;
+        }
+
         if (!in_array($value, $this->allowedColumnDatatypes)) {
             $this->context->buildViolation(
                 'pim_table_configuration.validation.table_configuration.unknown_data_type',

@@ -218,3 +218,13 @@ Feature: Create a table attribute
   Scenario: Cannot create a table configuration with an invalid "reference_entity_identifier" type in a record column
     When I create a table attribute with a configuration '{"data_type": "record", "code": "record", "is_required_for_completeness": true, "reference_entity_identifier": 153}'
     Then There is a violation with message: The required value is a string
+
+  @only-ee
+  Scenario: Cannot create a table configuration without "reference_entity_identifier" in a record column
+    When I create a table attribute with a configuration '{"data_type": "record", "code": "record", "is_required_for_completeness": true}'
+    Then There is a violation with message: The reference entity identifier must be filled
+
+  @only-ee
+  Scenario: Cannot create a table configuration with "reference_entity_identifier" in a text column
+    When I create a table attribute with a configuration '{"data_type": "text", "code": "text", "reference_entity_identifier": "brands"}'
+    Then There is a violation with message: Reference entity identifier cannot be set for a "text" column type

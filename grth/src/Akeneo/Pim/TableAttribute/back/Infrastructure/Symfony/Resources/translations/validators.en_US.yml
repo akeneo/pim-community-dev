@@ -33,6 +33,8 @@ pim_table_configuration:
             not_select_column: The "{{ column }}" column of the "{{ attribute }}" attribute is not a "select"
             max_should_be_greater_than_min: The maximum value should be greater than the minimum value.
             options_cannot_be_set: Options cannot be set for a "{{ data_type }}" column type
+            reference_entity_identifier_cannot_be_set: Reference entity identifier cannot be set for a "{{ data_type }}" column type
+            reference_entity_identifier_must_be_filled: The reference entity identifier must be filled
             no_validations_allowed: 'Do not use Validations on a "{{ columnType }}" column, current column type: "{{ given }}"'
             invalid_validation_key: 'The "{{ given }}" Validations does not work on a "{{ columnType }}" column, allowed: "{{ expected }}"'
             too_many_table_attributes: You have reached the maximum number of table attributes within your PIM ({{ limit }})

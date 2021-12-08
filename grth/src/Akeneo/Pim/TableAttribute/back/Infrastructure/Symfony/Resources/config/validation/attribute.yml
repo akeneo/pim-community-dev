@@ -17,6 +17,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
           - Type: array
           - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ValidationShouldMatchColumnType: ~
           - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\OptionsShouldOnlyBeSetOnSelectColumns: ~
+          - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ReferenceEntityIdentifierShouldOnlyBeSetOnRecordColumns: ~
           - Collection:
               fields:
                 code:
