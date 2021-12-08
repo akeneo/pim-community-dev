@@ -72,8 +72,8 @@ class AssetCollectionValue extends AbstractValue implements AssetCollectionValue
      */
     public function __toString(): string
     {
-        return null !== $this->data ? implode(array_map(function (AssetCode $assetCode) {
+        return null !== $this->data ? implode(', ', array_map(function (AssetCode $assetCode) {
             return $assetCode->__toString();
-        }, $this->data), ', ') : '';
+        }, $this->data)) : '';
     }
 }
