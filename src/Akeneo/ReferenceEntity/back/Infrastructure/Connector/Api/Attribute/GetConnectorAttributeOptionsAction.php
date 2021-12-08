@@ -30,7 +30,8 @@ class GetConnectorAttributeOptionsAction
         private ReferenceEntityExistsInterface $referenceEntityExists,
         private AttributeExistsInterface $attributeExists,
         private AttributeSupportsOptions $attributeSupportsOptions,
-        private SecurityFacade $securityFacade    ) {
+        private SecurityFacade $securityFacade
+    ) {
     }
 
     /**

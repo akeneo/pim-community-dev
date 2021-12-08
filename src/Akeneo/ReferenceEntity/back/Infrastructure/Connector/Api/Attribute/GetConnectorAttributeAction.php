@@ -29,7 +29,8 @@ class GetConnectorAttributeAction
     public function __construct(
         private FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttributeQuery,
         private ReferenceEntityExistsInterface $referenceEntityExists,
-        private SecurityFacade $securityFacade    ) {
+        private SecurityFacade $securityFacade
+    ) {
     }
 
     /**

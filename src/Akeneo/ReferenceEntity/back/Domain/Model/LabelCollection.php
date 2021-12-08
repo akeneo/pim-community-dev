@@ -19,10 +19,11 @@ namespace Akeneo\ReferenceEntity\Domain\Model;
  */
 class LabelCollection
 {
-    /** @param array<string, string> $translatedLabels */
-    private function __construct(
-        private array $translatedLabels
-    ) {
+    /** @var array<string, string> */
+    private array $translatedLabels;
+
+    private function __construct(array $translatedLabels)
+    {
         foreach ($translatedLabels as $code => $label) {
             if ('' === $label) {
                 unset($translatedLabels[$code]);
@@ -41,6 +42,8 @@ class LabelCollection
                 throw new \InvalidArgumentException(sprintf('Expecting label to be a string, %s given.', $label));
             }
         }
+
+        $this->translatedLabels = $translatedLabels;
     }
 
     public static function fromArray(array $translatedLabels): self

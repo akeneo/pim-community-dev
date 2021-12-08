@@ -34,7 +34,8 @@ class DownloadMediaFileAction
     public function __construct(
         private MediaFileRepositoryInterface $mediaFileRepository,
         private FilesystemProvider $filesystemProvider,
-        private SecurityFacade $securityFacade    ) {
+        private SecurityFacade $securityFacade
+    ) {
     }
 
     public function __invoke(string $fileCode): Response

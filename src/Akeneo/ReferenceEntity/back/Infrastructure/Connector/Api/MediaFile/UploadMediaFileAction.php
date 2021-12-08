@@ -34,7 +34,8 @@ class UploadMediaFileAction
     public function __construct(
         private FileStorerInterface $fileStorer,
         private RouterInterface $router,
-        private SecurityFacade $securityFacade    ) {
+        private SecurityFacade $securityFacade
+    ) {
     }
 
     public function __invoke(Request $request): Response

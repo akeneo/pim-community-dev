@@ -42,7 +42,8 @@ class CreateOrUpdateAttributeOptionAction
         private AttributeRepositoryInterface $attributeRepository,
         private EditAttributeOptionHandler $editAttributeOptionHandler,
         private AppendAttributeOptionHandler $appendAttributeOptionHandler,
-        private SecurityFacade $securityFacade    ) {
+        private SecurityFacade $securityFacade
+    ) {
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier, string $attributeCode, string $optionCode): Response

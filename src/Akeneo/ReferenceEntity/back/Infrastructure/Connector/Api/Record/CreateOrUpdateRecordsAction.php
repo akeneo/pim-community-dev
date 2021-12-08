@@ -53,7 +53,8 @@ class CreateOrUpdateRecordsAction
         private RecordValidator $recordStructureValidator,
         private RecordListValidator $recordListValidator,
         private int $maximumRecordsPerRequest,
-        private SecurityFacade $securityFacade    ) {
+        private SecurityFacade $securityFacade
+    ) {
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier): Response

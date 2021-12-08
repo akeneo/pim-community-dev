@@ -52,7 +52,8 @@ class CreateOrUpdateRecordAction
         private Router $router,
         private RecordValidator $recordStructureValidator,
         private ValidatorInterface $recordDataValidator,
-        private SecurityFacade $securityFacade    ) {
+        private SecurityFacade $securityFacade
+    ) {
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier, string $code): Response
