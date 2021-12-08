@@ -19,7 +19,7 @@ use Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\LocaleAccessManager;
-use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\Permission\Bundle\Persistence\ORM\UserGroup\GetUserGroupsWithDefaultPermission;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -50,18 +50,22 @@ class AddDefaultPermissionsSubscriber implements EventSubscriberInterface
     /** @var LocaleAccessManager */
     private $localeAccessManager;
 
+    private GetUserGroupsWithDefaultPermission $getUserGroupsWithDefaultPermission;
+
     public function __construct(
         GroupRepository $groupRepository,
         AttributeGroupAccessManager $attributeGroupAccessManager,
         JobProfileAccessManager $jobInstanceAccessManager,
         CategoryAccessManager $productCategoryAccessManager,
-        LocaleAccessManager $localeAccessManager
+        LocaleAccessManager $localeAccessManager,
+        GetUserGroupsWithDefaultPermission $getUserGroupsWithDefaultPermission
     ) {
         $this->groupRepository = $groupRepository;
         $this->attributeGroupAccessManager = $attributeGroupAccessManager;
         $this->jobInstanceAccessManager = $jobInstanceAccessManager;
         $this->productCategoryAccessManager = $productCategoryAccessManager;
         $this->localeAccessManager = $localeAccessManager;
+        $this->getUserGroupsWithDefaultPermission = $getUserGroupsWithDefaultPermission;
     }
 
     /**
@@ -70,7 +74,7 @@ class AddDefaultPermissionsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::POST_SAVE => 'setDefaultPermissions'
+            StorageEvents::POST_SAVE => 'setDefaultPermissions',
         ];
     }
 
@@ -90,22 +94,103 @@ class AddDefaultPermissionsSubscriber implements EventSubscriberInterface
         }
 
         $subject = $event->getSubject();
+
+        if ($subject instanceof AttributeGroupInterface) {
+            $this->setAttributeGroupDefaultPermissions($subject);
+        } elseif ($subject instanceof JobInstance) {
+            $this->setJobInstanceDefaultPermissions($subject);
+        } elseif ($subject instanceof CategoryInterface && $subject->isRoot()) {
+            $this->setRootCategoryDefaultPermissions($subject);
+        } elseif ($subject instanceof CategoryInterface) {
+            $this->setCategoryDefaultPermissions($subject);
+        } elseif ($subject instanceof LocaleInterface) {
+            $this->setLocaleDefaultPermissions($subject);
+        }
+    }
+
+    private function setAttributeGroupDefaultPermissions(AttributeGroupInterface $subject): void
+    {
+        $groupsWithDefaultViewPermission = $this->getUserGroupsWithDefaultPermission->execute('attribute_group_view');
+        $groupsWithDefaultEditPermission = $this->getUserGroupsWithDefaultPermission->execute('attribute_group_edit');
+
+        $defaultGroup = $this->groupRepository->getDefaultUserGroup();
+
+        if (null !== $defaultGroup) {
+            $groupsWithDefaultViewPermission[] = $defaultGroup;
+            $groupsWithDefaultEditPermission[] = $defaultGroup;
+        }
+
+        if (empty($groupsWithDefaultViewPermission) && empty($groupsWithDefaultEditPermission)) {
+            return;
+        }
+
+        $this->attributeGroupAccessManager->setAccess(
+            $subject,
+            $groupsWithDefaultViewPermission,
+            $groupsWithDefaultEditPermission
+        );
+    }
+
+    private function setJobInstanceDefaultPermissions(JobInstance $subject): void
+    {
         $defaultGroup = $this->groupRepository->getDefaultUserGroup();
 
         if (null === $defaultGroup) {
             return;
         }
 
-        if ($subject instanceof AttributeGroupInterface) {
-            $this->attributeGroupAccessManager->setAccess($subject, [$defaultGroup], [$defaultGroup]);
-        } elseif ($subject instanceof JobInstance) {
-            $this->jobInstanceAccessManager->setAccess($subject, [$defaultGroup], [$defaultGroup]);
-        } elseif ($subject instanceof CategoryInterface && $subject->isRoot()) {
-            $this->productCategoryAccessManager->grantAccess($subject, $defaultGroup, Attributes::OWN_PRODUCTS);
-        } elseif ($subject instanceof CategoryInterface) {
-            $this->productCategoryAccessManager->setAccessLikeParent($subject, ['owner' => true]);
-        } elseif ($subject instanceof LocaleInterface) {
-            $this->localeAccessManager->setAccess($subject, [$defaultGroup], [$defaultGroup]);
+        $this->jobInstanceAccessManager->setAccess(
+            $subject,
+            [$defaultGroup],
+            [$defaultGroup]
+        );
+    }
+
+    private function setRootCategoryDefaultPermissions(CategoryInterface $subject): void
+    {
+        $groupsWithDefaultOwnPermission = $this->getUserGroupsWithDefaultPermission->execute('category_own');
+        $groupsWithDefaultEditPermission = $this->getUserGroupsWithDefaultPermission->execute('category_edit');
+        $groupsWithDefaultViewPermission = $this->getUserGroupsWithDefaultPermission->execute('category_view');
+
+        $defaultGroup = $this->groupRepository->getDefaultUserGroup();
+
+        if (null !== $defaultGroup) {
+            $groupsWithDefaultOwnPermission[] = $defaultGroup;
         }
+
+        $this->productCategoryAccessManager->setAccess(
+            $subject,
+            $groupsWithDefaultViewPermission,
+            $groupsWithDefaultEditPermission,
+            $groupsWithDefaultOwnPermission
+        );
+    }
+
+    private function setCategoryDefaultPermissions(CategoryInterface $subject): void
+    {
+        $this->productCategoryAccessManager->setAccessLikeParent($subject, ['owner' => true]);
+    }
+
+    private function setLocaleDefaultPermissions(LocaleInterface $subject): void
+    {
+        $groupsWithDefaultViewPermission = $this->getUserGroupsWithDefaultPermission->execute('locale_view');
+        $groupsWithDefaultEditPermission = $this->getUserGroupsWithDefaultPermission->execute('locale_edit');
+
+        $defaultGroup = $this->groupRepository->getDefaultUserGroup();
+
+        if (null !== $defaultGroup) {
+            $groupsWithDefaultViewPermission[] = $defaultGroup;
+            $groupsWithDefaultEditPermission[] = $defaultGroup;
+        }
+
+        if (empty($groupsWithDefaultViewPermission) && empty($groupsWithDefaultEditPermission)) {
+            return;
+        }
+
+        $this->localeAccessManager->setAccess(
+            $subject,
+            $groupsWithDefaultViewPermission,
+            $groupsWithDefaultEditPermission
+        );
     }
 }

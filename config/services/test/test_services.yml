@@ -398,6 +398,48 @@ services:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@validator'
 
+    akeneo_integration_tests.loader.category_permissions:
+        class: 'AkeneoTestEnterprise\Pim\Permission\FixturesLoader\CategoryPermissionsFixturesLoader'
+        arguments:
+            - '@pim_catalog.repository.product_category'
+            - '@pimee_security.manager.category_access'
+
+    akeneo_integration_tests.loader.attribute_group:
+        class: 'AkeneoTestEnterprise\Pim\Permission\FixturesLoader\AttributeGroupFixturesLoader'
+        arguments:
+            - '@pim_catalog.factory.attribute_group'
+            - '@pim_catalog.updater.attribute_group'
+            - '@pim_catalog.saver.attribute_group'
+            - '@validator'
+
+    akeneo_integration_tests.loader.attribute_group_permissions:
+        class: 'AkeneoTestEnterprise\Pim\Permission\FixturesLoader\AttributeGroupPermissionsFixturesLoader'
+        arguments:
+            - '@pim_catalog.repository.attribute_group'
+            - '@pimee_security.manager.attribute_group_access'
+
+    akeneo_integration_tests.loader.locale:
+        class: 'AkeneoTestEnterprise\Pim\Permission\FixturesLoader\LocaleFixturesLoader'
+        arguments:
+            - '@pim_catalog.factory.locale'
+            - '@pim_catalog.updater.locale'
+            - '@pim_catalog.saver.locale'
+            - '@validator'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.channel'
+
+    akeneo_integration_tests.loader.locale_permissions:
+        class: 'AkeneoTestEnterprise\Pim\Permission\FixturesLoader\LocalePermissionsFixturesLoader'
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@pimee_security.manager.locale_access'
+            - '@doctrine.orm.default_entity_manager'
+
+    akeneo_integration_tests.loader.user_group_permissions:
+        class: 'AkeneoTestEnterprise\Pim\Permission\FixturesLoader\UserGroupPermissionsFixturesLoader'
+        arguments:
+            - '@pim_user.saver.group'
+
     akeneo_integration_tests.event_dispatcher:
         class: 'AkeneoEnterprise\Test\IntegrationTestsBundle\EventDispatcher\EventDispatcherMock'
         decorates: event_dispatcher

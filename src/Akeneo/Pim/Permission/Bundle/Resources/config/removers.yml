@@ -10,6 +10,20 @@ services:
             - '@event_dispatcher'
             - '%pimee_security.entity.product_category_access.class%'
 
+    pimee_security.remover.attribute_group_access:
+        class: '%akeneo_storage_utils.remover.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pimee_security.entity.attribute_group_access.class%'
+
+    pimee_security.remover.locale_access:
+        class: '%akeneo_storage_utils.remover.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pimee_security.entity.locale_access.class%'
+
     pimee_security.remover.product:
         class: '%pimee_security.remover.product.class%'
         decorates: pim_catalog.remover.product

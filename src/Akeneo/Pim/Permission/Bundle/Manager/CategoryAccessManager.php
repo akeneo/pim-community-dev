@@ -461,6 +461,23 @@ class CategoryAccessManager
         return $access;
     }
 
+    public function revokeGroupAccess(CategoryInterface $category, GroupInterface $group): void
+    {
+        $access = $this->accessRepository
+            ->findOneBy(
+                [
+                    'category'  => $category,
+                    'userGroup' => $group
+                ]
+            );
+
+        if (null === $access) {
+            return;
+        }
+
+        $this->accessRemover->removeAll([$access]);
+    }
+
     /**
      * Revoke access to a category
      * If $excludedGroups are provided, access will not be revoked for user groups with them
