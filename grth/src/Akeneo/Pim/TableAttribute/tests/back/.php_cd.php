@@ -58,6 +58,7 @@ $rules = [
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
             'Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor',
             'Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectory',
+            'Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface',
             'Akeneo\Tool\Component\Batch',
             'Akeneo\Tool\Component\Connector\Writer\File\ColumnSorterInterface',
             'Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface',
