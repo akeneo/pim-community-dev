@@ -650,10 +650,6 @@ config:
     # Group type
     pim/group-type-edit-form/delete:                 pimui/js/group-type/form/delete
 
-    # Catalog volume monitoring
-    pim/catalog-volume/section:                      pimui/js/catalog-volume/section.ts
-    pim/catalog-volume/header:                       pimui/js/catalog-volume/header.ts
-
     # Channel
     pim/channel-edit-form/delete:                           pimui/js/channel/form/delete
     pim/channel-edit-form/save:                             pimui/js/channel/form/save
