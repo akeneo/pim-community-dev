@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10189: Fix slow loading of attribute grid with a large number of rules
+
 # 5.0.61 (2021-12-02)
 
 # 5.0.60 (2021-11-30)
