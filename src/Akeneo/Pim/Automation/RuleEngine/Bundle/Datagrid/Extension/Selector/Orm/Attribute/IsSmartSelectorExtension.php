@@ -67,7 +67,7 @@ class IsSmartSelectorExtension extends AbstractExtension
                 'r',
                 'WITH',
                 $qb->expr()->andX(
-                    $qb->expr()->eq('r.resourceId', sprintf('%s.id', $rootAlias)),
+                    $qb->expr()->eq('r.resourceId', sprintf('CASTASCHAR(%s.id, utf8mb4_unicode_ci)', $rootAlias)),
                     $qb->expr()->eq('r.resourceName', $qb->expr()->literal($this->attributeClass))
                 )
             )

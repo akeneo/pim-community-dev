@@ -41,7 +41,7 @@ class IsSmartFilterSpec extends ObjectBehavior
     function it_applies_a_true_filter($ds, $qb, $expr)
     {
         $expr->andX(null, null)->shouldBeCalled();
-        $expr->eq("rlr.resourceId", "a.id")->shouldBeCalled();
+        $expr->eq("rlr.resourceId", "CASTASCHAR(a.id, utf8mb4_unicode_ci)")->shouldBeCalled();
         $expr->eq("rlr.resourceName", null)->shouldBeCalled();
         $expr->literal("Attribute")->shouldBeCalled();
         $qb
@@ -64,7 +64,7 @@ class IsSmartFilterSpec extends ObjectBehavior
     function it_applies_a_false_filter($ds, $qb, $expr)
     {
         $expr->andX(null, null)->shouldBeCalled();
-        $expr->eq("rlr.resourceId", "a.id")->shouldBeCalled();
+        $expr->eq("rlr.resourceId", "CASTASCHAR(a.id, utf8mb4_unicode_ci)")->shouldBeCalled();
         $expr->eq("rlr.resourceName", null)->shouldBeCalled();
         $expr->literal("Attribute")->shouldBeCalled();
         $qb

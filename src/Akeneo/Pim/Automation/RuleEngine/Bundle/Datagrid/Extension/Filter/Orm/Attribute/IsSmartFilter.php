@@ -67,7 +67,7 @@ class IsSmartFilter extends BooleanFilter
                 'rlr',
                 'WITH',
                 $qb->expr()->andX(
-                    $qb->expr()->eq('rlr.resourceId', sprintf('%s.id', $rootAlias)),
+                    $qb->expr()->eq('rlr.resourceId', sprintf('CASTASCHAR(%s.id, utf8mb4_unicode_ci)', $rootAlias)),
                     $qb->expr()->eq('rlr.resourceName', $qb->expr()->literal($this->attributeClass))
                 )
             );
