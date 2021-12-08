@@ -4,6 +4,7 @@ import {Link, Image, Button} from '../../components';
 import {render, screen, fireEvent} from '../../storybook/test-util';
 import {Checkbox} from '../Checkbox/Checkbox';
 import {Surtitle} from './Surtitle/Surtitle';
+import {GroupsIllustration} from '../../illustrations';
 
 test('it renders its children properly', () => {
   render(
@@ -38,7 +39,10 @@ test('it renders no result information', () => {
         <Dropdown.Header>
           <Dropdown.Title>Elements</Dropdown.Title>
         </Dropdown.Header>
-        <Dropdown.ItemCollection noResultLabel="Sorry, there is no results." />
+        <Dropdown.ItemCollection
+          noResultIllustration={<GroupsIllustration />}
+          noResultTitle="Sorry, there is no results."
+        />
       </Dropdown.Overlay>
     </Dropdown>
   );

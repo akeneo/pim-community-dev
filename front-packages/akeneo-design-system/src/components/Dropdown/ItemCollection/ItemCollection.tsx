@@ -1,26 +1,24 @@
 import {Key, Override} from '../../../shared';
-import React, {ReactNode, Children, useRef, useCallback, KeyboardEvent, isValidElement, cloneElement} from 'react';
+import React, {
+  ReactNode,
+  Children,
+  useRef,
+  useCallback,
+  KeyboardEvent,
+  isValidElement,
+  cloneElement,
+  ReactElement,
+} from 'react';
 import styled from 'styled-components';
 import {useAutoFocus, useCombinedRefs} from '../../../hooks';
 import {usePagination} from '../../../hooks/usePagination';
-import {GroupsIllustration} from '../../../illustrations';
-import {getColor, getFontSize} from '../../../theme';
+import {Placeholder} from '../../Placeholder/Placeholder';
+import {IllustrationProps} from '../../../illustrations/IllustrationProps';
 
 const ItemCollectionContainer = styled.div`
   max-height: 320px;
   overflow-y: auto;
   overflow-x: hidden;
-`;
-
-const NoResultSection = styled.div`
-  text-align: center;
-  margin: 0 30px 10px 30px;
-`;
-
-const NoResultTitle = styled.div`
-  color: ${getColor('grey', 140)};
-  font-size: ${getFontSize('default')};
-  text-align: center;
 `;
 
 type ItemCollectionProps = Override<
@@ -37,14 +35,19 @@ type ItemCollectionProps = Override<
     children?: ReactNode;
 
     /**
+     * The illustration displayed when no result was found.
+     */
+    noResultIllustration?: ReactElement<IllustrationProps>;
+
+    /**
      * The text displayed when no result was found.
      */
-    noResultLabel?: string;
+    noResultTitle?: string;
   }
 >;
 
 const ItemCollection = React.forwardRef<HTMLDivElement, ItemCollectionProps>(
-  ({children, onNextPage, noResultLabel, ...rest}: ItemCollectionProps, forwardedRef) => {
+  ({children, onNextPage, noResultTitle, noResultIllustration, ...rest}: ItemCollectionProps, forwardedRef) => {
     const firstItemRef = useRef<HTMLDivElement>(null);
     const lastItemRef = useRef<HTMLDivElement>(null);
     const containerRef = useCombinedRefs(forwardedRef);
@@ -82,12 +85,8 @@ const ItemCollection = React.forwardRef<HTMLDivElement, ItemCollectionProps>(
       <ItemCollectionContainer {...rest} ref={containerRef}>
         {childrenCount
           ? decoratedChildren
-          : noResultLabel && (
-              <NoResultSection>
-                <GroupsIllustration size={128} />
-                <NoResultTitle>{noResultLabel}</NoResultTitle>
-              </NoResultSection>
-            )}
+          : noResultIllustration &&
+            noResultTitle && <Placeholder illustration={noResultIllustration} title={noResultTitle} />}
       </ItemCollectionContainer>
     );
   }
