@@ -20,7 +20,9 @@ use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 
 final class TableBooleanTranslator implements TableValueTranslator
 {
+    /** @var array<string, string> */
     private array $trueLocalized = [];
+    /** @var array<string, string> */
     private array $falseLocalized = [];
 
     public function __construct(private LabelTranslatorInterface $labelTranslator)

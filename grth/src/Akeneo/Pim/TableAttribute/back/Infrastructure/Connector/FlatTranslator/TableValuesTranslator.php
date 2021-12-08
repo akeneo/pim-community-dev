@@ -27,6 +27,28 @@ class TableValuesTranslator
     ) {
     }
 
+    /**
+     * @param array $items for example:
+     *  [
+     *      {
+     *          "product": "foo",
+     *          "attribute": "nutrition-en_US-ecommerce",
+     *          "ingredient": "salt",
+     *          "is_allergenic": "1"
+     *      },
+     *      ...
+     *  ]
+     * @return array for example (header with label activated):
+     *  [
+     *      {
+     *          "Product": "foo",
+     *          "Attribute": "Nutrition (English US, Ecommerce)",
+     *          "Ingredient": "Salt",
+     *          "Is allergenic": "Yes"
+     *      },
+     *      ...
+     *  ]
+     */
     public function translate(array $items, string $localeCode, bool $headerWithLabel): array
     {
         $attributeCodes = [];

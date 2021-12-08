@@ -20,7 +20,9 @@ use Akeneo\Tool\Component\Localization\LanguageTranslator;
 
 class AttributeTranslator
 {
+    /** @var array<string, array<string, string>> */
     private array $localeTranslationCache = [];
+    /** @var array<string, array<string, string>> */
     private array $channelTranslationCache = [];
 
     public function __construct(
@@ -30,9 +32,12 @@ class AttributeTranslator
     ) {
     }
 
-    public function translate(string $column, string $localeCode): string
+    /**
+     * For example it translates "nutrition-en_US-ecommerce" into "Nutrition (English US, Ecommerce)"
+     */
+    public function translate(string $attributeLocaleScope, string $localeCode): string
     {
-        $attributeParts = \explode('-', $column);
+        $attributeParts = \explode('-', $attributeLocaleScope);
         $attributeCode = $attributeParts[0];
 
         $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
@@ -68,15 +73,17 @@ class AttributeTranslator
 
     private function getLocaleLabel(string $locale, string $localeCode): string
     {
-        if (!\in_array($locale, $this->localeTranslationCache)) {
-            $this->localeTranslationCache[$locale] = $this->languageTranslator->translate(
+        if (!\in_array($localeCode, $this->localeTranslationCache)
+            || !\in_array($locale, $this->localeTranslationCache[$localeCode])
+        ) {
+            $this->localeTranslationCache[$localeCode][$locale] = $this->languageTranslator->translate(
                 $locale,
                 $localeCode,
                 \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $locale)
             );
         }
 
-        return $this->localeTranslationCache[$locale];
+        return $this->localeTranslationCache[$localeCode][$locale];
     }
 
     private function getScopeLabel(string $channelCode, string $localeCode): string
