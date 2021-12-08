@@ -20,12 +20,14 @@ use Symfony\Component\HttpFoundation\Response;
 class GetConnectedAppMonitoringSettingsActionEndToEnd extends WebTestCase
 {
     private FakeFeatureFlag $featureFlagMarketplaceActivate;
+    private ConnectionLoader $connectionLoader;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->featureFlagMarketplaceActivate = $this->get('akeneo_connectivity.connection.marketplace_activate.feature');
+        $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
     }
 
     protected function getConfiguration(): Configuration
@@ -37,6 +39,8 @@ class GetConnectedAppMonitoringSettingsActionEndToEnd extends WebTestCase
     {
         $this->featureFlagMarketplaceActivate->disable();
         $this->authenticateAsAdmin();
+
+        $this->connectionLoader->createConnection('connectionCodeA', 'Connector A', FlowType::DATA_SOURCE, true);
 
         $this->client->request(
             'GET',
@@ -90,9 +94,11 @@ class GetConnectedAppMonitoringSettingsActionEndToEnd extends WebTestCase
         $this->authenticateAsAdmin();
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
 
+        $this->connectionLoader->createConnection('connectionCodeA', 'Connector A', FlowType::DATA_SOURCE, true);
+
         $this->client->request(
             'GET',
-            '/rest/apps/connected-apps/connectionCodeA/monitoring-settings',
+            '/rest/apps/connected-apps/unknownCode/monitoring-settings',
             [],
             [],
             [

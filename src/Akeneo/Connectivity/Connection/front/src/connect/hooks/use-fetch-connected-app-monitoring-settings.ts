@@ -1,8 +1,8 @@
 import {useRoute} from '../../shared/router';
 import {useCallback} from 'react';
-import {MonitorSettings} from '../../model/Apps/monitor-settings';
+import {MonitoringSettings} from '../../model/Apps/monitoring-settings';
 
-export const useFetchConnectedAppMonitoringSettings = (connectionCode: string): (() => Promise<MonitorSettings>) => {
+export const useFetchConnectedAppMonitoringSettings = (connectionCode: string): (() => Promise<MonitoringSettings>) => {
     const url = useRoute('akeneo_connectivity_connection_apps_rest_get_connected_app_monitoring_settings', {
         connectionCode: connectionCode,
     });

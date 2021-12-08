@@ -1,6 +1,6 @@
 import {FlowType} from '../flow-type.enum';
 
-export type MonitorSettings = {
+export type MonitoringSettings = {
     flowType: FlowType;
     auditable: boolean;
 };
