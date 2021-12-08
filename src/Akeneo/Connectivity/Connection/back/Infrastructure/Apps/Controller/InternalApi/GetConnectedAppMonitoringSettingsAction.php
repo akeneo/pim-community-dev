@@ -25,7 +25,8 @@ class GetConnectedAppMonitoringSettingsAction
         private FeatureFlag $featureFlag,
         private SecurityFacade $security,
         private FindAConnectionHandler $findAConnectionHandler,
-    ) {}
+    ) {
+    }
 
     public function __invoke(Request $request, string $connectionCode): Response
     {
