@@ -19,8 +19,10 @@ use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
+use Webmozart\Assert\Assert;
 
-final class TableValuesWriter implements ItemWriterInterface, InitializableInterface, FlushableInterface, StepExecutionAwareInterface
+final class TableValuesWriter implements ItemWriterInterface, InitializableInterface, FlushableInterface, StepExecutionAwareInterface, ArchivableWriterInterface
 {
     private StepExecution $stepExecution;
 
@@ -30,6 +32,9 @@ final class TableValuesWriter implements ItemWriterInterface, InitializableInter
     ) {
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
@@ -55,17 +60,43 @@ final class TableValuesWriter implements ItemWriterInterface, InitializableInter
         $this->decoratedWriter->write($items);
     }
 
-    public function flush()
+    /**
+     * {@inheritdoc}
+     */
+    public function flush(): void
     {
         if ($this->decoratedWriter instanceof FlushableInterface) {
             $this->decoratedWriter->flush();
         }
     }
 
-    public function initialize()
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize(): void
     {
         if ($this->decoratedWriter instanceof InitializableInterface) {
             $this->decoratedWriter->initialize();
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getWrittenFiles(): array
+    {
+        Assert::implementsInterface($this->decoratedWriter, ArchivableWriterInterface::class);
+
+        return $this->decoratedWriter->getWrittenFiles();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPath(): string
+    {
+        Assert::implementsInterface($this->decoratedWriter, ArchivableWriterInterface::class);
+
+        return $this->decoratedWriter->getPath();
     }
 }

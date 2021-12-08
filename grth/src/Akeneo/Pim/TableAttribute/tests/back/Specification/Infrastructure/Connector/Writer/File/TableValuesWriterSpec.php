@@ -12,6 +12,7 @@ use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -33,6 +34,7 @@ class TableValuesWriterSpec extends ObjectBehavior
         $this->shouldImplement(InitializableInterface::class);
         $this->shouldImplement(FlushableInterface::class);
         $this->shouldImplement(StepExecutionAwareInterface::class);
+        $this->shouldImplement(ArchivableWriterInterface::class);
     }
 
     function it_writes_items_without_labels(
