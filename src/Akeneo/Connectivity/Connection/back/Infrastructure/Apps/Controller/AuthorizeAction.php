@@ -107,8 +107,12 @@ class AuthorizeAction
         ) {
             // @TODO might loop if it decline the app => redirect on pim, with error ?
             // @TODO triggers the consent step 'akeneo_connectivity_connection_connect_apps_authenticate'
-            echo 'Display consent modal!';
-            die;
+            return new Response(sprintf(
+                '<a href=%s>I consent</a>',
+                $this->router->generate('akeneo_connectivity_connection_apps_rest_confirm_authentication', [
+                    'clientId' => $command->getClientId()
+                ])
+            ));
         }
 
         $redirectUrl = $this->redirectUriWithAuthorizationCodeGenerator->generate(

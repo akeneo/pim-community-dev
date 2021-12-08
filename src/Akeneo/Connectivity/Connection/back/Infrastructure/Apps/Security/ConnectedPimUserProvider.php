@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Security;
 
+use Akeneo\Connectivity\Connection\Application\Apps\ConnectedPimUserProviderInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -11,7 +12,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ConnectedPimUserProvider
+class ConnectedPimUserProvider implements ConnectedPimUserProviderInterface
 {
     private TokenStorageInterface $tokenStorage;
 
