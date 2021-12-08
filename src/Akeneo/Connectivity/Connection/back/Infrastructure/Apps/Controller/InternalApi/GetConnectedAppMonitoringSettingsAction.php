@@ -45,7 +45,7 @@ class GetConnectedAppMonitoringSettingsAction
         $connection = $this->findAConnectionHandler->handle(new FindAConnectionQuery($connectionCode));
 
         if (null === $connection) {
-            throw new NotFoundHttpException("Connected app with connection code $connectionCode does not exist.");
+            throw new NotFoundHttpException("Connection with connection code $connectionCode does not exist.");
         }
 
         return new JsonResponse([
