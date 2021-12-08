@@ -20,13 +20,11 @@ use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 
 final class TableBooleanTranslator implements TableValueTranslator
 {
-    private LabelTranslatorInterface $labelTranslator;
     private array $trueLocalized = [];
     private array $falseLocalized = [];
 
-    public function __construct(LabelTranslatorInterface $labelTranslator)
+    public function __construct(private LabelTranslatorInterface $labelTranslator)
     {
-        $this->labelTranslator = $labelTranslator;
     }
 
     public function getSupportedColumnDataType(): string

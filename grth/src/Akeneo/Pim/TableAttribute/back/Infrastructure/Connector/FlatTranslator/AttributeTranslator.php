@@ -20,20 +20,14 @@ use Akeneo\Tool\Component\Localization\LanguageTranslator;
 
 class AttributeTranslator
 {
-    private AttributeRepositoryInterface $attributeRepository;
-    private LanguageTranslator $languageTranslator;
-    private GetChannelTranslations $getChannelTranslations;
     private array $localeTranslationCache = [];
     private array $channelTranslationCache = [];
 
     public function __construct(
-        AttributeRepositoryInterface $attributeRepository,
-        LanguageTranslator $languageTranslator,
-        GetChannelTranslations $getChannelTranslations
+        private AttributeRepositoryInterface $attributeRepository,
+        private LanguageTranslator $languageTranslator,
+        private GetChannelTranslations $getChannelTranslations
     ) {
-        $this->attributeRepository = $attributeRepository;
-        $this->languageTranslator = $languageTranslator;
-        $this->getChannelTranslations = $getChannelTranslations;
     }
 
     public function translate(string $column, string $localeCode): string

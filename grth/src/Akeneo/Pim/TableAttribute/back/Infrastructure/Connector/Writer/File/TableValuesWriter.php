@@ -22,14 +22,12 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 
 final class TableValuesWriter implements ItemWriterInterface, InitializableInterface, FlushableInterface, StepExecutionAwareInterface
 {
-    private ItemWriterInterface $decoratedWriter;
-    private TableValuesTranslator $tableValuesTranslator;
     private StepExecution $stepExecution;
 
-    public function __construct(ItemWriterInterface $decoratedWriter, TableValuesTranslator $tableValuesTranslator)
-    {
-        $this->decoratedWriter = $decoratedWriter;
-        $this->tableValuesTranslator = $tableValuesTranslator;
+    public function __construct(
+        private ItemWriterInterface $decoratedWriter,
+        private TableValuesTranslator $tableValuesTranslator
+    ) {
     }
 
     public function setStepExecution(StepExecution $stepExecution): void

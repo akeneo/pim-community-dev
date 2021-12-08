@@ -19,21 +19,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TableValuesTranslator
 {
-    private TableValueTranslatorRegistry $tableValueTranslatorRegistry;
-    private AttributeTranslator $attributeTranslator;
-    private TableColumnTranslator $tableColumnTranslator;
-    private TranslatorInterface $translator;
-
     public function __construct(
-        TableValueTranslatorRegistry $tableValueTranslatorRegistry,
-        AttributeTranslator $attributeTranslator,
-        TableColumnTranslator $tableColumnTranslator,
-        TranslatorInterface $translator
+        private TableValueTranslatorRegistry $tableValueTranslatorRegistry,
+        private AttributeTranslator $attributeTranslator,
+        private TableColumnTranslator $tableColumnTranslator,
+        private TranslatorInterface $translator
     ) {
-        $this->tableValueTranslatorRegistry = $tableValueTranslatorRegistry;
-        $this->attributeTranslator = $attributeTranslator;
-        $this->tableColumnTranslator = $tableColumnTranslator;
-        $this->translator = $translator;
     }
 
     public function translate(array $items, string $localeCode, bool $headerWithLabel): array

@@ -18,13 +18,11 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigur
 
 class TableColumnTranslator
 {
-    private TableConfigurationRepository $tableConfigurationRepository;
     /** @var array<string, array<string, string>> */
     private array $columnLabelsByAttributeCodeAndLocaleCode = [];
 
-    public function __construct(TableConfigurationRepository $tableConfigurationRepository)
+    public function __construct(private TableConfigurationRepository $tableConfigurationRepository)
     {
-        $this->tableConfigurationRepository = $tableConfigurationRepository;
     }
 
     /**

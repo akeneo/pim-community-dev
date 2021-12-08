@@ -20,15 +20,10 @@ use Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\Tab
 
 final class TableTranslator implements FlatAttributeValueTranslatorInterface
 {
-    private TableValueTranslatorRegistry $tableValueTranslatorRegistry;
-    private TableColumnTranslator $tableColumnTranslator;
-
     public function __construct(
-        TableValueTranslatorRegistry $tableValueTranslatorRegistry,
-        TableColumnTranslator $tableColumnTranslator
+        private TableValueTranslatorRegistry $tableValueTranslatorRegistry,
+        private TableColumnTranslator $tableColumnTranslator
     ) {
-        $this->tableValueTranslatorRegistry = $tableValueTranslatorRegistry;
-        $this->tableColumnTranslator = $tableColumnTranslator;
     }
 
     public function supports(string $attributeType, string $columnName): bool

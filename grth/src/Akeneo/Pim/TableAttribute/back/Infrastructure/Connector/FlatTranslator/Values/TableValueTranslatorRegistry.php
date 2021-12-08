@@ -19,7 +19,6 @@ use Webmozart\Assert\Assert;
 
 class TableValueTranslatorRegistry
 {
-    private TableConfigurationRepository $tableConfigurationRepository;
     /** @var iterable<TableValueTranslator> */
     private iterable $tableValueTranslators;
 
@@ -27,10 +26,9 @@ class TableValueTranslatorRegistry
      * @param iterable<TableValueTranslator> $tableValueTranslators
      */
     public function __construct(
-        TableConfigurationRepository $tableConfigurationRepository,
+        private TableConfigurationRepository $tableConfigurationRepository,
         iterable $tableValueTranslators
     ) {
-        $this->tableConfigurationRepository = $tableConfigurationRepository;
         foreach ($tableValueTranslators as $tableValueTranslator) {
             Assert::isInstanceOf($tableValueTranslator, TableValueTranslator::class);
             $this->tableValueTranslators[$tableValueTranslator->getSupportedColumnDataType()] = $tableValueTranslator;

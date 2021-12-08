@@ -20,11 +20,8 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 
 final class TableSelectTranslator implements TableValueTranslator
 {
-    private SelectOptionCollectionRepository $selectOptionCollectionRepository;
-
-    public function __construct(SelectOptionCollectionRepository $selectOptionCollectionRepository)
+    public function __construct(private SelectOptionCollectionRepository $selectOptionCollectionRepository)
     {
-        $this->selectOptionCollectionRepository = $selectOptionCollectionRepository;
     }
 
     public function getSupportedColumnDataType(): string
