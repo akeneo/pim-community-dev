@@ -39,7 +39,7 @@ class TableColumnTranslatorSpec extends ObjectBehavior
         $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(TableConfiguration::fromColumnDefinitions([
             SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => [
                 'en_US' => 'Ingredient US',
-            ]]),
+            ], 'is_required_for_completeness' => true]),
             NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity', 'labels' => [
                 'fr_FR' => 'Quantité',
                 'en_US' => 'Quantity',
@@ -64,7 +64,7 @@ class TableColumnTranslatorSpec extends ObjectBehavior
         $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(TableConfiguration::fromColumnDefinitions([
             SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => [
                 'en_US' => 'Ingredient US',
-            ]]),
+            ], 'is_required_for_completeness' => true]),
             NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity', 'labels' => [
                 'fr_FR' => 'Quantité',
                 'en_US' => 'Quantity',
@@ -93,7 +93,7 @@ class TableColumnTranslatorSpec extends ObjectBehavior
         $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(TableConfiguration::fromColumnDefinitions([
             SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'labels' => [
                 'en_US' => 'Ingredient US',
-            ]]),
+            ], 'is_required_for_completeness' => true]),
             NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity', 'labels' => [
                 'en_US' => 'Quantity',
             ]]),

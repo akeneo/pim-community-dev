@@ -71,7 +71,7 @@ class TableValueTranslatorRegistrySpec extends ObjectBehavior
 
     private static function getIngredientColumn(): SelectColumn
     {
-        return SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']);
+        return SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]);
     }
 
     private static function getIsAllergenicColumn(): BooleanColumn
