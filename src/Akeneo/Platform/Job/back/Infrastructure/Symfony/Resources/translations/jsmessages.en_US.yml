@@ -5,6 +5,7 @@ pim_title:
 akeneo_job:
   job_status:
     COMPLETED: Completed
+    STARTED: In progress
     STARTING: Starting
     STOPPING: Stopping
     STOPPED: Stopped
