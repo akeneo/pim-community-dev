@@ -19,3 +19,6 @@ services:
       - 'prepare_evaluation'
     tags:
       - { name: akeneo_batch.job, connector: 'Akeneo Job Test', type: 'data_quality_insights' }
+
+  Akeneo\Platform\Job\Application\SearchJobExecution\ClockInterface:
+    class: Akeneo\Platform\Job\Test\Integration\FakeServices\SystemClock

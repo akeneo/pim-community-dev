@@ -78,6 +78,8 @@ final class FixturesJobHelper
             'errors' => [],
             'summary' => [],
             'warning_count' => 0,
+            'tracking_data' => [],
+            'is_trackable' => false,
         ];
 
         $dataToInsert = array_merge($defaultData, $data);
@@ -87,7 +89,11 @@ final class FixturesJobHelper
 
         $this->dbalConnection->insert(
             'akeneo_batch_step_execution',
-            $dataToInsert
+            $dataToInsert,
+            [
+                'tracking_data' => Types::JSON,
+                'is_trackable' => Types::BOOLEAN,
+            ]
         );
 
         return (int)$this->dbalConnection->lastInsertId();
