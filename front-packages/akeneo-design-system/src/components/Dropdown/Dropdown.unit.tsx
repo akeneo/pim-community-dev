@@ -29,6 +29,23 @@ test('it renders its children properly', () => {
   expect(screen.getByText('Item 1')).toBeInTheDocument();
   expect(screen.getByText('Elements')).toBeInTheDocument();
 });
+
+test('it renders no result information', () => {
+  render(
+    <Dropdown>
+      <Button>Dropdown</Button>
+      <Dropdown.Overlay verticalPosition="down" onClose={jest.fn()}>
+        <Dropdown.Header>
+          <Dropdown.Title>Elements</Dropdown.Title>
+        </Dropdown.Header>
+        <Dropdown.ItemCollection noResultLabel="Sorry, there is no results." />
+      </Dropdown.Overlay>
+    </Dropdown>
+  );
+
+  expect(screen.getByText('Sorry, there is no results.')).toBeInTheDocument();
+});
+
 test('it renders selectable item', () => {
   const onChange = jest.fn();
 

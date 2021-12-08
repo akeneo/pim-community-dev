@@ -121,6 +121,33 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
   </Story>
 </Canvas>
 
+## No result
+
+<Canvas>
+  <Story name="No result" height={260}>
+    {args => {
+      const [isOpen, open, close] = useBooleanState(true);
+      return (
+        <SpaceContainer height={200}>
+          <Dropdown {...args}>
+            <Button onClick={open}>
+              Dropdown <ArrowDownIcon />
+            </Button>
+            {isOpen && (
+              <Dropdown.Overlay verticalPosition="down" onClose={close}>
+                <Dropdown.Header>
+                  <Dropdown.Title>Elements</Dropdown.Title>
+                </Dropdown.Header>
+                <Dropdown.ItemCollection noResultLabel="Sorry, there is no results." />
+              </Dropdown.Overlay>
+            )}
+          </Dropdown>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
 ## Position
 
 <Canvas>
@@ -244,7 +271,7 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
                     title="Search"
                   />
                 </Dropdown.Header>
-                <Dropdown.ItemCollection onNextPage={handleNextPage}>
+                <Dropdown.ItemCollection onNextPage={handleNextPage} noResultLabel="Sorry, there is no results.">
                   {items.map((item, index) => (
                     <Dropdown.Item key={index}>{item.text}</Dropdown.Item>
                   ))}
