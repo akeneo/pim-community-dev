@@ -41,6 +41,7 @@ define([
         this.applyAction(event.target.dataset.actionTarget);
       },
     },
+    reactContainer: document.createElement('div'),
 
     /**
      * {@inheritdoc}
@@ -72,24 +73,27 @@ define([
       const itemsCount = this.getFormData().itemsCount;
 
       if (FeatureFlags.isEnabled('products_bulk_actions')) {
-        const container = document.createElement('div');
         this.renderReact(
           BulkActionsLauncher,
           {
             getStep: () => step,
+            step,
             currentStep: this.currentStep,
             itemsCount,
             formData: this.getFormData(),
-            setData: (data) => {this.setData(data)},
+            setData: data => {
+              this.setData(data);
+            },
             closeModal: () => router.redirectToRoute(this.config.backRoute),
             selectBulkAction: this.selectBulkAction.bind(this),
             confirmBulkAction: this.confirmBulkAction.bind(this),
             submitBulkAction: this.submitBulkAction.bind(this),
             chooseBulkAction: this.chooseBulkAction.bind(this),
           },
-          container
+          this.reactContainer
         );
-        this.$el.append(container);
+
+        this.$el.empty().append(this.reactContainer);
       } else {
         var currentStepNumber;
         switch (this.currentStep) {
