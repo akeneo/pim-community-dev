@@ -82,7 +82,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   const areRecordsPrefetched = usePrefetchTableValueRecords(valueData);
 
   const matchers: {[data_type: string]: (cell: TableCell, searchText: string, columnCode: ColumnCode) => boolean} = {};
-  Object.keys(cellInputsMapping).forEach(data_type => {
+  Object.keys(cellMatchersMapping).forEach(data_type => {
     matchers[data_type] = cellMatchersMapping[data_type].default();
   });
 
@@ -252,7 +252,13 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
         value={row[firstColumn.code] as SelectOptionCode}
       />
     ) : (
-      areRecordsPrefetched && <RecordCellIndex value={row[firstColumn.code] as RecordCode} />
+      areRecordsPrefetched && (
+        <RecordCellIndex
+          cellMatchersMapping={cellMatchersMapping}
+          searchText={searchText}
+          value={row[firstColumn.code] as RecordCode}
+        />
+      )
     );
   };
 

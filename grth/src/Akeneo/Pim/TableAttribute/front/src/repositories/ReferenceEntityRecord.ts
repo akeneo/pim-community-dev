@@ -65,9 +65,17 @@ const findByCode: (
   return record;
 };
 
+const getCachedByCode: (
+  referenceEntityIdentifier: ReferenceEntityIdentifierOrCode,
+  code: RecordCode
+) => ReferenceEntityRecord | null | undefined = (referenceEntityIdentifier, code) => {
+  return referenceEntityRecordsCache[getKey(referenceEntityIdentifier, code)];
+};
+
 const ReferenceEntityRecordRepository = {
   search,
   findByCode,
+  getCachedByCode,
 };
 
 export {ReferenceEntityRecordRepository};

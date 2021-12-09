@@ -29,11 +29,11 @@ const search: (
   });
 
   const body: {
-    channel: ChannelCode,
-    locale: LocaleCode,
-    size: number,
-    page: number,
-    filters: {field: string, operator: string, value: any}[],
+    channel: ChannelCode;
+    locale: LocaleCode;
+    size: number;
+    page: number;
+    filters: {field: string; operator: string; value: any}[];
   } = {
     channel,
     locale,

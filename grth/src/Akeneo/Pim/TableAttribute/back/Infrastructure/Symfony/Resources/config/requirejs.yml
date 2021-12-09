@@ -45,6 +45,7 @@ config:
                 number: '@akeneopimtableattribute/product/CellMatchers/NumberMatcher'
                 text: '@akeneopimtableattribute/product/CellMatchers/TextMatcher'
                 boolean: '@akeneopimtableattribute/product/CellMatchers/BooleanMatcher'
+                record: '@akeneopimtableattribute/product/CellMatchers/RecordMatcher'
 
         pim/form/common/attributes/create-button:
             attribute_icons:
