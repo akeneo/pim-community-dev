@@ -11,16 +11,30 @@ export const RECORD_FETCHER_DEFAULT_LIMIT = 200;
 const search: (
   router: Router,
   referenceEntityIdentifier: ReferenceEntityIdentifierOrCode,
-  props: {search?: string; page?: number; itemsPerPage?: number; channel: ChannelCode; locale: LocaleCode}
+  props: {
+    search?: string;
+    page?: number;
+    itemsPerPage?: number;
+    channel: ChannelCode;
+    locale: LocaleCode;
+    codes?: RecordCode[];
+  }
 ) => Promise<ReferenceEntityRecord[]> = async (
   router,
   referenceEntityIdentifier,
-  {search = '', page = 0, itemsPerPage = RECORD_FETCHER_DEFAULT_LIMIT, channel, locale}
+  {search = '', page = 0, itemsPerPage = RECORD_FETCHER_DEFAULT_LIMIT, channel, locale, codes}
 ) => {
   const url = router.generate('akeneo_reference_entities_record_index_rest', {
     referenceEntityIdentifier,
   });
-  const body = {
+
+  const body: {
+    channel: ChannelCode,
+    locale: LocaleCode,
+    size: number,
+    page: number,
+    filters: {field: string, operator: string, value: any}[],
+  } = {
     channel,
     locale,
     size: itemsPerPage,
@@ -28,9 +42,10 @@ const search: (
     filters: [
       {field: 'reference_entity', operator: '=', value: referenceEntityIdentifier},
       {field: 'code_label', operator: '=', value: search},
-      {field: 'code', operator: 'NOT IN', value: []},
     ],
   };
+
+  if (codes) body.filters.push({field: 'code', operator: 'IN', value: codes});
 
   const response = await fetch(url, {
     method: 'PUT',

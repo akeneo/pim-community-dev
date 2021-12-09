@@ -20,6 +20,7 @@ import {UNIQUE_ID_KEY} from './useUniqueIds';
 import {useAttributeContext} from '../contexts';
 import {SelectCellIndex} from './CellIndexes/SelectCellIndex';
 import {RecordCellIndex} from './CellIndexes/RecordCellIndex';
+import {usePrefetchTableValueRecords} from './usePrefetchTableValueRecords';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
@@ -78,6 +79,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   const [isActionsOpened, setActionsOpened] = React.useState<string | undefined>();
   const isSearching = searchText !== '';
   const isDragAndDroppable = !readOnly && !isSearching;
+  const areRecordsPrefetched = usePrefetchTableValueRecords(valueData);
 
   const matchers: {[data_type: string]: (cell: TableCell, searchText: string, columnCode: ColumnCode) => boolean} = {};
   Object.keys(cellInputsMapping).forEach(data_type => {
@@ -250,7 +252,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
         value={row[firstColumn.code] as SelectOptionCode}
       />
     ) : (
-      <RecordCellIndex value={row[firstColumn.code] as RecordCode} />
+      areRecordsPrefetched && <RecordCellIndex value={row[firstColumn.code] as RecordCode} />
     );
   };
 
