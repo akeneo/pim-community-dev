@@ -1,5 +1,5 @@
 import {ChannelCode, LocaleCode, Router} from '@akeneo-pim-community/shared';
-import {ReferenceEntityRecord, ReferenceEntityIdentifierOrCode} from '../models';
+import {RecordCode, ReferenceEntityIdentifierOrCode, ReferenceEntityRecord} from '../models';
 
 type Response = {
   items: ReferenceEntityRecord[];
@@ -41,8 +41,26 @@ const search: (
   return json.items;
 };
 
+const findByCode: (
+  router: Router,
+  referenceEntityIdentifier: ReferenceEntityIdentifierOrCode,
+  recordCode: RecordCode
+) => Promise<ReferenceEntityRecord | null> = async (router, referenceEntityIdentifier, recordCode) => {
+  const url = router.generate('akeneo_reference_entities_record_get_rest', {
+    referenceEntityIdentifier,
+    recordCode,
+  });
+
+  const response = await fetch(url);
+  if (response.status === 404) {
+    return null;
+  }
+  return await response.json();
+};
+
 const RecordFetcher = {
   search,
+  findByCode,
 };
 
 export {RecordFetcher};

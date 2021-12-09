@@ -9,7 +9,7 @@ import {
   Placeholder,
   TableInput,
 } from 'akeneo-design-system';
-import {ColumnCode, ColumnDefinition, SelectOptionCode, TableCell} from '../models';
+import {ColumnCode, ColumnDefinition, RecordCode, SelectOptionCode, TableCell} from '../models';
 import {TableFooter} from './TableFooter';
 import styled from 'styled-components';
 import {TableRowWithId, TableValueWithId, ViolatedCell} from './TableFieldApp';
@@ -19,6 +19,7 @@ import {CellMatchersMapping} from './CellMatchers';
 import {UNIQUE_ID_KEY} from './useUniqueIds';
 import {useAttributeContext} from '../contexts';
 import {SelectCellIndex} from './CellIndexes/SelectCellIndex';
+import {RecordCellIndex} from './CellIndexes/RecordCellIndex';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
@@ -240,6 +241,19 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
     return null;
   };
 
+  const tableIndexCell = (row: TableRowWithId) => {
+    return firstColumn.data_type === 'select' ? (
+      <SelectCellIndex
+        isInErrorFromBackend={isInErrorFromBackend(row[UNIQUE_ID_KEY], firstColumn.code)}
+        cellMatchersMapping={cellMatchersMapping}
+        searchText={searchText}
+        value={row[firstColumn.code] as SelectOptionCode}
+      />
+    ) : (
+      <RecordCellIndex value={row[firstColumn.code] as RecordCode} />
+    );
+  };
+
   const [firstColumn, ...otherColumns] = attribute?.table_configuration || [];
 
   return (
@@ -263,14 +277,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
               {valueDataPage.map(row => {
                 return (
                   <TableInput.Row key={row[UNIQUE_ID_KEY]} highlighted={isOpenActions(row[UNIQUE_ID_KEY])}>
-                    <TableInput.Cell>
-                      <SelectCellIndex
-                        isInErrorFromBackend={isInErrorFromBackend(row[UNIQUE_ID_KEY], firstColumn.code)}
-                        cellMatchersMapping={cellMatchersMapping}
-                        searchText={searchText}
-                        value={row[firstColumn.code] as SelectOptionCode}
-                      />
-                    </TableInput.Cell>
+                    <TableInput.Cell>{tableIndexCell(row)}</TableInput.Cell>
                     {otherColumns.map(columnDefinition => {
                       return (
                         <TableInput.Cell key={`${row[UNIQUE_ID_KEY]}-${columnDefinition.code}`}>
