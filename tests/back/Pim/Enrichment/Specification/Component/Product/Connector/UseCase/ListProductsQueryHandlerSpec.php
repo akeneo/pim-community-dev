@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetId;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
@@ -37,7 +38,8 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         GetConnectorProducts $getConnectorProductsWithOptions,
         EventDispatcherInterface $eventDispatcher,
         GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
-        GetProductsWithCompletenessesInterface $getProductsWithCompletenesses
+        GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
+        GetId $getProductId
     ) {
         $eventDispatcher->dispatch(Argument::any())->willReturn(Argument::type('object'));
         $this->beConstructedWith(
@@ -49,7 +51,8 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             $getConnectorProductsWithOptions,
             $eventDispatcher,
             $getProductsWithQualityScores,
-            $getProductsWithCompletenesses
+            $getProductsWithCompletenesses,
+            $getProductId
         );
     }
 
@@ -192,18 +195,21 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         ProductQueryBuilderInterface $pqb,
-        GetConnectorProducts $getConnectorProducts
+        GetConnectorProducts $getConnectorProducts,
+        GetId $getProductId
     ) {
         $query = new ListProductsQuery();
         $query->paginationType = PaginationTypes::SEARCH_AFTER;
         $query->limit = 42;
-        $query->searchAfter = '69';
+        $query->searchAfter = 'AN-UPPERCASE-IDENTIFIER';
         $query->userId = 1;
+
+        $getProductId->fromIdentifier('69')->shouldBeCalledOnce()->willReturn('AN-UPPERCASE-IDENTIFIER');
 
         $searchAfterPqbFactory->create([
             'limit' => 42,
-            'search_after_unique_key' => '69',
-            'search_after' => ['69']
+            'search_after_unique_key' => 'product_1234',
+            'search_after' => ['an-uppercase-identifier']
         ])->shouldBeCalled()->willReturn($pqb);
 
         $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
@@ -352,7 +358,8 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         ProductQueryBuilderInterface $pqb,
         GetConnectorProducts $getConnectorProducts,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        GetId $getProductId
     ) {
         $query = new ListProductsQuery();
         $query->paginationType = PaginationTypes::SEARCH_AFTER;
@@ -360,9 +367,10 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $query->searchAfter = '69';
         $query->userId = 1;
 
+        $getProductId->fromIdentifier('69')->shouldBeCalledOnce()->willReturn('5634');
         $searchAfterPqbFactory->create([
             'limit' => 42,
-            'search_after_unique_key' => '69',
+            'search_after_unique_key' => 'product_5634',
             'search_after' => ['69']
         ])->shouldBeCalled()->willReturn($pqb);
 
@@ -402,7 +410,8 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         ProductQueryBuilderInterface $pqb,
         GetConnectorProducts $getConnectorProducts,
-        GetProductsWithQualityScoresInterface $getProductsWithQualityScores
+        GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
+        GetId $getProductId
     ) {
         $query = new ListProductsQuery();
         $query->paginationType = PaginationTypes::SEARCH_AFTER;
@@ -411,9 +420,11 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $query->userId = 1;
         $query->withQualityScores = 'true';
 
+        $getProductId->fromIdentifier('69')->shouldBeCalledOnce()->willReturn('44');
+
         $searchAfterPqbFactory->create([
             'limit' => 42,
-            'search_after_unique_key' => '69',
+            'search_after_unique_key' => 'product_44',
             'search_after' => ['69']
         ])->shouldBeCalled()->willReturn($pqb);
 
@@ -457,7 +468,8 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         ProductQueryBuilderInterface $pqb,
         GetConnectorProducts $getConnectorProducts,
-        GetProductsWithCompletenessesInterface $getProductsWithCompletenesses
+        GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
+        GetId $getProductId
     ) {
         $query = new ListProductsQuery();
         $query->paginationType = PaginationTypes::SEARCH_AFTER;
@@ -466,9 +478,10 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $query->userId = 1;
         $query->withCompletenesses = 'true';
 
+        $getProductId->fromIdentifier('69')->shouldBeCalledOnce()->willReturn(null);
         $searchAfterPqbFactory->create([
             'limit' => 42,
-            'search_after_unique_key' => '69',
+            'search_after_unique_key' => '',
             'search_after' => ['69']
         ])->shouldBeCalled()->willReturn($pqb);
 

@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetId;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
@@ -54,6 +55,8 @@ final class ListProductsQueryHandler
 
     private GetProductsWithCompletenessesInterface $getProductsWithCompletenesses;
 
+    private GetId $getProductId;
+
     public function __construct(
         IdentifiableObjectRepositoryInterface $channelRepository,
         ApplyProductSearchQueryParametersToPQB $applyProductSearchQueryParametersToPQB,
@@ -63,7 +66,8 @@ final class ListProductsQueryHandler
         GetConnectorProducts $getConnectorProductsQuerywithOptions,
         EventDispatcherInterface $eventDispatcher,
         GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
-        GetProductsWithCompletenessesInterface $getProductsWithCompletenesses
+        GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
+        GetId $getProductId
     ) {
         $this->channelRepository = $channelRepository;
         $this->applyProductSearchQueryParametersToPQB = $applyProductSearchQueryParametersToPQB;
@@ -74,6 +78,7 @@ final class ListProductsQueryHandler
         $this->eventDispatcher = $eventDispatcher;
         $this->getProductsWithQualityScores = $getProductsWithQualityScores;
         $this->getProductsWithCompletenesses = $getProductsWithCompletenesses;
+        $this->getProductId = $getProductId;
     }
 
     /**
@@ -149,8 +154,9 @@ final class ListProductsQueryHandler
         $pqbOptions = ['limit' => (int)$query->limit];
 
         if (null !== $query->searchAfter) {
-            $pqbOptions['search_after_unique_key'] = $query->searchAfter;
-            $pqbOptions['search_after'] = [$query->searchAfter];
+            $id = $this->getProductId->fromIdentifier($query->searchAfter);
+            $pqbOptions['search_after_unique_key'] = null === $id ? '' : \sprintf('product_%s', $id);
+            $pqbOptions['search_after'] = [\strtolower($query->searchAfter)];
         }
 
         return $this->searchAfterPqbFactory->create($pqbOptions);
