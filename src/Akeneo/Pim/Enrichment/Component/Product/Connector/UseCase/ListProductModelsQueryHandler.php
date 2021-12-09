@@ -9,7 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetId;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindId;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
@@ -38,7 +38,7 @@ class ListProductModelsQueryHandler
     /** @var IdentifiableObjectRepositoryInterface */
     private $channelRepository;
 
-    private GetId $getProductModelId;
+    private FindId $getProductModelId;
 
     public function __construct(
         ApplyProductSearchQueryParametersToPQB $applyProductSearchQueryParametersToPQB,
@@ -46,7 +46,7 @@ class ListProductModelsQueryHandler
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         GetConnectorProductModels $getConnectorProductModelsQuery,
         IdentifiableObjectRepositoryInterface $channelRepository,
-        GetId $getProductModelId
+        FindId $getProductModelId
     ) {
         $this->applyProductSearchQueryParametersToPQB = $applyProductSearchQueryParametersToPQB;
         $this->fromSizePqbFactory = $fromSizePqbFactory;

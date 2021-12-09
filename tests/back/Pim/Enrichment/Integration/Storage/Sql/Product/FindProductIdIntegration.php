@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Product;
 
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlGetProductId;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductId;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
@@ -13,9 +13,9 @@ use PHPUnit\Framework\Assert;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetProductIdIntegration extends TestCase
+class FindProductIdIntegration extends TestCase
 {
-    private SqlGetProductId $getProductId;
+    private SqlFindProductId $getProductId;
     private string $fooId;
 
     /** @test */
@@ -31,7 +31,7 @@ class GetProductIdIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->getProductId = $this->get('akeneo.pim.enrichment.product.query.get_id');
+        $this->getProductId = $this->get('akeneo.pim.enrichment.product.query.find_id');
         $productFoo = $this->get('pim_catalog.builder.product')->createProduct('foo');
         $this->get('pim_catalog.saver.product')->save($productFoo);
         $this->fooId = (string) $productFoo->getId();

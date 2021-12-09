@@ -181,8 +181,8 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@pim_reference_data.repository_resolver'
 
-    akeneo.pim.enrichment.product.query.get_id:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlGetProductId'
+    akeneo.pim.enrichment.product.query.find_id:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductId'
         arguments:
             - '@database_connection'
 
@@ -273,8 +273,8 @@ services:
             - '@database_connection'
             - '@akeneo.pim.enrichment.factory.write_value_collection'
 
-    akeneo.pim.enrichment.product_model.query.get_id:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\SqlGetProductModelId'
+    akeneo.pim.enrichment.product_model.query.find_id:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\SqlFindProductModelId'
         arguments:
             - '@database_connection'
 

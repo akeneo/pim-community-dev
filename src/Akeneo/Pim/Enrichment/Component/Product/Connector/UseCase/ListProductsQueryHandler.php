@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 
-use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindId;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetId;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
@@ -55,7 +54,7 @@ final class ListProductsQueryHandler
 
     private GetProductsWithCompletenessesInterface $getProductsWithCompletenesses;
 
-    private GetId $getProductId;
+    private FindId $getProductId;
 
     public function __construct(
         IdentifiableObjectRepositoryInterface $channelRepository,
@@ -67,7 +66,7 @@ final class ListProductsQueryHandler
         EventDispatcherInterface $eventDispatcher,
         GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
         GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
-        GetId $getProductId
+        FindId $getProductId
     ) {
         $this->channelRepository = $channelRepository;
         $this->applyProductSearchQueryParametersToPQB = $applyProductSearchQueryParametersToPQB;
