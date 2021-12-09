@@ -1,0 +1,3 @@
+pimee_workflow:
+  check_removal:
+    product_model_error: Ten model produktu jest dostępny w wariancie, który został opublikowany. Cofnij jego publikację i spróbuj ponownie.

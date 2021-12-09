@@ -155,6 +155,10 @@ pim_table_attribute:
       please_try_again: Spróbuj ponownie.
       first_column_type_helper: Pierwsza kolumna tabeli jest zawsze kolumną typu Wybór.
       discard_changes: Jeżeli opuścisz tę stronę, utracisz zmiany wprowadzone w opcjach wyboru.
+      completeness: Kompletność
+      required_for_completeness: Wymagane do kompletności
+      completeness_helper_text: "Oby dowiedzieć się, jak sprawić, by atrybut tabeli był kompletny,"
+      completeness_helper_link: odwiedź nasze centrum pomocy.
     product:
       items_per_page: Pozycje na stronie
       current_items: "{{ minItem }}-{{ maxItem }} z {{ itemCount }}"
@@ -163,6 +167,8 @@ pim_table_attribute:
       no_rows_title: "Twoja tabela {{ attributeLabel }} jest pusta."
       no_rows_subtitle: Dodaj wiersze, aby zdefiniować nowe właściwości.
       no_rows_subtitle_on_readonly: Aby móc edytować ten atrybut, przejdź do strony z ustawieniami atrybutu lub skontaktuj się z administratorem PIM.
+      no_results: Niczego nie znaleziono
+      no_options: Brak opcji
       no_add_options_unallowed: Skontaktuj się z administratorem PIM, aby zarządzać opcjami „{{ attributeLabel }}”.
       actions:
         delete_row: Usuń ten wiersz
@@ -170,6 +176,8 @@ pim_table_attribute:
         move_first: Przenieś na pierwszą pozycję
         move_last: Przenieś na ostatnią pozycję
       order: Zamówienie
+      save_options_error: Podczas zapisywania opcji wystąpił błąd.
+      save_options_success: Pomyślnie zaktualizowano opcje
   properties:
     data_type:
       text: Tekst
@@ -178,6 +186,7 @@ pim_table_attribute:
       select: Wybierz
   validations:
     column_code_must_be_filled: Trzeba uzupełnić kod.
+    not_available_code: Ten kod kolumny jest niedostępny.
     column_data_type_must_be_filled: Trzeba uzupełnić typ danych.
     invalid_column_code: Kod kolumny może składać się wyłącznie z liter, cyfr i podkreśleń.
     invalid_code: Kod może składać się wyłącznie z liter, cyfr i podkreśleń.
@@ -215,6 +224,7 @@ pim_table_attribute:
     select_your_row: Wybierz wiersz
     select_your_operator: Wybierz operatora
     select_your_value: Wybierz wartość
+    any_row: Dowolny wiersz
 pim_enrich:
   entity:
     attribute:
@@ -226,3 +236,11 @@ batch_jobs:
   xlsx_table_attribute_options_export.label: Eksport opcji wyboru atrybutu tabeli w pliku XLSX
   csv_table_attribute_options_import.label: Import opcji wyboru atrybutu tabeli w pliku CSV
   xlsx_table_attribute_options_import.label: Import opcji wyboru atrybutu tabeli w pliku XLSX
+  csv_product_table_values_export.label: Eksport wartości tabeli produktu w formacie CSV
+  xlsx_product_table_values_export.label: Eksport wartości tabeli produktu w formacie XLSX
+  csv_product_model_table_values_export.label: Eksport wartości tabeli modelu produktu w formacie CSV
+  xlsx_product_model_table_values_export.label: Eksport wartości tabeli modelu produktu w formacie XLSX
+  csv_product_table_values_import.label: Import wartości tabeli produktu w formacie CSV
+  xlsx_product_table_values_import.label: Import wartości tabeli produktu w formacie XLSX
+  csv_product_model_table_values_import.label: Import wartości tabeli modelu produktu w formacie CSV
+  xlsx_product_model_table_values_import.label: Import wartości tabeli modelu produktu w formacie XLSX
