@@ -17,14 +17,14 @@ const jobExecution: JobExecution = {
   tracking: {
     error: false,
     warning: false,
-    status: 'STARTED',
+    status: 'IN_PROGRESS',
     currentStep: 1,
     totalSteps: 1,
     steps: [
       {
         jobName: 'csv_product_export',
         stepName: 'export',
-        status: 'STARTED',
+        status: 'IN_PROGRESS',
         isTrackable: true,
         hasWarning: false,
         hasError: false,
@@ -57,7 +57,7 @@ const jobExecution: JobExecution = {
     {
       job: 'product_export',
       label: 'Export file to export',
-      status: 'STARTED',
+      status: 'IN_PROGRESS',
       summary: {},
       startedAt: '12',
       endedAt: '13',
@@ -99,7 +99,7 @@ test('it displays a summary table', () => {
   renderWithProviders(<SummaryTable jobExecution={jobExecution} />);
 
   expect(screen.getByText('batch_jobs.default_steps.Export file to export')).toBeInTheDocument();
-  expect(screen.getByText('STARTED')).toBeInTheDocument();
+  expect(screen.getByText('IN_PROGRESS')).toBeInTheDocument();
   expect(screen.getByText('12')).toBeInTheDocument();
   expect(screen.getByText('an error')).toBeInTheDocument();
   expect(screen.getByText('a failure')).toBeInTheDocument();

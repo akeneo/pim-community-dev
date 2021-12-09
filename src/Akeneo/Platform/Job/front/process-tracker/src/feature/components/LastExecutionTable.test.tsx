@@ -12,6 +12,7 @@ const rows: JobExecutionRow[] = [
     tracking: {
       total_step: 2,
       current_step: 1,
+      steps: [],
     },
     error_count: 2,
     type: 'export',
@@ -27,6 +28,7 @@ const rows: JobExecutionRow[] = [
     tracking: {
       total_step: 3,
       current_step: 2,
+      steps: [],
     },
     error_count: 2,
     type: 'export',
@@ -42,6 +44,7 @@ const rows: JobExecutionRow[] = [
     tracking: {
       total_step: 1,
       current_step: 1,
+      steps: [],
     },
     error_count: 2,
     type: 'export',
@@ -80,7 +83,7 @@ test('it renders the last execution table', () => {
   expect(screen.getByText('akeneo_job.job_status.IN_PROGRESS 1/2')).toBeInTheDocument();
   expect(screen.getByText('4')).toBeInTheDocument();
 
-  // One header and 3 row
+  // One header and 3 rows
   expect(screen.getAllByRole('row')).toHaveLength(4);
 });
 
@@ -99,6 +102,7 @@ test('it does nothing on row click when user cannot show detail execution', () =
     tracking: {
       total_step: 3,
       current_step: 2,
+      steps: [],
     },
     error_count: 2,
     type: 'import',

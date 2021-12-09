@@ -25,14 +25,14 @@ const successResponse = {
   tracking: {
     error: false,
     warning: false,
-    status: 'STARTED',
+    status: 'IN_PROGRESS',
     currentStep: 1,
     totalSteps: 1,
     steps: [
       {
         jobName: 'csv_product_export',
         stepName: 'export',
-        status: 'STARTED',
+        status: 'IN_PROGRESS',
         isTrackable: true,
         hasWarning: false,
         hasError: false,

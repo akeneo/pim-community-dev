@@ -5,6 +5,7 @@ pim_title:
 akeneo_job:
   job_status:
     COMPLETED: Completed
+    STARTED: In progress
     STARTING: Starting
     STOPPING: Stopping
     STOPPED: Stopped
@@ -24,6 +25,7 @@ akeneo_job_process_tracker:
         type: Type
         started_at: Started at
         username: Username
+        progress: Progress
         status: Status
         warning_count: Warnings
   type_filter:
@@ -54,3 +56,9 @@ akeneo_job_process_tracker:
     in_progress: In progress
   max_page_without_filter_helper:
     In order to show you the most relevant results, please refine your search.
+  tracking:
+    completed: "Time spent: {{ duration }}"
+    in_progress: "Estimated time left for current step: {{ duration }}"
+    not_started: Pending
+    untrackable: Untrackable step
+    estimating: Estimating time remaining...
