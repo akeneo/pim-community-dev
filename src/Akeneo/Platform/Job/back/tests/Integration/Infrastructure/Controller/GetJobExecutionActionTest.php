@@ -8,7 +8,7 @@ use Akeneo\Platform\Job\Test\Integration\ControllerIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
-class IndexActionTest extends ControllerIntegrationTestCase
+class GetJobExecutionActionTest extends ControllerIntegrationTestCase
 {
     private const ROUTE = 'akeneo_job_index_action';
 

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\Job\Application\SearchJobExecution;
 
 use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
+use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRowTracking;
+use Akeneo\Platform\Job\Domain\Model\Status;
 use PhpSpec\ObjectBehavior;
 
 class JobExecutionRowSpec extends ObjectBehavior
@@ -17,12 +19,9 @@ class JobExecutionRowSpec extends ObjectBehavior
             'export',
             new \DateTimeImmutable('2021-11-02T11:20:27+02:00'),
             'admin',
-            'COMPLETED',
-            10,
-            15,
-            1,
-            3,
+            Status::fromLabel('COMPLETED'),
             true,
+            new JobExecutionRowTracking(1, 3, [])
         );
     }
 
@@ -40,11 +39,12 @@ class JobExecutionRowSpec extends ObjectBehavior
             'started_at' => '2021-11-02T11:20:27+02:00',
             'username' => 'admin',
             'status' => 'COMPLETED',
-            'warning_count' => 10,
-            'error_count' => 15,
+            'warning_count' => 0,
+            'error_count' => 0,
             'tracking' => [
                 'current_step' => 1,
                 'total_step' => 3,
+                'steps' => [],
             ],
             'is_stoppable' => true,
         ]);
@@ -58,12 +58,9 @@ class JobExecutionRowSpec extends ObjectBehavior
             'export',
             null,
             null,
-            'COMPLETED',
-            5,
-            0,
-            1,
-            1,
+            Status::fromLabel('COMPLETED'),
             false,
+            new JobExecutionRowTracking(1, 1, [])
         );
 
         $this->normalize()->shouldReturn([
@@ -73,11 +70,12 @@ class JobExecutionRowSpec extends ObjectBehavior
             'started_at' => null,
             'username' => null,
             'status' => 'COMPLETED',
-            'warning_count' => 5,
+            'warning_count' => 0,
             'error_count' => 0,
             'tracking' => [
                 'current_step' => 1,
                 'total_step' => 1,
+                'steps' => [],
             ],
             'is_stoppable' => false,
         ]);

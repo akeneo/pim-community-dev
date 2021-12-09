@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Integration\Loader;
 
+use Akeneo\Platform\Job\Domain\Model\Status;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 
@@ -45,7 +46,7 @@ final class FixturesJobHelper
     public function createJobExecution(array $data): int
     {
         $defaultData = [
-            'status' => 1,
+            'status' => Status::STARTING,
             'raw_parameters' => [],
             'is_stoppable' => true,
             'step_count' => 3,
@@ -69,7 +70,7 @@ final class FixturesJobHelper
     public function createStepExecution(array $data): int
     {
         $defaultData = [
-            'status' => 0,
+            'status' => Status::STARTING,
             'read_count' => 0,
             'write_count' => 0,
             'filter_count' => 0,
@@ -77,6 +78,8 @@ final class FixturesJobHelper
             'errors' => [],
             'summary' => [],
             'warning_count' => 0,
+            'tracking_data' => [],
+            'is_trackable' => false,
         ];
 
         $dataToInsert = array_merge($defaultData, $data);
@@ -86,7 +89,11 @@ final class FixturesJobHelper
 
         $this->dbalConnection->insert(
             'akeneo_batch_step_execution',
-            $dataToInsert
+            $dataToInsert,
+            [
+                'tracking_data' => Types::JSON,
+                'is_trackable' => Types::BOOLEAN,
+            ]
         );
 
         return (int)$this->dbalConnection->lastInsertId();

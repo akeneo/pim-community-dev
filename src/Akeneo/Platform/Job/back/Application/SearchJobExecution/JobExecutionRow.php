@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Application\SearchJobExecution;
 
+use Akeneo\Platform\Job\Domain\Model\Status;
+
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
@@ -11,42 +13,16 @@ namespace Akeneo\Platform\Job\Application\SearchJobExecution;
  */
 final class JobExecutionRow
 {
-    private int $jobExecutionId;
-    private string $jobName;
-    private string $type;
-    private ?\DateTimeImmutable $startedAt;
-    private ?string $username;
-    private string $status;
-    private int $warningCount;
-    private int $errorCount;
-    private int $currentStep;
-    private int $totalStep;
-    private bool $isStoppable;
-
     public function __construct(
-        int $jobExecutionId,
-        string $jobName,
-        string $type,
-        ?\DateTimeImmutable $startedAt,
-        ?string $username,
-        string $status,
-        int $warningCount,
-        int $errorCount,
-        int $currentStep,
-        int $totalStep,
-        bool $isStoppable
+        private int $jobExecutionId,
+        private string $jobName,
+        private string $type,
+        private ?\DateTimeImmutable $startedAt,
+        private ?string $username,
+        private Status $status,
+        private bool $isStoppable,
+        private JobExecutionRowTracking $tracking
     ) {
-        $this->jobExecutionId = $jobExecutionId;
-        $this->jobName = $jobName;
-        $this->type = $type;
-        $this->startedAt = $startedAt;
-        $this->username = $username;
-        $this->status = $status;
-        $this->warningCount = $warningCount;
-        $this->errorCount = $errorCount;
-        $this->currentStep = $currentStep;
-        $this->totalStep = $totalStep;
-        $this->isStoppable = $isStoppable;
     }
 
     public function normalize(): array
@@ -57,13 +33,10 @@ final class JobExecutionRow
             'type' => $this->type,
             'started_at' => $this->startedAt ? $this->startedAt->format(DATE_ATOM) : null,
             'username' => $this->username,
-            'status' => $this->status,
-            'warning_count' => $this->warningCount,
-            'error_count' => $this->errorCount,
-            'tracking' => [
-                'current_step' => $this->currentStep,
-                'total_step' => $this->totalStep,
-            ],
+            'status' => $this->status->getLabel(),
+            'warning_count' => $this->tracking->getWarningCount(),
+            'error_count' => $this->tracking->getErrorCount(),
+            'tracking' => $this->tracking->normalize(),
             'is_stoppable' => $this->isStoppable,
         ];
     }

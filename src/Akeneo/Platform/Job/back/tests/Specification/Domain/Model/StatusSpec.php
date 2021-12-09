@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Platform\Job\Domain\JobStatus;
+namespace Specification\Akeneo\Platform\Job\Domain\Status;
 
 use PhpSpec\ObjectBehavior;
 
@@ -11,7 +11,7 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class JobStatusSpec extends ObjectBehavior
+class StatusSpec extends ObjectBehavior
 {
     public function it_is_constructable_with_status()
     {
