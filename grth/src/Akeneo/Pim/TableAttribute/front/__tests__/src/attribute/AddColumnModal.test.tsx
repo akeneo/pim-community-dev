@@ -146,20 +146,20 @@ describe('AddColumnModal', () => {
     expect(
       screen.getByText('pim_table_attribute.form.attribute.first_column_type_helper_with_record')
     ).toBeInTheDocument();
-    expect((screen.getByText('pim_common.create') as HTMLButtonElement).disabled).toEqual(true);
     fireEvent.click(screen.getByTitle('pim_common.open'));
     fireEvent.click(await screen.findByText('pim_table_attribute.properties.data_type.record'));
+    expect(screen.getByText('pim_common.create') as HTMLButtonElement).toBeDisabled();
     expect(screen.getByText('pim_table_attribute.form.attribute.reference_entity')).toBeInTheDocument();
     fireEvent.click(screen.getAllByTitle('pim_common.open')[1]);
     expect(await screen.findByText('City')).toBeInTheDocument();
     fireEvent.click(screen.getByText('City'));
-    expect((screen.getByText('pim_common.create') as HTMLButtonElement).disabled).toEqual(false);
+    expect(screen.getByText('pim_common.create') as HTMLButtonElement).toBeEnabled();
     fireEvent.click(screen.getByText('pim_common.create'));
     expect(handleCreate).toBeCalledWith({
       code: 'Record_column',
       labels: {en_US: 'Record column'},
       data_type: 'record',
-      properties: {reference_entity_identifier: 'city'},
+      reference_entity_identifier: 'city',
       validations: {},
     });
   });

@@ -11,9 +11,7 @@ describe('RecordProperties', () => {
   it('should render the component', async () => {
     const recordColumn: RecordColumnDefinition = {
       code: 'city_column',
-      properties: {
-        reference_entity_identifier: 'city',
-      },
+      reference_entity_identifier: 'city',
       validations: {},
       data_type: 'record',
       labels: {},

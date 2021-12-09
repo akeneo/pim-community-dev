@@ -151,9 +151,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
       validations: {},
     } as ColumnDefinition;
     if (columnDefinition.reference_entity_identifier) {
-      (newColumn as RecordColumnDefinition).properties = {
-        reference_entity_identifier: columnDefinition.reference_entity_identifier,
-      };
+      (newColumn as RecordColumnDefinition).reference_entity_identifier = columnDefinition.reference_entity_identifier;
     }
     onCreate(newColumn);
   };
