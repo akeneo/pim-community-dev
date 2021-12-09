@@ -16,4 +16,4 @@ services:
             - '@Akeneo\Platform\Job\Application\SearchJobExecution\ClockInterface'
 
     Akeneo\Platform\Job\Application\SearchJobExecution\ClockInterface:
-        class: Akeneo\Platform\Job\Application\SearchJobExecution\SystemClock
+        class: Akeneo\Platform\Job\Infrastructure\Clock\SystemClock

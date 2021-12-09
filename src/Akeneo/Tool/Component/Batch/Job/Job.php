@@ -6,7 +6,6 @@ namespace Akeneo\Tool\Component\Batch\Job;
 
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
-use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepInterface;
@@ -272,7 +271,7 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
                 $step->setStoppable($this->isStoppable);
             }
 
-            if ($step instanceof TrackableStepInterface || $step instanceof TrackableTaskletInterface) {
+            if ($step instanceof TrackableStepInterface) {
                 $stepExecution->setIsTrackable(true);
                 $this->jobRepository->updateStepExecution($stepExecution);
             }
