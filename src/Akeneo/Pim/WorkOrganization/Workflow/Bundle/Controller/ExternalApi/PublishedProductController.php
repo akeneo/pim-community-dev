@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetId;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
@@ -78,6 +79,8 @@ class PublishedProductController
     /** @var array */
     protected $apiConfiguration;
 
+    private GetId $getPublishedProductId;
+
     /** @var QueryParametersCheckerInterface */
     protected $queryParametersChecker;
 
@@ -107,6 +110,7 @@ class PublishedProductController
         PaginatorInterface $searchAfterPaginator,
         PaginatorInterface $offsetPaginator,
         ParameterValidatorInterface $parameterValidator,
+        GetId $getPublishedProductId,
         array $apiConfiguration
     ) {
         $this->searchAfterPqbFactory = $searchAfterPqbFactory;
@@ -120,6 +124,7 @@ class PublishedProductController
         $this->offsetPaginator = $offsetPaginator;
         $this->parameterValidator = $parameterValidator;
         $this->apiConfiguration = $apiConfiguration;
+        $this->getPublishedProductId = $getPublishedProductId;
         $this->queryParametersChecker = $queryParametersChecker;
     }
 
@@ -310,8 +315,10 @@ class PublishedProductController
     ): array {
         $pqbOptions = ['limit' => (int) $queryParameters['limit']];
         if (isset($queryParameters['search_after'])) {
-            $pqbOptions['search_after_unique_key'] = $queryParameters['search_after'];
-            $pqbOptions['search_after'] = [$queryParameters['search_after']];
+            $pqbOptions['search_after_unique_key'] = $this->getPublishedProductId->fromIdentifier(
+                $queryParameters['search_after']
+            ) ?? '';
+            $pqbOptions['search_after'] = [\strtolower($queryParameters['search_after'])];
         }
         $pqb = $this->searchAfterPqbFactory->create($pqbOptions);
 
