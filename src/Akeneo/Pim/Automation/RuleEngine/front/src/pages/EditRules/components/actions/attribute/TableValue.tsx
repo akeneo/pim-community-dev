@@ -66,7 +66,6 @@ const TableValue: React.FC<InputValueProps> = ({
             attributeState.code
           )}
           <AddRowsButton
-            columnCode={firstColumnCode}
             checkedOptionCodes={tableValue.map(
               row => (row[firstColumnCode] ?? '') as string
             )}

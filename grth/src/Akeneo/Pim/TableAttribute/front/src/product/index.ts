@@ -9,3 +9,5 @@ export * from './useRenderElements';
 export * from './useManageOptions';
 export * from './useToggleRow';
 export * from './useUniqueIds';
+export * from './RecordAddRowsButton';
+export * from './SelectAddRowsButton';
