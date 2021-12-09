@@ -9,17 +9,16 @@ import {
   Placeholder,
   TableInput,
 } from 'akeneo-design-system';
-import {ColumnCode, ColumnDefinition, TableCell} from '../models';
+import {ColumnCode, ColumnDefinition, SelectOptionCode, TableCell} from '../models';
 import {TableFooter} from './TableFooter';
 import styled from 'styled-components';
 import {TableRowWithId, TableValueWithId, ViolatedCell} from './TableFieldApp';
-import {LoadingPlaceholderContainer} from '../shared';
-import {useFetchOptions} from './useFetchOptions';
 import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {CellInputsMapping} from './CellInputs';
 import {CellMatchersMapping} from './CellMatchers';
 import {UNIQUE_ID_KEY} from './useUniqueIds';
 import {useAttributeContext} from '../contexts';
+import {SelectCellIndex} from './CellIndexes/SelectCellIndex';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
@@ -46,13 +45,6 @@ const HeaderActionsCell = styled(TableInput.HeaderCell)`
   max-width: 34px;
   min-width: 34px;
   width: 34px;
-`;
-
-const FirstCellLoadingPlaceholderContainer = styled(LoadingPlaceholderContainer)`
-  padding-top: 10px;
-  & > * {
-    height: 20px;
-  }
 `;
 
 type TableInputValueProps = {
@@ -85,7 +77,6 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   const [isActionsOpened, setActionsOpened] = React.useState<string | undefined>();
   const isSearching = searchText !== '';
   const isDragAndDroppable = !readOnly && !isSearching;
-  const {getOptionLabel} = useFetchOptions(attribute, setAttribute);
 
   const matchers: {[data_type: string]: (cell: TableCell, searchText: string, columnCode: ColumnCode) => boolean} = {};
   Object.keys(cellInputsMapping).forEach(data_type => {
@@ -273,23 +264,12 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                 return (
                   <TableInput.Row key={row[UNIQUE_ID_KEY]} highlighted={isOpenActions(row[UNIQUE_ID_KEY])}>
                     <TableInput.Cell>
-                      <TableInput.CellContent
-                        rowTitle={true}
-                        highlighted={cellMatchSearch(row[firstColumn.code], firstColumn)}
-                        inError={
-                          isInErrorFromBackend(row[UNIQUE_ID_KEY], firstColumn.code) ||
-                          getOptionLabel(firstColumn.code, row[firstColumn.code] as string) === null
-                        }
-                      >
-                        {typeof getOptionLabel(firstColumn.code, row[firstColumn.code] as string) === 'undefined' ? (
-                          <FirstCellLoadingPlaceholderContainer>
-                            <div>{translate('pim_common.loading')}</div>
-                          </FirstCellLoadingPlaceholderContainer>
-                        ) : (
-                          getOptionLabel(firstColumn.code, row[firstColumn.code] as string) ||
-                          `[${row[firstColumn.code]}]`
-                        )}
-                      </TableInput.CellContent>
+                      <SelectCellIndex
+                        isInErrorFromBackend={isInErrorFromBackend(row[UNIQUE_ID_KEY], firstColumn.code)}
+                        cellMatchersMapping={cellMatchersMapping}
+                        searchText={searchText}
+                        value={row[firstColumn.code] as SelectOptionCode}
+                      />
                     </TableInput.Cell>
                     {otherColumns.map(columnDefinition => {
                       return (
