@@ -57,17 +57,3 @@ test('it displays a job execution progress cell', () => {
   expect(secondStepProgressBar).toHaveAttribute('aria-valuenow', '20');
   expect(screen.getByTitle('akeneo_job_process_tracker.tracking.in_progress')).toBeInTheDocument();
 });
-
-test('it print N/A instead of a progress bar when job is failed', () => {
-  renderWithProviders(
-    <table>
-      <tbody>
-        <tr>
-          <ProgressCell jobExecutionRow={{...jobExecutionRow, status: 'FAILED'}} />
-        </tr>
-      </tbody>
-    </table>
-  );
-
-  expect(screen.getByText('akeneo_job_process_tracker.tracking.not_available')).toBeInTheDocument();
-});

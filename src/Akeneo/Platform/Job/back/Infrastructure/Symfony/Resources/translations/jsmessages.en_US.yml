@@ -62,4 +62,3 @@ akeneo_job_process_tracker:
     not_started: Pending
     untrackable: Untrackable step
     estimating: Estimating time remaining...
-    not_available: N/A

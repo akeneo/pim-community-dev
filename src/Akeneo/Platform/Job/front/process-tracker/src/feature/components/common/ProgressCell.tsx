@@ -25,30 +25,27 @@ type ProgressCellProps = {
 
 const ProgressCell = ({jobExecutionRow}: ProgressCellProps) => {
   const translate = useTranslate();
-  const jobIsFailed = 'FAILED' === jobExecutionRow.status;
 
   return (
     <Table.Cell title={getJobExecutionRowTrackingProgressLabel(translate, jobExecutionRow)}>
       <Container>
-        {jobIsFailed && translate('akeneo_job_process_tracker.tracking.not_available')}
-        {!jobIsFailed &&
-          [...Array(jobExecutionRow.tracking.total_step)].map((_, stepIndex) => {
-            if ('STARTING' === jobExecutionRow.status) {
-              return <ProgressBar key={stepIndex} percent="indeterminate" level="primary" />;
-            }
+        {[...Array(jobExecutionRow.tracking.total_step)].map((_, stepIndex) => {
+          if ('STARTING' === jobExecutionRow.status) {
+            return <ProgressBar key={stepIndex} percent="indeterminate" level="primary" />;
+          }
 
-            const step = jobExecutionRow.tracking.steps[stepIndex] ?? null;
+          const step = jobExecutionRow.tracking.steps[stepIndex] ?? null;
 
-            return null === step ? (
-              <ProgressBar key={stepIndex} level="primary" percent={0} />
-            ) : (
-              <ProgressBar
-                key={stepIndex}
-                level={getStepExecutionRowTrackingLevel(step)}
-                percent={getStepExecutionRowTrackingPercent(step)}
-              />
-            );
-          })}
+          return null === step ? (
+            <ProgressBar key={stepIndex} level="primary" percent={0} />
+          ) : (
+            <ProgressBar
+              key={stepIndex}
+              level={getStepExecutionRowTrackingLevel(step)}
+              percent={getStepExecutionRowTrackingPercent(step)}
+            />
+          );
+        })}
       </Container>
     </Table.Cell>
   );
