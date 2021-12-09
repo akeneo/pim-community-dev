@@ -58,7 +58,7 @@ akeneo_job_process_tracker:
     In order to show you the most relevant results, please refine your search.
   tracking:
     completed: "Time spent: {{ duration }}"
-    in_progress: "Estimated time left: {{ duration }}"
+    in_progress: "Estimated time left for current step: {{ duration }}"
     not_started: Pending
     untrackable: Untrackable step
     estimating: Estimating time remaining...
