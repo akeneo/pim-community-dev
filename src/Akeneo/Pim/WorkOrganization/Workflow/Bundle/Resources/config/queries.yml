@@ -95,6 +95,11 @@ services:
         arguments:
             - '@database_connection'
 
+    pimee_workflow.query.get_published_product_id:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\SqlGetPublishedProductId'
+        arguments:
+            - '@database_connection'
+
     pimee_workflow.query.find_draft_ids_concerning_removed_attributes:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\FindDraftIdsConcerningRemovedAttributesQuery
         arguments:
