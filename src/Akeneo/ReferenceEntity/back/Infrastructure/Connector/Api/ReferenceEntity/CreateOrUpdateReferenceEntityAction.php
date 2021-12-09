@@ -37,36 +37,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateOrUpdateReferenceEntityAction
 {
-    private ReferenceEntityExistsInterface $referenceEntityExists;
-    private ValidatorInterface $validator;
-    private CreateReferenceEntityHandler $createReferenceEntityHandler;
-    private EditReferenceEntityHandler $editReferenceEntityHandler;
-    private Router $router;
-    private ReferenceEntityValidator $jsonSchemaValidator;
-    private FindFileDataByFileKeyInterface $findFileData;
-    private ReferenceEntityRepositoryInterface $referenceEntityRepository;
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        ReferenceEntityExistsInterface $referenceEntityExists,
-        ValidatorInterface $validator,
-        CreateReferenceEntityHandler $createReferenceEntityHandler,
-        EditReferenceEntityHandler $editReferenceEntityHandler,
-        Router $router,
-        ReferenceEntityValidator $jsonSchemaValidator,
-        FindFileDataByFileKeyInterface $findFileData,
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        SecurityFacade $securityFacade
+        private ReferenceEntityExistsInterface $referenceEntityExists,
+        private ValidatorInterface $validator,
+        private CreateReferenceEntityHandler $createReferenceEntityHandler,
+        private EditReferenceEntityHandler $editReferenceEntityHandler,
+        private Router $router,
+        private ReferenceEntityValidator $jsonSchemaValidator,
+        private FindFileDataByFileKeyInterface $findFileData,
+        private ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        private SecurityFacade $securityFacade
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
-        $this->validator = $validator;
-        $this->createReferenceEntityHandler = $createReferenceEntityHandler;
-        $this->editReferenceEntityHandler = $editReferenceEntityHandler;
-        $this->router = $router;
-        $this->jsonSchemaValidator = $jsonSchemaValidator;
-        $this->findFileData = $findFileData;
-        $this->referenceEntityRepository = $referenceEntityRepository;
-        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier): Response

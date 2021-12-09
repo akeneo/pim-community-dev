@@ -27,12 +27,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class RemoveUserGroupSubscriber implements EventSubscriberInterface
 {
-    private SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight $findReferenceEntityWhereUserGroupIsLastToHaveEditRight;
-
     public function __construct(
-        SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight $findReferenceEntityWhereUserGroupIsLastToHaveEditRight
+        private SqlFindReferenceEntityWhereUserGroupIsLastToHaveEditRight $findReferenceEntityWhereUserGroupIsLastToHaveEditRight
     ) {
-        $this->findReferenceEntityWhereUserGroupIsLastToHaveEditRight = $findReferenceEntityWhereUserGroupIsLastToHaveEditRight;
     }
 
     public static function getSubscribedEvents(): array

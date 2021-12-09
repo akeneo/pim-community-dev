@@ -39,36 +39,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class MassDeleteRecordsTasklet implements TaskletInterface, TrackableTaskletInterface
 {
     private ?StepExecution $stepExecution = null;
-    private RecordQueryBuilderInterface $recordQueryBuilder;
-    private Client $recordClient;
-    private DeleteRecordsHandler $deleteRecordsHandler;
-    private JobRepositoryInterface $jobRepository;
-    private RecordIndexerInterface $recordIndexer;
-    private JobStopper $jobStopper;
-    private ValidatorInterface $validator;
-    private FindRecordsUsedAsProductVariantAxisInterface $findRecordsUsedAsProductVariantAxis;
-    private int $batchSize;
 
     public function __construct(
-        DeleteRecordsHandler $deleteRecordsHandler,
-        RecordQueryBuilderInterface $recordQueryBuilder,
-        Client $recordClient,
-        JobRepositoryInterface $jobRepository,
-        RecordIndexerInterface $recordIndexer,
-        JobStopper $jobStopper,
-        ValidatorInterface $validator,
-        FindRecordsUsedAsProductVariantAxisInterface $findRecordsUsedAsProductVariantAxis,
-        int $batchSize
+        private DeleteRecordsHandler $deleteRecordsHandler,
+        private RecordQueryBuilderInterface $recordQueryBuilder,
+        private Client $recordClient,
+        private JobRepositoryInterface $jobRepository,
+        private RecordIndexerInterface $recordIndexer,
+        private JobStopper $jobStopper,
+        private ValidatorInterface $validator,
+        private FindRecordsUsedAsProductVariantAxisInterface $findRecordsUsedAsProductVariantAxis,
+        private int $batchSize
     ) {
-        $this->deleteRecordsHandler = $deleteRecordsHandler;
-        $this->recordQueryBuilder = $recordQueryBuilder;
-        $this->recordClient = $recordClient;
-        $this->jobRepository = $jobRepository;
-        $this->recordIndexer = $recordIndexer;
-        $this->jobStopper = $jobStopper;
-        $this->validator = $validator;
-        $this->findRecordsUsedAsProductVariantAxis = $findRecordsUsedAsProductVariantAxis;
-        $this->batchSize = $batchSize;
     }
 
     public function setStepExecution(StepExecution $stepExecution): void

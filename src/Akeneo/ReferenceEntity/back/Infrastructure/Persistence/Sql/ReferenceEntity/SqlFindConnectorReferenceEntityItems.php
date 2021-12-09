@@ -24,15 +24,10 @@ use Doctrine\DBAL\Connection;
  */
 class SqlFindConnectorReferenceEntityItems implements FindConnectorReferenceEntityItemsInterface
 {
-    private Connection $connection;
-    private ConnectorReferenceEntityHydrator $referenceEntityHydrator;
-
     public function __construct(
-        Connection $connection,
-        ConnectorReferenceEntityHydrator $hydrator
+        private Connection $connection,
+        private ConnectorReferenceEntityHydrator $referenceEntityHydrator
     ) {
-        $this->connection = $connection;
-        $this->referenceEntityHydrator = $hydrator;
     }
 
     public function find(ReferenceEntityQuery $query): array

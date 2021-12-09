@@ -22,9 +22,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 interface FindValueKeysByAttributeTypeInterface
 {
     /**
-     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
      * @param string[]                  $attributeTypes
-     *
      * @return string[]
      */
     public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, array $attributeTypes): array;

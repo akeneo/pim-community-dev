@@ -35,7 +35,6 @@ interface RecordRepositoryInterface
     public function getByReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code): Record;
 
     /**
-     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
      * @param RecordCode[] $recordCodes
      */
     public function deleteByReferenceEntityAndCodes(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): void;

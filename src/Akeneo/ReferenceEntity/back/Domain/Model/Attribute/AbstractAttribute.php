@@ -24,33 +24,16 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 abstract class AbstractAttribute
 {
-    protected AttributeIdentifier $identifier;
-    protected ReferenceEntityIdentifier $referenceEntityIdentifier;
-    protected AttributeCode $code;
-    protected LabelCollection $labelCollection;
-    protected AttributeOrder $order;
-    protected AttributeIsRequired $isRequired;
-    protected AttributeValuePerChannel $valuePerChannel;
-    protected AttributeValuePerLocale $valuePerLocale;
-
     protected function __construct(
-        AttributeIdentifier $identifier,
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        AttributeCode $code,
-        LabelCollection $labelCollection,
-        AttributeOrder $order,
-        AttributeIsRequired $isRequired,
-        AttributeValuePerChannel $valuePerChannel,
-        AttributeValuePerLocale $valuePerLocale
+        protected AttributeIdentifier $identifier,
+        protected ReferenceEntityIdentifier $referenceEntityIdentifier,
+        protected AttributeCode $code,
+        protected LabelCollection $labelCollection,
+        protected AttributeOrder $order,
+        protected AttributeIsRequired $isRequired,
+        protected AttributeValuePerChannel $valuePerChannel,
+        protected AttributeValuePerLocale $valuePerLocale
     ) {
-        $this->identifier = $identifier;
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
-        $this->code = $code;
-        $this->labelCollection = $labelCollection;
-        $this->order = $order;
-        $this->isRequired = $isRequired;
-        $this->valuePerChannel = $valuePerChannel;
-        $this->valuePerLocale = $valuePerLocale;
     }
 
     public function getIdentifier(): AttributeIdentifier

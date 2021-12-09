@@ -25,18 +25,11 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class GetConnectorAttributeOptionAction
 {
-    private FindConnectorAttributeOptionInterface $findConnectorAttributeOptionQuery;
-    private ReferenceEntityExistsInterface $referenceEntityExists;
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        FindConnectorAttributeOptionInterface $findConnectorAttributeOptionQuery,
-        ReferenceEntityExistsInterface $referenceEntityExists,
-        SecurityFacade $securityFacade
+        private FindConnectorAttributeOptionInterface $findConnectorAttributeOptionQuery,
+        private ReferenceEntityExistsInterface $referenceEntityExists,
+        private SecurityFacade $securityFacade
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
-        $this->findConnectorAttributeOptionQuery = $findConnectorAttributeOptionQuery;
-        $this->securityFacade = $securityFacade;
     }
 
     /**

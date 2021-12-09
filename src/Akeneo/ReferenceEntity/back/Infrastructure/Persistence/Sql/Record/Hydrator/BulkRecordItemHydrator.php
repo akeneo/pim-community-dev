@@ -27,18 +27,11 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
  */
 class BulkRecordItemHydrator
 {
-    private RecordItemHydratorInterface $recordItemHydrator;
-    private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType;
-    private FindRecordLabelsByIdentifiersInterface $findRecordLabelsByIdentifiers;
-
     public function __construct(
-        RecordItemHydratorInterface $recordItemHydrator,
-        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
-        FindRecordLabelsByIdentifiersInterface $findRecordLabelsByIdentifiers
+        private RecordItemHydratorInterface $recordItemHydrator,
+        private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
+        private FindRecordLabelsByIdentifiersInterface $findRecordLabelsByIdentifiers
     ) {
-        $this->recordItemHydrator = $recordItemHydrator;
-        $this->findValueKeysByAttributeType = $findValueKeysByAttributeType;
-        $this->findRecordLabelsByIdentifiers = $findRecordLabelsByIdentifiers;
     }
 
     public function hydrateAll(array $rows, RecordQuery $query): array

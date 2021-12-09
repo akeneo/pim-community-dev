@@ -27,15 +27,10 @@ use Symfony\Component\Routing\Router;
  */
 class AddHalDownloadLinkToRecordImages
 {
-    private Router $router;
-    private FindImageAttributeCodesInterface $findImageAttributeCodes;
-
     public function __construct(
-        Router $router,
-        FindImageAttributeCodesInterface $findImageAttributeCodes
+        private Router $router,
+        private FindImageAttributeCodesInterface $findImageAttributeCodes
     ) {
-        $this->router = $router;
-        $this->findImageAttributeCodes = $findImageAttributeCodes;
     }
 
     public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, array $normalizedRecords): array

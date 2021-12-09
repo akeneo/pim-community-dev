@@ -31,7 +31,7 @@ class OptionCollectionAttribute extends AbstractAttribute
         AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale
-    ) : self {
+    ): self {
         return new self(
             $identifier,
             $referenceEntityIdentifier,

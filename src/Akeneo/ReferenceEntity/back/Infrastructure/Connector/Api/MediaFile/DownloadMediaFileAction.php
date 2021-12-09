@@ -31,18 +31,11 @@ class DownloadMediaFileAction
 {
     private const FILE_STORAGE_ALIAS = 'catalogStorage';
 
-    private MediaFileRepositoryInterface $mediaFileRepository;
-    private FilesystemProvider $filesystemProvider;
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        MediaFileRepositoryInterface $mediaFileRepository,
-        FilesystemProvider $filesystemProvider,
-        SecurityFacade $securityFacade
+        private MediaFileRepositoryInterface $mediaFileRepository,
+        private FilesystemProvider $filesystemProvider,
+        private SecurityFacade $securityFacade
     ) {
-        $this->mediaFileRepository = $mediaFileRepository;
-        $this->filesystemProvider = $filesystemProvider;
-        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(string $fileCode): Response

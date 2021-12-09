@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -28,18 +29,11 @@ class EditReferenceEntityHandler
 {
     private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
 
-    private ReferenceEntityRepositoryInterface $referenceEntityRepository;
-    private FileStorerInterface $storer;
-    private FileExistsInterface $fileExists;
-
     public function __construct(
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        FileStorerInterface $storer,
-        FileExistsInterface $fileExists
+        private ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        private FileStorerInterface $storer,
+        private FileExistsInterface $fileExists
     ) {
-        $this->referenceEntityRepository = $referenceEntityRepository;
-        $this->storer = $storer;
-        $this->fileExists = $fileExists;
     }
 
     public function __invoke(EditReferenceEntityCommand $editReferenceEntityCommand): void

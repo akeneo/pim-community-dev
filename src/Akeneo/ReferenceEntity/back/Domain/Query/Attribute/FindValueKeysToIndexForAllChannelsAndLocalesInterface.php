@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Domain\Query\Attribute;
@@ -19,9 +20,7 @@ interface FindValueKeysToIndexForAllChannelsAndLocalesInterface
      *   'mobile' => [ ... ]
      * ]
      *
-     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
      *
-     * @return array
      */
     public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): array;
 }

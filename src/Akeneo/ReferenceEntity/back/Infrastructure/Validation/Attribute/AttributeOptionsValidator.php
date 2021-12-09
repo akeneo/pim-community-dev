@@ -19,11 +19,9 @@ use Symfony\Component\Validator\Validation;
  */
 class AttributeOptionsValidator extends ConstraintValidator
 {
-    private int $optionsLimit;
-
-    public function __construct(int $optionsLimit)
-    {
-        $this->optionsLimit = $optionsLimit;
+    public function __construct(
+        private int $optionsLimit
+    ) {
     }
 
     public function validate($attributeOptions, Constraint $constraint)

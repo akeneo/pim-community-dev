@@ -61,7 +61,7 @@ reference-entity-coupling-back: #Doc: launch PHP coupling detector for reference
 .PHONY: reference-entity-lint-back
 reference-entity-lint-back: #Doc: launch PHP linter for reference-entity
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/ReferenceEntity/tests/back/phpstan.neon.dist
-	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/ReferenceEntity/back
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=src/Akeneo/ReferenceEntity/tests/back/.php_cs.php src/Akeneo/ReferenceEntity/back
 
 .PHONY: reference-entity-unit-back
 reference-entity-unit-back: var/tests/phpspec #Doc: launch PHPSec for reference-entity

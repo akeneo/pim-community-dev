@@ -16,11 +16,9 @@ use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordLa
  */
 class FindRecordsLabelTranslations implements FindRecordsLabelTranslationsInterface
 {
-    private FindRecordLabelsByCodesInterface $findRecordLabelsByCodes;
-
-    public function __construct(FindRecordLabelsByCodesInterface $findRecordLabelsByCodes)
-    {
-        $this->findRecordLabelsByCodes = $findRecordLabelsByCodes;
+    public function __construct(
+        private FindRecordLabelsByCodesInterface $findRecordLabelsByCodes
+    ) {
     }
 
     public function find(string $referenceEntityCode, array $recordCodes, $locale): array

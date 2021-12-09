@@ -43,36 +43,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateOrUpdateRecordAction
 {
-    private ReferenceEntityExistsInterface $referenceEntityExists;
-    private RecordExistsInterface $recordExists;
-    private EditRecordCommandFactory $editRecordCommandFactory;
-    private EditRecordHandler $editRecordHandler;
-    private CreateRecordHandler $createRecordHandler;
-    private Router $router;
-    private RecordValidator $recordStructureValidator;
-    private ValidatorInterface $recordDataValidator;
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        ReferenceEntityExistsInterface $referenceEntityExists,
-        RecordExistsInterface $recordExists,
-        EditRecordCommandFactory $editRecordCommandFactory,
-        EditRecordHandler $editRecordHandler,
-        CreateRecordHandler $createRecordHandler,
-        Router $router,
-        RecordValidator $recordStructureValidator,
-        ValidatorInterface $recordDataValidator,
-        SecurityFacade $securityFacade
+        private ReferenceEntityExistsInterface $referenceEntityExists,
+        private RecordExistsInterface $recordExists,
+        private EditRecordCommandFactory $editRecordCommandFactory,
+        private EditRecordHandler $editRecordHandler,
+        private CreateRecordHandler $createRecordHandler,
+        private Router $router,
+        private RecordValidator $recordStructureValidator,
+        private ValidatorInterface $recordDataValidator,
+        private SecurityFacade $securityFacade
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
-        $this->recordExists = $recordExists;
-        $this->editRecordCommandFactory = $editRecordCommandFactory;
-        $this->editRecordHandler = $editRecordHandler;
-        $this->createRecordHandler = $createRecordHandler;
-        $this->router = $router;
-        $this->recordStructureValidator = $recordStructureValidator;
-        $this->recordDataValidator = $recordDataValidator;
-        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier, string $code): Response

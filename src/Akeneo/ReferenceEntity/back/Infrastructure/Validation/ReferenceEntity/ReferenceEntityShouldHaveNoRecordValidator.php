@@ -26,11 +26,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ReferenceEntityShouldHaveNoRecordValidator extends ConstraintValidator
 {
-    private ReferenceEntityHasRecordsInterface $referenceEntityHasRecords;
-
-    public function __construct(ReferenceEntityHasRecordsInterface $referenceEntityHasRecords)
-    {
-        $this->referenceEntityHasRecords = $referenceEntityHasRecords;
+    public function __construct(
+        private ReferenceEntityHasRecordsInterface $referenceEntityHasRecords
+    ) {
     }
 
     public function validate($command, Constraint $constraint): void
@@ -50,7 +48,7 @@ class ReferenceEntityShouldHaveNoRecordValidator extends ConstraintValidator
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
                     DeleteReferenceEntityCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

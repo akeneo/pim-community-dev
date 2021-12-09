@@ -26,11 +26,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ChannelShouldExistValidator extends ConstraintValidator
 {
-    private ChannelExistsInterface $channelExists;
-
-    public function __construct(ChannelExistsInterface $channelExists)
-    {
-        $this->channelExists = $channelExists;
+    public function __construct(
+        private ChannelExistsInterface $channelExists
+    ) {
     }
 
     /**
@@ -68,7 +66,7 @@ class ChannelShouldExistValidator extends ConstraintValidator
             throw new \InvalidArgumentException(sprintf(
                 'Expected argument to be of class "%s", "%s" given',
                 ChannelIdentifier::class,
-                get_class($channelReference)
+                $channelReference::class
             ));
         }
     }

@@ -19,12 +19,11 @@ use Webmozart\Assert\Assert;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordIdentifier
+class RecordIdentifier implements \Stringable
 {
-    private string $identifier;
-
-    private function __construct(string $identifier)
-    {
+    private function __construct(
+        private string $identifier
+    ) {
         Assert::stringNotEmpty($identifier, 'Record identifier cannot be empty');
         Assert::maxLength(
             $identifier,
@@ -42,8 +41,6 @@ class RecordIdentifier
                 $identifier
             )
         );
-
-        $this->identifier = $identifier;
     }
 
     public static function create(string $referenceEntityIdentifier, string $code, string $fingerprint): self

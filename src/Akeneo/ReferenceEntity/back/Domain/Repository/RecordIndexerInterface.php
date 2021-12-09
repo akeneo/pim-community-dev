@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Domain\Repository;
@@ -10,8 +11,6 @@ interface RecordIndexerInterface
 {
     /**
      * Indexes multiple records
-     *
-     * @param RecordIdentifier $recordIdentifier
      */
     public function index(RecordIdentifier $recordIdentifier);
 

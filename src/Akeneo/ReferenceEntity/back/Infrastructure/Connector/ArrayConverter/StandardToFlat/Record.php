@@ -27,13 +27,12 @@ use Akeneo\Tool\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimple
 
 class Record extends AbstractSimpleArrayConverter
 {
-    private AttributeRepositoryInterface $attributeRepository;
     /** @var AbstractAttribute[] */
     private array $cachedAttributes = [];
 
-    public function __construct(AttributeRepositoryInterface $attributeRepository)
-    {
-        $this->attributeRepository = $attributeRepository;
+    public function __construct(
+        private AttributeRepositoryInterface $attributeRepository
+    ) {
     }
 
     protected function convertProperty($property, $data, array $convertedItem, array $options)

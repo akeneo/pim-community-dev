@@ -26,29 +26,6 @@ class TextAttribute extends AbstractAttribute
 {
     public const ATTRIBUTE_TYPE = 'text';
 
-    private AttributeMaxLength $maxLength;
-    private AttributeIsTextarea $isTextarea;
-    private AttributeValidationRule $validationRule;
-    private AttributeRegularExpression $regularExpression;
-    private AttributeIsRichTextEditor $isRichTextEditor;
-
-    /**
-     * TextAttribute constructor.
-     *
-     * @param AttributeIdentifier        $identifier
-     * @param ReferenceEntityIdentifier   $referenceEntityIdentifier
-     * @param AttributeCode              $code
-     * @param LabelCollection            $labelCollection
-     * @param AttributeOrder             $order
-     * @param AttributeIsRequired        $isRequired
-     * @param AttributeValuePerChannel   $valuePerChannel
-     * @param AttributeValuePerLocale    $valuePerLocale
-     * @param AttributeMaxLength         $maxLength
-     * @param AttributeIsTextarea        $isTextarea
-     * @param AttributeValidationRule    $validationRule
-     * @param AttributeRegularExpression $regularExpression
-     * @param AttributeIsRichTextEditor  $isRichTextEditor
-     */
     protected function __construct(
         AttributeIdentifier $identifier,
         ReferenceEntityIdentifier $referenceEntityIdentifier,
@@ -58,11 +35,11 @@ class TextAttribute extends AbstractAttribute
         AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
-        AttributeMaxLength $maxLength,
-        AttributeIsTextarea $isTextarea,
-        AttributeValidationRule $validationRule,
-        AttributeRegularExpression $regularExpression,
-        AttributeIsRichTextEditor $isRichTextEditor
+        private AttributeMaxLength $maxLength,
+        private AttributeIsTextarea $isTextarea,
+        private AttributeValidationRule $validationRule,
+        private AttributeRegularExpression $regularExpression,
+        private AttributeIsRichTextEditor $isRichTextEditor
     ) {
         if ($isTextarea->isYes()) {
             Assert::true(
@@ -88,12 +65,6 @@ class TextAttribute extends AbstractAttribute
             $valuePerChannel,
             $valuePerLocale
         );
-
-        $this->maxLength = $maxLength;
-        $this->isTextarea = $isTextarea;
-        $this->validationRule = $validationRule;
-        $this->regularExpression = $regularExpression;
-        $this->isRichTextEditor = $isRichTextEditor;
     }
 
     public static function createText(
