@@ -18,7 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetId;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindId;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
@@ -79,7 +79,7 @@ class PublishedProductController
     /** @var array */
     protected $apiConfiguration;
 
-    private GetId $getPublishedProductId;
+    private FindId $getPublishedProductId;
 
     /** @var QueryParametersCheckerInterface */
     protected $queryParametersChecker;
@@ -110,7 +110,7 @@ class PublishedProductController
         PaginatorInterface $searchAfterPaginator,
         PaginatorInterface $offsetPaginator,
         ParameterValidatorInterface $parameterValidator,
-        GetId $getPublishedProductId,
+        FindId $getPublishedProductId,
         array $apiConfiguration
     ) {
         $this->searchAfterPqbFactory = $searchAfterPqbFactory;

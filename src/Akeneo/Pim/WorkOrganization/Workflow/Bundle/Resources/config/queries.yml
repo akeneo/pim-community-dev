@@ -95,8 +95,8 @@ services:
         arguments:
             - '@database_connection'
 
-    pimee_workflow.query.get_published_product_id:
-        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\SqlGetPublishedProductId'
+    pimee_workflow.query.find_published_product_id:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\SqlFindPublishedProductId'
         arguments:
             - '@database_connection'
 

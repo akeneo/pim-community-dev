@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql;
 
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetId;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindId;
 use Doctrine\DBAL\Connection;
 
-final class SqlGetPublishedProductId implements GetId
+final class SqlFindPublishedProductId implements FindId
 {
     public function __construct(private Connection $connection)
     {

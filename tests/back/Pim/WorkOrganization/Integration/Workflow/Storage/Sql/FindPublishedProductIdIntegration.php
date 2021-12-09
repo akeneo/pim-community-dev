@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow\Storage\Sql;
 
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\SqlGetPublishedProductId;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\SqlFindPublishedProductId;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
-final class GetPublishedProductIdIntegration extends TestCase
+final class FindPublishedProductIdIntegration extends TestCase
 {
-    private SqlGetPublishedProductId $getPublishedProductId;
+    private SqlFindPublishedProductId $getPublishedProductId;
 
     /** @test */
     public function it_gets_the_id_of_a_published_product_from_its_identifier(): void
@@ -36,7 +36,7 @@ final class GetPublishedProductIdIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->getPublishedProductId = $this->get('pimee_workflow.query.get_published_product_id');
+        $this->getPublishedProductId = $this->get('pimee_workflow.query.find_published_product_id');
         $productBuilder = $this->get('pim_catalog.builder.product');
         $productFoo = $productBuilder->createProduct('foo');
         $productBar = $productBuilder->createProduct('bar');
