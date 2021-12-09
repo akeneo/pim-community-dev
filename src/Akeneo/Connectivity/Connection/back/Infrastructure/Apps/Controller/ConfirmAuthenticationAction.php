@@ -93,10 +93,7 @@ class ConfirmAuthenticationAction
             $appAuthenticationUser
         );
 
+        // @TODO confirm that a redirect is enough
         return new RedirectResponse($redirectUrl);
-        // return new JsonResponse([
-        //     'appId' => $appConfirmation->getAppId(),
-        //     'redirectUrl' => $redirectUrl,
-        // ]);
     }
 }
