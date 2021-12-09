@@ -11,7 +11,7 @@ const RecordProperties: ColumnProperties = ({selectedColumn}) => {
 
   return (
     <Field label={translate('pim_table_attribute.form.attribute.reference_entity')}>
-      <ReferenceEntitySelector readOnly value={recordColumn.reference_entity_code} />
+      <ReferenceEntitySelector readOnly value={recordColumn.reference_entity_identifier} />
     </Field>
   );
 };

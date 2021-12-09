@@ -11,7 +11,7 @@ export const getComplexTableConfiguration: (firstColumnType?: DataType) => Table
           code: 'city',
           labels: {en_US: 'City'},
           validations: {},
-          reference_entity_code: 'city',
+          reference_entity_identifier: 'city',
         };
   return [
     firstColumn,

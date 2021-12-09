@@ -57,7 +57,8 @@ const RecordAddRowsButton: React.FC<RecordAddRowsButtonProps> = ({
     () => checkedOptionCodes.map(code => code.toLowerCase()),
     [checkedOptionCodes]
   );
-  const referenceEntityCode = (attribute?.table_configuration[0] as RecordColumnDefinition)?.reference_entity_code;
+  const referenceEntityCode = (attribute?.table_configuration[0] as RecordColumnDefinition)
+    ?.reference_entity_identifier;
   const {items, isLoading, handleNextPage} = useRecords({
     itemsPerPage,
     referenceEntityCode,

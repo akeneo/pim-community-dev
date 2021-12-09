@@ -159,7 +159,7 @@ describe('AddColumnModal', () => {
       code: 'Record_column',
       labels: {en_US: 'Record column'},
       data_type: 'record',
-      reference_entity_code: 'city',
+      reference_entity_identifier: 'city',
       validations: {},
     });
   });

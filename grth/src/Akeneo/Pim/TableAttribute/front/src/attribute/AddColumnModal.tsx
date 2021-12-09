@@ -32,7 +32,7 @@ type UndefinedColumnDefinition = {
   code: ColumnCode;
   label: string;
   data_type: DataType | null;
-  reference_entity_code: ReferenceEntityIdentifierOrCode | undefined;
+  reference_entity_identifier: ReferenceEntityIdentifierOrCode | undefined;
 };
 
 type ErrorValidations = {
@@ -51,7 +51,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
     code: '',
     label: '',
     data_type: null,
-    reference_entity_code: undefined,
+    reference_entity_identifier: undefined,
   });
 
   const [errorValidations, setErrorValidations] = React.useState<ErrorValidations>({
@@ -88,9 +88,9 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
     setDirtyCode(code !== '');
   };
 
-  const handleReferenceEntityChange = (referenceEntityCode: ReferenceEntityIdentifierOrCode | undefined) => {
+  const handleReferenceEntityChange = (referenceEntityIdentifier: ReferenceEntityIdentifierOrCode | undefined) => {
     setColumnDefinition(columnDefinition => {
-      return {...columnDefinition, reference_entity_code: referenceEntityCode};
+      return {...columnDefinition, reference_entity_identifier: referenceEntityIdentifier};
     });
   };
 
@@ -136,7 +136,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
   const isValid = (silent: boolean) => {
     if (validateCode(columnDefinition.code, silent) + validateDataType(columnDefinition.data_type, silent) > 0)
       return false;
-    if (columnDefinition.data_type === 'record' && !columnDefinition.reference_entity_code) return false;
+    if (columnDefinition.data_type === 'record' && !columnDefinition.reference_entity_identifier) return false;
     return true;
   };
 
@@ -150,8 +150,8 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
       data_type: columnDefinition.data_type,
       validations: {},
     } as ColumnDefinition;
-    if (columnDefinition.reference_entity_code) {
-      (newColumn as RecordColumnDefinition).reference_entity_code = columnDefinition.reference_entity_code;
+    if (columnDefinition.reference_entity_identifier) {
+      (newColumn as RecordColumnDefinition).reference_entity_identifier = columnDefinition.reference_entity_identifier;
     }
     onCreate(newColumn);
   };
@@ -220,7 +220,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
               onChange={handleReferenceEntityChange}
               openLabel={translate('pim_common.open')}
               clearLabel={translate('pim_common.clear_value')}
-              value={columnDefinition.reference_entity_code}
+              value={columnDefinition.reference_entity_identifier}
             />
           </Field>
         )}

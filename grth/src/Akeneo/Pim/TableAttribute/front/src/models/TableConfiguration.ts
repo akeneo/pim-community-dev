@@ -78,7 +78,7 @@ export type RecordColumnDefinition = {
   data_type: 'record';
   validations: RecordColumnValidation;
   is_required_for_completeness?: boolean;
-  reference_entity_code: ReferenceEntityIdentifierOrCode;
+  reference_entity_identifier: ReferenceEntityIdentifierOrCode;
 };
 
 export type ColumnDefinition =
