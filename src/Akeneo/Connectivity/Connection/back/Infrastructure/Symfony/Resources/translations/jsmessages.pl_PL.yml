@@ -139,6 +139,9 @@ akeneo_connectivity.connection:
         invalid: Typ połączeń może być tylko 'data_source', 'data_destination' lub 'other'.
       image:
         must_exist: Obraz nie został znaleziony. Spróbuj ponownie.
+      type:
+        required: Typ połączenia jest wymagany.
+        too_long: Typ połączenia jest zbyt długi. Powinien mieć 30 lub mniej znaków.
   flow_type:
     data_source: Źródło danych | Źródła danych
     data_destination: Przeznaczenie danych | Przeznaczenia danych
