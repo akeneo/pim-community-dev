@@ -26,6 +26,7 @@ class CreateUserConsentQuery implements CreateUserConsentQueryInterface
         $query = <<<SQL
             INSERT INTO akeneo_connectivity_user_consent (user_id, app_id, scopes, consent_date)
             VALUES (:userId, :appId, :scopes, :consentDate)
+            ON DUPLICATE KEY UPDATE scopes = :scopes, consent_date = :consentDate
             SQL;
 
         $this->connection->executeQuery($query, [
