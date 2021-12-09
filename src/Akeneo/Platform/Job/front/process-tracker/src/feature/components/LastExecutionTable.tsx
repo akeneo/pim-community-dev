@@ -2,9 +2,9 @@ import React, {MouseEvent} from 'react';
 import {Table} from 'akeneo-design-system';
 import {useDateFormatter, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {JobExecutionRow, jobCanBeStopped, canShowJobExecutionDetail} from '../models';
-import {JobExecutionStatus, StopJobAction, ProgressCell} from './common';
+import {JobExecutionStatus, StopJobAction} from './common';
 
-const COLUMN_HEADERS = ['started_at', 'username', 'progress', 'status', 'warning_count'];
+const COLUMN_HEADERS = ['started_at', 'username', 'status', 'warning_count'];
 
 type LastExecutionsTableProps = {
   sticky?: number;
@@ -63,7 +63,7 @@ const LastExecutionTable = ({sticky, jobExecutionRows, onTableRefresh}: LastExec
                 : '-'}
             </Table.Cell>
             <Table.Cell>{jobExecutionRow.username}</Table.Cell>
-            <ProgressCell jobExecutionRow={jobExecutionRow} />
+            {/* <ProgressCell jobExecutionRow={jobExecutionRow} /> */}
             <Table.Cell>
               <JobExecutionStatus
                 status={jobExecutionRow.status}

@@ -57,3 +57,21 @@ test('it displays a job execution progress cell', () => {
   expect(secondStepProgressBar).toHaveAttribute('aria-valuenow', '20');
   expect(screen.getByTitle('akeneo_job_process_tracker.tracking.in_progress')).toBeInTheDocument();
 });
+
+test('it displays indeterminate progress bars when job is starting', () => {
+  renderWithProviders(
+    <table>
+      <tbody>
+        <tr>
+          <ProgressCell jobExecutionRow={{...jobExecutionRow, status: 'STARTING'}} />
+        </tr>
+      </tbody>
+    </table>
+  );
+
+  const [firstStepProgressBar, secondStepProgressBar] = screen.getAllByRole('progressbar');
+
+  expect(firstStepProgressBar).not.toHaveAttribute('aria-valuenow', '100');
+  expect(secondStepProgressBar).not.toHaveAttribute('aria-valuenow', '20');
+  expect(screen.getByTitle('akeneo_job_process_tracker.tracking.in_progress')).toBeInTheDocument();
+});
