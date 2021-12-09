@@ -9,6 +9,7 @@ pim_table_configuration:
       column_code_must_be_filled: Trzeba uzupełnić kod kolumny.
       option_code_must_be_filled: Trzeba uzupełnić kod opcji.
       invalid_code: Kod kolumny może składać się wyłącznie z liter, cyfr i podkreśleń.
+      not_available_code: Ten kod kolumny jest niedostępny.
       invalid_option_code: Kod opcji może składać się wyłącznie z liter, cyfr i podkreśleń.
       too_long_code: "Kod kolumny jest za długi: może składać się z maksymalnie 100 znaków."
       too_long_label: "Etykieta kolumny jest za długa: może składać się z maksymalnie 250 znaków."
