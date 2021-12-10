@@ -4,10 +4,6 @@ services:
         tags:
             - { name: 'liip_imagine.filter.loader', loader: colorspace }
 
-    Akeneo\AssetManager\Infrastructure\Filesystem\Filter\IccStripFilter:
-        tags:
-            - { name: 'liip_imagine.filter.loader', loader: icc_strip }
-
     Akeneo\AssetManager\Infrastructure\Filesystem\PostProcessor\ConvertToJPGPostProcessor:
         tags:
             - { name: 'liip_imagine.filter.post_processor', post_processor: 'convert_to_jpg' }
