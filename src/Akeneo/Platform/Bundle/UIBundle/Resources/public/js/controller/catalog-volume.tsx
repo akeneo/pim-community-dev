@@ -8,7 +8,6 @@ import {CatalogVolumeMonitoringApp, getCatalogVolume} from '@akeneo-pim-communit
 const mediator = require('oro/mediator');
 
 class CatalogVolumeController extends ReactController {
-
   reactElementToMount() {
     return (
       <DependenciesProvider>
@@ -24,8 +23,8 @@ class CatalogVolumeController extends ReactController {
   }
 
   renderRoute() {
-      mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-system'});
-      mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-system-catalog-volume'});
+    mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-system'});
+    mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-system-catalog-volume'});
 
     return super.renderRoute();
   }
