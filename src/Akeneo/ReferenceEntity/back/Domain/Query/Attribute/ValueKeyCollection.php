@@ -34,12 +34,9 @@ use Webmozart\Assert\Assert;
  */
 class ValueKeyCollection implements \IteratorAggregate
 {
-    /** @var ValueKey[] */
-    private array $valueKeys;
-
-    private function __construct(array $valueKeys)
-    {
-        $this->valueKeys = $valueKeys;
+    private function __construct(
+        private array $valueKeys
+    ) {
     }
 
     public static function fromValueKeys(array $valueKeys): self

@@ -482,7 +482,6 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     {
         if (!$this->groups->contains($group)) {
             $this->groups->add($group);
-            $group->addProduct($this);
         }
 
         return $this;

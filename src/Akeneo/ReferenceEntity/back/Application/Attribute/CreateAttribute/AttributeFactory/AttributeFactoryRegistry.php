@@ -43,7 +43,7 @@ class AttributeFactoryRegistry implements AttributeFactoryRegistryInterface
         }
 
         throw new \RuntimeException(
-            sprintf('There was no attribute factory found for command "%s"', get_class($command))
+            sprintf('There was no attribute factory found for command "%s"', $command::class)
         );
     }
 }

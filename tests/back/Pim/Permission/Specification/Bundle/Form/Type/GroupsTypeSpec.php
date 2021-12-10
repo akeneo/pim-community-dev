@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Specification\Akeneo\Pim\Permission\Bundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
@@ -37,7 +39,8 @@ class GroupsTypeSpec extends ObjectBehavior
                     Argument::withEntry('property', 'name'),
                     Argument::withEntry('multiple', true),
                     Argument::withEntry('required', false),
-                    Argument::withEntry('select2', true)
+                    Argument::withEntry('select2', true),
+                    Argument::withKey('query_builder')
                 )
             )
             ->shouldHaveBeenCalled();

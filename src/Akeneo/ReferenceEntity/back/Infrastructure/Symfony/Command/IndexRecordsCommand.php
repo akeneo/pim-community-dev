@@ -36,26 +36,14 @@ class IndexRecordsCommand extends Command
     public const INDEX_RECORDS_COMMAND_NAME = 'akeneo:reference-entity:index-records';
     private const ERROR_CODE_USAGE = 1;
 
-    private Client $recordClient;
-    private ReferenceEntityRepositoryInterface $referenceEntityRepository;
-    private RecordIndexerInterface $recordIndexer;
-    private ReferenceEntityExistsInterface $referenceEntityExists;
-    private string $recordIndexName;
-
     public function __construct(
-        Client $client,
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        RecordIndexerInterface $recordIndexer,
-        ReferenceEntityExistsInterface $referenceEntityExists,
-        string $recordIndexName
+        private Client $recordClient,
+        private ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        private RecordIndexerInterface $recordIndexer,
+        private ReferenceEntityExistsInterface $referenceEntityExists,
+        private string $recordIndexName
     ) {
         parent::__construct();
-
-        $this->recordClient = $client;
-        $this->referenceEntityRepository = $referenceEntityRepository;
-        $this->recordIndexer = $recordIndexer;
-        $this->referenceEntityExists = $referenceEntityExists;
-        $this->recordIndexName = $recordIndexName;
     }
 
     /**

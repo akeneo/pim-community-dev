@@ -196,7 +196,7 @@ RUN composer install \
         --optimize-autoloader && \
      composer dump-env prod
 
-FROM node:14 AS builder-bigcommerceconnector-front
+FROM node:16 AS builder-bigcommerceconnector-front
 
 COPY --from=builder-bigcommerceconnector-back --chown=www-data:www-data /srv/pim/tmp/build-connector/front /srv/pim/tmp/build-connector/front
 

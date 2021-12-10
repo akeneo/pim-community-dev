@@ -18,69 +18,34 @@ use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\JsonSchema\Edi
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateOrUpdateAttributeAction
 {
-    private CreateAttributeCommandFactoryRegistry $createAttributeCommandFactoryRegistry;
-    private AttributeExistsInterface $attributeExists;
-    private CreateAttributeHandler $createAttributeHandler;
-    private GetAttributeIdentifierInterface $getAttributeIdentifier;
-    private EditAttributeCommandFactory $editAttributeCommandFactory;
-    private EditAttributeHandler $editAttributeHandler;
-    private Router $router;
-    private ReferenceEntityExistsInterface $referenceEntityExists;
-    private ValidatorInterface $validator;
-    private AttributeCreationValidator $jsonSchemaCreateValidator;
-    private AttributeEditionValidator $jsonSchemaEditValidator;
-    private ValidateAttributePropertiesImmutability $validateAttributePropertiesImmutability;
-    private SecurityFacade $securityFacade;
-    private TokenStorageInterface $tokenStorage;
-    private LoggerInterface $apiAclLogger;
-
     public function __construct(
-        CreateAttributeCommandFactoryRegistry $createAttributeCommandFactoryRegistry,
-        AttributeExistsInterface $attributeExists,
-        CreateAttributeHandler $createAttributeHandler,
-        Router $router,
-        GetAttributeIdentifierInterface $getAttributeIdentifier,
-        EditAttributeCommandFactory $editAttributeCommandFactory,
-        EditAttributeHandler $editAttributeHandler,
-        ReferenceEntityExistsInterface $referenceEntityExists,
-        ValidatorInterface $validator,
-        AttributeCreationValidator $jsonSchemaCreateValidator,
-        AttributeEditionValidator $jsonSchemaEditValidator,
-        ValidateAttributePropertiesImmutability $validateAttributePropertiesImmutability,
-        SecurityFacade $securityFacade,
-        TokenStorageInterface $tokenStorage,
-        LoggerInterface $apiAclLogger
+        private CreateAttributeCommandFactoryRegistry $createAttributeCommandFactoryRegistry,
+        private AttributeExistsInterface $attributeExists,
+        private CreateAttributeHandler $createAttributeHandler,
+        private Router $router,
+        private GetAttributeIdentifierInterface $getAttributeIdentifier,
+        private EditAttributeCommandFactory $editAttributeCommandFactory,
+        private EditAttributeHandler $editAttributeHandler,
+        private ReferenceEntityExistsInterface $referenceEntityExists,
+        private ValidatorInterface $validator,
+        private AttributeCreationValidator $jsonSchemaCreateValidator,
+        private AttributeEditionValidator $jsonSchemaEditValidator,
+        private ValidateAttributePropertiesImmutability $validateAttributePropertiesImmutability,
+        private SecurityFacade $securityFacade
     ) {
-        $this->createAttributeCommandFactoryRegistry = $createAttributeCommandFactoryRegistry;
-        $this->attributeExists = $attributeExists;
-        $this->createAttributeHandler = $createAttributeHandler;
-        $this->router = $router;
-        $this->getAttributeIdentifier = $getAttributeIdentifier;
-        $this->editAttributeCommandFactory = $editAttributeCommandFactory;
-        $this->editAttributeHandler = $editAttributeHandler;
-        $this->referenceEntityExists = $referenceEntityExists;
-        $this->validator = $validator;
-        $this->jsonSchemaCreateValidator = $jsonSchemaCreateValidator;
-        $this->jsonSchemaEditValidator = $jsonSchemaEditValidator;
-        $this->validateAttributePropertiesImmutability = $validateAttributePropertiesImmutability;
-        $this->securityFacade = $securityFacade;
-        $this->tokenStorage = $tokenStorage;
-        $this->apiAclLogger = $apiAclLogger;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier, string $attributeCode): Response
@@ -262,28 +227,8 @@ class CreateOrUpdateAttributeAction
 
     private function denyAccessUnlessAclIsGranted(): void
     {
-        $acl = 'pim_api_reference_entity_edit';
-
-        if (!$this->securityFacade->isGranted($acl)) {
-            $token = $this->tokenStorage->getToken();
-            if (null === $token) {
-                throw new \LogicException('An user must be authenticated if ACLs are required');
-            }
-
-            $user = $token->getUser();
-            if (!$user instanceof UserInterface) {
-                throw new \LogicException(sprintf(
-                    'An instance of "%s" is expected if ACLs are required',
-                    UserInterface::class
-                ));
-            }
-
-            $this->apiAclLogger->warning(sprintf(
-                'User "%s" with roles %s is not granted "%s"',
-                $user->getUsername(),
-                implode(',', $user->getRoles()),
-                $acl
-            ));
+        if (!$this->securityFacade->isGranted('pim_api_reference_entity_edit')) {
+            throw new AccessDeniedHttpException('Access forbidden. You are not allowed to create or update reference entities.');
         }
     }
 }

@@ -22,13 +22,10 @@ use Webmozart\Assert\Assert;
  */
 class RecordData implements ValueDataInterface
 {
-    private string $recordCode;
-
-    private function __construct(string $recordCode)
-    {
+    private function __construct(
+        private string $recordCode
+    ) {
         Assert::stringNotEmpty($recordCode, 'Record code should be a non empty string');
-
-        $this->recordCode = $recordCode;
     }
 
     /**

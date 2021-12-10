@@ -26,15 +26,10 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ThereShouldBeLessRecordsThanLimitValidator extends ConstraintValidator
 {
-    private RecordRepositoryInterface $recordRepository;
-    private int $recordsLimit;
-
     public function __construct(
-        RecordRepositoryInterface $recordRepository,
-        int $recordsLimit
+        private RecordRepositoryInterface $recordRepository,
+        private int $recordsLimit
     ) {
-        $this->recordRepository = $recordRepository;
-        $this->recordsLimit = $recordsLimit;
     }
 
     public function validate($command, Constraint $constraint): void
@@ -54,7 +49,7 @@ class ThereShouldBeLessRecordsThanLimitValidator extends ConstraintValidator
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
                     CreateRecordCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

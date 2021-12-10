@@ -39,31 +39,18 @@ class ConnectorAttribute
         'record_type' => 'reference_entity_code'
     ];
 
-    private AttributeCode $code;
-    private LabelCollection $labelCollection;
-    private string $type;
-    private AttributeValuePerLocale $valuePerLocale;
-    private AttributeValuePerChannel $valuePerChannel;
-    private AttributeIsRequired $isRequired;
-    /** @var array<string, string> */
-    private array $additionalProperties;
-
+    /**
+     * @param array<string, string> $additionalProperties
+     */
     public function __construct(
-        AttributeCode $identifier,
-        LabelCollection $labelCollection,
-        string $type,
-        AttributeValuePerLocale $valuePerLocale,
-        AttributeValuePerChannel $valuePerChannel,
-        AttributeIsRequired $isRequired,
-        array $additionalProperties
+        private AttributeCode $code,
+        private LabelCollection $labelCollection,
+        private string $type,
+        private AttributeValuePerLocale $valuePerLocale,
+        private AttributeValuePerChannel $valuePerChannel,
+        private AttributeIsRequired $isRequired,
+        private array $additionalProperties
     ) {
-        $this->code = $identifier;
-        $this->labelCollection = $labelCollection;
-        $this->type = $type;
-        $this->valuePerLocale = $valuePerLocale;
-        $this->valuePerChannel = $valuePerChannel;
-        $this->isRequired = $isRequired;
-        $this->additionalProperties = $additionalProperties;
     }
 
     public function mapAttributeType(string $type)

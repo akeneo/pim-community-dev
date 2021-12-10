@@ -108,7 +108,7 @@ $rules = [
 
         // TIP-949: Assets should not be Reference Data
         // TIP-963: Define the Products public API
-        'Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface', // For the reference data PQB filter
+        'Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface',// For the reference data PQB filter
 
         // TIP-1031: Do not override PIM/Enrichment commands
         'Akeneo\Pim\Enrichment\Bundle\Command\UpdateProductCommand',
@@ -147,6 +147,7 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes',
         'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchBufferedPimEventSubscriberInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelCommand',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\FindId',
 
         // TIP-1004: WidgetInterface located in Platform is used in multiple contexts
         'Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface',

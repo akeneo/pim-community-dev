@@ -48,6 +48,7 @@ $rules = [
         'JsonSchema\Validator',
         'PDO',
         'Akeneo\UserManagement\Component\Model\GroupInterface', // Because of an EventSubscriber on UserGroup deletion
+        'Akeneo\UserManagement\Component\Model\Group', // For constant usage
         'Liip\ImagineBundle',
         'Akeneo\Pim\Automation\RuleEngine',
         'Psr\Log\LoggerInterface',
@@ -60,6 +61,7 @@ $rules = [
         'Psr\Http\Message\RequestInterface',
         'Psr\Http\Message\ResponseInterface',
         'Psr\Http\Message\UriInterface',
+        'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
 
         // TODO: asset families should not depend on PIM
         'Akeneo\Pim\Enrichment\AssetManager\Component',
@@ -67,6 +69,7 @@ $rules = [
         'Akeneo\Pim\Structure\Component',
         'Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes',
         'Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery',
+        'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
     ])->in('Akeneo\AssetManager\Infrastructure'),
 ];
 

@@ -12,6 +12,7 @@ akeneo_batch_job_instance | BASE TABLE
 akeneo_batch_step_execution | BASE TABLE
 akeneo_batch_warning | BASE TABLE
 akeneo_communication_channel_viewed_announcements | BASE TABLE
+akeneo_connectivity_connected_app | BASE TABLE
 akeneo_connectivity_connection | BASE TABLE
 akeneo_connectivity_connection_audit_error | BASE TABLE
 akeneo_connectivity_connection_audit_product | BASE TABLE
@@ -248,6 +249,16 @@ akeneo_batch_warning | reason_parameters | NO | longtext |
 akeneo_batch_warning | item | NO | longtext |
 akeneo_communication_channel_viewed_announcements | announcement_id | NO | varchar(100) | PRI
 akeneo_communication_channel_viewed_announcements | user_id | NO | int | PRI
+akeneo_connectivity_connected_app | id | NO | varchar(36) | PRI
+akeneo_connectivity_connected_app | name | NO | varchar(255) |
+akeneo_connectivity_connected_app | logo | NO | varchar(255) |
+akeneo_connectivity_connected_app | author | NO | varchar(255) |
+akeneo_connectivity_connected_app | partner | YES | varchar(255) |
+akeneo_connectivity_connected_app | categories | NO | json |
+akeneo_connectivity_connected_app | certified | NO | tinyint(1) |
+akeneo_connectivity_connected_app | connection_code | NO | varchar(100) | MUL
+akeneo_connectivity_connected_app | scopes | NO | json |
+akeneo_connectivity_connected_app | user_group_name | NO | varchar(255) | MUL
 akeneo_connectivity_connection | client_id | NO | int | UNI
 akeneo_connectivity_connection | user_id | NO | int | MUL
 akeneo_connectivity_connection | code | NO | varchar(100) | PRI
@@ -375,6 +386,8 @@ migration_versions | executed_at | YES | datetime |
 migration_versions | execution_time | YES | int |
 oro_access_group | id | NO | smallint | PRI
 oro_access_group | name | NO | varchar(255) | UNI
+oro_access_group | default_permissions | YES | json |
+oro_access_group | type | NO | varchar(30) |
 oro_access_role | id | NO | smallint | PRI
 oro_access_role | role | NO | varchar(255) | UNI
 oro_access_role | label | NO | varchar(255) |

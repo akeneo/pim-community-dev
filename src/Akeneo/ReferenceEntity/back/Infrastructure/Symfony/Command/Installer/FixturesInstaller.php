@@ -21,21 +21,12 @@ class FixturesInstaller
     private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
     private const NUMBER_OF_FAKE_RECORD_TO_CREATE = 10000;
 
-    private Connection $sqlConnection;
-    private FileStorerInterface $storer;
-    private Client $recordClient;
-    private CommandLauncher $commandLauncher;
-
     public function __construct(
-        Connection $sqlConnection,
-        FileStorerInterface $storer,
-        Client $recordClient,
-        CommandLauncher $commandLauncher
+        private Connection $sqlConnection,
+        private FileStorerInterface $storer,
+        private Client $recordClient,
+        private CommandLauncher $commandLauncher
     ) {
-        $this->sqlConnection = $sqlConnection;
-        $this->storer = $storer;
-        $this->recordClient = $recordClient;
-        $this->commandLauncher = $commandLauncher;
     }
 
     public function createSchema(): void

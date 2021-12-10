@@ -25,15 +25,10 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
  */
 class SearchConnectorRecord
 {
-    private FindIdentifiersForQueryInterface $findIdentifiersForQuery;
-    private FindConnectorRecordsByIdentifiersInterface $findConnectorRecordsByIdentifiers;
-
     public function __construct(
-        FindIdentifiersForQueryInterface $findIdentifiersForQuery,
-        FindConnectorRecordsByIdentifiersInterface $findConnectorRecordsByIdentifiers
+        private FindIdentifiersForQueryInterface $findIdentifiersForQuery,
+        private FindConnectorRecordsByIdentifiersInterface $findConnectorRecordsByIdentifiers
     ) {
-        $this->findIdentifiersForQuery = $findIdentifiersForQuery;
-        $this->findConnectorRecordsByIdentifiers = $findConnectorRecordsByIdentifiers;
     }
 
     public function __invoke(RecordQuery $query): SearchConnectorRecordResult

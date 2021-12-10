@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -34,27 +35,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditAction
 {
-    private EditRecordCommandFactory $editRecordCommandFactory;
-    private EditRecordHandler $editRecordHandler;
-    private ValidatorInterface $validator;
-    private NormalizerInterface $normalizer;
-    private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
-    private TokenStorageInterface $tokenStorage;
-
     public function __construct(
-        EditRecordCommandFactory $editRecordCommandFactory,
-        EditRecordHandler $editRecordHandler,
-        ValidatorInterface $validator,
-        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
-        TokenStorageInterface $tokenStorage,
-        NormalizerInterface $normalizer
+        private EditRecordCommandFactory $editRecordCommandFactory,
+        private EditRecordHandler $editRecordHandler,
+        private ValidatorInterface $validator,
+        private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        private TokenStorageInterface $tokenStorage,
+        private NormalizerInterface $normalizer
     ) {
-        $this->editRecordCommandFactory = $editRecordCommandFactory;
-        $this->editRecordHandler = $editRecordHandler;
-        $this->validator = $validator;
-        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
-        $this->tokenStorage = $tokenStorage;
-        $this->normalizer = $normalizer;
     }
 
     public function __invoke(Request $request): Response

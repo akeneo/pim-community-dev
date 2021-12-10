@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\CLI;
@@ -28,23 +29,13 @@ class RefreshRecordsCommand extends Command
     public const REFRESH_RECORDS_COMMAND_NAME = 'akeneo:reference-entity:refresh-records';
     private const BULK_SIZE = 100;
 
-    private Connection $sqlConnection;
-    private FindAllRecordIdentifiers $findAllRecordIdentifiers;
-    private RefreshRecord $refreshRecord;
-    private LoggerInterface $logger;
-
     public function __construct(
-        LoggerInterface $logger,
-        FindAllRecordIdentifiers $findAllRecordIdentifiers,
-        RefreshRecord $refreshRecord,
-        Connection $sqlConnection
+        private LoggerInterface $logger,
+        private FindAllRecordIdentifiers $findAllRecordIdentifiers,
+        private RefreshRecord $refreshRecord,
+        private Connection $sqlConnection
     ) {
         parent::__construct(self::REFRESH_RECORDS_COMMAND_NAME);
-
-        $this->sqlConnection = $sqlConnection;
-        $this->findAllRecordIdentifiers = $findAllRecordIdentifiers;
-        $this->refreshRecord = $refreshRecord;
-        $this->logger = $logger;
     }
 
     /**

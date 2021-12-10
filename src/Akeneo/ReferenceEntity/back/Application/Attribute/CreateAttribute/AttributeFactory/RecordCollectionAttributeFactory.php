@@ -47,7 +47,7 @@ class RecordCollectionAttributeFactory implements AttributeFactoryInterface
                 sprintf(
                     'Expected command of type "%s", "%s" given',
                     CreateRecordCollectionAttributeCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

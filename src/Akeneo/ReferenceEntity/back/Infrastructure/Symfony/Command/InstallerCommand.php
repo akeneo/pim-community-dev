@@ -35,20 +35,12 @@ class InstallerCommand extends Command implements EventSubscriberInterface
 
     private const RESET_FIXTURES_COMMAND_NAME = 'akeneo:reference-entity:reset-fixtures';
 
-    private FixturesInstaller $fixturesInstaller;
-    private AssetsInstaller $assetInstaller;
-    private bool $shouldLoadReferenceEntitiesFixtures;
-
     public function __construct(
-        FixturesInstaller $fixturesInstaller,
-        AssetsInstaller $assetInstaller,
-        bool $shouldLoadReferenceEntitiesFixtures
+        private FixturesInstaller $fixturesInstaller,
+        private AssetsInstaller $assetInstaller,
+        private bool $shouldLoadReferenceEntitiesFixtures
     ) {
         parent::__construct(self::RESET_FIXTURES_COMMAND_NAME);
-
-        $this->fixturesInstaller = $fixturesInstaller;
-        $this->assetInstaller = $assetInstaller;
-        $this->shouldLoadReferenceEntitiesFixtures = $shouldLoadReferenceEntitiesFixtures;
     }
 
     /**
@@ -83,10 +75,7 @@ class InstallerCommand extends Command implements EventSubscriberInterface
     {
         if (
             $this->shouldLoadReferenceEntitiesFixtures ||
-            substr(
-                $event->getArgument('catalog'),
-                -strlen(self::ICECAT_DEMO_DEV)
-            ) === self::ICECAT_DEMO_DEV
+            str_ends_with($event->getArgument('catalog'), self::ICECAT_DEMO_DEV)
         ) {
             $this->fixturesInstaller->loadCatalog();
         }

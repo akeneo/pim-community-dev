@@ -1,0 +1,27 @@
+services:
+    Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver:
+        arguments:
+          - '@pimee_security.manager.category_access'
+          - '@pim_user.repository.group'
+          - '@pim_user.saver.group'
+          - '@Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetRootCategoryReferenceFromCode'
+          - '@Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetAllRootCategoriesCodes'
+          - '@Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetCategoriesAccessesWithHighestLevel'
+
+    Akeneo\Pim\Permission\Bundle\Saver\UserGroupAttributeGroupPermissionsSaver:
+        arguments:
+            - '@pimee_security.manager.attribute_group_access'
+            - '@pim_user.repository.group'
+            - '@pim_user.saver.group'
+            - '@Akeneo\Pim\Permission\Bundle\Persistence\ORM\AttributeGroup\GetAllAttributeGroupCodes'
+            - '@Akeneo\Pim\Permission\Bundle\Persistence\ORM\AttributeGroup\GetAttributeGroupsAccessesWithHighestLevel'
+            - '@Akeneo\Pim\Permission\Bundle\Persistence\ORM\AttributeGroup\GetAttributeGroupReferenceFromCode'
+
+    Akeneo\Pim\Permission\Bundle\Saver\UserGroupLocalePermissionsSaver:
+        arguments:
+            - '@pimee_security.manager.locale_access'
+            - '@pim_user.repository.group'
+            - '@pim_user.saver.group'
+            - '@Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetAllActiveLocalesCodes'
+            - '@Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetActiveLocalesAccessesWithHighestLevel'
+            - '@Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetActiveLocaleReferenceFromCode'

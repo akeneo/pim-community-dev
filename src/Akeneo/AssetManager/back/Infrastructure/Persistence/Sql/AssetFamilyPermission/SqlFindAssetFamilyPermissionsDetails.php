@@ -8,6 +8,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Permission\RightLevel;
 use Akeneo\AssetManager\Domain\Query\AssetFamilyPermission\FindAssetFamilyPermissionsDetailsInterface;
 use Akeneo\AssetManager\Domain\Query\AssetFamilyPermission\PermissionDetails;
+use Akeneo\UserManagement\Component\Model\Group;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
@@ -45,9 +46,9 @@ class SqlFindAssetFamilyPermissionsDetails implements FindAssetFamilyPermissions
         $query = <<<SQL
 SELECT ug.id as user_group_identifier, ug.name as user_group_name
 FROM oro_access_group ug
-WHERE ug.name <> 'All';
+WHERE ug.name <> 'All' AND ug.type = :default;
 SQL;
-        $statement = $this->sqlConnection->executeQuery($query);
+        $statement = $this->sqlConnection->executeQuery($query, ['default' => Group::TYPE_DEFAULT]);
         $result = $statement->fetchAllAssociative();
 
         return false !== $result ? $result : [];

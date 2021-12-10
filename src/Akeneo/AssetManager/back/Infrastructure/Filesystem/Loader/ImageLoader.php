@@ -46,10 +46,10 @@ class ImageLoader implements LoaderInterface
         }
 
         $mimeType = $this->filesystem->mimeType($path);
-        $pathParts = pathinfo($path);
+        $pathExtension = pathinfo($path, PATHINFO_EXTENSION);
 
         // This is an override here to handle the google bucket case where images without extensions are considered as octet-stream
-        if (!isset($pathParts['extension']) && $mimeType === 'application/octet-stream') {
+        if (empty($pathExtension) && $mimeType === 'application/octet-stream') {
             $mimeType = 'image/jpeg';
         }
         $extension = $this->getExtension($mimeType);

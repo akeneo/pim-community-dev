@@ -22,15 +22,10 @@ use Doctrine\DBAL\Connection;
 
 class SqlFindConnectorAttributeOptions implements FindConnectorAttributeOptionsInterface
 {
-    private Connection $sqlConnection;
-    private InactiveLabelFilter $inactiveLabelFilter;
-
     public function __construct(
-        Connection $sqlConnection,
-        InactiveLabelFilter $inactiveLabelFilter
+        private Connection $sqlConnection,
+        private InactiveLabelFilter $inactiveLabelFilter
     ) {
-        $this->sqlConnection = $sqlConnection;
-        $this->inactiveLabelFilter = $inactiveLabelFilter;
     }
 
     public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): array

@@ -36,30 +36,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateAction
 {
-    private CreateRecordHandler $createRecordHandler;
-    private RecordIndexerInterface $recordIndexer;
-    private NormalizerInterface $normalizer;
-    private ValidatorInterface $validator;
-    private SecurityFacade $securityFacade;
-    private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
-    private TokenStorageInterface $tokenStorage;
-
     public function __construct(
-        CreateRecordHandler $createRecordHandler,
-        RecordIndexerInterface $recordIndexer,
-        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
-        TokenStorageInterface $tokenStorage,
-        NormalizerInterface $normalizer,
-        ValidatorInterface $validator,
-        SecurityFacade $securityFacade
+        private CreateRecordHandler $createRecordHandler,
+        private RecordIndexerInterface $recordIndexer,
+        private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        private TokenStorageInterface $tokenStorage,
+        private NormalizerInterface $normalizer,
+        private ValidatorInterface $validator,
+        private SecurityFacade $securityFacade
     ) {
-        $this->createRecordHandler = $createRecordHandler;
-        $this->validator = $validator;
-        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
-        $this->tokenStorage = $tokenStorage;
-        $this->normalizer = $normalizer;
-        $this->securityFacade = $securityFacade;
-        $this->recordIndexer = $recordIndexer;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier): Response

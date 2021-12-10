@@ -23,8 +23,6 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 interface GetAttributeIdentifierInterface
 {
     /**
-     * @return AttributeIdentifier
-     *
      * @throws \LogicException if the attribute identifier is not found
      */
     public function withReferenceEntityAndCode(

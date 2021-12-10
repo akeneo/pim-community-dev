@@ -2,9 +2,9 @@
 
 namespace Akeneo\Pim\Permission\Bundle\EventSubscriber;
 
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\CategorySaver;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\ProductCategoryAccess;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -15,9 +15,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class UpdateCategoryTimestampOnPermissionUpdatesSubscriber implements EventSubscriberInterface
 {
-    private SaverInterface $categorySaver;
+    private CategorySaver $categorySaver;
 
-    public function __construct(SaverInterface $categorySaver)
+    public function __construct(CategorySaver $categorySaver)
     {
         $this->categorySaver = $categorySaver;
     }
@@ -27,12 +27,18 @@ class UpdateCategoryTimestampOnPermissionUpdatesSubscriber implements EventSubsc
         return [
             StorageEvents::POST_SAVE => 'updateCategoryTimestamp',
             StorageEvents::POST_REMOVE => 'updateCategoryTimestamp',
+            StorageEvents::POST_SAVE_ALL => 'updateCategoriesTimestamp',
+            StorageEvents::POST_REMOVE_ALL => 'updateCategoriesTimestamp',
         ];
     }
 
     public function updateCategoryTimestamp(GenericEvent $event)
     {
         if ($event->hasArgument('is_installation') && $event->getArgument('is_installation')) {
+            return;
+        }
+
+        if ($event->hasArgument('unitary') && false === $event->getArgument('unitary')) {
             return;
         }
 
@@ -50,5 +56,37 @@ class UpdateCategoryTimestampOnPermissionUpdatesSubscriber implements EventSubsc
         $category->setUpdated(new \DateTime('now', new \DateTimeZone('UTC')));
 
         $this->categorySaver->save($category);
+    }
+
+    public function updateCategoriesTimestamp(GenericEvent $event)
+    {
+        if ($event->hasArgument('is_installation') && $event->getArgument('is_installation')) {
+            return;
+        }
+
+        if ($event->hasArgument('unitary') && true === $event->getArgument('unitary')) {
+            return;
+        }
+
+        $subjects = $event->getSubject();
+        $accesses = array_filter($subjects, function ($subject) {
+            return $subject instanceof ProductCategoryAccess && $subject->getCategory() instanceof CategoryInterface;
+        });
+        /** @var CategoryInterface[] $categories */
+        $categories = array_map(function (ProductCategoryAccess $access) {
+            return $access->getCategory();
+        }, $accesses);
+
+        if (empty($categories)) {
+            return;
+        }
+
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+
+        foreach ($categories as $category) {
+            $category->setUpdated($now);
+        }
+
+        $this->categorySaver->saveAll($categories);
     }
 }

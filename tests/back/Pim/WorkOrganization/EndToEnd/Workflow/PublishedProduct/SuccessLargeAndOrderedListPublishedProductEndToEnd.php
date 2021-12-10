@@ -29,11 +29,9 @@ class SuccessLargeAndOrderedListPublishedProductEndToEnd extends AbstractPublish
             $product = $this->createProduct($identifier, []);
             $publishedProduct = $this->publishProduct($product);
 
-            $this->publishedProducts[$publishedProduct->getId()] = $publishedProduct;
+            $this->publishedProducts[$publishedProduct->getIdentifier()] = $publishedProduct;
         }
-        // the API will return products sorted alphabetical by MySQL ID, and that's what we expect
-        // for instance, if we have 100 products
-        // 1, 10, 100, 11, 12, 13, 14, 15, 16, 17, 18, 19, 2, 20, 21...
+        
         ksort($this->publishedProducts, SORT_STRING);
     }
 
@@ -44,7 +42,7 @@ class SuccessLargeAndOrderedListPublishedProductEndToEnd extends AbstractPublish
             $standardizedPublishedProducts[] = $this->getStandardizedPublishedProduct($publishedProduct->getIdentifier());
         }
         $standardizedPublishedProducts = implode(',', $standardizedPublishedProducts);
-        $lastEncryptedId = rawurlencode($this->getEncryptedId(end($this->publishedProducts)->getIdentifier()));
+        $lastProductIdentifier = end($this->publishedProducts)->getIdentifier();
 
         $client = $this->createAuthenticatedClient();
 
@@ -54,7 +52,7 @@ class SuccessLargeAndOrderedListPublishedProductEndToEnd extends AbstractPublish
     "_links": {
         "self"  : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit={$this->getListSize()}"},
         "first" : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit={$this->getListSize()}"},
-        "next" : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit={$this->getListSize()}&search_after={$lastEncryptedId}"}
+        "next" : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit={$this->getListSize()}&search_after={$lastProductIdentifier}"}
     },
     "_embedded"    : {
 		"items": [

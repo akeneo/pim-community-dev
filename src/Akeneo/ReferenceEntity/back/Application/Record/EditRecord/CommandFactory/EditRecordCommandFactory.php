@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -21,15 +22,10 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentif
  */
 class EditRecordCommandFactory
 {
-    private FindAttributesIndexedByIdentifierInterface $sqlFindAttributesIndexedByIdentifier;
-    private EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry;
-
     public function __construct(
-        EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry,
-        FindAttributesIndexedByIdentifierInterface $sqlFindAttributesIndexedByIdentifier
+        private EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry,
+        private FindAttributesIndexedByIdentifierInterface $sqlFindAttributesIndexedByIdentifier
     ) {
-        $this->sqlFindAttributesIndexedByIdentifier = $sqlFindAttributesIndexedByIdentifier;
-        $this->editValueCommandFactoryRegistry = $editValueCommandFactoryRegistry;
     }
 
     public function create(array $normalizedCommand): EditRecordCommand

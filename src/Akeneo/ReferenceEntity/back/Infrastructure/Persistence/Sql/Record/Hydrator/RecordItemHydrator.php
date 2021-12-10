@@ -35,20 +35,14 @@ use Doctrine\DBAL\Types\Types;
 class RecordItemHydrator implements RecordItemHydratorInterface
 {
     private AbstractPlatform $platform;
-    private FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocales;
-    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
-    private ValueHydratorInterface $valueHydrator;
 
     public function __construct(
         Connection $connection,
-        FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocales,
-        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
-        ValueHydratorInterface $valueHydrator
+        private FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocales,
+        private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
+        private ValueHydratorInterface $valueHydrator
     ) {
         $this->platform = $connection->getDatabasePlatform();
-        $this->findRequiredValueKeyCollectionForChannelAndLocales = $findRequiredValueKeyCollectionForChannelAndLocales;
-        $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
-        $this->valueHydrator = $valueHydrator;
     }
 
     public function hydrate(array $row, RecordQuery $query, $context = []): RecordItem

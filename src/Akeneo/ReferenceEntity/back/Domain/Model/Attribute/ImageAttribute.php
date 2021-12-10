@@ -25,9 +25,6 @@ class ImageAttribute extends AbstractAttribute
 {
     public const ATTRIBUTE_TYPE = 'image';
 
-    private AttributeMaxFileSize $maxFileSize;
-    private AttributeAllowedExtensions $allowedExtensions;
-
     protected function __construct(
         AttributeIdentifier $identifier,
         ReferenceEntityIdentifier $referenceEntityIdentifier,
@@ -37,8 +34,8 @@ class ImageAttribute extends AbstractAttribute
         AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
-        AttributeMaxFileSize $maxFileSize,
-        AttributeAllowedExtensions $extensions
+        private AttributeMaxFileSize $maxFileSize,
+        private AttributeAllowedExtensions $allowedExtensions
     ) {
         parent::__construct(
             $identifier,
@@ -50,9 +47,6 @@ class ImageAttribute extends AbstractAttribute
             $valuePerChannel,
             $valuePerLocale
         );
-
-        $this->maxFileSize = $maxFileSize;
-        $this->allowedExtensions = $extensions;
     }
 
     public static function create(
@@ -92,7 +86,7 @@ class ImageAttribute extends AbstractAttribute
         );
     }
 
-    public function hasMaxFileSizeLimit():bool
+    public function hasMaxFileSizeLimit(): bool
     {
         return $this->maxFileSize->hasLimit();
     }

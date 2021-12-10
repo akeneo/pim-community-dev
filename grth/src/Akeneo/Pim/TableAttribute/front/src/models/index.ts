@@ -4,4 +4,5 @@ export * from './TableFilter';
 export * from './TableValue';
 export * from './Template';
 export * from './TranslatedTableConfigurationProvider';
+export * from './ReferenceEntityRecord';
 export * from './ReferenceEntity';

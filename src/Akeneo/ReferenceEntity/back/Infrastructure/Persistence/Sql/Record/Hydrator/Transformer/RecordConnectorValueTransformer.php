@@ -25,11 +25,9 @@ use Webmozart\Assert\Assert;
  */
 class RecordConnectorValueTransformer implements ConnectorValueTransformerInterface
 {
-    private FindCodesByIdentifiersInterface $findCodesByIdentifiers;
-
-    public function __construct(FindCodesByIdentifiersInterface $findCodesByIdentifiers)
-    {
-        $this->findCodesByIdentifiers = $findCodesByIdentifiers;
+    public function __construct(
+        private FindCodesByIdentifiersInterface $findCodesByIdentifiers
+    ) {
     }
 
     public function supports(AbstractAttribute $attribute): bool
@@ -54,7 +52,7 @@ class RecordConnectorValueTransformer implements ConnectorValueTransformerInterf
                 'channel' => $normalizedValue['channel'],
                 'data'    => (string) current($recordCodes),
             ];
-        } catch (\InvalidArgumentException $exception) {
+        } catch (\InvalidArgumentException) {
             return null;
         }
     }

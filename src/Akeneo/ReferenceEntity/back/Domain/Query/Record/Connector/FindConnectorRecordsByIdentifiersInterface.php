@@ -26,7 +26,6 @@ interface FindConnectorRecordsByIdentifiersInterface
 {
     /**
      * @param string[]    $identifiers
-     * @param RecordQuery $recordQuery
      *
      * @return ConnectorRecord[]
      */
