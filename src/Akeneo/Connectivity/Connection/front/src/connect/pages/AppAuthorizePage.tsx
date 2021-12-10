@@ -3,7 +3,7 @@ import {useLocation} from 'react-router-dom';
 import {AuthorizeClientError} from '../components/AuthorizeClientError';
 import {AppWizard} from '../components/AppWizard/AppWizard';
 import {useHistory} from 'react-router';
-import {AppWizardWithSteps} from '../components/AppWizardWithSteps/AppWizardWithSteps';
+import {AppWizardWithSteps} from '../components/AppWizard/AppWizardWithSteps';
 import {useFeatureFlags} from '../../shared/feature-flags';
 
 export const AppAuthorizePage: FC = () => {

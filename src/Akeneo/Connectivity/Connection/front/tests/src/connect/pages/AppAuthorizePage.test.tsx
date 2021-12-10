@@ -15,7 +15,7 @@ beforeEach(() => {
 jest.mock('@src/connect/components/AppWizard/AppWizard', () => ({
     AppWizard: () => <div>AppWizard</div>,
 }));
-jest.mock('@src/connect/components/AppWizardWithSteps/AppWizardWithSteps', () => ({
+jest.mock('@src/connect/components/AppWizard/AppWizardWithSteps', () => ({
     AppWizardWithSteps: () => <div>AppWizardWithSteps</div>,
 }));
 jest.mock('@src/connect/components/AuthorizeClientError', () => ({

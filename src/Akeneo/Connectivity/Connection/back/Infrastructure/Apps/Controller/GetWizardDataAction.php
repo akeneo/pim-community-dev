@@ -56,7 +56,7 @@ class GetWizardDataAction
             'appName' => $app->getName(),
             'appLogo' => $app->getLogo(),
             'scopeMessages' => $authorizationScopeMessages,
-            // @TODO add authenticationScopeMessages
+            'authenticationScopes' => $appAuthorization->getAuthenticationScopes()->getScopes()
         ]);
     }
 }

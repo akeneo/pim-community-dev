@@ -2,8 +2,9 @@ import React, {FC} from 'react';
 import styled from 'styled-components';
 import {getColor, getFontSize, Link} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/connectivity-connection/src/shared/translate';
-import {PermissionFormProvider} from '../../../shared/permission-form-registry';
-import {PermissionsByProviderKey} from '../../../model/Apps/permissions-by-provider-key';
+import {PermissionFormProvider} from '../../../../shared/permission-form-registry';
+import {PermissionsByProviderKey} from '../../../../model/Apps/permissions-by-provider-key';
+import {PermissionsForm} from '../../PermissionsForm';
 
 const InfoContainer = styled.div`
     grid-area: INFO;
@@ -23,7 +24,7 @@ const Connect = styled.h3`
 
 const AppTitle = styled.h2`
     color: ${getColor('grey', 140)};
-    font-size: 28px;
+    font-size: ${getFontSize('title')};
     font-weight: normal;
     line-height: 28px;
     margin: 0;
@@ -38,21 +39,14 @@ const Helper = styled.div`
     width: 280px;
 `;
 
-type PermissionsSummarySectionProps = {
-    provider: PermissionFormProvider<any>;
-    permissions: PermissionsByProviderKey;
-};
-
-const PermissionsSummarySection: FC<PermissionsSummarySectionProps> = React.memo(({provider, permissions}) => (
-    <div>{provider.renderSummary(permissions)}</div>
-));
-
 type Props = {
     appName: string;
     providers: PermissionFormProvider<any>[];
+    setProviderPermissions: (providerKey: string, providerPermissions: object) => void;
     permissions: PermissionsByProviderKey;
 };
-export const PermissionsSummary: FC<Props> = ({appName, providers, permissions}) => {
+
+export const Permissions: FC<Props> = ({appName, providers, setProviderPermissions, permissions}) => {
     const translate = useTranslate();
 
     return (
@@ -66,13 +60,19 @@ export const PermissionsSummary: FC<Props> = ({appName, providers, permissions})
                 </Link>
             </Helper>
             {providers.map(provider => {
+                const readOnly = false === permissions[provider.key];
                 const providerPermissions = false === permissions[provider.key] ? undefined : permissions[provider.key];
+                const handlePermissionsChange = (providerPermissions: object) => {
+                    setProviderPermissions(provider.key, providerPermissions);
+                };
 
                 return (
-                    <PermissionsSummarySection
+                    <PermissionsForm
                         key={provider.key}
                         provider={provider}
+                        onPermissionsChange={handlePermissionsChange}
                         permissions={providerPermissions}
+                        readOnly={readOnly}
                     />
                 );
             })}

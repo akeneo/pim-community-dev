@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect';
 import {act, screen, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {historyMock, mockFetchResponses, MockFetchResponses, renderWithProviders} from '../../../../test-utils';
-import {AppWizardWithSteps} from '@src/connect/components/AppWizardWithSteps/AppWizardWithSteps';
+import {AppWizardWithSteps} from '@src/connect/components/AppWizard/AppWizardWithSteps';
 import {PermissionFormProvider, PermissionFormRegistryContext} from '@src/shared/permission-form-registry';
 import {NotificationLevel, NotifyContext} from '@src/shared/notify';
 import {PermissionsByProviderKey} from '@src/model/Apps/permissions-by-provider-key';
@@ -33,8 +33,8 @@ beforeEach(() => {
     };
 });
 
-jest.mock('@src/connect/components/AppWizardWithSteps/Authorizations', () => ({
-    ...jest.requireActual('@src/connect/components/AppWizardWithSteps/Authorizations'),
+jest.mock('@src/connect/components/AppWizard/steps/Authorizations', () => ({
+    ...jest.requireActual('@src/connect/components/AppWizard/steps/Authorizations'),
     Authorizations: () => <div>authorizations-component</div>,
 }));
 
@@ -44,8 +44,8 @@ type PermissionsProps = {
     setProviderPermissions: (providerKey: string, providerPermissions: object) => void;
     permissions: PermissionsByProviderKey;
 };
-jest.mock('@src/connect/components/AppWizardWithSteps/Permissions', () => ({
-    ...jest.requireActual('@src/connect/components/AppWizardWithSteps/Permissions'),
+jest.mock('@src/connect/components/AppWizard/steps/Permissions', () => ({
+    ...jest.requireActual('@src/connect/components/AppWizard/steps/Permissions'),
     Permissions: ({permissions, setProviderPermissions}: PermissionsProps) => {
         const handleClick = () => {
             setProviderPermissions('data', {view: 'hello world!'});
@@ -66,8 +66,8 @@ jest.mock('@src/connect/components/AppWizardWithSteps/Permissions', () => ({
 type SummaryProps = {
     permissions: PermissionsByProviderKey;
 };
-jest.mock('@src/connect/components/AppWizardWithSteps/PermissionsSummary', () => ({
-    ...jest.requireActual('@src/connect/components/AppWizardWithSteps/PermissionsSummary'),
+jest.mock('@src/connect/components/AppWizard/steps/PermissionsSummary', () => ({
+    ...jest.requireActual('@src/connect/components/AppWizard/steps/PermissionsSummary'),
     PermissionsSummary: ({permissions}: SummaryProps) => (
         <div>permissions-summary-component {JSON.stringify(permissions.data)}</div>
     ),
@@ -80,6 +80,7 @@ test('The step wizard renders without error', async () => {
                 appName: 'MyApp',
                 appLogo: '',
                 scopeMessages: [],
+                authenticationScopes: [],
             },
         },
     };
@@ -103,6 +104,7 @@ test('The wizard redirect to the marketplace when closed', async () => {
                 appName: 'MyApp',
                 appLogo: '',
                 scopeMessages: [],
+                authenticationScopes: [],
             },
         },
     };
@@ -128,6 +130,7 @@ test('The wizard renders steps and is able to navigate between steps', async () 
                 appName: 'MyApp',
                 appLogo: '',
                 scopeMessages: [],
+                authenticationScopes: [],
             },
         },
     };
@@ -175,6 +178,7 @@ test('The wizard notifies of the error on app confirm ', async () => {
                 appName: 'MyApp',
                 appLogo: '',
                 scopeMessages: [],
+                authenticationScopes: [],
             },
         },
         [`akeneo_connectivity_connection_apps_rest_confirm_authorization?clientId=${clientId}`]: {
@@ -213,6 +217,7 @@ test('The wizard saves app and permissions on confirm', async () => {
                 appName: 'MyApp',
                 appLogo: '',
                 scopeMessages: [],
+                authenticationScopes: [],
             },
         },
         [`akeneo_connectivity_connection_apps_rest_confirm_authorization?clientId=${clientId}`]: {
@@ -281,6 +286,7 @@ test('The wizard saves app but have some failing permissions on confirm', async 
                 appName: 'MyApp',
                 appLogo: '',
                 scopeMessages: [],
+                authenticationScopes: [],
             },
         },
         [`akeneo_connectivity_connection_apps_rest_confirm_authorization?clientId=${clientId}`]: {

@@ -29,7 +29,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
         $command = new RequestAppAuthorizationCommand(
             '90741597-54c5-48a1-98da-a68e7ee0a715',
             'code',
-            'write_catalog_structure delete_products read_association_types',
+            'write_catalog_structure delete_products read_association_types openid profile',
             'http://anyurl.test'
         );
         $this->appAuthorizationHandler->handle($command);
@@ -66,6 +66,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
                     'entities' => 'catalog_structure',
                 ],
             ],
+            'authenticationScopes' => ['openid', 'profile'],
         ], json_decode($response->getContent(), true));
     }
 
