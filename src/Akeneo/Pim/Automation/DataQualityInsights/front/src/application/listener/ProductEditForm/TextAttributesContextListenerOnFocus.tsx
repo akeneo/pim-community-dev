@@ -15,6 +15,7 @@ const WIDGET_UUID_NAMESPACE = '4e34f5c2-d1b0-4cf2-96c9-dca6b95e695e';
 const PRODUCT_ATTRIBUTES_CONTAINER_SELECTOR = '.entity-edit-form.edit-form div[data-drop-zone="container"]';
 const EDITOR_ELEMENT_SELECTOR = ['.field-input textarea', '.field-input input[type="text"]'].join(', ');
 const RICH_EDITOR_ELEMENT_SELECTOR = ['.field-input div.note-editable[contenteditable]'].join(', ');
+const WIDGET_LIST_LIMIT = 10;
 
 export const getTextAttributes = (family: Family, product: Product, activeLocalesNumber: number) => {
   const isValidTextarea = (attribute: Attribute) =>
@@ -117,9 +118,19 @@ const TextAttributesContextListenerOnFocus = () => {
 
     setWidgetsList((list) => {
       const widgetId = uuidV5(`${product.meta.id}-${attribute}`, WIDGET_UUID_NAMESPACE);
+
+      let widgetsArray = Object.values(list);
+      if (widgetsArray.length >= WIDGET_LIST_LIMIT) {
+        widgetsArray.shift();
+      }
+
+      const widgetsCollection = widgetsArray.reduce((previousValue, currentValue) => {
+        return {...previousValue, [currentValue.attribute]: currentValue};
+      }, {});
+
       return {
-        ...list,
-        [attribute]:  createWidget(widgetId, editor as EditorElement, editorId, attribute),
+        ...widgetsCollection,
+        [attribute]: createWidget(widgetId, editor as EditorElement, editorId, attribute),
       }
     });
   }, [widgetsList, textAttributes, attributeGroupsStatus]);
