@@ -45,13 +45,15 @@ const findByCode: (
   referenceEntityIdentifier: ReferenceEntityIdentifierOrCode,
   code: RecordCode
 ) => Promise<ReferenceEntityRecord | null> = async (router, referenceEntityIdentifier, code) => {
-  if (getKey(referenceEntityIdentifier, code) in referenceEntityRecordsCache) {
-    return referenceEntityRecordsCache[getKey(referenceEntityIdentifier, code)];
+  if (!(getKey(referenceEntityIdentifier, code) in referenceEntityRecordsCache)) {
+    referenceEntityRecordsCache[getKey(referenceEntityIdentifier, code)] = await RecordFetcher.findByCode(
+      router,
+      referenceEntityIdentifier,
+      code
+    );
   }
 
-  const record = await RecordFetcher.findByCode(router, referenceEntityIdentifier, code);
-  referenceEntityRecordsCache[getKey(referenceEntityIdentifier, code)] = record;
-  return record;
+  return referenceEntityRecordsCache[getKey(referenceEntityIdentifier, code)];
 };
 
 const getCachedByCode: (

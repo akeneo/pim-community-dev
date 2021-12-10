@@ -18,7 +18,7 @@ describe('RecordMatcher', () => {
     );
 
     const {result} = renderHook(() => useSearch(), {wrapper});
-    expect(result.current('nantes00e3cffd_f60e_4a51_925b_d2952bd947e1', 'Nantes', 'nutrition_score')).toBeTruthy();
+    expect(result.current('nantes00e3cffd_f60e_4a51_925b_d2952bd947e1', 'Nantes', 'city')).toBeTruthy();
   });
 
   it('should not match if no attribute was given', () => {
