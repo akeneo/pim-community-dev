@@ -11,9 +11,11 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Bundle\DependencyInjection;
 
+use Akeneo\Pim\Automation\RuleEngine\Bundle\Query\ORM\MySQL\CastAsChar;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
@@ -21,12 +23,12 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class AkeneoPimRuleEngineExtension extends AkeneoStorageUtilsExtension
+class AkeneoPimRuleEngineExtension extends AkeneoStorageUtilsExtension implements PrependExtensionInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('action_appliers.yml');
@@ -61,5 +63,24 @@ class AkeneoPimRuleEngineExtension extends AkeneoStorageUtilsExtension
         $loader->load('validators.yml');
         $loader->load('view_elements/attribute.yml');
         $loader->load('steps.yml');
+    }
+
+    /**
+     * @todo @merge master/6.0: remove this method + do not implement the PrependExtensionInterface anymore
+     */
+    public function prepend(ContainerBuilder $container): void
+    {
+        // register the CastAsChar DQL function
+        if ($container->hasExtension('doctrine')) {
+            $container->prependExtensionConfig('doctrine', [
+                'orm' => [
+                    'dql' => [
+                        'string_functions' => [
+                            'castAsChar' => CastAsChar::class,
+                        ],
+                    ],
+                ],
+            ]);
+        }
     }
 }

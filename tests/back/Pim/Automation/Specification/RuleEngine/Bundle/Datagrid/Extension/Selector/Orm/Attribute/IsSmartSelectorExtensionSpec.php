@@ -47,7 +47,7 @@ class IsSmartSelectorExtensionSpec extends ObjectBehavior
         $qb->expr()->willReturn($expr);
 
         $expr->andX(null, null)->shouldBeCalled();
-        $expr->eq("r.resourceId", "a.id")->shouldBeCalled();
+        $expr->eq("r.resourceId", "CASTASCHAR(a.id, utf8mb4_unicode_ci)")->shouldBeCalled();
         $expr->eq("r.resourceName", null)->shouldBeCalled();
         $expr->literal("Attribute")->shouldBeCalled();
 
