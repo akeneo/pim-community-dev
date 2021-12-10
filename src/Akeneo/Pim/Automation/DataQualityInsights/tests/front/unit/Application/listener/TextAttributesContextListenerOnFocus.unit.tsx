@@ -2,7 +2,7 @@ import {Attribute, Family, Product} from '@akeneo-pim-ee/data-quality-insights/s
 import {
   getTextAttributes,
   isValidTextAttributeElement,
-} from '@akeneo-pim-ee/data-quality-insights/src/application/listener/ProductEditForm/TextAttributesContextListener';
+} from '@akeneo-pim-ee/data-quality-insights/src/application/listener/ProductEditForm/TextAttributesContextListenerOnFocus';
 import {anAttribute} from '../../../utils';
 
 const localizableTextarea = buildAttribute('textarea_1', 'pim_catalog_textarea', true, false, false);
