@@ -36,9 +36,9 @@ class SearchJobExecution implements SearchJobExecutionInterface
     {
         $sql = <<<SQL
     SELECT count(*)
-    FROM akeneo_batch_job_execution je
-    JOIN akeneo_batch_job_instance ji on je.job_instance_id = ji.id
-    WHERE je.is_visible = 1
+    FROM akeneo_batch_job_execution job_execution
+    JOIN akeneo_batch_job_instance job_instance on job_execution.job_instance_id = job_instance.id
+    WHERE job_execution.is_visible = 1
     %s
 SQL;
         $whereSqlPart = $this->buildSqlWherePart($query);
@@ -59,46 +59,46 @@ SQL;
         $sql = <<<SQL
     WITH job_executions AS (
         SELECT
-            je.id,
-            je.job_instance_id,
-            ji.label,
-            ji.type,
-            je.start_time,
-            je.user,
-            je.status,
-            je.is_stoppable,
-            je.step_count
-        FROM akeneo_batch_job_execution je
-        JOIN akeneo_batch_job_instance ji ON je.job_instance_id = ji.id
-        WHERE je.is_visible = 1
+            job_execution.id,
+            job_execution.job_instance_id,
+            job_instance.label,
+            job_instance.type,
+            job_execution.start_time,
+            job_execution.user,
+            job_execution.status,
+            job_execution.is_stoppable,
+            job_execution.step_count
+        FROM akeneo_batch_job_execution job_execution
+        JOIN akeneo_batch_job_instance job_instance ON job_execution.job_instance_id = job_instance.id
+        WHERE job_execution.is_visible = 1
         %s
         %s
         LIMIT :offset, :limit
     )
     SELECT
-        je.*,
-        COUNT(se.job_execution_id) AS current_step_number,
+        job_execution.*,
+        COUNT(step_execution.job_execution_id) AS current_step_number,
         JSON_ARRAYAGG(JSON_OBJECT(
-            'id', se.id,
-            'start_time', se.start_time,
-            'end_time', se.end_time,
-            'warning_count', se.warning_count,
-            'errors', JSON_ARRAY(IFNULL(se.failure_exceptions, 'a:0:{}'), IFNULL(se.errors, 'a:0:{}')),
-            'total_items', JSON_EXTRACT(se.tracking_data, '$.totalItems'),
-            'processed_items', JSON_EXTRACT(se.tracking_data, '$.processedItems'),
-            'status', se.status,
-            'is_trackable', se.is_trackable
+            'id', step_execution.id,
+            'start_time', step_execution.start_time,
+            'end_time', step_execution.end_time,
+            'warning_count', step_execution.warning_count,
+            'errors', JSON_ARRAY(IFNULL(step_execution.failure_exceptions, 'a:0:{}'), IFNULL(step_execution.errors, 'a:0:{}')),
+            'total_items', JSON_EXTRACT(step_execution.tracking_data, '$.totalItems'),
+            'processed_items', JSON_EXTRACT(step_execution.tracking_data, '$.processedItems'),
+            'status', step_execution.status,
+            'is_trackable', step_execution.is_trackable
         )) AS steps
-    FROM job_executions je
-    LEFT JOIN akeneo_batch_step_execution se ON je.id = se.job_execution_id
-    GROUP BY je.id
+    FROM job_executions job_execution
+    LEFT JOIN akeneo_batch_step_execution step_execution ON job_execution.id = step_execution.job_execution_id
+    GROUP BY job_execution.id
     %s
 SQL;
 
         $whereSqlPart = $this->buildSqlWherePart($query);
         $orderBySqlPart = $this->buildSqlOrderByPart($query);
 
-        return sprintf($sql, $whereSqlPart, $orderBySqlPart, str_replace('ji', 'je', $orderBySqlPart));
+        return sprintf($sql, $whereSqlPart, $orderBySqlPart, str_replace('job_instance', 'job_execution', $orderBySqlPart));
     }
 
     private function buildSqlWherePart(SearchJobExecutionQuery $query): string
@@ -111,25 +111,25 @@ SQL;
         $code = $query->code;
 
         if (!empty($type)) {
-            $sqlWhereParts[] = 'ji.type IN (:type)';
+            $sqlWhereParts[] = 'job_instance.type IN (:type)';
         }
 
         if (!empty($code)) {
-            $sqlWhereParts[] = 'ji.code IN (:code)';
+            $sqlWhereParts[] = 'job_instance.code IN (:code)';
         }
 
         if (!empty($status)) {
-            $sqlWhereParts[] = 'je.status IN (:status)';
+            $sqlWhereParts[] = 'job_execution.status IN (:status)';
         }
 
         if (!empty($user)) {
-            $sqlWhereParts[] = 'je.user IN (:user)';
+            $sqlWhereParts[] = 'job_execution.user IN (:user)';
         }
 
         if (!empty($search)) {
             $searchParts = explode(' ', $search);
             foreach ($searchParts as $index => $searchPart) {
-                $sqlWhereParts[] = sprintf('ji.label LIKE :%s_%s', self::SEARCH_PART_PARAM_SUFFIX, $index);
+                $sqlWhereParts[] = sprintf('job_instance.label LIKE :%s_%s', self::SEARCH_PART_PARAM_SUFFIX, $index);
             }
         }
 
@@ -141,11 +141,11 @@ SQL;
         $sortDirection = $query->sortDirection;
 
         $orderByColumn = match ($query->sortColumn) {
-            'job_name' => sprintf("ji.label %s", $sortDirection),
-            'type' => sprintf("ji.type %s", $sortDirection),
-            'started_at' => sprintf("je.start_time %s", $sortDirection),
-            'username' => sprintf("je.user %s", $sortDirection),
-            'status' => sprintf("je.status %s", $sortDirection),
+            'job_name' => sprintf("job_instance.label %s", $sortDirection),
+            'type' => sprintf("job_instance.type %s", $sortDirection),
+            'started_at' => sprintf("job_execution.start_time %s", $sortDirection),
+            'username' => sprintf("job_execution.user %s", $sortDirection),
+            'status' => sprintf("job_execution.status %s", $sortDirection),
             default => throw new \InvalidArgumentException(sprintf('Unknown sort column "%s"', $query->sortColumn)),
         };
 
