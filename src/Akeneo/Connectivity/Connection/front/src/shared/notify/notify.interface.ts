@@ -5,4 +5,4 @@ export enum NotificationLevel {
     ERROR = 'error',
 }
 
-export type Notify = (level: NotificationLevel, message: string) => void;
+export type Notify = (level: NotificationLevel, message: string, title?: {titleMessage: string}) => void;

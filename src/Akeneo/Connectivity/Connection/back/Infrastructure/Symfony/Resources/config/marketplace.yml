@@ -40,6 +40,8 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.marketplace.guzzle_client'
             - '@akeneo_connectivity.connection.marketplace.web_marketplace_aliases'
+            - '@logger'
+            - '@akeneo_connectivity.connection.marketplace_fake_apps.feature'
         calls:
             - setFixturePath: [ '%connectivity.marketplace_fixtures_directory%' ]
 
@@ -58,6 +60,7 @@ services:
         class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllAppsQuery
         arguments:
             - '@akeneo_connectivity.connection.marketplace.web_marketplace_api'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAllConnectedAppsPublicIdsQuery'
             - '%akeneo_pim_marketplace_api_pagination_size%'
 
     akeneo_connectivity.connection.marketplace.get_app_query:

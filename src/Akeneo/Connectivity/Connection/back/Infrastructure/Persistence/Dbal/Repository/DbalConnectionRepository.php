@@ -39,7 +39,7 @@ SQL;
                 'label' => (string) $connection->label(),
                 'flow_type' => (string) $connection->flowType(),
                 'auditable' => $connection->auditable(),
-                'type' => $connection->type(),
+                'type' => (string) $connection->type(),
             ],
             [
                 'auditable' => Types::BOOLEAN,
@@ -50,7 +50,7 @@ SQL;
     public function findOneByCode(string $code): ?Connection
     {
         $selectQuery = <<<SQL
-SELECT code, label, flow_type, image, client_id, user_id, auditable
+SELECT code, label, flow_type, image, client_id, user_id, auditable, type
 FROM akeneo_connectivity_connection
 WHERE code = :code
 SQL;
@@ -65,7 +65,8 @@ SQL;
                 (int) $dataRow['client_id'],
                 (int) $dataRow['user_id'],
                 $dataRow['image'],
-                (bool) $dataRow['auditable']
+                (bool) $dataRow['auditable'],
+                $dataRow['type']
             ) : null;
     }
 

@@ -59,6 +59,14 @@ akeneo_connectivity.connection:
         empty: Brak aplikacji kompatybilnych z twoją wersją
       unreachable: Nie możemy nawiązać połączenia z rynkiem. Spróbuj ponownie później.
       scroll_to_top: Przewiń do początku
+    connected_apps:
+      edit:
+        tabs:
+          settings: Ustawienia
+          permissions: Uprawnienia
+      delete:
+        title: Potwierdź usunięcie
+        link: Oto co się stanie.
     apps:
       wizard:
         title: Połącz
@@ -71,13 +79,9 @@ akeneo_connectivity.connection:
         progress:
           authorizations: Autoryzacje
           permissions: Uprawnienia
-          well_done: Świetnie!
         authorize:
-          title: 'Aplikacja {{ app_name }} musi'
           no_scope_title: 'Aplikacja {{ app_name }} chciałaby uzyskać dostęp do Twojego PIM.'
           no_scope: Nie zażądano żadnych określonych autoryzacji.
-          helper: Aby dowiedzieć się więcej o autoryzacji aplikacji,
-          helper_link: zajrzyj do naszego Centrum Pomocy.
       title: Połącz
       activate:
         flash:
@@ -104,8 +108,6 @@ akeneo_connectivity.connection:
         response_type:
           not_blank: Atrybut response_type jest wymagany.
           must_be_code: Atrybut response_type musi mieć wartość kodową.
-        scope:
-          must_be_valid: Zakresy są nieprawidłowe.
         redirect_uri:
           not_blank: Atrybut redirect_uri jest wymagany.
           must_be_url: Atrybut redirect_uri nie jest prawidłowym adresem URL.
@@ -139,6 +141,9 @@ akeneo_connectivity.connection:
         invalid: Typ połączeń może być tylko 'data_source', 'data_destination' lub 'other'.
       image:
         must_exist: Obraz nie został znaleziony. Spróbuj ponownie.
+      type:
+        required: Typ połączenia jest wymagany.
+        too_long: Typ połączenia jest zbyt długi. Powinien mieć 30 lub mniej znaków.
   flow_type:
     data_source: Źródło danych | Źródła danych
     data_destination: Przeznaczenie danych | Przeznaczenia danych
@@ -387,3 +392,8 @@ akeneo_connectivity.connection:
     error_message: Motyla noga! Mamy błąd...
     reload_helper: Proszę odświeżyć stronę i spróbować ponownie
     reload_button: Odśwież
+pim_permissions:
+  widget:
+    action:
+      all: Wszystkie
+    all: Wszystkie

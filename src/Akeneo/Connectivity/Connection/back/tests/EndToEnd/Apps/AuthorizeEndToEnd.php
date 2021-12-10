@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Apps;
 
+use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler;
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider;
@@ -25,6 +29,8 @@ class AuthorizeEndToEnd extends WebTestCase
     private FakeFeatureFlag $featureFlagMarketplaceActivate;
     private ClientProvider $clientProvider;
     private SessionInterface $session;
+    private RequestAppAuthorizationHandler $appAuthorizationHandler;
+    private CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler;
 
     protected function setUp(): void
     {
@@ -34,6 +40,8 @@ class AuthorizeEndToEnd extends WebTestCase
         $this->featureFlagMarketplaceActivate = $this->get('akeneo_connectivity.connection.marketplace_activate.feature');
         $this->clientProvider = $this->get('akeneo_connectivity.connection.service.apps.client_provider');
         $this->session = $this->get('session');
+        $this->appAuthorizationHandler = $this->get(RequestAppAuthorizationHandler::class);
+        $this->createAppWithAuthorizationHandler = $this->get(CreateAppWithAuthorizationHandler::class);
         $this->loadAppsFixtures();
     }
 
@@ -59,7 +67,7 @@ class AuthorizeEndToEnd extends WebTestCase
         Assert::assertEquals('/#/connect/apps/authorize?error=akeneo_connectivity.connection.connect.apps.constraint.client_id.not_blank', $response->getTargetUrl());
     }
 
-    public function test_it_is_redirected_to_the_wizard_when_authorizing_an_app(): void
+    public function test_it_is_redirected_to_the_wizard_without_unknown_scopes_when_authorizing_an_app(): void
     {
         $this->featureFlagMarketplaceActivate->enable();
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
@@ -73,8 +81,8 @@ class AuthorizeEndToEnd extends WebTestCase
             [
                 'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
                 'response_type' => 'code',
-                'redirect_uri' => 'http://shopware.example.com/callback',
                 'state' => 'foo',
+                'scope' => 'read_catalog_structure SOME_UNKNOWN_SCOPE write_categories'
             ]
         );
         $response = $this->client->getResponse();
@@ -87,10 +95,43 @@ class AuthorizeEndToEnd extends WebTestCase
         Assert::assertNotEmpty($authorizationInSession);
         Assert::assertEquals([
             'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
-            'scope' => '',
+            'scope' => 'read_catalog_structure write_categories',
             'redirect_uri' => 'http://shopware.example.com/callback',
             'state' => 'foo',
         ], json_decode($authorizationInSession, true));
+    }
+
+    public function test_it_is_redirected_to_the_app_when_already_authorized(): void
+    {
+        $this->featureFlagMarketplaceActivate->enable();
+        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
+        $app = App::fromWebMarketplaceValues($this->webMarketplaceApi->getApp('90741597-54c5-48a1-98da-a68e7ee0a715'));
+        $this->clientProvider->findOrCreateClient($app);
+        $this->appAuthorizationHandler->handle(new RequestAppAuthorizationCommand(
+            '90741597-54c5-48a1-98da-a68e7ee0a715',
+            'code',
+            'write_catalog_structure delete_products read_association_types',
+            'http://anyurl.test'
+        ));
+        $this->createAppWithAuthorizationHandler->handle(new CreateAppWithAuthorizationCommand(
+            '90741597-54c5-48a1-98da-a68e7ee0a715'
+        ));
+        $this->authenticateAsAdmin();
+
+        $this->client->request(
+            'GET',
+            '/connect/apps/v1/authorize',
+            [
+                'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
+                'response_type' => 'code',
+                'state' => 'foo',
+            ]
+        );
+        $response = $this->client->getResponse();
+
+        Assert::assertEquals(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
+        assert($response instanceof RedirectResponse);
+        Assert::matchesRegularExpression('^http:\/\/shopware\.example\.com\/callback\?code=[a-zA-Z0-9@=]+&state=foo$');
     }
 
     private function loadAppsFixtures(): void

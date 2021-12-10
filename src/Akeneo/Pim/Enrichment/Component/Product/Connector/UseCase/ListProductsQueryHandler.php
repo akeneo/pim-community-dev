@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 
-use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindId;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
-use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -39,9 +38,6 @@ final class ListProductsQueryHandler
     /** @var ProductQueryBuilderFactoryInterface */
     private $searchAfterPqbFactory;
 
-    /** @var PrimaryKeyEncrypter */
-    private $primaryKeyEncrypter;
-
     /** @var GetConnectorProducts */
     private $getConnectorProductsQuery;
 
@@ -58,28 +54,30 @@ final class ListProductsQueryHandler
 
     private GetProductsWithCompletenessesInterface $getProductsWithCompletenesses;
 
+    private FindId $getProductId;
+
     public function __construct(
         IdentifiableObjectRepositoryInterface $channelRepository,
         ApplyProductSearchQueryParametersToPQB $applyProductSearchQueryParametersToPQB,
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
-        PrimaryKeyEncrypter $primaryKeyEncrypter,
         GetConnectorProducts $getConnectorProductsQuery,
         GetConnectorProducts $getConnectorProductsQuerywithOptions,
         EventDispatcherInterface $eventDispatcher,
         GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
-        GetProductsWithCompletenessesInterface $getProductsWithCompletenesses
+        GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
+        FindId $getProductId
     ) {
         $this->channelRepository = $channelRepository;
         $this->applyProductSearchQueryParametersToPQB = $applyProductSearchQueryParametersToPQB;
         $this->fromSizePqbFactory = $fromSizePqbFactory;
         $this->searchAfterPqbFactory = $searchAfterPqbFactory;
-        $this->primaryKeyEncrypter = $primaryKeyEncrypter;
         $this->getConnectorProductsQuery = $getConnectorProductsQuery;
         $this->getConnectorProductsQuerywithOptions = $getConnectorProductsQuerywithOptions;
         $this->eventDispatcher = $eventDispatcher;
         $this->getProductsWithQualityScores = $getProductsWithQualityScores;
         $this->getProductsWithCompletenesses = $getProductsWithCompletenesses;
+        $this->getProductId = $getProductId;
     }
 
     /**
@@ -108,7 +106,7 @@ final class ListProductsQueryHandler
             throw new InvalidQueryException($e->getMessage(), $e->getCode(), $e);
         }
 
-        $pqb->addSorter('id', Directions::ASCENDING);
+        $pqb->addSorter('identifier', Directions::ASCENDING);
 
         $connectorProductsQuery = $query->withAttributeOptionsAsBoolean() ?
             $this->getConnectorProductsQuerywithOptions :
@@ -155,9 +153,9 @@ final class ListProductsQueryHandler
         $pqbOptions = ['limit' => (int)$query->limit];
 
         if (null !== $query->searchAfter) {
-            $searchParameterDecrypted = $this->primaryKeyEncrypter->decrypt($query->searchAfter);
-            $pqbOptions['search_after_unique_key'] = 'product_' . $searchParameterDecrypted;
-            $pqbOptions['search_after'] = ['product_' . $searchParameterDecrypted];
+            $id = $this->getProductId->fromIdentifier($query->searchAfter);
+            $pqbOptions['search_after_unique_key'] = null === $id ? '' : \sprintf('product_%s', $id);
+            $pqbOptions['search_after'] = [\strtolower($query->searchAfter)];
         }
 
         return $this->searchAfterPqbFactory->create($pqbOptions);

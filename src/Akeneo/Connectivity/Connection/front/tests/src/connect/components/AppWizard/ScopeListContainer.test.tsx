@@ -4,15 +4,17 @@ import {screen} from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
 import {renderWithProviders, historyMock} from '../../../../test-utils';
 import {ScopeListContainer} from '@src/connect/components/AppWizard/ScopeListContainer';
+import {ScopeList} from '@src/connect/components/ScopeList';
 
 beforeEach(() => {
     fetchMock.resetMocks();
     historyMock.reset();
+    jest.clearAllMocks();
 });
 
 jest.mock('@src/connect/components/ScopeList', () => ({
-    ScopeList: () => <div>ScopeListComponent</div>,
-    ScopeItem: () => <div>ScopeItemComponent</div>,
+    ...jest.requireActual('@src/connect/components/ScopeList'),
+    ScopeList: jest.fn(() => null),
 }));
 
 test('The scope list renders with scopes', () => {
@@ -32,7 +34,7 @@ test('The scope list renders with scopes', () => {
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authorize.helper')
     ).toBeInTheDocument();
-    expect(screen.queryByText('ScopeListComponent')).toBeInTheDocument();
+    expect(ScopeList).toHaveBeenCalledWith({scopeMessages: scopes}, {});
 });
 
 test('The scope list still renders with unknown scopes', () => {
@@ -49,7 +51,7 @@ test('The scope list still renders with unknown scopes', () => {
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authorize.helper')
     ).toBeInTheDocument();
-    expect(screen.queryByText('ScopeListComponent')).toBeInTheDocument();
+    expect(ScopeList).toHaveBeenCalledWith({scopeMessages: scopes}, {});
 });
 
 test('The scope list renders without scopes', () => {
@@ -60,6 +62,8 @@ test('The scope list renders without scopes', () => {
             exact: false,
         })
     ).toBeInTheDocument();
-    expect(screen.queryByText('ScopeItemComponent')).toBeInTheDocument();
-    expect(screen.queryByText('ScopeListComponent')).not.toBeInTheDocument();
+    expect(ScopeList).not.toHaveBeenCalled();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authorize.no_scope')
+    ).toBeInTheDocument();
 });

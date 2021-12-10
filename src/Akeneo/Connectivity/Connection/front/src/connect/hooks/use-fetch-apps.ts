@@ -1,7 +1,8 @@
 import {useRoute} from '../../shared/router';
 import {useCallback} from 'react';
+import {Apps} from '../../model/app';
 
-export const useFetchApps = () => {
+export const useFetchApps = (): (() => Promise<Apps>) => {
     const url = useRoute('akeneo_connectivity_connection_marketplace_rest_get_all_apps');
 
     return useCallback(async () => {
@@ -9,7 +10,7 @@ export const useFetchApps = () => {
             method: 'GET',
             headers: [['X-Requested-With', 'XMLHttpRequest']],
         });
-        if (false === response.ok) {
+        if (false === response.ok || 204 === response.status) {
             return Promise.reject(`${response.status} ${response.statusText}`);
         }
 

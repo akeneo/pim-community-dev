@@ -59,6 +59,14 @@ akeneo_connectivity.connection:
         empty: Er zijn geen apps die compatibel zijn met uw versie
       unreachable: We kunnen de marktplaats niet bereiken. Kom later terug.
       scroll_to_top: Naar boven scrollen
+    connected_apps:
+      edit:
+        tabs:
+          settings: Instellingen
+          permissions: Machtigingen
+      delete:
+        title: Bevestig verwijderen
+        link: Dat is wat er gaat gebeuren.
     apps:
       wizard:
         title: Verbinden
@@ -71,13 +79,9 @@ akeneo_connectivity.connection:
         progress:
           authorizations: Autorisaties
           permissions: Machtigingen
-          well_done: Goed gedaan!
         authorize:
-          title: 'App {{ app_name }} moet'
           no_scope_title: 'De app {{ app_name }} wil toegang tot uw PIM.'
           no_scope: Er zijn geen specifieke autorisaties aangevraagd.
-          helper: Voor meer informatie over het autoriseren van apps,
-          helper_link: kunt u in de sectie Hulp kijken.
       title: Verbinden
       activate:
         flash:
@@ -104,8 +108,6 @@ akeneo_connectivity.connection:
         response_type:
           not_blank: Het reactie_type is vereist.
           must_be_code: Het reactie_type moet "code" zijn.
-        scope:
-          must_be_valid: De toepassingsgebieden zijn niet geldig.
         redirect_uri:
           not_blank: De redirect_uri is vereist.
           must_be_url: De redirect_uri is geen geldige url.
@@ -139,6 +141,9 @@ akeneo_connectivity.connection:
         invalid: Verbindingsstroomtype kan alleen 'databron', 'datadoel' of 'andere' zijn.
       image:
         must_exist: De afbeelding is niet gevonden. Probeer het opnieuw.
+      type:
+        required: Verbindingstype is vereist.
+        too_long: Verbindingstype is te lang. Het moet 30 tekens of minder bevatten.
   flow_type:
     data_source: Gegevensbron | Gegevensbronnen
     data_destination: Gegevensdoel | Gegevensdoelen
@@ -387,3 +392,8 @@ akeneo_connectivity.connection:
     error_message: Oh nee! Er is een fout opgetreden...
     reload_helper: Herlaad de pagina en probeer opnieuw
     reload_button: Herladen
+pim_permissions:
+  widget:
+    action:
+      all: Alles
+    all: Alles

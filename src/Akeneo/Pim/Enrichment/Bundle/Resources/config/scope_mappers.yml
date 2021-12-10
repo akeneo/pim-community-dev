@@ -1,0 +1,8 @@
+services:
+    Akeneo\Pim\Enrichment\Component\Product\Security\ProductScopeMapper:
+        tags:
+            - { name: pim_api.security.scope_mapper }
+
+    Akeneo\Pim\Enrichment\Component\Security\CategoriesScopeMapper:
+        tags:
+            - { name: pim_api.security.scope_mapper }

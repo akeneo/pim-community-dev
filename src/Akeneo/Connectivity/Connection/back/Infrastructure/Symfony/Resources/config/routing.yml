@@ -6,6 +6,11 @@ akeneo_connectivity_connection_connect_apps_v1_authorize:
     controller: akeneo_connectivity.connection.public.controller.apps.authorize
     methods: [ GET ]
 
+akeneo_connectivity_connection_connect_apps_v1_token:
+  path: '/connect/apps/v1/oauth2/token'
+  controller: akeneo_connectivity.connection.public.controller.apps.token
+  methods: [ POST ]
+
 # Internal API
 
 akeneo_connectivity_connection_error_management_rest:
@@ -111,3 +116,17 @@ akeneo_connectivity_connection_settings_any:
     path: '/connect/connection-settings/{any}'
     requirements:
         any: .*
+
+## Connected Apps
+akeneo_connectivity_connection_connect_connected_apps:
+    path: '/connect/connected-apps'
+
+akeneo_connectivity_connection_connect_connected_apps_edit:
+    path: '/connect/connected-apps/{connectionCode}'
+    requirements:
+      connectionCode: '[a-zA-Z0-9_-]+'
+
+akeneo_connectivity_connection_connect_connected_apps_delete:
+    path: '/connect/connected-apps/{connectionCode}/delete'
+    requirements:
+      connectionCode: '[a-zA-Z0-9_-]+'

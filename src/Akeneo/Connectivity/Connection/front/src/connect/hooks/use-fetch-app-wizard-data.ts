@@ -10,7 +10,7 @@ export const useFetchAppWizardData = (clientId: string) => {
             headers: [['X-Requested-With', 'XMLHttpRequest']],
         });
         if (!response.ok) {
-            throw new Error(`${response.status} ${response.statusText}`);
+            return Promise.reject(`${response.status} ${response.statusText}`);
         }
 
         return response.json();

@@ -47,7 +47,7 @@ class GetAllExtensions
         } catch (\Exception $e) {
             $this->logger->error(sprintf('unable to retrieve the list of extensions, got error "%s"', $e->getMessage()));
 
-            return new JsonResponse(null, 500);
+            return new Response(null, Response::HTTP_NO_CONTENT);
         }
 
         $username = $this->userContext->getUser()->getUsername();

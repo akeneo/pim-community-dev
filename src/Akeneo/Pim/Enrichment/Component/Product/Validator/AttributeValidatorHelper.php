@@ -95,7 +95,7 @@ class AttributeValidatorHelper
                 sprintf(
                     'Attribute "%s" is locale specific and expects one of these locales: %s, "%s" given.',
                     $attribute->getCode(),
-                    implode($attribute->getAvailableLocaleCodes(), ', '),
+                    implode(', ', $attribute->getAvailableLocaleCodes()),
                     $locale
                 )
             );

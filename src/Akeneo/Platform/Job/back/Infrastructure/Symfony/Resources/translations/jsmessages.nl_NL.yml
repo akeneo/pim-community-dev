@@ -1,0 +1,33 @@
+pim_title:
+  akeneo_job_process_tracker_index: Procesopvolger
+akeneo_job_process_tracker:
+  job_execution_list:
+    table:
+      headers:
+        job_name: Taak
+        type: Type
+        started_at: Begonnen op
+        username: Gebruikersnaam
+        status: Status
+        warnings: Waarschuwingen
+  type:
+    label: Type
+    all: Alle
+    quick_export: Snelle export
+    import: Importeer
+    export: Exporteer
+    mass_edit: Groepsgewijs Bewerken
+    mass_delete: Groepsgewijs verwijderen
+    compute_family_variant_structure_changes: Wijzigingen van de familie variant structuur berekenen
+    compute_completeness_of_products_family: Berekenen van de volledigheid van de productenfamilie
+    clean_removed_attribute_job: Verwijderde attribuut waarden opruimen
+  status:
+    label: Status
+    all: Alle
+    completed: Voltooid
+    failed: Mislukt
+    started: Gestart
+    starting: Starten...
+    stopped: Gestopt
+    stopping: Stoppen
+    unknown: Onbekend

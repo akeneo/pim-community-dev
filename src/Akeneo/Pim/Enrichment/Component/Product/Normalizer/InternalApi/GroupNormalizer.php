@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetGroupProductIdentifiers;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindProductIdentifiersInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
@@ -33,7 +33,7 @@ class GroupNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
     /** @var NormalizerInterface */
     protected $versionNormalizer;
 
-    /** @var GetGroupProductIdentifiers */
+    /** @var FindProductIdentifiersInterface */
     private $getGroupProductIdentifiers;
 
     public function __construct(
@@ -41,7 +41,7 @@ class GroupNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
         StructureVersionProviderInterface $structureVersionProvider,
         VersionManager $versionManager,
         NormalizerInterface $versionNormalizer,
-        GetGroupProductIdentifiers $getGroupProductIdentifiers
+        FindProductIdentifiersInterface $getGroupProductIdentifiers
     ) {
         $this->groupNormalizer = $groupNormalizer;
         $this->structureVersionProvider = $structureVersionProvider;
@@ -58,7 +58,7 @@ class GroupNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
     {
         $normalizedGroup = $this->groupNormalizer->normalize($group, 'standard', $context);
 
-        $normalizedGroup['products'] = $this->getGroupProductIdentifiers->byGroupId($group->getId());
+        $normalizedGroup['products'] = $this->getGroupProductIdentifiers->fromGroupId($group->getId());
 
         $firstVersion = $this->versionManager->getOldestLogEntry($group);
         $lastVersion = $this->versionManager->getNewestLogEntry($group);

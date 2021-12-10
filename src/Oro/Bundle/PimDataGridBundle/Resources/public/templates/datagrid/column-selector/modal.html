@@ -8,7 +8,8 @@
                 </li>
                 <% _.each(groups, (group) => { %>
                 <li class="AknVerticalList-item AknVerticalList-item--selectable tab" data-group data-value="<%- group.code %>">
-                    <%- group.label %><span class="AknBadge"><%- group.count %></span>
+                    <div class="AknVerticalList-item-itemLabel" title="<%- group.label %>"><%- group.label %></div>
+                    <span class="AknBadge"><%- group.count %></span>
                 </li>
                 <% }) %>
             </ul>

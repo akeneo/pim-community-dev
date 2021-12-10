@@ -1,0 +1,4 @@
+services:
+    Akeneo\Channel\Component\Security\ChannelScopeMapper:
+        tags:
+            - { name: pim_api.security.scope_mapper }

@@ -6,23 +6,16 @@ import {useTranslate} from '../../shared/translate';
 import {Extension} from '../../model/extension';
 import {App} from '../../model/app';
 
-const Grid = styled.section`
-    margin: 20px 0;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(300px, 1fr));
-    gap: 20px;
-`;
-
 const CardContainer = styled.div`
     padding: 20px;
     border: 1px ${getColor('grey', 40)} solid;
     display: grid;
     gap: 20px 20px;
-    grid-template-columns: 100px 1fr 50px;
+    grid-template-columns: 50px 50px 1fr 1px; /* 1px column only for ellipsis working */
     grid-template-rows: 1fr 50px;
     grid-template-areas:
-        'logo text text'
-        'actions actions certified';
+        'logo logo text text'
+        'certified actions actions actions';
 `;
 
 const Logo = styled.img`
@@ -108,17 +101,18 @@ const CertifiedIcon = styled.div`
     height: 50px;
 
     grid-area: certified;
-    justify-self: end;
+    justify-self: start;
     align-self: end;
 `;
 
 const Actions = styled.div`
     grid-area: actions;
-    justify-self: start;
+    justify-self: end;
     align-self: end;
+    text-align: right;
 
     & > * {
-        margin-right: 10px;
+        margin-left: 10px;
     }
 `;
 
@@ -127,7 +121,7 @@ type Props = {
     additionalActions?: ReactNode[];
 };
 
-const MarketplaceCard: FC<Props> = ({item, additionalActions}) => {
+export const MarketplaceCard: FC<Props> = ({item, additionalActions}) => {
     const translate = useTranslate();
 
     const normalizedDescription =
@@ -168,5 +162,3 @@ const MarketplaceCard: FC<Props> = ({item, additionalActions}) => {
         </CardContainer>
     );
 };
-
-export {MarketplaceCard, Grid};

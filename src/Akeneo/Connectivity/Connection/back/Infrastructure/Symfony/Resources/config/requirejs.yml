@@ -37,6 +37,15 @@ config:
                     module: pim/controller/connectivity/connection/audit
                 akeneo_connectivity_connection_audit_any:
                     module: pim/controller/connectivity/connection/audit
+                akeneo_connectivity_connection_connect_connected_apps:
+                    module: pim/controller/connectivity/connection/connect/connected-apps
+                    aclResourceId: akeneo_connectivity_connection_manage_apps
+                akeneo_connectivity_connection_connect_connected_apps_edit:
+                    module: pim/controller/connectivity/connection/connect/connected-apps
+                    aclResourceId: akeneo_connectivity_connection_manage_apps
+                akeneo_connectivity_connection_connect_connected_apps_delete:
+                    module: pim/controller/connectivity/connection/connect/connected-apps
+                    aclResourceId: akeneo_connectivity_connection_manage_apps
 
     paths:
         pim/controller/connectivity/connection/connect/apps: akeneoconnectivityconnection/js/controller/apps.tsx
@@ -45,5 +54,8 @@ config:
         pim/controller/connectivity/connection/error-management: akeneoconnectivityconnection/js/controller/error-management.tsx
         pim/controller/connectivity/connection/webhook: akeneoconnectivityconnection/js/controller/webhook.tsx
         pim/controller/connectivity/connection/audit: akeneoconnectivityconnection/js/controller/audit.tsx
+        pim/controller/connectivity/connection/connect/connected-apps: akeneoconnectivityconnection/js/controller/connected-apps.tsx
 
         pim/menu/connectivity/connection/connection-params-provider: akeneoconnectivityconnection/js/menu/connection-params-provider.ts
+
+        pim/permission-form-registry: akeneoconnectivityconnection/js/registry/permission-form-registry

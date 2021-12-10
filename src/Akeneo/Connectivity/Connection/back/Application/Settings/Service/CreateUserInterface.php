@@ -13,5 +13,15 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\User;
  */
 interface CreateUserInterface
 {
-    public function execute(string $username, string $firstname, string $lastname): User;
+    /**
+     * Creates and persists a new user
+     *
+     * @param string $username
+     * @param string $firstname
+     * @param string $lastname
+     * @param string[]|null $groups
+     * @param string[]|null $roles
+     * @return User
+     */
+    public function execute(string $username, string $firstname, string $lastname, ?array $groups = null, ?array $roles = null): User;
 }

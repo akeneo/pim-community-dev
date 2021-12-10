@@ -10,6 +10,7 @@ export type App = {
     certified: boolean;
     activate_url: string;
     callback_url: string;
+    connected: boolean;
 };
 
 export type Apps = {

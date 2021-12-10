@@ -260,6 +260,8 @@ $rules = [
         'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
 
         'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
+
+        'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
     ])->in('Akeneo\Pim\Enrichment\Component'),
 ];
 

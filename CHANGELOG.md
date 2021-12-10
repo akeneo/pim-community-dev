@@ -143,7 +143,12 @@
 - PIM-10167: Fix import file - datetime in price attribute break the import
 - PIM-10177: Fix warning level for status badge on last operations
 - PIM-10158: Fix failed migration longtext to json for akeneo_batch_job_execution.raw_parameters du to empty values
+- PIM-10187: Fix impossible to configure the columns of the product grid if attribute labels are too long
 - PIM-10155: Decrease batch size during indexation of products and product models
+- PIM-10182: Search_after uses identifiers/codes instead of encrypted Mysql ids in external API
+- PIM-10149: Fix group product page OOM (remove group to products association)
+- PIM-10193: fix TypeError(implode(): Argument #2 () must be of type ?array, string given)
+- PIM-10194: Fix pagination for list products/product models endpoints with search_after pagination type
 
 ## New features
 

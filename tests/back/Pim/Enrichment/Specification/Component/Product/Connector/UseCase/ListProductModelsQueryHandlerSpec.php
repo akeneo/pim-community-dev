@@ -6,17 +6,17 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\UseCas
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ApplyProductSearchQueryParametersToPQB;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindId;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
-use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -27,16 +27,16 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $channelRepository,
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
-        PrimaryKeyEncrypter $primaryKeyEncrypter,
-        GetConnectorProductModels $getConnectorProductModels
+        GetConnectorProductModels $getConnectorProductModels,
+        FindId $findProductModelId
     ) {
         $this->beConstructedWith(
             new ApplyProductSearchQueryParametersToPQB($channelRepository->getWrappedObject()),
             $fromSizePqbFactory,
             $searchAfterPqbFactory,
-            $primaryKeyEncrypter,
             $getConnectorProductModels,
-            $channelRepository
+            $channelRepository,
+            $findProductModelId
         );
     }
 
@@ -60,7 +60,7 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
             'from' => 2856
         ])->shouldBeCalled()->willReturn($productQueryBuilder);
 
-        $productQueryBuilder->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
+        $productQueryBuilder->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
         $connectorProductModel1 = new ConnectorProductModel(
             1234,
@@ -106,24 +106,23 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         ProductQueryBuilderInterface $productQueryBuilder,
-        PrimaryKeyEncrypter $primaryKeyEncrypter,
-        GetConnectorProductModels $getConnectorProductModels
+        GetConnectorProductModels $getConnectorProductModels,
+        FindId $findProductModelId
     ) {
         $query = new ListProductModelsQuery();
         $query->paginationType = PaginationTypes::SEARCH_AFTER;
         $query->limit = 42;
-        $query->searchAfter = '69';
+        $query->searchAfter = 'AN-UPPERCASE-CODE';
         $query->userId = 42;
 
-        $primaryKeyEncrypter->decrypt('69')->shouldBeCalled()->willReturn('encoded69');
-
+        $findProductModelId->fromIdentifier('AN-UPPERCASE-CODE')->shouldBeCalledOnce()->willReturn('4');
         $searchAfterPqbFactory->create([
             'limit' => 42,
-            'search_after_unique_key' => 'product_model_encoded69',
-            'search_after' => ['product_model_encoded69']
+            'search_after_unique_key' => 'product_model_4',
+            'search_after' => ['an-uppercase-code']
         ])->shouldBeCalled()->willReturn($productQueryBuilder);
 
-        $productQueryBuilder->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
+        $productQueryBuilder->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
         $connectorProductModel1 = new ConnectorProductModel(
             1234,
@@ -189,7 +188,7 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
             'limit' => 42
         ])->shouldBeCalled()->willReturn($pqb);
 
-        $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
+        $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
         $pqb->addFilter('categories', 'IN CHILDREN', ['master'], ['locale' => null, 'scope' => null])->shouldBeCalled();
 
         $getConnectorProductModels
@@ -219,7 +218,7 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
             'limit' => 42
         ])->shouldBeCalled()->willReturn($pqb);
 
-        $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
+        $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
         $getConnectorProductModels
             ->fromProductQueryBuilder($pqb, 42, null, null, ['en_US', 'fr_FR'])
@@ -248,7 +247,7 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
             'limit' => 42
         ])->shouldBeCalled()->willReturn($pqb);
 
-        $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
+        $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
 
         $getConnectorProductModels

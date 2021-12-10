@@ -8,6 +8,7 @@ const IconButtonContainer = styled(Button)<ButtonProps & {borderless: boolean}>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   padding: 0;
   width: ${({size}) => (size === 'small' ? 24 : 32)}px;
   border-style: ${({borderless, ghost}) => (!borderless && ghost ? 'solid' : 'none')};
