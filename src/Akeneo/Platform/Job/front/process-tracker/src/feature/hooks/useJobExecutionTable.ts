@@ -2,7 +2,7 @@ import {useCallback, useEffect, useRef, useState} from 'react';
 import {useRoute, useIsMounted, useDocumentVisibility} from '@akeneo-pim-community/shared';
 import {JobExecutionFilter, JobExecutionTable} from '../models';
 
-const AUTO_REFRESH_FREQUENCY = 5000;
+const AUTO_REFRESH_FREQUENCY = 2000;
 
 const useJobExecutionTable = ({page, size, sort, type, status, code, user, search}: JobExecutionFilter) => {
   const [jobExecutionTable, setJobExecutionTable] = useState<JobExecutionTable | null>(null);
