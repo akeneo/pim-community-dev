@@ -24,7 +24,7 @@ final class GetJobExecutionAction
     public function __construct(
         private Security $security,
         private SecurityFacade $securityFacade,
-        private SearchJobExecutionHandler $searchJobExecutionHandler
+        private SearchJobExecutionHandler $searchJobExecutionHandler,
     ) {
     }
 

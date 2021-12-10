@@ -12,7 +12,7 @@ namespace Akeneo\Platform\Job\Application\SearchJobUsers;
 final class SearchJobUsersHandler
 {
     public function __construct(
-        private SearchJobUsersInterface $searchJobUsers
+        private SearchJobUsersInterface $searchJobUsers,
     ) {
     }
 

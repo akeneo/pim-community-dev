@@ -12,7 +12,7 @@ namespace Akeneo\Platform\Job\Application\FindJobTypes;
 final class FindJobTypesHandler
 {
     public function __construct(
-        private FindJobTypesInterface $findJobTypes
+        private FindJobTypesInterface $findJobTypes,
     ) {
     }
 

@@ -52,7 +52,7 @@ class GetJobUsersActionTest extends ControllerIntegrationTestCase
     {
         $this->logAs('betty');
 
-        $this->webClientHelper->callApiRoute($this->client, self::ROUTE, [], 'GET');
+        $this->webClientHelper->callApiRoute($this->client, self::ROUTE, []);
 
         $response = $this->client->getResponse();
         Assert::assertSame($response->getStatusCode(), Response::HTTP_FORBIDDEN);

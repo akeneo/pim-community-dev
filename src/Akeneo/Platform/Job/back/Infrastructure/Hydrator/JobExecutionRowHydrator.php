@@ -24,7 +24,7 @@ class JobExecutionRowHydrator
         $startTime = null !== $jobExecution['start_time'] ?
             \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $jobExecution['start_time'], new \DateTimeZone('UTC'))
             : null;
-        
+
         $tracking = $this->jobExecutionTrackingHydrator->hydrate(
             (int) $jobExecution['current_step_number'] ?? 0,
             (int) $jobExecution['step_count'],

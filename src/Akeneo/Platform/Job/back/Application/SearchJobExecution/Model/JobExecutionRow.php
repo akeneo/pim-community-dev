@@ -21,7 +21,7 @@ final class JobExecutionRow
         private ?string $username,
         private Status $status,
         private bool $isStoppable,
-        private JobExecutionTracking $tracking
+        private JobExecutionTracking $tracking,
     ) {
     }
 

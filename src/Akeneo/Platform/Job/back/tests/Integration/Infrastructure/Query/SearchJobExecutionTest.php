@@ -369,7 +369,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             'type' => 'import',
         ]);
 
-        $anotherProductImportJobInstanceId = $this->fixturesJobHelper->createJobInstance([
+        $this->fixturesJobHelper->createJobInstance([
             'code' => 'another_product_import',
             'job_name' => 'another_product_import',
             'label' => 'Another product import',
@@ -427,7 +427,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             'tracking_data' => [
                 'totalItems' => 100,
                 'processedItems' => 100,
-            ]
+            ],
         ]);
 
         $this->stepExecutionIds[] = $this->fixturesJobHelper->createStepExecution([
@@ -440,7 +440,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             'tracking_data' => [
                 'totalItems' => 100,
                 'processedItems' => 100,
-            ]
+            ],
         ]);
 
         $this->stepExecutionIds[] = $this->fixturesJobHelper->createStepExecution([
@@ -455,7 +455,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             'tracking_data' => [
                 'totalItems' => 1000,
                 'processedItems' => 300,
-            ]
+            ],
         ]);
     }
 
@@ -523,7 +523,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                             true,
                             Status::fromLabel('IN_PROGRESS'),
                         ),
-                    ])
+                    ]),
                 ),
                 $this->jobExecutionIds[2] => new JobExecutionRow(
                     $this->jobExecutionIds[2],
@@ -533,7 +533,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                     null,
                     Status::fromLabel('STARTING'),
                     true,
-                    new JobExecutionTracking(0, 3, [])
+                    new JobExecutionTracking(0, 3, []),
                 ),
                 $this->jobExecutionIds[3] => new JobExecutionRow(
                     $this->jobExecutionIds[3],
@@ -543,7 +543,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                     null,
                     Status::fromLabel('STARTING'),
                     true,
-                    new JobExecutionTracking(0, 3, [])
+                    new JobExecutionTracking(0, 3, []),
                 ),
             ];
         }

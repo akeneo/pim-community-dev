@@ -24,7 +24,7 @@ class GetJobUsersAction
     public function __construct(
         private Security $security,
         private SecurityFacade $securityFacade,
-        private SearchJobUsersHandler $searchJobUsersHandler
+        private SearchJobUsersHandler $searchJobUsersHandler,
     ) {
     }
 

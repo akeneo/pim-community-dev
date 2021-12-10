@@ -21,7 +21,7 @@ final class JobExecutionTable
 
     public function __construct(
         array $jobExecutionRows,
-        public int $matchesCount
+        public int $matchesCount,
     ) {
         Assert::allIsInstanceOf($jobExecutionRows, JobExecutionRow::class);
         $this->rows = $jobExecutionRows;

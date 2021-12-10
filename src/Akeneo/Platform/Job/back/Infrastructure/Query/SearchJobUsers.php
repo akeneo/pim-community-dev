@@ -16,7 +16,7 @@ use Doctrine\DBAL\Connection;
 class SearchJobUsers implements SearchJobUsersInterface
 {
     public function __construct(
-        private Connection $connection
+        private Connection $connection,
     ) {
     }
 

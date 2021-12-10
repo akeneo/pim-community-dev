@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class JobInstaller implements EventSubscriberInterface
 {
     public function __construct(
-        private Connection $connection
+        private Connection $connection,
     ) {
     }
 

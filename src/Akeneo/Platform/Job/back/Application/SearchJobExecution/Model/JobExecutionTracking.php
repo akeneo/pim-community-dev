@@ -16,7 +16,7 @@ final class JobExecutionTracking
         private int $currentStep,
         private int $totalStep,
         /** @var StepExecutionTracking[] */
-        private array $steps
+        private array $steps,
     ) {
         Assert::allIsInstanceOf($steps, StepExecutionTracking::class);
     }

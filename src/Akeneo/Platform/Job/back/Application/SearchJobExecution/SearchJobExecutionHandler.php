@@ -14,7 +14,7 @@ use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionTable;
 final class SearchJobExecutionHandler
 {
     public function __construct(
-        private SearchJobExecutionInterface $findJobExecutionRowsForQuery
+        private SearchJobExecutionInterface $findJobExecutionRowsForQuery,
     ) {
     }
 

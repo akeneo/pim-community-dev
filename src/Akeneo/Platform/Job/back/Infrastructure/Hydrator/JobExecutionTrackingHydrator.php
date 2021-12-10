@@ -31,7 +31,7 @@ class JobExecutionTrackingHydrator
 
         $steps = array_map(
             fn (array $step) => $this->stepExecutionHydrator->hydrate($step),
-            $steps
+            $steps,
         );
 
         usort(
