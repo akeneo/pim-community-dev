@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\Job\Application\SearchJobExecution;
+namespace Akeneo\Platform\Job\Application\SearchJobExecution\Model;
 
 use Webmozart\Assert\Assert;
 
@@ -10,7 +10,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class JobExecutionRowTracking
+final class JobExecutionTracking
 {
     public function __construct(
         private int $currentStep,

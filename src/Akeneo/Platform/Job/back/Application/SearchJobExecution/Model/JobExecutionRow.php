@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\Job\Application\SearchJobExecution;
+namespace Akeneo\Platform\Job\Application\SearchJobExecution\Model;
 
 use Akeneo\Platform\Job\Domain\Model\Status;
 
@@ -21,7 +21,7 @@ final class JobExecutionRow
         private ?string $username,
         private Status $status,
         private bool $isStoppable,
-        private JobExecutionRowTracking $tracking
+        private JobExecutionTracking $tracking
     ) {
     }
 

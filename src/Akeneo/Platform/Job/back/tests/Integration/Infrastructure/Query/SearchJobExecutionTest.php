@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Integration\Infrastructure\Query;
 
-use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
-use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRowTracking;
+use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionRow;
+use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionTracking;
+use Akeneo\Platform\Job\Application\SearchJobExecution\Model\StepExecutionTracking;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
-use Akeneo\Platform\Job\Application\SearchJobExecution\StepExecutionTracking;
 use Akeneo\Platform\Job\Domain\Model\Status;
 use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
 
@@ -471,7 +471,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                     'julia',
                     Status::fromLabel('COMPLETED'),
                     false,
-                    new JobExecutionRowTracking(3, 3, [
+                    new JobExecutionTracking(3, 3, [
                         new StepExecutionTracking(
                             $this->stepExecutionIds[0],
                             5,
@@ -512,7 +512,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                     'peter',
                     Status::fromLabel('IN_PROGRESS'),
                     true,
-                    new JobExecutionRowTracking(1, 3, [
+                    new JobExecutionTracking(1, 3, [
                         new StepExecutionTracking(
                             $this->stepExecutionIds[3],
                             3600,
@@ -533,7 +533,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                     null,
                     Status::fromLabel('STARTING'),
                     true,
-                    new JobExecutionRowTracking(0, 3, [])
+                    new JobExecutionTracking(0, 3, [])
                 ),
                 $this->jobExecutionIds[3] => new JobExecutionRow(
                     $this->jobExecutionIds[3],
@@ -543,7 +543,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                     null,
                     Status::fromLabel('STARTING'),
                     true,
-                    new JobExecutionRowTracking(0, 3, [])
+                    new JobExecutionTracking(0, 3, [])
                 ),
             ];
         }

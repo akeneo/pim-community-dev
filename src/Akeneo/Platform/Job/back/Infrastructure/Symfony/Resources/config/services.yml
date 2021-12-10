@@ -5,3 +5,6 @@ services:
             - '@doctrine.dbal.default_connection'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Platform\Job\Infrastructure\Clock\ClockInterface:
+        class: Akeneo\Platform\Job\Infrastructure\Clock\SystemClock

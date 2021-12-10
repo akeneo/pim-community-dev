@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Acceptance\Application\SearchJobExecution;
 
-use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
-use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRowTracking;
-use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionTable;
+use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionRow;
+use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionTable;
+use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionTracking;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionHandler;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
 use Akeneo\Platform\Job\Domain\Model\Status;
@@ -46,7 +46,7 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
                 'admin',
                 Status::fromLabel('COMPLETED'),
                 false,
-                new JobExecutionRowTracking(1, 2, []),
+                new JobExecutionTracking(1, 2, []),
             ),
             new JobExecutionRow(
                 2,
@@ -56,7 +56,7 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
                 'admin',
                 Status::fromLabel('FAILED'),
                 true,
-                new JobExecutionRowTracking(1, 2, []),
+                new JobExecutionTracking(1, 2, []),
             ),
         ];
 

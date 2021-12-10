@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Platform\Job\Application\SearchJobExecution;
+namespace Specification\Akeneo\Platform\Job\Application\SearchJobExecution\Model;
 
-use Akeneo\Platform\Job\Application\SearchJobExecution\StepExecutionTracking;
+use Akeneo\Platform\Job\Application\SearchJobExecution\Model\StepExecutionTracking;
 use Akeneo\Platform\Job\Domain\Model\Status;
 use PhpSpec\ObjectBehavior;
 
