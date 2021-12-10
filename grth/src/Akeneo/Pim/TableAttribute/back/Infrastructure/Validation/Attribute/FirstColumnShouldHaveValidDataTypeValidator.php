@@ -18,24 +18,38 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
-final class FirstColumnShouldHaveSelectDataTypeValidator extends ConstraintValidator
+final class FirstColumnShouldHaveValidDataTypeValidator extends ConstraintValidator
 {
+    private array $allowedFirstColumnDataTypes;
+
+    public function __construct(array $allowedFirstColumnDataTypes)
+    {
+        Assert::allString($allowedFirstColumnDataTypes);
+        $this->allowedFirstColumnDataTypes = $allowedFirstColumnDataTypes;
+    }
+
     /**
      * {@inheritDoc}
      */
     public function validate($value, Constraint $constraint): void
     {
-        Assert::isInstanceOf($constraint, FirstColumnShouldHaveSelectDataType::class);
-        if (!is_array($value) || [] === $value) {
+        Assert::isInstanceOf($constraint, FirstColumnShouldHaveValidDataType::class);
+        if (!\is_array($value) || [] === $value) {
             return;
         }
 
         $firstColumnDefinition = current($value);
         $firstColumnDataType = $firstColumnDefinition['data_type'] ?? null;
 
-        if (is_string($firstColumnDataType) && SelectColumn::DATATYPE !== $firstColumnDataType) {
+        if (\is_string($firstColumnDataType) && !\in_array($firstColumnDataType, $this->allowedFirstColumnDataTypes)) {
             $this->context
-                ->buildViolation($constraint->message, ['{{ data_type }}' => $firstColumnDataType])
+                ->buildViolation(
+                    $constraint->message,
+                    [
+                        '{{ data_type }}' => $firstColumnDataType,
+                        '{{ allowed_data_types }}' => implode(', ', $this->allowedFirstColumnDataTypes),
+                    ]
+                )
                 ->atPath('[0].data_type')
                 ->addViolation();
         }

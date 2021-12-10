@@ -15,9 +15,9 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute;
 
 use Symfony\Component\Validator\Constraint;
 
-final class FirstColumnShouldHaveSelectDataType extends Constraint
+final class FirstColumnShouldHaveValidDataType extends Constraint
 {
-    public string $message = 'pim_table_configuration.validation.table_configuration.first_column_should_be_select';
+    public string $message = 'pim_table_configuration.validation.table_configuration.first_column_should_be_valid';
 
     public function getTargets(): array
     {

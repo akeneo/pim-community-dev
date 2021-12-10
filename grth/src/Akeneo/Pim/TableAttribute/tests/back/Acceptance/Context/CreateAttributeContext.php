@@ -214,6 +214,30 @@ final class CreateAttributeContext implements Context
         $this->saveAttribute($attribute);
     }
 
+    /**
+     * @When I create a table attribute with record first column
+     */
+    public function iCreateATableAttributeWithRecordFirstColumn(): void
+    {
+        $attribute = $this->attributeBuilder
+            ->withCode('table')
+            ->withGroupCode('marketing')
+            ->withType(AttributeTypes::TABLE)
+            ->build();
+        $attribute->setRawTableConfiguration([
+            [
+                'data_type' => 'record',
+                'code' => 'brand',
+                'reference_entity_identifier' => 'brands',
+            ],
+            [
+                'data_type' => 'number',
+                'code' => 'quantity',
+            ],
+        ]);
+        $this->saveAttribute($attribute);
+    }
+
     private function saveAttribute(AttributeInterface $attribute): void
     {
         $violations = $this->validator->validate($attribute);

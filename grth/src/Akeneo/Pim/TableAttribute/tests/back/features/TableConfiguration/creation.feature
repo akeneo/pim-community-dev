@@ -118,9 +118,15 @@ Feature: Create a table attribute
     When I create a text attribute with a table configuration
     Then There is a violation with message: The type pim_catalog_text does not allow table_configuration
 
+  @only-ge
   Scenario: Cannot create a table attribute when the first column is not select
     When I create a table attribute with text first column
-    Then There is a violation with message: The first column type should always be "select", current type: "text"
+    Then There is a violation with message: The first column type cannot be "text". Please choose one of the following: select
+
+  @only-ee
+  Scenario: Cannot create a table attribute when the first column is not select
+    When I create a table attribute with text first column
+    Then There is a violation with message: The first column type cannot be "text". Please choose one of the following: select, record
 
   Scenario: Cannot create a table configuration having invalid decimals allowed value type
     When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "decimals_allowed": "error"}}'
@@ -228,3 +234,13 @@ Feature: Create a table attribute
   Scenario: Cannot create a table configuration with "reference_entity_identifier" in a text column
     When I create a table attribute with a configuration '{"data_type": "text", "code": "text", "reference_entity_identifier": "brands"}'
     Then There is a violation with message: Reference entity identifier cannot be set for a "text" column type
+
+  @only-ge
+  Scenario: Cannot create a table attribute with record as the first column type
+    When I create a table attribute with record first column
+    Then There is a violation with message: The first column type cannot be "record". Please choose one of the following: select
+
+  @only-ee
+  Scenario: Can create a table attribute with record as the first column type
+    When I create a table attribute with record first column
+    Then There is no violation

@@ -24,7 +24,7 @@ pim_table_configuration:
             invalid_labels_format: The column labels must be a key/value object
             invalid_option_labels_format: The option labels must be a key/value object
             must_not_be_filled: The type %type% does not allow table_configuration
-            first_column_should_be_select: 'The first column type should always be "select", current type: "{{ data_type }}"'
+            first_column_should_be_valid: 'The first column type cannot be "{{ data_type }}". Please choose one of the following: {{ allowed_data_types }}'
             first_column_code_cannot_be_changed: The code of your first column cannot be changed.
             unknown_field: 'Make sure you use only expected fields, current field: {{ field }}'
             attribute_does_not_exist: The "{{ attribute }}" attribute does not exist

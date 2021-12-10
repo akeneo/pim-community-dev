@@ -12,7 +12,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
           minMessage: pim_table_configuration.validation.table_configuration.must_contain_at_least_two_columns
           maxMessage: pim_table_configuration.validation.table_configuration.max_columns_reached
       - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsColumnCodeUnique: ~
-      - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnShouldHaveSelectDataType: ~
+      - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnShouldHaveValidDataType: ~
       - All:
           - Type: array
           - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ValidationShouldMatchColumnType: ~

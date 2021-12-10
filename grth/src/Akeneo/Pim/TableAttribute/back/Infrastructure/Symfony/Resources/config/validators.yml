@@ -1,5 +1,6 @@
 parameters:
     pim_catalog_table_allowed_column_datatypes: [ "text", "number", "boolean", "select" ]
+    pim_catalog_table_allowed_first_column_datatypes: [ "select" ]
 
 services:
     Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsTableAttributeConfiguredValidator:
@@ -19,6 +20,12 @@ services:
     Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnCodeCannotBeChangedValidator:
         arguments:
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
+        tags:
+            - { name: 'validator.constraint_validator' }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnShouldHaveValidDataTypeValidator:
+        arguments:
+            - '%pim_catalog_table_allowed_first_column_datatypes%'
         tags:
             - { name: 'validator.constraint_validator' }
 
