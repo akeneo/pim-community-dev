@@ -15,7 +15,7 @@ class CreateUserConsentTable
         user_id INT NOT NULL,
         app_id VARCHAR(36) NOT NULL,
         scopes JSON NOT NULL,
-        uuid CHAR(36) NOT NULL CHARACTER SET ascii,
+        uuid CHAR(36) CHARACTER SET ascii NOT NULL,
         consent_date DATETIME NOT NULL,
         PRIMARY KEY (user_id, app_id),
         CONSTRAINT FK_CONNECTIVITY_CONNECTION_user_consent_user_id FOREIGN KEY (user_id) REFERENCES oro_user (id) ON DELETE CASCADE,
