@@ -18,8 +18,7 @@ import {CellInputsMapping} from './CellInputs';
 import {CellMatchersMapping} from './CellMatchers';
 import {UNIQUE_ID_KEY} from './useUniqueIds';
 import {useAttributeContext} from '../contexts';
-import {SelectCellIndex} from './CellIndexes/SelectCellIndex';
-import {RecordCellIndex} from './CellIndexes/RecordCellIndex';
+import {RecordCellIndex, SelectCellIndex} from './CellIndexes';
 import {usePrefetchTableValueRecords} from './usePrefetchTableValueRecords';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];

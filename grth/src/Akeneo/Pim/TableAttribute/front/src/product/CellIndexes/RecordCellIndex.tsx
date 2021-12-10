@@ -29,17 +29,18 @@ const RecordCellIndex: React.FC<RecordCellIndexProps> = ({cellMatchersMapping, s
   const {attribute} = useAttributeContext();
   const firstColumn = attribute?.table_configuration?.[0];
   const [record, setRecord] = React.useState<ReferenceEntityRecord | undefined | null>();
-  const isMatching = cellMatchersMapping['record'].default();
+  const isMatching = cellMatchersMapping['record'] ? cellMatchersMapping['record'].default() : () => false;
 
   React.useEffect(() => {
-    if (!attribute) return;
-    ReferenceEntityRecordRepository.findByCode(
-      router,
-      (firstColumn as RecordColumnDefinition).reference_entity_identifier,
-      value
-    ).then(record => {
-      setRecord(record);
-    });
+    if (attribute) {
+      ReferenceEntityRecordRepository.findByCode(
+        router,
+        (firstColumn as RecordColumnDefinition).reference_entity_identifier,
+        value
+      ).then(record => {
+        setRecord(record);
+      });
+    }
   }, [attribute]);
 
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {RecordAddRowsButton} from '../../../src';
+import {RecordAddRowsButton, RecordColumnDefinition} from '../../../src';
 import {act, fireEvent, screen} from '@testing-library/react';
 import {getComplexTableAttribute} from '../../factories';
 import {TestAttributeContextProvider} from '../../shared/TestAttributeContextProvider';
@@ -25,7 +25,7 @@ describe('RecordAddRowsButton', () => {
     const toggleChange = jest.fn();
     renderWithProviders(
       <TestAttributeContextProvider attribute={tableAttributeRecord}>
-        <RecordAddRowsButton checkedOptionCodes={[]} toggleChange={toggleChange} />
+        <RecordAddRowsButton checkedOptionCodes={[]} toggleChange={toggleChange} itemsPerPage={3} />
       </TestAttributeContextProvider>
     );
 
@@ -71,10 +71,12 @@ describe('RecordAddRowsButton', () => {
   });
 
   it('should show no options', async () => {
-    const toggleChange = jest.fn();
+    const tableAttributeRecordWithoutRecord = getComplexTableAttribute('record');
+    (tableAttributeRecordWithoutRecord.table_configuration[0] as RecordColumnDefinition).reference_entity_identifier =
+      'empty_reference_entity';
     renderWithProviders(
-      <TestAttributeContextProvider attribute={tableAttributeRecord}>
-        <RecordAddRowsButton checkedOptionCodes={[]} toggleChange={toggleChange} itemsPerPage={0} />
+      <TestAttributeContextProvider attribute={tableAttributeRecordWithoutRecord}>
+        <RecordAddRowsButton checkedOptionCodes={[]} toggleChange={jest.fn()} itemsPerPage={3} />
       </TestAttributeContextProvider>
     );
 
@@ -90,7 +92,7 @@ describe('RecordAddRowsButton', () => {
     const toggleChange = jest.fn();
     renderWithProviders(
       <TestAttributeContextProvider attribute={tableAttributeRecord}>
-        <RecordAddRowsButton checkedOptionCodes={[]} toggleChange={toggleChange} itemsPerPage={0} />
+        <RecordAddRowsButton checkedOptionCodes={[]} toggleChange={toggleChange} itemsPerPage={3} />
       </TestAttributeContextProvider>
     );
 
@@ -104,12 +106,11 @@ describe('RecordAddRowsButton', () => {
   });
 
   it('should disable options when maxRowCount is reached', async () => {
-    const toggleChange = jest.fn();
     renderWithProviders(
       <TestAttributeContextProvider attribute={tableAttributeRecord}>
         <RecordAddRowsButton
           checkedOptionCodes={['lanion00893335_2e73_41e3_ac34_763fb6a35107']}
-          toggleChange={toggleChange}
+          toggleChange={jest.fn()}
           maxRowCount={1}
         />
       </TestAttributeContextProvider>

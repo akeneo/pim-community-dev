@@ -1,6 +1,6 @@
 import {ChannelCode, LocaleCode, Router} from '@akeneo-pim-community/shared';
 import {RecordCode, ReferenceEntityIdentifierOrCode, ReferenceEntityRecord} from '../models';
-import {RECORD_FETCHER_DEFAULT_LIMIT, RecordFetcher} from '../fetchers';
+import {RecordFetcher} from '../fetchers';
 
 const referenceEntityRecordsCache: {[key: string]: ReferenceEntityRecord | null} = {};
 
@@ -22,19 +22,8 @@ const search: (
     locale: LocaleCode;
     codes?: RecordCode[];
   }
-) => Promise<ReferenceEntityRecord[]> = async (
-  router,
-  referenceEntityIdentifier,
-  {search = '', page = 0, itemsPerPage = RECORD_FETCHER_DEFAULT_LIMIT, channel, locale, codes}
-) => {
-  const records = await RecordFetcher.search(router, referenceEntityIdentifier, {
-    search,
-    page,
-    itemsPerPage,
-    channel,
-    locale,
-    codes,
-  });
+) => Promise<ReferenceEntityRecord[]> = async (router, referenceEntityIdentifier, props) => {
+  const records = await RecordFetcher.search(router, referenceEntityIdentifier, props);
 
   records.forEach(record => {
     if (!(getKey(referenceEntityIdentifier, record.code) in referenceEntityRecordsCache)) {
@@ -43,7 +32,7 @@ const search: (
   });
 
   const foundRecordCodes = records.map(record => record.code);
-  const notFoundRecordCodes = (codes || []).filter(item => foundRecordCodes.indexOf(item) < 0);
+  const notFoundRecordCodes = (props.codes || []).filter(item => foundRecordCodes.indexOf(item) < 0);
   notFoundRecordCodes.forEach(recordCode => {
     referenceEntityRecordsCache[getKey(referenceEntityIdentifier, recordCode)] = null;
   });

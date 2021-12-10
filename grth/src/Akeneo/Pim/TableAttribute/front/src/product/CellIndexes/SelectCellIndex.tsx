@@ -33,7 +33,7 @@ const SelectCellIndex: React.FC<SelectCellIndexProps> = ({
   const firstColumn = attribute?.table_configuration?.[0];
   const {getOptionLabel} = useFetchOptions(attribute, setAttribute);
 
-  const isMatching = cellMatchersMapping['select'].default();
+  const isMatching = cellMatchersMapping['select'] ? cellMatchersMapping['select'].default() : () => false;
 
   return (
     <>

@@ -1,7 +1,7 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen} from '@testing-library/react';
-import {TableInputValue} from '../../../src';
+import {TableInputValue, UNIQUE_ID_KEY} from '../../../src';
 import {
   defaultCellInputsMapping,
   defaultCellMatchersMapping,
@@ -13,6 +13,7 @@ import {TestAttributeContextProvider} from '../../shared/TestAttributeContextPro
 
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
+jest.mock('../../../src/fetchers/RecordFetcher');
 
 describe('TableInputValue', () => {
   it('should render the component', async () => {
@@ -243,7 +244,7 @@ describe('TableInputValue', () => {
     ]);
   });
 
-  it('should not render anything if cell inputs are undefined', () => {
+  it('should not render anything if select cell inputs are undefined', () => {
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
         <TableInputValue
@@ -256,5 +257,42 @@ describe('TableInputValue', () => {
       </TestAttributeContextProvider>
     );
     expect(screen.queryByText('Sugar')).not.toBeInTheDocument();
+  });
+
+  it('should not render anything if record cell inputs are undefined', () => {
+    renderWithProviders(
+      <TestAttributeContextProvider attribute={getComplexTableAttribute('record')}>
+        <TableInputValue
+          valueData={getTableValueWithId('record')}
+          searchText={''}
+          onChange={jest.fn()}
+          cellInputsMapping={{}}
+          cellMatchersMapping={{}}
+        />
+      </TestAttributeContextProvider>
+    );
+    expect(screen.queryByText('Vannes')).not.toBeInTheDocument();
+  });
+
+  it('should render records as fist column', async () => {
+    const valueDataWithUnknownRecord = getTableValueWithId('record');
+    valueDataWithUnknownRecord.push({
+      [UNIQUE_ID_KEY]: 'unknown_record_uniqueid',
+      city: 'unknown_record',
+    });
+    renderWithProviders(
+      <TestAttributeContextProvider attribute={getComplexTableAttribute('record')}>
+        <TableInputValue
+          valueData={valueDataWithUnknownRecord}
+          cellInputsMapping={defaultCellInputsMapping}
+          cellMatchersMapping={defaultCellMatchersMapping}
+        />
+      </TestAttributeContextProvider>
+    );
+
+    expect(await screen.findByText('Vannes')).toBeInTheDocument();
+    expect(await screen.findByText('Nantes')).toBeInTheDocument();
+    expect(await screen.findByText('Brest')).toBeInTheDocument();
+    expect(await screen.findByText('[unknown_record]')).toBeInTheDocument();
   });
 });
