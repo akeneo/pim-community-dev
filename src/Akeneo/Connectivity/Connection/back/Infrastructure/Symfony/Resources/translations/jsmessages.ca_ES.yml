@@ -17,6 +17,14 @@ pim_title:
   akeneo_connectivity_connection_settings_redirect: Connexions
 akeneo_connectivity.connection:
   connect:
+    connected_apps:
+      edit:
+        tabs:
+          settings: Preferències
+          permissions: Permisos
+      delete:
+        title: Confirmar l'eliminació
+        link: Això passarà.
     apps:
       wizard:
         progress:
@@ -216,3 +224,8 @@ akeneo_connectivity.connection:
     error_message: Oh vaja! S'ha produït un error...
     reload_helper: Si us plau, actualitzeu la pàgina i torneu a provar.
     reload_button: Recarregar
+pim_permissions:
+  widget:
+    action:
+      all: Tot
+    all: Tot
