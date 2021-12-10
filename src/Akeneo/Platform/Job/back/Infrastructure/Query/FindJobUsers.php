@@ -37,6 +37,7 @@ class FindJobUsers implements FindJobUsersInterface
             SELECT DISTINCT job_execution.user
             FROM akeneo_batch_job_execution job_execution
             WHERE job_execution.is_visible = 1
+            AND job_execution.user IS NOT NULL
             %s
             ORDER BY job_execution.user
         SQL;
