@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
-import {AttributeCode, RecordColumnDefinition, TableAttribute, TableValue} from '../models';
+import {AttributeCode, TableAttribute, TableValue} from '../models';
 import {CellInputsMapping, CellMatchersMapping, TableFieldApp} from '../product';
 import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -121,17 +121,6 @@ class TableField extends (Field as {new (config: any): any}) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const cellMatchersMapping = __moduleConfig.cell_matchers as CellMatchersMapping;
-
-    templateContext.attribute.table_configuration[0].data_type = 'record';
-    (templateContext.attribute.table_configuration[0] as RecordColumnDefinition).reference_entity_identifier = 'brand';
-    (templateContext.attribute.table_configuration[0] as RecordColumnDefinition).code = 'brand_column';
-
-    templateContext.value.data = [
-      {brand_column: 'alessi'},
-      {brand_column: 'fatboy'},
-      {brand_column: 'muuto'},
-      {brand_column: 'unknown'},
-    ];
 
     ReactDOM.render(
       <DependenciesProvider>
