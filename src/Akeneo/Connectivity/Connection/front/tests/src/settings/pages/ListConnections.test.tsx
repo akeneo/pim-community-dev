@@ -54,7 +54,9 @@ describe('testing ListConnections page', () => {
         );
 
         expect(fetchMock).toBeCalledTimes(2);
-        expect(fetchMock.mock.calls[0][0]).toEqual('akeneo_connectivity_connection_rest_list?search=%7B%22types%22%3A%5B%22default%22%5D%7D');
+        expect(fetchMock.mock.calls[0][0]).toEqual(
+            'akeneo_connectivity_connection_rest_list?search=%7B%22types%22%3A%5B%22default%22%5D%7D'
+        );
         expect(fetchMock.mock.calls[1][0]).toEqual(
             'akeneo_connectivity_connection_rest_wrong_credentials_combination_list'
         );
