@@ -10,6 +10,7 @@ import {
 } from '../../factories';
 import {dragAndDrop} from '../../shared/dragAndDrop';
 import {TestAttributeContextProvider} from '../../shared/TestAttributeContextProvider';
+import {CellMappingContext} from '../../../src/contexts';
 
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
@@ -19,13 +20,11 @@ describe('TableInputValue', () => {
   it('should render the component', async () => {
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <TableInputValue
-          valueData={getTableValueWithId()}
-          searchText={''}
-          onChange={jest.fn()}
-          cellInputsMapping={defaultCellInputsMapping}
-          cellMatchersMapping={defaultCellMatchersMapping}
-        />
+        <CellMappingContext.Provider
+          value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
+        >
+          <TableInputValue valueData={getTableValueWithId()} searchText={''} onChange={jest.fn()} />
+        </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -45,13 +44,11 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <TableInputValue
-          valueData={getTableValueWithId()}
-          searchText={''}
-          onChange={handleChange}
-          cellInputsMapping={defaultCellInputsMapping}
-          cellMatchersMapping={defaultCellMatchersMapping}
-        />
+        <CellMappingContext.Provider
+          value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
+        >
+          <TableInputValue valueData={getTableValueWithId()} searchText={''} onChange={handleChange} />
+        </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -79,13 +76,11 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <TableInputValue
-          valueData={getTableValueWithId()}
-          searchText={'r'}
-          onChange={handleChange}
-          cellInputsMapping={defaultCellInputsMapping}
-          cellMatchersMapping={defaultCellMatchersMapping}
-        />
+        <CellMappingContext.Provider
+          value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
+        >
+          <TableInputValue valueData={getTableValueWithId()} searchText={'r'} onChange={handleChange} />
+        </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -99,18 +94,20 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <TableInputValue
-          valueData={getTableValueWithId()}
-          onChange={handleChange}
-          violatedCells={[
-            {
-              id: 'uniqueidsugar',
-              columnCode: 'quantity',
-            },
-          ]}
-          cellInputsMapping={defaultCellInputsMapping}
-          cellMatchersMapping={defaultCellMatchersMapping}
-        />
+        <CellMappingContext.Provider
+          value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
+        >
+          <TableInputValue
+            valueData={getTableValueWithId()}
+            onChange={handleChange}
+            violatedCells={[
+              {
+                id: 'uniqueidsugar',
+                columnCode: 'quantity',
+              },
+            ]}
+          />
+        </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -128,13 +125,11 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <TableInputValue
-          valueData={getTableValueWithId()}
-          searchText={''}
-          onChange={handleChange}
-          cellInputsMapping={defaultCellInputsMapping}
-          cellMatchersMapping={defaultCellMatchersMapping}
-        />
+        <CellMappingContext.Provider
+          value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
+        >
+          <TableInputValue valueData={getTableValueWithId()} searchText={''} onChange={handleChange} />
+        </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -149,13 +144,11 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <TableInputValue
-          valueData={getTableValueWithId()}
-          searchText={''}
-          onChange={handleChange}
-          cellInputsMapping={defaultCellInputsMapping}
-          cellMatchersMapping={defaultCellMatchersMapping}
-        />
+        <CellMappingContext.Provider
+          value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
+        >
+          <TableInputValue valueData={getTableValueWithId()} searchText={''} onChange={handleChange} />
+        </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -174,13 +167,11 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <TableInputValue
-          valueData={getTableValueWithId()}
-          searchText={''}
-          onChange={handleChange}
-          cellInputsMapping={defaultCellInputsMapping}
-          cellMatchersMapping={defaultCellMatchersMapping}
-        />
+        <CellMappingContext.Provider
+          value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
+        >
+          <TableInputValue valueData={getTableValueWithId()} searchText={''} onChange={handleChange} />
+        </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -199,13 +190,11 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <TableInputValue
-          valueData={getTableValueWithId()}
-          searchText={''}
-          onChange={handleChange}
-          cellInputsMapping={defaultCellInputsMapping}
-          cellMatchersMapping={defaultCellMatchersMapping}
-        />
+        <CellMappingContext.Provider
+          value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
+        >
+          <TableInputValue valueData={getTableValueWithId()} searchText={''} onChange={handleChange} />
+        </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -224,13 +213,11 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <TableInputValue
-          valueData={getTableValueWithId()}
-          searchText={''}
-          onChange={handleChange}
-          cellInputsMapping={defaultCellInputsMapping}
-          cellMatchersMapping={defaultCellMatchersMapping}
-        />
+        <CellMappingContext.Provider
+          value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
+        >
+          <TableInputValue valueData={getTableValueWithId()} searchText={''} onChange={handleChange} />
+        </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -247,13 +234,9 @@ describe('TableInputValue', () => {
   it('should not render anything if select cell inputs are undefined', () => {
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <TableInputValue
-          valueData={getTableValueWithId()}
-          searchText={''}
-          onChange={jest.fn()}
-          cellInputsMapping={{}}
-          cellMatchersMapping={{}}
-        />
+        <CellMappingContext.Provider value={{cellMatchersMapping: {}, cellInputsMapping: {}}}>
+          <TableInputValue valueData={getTableValueWithId()} searchText={''} onChange={jest.fn()} />
+        </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
     expect(screen.queryByText('Sugar')).not.toBeInTheDocument();
@@ -262,13 +245,9 @@ describe('TableInputValue', () => {
   it('should not render anything if record cell inputs are undefined', () => {
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute('record')}>
-        <TableInputValue
-          valueData={getTableValueWithId('record')}
-          searchText={''}
-          onChange={jest.fn()}
-          cellInputsMapping={{}}
-          cellMatchersMapping={{}}
-        />
+        <CellMappingContext.Provider value={{cellMatchersMapping: {}, cellInputsMapping: {}}}>
+          <TableInputValue valueData={getTableValueWithId('record')} searchText={''} onChange={jest.fn()} />
+        </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
     expect(screen.queryByText('Vannes')).not.toBeInTheDocument();
@@ -282,11 +261,11 @@ describe('TableInputValue', () => {
     });
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute('record')}>
-        <TableInputValue
-          valueData={valueDataWithUnknownRecord}
-          cellInputsMapping={defaultCellInputsMapping}
-          cellMatchersMapping={defaultCellMatchersMapping}
-        />
+        <CellMappingContext.Provider
+          value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
+        >
+          <TableInputValue valueData={valueDataWithUnknownRecord} />
+        </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
 

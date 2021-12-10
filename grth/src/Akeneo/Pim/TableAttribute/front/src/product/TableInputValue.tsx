@@ -14,12 +14,11 @@ import {TableFooter} from './TableFooter';
 import styled from 'styled-components';
 import {TableRowWithId, TableValueWithId, ViolatedCell} from './TableFieldApp';
 import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {CellInputsMapping} from './CellInputs';
-import {CellMatchersMapping} from './CellMatchers';
 import {UNIQUE_ID_KEY} from './useUniqueIds';
 import {useAttributeContext} from '../contexts';
 import {RecordCellIndex, SelectCellIndex} from './CellIndexes';
 import {usePrefetchTableValueRecords} from './usePrefetchTableValueRecords';
+import {useCellInputsMapping, useCellMatchersMapping} from '../contexts/CellMappingContext';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
@@ -55,8 +54,6 @@ type TableInputValueProps = {
   violatedCells?: ViolatedCell[];
   readOnly?: boolean;
   isCopying?: boolean;
-  cellInputsMapping: CellInputsMapping;
-  cellMatchersMapping: CellMatchersMapping;
 };
 
 const TableInputValue: React.FC<TableInputValueProps> = ({
@@ -66,8 +63,6 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   searchText = '',
   violatedCells = [],
   isCopying = false,
-  cellInputsMapping,
-  cellMatchersMapping,
 }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
@@ -79,6 +74,8 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   const isSearching = searchText !== '';
   const isDragAndDroppable = !readOnly && !isSearching;
   const areRecordsPrefetched = usePrefetchTableValueRecords(valueData);
+  const cellMatchersMapping = useCellMatchersMapping();
+  const cellInputsMapping = useCellInputsMapping();
 
   const matchers: {[data_type: string]: (cell: TableCell, searchText: string, columnCode: ColumnCode) => boolean} = {};
   Object.keys(cellMatchersMapping).forEach(data_type => {
@@ -246,18 +243,11 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
     return firstColumn.data_type === 'select' ? (
       <SelectCellIndex
         isInErrorFromBackend={isInErrorFromBackend(row[UNIQUE_ID_KEY], firstColumn.code)}
-        cellMatchersMapping={cellMatchersMapping}
         searchText={searchText}
         value={row[firstColumn.code] as SelectOptionCode}
       />
     ) : (
-      areRecordsPrefetched && (
-        <RecordCellIndex
-          cellMatchersMapping={cellMatchersMapping}
-          searchText={searchText}
-          value={row[firstColumn.code] as RecordCode}
-        />
-      )
+      areRecordsPrefetched && <RecordCellIndex searchText={searchText} value={row[firstColumn.code] as RecordCode} />
     );
   };
 

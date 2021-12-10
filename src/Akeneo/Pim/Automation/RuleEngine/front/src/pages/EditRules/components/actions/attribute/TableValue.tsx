@@ -8,6 +8,7 @@ import {
   useToggleRow,
   useUniqueIds,
   AttributeContext,
+  CellMappingContext,
   TableAttribute,
   TableValue,
 } from '@akeneo-pim-ge/table_attribute';
@@ -67,27 +68,27 @@ const TableValue: React.FC<InputValueProps> = ({
   return (
     <AttributeContext.Provider
       value={{attribute: attributeState, setAttribute: setAttributeState}}>
-      <TableValueContainer>
-        <AttributeLabel>
-          {getLabel(
-            attributeState.labels,
-            UserContext.get('catalogLocale'),
-            attributeState.code
-          )}
-          <AddRowsButton
-            checkedOptionCodes={tableValue.map(
-              row => (row[firstColumnCode] ?? '') as string
+      <CellMappingContext.Provider value={{cellMatchersMapping, cellInputsMapping}}>
+        <TableValueContainer>
+          <AttributeLabel>
+            {getLabel(
+              attributeState.labels,
+              UserContext.get('catalogLocale'),
+              attributeState.code
             )}
-            toggleChange={handleToggleRow}
+            <AddRowsButton
+              checkedOptionCodes={tableValue.map(
+                row => (row[firstColumnCode] ?? '') as string
+              )}
+              toggleChange={handleToggleRow}
+            />
+          </AttributeLabel>
+          <TableInputValue
+            valueData={tableValue}
+            onChange={handleChange}
           />
-        </AttributeLabel>
-        <TableInputValue
-          valueData={tableValue}
-          onChange={handleChange}
-          cellInputsMapping={cellInputsMapping}
-          cellMatchersMapping={cellMatchersMapping}
-        />
-      </TableValueContainer>
+        </TableValueContainer>
+      </CellMappingContext.Provider>
       <HelperContainer>
         <Helper level='info' inline={true}>
           {translate(

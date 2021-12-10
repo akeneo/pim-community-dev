@@ -6,7 +6,7 @@ import {ReferenceEntityRecordRepository} from '../../repositories';
 import {LoadingPlaceholderContainer} from '../../shared';
 import styled from 'styled-components';
 import {TableInput} from 'akeneo-design-system';
-import {CellMatchersMapping} from '../CellMatchers';
+import {useCellMatchersMapping} from '../../contexts/CellMappingContext';
 
 const FirstCellLoadingPlaceholderContainer = styled(LoadingPlaceholderContainer)`
   padding-top: 10px;
@@ -16,12 +16,11 @@ const FirstCellLoadingPlaceholderContainer = styled(LoadingPlaceholderContainer)
 `;
 
 type RecordCellIndexProps = {
-  cellMatchersMapping: CellMatchersMapping;
   searchText: string;
   value: RecordCode;
 };
 
-const RecordCellIndex: React.FC<RecordCellIndexProps> = ({cellMatchersMapping, searchText, value}) => {
+const RecordCellIndex: React.FC<RecordCellIndexProps> = ({searchText, value}) => {
   const userContext = useUserContext();
   const router = useRouter();
   const translate = useTranslate();
@@ -29,6 +28,7 @@ const RecordCellIndex: React.FC<RecordCellIndexProps> = ({cellMatchersMapping, s
   const {attribute} = useAttributeContext();
   const firstColumn = attribute?.table_configuration?.[0];
   const [record, setRecord] = React.useState<ReferenceEntityRecord | undefined | null>();
+  const cellMatchersMapping = useCellMatchersMapping();
   const isMatching = cellMatchersMapping['record'] ? cellMatchersMapping['record'].default() : () => false;
 
   React.useEffect(() => {
