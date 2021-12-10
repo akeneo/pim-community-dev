@@ -59,6 +59,14 @@ akeneo_connectivity.connection:
         empty: Ei versiosi kanssa yhteensopivia sovelluksia
       unreachable: Emme pääse nyt kauppapaikkaan. Ole hyvä ja yritä myöhemmin uudelleen.
       scroll_to_top: Siirry ylös
+    connected_apps:
+      edit:
+        tabs:
+          settings: Asetukset
+          permissions: Käyttöoikeudet
+      delete:
+        title: Vahvista poisto
+        link: Tässä on mitä tapahtuu.
     apps:
       wizard:
         title: Yhdistä
@@ -71,7 +79,6 @@ akeneo_connectivity.connection:
         progress:
           authorizations: Tunnistautumiset
           permissions: Käyttöoikeudet
-          well_done: Hyvin tehty!
       title: Yhdistä
       scope:
         type:
@@ -331,3 +338,8 @@ akeneo_connectivity.connection:
     error_message: Voi ei! Tapahtui virhe...
     reload_helper: Päivitä sivu ja yritä uudelleen
     reload_button: Lataa uudelleen
+pim_permissions:
+  widget:
+    action:
+      all: Kaikki
+    all: Kaikki

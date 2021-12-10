@@ -11,6 +11,10 @@ services:
         tags:
             - { name: liip_imagine.binary.loader, loader: flysystem_data_loader }
 
+    Akeneo\Platform\Bundle\UIBundle\Imagine\IccStripFilter:
+        tags:
+            - { name: 'liip_imagine.filter.loader', loader: icc_strip }
+
     pim_enrich.resolver.locale:
         class: 'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver'
         arguments:
@@ -22,7 +26,7 @@ services:
         arguments:
             - '@pim_catalog.version_provider'
 
-    # inject current locale into translatable entities
+    # inject current locale into translatable entities
     pim_enrich.event_listener.add_locale:
         class: 'Akeneo\Platform\Bundle\UIBundle\EventListener\AddLocaleListener'
         tags:

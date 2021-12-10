@@ -6,12 +6,13 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\UseCas
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ApplyProductSearchQueryParametersToPQB;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindId;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
@@ -26,14 +27,16 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $channelRepository,
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
-        GetConnectorProductModels $getConnectorProductModels
+        GetConnectorProductModels $getConnectorProductModels,
+        FindId $findProductModelId
     ) {
         $this->beConstructedWith(
             new ApplyProductSearchQueryParametersToPQB($channelRepository->getWrappedObject()),
             $fromSizePqbFactory,
             $searchAfterPqbFactory,
             $getConnectorProductModels,
-            $channelRepository
+            $channelRepository,
+            $findProductModelId
         );
     }
 
@@ -103,18 +106,20 @@ final class ListProductModelsQueryHandlerSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         ProductQueryBuilderInterface $productQueryBuilder,
-        GetConnectorProductModels $getConnectorProductModels
+        GetConnectorProductModels $getConnectorProductModels,
+        FindId $findProductModelId
     ) {
         $query = new ListProductModelsQuery();
         $query->paginationType = PaginationTypes::SEARCH_AFTER;
         $query->limit = 42;
-        $query->searchAfter = '69';
+        $query->searchAfter = 'AN-UPPERCASE-CODE';
         $query->userId = 42;
 
+        $findProductModelId->fromIdentifier('AN-UPPERCASE-CODE')->shouldBeCalledOnce()->willReturn('4');
         $searchAfterPqbFactory->create([
             'limit' => 42,
-            'search_after_unique_key' => '69',
-            'search_after' => ['69']
+            'search_after_unique_key' => 'product_model_4',
+            'search_after' => ['an-uppercase-code']
         ])->shouldBeCalled()->willReturn($productQueryBuilder);
 
         $productQueryBuilder->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
