@@ -241,7 +241,7 @@ akeneo_batch_step_execution | errors | NO | longtext |
 akeneo_batch_step_execution | summary | NO | longtext |
 akeneo_batch_step_execution | tracking_data | YES | json |
 akeneo_batch_step_execution | warning_count | NO | int |
-akeneo_batch_step_execution | is_trackable | NO | tinyint(1)
+akeneo_batch_step_execution | is_trackable | NO | tinyint(1) |
 akeneo_batch_warning | id | NO | int | PRI
 akeneo_batch_warning | step_execution_id | YES | int | MUL
 akeneo_batch_warning | reason | YES | longtext |
