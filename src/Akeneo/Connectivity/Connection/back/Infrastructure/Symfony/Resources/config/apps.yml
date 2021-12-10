@@ -36,6 +36,10 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
             - '@akeneo_connectivity.connection.marketplace.get_app_query'
 
+    Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\AsymmetricKeysGenerator'
+
     Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository'
@@ -51,6 +55,8 @@ services:
             - '@pim_user.factory.role'
             - '@pim_user.saver.role_with_permissions'
         public: true
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\AsymmetricKeysGenerator: ~
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository:
         arguments:
