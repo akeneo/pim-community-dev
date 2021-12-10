@@ -15,10 +15,12 @@ use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnec
 use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionCommand;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Query\FetchConnectionsHandler;
+use Akeneo\Connectivity\Connection\Application\Settings\Query\FetchConnectionsQuery;
 use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionQuery;
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Connection;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionType;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -76,12 +78,16 @@ class ConnectionController
         $this->securityFacade = $securityFacade;
     }
 
-    public function list(): JsonResponse
+    public function list(Request $request): JsonResponse
     {
-        $connections = $this->fetchConnectionsHandler->query();
+        $defaultSearch = \sprintf('{"types": ["%s","%s"]}', ConnectionType::DEFAULT_TYPE, ConnectionType::APP_TYPE);
+
+        $query = new FetchConnectionsQuery(\json_decode($request->get('search', $defaultSearch), true));
+
+        $connections = $this->fetchConnectionsHandler->handle($query);
 
         return new JsonResponse(
-            array_map(function (Connection $connection) {
+            \array_map(function (Connection $connection) {
                 return $connection->normalize();
             }, $connections)
         );

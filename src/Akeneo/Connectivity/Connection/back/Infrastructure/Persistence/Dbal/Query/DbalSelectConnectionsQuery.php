@@ -24,19 +24,28 @@ class DbalSelectConnectionsQuery implements SelectConnectionsQuery
     }
 
     /**
+     * @param string[] $types
      * @return Connection[]
      */
-    public function execute(): array
+    public function execute(array $types = []): array
     {
         $selectSQL = <<<SQL
 SELECT code, label, flow_type, image, auditable
 FROM akeneo_connectivity_connection
-WHERE type = :type
+WHERE type IN (:types)
 ORDER BY created ASC
 SQL;
 
         $dataRows = $this->dbalConnection
-            ->executeQuery($selectSQL, ['type' => ConnectionType::DEFAULT_TYPE])
+            ->executeQuery(
+                $selectSQL,
+                [
+                    'types' => $types,
+                ],
+                [
+                    'types' => DbalConnection::PARAM_STR_ARRAY,
+                ]
+            )
             ->fetchAllAssociative();
 
         $connections = [];
