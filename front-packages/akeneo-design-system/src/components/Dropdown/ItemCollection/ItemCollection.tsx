@@ -14,11 +14,19 @@ import {useAutoFocus, useCombinedRefs} from '../../../hooks';
 import {usePagination} from '../../../hooks/usePagination';
 import {Placeholder} from '../../Placeholder/Placeholder';
 import {IllustrationProps} from '../../../illustrations/IllustrationProps';
+import {getFontSize} from '../../../theme';
 
 const ItemCollectionContainer = styled.div`
   max-height: 320px;
   overflow-y: auto;
   overflow-x: hidden;
+`;
+
+const NoResultPlaceholderContainer = styled(Placeholder)`
+  margin: 10px 10px 20px 10px;
+  & > div {
+    font-size: ${getFontSize('default')};
+  }
 `;
 
 type ItemCollectionProps = Override<
@@ -86,7 +94,7 @@ const ItemCollection = React.forwardRef<HTMLDivElement, ItemCollectionProps>(
         {childrenCount
           ? decoratedChildren
           : noResultIllustration &&
-            noResultTitle && <Placeholder illustration={noResultIllustration} title={noResultTitle} />}
+            noResultTitle && <NoResultPlaceholderContainer illustration={noResultIllustration} title={noResultTitle} />}
       </ItemCollectionContainer>
     );
   }
