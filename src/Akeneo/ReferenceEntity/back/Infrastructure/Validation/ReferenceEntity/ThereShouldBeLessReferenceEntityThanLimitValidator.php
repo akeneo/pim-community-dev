@@ -25,15 +25,10 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ThereShouldBeLessReferenceEntityThanLimitValidator extends ConstraintValidator
 {
-    private ReferenceEntityRepositoryInterface $referenceEntityRepository;
-    private int $referenceEntityLimit;
-
     public function __construct(
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        int $referenceEntityLimit
+        private ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        private int $referenceEntityLimit
     ) {
-        $this->referenceEntityRepository = $referenceEntityRepository;
-        $this->referenceEntityLimit = $referenceEntityLimit;
     }
 
     public function validate($command, Constraint $constraint): void
@@ -53,7 +48,7 @@ class ThereShouldBeLessReferenceEntityThanLimitValidator extends ConstraintValid
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
                     CreateReferenceEntityCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

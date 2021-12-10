@@ -35,8 +35,6 @@ interface AttributeRepositoryInterface
     public function getByIdentifier(AttributeIdentifier $identifier): AbstractAttribute;
 
     /**
-     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
-     *
      * @return AbstractAttribute[]
      */
     public function findByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): array;

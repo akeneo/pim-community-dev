@@ -17,11 +17,9 @@ use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityPermissionRepository
  */
 class SetReferenceEntityPermissionsHandler
 {
-    private ReferenceEntityPermissionRepositoryInterface $repository;
-
-    public function __construct(ReferenceEntityPermissionRepositoryInterface $referenceEntityPermissionRepository)
-    {
-        $this->repository = $referenceEntityPermissionRepository;
+    public function __construct(
+        private ReferenceEntityPermissionRepositoryInterface $repository
+    ) {
     }
 
     public function __invoke(SetReferenceEntityPermissionsCommand $command)

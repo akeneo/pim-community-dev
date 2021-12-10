@@ -26,15 +26,10 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentif
  */
 class RecordValuesValidator
 {
-    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
-    private RecordValueValidatorRegistry $recordValueValidatorRegistry;
-
     public function __construct(
-        RecordValueValidatorRegistry $recordValueValidatorRegistry,
-        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
+        private RecordValueValidatorRegistry $recordValueValidatorRegistry,
+        private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
     ) {
-        $this->recordValueValidatorRegistry = $recordValueValidatorRegistry;
-        $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
     }
 
     public function validate(ReferenceEntityIdentifier $referenceEntityIdentifier, array $normalizedRecord): array
@@ -62,7 +57,7 @@ class RecordValuesValidator
         $attributeCodesIndexedByTypes = [];
 
         foreach ($attributes as $attribute) {
-            $attributeCodesIndexedByTypes[get_class($attribute)][] = (string) $attribute->getCode();
+            $attributeCodesIndexedByTypes[$attribute::class][] = (string) $attribute->getCode();
         }
 
         return $attributeCodesIndexedByTypes;

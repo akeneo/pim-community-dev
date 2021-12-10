@@ -20,11 +20,9 @@ namespace Akeneo\ReferenceEntity\Domain\Model\Attribute;
  */
 class AttributeIsRequired
 {
-    private bool $value;
-
-    private function __construct(bool $value)
-    {
-        $this->value = $value;
+    private function __construct(
+        private bool $value
+    ) {
     }
 
     public static function fromBoolean(bool $isRequired): self

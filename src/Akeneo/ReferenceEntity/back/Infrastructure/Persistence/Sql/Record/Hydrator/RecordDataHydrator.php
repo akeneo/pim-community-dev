@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -25,11 +26,9 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\FindCodesByIdentifiersInterface;
  */
 class RecordDataHydrator implements DataHydratorInterface
 {
-    private FindCodesByIdentifiersInterface $findCodesByIdentifiers;
-
-    public function __construct(FindCodesByIdentifiersInterface $findCodesByIdentifiers)
-    {
-        $this->findCodesByIdentifiers = $findCodesByIdentifiers;
+    public function __construct(
+        private FindCodesByIdentifiersInterface $findCodesByIdentifiers
+    ) {
     }
 
     public function supports(AbstractAttribute $attribute): bool

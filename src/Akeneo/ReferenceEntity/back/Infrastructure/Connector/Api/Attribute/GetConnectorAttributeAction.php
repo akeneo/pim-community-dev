@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -14,7 +15,6 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
  * file that was distributed with this source code.
  */
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeByIdentifierAndCodeInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
@@ -26,18 +26,11 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class GetConnectorAttributeAction
 {
-    private FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttributeQuery;
-    private ReferenceEntityExistsInterface $referenceEntityExists;
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttributeQuery,
-        ReferenceEntityExistsInterface $referenceEntityExists,
-        SecurityFacade $securityFacade
+        private FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttributeQuery,
+        private ReferenceEntityExistsInterface $referenceEntityExists,
+        private SecurityFacade $securityFacade
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
-        $this->findConnectorAttributeQuery = $findConnectorAttributeQuery;
-        $this->securityFacade = $securityFacade;
     }
 
     /**

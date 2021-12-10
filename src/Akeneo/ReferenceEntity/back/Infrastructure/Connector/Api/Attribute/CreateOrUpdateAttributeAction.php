@@ -31,48 +31,21 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateOrUpdateAttributeAction
 {
-    private CreateAttributeCommandFactoryRegistry $createAttributeCommandFactoryRegistry;
-    private AttributeExistsInterface $attributeExists;
-    private CreateAttributeHandler $createAttributeHandler;
-    private GetAttributeIdentifierInterface $getAttributeIdentifier;
-    private EditAttributeCommandFactory $editAttributeCommandFactory;
-    private EditAttributeHandler $editAttributeHandler;
-    private Router $router;
-    private ReferenceEntityExistsInterface $referenceEntityExists;
-    private ValidatorInterface $validator;
-    private AttributeCreationValidator $jsonSchemaCreateValidator;
-    private AttributeEditionValidator $jsonSchemaEditValidator;
-    private ValidateAttributePropertiesImmutability $validateAttributePropertiesImmutability;
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        CreateAttributeCommandFactoryRegistry $createAttributeCommandFactoryRegistry,
-        AttributeExistsInterface $attributeExists,
-        CreateAttributeHandler $createAttributeHandler,
-        Router $router,
-        GetAttributeIdentifierInterface $getAttributeIdentifier,
-        EditAttributeCommandFactory $editAttributeCommandFactory,
-        EditAttributeHandler $editAttributeHandler,
-        ReferenceEntityExistsInterface $referenceEntityExists,
-        ValidatorInterface $validator,
-        AttributeCreationValidator $jsonSchemaCreateValidator,
-        AttributeEditionValidator $jsonSchemaEditValidator,
-        ValidateAttributePropertiesImmutability $validateAttributePropertiesImmutability,
-        SecurityFacade $securityFacade
+        private CreateAttributeCommandFactoryRegistry $createAttributeCommandFactoryRegistry,
+        private AttributeExistsInterface $attributeExists,
+        private CreateAttributeHandler $createAttributeHandler,
+        private Router $router,
+        private GetAttributeIdentifierInterface $getAttributeIdentifier,
+        private EditAttributeCommandFactory $editAttributeCommandFactory,
+        private EditAttributeHandler $editAttributeHandler,
+        private ReferenceEntityExistsInterface $referenceEntityExists,
+        private ValidatorInterface $validator,
+        private AttributeCreationValidator $jsonSchemaCreateValidator,
+        private AttributeEditionValidator $jsonSchemaEditValidator,
+        private ValidateAttributePropertiesImmutability $validateAttributePropertiesImmutability,
+        private SecurityFacade $securityFacade
     ) {
-        $this->createAttributeCommandFactoryRegistry = $createAttributeCommandFactoryRegistry;
-        $this->attributeExists = $attributeExists;
-        $this->createAttributeHandler = $createAttributeHandler;
-        $this->router = $router;
-        $this->getAttributeIdentifier = $getAttributeIdentifier;
-        $this->editAttributeCommandFactory = $editAttributeCommandFactory;
-        $this->editAttributeHandler = $editAttributeHandler;
-        $this->referenceEntityExists = $referenceEntityExists;
-        $this->validator = $validator;
-        $this->jsonSchemaCreateValidator = $jsonSchemaCreateValidator;
-        $this->jsonSchemaEditValidator = $jsonSchemaEditValidator;
-        $this->validateAttributePropertiesImmutability = $validateAttributePropertiesImmutability;
-        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier, string $attributeCode): Response

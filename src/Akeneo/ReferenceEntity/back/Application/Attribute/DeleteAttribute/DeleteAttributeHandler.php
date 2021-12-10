@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -26,18 +27,11 @@ use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
  */
 class DeleteAttributeHandler
 {
-    private FindReferenceEntityAttributeAsLabelInterface $findReferenceEntityAttributeAsLabel;
-    private FindReferenceEntityAttributeAsImageInterface $findReferenceEntityAttributeAsImage;
-    private AttributeRepositoryInterface $attributeRepository;
-
     public function __construct(
-        FindReferenceEntityAttributeAsLabelInterface $findReferenceEntityAttributeAsLabel,
-        FindReferenceEntityAttributeAsImageInterface $findReferenceEntityAttributeAsImage,
-        AttributeRepositoryInterface $attributeRepository
+        private FindReferenceEntityAttributeAsLabelInterface $findReferenceEntityAttributeAsLabel,
+        private FindReferenceEntityAttributeAsImageInterface $findReferenceEntityAttributeAsImage,
+        private AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->findReferenceEntityAttributeAsLabel = $findReferenceEntityAttributeAsLabel;
-        $this->findReferenceEntityAttributeAsImage = $findReferenceEntityAttributeAsImage;
-        $this->attributeRepository = $attributeRepository;
     }
 
     public function __invoke(DeleteAttributeCommand $deleteAttributeCommand): void

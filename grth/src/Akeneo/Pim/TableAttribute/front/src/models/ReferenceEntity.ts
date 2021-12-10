@@ -1,9 +1,9 @@
 import {LabelCollection} from '@akeneo-pim-community/shared';
 
-export type ReferenceEntityIdentifier = string;
+export type ReferenceEntityIdentifierOrCode = string;
 
 export type ReferenceEntity = {
-  identifier: ReferenceEntityIdentifier;
+  identifier: ReferenceEntityIdentifierOrCode;
   image: {
     filePath: string;
     originalFilename: string;

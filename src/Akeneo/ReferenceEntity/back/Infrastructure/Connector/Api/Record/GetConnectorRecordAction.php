@@ -31,21 +31,12 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  */
 class GetConnectorRecordAction
 {
-    private FindConnectorRecordByReferenceEntityAndCodeInterface $findConnectorRecord;
-    private ReferenceEntityExistsInterface $referenceEntityExists;
-    private AddHalDownloadLinkToRecordImages $addHalLinksToImageValues;
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        FindConnectorRecordByReferenceEntityAndCodeInterface $findConnectorRecord,
-        ReferenceEntityExistsInterface $referenceEntityExists,
-        AddHalDownloadLinkToRecordImages $addHalLinksToImageValues,
-        SecurityFacade $securityFacade
+        private FindConnectorRecordByReferenceEntityAndCodeInterface $findConnectorRecord,
+        private ReferenceEntityExistsInterface $referenceEntityExists,
+        private AddHalDownloadLinkToRecordImages $addHalLinksToImageValues,
+        private SecurityFacade $securityFacade
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
-        $this->findConnectorRecord = $findConnectorRecord;
-        $this->addHalLinksToImageValues = $addHalLinksToImageValues;
-        $this->securityFacade = $securityFacade;
     }
 
     /**

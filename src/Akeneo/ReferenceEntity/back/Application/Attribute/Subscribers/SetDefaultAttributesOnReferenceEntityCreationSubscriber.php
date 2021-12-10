@@ -31,18 +31,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class SetDefaultAttributesOnReferenceEntityCreationSubscriber implements EventSubscriberInterface
 {
-    private CreateAttributeHandler $createAttributeHandler;
-    private ReferenceEntityRepositoryInterface $referenceEntityRepository;
-    private AttributeRepositoryInterface $attributeRepository;
-
     public function __construct(
-        ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        CreateAttributeHandler $createAttributeHandler
+        private ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        private AttributeRepositoryInterface $attributeRepository,
+        private CreateAttributeHandler $createAttributeHandler
     ) {
-        $this->createAttributeHandler = $createAttributeHandler;
-        $this->referenceEntityRepository = $referenceEntityRepository;
-        $this->attributeRepository = $attributeRepository;
     }
 
     /**

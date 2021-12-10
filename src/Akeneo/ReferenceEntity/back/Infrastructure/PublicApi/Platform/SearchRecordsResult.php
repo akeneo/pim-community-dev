@@ -17,17 +17,14 @@ use Webmozart\Assert\Assert;
 
 class SearchRecordsResult
 {
-    private int $matchesCount;
-
     /** @var Record[] */
     private array $items;
 
-    public function __construct(array $items, int $matchesCount)
+    public function __construct(array $items, private int $matchesCount)
     {
         Assert::allIsInstanceOf($items, Record::class);
 
         $this->items = $items;
-        $this->matchesCount = $matchesCount;
     }
 
     public function getMatchesCount(): int

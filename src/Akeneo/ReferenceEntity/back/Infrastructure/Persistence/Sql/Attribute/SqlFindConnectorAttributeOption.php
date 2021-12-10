@@ -23,15 +23,10 @@ use Doctrine\DBAL\Connection;
 
 class SqlFindConnectorAttributeOption implements FindConnectorAttributeOptionInterface
 {
-    private Connection $sqlConnection;
-    private InactiveLabelFilter $inactiveLabelFilter;
-
     public function __construct(
-        Connection $sqlConnection,
-        InactiveLabelFilter $inactiveLabelFilter
+        private Connection $sqlConnection,
+        private InactiveLabelFilter $inactiveLabelFilter
     ) {
-        $this->sqlConnection = $sqlConnection;
-        $this->inactiveLabelFilter = $inactiveLabelFilter;
     }
 
     public function find(

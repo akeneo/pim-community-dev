@@ -14,18 +14,11 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class GetConnectorReferenceEntityAction
 {
-    private FindConnectorReferenceEntityByReferenceEntityIdentifierInterface $findConnectorReferenceEntity;
-    private AddHalDownloadLinkToReferenceEntityImage $addHalLinksToReferenceEntityImage;
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        FindConnectorReferenceEntityByReferenceEntityIdentifierInterface $findConnectorReferenceEntity,
-        AddHalDownloadLinkToReferenceEntityImage $addHalLinksToImageValues,
-        SecurityFacade $securityFacade
+        private FindConnectorReferenceEntityByReferenceEntityIdentifierInterface $findConnectorReferenceEntity,
+        private AddHalDownloadLinkToReferenceEntityImage $addHalLinksToReferenceEntityImage,
+        private SecurityFacade $securityFacade
     ) {
-        $this->findConnectorReferenceEntity = $findConnectorReferenceEntity;
-        $this->addHalLinksToReferenceEntityImage = $addHalLinksToImageValues;
-        $this->securityFacade = $securityFacade;
     }
 
     /**

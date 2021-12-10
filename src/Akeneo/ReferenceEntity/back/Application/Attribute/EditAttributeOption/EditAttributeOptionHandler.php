@@ -14,15 +14,10 @@ use Webmozart\Assert\Assert;
 
 class EditAttributeOptionHandler
 {
-    private GetAttributeIdentifierInterface $getAttributeIdentifier;
-    private AttributeRepositoryInterface $attributeRepository;
-
     public function __construct(
-        GetAttributeIdentifierInterface $getAttributeIdentifier,
-        AttributeRepositoryInterface $attributeRepository
+        private GetAttributeIdentifierInterface $getAttributeIdentifier,
+        private AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->getAttributeIdentifier = $getAttributeIdentifier;
-        $this->attributeRepository = $attributeRepository;
     }
 
     public function __invoke(EditAttributeOptionCommand $command): void

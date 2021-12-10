@@ -35,11 +35,9 @@ use Symfony\Component\Validator\Validation;
  */
 class EditStoredFileValueCommandValidator extends ConstraintValidator
 {
-    private FileExistsInterface $fileExists;
-
-    public function __construct(FileExistsInterface $fileExists)
-    {
-        $this->fileExists = $fileExists;
+    public function __construct(
+        private FileExistsInterface $fileExists
+    ) {
     }
 
     public function validate($command, Constraint $constraint)
@@ -59,7 +57,7 @@ class EditStoredFileValueCommandValidator extends ConstraintValidator
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
                     EditStoredFileValueCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }
@@ -85,7 +83,7 @@ class EditStoredFileValueCommandValidator extends ConstraintValidator
                 sprintf(
                     'Expected command attribute to be of class "%s", "%s" given',
                     ImageAttribute::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

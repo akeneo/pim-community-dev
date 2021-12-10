@@ -196,7 +196,6 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
             {getLocaleScopeInfo(locale, scope)}
             {isEditable && isDisplayedForCurrentLocale && (
               <AddRowsButton
-                columnCode={firstColumnCode}
                 checkedOptionCodes={tableValue.map(row => (row[firstColumnCode] ?? '') as string)}
                 toggleChange={handleToggleRow}
               />

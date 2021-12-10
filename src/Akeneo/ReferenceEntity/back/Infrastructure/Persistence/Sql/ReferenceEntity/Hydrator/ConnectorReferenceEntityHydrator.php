@@ -31,14 +31,12 @@ use Doctrine\DBAL\Types\Types;
 class ConnectorReferenceEntityHydrator
 {
     private AbstractPlatform $platform;
-    private FindActivatedLocalesInterface $findActivatedLocales;
 
     public function __construct(
         Connection $connection,
-        FindActivatedLocalesInterface $findActivatedLocales
+        private FindActivatedLocalesInterface $findActivatedLocales
     ) {
         $this->platform = $connection->getDatabasePlatform();
-        $this->findActivatedLocales = $findActivatedLocales;
     }
 
     public function hydrate(array $row): ConnectorReferenceEntity

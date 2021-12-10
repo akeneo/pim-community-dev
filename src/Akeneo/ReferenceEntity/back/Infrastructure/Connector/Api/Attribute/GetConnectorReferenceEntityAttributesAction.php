@@ -2,6 +2,7 @@
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
 
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -11,7 +12,6 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
  * file that was distributed with this source code.
  */
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributesByReferenceEntityIdentifierInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\Hal\AddHalSelfLinkToNormalizedConnectorAttribute;
@@ -23,21 +23,12 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class GetConnectorReferenceEntityAttributesAction
 {
-    private FindConnectorAttributesByReferenceEntityIdentifierInterface $findConnectorReferenceEntityAttributes;
-    private ReferenceEntityExistsInterface $referenceEntityExists;
-    private AddHalSelfLinkToNormalizedConnectorAttribute $addHalSelfLinkToNormalizedConnectorAttribute;
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        FindConnectorAttributesByReferenceEntityIdentifierInterface $findConnectorReferenceEntityAttributes,
-        ReferenceEntityExistsInterface $referenceEntityExists,
-        AddHalSelfLinkToNormalizedConnectorAttribute $addHalSelfLinkToNormalizedConnectorAttribute,
-        SecurityFacade $securityFacade
+        private FindConnectorAttributesByReferenceEntityIdentifierInterface $findConnectorReferenceEntityAttributes,
+        private ReferenceEntityExistsInterface $referenceEntityExists,
+        private AddHalSelfLinkToNormalizedConnectorAttribute $addHalSelfLinkToNormalizedConnectorAttribute,
+        private SecurityFacade $securityFacade
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
-        $this->findConnectorReferenceEntityAttributes = $findConnectorReferenceEntityAttributes;
-        $this->addHalSelfLinkToNormalizedConnectorAttribute = $addHalSelfLinkToNormalizedConnectorAttribute;
-        $this->securityFacade = $securityFacade;
     }
 
     /**

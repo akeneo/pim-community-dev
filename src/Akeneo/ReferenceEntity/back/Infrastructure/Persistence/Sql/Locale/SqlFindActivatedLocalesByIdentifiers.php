@@ -25,11 +25,9 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlFindActivatedLocalesByIdentifiers implements FindActivatedLocalesByIdentifiersInterface
 {
-    private Connection $sqlConnection;
-
-    public function __construct(Connection $sqlConnection)
-    {
-        $this->sqlConnection = $sqlConnection;
+    public function __construct(
+        private Connection $sqlConnection
+    ) {
     }
 
     /**

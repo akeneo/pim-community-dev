@@ -22,14 +22,11 @@ use Webmozart\Assert\Assert;
  */
 class RecordCollectionData implements ValueDataInterface
 {
-    /** @var string[] */
-    private array $recordCodes;
-
-    private function __construct(array $recordCodes)
-    {
+    /** @var string[] $recordCodes */
+    private function __construct(
+        private array $recordCodes
+    ) {
         Assert::notEmpty($recordCodes, 'Record codes should be a non empty array');
-
-        $this->recordCodes = $recordCodes;
     }
 
     /**

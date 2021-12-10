@@ -1,6 +1,7 @@
 import {LabelCollection} from '@akeneo-pim-community/shared';
+import {ReferenceEntityIdentifierOrCode} from './ReferenceEntity';
 
-export type DataType = 'text' | 'number' | 'boolean' | 'select';
+export type DataType = 'text' | 'number' | 'boolean' | 'select' | 'record';
 export type ColumnCode = string;
 
 export type TextColumnValidation = {
@@ -17,13 +18,25 @@ type BooleanColumnValidation = {};
 
 type SelectColumnValidation = {};
 
-export type ColumnValidation = TextColumnValidation | NumberColumnValidation | BooleanColumnValidation;
+type RecordColumnValidation = {};
+
+export type ColumnValidation =
+  | TextColumnValidation
+  | NumberColumnValidation
+  | BooleanColumnValidation
+  | RecordColumnValidation;
 
 export type SelectOptionCode = string;
 
 export type SelectOption = {
   code: SelectOptionCode;
   labels: LabelCollection;
+};
+
+type RecordOptionCode = string;
+
+export type RecordOption = {
+  code: RecordOptionCode;
 };
 
 export type TextColumnDefinition = {
@@ -59,11 +72,21 @@ export type SelectColumnDefinition = {
   options?: SelectOption[];
 };
 
+export type RecordColumnDefinition = {
+  code: ColumnCode;
+  labels: LabelCollection;
+  data_type: 'record';
+  validations: RecordColumnValidation;
+  is_required_for_completeness?: boolean;
+  reference_entity_code: ReferenceEntityIdentifierOrCode;
+};
+
 export type ColumnDefinition =
   | TextColumnDefinition
   | NumberColumnDefinition
   | BooleanColumnDefinition
-  | SelectColumnDefinition;
+  | SelectColumnDefinition
+  | RecordColumnDefinition;
 
 export type TableConfiguration = ColumnDefinition[];
 

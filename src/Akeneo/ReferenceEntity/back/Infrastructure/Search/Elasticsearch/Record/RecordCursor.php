@@ -14,21 +14,15 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
  */
 class RecordCursor implements CursorInterface
 {
-    private RecordQueryBuilderInterface $queryBuilder;
-    private Client $recordClient;
-    private RecordQuery $recordQuery;
     private int $count;
     private ?array $items = null;
     private ?string $searchAfterCode = null;
 
     public function __construct(
-        RecordQueryBuilderInterface $queryBuilder,
-        Client $recordClient,
-        RecordQuery $recordQuery
+        private RecordQueryBuilderInterface $queryBuilder,
+        private Client $recordClient,
+        private RecordQuery $recordQuery
     ) {
-        $this->queryBuilder = $queryBuilder;
-        $this->recordClient = $recordClient;
-        $this->recordQuery = $recordQuery;
     }
 
     /**

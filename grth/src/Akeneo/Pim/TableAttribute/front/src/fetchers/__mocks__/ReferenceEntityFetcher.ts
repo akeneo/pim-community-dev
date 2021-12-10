@@ -1,4 +1,3 @@
-import {Router} from '@akeneo-pim-community/shared';
 import {ReferenceEntity} from '../../models';
 
 const image = {
@@ -6,7 +5,7 @@ const image = {
   originalFilename: 'img.png',
 };
 
-const fetchAll = async (_router: Router): Promise<ReferenceEntity[]> => {
+const fetchAll = async (): Promise<ReferenceEntity[]> => {
   return Promise.resolve([
     {identifier: 'brand', labels: {en_US: 'Brand', fr_FR: 'Marque'}, image},
     {identifier: 'city', labels: {en_US: 'City'}, image},

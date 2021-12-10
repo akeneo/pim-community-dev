@@ -34,27 +34,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class SetAction
 {
-    private SetReferenceEntityPermissionsHandler $setReferenceEntityPermissionsHandler;
-    private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler;
-    private TokenStorageInterface $tokenStorage;
-    private SecurityFacade $securityFacade;
-    private ValidatorInterface $validator;
-    private Serializer $serializer;
-
     public function __construct(
-        SetReferenceEntityPermissionsHandler $setReferenceEntityPermissionsHandler,
-        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
-        TokenStorageInterface $tokenStorage,
-        SecurityFacade $securityFacade,
-        ValidatorInterface $validator,
-        Serializer $serializer
+        private SetReferenceEntityPermissionsHandler $setReferenceEntityPermissionsHandler,
+        private CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        private TokenStorageInterface $tokenStorage,
+        private SecurityFacade $securityFacade,
+        private ValidatorInterface $validator,
+        private Serializer $serializer
     ) {
-        $this->setReferenceEntityPermissionsHandler = $setReferenceEntityPermissionsHandler;
-        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
-        $this->tokenStorage = $tokenStorage;
-        $this->securityFacade = $securityFacade;
-        $this->validator = $validator;
-        $this->serializer = $serializer;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier)

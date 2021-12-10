@@ -43,33 +43,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class GetConnectorRecordsAction
 {
-    private ReferenceEntityExistsInterface $referenceEntityExists;
     private Limit $limit;
-    private SearchConnectorRecord $searchConnectorRecord;
-    private PaginatorInterface $halPaginator;
-    private AddHalDownloadLinkToRecordImages $addHalLinksToImageValues;
-    private ValidatorInterface $validator;
-    private SearchFiltersValidator $searchFiltersValidator;
-    private SecurityFacade $securityFacade;
 
     public function __construct(
-        ReferenceEntityExistsInterface $referenceEntityExists,
-        SearchConnectorRecord $searchConnectorRecord,
-        PaginatorInterface $halPaginator,
-        AddHalDownloadLinkToRecordImages $addHalLinksToImageValues,
+        private ReferenceEntityExistsInterface $referenceEntityExists,
+        private SearchConnectorRecord $searchConnectorRecord,
+        private PaginatorInterface $halPaginator,
+        private AddHalDownloadLinkToRecordImages $addHalLinksToImageValues,
         int $limit,
-        ValidatorInterface $validator,
-        SearchFiltersValidator $searchFiltersValidator,
-        SecurityFacade $securityFacade
+        private ValidatorInterface $validator,
+        private SearchFiltersValidator $searchFiltersValidator,
+        private SecurityFacade $securityFacade
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
-        $this->searchConnectorRecord = $searchConnectorRecord;
         $this->limit = new Limit($limit);
-        $this->halPaginator = $halPaginator;
-        $this->addHalLinksToImageValues = $addHalLinksToImageValues;
-        $this->validator = $validator;
-        $this->searchFiltersValidator = $searchFiltersValidator;
-        $this->securityFacade = $securityFacade;
     }
 
     /**

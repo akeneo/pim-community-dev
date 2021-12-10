@@ -21,13 +21,12 @@ use Doctrine\DBAL\Connection;
 
 class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
 {
-    private Connection $sqlConnection;
     /** @var array<string, ValueKeyCollection> */
     private array $cachedResult = [];
 
-    public function __construct(Connection $sqlConnection)
-    {
-        $this->sqlConnection = $sqlConnection;
+    public function __construct(
+        private Connection $sqlConnection
+    ) {
     }
 
     public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): ValueKeyCollection

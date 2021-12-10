@@ -39,37 +39,20 @@ abstract class AbstractRecordWriter extends AbstractFileWriter implements
     InitializableInterface,
     FlushableInterface
 {
-    private ArrayConverterInterface $arrayConverter;
-    private BufferFactory $bufferFactory;
-    private FlatItemBufferFlusher $flusher;
-    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
-    private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels;
-    private FileExporterPathGeneratorInterface $fileExporterPath;
-    private FileInfoRepositoryInterface $fileInfoRepository;
-    private FilesystemProvider $filesystemProvider;
     private ?FlatItemBuffer $flatRowBuffer = null;
     /** @var AbstractAttribute[] */
     private array $attributesIndexedByIdentifier = [];
 
     public function __construct(
-        ArrayConverterInterface $arrayConverter,
-        BufferFactory $bufferFactory,
-        FlatItemBufferFlusher $flusher,
-        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
-        FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels,
-        FileExporterPathGeneratorInterface $fileExporterPath,
-        FileInfoRepositoryInterface $fileInfoRepository,
-        FilesystemProvider $filesystemProvider
+        private ArrayConverterInterface $arrayConverter,
+        private BufferFactory $bufferFactory,
+        private FlatItemBufferFlusher $flusher,
+        private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
+        private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels,
+        private FileExporterPathGeneratorInterface $fileExporterPath,
+        private FileInfoRepositoryInterface $fileInfoRepository,
+        private FilesystemProvider $filesystemProvider
     ) {
-        $this->arrayConverter = $arrayConverter;
-        $this->bufferFactory = $bufferFactory;
-        $this->flusher = $flusher;
-        $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
-        $this->findActivatedLocalesPerChannels = $findActivatedLocalesPerChannels;
-        $this->fileExporterPath = $fileExporterPath;
-        $this->fileInfoRepository = $fileInfoRepository;
-        $this->filesystemProvider = $filesystemProvider;
-
         parent::__construct();
     }
 

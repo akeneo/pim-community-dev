@@ -19,23 +19,16 @@ class FileData implements ValueDataInterface
     private const MIME_TYPE = 'mimeType';
     private const EXTENSION = 'extension';
 
-    private string $key;
-    private string $originalFilename;
-    private ?int $size;
-    private ?string $mimeType;
-    private ?string $extension;
-
     // TODO: make the optional args mandatory
-    private function __construct(string $key, string $originalFilename, ?int $size = 0, ?string $mimeType = '', ?string $extension = '')
-    {
+    private function __construct(
+        private string $key,
+        private string $originalFilename,
+        private ?int $size = 0,
+        private ?string $mimeType = '',
+        private ?string $extension = ''
+    ) {
         Assert::stringNotEmpty($key, 'File data key cannot be empty');
         Assert::stringNotEmpty($originalFilename, 'Original filename data cannot be empty');
-
-        $this->key = $key;
-        $this->originalFilename = $originalFilename;
-        $this->size = $size;
-        $this->mimeType = $mimeType;
-        $this->extension = $extension;
     }
 
     /**
