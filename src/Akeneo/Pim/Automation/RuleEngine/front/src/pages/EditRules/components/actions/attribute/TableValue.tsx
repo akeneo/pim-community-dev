@@ -68,7 +68,8 @@ const TableValue: React.FC<InputValueProps> = ({
   return (
     <AttributeContext.Provider
       value={{attribute: attributeState, setAttribute: setAttributeState}}>
-      <CellMappingContext.Provider value={{cellMatchersMapping, cellInputsMapping}}>
+      <CellMappingContext.Provider
+        value={{cellMatchersMapping, cellInputsMapping}}>
         <TableValueContainer>
           <AttributeLabel>
             {getLabel(
@@ -83,10 +84,7 @@ const TableValue: React.FC<InputValueProps> = ({
               toggleChange={handleToggleRow}
             />
           </AttributeLabel>
-          <TableInputValue
-            valueData={tableValue}
-            onChange={handleChange}
-          />
+          <TableInputValue valueData={tableValue} onChange={handleChange} />
         </TableValueContainer>
       </CellMappingContext.Provider>
       <HelperContainer>
