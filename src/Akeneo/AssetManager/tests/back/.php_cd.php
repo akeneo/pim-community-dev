@@ -53,7 +53,6 @@ $rules = [
         'Akeneo\Pim\Automation\RuleEngine',
         'Psr\Log\LoggerInterface',
         'Imagine\Image',
-        'Imagine\Imagick',
         'Imagine\Exception',
         'League\Flysystem\FilesystemReader',
         'League\Flysystem\FilesystemException',

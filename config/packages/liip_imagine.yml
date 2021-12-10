@@ -14,46 +14,46 @@ liip_imagine:
             quality:          95
             format:           png
             filters:
+                icc_strip:    ~
                 thumbnail:    { size: [58, 58], mode: outbound }
-                strip:        ~
 
         preview:
             quality:          95
             format:           jpg
             filters:
+                icc_strip: ~
                 background:
                     color: "#ffffff"
-                strip:        ~
 
         thumbnail:
             quality:          95
             format:           png
             filters:
-                thumbnail:    { size: [320, 320], mode: inset }
-                strip:        ~
+                icc_strip: ~
+                thumbnail: { size: [320, 320], mode: inset }
                 auto_rotate: ~
 
         thumbnail_small:
             quality:          95
             format:           png
             filters:
+                icc_strip: ~
                 auto_rotate: ~
                 thumbnail:    { size: [280, 280], mode: inset }
-                strip:        ~
 
         dropdown_select_picture:
             quality:          95
             format:           png
             filters:
+                icc_strip: ~
                 thumbnail:    { size: [28, 28], mode: outbound }
-                strip:        ~
 
         pdf_thumbnail:
             quality:          95
             format:           png
             filters:
+                icc_strip: ~
                 downscale: { max: [320, 240] }
-                strip:        ~
 
         am_url_image_preview:
             cache: asset_manager_flysystem_cache
