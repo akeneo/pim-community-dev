@@ -153,6 +153,10 @@ pim_table_attribute:
       please_try_again: Bitte versuche es noch einmal
       first_column_type_helper: Die erste Spalte einer Tabelle ist immer ein Spaltentyp.
       discard_changes: Wenn Sie die Seite verlassen, verlieren Sie die Änderungen an den Auswahloptionen.
+      completeness: Vollständigkeit
+      required_for_completeness: Erforderlich für die Vollständigkeit
+      completeness_helper_text: "Um herauszufinden, wie Vollständigkeit für ein Tabellenattribut funktioniert,"
+      completeness_helper_link: schauen Sie sich unser Hilfe-Center an.
     product:
       items_per_page: Elemente pro Seite
       current_items: "{{ minItem }}-{{ maxItem }} von {{ itemCount }}"
