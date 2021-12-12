@@ -54,14 +54,22 @@ class UpdateConnectedAppMonitoringSettingsAction
             throw new NotFoundHttpException("Connection with connection code $connectionCode does not exist.");
         }
 
+        $data = \json_decode($request->getContent(), true);
+        $flowType = $data['flowType'] ?? $connection->flowType();
+        $auditable = $data['auditable'] ?? $connection->auditable();
+
+        if (false === is_string($flowType) || false === is_bool($auditable)) {
+            return new JsonResponse(['error' => 'Wrong type for parameters'], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
         $command = new UpdateConnectionCommand(
             $connection->code(),
             $connection->label(),
-            (string) $request->request->get('flow_type', $connection->flowType()),
+            $flowType,
             $connection->image(),
             $connection->userRoleId(),
             $connection->userGroupId(),
-            (bool) $request->request->get('auditable', $connection->auditable())
+            $auditable
         );
 
         try {

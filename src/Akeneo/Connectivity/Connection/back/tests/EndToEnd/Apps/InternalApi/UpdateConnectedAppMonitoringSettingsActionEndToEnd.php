@@ -10,6 +10,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Test\Integration\Configuration;
+use JetBrains\PhpStorm\ArrayShape;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -126,7 +127,7 @@ class UpdateConnectedAppMonitoringSettingsActionEndToEnd extends WebTestCase
         );
 
         $data = [
-            'flow_type' => FlowType::DATA_SOURCE,
+            'flowType' => FlowType::DATA_SOURCE,
             'auditable' => true,
         ];
 
@@ -164,8 +165,8 @@ class UpdateConnectedAppMonitoringSettingsActionEndToEnd extends WebTestCase
         );
 
         $data = [
-            'flow_type' => 'some_unknown_flow_type',
-            'auditable' => true,
+            'flowType' => 'some_unknown_flow_type',
+            'auditable' => false,
         ];
 
         $this->client->request(
@@ -196,6 +197,48 @@ class UpdateConnectedAppMonitoringSettingsActionEndToEnd extends WebTestCase
         Assert::assertEquals($expectedResult, $result);
     }
 
+    public function test_it_throws_unprocessed_entity_on_update_with_wrong_type(): void
+    {
+        $this->featureFlagMarketplaceActivate->enable();
+        $this->authenticateAsAdmin();
+        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
+
+        $this->connectionLoader->createConnection(
+            'connectionCodeA',
+            'Connector A',
+            FlowType::DATA_DESTINATION,
+            false,
+            ConnectionType::APP_TYPE
+        );
+
+        $data = [
+            'flowType' => FlowType::DATA_SOURCE,
+            'auditable' => 'should be a bool',
+        ];
+
+        $this->client->request(
+            'POST',
+            '/rest/apps/connected-apps/connectionCodeA/monitoring-settings',
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json'
+            ],
+            \json_encode($data)
+        );
+        $response = $this->client->getResponse();
+        $result = \json_decode($response->getContent(), true);
+
+        $expectedResult = [
+            "error" => "Wrong type for parameters",
+        ];
+
+        Assert::assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        Assert::assertEquals($expectedResult, $result);
+    }
+
+
     private function getConnectionMonitoringSettings(string $connectionCode): array
     {
         $dbalConnection = $this->get('database_connection');
@@ -208,7 +251,7 @@ SQL;
         $result = $dbalConnection->fetchAssociative($query, ['code' => $connectionCode]);
 
         return [
-            'flow_type' => $result['flow_type'],
+            'flowType' => $result['flow_type'],
             'auditable' => (bool) $result['auditable'],
         ];
     }
