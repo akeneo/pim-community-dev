@@ -92,6 +92,8 @@ akeneo_connectivity.connection:
                     settings: Settings
                     permissions: Permissions
                 settings:
+                    monitoring:
+                        title: General settings
                     authorizations:
                         title: authorizations
                         information: 'To know more about app authorizations, check out our {{ link }}.'
@@ -103,6 +105,7 @@ akeneo_connectivity.connection:
                     save_permissions_error.title: 'Permissions on {{ entity }} could not be updated.'
                     save_permissions_error.description: Please check the App permission settings.
                     success: App settings successfully updated.
+                    monitoring_settings_error.description: Sorry, an error occurred while editing the app.
             delete:
                 subtitle: Apps
                 title: Confirm deletion
@@ -181,7 +184,7 @@ akeneo_connectivity.connection:
         label: Label
         flow_type: Flow type
         image: Image
-        auditable: Track this connection in the dashboard
+        auditable: Track in Data flows dashboard
         client_id: Client ID
         secret: Secret
         username: Username
