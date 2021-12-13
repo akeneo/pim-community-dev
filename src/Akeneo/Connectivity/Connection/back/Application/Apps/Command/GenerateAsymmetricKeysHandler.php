@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\AsymmetricKeysGeneratorInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\SaveAsymmetricKeysQueryInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -11,14 +12,16 @@ use Akeneo\Connectivity\Connection\Domain\Apps\AsymmetricKeysGeneratorInterface;
  */
 class GenerateAsymmetricKeysHandler
 {
-    public function __construct(private AsymmetricKeysGeneratorInterface $asymmetricKeysGenerator)
-    {
+    public function __construct(
+        private AsymmetricKeysGeneratorInterface $asymmetricKeysGenerator,
+        private SaveAsymmetricKeysQueryInterface $saveAsymmetricKeysQuery
+    ) {
     }
 
     public function handle(GenerateAsymmetricKeysCommand $command): void
     {
         $keys = $this->asymmetricKeysGenerator->generate();
+        $this->saveAsymmetricKeysQuery->execute($keys);
 
-        //TODO:: save into database
     }
 }

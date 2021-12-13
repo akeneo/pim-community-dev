@@ -39,6 +39,7 @@ services:
     Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\AsymmetricKeysGenerator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\SaveAsymmetricKeysQuery'
 
     Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp:
         arguments:
@@ -155,5 +156,9 @@ services:
             - '@database_connection'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAsymmetricKeysQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\SaveAsymmetricKeysQuery:
         arguments:
             - '@database_connection'

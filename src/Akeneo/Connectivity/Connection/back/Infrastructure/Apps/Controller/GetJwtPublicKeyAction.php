@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller;
 
+use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AsymmetricKeys;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAsymmetricKeysQueryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,8 +24,8 @@ class GetJwtPublicKeyAction
 
     public function __invoke(Request $request): Response
     {
-        ['public_key' => $publicKey] = $this->getAsymmetricKeysQuery->execute();
+        $asymmetricKeys = $this->getAsymmetricKeysQuery->execute();
 
-        return new Response($publicKey, Response::HTTP_OK);
+        return new Response($asymmetricKeys->normalize()[AsymmetricKeys::PUBLIC_KEY], Response::HTTP_OK);
     }
 }

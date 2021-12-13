@@ -9,6 +9,9 @@ namespace Akeneo\Connectivity\Connection\Domain\Apps\DTO;
  */
 class AsymmetricKeys
 {
+    public const PUBLIC_KEY = 'public_key';
+    public const PRIVATE_KEY = 'private_key';
+
     private function __construct(private string $publicKey, private string $privateKey)
     {
     }
@@ -21,11 +24,11 @@ class AsymmetricKeys
     /**
      * @return array{public_key:string,private_key:string}
      */
-    public function toArray(): array
+    public function normalize(): array
     {
         return [
-            'public_key' => $this->publicKey,
-            'private_key' => $this->privateKey
+            self::PUBLIC_KEY => $this->publicKey,
+            self::PRIVATE_KEY => $this->privateKey
         ];
     }
 }
