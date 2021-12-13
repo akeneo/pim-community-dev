@@ -54,7 +54,6 @@ export const Authentication = ({appName, scopes}: Props) => {
                 <p>
                     {translate('akeneo_connectivity.connection.connect.apps.wizard.authentication.helper')}{' '}
                     <Link href={'https://help.akeneo.com/pim/serenity/articles/how-to-connect-my-pim-with-apps.html'}>
-                        {/** @todo link to update */}
                         {translate('akeneo_connectivity.connection.connect.apps.wizard.authentication.helper_link')}
                     </Link>
                 </p>

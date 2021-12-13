@@ -61,7 +61,11 @@ export const PermissionsSummary: FC<Props> = ({appName, providers, permissions})
             <AppTitle>{appName}</AppTitle>
             <Helper>
                 <p>{translate('akeneo_connectivity.connection.connect.apps.wizard.permission.helper')}</p>
-                <Link href={'https://help.akeneo.com/'}>
+                <Link
+                    href={
+                        'https://help.akeneo.com/pim/serenity/articles/how-to-connect-my-pim-with-apps.html#give-permissions-to-your-app-ee'
+                    }
+                >
                     {translate('akeneo_connectivity.connection.connect.apps.wizard.permission.helper_link')}
                 </Link>
             </Helper>
