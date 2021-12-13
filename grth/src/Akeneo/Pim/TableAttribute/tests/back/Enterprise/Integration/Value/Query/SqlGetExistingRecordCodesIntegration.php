@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\TableAttribute\tests\back\Integration\Value\Query;
+namespace Akeneo\Pim\TableAttribute\tests\back\Enterprise\Integration\Value\Query;
 
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\GetExistingRecordCodes;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\SqlGetExistingRecordCodes;
@@ -10,8 +10,6 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlRecordRepository;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlReferenceEntityRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -30,9 +28,9 @@ class SqlGetExistingRecordCodesIntegration extends TestCase
             Image::createEmpty()
         );
 
-        $this->get(SqlReferenceEntityRepository::class)->create($referenceEntity);
+        $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity')->create($referenceEntity);
 
-        $recordRepository = $this->get(SqlRecordRepository::class);
+        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
         $recordCode1 = RecordCode::fromString('Ferrari');
