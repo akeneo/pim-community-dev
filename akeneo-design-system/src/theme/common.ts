@@ -1,5 +1,5 @@
 import {css} from 'styled-components';
-import {Color, FontSize, getColor, getFontSize, Palette} from './theme';
+import {Color, FontSize, getColor, getFontSize, Palette, FontFamily} from './theme';
 
 const CommonStyle = css`
   font-family: 'Lato';
@@ -81,4 +81,9 @@ const palette: Palette = {
   danger: 'red',
 };
 
-export {color, fontSize, palette, CommonStyle};
+const fontFamily: FontFamily = {
+  default: 'Lato, "Helvetica Neue", Helvetica, Arial, sans-serif',
+  monospace: 'Courier, "MS Courier New", Prestige, "Everson Mono"',
+};
+
+export {color, fontSize, palette, CommonStyle, fontFamily};
