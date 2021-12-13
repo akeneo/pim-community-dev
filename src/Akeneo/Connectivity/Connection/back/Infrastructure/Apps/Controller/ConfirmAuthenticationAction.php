@@ -7,12 +7,16 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller;
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +37,8 @@ class ConfirmAuthenticationAction
     private AppAuthenticationUserProvider $appAuthenticationUserProvider;
     private ConnectedPimUserProvider $connectedPimUserProvider;
     private ConsentAppAuthenticationHandler $consentAppAuthenticationHandler;
+    private LoggerInterface $logger;
+    private ViolationListNormalizer $violationListNormalizer;
 
     public function __construct(
         FeatureFlag $featureFlag,
@@ -42,7 +48,9 @@ class ConfirmAuthenticationAction
         AppAuthorizationSessionInterface $appAuthorizationSession,
         AppAuthenticationUserProvider $appAuthenticationUserProvider,
         ConnectedPimUserProvider $connectedPimUserProvider,
-        ConsentAppAuthenticationHandler $consentAppAuthenticationHandler
+        ConsentAppAuthenticationHandler $consentAppAuthenticationHandler,
+        LoggerInterface $logger,
+        ViolationListNormalizer $violationListNormalizer
     ) {
         $this->featureFlag = $featureFlag;
         $this->getAppConfirmationQuery = $getAppConfirmationQuery;
@@ -52,6 +60,8 @@ class ConfirmAuthenticationAction
         $this->appAuthenticationUserProvider = $appAuthenticationUserProvider;
         $this->connectedPimUserProvider = $connectedPimUserProvider;
         $this->consentAppAuthenticationHandler = $consentAppAuthenticationHandler;
+        $this->logger = $logger;
+        $this->violationListNormalizer = $violationListNormalizer;
     }
 
     public function __invoke(Request $request, string $clientId): Response
@@ -65,12 +75,21 @@ class ConfirmAuthenticationAction
             throw new AccessDeniedHttpException();
         }
 
-        // if (!$request->isXmlHttpRequest()) {
-        //     return new RedirectResponse('/');
-        // }
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
 
-        // @TODO handle validation error
-        $this->consentAppAuthenticationHandler->handle(new ConsentAppAuthenticationCommand($clientId));
+        try {
+            $this->consentAppAuthenticationHandler->handle(new ConsentAppAuthenticationCommand($clientId));
+        } catch (InvalidAppAuthorizationRequest $exception) {
+            $this->logger->warning(
+                sprintf('App activation failed with validation error "%s"', $exception->getMessage())
+            );
+
+            return new JsonResponse([
+                'errors' => $this->violationListNormalizer->normalize($exception->getConstraintViolationList()),
+            ], Response::HTTP_BAD_REQUEST);
+        }
 
         $appAuthorization = $this->appAuthorizationSession->getAppAuthorization($clientId);
         if (null === $appAuthorization) {
@@ -93,7 +112,8 @@ class ConfirmAuthenticationAction
             $appAuthenticationUser
         );
 
-        // @TODO confirm that a redirect is enough
-        return new RedirectResponse($redirectUrl);
+        return new JsonResponse([
+            'redirectUrl' => $redirectUrl,
+        ]);
     }
 }

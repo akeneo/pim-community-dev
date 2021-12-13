@@ -139,6 +139,8 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler'
+            - '@logger'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer'
 
     akeneo_connectivity.connection.internal_api.controller.apps.get_all_connected_apps:
         public: true

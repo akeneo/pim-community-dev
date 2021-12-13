@@ -38,7 +38,7 @@ const Helper = styled.div`
 
 type Props = {
     appName: string;
-    scopes: Array<'openid' | 'email' | 'profile'>;
+    scopes: Array<'email' | 'profile'>;
 };
 
 export const Authentication = ({appName, scopes}: Props) => {

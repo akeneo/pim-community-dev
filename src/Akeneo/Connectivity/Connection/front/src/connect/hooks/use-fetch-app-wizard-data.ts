@@ -9,7 +9,7 @@ type Result = {
         type: string;
         entities: string;
     }>;
-    authenticationScopes: Array<'openid' | 'email' | 'profile'>;
+    authenticationScopes: Array<'email' | 'profile'>;
 };
 
 export const useFetchAppWizardData = (clientId: string): (() => Promise<Result>) => {
