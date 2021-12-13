@@ -7,7 +7,7 @@ import {PermissionFormProvider, usePermissionFormRegistry} from '../../../shared
 import {useTranslate} from '../../../shared/translate';
 import {useConfirmAuthorization} from '../../hooks/use-confirm-authorization';
 import {useFetchAppWizardData} from '../../hooks/use-fetch-app-wizard-data';
-import {Authentication} from './steps/Authentication';
+import {Authentication} from './steps/Authentication/Authentication';
 import {Authorizations} from './steps/Authorizations';
 import {Permissions} from './steps/Permissions';
 import {PermissionsSummary} from './steps/PermissionsSummary';

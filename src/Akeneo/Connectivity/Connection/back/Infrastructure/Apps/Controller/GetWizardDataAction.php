@@ -61,7 +61,7 @@ class GetWizardDataAction
             'appName' => $app->getName(),
             'appLogo' => $app->getLogo(),
             'scopeMessages' => $authorizationScopeMessages,
-            'authenticationScopes' => $authenticationScopesThatRequireConsent
+            'authenticationScopes' => array_values($authenticationScopesThatRequireConsent)
         ]);
     }
 }

@@ -5,7 +5,7 @@ import {NotificationLevel, useNotify} from '../../../shared/notify';
 import {useTranslate} from '../../../shared/translate';
 import {useConfirmAuthorization} from '../../hooks/use-confirm-authorization';
 import {useFetchAppWizardData} from '../../hooks/use-fetch-app-wizard-data';
-import {Authentication} from './steps/Authentication';
+import {Authentication} from './steps/Authentication/Authentication';
 import {Authorizations} from './steps/Authorizations';
 import {WizardModal} from './WizardModal';
 

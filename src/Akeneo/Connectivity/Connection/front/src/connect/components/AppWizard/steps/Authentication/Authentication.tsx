@@ -1,7 +1,9 @@
 import {getColor, getFontSize, Link} from 'akeneo-design-system';
 import React from 'react';
 import styled from 'styled-components';
-import {useTranslate} from '../../../../shared/translate';
+import {useTranslate} from '../../../../../shared/translate';
+import {UserAvatar} from './UserAvatar';
+import {ConsentList} from './ConsentList';
 
 const InfoContainer = styled.div`
     grid-area: INFO;
@@ -58,14 +60,8 @@ export const Authentication = ({appName, scopes}: Props) => {
                     </Link>
                 </p>
             </Helper>
-            <div>
-                {scopes.includes('profile') &&
-                    translate('akeneo_connectivity.connection.connect.apps.wizard.authentication.scope_profile')}
-            </div>
-            <div>
-                {scopes.includes('email') &&
-                    translate('akeneo_connectivity.connection.connect.apps.wizard.authentication.scope_email')}
-            </div>
+            <UserAvatar />
+            <ConsentList scopes={scopes} />
         </InfoContainer>
     );
 };
