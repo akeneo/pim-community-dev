@@ -1,0 +1,96 @@
+<?php
+declare(strict_types=1);
+
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Apps\Persistence\Query;
+
+use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AsymmetricKeys;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\SaveAsymmetricKeysQuery;
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\TestCase;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types;
+
+/**
+ * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class SaveAsymmetricKeysQueryIntegration extends TestCase
+{
+    private SaveAsymmetricKeysQuery $query;
+    private Connection $connection;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->query = $this->get(SaveAsymmetricKeysQuery::class);
+        $this->connection = $this->get('database_connection');
+    }
+
+    public function test_it_saves_asymmetric_keys_into_the_database(): void
+    {
+        $selectQuery = 'SELECT * FROM pim_configuration WHERE code=:code';
+
+        $result = $this->connection->executeQuery(
+            $selectQuery,
+            [
+                'code' => SaveAsymmetricKeysQuery::OPTION_CODE,
+            ],
+            [
+                'code' => Types::STRING,
+            ]
+        )->fetchAssociative();
+
+        $this->assertFalse($result);
+
+        $keys = AsymmetricKeys::create('the_public_key', 'the_private_key');
+
+        $this->query->execute($keys);
+
+        $result = $this->connection->executeQuery(
+            $selectQuery,
+            [
+                'code' => SaveAsymmetricKeysQuery::OPTION_CODE,
+            ],
+            [
+                'code' => Types::STRING,
+            ]
+        )->fetchAssociative();
+
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey('code', $result);
+        $this->assertArrayHasKey('values', $result);
+        $this->assertEquals(SaveAsymmetricKeysQuery::OPTION_CODE, $result['code']);
+        $this->assertEquals([
+            AsymmetricKeys::PUBLIC_KEY => 'the_public_key',
+            AsymmetricKeys::PRIVATE_KEY => 'the_private_key',
+        ], json_decode($result['values'], true));
+    }
+
+    public function test_it_overrides_asymmetric_keys_into_the_database(): void
+    {
+        $selectQuery = 'SELECT * FROM pim_configuration WHERE code=:code';
+
+        $this->query->execute(AsymmetricKeys::create('the_public_key', 'the_private_key'));
+        $this->query->execute(AsymmetricKeys::create('the_new_public_key', 'the_new_private_key'));
+
+        $result = $this->connection->executeQuery(
+            $selectQuery,
+            [
+                'code' => SaveAsymmetricKeysQuery::OPTION_CODE,
+            ],
+            [
+                'code' => Types::STRING,
+            ]
+        )->fetchAssociative();
+
+        $this->assertEquals([
+            AsymmetricKeys::PUBLIC_KEY => 'the_new_public_key',
+            AsymmetricKeys::PRIVATE_KEY => 'the_new_private_key',
+        ], json_decode($result['values'], true));
+    }
+
+    protected function getConfiguration(): Configuration
+    {
+        return $this->catalog->useMinimalCatalog();
+    }
+}

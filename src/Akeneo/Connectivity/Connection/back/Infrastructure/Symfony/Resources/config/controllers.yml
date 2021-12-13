@@ -174,7 +174,7 @@ services:
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler'
 
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\GetJwtPublicKeyAction:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\GetOpenIdPublicKeyAction:
         public: true
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAsymmetricKeysQuery'

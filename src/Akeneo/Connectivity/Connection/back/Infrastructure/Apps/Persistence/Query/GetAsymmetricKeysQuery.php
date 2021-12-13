@@ -25,12 +25,13 @@ class GetAsymmetricKeysQuery implements GetAsymmetricKeysQueryInterface
         WHERE code = :code
         SQL;
 
-        $keys = json_decode(
-            $this->connection->fetchOne($query, [
-                'code' => SaveAsymmetricKeysQuery::OPTION_CODE,
-            ]),
-            true
-        );
+        $result = $this->connection->fetchOne($query, ['code' => SaveAsymmetricKeysQuery::OPTION_CODE]);
+
+        if (!$result) {
+            return AsymmetricKeys::create();
+        }
+
+        $keys = json_decode($result, true);
 
         return AsymmetricKeys::create($keys[AsymmetricKeys::PUBLIC_KEY], $keys[AsymmetricKeys::PRIVATE_KEY]);
     }
