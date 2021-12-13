@@ -59,6 +59,14 @@ akeneo_connectivity.connection:
         empty: Non ci sono app compatibili con la tua versione
       unreachable: Non riusciamo a raggiungere il marketplace, torna più tardi.
       scroll_to_top: Scorri in alto
+    connected_apps:
+      edit:
+        tabs:
+          settings: Impostazioni
+          permissions: Permessi
+      delete:
+        title: Conferma eliminazione
+        link: Ecco cosa succederà.
     apps:
       wizard:
         title: Connetti
@@ -71,13 +79,9 @@ akeneo_connectivity.connection:
         progress:
           authorizations: Autorizzazioni
           permissions: Permessi
-          well_done: Ottimo!
         authorize:
-          title: 'L''app {{ app_name }} deve'
           no_scope_title: 'L''app {{ app_name }} vorrebbe accedere al tuo PIM.'
           no_scope: Nessuna autorizzazione specifica richiesta.
-          helper: Per scoprire di più sull'autorizzazione dell'app,
-          helper_link: consulta il nostro Help Center per ulteriori informazioni.
       title: Connetti
       activate:
         flash:
@@ -104,8 +108,6 @@ akeneo_connectivity.connection:
         response_type:
           not_blank: Response_type obbligatorio.
           must_be_code: Il response_type deve essere "code".
-        scope:
-          must_be_valid: Gli ambiti non sono validi.
         redirect_uri:
           not_blank: Redirect_uri obbligatorio.
           must_be_url: Il redirect_uri non è un url valido.
@@ -390,3 +392,8 @@ akeneo_connectivity.connection:
     error_message: Uffa! Si è verificato un errore...
     reload_helper: Prova a ricaricare la pagina e a provare di nuovo.
     reload_button: Ricarica
+pim_permissions:
+  widget:
+    action:
+      all: Tutte
+    all: Tutte

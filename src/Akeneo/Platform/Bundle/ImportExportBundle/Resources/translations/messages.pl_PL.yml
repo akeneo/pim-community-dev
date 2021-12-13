@@ -34,6 +34,8 @@ pim_import_export:
       error: Import <strong>%label%</strong> nie powiódł się
       warning: Import <strong>%label%</strong> zakończony z ostrzeżeniami
       success: Import <strong>%label%</strong> zakończony
+      warnings:
+        xlsx_cell_date_conversion_error: Komórki „{cellName}” o formacie daty nie można skonwertować na atrybut typu {attributeType}.
   list: Wybierz zadanie
   job_profile:
     tab:

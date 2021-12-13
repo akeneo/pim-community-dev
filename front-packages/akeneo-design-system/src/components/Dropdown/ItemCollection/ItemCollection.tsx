@@ -1,13 +1,32 @@
 import {Key, Override} from '../../../shared';
-import React, {ReactNode, Children, useRef, useCallback, KeyboardEvent, isValidElement, cloneElement} from 'react';
+import React, {
+  ReactNode,
+  Children,
+  useRef,
+  useCallback,
+  KeyboardEvent,
+  isValidElement,
+  cloneElement,
+  ReactElement,
+} from 'react';
 import styled from 'styled-components';
 import {useAutoFocus, useCombinedRefs} from '../../../hooks';
 import {usePagination} from '../../../hooks/usePagination';
+import {Placeholder} from '../../Placeholder/Placeholder';
+import {IllustrationProps} from '../../../illustrations/IllustrationProps';
+import {getFontSize} from '../../../theme';
 
 const ItemCollectionContainer = styled.div`
   max-height: 320px;
   overflow-y: auto;
   overflow-x: hidden;
+`;
+
+const NoResultPlaceholderContainer = styled(Placeholder)`
+  margin: 10px 10px 20px 10px;
+  & > div {
+    font-size: ${getFontSize('default')};
+  }
 `;
 
 type ItemCollectionProps = Override<
@@ -21,12 +40,22 @@ type ItemCollectionProps = Override<
     /**
      * The list of items.
      */
-    children: ReactNode;
+    children?: ReactNode;
+
+    /**
+     * The illustration displayed when no result was found.
+     */
+    noResultIllustration?: ReactElement<IllustrationProps>;
+
+    /**
+     * The text displayed when no result was found.
+     */
+    noResultTitle?: string;
   }
 >;
 
 const ItemCollection = React.forwardRef<HTMLDivElement, ItemCollectionProps>(
-  ({children, onNextPage, ...rest}: ItemCollectionProps, forwardedRef) => {
+  ({children, onNextPage, noResultTitle, noResultIllustration, ...rest}: ItemCollectionProps, forwardedRef) => {
     const firstItemRef = useRef<HTMLDivElement>(null);
     const lastItemRef = useRef<HTMLDivElement>(null);
     const containerRef = useCombinedRefs(forwardedRef);
@@ -62,7 +91,10 @@ const ItemCollection = React.forwardRef<HTMLDivElement, ItemCollectionProps>(
 
     return (
       <ItemCollectionContainer {...rest} ref={containerRef}>
-        {decoratedChildren}
+        {childrenCount
+          ? decoratedChildren
+          : noResultIllustration &&
+            noResultTitle && <NoResultPlaceholderContainer illustration={noResultIllustration} title={noResultTitle} />}
       </ItemCollectionContainer>
     );
   }
