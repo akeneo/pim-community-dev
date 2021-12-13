@@ -86,6 +86,15 @@ class ConfirmAuthorizationAction
 
         try {
             $this->createAppWithAuthorizationHandler->handle(new CreateAppWithAuthorizationCommand($clientId));
+
+            $appAuthorization = $this->appAuthorizationSession->getAppAuthorization($clientId);
+            if (null === $appAuthorization) {
+                throw new \LogicException('There is no active app authorization in session');
+            }
+
+            if ($appAuthorization->getAuthenticationScopes()->hasScope(AuthenticationScope::SCOPE_OPENID)) {
+                $this->consentAppAuthenticationHandler->handle(new ConsentAppAuthenticationCommand($clientId));
+            }
         } catch (InvalidAppAuthorizationRequest $exception) {
             $this->logger->warning(
                 sprintf('App activation failed with validation error "%s"', $exception->getMessage())
@@ -94,16 +103,6 @@ class ConfirmAuthorizationAction
             return new JsonResponse([
                 'errors' => $this->violationListNormalizer->normalize($exception->getConstraintViolationList()),
             ], Response::HTTP_BAD_REQUEST);
-        }
-
-        $appAuthorization = $this->appAuthorizationSession->getAppAuthorization($clientId);
-        if (null === $appAuthorization) {
-            throw new \LogicException('There is no active app authorization in session');
-        }
-
-        if ($appAuthorization->getAuthenticationScopes()->hasScope(AuthenticationScope::SCOPE_OPENID)) {
-            // @TODO handle validation error
-            $this->consentAppAuthenticationHandler->handle(new ConsentAppAuthenticationCommand($clientId));
         }
 
         $appConfirmation = $this->getAppConfirmationQuery->execute($clientId);

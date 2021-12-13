@@ -102,23 +102,23 @@ class AuthorizeAction
             $this->connectedPimUserProvider->getCurrentUserId()
         );
 
-        $newAuthenticationScopes = array_diff(
-            $appAuthorization->getAuthenticationScopes()->getScopes(),
-            $appAuthenticationUser->getConsentedAuthenticationScopes()->getScopes()
-        );
-        if (
-            $appAuthorization->getAuthenticationScopes()->hasScope(AuthenticationScope::SCOPE_OPENID)
-            && count($newAuthenticationScopes) > 0
-        ) {
-            // @TODO might loop if it decline the app => redirect on pim, with error ?
-            // @TODO triggers the consent step 'akeneo_connectivity_connection_connect_apps_authenticate'
-            return new Response(sprintf(
-                '<a href=%s>I consent to %s</a>',
-                $this->router->generate('akeneo_connectivity_connection_apps_rest_confirm_authentication', [
-                    'clientId' => $command->getClientId()
-                ]),
-                ScopeList::fromScopes($newAuthenticationScopes)->toScopeString()
-            ));
+
+        if ($appAuthorization->getAuthenticationScopes()->hasScope(AuthenticationScope::SCOPE_OPENID)) {
+            $newAuthenticationScopes = array_diff(
+                $appAuthorization->getAuthenticationScopes()->getScopes(),
+                $appAuthenticationUser->getConsentedAuthenticationScopes()->getScopes()
+            );
+            if (count($newAuthenticationScopes) > 0) {
+                // @TODO might loop if it decline the app => redirect on pim, with error ?
+                // @TODO triggers the consent step 'akeneo_connectivity_connection_connect_apps_authenticate'
+                return new Response(sprintf(
+                    '<a href=%s>I consent to share: %s</a>',
+                    $this->router->generate('akeneo_connectivity_connection_apps_rest_confirm_authentication', [
+                        'clientId' => $command->getClientId()
+                    ]),
+                    ScopeList::fromScopes($newAuthenticationScopes)->toScopeString()
+                ));
+            }
         }
 
         $redirectUrl = $this->redirectUriWithAuthorizationCodeGenerator->generate(

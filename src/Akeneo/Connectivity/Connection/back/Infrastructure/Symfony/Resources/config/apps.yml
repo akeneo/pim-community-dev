@@ -28,6 +28,7 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\CreateUserConsentQuery'
             - '@akeneo_connectivity.connection.clock'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider'
+            - '@validator'
 
     Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler:
         arguments:
