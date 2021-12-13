@@ -121,12 +121,12 @@ Feature: Create a table attribute
   @only-ge
   Scenario: Cannot create a table attribute when the first column is not select
     When I create a table attribute with text first column
-    Then There is a violation with message: The first column type cannot be "text". Please choose one of the following: select
+    Then There is a violation with message: The first column type should always be select
 
   @only-ee
   Scenario: Cannot create a table attribute when the first column is not select
     When I create a table attribute with text first column
-    Then There is a violation with message: The first column type cannot be "text". Please choose one of the following: select, record
+    Then There is a violation with message: The first column type should be one of the following: select, record
 
   Scenario: Cannot create a table configuration having invalid decimals allowed value type
     When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "decimals_allowed": "error"}}'
@@ -238,7 +238,7 @@ Feature: Create a table attribute
   @only-ge
   Scenario: Cannot create a table attribute with record as the first column type
     When I create a table attribute with record first column
-    Then There is a violation with message: The first column type cannot be "record". Please choose one of the following: select
+    Then There is a violation with message: The column data type is unknown. Please choose one of the following: text, number, boolean, select
 
   @only-ee
   Scenario: Can create a table attribute with record as the first column type

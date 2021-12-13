@@ -48,6 +48,7 @@ final class FirstColumnShouldHaveValidDataTypeValidator extends ConstraintValida
                     [
                         '{{ data_type }}' => $firstColumnDataType,
                         '{{ allowed_data_types }}' => implode(', ', $this->allowedFirstColumnDataTypes),
+                        '%count%' => count($this->allowedFirstColumnDataTypes)
                     ]
                 )
                 ->atPath('[0].data_type')
