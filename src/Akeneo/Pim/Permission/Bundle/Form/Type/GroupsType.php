@@ -12,6 +12,7 @@
 namespace Akeneo\Pim\Permission\Bundle\Form\Type;
 
 use Akeneo\UserManagement\Component\Model\Group;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -34,7 +35,12 @@ class GroupsType extends AbstractType
                 'property' => 'name',
                 'multiple' => true,
                 'select2'  => true,
-                'required' => false
+                'required' => false,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('ug')
+                        ->where('ug.type = :type')
+                        ->setParameter('type', Group::TYPE_DEFAULT);
+                },
             ]
         );
     }

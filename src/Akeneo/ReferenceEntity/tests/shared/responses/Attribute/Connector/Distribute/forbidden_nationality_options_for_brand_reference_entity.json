@@ -8,32 +8,10 @@
     }
   },
   "response": {
-    "status": 200,
-    "body": [
-      {
-        "code": "french",
-        "labels": {
-          "fr_FR": "Francais"
-        }
-      },
-      {
-        "code": "australian",
-        "labels": {
-          "en_US": "Australian"
-        }
-      },
-      {
-        "code": "lebanese",
-        "labels": {
-          "ar_LB": "Lebanese"
-        }
-      },
-      {
-        "code": "cat",
-        "labels": {
-          "cat_CAT": "Cat"
-        }
-      }
-    ]
+    "status": 403,
+    "body": {
+      "code": 403,
+      "message": "Access forbidden. You are not allowed to list reference entities."
+    }
   }
 }

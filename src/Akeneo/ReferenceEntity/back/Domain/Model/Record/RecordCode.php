@@ -19,12 +19,11 @@ use Webmozart\Assert\Assert;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordCode
+class RecordCode implements \Stringable
 {
-    private string $code;
-
-    private function __construct(string $code)
-    {
+    private function __construct(
+        private string $code
+    ) {
         Assert::stringNotEmpty($code, 'Record code cannot be empty');
         Assert::maxLength(
             $code,
@@ -36,8 +35,6 @@ class RecordCode
             '/^[a-zA-Z0-9_]+$/',
             sprintf('Record code may contain only letters, numbers and underscores. "%s" given', $code)
         );
-
-        $this->code = $code;
     }
 
     public static function fromString(string $code): self

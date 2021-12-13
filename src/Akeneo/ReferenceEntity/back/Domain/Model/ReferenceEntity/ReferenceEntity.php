@@ -25,24 +25,13 @@ class ReferenceEntity
     public const DEFAULT_ATTRIBUTE_AS_LABEL_CODE = 'label';
     public const DEFAULT_ATTRIBUTE_AS_IMAGE_CODE = 'image';
 
-    private ReferenceEntityIdentifier $identifier;
-    private LabelCollection $labelCollection;
-    private Image $image;
-    private AttributeAsLabelReference $attributeAsLabel;
-    private AttributeAsImageReference $attributeAsImage;
-
     private function __construct(
-        ReferenceEntityIdentifier $identifier,
-        LabelCollection $labelCollection,
-        Image $image,
-        AttributeAsLabelReference $attributeAsLabel,
-        AttributeAsImageReference $attributeAsImage
+        private ReferenceEntityIdentifier $identifier,
+        private LabelCollection $labelCollection,
+        private Image $image,
+        private AttributeAsLabelReference $attributeAsLabel,
+        private AttributeAsImageReference $attributeAsImage
     ) {
-        $this->identifier = $identifier;
-        $this->labelCollection = $labelCollection;
-        $this->image = $image;
-        $this->attributeAsLabel = $attributeAsLabel;
-        $this->attributeAsImage = $attributeAsImage;
     }
 
     public static function create(

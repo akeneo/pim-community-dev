@@ -24,8 +24,6 @@ class RecordAttribute extends AbstractAttribute
 {
     public const ATTRIBUTE_TYPE = 'record';
 
-    private ReferenceEntityIdentifier $recordType;
-
     protected function __construct(
         AttributeIdentifier $identifier,
         ReferenceEntityIdentifier $referenceEntityIdentifier,
@@ -35,7 +33,7 @@ class RecordAttribute extends AbstractAttribute
         AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
-        ReferenceEntityIdentifier $recordType
+        private ReferenceEntityIdentifier $recordType
     ) {
         parent::__construct(
             $identifier,
@@ -47,8 +45,6 @@ class RecordAttribute extends AbstractAttribute
             $valuePerChannel,
             $valuePerLocale
         );
-
-        $this->recordType = $recordType;
     }
 
     public static function create(

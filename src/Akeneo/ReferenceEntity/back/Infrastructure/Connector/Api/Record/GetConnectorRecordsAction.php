@@ -28,15 +28,13 @@ use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Search
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -45,39 +43,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class GetConnectorRecordsAction
 {
-    private ReferenceEntityExistsInterface $referenceEntityExists;
     private Limit $limit;
-    private SearchConnectorRecord $searchConnectorRecord;
-    private PaginatorInterface $halPaginator;
-    private AddHalDownloadLinkToRecordImages $addHalLinksToImageValues;
-    private ValidatorInterface $validator;
-    private SearchFiltersValidator $searchFiltersValidator;
-    private SecurityFacade $securityFacade;
-    private TokenStorageInterface $tokenStorage;
-    private LoggerInterface $apiAclLogger;
 
     public function __construct(
-        ReferenceEntityExistsInterface $referenceEntityExists,
-        SearchConnectorRecord $searchConnectorRecord,
-        PaginatorInterface $halPaginator,
-        AddHalDownloadLinkToRecordImages $addHalLinksToImageValues,
+        private ReferenceEntityExistsInterface $referenceEntityExists,
+        private SearchConnectorRecord $searchConnectorRecord,
+        private PaginatorInterface $halPaginator,
+        private AddHalDownloadLinkToRecordImages $addHalLinksToImageValues,
         int $limit,
-        ValidatorInterface $validator,
-        SearchFiltersValidator $searchFiltersValidator,
-        SecurityFacade $securityFacade,
-        TokenStorageInterface $tokenStorage,
-        LoggerInterface $apiAclLogger
+        private ValidatorInterface $validator,
+        private SearchFiltersValidator $searchFiltersValidator,
+        private SecurityFacade $securityFacade
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
-        $this->searchConnectorRecord = $searchConnectorRecord;
         $this->limit = new Limit($limit);
-        $this->halPaginator = $halPaginator;
-        $this->addHalLinksToImageValues = $addHalLinksToImageValues;
-        $this->validator = $validator;
-        $this->searchFiltersValidator = $searchFiltersValidator;
-        $this->securityFacade = $securityFacade;
-        $this->tokenStorage = $tokenStorage;
-        $this->apiAclLogger = $apiAclLogger;
     }
 
     /**
@@ -215,28 +193,8 @@ class GetConnectorRecordsAction
 
     private function denyAccessUnlessAclIsGranted(): void
     {
-        $acl = 'pim_api_reference_entity_record_list';
-
-        if (!$this->securityFacade->isGranted($acl)) {
-            $token = $this->tokenStorage->getToken();
-            if (null === $token) {
-                throw new \LogicException('An user must be authenticated if ACLs are required');
-            }
-
-            $user = $token->getUser();
-            if (!$user instanceof UserInterface) {
-                throw new \LogicException(sprintf(
-                    'An instance of "%s" is expected if ACLs are required',
-                    UserInterface::class
-                ));
-            }
-
-            $this->apiAclLogger->warning(sprintf(
-                'User "%s" with roles %s is not granted "%s"',
-                $user->getUsername(),
-                implode(',', $user->getRoles()),
-                $acl
-            ));
+        if (!$this->securityFacade->isGranted('pim_api_reference_entity_record_list')) {
+            throw new AccessDeniedHttpException('Access forbidden. You are not allowed to list reference entity records.');
         }
     }
 }

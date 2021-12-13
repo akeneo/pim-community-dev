@@ -69,3 +69,17 @@ category.permissions:
   no_access_to_products: Sie haben keinen Zugriff auf Produkte in einem Strukturbaum. Bitte kontaktieren Sie Ihren Administrator.
   apply_on_children.label: Übernehme Änderungen auf Kindelemente
   apply_on_children.help: Vorhandene Berechtigungen für Kinder werden beibehalten
+pim_permissions:
+  widget:
+    entity:
+      attribute_group:
+        label: Attributgruppen
+        help: Wenn Sie möchten, dass Ihre App in der Lage ist, alle Ihre Produktdaten zu ändern, wählen Sie die Option Alles in der Ebene Bearbeiten. Andernfalls wählen Sie nur die Attributgruppen aus, die Ihre App je nach Level sehen oder ändern kann.
+      category:
+        label: Kategoriebäume
+        help: Wenn Sie möchten, dass Ihre App in der Lage ist, Ihre Produkte ohne PIM-Vorschläge zu modifizieren, wählen Sie die Eigene Ebene. Andernfalls wählen Sie die Ebene bearbeiten.
+      locale:
+        label: Gebietsschemata
+pimee_enrich.acl.category.edit_permissions: Kategorieberechtigungen verwalten
+pimee_enrich.acl.attribute_group.edit_permissions: Attributgruppenberechtigungen verwalten
+pimee_enrich.acl.locale.edit_permissions: Gebietsschema Berechtigungen verwalten

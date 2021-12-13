@@ -18,39 +18,20 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeSupportsOptions;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class GetConnectorAttributeOptionsAction
 {
-    private FindConnectorAttributeOptionsInterface $findConnectorAttributeOptionsQuery;
-    private ReferenceEntityExistsInterface $referenceEntityExists;
-    private AttributeExistsInterface $attributeExists;
-    private AttributeSupportsOptions $attributeSupportsOptions;
-    private SecurityFacade $securityFacade;
-    private TokenStorageInterface $tokenStorage;
-    private LoggerInterface $apiAclLogger;
-
     public function __construct(
-        FindConnectorAttributeOptionsInterface $findConnectorAttributeOptionsQuery,
-        ReferenceEntityExistsInterface $referenceEntityExists,
-        AttributeExistsInterface $attributeExists,
-        AttributeSupportsOptions $attributeSupportsOptions,
-        SecurityFacade $securityFacade,
-        TokenStorageInterface $tokenStorage,
-        LoggerInterface $apiAclLogger
+        private FindConnectorAttributeOptionsInterface $findConnectorAttributeOptionsQuery,
+        private ReferenceEntityExistsInterface $referenceEntityExists,
+        private AttributeExistsInterface $attributeExists,
+        private AttributeSupportsOptions $attributeSupportsOptions,
+        private SecurityFacade $securityFacade
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
-        $this->findConnectorAttributeOptionsQuery = $findConnectorAttributeOptionsQuery;
-        $this->attributeExists = $attributeExists;
-        $this->attributeSupportsOptions = $attributeSupportsOptions;
-        $this->securityFacade = $securityFacade;
-        $this->tokenStorage = $tokenStorage;
-        $this->apiAclLogger = $apiAclLogger;
     }
 
     /**
@@ -107,28 +88,8 @@ class GetConnectorAttributeOptionsAction
 
     private function denyAccessUnlessAclIsGranted(): void
     {
-        $acl = 'pim_api_reference_entity_list';
-
-        if (!$this->securityFacade->isGranted($acl)) {
-            $token = $this->tokenStorage->getToken();
-            if (null === $token) {
-                throw new \LogicException('An user must be authenticated if ACLs are required');
-            }
-
-            $user = $token->getUser();
-            if (!$user instanceof UserInterface) {
-                throw new \LogicException(sprintf(
-                    'An instance of "%s" is expected if ACLs are required',
-                    UserInterface::class
-                ));
-            }
-
-            $this->apiAclLogger->warning(sprintf(
-                'User "%s" with roles %s is not granted "%s"',
-                $user->getUsername(),
-                implode(',', $user->getRoles()),
-                $acl
-            ));
+        if (!$this->securityFacade->isGranted('pim_api_reference_entity_list')) {
+            throw new AccessDeniedHttpException('Access forbidden. You are not allowed to list reference entities.');
         }
     }
 }

@@ -15,15 +15,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class IndexRecordSubscriber implements EventSubscriberInterface
 {
-    private RecordIndexerInterface $recordIndexer;
-    private IndexByReferenceEntityInBackgroundInterface $indexByReferenceEntityInBackground;
-
     public function __construct(
-        RecordIndexerInterface $recordIndexer,
-        IndexByReferenceEntityInBackgroundInterface $indexByReferenceEntityInBackground
+        private RecordIndexerInterface $recordIndexer,
+        private IndexByReferenceEntityInBackgroundInterface $indexByReferenceEntityInBackground
     ) {
-        $this->recordIndexer = $recordIndexer;
-        $this->indexByReferenceEntityInBackground = $indexByReferenceEntityInBackground;
     }
 
     /**

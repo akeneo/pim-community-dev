@@ -49,6 +49,7 @@ class AkeneoAssetManagerExtension extends Extension
         $loader->load('public_api/onboarder.yml');
         $loader->load('public_api/platform.yml');
         $loader->load('rule_templates.yml');
+        $loader->load('scope_mappers.yml');
         $loader->load('serializer.yml');
         $loader->load('services.yml');
         $loader->load('updaters.yml');

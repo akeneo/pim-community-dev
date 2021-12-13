@@ -20,11 +20,9 @@ use Doctrine\DBAL\Types\Types;
 
 class SqlFileExists implements FileExistsInterface
 {
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
-    {
-        $this->connection = $connection;
+    public function __construct(
+        private Connection $connection
+    ) {
     }
 
     public function exists(string $fileKey): bool

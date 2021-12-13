@@ -69,3 +69,19 @@ category.permissions:
   no_access_to_products: Vous n'avez accès à aucun produit dans aucune arborescence, contactez votre administrateur pour résoudre le problème
   apply_on_children.label: Appliquer les changements aux sous-catégories
   apply_on_children.help: Les permissions existantes sur les enfants sont conservées
+pim_permissions:
+  widget:
+    entity:
+      attribute_group:
+        label: Groupes d'attributs
+        help: Si vous voulez que cette app puisse modifier toutes les données de vos produits, choisissez l'option Tout pour le niveau Modifier. Sinon, sélectionnez uniquement les groupes d'attributs que votre app sera en mesure de voir ou de modifier selon le niveau souhaité.
+      category:
+        label: Arbres de catégories
+        help: Si vous voulez que cette app puisse modifier vos produits sans utiliser les propositions PIM, choisissez le niveau Gérer. Sinon, choisissez le niveau Modifier.
+      locale:
+        label: Locales
+        help: Si vous voulez que cette app soit en mesure de modifier vos produits dans toutes les langues, choisissez l'option Tout pour le niveau Modifier. Sinon, sélectionnez uniquement les langues que l'app pourra voir ou modifier en fonction du niveau souhaité.
+      not_granted_warning: Cette section n'est accessible qu'aux utilisateurs avec l'autorisation {{ permission }}. Veuillez contacter votre administrateur. Avec la bonne autorisation, vous serez en mesure de revenir aux paramètres de l'app pour les modifier.
+pimee_enrich.acl.category.edit_permissions: Gérer les permissions des catégories
+pimee_enrich.acl.attribute_group.edit_permissions: Gérer les permissions des groupes d'attributs
+pimee_enrich.acl.locale.edit_permissions: Gérer les permissions des locales

@@ -13,11 +13,9 @@ use Doctrine\DBAL\Types\Types;
 
 class SqlFindRecordIdentifiersByReferenceEntity implements FindRecordIdentifiersByReferenceEntityInterface
 {
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
-    {
-        $this->connection = $connection;
+    public function __construct(
+        private Connection $connection
+    ) {
     }
 
     public function find(ReferenceEntityIdentifier $referenceEntityIdentifier): Iterable

@@ -40,36 +40,17 @@ class RecordDetails
 
     private const DATE_FORMAT = 'c';
 
-    public RecordIdentifier $identifier;
-    public ReferenceEntityIdentifier $referenceEntityIdentifier;
-    public RecordCode $code;
-    public LabelCollection $labels;
-    public \DateTimeImmutable $createdAt;
-    public \DateTimeImmutable $updatedAt;
-    public Image $image;
-    public array $values;
-    public bool $isAllowedToEdit = true;
-
     public function __construct(
-        RecordIdentifier $identifier,
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        RecordCode $code,
-        LabelCollection $labels,
-        \DateTimeImmutable $createdAt,
-        \DateTimeImmutable $updatedAt,
-        Image $image,
-        array $values,
-        bool $isAllowedToEdit
+        public RecordIdentifier $identifier,
+        public ReferenceEntityIdentifier $referenceEntityIdentifier,
+        public RecordCode $code,
+        public LabelCollection $labels,
+        public \DateTimeImmutable $createdAt,
+        public \DateTimeImmutable $updatedAt,
+        public Image $image,
+        public array $values,
+        public bool $isAllowedToEdit
     ) {
-        $this->identifier = $identifier;
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
-        $this->code = $code;
-        $this->labels = $labels;
-        $this->createdAt = $createdAt;
-        $this->updatedAt = $updatedAt;
-        $this->values = $values;
-        $this->image = $image;
-        $this->isAllowedToEdit = $isAllowedToEdit;
     }
 
     public function normalize(): array

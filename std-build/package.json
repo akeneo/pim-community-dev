@@ -22,6 +22,7 @@
     "vendor/akeneo/pim-community-dev/front-packages/measurement",
     "vendor/akeneo/pim-community-dev/front-packages/shared",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/front",
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/workspaces/permission-form",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/front",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Bundle/Resources/workspaces/enrichment",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Structure/Bundle/Resources/workspaces/settings-ui",
@@ -39,5 +40,8 @@
     "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Pim/Automation/RuleEngine/front",
     "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Pim/Structure/Bundle/Resources/workspaces/settings-ui",
     "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity"
-  ]
+  ],
+  "resolutions": {
+    "akeneo-design-system": "link:vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system"
+  }
 }

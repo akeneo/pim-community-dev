@@ -40,27 +40,17 @@ use Webmozart\Assert\Assert;
  */
 final class RecordProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
-    private EditRecordCommandFactory $editRecordCommandFactory;
-    private RecordExistsInterface $recordExists;
-    private ValidatorInterface $validator;
-    private FindImageAttributeCodesInterface $findImageAttributeCodes;
-    private FileStorerInterface $fileStorer;
     private ?StepExecution $stepExecution = null;
     /** @var array<string, AttributeCode> */
     private array $indexedImageAttributeCodes = [];
 
     public function __construct(
-        EditRecordCommandFactory $editRecordCommandFactory,
-        RecordExistsInterface $recordExists,
-        ValidatorInterface $validator,
-        FindImageAttributeCodesInterface $findImageAttributeCodes,
-        FileStorerInterface $fileStorer
+        private EditRecordCommandFactory $editRecordCommandFactory,
+        private RecordExistsInterface $recordExists,
+        private ValidatorInterface $validator,
+        private FindImageAttributeCodesInterface $findImageAttributeCodes,
+        private FileStorerInterface $fileStorer
     ) {
-        $this->editRecordCommandFactory = $editRecordCommandFactory;
-        $this->recordExists = $recordExists;
-        $this->validator = $validator;
-        $this->findImageAttributeCodes = $findImageAttributeCodes;
-        $this->fileStorer = $fileStorer;
     }
 
     /**

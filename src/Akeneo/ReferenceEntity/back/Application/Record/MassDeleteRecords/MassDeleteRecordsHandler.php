@@ -21,11 +21,9 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
  */
 class MassDeleteRecordsHandler
 {
-    private MassDeleteRecordsLauncherInterface $massDeleteRecordsLauncher;
-
-    public function __construct(MassDeleteRecordsLauncherInterface $massDeleteRecordsLauncher)
-    {
-        $this->massDeleteRecordsLauncher = $massDeleteRecordsLauncher;
+    public function __construct(
+        private MassDeleteRecordsLauncherInterface $massDeleteRecordsLauncher
+    ) {
     }
 
     public function __invoke(MassDeleteRecordsCommand $massDeleteRecordsCommand): void

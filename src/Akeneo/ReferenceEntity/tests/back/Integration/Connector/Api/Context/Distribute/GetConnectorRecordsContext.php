@@ -49,13 +49,10 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
-use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
-use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 use Webmozart\Assert\Assert;
 
@@ -120,8 +117,6 @@ class GetConnectorRecordsContext implements Context
 
     private SecurityFacadeStub $securityFacade;
 
-    private TestLogger $apiAclLogger;
-
     private ?Response $response = null;
 
     public function __construct(
@@ -136,8 +131,7 @@ class GetConnectorRecordsContext implements Context
         InMemoryFindRequiredValueKeyCollectionForChannelAndLocales $findRequiredValueKeyCollectionForChannelAndLocales,
         InMemoryFindActivatedLocalesPerChannels $findActivatedLocalesPerChannels,
         InMemoryDateRepository $dateRepository,
-        SecurityFacadeStub $securityFacade,
-        TestLogger $apiAclLogger
+        SecurityFacadeStub $securityFacade
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -152,7 +146,6 @@ class GetConnectorRecordsContext implements Context
         $this->findActivatedLocalesPerChannels = $findActivatedLocalesPerChannels;
         $this->dateRepository = $dateRepository;
         $this->securityFacade = $securityFacade;
-        $this->apiAclLogger = $apiAclLogger;
     }
 
     /**
@@ -290,17 +283,9 @@ class GetConnectorRecordsContext implements Context
      */
     public function thePIMNotifiesTheConnectorAboutMissingPermissionsForDistributingRecords(): void
     {
-        /**
-         * TODO CXP-923: Assert 403 instead of success & remove logger assertion
-         */
         $this->webClientHelper->assertJsonFromFile(
             $this->response,
             self::REQUEST_CONTRACT_DIR . 'forbidden_brand_records.json'
-        );
-
-        Assert::true(
-            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_reference_entity_record_list"'),
-            'Expected warning not found in the logs.'
         );
     }
 

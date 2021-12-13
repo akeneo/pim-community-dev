@@ -1,0 +1,4 @@
+services:
+    Akeneo\AssetManager\Infrastructure\Security\AssetScopeMapper:
+        tags:
+            - { name: pim_api.security.scope_mapper }

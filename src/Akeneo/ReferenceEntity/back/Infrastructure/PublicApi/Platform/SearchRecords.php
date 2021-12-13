@@ -19,11 +19,9 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 
 class SearchRecords implements SearchRecordsInterface
 {
-    private SearchRecord $searchRecord;
-
-    public function __construct(SearchRecord $searchRecord)
-    {
-        $this->searchRecord = $searchRecord;
+    public function __construct(
+        private SearchRecord $searchRecord
+    ) {
     }
 
     public function search(

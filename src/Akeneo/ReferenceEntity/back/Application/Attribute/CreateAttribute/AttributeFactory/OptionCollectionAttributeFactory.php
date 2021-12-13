@@ -38,7 +38,7 @@ class OptionCollectionAttributeFactory implements AttributeFactoryInterface
                 sprintf(
                     'Expected command of type "%s", "%s" given',
                     CreateOptionCollectionAttributeCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

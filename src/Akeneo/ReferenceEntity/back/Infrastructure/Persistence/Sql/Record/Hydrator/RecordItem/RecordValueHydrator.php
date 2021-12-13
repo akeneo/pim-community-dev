@@ -27,11 +27,9 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByCodesInterface;
  */
 class RecordValueHydrator implements ValueHydratorInterface
 {
-    private FindRecordLabelsByCodesInterface $findRecordLabelsByCodes;
-
-    public function __construct(FindRecordLabelsByCodesInterface $findRecordLabelsByCodes)
-    {
-        $this->findRecordLabelsByCodes = $findRecordLabelsByCodes;
+    public function __construct(
+        private FindRecordLabelsByCodesInterface $s
+    ) {
     }
 
     public function supports(AbstractAttribute $attribute): bool

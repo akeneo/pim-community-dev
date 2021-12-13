@@ -15,11 +15,10 @@
     }
   },
   "response": {
-    "status": 201,
-    "body": "",
-    "headers": {
-      "location": "http://localhost/api/rest/v1/reference-entities/brand"
+    "status": 403,
+    "body": {
+      "code": 403,
+      "message": "Access forbidden. You are not allowed to create or update reference entities."
     }
   }
 }
-

@@ -4,8 +4,8 @@ import {Project} from '../../../domain';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useSearchProjects} from '../../../hooks';
 import {SearchingPlaceholder} from './SearchingPlaceholder';
-import {NoResults} from './NoResults';
 import styled from 'styled-components';
+import {GroupsIllustration} from 'akeneo-design-system';
 
 const loadNextPageThreshold = 100; //value in pixels
 const projectsPerPage = 20;
@@ -75,8 +75,12 @@ const ProjectsDropdown: FC<ProjectsDropdownProps> = ({project, setCurrentProject
           {isFetching && projects.length === 0 && (
             <SearchingPlaceholder>{translate('teamwork_assistant.widget.searching')}</SearchingPlaceholder>
           )}
-          {!isFetching && projects.length === 0 && <NoResults />}
-          <Dropdown.ItemCollection ref={dropdownRef} onScroll={onScroll}>
+          <Dropdown.ItemCollection
+            ref={dropdownRef}
+            onScroll={onScroll}
+            noResultIllustration={<GroupsIllustration />}
+            noResultTitle={translate('teamwork_assistant.widget.no_search_results')}
+          >
             {(!isFetching || projects.length > 0) &&
               projects.map((project: Project) => {
                 const projectCompleteness: number = Math.round(project.completeness.ratio_done);

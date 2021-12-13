@@ -27,11 +27,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class EditRecordCollectionValueCommandValidator extends ConstraintValidator
 {
-    private FindExistingRecordCodesInterface $existingRecordCodes;
-
-    public function __construct(FindExistingRecordCodesInterface $existingRecordCodes)
-    {
-        $this->existingRecordCodes = $existingRecordCodes;
+    public function __construct(
+        private FindExistingRecordCodesInterface $existingRecordCodes
+    ) {
     }
 
     public function validate($command, Constraint $constraint)
@@ -51,7 +49,7 @@ class EditRecordCollectionValueCommandValidator extends ConstraintValidator
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
                     EditRecordCollectionValueCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

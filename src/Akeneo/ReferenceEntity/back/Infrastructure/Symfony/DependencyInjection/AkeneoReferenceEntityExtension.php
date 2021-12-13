@@ -44,6 +44,7 @@ class AkeneoReferenceEntityExtension extends Extension
         $loader->load('parameters.yml');
         $loader->load('persistence.yml');
         $loader->load('product_value.yml');
+        $loader->load('scope_mappers.yml');
         $loader->load('serializer.yml');
         $loader->load('services.yml');
         $loader->load('steps.yml');

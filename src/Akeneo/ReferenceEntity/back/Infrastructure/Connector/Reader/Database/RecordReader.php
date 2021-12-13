@@ -24,18 +24,14 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 
 class RecordReader implements ItemReaderInterface, InitializableInterface, StepExecutionAwareInterface
 {
-    private RecordRepositoryInterface $recordRepository;
-    private FindRecordIdentifiersByReferenceEntityInterface $findRecordIdentifiers;
     private StepExecution $stepExecution;
     private \Iterator $identifiers;
     private bool $firstRead;
 
     public function __construct(
-        FindRecordIdentifiersByReferenceEntityInterface $findRecordIdentifiers,
-        RecordRepositoryInterface $recordRepository
+        private FindRecordIdentifiersByReferenceEntityInterface $findRecordIdentifiers,
+        private RecordRepositoryInterface $recordRepository
     ) {
-        $this->findRecordIdentifiers = $findRecordIdentifiers;
-        $this->recordRepository = $recordRepository;
     }
 
     public function initialize()

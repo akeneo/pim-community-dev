@@ -22,13 +22,11 @@ use Doctrine\DBAL\Connection;
  */
 class SqlFindActivatedLocalesPerChannels implements FindActivatedLocalesPerChannelsInterface
 {
-    private Connection $sqlConnection;
-
     // TODO caching ?
 
-    public function __construct(Connection $sqlConnection)
-    {
-        $this->sqlConnection = $sqlConnection;
+    public function __construct(
+        private Connection $sqlConnection
+    ) {
     }
 
     /**

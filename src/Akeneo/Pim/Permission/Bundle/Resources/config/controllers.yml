@@ -147,3 +147,51 @@ services:
             - '@pim_catalog.filter.chained'
             - '@oneup_flysystem.jobs_storage_filesystem'
             - '@oro_security.security_facade'
+
+    Akeneo\Pim\Permission\Bundle\Controller\InternalApi\GetCategoriesForPermissionsAction:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetRootCategoryCodesAndLabels'
+            - '@router'
+
+    Akeneo\Pim\Permission\Bundle\Controller\InternalApi\PostCategoriesPermissionsAction:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@validator'
+            - '@Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver'
+
+    Akeneo\Pim\Permission\Bundle\Controller\InternalApi\GetUserGroupCategoriesPermissionsAction:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\GetUserGroupRootCategoriesAccesses'
+
+    Akeneo\Pim\Permission\Bundle\Controller\InternalApi\GetAttributeGroupsForPermissionsAction:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\AttributeGroup\GetAttributeGroupCodesAndLabels'
+            - '@router'
+
+    Akeneo\Pim\Permission\Bundle\Controller\InternalApi\GetUserGroupAttributeGroupsPermissionsAction:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Permission\Bundle\Persistence\ORM\AttributeGroup\GetUserGroupAttributeGroupsAccesses'
+
+    Akeneo\Pim\Permission\Bundle\Controller\InternalApi\GetUserGroupLocalesPermissionsAction:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetUserGroupLocalesAccesses'
+
+    Akeneo\Pim\Permission\Bundle\Controller\InternalApi\SaveAttributeGroupsPermissionsAction:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@validator'
+            - '@Akeneo\Pim\Permission\Bundle\Saver\UserGroupAttributeGroupPermissionsSaver'
+
+    Akeneo\Pim\Permission\Bundle\Controller\InternalApi\SaveLocalesPermissionsAction:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@validator'
+            - '@Akeneo\Pim\Permission\Bundle\Saver\UserGroupLocalePermissionsSaver'

@@ -26,15 +26,10 @@ use PDO;
  */
 class SqlFindRecordLabelsByCodes implements FindRecordLabelsByCodesInterface
 {
-    private Connection $sqlConnection;
-    private SqlFindReferenceEntityAttributeAsLabel $findReferenceEntityAttributeAsLabel;
-
     public function __construct(
-        Connection $sqlConnection,
-        SqlFindReferenceEntityAttributeAsLabel $findReferenceEntityAttributeAsLabel
+        private Connection $sqlConnection,
+        private SqlFindReferenceEntityAttributeAsLabel $findReferenceEntityAttributeAsLabel
     ) {
-        $this->sqlConnection = $sqlConnection;
-        $this->findReferenceEntityAttributeAsLabel = $findReferenceEntityAttributeAsLabel;
     }
 
     /**

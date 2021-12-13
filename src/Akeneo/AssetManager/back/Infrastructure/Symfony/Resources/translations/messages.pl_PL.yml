@@ -87,5 +87,13 @@ pim_mass_edit.notification.asset_manager_mass_edit_assets:
   success: Wyedytowano zasoby
   error: Edycja zasobów nie powiodła się
 pim_api:
+  acl:
+    asset_family:
+      create: Utwórz i zaktualizuj rodziny zasobów
+      list: Wymień rodziny zasobów
+    asset:
+      create: Utwórz i zaktualizuj zasoby
+      list: Wymień zasoby
+      remove: Usuń zasoby
   acl_group:
     asset: Zasoby

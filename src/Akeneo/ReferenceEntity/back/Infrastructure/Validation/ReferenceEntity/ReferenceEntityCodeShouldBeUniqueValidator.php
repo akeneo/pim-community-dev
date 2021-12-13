@@ -28,11 +28,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ReferenceEntityCodeShouldBeUniqueValidator extends ConstraintValidator
 {
-    private ReferenceEntityExistsInterface $referenceEntityExists;
-
-    public function __construct(ReferenceEntityExistsInterface $recordExists)
-    {
-        $this->referenceEntityExists = $recordExists;
+    public function __construct(
+        private ReferenceEntityExistsInterface $referenceEntityExists
+    ) {
     }
 
     public function validate($command, Constraint $constraint): void
@@ -51,7 +49,7 @@ class ReferenceEntityCodeShouldBeUniqueValidator extends ConstraintValidator
             throw new \InvalidArgumentException(sprintf(
                 'Expected argument to be of class "%s", "%s" given',
                 CreateReferenceEntityCommand::class,
-                get_class($command)
+                $command::class
             ));
         }
     }

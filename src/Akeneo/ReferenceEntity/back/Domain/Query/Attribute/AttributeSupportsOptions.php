@@ -10,15 +10,10 @@ use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 
 class AttributeSupportsOptions
 {
-    private GetAttributeIdentifierInterface $getAttributeIdentifier;
-    private AttributeRepositoryInterface $attributeRepository;
-
     public function __construct(
-        GetAttributeIdentifierInterface $getAttributeIdentifier,
-        AttributeRepositoryInterface $attributeRepository
+        private GetAttributeIdentifierInterface $getAttributeIdentifier,
+        private AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->getAttributeIdentifier = $getAttributeIdentifier;
-        $this->attributeRepository = $attributeRepository;
     }
 
     public function supports(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): bool

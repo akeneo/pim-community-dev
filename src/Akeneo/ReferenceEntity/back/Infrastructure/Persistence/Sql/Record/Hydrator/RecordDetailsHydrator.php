@@ -33,14 +33,12 @@ use Doctrine\DBAL\Types\Types;
 class RecordDetailsHydrator implements RecordDetailsHydratorInterface
 {
     private AbstractPlatform $platform;
-    private ValueHydratorInterface $valueHydrator;
 
     public function __construct(
         Connection $connection,
-        ValueHydratorInterface $valueHydrator
+        private ValueHydratorInterface $valueHydrator
     ) {
         $this->platform = $connection->getDatabasePlatform();
-        $this->valueHydrator = $valueHydrator;
     }
 
     public function hydrate(

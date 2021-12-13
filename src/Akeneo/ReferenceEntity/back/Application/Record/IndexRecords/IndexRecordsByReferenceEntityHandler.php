@@ -15,14 +15,12 @@ use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
  */
 class IndexRecordsByReferenceEntityHandler
 {
-    private RecordIndexerInterface $recordIndexer;
-
-    public function __construct(RecordIndexerInterface $recordIndexer)
-    {
-        $this->recordIndexer = $recordIndexer;
+    public function __construct(
+        private RecordIndexerInterface $recordIndexer
+    ) {
     }
 
-    public function __invoke(IndexRecordsByReferenceEntityCommand $command) :void
+    public function __invoke(IndexRecordsByReferenceEntityCommand $command): void
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier);
         $this->recordIndexer->indexByReferenceEntity($referenceEntityIdentifier);

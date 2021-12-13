@@ -25,11 +25,9 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlChannelExists implements ChannelExistsInterface
 {
-    private Connection $sqlConnection;
-
-    public function __construct(Connection $sqlConnection)
-    {
-        $this->sqlConnection = $sqlConnection;
+    public function __construct(
+        private Connection $sqlConnection
+    ) {
     }
 
     public function exists(ChannelIdentifier $channelIdentifier): bool

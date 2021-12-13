@@ -23,11 +23,9 @@ use PDO;
  */
 class SqlFindRecordLabelsByIdentifiers implements FindRecordLabelsByIdentifiersInterface
 {
-    private Connection $sqlConnection;
-
-    public function __construct(Connection $sqlConnection)
-    {
-        $this->sqlConnection = $sqlConnection;
+    public function __construct(
+        private Connection $sqlConnection
+    ) {
     }
 
     /**

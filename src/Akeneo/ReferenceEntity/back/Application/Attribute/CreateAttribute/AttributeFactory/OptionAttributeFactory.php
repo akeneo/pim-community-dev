@@ -32,13 +32,13 @@ class OptionAttributeFactory implements AttributeFactoryInterface
         AbstractCreateAttributeCommand $command,
         AttributeIdentifier $identifier,
         AttributeOrder $order
-    ):AbstractAttribute {
+    ): AbstractAttribute {
         if (!$this->supports($command)) {
             throw new \RuntimeException(
                 sprintf(
                     'Expected command of type "%s", "%s" given',
                     CreateOptionAttributeCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

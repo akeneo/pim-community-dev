@@ -55,7 +55,7 @@ class EditTextValueCommandValidator extends ConstraintValidator
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
                     EditTextValueCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }
@@ -94,15 +94,14 @@ class EditTextValueCommandValidator extends ConstraintValidator
         }
     }
 
-    private function checkType(EditTextValueCommand $command):ConstraintViolationListInterface
+    private function checkType(EditTextValueCommand $command): ConstraintViolationListInterface
     {
         $validator = Validation::createValidator();
 
         return $validator->validate($command->text, new Type('string'));
     }
 
-    private function checkTextLength(EditTextValueCommand $command)
-    : ConstraintViolationListInterface
+    private function checkTextLength(EditTextValueCommand $command): ConstraintViolationListInterface
     {
         $intMaxLength = $command->attribute->getMaxLength()->intValue();
         if (null === $intMaxLength || 0 >= $intMaxLength) {
@@ -116,8 +115,7 @@ class EditTextValueCommandValidator extends ConstraintValidator
         ]);
     }
 
-    private function checkValidationRule(EditTextValueCommand $command)
-    : ConstraintViolationListInterface
+    private function checkValidationRule(EditTextValueCommand $command): ConstraintViolationListInterface
     {
         if ($command->attribute->hasValidationRule()) {
             return new ConstraintViolationList();

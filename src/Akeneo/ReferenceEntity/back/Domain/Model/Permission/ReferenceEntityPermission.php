@@ -25,20 +25,13 @@ class ReferenceEntityPermission
     private const REFERENCE_ENTITY_IDENTIFIER = 'reference_entity_identifier';
     private const PERMISSIONS = 'permissions';
 
-    private ReferenceEntityIdentifier $referenceEntityIdentifier;
-
-    /** @var UserGroupPermission[] */
-    private array $permissions;
-
+    /** @param UserGroupPermission[] $permissions */
     private function __construct(
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
-        array $permissions
+        private ReferenceEntityIdentifier $referenceEntityIdentifier,
+        private array $permissions
     ) {
         Assert::allIsInstanceOf($permissions, UserGroupPermission::class);
         $this->assertUniquePermissions($permissions);
-
-        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
-        $this->permissions = $permissions;
     }
 
     /**
@@ -59,7 +52,6 @@ class ReferenceEntityPermission
     }
 
     /**
-     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
      * @param UserGroupPermission[]     $permissions
      */
     public static function create(

@@ -140,4 +140,14 @@ class AssetCollectionValueSpec extends ObjectBehavior
         $this->isEqual($sameDataOrderAssetCollection)->shouldReturn(true);
         $this->isEqual($otherOrderAssetCollection)->shouldReturn(false);
     }
+
+    public function it_returns_a_string_representation_of_the_asset_collection_value()
+    {
+        $this->beConstructedThrough(
+            'value',
+            [self::ATTRIBUTE_CODE, [AssetCode::fromString('paint'), AssetCode::fromString('bike')]]
+        );
+
+        $this->__toString()->shouldReturn('paint, bike');
+    }
 }

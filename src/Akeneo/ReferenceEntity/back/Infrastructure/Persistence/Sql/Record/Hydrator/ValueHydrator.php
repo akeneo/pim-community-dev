@@ -24,12 +24,9 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
  */
 class ValueHydrator implements ValueHydratorInterface
 {
-    private DataHydratorRegistry $dataHydratorRegistry;
-
     public function __construct(
-        DataHydratorRegistry $dataHydratorRegistry
+        private DataHydratorRegistry $dataHydratorRegistry
     ) {
-        $this->dataHydratorRegistry = $dataHydratorRegistry;
     }
 
     public function hydrate(array $row, AbstractAttribute $attribute): Value

@@ -43,8 +43,8 @@ spec:
             limits:
               memory: "512Mi"
             requests:
-              memory: "256Mi"
-              cpu: "200m"
+              memory: "128Mi"
+              cpu: "10m"
           volumeMounts:
             - name: google-cloud-pim-storage-key
               mountPath: /var/secrets/google/srnt.json

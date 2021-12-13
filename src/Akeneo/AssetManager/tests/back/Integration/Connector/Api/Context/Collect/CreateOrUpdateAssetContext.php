@@ -75,7 +75,6 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
-use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateOrUpdateAssetContext implements Context
@@ -121,8 +120,6 @@ class CreateOrUpdateAssetContext implements Context
 
     private SecurityFacadeStub $securityFacade;
 
-    private TestLogger $apiAclLogger;
-
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -137,8 +134,7 @@ class CreateOrUpdateAssetContext implements Context
         InMemoryGetAttributeIdentifier $getAttributeIdentifier,
         ProductLinkRuleLauncherSpy $productLinkRuleLauncherSpy,
         ComputeTransformationFromAssetIdentifiersLauncherSpy $computeTransformationLauncherSpy,
-        SecurityFacadeStub $securityFacade,
-        TestLogger $apiAclLogger
+        SecurityFacadeStub $securityFacade
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -154,7 +150,6 @@ class CreateOrUpdateAssetContext implements Context
         $this->productLinkRuleLauncherSpy = $productLinkRuleLauncherSpy;
         $this->computeTransformationLauncherSpy = $computeTransformationLauncherSpy;
         $this->securityFacade = $securityFacade;
-        $this->apiAclLogger = $apiAclLogger;
     }
 
     /**
@@ -800,16 +795,9 @@ class CreateOrUpdateAssetContext implements Context
      */
     public function thePimNotifiesTheConnectorAboutMissingPermissionsForCollectingAMediaFileForTheKartellAssetFromTheDamToSynchronizeItWithThePim()
     {
-        /**
-         * TODO CXP-922: Assert 403 instead of success & remove logger assertion
-         */
         $this->webClientHelper->assertJsonFromFile(
             $this->uploadImageResponse,
             self::REQUEST_CONTRACT_DIR . 'forbidden_image_upload.json'
-        );
-        Assert::assertTrue(
-            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_asset_edit"'),
-            'Expected warning not found in the logs.'
         );
     }
 
@@ -1231,16 +1219,9 @@ class CreateOrUpdateAssetContext implements Context
      */
     public function thePimNotifiesTheConnectorAboutMissingPermissionsForCollectingTheseAssetsFromTheErpToSynchronizeThemWithThePim()
     {
-        /**
-         * TODO CXP-922: Assert 403 instead of success & remove logger assertion
-         */
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
             self::REQUEST_CONTRACT_DIR . 'forbidden_frontview_assets_synchronization.json'
-        );
-        Assert::assertTrue(
-            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_asset_edit"'),
-            'Expected warning not found in the logs.'
         );
     }
 
@@ -1262,16 +1243,9 @@ class CreateOrUpdateAssetContext implements Context
      */
     public function thePimNotifiesTheConnectorAboutMissingPermissionsForCollectingThisAssetFromTheErpToSynchronizeItWithThePim()
     {
-        /**
-         * TODO CXP-922: Assert 403 instead of success & remove logger assertion
-         */
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
             self::REQUEST_CONTRACT_DIR . 'forbidden_house_asset_creation.json'
-        );
-        Assert::assertTrue(
-            $this->apiAclLogger->hasWarning('User "julia" with roles ROLE_USER is not granted "pim_api_asset_edit"'),
-            'Expected warning not found in the logs.'
         );
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -32,22 +33,14 @@ class EditRecordHandler
 {
     private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
 
-    private ValueUpdaterRegistryInterface $valueUpdaterRegistry;
-    private RecordRepositoryInterface $recordRepository;
-    private FileStorerInterface $storer;
-
     public function __construct(
-        ValueUpdaterRegistryInterface $valueUpdaterRegistry,
-        RecordRepositoryInterface $recordRepository,
-        FileStorerInterface $storer
+        private ValueUpdaterRegistryInterface $valueUpdaterRegistry,
+        private RecordRepositoryInterface $recordRepository,
+        private FileStorerInterface $storer
     ) {
-        $this->valueUpdaterRegistry = $valueUpdaterRegistry;
-        $this->recordRepository = $recordRepository;
-        $this->storer = $storer;
     }
 
     /**
-     * @param EditRecordCommand $editRecordCommand
      *
      * @throws FileRemovalException
      * @throws FileTransferException

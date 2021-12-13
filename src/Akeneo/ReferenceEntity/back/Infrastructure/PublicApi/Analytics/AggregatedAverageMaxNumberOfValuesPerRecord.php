@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics;
 
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
@@ -16,12 +15,9 @@ class AggregatedAverageMaxNumberOfValuesPerRecord implements AverageMaxQuery
 {
     private const VOLUME_NAME = 'average_max_number_of_values_per_record';
 
-    private Connection $connection;
-    private int $limit;
-
-    public function __construct(Connection $connection)
-    {
-        $this->connection = $connection;
+    public function __construct(
+        private Connection $connection,
+    ) {
     }
 
     /**

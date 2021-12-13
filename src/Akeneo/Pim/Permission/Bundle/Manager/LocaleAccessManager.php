@@ -15,6 +15,7 @@ use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\LocaleAccess;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\LocaleAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 
@@ -34,16 +35,23 @@ class LocaleAccessManager
     /** @var string */
     protected $localeAccessClass;
 
+    private BulkRemoverInterface $remover;
+
     /**
      * @param LocaleAccessRepository $repository
      * @param BulkSaverInterface     $saver
      * @param string                 $localeAccessClass
      */
-    public function __construct(LocaleAccessRepository $repository, BulkSaverInterface $saver, $localeAccessClass)
-    {
+    public function __construct(
+        LocaleAccessRepository $repository,
+        BulkSaverInterface $saver,
+        $localeAccessClass,
+        BulkRemoverInterface $remover
+    ) {
         $this->repository = $repository;
         $this->saver = $saver;
         $this->localeAccessClass = $localeAccessClass;
+        $this->remover = $remover;
     }
 
     /**
@@ -122,6 +130,17 @@ class LocaleAccessManager
     public function revokeAccess(LocaleInterface $locale, array $excludedUserGroups = [])
     {
         return $this->repository->revokeAccess($locale, $excludedUserGroups);
+    }
+
+    public function revokeGroupAccess(LocaleInterface $locale, GroupInterface $group): void
+    {
+        $access = $this->repository->findOneBy(['locale' => $locale, 'userGroup' => $group]);
+
+        if (null === $access) {
+            return;
+        }
+
+        $this->remover->removeAll([$access]);
     }
 
     /**
