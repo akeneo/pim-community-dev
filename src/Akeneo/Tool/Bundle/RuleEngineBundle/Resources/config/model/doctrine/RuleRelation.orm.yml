@@ -17,9 +17,8 @@ Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleRelation:
             type: string
             column: resource_name
         resourceId:
-            type: string
+            type: integer
             column: resource_id
-            length: 24
     manyToOne:
         rule:
             targetEntity: Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface

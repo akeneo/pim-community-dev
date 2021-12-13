@@ -34,7 +34,7 @@ interface RuleRelationInterface
     public function getResourceName();
 
     /**
-     * @return string
+     * @return int
      */
     public function getResourceId();
 
@@ -53,7 +53,7 @@ interface RuleRelationInterface
     public function setResourceName($resourceName);
 
     /**
-     * @param mixed $resourceId
+     * @param int $resourceId
      *
      * @return RuleRelationInterface
      */

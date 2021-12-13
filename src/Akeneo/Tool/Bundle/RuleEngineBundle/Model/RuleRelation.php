@@ -27,7 +27,7 @@ class RuleRelation implements RuleRelationInterface
     /** @var string */
     protected $resourceName;
 
-    /** @var mixed */
+    /** @var int */
     protected $resourceId;
 
     /**
