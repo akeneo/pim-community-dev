@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "33aa86a12ef6f21a275db70aba89bdd3",
+    "content-hash": "ba66639a0a72f0826e06e24ffd570c30",
     "packages": [
         {
             "name": "akeneo/oauth-server-bundle",
@@ -2875,16 +2875,16 @@
         },
         {
             "name": "google/cloud-pubsub",
-            "version": "v1.29.1",
+            "version": "v1.34.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-pubsub.git",
-                "reference": "25e2b60c1c35b8417182d70ccbed06e788959b6b"
+                "reference": "0524f6c11820be7c5601e9dabff86e67f409dc54"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-pubsub/zipball/25e2b60c1c35b8417182d70ccbed06e788959b6b",
-                "reference": "25e2b60c1c35b8417182d70ccbed06e788959b6b",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-pubsub/zipball/0524f6c11820be7c5601e9dabff86e67f409dc54",
+                "reference": "0524f6c11820be7c5601e9dabff86e67f409dc54",
                 "shasum": ""
             },
             "require": {
@@ -2922,9 +2922,9 @@
             ],
             "description": "Cloud PubSub Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-pubsub/tree/v1.29.1"
+                "source": "https://github.com/googleapis/google-cloud-php-pubsub/tree/v1.34.2"
             },
-            "time": "2020-10-13T13:31:20+00:00"
+            "time": "2021-12-10T17:55:49+00:00"
         },
         {
             "name": "google/common-protos",

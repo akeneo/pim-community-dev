@@ -76,7 +76,7 @@
         "akeneo/oauth-server-bundle": "^2.0.0",
         "friendsofsymfony/rest-bundle": "^3.0.5",
         "gedmo/doctrine-extensions":"^3.2.0",
-        "google/cloud-pubsub": "1.29.1",
+        "google/cloud-pubsub": "1.34.2",
         "guzzlehttp/guzzle": "6.5.5",
         "imagine/imagine": "1.2.4",
         "justinrainbow/json-schema": "^5.2",
