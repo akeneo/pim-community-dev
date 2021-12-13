@@ -1414,13 +1414,8 @@ jobs:
         - run:
               name: Pull Terraform modules from last release
               command: |
-                  # TO BE REVERT AFTER PROD
-                  cp ./deployments/Makefile ./Makefile_new
                   rm -r ./deployments
                   BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${TYPE_LONG}-edition-dev/${LATEST_RELEASE}/deployments/ .
-                  mv ./Makefile_new ./deployments/Makefile
-                  # rm -r ./deployments
-                  # BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${TYPE_LONG}-edition-dev/${LATEST_RELEASE}/deployments/ .
         - run:
               name: Deploy instance with latest release
               command: |
