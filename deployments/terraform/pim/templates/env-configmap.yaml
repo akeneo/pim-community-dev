@@ -97,3 +97,7 @@ data:
   {{- else }}
   FLAG_FREE_TRIAL_ENABLED: "0"
   {{- end }}
+
+
+.Values.global.extraLabels.product_reference_code
+.Values.global.extraLabels.product_reference_type

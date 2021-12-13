@@ -69,6 +69,8 @@ global:
     papo_project_code: ${papoProjectCode}
     papo_project_code_truncated: ${papoProjectCodeTruncated}
     papo_project_code_hashed: ${papoProjectCodeHashed}
+    product_reference_code: ${product_reference_code}
+    product_reference_type: ${product_reference_type}
 
 common:
   gcpProjectID: ${projectId}
