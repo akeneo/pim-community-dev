@@ -17,6 +17,14 @@ pim_title:
   akeneo_connectivity_connection_settings_redirect: Connections
 akeneo_connectivity.connection:
   connect:
+    connected_apps:
+      edit:
+        tabs:
+          settings: Settings
+          permissions: Permissions
+      delete:
+        title: Confirm deletion
+        link: Here is what will happen.
     apps:
       wizard:
         progress:
@@ -218,3 +226,8 @@ akeneo_connectivity.connection:
     error_message: Oh, snap! An error occurred...
     reload_helper: Please reload the page and try again.
     reload_button: Reload
+pim_permissions:
+  widget:
+    action:
+      all: All
+    all: All

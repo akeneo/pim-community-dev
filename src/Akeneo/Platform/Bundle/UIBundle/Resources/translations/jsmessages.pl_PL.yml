@@ -211,6 +211,7 @@ pim_common:
     search: Szukaj...
     no_match: Nie znaleziono dopasowań
     load_more: Ładuję więcej wyników...
+  selected: "{0}Brak wybranych|{1}Wybrane pozycje: 1|]1, Inf[Wybrane pozycje: {{ itemsCount }}"
   status: Status
   to: do
   type: Typ

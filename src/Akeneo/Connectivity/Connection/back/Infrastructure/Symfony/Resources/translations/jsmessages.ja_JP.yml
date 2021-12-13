@@ -59,6 +59,14 @@ akeneo_connectivity.connection:
         empty: お使いのバージョンと互換性のあるアプリがありません
       unreachable: マーケットに接続できません。後でもう一度確認してください。
       scroll_to_top: 上までスクロール
+    connected_apps:
+      edit:
+        tabs:
+          settings: 設定
+          permissions: 許可
+      delete:
+        title: 削除を確認
+        link: 何が起こるかご確認ください。
     apps:
       wizard:
         title: 接続
@@ -71,13 +79,9 @@ akeneo_connectivity.connection:
         progress:
           authorizations: 承認
           permissions: 許可
-          well_done: よくできました！
         authorize:
-          title: '{{ app_name }}アプリには以下が必要です：'
           no_scope_title: '{{ app_name }}アプリがPIMにアクセスしようとしています。'
           no_scope: 特定の承認は要求されていません。
-          helper: アプリの承認について詳しくは、
-          helper_link: ヘルプセンターをご確認ください。
       title: 接続
       activate:
         flash:
@@ -104,8 +108,6 @@ akeneo_connectivity.connection:
         response_type:
           not_blank: response_typeは必須です。
           must_be_code: response_typeは「コード」でなければなりません。
-        scope:
-          must_be_valid: スコープが無効です。
         redirect_uri:
           not_blank: redirect_uriは必須です。
           must_be_url: redirect_uriは有効なURLではありません。
@@ -390,3 +392,8 @@ akeneo_connectivity.connection:
     error_message: 申し訳ありません！ エラーが発生しました…
     reload_helper: ページをリロードして再試行してください。
     reload_button: リロード
+pim_permissions:
+  widget:
+    action:
+      all: すべて
+    all: すべて

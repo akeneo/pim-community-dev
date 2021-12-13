@@ -173,8 +173,14 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler'
 
-
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\GetOpenIdPublicKeyAction:
         public: true
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAsymmetricKeysQuery'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetConnectedAppMonitoringSettingsAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@oro_security.security_facade'
+            - '@akeneo_connectivity.connection.application.handler.find_a_connection'

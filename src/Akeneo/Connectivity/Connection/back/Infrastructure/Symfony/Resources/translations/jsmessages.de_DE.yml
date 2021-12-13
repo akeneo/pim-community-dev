@@ -17,6 +17,7 @@ pim_menu:
     data_flows: Datenfluss
     connect_connection_settings: Verbindungseinstellungen
     marketplace: Marktplatz
+    connected_apps: Apps
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: Marktplatz
   akeneo_connectivity_connection_connect_marketplace_profile: Marktplatz
@@ -33,6 +34,9 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: Event-Abonnement
   akeneo_connectivity_connection_webhook_event_logs: Ereignis-Logs
   akeneo_connectivity_connection_settings_redirect: Verbindungen
+  akeneo_connectivity_connection_connect_connected_apps: Apps
+  akeneo_connectivity_connection_connect_connected_apps_edit: Appeinstellungen
+  akeneo_connectivity_connection_connect_connected_apps_delete: App löschen
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -49,6 +53,7 @@ akeneo_connectivity.connection:
         read_more: weiterlesen
         more_info: Mehr Informationen
         connect: Verbinde
+        connected: Verbunden
       extensions:
         title: Konnektoren
         total: '{0} keine Konnektor|{1} 1 Konnektor|[2,Inf] {{ total }} Konnektoren'
@@ -59,7 +64,54 @@ akeneo_connectivity.connection:
         empty: Keine Apps, die mit Ihrer Version kompatibel sind
       unreachable: Wir können den Marktplatz nicht erreichen, bitte kommen Sie später wieder.
       scroll_to_top: Zum Anfang scrollen
+    connected_apps:
+      list:
+        apps:
+          title: Verbundene Apps
+          total: '{0} Keine Apps|{1} 1 App|[2,Inf] {{ total }} Apps'
+          empty: Noch keine Apps verbunden.
+          check_marketplace: 'Überprüfen Sie die {{ marketplaceLink }} , um alle verfügbaren Inhalte zu durchsuchen und Ihre erste App zu installieren.'
+          marketplace_link_anchor: Marktplatz
+        helper:
+          title: '[0,1] Ihr PIM ist mit {{ count }} App verbunden.|[2,Inf] Ihr PIM ist mit {{ count }} Apps verbunden.'
+          description_1: Neue Apps werden regelmäßig entwickelt, also bleiben Sie dran und schauen Sie regelmäßig auf unseren Marktplatz, um herauszufinden, wie Sie Ihr PIM verbinden können.
+          description_2: Möchten Sie mehr über Apps erfahren?
+          link: Weitere Informationen finden Sie in unserem Hilfe-Center.
+        card:
+          developed_by: Entwickelt von
+          manage_app: Apps verwalten
+          open_app: App öffnen
+        flash:
+          error: Beim Abrufen der Liste der verbundenen Apps ist ein Fehler aufgetreten.
+      edit:
+        not_found: App nicht gefunden
+        tabs:
+          settings: Einstellungen
+          permissions: Berechtigungen
+        settings:
+          authorizations:
+            title: Autorisierungen
+            information: 'Um mehr über App-Autorisierungen zu erfahren, schauen Sie sich unseren {{ link }} an.'
+            information_link_anchor: Hilfe-Center-Artikel
+            no_scope: Es wurden keine spezifischen Berechtigungen angefordert.
+        flash:
+          load_permissions_error.title: 'Berechtigungen auf {{ entity }} konnten nicht geladen werden.'
+          load_permissions_error.description: Bitte später versuchen.
+          save_permissions_error.title: 'Berechtigungen auf {{ entity }} konnten nicht aktualisiert werden.'
+          save_permissions_error.description: Bitte überprüfen Sie die App-Berechtigungseinstellungen.
+          success: App-Einstellungen erfolgreich aktualisiert.
+      delete:
+        subtitle: Apps
+        title: Löschen bestätigen
+        description: Sind Sie sicher, dass Sie die App löschen möchten? Sind Sie sich über die Auswirkungen nicht sicher?
+        link: Hier ist das, was geschehen wird.
+        flash:
+          success: App erfolgreich gelöscht.
+          error: Beim Löschen der App ist ein Fehler aufgetreten.
     apps:
+      flash:
+        permissions_error.title: 'Berechtigungen auf {{ entity }} konnten nicht gespeichert werden.'
+        permissions_error.description: Bitte überprüfen Sie die App-Berechtigungseinstellungen.
       wizard:
         title: Verbinde
         action:
@@ -71,13 +123,19 @@ akeneo_connectivity.connection:
         progress:
           authorizations: Autorisierungen
           permissions: Berechtigungen
-          well_done: Gut gemacht!
+          summary: Gut gemacht!
         authorize:
-          title: 'App {{ app_name }} muss'
+          title: '{{ app_name }} muss'
           no_scope_title: 'Die {{ app_name }} App möchte auf Ihr PIM zugreifen.'
           no_scope: Es wurden keine spezifischen Genehmigungen angefordert.
           helper: Um mehr über die App-Autorisierung zu erfahren,
-          helper_link: checke unser Hilfe-Center für weitere Informationen.
+          helper_link: lesen Sie unseren Hilfe-Center-Artikel.
+        flash:
+          success: App erfolgreich konfiguriert.
+          error: Beim Verbinden mit der App ist ein Fehler aufgetreten.
+        permission:
+          helper: Wenn Sie Hilfe benötigen, überprüfe bitte unseren Artikel
+          helper_link: Wie richten Sie App-Berechtigungen ein?
       title: Verbinde
       activate:
         flash:
@@ -95,17 +153,20 @@ akeneo_connectivity.connection:
           channel_settings: Kanäle
           association_types: Verbindungstypen
           products: Produkte und Produktmodelle
+          reference_entity: Referenz Entitäten
+          reference_entity_record: Referenz Entitäten Datensätze
+          asset_families: Asset-Familien
+          assets: Assets
       error:
         sub_text: Bitte kontaktieren Sie den App-Entwickler oder den Akeneo-Support
       constraint:
         client_id:
           not_blank: Die client_id ist erforderlich.
           must_be_valid: Die client_id entspricht keinem bekannten Client.
+          must_have_ongoing_authorization: Die client_id hat im Moment keinen laufenden Autorisierungsprozess
         response_type:
           not_blank: Der response_type ist erforderlich.
           must_be_code: Die response_type muss "code" sein.
-        scope:
-          must_be_valid: Der Gültigkeitsbereich ist ungültig.
         redirect_uri:
           not_blank: Die redirect_uri ist erforderlich.
           must_be_url: Die redirect_uri ist keine gültige URL.
@@ -390,3 +451,13 @@ akeneo_connectivity.connection:
     error_message: Oh verdammt! Ein Fehler ist aufgetreten...
     reload_helper: Bitte laden Sie die Seite neu und versuchen Sie es erneut.
     reload_button: Neu laden
+pim_permissions:
+  widget:
+    action:
+      all: Alle
+      clear: Zurücksetzen
+    level:
+      own: Eigenes
+      edit: Bearbeiten
+      view: Ansehen
+    all: Alle

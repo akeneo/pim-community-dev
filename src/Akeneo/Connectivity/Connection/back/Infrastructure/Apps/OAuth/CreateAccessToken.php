@@ -60,7 +60,8 @@ class CreateAccessToken implements CreateAccessTokenInterface
         $client = $this->getClient($appId);
         $authCode = $this->getAuthCode($code);
 
-        $scopes = ScopeList::fromScopes($this->getConnectedAppScopesQuery->execute($appId));
+        $allScopesList = ScopeList::fromScopes([]);
+
         $jwt = null;
 
         if (ScopeList::fromScopeString($authCode->getScope())->hasScope(AuthenticationScope::SCOPE_OPENID)) {
@@ -72,22 +73,26 @@ class CreateAccessToken implements CreateAccessTokenInterface
 
             $appAuthenticationUser = $this->appAuthenticationUserProvider->getAppAuthenticationUser($appId, $pimUser->getId());
 
-            $scopes = $scopes->addScopes($appAuthenticationUser->getConsentedAuthenticationScopes());
+            $allScopesList = $allScopesList->addScopes($appAuthenticationUser->getConsentedAuthenticationScopes());
+
             $jwt = $this->createJsonWebToken->create($appId, $appAuthenticationUser);
         }
 
         $token = $this->randomCodeGenerator->generate();
-        $scope = $scopes->toScopeString();
+
+        $authorizationScopesList = ScopeList::fromScopes($this->getConnectedAppScopesQuery->execute($appId));
 
         $appUser = $this->getAppUser($appId);
         /* @phpstan-ignore-next-line */
-        $this->storage->createAccessToken($token, $client, $appUser, null, $scope);
+        $this->storage->createAccessToken($token, $client, $appUser, null, $authorizationScopesList->toScopeString());
         $this->storage->markAuthCodeAsUsed($code);
+
+        $allScopesList = $allScopesList->addScopes($authorizationScopesList);
 
         $accessToken = [
             'access_token' => $token,
             'token_type' => 'bearer',
-            'scope' => $scope
+            'scope' => $allScopesList->toScopeString()
         ];
 
         if (null !== $jwt) {
