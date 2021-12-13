@@ -10,6 +10,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizat
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider;
@@ -101,17 +102,22 @@ class AuthorizeAction
             $this->connectedPimUserProvider->getCurrentUserId()
         );
 
+        $newAuthenticationScopes = array_diff(
+            $appAuthorization->getAuthenticationScopes()->getScopes(),
+            $appAuthenticationUser->getConsentedAuthenticationScopes()->getScopes()
+        );
         if (
             $appAuthorization->getAuthenticationScopes()->hasScope(AuthenticationScope::SCOPE_OPENID)
-            && false === $appAuthenticationUser->getConsentedAuthenticationScopes()->equals($appAuthorization->getAuthenticationScopes())
+            && count($newAuthenticationScopes) > 0
         ) {
             // @TODO might loop if it decline the app => redirect on pim, with error ?
             // @TODO triggers the consent step 'akeneo_connectivity_connection_connect_apps_authenticate'
             return new Response(sprintf(
-                '<a href=%s>I consent</a>',
+                '<a href=%s>I consent to %s</a>',
                 $this->router->generate('akeneo_connectivity_connection_apps_rest_confirm_authentication', [
                     'clientId' => $command->getClientId()
-                ])
+                ]),
+                ScopeList::fromScopes($newAuthenticationScopes)->toScopeString()
             ));
         }
 
