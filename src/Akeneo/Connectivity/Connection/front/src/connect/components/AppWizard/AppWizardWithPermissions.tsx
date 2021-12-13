@@ -22,7 +22,7 @@ interface Props {
     clientId: string;
 }
 
-export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
+export const AppWizardWithPermissions: FC<Props> = ({clientId}) => {
     const translate = useTranslate();
     const history = useHistory();
     const notify = useNotify();

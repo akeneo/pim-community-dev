@@ -1,7 +1,7 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {Permissions} from '@src/connect/components/AppWizard/steps/Permissions';
-import {renderWithProviders} from '../../../../test-utils';
+import {renderWithProviders} from '../../../../../test-utils';
 import {PermissionsForm} from '@src/connect/components/PermissionsForm';
 
 jest.mock('@src/connect/components/PermissionsForm', () => ({

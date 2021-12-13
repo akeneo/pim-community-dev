@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect';
 import {act, screen, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {historyMock, mockFetchResponses, MockFetchResponses, renderWithProviders} from '../../../../test-utils';
-import {AppWizardWithSteps} from '@src/connect/components/AppWizard/AppWizardWithSteps';
+import {AppWizardWithPermissions} from '@src/connect/components/AppWizard/AppWizardWithPermissions';
 import {PermissionFormProvider, PermissionFormRegistryContext} from '@src/shared/permission-form-registry';
 import {NotificationLevel, NotifyContext} from '@src/shared/notify';
 import {PermissionsByProviderKey} from '@src/model/Apps/permissions-by-provider-key';
@@ -88,7 +88,7 @@ test('The step wizard renders without error', async () => {
     mockFetchResponses({
         ...fetchAppWizardDataResponses,
     });
-    renderWithProviders(<AppWizardWithSteps clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
+    renderWithProviders(<AppWizardWithPermissions clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
 
     await waitFor(() => screen.getByAltText('MyApp'));
     expect(screen.queryByAltText('MyApp')).toBeInTheDocument();
@@ -113,7 +113,7 @@ test('The wizard redirect to the marketplace when closed', async () => {
         ...fetchAppWizardDataResponses,
     });
 
-    renderWithProviders(<AppWizardWithSteps clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
+    renderWithProviders(<AppWizardWithPermissions clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
     await waitFor(() => screen.getByAltText('MyApp'));
 
     act(() => {
@@ -138,7 +138,7 @@ test('The wizard renders steps and is able to navigate between steps', async () 
     mockFetchResponses({
         ...fetchAppWizardDataResponses,
     });
-    renderWithProviders(<AppWizardWithSteps clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
+    renderWithProviders(<AppWizardWithPermissions clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
     await waitFor(() => screen.getByAltText('MyApp'));
 
     assertAuthorizationsScreen();
@@ -193,7 +193,7 @@ test('The wizard notifies of the error on app confirm ', async () => {
 
     renderWithProviders(
         <NotifyContext.Provider value={notify}>
-            <AppWizardWithSteps clientId={clientId} />
+            <AppWizardWithPermissions clientId={clientId} />
         </NotifyContext.Provider>
     );
 
@@ -253,7 +253,7 @@ test('The wizard saves app and permissions on confirm', async () => {
     renderWithProviders(
         <NotifyContext.Provider value={notify}>
             <PermissionFormRegistryContext.Provider value={registry}>
-                <AppWizardWithSteps clientId={clientId} />
+                <AppWizardWithPermissions clientId={clientId} />
             </PermissionFormRegistryContext.Provider>
         </NotifyContext.Provider>
     );
@@ -346,7 +346,7 @@ test('The wizard saves app but have some failing permissions on confirm', async 
     renderWithProviders(
         <NotifyContext.Provider value={notify}>
             <PermissionFormRegistryContext.Provider value={registry}>
-                <AppWizardWithSteps clientId={clientId} />
+                <AppWizardWithPermissions clientId={clientId} />
             </PermissionFormRegistryContext.Provider>
         </NotifyContext.Provider>
     );

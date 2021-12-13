@@ -2,7 +2,7 @@ import {Button, Modal, ProgressIndicator} from 'akeneo-design-system';
 import React from 'react';
 import styled from 'styled-components';
 import {useTranslate} from '../../../shared/translate';
-import {useProgress} from './useProgress';
+import {useStepProgress} from './useStepProgress';
 
 const Content = styled.div`
     display: grid;
@@ -45,7 +45,7 @@ type Props = {
 export const WizardModal = ({appLogo, appName, children, onClose, onConfirm, steps}: Props) => {
     const translate = useTranslate();
 
-    const {current, isFirst, isLast: isLast, next, previous} = useProgress(steps);
+    const {current, isFirst, isLast: isLast, next, previous} = useStepProgress(steps);
 
     const isSingleStepWizard = steps.length === 1;
 
