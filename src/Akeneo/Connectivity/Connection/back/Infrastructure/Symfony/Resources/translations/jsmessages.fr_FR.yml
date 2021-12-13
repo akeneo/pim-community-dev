@@ -17,6 +17,7 @@ pim_menu:
     data_flows: Flux de données
     connect_connection_settings: Paramètres de connexion
     marketplace: Marketplace
+    connected_apps: Apps
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: Marketplace
   akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
@@ -33,6 +34,9 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: Souscription aux événements
   akeneo_connectivity_connection_webhook_event_logs: Journal des événements
   akeneo_connectivity_connection_settings_redirect: Connexions
+  akeneo_connectivity_connection_connect_connected_apps: Apps
+  akeneo_connectivity_connection_connect_connected_apps_edit: Paramètres des apps
+  akeneo_connectivity_connection_connect_connected_apps_delete: Suppression de l'app
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -49,6 +53,7 @@ akeneo_connectivity.connection:
         read_more: en savoir plus
         more_info: Plus d'info
         connect: Connecter
+        connected: Connectée
       extensions:
         title: Connecteurs
         total: '{0} Aucun connecteurs|{1} 1 connecteur|[2,Inf] {{ total }} connecteurs'
@@ -59,7 +64,54 @@ akeneo_connectivity.connection:
         empty: Aucune app compatible avec votre version
       unreachable: La marketplace est injoignable, veuillez revenir plus tard.
       scroll_to_top: Haut de la page
+    connected_apps:
+      list:
+        apps:
+          title: Apps connectées
+          total: '{0} Aucune app|{1} 1 app|[2,Inf] {{ total }} apps'
+          empty: Aucune app connectée pour le moment.
+          check_marketplace: 'Rendez-vous sur la {{ marketplaceLink }} pour parcourir les extensions disponibles et connecter votre première app.'
+          marketplace_link_anchor: Marketplace
+        helper:
+          title: '[0,1] Votre PIM est connecté à {{ count }} app.|[2,Inf] Votre PIM est connecté à {{ count }} apps.'
+          description_1: De nouvelles apps sont publiées régulièrement. Consultez notre page Marketplace fréquemment pour découvrir comment connecter votre PIM.
+          description_2: Vous voulez en savoir plus sur les apps ?
+          link: Consultez notre Help Center pour plus d'informations.
+        card:
+          developed_by: Développée par
+          manage_app: Paramètres
+          open_app: Ouvrir l'app
+        flash:
+          error: Désolé, une erreur s'est produite lors de la récupération de la liste des apps.
+      edit:
+        not_found: App non trouvée
+        tabs:
+          settings: Général
+          permissions: Permissions
+        settings:
+          authorizations:
+            title: Autorisations
+            information: 'Pour en savoir plus sur les autorisations liées aux apps, consultez notre article: {{ link }}.'
+            information_link_anchor: Article sur le Help Center
+            no_scope: Aucune autorisation spécifique n'a été demandée.
+        flash:
+          load_permissions_error.title: 'Les permissions enregistrées sur {{ entity }} n''ont pas pu être affichées.'
+          load_permissions_error.description: Veuillez réessayer plus tard.
+          save_permissions_error.title: 'Les permissions pour l''app {{ entity }} n''ont pas pu être mises à jour.'
+          save_permissions_error.description: Veuillez vérifier les permissions accordées à cette app.
+          success: Paramètres mis à jour avec succès.
+      delete:
+        subtitle: Apps
+        title: Confirmer la suppression
+        description: Êtes-vous sûr de vouloir supprimer cette app ? Vous n'êtes pas sûr des impacts ?
+        link: Découvrez-les ici.
+        flash:
+          success: App supprimée avec succès.
+          error: Désolé, une erreur s'est produite lors de la suppression de l'app.
     apps:
+      flash:
+        permissions_error.title: 'Les permissions pour l''app {{ entity }} n''ont pas pu être enregistrées.'
+        permissions_error.description: Veuillez vérifier les permissions accordées à cette app.
       wizard:
         title: Connecter
         action:
@@ -71,13 +123,19 @@ akeneo_connectivity.connection:
         progress:
           authorizations: Autorisations
           permissions: Permissions
-          well_done: Bravo!
+          summary: Bien joué !
         authorize:
-          title: 'L''app {{ app_name }} a besoin de '
+          title: '{{ app_name }} a besoin de'
           no_scope_title: 'L''app {{ app_name }} aimerait accéder à votre PIM.'
           no_scope: Aucune autorisation spécifique n'a été demandée.
-          helper: Pour en savoir plus sur les autorisations accordées à une app,
+          helper: Pour en savoir plus sur les autorisations accordées aux apps,
           helper_link: consultez notre Help Center.
+        flash:
+          success: App configurée avec succès.
+          error: Désolé, une erreur s'est produite lors de la connexion à l'app.
+        permission:
+          helper: Si vous avez besoin d'aide, veuillez consulter notre article
+          helper_link: How to set-up app permissions?
       title: Connecter
       activate:
         flash:
@@ -95,17 +153,20 @@ akeneo_connectivity.connection:
           channel_settings: les canaux
           association_types: les types d'association
           products: les produits et modèles de produits
+          reference_entity: entités référentielles
+          reference_entity_record: enregistrements des entités référentielles
+          asset_families: familles de ressources
+          assets: ressources
       error:
         sub_text: Veuillez contacter le développeur de l'application ou le support d'Akeneo
       constraint:
         client_id:
           not_blank: Le client_id est requis.
           must_be_valid: Le client_id ne correspond à aucun client connu.
+          must_have_ongoing_authorization: Le client_id n'a pas de processus d'autorisation en cours pour le moment
         response_type:
           not_blank: Le response_type est requis.
           must_be_code: Le response_type doit être "code".
-        scope:
-          must_be_valid: Les scopes demandés sont invalides.
         redirect_uri:
           not_blank: La redirect_uri est requise.
           must_be_url: Le redirect_uri n'est pas une URL valide.
@@ -139,6 +200,9 @@ akeneo_connectivity.connection:
         invalid: Le type de flux de la connexion ne peut être que 'data_source', 'data_destination' ou 'other'.
       image:
         must_exist: Désolé, l'image n'a pas été trouvée. Veuillez réessayer.
+      type:
+        required: Le type de connexion est requis.
+        too_long: La valeur saisie pour le type de connexion est trop longue. Elle ne peut pas dépasser 30 caractères.
   flow_type:
     data_source: Source de données | Sources de données
     data_destination: Destination de données | Destinations de données
@@ -387,3 +451,13 @@ akeneo_connectivity.connection:
     error_message: Oups ! Une erreur s'est produite...
     reload_helper: Merci de rafraîchir la page et de réessayer.
     reload_button: Actualiser
+pim_permissions:
+  widget:
+    action:
+      all: Toutes
+      clear: Effacer
+    level:
+      own: Gérer
+      edit: Modifier
+      view: Voir
+    all: Toutes

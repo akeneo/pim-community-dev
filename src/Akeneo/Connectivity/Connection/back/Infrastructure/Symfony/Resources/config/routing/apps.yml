@@ -37,3 +37,8 @@ akeneo_connectivity_connection_apps_rest_delete:
     path: '/connected-apps/{connectionCode}'
     controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\DeleteAppAction
     methods: [DELETE]
+
+akeneo_connectivity_connection_apps_rest_get_connected_app_monitoring_settings:
+    path: '/connected-apps/{connectionCode}/monitoring-settings'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetConnectedAppMonitoringSettingsAction
+    methods: [GET]
