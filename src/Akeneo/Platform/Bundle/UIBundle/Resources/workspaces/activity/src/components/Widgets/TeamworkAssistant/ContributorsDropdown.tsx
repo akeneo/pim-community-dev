@@ -4,8 +4,8 @@ import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {Contributor} from '../../../domain';
 import {useSearchContributors} from '../../../hooks';
 import {SearchingPlaceholder} from './SearchingPlaceholder';
-import {NoResults} from './NoResults';
 import styled from 'styled-components';
+import {GroupsIllustration} from 'akeneo-design-system';
 
 const loadNextPageThreshold = 100; //value in pixels
 const contributorsPerPage = 20;
@@ -87,8 +87,12 @@ const ContributorsDropdown: FC<ContributorsDropdownProps> = ({setCurrentContribu
           {isFetching && contributors.length === 0 && (
             <SearchingPlaceholder>{translate('teamwork_assistant.widget.searching')}</SearchingPlaceholder>
           )}
-          {!isFetching && contributors.length === 0 && <NoResults />}
-          <Dropdown.ItemCollection ref={dropdownRef} onScroll={onScroll}>
+          <Dropdown.ItemCollection
+            ref={dropdownRef}
+            onScroll={onScroll}
+            noResultIllustration={<GroupsIllustration />}
+            noResultTitle={translate('teamwork_assistant.widget.no_search_results')}
+          >
             {contributors.length > 0 && !isSearchResults && (
               <Dropdown.Item onClick={onResetContributor}>{translate('pim_common.all')}</Dropdown.Item>
             )}
