@@ -28,7 +28,6 @@ const NoScope = styled.div`
     }
 `;
 
-
 type Props = {
     connectedApp: ConnectedApp;
 };
@@ -48,7 +47,7 @@ export const ConnectedAppAuthorizations: FC<Props> = ({connectedApp}) => {
         fetchConnectedAppScopeMessages()
             .then(setConnectedAppScopeMessages)
             .catch(() => setConnectedAppScopeMessages(false));
-    }, [fetchConnectedAppScopeMessages, featureFlag]);
+    }, [fetchConnectedAppScopeMessages]);
 
     const informationLinkAnchor = translate(
         'akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.information_link_anchor'
