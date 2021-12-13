@@ -12,7 +12,7 @@ pim_menu:
         connection_audit: Connection dashboard
         connection_settings: Connections
         connection_settings_edit: Connection settings
-        connection_monitoring: Monitoring
+        connection_monitoring: Error monitoring
         connection_webhook_edit: Event subscription
         connection_webhook_event_logs: Event logs
         data_flows: Data flows
