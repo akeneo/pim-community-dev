@@ -1,12 +1,12 @@
-import {default as BooleanFilterValue, useValueRenderer as BooleanUseValueRenderer,} from './BooleanFilterValue';
-import {default as StringFilterValue, useValueRenderer as StringUseValueRenderer,} from './StringFilterValue';
-import {default as NumberFilterValue, useValueRenderer as NumberUseValueRenderer,} from './NumberFilterValue';
+import {default as BooleanFilterValue, useValueRenderer as BooleanUseValueRenderer} from './BooleanFilterValue';
+import {default as StringFilterValue, useValueRenderer as StringUseValueRenderer} from './StringFilterValue';
+import {default as NumberFilterValue, useValueRenderer as NumberUseValueRenderer} from './NumberFilterValue';
 import {
   default as MultiSelectFilterValue,
   useValueRenderer as MultiSelectUseValueRenderer,
 } from './MultiSelectFilterValue';
-import {default as EmptyFilterValue, useValueRenderer as EmptyUseValueRenderer,} from './EmptyFilterValue';
-import {ColumnCode, FilterValue} from "../../models";
+import {default as EmptyFilterValue, useValueRenderer as EmptyUseValueRenderer} from './EmptyFilterValue';
+import {ColumnCode, FilterValue} from '../../models';
 
 type DatagridTableFilterValueProps = {
   value?: FilterValue;
@@ -58,7 +58,7 @@ const ValuesFilterMapping: FilterValuesMapping = {
     'NOT EMPTY': {default: EmptyFilterValue, useValueRenderer: EmptyUseValueRenderer},
     IN: {default: MultiSelectFilterValue, useValueRenderer: MultiSelectUseValueRenderer},
     'NOT IN': {default: MultiSelectFilterValue, useValueRenderer: MultiSelectUseValueRenderer},
-  }
+  },
 };
 
 export {ValuesFilterMapping};

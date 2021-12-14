@@ -1,5 +1,5 @@
 import {LocaleCode} from './Locale';
-import {TableConfiguration} from "@akeneo-pim-ge/table_attribute";
+import {TableConfiguration} from '@akeneo-pim-ge/table_attribute';
 
 type AttributeId = number;
 type AttributeCode = string;

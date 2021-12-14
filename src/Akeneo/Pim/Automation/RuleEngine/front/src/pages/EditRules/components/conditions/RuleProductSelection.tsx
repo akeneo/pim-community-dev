@@ -41,7 +41,10 @@ import {ProductAndProductModelCount} from '../ProductAndProductModelCount';
 import {AddFieldButton} from '../../../../components/Selectors/AddFieldButton';
 import {FormData} from '../../edit-rules.types';
 import startImage from '../../../../assets/illustrations/start.svg';
-import {useBackboneRouter, useTranslate,} from '../../../../dependenciesTools/hooks';
+import {
+  useBackboneRouter,
+  useTranslate,
+} from '../../../../dependenciesTools/hooks';
 import {Action} from '../../../../models/Action';
 import {EmptySectionMessage} from '../EmptySectionMessage';
 

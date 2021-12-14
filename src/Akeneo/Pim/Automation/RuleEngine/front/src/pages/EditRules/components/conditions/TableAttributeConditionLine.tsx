@@ -2,34 +2,43 @@ import React from 'react';
 import {Controller, useFormContext} from 'react-hook-form';
 import {TableAttributeCondition} from '../../../../models/conditions';
 import {ConditionLineProps} from './ConditionLineProps';
-import {useBackboneRouter, useTranslate,} from '../../../../dependenciesTools/hooks';
+import {
+  useBackboneRouter,
+  useTranslate,
+} from '../../../../dependenciesTools/hooks';
 import {Attribute, Locale} from '../../../../models';
 import {getAttributeByIdentifier} from '../../../../repositories/AttributeRepository';
 import {
   PendingBackendTableFilterValue,
   TableAttribute,
-  TableAttributeConditionLineInput
-} from "@akeneo-pim-ge/table_attribute";
+  TableAttributeConditionLineInput,
+} from '@akeneo-pim-ge/table_attribute';
 import {
   ConditionLineErrorsContainer,
   ConditionLineFormAndErrorsContainer,
   ConditionLineFormContainer,
   FieldColumn,
   LocaleColumn,
-  ScopeColumn
-} from "./style";
-import {getScopeValidation, ScopeSelector} from "../../../../components/Selectors/ScopeSelector";
-import {getLocaleValidation, LocaleSelector} from "../../../../components/Selectors/LocaleSelector";
-import {LineErrors} from "../LineErrors";
-import {useControlledFormInputCondition} from "../../hooks";
-import styled from "styled-components";
+  ScopeColumn,
+} from './style';
+import {
+  getScopeValidation,
+  ScopeSelector,
+} from '../../../../components/Selectors/ScopeSelector';
+import {
+  getLocaleValidation,
+  LocaleSelector,
+} from '../../../../components/Selectors/LocaleSelector';
+import {LineErrors} from '../LineErrors';
+import {useControlledFormInputCondition} from '../../hooks';
+import styled from 'styled-components';
 
 const TableAttributeConditionLineInputContainer = styled.div`
   min-width: 480px;
   display: inline-block;
   margin: 0 20px 0 0;
   height: 40px;
-`
+`;
 
 type TableAttributeConditionLineProps = ConditionLineProps & {
   condition: TableAttributeCondition;
@@ -68,7 +77,7 @@ const TableAttributeConditionLine: React.FC<TableAttributeConditionLineProps> = 
     getLocaleFormValue,
     getScopeFormValue,
     isFormFieldInError,
-    formName
+    formName,
   } = useControlledFormInputCondition<string[]>(lineNumber);
 
   const getAvailableLocales = (): Locale[] => {
@@ -94,9 +103,11 @@ const TableAttributeConditionLine: React.FC<TableAttributeConditionLineProps> = 
     setValue(formName('value.value'), value.value);
     setValue(formName('value.column'), value.column);
     setValue(formName('value.row'), value.row);
-  }
+  };
 
-  return (!attribute ? <></> :
+  return !attribute ? (
+    <></>
+  ) : (
     <ConditionLineFormAndErrorsContainer className={'AknGrid-bodyCell'}>
       <ConditionLineFormContainer>
         <FieldColumn className={'AknGrid-bodyCell--highlight'} title={title}>
@@ -111,7 +122,11 @@ const TableAttributeConditionLine: React.FC<TableAttributeConditionLineProps> = 
           as={<input type='hidden' />}
           name={formName('operator')}
           defaultValue={operator}
-          rules={{required: translate('pimee_catalog_rule.exceptions.required_operator_for_operation')}}
+          rules={{
+            required: translate(
+              'pimee_catalog_rule.exceptions.required_operator_for_operation'
+            ),
+          }}
         />
         <Controller
           as={<input type='hidden' />}
@@ -122,7 +137,9 @@ const TableAttributeConditionLine: React.FC<TableAttributeConditionLineProps> = 
           as={<input type='hidden' />}
           name={formName('value.column')}
           defaultValue={column}
-          rules={{required: translate('pimee_catalog_rule.exceptions.required_item')}}
+          rules={{
+            required: translate('pimee_catalog_rule.exceptions.required_item'),
+          }}
         />
         <Controller
           as={<input type='hidden' />}
@@ -131,7 +148,7 @@ const TableAttributeConditionLine: React.FC<TableAttributeConditionLineProps> = 
         />
         <TableAttributeConditionLineInputContainer>
           <TableAttributeConditionLineInput
-            attribute={attribute || undefined as (TableAttribute | undefined)}
+            attribute={(attribute || undefined) as TableAttribute | undefined}
             value={{
               operator: getValues('value.column') || operator,
               value: getValues('value.value') || value,

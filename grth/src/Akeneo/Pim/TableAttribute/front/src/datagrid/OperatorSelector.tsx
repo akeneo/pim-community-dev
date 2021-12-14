@@ -2,7 +2,7 @@ import React from 'react';
 import {SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {DataType, FilterOperator, FilterValue} from '../models';
-import {ValuesFilterMapping} from "./FilterValues";
+import {ValuesFilterMapping} from './FilterValues';
 
 type OperatorSelectorProps = {
   dataType?: DataType;

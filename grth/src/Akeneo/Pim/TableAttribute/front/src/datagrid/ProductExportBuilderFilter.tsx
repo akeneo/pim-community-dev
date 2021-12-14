@@ -88,13 +88,7 @@ const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
     <AttributeContext.Provider value={{attribute: attributeState, setAttribute: setAttributeState}}>
       <FieldContainer className='AknFieldContainer AknFieldContainer--big'>
         <div className='AknFieldContainer-inputContainer'>
-          {initialFilter && (
-            <FilterSelectorList
-              onChange={handleChange}
-              initialFilter={initialFilter}
-              inline={true}
-            />
-          )}
+          {initialFilter && <FilterSelectorList onChange={handleChange} initialFilter={initialFilter} inline={true} />}
         </div>
       </FieldContainer>
     </AttributeContext.Provider>

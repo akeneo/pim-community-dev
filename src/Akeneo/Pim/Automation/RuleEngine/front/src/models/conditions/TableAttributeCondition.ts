@@ -3,8 +3,8 @@ import {Operator} from '../Operator';
 import {ConditionFactory} from './Condition';
 import {ConditionModuleGuesser} from './ConditionModuleGuesser';
 import {AttributeType} from '../Attribute';
-import {getAttributeByIdentifier} from "../../repositories/AttributeRepository";
-import {TableAttribute} from "@akeneo-pim-ge/table_attribute";
+import {getAttributeByIdentifier} from '../../repositories/AttributeRepository';
+import {TableAttribute} from '@akeneo-pim-ge/table_attribute';
 
 type TableAttributeCondition = {
   field: string;

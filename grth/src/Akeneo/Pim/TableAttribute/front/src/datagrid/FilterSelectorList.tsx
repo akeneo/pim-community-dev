@@ -43,11 +43,7 @@ type FilterSelectorListProps = {
   initialFilter: PendingTableFilterValue;
 };
 
-const FilterSelectorList: React.FC<FilterSelectorListProps> = ({
-  onChange,
-  inline = false,
-  initialFilter,
-}) => {
+const FilterSelectorList: React.FC<FilterSelectorListProps> = ({onChange, inline = false, initialFilter}) => {
   const [filter, setFilter] = useState<PendingTableFilterValue>(initialFilter);
 
   const updateFilter = (newFilter: PendingTableFilterValue) => {
@@ -75,11 +71,7 @@ const FilterSelectorList: React.FC<FilterSelectorListProps> = ({
     <FilterSelectorListContainer inline={inline}>
       <RowSelector value={filter.row} onChange={handleRowChange} />
       <ColumnDefinitionSelector onChange={handleColumnChange} value={filter.column} />
-      <OperatorSelector
-        dataType={filter.column?.data_type}
-        value={filter.operator}
-        onChange={handleOperatorChange}
-      />
+      <OperatorSelector dataType={filter.column?.data_type} value={filter.operator} onChange={handleOperatorChange} />
       {filter.operator && filter.column && (
         <ValueSelector
           dataType={filter.column?.data_type}

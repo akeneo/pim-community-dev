@@ -5,12 +5,7 @@ import {ValueSelector} from '../../../src/datagrid';
 describe('ValueSelector', () => {
   it('should display empty value selector', () => {
     const r = renderWithProviders(
-      <ValueSelector
-        dataType={'text'}
-        operator={'EMPTY'}
-        onChange={jest.fn()}
-        columnCode={'part'}
-      />
+      <ValueSelector dataType={'text'} operator={'EMPTY'} onChange={jest.fn()} columnCode={'part'} />
     );
 
     expect(r.container.innerHTML).toEqual('');

@@ -127,10 +127,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
                   {getLabel(attribute.labels, catalogLocale, attribute.code)}
                 </FilterSectionTitleTitle>
               </FilterSectionTitle>
-              <FilterSelectorList
-                onChange={setFilterValue}
-                initialFilter={filterValue}
-              />
+              <FilterSelectorList onChange={setFilterValue} initialFilter={filterValue} />
               <FilterButtonContainer>
                 <Button onClick={handleValidate} disabled={!isFilterValid(filterValue)}>
                   {translate('pim_common.update')}

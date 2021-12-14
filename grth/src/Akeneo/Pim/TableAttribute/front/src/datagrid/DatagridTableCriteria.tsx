@@ -1,7 +1,7 @@
 import {ColumnCode, ColumnDefinition, isFilterValid, PendingTableFilterValue} from '../models';
 import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import React from 'react';
-import {ValuesFilterMapping} from "./FilterValues";
+import {ValuesFilterMapping} from './FilterValues';
 
 type DatagridTableCriteriaProps = {
   filterValue?: PendingTableFilterValue;
