@@ -11,6 +11,7 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject;
 final class ConnectionType
 {
     const DEFAULT_TYPE = 'default';
+    const APP_TYPE = 'app';
 
     private string $type;
 
