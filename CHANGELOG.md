@@ -150,6 +150,7 @@
 - PIM-10193: fix TypeError(implode(): Argument #2 () must be of type ?array, string given)
 - PIM-10194: Fix pagination for list products/product models endpoints with search_after pagination type
 - PIM-10199: Fix occasional segmentation fault when generating thumbnails
+- PIM-10197: Added safeguards against attribute change to locale specific when the same attribute is a variant axis for a family
 
 ## New features
 
