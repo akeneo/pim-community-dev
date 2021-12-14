@@ -7,7 +7,13 @@ jobs:
             -   attach_workspace:
                     at: ~/
             -   run:
-                    name: Pull docker image
+                    name: Create yarn cache folder
+                    command: mkdir -p  ~/.cache/yarn
+            -   run:
+                    name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                    command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
+            -   run:
+                    name: Pull docker image for node
                     command: docker-compose pull node
             -   run:
                     name: Lint front
@@ -15,6 +21,9 @@ jobs:
             -   run:
                     name: Unit front
                     command: make connectivity-connection-unit-front
+            -   run:
+                    name: Type checking front
+                    command: make javascript-dev-strict
 
     test_connectivity_back:
         machine:
@@ -23,6 +32,12 @@ jobs:
         steps:
             -   attach_workspace:
                     at: ~/
+            -   run:
+                    name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                    command: sudo chown -R 1000:1000 ../project
+            -   run:
+                    name: Pull docker image for php
+                    command: docker-compose pull php
             -   run:
                     name: Coupling back
                     command: make connectivity-connection-coupling-back
