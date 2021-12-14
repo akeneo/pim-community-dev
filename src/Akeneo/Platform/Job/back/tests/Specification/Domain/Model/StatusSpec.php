@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Platform\Job\Domain;
+namespace Specification\Akeneo\Platform\Job\Domain\Model;
 
 use PhpSpec\ObjectBehavior;
 
