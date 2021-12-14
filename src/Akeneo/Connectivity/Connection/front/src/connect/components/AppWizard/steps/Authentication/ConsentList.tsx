@@ -29,7 +29,7 @@ const StyledMailIcon = styled(MailIcon)`
 `;
 
 type Props = {
-    scopes: Array<'openid' | 'email' | 'profile'>;
+    scopes: Array<'email' | 'profile'>;
 };
 
 export const ConsentList = ({scopes}: Props) => {
