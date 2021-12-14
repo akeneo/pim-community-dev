@@ -6,6 +6,10 @@ akeneo_job_process_tracker_details:
   requirements:
     id: \d+
 
+# Used for onboarder compatibility
+pim_enrich_job_tracker_index:
+  path: /job
+
 akeneo_job_index_action:
   path: /rest/process-tracker
   defaults: { _controller: akeneo.job.controller.get_job_execution_action }
