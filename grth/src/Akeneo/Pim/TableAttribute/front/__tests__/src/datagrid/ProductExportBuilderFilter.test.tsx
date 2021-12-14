@@ -4,7 +4,7 @@ import {getComplexTableAttribute} from '../../factories';
 import {act, screen} from '@testing-library/react';
 import {ProductExportBuilderFilter} from '../../../src/datagrid/ProductExportBuilderFilter';
 import {fireEvent} from '@testing-library/dom';
-import {mockScroll} from "../../shared/mockScroll";
+import {mockScroll} from '../../shared/mockScroll';
 
 jest.mock('../../../src/fetchers/AttributeFetcher');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');

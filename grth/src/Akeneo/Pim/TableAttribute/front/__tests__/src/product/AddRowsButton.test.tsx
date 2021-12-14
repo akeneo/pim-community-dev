@@ -4,7 +4,7 @@ import {act, fireEvent, screen} from '@testing-library/react';
 import {AddRowsButton} from '../../../src';
 import {getComplexTableAttribute} from '../../factories';
 import {TestAttributeContextProvider} from '../../shared/TestAttributeContextProvider';
-import {mockScroll} from "../../shared/mockScroll";
+import {mockScroll} from '../../shared/mockScroll';
 
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');

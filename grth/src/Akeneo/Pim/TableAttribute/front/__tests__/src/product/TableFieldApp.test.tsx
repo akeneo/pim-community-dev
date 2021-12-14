@@ -9,7 +9,7 @@ import {
   getComplexTableAttribute,
   getTableValueSelectRow,
 } from '../../factories';
-import {mockScroll} from "../../shared/mockScroll";
+import {mockScroll} from '../../shared/mockScroll';
 
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');

@@ -3,7 +3,7 @@ import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/fro
 import {screen, fireEvent} from '@testing-library/react';
 import {TableAttributeConditionLineInput} from '../../../src';
 import {getComplexTableAttribute} from '../../factories';
-import {mockScroll} from "../../shared/mockScroll";
+import {mockScroll} from '../../shared/mockScroll';
 
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 mockScroll();

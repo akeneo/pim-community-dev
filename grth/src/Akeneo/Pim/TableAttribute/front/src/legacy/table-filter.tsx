@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
-import {DatagridTableFilter, ValuesFilterMapping} from '../datagrid';
+import {DatagridTableFilter} from '../datagrid';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
 class TableFilter extends AbstractFilter {
@@ -46,7 +46,6 @@ class TableFilter extends AbstractFilter {
   render(): any {
     const onDisable = this.disable.bind(this);
     const onChange = this.setValue.bind(this);
-    const filterValuesMapping = ValuesFilterMapping;
 
     ReactDOM.render(
       <DependenciesProvider>
@@ -57,7 +56,6 @@ class TableFilter extends AbstractFilter {
             onDisable={onDisable}
             attributeCode={this.name}
             onChange={onChange}
-            filterValuesMapping={filterValuesMapping}
             initialDataFilter={this.initialDataFilter}
           />
         </ThemeProvider>
