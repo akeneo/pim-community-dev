@@ -1,6 +1,6 @@
 import React, {useCallback, useMemo, useState, useEffect} from 'react';
 import {CellInput} from './index';
-import {Dropdown, Image, TableInput, useDebounce} from 'akeneo-design-system';
+import {Dropdown, IconButton, Image, LinkIcon, TableInput, useDebounce} from 'akeneo-design-system';
 import {useRecords} from '../useRecords';
 import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {CompletenessBadge} from './CompletenessBadge';
@@ -54,6 +54,14 @@ const RecordInput: CellInput = ({columnDefinition, row, onChange}) => {
     [router]
   );
 
+  const getUrl = useCallback((code: RecordCode) => {
+    return router.generate('akeneo_reference_entities_record_edit', {
+      recordCode: code,
+      referenceEntityIdentifier: referenceEntityCode,
+      tab: 'enrich',
+    });
+  }, [referenceEntityCode, router]);
+
   const createOnClick = useCallback((code: RecordCode) => () => onChange(code), [onChange]);
 
   const handleClear = () => {
@@ -75,6 +83,7 @@ const RecordInput: CellInput = ({columnDefinition, row, onChange}) => {
       {items?.map(record => {
         const label = getLabel(record.labels, catalogLocale, record.code);
         const image = getImage(record.image?.filePath);
+        const url = getUrl(record.code);
         return (
           <Dropdown.Item onClick={createOnClick(record.code)} key={record.code}>
             <Image
@@ -84,6 +93,14 @@ const RecordInput: CellInput = ({columnDefinition, row, onChange}) => {
             />
             <Dropdown.Surtitle label={record.code}>{label}</Dropdown.Surtitle>
             <CompletenessBadge completeness={record.completeness} />
+            {url && <IconButton
+              icon={<LinkIcon/>}
+              ghost='borderless'
+              level='tertiary'
+              href={`#${url}`}
+              target='_blank'
+              title={url}
+            />}
           </Dropdown.Item>
         );
       })}

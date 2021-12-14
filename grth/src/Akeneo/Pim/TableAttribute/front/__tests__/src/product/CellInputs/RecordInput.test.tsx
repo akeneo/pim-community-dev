@@ -64,6 +64,7 @@ describe('RecordInput', () => {
     expect(screen.getByTitle('lannion.jpg')).toBeInTheDocument();
     expect(screen.getByText('Lannion')).toBeInTheDocument();
     expect(screen.getByText('75%')).toBeInTheDocument();
+    expect(screen.getAllByTitle('akeneo_reference_entities_record_edit')[0]).toBeInTheDocument();
 
     userEvent.click(screen.getByTitle('lannion00893335_2e73_41e3_ac34_763fb6a35107'));
     expect(onChange).toBeCalledWith('lannion00893335_2e73_41e3_ac34_763fb6a35107');
