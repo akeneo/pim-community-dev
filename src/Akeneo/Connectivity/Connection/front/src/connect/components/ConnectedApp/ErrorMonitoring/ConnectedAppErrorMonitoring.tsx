@@ -22,27 +22,28 @@ export const ConnectedAppErrorMonitoring: FC<Props> = ({connectedApp}) => {
             .catch(() => setMonitoringSettings(false));
     }, []);
 
-    if (monitoringSettings === null) {
-
+    if (null === monitoringSettings) {
         return null;
     }
 
-    return (<>
-        {
-            monitoringSettings ? (
-                FlowType.DATA_SOURCE !== monitoringSettings.flowType ? (
-                    <NotDataSourceConnectedApp />
-                ) : !monitoringSettings.auditable ? (
-                    <NotAuditableConnectedApp />
-                ) : (
-                    <ConnectionErrors
-                        connectionCode={connectedApp.connection_code}
-                        description={'akeneo_connectivity.connection.connect.connected_apps.edit.error_monitoring.helper.description'}
-                    />
-                )
-            ) : (
-                <ErrorMonitoringError />
-            )
-        }
-    </>);
+    if (false === monitoringSettings) {
+        return <ErrorMonitoringError />;
+    }
+
+    if (FlowType.DATA_SOURCE !== monitoringSettings.flowType) {
+        return <NotDataSourceConnectedApp />;
+    }
+
+    if (!monitoringSettings.auditable) {
+        return <NotAuditableConnectedApp />;
+    }
+
+    return (
+        <ConnectionErrors
+            connectionCode={connectedApp.connection_code}
+            description={
+                'akeneo_connectivity.connection.connect.connected_apps.edit.error_monitoring.helper.description'
+            }
+        />
+    );
 };

@@ -186,7 +186,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                     />
                 )}
 
-                {isCurrent(errorMonitoringTabName) && <ConnectedAppErrorMonitoring connectedApp={connectedApp}/>}
+                {isCurrent(errorMonitoringTabName) && <ConnectedAppErrorMonitoring connectedApp={connectedApp} />}
             </PageContent>
         </>
     );

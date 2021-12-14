@@ -20,9 +20,9 @@ const ConnectionErrors: FC<Props> = ({connectionCode, description}) => {
 
     return (
         <>
-            {!featureFlags.isEnabled('free_trial') &&
-                <ErrorsHelper errorCount={connectionErrors.length} description={description}/>
-            }
+            {!featureFlags.isEnabled('free_trial') && (
+                <ErrorsHelper errorCount={connectionErrors.length} description={description} />
+            )}
 
             <ErrorList errors={connectionErrors} />
         </>

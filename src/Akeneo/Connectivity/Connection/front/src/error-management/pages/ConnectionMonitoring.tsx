@@ -49,7 +49,9 @@ const ConnectionMonitoring: FC = memo(() => {
                 ) : (
                     <ConnectionErrors
                         connectionCode={connectionCode}
-                        description={'akeneo_connectivity.connection.error_management.connection_monitoring.helper.description'}
+                        description={
+                            'akeneo_connectivity.connection.error_management.connection_monitoring.helper.description'
+                        }
                     />
                 )}
             </PageContent>

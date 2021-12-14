@@ -10,9 +10,7 @@ import usePermissionsFormProviders from '@src/connect/hooks/use-permissions-form
 import {NotificationLevel, NotifyContext} from '@src/shared/notify';
 import {PermissionFormProvider} from '@src/shared/permission-form-registry';
 import {PermissionsByProviderKey} from '@src/model/Apps/permissions-by-provider-key';
-import {
-    ConnectedAppErrorMonitoring
-} from '@src/connect/components/ConnectedApp/ErrorMonitoring/ConnectedAppErrorMonitoring';
+import {ConnectedAppErrorMonitoring} from '@src/connect/components/ConnectedApp/ErrorMonitoring/ConnectedAppErrorMonitoring';
 
 beforeEach(() => {
     window.sessionStorage.clear();
