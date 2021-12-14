@@ -85,12 +85,12 @@ variable "type" {
 }
 
 variable "types" {
-  type    = map
+  type = map
   default = {
-    "serenity_instance" = "srnt"
+    "serenity_instance"       = "srnt"
     "growth_edition_instance" = "grth"
-    "pim_trial_instance" = "tria"
-    }
+    "pim_trial_instance"      = "tria"
+  }
 }
 
 variable "mysql_disk_name" {

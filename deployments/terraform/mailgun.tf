@@ -1,6 +1,6 @@
 locals {
-  mailgun_login_name              = format("%s-%s", local.pfid, var.google_project_id)
-  mailgun_login_email             = "${local.mailgun_login_name}@${var.mailgun_domain}"
+  mailgun_login_name  = format("%s-%s", local.pfid, var.google_project_id)
+  mailgun_login_email = "${local.mailgun_login_name}@${var.mailgun_domain}"
 }
 
 resource "random_string" "mailgun_password" {
