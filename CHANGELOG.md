@@ -149,6 +149,7 @@
 - PIM-10149: Fix group product page OOM (remove group to products association)
 - PIM-10193: fix TypeError(implode(): Argument #2 () must be of type ?array, string given)
 - PIM-10194: Fix pagination for list products/product models endpoints with search_after pagination type
+- PIM-10199: Fix occasional segmentation fault when generating thumbnails
 
 ## New features
 
