@@ -10,6 +10,7 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 
 final class AttributeCodeBlacklisterIntegration extends TestCase
 {
@@ -27,8 +28,11 @@ final class AttributeCodeBlacklisterIntegration extends TestCase
     {
         $blacklister = $this->getBlacklister();
 
-        $jobInstance = $this->getJobInstanceRepository()->findOneByIdentifier('clean_removed_attribute_job');
+        $jobInstanceCode = 'clean_removed_attribute_job';
+        $jobInstance = $this->getJobInstanceRepository()->findOneByIdentifier($jobInstanceCode);
+        $job = $this->getJobRegistry()->get($jobInstanceCode);
         $jobExecution = $this->getJobExecutionRepository()->createJobExecution(
+            $job,
             $jobInstance,
             new JobParameters(['attribute_code' => 'nice_attribute_code'])
         );
@@ -81,5 +85,10 @@ final class AttributeCodeBlacklisterIntegration extends TestCase
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
+    }
+
+    private function getJobRegistry(): JobRegistry
+    {
+        return $this->get('akeneo_batch.job.job_registry');
     }
 }

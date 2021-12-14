@@ -20,7 +20,7 @@
 <p>
 {% if akeneo_pim_url is not empty %}
     You can view full summary page in the
-    <a href="{{ akeneo_pim_url }}/#{{ path('pim_enrich_job_tracker_show', {'id': jobExecution.id}) }}">Process Tracker</a>.
+    <a href="{{ akeneo_pim_url }}/#{{ path('akeneo_job_process_tracker_details', {'id': jobExecution.id}) }}">Process Tracker</a>.
 {% else %}
     You should set the AKENEO_PIM_URL environment variable to have a link to the Process Tracker
 {% endif %}

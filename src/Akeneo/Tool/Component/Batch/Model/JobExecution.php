@@ -20,7 +20,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class JobExecution
 {
-    /** @var integer */
+    /** @var int */
     private $id;
 
     /** @var ArrayCollection */
@@ -29,13 +29,13 @@ class JobExecution
     /** @var JobInstance */
     private $jobInstance;
 
-    /** @var integer Process Identifier */
+    /** @var int Process Identifier */
     private $pid;
 
     /** @var string|null The user who launched the job */
     private $user;
 
-    /** @var integer */
+    /** @var int */
     private $status;
 
     /** @var \DateTime */
@@ -76,6 +76,9 @@ class JobExecution
 
     /** @var array */
     private $rawParameters;
+    private bool $isStoppable;
+    private int $stepCount;
+    private bool $isVisible;
 
     /**
      * Constructor
@@ -89,6 +92,9 @@ class JobExecution
         $this->createTime = new \DateTime();
         $this->failureExceptions = [];
         $this->rawParameters = [];
+        $this->isStoppable = false;
+        $this->stepCount = 1;
+        $this->isVisible = true;
     }
 
     /**
@@ -109,7 +115,7 @@ class JobExecution
 
     /**
      * Get Id
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -236,10 +242,10 @@ class JobExecution
     }
 
     /**
-      * Gets the time this execution has been health checked
-      *
-      * @return \DateTime time this execution has been health checked
-      */
+     * Gets the time this execution has been health checked
+     *
+     * @return \DateTime time this execution has been health checked
+     */
     public function getHealthCheckTime(): ?\DateTime
     {
         return $this->healthCheckTime;
@@ -254,7 +260,7 @@ class JobExecution
      */
     public function setHealthcheckTime(\DateTime $healthCheckTime): JobExecution
     {
-        $this->healthCheckTime= $healthCheckTime;
+        $this->healthCheckTime = $healthCheckTime;
 
         return $this;
     }
@@ -262,7 +268,7 @@ class JobExecution
     /**
      * Returns the process identifier of the batch job
      *
-     * @return integer
+     * @return int
      */
     public function getPid()
     {
@@ -272,7 +278,7 @@ class JobExecution
     /**
      * Sets the process identifier of the batch job
      *
-     * @param integer $pid
+     * @param int $pid
      *
      * @return JobExecution
      */
@@ -628,5 +634,35 @@ class JobExecution
     public function getRawParameters(): array
     {
         return $this->rawParameters;
+    }
+
+    public function setIsStoppable(bool $isStoppable): void
+    {
+        $this->isStoppable = $isStoppable;
+    }
+
+    public function isStoppable(): bool
+    {
+        return $this->isStoppable;
+    }
+
+    public function setIsVisible(bool $isVisible): void
+    {
+        $this->isVisible = $isVisible;
+    }
+
+    public function isVisible(): bool
+    {
+        return $this->isVisible;
+    }
+
+    public function setStepCount(int $stepCount): void
+    {
+        $this->stepCount = $stepCount;
+    }
+
+    public function getStepCount(): int
+    {
+        return $this->stepCount;
     }
 }

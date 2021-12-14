@@ -14,10 +14,7 @@ const LastOperationsWidget = () => {
   const router = useRouter();
   const data: Operation[] | null = useDashboardLastOperations();
 
-  const redirectToJob = (jobId: string) => {
-    // @ts-ignore
-    router.redirectToRoute('pim_enrich_job_tracker_show', {id: jobId});
-  };
+  const redirectToJob = (jobId: string) => router.redirectToRoute('akeneo_job_process_tracker_details', {id: jobId});
 
   return (
     <>
@@ -31,8 +28,7 @@ const LastOperationsWidget = () => {
               size={'small'}
               level={'tertiary'}
               title="Show job tracker"
-              // @ts-ignore
-              onClick={() => router.redirectToRoute('pim_enrich_job_tracker_index')}
+              onClick={() => router.redirectToRoute('akeneo_job_process_tracker_index')}
             >
               {translate('pim_import_export.widget.last_operations.header.view_all')}
             </Button>

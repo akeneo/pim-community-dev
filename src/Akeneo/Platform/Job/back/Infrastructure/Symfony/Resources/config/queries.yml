@@ -1,16 +1,19 @@
 services:
-    Akeneo\Platform\Job\Domain\Query\CountJobExecutionInterface:
-        class: Akeneo\Platform\Job\Infrastructure\Query\CountJobExecution
-        arguments:
-            - '@database_connection'
-
-    Akeneo\Platform\Job\Domain\Query\FindJobTypesInterface:
+    Akeneo\Platform\Job\Application\SearchJobExecution\FindJobTypesInterface:
         class: Akeneo\Platform\Job\Infrastructure\Query\FindJobTypes
         arguments:
             - '@database_connection'
-            - '@Akeneo\Platform\Job\Infrastructure\Registry\NotVisibleJobsRegistry'
+
+    Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersInterface:
+        class: Akeneo\Platform\Job\Infrastructure\Query\FindJobUsers
+        arguments:
+            - '@database_connection'
 
     Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface:
         class: Akeneo\Platform\Job\Infrastructure\Query\SearchJobExecution
         arguments:
             - '@database_connection'
+            - '@Akeneo\Platform\Job\Application\SearchJobExecution\ClockInterface'
+
+    Akeneo\Platform\Job\Application\SearchJobExecution\ClockInterface:
+        class: Akeneo\Platform\Job\Infrastructure\Clock\SystemClock

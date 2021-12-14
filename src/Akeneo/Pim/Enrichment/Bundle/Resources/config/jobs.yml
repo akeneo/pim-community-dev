@@ -91,14 +91,13 @@ services:
             -
                 - '@pim_catalog.step.compute_completeness_of_products_family'
             - true
+            - false
         public: false
         tags:
             -
                 name: akeneo_batch.job
                 connector: '%pim_catalog.compute_completeness_of_products_family.connector_name%'
                 type: '%pim_catalog.compute_completeness_of_products_family.job_type%'
-            -
-                name: akeneo_batch.job.not_visible
 
     pim_catalog.tasklet.compute_family_variant_structure_changes:
         class: '%pim_catalog.tasklet.compute_family_variant_structure_changes.class%'
@@ -152,14 +151,14 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_catalog.step.remove_completeness_for_channel_and_locale'
+            - false
+            - false
         public: false
         tags:
             -
                 name: akeneo_batch.job
                 connector: '%pim_catalog.remove_completeness_for_channel_and_locale.connector_name%'
                 type: '%pim_catalog.remove_completeness_for_channel_and_locale.job_type%'
-            -
-                name: akeneo_batch.job.not_visible
 
     pim_catalog.job.compute_family_variant_structure_changes:
         class: '%pim_connector.job.simple_job.class%'
@@ -170,14 +169,13 @@ services:
             -
                 - '@pim_catalog.step.compute_family_variant_structure_changes'
             - true
+            - false
         public: false
         tags:
             -
                 name: akeneo_batch.job
                 connector: '%pim_catalog.compute_family_variant_structure_changes.connector_name%'
                 type: '%pim_catalog.compute_family_variant_structure_changes.job_type%'
-            -
-                name: akeneo_batch.job.not_visible
 
     pim_connector.tasklet.csv_family.compute_data_related_to_family_root_product_models:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyRootProductModelsTasklet'
@@ -736,12 +734,12 @@ services:
             - '@akeneo_batch.job_repository'
             - ['@pim_enrich.step.remove_non_existing_product_values']
             - true
+            - false
         tags:
             -
                 name: akeneo_batch.job
                 connector: '%pim_catalog.job.remove_non_existing_product_values.connector_name%'
                 type: '%pim_catalog.job.remove_non_existing_product_values.job_type%'
-            - { name: akeneo_batch.job.not_visible }
 
     # Clean removed attribute
     pim_catalog.job.clean_removed_attribute:

@@ -1,4 +1,4 @@
-import React, {ReactElement, ReactNode, useEffect, useRef} from 'react';
+import React, {ReactElement, ReactNode, SyntheticEvent, useEffect, useRef} from 'react';
 import {createPortal} from 'react-dom';
 import styled from 'styled-components';
 import {AkeneoThemedProps, CommonStyle, getColor, getFontSize} from '../../theme';
@@ -139,9 +139,13 @@ const Modal: React.FC<ModalProps> & {
     };
   }, []);
 
+  const stopEventPropagation = (event: SyntheticEvent) => {
+    event.stopPropagation();
+  };
+
   return createPortal(
     <ModalContext.Provider value={true}>
-      <ModalContainer role="dialog" {...rest}>
+      <ModalContainer onClick={stopEventPropagation} role="dialog" {...rest}>
         <ModalCloseButton
           title={closeTitle}
           level="tertiary"

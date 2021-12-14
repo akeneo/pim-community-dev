@@ -10,9 +10,9 @@ services:
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.prepare_products_criteria_evaluation'
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.prepare_product_models_criteria_evaluation'
             - true
+            - false
         tags:
             - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
-            - name: akeneo_batch.job.not_visible
 
     akeneo.pim.automation.data_quality_insights.job.evaluations:
         class: '%pim_connector.job.simple_job.class%'
@@ -23,9 +23,9 @@ services:
             -
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.evaluate_products_and_product_models_criteria'
             - true
+            - false
         tags:
             - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
-            - name: akeneo_batch.job.not_visible
 
     akeneo.pim.automation.data_quality_insights.job.periodic_tasks:
         class: '%pim_connector.job.simple_job.class%'
@@ -37,9 +37,9 @@ services:
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.purge_outdated_data'
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.consolidate_dashboard_rates'
             - true
+            - false
         tags:
             - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
-            - name: akeneo_batch.job.not_visible
 
     akeneo.pim.automation.data_quality_insights.job.recompute_products_scores:
         class: '%pim_connector.job.simple_job.class%'
@@ -50,9 +50,9 @@ services:
             -
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.recompute_products_scores'
             - true
+            - false
         tags:
             - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
-            - name: akeneo_batch.job.not_visible
 
     #Steps
     akeneo.pim.automation.data_quality_insights.connector.step.recompute_products_scores:
@@ -174,4 +174,5 @@ services:
             - '@akeneo_batch.job_repository'
             - '@akeneo_batch_queue.factory.job_execution_message'
             - '@logger'
+            - '@akeneo_batch.job.job_registry'
             - '%kernel.project_dir%'

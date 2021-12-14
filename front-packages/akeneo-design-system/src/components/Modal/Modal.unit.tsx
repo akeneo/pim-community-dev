@@ -1,6 +1,9 @@
 import React from 'react';
 import {Modal, useInModal} from './Modal';
 import {fireEvent, render, screen} from '../../storybook/test-util';
+import {Table} from '../Table/Table';
+import userEvent from '@testing-library/user-event';
+import {Button} from '../Button/Button';
 
 test('it renders its children properly', () => {
   render(
@@ -53,6 +56,28 @@ test('it calls the onClose handler when hitting the Escape key', () => {
   fireEvent.keyDown(document, {key: 'Escape', code: 'Escape'});
 
   expect(onClose).toBeCalledTimes(1);
+});
+
+test('it does not forward click on parent node by default', () => {
+  const handleRowClick = jest.fn();
+  const handleButtonClick = jest.fn();
+  render(
+    <Table>
+      <Table.Row>
+        <Table.Cell onClick={handleRowClick}>
+          <Modal closeTitle="Close" onClose={jest.fn()}>
+            Modal content
+            <Button onClick={handleButtonClick}>Button</Button>
+          </Modal>
+        </Table.Cell>
+      </Table.Row>
+    </Table>
+  );
+
+  userEvent.click(screen.getByText('Button'));
+
+  expect(handleButtonClick).toBeCalledTimes(1);
+  expect(handleRowClick).toBeCalledTimes(0);
 });
 
 const Component = () => {
