@@ -1,12 +1,15 @@
 import React from 'react';
 import {Controller, useFormContext} from 'react-hook-form';
-import {TableAttributeCondition,} from '../../../../models/conditions';
+import {TableAttributeCondition} from '../../../../models/conditions';
 import {ConditionLineProps} from './ConditionLineProps';
 import {useBackboneRouter, useTranslate,} from '../../../../dependenciesTools/hooks';
 import {Attribute, Locale} from '../../../../models';
 import {getAttributeByIdentifier} from '../../../../repositories/AttributeRepository';
-import {TableAttributeConditionLineInput} from "@akeneo-pim-ge/table_attribute/src/rules";
-import {PendingBackendTableFilterValue, TableAttribute} from "@akeneo-pim-ge/table_attribute/src/models";
+import {
+  PendingBackendTableFilterValue,
+  TableAttribute,
+  TableAttributeConditionLineInput
+} from "@akeneo-pim-ge/table_attribute";
 import {
   ConditionLineErrorsContainer,
   ConditionLineFormAndErrorsContainer,
@@ -46,7 +49,6 @@ const TableAttributeConditionLine: React.FC<TableAttributeConditionLineProps> = 
   const value = condition.value.value;
   const column = condition.value.column;
   const row = condition.value.row;
-  console.log(operator);
   const [attribute, setAttribute] = React.useState<Attribute | null>();
   React.useEffect(() => {
     getAttributeByIdentifier(condition.field, router).then(attribute =>
@@ -86,13 +88,6 @@ const TableAttributeConditionLine: React.FC<TableAttributeConditionLineProps> = 
   watch(formName('value.column'));
   watch(formName('value.row'));
   watch(formName('value.value'));
-
-  const theValue = {
-    operator: getValues('value.column') || operator,
-    value: getValues('value.value') || value,
-    row: getValues('value.row') || row,
-    column: getValues('value.column') || column,
-  }
 
   const handleTableInputChange = (value: PendingBackendTableFilterValue) => {
     setValue(formName('operator'), value.operator);
@@ -137,7 +132,12 @@ const TableAttributeConditionLine: React.FC<TableAttributeConditionLineProps> = 
         <TableAttributeConditionLineInputContainer>
           <TableAttributeConditionLineInput
             attribute={attribute || undefined as (TableAttribute | undefined)}
-            theValue={theValue}
+            value={{
+              operator: getValues('value.column') || operator,
+              value: getValues('value.value') || value,
+              row: getValues('value.row') || row,
+              column: getValues('value.column') || column,
+            }}
             onChange={handleTableInputChange}
           />
         </TableAttributeConditionLineInputContainer>

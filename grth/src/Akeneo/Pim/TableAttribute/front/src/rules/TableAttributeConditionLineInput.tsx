@@ -7,7 +7,7 @@ import {useFetchOptions} from "../product";
 
 type TableAttributeConditionLineProps = {
   attribute?: TableAttribute;
-  theValue: PendingBackendTableFilterValue;
+  value: PendingBackendTableFilterValue;
   onChange: (value: PendingBackendTableFilterValue) => void;
 }
 
@@ -19,7 +19,7 @@ const TableAttributeConditionLineInput: React.FC<TableAttributeConditionLineProp
 
 const InnerTableAttributeConditionLine: React.FC<TableAttributeConditionLineProps> = ({
   attribute,
-  theValue,
+  value,
   onChange
 }) => {
   const [attributeState, setAttributeState] = React.useState<TableAttribute | undefined>(attribute);
@@ -30,9 +30,9 @@ const InnerTableAttributeConditionLine: React.FC<TableAttributeConditionLineProp
   }
 
   const initialFilter = {
-    ...theValue,
-    column: attributeState.table_configuration.find(column => column.code === theValue.column),
-    row: getOptionsFromColumnCode(attributeState.table_configuration[0].code)?.find(option => option.code === theValue.row),
+    ...value,
+    column: attributeState.table_configuration.find(column => column.code === value.column),
+    row: getOptionsFromColumnCode(attributeState.table_configuration[0].code)?.find(option => option.code === value.row),
   }
 
   const handleChange = (value: PendingTableFilterValue) => {

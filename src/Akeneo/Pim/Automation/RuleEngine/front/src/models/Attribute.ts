@@ -1,4 +1,5 @@
 import {LocaleCode} from './Locale';
+import {TableConfiguration} from "@akeneo-pim-ge/table_attribute";
 
 type AttributeId = number;
 type AttributeCode = string;
@@ -59,7 +60,7 @@ type Attribute = {
   filter_types: {[type: string]: string};
   is_locale_specific: boolean;
   meta: {id: AttributeId} & {[key: string]: any};
-  table_configuration: any; //TODO
+  table_configuration?: TableConfiguration;
 };
 
 const validateLocalizableScopableAttribute = (
