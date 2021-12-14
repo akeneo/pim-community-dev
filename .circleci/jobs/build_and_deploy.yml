@@ -269,6 +269,8 @@ jobs:
                       - project
 
     build_dev_optimized:
+        resource_class: large
+        docker_layer_caching: true
         parameters:
             path_to_front_packages:
                 type: string
