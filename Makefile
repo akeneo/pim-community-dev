@@ -42,9 +42,7 @@ process-tracker-build:
 
 .PHONY: front-packages
 front-packages:
-	$(YARN_RUN) dsm:build
-	$(YARN_RUN) shared:build
-	$(MAKE) measurement-build catalog-volume-monitoring-build process-tracker-build
+    $(YARN_RUN) packages:build
 
 .PHONY: dsm
 dsm:

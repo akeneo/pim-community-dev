@@ -315,7 +315,7 @@ jobs:
                   name: Install back and front dependencies
                   command: |
                     docker-compose run --rm php echo "warm up docker network"
-                    make -j --output-sync dependencies
+                    make dependencies
                   environment:
                       YARN_REGISTRY: "http://registry.yarnpkg.com"
             - run:
@@ -399,9 +399,6 @@ jobs:
                   key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}
                   paths:
                       - front-packages/../src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front
-            - run:
-                  name: Delete front-packages
-                  command: rm -rf front-packages
             - persist_to_workspace:
                   root: ~/
                   paths:
