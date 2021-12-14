@@ -36,7 +36,7 @@ const ListItem: FC<AttributeOptionItemProps> = ({children, ...props}) => {
   const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState<boolean>(false);
   const attributeContext = useAttributeContext();
   const rowRef = useRef(null);
-  const locale = useUserContext().get('uiLocale');
+  const locale = useUserContext().get('catalogLocale');
 
   const deleteOption = () => {
     setShowDeleteConfirmationModal(false);
