@@ -1,4 +1,4 @@
-batch_jobs.akeneo_shared_catalog.label: Send to shared catalogs
+batch_jobs.akeneo_shared_catalog.label: Send to Shared Catalogs
 pim_common:
     recipients: Recipients
     branding: Branding
