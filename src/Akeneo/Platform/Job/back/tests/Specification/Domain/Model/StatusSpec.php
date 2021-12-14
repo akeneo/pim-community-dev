@@ -15,26 +15,30 @@ class StatusSpec extends ObjectBehavior
 {
     public function it_is_constructable_with_status()
     {
-        $this::fromStatus(3);
+        $this->beConstructedThrough('fromStatus', [3]);
         $this->getStatus()->shouldReturn(3);
         $this->getLabel()->shouldReturn('IN_PROGRESS');
     }
 
     public function it_is_constructable_with_label()
     {
-        $this::fromLabel('IN_PROGRESS');
+        $this->beConstructedThrough('fromLabel', ['IN_PROGRESS']);
         $this->getStatus()->shouldReturn(3);
         $this->getLabel()->shouldReturn('IN_PROGRESS');
     }
 
     public function it_throws_exception_when_trying_to_construct_it_with_invalid_status()
     {
-        $this->shouldThrow(\InvalidArgumentException::class)->during('fromStatus', [0]);
-        $this->shouldThrow(\InvalidArgumentException::class)->during('fromStatus', [26]);
+        $this->beConstructedThrough('fromStatus', [0]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+
+        $this->beConstructedThrough('fromStatus', [26]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
     public function it_throws_exception_when_trying_to_construct_it_with_invalid_label()
     {
-        $this->shouldThrow(\InvalidArgumentException::class)->during('fromLabel', ['invalid']);
+        $this->beConstructedThrough('fromLabel', ['invalid']);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 }
