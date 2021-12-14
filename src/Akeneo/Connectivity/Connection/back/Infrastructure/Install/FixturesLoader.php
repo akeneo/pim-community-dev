@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Install;
 
+use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\AsymmetricKeysGenerator;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\SaveAsymmetricKeysQuery;
@@ -35,7 +37,7 @@ class FixturesLoader
     private SimpleFactoryInterface $userGroupFactory;
     private ObjectUpdaterInterface $userGroupUpdater;
     private SaverInterface $userGroupSaver;
-    private AsymmetricKeysGenerator $asymmetricKeysGenerator;
+    private GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler;
 
     public function __construct(
         DbalConnection $dbalConnection,
@@ -50,7 +52,7 @@ class FixturesLoader
         SimpleFactoryInterface $userGroupFactory,
         ObjectUpdaterInterface $userGroupUpdater,
         SaverInterface $userGroupSaver,
-        AsymmetricKeysGenerator $asymmetricKeysGenerator
+        GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler
     ) {
         $this->dbalConnection = $dbalConnection;
         $this->fileStorer = $fileStorer;
@@ -64,14 +66,14 @@ class FixturesLoader
         $this->userGroupFactory = $userGroupFactory;
         $this->userGroupUpdater = $userGroupUpdater;
         $this->userGroupSaver = $userGroupSaver;
-        $this->asymmetricKeysGenerator = $asymmetricKeysGenerator;
+        $this->generateAsymmetricKeysHandler = $generateAsymmetricKeysHandler;
     }
 
     public function loadFixtures(): void
     {
         $roles = [
             'source' => $this->createUserRole(['role' => 'ROLE_API_SOURCE', 'label' => 'API Source']),
-            'destination' => $this->createUserRole(['role' => 'ROLE_API_DESTINATION', 'label' => 'API Destination'])
+            'destination' => $this->createUserRole(['role' => 'ROLE_API_DESTINATION', 'label' => 'API Destination']),
         ];
 
         $groups = [
@@ -88,7 +90,7 @@ class FixturesLoader
             'username' => $username,
             'password' => '2dpuj5tx4w4d',
             'roles' => [$roles['destination']->getRole()],
-            'groups' => [$groups['magento']->getName()]
+            'groups' => [$groups['magento']->getName()],
         ]);
 
         $clientId = $this->createClient([
@@ -117,7 +119,7 @@ class FixturesLoader
             'username' => $username,
             'password' => 'xjhsee5443qv',
             'roles' => [$roles['source']->getRole()],
-            'groups' => [$groups['sap']->getName()]
+            'groups' => [$groups['sap']->getName()],
         ]);
 
         $clientId = $this->createClient([
@@ -146,7 +148,7 @@ class FixturesLoader
             'username' => $username,
             'password' => 'dvx9bjw5b923',
             'roles' => [$roles['source']->getRole()],
-            'groups' => [$groups['alkemics']->getName()]
+            'groups' => [$groups['alkemics']->getName()],
         ]);
 
         $clientId = $this->createClient([
@@ -175,7 +177,7 @@ class FixturesLoader
             'username' => $username,
             'password' => 'hpd63xahxbyg',
             'roles' => [$roles['source']->getRole()],
-            'groups' => [$groups['translations_com']->getName()]
+            'groups' => [$groups['translations_com']->getName()],
         ]);
 
         $clientId = $this->createClient([
@@ -253,13 +255,13 @@ class FixturesLoader
             array_merge(
                 [
                     'allowed_grant_types' => [OAuth2::GRANT_TYPE_USER_CREDENTIALS, OAuth2::GRANT_TYPE_REFRESH_TOKEN],
-                    'redirect_uris' => []
+                    'redirect_uris' => [],
                 ],
                 $data
             ),
             [
                 'allowed_grant_types' => Types::ARRAY,
-                'redirect_uris' => Types::ARRAY
+                'redirect_uris' => Types::ARRAY,
             ]
         );
 
@@ -273,7 +275,7 @@ class FixturesLoader
 
     private function uploadImage(string $file): FileInfoInterface
     {
-        $rawFile = new \SplFileInfo(__DIR__ . '/../Symfony/Resources/fixtures/images/' . $file);
+        $rawFile = new \SplFileInfo(__DIR__.'/../Symfony/Resources/fixtures/images/'.$file);
 
         return $this->fileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS);
     }
@@ -300,26 +302,6 @@ class FixturesLoader
 
     private function addOpenIdKeys(): void
     {
-        $query = <<<SQL
-            INSERT INTO pim_configuration (`code`,`values`)
-            VALUES (:code, :asymmetricKeys)
-            ON DUPLICATE KEY UPDATE `values`= :asymmetricKeys
-            SQL;
-
-        $asymmetricKeys = $this->asymmetricKeysGenerator->generate();
-
-        $now = new \DateTime('now', new \DateTimeZone('UTC'));
-
-        $this->dbalConnection->executeQuery($query, [
-            'code' => SaveAsymmetricKeysQuery::OPTION_CODE,
-            'asymmetricKeys' => array_merge(
-                $asymmetricKeys->normalize(),
-                ['updated_at' => $now->format(\DateTimeInterface::ATOM)]
-            ),
-        ], [
-            'code' => Types::STRING,
-            'asymmetricKeys' => Types::JSON,
-        ]);
-
+        $this->generateAsymmetricKeysHandler->handle(new GenerateAsymmetricKeysCommand());
     }
 }
