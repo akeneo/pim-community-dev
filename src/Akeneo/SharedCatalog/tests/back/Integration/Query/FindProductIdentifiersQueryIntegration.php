@@ -26,6 +26,7 @@ class FindProductIdentifiersQueryIntegration extends TestCase
     {
         return new SharedCatalog(
             'shared_catalog',
+            'Shared catalog',
             'julia',
             [],
             [

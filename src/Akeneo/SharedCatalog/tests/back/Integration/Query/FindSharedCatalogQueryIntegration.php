@@ -35,6 +35,7 @@ class FindSharedCatalogQueryIntegration extends TestCase
     {
         $this->createJobInstance(
             'shared_catalog_1',
+            'Shared catalog 1',
             'akeneo_shared_catalog',
             'export',
             JobInstance::STATUS_READY,
@@ -62,6 +63,7 @@ class FindSharedCatalogQueryIntegration extends TestCase
     {
         $this->createJobInstance(
             'shared_catalog_1',
+            'Shared catalog 1',
             'something_else',
             'export',
             JobInstance::STATUS_READY,
