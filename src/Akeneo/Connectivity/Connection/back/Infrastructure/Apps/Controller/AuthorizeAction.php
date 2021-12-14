@@ -62,12 +62,11 @@ class AuthorizeAction
         }
 
         $clientId = $request->query->get('client_id', '');
-        $scope = $request->query->get('scope', '');
 
         $command = new RequestAppAuthorizationCommand(
             $clientId,
             $request->query->get('response_type', ''),
-            $scope,
+            $request->query->get('scope', ''),
             $request->query->get('state', null),
         );
 
