@@ -1,15 +1,15 @@
 image:
   pim:
-    tag: ${pimVersion}
+    tag: ${pim.version}
 
 connectors:
   bigcommerce:
-    enabled: ${bigcommerce_connector_enabled}
+    enabled: ${bigcommerce_connector.enabled}
     pubsub:
-      topic_name: ${bigcommerce_connector_topic}
-      subscription_name: ${bigcommerce_connector_subscription}
-    akeneo_connect_bot_password: ${bigcommerce_connector_akeneo_connect_bot_password}
-    akeneo_connect_bot_client_secret: ${bigcommerce_connector_akeneo_connect_bot_client_secret}
+      topic_name: ${bigcommerce_connector.topic}
+      subscription_name: ${bigcommerce_connector.subscription}
+    akeneo_connect_bot_password: ${bigcommerce_connector.akeneo_connect.bot_password}
+    akeneo_connect_bot_client_secret: ${bigcommerce_connector.akeneo_connect.bot_client_secret}
 
 elasticsearch:
   cluster:
@@ -19,105 +19,95 @@ elasticsearch:
       cluster.routing.allocation.disk.watermark.flood_stage: .99
   master:
     podAnnotations:
-      tags.akeneo.com/pfid: ${pfid}
-      # app.kubernetes.io/name: # already set by default by ES chart. Cf  https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L5
-      # app.kubernetes.io/component: # already set by default by ES chart. Cf https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L6
+      tags.akeneo.com/pfid: ${pim.pfid}
       tags.akeneo.com/product_reference: serenity
-      # helm.sh/chart: # already set by default by ES chart. Cf https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L6
-      tags.akeneo.com/instance_dns_zone: ${dnsZone}
-      tags.akeneo.com/instance_dns_record: ${instanceName}
-      tags.akeneo.com/papo_project_code: ${papoProjectCode}
+      tags.akeneo.com/instance_dns_zone: ${pim.dns_zone}
+      tags.akeneo.com/instance_dns_record: ${pim.dns_record}
+      tags.akeneo.com/papo_project_code: ${portal.project_code}
   client:
     podAnnotations:
-      tags.akeneo.com/pfid: ${pfid}
-      # app.kubernetes.io/name: # already set by default by ES chart. Cf  https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L5
-      # app.kubernetes.io/component: # already set by default by ES chart. Cf https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L6
+      tags.akeneo.com/pfid: ${pim.pfid}
       tags.akeneo.com/product_reference: serenity
-      # helm.sh/chart: # already set by default by ES chart. Cf https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L6
-      tags.akeneo.com/instance_dns_zone: ${dnsZone}
-      tags.akeneo.com/instance_dns_record: ${instanceName}
-      tags.akeneo.com/papo_project_code:  ${papoProjectCode}
+      tags.akeneo.com/instance_dns_zone: ${pim.dns_zone}
+      tags.akeneo.com/instance_dns_record: ${pim.dns_record}
+      tags.akeneo.com/papo_project_code: ${portal.project_code}
   data:
     podAnnotations:
-      tags.akeneo.com/pfid: ${pfid}
-      # app.kubernetes.io/name: # already set by default by ES chart. Cf  https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L5
-      # app.kubernetes.io/component: # already set by default by ES chart. Cf https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L6
+      tags.akeneo.com/pfid: ${pim.pfid}
       tags.akeneo.com/product_reference: serenity
-      # helm.sh/chart: # already set by default by ES chart. Cf https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L6
-      tags.akeneo.com/instance_dns_zone: ${dnsZone}
-      tags.akeneo.com/instance_dns_record: ${instanceName}
-      tags.akeneo.com/papo_project_code: ${papoProjectCode}
+      tags.akeneo.com/instance_dns_zone: ${pim.dns_zone}
+      tags.akeneo.com/instance_dns_record: ${pim.dns_record}
+      tags.akeneo.com/papo_project_code: ${portal.project_code}
 
 memcached:
   podAnnotations:
-    tags.akeneo.com/pfid: ${pfid}
-    # app.kubernetes.io/name: # already set by default by Memcached chart. Cf  https://github.com/helm/charts/blob/09324a8a8fdc9b9261ce829486421c345109475b/stable/memcached/templates/_helpers.tpl#L30
+    tags.akeneo.com/pfid: ${pim.pfid}
     app.kubernetes.io/component: memcached
     tags.akeneo.com/product_reference: serenity
-    # helm.sh/chart: # already set by default by Memcached chart. Cf https://github.com/helm/charts/blob/09324a8a8fdc9b9261ce829486421c345109475b/stable/memcached/templates/_helpers.tpl#L31
-    tags.akeneo.com/instance_dns_zone: ${dnsZone}
-    tags.akeneo.com/instance_dns_record: ${instanceName}
-    tags.akeneo.com/papo_project_code: ${papoProjectCode}
+    tags.akeneo.com/instance_dns_zone: ${pim.dns_zone}
+    tags.akeneo.com/instance_dns_record: ${pim.dns_record}
+    tags.akeneo.com/papo_project_code: ${portal.project_code}
 
 global:
   extraLabels:
-    type: ${type}
-    instanceName: ${instanceName}
-    pfid: ${pfid}
-    instance_dns_record: ${instanceName}
-    instance_dns_zone: ${dnsZone}
-    papo_project_code: ${papoProjectCode}
-    papo_project_code_truncated: ${papoProjectCodeTruncated}
-    papo_project_code_hashed: ${papoProjectCodeHashed}
+    type: ${pim.type}
+    instanceName: ${pim.dns_record}
+    pfid: ${pim.pfid}
+    instance_dns_record: ${pim.dns_record}
+    instance_dns_zone: ${pim.dns_zone}
+    papo_project_code: ${portal.project_code}
+    papo_project_code_truncated: ${portal.project_code_truncated}
+    papo_project_code_hashed: ${portal.project_code_hashed}
 
 common:
-  gcpProjectID: ${projectId}
-  googleZone: ${googleZone}
-  pimMasterDomain: ${pimmaster_dns_name}
+  gcpProjectID: ${google_cloud_project.id}
+  googleZone: ${google_cloud_project.zone}
+  pimMasterDomain: ${pim.master_dns_name}
 
 backup:
-  projectId: ${projectId}
-  zone: ${googleZone}
+  projectId: ${google_cloud_project.id}
+  zone: ${google_cloud_project.zone}
 
 mailer:
-  login: ${mailgun_login_email}
-  password: ${mailgun_password}
+  login: ${mailgun.login_email}
+  password: ${mailgun.password}
+  base_mailer_url: "smtp://${mailgun.host}:${mailgun.port}"
 
 pim:
-  serviceAccountKey: ${pimStoragekey}
+  serviceAccountKey: ${pim.storage_key}
   pubsub:
-    subscription_webhook: ${subscription_webhook}
-    subscription_job_queue_ui: ${subscription_job_queue_ui}
-    subscription_job_queue_import_export: ${subscription_job_queue_import_export}
-    subscription_job_queue_data_maintenance: ${subscription_job_queue_data_maintenance}
-    topic_business_event: ${topic_business_event}
-    topic_job_queue_ui: ${topic_job_queue_ui}
-    topic_job_queue_import_export: ${topic_job_queue_import_export}
-    topic_job_queue_data_maintenance: ${topic_job_queue_data_maintenance}
+    subscription_webhook: ${pim.subscription.webhook}
+    subscription_job_queue_ui: ${pim.subscription.job_queue_ui}
+    subscription_job_queue_import_export: ${pim.subscription.job_queue_import_export}
+    subscription_job_queue_data_maintenance: ${pim.subscription.job_queue_data_maintenance}
+    topic_business_event: ${pim.topic.business_event}
+    topic_job_queue_ui: ${pim.topic.job_queue_ui}
+    topic_job_queue_import_export: ${pim.topic.job_queue_import_export}
+    topic_job_queue_data_maintenance: ${pim.topic.job_queue_data_maintenance}
   storage:
-    bucketName: ${bucketName}
+    bucketName: ${pim.bucket_name}
   monitoring:
-    authenticationToken: ${monitoring_authentication_token}
+    authenticationToken: ${pim.monitoring_authentication_token}
 
 mysql:
   mysql:
-    dataDiskSize: ${mysql_disk_size}Gi
+    dataDiskSize: ${mysql.disk_size}Gi
   common:
     persistentDisks:
-    - ${mysql_disk_name}
-    class: ${mysql_disk_storage_class}
+    - ${mysql.disk_name}
+    class: ${mysql.disk_storage_class}
 
 
-%{ if type == "tria" }
+%{ if pim.type == "tria" }
 free_trial:
   enabled: true
-  akeneo_connect_saml_entity_id: ${akeneo_connect_saml_entity_id}
-  akeneo_connect_saml_certificate: ${akeneo_connect_saml_certificate}
-  akeneo_connect_saml_sp_certificate_base64: ${akeneo_connect_saml_sp_certificate_base64}
-  akeneo_connect_saml_sp_private_key_base64: ${akeneo_connect_saml_sp_private_key_base64}
-  akeneo_connect_api_client_secret: ${akeneo_connect_api_client_secret}
-  akeneo_connect_api_client_password: ${akeneo_connect_api_client_password}
-  ft_catalog_api_client_id: ${ft_catalog_api_client_id}
-  ft_catalog_api_password: ${ft_catalog_api_password}
-  ft_catalog_api_secret: ${ft_catalog_api_secret}
+  akeneo_connect_saml_entity_id: ${ft_catalog.akeneo_connect.saml.entity_id}
+  akeneo_connect_saml_certificate: ${ft_catalog.akeneo_connect.saml.certificate}
+  akeneo_connect_saml_sp_certificate_base64: ${ft_catalog.akeneo_connect.saml.sp_certificate_base64}
+  akeneo_connect_saml_sp_private_key_base64: ${ft_catalog.akeneo_connect.saml.sp_private_key_base64}
+  akeneo_connect_api_client_secret: ${ft_catalog.akeneo_connect.api.client_secret}
+  akeneo_connect_api_client_password: ${ft_catalog.akeneo_connect.api.client_password}
+  ft_catalog_api_client_id: ${ft_catalog.api_client_id}
+  ft_catalog_api_password: ${ft_catalog.api_password}
+  ft_catalog_api_secret: ${ft_catalog.api_secret}
 %{ endif }
