@@ -5,6 +5,8 @@ jobs:
         steps:
             -   attach_workspace:
                     at: ~/
+            -   setup_remote_docker:
+                    docker_layer_caching: true
             -   run:
                     name: Create yarn cache folder
                     command: mkdir -p  ~/.cache/yarn
@@ -30,12 +32,14 @@ jobs:
         steps:
             -   attach_workspace:
                     at: ~/
+            -   setup_remote_docker:
+                    docker_layer_caching: true
             -   run:
                     name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
                     command: sudo chown -R 1000:1000 ../project
             -   run:
                     name: Pull docker image for php
-                    command: docker load -i php-pim-image.tar
+                    command: docker-compose pull php
             -   run:
                     name: Coupling back
                     command: make connectivity-connection-coupling-back
