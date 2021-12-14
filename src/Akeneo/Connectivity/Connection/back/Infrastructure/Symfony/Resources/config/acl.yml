@@ -10,3 +10,10 @@ akeneo_connectivity_connection_manage_apps:
     group_name: oro_config_system
     enabled_at_creation: false
     order: -10
+
+akeneo_connectivity_connection_open_apps:
+    type: action
+    label: akeneo_connectivity.connection.acl.open_apps
+    group_name: oro_config_system
+    enabled_at_creation: false
+    order: -10

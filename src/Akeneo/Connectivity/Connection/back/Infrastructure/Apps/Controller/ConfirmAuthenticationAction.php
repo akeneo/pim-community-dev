@@ -70,8 +70,7 @@ class ConfirmAuthenticationAction
             throw new NotFoundHttpException();
         }
 
-        // @TODO is this acl mandatory for just accessing the app?
-        if (!$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
+        if (!$this->security->isGranted('akeneo_connectivity_connection_open_apps')) {
             throw new AccessDeniedHttpException();
         }
 

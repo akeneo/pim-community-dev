@@ -41,7 +41,7 @@ config:
                     module: pim/controller/connectivity/connection/audit
                 akeneo_connectivity_connection_connect_connected_apps:
                     module: pim/controller/connectivity/connection/connect/connected-apps
-                    aclResourceId: akeneo_connectivity_connection_manage_apps
+                    aclResourceId: akeneo_connectivity_connection_open_apps
                 akeneo_connectivity_connection_connect_connected_apps_edit:
                     module: pim/controller/connectivity/connection/connect/connected-apps
                     aclResourceId: akeneo_connectivity_connection_manage_apps
