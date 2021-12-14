@@ -11,16 +11,16 @@ class AsymmetricKeys
 {
     public const PUBLIC_KEY = 'public_key';
     public const PRIVATE_KEY = 'private_key';
-    private ?string $publicKey;
-    private ?string $privateKey;
+    private string $publicKey;
+    private string $privateKey;
 
-    private function __construct(?string $publicKey = null, ?string $privateKey = null)
+    private function __construct(string $publicKey, string $privateKey)
     {
         $this->publicKey = $publicKey;
         $this->privateKey = $privateKey;
     }
 
-    public static function create(?string $publicKey = null, ?string $privateKey = null): self
+    public static function create(string $publicKey, string $privateKey): self
     {
         return new self($publicKey, $privateKey);
     }

@@ -5,6 +5,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AsymmetricKeys;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\SaveAsymmetricKeysQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Clock;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 
@@ -16,10 +17,12 @@ class SaveAsymmetricKeysQuery implements SaveAsymmetricKeysQueryInterface
 {
     public const OPTION_CODE = 'OPENID_ASYMMETRIC_KEYS';
     private Connection $connection;
+    private Clock $clock;
 
-    public function __construct(Connection $connection)
+    public function __construct(Connection $connection, Clock $clock)
     {
         $this->connection = $connection;
+        $this->clock = $clock;
     }
 
     public function execute(AsymmetricKeys $asymmetricKeys): void
@@ -30,9 +33,11 @@ class SaveAsymmetricKeysQuery implements SaveAsymmetricKeysQueryInterface
             ON DUPLICATE KEY UPDATE `values`= :asymmetricKeys
             SQL;
 
+        $updatedAt = $this->clock->now()->format(\DateTimeInterface::ATOM);
+
         $this->connection->executeQuery($query, [
             'code' => self::OPTION_CODE,
-            'asymmetricKeys' => $asymmetricKeys->normalize(),
+            'asymmetricKeys' => array_merge($asymmetricKeys->normalize(), ['updated_at' => $updatedAt]),
         ], [
             'code' => Types::STRING,
             'asymmetricKeys' => Types::JSON,

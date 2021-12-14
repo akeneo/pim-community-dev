@@ -5,6 +5,7 @@ namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Apps;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AsymmetricKeys;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\OpenIdKeysNotFoundException;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\SaveAsymmetricKeysQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\PimConfigurationLoader;
 use Akeneo\Test\Integration\Configuration;
@@ -50,7 +51,7 @@ class GetOpenIdPublicKeyEndToEnd extends WebTestCase
         );
     }
 
-    public function test_it_gets_null_if_there_is_no_openid_public_key_into_database(): void
+    public function test_it_gets_an_error_if_there_is_no_openid_public_key_into_database(): void
     {
         $this->client->request(
             'GET',
@@ -58,7 +59,7 @@ class GetOpenIdPublicKeyEndToEnd extends WebTestCase
         );
         $result = $this->client->getResponse()->getContent();
 
-        Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        Assert::assertEquals(null, $result);
+        Assert::assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $this->client->getResponse()->getStatusCode());
+        Assert::assertEquals(OpenIdKeysNotFoundException::MESSAGE, $result);
     }
 }

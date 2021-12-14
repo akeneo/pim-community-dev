@@ -162,3 +162,4 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\SaveAsymmetricKeysQuery:
         arguments:
             - '@database_connection'
+            - '@akeneo_connectivity.connection.clock'

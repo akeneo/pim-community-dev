@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Install;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\AsymmetricKeysGenerator;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\SaveAsymmetricKeysQuery;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
@@ -33,6 +35,7 @@ class FixturesLoader
     private SimpleFactoryInterface $userGroupFactory;
     private ObjectUpdaterInterface $userGroupUpdater;
     private SaverInterface $userGroupSaver;
+    private AsymmetricKeysGenerator $asymmetricKeysGenerator;
 
     public function __construct(
         DbalConnection $dbalConnection,
@@ -46,7 +49,8 @@ class FixturesLoader
         SaverInterface $userRoleSaver,
         SimpleFactoryInterface $userGroupFactory,
         ObjectUpdaterInterface $userGroupUpdater,
-        SaverInterface $userGroupSaver
+        SaverInterface $userGroupSaver,
+        AsymmetricKeysGenerator $asymmetricKeysGenerator
     ) {
         $this->dbalConnection = $dbalConnection;
         $this->fileStorer = $fileStorer;
@@ -60,6 +64,7 @@ class FixturesLoader
         $this->userGroupFactory = $userGroupFactory;
         $this->userGroupUpdater = $userGroupUpdater;
         $this->userGroupSaver = $userGroupSaver;
+        $this->asymmetricKeysGenerator = $asymmetricKeysGenerator;
     }
 
     public function loadFixtures(): void
@@ -191,6 +196,9 @@ class FixturesLoader
             'auditable' => false,
             'type' => 'default',
         ]);
+
+        // Load OpenId public and private keys
+        $this->addOpenIdKeys();
     }
 
     private function createUserRole(array $data): RoleInterface
@@ -288,5 +296,30 @@ class FixturesLoader
                 )
             );
         }
+    }
+
+    private function addOpenIdKeys(): void
+    {
+        $query = <<<SQL
+            INSERT INTO pim_configuration (`code`,`values`)
+            VALUES (:code, :asymmetricKeys)
+            ON DUPLICATE KEY UPDATE `values`= :asymmetricKeys
+            SQL;
+
+        $asymmetricKeys = $this->asymmetricKeysGenerator->generate();
+
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+
+        $this->dbalConnection->executeQuery($query, [
+            'code' => SaveAsymmetricKeysQuery::OPTION_CODE,
+            'asymmetricKeys' => array_merge(
+                $asymmetricKeys->normalize(),
+                ['updated_at' => $now->format(\DateTimeInterface::ATOM)]
+            ),
+        ], [
+            'code' => Types::STRING,
+            'asymmetricKeys' => Types::JSON,
+        ]);
+
     }
 }

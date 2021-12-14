@@ -5,6 +5,7 @@ namespace Akeneo\Connectivity\Connection\Tests\Integration\Apps\Persistence\Quer
 
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AsymmetricKeys;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\SaveAsymmetricKeysQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -18,12 +19,15 @@ class SaveAsymmetricKeysQueryIntegration extends TestCase
 {
     private SaveAsymmetricKeysQuery $query;
     private Connection $connection;
+    private FakeClock $clock;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->query = $this->get(SaveAsymmetricKeysQuery::class);
         $this->connection = $this->get('database_connection');
+        $this->clock = $this->get('akeneo_connectivity.connection.clock');
+        $this->clock->setNow(new \DateTimeImmutable('2021-03-02T04:30:11'));
     }
 
     public function test_it_saves_asymmetric_keys_into_the_database(): void
@@ -63,6 +67,7 @@ class SaveAsymmetricKeysQueryIntegration extends TestCase
         $this->assertEquals([
             AsymmetricKeys::PUBLIC_KEY => 'the_public_key',
             AsymmetricKeys::PRIVATE_KEY => 'the_private_key',
+            'updated_at' => $this->clock->now()->format(\DateTimeInterface::ATOM),
         ], json_decode($result['values'], true));
     }
 
@@ -86,6 +91,7 @@ class SaveAsymmetricKeysQueryIntegration extends TestCase
         $this->assertEquals([
             AsymmetricKeys::PUBLIC_KEY => 'the_new_public_key',
             AsymmetricKeys::PRIVATE_KEY => 'the_new_private_key',
+            'updated_at' => $this->clock->now()->format(\DateTimeInterface::ATOM),
         ], json_decode($result['values'], true));
     }
 

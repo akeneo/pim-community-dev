@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AsymmetricKeys;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\OpenIdKeysNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAsymmetricKeysQueryInterface;
 use Doctrine\DBAL\Connection;
 
@@ -31,7 +32,7 @@ class GetAsymmetricKeysQuery implements GetAsymmetricKeysQueryInterface
         $result = $this->connection->fetchOne($query, ['code' => SaveAsymmetricKeysQuery::OPTION_CODE]);
 
         if (!$result) {
-            return AsymmetricKeys::create();
+            throw new OpenIdKeysNotFoundException();
         }
 
         $keys = json_decode($result, true);
