@@ -24,6 +24,8 @@ elasticsearch:
       tags.akeneo.com/instance_dns_zone: ${pim.dns_zone}
       tags.akeneo.com/instance_dns_record: ${pim.dns_record}
       tags.akeneo.com/papo_project_code: ${portal.project_code}
+    heapSize: ${elasticsearch.master.heap_size}
+    ${indent(4,replace(yamlencode({resources: "${elasticsearch.master.resources}"}),"\"",""))}
   client:
     podAnnotations:
       tags.akeneo.com/pfid: ${pim.pfid}
@@ -31,6 +33,8 @@ elasticsearch:
       tags.akeneo.com/instance_dns_zone: ${pim.dns_zone}
       tags.akeneo.com/instance_dns_record: ${pim.dns_record}
       tags.akeneo.com/papo_project_code: ${portal.project_code}
+    heapSize: ${elasticsearch.client.heap_size}
+    ${indent(4,replace(yamlencode({resources: "${elasticsearch.client.resources}"}),"\"",""))}
   data:
     podAnnotations:
       tags.akeneo.com/pfid: ${pim.pfid}
@@ -38,7 +42,8 @@ elasticsearch:
       tags.akeneo.com/instance_dns_zone: ${pim.dns_zone}
       tags.akeneo.com/instance_dns_record: ${pim.dns_record}
       tags.akeneo.com/papo_project_code: ${portal.project_code}
-
+    heapSize: ${elasticsearch.data.heap_size}
+    ${indent(4,replace(yamlencode({resources: "${elasticsearch.data.resources}"}),"\"",""))}
 memcached:
   podAnnotations:
     tags.akeneo.com/pfid: ${pim.pfid}
@@ -47,7 +52,7 @@ memcached:
     tags.akeneo.com/instance_dns_zone: ${pim.dns_zone}
     tags.akeneo.com/instance_dns_record: ${pim.dns_record}
     tags.akeneo.com/papo_project_code: ${portal.project_code}
-
+  ${indent(2,replace(yamlencode({resources: "${memcached.resources}"}),"\"",""))}
 global:
   extraLabels:
     type: ${pim.type}
@@ -88,16 +93,25 @@ pim:
     bucketName: ${pim.bucket_name}
   monitoring:
     authenticationToken: ${pim.monitoring_authentication_token}
+  daemons:
+    job-consumer-process:
+      replicas: ${pim.daemons.job-consumer-process.replicas}
+    webhook-consumer-process:
+      replicas: ${pim.daemons.webhook-consumer-process.replicas}
+  web:
+    replicas: ${pim.web.replicas}
+  api:
+    replicas: ${pim.api.replicas}
 
 mysql:
   mysql:
     dataDiskSize: ${mysql.disk_size}Gi
+    innodbBufferPoolSize: ${mysql.innodb_buffer_pool_size}
+    ${indent(4,replace(yamlencode({resources: "${mysql.resources}"}),"\"",""))}
   common:
     persistentDisks:
     - ${mysql.disk_name}
     class: ${mysql.disk_storage_class}
-
-
 %{ if pim.type == "tria" }
 free_trial:
   enabled: true

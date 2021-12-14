@@ -375,6 +375,8 @@ mysql:
     rootPassword: null # Generate me with `pwgen -sB 22`
     defaultDatabase: akeneo_pim
     dataDiskSize: 100Gi
+    innodbBufferPoolSize: 2048M
+    innodbPoolInstances: 8
     stateful:
       enabled: false
     resources:
@@ -402,10 +404,10 @@ memcached:
   replicaCount: 1
   resources:
     limits:
-      memory: "96Mi"
+      memory: "32Mi"
     requests:
       cpu: "5m"
-      memory: "20Mi"
+      memory: "16Mi"
   memcached:
     maxItemMemory: 64
   pdbMinAvailable: 0
@@ -460,7 +462,7 @@ elasticsearch:
     persistence:
       size: 10Gi
       storageClass: ssd-retain
-    heapSize: "1G"
+    heapSize: "1024m"
     resources:
       limits:
         memory: "1740Mi"

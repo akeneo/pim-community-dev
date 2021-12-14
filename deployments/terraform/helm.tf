@@ -3,6 +3,21 @@ resource "random_string" "monitoring_authentication_token" {
   special = false
 }
 
+locals {
+  helm-default-values = yamldecode(file("${path.module}/pim/values.yaml"))
+  tshirt-size-index-mapping = {
+    S  = 0
+    M  = 1
+    L  = 2
+    XL = 3
+  }
+  tshirt-size-index = can(regex("^[2-9][0-9]*XL$", var.product_reference_size)) ? local.tshirt-size-index-mapping["XL"] + trimsuffix(var.product_reference_size, "XL") - 1 : local.tshirt-size-index-mapping[var.product_reference_size]
+  mysql-memory-unit = "M"
+  jvm-heap-unit     = "m"
+  k8s-memory-unit   = "Mi"
+  k8s-cpu-unit      = "m"
+}
+
 resource "local_file" "helm_pim_config" {
   content = templatefile("${path.module}/tf-helm-pim-values.tpl",
     {
@@ -29,12 +44,30 @@ resource "local_file" "helm_pim_config" {
         bucket_name                     = google_storage_bucket.srnt_bucket.name
         monitoring_authentication_token = local.monitoring_authentication_token
 
+        api = {
+          replicas = local.helm-default-values.pim.api.replicas + local.tshirt-size-index
+        }
+
+        web = {
+          replicas = local.helm-default-values.pim.web.replicas + local.tshirt-size-index
+        }
+
+        daemons = {
+          job-consumer-process = {
+            replicas = local.helm-default-values.pim.daemons.job-consumer-process.replicas + local.tshirt-size-index
+          }
+          webhook-consumer-process = {
+            replicas = local.helm-default-values.pim.daemons.webhook-consumer-process.replicas + local.tshirt-size-index
+          }
+        }
+
         subscription = {
           webhook                    = google_pubsub_subscription.webhook.name
           job_queue_ui               = google_pubsub_subscription.job-queue-ui.name
           job_queue_import_export    = google_pubsub_subscription.job-queue-import-export.name
           job_queue_data_maintenance = google_pubsub_subscription.job-queue-data-maintenance.name
         }
+
         topic = {
           business_event             = google_pubsub_topic.business-event.name
           job_queue_ui               = google_pubsub_topic.job-queue-ui.name
@@ -53,10 +86,185 @@ resource "local_file" "helm_pim_config" {
         project_code_hashed = md5(var.papo_project_code)
       }
 
+      elasticsearch = {
+        client = {
+          heap_size = format(
+            "%d%s", ceil(
+              trimsuffix(local.helm-default-values.elasticsearch.client.heapSize, local.jvm-heap-unit) +
+              trimsuffix(local.helm-default-values.elasticsearch.client.heapSize, local.jvm-heap-unit) / 2 * local.tshirt-size-index
+            ),
+            local.jvm-heap-unit
+          )
+          resources = {
+            limits = {
+              memory = format(
+                "%d%s", ceil(
+                  trimsuffix(local.helm-default-values.elasticsearch.client.resources.limits.memory, local.k8s-memory-unit) +
+                  trimsuffix(local.helm-default-values.elasticsearch.client.resources.limits.memory, local.k8s-memory-unit) / 2 * local.tshirt-size-index
+                ),
+                local.k8s-memory-unit
+              )
+            }
+            requests = {
+              cpu = format(
+                "%d%s", ceil(
+                  trimsuffix(local.helm-default-values.elasticsearch.client.resources.requests.cpu, local.k8s-cpu-unit) +
+                  trimsuffix(local.helm-default-values.elasticsearch.client.resources.requests.cpu, local.k8s-cpu-unit) / 2 * local.tshirt-size-index
+                ),
+                local.k8s-cpu-unit
+              )
+              memory = format(
+                "%d%s", ceil(
+                  trimsuffix(local.helm-default-values.elasticsearch.client.resources.requests.memory, local.k8s-memory-unit) +
+                  trimsuffix(local.helm-default-values.elasticsearch.client.resources.requests.memory, local.k8s-memory-unit) / 2 * local.tshirt-size-index
+                ),
+                local.k8s-memory-unit
+              )
+            }
+          }
+        }
+        master = {
+          heap_size = format(
+            "%d%s", ceil(
+              trimsuffix(local.helm-default-values.elasticsearch.master.heapSize, local.jvm-heap-unit) +
+              trimsuffix(local.helm-default-values.elasticsearch.master.heapSize, local.jvm-heap-unit) / 2 * local.tshirt-size-index
+            ),
+            local.jvm-heap-unit
+          )
+          resources = {
+            limits = {
+              memory = format(
+                "%d%s", ceil(
+                  trimsuffix(local.helm-default-values.elasticsearch.master.resources.limits.memory, local.k8s-memory-unit) +
+                  trimsuffix(local.helm-default-values.elasticsearch.master.resources.limits.memory, local.k8s-memory-unit) / 2 * local.tshirt-size-index
+                ),
+                local.k8s-memory-unit
+              )
+            }
+            requests = {
+              cpu = format(
+                "%d%s", ceil(
+                  trimsuffix(local.helm-default-values.elasticsearch.master.resources.requests.cpu, local.k8s-cpu-unit) +
+                  trimsuffix(local.helm-default-values.elasticsearch.master.resources.requests.cpu, local.k8s-cpu-unit) / 2 * local.tshirt-size-index
+                ),
+                local.k8s-cpu-unit
+              )
+              memory = format(
+                "%d%s", ceil(
+                  trimsuffix(local.helm-default-values.elasticsearch.master.resources.requests.memory, local.k8s-memory-unit) +
+                  trimsuffix(local.helm-default-values.elasticsearch.master.resources.requests.memory, local.k8s-memory-unit) / 2 * local.tshirt-size-index
+                ),
+                local.k8s-memory-unit
+              )
+            }
+          }
+        }
+        data = {
+          heap_size = format(
+            "%d%s", ceil(
+              trimsuffix(local.helm-default-values.elasticsearch.data.heapSize, local.jvm-heap-unit) +
+              trimsuffix(local.helm-default-values.elasticsearch.data.heapSize, local.jvm-heap-unit) / 2 * local.tshirt-size-index
+            ),
+            local.jvm-heap-unit
+          )
+          resources = {
+            limits = {
+              memory = format(
+                "%d%s", ceil(
+                  trimsuffix(local.helm-default-values.elasticsearch.data.resources.limits.memory, local.k8s-memory-unit) +
+                  trimsuffix(local.helm-default-values.elasticsearch.data.resources.limits.memory, local.k8s-memory-unit) / 2 * local.tshirt-size-index
+                ),
+                local.k8s-memory-unit
+              )
+            }
+            requests = {
+              cpu = format(
+                "%d%s", ceil(
+                  trimsuffix(local.helm-default-values.elasticsearch.data.resources.requests.cpu, local.k8s-cpu-unit) +
+                  trimsuffix(local.helm-default-values.elasticsearch.data.resources.requests.cpu, local.k8s-cpu-unit) / 2 * local.tshirt-size-index
+                ),
+                local.k8s-cpu-unit
+              )
+              memory = format(
+                "%d%s", ceil(
+                  trimsuffix(local.helm-default-values.elasticsearch.data.resources.requests.memory, local.k8s-memory-unit) +
+                  trimsuffix(local.helm-default-values.elasticsearch.data.resources.requests.memory, local.k8s-memory-unit) / 2 * local.tshirt-size-index
+                ),
+                local.k8s-memory-unit
+              )
+            }
+          }
+        }
+      }
+
+      memcached = {
+        resources = {
+          limits = {
+            memory = format(
+              "%d%s", ceil(
+                trimsuffix(local.helm-default-values.memcached.resources.limits.memory, local.k8s-memory-unit) +
+                trimsuffix(local.helm-default-values.memcached.resources.limits.memory, local.k8s-memory-unit) / 2 * local.tshirt-size-index
+              ),
+              local.k8s-memory-unit
+            )
+          }
+          requests = {
+            cpu = format(
+              "%d%s", ceil(
+                trimsuffix(local.helm-default-values.memcached.resources.requests.cpu, local.k8s-cpu-unit) +
+                trimsuffix(local.helm-default-values.memcached.resources.requests.cpu, local.k8s-cpu-unit) / 2 * local.tshirt-size-index
+              ),
+              local.k8s-cpu-unit
+            )
+            memory = format(
+              "%d%s", ceil(
+                trimsuffix(local.helm-default-values.memcached.resources.requests.memory, local.k8s-memory-unit) +
+                trimsuffix(local.helm-default-values.memcached.resources.requests.memory, local.k8s-memory-unit) / 2 * local.tshirt-size-index
+              ),
+              local.k8s-memory-unit
+            )
+          }
+        }
+      }
+
       mysql = {
         disk_name          = google_compute_disk.mysql-disk.name
         disk_size          = google_compute_disk.mysql-disk.size
         disk_storage_class = google_compute_disk.mysql-disk.type == "pd-ssd" ? "ssd-retain" : "standard-retain"
+        innodb_buffer_pool_size = format(
+          "%d%s", ceil(
+            trimsuffix(local.helm-default-values.mysql.mysql.innodbBufferPoolSize, local.mysql-memory-unit) +
+            1024 * local.tshirt-size-index
+          ),
+          local.mysql-memory-unit
+        )
+        resources = {
+          limits = {
+            memory = format(
+              "%d%s", ceil(
+                trimsuffix(local.helm-default-values.mysql.mysql.resources.limits.memory, local.k8s-memory-unit) +
+                1024 * local.tshirt-size-index
+              ),
+              local.k8s-memory-unit
+            )
+          }
+          requests = {
+            cpu = format(
+              "%d%s", ceil(
+                trimsuffix(local.helm-default-values.mysql.mysql.resources.requests.cpu, local.k8s-cpu-unit) +
+                trimsuffix(local.helm-default-values.mysql.mysql.resources.requests.cpu, local.k8s-cpu-unit) / 2 * local.tshirt-size-index
+              ),
+              local.k8s-cpu-unit
+            )
+            memory = format(
+              "%d%s", ceil(
+                trimsuffix(local.helm-default-values.mysql.mysql.resources.limits.memory, local.k8s-memory-unit) +
+                1024 * local.tshirt-size-index
+              ),
+              local.k8s-memory-unit
+            )
+          }
+        }
       }
 
       ft_catalog = {
@@ -93,8 +301,8 @@ resource "local_file" "helm_pim_config" {
 
 resource "null_resource" "helm_release_pim" {
   triggers = {
-    values             = filebase64("./values.yaml")
-    tf-helm-pim-values = local_file.helm_pim_config.content_base64
+    tf-helm-pim-values-yaml = sha256(local_file.helm_pim_config.content)
+    values-override         = fileexists(trimspace(var.chart_values_override_path)) ? file(var.chart_values_override_path) : ""
   }
 
   depends_on = [
@@ -111,7 +319,7 @@ yq w -i ${path.module}/pim/Chart.yaml appVersion ${var.pim_version}
 helm3 repo add akeneo-charts gs://akeneo-charts/ 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
 helm3 dependencies update ${path.module}/pim/ 2>&1 | grep -v "skipping loading invalid entry"; test $${PIPESTATUS[0]} -eq 0
 export KUBECONFIG="${local_file.kubeconfig.filename}"
-helm3 upgrade --atomic --cleanup-on-fail --history-max 5 --create-namespace --wait --install --timeout 20m ${local.pfid} --namespace ${local.pfid} ${path.module}/pim/ -f tf-helm-pim-values.yaml -f values.yaml
+helm3 upgrade --atomic --cleanup-on-fail --history-max 5 --create-namespace --wait --install --timeout 20m ${local.pfid} --namespace ${local.pfid} ${path.module}/pim/ -f ${local_file.helm_pim_config.filename} -f ${var.chart_values_override_path}
 EOF
   }
 }
