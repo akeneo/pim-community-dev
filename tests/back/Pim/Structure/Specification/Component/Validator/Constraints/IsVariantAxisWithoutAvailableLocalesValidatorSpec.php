@@ -10,6 +10,7 @@ use Akeneo\Pim\Structure\Component\Validator\Constraints\IsVariantAxisWithoutAva
 use Akeneo\Pim\Structure\Component\Validator\Constraints\IsVariantAxisWithoutAvailableLocalesValidator;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -51,10 +52,29 @@ class IsVariantAxisWithoutAvailableLocalesValidatorSpec extends ObjectBehavior
         IsVariantAxisWithoutAvailableLocales $constraint,
         ExecutionContextInterface $context,
     ) {
-        $attributeIsAFamilyVariantAxis->execute('code')->shouldNotBeCalled();
+        $attributeIsAFamilyVariantAxis->execute(Argument::any())->shouldNotBeCalled();
         $context->buildViolation($constraint->message)->shouldNotBeCalled();
 
         $this->validate('non attribute', $constraint);
+    }
+
+    /**
+     * Integration test to validate an attribute with invalid code (integer or null) will fail without a check on code type
+     * @see GlobalConstraintsIntegration testCodeIsNotBlank
+     * @see DataTypesIntegration testCodeIsString
+     */
+    function it_does_nothing_on_attribute_without_code(
+        AttributeIsAFamilyVariantAxis $attributeIsAFamilyVariantAxis,
+        IsVariantAxisWithoutAvailableLocales $constraint,
+        AttributeInterface $attribute,
+        ExecutionContextInterface $context,
+    ) {
+        $attribute->getCode()->willReturn(null);
+
+        $attributeIsAFamilyVariantAxis->execute(Argument::any())->shouldNotBeCalled();
+        $context->buildViolation($constraint->message)->shouldNotBeCalled();
+
+        $this->validate($attribute, $constraint);
     }
 
     function it_does_not_create_any_violations_for_a_locale_specific_attribute_only(

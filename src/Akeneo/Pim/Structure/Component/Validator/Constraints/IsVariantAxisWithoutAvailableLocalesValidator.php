@@ -16,7 +16,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class IsVariantAxisWithoutAvailableLocalesValidator extends ConstraintValidator
 {
-    public function __construct(private AttributeIsAFamilyVariantAxis $attributeIsAFamilyVariantAxis) {}
+    public function __construct(private AttributeIsAFamilyVariantAxis $attributeIsAFamilyVariantAxis)
+    {
+    }
 
     /**
      * {@inheritdoc}
@@ -27,11 +29,11 @@ class IsVariantAxisWithoutAvailableLocalesValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, IsVariantAxisWithoutAvailableLocales::class);
         }
 
-        if (!$value instanceof AttributeInterface) {
+        if (!$value instanceof AttributeInterface || !is_string($value->getCode())) {
             return;
         }
 
-        $isLocaleSpecific = $value->getAvailableLocales()->count() > 0;
+        $isLocaleSpecific = \count($value->getAvailableLocales()) > 0;
         $isAFamilyVariantAxis = $this->attributeIsAFamilyVariantAxis->execute($value->getCode());
 
         if ($isAFamilyVariantAxis && $isLocaleSpecific) {
