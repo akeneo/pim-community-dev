@@ -17,10 +17,10 @@ workflows:
                   is_ee_built: false
                   requires:
                       - checkout_ce
-            - test_connectivity_front:
+            - test_front_connectivity:
                   requires:
                       - build_dev_ce
-            - test_connectivity_back:
+            - test_back_connectivity:
                   requires:
                       - build_dev_ce
             - test_marketplace_activate_e2e:
@@ -31,8 +31,8 @@ workflows:
                       - build_dev_ce
             - pull_request_success:
                   requires:
-                      - test_connectivity_front
-                      - test_connectivity_back
+                      - test_front_connectivity
+                      - test_back_connectivity
                       - test_back_data_migrations
 
     weekly_octopus_code_quality:
