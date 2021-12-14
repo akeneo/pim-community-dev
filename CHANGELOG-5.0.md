@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.63 (2021-12-14)
+
 ## Bug fixes
 
 - PIM-10204: Use catalog locale for option labels in simple/multi select attributes
