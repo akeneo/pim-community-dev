@@ -7,28 +7,23 @@ workflows:
             not:
                 equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
         jobs:
-            - checkout_ce:
+            - build_dev_optimized:
                   filters:
                       branches:
                           only:
                               - /CXP-.*/
-            - build_dev:
-                  name: build_dev_ce
-                  is_ee_built: false
-                  requires:
-                      - checkout_ce
             - test_front_connectivity:
                   requires:
-                      - build_dev_ce
+                      - build_dev_optimized
             - test_back_connectivity:
                   requires:
-                      - build_dev_ce
+                      - build_dev_optimized
             - test_marketplace_activate_e2e:
                   requires:
-                      - build_dev_ce
+                      - build_dev_optimized
             - test_back_data_migrations:
                   requires:
-                      - build_dev_ce
+                      - build_dev_optimized
             - pull_request_success:
                   requires:
                       - test_front_connectivity

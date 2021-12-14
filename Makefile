@@ -1,5 +1,5 @@
 DOCKER_COMPOSE = docker-compose
-NODE_RUN = $(DOCKER_COMPOSE) run -u node --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 -e PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome node
+NODE_RUN = $(DOCKER_COMPOSE) run --name $$(uuidgen | cut -c1-8) -u node --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 -e PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome node
 YARN_RUN = $(NODE_RUN) yarn
 PHP_RUN = $(DOCKER_COMPOSE) run -u www-data --rm php php
 PHP_EXEC = $(DOCKER_COMPOSE) exec -u www-data fpm php
@@ -28,9 +28,23 @@ node_modules:
 javascript-extensions:
 	$(YARN_RUN) run update-extensions
 
+.PHONY: measurement-build
+measurement-build:
+	$(YARN_RUN) measurement:build
+
+.PHONY: catalog-volume-monitoring-build
+catalog-volume-monitoring-build:
+	$(YARN_RUN) catalog-volume-monitoring:build
+
+.PHONY: process-tracker-build
+process-tracker-build:
+	$(YARN_RUN) process-tracker:build
+
 .PHONY: front-packages
 front-packages:
-	$(YARN_RUN) packages:build
+	$(YARN_RUN) dsm:build
+	$(YARN_RUN) shared:build
+	$(MAKE) measurement-build catalog-volume-monitoring-build process-tracker-build
 
 .PHONY: dsm
 dsm:

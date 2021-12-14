@@ -268,6 +268,142 @@ jobs:
                   paths:
                       - project
 
+    build_dev_optimized:
+        parameters:
+            path_to_front_packages:
+                type: string
+                default: front-packages
+        machine:
+            image: ubuntu-2004:202101-01
+        steps:
+            - checkout
+            - install_yq
+            - run:
+                  name: Remove MySQL port translation (see BH-664)
+                  command: yq delete --inplace docker-compose.yml services.mysql.ports
+            - run:
+                  name: Copy docker-compose.override.yml.dist
+                  command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
+            - run:
+                  name: Save the CE image as a tar
+                  command: |
+                      docker pull akeneo/pim-php-dev:6.0
+                      docker save -o php-pim-image.tar akeneo/pim-php-dev:6.0
+            - run:
+                  name: Setup tests results folder and log folder
+                  command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.cache/Cypress ~/.composer
+            - run:
+                  name: Creating cache key for JS and PHP dependencies
+                  command: |
+                      cat yarn.lock > ~/front-dependency.hash && date +%F >> ~/front-dependency.hash
+                      cat composer.json > ~/back-dependency.hash && date +%F >> ~/back-dependency.hash
+            - restore_cache:
+                  name: Restore cache - yarn and Cypress dependency cache
+                  keys:
+                      - frontend-dependency-cache-{{ checksum "~/front-dependency.hash" }}
+            - restore_cache:
+                  name: Restore cache - composer dependency cache
+                  keys:
+                      - backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}
+            - run:
+                  name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                  command: |
+                      sudo chown -R 1000:1000 ../project ~/.composer ~/.cache/
+            - run:
+                  name: Install back and front dependencies
+                  command: make -j --output-sync dependencies
+                  environment:
+                      YARN_REGISTRY: "http://registry.yarnpkg.com"
+            - run:
+                  name: Install assets
+                  command: make assets
+            - run:
+                  name: Build css
+                  command: make css
+            - run:
+                  name: Create hash for front packages
+                  # Adding date allows to invalidate the cache each new day, adding front package path avoid conflict between CE build and EE build
+                  command: |
+                      find front-packages/akeneo-design-system -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
+                      find front-packages/measurement -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/measurement.hash
+                      find front-packages/shared -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/shared.hash
+                      find front-packages/../src/Akeneo/Platform/Job/front/process-tracker -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/process-tracker.hash
+                      find front-packages/../src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/catalog-volume-monitoring.hash
+                      echo "$(date +%F) front-packages" | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/catalog-volume-monitoring.hash ~/process-tracker.hash
+            - run:
+                  name: Set directories owner to circleci
+                  command: sudo chown -R 1001:1001 .
+            - restore_cache:
+                  name: Restore front package DSM cache
+                  key: front-packages-dsm-{{ checksum "~/akeneo-design-system.hash" }}
+            - restore_cache:
+                  name: Restore front package measurement cache
+                  key: front-packages-measurement-{{ checksum "~/measurement.hash" }}
+            - restore_cache:
+                  name: Restore front package Shared cache
+                  key: front-packages-shared-{{ checksum "~/shared.hash" }}
+            - restore_cache:
+                  name: Restore micro frontend Process tracker cache
+                  key: micro-frontend-process-tracker-{{ checksum "~/process-tracker.hash" }}
+            - restore_cache:
+                  name: Restore micro-frontend Catalog Volume Monitoring cache
+                  key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}
+            - run:
+                  name: Set directories owner to docker
+                  command: sudo chown -R 1000:1000 ../project
+            - run:
+                  name: Build front-packages
+                  command: make front-packages
+            - run:
+                  name: Build Javascript
+                  command: make javascript-dev
+            - run:
+                  name: Change owner on project dir after installing when there is no cache
+                  command: sudo chmod -R 777 ../project ~/.cache ~/.composer
+            - save_cache:
+                  name: Save frontend dependency cache
+                  paths:
+                      - ~/.cache
+                  key: frontend-dependency-cache-{{ checksum "~/front-dependency.hash" }}
+            - save_cache:
+                  name: Save backend dependency cache
+                  paths:
+                      - ~/.composer
+                  key: backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}
+            - save_cache:
+                  name: Save front package DSM cache
+                  key: front-packages-dsm-{{ checksum "~/akeneo-design-system.hash" }}
+                  paths:
+                      - << parameters.path_to_front_packages >>/akeneo-design-system/
+            - save_cache:
+                  name: Save front package measurement cache
+                  key: front-packages-measurement-{{ checksum "~/measurement.hash" }}
+                  paths:
+                      - << parameters.path_to_front_packages >>/measurement/
+            - save_cache:
+                  name: Save front package Shared cache
+                  key: front-packages-shared-{{ checksum "~/shared.hash" }}
+                  paths:
+                      - << parameters.path_to_front_packages >>/shared/
+            - save_cache:
+                  name: Save micro frontend Process Tracker cache
+                  key: micro-frontend-process-tracker-{{ checksum "~/process-tracker.hash" }}
+                  paths:
+                      - front-packages/../src/Akeneo/Platform/Job/front/process-tracker
+            - save_cache:
+                  name: Save micro-frontend Catalog Volume Monitoring cache
+                  key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}
+                  paths:
+                      - front-packages/../src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front
+            - run:
+                  name: Delete front-packages
+                  command: rm -rf front-packages
+            - persist_to_workspace:
+                  root: ~/
+                  paths:
+                      - project
+
+
     build_prod:
         parameters:
             is_ee_built:
