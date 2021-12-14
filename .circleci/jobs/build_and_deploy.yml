@@ -311,7 +311,9 @@ jobs:
                       sudo chown -R 1000:1000 ../project ~/.composer ~/.cache/
             - run:
                   name: Install back and front dependencies
-                  command: make -j --output-sync dependencies
+                  command: |
+                    docker-compose run --rm php echo "warm up docker network"
+                    make -j --output-sync dependencies
                   environment:
                       YARN_REGISTRY: "http://registry.yarnpkg.com"
             - run:
