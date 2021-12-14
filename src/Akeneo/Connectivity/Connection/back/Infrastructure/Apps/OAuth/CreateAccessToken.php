@@ -57,25 +57,15 @@ class CreateAccessToken implements CreateAccessTokenInterface
      */
     public function create(string $appId, string $code): array
     {
-        $client = $this->getClient($appId);
-        $authCode = $this->getAuthCode($code);
+        $client = $this->clientProvider->findClientByAppId($appId);
+        if (null === $client) {
+            throw new \InvalidArgumentException('No client found with the given client id.');
+        }
 
-        $allScopesList = ScopeList::fromScopes([]);
-
-        $jwt = null;
-
-        if (ScopeList::fromScopeString($authCode->getScope())->hasScope(AuthenticationScope::SCOPE_OPENID)) {
-            /** @var UserInterface|mixed */
-            $pimUser = $authCode->getData();
-            if (false === $pimUser instanceof UserInterface) {
-                throw new \LogicException();
-            }
-
-            $appAuthenticationUser = $this->appAuthenticationUserProvider->getAppAuthenticationUser($appId, $pimUser->getId());
-
-            $allScopesList = $allScopesList->addScopes($appAuthenticationUser->getConsentedAuthenticationScopes());
-
-            $jwt = $this->createJsonWebToken->create($appId, $appAuthenticationUser);
+        /** @var IOAuth2AuthCode|null $authCode */
+        $authCode = $this->storage->getAuthCode($code);
+        if (null === $authCode) {
+            throw new \InvalidArgumentException('Unknown authorization code.');
         }
 
         $token = $this->randomCodeGenerator->generate();
@@ -87,40 +77,15 @@ class CreateAccessToken implements CreateAccessTokenInterface
         $this->storage->createAccessToken($token, $client, $appUser, null, $authorizationScopesList->toScopeString());
         $this->storage->markAuthCodeAsUsed($code);
 
-        $allScopesList = $allScopesList->addScopes($authorizationScopesList);
-
         $accessToken = [
             'access_token' => $token,
             'token_type' => 'bearer',
-            'scope' => $allScopesList->toScopeString()
+            'scope' => $authorizationScopesList->toScopeString()
         ];
 
-        if (null !== $jwt) {
-            $accessToken['id_token'] = $jwt;
-        }
+        $accessToken = $this->appendOpenIdData($authCode, $appId, $accessToken);
 
         return $accessToken;
-    }
-
-    private function getClient(string $appId): Client
-    {
-        $client = $this->clientProvider->findClientByAppId($appId);
-        if (null === $client) {
-            throw new \InvalidArgumentException('No client found with the given client id.');
-        }
-
-        return $client;
-    }
-
-    private function getAuthCode(string $code): IOAuth2AuthCode
-    {
-        /** @var IOAuth2AuthCode|null $authCode */
-        $authCode = $this->storage->getAuthCode($code);
-        if (null === $authCode) {
-            throw new \InvalidArgumentException('Unknown authorization code.');
-        }
-
-        return $authCode;
     }
 
     private function getAppUser(string $appId): UserInterface
@@ -135,5 +100,28 @@ class CreateAccessToken implements CreateAccessTokenInterface
         }
 
         return $appUser;
+    }
+
+    private function appendOpenIdData(IOAuth2AuthCode $authCode, string $appId, array $accessToken): array
+    {
+        if (ScopeList::fromScopeString($authCode->getScope())->hasScope(AuthenticationScope::SCOPE_OPENID)) {
+            /** @var UserInterface|mixed */
+            $pimUser = $authCode->getData();
+            if (false === $pimUser instanceof UserInterface) {
+                throw new \LogicException();
+            }
+
+            $appAuthenticationUser = $this->appAuthenticationUserProvider->getAppAuthenticationUser($appId, $pimUser->getId());
+
+            $authenticationScopes = $appAuthenticationUser->getConsentedAuthenticationScopes();
+
+            $accessToken['id_token'] = $this->createJsonWebToken->create($appId, $appAuthenticationUser);
+
+            $existingScopesList = ScopeList::fromScopeString($accessToken['scope']);
+            $newScopeList = $existingScopesList->addScopes($authenticationScopes);
+            $accessToken['scope'] = $newScopeList->toScopeString();
+        }
+
+        return $accessToken;
     }
 }
