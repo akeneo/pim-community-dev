@@ -7,6 +7,18 @@ Akeneo\Tool\Bundle\ApiBundle\Entity\AccessToken:
             id: true
             generator:
                 strategy: AUTO
+        token:
+            type: string
+            column: token
+            unique: true
+        expiresAt:
+            type: integer
+            column: expires_at
+            nullable: true
+        scope:
+            type: string
+            column: scope
+            nullable: true
     manyToOne:
         user:
             targetEntity: Akeneo\UserManagement\Component\Model\UserInterface

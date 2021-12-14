@@ -32,6 +32,8 @@ doctrine:
                 alias: Gedmo
                 prefix: Gedmo\Tree\Entity
                 dir: '%kernel.project_dir%/vendor/gedmo/doctrine-extensions/src/Tree/Entity'
+            FOSOAuthServerBundle: 
+                mapping: false
 
 services:
     doctrine.result_cache_provider:

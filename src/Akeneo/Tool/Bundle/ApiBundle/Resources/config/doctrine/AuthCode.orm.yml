@@ -7,6 +7,21 @@ Akeneo\Tool\Bundle\ApiBundle\Entity\AuthCode:
             id: true
             generator:
                 strategy: AUTO
+        token:
+            type: string
+            column: token
+            unique: true
+        redirectUri:
+            type: text
+            column: redirect_uri
+        expiresAt:
+            type: integer
+            column: expires_at
+            nullable: true
+        scope:
+            type: text
+            column: scope
+            nullable: true
     manyToOne:
         client:
             targetEntity: Akeneo\Tool\Bundle\ApiBundle\Entity\Client
