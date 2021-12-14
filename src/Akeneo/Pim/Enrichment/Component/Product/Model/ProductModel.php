@@ -850,7 +850,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritDoc}
      */
-    public function getCategoriesForThisLevel(): Collection
+    public function getCategoriesForCurrentLevel(): Collection
     {
         return new ArrayCollection($this->categories->toArray());
     }

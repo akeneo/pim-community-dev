@@ -1330,7 +1330,7 @@ class ProductModelSpec extends ObjectBehavior
         $this->addCategory($categoryB);
         $this->addCategory($categoryC);
 
-        $categories = $this->getCategoriesForThisLevel();
+        $categories = $this->getCategoriesForCurrentLevel();
         $categories->shouldBeAnInstanceOf(ArrayCollection::class);
         $categories->toArray()->shouldBe([$categoryB, $categoryC]);
     }

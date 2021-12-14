@@ -139,5 +139,5 @@ interface ProductModelInterface extends
     /**
      * Return the categories for the current level
      */
-    public function getCategoriesForThisLevel(): Collection;
+    public function getCategoriesForCurrentLevel(): Collection;
 }
