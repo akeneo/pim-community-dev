@@ -20,7 +20,6 @@ class AkeneoJobExtension extends Extension
 
         $loader->load('controllers.yml');
         $loader->load('queries.yml');
-        $loader->load('registries.yml');
         $loader->load('services.yml');
 
         if ('test' === $container->getParameter('kernel.environment')) {

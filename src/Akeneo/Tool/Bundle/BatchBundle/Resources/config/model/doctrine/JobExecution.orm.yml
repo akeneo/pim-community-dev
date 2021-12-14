@@ -63,6 +63,21 @@ Akeneo\Tool\Component\Batch\Model\JobExecution:
         rawParameters:
             type: json
             column: raw_parameters
+        isStoppable:
+            type: boolean
+            column: is_stoppable
+            options:
+                default: 0
+        stepCount:
+            type: integer
+            column: step_count
+            options:
+                default: 1
+        isVisible:
+            type: boolean
+            column: is_visible
+            options:
+                default: 1
     oneToMany:
         stepExecutions:
             targetEntity: Akeneo\Tool\Component\Batch\Model\StepExecution

@@ -1,12 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Specification\Akeneo\Platform\Bundle\ImportExportBundle\Query;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Query\GetLastOperationsInterface;
-use Akeneo\Platform\Bundle\ImportExportBundle\Registry\NotVisibleJobsRegistry;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Query\Expression\ExpressionBuilder;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Result;
@@ -15,9 +15,9 @@ use Prophecy\Argument;
 
 class GetLastOperationsSpec extends ObjectBehavior
 {
-    function let(Connection $connection, NotVisibleJobsRegistry $notVisibleJobs)
+    function let(Connection $connection)
     {
-        $this->beConstructedWith($connection, $notVisibleJobs);
+        $this->beConstructedWith($connection);
     }
 
     function it_is_a_last_operations_query()
@@ -27,14 +27,12 @@ class GetLastOperationsSpec extends ObjectBehavior
 
     function it_executes_the_query_builder(
         $connection,
-        $notVisibleJobs,
         UserInterface $user,
         QueryBuilder $qb,
         ExpressionBuilder $expr,
         Result $result
     ) {
         $lastOperations = ['an_operation', 'another_one'];
-        $notVisibleJobs->getCodes()->willReturn(['not_visible_job', 'again']);
         $connection->createQueryBuilder()->willReturn($qb);
         $user->getUserIdentifier()->shouldBeCalled()->willReturn('julia');
 
@@ -61,13 +59,11 @@ class GetLastOperationsSpec extends ObjectBehavior
     }
 
     function it_returns_the_query_builder(
-        $notVisibleJobs,
         $connection,
         UserInterface $user,
         QueryBuilder $qb,
         ExpressionBuilder $expr
     ) {
-        $notVisibleJobs->getCodes()->willReturn(['not_visible_job', 'again']);
         $connection->createQueryBuilder()->willReturn($qb);
         $user->getUserIdentifier()->willReturn('julia');
 
@@ -83,6 +79,8 @@ class GetLastOperationsSpec extends ObjectBehavior
         $qb->setMaxResults(Argument::cetera())->willReturn($qb);
         $qb->setParameters(Argument::cetera())->willReturn($qb);
 
+        $expr->isNull(Argument::cetera())->willReturn($expr);
+        $expr->orX(Argument::cetera())->willReturn($expr);
         $expr->eq(Argument::cetera())->willReturn('eq');
         $expr->notIn(Argument::cetera())->willReturn('notIn');
 

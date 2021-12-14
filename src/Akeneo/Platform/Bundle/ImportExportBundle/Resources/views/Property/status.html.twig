@@ -1,5 +1,0 @@
-{% set status = 'success' %}
-{% set status = record.getValue('warningCount') is not null and record.getValue('warningCount') != 0 ? 'warning' : status  %}
-{% set status = 'FAILED' == record.getValue('exitStatus').exitCode ? 'important' : status %}
-
-<span class="AknBadge AknBadge--{{ status }}">{{ value|trans }}</span>

@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Platform\Job\Infrastructure\Query;
 
-use Akeneo\Platform\Job\Domain\Query\FindJobTypesInterface;
-use Akeneo\Platform\Job\Infrastructure\Registry\NotVisibleJobsRegistry;
+use Akeneo\Platform\Job\Application\SearchJobExecution\FindJobTypesInterface;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -14,32 +15,20 @@ use Doctrine\DBAL\Connection;
 class FindJobTypes implements FindJobTypesInterface
 {
     private Connection $connection;
-    private NotVisibleJobsRegistry $notVisibleJobsRegistry;
 
-    public function __construct(Connection $connection, NotVisibleJobsRegistry $notVisibleJobsRegistry)
+    public function __construct(Connection $connection)
     {
         $this->connection = $connection;
-        $this->notVisibleJobsRegistry = $notVisibleJobsRegistry; #TODO RAC-1013
     }
 
     public function visible(): array
     {
-        $notVisibleJobsCodes = $this->notVisibleJobsRegistry->getCodes();
-
         $sql = <<<SQL
-SELECT DISTINCT type FROM akeneo_batch_job_instance WHERE code NOT IN (:not_visible_jobs_codes);
+SELECT DISTINCT type FROM akeneo_batch_job_execution job_execution
+INNER JOIN akeneo_batch_job_instance job_instance ON job_instance.id = job_execution.job_instance_id
+WHERE job_execution.is_visible = 1;
 SQL;
 
-        $jobTypes = $this->connection->executeQuery(
-            $sql,
-            [
-                'not_visible_jobs_codes' => $notVisibleJobsCodes,
-            ],
-            [
-                'not_visible_jobs_codes' => Connection::PARAM_STR_ARRAY,
-            ],
-        )->fetchFirstColumn();
-
-        return $jobTypes;
+        return $this->connection->executeQuery($sql)->fetchFirstColumn();
     }
 }

@@ -81,7 +81,7 @@ const getLinkColor = (level: Level, inline: boolean) => {
   }
 };
 
-const Container = styled.div<{level: Level; inline: boolean} & AkeneoThemedProps>`
+const Container = styled.div<{level: Level; inline: boolean; sticky?: number} & AkeneoThemedProps>`
   display: flex;
   font-weight: 400;
   padding-right: 20px;
@@ -92,6 +92,14 @@ const Container = styled.div<{level: Level; inline: boolean} & AkeneoThemedProps
     css`
       min-height: 44px;
       background-color: ${getBackgroundColor(props.level)};
+    `}
+
+  ${({sticky}) =>
+    undefined !== sticky &&
+    css`
+      position: sticky;
+      top: ${sticky}px;
+      z-index: 1;
     `}
 `;
 
@@ -131,6 +139,11 @@ type HelperProps = {
    * Level of the helper defining its color and icon.
    */
   level?: Level;
+
+  /**
+   * When set, defines the top position of the Helper.
+   */
+  sticky?: number;
 
   /**
    * Icon to display. If not provided, the Helper will display the corresponding level Icon.

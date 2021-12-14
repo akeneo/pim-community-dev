@@ -90,7 +90,7 @@ const ItemCollection = React.forwardRef<HTMLDivElement, ItemCollectionProps>(
     useAutoFocus(firstItemRef);
 
     return (
-      <ItemCollectionContainer {...rest} ref={containerRef}>
+      <ItemCollectionContainer role="listbox" {...rest} ref={containerRef}>
         {childrenCount
           ? decoratedChildren
           : noResultIllustration &&

@@ -66,6 +66,11 @@ Akeneo\Tool\Component\Batch\Model\StepExecution:
             column: warning_count
             options:
                 default: 0
+        isTrackable:
+            type: boolean
+            column: is_trackable
+            options:
+                default: false
     oneToMany:
         warnings:
             targetEntity: Akeneo\Tool\Component\Batch\Model\Warning

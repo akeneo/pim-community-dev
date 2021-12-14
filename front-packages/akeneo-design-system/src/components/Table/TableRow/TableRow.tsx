@@ -1,4 +1,13 @@
-import React, {ReactNode, Ref, SyntheticEvent, HTMLAttributes, forwardRef, useContext, DragEvent} from 'react';
+import React, {
+  ReactNode,
+  Ref,
+  SyntheticEvent,
+  HTMLAttributes,
+  forwardRef,
+  useContext,
+  DragEvent,
+  MouseEvent,
+} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {Checkbox} from '../../../components';
@@ -110,7 +119,7 @@ type TableRowProps = Override<
     /**
      * Function called when the user clicks on the row
      */
-    onClick?: (event: SyntheticEvent) => void;
+    onClick?: (event: MouseEvent<HTMLTableRowElement>) => void;
 
     /**
      * @private

@@ -60,7 +60,7 @@ class SimpleJobLauncherSpec extends ObjectBehavior
         $jobRegistry->get('job_instance_name')->willReturn($job);
         $jobParametersFactory->create($job, ['foo' => 'bar', 'baz' => 'foz'])->willReturn($jobParameters);
         $jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution'])->willReturn($constraintViolationList);
-        $jobRepository->createJobExecution($jobInstance, $jobParameters)->willReturn($jobExecution);
+        $jobRepository->createJobExecution($job, $jobInstance, $jobParameters)->willReturn($jobExecution);
         $jobExecution->setUser('julia')->shouldBeCalled();
         $jobRepository->updateJobExecution($jobExecution)->shouldBeCalled();
 

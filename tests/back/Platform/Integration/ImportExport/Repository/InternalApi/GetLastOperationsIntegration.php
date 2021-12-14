@@ -12,8 +12,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 
 class GetLastOperationsIntegration extends TestCase
 {
-    /** @var JobLauncher */
-    protected $jobLauncher;
+    protected JobLauncher $jobLauncher;
 
     public function testGetLastOperationsInTermsOfUser(): void
     {
@@ -160,7 +159,7 @@ SQL;
     private function addWarningToStep(StepExecution $step, $number): void
     {
         $connection = $this->get('database_connection');
-            $sql = <<<SQL
+        $sql = <<<SQL
 UPDATE akeneo_batch_step_execution 
 SET warning_count = :warningCount
 WHERE id = :stepId

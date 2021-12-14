@@ -13,6 +13,7 @@ const StyledMainNavigationItem = styled(MainNavigationItem)<{align?: 'bottom'; f
       position: absolute;
       bottom: 0;
     `}
+
   ${({disabled, freeTrialEnabled}) =>
     disabled &&
     freeTrialEnabled &&

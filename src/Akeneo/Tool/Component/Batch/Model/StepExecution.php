@@ -89,6 +89,8 @@ class StepExecution
     /** @var array */
     private $trackingData = self::TRACKING_DATA_DEFAULT;
 
+    private bool $isTrackable;
+
     /**
      * Constructor with mandatory properties.
      *
@@ -107,6 +109,7 @@ class StepExecution
 
         $this->failureExceptions = [];
         $this->errors = [];
+        $this->isTrackable = false;
 
         $this->startTime = new \DateTime();
     }
@@ -604,6 +607,16 @@ class StepExecution
     public function setTrackingData(array $trackingData): void
     {
         $this->trackingData = $trackingData;
+    }
+
+    public function isTrackable(): bool
+    {
+        return $this->isTrackable;
+    }
+
+    public function setIsTrackable(bool $trackable): void
+    {
+        $this->isTrackable = $trackable;
     }
 
     /**

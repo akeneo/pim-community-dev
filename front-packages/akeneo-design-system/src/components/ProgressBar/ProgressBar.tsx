@@ -1,4 +1,4 @@
-import React, {Ref} from 'react';
+import React, {forwardRef, HTMLAttributes, Ref} from 'react';
 import styled, {css, keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor, getColorForLevel, getFontSize, Level} from '../../theme';
 import {useId} from '../../hooks';
@@ -22,7 +22,7 @@ const Header = styled.div`
 `;
 
 const Title = styled.div`
-  color: ${getColor('grey140')};
+  color: ${getColor('grey', 140)};
   padding-right: 20px;
   white-space: nowrap;
   overflow: hidden;
@@ -37,7 +37,7 @@ const Title = styled.div`
 `;
 
 const ProgressLabel = styled.div`
-  color: ${getColor('grey120')};
+  color: ${getColor('grey', 120)};
   flex-grow: 0;
   flex-basis: auto;
   flex-shrink: 1;
@@ -48,7 +48,7 @@ const ProgressLabel = styled.div`
 `;
 
 const ProgressBarBackground = styled.div<{size: ProgressBarSize} & AkeneoThemedProps>`
-  background: ${getColor('grey60')};
+  background: ${getColor('grey', 60)};
   height: ${props => getHeightFromSize(props.size)};
   overflow: hidden;
   position: relative;
@@ -126,7 +126,7 @@ type ProgressBarProps = {
   percent: ProgressBarPercent;
 
   /**
-   * Whether the style of the progress bar should be light
+   * Whether the style of the progress bar should be light.
    */
   light?: boolean;
 
@@ -144,12 +144,12 @@ type ProgressBarProps = {
    * Define the size of the progress bar.
    */
   size?: ProgressBarSize;
-} & React.HTMLAttributes<HTMLDivElement>;
+} & HTMLAttributes<HTMLDivElement>;
 
 /**
  * Progress bar to provide users with feedback on what is going on.
  */
-const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
+const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
   (
     {level, percent, title, progressLabel, light = false, size = 'small', ...rest}: ProgressBarProps,
     forwardedRef: Ref<HTMLDivElement>
@@ -199,3 +199,4 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
 );
 
 export {ProgressBar};
+export type {ProgressBarPercent};
