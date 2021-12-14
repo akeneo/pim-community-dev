@@ -24,7 +24,7 @@ class CreateAsymmetricKeysCommand extends Command
 
     protected function configure(): void
     {
-        $this->setDescription('Create a public/private key couple and store it into database');
+        $this->setDescription('Create or update a public/private key couple to be used to sign openid token and store it into database');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
