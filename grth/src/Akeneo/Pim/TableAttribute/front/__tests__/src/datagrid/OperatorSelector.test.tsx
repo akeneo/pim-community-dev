@@ -2,7 +2,6 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, screen, fireEvent} from '@testing-library/react';
 import {OperatorSelector} from '../../../src/datagrid';
-import {defaultFilterValuesMapping} from '../../factories';
 
 describe('OperatorSelector', () => {
   it('should display current operator', () => {
@@ -11,7 +10,6 @@ describe('OperatorSelector', () => {
         dataType={'number'}
         value={'>='}
         onChange={jest.fn()}
-        filterValuesMapping={defaultFilterValuesMapping}
       />
     );
 
@@ -25,7 +23,6 @@ describe('OperatorSelector', () => {
         dataType={'number'}
         value={'>='}
         onChange={handleChange}
-        filterValuesMapping={defaultFilterValuesMapping}
       />
     );
 

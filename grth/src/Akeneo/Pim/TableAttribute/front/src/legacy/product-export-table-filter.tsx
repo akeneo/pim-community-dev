@@ -11,7 +11,7 @@ import {
   PendingTableProductExportFilterValue,
   ProductExportBuilderFilter,
 } from '../datagrid/ProductExportBuilderFilter';
-import {FilterValuesProvider} from './filter-values-provider';
+import {ValuesFilterMapping} from '../datagrid';
 
 type TemplateContext = {
   attribute: Attribute;
@@ -33,7 +33,7 @@ class ProductExportTableFilter extends AbstractFilter {
     }
 
     this.element = document.createElement('div');
-    const filterValuesMapping = FilterValuesProvider.getMapping();
+    const filterValuesMapping = ValuesFilterMapping;
     const {attribute} = templateContext;
     const handleChange = this.updateState.bind(this);
 

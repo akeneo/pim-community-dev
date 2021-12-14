@@ -1,6 +1,5 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {defaultFilterValuesMapping} from '../../factories';
 import {DatagridTableFilter} from '../../../src/datagrid';
 import {act, fireEvent, screen} from '@testing-library/react';
 
@@ -55,7 +54,6 @@ describe('DatagridTableFilter', () => {
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
-        filterValuesMapping={defaultFilterValuesMapping}
         initialDataFilter={{}}
       />
     );
@@ -72,7 +70,6 @@ describe('DatagridTableFilter', () => {
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
-        filterValuesMapping={defaultFilterValuesMapping}
         initialDataFilter={{
           value: 10000,
           row: 'salt',
@@ -102,7 +99,6 @@ describe('DatagridTableFilter', () => {
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
-        filterValuesMapping={defaultFilterValuesMapping}
         initialDataFilter={{
           value: 10000,
           row: 'salt',
@@ -135,7 +131,6 @@ describe('DatagridTableFilter', () => {
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
-        filterValuesMapping={defaultFilterValuesMapping}
         initialDataFilter={{
           value: 10000,
           row: 'salt',
@@ -165,7 +160,6 @@ describe('DatagridTableFilter', () => {
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
-        filterValuesMapping={defaultFilterValuesMapping}
         initialDataFilter={{}}
       />
     );
@@ -196,7 +190,6 @@ describe('DatagridTableFilter', () => {
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
-        filterValuesMapping={defaultFilterValuesMapping}
         initialDataFilter={{}}
       />
     );
@@ -231,7 +224,6 @@ describe('DatagridTableFilter', () => {
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
-        filterValuesMapping={defaultFilterValuesMapping}
         initialDataFilter={{}}
       />
     );
@@ -262,7 +254,6 @@ describe('DatagridTableFilter', () => {
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
-        filterValuesMapping={defaultFilterValuesMapping}
         initialDataFilter={{}}
       />
     );
@@ -292,7 +283,6 @@ describe('DatagridTableFilter', () => {
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
-        filterValuesMapping={defaultFilterValuesMapping}
         initialDataFilter={{}}
       />
     );

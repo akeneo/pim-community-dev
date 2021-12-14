@@ -59,6 +59,7 @@ type Attribute = {
   filter_types: {[type: string]: string};
   is_locale_specific: boolean;
   meta: {id: AttributeId} & {[key: string]: any};
+  table_configuration: any; //TODO
 };
 
 const validateLocalizableScopableAttribute = (

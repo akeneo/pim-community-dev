@@ -1,26 +1,32 @@
-import {
-  default as BooleanFilterValue,
-  useValueRenderer as BooleanUseValueRenderer,
-} from '../../src/datagrid/FilterValues/BooleanFilterValue';
-import {
-  default as StringFilterValue,
-  useValueRenderer as StringUseValueRenderer,
-} from '../../src/datagrid/FilterValues/StringFilterValue';
-import {
-  default as NumberFilterValue,
-  useValueRenderer as NumberUseValueRenderer,
-} from '../../src/datagrid/FilterValues/NumberFilterValue';
+import {default as BooleanFilterValue, useValueRenderer as BooleanUseValueRenderer,} from './BooleanFilterValue';
+import {default as StringFilterValue, useValueRenderer as StringUseValueRenderer,} from './StringFilterValue';
+import {default as NumberFilterValue, useValueRenderer as NumberUseValueRenderer,} from './NumberFilterValue';
 import {
   default as MultiSelectFilterValue,
   useValueRenderer as MultiSelectUseValueRenderer,
-} from '../../src/datagrid/FilterValues/MultiSelectFilterValue';
-import {
-  default as EmptyFilterValue,
-  useValueRenderer as EmptyUseValueRenderer,
-} from '../../src/datagrid/FilterValues/EmptyFilterValue';
-import {FilterValuesMapping} from '../../src/datagrid';
+} from './MultiSelectFilterValue';
+import {default as EmptyFilterValue, useValueRenderer as EmptyUseValueRenderer,} from './EmptyFilterValue';
+import {ColumnCode, FilterValue} from "../../models";
 
-export const defaultFilterValuesMapping: FilterValuesMapping = {
+type DatagridTableFilterValueProps = {
+  value?: FilterValue;
+  onChange: (value?: FilterValue) => void;
+  columnCode: ColumnCode;
+};
+
+export type TableFilterValueRenderer = React.FC<DatagridTableFilterValueProps>;
+export type FilteredValueRenderer = () => (value: FilterValue, columnCode: ColumnCode) => string;
+
+export type FilterValuesMapping = {
+  [data_type: string]: {
+    [operator: string]: {
+      default: TableFilterValueRenderer;
+      useValueRenderer: FilteredValueRenderer;
+    };
+  };
+};
+
+const ValuesFilterMapping: FilterValuesMapping = {
   text: {
     'STARTS WITH': {default: StringFilterValue, useValueRenderer: StringUseValueRenderer},
     'ENDS WITH': {default: StringFilterValue, useValueRenderer: StringUseValueRenderer},
@@ -52,5 +58,7 @@ export const defaultFilterValuesMapping: FilterValuesMapping = {
     'NOT EMPTY': {default: EmptyFilterValue, useValueRenderer: EmptyUseValueRenderer},
     IN: {default: MultiSelectFilterValue, useValueRenderer: MultiSelectUseValueRenderer},
     'NOT IN': {default: MultiSelectFilterValue, useValueRenderer: MultiSelectUseValueRenderer},
-  },
+  }
 };
+
+export {ValuesFilterMapping};

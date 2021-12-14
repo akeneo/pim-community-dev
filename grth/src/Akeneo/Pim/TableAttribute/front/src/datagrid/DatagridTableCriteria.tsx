@@ -1,23 +1,22 @@
 import {ColumnCode, ColumnDefinition, isFilterValid, PendingTableFilterValue} from '../models';
 import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import React from 'react';
-import {FilterValuesMapping} from './FilterValues';
+import {ValuesFilterMapping} from "./FilterValues";
 
 type DatagridTableCriteriaProps = {
   filterValue?: PendingTableFilterValue;
-  filterValuesMapping: FilterValuesMapping;
 };
 
-export const DatagridTableCriteria: React.FC<DatagridTableCriteriaProps> = ({filterValue, filterValuesMapping}) => {
+export const DatagridTableCriteria: React.FC<DatagridTableCriteriaProps> = ({filterValue}) => {
   const userContext = useUserContext();
   const translate = useTranslate();
   const catalogLocale = userContext.get('catalogLocale');
 
   const valueRenderers: {[dataType: string]: {[operator: string]: (value: any, columnCode: ColumnCode) => string}} = {};
-  Object.keys(filterValuesMapping).forEach(dataType => {
+  Object.keys(ValuesFilterMapping).forEach(dataType => {
     valueRenderers[dataType] = {};
-    Object.keys(filterValuesMapping[dataType]).forEach(operator => {
-      valueRenderers[dataType][operator] = filterValuesMapping[dataType][operator].useValueRenderer();
+    Object.keys(ValuesFilterMapping[dataType]).forEach(operator => {
+      valueRenderers[dataType][operator] = ValuesFilterMapping[dataType][operator].useValueRenderer();
     });
   });
 

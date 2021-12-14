@@ -27,6 +27,7 @@ import {
   createSimpleMultiOptionsAttributeCondition,
   createSimpleMultiReferenceEntitiesAttributeCondition,
   createStatusCondition,
+  createTableAttributeCondition,
   createTextareaAttributeCondition,
   createTextAttributeCondition,
   Locale,
@@ -40,10 +41,7 @@ import {ProductAndProductModelCount} from '../ProductAndProductModelCount';
 import {AddFieldButton} from '../../../../components/Selectors/AddFieldButton';
 import {FormData} from '../../edit-rules.types';
 import startImage from '../../../../assets/illustrations/start.svg';
-import {
-  useBackboneRouter,
-  useTranslate,
-} from '../../../../dependenciesTools/hooks';
+import {useBackboneRouter, useTranslate,} from '../../../../dependenciesTools/hooks';
 import {Action} from '../../../../models/Action';
 import {EmptySectionMessage} from '../EmptySectionMessage';
 
@@ -156,6 +154,7 @@ const RuleProductSelection: React.FC<Props> = ({
       createPictureAttributeCondition,
       createSimpleMultiOptionsAttributeCondition,
       createSimpleMultiReferenceEntitiesAttributeCondition,
+      createTableAttributeCondition,
       createTextAttributeCondition,
       createTextareaAttributeCondition,
       createPriceCollectionAttributeCondition,
@@ -206,6 +205,7 @@ const RuleProductSelection: React.FC<Props> = ({
     AttributeType.PRICE_COLLECTION,
     AttributeType.REFERENCE_ENTITY_COLLECTION,
     AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
+    AttributeType.TABLE,
     AttributeType.TEXT,
     AttributeType.TEXTAREA,
   ];

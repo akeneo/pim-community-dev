@@ -9,7 +9,6 @@ import {
   TableAttribute,
 } from '../models';
 import {FilterSelectorList} from './FilterSelectorList';
-import {FilterValuesMapping} from './FilterValues';
 import styled from 'styled-components';
 import {useFetchOptions} from '../product';
 import {AttributeContext} from '../contexts';
@@ -34,7 +33,6 @@ export type PendingTableProductExportFilterValue = {
 
 type ProductExportBuilderFilterProps = {
   attribute: TableAttribute;
-  filterValuesMapping: FilterValuesMapping;
   onChange: (val: BackendTableProductExportFilterValue) => void;
   initialDataFilter: PendingTableProductExportFilterValue;
 };
@@ -45,7 +43,6 @@ const FieldContainer = styled.div`
 
 const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
   attribute,
-  filterValuesMapping,
   onChange,
   initialDataFilter,
 }) => {
@@ -93,7 +90,6 @@ const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
         <div className='AknFieldContainer-inputContainer'>
           {initialFilter && (
             <FilterSelectorList
-              filterValuesMapping={filterValuesMapping}
               onChange={handleChange}
               initialFilter={initialFilter}
               inline={true}

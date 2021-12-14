@@ -1,14 +1,14 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen} from '@testing-library/react';
-import {TableInputValue} from '@akeneo-pim-ge/table_attribute/src/product';
+import {TableInputValue} from '../../../src/product';
 import {
   defaultCellInputsMapping,
   defaultCellMatchersMapping,
   getComplexTableAttribute,
   getTableValueWithId,
-} from '@akeneo-pim-ge/table_attribute/__tests__/factories';
-import {dragAndDrop} from '@akeneo-pim-ge/table_attribute/__tests__/shared/dragAndDrop';
+} from '../../factories';
+import {dragAndDrop} from '../../shared/dragAndDrop';
 import {TestAttributeContextProvider} from '../../shared/TestAttributeContextProvider';
 
 jest.mock('../../../src/attribute/LocaleLabel');

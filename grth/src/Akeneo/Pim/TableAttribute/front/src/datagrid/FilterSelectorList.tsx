@@ -5,7 +5,6 @@ import {ValueSelector} from './ValueSelector';
 import React, {useState} from 'react';
 import styled, {css} from 'styled-components';
 import {ColumnDefinition, FilterOperator, FilterValue, PendingTableFilterValue, SelectOption} from '../models';
-import {FilterValuesMapping} from './FilterValues';
 import {AkeneoThemedProps} from 'akeneo-design-system';
 
 const FilterSelectorListContainer = styled.div<{inline: boolean} & AkeneoThemedProps>`
@@ -39,14 +38,12 @@ const FilterSelectorListContainer = styled.div<{inline: boolean} & AkeneoThemedP
 `;
 
 type FilterSelectorListProps = {
-  filterValuesMapping: FilterValuesMapping;
   onChange: (value: PendingTableFilterValue) => void;
   inline?: boolean;
   initialFilter: PendingTableFilterValue;
 };
 
 const FilterSelectorList: React.FC<FilterSelectorListProps> = ({
-  filterValuesMapping,
   onChange,
   inline = false,
   initialFilter,
@@ -82,7 +79,6 @@ const FilterSelectorList: React.FC<FilterSelectorListProps> = ({
         dataType={filter.column?.data_type}
         value={filter.operator}
         onChange={handleOperatorChange}
-        filterValuesMapping={filterValuesMapping}
       />
       {filter.operator && filter.column && (
         <ValueSelector
@@ -90,7 +86,6 @@ const FilterSelectorList: React.FC<FilterSelectorListProps> = ({
           operator={filter.operator}
           onChange={handleValueChange}
           value={filter.value}
-          filterValuesMapping={filterValuesMapping}
           columnCode={filter.column.code}
         />
       )}

@@ -1,6 +1,6 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {defaultFilterValuesMapping, getComplexTableAttribute} from '../../factories';
+import {getComplexTableAttribute} from '../../factories';
 import {act, screen} from '@testing-library/react';
 import {ProductExportBuilderFilter} from '../../../src/datagrid/ProductExportBuilderFilter';
 import {fireEvent} from '@testing-library/dom';
@@ -46,7 +46,6 @@ describe('ProductExportBuilderFilter', () => {
         attribute={getComplexTableAttribute()}
         initialDataFilter={{}}
         onChange={handleChange}
-        filterValuesMapping={defaultFilterValuesMapping}
       />
     );
 
