@@ -4,7 +4,7 @@ import {getColor, getFontSize, Button} from 'akeneo-design-system';
 import {useTranslate} from '../../../shared/translate';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
 import {useRouter} from '../../../shared/router/use-router';
-import { useSecurity } from '../../../shared/security';
+import {useSecurity} from '../../../shared/security';
 
 const Grid = styled.section`
     margin: 20px 0;
@@ -123,7 +123,12 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
                 {item.categories.length > 0 && <Tag>{item.categories[0]}</Tag>}
             </TextInformation>
             <Actions>
-                <Button ghost level='tertiary' href={connectedAppUrl} disabled={!security.isGranted('akeneo_connectivity_connection_manage_apps')}>
+                <Button
+                    ghost
+                    level='tertiary'
+                    href={connectedAppUrl}
+                    disabled={!security.isGranted('akeneo_connectivity_connection_manage_apps')}
+                >
                     {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')}
                 </Button>
                 <Button level='secondary' href={item.activate_url} disabled={!item.activate_url} target='_blank'>
