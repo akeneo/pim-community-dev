@@ -368,7 +368,7 @@ akeneo_rule_engine_rule_definition_translation | locale | NO | varchar(20) | MUL
 akeneo_rule_engine_rule_relation | id | NO | int | PRI
 akeneo_rule_engine_rule_relation | rule_id | YES | int | MUL
 akeneo_rule_engine_rule_relation | resource_name | NO | varchar(255) | MUL
-akeneo_rule_engine_rule_relation | resource_id | NO | varchar(24) |
+akeneo_rule_engine_rule_relation | resource_id | NO | int |
 akeneo_structure_version_last_update | resource_name | NO | varchar(255) | PRI
 akeneo_structure_version_last_update | last_update | NO | datetime |
 lock_keys | key_id | NO | varchar(64) | PRI

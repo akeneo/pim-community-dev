@@ -1414,13 +1414,8 @@ jobs:
         - run:
               name: Pull Terraform modules from last release
               command: |
-                  # TO BE REVERT AFTER PROD
-                  cp ./deployments/Makefile ./Makefile_new
                   rm -r ./deployments
                   BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${TYPE_LONG}-edition-dev/${LATEST_RELEASE}/deployments/ .
-                  mv ./Makefile_new ./deployments/Makefile
-                  # rm -r ./deployments
-                  # BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${TYPE_LONG}-edition-dev/${LATEST_RELEASE}/deployments/ .
         - run:
               name: Deploy instance with latest release
               command: |
@@ -2078,7 +2073,7 @@ jobs:
           default: "srnt-c3po"
       machine:
           image: ubuntu-2004:202010-01
-      resource_class: medium
+      resource_class: large
       steps:
           - attach_workspace:
                 at: ~/
@@ -2089,7 +2084,7 @@ jobs:
                 command: |
                     CURRENT_TIME=$(date +%s)
                     LAST_HOUR_TIME=$(( CURRENT_TIME - 60*60 ))
-                    VERSION=$(curl --location -s -g -H "Content-Type: application/json" -H "DD-API-KEY: ${DATADOG_API_KEY}" -H "DD-APPLICATION-KEY: ${DATADOG_APP_KEY}" --request GET "https://api.datadoghq.eu/api/v1/query?from=${LAST_HOUR_TIME}&to=${CURRENT_TIME}&query=sum:kubernetes.containers.running{project:akecld-saas-demo,short_image:pim-enterprise-dev,app:pim,component:pim-web,type:<<parameters.PRODUCT_TYPE>>,pfid:<<parameters.PFID>>}%20by%20{image_tag}" | yq r - 'series[*].tag_set[0]' | sort | head -n1 | cut -c11-)
+                    VERSION=$(curl --location -s -g -H "Content-Type: application/json" -H "DD-API-KEY: ${DATADOG_API_KEY}" -H "DD-APPLICATION-KEY: ${DATADOG_APP_KEY}" --request GET "https://api.datadoghq.eu/api/v1/query?from=${LAST_HOUR_TIME}&to=${CURRENT_TIME}&query=sum:kubernetes.containers.running{project:akecld-saas-demo,short_image:pim-enterprise-dev,app:pim,component:pim-web,type:<<parameters.PRODUCT_TYPE>>,pfid:<<parameters.PFID>>}%20by%20{image_tag}" | yq r - 'series[*].tag_set[0]' | sort | tail -n1 | cut -c11-)
                     TYPE=<<parameters.PRODUCT_TYPE>> LOGIN=${E2E_LOGIN_<<parameters.PRODUCT_TYPE>>} PASSWORD=${E2E_PASSWORD_<<parameters.PRODUCT_TYPE>>} VERSION=${VERSION} make -C deployments/ test_deployment_e2e
           - store_artifacts:
                 path: deployments/test/e2e/cypress/screenshots/

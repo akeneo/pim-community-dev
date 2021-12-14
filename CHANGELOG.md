@@ -128,6 +128,8 @@
 - PIM-10190: Fix "Label" column shows the code in attribute rules tab
 - PIM-10193: Fix incorrect asset in a product import file fail the import job with no warning in the process tracker
 - PIM-10194: Fix pagination for list published products endpoint with search_after pagination type
+- PIM-10195: Fix Asset Manager thumbnail generation on image/x-eps files
+- PIM-10199: Fix occasional segmentation fault when generating thumbnails
 
 ## Improvements
 

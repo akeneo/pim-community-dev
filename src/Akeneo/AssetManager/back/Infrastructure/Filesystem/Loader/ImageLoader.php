@@ -10,12 +10,12 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Akeneo\AssetManager\Infrastructure\Filesystem\Loader;
 
 use League\Flysystem\FilesystemReader;
 use Liip\ImagineBundle\Binary\Loader\LoaderInterface;
 use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
-use Liip\ImagineBundle\Exception\InvalidArgumentException;
 use Liip\ImagineBundle\Model\Binary;
 use Symfony\Component\Mime\MimeTypesInterface;
 
@@ -45,13 +45,7 @@ class ImageLoader implements LoaderInterface
             throw new NotLoadableException(sprintf('Source image "%s" not found.', $path));
         }
 
-        $mimeType = $this->filesystem->mimeType($path);
-        $pathExtension = pathinfo($path, PATHINFO_EXTENSION);
-
-        // This is an override here to handle the google bucket case where images without extensions are considered as octet-stream
-        if (empty($pathExtension) && $mimeType === 'application/octet-stream') {
-            $mimeType = 'image/jpeg';
-        }
+        $mimeType = $this->getMimeType($path);
         $extension = $this->getExtension($mimeType);
 
         return new Binary(
@@ -59,6 +53,26 @@ class ImageLoader implements LoaderInterface
             $mimeType,
             $extension
         );
+    }
+
+    private function getMimeType(string $path): string
+    {
+        $mimeType = $this->filesystem->mimeType($path);
+
+        // Dirty fix for PIM-10195 until https://github.com/thephpleague/flysystem/pull/1299 is merged
+        // `Flysystem\GoogleCloudStorageAdapter` does not transmit the content type of the file
+        // Without content type, it's up to `GuzzleHttp\Psr7\MimeType` to guess the mime type
+        if ('application/postscript' === $mimeType) {
+            return 'image/x-eps';
+        }
+
+        // This is an override here to handle the google bucket case where images without extensions are considered as octet-stream
+        $pathExtension = pathinfo($path, PATHINFO_EXTENSION);
+        if (empty($pathExtension) && $mimeType === 'application/octet-stream') {
+            return 'image/jpeg';
+        }
+
+        return $mimeType;
     }
 
     private function getExtension(?string $mimeType): ?string

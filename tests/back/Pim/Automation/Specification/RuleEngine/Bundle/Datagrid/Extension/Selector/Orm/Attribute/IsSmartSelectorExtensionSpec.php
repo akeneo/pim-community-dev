@@ -7,8 +7,8 @@ use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
-use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceInterface;
+use PhpSpec\ObjectBehavior;
 
 class IsSmartSelectorExtensionSpec extends ObjectBehavior
 {
