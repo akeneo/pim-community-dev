@@ -2,7 +2,6 @@ jobs:
     test_front_connectivity:
         machine:
             image: ubuntu-2004:202101-01
-            docker_layer_caching: true
         steps:
             -   attach_workspace:
                     at: ~/
@@ -28,7 +27,6 @@ jobs:
     test_back_connectivity:
         machine:
             image: ubuntu-2004:202101-01
-            docker_layer_caching: true
         steps:
             -   attach_workspace:
                     at: ~/
