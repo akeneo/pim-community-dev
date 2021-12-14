@@ -14,12 +14,12 @@ else
     exit 1
 fi
 
-CONTAINER_FILTER="v202"
+CONTAINER_FILTER="tags~^v[0-9]{14}$"
 if [[ "${TYPE}" == "grth" ]]; then
-    CONTAINER_FILTER="growth-"
+    CONTAINER_FILTER="tags~^growth-v[0-9]{14}$"
 fi
 if [[ "${TYPE}" == "tria" ]]; then
-    CONTAINER_FILTER="trial-"
+    CONTAINER_FILTER="tags~^trial-v[0-9]{14}$"
 fi
 
 echo "Get last release version for ${TYPE}"

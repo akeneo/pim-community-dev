@@ -1718,7 +1718,7 @@ jobs:
                 name: Define value for next steps
                 command: |
                   TYPE="srnt"
-                  RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="v" --sort-by="~tags" --limit=1 --format="value(tags)")
+                  RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
                   INSTANCE_NAME="pimci-helpdesk"
                   PRODUCT_REFERENCE_TYPE="serenity_instance"
                   PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
@@ -1767,7 +1767,7 @@ jobs:
                 name: Define value for next steps
                 command: |
                   TYPE="grth"
-                  RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="growth-v" --sort-by="~tags" --limit=1 --format="value(tags)")
+                  RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="tags~^growth-v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
                   INSTANCE_NAME="pimci-helpdesk-ge"
                   PRODUCT_REFERENCE_TYPE="growth_edition_instance"
                   PRODUCT_REFERENCE_CODE="growth_edition_${ENV_NAME}"
@@ -1816,7 +1816,7 @@ jobs:
               name: Define value for next steps
               command: |
                 TYPE="srnt"
-                RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="v" --sort-by="~tags" --limit=1 --format="value(tags)")
+                RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
                 INSTANCE_NAME="pimci-pm"
                 PRODUCT_REFERENCE_TYPE="serenity_instance"
                 PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
