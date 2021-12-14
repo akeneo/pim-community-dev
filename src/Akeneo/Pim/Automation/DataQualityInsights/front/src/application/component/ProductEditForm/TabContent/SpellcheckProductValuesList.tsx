@@ -19,7 +19,7 @@ import withPortal from '../../Common/Decorator/withPortal';
 import {isSimpleProduct, isVariantProduct} from '@akeneo-pim-community/data-quality-insights/src/application/helper';
 import fetchProductModelIgnoreTextIssue from '../../../../infrastructure/fetcher/ProductEditForm/Spellcheck/fetchProductModelIgnoreTextIssue';
 import applySuggestionOnContent from '../../../helper/ProductEditForm/Spellcheck/applySuggestionOnContent';
-import ActiveHighlightsOnLoad from "../../Common/HighlightableContent/ActiveHighlightsOnLoad";
+import ActiveHighlightsOnLoad from '../../Common/HighlightableContent/ActiveHighlightsOnLoad';
 
 const SPELLCHECK_PRODUCT_VALUE_ELEMENT_BASE_ID = 'product-value-spellcheck';
 const SPELLCHECK_PRODUCT_VALUE_ELEMENT_CONTAINER_ID = 'product-value-spellcheck-container';

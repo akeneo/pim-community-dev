@@ -100,40 +100,43 @@ const TextAttributesContextListenerOnFocus = () => {
     if (!family || activeLocales.length === 0) {
       return [];
     }
-    return getTextAttributes(family, product, activeLocales.length)
+    return getTextAttributes(family, product, activeLocales.length);
   }, [family, product, activeLocales]);
   const [widgetsList, setWidgetsList] = useState<WidgetsCollection>({});
 
-  const addWidget = useCallback((container: Element, element: Element) => {
-    if (!isValidTextAttributeElement(element, textAttributes, attributeGroupsStatus)) {
-      return;
-    }
-
-    const attribute = element.getAttribute('data-attribute');
-    const {editor, editorId} = getEditorElement(element);
-
-    if (!attribute || !editor || widgetsList[attribute]) {
-      return;
-    }
-
-    setWidgetsList((list) => {
-      const widgetId = uuidV5(`${product.meta.id}-${attribute}`, WIDGET_UUID_NAMESPACE);
-
-      let widgetsArray = Object.values(list);
-      if (widgetsArray.length >= WIDGET_LIST_LIMIT) {
-        widgetsArray.shift();
+  const addWidget = useCallback(
+    (element: Element) => {
+      if (!isValidTextAttributeElement(element, textAttributes, attributeGroupsStatus)) {
+        return;
       }
 
-      const widgetsCollection = widgetsArray.reduce((previousValue, currentValue) => {
-        return {...previousValue, [currentValue.attribute]: currentValue};
-      }, {});
+      const attribute = element.getAttribute('data-attribute');
+      const {editor, editorId} = getEditorElement(element);
 
-      return {
-        ...widgetsCollection,
-        [attribute]: createWidget(widgetId, editor as EditorElement, editorId, attribute),
+      if (!attribute || !editor || widgetsList[attribute]) {
+        return;
       }
-    });
-  }, [widgetsList, textAttributes, attributeGroupsStatus]);
+
+      setWidgetsList(list => {
+        const widgetId = uuidV5(`${product.meta.id}-${attribute}`, WIDGET_UUID_NAMESPACE);
+
+        let widgetsArray = Object.values(list);
+        if (widgetsArray.length >= WIDGET_LIST_LIMIT) {
+          widgetsArray.shift();
+        }
+
+        const widgetsCollection = widgetsArray.reduce((previousValue, currentValue) => {
+          return {...previousValue, [currentValue.attribute]: currentValue};
+        }, {});
+
+        return {
+          ...widgetsCollection,
+          [attribute]: createWidget(widgetId, editor as EditorElement, editorId, attribute),
+        };
+      });
+    },
+    [widgetsList, textAttributes, attributeGroupsStatus]
+  );
 
   useEffect(() => {
     load();
@@ -161,14 +164,13 @@ const TextAttributesContextListenerOnFocus = () => {
         return;
       }
 
-      addWidget(container, element)
+      addWidget(element);
     };
 
     container.addEventListener('focus', handleFocus as EventListener, true);
     return () => {
       container.removeEventListener('focus', handleFocus as EventListener, true);
-    }
-
+    };
   }, [attributesTabIsLoading, textAttributes, addWidget]);
 
   return <></>;

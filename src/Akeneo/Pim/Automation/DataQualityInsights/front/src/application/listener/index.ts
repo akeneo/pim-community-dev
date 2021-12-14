@@ -1,1 +1,1 @@
-export * from './ProductEditForm/TextAttributesContextListenerOnFocus'
+export * from './ProductEditForm/TextAttributesContextListenerOnFocus';
