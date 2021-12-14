@@ -42,6 +42,10 @@ security:
             pattern:                        ^/api/oauth/v1/token
             security:                       false
 
+        openid_public_key:
+            pattern:                        ^/connect/apps/v1/openid/public-key
+            security:                       false
+
         oauth2_token:
             pattern:                        ^/connect/apps/v1/oauth2/token
             security:                       false
