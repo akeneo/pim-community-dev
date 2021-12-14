@@ -270,13 +270,13 @@ jobs:
 
     build_dev_optimized:
         resource_class: large
-        docker_layer_caching: true
         parameters:
             path_to_front_packages:
                 type: string
                 default: front-packages
         machine:
             image: ubuntu-2004:202101-01
+            docker_layer_caching: true
         steps:
             - checkout
             - install_yq
