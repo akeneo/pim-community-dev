@@ -135,4 +135,9 @@ interface ProductModelInterface extends
      * @return ValueInterface|null
      */
     public function getImage(): ?ValueInterface;
+
+    /**
+     * Return the categories for the current level
+     */
+    public function getCategoriesForThisLevel(): Collection;
 }
