@@ -13,13 +13,15 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CreateAsymmetricKeysCommand extends Command
+class CreateOpenIdKeysCommand extends Command
 {
-    protected static $defaultName = 'akeneo:asymmetric-keys:create';
+    protected static $defaultName = 'akeneo:connectivity-connection:openid-keys:create';
+    private GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler;
 
-    public function __construct(public GenerateAsymmetricKeysHandler $generateJwtKeysHandler)
+    public function __construct(GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler)
     {
         parent::__construct();
+        $this->generateAsymmetricKeysHandler = $generateAsymmetricKeysHandler;
     }
 
     protected function configure(): void
@@ -29,7 +31,7 @@ class CreateAsymmetricKeysCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->generateJwtKeysHandler->handle(new GenerateAsymmetricKeysCommand());
+        $this->generateAsymmetricKeysHandler->handle(new GenerateAsymmetricKeysCommand());
 
         return self::SUCCESS;
     }

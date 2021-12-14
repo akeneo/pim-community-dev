@@ -10,7 +10,7 @@ akeneo_connectivity_connection_connect_apps_v1_token:
     controller: akeneo_connectivity.connection.public.controller.apps.token
     methods: [ POST ]
 
-akeneo_connectivity_connection_connect_apps_openid_public_key:
+akeneo_connectivity_connection_connect_apps_v1_openid_public_key:
     path: '/connect/apps/v1/openid/public-key'
     controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\GetOpenIdPublicKeyAction
     methods: [ GET ]

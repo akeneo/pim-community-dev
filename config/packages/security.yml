@@ -40,8 +40,8 @@ security:
             pattern:                        ^/connect/apps/v1/oauth2/token
             security:                       false
 
-        jwt_public_key:
-            pattern:                        ^/connect/apps/jwt-public-key
+        openid_public_key:
+            pattern:                        ^/connect/apps/v1/openid/public-key
             security:                       false
 
         api_index:

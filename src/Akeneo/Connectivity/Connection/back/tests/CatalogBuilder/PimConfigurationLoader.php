@@ -12,8 +12,11 @@ use Doctrine\DBAL\Types\Types;
  */
 class PimConfigurationLoader
 {
-    public function __construct(private Connection $connection)
+    private Connection $connection;
+
+    public function __construct(Connection $connection)
     {
+        $this->connection = $connection;
     }
 
     public function addPimconfiguration(string $code, array $values): void

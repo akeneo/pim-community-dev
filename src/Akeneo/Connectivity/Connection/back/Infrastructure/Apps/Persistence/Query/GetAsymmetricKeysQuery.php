@@ -14,8 +14,11 @@ use Doctrine\DBAL\Connection;
  */
 class GetAsymmetricKeysQuery implements GetAsymmetricKeysQueryInterface
 {
-    public function __construct(private Connection $connection)
+    private Connection $connection;
+
+    public function __construct(Connection $connection)
     {
+        $this->connection = $connection;
     }
 
     public function execute(): AsymmetricKeys

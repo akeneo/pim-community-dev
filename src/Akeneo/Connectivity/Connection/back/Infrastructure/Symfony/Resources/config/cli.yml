@@ -15,7 +15,7 @@ services:
         tags:
             - { name: 'console.command' }
 
-    Akeneo\Connectivity\Connection\Infrastructure\Cli\CreateAsymmetricKeysCommand:
+    Akeneo\Connectivity\Connection\Infrastructure\Cli\CreateOpenIdKeysCommand:
         arguments:
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler'
         tags:
