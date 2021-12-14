@@ -79,7 +79,7 @@ class ProjectCalculationNotificationFactory extends AbstractNotificationFactory 
             ->setType($status)
             ->setMessage(sprintf('teamwork_assistant.notification.%s.%s', $type, $status))
             ->setMessageParams(['%project_label%' => $project->getLabel(), '%due_date%' => $formattedDate])
-            ->setRoute('pim_enrich_job_tracker_show')
+            ->setRoute('akeneo_job_process_tracker_details')
             ->setRouteParams(['id' => $jobExecution->getId()])
             ->setContext(['actionType' => $type]);
 
