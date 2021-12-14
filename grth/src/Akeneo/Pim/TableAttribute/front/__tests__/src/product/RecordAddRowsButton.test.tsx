@@ -32,7 +32,7 @@ describe('RecordAddRowsButton', () => {
     await openDropdown();
 
     userEvent.click(screen.getByTestId('checkbox-0'));
-    expect(toggleChange).toBeCalledWith('lanion00893335_2e73_41e3_ac34_763fb6a35107');
+    expect(toggleChange).toBeCalledWith('lannion00893335_2e73_41e3_ac34_763fb6a35107');
   });
 
   it('should not retrieve on scroll when result length is smaller than itemsPerPage', async () => {
@@ -109,7 +109,7 @@ describe('RecordAddRowsButton', () => {
     renderWithProviders(
       <TestAttributeContextProvider attribute={tableAttributeRecord}>
         <RecordAddRowsButton
-          checkedOptionCodes={['lanion00893335_2e73_41e3_ac34_763fb6a35107']}
+          checkedOptionCodes={['lannion00893335_2e73_41e3_ac34_763fb6a35107']}
           toggleChange={jest.fn()}
           maxRowCount={1}
         />
@@ -118,10 +118,10 @@ describe('RecordAddRowsButton', () => {
 
     await openDropdown();
 
-    const [lanionCheckbox, vannesCheckbox] = screen.getAllByRole('checkbox');
+    const [lannionCheckbox, vannesCheckbox] = screen.getAllByRole('checkbox');
 
-    expect(lanionCheckbox).toBeChecked();
-    expect(lanionCheckbox).toBeEnabled();
+    expect(lannionCheckbox).toBeChecked();
+    expect(lannionCheckbox).toBeEnabled();
     expect(vannesCheckbox).not.toBeChecked();
     expect(vannesCheckbox).toHaveAttribute('readOnly');
   });

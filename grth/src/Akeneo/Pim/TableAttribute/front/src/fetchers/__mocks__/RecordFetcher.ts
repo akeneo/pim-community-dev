@@ -3,12 +3,18 @@ import {RecordCode, ReferenceEntityIdentifierOrCode, ReferenceEntityRecord} from
 
 // For the test, please use the default pagination size to 3 items
 
-const lanion: ReferenceEntityRecord = {
-  code: 'lanion00893335_2e73_41e3_ac34_763fb6a35107',
-  completeness: {complete: 0, required: 0},
-  identifier: 'city_lanion_00893335-2e73-41e3-ac34-763fb6a35107',
-  image: null,
-  labels: {en_US: 'Lanion'},
+const lannion: ReferenceEntityRecord = {
+  code: 'lannion00893335_2e73_41e3_ac34_763fb6a35107',
+  completeness: {complete: 3, required: 4},
+  identifier: 'city_lannion_00893335-2e73-41e3-ac34-763fb6a35107',
+  image: {
+    extension: 'jpeg',
+    filePath: 'c/e/9/1/Lannion.jpg',
+    mimeType: 'image/jpeg',
+    originalFilename: 'lannion.jpg',
+    size: 5396,
+  },
+  labels: {en_US: 'Lannion'},
   reference_entity_identifier: 'city',
   values: {},
 };
@@ -48,7 +54,7 @@ const brest: ReferenceEntityRecord = {
   reference_entity_identifier: 'city',
   values: {},
 };
-const items = [lanion, vannes, nantes, coueron, brest];
+const items = [lannion, vannes, nantes, coueron, brest];
 
 const search: (
   _router: Router,

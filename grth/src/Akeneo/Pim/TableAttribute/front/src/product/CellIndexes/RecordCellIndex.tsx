@@ -41,7 +41,7 @@ const RecordCellIndex: React.FC<RecordCellIndexProps> = ({searchText, value}) =>
         setRecord(record);
       });
     }
-  }, [attribute]);
+  }, [attribute, firstColumn, router, value]);
 
   return (
     <>

@@ -40,6 +40,7 @@ config:
                 number: '@akeneopimtableattribute/product/CellInputs/NumberInput'
                 text: '@akeneopimtableattribute/product/CellInputs/TextInput'
                 boolean: '@akeneopimtableattribute/product/CellInputs/BooleanInput'
+                record: '@akeneopimtableattribute/product/CellInputs/RecordInput'
             cell_matchers:
                 select: '@akeneopimtableattribute/product/CellMatchers/SelectMatcher'
                 number: '@akeneopimtableattribute/product/CellMatchers/NumberMatcher'
