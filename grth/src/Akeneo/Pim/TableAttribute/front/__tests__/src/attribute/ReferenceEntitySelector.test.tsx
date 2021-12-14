@@ -1,6 +1,6 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {ReferenceEntitySelector} from '../../../src/attribute';
+import {ReferenceEntitySelector} from '../../../src';
 import {fireEvent, screen} from '@testing-library/react';
 
 jest.mock('../../../src/fetchers/ReferenceEntityFetcher');

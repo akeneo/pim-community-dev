@@ -5,7 +5,6 @@ export * from './fetchers';
 export * from './jobs';
 export * from './models';
 export * from './product';
-export * from './proposals';
 export * from './repositories';
 export * from './rules';
 export * from './shared';

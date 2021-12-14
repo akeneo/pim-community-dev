@@ -1,7 +1,7 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen} from '@testing-library/react';
-import {TableFieldApp} from '../../../src/product';
+import {TableFieldApp} from '../../../src';
 import {TemplateContext} from '../../../src/legacy/table-field';
 import {
   defaultCellInputsMapping,
@@ -9,16 +9,12 @@ import {
   getComplexTableAttribute,
   getTableValueSelectRow,
 } from '../../factories';
+import {mockScroll} from "../../shared/mockScroll";
 
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 jest.mock('../../../src/product/AddRowsButton');
-
-const intersectionObserverMock = () => ({
-  observe: jest.fn(),
-  unobserve: jest.fn(),
-});
-window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
+mockScroll();
 
 const getTemplateContext: () => TemplateContext = () => {
   return {

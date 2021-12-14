@@ -1,22 +1,15 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen} from '@testing-library/react';
-import {SelectAddRowsButton} from '../../../src/product';
+import {SelectAddRowsButton} from '../../../src';
 import {getComplexTableAttribute} from '../../factories';
 import {TestAttributeContextProvider} from '../../shared/TestAttributeContextProvider';
+import {mockScroll} from '../../shared/mockScroll';
 
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 jest.mock('../../../src/attribute/ManageOptionsModal');
-
-type EntryCallback = (entries: {isIntersecting: boolean}[]) => void;
-
-let entryCallback: EntryCallback | undefined = undefined;
-const intersectionObserverMock = (callback: EntryCallback) => ({
-  observe: jest.fn(() => (entryCallback = callback)),
-  unobserve: jest.fn(),
-});
-window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
+const scroll = mockScroll();
 
 const openSelect = async (textToFind = 'Sugar') => {
   const button = screen.getByText('pim_table_attribute.product_edit_form.add_rows');
@@ -114,9 +107,7 @@ describe('SelectAddRowsButton', () => {
 
     expect(screen.queryByText('U')).not.toBeInTheDocument();
 
-    act(() => {
-      entryCallback?.([{isIntersecting: true}]);
-    });
+    act(() => scroll());
     expect(await screen.findByText('U')).toBeInTheDocument();
   });
 

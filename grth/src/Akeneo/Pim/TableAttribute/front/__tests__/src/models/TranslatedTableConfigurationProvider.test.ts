@@ -4,7 +4,7 @@ import {
   SelectOption,
   SelectOptionCode,
   TableConfiguration,
-} from '../../../src/models';
+} from '../../../src';
 import 'jest-fetch-mock';
 import {LabelCollection} from '@akeneo-pim-community/shared';
 

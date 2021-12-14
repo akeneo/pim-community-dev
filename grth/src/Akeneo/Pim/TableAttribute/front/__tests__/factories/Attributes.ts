@@ -1,4 +1,4 @@
-import {DataType, TableAttribute} from '../../src/models';
+import {DataType, TableAttribute} from '../../src';
 import {getComplexTableConfiguration} from './TableConfiguration';
 
 const getComplexTableAttribute: (firstColumnType?: DataType) => TableAttribute = (firstColumnType = 'select') => {

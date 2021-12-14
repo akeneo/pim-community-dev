@@ -1,7 +1,7 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, screen, fireEvent} from '@testing-library/react';
-import {ColumnDefinitionSelector} from '../../../src/datagrid';
+import {ColumnDefinitionSelector} from '../../../src';
 import {getComplexTableAttribute} from '../../factories';
 import {TestAttributeContextProvider} from '../../shared/TestAttributeContextProvider';
 
