@@ -2,11 +2,10 @@ jobs:
     test_front_connectivity:
         machine:
             image: ubuntu-2004:202101-01
+            docker_layer_caching: true
         steps:
             -   attach_workspace:
                     at: ~/
-            -   setup_remote_docker:
-                    docker_layer_caching: true
             -   run:
                     name: Create yarn cache folder
                     command: mkdir -p  ~/.cache/yarn
@@ -29,11 +28,10 @@ jobs:
     test_back_connectivity:
         machine:
             image: ubuntu-2004:202101-01
+            docker_layer_caching: true
         steps:
             -   attach_workspace:
                     at: ~/
-            -   setup_remote_docker:
-                    docker_layer_caching: true
             -   run:
                     name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
                     command: sudo chown -R 1000:1000 ../project
