@@ -19,9 +19,9 @@ SELECT unit.*
 FROM akeneo_measurement measurement, JSON_TABLE(measurement.units,
     '$[*]' COLUMNS(
         code VARCHAR(100) PATH '$.code',
-        label VARCHAR(100) PATH '$.labels',
+        labels JSON PATH '$.labels',
         symbol VARCHAR(100) PATH '$.symbol',
-        convert_from_standard VARCHAR(100) PATH '$.convert_from_standard'
+        convert_from_standard JSON PATH '$.convert_from_standard'
     )
 ) AS unit
 WHERE measurement.code = :measurementFamilyCode
@@ -34,6 +34,6 @@ SQL;
                 'unitCode' => $unitCode,
                 'measurementFamilyCode' => $measurementFamilyCode
             ]
-        )->fetchKeyValue();
+        )->fetchAssociative();
     }
 }

@@ -16,21 +16,15 @@ final class SqlGetUnitIntegration extends TestCase
 
         $expected = [
             'code' => 'MICROGRAM',
-            'labels' => [
-                'en_US' => 'Microgram',
-                'fr_FR' => 'Microgramme',
-            ],
+            'labels' => '{"en_US": "Microgram", "fr_FR": "Microgramme"}',
             'symbol' => 'μg',
-            'convert_from_standard' => [
-                [
-                    'value' => '0.000000001',
-                    'operator' => 'mul',
-                ],
-            ]
+            'convert_from_standard' => '[{"value": "0.000000001", "operator": "mul"}]'
         ];
-        $actual = $query->byMeasurementFamilyCodeAndUnitCode('Weight', 'MICROGRAM');
 
-        $this->assertEqualsCanonicalizing($expected, $actual);
+        $this->assertEqualsCanonicalizing(
+            $expected,
+            $query->byMeasurementFamilyCodeAndUnitCode('Weight', 'MICROGRAM')
+        );
     }
 
     protected function getConfiguration(): Configuration
