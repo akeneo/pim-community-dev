@@ -1,6 +1,5 @@
 import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
-import {useArgs, updateArgs} from '@storybook/client-api';
 import {ColorInput} from './ColorInput.tsx';
 
 <Meta
@@ -39,8 +38,7 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
 <Canvas>
   <Story name="Standard">
     {args => {
-      const [{value}, updateArgs] = useArgs();
-      const setValue = value => updateArgs({value});
+      const [value, setValue] = useState(args.value);
       return <ColorInput {...args} value={value} onChange={setValue} />;
     }}
   </Story>
@@ -71,7 +69,7 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
       return (
         <>
           <ColorInput value="#ffe000" invalid={false} />
-          <ColorInput value="#e70001" invalid={true} />
+          <ColorInput value="not a color" invalid={true} />
         </>
       );
     }}

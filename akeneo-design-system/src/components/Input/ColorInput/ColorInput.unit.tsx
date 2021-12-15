@@ -8,14 +8,13 @@ test('it renders and handle changes', () => {
   render(
     <>
       <label htmlFor="myInput">My label</label>
-      <ColorInput id="myInput" value="Nice" onChange={handleChange} />
+      <ColorInput id="myInput" value="#ff0000" onChange={handleChange} />
     </>
   );
 
-  expect(screen.getByLabelText('My label')).toBeInTheDocument();
-  const input = screen.getByLabelText('My label') as HTMLInputElement;
-  fireEvent.change(input, {target: {value: 'Cool'}});
-  expect(handleChange).toHaveBeenCalledWith('Cool');
+  fireEvent.change(screen.getByLabelText('My label'), {target: {value: '#00ff00'}});
+
+  expect(handleChange).toHaveBeenCalledWith('#00ff00');
 });
 
 test('it renders and does not call onChange if readOnly', () => {
@@ -24,24 +23,36 @@ test('it renders and does not call onChange if readOnly', () => {
   render(
     <>
       <label htmlFor="myInput">My label</label>
-      <ColorInput id="myInput" readOnly={true} value="Nice" onChange={handleChange} />
+      <ColorInput id="myInput" readOnly={true} value="#ff0000" onChange={handleChange} />
     </>
   );
 
-  expect(screen.getByLabelText('My label')).toBeInTheDocument();
-  const input = screen.getByLabelText('My label') as HTMLInputElement;
-  fireEvent.change(input, {target: {value: 'Cool'}});
-  expect(handleChange).not.toHaveBeenCalledWith('Cool');
+  fireEvent.change(screen.getByLabelText('My label'), {target: {value: '#00ff00'}});
+
+  expect(handleChange).not.toHaveBeenCalledWith('#00ff00');
+});
+
+test('it displays an error icon when the color is invalid', () => {
+  render(
+    <>
+      <label htmlFor="myInput">My label</label>
+      <ColorInput id="myInput" value="not a valid color" />
+    </>
+  );
+
+  expect(screen.getByRole('alert')).toBeInTheDocument();
 });
 
 test('ColorInput supports forwardRef', () => {
   const ref = {current: null};
 
-  render(<ColorInput value={'nice'} onChange={jest.fn()} ref={ref} />);
+  render(<ColorInput value="#ff0000" onChange={jest.fn()} ref={ref} />);
+
   expect(ref.current).not.toBe(null);
 });
 
 test('ColorInput supports ...rest props', () => {
-  render(<ColorInput value={'nice'} onChange={jest.fn()} data-testid="my_value" />);
+  render(<ColorInput value="#ff0000" onChange={jest.fn()} data-testid="my_value" />);
+
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });

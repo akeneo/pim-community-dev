@@ -1,7 +1,7 @@
 import React, {ChangeEvent, forwardRef, InputHTMLAttributes, Ref, useCallback} from 'react';
 import styled, {css} from 'styled-components';
 import {InputProps} from '../InputProps';
-import {LockIcon} from '../../../icons';
+import {DangerIcon, LockIcon} from '../../../icons';
 import {Override} from '../../../shared';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 
@@ -67,6 +67,10 @@ const ReadOnlyIcon = styled(LockIcon)`
   margin-left: 4px;
 `;
 
+const ErrorIcon = styled(DangerIcon)`
+  padding: 0 16px 0 15px;
+`;
+
 type ColorInputProps = Override<
   Override<InputHTMLAttributes<HTMLInputElement>, InputProps<string>>,
   (
@@ -89,7 +93,7 @@ type ColorInputProps = Override<
     placeholder?: string;
 
     /**
-     * Defines if the input is valid on not.
+     * Defines if the input is valid or not.
      */
     invalid?: boolean;
   }
@@ -107,9 +111,15 @@ const ColorInput = forwardRef<HTMLInputElement, ColorInputProps>(
       [readOnly, onChange]
     );
 
+    const isValidHexaColor = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(value);
+
     return (
-      <ColorInputContainer invalid={invalid} readOnly={readOnly}>
-        <ColorPreview type="color" value={value} onChange={handleChange} disabled={readOnly} />
+      <ColorInputContainer invalid={invalid || !isValidHexaColor} readOnly={readOnly}>
+        {isValidHexaColor ? (
+          <ColorPreview type="color" value={value} onChange={handleChange} disabled={readOnly} />
+        ) : (
+          <ErrorIcon role="alert" size={16} />
+        )}
         <Input
           ref={forwardedRef}
           value={value}
@@ -117,7 +127,7 @@ const ColorInput = forwardRef<HTMLInputElement, ColorInputProps>(
           type="text"
           readOnly={readOnly}
           disabled={readOnly}
-          aria-invalid={invalid}
+          aria-invalid={invalid || !isValidHexaColor}
           {...rest}
         />
         {readOnly && <ReadOnlyIcon size={16} />}
