@@ -4,17 +4,10 @@ import RecordInput from '../../../../src/product/CellInputs/RecordInput';
 import {getComplexTableAttribute, getTableValueWithId} from '../../../factories';
 import {screen, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import {mockScroll} from "../../../shared/mockScroll";
 
 jest.mock('../../../../src/fetchers/RecordFetcher');
-
-// TODO: use mockScroll()
-type EntryCallback = (entries: {isIntersecting: boolean}[]) => void;
-
-const intersectionObserverMock = (_callback: EntryCallback) => ({
-  observe: jest.fn(() => null),
-  unobserve: jest.fn(),
-});
-window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
+mockScroll();
 
 const tableAttribute = getComplexTableAttribute('record');
 
