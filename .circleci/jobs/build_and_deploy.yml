@@ -320,10 +320,10 @@ jobs:
                       YARN_REGISTRY: "http://registry.yarnpkg.com"
             - run:
                   name: Install assets
-                  command: make -j --output-sync assets css
-#            - run:
-#                  name: Build css
-#                  command: make css
+                  command: make assets
+            - run:
+                  name: Build css
+                  command: make css
             - run:
                   name: Create hash for front packages
                   # Adding date allows to invalidate the cache each new day, adding front package path avoid conflict between CE build and EE build
