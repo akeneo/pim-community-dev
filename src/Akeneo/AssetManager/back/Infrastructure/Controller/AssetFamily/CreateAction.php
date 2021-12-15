@@ -32,24 +32,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateAction
 {
-    private CreateAssetFamilyHandler $createAssetFamilyHandler;
-
-    private NormalizerInterface $normalizer;
-
-    private ValidatorInterface $validator;
-
-    private SecurityFacade $securityFacade;
-
-    public function __construct(
-        CreateAssetFamilyHandler $createAssetFamilyHandler,
-        NormalizerInterface $normalizer,
-        ValidatorInterface $validator,
-        SecurityFacade $securityFacade
-    ) {
-        $this->createAssetFamilyHandler = $createAssetFamilyHandler;
-        $this->normalizer                  = $normalizer;
-        $this->validator                   = $validator;
-        $this->securityFacade              = $securityFacade;
+    public function __construct(private CreateAssetFamilyHandler $createAssetFamilyHandler, private NormalizerInterface $normalizer, private ValidatorInterface $validator, private SecurityFacade $securityFacade)
+    {
     }
 
     public function __invoke(Request $request): Response

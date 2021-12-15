@@ -25,16 +25,8 @@ use Liip\ImagineBundle\Model\Binary;
  */
 class PdfLoader implements LoaderInterface
 {
-    private LoaderInterface $loader;
-
-    private DefaultImageProviderInterface $defaultImageProvider;
-
-    public function __construct(
-        LoaderInterface $streamLoader,
-        DefaultImageProviderInterface $defaultImageProvider
-    ) {
-        $this->loader = $streamLoader;
-        $this->defaultImageProvider = $defaultImageProvider;
+    public function __construct(private LoaderInterface $loader, private DefaultImageProviderInterface $defaultImageProvider)
+    {
     }
 
     public function find($path)

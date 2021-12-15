@@ -20,12 +20,10 @@ use Doctrine\DBAL\Connection;
 class SqlGetAttributeAsMainMedia implements GetAttributeAsMainMediaInterface
 {
     private array $attributesAsMainMedia;
-    private Connection $connection;
 
-    public function __construct(Connection $connection)
+    public function __construct(private Connection $connection)
     {
         $this->attributesAsMainMedia = [];
-        $this->connection = $connection;
     }
 
     public function forAssetFamilyCode(string $assetFamilyCode): AttributeAsMainMedia

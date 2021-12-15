@@ -39,26 +39,14 @@ class AssetItemHydrator implements AssetItemHydratorInterface
 
     private AbstractPlatform $platform;
 
-    private FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocales;
-
-    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
-
-    private ValueHydratorInterface $valueHydrator;
-
-    private ImagePreviewUrlGenerator $imagePreviewUrlGenerator;
-
     public function __construct(
         Connection $connection,
-        FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocales,
-        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
-        ValueHydratorInterface $valueHydrator,
-        ImagePreviewUrlGenerator $imagePreviewUrlGenerator
+        private FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocales,
+        private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
+        private ValueHydratorInterface $valueHydrator,
+        private ImagePreviewUrlGenerator $imagePreviewUrlGenerator
     ) {
         $this->platform = $connection->getDatabasePlatform();
-        $this->findRequiredValueKeyCollectionForChannelAndLocales = $findRequiredValueKeyCollectionForChannelAndLocales;
-        $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
-        $this->valueHydrator = $valueHydrator;
-        $this->imagePreviewUrlGenerator = $imagePreviewUrlGenerator;
     }
 
     public function hydrate(array $row, AssetQuery $query, array $context = []): AssetItem
@@ -98,7 +86,7 @@ class AssetItemHydrator implements AssetItemHydratorInterface
         $normalizedRequiredValueKeys = $this->getRequiredValueKeys($query)->normalize();
 
         $completeness = ['complete' => 0, 'required' => 0];
-        if (count($normalizedRequiredValueKeys) > 0) {
+        if ($normalizedRequiredValueKeys !== []) {
             $existingValueKeys = array_keys($valueCollection);
             $completeness['complete'] = count(
                 array_intersect($normalizedRequiredValueKeys, $existingValueKeys)

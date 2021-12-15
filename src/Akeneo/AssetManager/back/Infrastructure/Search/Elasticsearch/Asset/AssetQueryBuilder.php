@@ -25,21 +25,8 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
 {
     private const ATTRIBUTE_FILTER_FIELD = 'values.';
 
-    private FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale;
-    private GetValueKeyForAttributeChannelAndLocaleInterface $getValueKeyForAttributeChannelAndLocale;
-    private AttributeRepositoryInterface $attributeRepository;
-    private FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes;
-
-    public function __construct(
-        FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale,
-        GetValueKeyForAttributeChannelAndLocaleInterface $getValueKeyForAttributeChannelAndLocale,
-        AttributeRepositoryInterface $attributeRepository,
-        FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes
-    ) {
-        $this->findRequiredValueKeyCollectionForChannelAndLocale = $findRequiredValueKeyCollectionForChannelAndLocale;
-        $this->getValueKeyForAttributeChannelAndLocale = $getValueKeyForAttributeChannelAndLocale;
-        $this->attributeRepository = $attributeRepository;
-        $this->findIdentifiersByAssetFamilyAndCodes = $findIdentifiersByAssetFamilyAndCodes;
+    public function __construct(private FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale, private GetValueKeyForAttributeChannelAndLocaleInterface $getValueKeyForAttributeChannelAndLocale, private AttributeRepositoryInterface $attributeRepository, private FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes)
+    {
     }
 
     public function buildFromQuery(AssetQuery $assetQuery, $source): array
@@ -131,35 +118,26 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
                 if (empty($filter['value'])) {
                     return $query;
                 }
-                switch ($filter['operator']) {
-                    case '<':
-                        $query['filter'][] = ['range' => ['updated_at' => [
-                            'lt' => $this->getFormattedDate($filter['value']),
-                        ]]];
-                        break;
-                    case '>':
-                        $query['filter'][] = ['range' => ['updated_at' => [
-                            'gt' => $this->getFormattedDate($filter['value']),
-                        ]]];
-                        break;
-                    case 'BETWEEN':
-                        $query['filter'][] = ['range' => ['updated_at' => [
-                            'gt' => $this->getFormattedDate($filter['value'][0]),
-                            'lt' => $this->getFormattedDate($filter['value'][1]),
-                        ]]];
-                        break;
-                    case 'NOT BETWEEN':
-                        $query['must_not'][] = ['range' => ['updated_at' => [
-                            'gt' => $this->getFormattedDate($filter['value'][0]),
-                            'lt' => $this->getFormattedDate($filter['value'][1]),
-                        ]]];
-                        break;
-                    case 'SINCE LAST N DAYS':
-                        $query['filter'][] = ['range' => ['updated_at' => [
-                            'gt' => $this->getFormattedDate(sprintf('%s days ago', $filter['value'])),
-                        ]]];
-                        break;
-                }
+                $query['filter'][] = match ($filter['operator']) {
+                    '<' => ['range' => ['updated_at' => [
+                        'lt' => $this->getFormattedDate($filter['value']),
+                    ]]],
+                    '>' => ['range' => ['updated_at' => [
+                        'gt' => $this->getFormattedDate($filter['value']),
+                    ]]],
+                    'BETWEEN' => ['range' => ['updated_at' => [
+                        'gt' => $this->getFormattedDate($filter['value'][0]),
+                        'lt' => $this->getFormattedDate($filter['value'][1]),
+                    ]]],
+                    'NOT BETWEEN' => ['range' => ['updated_at' => [
+                        'gt' => $this->getFormattedDate($filter['value'][0]),
+                        'lt' => $this->getFormattedDate($filter['value'][1]),
+                    ]]],
+                    'SINCE LAST N DAYS' => ['range' => ['updated_at' => [
+                        'gt' => $this->getFormattedDate(sprintf('%s days ago', $filter['value'])),
+                    ]]],
+                    default => $query,
+                };
                 return $query;
             },
             $query['query']['constant_score']['filter']['bool']
@@ -235,8 +213,8 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
 
     private function getCompleteFilterQuery(AssetQuery $assetQuery, $assetFamilyCode, $completeFilter, $query)
     {
-        $channel = isset($completeFilter['context']['channel']) ? $completeFilter['context']['channel'] : $assetQuery->getChannel();
-        $locales = isset($completeFilter['context']['locales']) ? $completeFilter['context']['locales'] : [$assetQuery->getLocale()];
+        $channel = $completeFilter['context']['channel'] ?? $assetQuery->getChannel();
+        $locales = $completeFilter['context']['locales'] ?? [$assetQuery->getLocale()];
 
         $requiredValueKeys = $this->getRequiredValueKeys(
             $assetFamilyCode,

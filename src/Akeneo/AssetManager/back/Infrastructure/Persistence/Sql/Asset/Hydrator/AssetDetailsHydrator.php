@@ -38,18 +38,12 @@ class AssetDetailsHydrator implements AssetDetailsHydratorInterface
 {
     private AbstractPlatform $platform;
 
-    private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType;
-
-    private ValueHydratorInterface $valueHydrator;
-
     public function __construct(
         Connection $connection,
-        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
-        ValueHydratorInterface $valueHydrator
+        private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
+        private ValueHydratorInterface $valueHydrator
     ) {
         $this->platform = $connection->getDatabasePlatform();
-        $this->findValueKeysByAttributeType = $findValueKeysByAttributeType;
-        $this->valueHydrator = $valueHydrator;
     }
 
     public function hydrate(

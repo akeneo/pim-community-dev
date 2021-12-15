@@ -36,40 +36,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ExecuteNamingConventionAction
 {
-    private EditAssetHandler $editAssetHandler;
-
-    private TokenStorageInterface $tokenStorage;
-
-    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
-
-    private SecurityFacade $securityFacade;
-
-    private EditAssetCommandFactory $editAssetCommandFactory;
-
-    private ValidatorInterface $validator;
-
-    private NormalizerInterface $violationNormalizer;
-
-    private AssetRepositoryInterface $assetRepository;
-
-    public function __construct(
-        AssetRepositoryInterface $assetRepository,
-        EditAssetHandler $editAssetHandler,
-        EditAssetCommandFactory $editAssetCommandFactory,
-        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        ValidatorInterface $validator,
-        NormalizerInterface $violationNormalizer,
-        TokenStorageInterface $tokenStorage,
-        SecurityFacade $securityFacade
-    ) {
-        $this->editAssetHandler = $editAssetHandler;
-        $this->tokenStorage = $tokenStorage;
-        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
-        $this->editAssetCommandFactory = $editAssetCommandFactory;
-        $this->validator = $validator;
-        $this->securityFacade = $securityFacade;
-        $this->violationNormalizer = $violationNormalizer;
-        $this->assetRepository = $assetRepository;
+    public function __construct(private AssetRepositoryInterface $assetRepository, private EditAssetHandler $editAssetHandler, private EditAssetCommandFactory $editAssetCommandFactory, private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler, private ValidatorInterface $validator, private NormalizerInterface $violationNormalizer, private TokenStorageInterface $tokenStorage, private SecurityFacade $securityFacade)
+    {
     }
 
     public function __invoke(string $assetFamilyIdentifier, string $assetCode): JsonResponse
@@ -83,7 +51,7 @@ class ExecuteNamingConventionAction
                 AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
                 AssetCode::fromString($assetCode)
             );
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 
@@ -102,7 +70,7 @@ class ExecuteNamingConventionAction
 
         try {
             ($this->editAssetHandler)($editAssetCommand);
-        } catch (AssetFamilyNotFoundException|AssetNotFoundException $e) {
+        } catch (AssetFamilyNotFoundException|AssetNotFoundException) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute\MediaLink;
 
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -43,7 +44,7 @@ class PrefixValidator extends ConstraintValidator
 
         $validator = Validation::createValidator();
         $violations = $validator->validate($prefix, [
-            new Constraints\Type('string'),
+            new Type('string'),
         ]);
 
         if ('' === $prefix) {

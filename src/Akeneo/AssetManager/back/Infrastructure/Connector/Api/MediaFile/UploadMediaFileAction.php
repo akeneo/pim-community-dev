@@ -30,18 +30,8 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class UploadMediaFileAction
 {
-    private FileStorerInterface $fileStorer;
-    private RouterInterface $router;
-    private SecurityFacade $securityFacade;
-
-    public function __construct(
-        FileStorerInterface $fileStorer,
-        RouterInterface $router,
-        SecurityFacade $securityFacade
-    ) {
-        $this->fileStorer = $fileStorer;
-        $this->router = $router;
-        $this->securityFacade = $securityFacade;
+    public function __construct(private FileStorerInterface $fileStorer, private RouterInterface $router, private SecurityFacade $securityFacade)
+    {
     }
 
     public function __invoke(Request $request): Response

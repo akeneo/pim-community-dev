@@ -10,21 +10,15 @@ use Webmozart\Assert\Assert;
 
 final class AttributeEditionValidator
 {
-    private AttributeRepositoryInterface $attributeRepository;
-
-    private GetAttributeIdentifierInterface $getAttributeIdentifier;
-
     /** @var AttributeValidatorInterface[] */
     private iterable $attributeValidator;
 
     public function __construct(
-        AttributeRepositoryInterface $attributeRepository,
-        GetAttributeIdentifierInterface $getAttributeIdentifier,
+        private AttributeRepositoryInterface $attributeRepository,
+        private GetAttributeIdentifierInterface $getAttributeIdentifier,
         iterable $attributeValidators
     ) {
         Assert::allIsInstanceOf($attributeValidators, AttributeValidatorInterface::class);
-        $this->attributeRepository = $attributeRepository;
-        $this->getAttributeIdentifier = $getAttributeIdentifier;
         $this->attributeValidator = $attributeValidators;
     }
 

@@ -25,34 +25,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class UploadAction
 {
-    protected ValidatorInterface $validator;
-
-    protected PathGeneratorInterface $pathGenerator;
-
-    private FileStorer $fileStorer;
-
-    private FileInfoRepositoryInterface $fileInfoRepository;
-
-    private NormalizerInterface $normalizer;
-
-    public function __construct(
-        ValidatorInterface $validator,
-        PathGeneratorInterface $pathGenerator,
-        FileStorer $fileStorer,
-        FileInfoRepositoryInterface $fileInfoRepository,
-        NormalizerInterface $normalizer
-    ) {
-        $this->validator = $validator;
-        $this->pathGenerator = $pathGenerator;
-        $this->fileStorer = $fileStorer;
-        $this->fileInfoRepository = $fileInfoRepository;
-        $this->normalizer = $normalizer;
+    public function __construct(protected ValidatorInterface $validator, protected PathGeneratorInterface $pathGenerator, private FileStorer $fileStorer, private FileInfoRepositoryInterface $fileInfoRepository, private NormalizerInterface $normalizer)
+    {
     }
 
     /**
      * Post a new media and return it's temporary identifier
      *
-     * @param Request $request
      *
      * @return Response
      */

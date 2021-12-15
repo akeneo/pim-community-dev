@@ -31,14 +31,8 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlFindAssetFamilyItems implements FindAssetFamilyItemsInterface
 {
-    private Connection $sqlConnection;
-
-    /**
-     * @param Connection $sqlConnection
-     */
-    public function __construct(Connection $sqlConnection)
+    public function __construct(private Connection $sqlConnection)
     {
-        $this->sqlConnection = $sqlConnection;
     }
 
     /**

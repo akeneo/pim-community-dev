@@ -35,21 +35,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class MassDeleteAction
 {
-    private MassDeleteAssetsHandler $massDeleteAssetsHandler;
-    private SecurityFacade $securityFacade;
-    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
-    private TokenStorageInterface $tokenStorage;
-
-    public function __construct(
-        MassDeleteAssetsHandler $massDeleteAssetsHandler,
-        SecurityFacade $securityFacade,
-        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        TokenStorageInterface $tokenStorage
-    ) {
-        $this->massDeleteAssetsHandler = $massDeleteAssetsHandler;
-        $this->securityFacade = $securityFacade;
-        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
-        $this->tokenStorage = $tokenStorage;
+    public function __construct(private MassDeleteAssetsHandler $massDeleteAssetsHandler, private SecurityFacade $securityFacade, private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler, private TokenStorageInterface $tokenStorage)
+    {
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): Response

@@ -67,7 +67,7 @@ class TransformationCollectionValidator extends ConstraintValidator
                     'Expected argument to be of class "%s" or "%s", "%s" given',
                     CreateAssetFamilyCommand::class,
                     EditAssetFamilyCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

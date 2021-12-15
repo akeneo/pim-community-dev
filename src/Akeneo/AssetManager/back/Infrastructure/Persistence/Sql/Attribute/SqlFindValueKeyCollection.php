@@ -21,13 +21,10 @@ use Doctrine\DBAL\Connection;
 
 class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
 {
-    private Connection $sqlConnection;
-
     private array $cachedResult = [];
 
-    public function __construct(Connection $sqlConnection)
+    public function __construct(private Connection $sqlConnection)
     {
-        $this->sqlConnection = $sqlConnection;
     }
 
     public function clearCache(): void
@@ -45,9 +42,7 @@ class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
     }
 
     /**
-     * @param AssetFamilyIdentifier $assetFamilyIdentifier
      *
-     * @return ValueKeyCollection
      *
      * @throws \Doctrine\DBAL\DBALException
      */

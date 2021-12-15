@@ -33,26 +33,14 @@ class ConnectorAssetFamilyHydrator
 {
     private AbstractPlatform $platform;
 
-    private ConnectorProductLinkRulesHydrator $productLinkRulesHydrator;
-
-    private ConnectorTransformationCollectionHydrator $transformationCollectionHydrator;
-
-    private ConnectorNamingConventionHydrator $namingConventionHydrator;
-
-    private FindActivatedLocalesInterface $findActivatedLocales;
-
     public function __construct(
         Connection $connection,
-        ConnectorProductLinkRulesHydrator $productLinkRulesHydrator,
-        ConnectorTransformationCollectionHydrator $transformationCollectionHydrator,
-        ConnectorNamingConventionHydrator $namingConventionHydrator,
-        FindActivatedLocalesInterface $findActivatedLocales
+        private ConnectorProductLinkRulesHydrator $productLinkRulesHydrator,
+        private ConnectorTransformationCollectionHydrator $transformationCollectionHydrator,
+        private ConnectorNamingConventionHydrator $namingConventionHydrator,
+        private FindActivatedLocalesInterface $findActivatedLocales
     ) {
         $this->platform = $connection->getDatabasePlatform();
-        $this->productLinkRulesHydrator = $productLinkRulesHydrator;
-        $this->transformationCollectionHydrator = $transformationCollectionHydrator;
-        $this->namingConventionHydrator = $namingConventionHydrator;
-        $this->findActivatedLocales = $findActivatedLocales;
     }
 
     public function hydrate(array $row): ConnectorAssetFamily

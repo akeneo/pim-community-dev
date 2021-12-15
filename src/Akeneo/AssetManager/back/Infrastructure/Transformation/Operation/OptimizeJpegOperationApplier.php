@@ -24,14 +24,8 @@ use Webmozart\Assert\Assert;
 
 class OptimizeJpegOperationApplier implements OperationApplier
 {
-    private FilterManager $filterManager;
-
-    private Filesystem $filesystem;
-
-    public function __construct(FilterManager $filterManager, Filesystem $filesystem)
+    public function __construct(private FilterManager $filterManager, private Filesystem $filesystem)
     {
-        $this->filterManager = $filterManager;
-        $this->filesystem = $filesystem;
     }
 
     /**

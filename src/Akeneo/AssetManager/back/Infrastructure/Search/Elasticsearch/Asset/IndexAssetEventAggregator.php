@@ -24,16 +24,8 @@ class IndexAssetEventAggregator implements EventAggregatorInterface
     /** @var AssetIdentifier[] */
     private array $assetsToIndex = [];
 
-    private AssetIndexerInterface $assetIndexer;
-
-    private IndexByAssetFamilyInBackgroundInterface $indexByAssetFamilyInBackground;
-
-    public function __construct(
-        AssetIndexerInterface $assetIndexer,
-        IndexByAssetFamilyInBackgroundInterface $indexByAssetFamilyInBackground
-    ) {
-        $this->assetIndexer = $assetIndexer;
-        $this->indexByAssetFamilyInBackground = $indexByAssetFamilyInBackground;
+    public function __construct(private AssetIndexerInterface $assetIndexer, private IndexByAssetFamilyInBackgroundInterface $indexByAssetFamilyInBackground)
+    {
     }
 
     /**

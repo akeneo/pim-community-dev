@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\PublicApi\Enrich;
 
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
@@ -29,24 +30,8 @@ use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\
  */
 class AssetPreviewGenerator
 {
-    private AssetRepositoryInterface $assetRepository;
-
-    private AssetFamilyRepositoryInterface $assetFamilyRepository;
-
-    private AttributeRepositoryInterface $attributeRepository;
-
-    private ImagePreviewUrlGenerator $imagePreviewUrlGenerator;
-
-    public function __construct(
-        AssetRepositoryInterface $assetRepository,
-        AssetFamilyRepositoryInterface $assetFamilyRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        ImagePreviewUrlGenerator $imagePreviewUrlGenerator
-    ) {
-        $this->assetRepository = $assetRepository;
-        $this->assetFamilyRepository = $assetFamilyRepository;
-        $this->attributeRepository = $attributeRepository;
-        $this->imagePreviewUrlGenerator = $imagePreviewUrlGenerator;
+    public function __construct(private AssetRepositoryInterface $assetRepository, private AssetFamilyRepositoryInterface $assetFamilyRepository, private AttributeRepositoryInterface $attributeRepository, private ImagePreviewUrlGenerator $imagePreviewUrlGenerator)
+    {
     }
 
     public function getImageUrl(
@@ -79,7 +64,7 @@ class AssetPreviewGenerator
 
         $value = $asset->findValue($valueKey);
 
-        if (null === $value) {
+        if (!$value instanceof Value) {
             $rawData = '';
         } else {
             $data = $value->getData()->normalize();

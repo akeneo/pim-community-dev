@@ -11,6 +11,7 @@
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute;
 
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttributeOption;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
@@ -24,20 +25,8 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class GetConnectorAttributeOptionAction
 {
-    private FindConnectorAttributeOptionInterface $findConnectorAttributeOptionQuery;
-
-    private AssetFamilyExistsInterface $assetFamilyExists;
-
-    private SecurityFacade $securityFacade;
-
-    public function __construct(
-        FindConnectorAttributeOptionInterface $findConnectorAttributeOptionQuery,
-        AssetFamilyExistsInterface $assetFamilyExists,
-        SecurityFacade $securityFacade
-    ) {
-        $this->assetFamilyExists = $assetFamilyExists;
-        $this->findConnectorAttributeOptionQuery = $findConnectorAttributeOptionQuery;
-        $this->securityFacade = $securityFacade;
+    public function __construct(private FindConnectorAttributeOptionInterface $findConnectorAttributeOptionQuery, private AssetFamilyExistsInterface $assetFamilyExists, private SecurityFacade $securityFacade)
+    {
     }
 
     /**
@@ -69,7 +58,7 @@ class GetConnectorAttributeOptionAction
 
         $attributeOption = $this->findConnectorAttributeOptionQuery->find($assetFamilyIdentifier, $attributeCode, $optionCode);
 
-        if (null === $attributeOption) {
+        if (!$attributeOption instanceof ConnectorAttributeOption) {
             throw new NotFoundHttpException(sprintf('Attribute option "%s" does not exist for the attribute "%s".', $optionCode, $attributeCode));
         }
 

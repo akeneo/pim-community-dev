@@ -29,18 +29,13 @@ class UrlChecker
     /** @var string[] */
     private array $networkWhitelist;
 
-    private DnsLookupInterface $dnsLookup;
-    private IpMatcher $ipMatcher;
-
     public function __construct(
         array $allowedProtocols,
-        DnsLookupInterface $dnsLookup,
-        IpMatcher $ipMatcher,
+        private DnsLookupInterface $dnsLookup,
+        private IpMatcher $ipMatcher,
         string $networkWhitelist = ''
     ) {
         $this->allowedProtocols = $allowedProtocols;
-        $this->dnsLookup = $dnsLookup;
-        $this->ipMatcher = $ipMatcher;
         $this->networkWhitelist = empty($networkWhitelist) ? [] : \explode(',', $networkWhitelist);
     }
 
@@ -71,12 +66,7 @@ class UrlChecker
         if ($this->isInWhitelist($ip)) {
             return true;
         }
-
-        if ($this->isInPrivateRange($ip)) {
-            return false;
-        }
-
-        return true;
+        return !$this->isInPrivateRange($ip);
     }
 
     private function isInPrivateRange(string $ip): bool

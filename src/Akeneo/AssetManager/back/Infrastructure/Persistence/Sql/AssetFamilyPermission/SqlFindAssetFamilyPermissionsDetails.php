@@ -23,11 +23,8 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlFindAssetFamilyPermissionsDetails implements FindAssetFamilyPermissionsDetailsInterface
 {
-    private Connection $sqlConnection;
-
-    public function __construct(Connection $sqlConnection)
+    public function __construct(private Connection $sqlConnection)
     {
-        $this->sqlConnection = $sqlConnection;
     }
 
     /**

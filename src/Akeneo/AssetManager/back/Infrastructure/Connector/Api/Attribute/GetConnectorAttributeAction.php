@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute;
 
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -25,19 +26,8 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class GetConnectorAttributeAction
 {
-    private FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttributeQuery;
-    private AssetFamilyExistsInterface $assetFamilyExists;
-
-    private SecurityFacade $securityFacade;
-
-    public function __construct(
-        FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttributeQuery,
-        AssetFamilyExistsInterface $assetFamilyExists,
-        SecurityFacade $securityFacade
-    ) {
-        $this->assetFamilyExists = $assetFamilyExists;
-        $this->findConnectorAttributeQuery = $findConnectorAttributeQuery;
-        $this->securityFacade = $securityFacade;
+    public function __construct(private FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttributeQuery, private AssetFamilyExistsInterface $assetFamilyExists, private SecurityFacade $securityFacade)
+    {
     }
 
     /**
@@ -63,7 +53,7 @@ class GetConnectorAttributeAction
 
         $attribute = $this->findConnectorAttributeQuery->find($assetFamilyIdentifier, $attributeCode);
 
-        if (null === $attribute) {
+        if (!$attribute instanceof ConnectorAttribute) {
             throw new NotFoundHttpException(sprintf('Attribute "%s" does not exist for the asset family "%s".', $code, $assetFamilyIdentifier));
         }
 

@@ -30,13 +30,10 @@ use Doctrine\DBAL\Types\Types;
  */
 class AssetHydrator implements AssetHydratorInterface
 {
-    private ValueHydratorInterface $valueHydrator;
-
     private AbstractPlatform $platform;
 
-    public function __construct(Connection $connection, ValueHydratorInterface $valueHydrator)
+    public function __construct(Connection $connection, private ValueHydratorInterface $valueHydrator)
     {
-        $this->valueHydrator = $valueHydrator;
         $this->platform = $connection->getDatabasePlatform();
     }
 

@@ -21,29 +21,8 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
     /** The limit above which we do not try to generate a preview, in bytes */
     private const PREVIEW_SIZE_LIMIT = 60_000_000;
 
-    protected DefaultImageProviderInterface $defaultImageProvider;
-    protected DataManager $dataManager;
-    protected CacheManager $cacheManager;
-    protected FilterManager $filterManager;
-    protected LoggerInterface $logger;
-
-    /** @var string[] */
-    protected array $supportedMimeTypes;
-
-    public function __construct(
-        DataManager $dataManager,
-        CacheManager $cacheManager,
-        FilterManager $filterManager,
-        DefaultImageProviderInterface $defaultImageProvider,
-        LoggerInterface $logger,
-        ?array $supportedMimeTypes = []
-    ) {
-        $this->dataManager = $dataManager;
-        $this->cacheManager = $cacheManager;
-        $this->filterManager = $filterManager;
-        $this->defaultImageProvider = $defaultImageProvider;
-        $this->logger = $logger;
-        $this->supportedMimeTypes = $supportedMimeTypes;
+    public function __construct(protected DataManager $dataManager, protected CacheManager $cacheManager, protected FilterManager $filterManager, protected DefaultImageProviderInterface $defaultImageProvider, protected LoggerInterface $logger, protected ?array $supportedMimeTypes = [])
+    {
     }
 
     abstract public function supports(string $data, AbstractAttribute $attribute, string $type): bool;
@@ -116,7 +95,7 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
                     'data'        => $data,
                     'attribute'   => $attribute->normalize(),
                     'exception'   => [
-                        'type'    => get_class($exception),
+                        'type'    => $exception::class,
                         'message' => $exception->getMessage(),
                     ],
                 ]
@@ -130,7 +109,7 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
                     'data'        => $data,
                     'attribute'   => $attribute->normalize(),
                     'exception'   => [
-                        'type'    => get_class($exception),
+                        'type'    => $exception::class,
                         'message' => $exception->getMessage(),
                     ],
                 ],
@@ -174,7 +153,7 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
                     'data'        => $data,
                     'attribute'   => $attribute->normalize(),
                     'exception'   => [
-                        'type'    => get_class($exception),
+                        'type'    => $exception::class,
                         'message' => $exception->getMessage(),
                     ],
                 ]
@@ -196,10 +175,7 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
      * Create an unique filename for the given url.
      * The file extension is calculated from the preview type configuration.
      *
-     * @param string $url
-     * @param string $type
      *
-     * @return string
      */
     private function createCacheFilename(string $url, string $type): string
     {
@@ -220,11 +196,6 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
         return sprintf('%s%s%s', $path, $hashedFilename, $fileExtension);
     }
 
-    /**
-     * @param string $type
-     *
-     * @return string
-     */
     private function getDefaultImageUrl(string $type): string
     {
         $previewType = $this->getPreviewType($type);

@@ -23,14 +23,8 @@ use Webmozart\Assert\Assert;
 
 class ColorspaceOperationApplier implements OperationApplier
 {
-    private FilterManager $filterManager;
-
-    private Filesystem $filesystem;
-
-    public function __construct(FilterManager $filterManager, Filesystem $filesystem)
+    public function __construct(private FilterManager $filterManager, private Filesystem $filesystem)
     {
-        $this->filterManager = $filterManager;
-        $this->filesystem = $filesystem;
     }
 
     /**

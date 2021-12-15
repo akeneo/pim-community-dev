@@ -26,12 +26,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class AssetFamilyShouldNotBeLinkedToAnyProductAttributeValidator extends ConstraintValidator
 {
-    private AssetFamilyIsLinkedToAtLeastOneProductAttributeInterface $assetFamilyIsLinkedToProductAttributes;
-
-    public function __construct(
-        AssetFamilyIsLinkedToAtLeastOneProductAttributeInterface $assetFamilyIsLinkedToProductAttributes
-    ) {
-        $this->assetFamilyIsLinkedToProductAttributes = $assetFamilyIsLinkedToProductAttributes;
+    public function __construct(private AssetFamilyIsLinkedToAtLeastOneProductAttributeInterface $assetFamilyIsLinkedToProductAttributes)
+    {
     }
 
     public function validate($command, Constraint $constraint): void
@@ -51,7 +47,7 @@ class AssetFamilyShouldNotBeLinkedToAnyProductAttributeValidator extends Constra
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
                     DeleteAssetFamilyCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

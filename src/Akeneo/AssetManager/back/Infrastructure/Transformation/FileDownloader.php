@@ -29,21 +29,11 @@ use Symfony\Component\HttpFoundation\File\File;
 class FileDownloader
 {
     private const MAX_CACHED_FILES = 10;
-
-    private FilesystemProvider $filesystemProvider;
-    private FileFetcherInterface $fileFetcher;
-    private Filesystem $filesystem;
     /** @var array<string, \SplFileInfo> */
     private array $cachedFiles = [];
 
-    public function __construct(
-        FilesystemProvider $filesystemProvider,
-        FileFetcherInterface $fileFetcher,
-        Filesystem $filesystem
-    ) {
-        $this->filesystemProvider = $filesystemProvider;
-        $this->fileFetcher = $fileFetcher;
-        $this->filesystem = $filesystem;
+    public function __construct(private FilesystemProvider $filesystemProvider, private FileFetcherInterface $fileFetcher, private Filesystem $filesystem)
+    {
     }
 
     public function get(string $key, string $destinationDir, string $originalFilename): File

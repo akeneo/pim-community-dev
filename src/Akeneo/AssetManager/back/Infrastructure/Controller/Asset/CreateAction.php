@@ -48,60 +48,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateAction
 {
-    private CreateAssetHandler $createAssetHandler;
-
-    private EditAssetHandler $editAssetHandler;
-
-    private AssetIndexerInterface $assetIndexer;
-
-    private NormalizerInterface $normalizer;
-
-    private ValidatorInterface $validator;
-
-    private SecurityFacade $securityFacade;
-
-    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
-
-    private TokenStorageInterface $tokenStorage;
-
-    private \Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommandFactory $editAssetCommandFactory;
-
-    private NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory;
-
-    private LinkAssetHandler $linkAssetHandler;
-
-    private \Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface $indexAssetEventAggregator;
-
-    private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator;
-
-    public function __construct(
-        CreateAssetHandler $createAssetHandler,
-        EditAssetHandler $editAssetHandler,
-        AssetIndexerInterface $assetIndexer,
-        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        TokenStorageInterface $tokenStorage,
-        NormalizerInterface $normalizer,
-        ValidatorInterface $validator,
-        SecurityFacade $securityFacade,
-        EditAssetCommandFactory $editAssetCommandFactory,
-        NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory,
-        LinkAssetHandler $linkAssetHandler,
-        EventAggregatorInterface $indexAssetEventAggregator,
-        ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator
-    ) {
-        $this->createAssetHandler = $createAssetHandler;
-        $this->editAssetHandler = $editAssetHandler;
-        $this->assetIndexer = $assetIndexer;
-        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
-        $this->tokenStorage = $tokenStorage;
-        $this->normalizer = $normalizer;
-        $this->validator = $validator;
-        $this->securityFacade = $securityFacade;
-        $this->editAssetCommandFactory = $editAssetCommandFactory;
-        $this->namingConventionEditAssetCommandFactory = $namingConventionEditAssetCommandFactory;
-        $this->linkAssetHandler = $linkAssetHandler;
-        $this->indexAssetEventAggregator = $indexAssetEventAggregator;
-        $this->computeTransformationEventAggregator = $computeTransformationEventAggregator;
+    public function __construct(private CreateAssetHandler $createAssetHandler, private EditAssetHandler $editAssetHandler, private AssetIndexerInterface $assetIndexer, private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler, private TokenStorageInterface $tokenStorage, private NormalizerInterface $normalizer, private ValidatorInterface $validator, private SecurityFacade $securityFacade, private EditAssetCommandFactory $editAssetCommandFactory, private NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory, private LinkAssetHandler $linkAssetHandler, private EventAggregatorInterface $indexAssetEventAggregator, private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator)
+    {
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): Response

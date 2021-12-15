@@ -40,40 +40,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditAction
 {
-    private EditAssetFamilyHandler $editAssetFamilyHandler;
-
-    private Serializer $serializer;
-
-    private ValidatorInterface $validator;
-
-    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
-
-    private TokenStorageInterface $tokenStorage;
-
-    private AttributeRepositoryInterface $attributeRepository;
-
-    private AssetFamilyRepositoryInterface $assetFamilyRepository;
-
-    private SecurityFacade $securityFacade;
-
-    public function __construct(
-        EditAssetFamilyHandler $editAssetFamilyHandler,
-        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        TokenStorageInterface $tokenStorage,
-        Serializer $serializer,
-        ValidatorInterface $validator,
-        AttributeRepositoryInterface $attributeRepository,
-        AssetFamilyRepositoryInterface $assetFamilyRepository,
-        SecurityFacade $securityFacade
-    ) {
-        $this->editAssetFamilyHandler = $editAssetFamilyHandler;
-        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
-        $this->tokenStorage = $tokenStorage;
-        $this->serializer = $serializer;
-        $this->validator = $validator;
-        $this->attributeRepository = $attributeRepository;
-        $this->assetFamilyRepository = $assetFamilyRepository;
-        $this->securityFacade = $securityFacade;
+    public function __construct(private EditAssetFamilyHandler $editAssetFamilyHandler, private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler, private TokenStorageInterface $tokenStorage, private Serializer $serializer, private ValidatorInterface $validator, private AttributeRepositoryInterface $attributeRepository, private AssetFamilyRepositoryInterface $assetFamilyRepository, private SecurityFacade $securityFacade)
+    {
     }
 
     public function __invoke(Request $request): Response
@@ -183,7 +151,7 @@ class EditAction
             );
 
             $attributeAsMainMediaCode = (string) $attribute->getCode();
-        } catch (AttributeNotFoundException $e) {
+        } catch (AttributeNotFoundException) {
             $attributeAsMainMediaCode = null;
         }
 

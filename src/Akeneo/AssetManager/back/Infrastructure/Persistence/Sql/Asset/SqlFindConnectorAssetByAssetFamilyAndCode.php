@@ -30,24 +30,8 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlFindConnectorAssetByAssetFamilyAndCode implements FindConnectorAssetByAssetFamilyAndCodeInterface
 {
-    private Connection $connection;
-
-    private FindValueKeyCollectionInterface $findValueKeyCollection;
-
-    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
-
-    private ConnectorAssetHydrator $assetHydrator;
-
-    public function __construct(
-        Connection $connection,
-        ConnectorAssetHydrator $hydrator,
-        FindValueKeyCollectionInterface $findValueKeyCollection,
-        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
-    ) {
-        $this->connection = $connection;
-        $this->findValueKeyCollection = $findValueKeyCollection;
-        $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
-        $this->assetHydrator = $hydrator;
+    public function __construct(private Connection $connection, private ConnectorAssetHydrator $assetHydrator, private FindValueKeyCollectionInterface $findValueKeyCollection, private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier)
+    {
     }
 
     public function find(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $assetCode): ?ConnectorAsset

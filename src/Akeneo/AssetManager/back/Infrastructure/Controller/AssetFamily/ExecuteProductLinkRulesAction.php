@@ -31,24 +31,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class ExecuteProductLinkRulesAction
 {
-    private LinkAllAssetFamilyAssetsHandler $linkAllAssetFamilyAssetsHandler;
-
-    private TokenStorageInterface $tokenStorage;
-
-    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
-
-    private SecurityFacade $securityFacade;
-
-    public function __construct(
-        LinkAllAssetFamilyAssetsHandler $linkAllAssetFamilyAssetsHandler,
-        TokenStorageInterface $tokenStorage,
-        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        SecurityFacade $securityFacade
-    ) {
-        $this->linkAllAssetFamilyAssetsHandler = $linkAllAssetFamilyAssetsHandler;
-        $this->tokenStorage = $tokenStorage;
-        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
-        $this->securityFacade = $securityFacade;
+    public function __construct(private LinkAllAssetFamilyAssetsHandler $linkAllAssetFamilyAssetsHandler, private TokenStorageInterface $tokenStorage, private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler, private SecurityFacade $securityFacade)
+    {
     }
 
     public function __invoke(string $identifier): JsonResponse
@@ -60,7 +44,7 @@ class ExecuteProductLinkRulesAction
         $command = new LinkAllAssetFamilyAssetsCommand($identifier);
         try {
             ($this->linkAllAssetFamilyAssetsHandler)($command);
-        } catch (AssetFamilyNotFoundException $e) {
+        } catch (AssetFamilyNotFoundException) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 

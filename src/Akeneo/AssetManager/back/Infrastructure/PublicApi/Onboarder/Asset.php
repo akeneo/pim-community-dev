@@ -9,36 +9,21 @@ namespace Akeneo\AssetManager\Infrastructure\PublicApi\Onboarder;
  */
 final class Asset
 {
-    private string $identifier;
-
     private array $labels;
-
-    private string $code;
-
-    private string $assetFamilyIdentifier;
 
     private array $media;
 
-    private string $attributeType;
-
-    private string $mediaType;
-
     public function __construct(
-        string $identifier,
+        private string $identifier,
         array $labels,
-        string $code,
-        string $assetFamilyIdentifier,
+        private string $code,
+        private string $assetFamilyIdentifier,
         array $media,
-        string $attributeType,
-        string $mediaType
+        private string $attributeType,
+        private string $mediaType
     ) {
-        $this->identifier = $identifier;
         $this->labels = $labels;
-        $this->code = $code;
-        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
         $this->media = $media;
-        $this->attributeType = $attributeType;
-        $this->mediaType = $mediaType;
     }
 
     public function getIdentifier(): string

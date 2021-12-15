@@ -14,11 +14,9 @@ class LRUCachedFindAssetFamilyItems implements FindAssetFamilyItemsInterface
 {
     /** @var array<AssetFamilyItem>|null */
     private ?array $cachedAssetFamilyItems;
-    private FindAssetFamilyItemsInterface $findAssetFamilyItems;
 
-    public function __construct(FindAssetFamilyItemsInterface $findAssetFamilyItems)
+    public function __construct(private FindAssetFamilyItemsInterface $findAssetFamilyItems)
     {
-        $this->findAssetFamilyItems = $findAssetFamilyItems;
         $this->cachedAssetFamilyItems = null;
     }
 

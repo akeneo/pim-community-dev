@@ -31,14 +31,11 @@ class ConnectorAssetHydrator
 {
     private AbstractPlatform $platform;
 
-    private ConnectorValueTransformerRegistry $valueTransformerRegistry;
-
     public function __construct(
         Connection $connection,
-        ConnectorValueTransformerRegistry $valueTransformerRegistry
+        private ConnectorValueTransformerRegistry $valueTransformerRegistry
     ) {
         $this->platform = $connection->getDatabasePlatform();
-        $this->valueTransformerRegistry = $valueTransformerRegistry;
     }
 
     public function hydrate(array $row, ValueKeyCollection $valueKeyCollection, array $attributes): ConnectorAsset

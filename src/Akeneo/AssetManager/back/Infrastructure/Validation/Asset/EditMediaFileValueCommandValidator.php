@@ -37,11 +37,8 @@ use Symfony\Component\Validator\Validation;
  */
 class EditMediaFileValueCommandValidator extends ConstraintValidator
 {
-    private FileExistsInterface $fileExists;
-
-    public function __construct(FileExistsInterface $fileExists)
+    public function __construct(private FileExistsInterface $fileExists)
     {
-        $this->fileExists = $fileExists;
     }
 
     public function validate($command, Constraint $constraint)
@@ -64,7 +61,7 @@ class EditMediaFileValueCommandValidator extends ConstraintValidator
                         EditMediaFileValueCommand::class,
                         EditMediaFileTargetValueCommand::class
                     ]),
-                    get_class($command)
+                    $command::class
                 )
             );
         }
@@ -90,7 +87,7 @@ class EditMediaFileValueCommandValidator extends ConstraintValidator
                 sprintf(
                     'Expected command attribute to be of class "%s", "%s" given',
                     MediaFileAttribute::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

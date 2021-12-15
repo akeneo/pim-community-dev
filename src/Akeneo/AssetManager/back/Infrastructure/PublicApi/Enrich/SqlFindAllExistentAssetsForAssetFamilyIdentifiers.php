@@ -23,11 +23,8 @@ final class SqlFindAllExistentAssetsForAssetFamilyIdentifiers
 {
     private const BATCH_SIZE = 200;
 
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private Connection $connection)
     {
-        $this->connection = $connection;
     }
 
     public function forAssetFamilyIdentifiersAndAssetCodes(array $assetFamilyIdentifiersToCodes): array

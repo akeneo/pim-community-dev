@@ -47,42 +47,12 @@ class ComputeTransformations implements TaskletInterface, TrackableTaskletInterf
     ];
 
     private ?StepExecution $stepExecution = null;
-    private FindAssetIdentifiersByAssetFamilyInterface $findIdentifiersByAssetFamily;
-    private GetTransformations $getTransformations;
-    private AssetRepositoryInterface $assetRepository;
-    private GetOutdatedVariationSource $getOutdatedVariationSource;
-    private TransformationExecutor $transformationExecutor;
-    private EditAssetHandler $editAssetHandler;
-    private ValidatorInterface $validator;
-    private CountAssetsInterface $countAssets;
-    private JobRepositoryInterface $jobRepository;
-    private int $batchSize;
 
     /** @var TransformationCollection[] */
     private array $cachedTransformationsPerAssetFamily = [];
 
-    public function __construct(
-        FindAssetIdentifiersByAssetFamilyInterface $findIdentifiersByAssetFamily,
-        GetTransformations $getTransformations,
-        AssetRepositoryInterface $assetRepository,
-        GetOutdatedVariationSource $getOutdatedVariationSource,
-        TransformationExecutor $transformationExecutor,
-        EditAssetHandler $editAssetHandler,
-        ValidatorInterface $validator,
-        CountAssetsInterface $countAssets,
-        JobRepositoryInterface $jobRepository,
-        int $batchSize
-    ) {
-        $this->findIdentifiersByAssetFamily = $findIdentifiersByAssetFamily;
-        $this->getTransformations = $getTransformations;
-        $this->assetRepository = $assetRepository;
-        $this->getOutdatedVariationSource = $getOutdatedVariationSource;
-        $this->transformationExecutor = $transformationExecutor;
-        $this->editAssetHandler = $editAssetHandler;
-        $this->validator = $validator;
-        $this->countAssets = $countAssets;
-        $this->jobRepository = $jobRepository;
-        $this->batchSize = $batchSize;
+    public function __construct(private FindAssetIdentifiersByAssetFamilyInterface $findIdentifiersByAssetFamily, private GetTransformations $getTransformations, private AssetRepositoryInterface $assetRepository, private GetOutdatedVariationSource $getOutdatedVariationSource, private TransformationExecutor $transformationExecutor, private EditAssetHandler $editAssetHandler, private ValidatorInterface $validator, private CountAssetsInterface $countAssets, private JobRepositoryInterface $jobRepository, private int $batchSize)
+    {
     }
 
     public function setStepExecution(StepExecution $stepExecution)

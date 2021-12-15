@@ -23,11 +23,8 @@ class CacheFindActivatedLocalesPerChannels implements FindActivatedLocalesPerCha
 {
     private ?array $activatedLocalesPerChannels = null;
 
-    private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels;
-
-    public function __construct(FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels)
+    public function __construct(private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels)
     {
-        $this->findActivatedLocalesPerChannels = $findActivatedLocalesPerChannels;
     }
 
     public function findAll(): array

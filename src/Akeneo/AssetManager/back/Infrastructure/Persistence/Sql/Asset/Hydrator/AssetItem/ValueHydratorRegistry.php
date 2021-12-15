@@ -48,7 +48,7 @@ class ValueHydratorRegistry implements ValueHydratorInterface
     {
         $valueHydrator = $this->findHydrator($attribute);
 
-        if (null === $valueHydrator) {
+        if (!$valueHydrator instanceof ValueHydratorInterface) {
             return $normalizedValue;
         }
 

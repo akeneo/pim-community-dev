@@ -36,32 +36,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class DeleteAction
 {
-    private SecurityFacade $securityFacade;
-
-    private NormalizerInterface $normalizer;
-
-    private ValidatorInterface $validator;
-
-    private DeleteAssetFamilyHandler $deleteAssetFamilyHandler;
-
-    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
-
-    private TokenStorageInterface $tokenStorage;
-
-    public function __construct(
-        SecurityFacade $securityFacade,
-        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        TokenStorageInterface $tokenStorage,
-        NormalizerInterface $normalizer,
-        ValidatorInterface $validator,
-        DeleteAssetFamilyHandler $deleteAssetFamilyHandler
-    ) {
-        $this->securityFacade = $securityFacade;
-        $this->normalizer = $normalizer;
-        $this->validator = $validator;
-        $this->deleteAssetFamilyHandler = $deleteAssetFamilyHandler;
-        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
-        $this->tokenStorage = $tokenStorage;
+    public function __construct(private SecurityFacade $securityFacade, private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler, private TokenStorageInterface $tokenStorage, private NormalizerInterface $normalizer, private ValidatorInterface $validator, private DeleteAssetFamilyHandler $deleteAssetFamilyHandler)
+    {
     }
 
     public function __invoke(Request $request, string $identifier): Response
@@ -85,7 +61,7 @@ class DeleteAction
 
         try {
             ($this->deleteAssetFamilyHandler)($command);
-        } catch (AssetFamilyNotFoundException $e) {
+        } catch (AssetFamilyNotFoundException) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 

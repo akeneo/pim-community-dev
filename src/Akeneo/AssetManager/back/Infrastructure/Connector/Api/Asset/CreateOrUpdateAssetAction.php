@@ -47,60 +47,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateOrUpdateAssetAction
 {
-    private AssetFamilyExistsInterface $assetFamilyExists;
-
-    private AssetExistsInterface $assetExists;
-
-    private \Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\Connector\EditAssetCommandFactory $editAssetCommandFactory;
-
-    private EditAssetHandler $editAssetHandler;
-
-    private CreateAssetHandler $createAssetHandler;
-
-    private Router $router;
-
-    private AssetValidator $assetStructureValidator;
-
-    private ValidatorInterface $assetDataValidator;
-
-    private BatchAssetsToLink $batchAssetsToLink;
-
-    private NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory;
-
-    private \Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface $indexAssetEventAggregator;
-
-    private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator;
-
-    private SecurityFacade $securityFacade;
-
-    public function __construct(
-        AssetFamilyExistsInterface $assetFamilyExists,
-        AssetExistsInterface $assetExists,
-        EditAssetCommandFactory $editAssetCommandFactory,
-        EditAssetHandler $editAssetHandler,
-        CreateAssetHandler $createAssetHandler,
-        Router $router,
-        AssetValidator $assetStructureValidator,
-        ValidatorInterface $assetDataValidator,
-        BatchAssetsToLink $batchAssetsToLink,
-        NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory,
-        EventAggregatorInterface $indexAssetEventAggregator,
-        ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator,
-        SecurityFacade $securityFacade
-    ) {
-        $this->assetFamilyExists = $assetFamilyExists;
-        $this->assetExists = $assetExists;
-        $this->editAssetCommandFactory = $editAssetCommandFactory;
-        $this->editAssetHandler = $editAssetHandler;
-        $this->createAssetHandler = $createAssetHandler;
-        $this->router = $router;
-        $this->assetStructureValidator = $assetStructureValidator;
-        $this->assetDataValidator = $assetDataValidator;
-        $this->batchAssetsToLink = $batchAssetsToLink;
-        $this->namingConventionEditAssetCommandFactory = $namingConventionEditAssetCommandFactory;
-        $this->indexAssetEventAggregator = $indexAssetEventAggregator;
-        $this->computeTransformationEventAggregator = $computeTransformationEventAggregator;
-        $this->securityFacade = $securityFacade;
+    public function __construct(private AssetFamilyExistsInterface $assetFamilyExists, private AssetExistsInterface $assetExists, private EditAssetCommandFactory $editAssetCommandFactory, private EditAssetHandler $editAssetHandler, private CreateAssetHandler $createAssetHandler, private Router $router, private AssetValidator $assetStructureValidator, private ValidatorInterface $assetDataValidator, private BatchAssetsToLink $batchAssetsToLink, private NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory, private EventAggregatorInterface $indexAssetEventAggregator, private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator, private SecurityFacade $securityFacade)
+    {
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier, string $code): Response

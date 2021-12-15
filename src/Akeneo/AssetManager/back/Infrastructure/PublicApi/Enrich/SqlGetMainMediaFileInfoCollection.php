@@ -19,18 +19,15 @@ use Webmozart\Assert\Assert;
 
 final class SqlGetMainMediaFileInfoCollection implements GetMainMediaFileInfoCollectionInterface
 {
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private Connection $connection)
     {
-        $this->connection = $connection;
     }
 
     public function forAssetFamilyAndAssetCodes(
         string $assetFamilyIdentifier,
         array $assetCodes
     ): array {
-        if (0 === count($assetCodes)) {
+        if ([] === $assetCodes) {
             return [];
         }
 

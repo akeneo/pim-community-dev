@@ -27,16 +27,8 @@ use Symfony\Component\Routing\Router;
  */
 class AddHalDownloadLinkToAssetImages
 {
-    private Router $router;
-
-    private FindMediaFileAttributeCodesInterface $findMediaFileAttributeCodes;
-
-    public function __construct(
-        Router $router,
-        FindMediaFileAttributeCodesInterface $findMediaFileAttributeCodes
-    ) {
-        $this->router = $router;
-        $this->findMediaFileAttributeCodes = $findMediaFileAttributeCodes;
+    public function __construct(private Router $router, private FindMediaFileAttributeCodesInterface $findMediaFileAttributeCodes)
+    {
     }
 
     public function __invoke(AssetFamilyIdentifier $assetFamilyIdentifier, array $normalizedAssets): array

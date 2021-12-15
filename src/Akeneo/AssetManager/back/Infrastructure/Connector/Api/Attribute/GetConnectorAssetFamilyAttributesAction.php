@@ -23,24 +23,8 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class GetConnectorAssetFamilyAttributesAction
 {
-    private FindConnectorAttributesByAssetFamilyIdentifierInterface $findConnectorAssetFamilyAttributes;
-
-    private AssetFamilyExistsInterface $assetFamilyExists;
-
-    private AddHalSelfLinkToNormalizedConnectorAttribute $addHalSelfLinkToNormalizedConnectorAttribute;
-
-    private SecurityFacade $securityFacade;
-
-    public function __construct(
-        FindConnectorAttributesByAssetFamilyIdentifierInterface $findConnectorAssetFamilyAttributes,
-        AssetFamilyExistsInterface $assetFamilyExists,
-        AddHalSelfLinkToNormalizedConnectorAttribute $addHalSelfLinkToNormalizedConnectorAttribute,
-        SecurityFacade $securityFacade
-    ) {
-        $this->assetFamilyExists = $assetFamilyExists;
-        $this->findConnectorAssetFamilyAttributes = $findConnectorAssetFamilyAttributes;
-        $this->addHalSelfLinkToNormalizedConnectorAttribute = $addHalSelfLinkToNormalizedConnectorAttribute;
-        $this->securityFacade = $securityFacade;
+    public function __construct(private FindConnectorAttributesByAssetFamilyIdentifierInterface $findConnectorAssetFamilyAttributes, private AssetFamilyExistsInterface $assetFamilyExists, private AddHalSelfLinkToNormalizedConnectorAttribute $addHalSelfLinkToNormalizedConnectorAttribute, private SecurityFacade $securityFacade)
+    {
     }
 
     /**
