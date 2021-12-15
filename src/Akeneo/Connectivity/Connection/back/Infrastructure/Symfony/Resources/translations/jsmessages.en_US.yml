@@ -91,12 +91,24 @@ akeneo_connectivity.connection:
                 tabs:
                     settings: Settings
                     permissions: Permissions
+                    error_monitoring: Error monitoring
                 settings:
                     authorizations:
                         title: authorizations
                         information: 'To know more about app authorizations, check out our {{ link }}.'
                         information_link_anchor: Help Center article
                         no_scope: No specific authorizations have been requested.
+                error_monitoring:
+                    error: Oups, something went wrong!
+                    helper:
+                        description: Here, you can see the detail of each error for this app over the last 7 days. Error number is limited to 100 errors.
+                    not_data_source: For now, monitoring page is only available for source app.
+                    not_auditable:
+                        title: Unmonitored app
+                        description:
+                            1: To track errors on this app,
+                            2: activate monitoring
+                            3: in the settings.
                 flash:
                     load_permissions_error.title: 'Saved permissions on {{ entity }} could not be loaded.'
                     load_permissions_error.description: Please retry later.
