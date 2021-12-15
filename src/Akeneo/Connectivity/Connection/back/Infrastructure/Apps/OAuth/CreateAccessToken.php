@@ -104,17 +104,17 @@ class CreateAccessToken implements CreateAccessTokenInterface
 
     private function appendOpenIdData(IOAuth2AuthCode $authCode, string $appId, array $accessToken): array
     {
-        if (ScopeList::fromScopeString($authCode->getScope())->hasScope(AuthenticationScope::SCOPE_OPENID)) {
-            /** @var UserInterface|mixed */
-            $pimUser = $authCode->getData();
-            if (false === $pimUser instanceof UserInterface) {
-                throw new \LogicException();
-            }
+        /** @var UserInterface|mixed */
+        $pimUser = $authCode->getData();
+        if (false === $pimUser instanceof UserInterface) {
+            throw new \LogicException();
+        }
 
-            $appAuthenticationUser = $this->appAuthenticationUserProvider->getAppAuthenticationUser($appId, $pimUser->getId());
+        $appAuthenticationUser = $this->appAuthenticationUserProvider->getAppAuthenticationUser($appId, $pimUser->getId());
+        $authenticationScopes = $appAuthenticationUser->getConsentedAuthenticationScopes();
 
-            $authenticationScopes = $appAuthenticationUser->getConsentedAuthenticationScopes();
-
+        if($authenticationScopes->hasScope(AuthenticationScope::SCOPE_OPENID))
+        {
             $accessToken['id_token'] = $this->createJsonWebToken->create($appId, $appAuthenticationUser);
 
             $existingScopesList = ScopeList::fromScopeString($accessToken['scope']);
