@@ -402,7 +402,7 @@ class Client
                 return;
             } catch (Conflict409Exception $e) {
                 $exception = $e;
-                sleep($this->maxExpectedIndexationLatency);
+                usleep($this->maxExpectedIndexationLatency);
                 continue;
             }
         } while ($attempts < $this->maxNumberOfRetries);
