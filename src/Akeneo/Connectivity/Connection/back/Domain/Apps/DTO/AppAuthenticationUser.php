@@ -13,23 +13,23 @@ use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 class AppAuthenticationUser
 {
     private int $pimUserId;
-    private string $appId;
     private ScopeList $consentedAuthenticationScopes;
     private string $email;
     private string $firstname;
     private string $lastname;
+    private string $uuid;
 
     public function __construct(
         int $pimUserId,
-        string $appId,
         ScopeList $consentedAuthenticationScopes,
+        string $uuid,
         string $email,
         string $firstname,
         string $lastname
     ) {
         $this->pimUserId = $pimUserId;
-        $this->appId = $appId;
         $this->consentedAuthenticationScopes = $consentedAuthenticationScopes;
+        $this->uuid = $uuid;
         $this->email = $email;
         $this->firstname = $firstname;
         $this->lastname = $lastname;
@@ -37,7 +37,7 @@ class AppAuthenticationUser
 
     public function getAppUserId(): string
     {
-        return md5($this->appId . $this->pimUserId);
+        return $this->uuid;
     }
 
     public function getPimUserId(): int

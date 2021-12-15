@@ -1,19 +1,17 @@
 <?php
-
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query;
+namespace Akeneo\Connectivity\Connection\Tests\CatalogBuilder;
 
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\CreateUserConsentQueryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
-use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CreateUserConsentQuery implements CreateUserConsentQueryInterface
+class UserConsentLoader
 {
     private Connection $connection;
 
@@ -22,26 +20,30 @@ class CreateUserConsentQuery implements CreateUserConsentQueryInterface
         $this->connection = $connection;
     }
 
-    public function execute(int $userId, string $appId, array $authenticationScopes, \DateTimeImmutable $consentDate): void
-    {
+    public function addUserConsent(
+        int $userId,
+        string $appId,
+        array $scopes,
+        UuidInterface $uuid,
+        \DateTimeImmutable $consentDate
+    ): void {
         $query = <<<SQL
-            INSERT INTO akeneo_connectivity_user_consent (user_id, app_id, scopes, uuid, consent_date)
+            INSERT INTO akeneo_connectivity_user_consent (`user_id`,`app_id`,`scopes`, `uuid`,`consent_date`)
             VALUES (:userId, :appId, :scopes, :uuid, :consentDate)
-            ON DUPLICATE KEY UPDATE scopes = :scopes, consent_date = :consentDate
             SQL;
 
         $this->connection->executeQuery($query, [
             'userId' => $userId,
             'appId' => $appId,
-            'scopes' => array_values($authenticationScopes),
-            'uuid' => Uuid::uuid4(),
+            'scopes' => $scopes,
+            'uuid' => $uuid->toString(),
             'consentDate' => $consentDate,
         ], [
             'userId' => Types::INTEGER,
             'appId' => Types::STRING,
             'scopes' => Types::JSON,
             'uuid' => Types::ASCII_STRING,
-            'consentDate' => Types::DATETIMETZ_IMMUTABLE
+            'consentDate' => Types::DATETIMETZ_IMMUTABLE,
         ]);
     }
 }

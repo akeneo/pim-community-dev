@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Security;
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthenticationUserProviderInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthenticationUser;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetUserConsentedAuthenticationScopesQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetUserConsentedAuthenticationUuidQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
@@ -18,25 +19,29 @@ use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 class AppAuthenticationUserProvider implements AppAuthenticationUserProviderInterface
 {
     private GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery;
+    private GetUserConsentedAuthenticationUuidQueryInterface $getUserConsentedAuthenticationUuidQuery;
     private UserRepositoryInterface $userRepository;
 
     public function __construct(
         GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
+        GetUserConsentedAuthenticationUuidQueryInterface $getUserConsentedAuthenticationUuidQuery,
         UserRepositoryInterface $userRepository
     ) {
         $this->getUserConsentedAuthenticationScopesQuery = $getUserConsentedAuthenticationScopesQuery;
         $this->userRepository = $userRepository;
+        $this->getUserConsentedAuthenticationUuidQuery = $getUserConsentedAuthenticationUuidQuery;
     }
 
     public function getAppAuthenticationUser(string $appId, int $pimUserId): AppAuthenticationUser
     {
         $user = $this->getUser($pimUserId);
         $consentedAuthenticationScopes = ScopeList::fromScopes($this->getUserConsentedAuthenticationScopesQuery->execute($pimUserId, $appId));
+        $userUuid = $this->getUserConsentedAuthenticationUuidQuery->execute($pimUserId, $appId);
 
         return new AppAuthenticationUser(
             $pimUserId,
-            $appId,
             $consentedAuthenticationScopes,
+            $userUuid,
             $user->getEmail(),
             $user->getFirstName(),
             $user->getLastName()
