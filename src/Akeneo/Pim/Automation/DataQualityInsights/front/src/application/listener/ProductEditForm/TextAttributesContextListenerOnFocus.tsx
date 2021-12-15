@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect} from 'react';
+import React, {useCallback, useEffect, useLayoutEffect, useMemo, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {usePageContext, useProduct, useProductFamily} from '../../../infrastructure/hooks';
 import {createWidget, EditorElement, WidgetsCollection} from '../../helper';
@@ -15,6 +15,7 @@ const WIDGET_UUID_NAMESPACE = '4e34f5c2-d1b0-4cf2-96c9-dca6b95e695e';
 const PRODUCT_ATTRIBUTES_CONTAINER_SELECTOR = '.entity-edit-form.edit-form div[data-drop-zone="container"]';
 const EDITOR_ELEMENT_SELECTOR = ['.field-input textarea', '.field-input input[type="text"]'].join(', ');
 const RICH_EDITOR_ELEMENT_SELECTOR = ['.field-input div.note-editable[contenteditable]'].join(', ');
+const WIDGET_LIST_LIMIT = 12;
 
 export const getTextAttributes = (family: Family, product: Product, activeLocalesNumber: number) => {
   const isValidTextarea = (attribute: Attribute) =>
@@ -88,65 +89,91 @@ const getEditorElement = (element: Element) => {
   };
 };
 
-const TextAttributesContextListener = () => {
+const TextAttributesContextListenerOnFocus = () => {
   const family = useProductFamily();
   const {attributesTabIsLoading} = usePageContext();
   const product = useProduct();
   const dispatchAction = useDispatch();
   const activeLocales = useFetchActiveLocales();
   const {status: attributeGroupsStatus, load} = useAttributeGroupsStatusContext();
+  const textAttributes = useMemo(() => {
+    if (!family || activeLocales.length === 0) {
+      return [];
+    }
+    return getTextAttributes(family, product, activeLocales.length);
+  }, [family, product, activeLocales]);
+  const [widgetsList, setWidgetsList] = useState<WidgetsCollection>({});
+
+  const addWidget = useCallback(
+    (element: Element) => {
+      if (!isValidTextAttributeElement(element, textAttributes, attributeGroupsStatus)) {
+        return;
+      }
+
+      const attribute = element.getAttribute('data-attribute');
+      const {editor, editorId} = getEditorElement(element);
+
+      if (!attribute || !editor || widgetsList[attribute]) {
+        return;
+      }
+
+      setWidgetsList(list => {
+        const widgetId = uuidV5(`${product.meta.id}-${attribute}`, WIDGET_UUID_NAMESPACE);
+
+        let widgetsArray = Object.values(list);
+        if (widgetsArray.length >= WIDGET_LIST_LIMIT) {
+          widgetsArray.shift();
+        }
+
+        const widgetsCollection = widgetsArray.reduce((previousValue, currentValue) => {
+          return {...previousValue, [currentValue.attribute]: currentValue};
+        }, {});
+
+        return {
+          ...widgetsCollection,
+          [attribute]: createWidget(widgetId, editor as EditorElement, editorId, attribute),
+        };
+      });
+    },
+    [widgetsList, textAttributes, attributeGroupsStatus]
+  );
 
   useEffect(() => {
     load();
   }, []);
 
-  useLayoutEffect(() => {
-    const container = document.querySelector(PRODUCT_ATTRIBUTES_CONTAINER_SELECTOR);
-    let observer: MutationObserver | null = null;
-
-    if (family && container && activeLocales.length > 0) {
-      const textAttributes = getTextAttributes(family, product, activeLocales.length);
-
-      observer = new MutationObserver(mutations => {
-        let widgetList: WidgetsCollection = {};
-        mutations.forEach(mutation => {
-          if (isValidTextAttributeElement(mutation.target as Element, textAttributes, attributeGroupsStatus)) {
-            const element = mutation.target as Element;
-            const attribute = element.getAttribute('data-attribute');
-            const {editor, editorId} = getEditorElement(element);
-
-            if (!attribute || !editor) {
-              return;
-            }
-
-            editor.setAttribute('data-gramm', 'false');
-            editor.setAttribute('data-gramm_editor', 'false');
-            editor.setAttribute('spellcheck', 'false');
-
-            const widgetId = uuidV5(`${product.meta.id}-${attribute}`, WIDGET_UUID_NAMESPACE);
-            widgetList[widgetId] = createWidget(widgetId, editor as EditorElement, editorId, attribute);
-          }
-        });
-
-        if (Object.entries(widgetList).length > 0) {
-          dispatchAction(initializeWidgetsListAction(widgetList));
-        }
-      });
-
-      observer.observe(container, {
-        childList: true,
-        subtree: true,
-      });
+  useEffect(() => {
+    if (Object.entries(widgetsList).length === 0) {
+      return;
     }
 
-    return () => {
-      if (observer) {
-        observer.disconnect();
+    dispatchAction(initializeWidgetsListAction(widgetsList));
+  }, [widgetsList]);
+
+  useLayoutEffect(() => {
+    const container = document.querySelector(PRODUCT_ATTRIBUTES_CONTAINER_SELECTOR);
+    if (!container || textAttributes.length === 0) {
+      return;
+    }
+
+    const handleFocus = (event: Event) => {
+      const inputField = event.target as Element;
+      const element = inputField.closest('[data-attribute]');
+
+      if (!element) {
+        return;
       }
+
+      addWidget(element);
     };
-  }, [product, family, attributesTabIsLoading, activeLocales, attributeGroupsStatus]);
+
+    container.addEventListener('focus', handleFocus as EventListener, true);
+    return () => {
+      container.removeEventListener('focus', handleFocus as EventListener, true);
+    };
+  }, [attributesTabIsLoading, textAttributes, addWidget]);
 
   return <></>;
 };
 
-export default TextAttributesContextListener;
+export {TextAttributesContextListenerOnFocus};
