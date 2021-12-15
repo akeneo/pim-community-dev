@@ -109,6 +109,7 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetUserConsentedAuthenticationScopesQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetUserConsentedAuthenticationUuidQuery'
             - '@pim_user.repository.user'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider:
@@ -141,6 +142,10 @@ services:
             - '@database_connection'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetUserConsentedAuthenticationScopesQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetUserConsentedAuthenticationUuidQuery:
         arguments:
             - '@database_connection'
 
