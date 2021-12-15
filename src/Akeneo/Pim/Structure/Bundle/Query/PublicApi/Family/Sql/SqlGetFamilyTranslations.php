@@ -30,7 +30,7 @@ SELECT
 FROM pim_catalog_family f
 INNER JOIN pim_catalog_family_translation trans ON f.id = trans.foreign_key
 WHERE f.code IN (:familyCodes)
-AND locale = :locale
+AND locale = $locale
 SQL;
         $rows = $this->connection->executeQuery(
             $sql,
