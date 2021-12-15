@@ -76,18 +76,10 @@ connectivity-connection-activate-e2e: var/tests/behat/connectivity/connection
 	APP_ENV=behat $(PHP_RUN) vendor/bin/behat --config behat.yml -p legacy -s connectivity src/Akeneo/Connectivity/Connection/tests/features/activate_an_app.feature
 
 connectivity-connection-integration-back:
-ifeq ($(CI),true)
-	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Connectivity_Connection_Integration
-else
-	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Connectivity_Connection_Integration $(0)
-endif
+	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit -c . --testsuite Akeneo_Connectivity_Connection_Integration --log-junit var/tests/phpunit/phpunit_connectivity_integration.xml $(0)
 
 connectivity-connection-e2e-back:
-ifeq ($(CI),true)
-	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Connectivity_Connection_EndToEnd
-else
-	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Connectivity_Connection_EndToEnd $(0)
-endif
+	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit -c . --testsuite Akeneo_Connectivity_Connection_EndToEnd --log-junit var/tests/phpunit/phpunit_connectivity_e2e.xml $(0)
 
 connectivity-connection-back:
 	$(MAKE) connectivity-connection-coupling-back

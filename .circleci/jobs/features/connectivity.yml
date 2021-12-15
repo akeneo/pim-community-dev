@@ -60,10 +60,10 @@ jobs:
                     command: APP_ENV=test make database
             -   run:
                     name: Integration back
-                    command: CI=false make connectivity-connection-integration-back
+                    command: make connectivity-connection-integration-back
             -   run:
                     name: End to end back
-                    command: CI=false make connectivity-connection-e2e-back
+                    command: make connectivity-connection-e2e-back
             -   store_test_results:
                     path: var/tests/phpunit
 
