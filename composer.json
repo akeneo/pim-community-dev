@@ -125,7 +125,7 @@
         "twig/extensions": "1.3.0",
         "twig/twig": "1.44.1",
         "webmozart/assert": "1.5",
-        "aws/aws-sdk-php": "3.172"
+        "aws/aws-sdk-php": "3.208.5"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",
