@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
 
+use Akeneo\Connectivity\Connection\Application\Apps\AppAuthenticationUserProviderInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAccessTokenInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthenticationUser;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetConnectedAppScopesQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateAccessToken;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateJsonWebToken;
@@ -59,7 +62,9 @@ class CreateAccessTokenSpec extends ObjectBehavior
         GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
         GetAppConfirmationQueryInterface $appConfirmationQuery,
         UserRepositoryInterface $userRepository,
-        UserInterface $appUser
+        UserInterface $appUser,
+        UserInterface $pimUser,
+        AppAuthenticationUserProviderInterface $appAuthenticationUserProvider
     ): void {
         $clientProvider->findClientByAppId('client_id_1234')->willReturn($client);
         $storage->getAuthCode('auth_code_1234')->willReturn($authCode);
@@ -69,8 +74,19 @@ class CreateAccessTokenSpec extends ObjectBehavior
             ->willReturn(AppConfirmation::create('client_id_1234', 1, 'some_user_group', 2));
         $userRepository->find(1)
             ->willReturn($appUser);
+        $pimUser->getId()->willReturn(2);
+        $appAuthenticationUserProvider->getAppAuthenticationUser('client_id_1234', 2)
+            ->willReturn(new AppAuthenticationUser(
+                2,
+                'client_id_1234',
+                ScopeList::fromScopes([]),
+                'an_email',
+                'a_firstname',
+                'a_lastname'
+            ));
 
         $authCode->getScope()->willReturn('delete_products');
+        $authCode->getData()->willReturn($pimUser);
         $token = [
             'access_token' => 'generated_token_123',
             'token_type' => 'bearer',
