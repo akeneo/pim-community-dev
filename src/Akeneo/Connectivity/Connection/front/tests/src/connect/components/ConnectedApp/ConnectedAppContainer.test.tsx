@@ -147,6 +147,17 @@ test('The connected app container renders without permissions tab', async () => 
 });
 
 test('The connected app container renders the error monitoring', () => {
+    const fetchConnectedAppMonitoringSettings: MockFetchResponses = {
+        'akeneo_connectivity_connection_apps_rest_get_connected_app_monitoring_settings?connectionCode=some_connection_code':
+            {
+                json: {flowType: FlowType.DATA_DESTINATION, auditable: true},
+            },
+    };
+
+    mockFetchResponses({
+        ...fetchConnectedAppMonitoringSettings,
+    });
+
     (usePermissionsFormProviders as jest.Mock).mockImplementation(() => [[], {}, jest.fn()]);
 
     renderWithProviders(<ConnectedAppContainer connectedApp={connectedApp} />);
