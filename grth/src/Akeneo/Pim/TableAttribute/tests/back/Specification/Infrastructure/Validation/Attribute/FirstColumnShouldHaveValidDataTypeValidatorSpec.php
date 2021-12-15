@@ -101,6 +101,7 @@ final class FirstColumnShouldHaveValidDataTypeValidatorSpec extends ObjectBehavi
             [
                 '{{ data_type }}' => 'number',
                 '{{ allowed_data_types }}' => implode(', ', $this->getAllowedFirstColumnDatatypes()),
+                '%count%' => count($this->getAllowedFirstColumnDatatypes()),
             ]
             )->shouldBeCalled()
             ->willReturn($violationBuilder);
