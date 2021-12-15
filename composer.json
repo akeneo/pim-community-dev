@@ -111,7 +111,7 @@
         "symfony/security-core": "4.4.18",
         "symfony/security-http": "4.4.18",
         "symfony/security-csrf": "4.4.18",
-        "symfony/options-resolver": "4.4.18",
+        "symfony/options-resolver": "4.4.30",
         "symfony/intl": "4.4.18",
         "symfony/finder": "4.4.18",
         "symfony/templating": "4.4.18",
