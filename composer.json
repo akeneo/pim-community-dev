@@ -84,7 +84,7 @@
         "webmozart/assert": "1.5",
         "symfony/asset": "4.4.18",
         "symfony/flex": "1.10.*",
-        "symfony/form": "4.4.18",
+        "symfony/form": "4.4.34",
         "symfony/monolog-bundle": "^3.4",
         "symfony/orm-pack": "^1.0",
         "symfony/twig-bundle": "4.4.18",
