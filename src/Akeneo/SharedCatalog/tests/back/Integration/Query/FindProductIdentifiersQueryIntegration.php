@@ -26,6 +26,7 @@ class FindProductIdentifiersQueryIntegration extends TestCase
     {
         return new SharedCatalog(
             'shared_catalog',
+            'Shared catalog',
             'julia',
             [],
             [
@@ -55,6 +56,49 @@ class FindProductIdentifiersQueryIntegration extends TestCase
                 ],
             ],
             []
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_requires_the_limit_option()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->findProductIdentifiersQuery->find(
+            $this->getSharedCatalogForWomenShirts(),
+            []
+        );
+    }
+
+
+    /**
+     * @test
+     */
+    public function it_requires_a_valid_limit_option()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->findProductIdentifiersQuery->find(
+            $this->getSharedCatalogForWomenShirts(),
+            ['limit' => 'foo']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_if_the_search_after_identifier_does_not_exists()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->findProductIdentifiersQuery->find(
+            $this->getSharedCatalogForWomenShirts(),
+            [
+                'limit' => 100,
+                'search_after' => 'does_not_exists',
+            ]
         );
     }
 

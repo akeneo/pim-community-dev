@@ -13,6 +13,7 @@ class SharedCatalogSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             'shared_catalog',
+            'Shared catalog',
             null,
             [],
             null,
@@ -29,6 +30,7 @@ class SharedCatalogSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             'shared_catalog',
+            'Shared catalog',
             'julia',
             [
                 [
@@ -58,6 +60,7 @@ class SharedCatalogSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             'shared_catalog',
+            'Shared catalog',
             'julia',
             [
                 [
@@ -82,6 +85,7 @@ class SharedCatalogSpec extends ObjectBehavior
 
         $this->normalizeForExternalApi()->shouldBeLike([
             'code' => 'shared_catalog',
+            'label' => 'Shared catalog',
             'publisher' => 'julia',
             'recipients' => [
                 'betty@akeneo.com',
@@ -103,6 +107,7 @@ class SharedCatalogSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             'shared_catalog',
+            'Shared catalog',
             'julia',
             [],
             [
@@ -120,6 +125,7 @@ class SharedCatalogSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             'shared_catalog',
+            'Shared catalog',
             'julia',
             [],
             [],
@@ -133,6 +139,7 @@ class SharedCatalogSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             'shared_catalog',
+            'Shared catalog',
             'julia',
             [],
             [
@@ -160,6 +167,7 @@ class SharedCatalogSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             'shared_catalog',
+            'Shared catalog',
             'julia',
             [],
             [],

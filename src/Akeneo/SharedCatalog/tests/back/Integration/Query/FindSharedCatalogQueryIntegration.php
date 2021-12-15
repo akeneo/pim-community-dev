@@ -35,6 +35,7 @@ class FindSharedCatalogQueryIntegration extends TestCase
     {
         $this->createJobInstance(
             'shared_catalog_1',
+            'Shared catalog 1',
             'akeneo_shared_catalog',
             'export',
             JobInstance::STATUS_READY,
@@ -46,6 +47,7 @@ class FindSharedCatalogQueryIntegration extends TestCase
 
         self::assertEquals([
             'code' => 'shared_catalog_1',
+            'label' => 'Shared catalog 1',
             'publisher' => 'admin@example.com',
             'recipients' => [],
             'channel' => null,
@@ -62,6 +64,7 @@ class FindSharedCatalogQueryIntegration extends TestCase
     {
         $this->createJobInstance(
             'shared_catalog_1',
+            'Shared catalog 1',
             'something_else',
             'export',
             JobInstance::STATUS_READY,

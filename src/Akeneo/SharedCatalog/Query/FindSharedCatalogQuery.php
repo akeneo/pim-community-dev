@@ -28,6 +28,7 @@ class FindSharedCatalogQuery implements FindSharedCatalogQueryInterface
         $sql = <<<SQL
 SELECT
     code,
+    label,
     raw_parameters
 FROM akeneo_batch_job_instance
 WHERE job_name = :job_name
@@ -66,6 +67,7 @@ SQL;
 
         return new SharedCatalog(
             $row['code'],
+            $row['label'],
             $parameters['publisher'] ?? null,
             $parameters['recipients'] ?? [],
             $parameters['filters'] ?? null,
