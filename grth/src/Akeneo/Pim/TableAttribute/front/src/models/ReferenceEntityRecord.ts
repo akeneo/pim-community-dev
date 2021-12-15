@@ -4,7 +4,7 @@ import {ReferenceEntityIdentifierOrCode} from './ReferenceEntity';
 type RecordIdentifier = string; //"alessi";
 export type RecordCode = string; // "brand_alessi_dc1c552a-108c-4e1d-9d72-7f17368bdb5a";
 
-export type Completeness = {complete: number; required: number};
+export type RecordCompleteness = {complete: number; required: number};
 
 /**
  * When you fetch several records, you will get "completeness" field
@@ -30,7 +30,7 @@ export type ReferenceEntityRecord = {
       locale: LocaleCode | null;
     };
   };
-  completeness?: Completeness;
+  completeness?: RecordCompleteness;
   created_at?: string;
   updated_at?: string;
   permission?: {[key: string]: boolean};

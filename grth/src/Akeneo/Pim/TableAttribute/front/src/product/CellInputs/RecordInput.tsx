@@ -9,13 +9,13 @@ import {ReferenceEntityRecordRepository} from '../../repositories';
 
 const DEFAULT_IMAGE_PATH = '/bundles/pimui/img/image_default.png';
 
-const RecordInput: CellInput = ({columnDefinition, row, onChange}) => {
+const RecordInput: CellInput = ({columnDefinition, highlighted, inError, row, onChange}) => {
   const translate = useTranslate();
   const router = useRouter();
   const userContext = useUserContext();
   const catalogLocale = userContext.get('catalogLocale');
 
-  const [option, setOption] = useState<ReferenceEntityRecord | null>(null);
+  const [option, setOption] = useState<ReferenceEntityRecord | null | undefined>();
   const [searchValue, setSearchValue] = React.useState<string>('');
   const debouncedSearchValue = useDebounce(searchValue, 200);
 
@@ -36,15 +36,11 @@ const RecordInput: CellInput = ({columnDefinition, row, onChange}) => {
   }, [cell, referenceEntityCode, router]);
 
   const value = useMemo(() => {
-    if (cell && option) {
-      return getLabel(option.labels, catalogLocale, option.code);
-    } else if (cell) {
-      return `[${cell}]`;
-    }
+    if (cell) return getLabel(option?.labels || {}, catalogLocale, cell);
     return undefined;
   }, [catalogLocale, cell, option]);
 
-  const getImage = useCallback(
+  const getImageUrl = useCallback(
     (path?: string) => {
       if (!path) return DEFAULT_IMAGE_PATH;
 
@@ -54,13 +50,16 @@ const RecordInput: CellInput = ({columnDefinition, row, onChange}) => {
     [router]
   );
 
-  const getUrl = useCallback((code: RecordCode) => {
-    return router.generate('akeneo_reference_entities_record_edit', {
-      recordCode: code,
-      referenceEntityIdentifier: referenceEntityCode,
-      tab: 'enrich',
-    });
-  }, [referenceEntityCode, router]);
+  const getUrl = useCallback(
+    (code: RecordCode) => {
+      return router.generate('akeneo_reference_entities_record_edit', {
+        recordCode: code,
+        referenceEntityIdentifier: referenceEntityCode,
+        tab: 'enrich',
+      });
+    },
+    [referenceEntityCode, router]
+  );
 
   const createOnClick = useCallback((code: RecordCode) => () => onChange(code), [onChange]);
 
@@ -71,6 +70,7 @@ const RecordInput: CellInput = ({columnDefinition, row, onChange}) => {
   return (
     <TableInput.Select
       clearLabel={translate('pim_common.clear')}
+      highlighted={highlighted}
       openDropdownLabel={translate('pim_common.open')}
       value={value}
       onClear={handleClear}
@@ -79,10 +79,11 @@ const RecordInput: CellInput = ({columnDefinition, row, onChange}) => {
       onSearchChange={setSearchValue}
       searchTitle={translate('pim_common.search')}
       onNextPage={handleNextPage}
+      inError={inError}
     >
       {items?.map(record => {
         const label = getLabel(record.labels, catalogLocale, record.code);
-        const image = getImage(record.image?.filePath);
+        const image = getImageUrl(record.image?.filePath);
         const url = getUrl(record.code);
         return (
           <Dropdown.Item onClick={createOnClick(record.code)} key={record.code}>
@@ -93,14 +94,16 @@ const RecordInput: CellInput = ({columnDefinition, row, onChange}) => {
             />
             <Dropdown.Surtitle label={record.code}>{label}</Dropdown.Surtitle>
             <CompletenessBadge completeness={record.completeness} />
-            {url && <IconButton
-              icon={<LinkIcon/>}
-              ghost='borderless'
-              level='tertiary'
-              href={`#${url}`}
-              target='_blank'
-              title={url}
-            />}
+            {url && (
+              <IconButton
+                icon={<LinkIcon />}
+                ghost='borderless'
+                level='tertiary'
+                href={`#${url}`}
+                target='_blank'
+                title={url}
+              />
+            )}
           </Dropdown.Item>
         );
       })}

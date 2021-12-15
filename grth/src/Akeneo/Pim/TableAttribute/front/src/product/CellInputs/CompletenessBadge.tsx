@@ -1,10 +1,10 @@
 import React, {useMemo} from 'react';
 
 import {Badge} from 'akeneo-design-system';
-import {Completeness} from '../../models';
+import {RecordCompleteness} from '../../models';
 
 type CompletenessBadgeProps = {
-  completeness?: Completeness;
+  completeness?: RecordCompleteness;
 };
 
 const CompletenessBadge: React.FC<CompletenessBadgeProps> = ({completeness}) => {
