@@ -327,8 +327,8 @@ akeneo_connectivity.connection:
             button: Let's go!
         connection_selector:
             title:
-                source: Source connections
-                destination: Destination connections
+                source: Data connections
+                destination: Destinations
             all: All
         charts:
             inbound: Inbound
@@ -342,12 +342,12 @@ akeneo_connectivity.connection:
         error_management:
             data_source_error_chart:
                 section:
-                    title: Errors on source connections
+                    title: Errors on data sources
                     helper: Here you can see the total number of errors, including business errors.
                 chart:
                     title: Error count per day
             widget:
-                title: Business errors per source connection
+                title: Business errors per data source
                 over_the_last_seven_days : Over the last 7 days
                 business_errors : business errors
         no_connection:
