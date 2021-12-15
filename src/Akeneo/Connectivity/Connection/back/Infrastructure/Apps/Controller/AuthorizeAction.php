@@ -12,9 +12,11 @@ use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorization
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -30,6 +32,7 @@ class AuthorizeAction
     private AppAuthorizationSessionInterface $appAuthorizationSession;
     private GetAppConfirmationQueryInterface $getAppConfirmationQuery;
     private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator;
+    private SecurityFacade $security;
 
     public function __construct(
         RequestAppAuthorizationHandler $handler,
@@ -37,7 +40,8 @@ class AuthorizeAction
         FeatureFlag $featureFlag,
         AppAuthorizationSessionInterface $appAuthorizationSession,
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
-        RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator
+        RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
+        SecurityFacade $security,
     ) {
         $this->handler = $handler;
         $this->router = $router;
@@ -45,12 +49,17 @@ class AuthorizeAction
         $this->appAuthorizationSession = $appAuthorizationSession;
         $this->getAppConfirmationQuery = $getAppConfirmationQuery;
         $this->redirectUriWithAuthorizationCodeGenerator = $redirectUriWithAuthorizationCodeGenerator;
+        $this->security = $security;
     }
 
     public function __invoke(Request $request): Response
     {
         if (!$this->featureFlag->isEnabled()) {
             throw new NotFoundHttpException();
+        }
+
+        if (!$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
+            throw new AccessDeniedHttpException();
         }
 
         $clientId = $request->query->get('client_id', '');
