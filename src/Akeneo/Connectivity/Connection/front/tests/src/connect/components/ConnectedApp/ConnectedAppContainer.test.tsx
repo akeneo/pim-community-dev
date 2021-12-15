@@ -97,7 +97,7 @@ test('The connected app container renders without permissions tab', () => {
     expect(ConnectedAppErrorMonitoring).not.toHaveBeenCalled();
 });
 
-test('The connected app container renders renders the error monitoring', () => {
+test('The connected app container renders the error monitoring', () => {
     (usePermissionsFormProviders as jest.Mock).mockImplementation(() => [[], {}, jest.fn()]);
 
     renderWithProviders(<ConnectedAppContainer connectedApp={connectedApp} />);
