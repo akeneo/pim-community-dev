@@ -43,6 +43,17 @@ test('it displays an error icon when the color is invalid', () => {
   expect(screen.getByRole('alert')).toBeInTheDocument();
 });
 
+test('it accepts color without a leading #', () => {
+  render(
+    <>
+      <label htmlFor="myInput">My label</label>
+      <ColorInput id="myInput" value="00ff00" />
+    </>
+  );
+
+  expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+});
+
 test('ColorInput supports forwardRef', () => {
   const ref = {current: null};
 

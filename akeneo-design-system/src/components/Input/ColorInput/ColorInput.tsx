@@ -99,6 +99,8 @@ type ColorInputProps = Override<
   }
 >;
 
+const isValidHexaColor = (value: string) => /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(value);
+
 /**
  * The ColorInput component allows the user to enter a color in hexadecimal format.
  */
@@ -111,11 +113,13 @@ const ColorInput = forwardRef<HTMLInputElement, ColorInputProps>(
       [readOnly, onChange]
     );
 
-    const isValidHexaColor = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(value);
+    if (isValidHexaColor(`#${value}`)) {
+      value = `#${value}`;
+    }
 
     return (
-      <ColorInputContainer invalid={invalid || !isValidHexaColor} readOnly={readOnly}>
-        {isValidHexaColor ? (
+      <ColorInputContainer invalid={invalid || !isValidHexaColor(value)} readOnly={readOnly}>
+        {isValidHexaColor(value) ? (
           <ColorPreview type="color" value={value} onChange={handleChange} disabled={readOnly} />
         ) : (
           <ErrorIcon role="alert" size={16} />
@@ -127,7 +131,7 @@ const ColorInput = forwardRef<HTMLInputElement, ColorInputProps>(
           type="text"
           readOnly={readOnly}
           disabled={readOnly}
-          aria-invalid={invalid || !isValidHexaColor}
+          aria-invalid={invalid || !isValidHexaColor(value)}
           {...rest}
         />
         {readOnly && <ReadOnlyIcon size={16} />}
