@@ -6,6 +6,7 @@ enum Key {
   Escape = 'Escape',
   ArrowLeft = 'ArrowLeft',
   ArrowRight = 'ArrowRight',
+  Delete = 'Delete',
 }
 
 export {Key};

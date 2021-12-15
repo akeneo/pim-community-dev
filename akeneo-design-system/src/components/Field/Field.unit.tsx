@@ -18,7 +18,7 @@ test('it renders its children properly', () => {
 test('it does not render something else than an Input or Helpers', () => {
   render(
     // @ts-expect-error Something else should not be displayed
-    <Field label="Nice field" locale="en_US" channel="ecommerce">
+    <Field label="Nice field" locale="en_US" channel="ecommerce" requiredLabel={'(required)'}>
       Something else
       <TextInput data-testid="text-input" value="Coucou" onChange={jest.fn()} />
       <Helper>Some info</Helper>
@@ -31,6 +31,7 @@ test('it does not render something else than an Input or Helpers', () => {
   expect(screen.getByText('Another one')).toBeInTheDocument();
   expect(screen.getByText('ecommerce')).toBeInTheDocument();
   expect(screen.getByText('en')).toBeInTheDocument();
+  expect(screen.getByText('(required)')).toBeInTheDocument();
   expect(screen.queryByText('Something else')).not.toBeInTheDocument();
 });
 
