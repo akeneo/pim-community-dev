@@ -1,13 +1,12 @@
-import React, {Ref, ReactElement} from 'react';
+import React, {Ref, ReactElement, ReactNode} from 'react';
 import styled from 'styled-components';
-import {Helper, HelperProps, InputProps, Locale, LocaleProps} from '../../components';
-import {getColor} from '../../theme';
+import {Helper, HelperProps, InputProps, Locale, LocaleProps, Pill} from '../../components';
 import {useId} from '../../hooks';
 
-const FieldContainer = styled.div`
+const FieldContainer = styled.div<{fullWidth: boolean}>`
   display: flex;
   flex-direction: column;
-  max-width: 460px;
+  max-width: ${({fullWidth}) => (fullWidth ? '100%' : '460px')};
 `;
 
 const LabelContainer = styled.div`
@@ -16,6 +15,7 @@ const LabelContainer = styled.div`
   line-height: 16px;
   margin-bottom: 8px;
   max-width: 460px;
+  gap: 5px;
 `;
 
 const Label = styled.label`
@@ -24,10 +24,6 @@ const Label = styled.label`
 
 const Channel = styled.span`
   text-transform: capitalize;
-
-  :not(:last-child) {
-    margin-right: 5px;
-  }
 `;
 
 const HelperContainer = styled.div`
@@ -35,15 +31,13 @@ const HelperContainer = styled.div`
   max-width: 460px;
 `;
 
-const IncompleteBadge = styled.div`
-  border-radius: 50%;
-  background-color: ${getColor('yellow', 100)};
-  width: 8px;
-  height: 8px;
-  margin-right: 4px;
-`;
-
-type FieldChild = ReactElement<InputProps<unknown>> | ReactElement<HelperProps>;
+type FieldChild =
+  | ReactElement<InputProps<unknown>>
+  | ReactElement<HelperProps>
+  | FieldChild[]
+  | false
+  | null
+  | undefined;
 
 type FieldProps = {
   /**
@@ -59,24 +53,52 @@ type FieldProps = {
   /**
    * The locale of the field.
    */
-  locale?: ReactElement<LocaleProps> | string;
+  locale?: ReactElement<LocaleProps> | string | null;
 
   /**
    * The channel of the field.
    */
-  channel?: string;
+  channel?: string | null;
+
+  /**
+   * The required label to display when field is required within the form.
+   */
+  requiredLabel?: string;
+
+  /**
+   * Should the field input take the full width of the parent container
+   */
+  fullWidth?: boolean;
 
   /**
    * Children of the Field, can only be an Input or Helpers, other children will not be displayed.
    */
-  children: FieldChild | FieldChild[];
+  children: FieldChild;
+
+  /**
+   * Adds actions for this field
+   */
+  actions?: ReactNode;
 };
 
 /**
  * The Field component is used to display information around an Input component.
  */
 const Field = React.forwardRef<HTMLDivElement, FieldProps>(
-  ({label, locale, channel, incomplete = false, children, ...rest}: FieldProps, forwardedRef: Ref<HTMLDivElement>) => {
+  (
+    {
+      label,
+      locale,
+      channel,
+      incomplete = false,
+      fullWidth = false,
+      requiredLabel,
+      children,
+      actions,
+      ...rest
+    }: FieldProps,
+    forwardedRef: Ref<HTMLDivElement>
+  ) => {
     const inputId = useId('input_');
     const labelId = useId('label_');
 
@@ -93,14 +115,20 @@ const Field = React.forwardRef<HTMLDivElement, FieldProps>(
     });
 
     return (
-      <FieldContainer ref={forwardedRef} {...rest}>
+      <FieldContainer ref={forwardedRef} fullWidth={fullWidth ?? false} {...rest}>
         <LabelContainer>
-          {incomplete && <IncompleteBadge />}
+          {incomplete && <Pill level="warning" />}
           <Label htmlFor={inputId} id={labelId}>
             {label}
+            {requiredLabel && (
+              <>
+                &nbsp;<em>{requiredLabel}</em>
+              </>
+            )}
           </Label>
           {channel && <Channel>{channel}</Channel>}
           {locale && ('string' === typeof locale ? <Locale code={locale} /> : locale)}
+          {actions}
         </LabelContainer>
         {decoratedChildren}
       </FieldContainer>
@@ -109,3 +137,4 @@ const Field = React.forwardRef<HTMLDivElement, FieldProps>(
 );
 
 export {Field};
+export type {FieldProps};
