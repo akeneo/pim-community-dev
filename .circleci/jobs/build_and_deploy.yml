@@ -315,15 +315,15 @@ jobs:
                   name: Install back and front dependencies
                   command: |
                     docker-compose run --rm php echo "warm up docker network"
-                    make dependencies
+                    make -j --output-sync dependencies assets css
                   environment:
                       YARN_REGISTRY: "http://registry.yarnpkg.com"
-            - run:
-                  name: Install assets
-                  command: make assets
-            - run:
-                  name: Build css
-                  command: make css
+#            - run:
+#                  name: Install assets
+#                  command: make assets
+#            - run:
+#                  name: Build css
+#                  command: make css
             - run:
                   name: Create hash for front packages
                   # Adding date allows to invalidate the cache each new day, adding front package path avoid conflict between CE build and EE build
