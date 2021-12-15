@@ -47,8 +47,21 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateOrUpdateAssetAction
 {
-    public function __construct(private AssetFamilyExistsInterface $assetFamilyExists, private AssetExistsInterface $assetExists, private EditAssetCommandFactory $editAssetCommandFactory, private EditAssetHandler $editAssetHandler, private CreateAssetHandler $createAssetHandler, private Router $router, private AssetValidator $assetStructureValidator, private ValidatorInterface $assetDataValidator, private BatchAssetsToLink $batchAssetsToLink, private NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory, private EventAggregatorInterface $indexAssetEventAggregator, private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator, private SecurityFacade $securityFacade)
-    {
+    public function __construct(
+        private AssetFamilyExistsInterface $assetFamilyExists,
+        private AssetExistsInterface $assetExists,
+        private EditAssetCommandFactory $editAssetCommandFactory,
+        private EditAssetHandler $editAssetHandler,
+        private CreateAssetHandler $createAssetHandler,
+        private Router $router,
+        private AssetValidator $assetStructureValidator,
+        private ValidatorInterface $assetDataValidator,
+        private BatchAssetsToLink $batchAssetsToLink,
+        private NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory,
+        private EventAggregatorInterface $indexAssetEventAggregator,
+        private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator,
+        private SecurityFacade $securityFacade,
+    ) {
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier, string $code): Response

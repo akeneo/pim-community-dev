@@ -29,8 +29,11 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class GetAction
 {
-    public function __construct(private FindAssetFamilyDetailsInterface $findOneAssetFamilyQuery, private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler, private TokenStorageInterface $tokenStorage)
-    {
+    public function __construct(
+        private FindAssetFamilyDetailsInterface $findOneAssetFamilyQuery,
+        private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
+        private TokenStorageInterface $tokenStorage,
+    ) {
     }
 
     public function __invoke(string $identifier): JsonResponse

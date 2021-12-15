@@ -32,8 +32,13 @@ class NamingConventionTasklet implements TaskletInterface, TrackableTaskletInter
 {
     private ?StepExecution $stepExecution = null;
 
-    public function __construct(private ExecuteNamingConvention $executeNamingConvention, private FindAssetIdentifiersByAssetFamilyInterface $findAssetIdentifiersByAssetFamily, private CountAssetsInterface $countAssets, private JobRepositoryInterface $jobRepository, private int $batchSize)
-    {
+    public function __construct(
+        private ExecuteNamingConvention $executeNamingConvention,
+        private FindAssetIdentifiersByAssetFamilyInterface $findAssetIdentifiersByAssetFamily,
+        private CountAssetsInterface $countAssets,
+        private JobRepositoryInterface $jobRepository,
+        private int $batchSize,
+    ) {
     }
 
     public function setStepExecution(StepExecution $stepExecution): void

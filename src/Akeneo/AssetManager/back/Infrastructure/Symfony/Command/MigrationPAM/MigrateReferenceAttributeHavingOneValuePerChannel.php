@@ -36,7 +36,11 @@ class MigrateReferenceAttributeHavingOneValuePerChannel extends Command
 
     private ?SymfonyStyle $io = null;
 
-    public function __construct(private ConnectionFactory $connectionFactory, private Connection $writeConnection, private CountAssets $countAssets)
+    public function __construct(
+        private ConnectionFactory $connectionFactory,
+        private Connection $writeConnection,
+        private CountAssets $countAssets
+    )
     {
         parent::__construct($this::$defaultName);
     }

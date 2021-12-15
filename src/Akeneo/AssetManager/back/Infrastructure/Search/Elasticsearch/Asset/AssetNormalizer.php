@@ -33,8 +33,12 @@ class AssetNormalizer implements AssetNormalizerInterface
     private const VALUES_FIELD = 'values';
     private const ES_TERM_MAX_LENGTH = 32766;
 
-    public function __construct(private FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales, private SqlFindSearchableAssets $findSearchableAssets, private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType, private FindActivatedLocalesInterface $findActivatedLocales)
-    {
+    public function __construct(
+        private FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
+        private SqlFindSearchableAssets $findSearchableAssets,
+        private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
+        private FindActivatedLocalesInterface $findActivatedLocales,
+    ) {
     }
 
     public function normalizeAsset(AssetIdentifier $assetIdentifier): array

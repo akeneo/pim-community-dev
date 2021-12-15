@@ -30,8 +30,10 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  */
 class DeleteAssetAction
 {
-    public function __construct(private DeleteAssetHandler $deleteAssetHandler, private SecurityFacade $securityFacade)
-    {
+    public function __construct(
+        private DeleteAssetHandler $deleteAssetHandler,
+        private SecurityFacade $securityFacade
+    ) {
     }
 
     public function __invoke(string $assetFamilyIdentifier, string $code): Response

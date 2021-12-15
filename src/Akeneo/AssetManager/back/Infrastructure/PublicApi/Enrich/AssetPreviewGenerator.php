@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\PublicApi\Enrich;
 
-use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
+use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
@@ -30,8 +30,12 @@ use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\AssetItem\
  */
 class AssetPreviewGenerator
 {
-    public function __construct(private AssetRepositoryInterface $assetRepository, private AssetFamilyRepositoryInterface $assetFamilyRepository, private AttributeRepositoryInterface $attributeRepository, private ImagePreviewUrlGenerator $imagePreviewUrlGenerator)
-    {
+    public function __construct(
+        private AssetRepositoryInterface $assetRepository,
+        private AssetFamilyRepositoryInterface $assetFamilyRepository,
+        private AttributeRepositoryInterface $attributeRepository,
+        private ImagePreviewUrlGenerator $imagePreviewUrlGenerator,
+    ) {
     }
 
     public function getImageUrl(

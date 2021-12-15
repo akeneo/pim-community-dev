@@ -23,8 +23,11 @@ use Doctrine\DBAL\Connection;
 
 class SqlFindConnectorAttributeOption implements FindConnectorAttributeOptionInterface
 {
-    public function __construct(private Connection $sqlConnection, private AttributeHydratorRegistry $attributeHydratorRegistry, private InactiveLabelFilter $inactiveLabelFilter)
-    {
+    public function __construct(
+        private Connection $sqlConnection,
+        private AttributeHydratorRegistry $attributeHydratorRegistry,
+        private InactiveLabelFilter $inactiveLabelFilter,
+    ) {
     }
 
     public function find(

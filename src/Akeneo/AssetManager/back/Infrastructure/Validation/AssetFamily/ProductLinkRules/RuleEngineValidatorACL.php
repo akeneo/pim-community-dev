@@ -26,8 +26,11 @@ class RuleEngineValidatorACL implements RuleEngineValidatorACLInterface
 {
     private const ASSET_CODE_DUMMY = 'VALIDATION_TEST';
 
-    public function __construct(private DenormalizerInterface $actionDenormalizer, private ValidatorInterface $productConditionValidator, private ValidatorInterface $productAtionValidator)
-    {
+    public function __construct(
+        private DenormalizerInterface $actionDenormalizer,
+        private ValidatorInterface $productConditionValidator,
+        private ValidatorInterface $productAtionValidator,
+    ) {
     }
 
     public function validateProductSelection(array $normalizedProductSelection): ConstraintViolationListInterface

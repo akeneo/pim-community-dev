@@ -19,8 +19,12 @@ class AssetIndexer implements AssetIndexerInterface
 {
     private const KEY_AS_ID = 'identifier';
 
-    public function __construct(private Client $assetClient, private AssetNormalizerInterface $normalizer, private int $batchSize, private FindAssetIdentifiersByAssetFamilyInterface $assetIdentifiersByAssetFamily)
-    {
+    public function __construct(
+        private Client $assetClient,
+        private AssetNormalizerInterface $normalizer,
+        private int $batchSize,
+        private FindAssetIdentifiersByAssetFamilyInterface $assetIdentifiersByAssetFamily,
+    ) {
     }
 
     /**

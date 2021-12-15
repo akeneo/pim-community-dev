@@ -27,8 +27,11 @@ use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeysByAttributeTypeInter
  */
 class BulkAssetItemHydrator
 {
-    public function __construct(private AssetItemHydratorInterface $assetItemHydrator, private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType, private FindAssetLabelsByIdentifiersInterface $findAssetLabelsByIdentifiers)
-    {
+    public function __construct(
+        private AssetItemHydratorInterface $assetItemHydrator,
+        private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
+        private FindAssetLabelsByIdentifiersInterface $findAssetLabelsByIdentifiers,
+    ) {
     }
 
     public function hydrateAll(array $rows, AssetQuery $query): array

@@ -25,8 +25,12 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
 {
     private const ATTRIBUTE_FILTER_FIELD = 'values.';
 
-    public function __construct(private FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale, private GetValueKeyForAttributeChannelAndLocaleInterface $getValueKeyForAttributeChannelAndLocale, private AttributeRepositoryInterface $attributeRepository, private FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes)
-    {
+    public function __construct(
+        private FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale,
+        private GetValueKeyForAttributeChannelAndLocaleInterface $getValueKeyForAttributeChannelAndLocale,
+        private AttributeRepositoryInterface $attributeRepository,
+        private FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes,
+    ) {
     }
 
     public function buildFromQuery(AssetQuery $assetQuery, $source): array

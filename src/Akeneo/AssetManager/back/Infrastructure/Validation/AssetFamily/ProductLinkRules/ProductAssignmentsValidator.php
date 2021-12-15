@@ -23,8 +23,12 @@ class ProductAssignmentsValidator
     private const LOCALE_FIELD = 'locale';
     private const MODE_FIELD = 'mode';
 
-    public function __construct(private RuleEngineValidatorACLInterface $ruleEngineValidatorACL, private ExtrapolatedAttributeValidator $extrapolatedAttributeValidator, private ChannelAndLocaleValidator $channelAndLocaleValidator, private GetAssetCollectionTypeAdapterInterface $findAssetCollectionTypeACL)
-    {
+    public function __construct(
+        private RuleEngineValidatorACLInterface $ruleEngineValidatorACL,
+        private ExtrapolatedAttributeValidator $extrapolatedAttributeValidator,
+        private ChannelAndLocaleValidator $channelAndLocaleValidator,
+        private GetAssetCollectionTypeAdapterInterface $findAssetCollectionTypeACL,
+    ) {
     }
 
     public function validate(array $productAssignments, string $assetFamilyIdentifier): ConstraintViolationListInterface

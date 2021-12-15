@@ -15,8 +15,11 @@ namespace Akeneo\AssetManager\Infrastructure\PublicApi\Enrich;
 
 class MediaFileInfo
 {
-    public function __construct(private string $fileKey, private string $originalFilename, private string $storage)
-    {
+    public function __construct(
+        private string $fileKey,
+        private string $originalFilename,
+        private string $storage,
+    ) {
     }
 
     public function getFileKey(): string

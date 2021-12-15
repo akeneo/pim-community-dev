@@ -31,8 +31,13 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlFindAssetDetails implements FindAssetDetailsInterface
 {
-    public function __construct(private Connection $sqlConnection, private AssetDetailsHydratorInterface $assetDetailsHydrator, private GenerateEmptyValuesInterface $generateEmptyValues, private FindValueKeyCollectionInterface $findValueKeyCollection, private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier)
-    {
+    public function __construct(
+        private Connection $sqlConnection,
+        private AssetDetailsHydratorInterface $assetDetailsHydrator,
+        private GenerateEmptyValuesInterface $generateEmptyValues,
+        private FindValueKeyCollectionInterface $findValueKeyCollection,
+        private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
+    ) {
     }
 
     /**

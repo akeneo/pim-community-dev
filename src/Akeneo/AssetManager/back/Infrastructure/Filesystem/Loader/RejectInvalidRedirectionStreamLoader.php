@@ -44,7 +44,7 @@ final class RejectInvalidRedirectionStreamLoader implements LoaderInterface
                 'strict'          => true,
                 'referer'         => true,
                 'protocols'       => $this->urlChecker->getAllowedProtocols(),
-                'on_redirect'     => fn(RequestInterface $request, ResponseInterface $response, UriInterface $uri): bool => $this->checkRedirectIsValid($request, $response, $uri),
+                'on_redirect'     => fn (RequestInterface $request, ResponseInterface $response, UriInterface $uri): bool => $this->checkRedirectIsValid($request, $response, $uri),
                 'track_redirects' => true,
             ],
         ]);

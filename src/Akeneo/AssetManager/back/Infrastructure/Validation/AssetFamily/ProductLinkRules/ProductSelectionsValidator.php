@@ -25,8 +25,11 @@ class ProductSelectionsValidator
     private const FIELD_FIELD = 'field';
     private const FIELDS_WITH_NO_CHANNEL_NOR_LOCALES = ['enable', 'family', 'categories'];
 
-    public function __construct(private RuleEngineValidatorACLInterface $ruleEngineValidatorACL, private ExtrapolatedAttributeValidator $extrapolatedAttributeValidator, private ChannelAndLocaleValidator $channelAndLocaleValidator)
-    {
+    public function __construct(
+        private RuleEngineValidatorACLInterface $ruleEngineValidatorACL,
+        private ExtrapolatedAttributeValidator $extrapolatedAttributeValidator,
+        private ChannelAndLocaleValidator $channelAndLocaleValidator,
+    ) {
     }
 
     public function validate(array $productSelections, string $assetFamilyIdentifier): ConstraintViolationListInterface

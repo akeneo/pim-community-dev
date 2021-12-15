@@ -28,8 +28,12 @@ use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 class TransformationExecutor
 {
-    public function __construct(private FileDownloader $fileDownloader, private FileTransformer $fileTransformer, private FileStorerInterface $fileStorer, private AttributeRepositoryInterface $attributeRepository)
-    {
+    public function __construct(
+        private FileDownloader $fileDownloader,
+        private FileTransformer $fileTransformer,
+        private FileStorerInterface $fileStorer,
+        private AttributeRepositoryInterface $attributeRepository,
+    ) {
     }
 
     public function execute(

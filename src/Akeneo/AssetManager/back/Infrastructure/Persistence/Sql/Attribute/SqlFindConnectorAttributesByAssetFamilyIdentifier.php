@@ -16,8 +16,11 @@ use Doctrine\DBAL\Connection;
 
 class SqlFindConnectorAttributesByAssetFamilyIdentifier implements FindConnectorAttributesByAssetFamilyIdentifierInterface
 {
-    public function __construct(private Connection $sqlConnection, private AttributeHydratorRegistry $attributeHydratorRegistry, private InactiveLabelFilter $inactiveLabelFilter)
-    {
+    public function __construct(
+        private Connection $sqlConnection,
+        private AttributeHydratorRegistry $attributeHydratorRegistry,
+        private InactiveLabelFilter $inactiveLabelFilter,
+    ) {
     }
 
     /**

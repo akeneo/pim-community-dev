@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute;
 
-use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributeByIdentifierAndCodeInterface;
 
 /**

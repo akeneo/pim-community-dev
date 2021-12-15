@@ -33,7 +33,10 @@ class PurgeOrphanAssetsCommand extends Command
 
     public const PURGE_ORPHANS_FILE_INFO_COMMAND_NAME = 'akeneo:asset-manager:purge-orphans-file-info';
 
-    public function __construct(private Connection $connection, private FilesystemProvider $filesystemProvider)
+    public function __construct(
+        private Connection $connection,
+        private FilesystemProvider $filesystemProvider
+    )
     {
         parent::__construct();
     }
@@ -41,8 +44,8 @@ class PurgeOrphanAssetsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
-    {
+    protected function configure(
+    ) {
         $this
             ->setDescription('Identify all the file info lines not linked to an asset anymore and remove them.');
     }

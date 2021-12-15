@@ -25,8 +25,13 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class GetConnectorAttributeOptionsAction
 {
-    public function __construct(private FindConnectorAttributeOptionsInterface $findConnectorAttributeOptionsQuery, private AssetFamilyExistsInterface $assetFamilyExists, private AttributeExistsInterface $attributeExists, private AttributeSupportsOptions $attributeSupportsOptions, private SecurityFacade $securityFacade)
-    {
+    public function __construct(
+        private FindConnectorAttributeOptionsInterface $findConnectorAttributeOptionsQuery,
+        private AssetFamilyExistsInterface $assetFamilyExists,
+        private AttributeExistsInterface $attributeExists,
+        private AttributeSupportsOptions $attributeSupportsOptions,
+        private SecurityFacade $securityFacade,
+    ) {
     }
 
     /**

@@ -18,8 +18,11 @@ class AssetCursor implements CursorInterface
     private ?array $items = null;
     private ?string $searchAfterCode = null;
 
-    public function __construct(private AssetQueryBuilderInterface $queryBuilder, private Client $assetClient, private AssetQuery $assetQuery)
-    {
+    public function __construct(
+        private AssetQueryBuilderInterface $queryBuilder,
+        private Client $assetClient,
+        private AssetQuery $assetQuery
+    ) {
     }
 
     /**

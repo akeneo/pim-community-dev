@@ -38,8 +38,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateOrUpdateAssetFamilyAction
 {
-    public function __construct(private AssetFamilyExistsInterface $assetFamilyExists, private ValidatorInterface $validator, private CreateAssetFamilyHandler $createAssetFamilyHandler, private EditAssetFamilyHandler $editAssetFamilyHandler, private Router $router, private AssetFamilyValidator $jsonSchemaValidator, private FindFileDataByFileKeyInterface $findFileData, private AssetFamilyRepositoryInterface $assetFamilyRepository, private SecurityFacade $securityFacade)
-    {
+    public function __construct(
+        private AssetFamilyExistsInterface $assetFamilyExists,
+        private ValidatorInterface $validator,
+        private CreateAssetFamilyHandler $createAssetFamilyHandler,
+        private EditAssetFamilyHandler $editAssetFamilyHandler,
+        private Router $router,
+        private AssetFamilyValidator $jsonSchemaValidator,
+        private FindFileDataByFileKeyInterface $findFileData,
+        private AssetFamilyRepositoryInterface $assetFamilyRepository,
+        private SecurityFacade $securityFacade,
+    ) {
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): Response

@@ -24,8 +24,10 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
 {
-    public function __construct(private Client $assetClient, private AssetQueryBuilderInterface $assetQueryBuilder)
-    {
+    public function __construct(
+        private Client $assetClient,
+        private AssetQueryBuilderInterface $assetQueryBuilder
+    ) {
     }
 
     /**

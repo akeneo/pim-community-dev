@@ -48,8 +48,12 @@ class ImagePreviewAction
      */
     private const ROOT_FLAG = '__root__';
 
-    public function __construct(private AttributeRepositoryInterface $attributeRepository, private PreviewGeneratorInterface $previewGenerator, private DefaultImageProviderInterface $defaultImageProvider, private LoaderInterface $imageLoader)
-    {
+    public function __construct(
+        private AttributeRepositoryInterface $attributeRepository,
+        private PreviewGeneratorInterface $previewGenerator,
+        private DefaultImageProviderInterface $defaultImageProvider,
+        private LoaderInterface $imageLoader,
+    ) {
     }
 
     public function __invoke(

@@ -58,8 +58,17 @@ class FixturesInstaller
     private const ZOOM_ON_MATERIAL_ASSET_FAMILY_IDENTIFIER = 'zoom_on_material';
     private const USER_GUIDE_ASSET_FAMILY_IDENTIFIER = 'user_guide';
 
-    public function __construct(private Connection $sqlConnection, private FileStorerInterface $storer, private Client $assetClient, private CommandLauncher $commandLauncher, private AssetFamilyRepositoryInterface $assetFamilyRepository, private AttributeRepositoryInterface $attributeRepository, private AssetRepositoryInterface $assetRepository, private ValueHydratorInterface $valueHydrator, private FixturesLoader $fixturesLoader)
-    {
+    public function __construct(
+        private Connection $sqlConnection,
+        private FileStorerInterface $storer,
+        private Client $assetClient,
+        private CommandLauncher $commandLauncher,
+        private AssetFamilyRepositoryInterface $assetFamilyRepository,
+        private AttributeRepositoryInterface $attributeRepository,
+        private AssetRepositoryInterface $assetRepository,
+        private ValueHydratorInterface $valueHydrator,
+        private FixturesLoader $fixturesLoader,
+    ) {
     }
 
     public function createSchema(): void

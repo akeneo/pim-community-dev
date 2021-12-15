@@ -31,8 +31,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateOrUpdateAttributeOptionAction
 {
-    public function __construct(private Router $router, private AttributeOptionValidator $jsonSchemaValidator, private ValidatorInterface $businessRulesValidator, private AssetFamilyExistsInterface $assetFamilyExists, private AttributeExistsInterface $attributeExists, private AttributeSupportsOptions $attributeSupportsOptions, private GetAttributeIdentifierInterface $getAttributeIdentifier, private AttributeRepositoryInterface $attributeRepository, private EditAttributeOptionHandler $editAttributeOptionHandler, private AppendAttributeOptionHandler $appendAttributeOptionHandler, private SecurityFacade $securityFacade)
-    {
+    public function __construct(
+        private Router $router,
+        private AttributeOptionValidator $jsonSchemaValidator,
+        private ValidatorInterface $businessRulesValidator,
+        private AssetFamilyExistsInterface $assetFamilyExists,
+        private AttributeExistsInterface $attributeExists,
+        private AttributeSupportsOptions $attributeSupportsOptions,
+        private GetAttributeIdentifierInterface $getAttributeIdentifier,
+        private AttributeRepositoryInterface $attributeRepository,
+        private EditAttributeOptionHandler $editAttributeOptionHandler,
+        private AppendAttributeOptionHandler $appendAttributeOptionHandler,
+        private SecurityFacade $securityFacade,
+    ) {
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier, string $attributeCode, string $optionCode): Response

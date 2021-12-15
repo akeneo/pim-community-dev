@@ -39,8 +39,17 @@ class MassEditAssetsTasklet implements TaskletInterface, TrackableTaskletInterfa
 {
     private ?StepExecution $stepExecution = null;
 
-    public function __construct(private EditAssetHandler $editAssetsHandler, private AssetQueryBuilderInterface $assetQueryBuilder, private Client $assetClient, private JobRepositoryInterface $jobRepository, private EventAggregatorInterface $indexAssetEventAggregator, private JobStopper $jobStopper, private EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry, private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier, private int $batchSize)
-    {
+    public function __construct(
+        private EditAssetHandler $editAssetsHandler,
+        private AssetQueryBuilderInterface $assetQueryBuilder,
+        private Client $assetClient,
+        private JobRepositoryInterface $jobRepository,
+        private EventAggregatorInterface $indexAssetEventAggregator,
+        private JobStopper $jobStopper,
+        private EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry,
+        private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
+        private int $batchSize,
+    ) {
     }
 
     public function setStepExecution(StepExecution $stepExecution): void

@@ -48,8 +48,24 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateOrUpdateAssetsAction
 {
-    public function __construct(private AssetFamilyExistsInterface $assetFamilyExists, private AssetExistsInterface $assetExists, private EditAssetCommandFactory $editAssetCommandFactory, private EditAssetHandler $editAssetHandler, private CreateAssetHandler $createAssetHandler, private Router $router, private ValidatorInterface $assetDataValidator, private ViolationNormalizer $violationNormalizer, private AssetValidator $assetStructureValidator, private AssetListValidator $assetListValidator, private BatchAssetsToLink $batchAssetsToLink, private NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory, private EventAggregatorInterface $indexAssetEventAggregator, private int $maximumAssetsPerRequest, private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator, private SecurityFacade $securityFacade)
-    {
+    public function __construct(
+        private AssetFamilyExistsInterface $assetFamilyExists,
+        private AssetExistsInterface $assetExists,
+        private EditAssetCommandFactory $editAssetCommandFactory,
+        private EditAssetHandler $editAssetHandler,
+        private CreateAssetHandler $createAssetHandler,
+        private Router $router,
+        private ValidatorInterface $assetDataValidator,
+        private ViolationNormalizer $violationNormalizer,
+        private AssetValidator $assetStructureValidator,
+        private AssetListValidator $assetListValidator,
+        private BatchAssetsToLink $batchAssetsToLink,
+        private NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory,
+        private EventAggregatorInterface $indexAssetEventAggregator,
+        private int $maximumAssetsPerRequest,
+        private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator,
+        private SecurityFacade $securityFacade
+    ) {
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): Response

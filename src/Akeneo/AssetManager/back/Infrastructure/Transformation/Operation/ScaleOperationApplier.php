@@ -23,8 +23,10 @@ use Webmozart\Assert\Assert;
 
 class ScaleOperationApplier implements OperationApplier
 {
-    public function __construct(private FilterManager $filterManager, private Filesystem $filesystem)
-    {
+    public function __construct(
+        private FilterManager $filterManager,
+        private Filesystem $filesystem
+    ) {
     }
 
     /**

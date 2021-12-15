@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute\MediaLink;
 
-use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
@@ -27,13 +27,10 @@ use Webmozart\Assert\Assert;
  */
 class PrefixValidator extends ConstraintValidator
 {
-    /** @var string[] */
-    private array $allowedProtocols;
-
-    public function __construct(array $allowedProtocols)
+    /** @param $allowedProtocols string[] */
+    public function __construct(private array $allowedProtocols)
     {
         Assert::allString($allowedProtocols);
-        $this->allowedProtocols = $allowedProtocols;
     }
 
     public function validate($prefix, Constraint $constraint)

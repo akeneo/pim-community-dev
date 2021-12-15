@@ -38,8 +38,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditAction
 {
-    public function __construct(private EditAssetCommandFactory $editAssetCommandFactory, private EditAssetHandler $editAssetHandler, private ValidatorInterface $validator, private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler, private TokenStorageInterface $tokenStorage, private NormalizerInterface $normalizer, private EventAggregatorInterface $indexAssetEventAggregator, private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator)
-    {
+    public function __construct(
+        private EditAssetCommandFactory $editAssetCommandFactory,
+        private EditAssetHandler $editAssetHandler,
+        private ValidatorInterface $validator,
+        private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
+        private TokenStorageInterface $tokenStorage,
+        private NormalizerInterface $normalizer,
+        private EventAggregatorInterface $indexAssetEventAggregator,
+        private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator,
+    ) {
     }
 
     public function __invoke(Request $request): Response

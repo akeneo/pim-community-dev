@@ -31,8 +31,12 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class ExecuteProductLinkRulesAction
 {
-    public function __construct(private LinkAllAssetFamilyAssetsHandler $linkAllAssetFamilyAssetsHandler, private TokenStorageInterface $tokenStorage, private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler, private SecurityFacade $securityFacade)
-    {
+    public function __construct(
+        private LinkAllAssetFamilyAssetsHandler $linkAllAssetFamilyAssetsHandler,
+        private TokenStorageInterface $tokenStorage,
+        private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
+        private SecurityFacade $securityFacade,
+    ) {
     }
 
     public function __invoke(string $identifier): JsonResponse

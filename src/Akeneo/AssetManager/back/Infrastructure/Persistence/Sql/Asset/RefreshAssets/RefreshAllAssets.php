@@ -11,8 +11,10 @@ namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\RefreshAssets
  */
 class RefreshAllAssets
 {
-    public function __construct(private SelectAssetIdentifiersInterface $selectAssetIdentifiers, private RefreshAsset $refreshAsset)
-    {
+    public function __construct(
+        private SelectAssetIdentifiersInterface $selectAssetIdentifiers,
+        private RefreshAsset $refreshAsset
+    ) {
     }
 
     public function execute(): void

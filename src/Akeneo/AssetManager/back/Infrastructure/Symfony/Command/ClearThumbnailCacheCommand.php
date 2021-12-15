@@ -28,7 +28,10 @@ class ClearThumbnailCacheCommand extends Command
 
     public const ASSET_MANAGER_CACHE_RESOLVER = 'asset_manager_flysystem_cache';
 
-    public function __construct(private CacheManager $cacheManager, private FilterConfiguration $filterConfiguration)
+    public function __construct(
+        private CacheManager $cacheManager,
+        private FilterConfiguration $filterConfiguration
+    )
     {
         parent::__construct();
     }
@@ -36,8 +39,8 @@ class ClearThumbnailCacheCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
-    {
+    protected function configure(
+    ) {
         $this
             ->addArgument(
                 'preview_type',
@@ -102,7 +105,7 @@ class ClearThumbnailCacheCommand extends Command
     private function getSupportedPreviewTypes(): array
     {
         return array_keys(
-            array_filter($this->filterConfiguration->all(), fn($filterConfiguration) => isset($filterConfiguration['cache']) && $filterConfiguration['cache'] === self::ASSET_MANAGER_CACHE_RESOLVER)
+            array_filter($this->filterConfiguration->all(), fn ($filterConfiguration) => isset($filterConfiguration['cache']) && $filterConfiguration['cache'] === self::ASSET_MANAGER_CACHE_RESOLVER)
         );
     }
 

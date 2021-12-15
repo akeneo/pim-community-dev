@@ -21,8 +21,10 @@ use Webmozart\Assert\Assert;
 
 class ComputeTransformationFromAssetIdentifiersLauncher implements ComputeTransformationFromAssetIdentifiersLauncherInterface
 {
-    public function __construct(private PublishJobToQueue $publishJobToQueue, private TokenStorageInterface $tokenStorage)
-    {
+    public function __construct(
+        private PublishJobToQueue $publishJobToQueue,
+        private TokenStorageInterface $tokenStorage
+    ) {
     }
 
     /**

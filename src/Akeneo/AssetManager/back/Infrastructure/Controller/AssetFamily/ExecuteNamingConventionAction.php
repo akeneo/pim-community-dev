@@ -31,8 +31,12 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class ExecuteNamingConventionAction
 {
-    public function __construct(private ExecuteAssetFamilyNamingConventionHandler $executeAssetFamilyNamingConventionHandler, private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler, private TokenStorageInterface $tokenStorage, private SecurityFacade $securityFacade)
-    {
+    public function __construct(
+        private ExecuteAssetFamilyNamingConventionHandler $executeAssetFamilyNamingConventionHandler,
+        private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
+        private TokenStorageInterface $tokenStorage,
+        private SecurityFacade $securityFacade,
+    ) {
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): JsonResponse

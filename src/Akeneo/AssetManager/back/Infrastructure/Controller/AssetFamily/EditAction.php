@@ -40,8 +40,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditAction
 {
-    public function __construct(private EditAssetFamilyHandler $editAssetFamilyHandler, private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler, private TokenStorageInterface $tokenStorage, private Serializer $serializer, private ValidatorInterface $validator, private AttributeRepositoryInterface $attributeRepository, private AssetFamilyRepositoryInterface $assetFamilyRepository, private SecurityFacade $securityFacade)
-    {
+    public function __construct(
+        private EditAssetFamilyHandler $editAssetFamilyHandler,
+        private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
+        private TokenStorageInterface $tokenStorage,
+        private Serializer $serializer,
+        private ValidatorInterface $validator,
+        private AttributeRepositoryInterface $attributeRepository,
+        private AssetFamilyRepositoryInterface $assetFamilyRepository,
+        private SecurityFacade $securityFacade,
+    ) {
     }
 
     public function __invoke(Request $request): Response

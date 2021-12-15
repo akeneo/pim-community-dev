@@ -32,8 +32,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateOrUpdateAttributeAction
 {
-    public function __construct(private CreateAttributeCommandFactoryRegistry $createAttributeCommandFactoryRegistry, private FindAttributeNextOrderInterface $attributeNextOrder, private AttributeExistsInterface $attributeExists, private CreateAttributeHandler $createAttributeHandler, private Router $router, private GetAttributeIdentifierInterface $getAttributeIdentifier, private EditAttributeCommandFactory $editAttributeCommandFactory, private EditAttributeHandler $editAttributeHandler, private AssetFamilyExistsInterface $assetFamilyExists, private ValidatorInterface $validator, private AttributeCreationValidator $jsonSchemaCreateValidator, private AttributeEditionValidator $jsonSchemaEditValidator, private ValidateAttributePropertiesImmutability $validateAttributePropertiesImmutability, private SecurityFacade $securityFacade)
-    {
+    public function __construct(
+        private CreateAttributeCommandFactoryRegistry $createAttributeCommandFactoryRegistry,
+        private FindAttributeNextOrderInterface $attributeNextOrder,
+        private AttributeExistsInterface $attributeExists,
+        private CreateAttributeHandler $createAttributeHandler,
+        private Router $router,
+        private GetAttributeIdentifierInterface $getAttributeIdentifier,
+        private EditAttributeCommandFactory $editAttributeCommandFactory,
+        private EditAttributeHandler $editAttributeHandler,
+        private AssetFamilyExistsInterface $assetFamilyExists,
+        private ValidatorInterface $validator,
+        private AttributeCreationValidator $jsonSchemaCreateValidator,
+        private AttributeEditionValidator $jsonSchemaEditValidator,
+        private ValidateAttributePropertiesImmutability $validateAttributePropertiesImmutability,
+        private SecurityFacade $securityFacade
+    ) {
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier, string $attributeCode): Response

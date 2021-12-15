@@ -51,12 +51,23 @@ class ComputeTransformations implements TaskletInterface, TrackableTaskletInterf
     /** @var TransformationCollection[] */
     private array $cachedTransformationsPerAssetFamily = [];
 
-    public function __construct(private FindAssetIdentifiersByAssetFamilyInterface $findIdentifiersByAssetFamily, private GetTransformations $getTransformations, private AssetRepositoryInterface $assetRepository, private GetOutdatedVariationSource $getOutdatedVariationSource, private TransformationExecutor $transformationExecutor, private EditAssetHandler $editAssetHandler, private ValidatorInterface $validator, private CountAssetsInterface $countAssets, private JobRepositoryInterface $jobRepository, private int $batchSize)
-    {
+    public function __construct(
+        private FindAssetIdentifiersByAssetFamilyInterface $findIdentifiersByAssetFamily,
+        private GetTransformations $getTransformations,
+        private AssetRepositoryInterface $assetRepository,
+        private GetOutdatedVariationSource $getOutdatedVariationSource,
+        private TransformationExecutor $transformationExecutor,
+        private EditAssetHandler $editAssetHandler,
+        private ValidatorInterface $validator,
+        private CountAssetsInterface $countAssets,
+        private JobRepositoryInterface $jobRepository,
+        private int $batchSize
+    ) {
     }
 
-    public function setStepExecution(StepExecution $stepExecution)
-    {
+    public function setStepExecution(
+        StepExecution $stepExecution,
+    ) {
         $this->stepExecution = $stepExecution;
     }
 

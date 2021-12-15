@@ -25,8 +25,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditAction
 {
-    public function __construct(private EditAttributeCommandFactoryInterface $editAttributeCommandFactory, private EditAttributeHandler $editAttributeHandler, private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler, private TokenStorageInterface $tokenStorage, private NormalizerInterface $normalizer, private ValidatorInterface $validator, private SecurityFacade $securityFacade)
-    {
+    public function __construct(
+        private EditAttributeCommandFactoryInterface $editAttributeCommandFactory,
+        private EditAttributeHandler $editAttributeHandler,
+        private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
+        private TokenStorageInterface $tokenStorage,
+        private NormalizerInterface $normalizer,
+        private ValidatorInterface $validator,
+        private SecurityFacade $securityFacade
+    ) {
     }
 
     public function __invoke(Request $request)

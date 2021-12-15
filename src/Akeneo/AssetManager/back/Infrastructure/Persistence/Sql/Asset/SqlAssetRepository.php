@@ -39,8 +39,15 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class SqlAssetRepository implements AssetRepositoryInterface
 {
-    public function __construct(private Connection $sqlConnection, private AssetHydratorInterface $assetHydrator, private FindValueKeyCollectionInterface $findValueKeyCollection, private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier, private EventDispatcherInterface $eventDispatcher, private FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes, private CountAssetsInterface $countAssets)
-    {
+    public function __construct(
+        private Connection $sqlConnection,
+        private AssetHydratorInterface $assetHydrator,
+        private FindValueKeyCollectionInterface $findValueKeyCollection,
+        private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
+        private EventDispatcherInterface $eventDispatcher,
+        private FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes,
+        private CountAssetsInterface $countAssets,
+    ) {
     }
 
     public function count(): int

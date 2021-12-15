@@ -11,11 +11,11 @@
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute;
 
-use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttributeOption;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttributeOption;
 use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,8 +25,11 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class GetConnectorAttributeOptionAction
 {
-    public function __construct(private FindConnectorAttributeOptionInterface $findConnectorAttributeOptionQuery, private AssetFamilyExistsInterface $assetFamilyExists, private SecurityFacade $securityFacade)
-    {
+    public function __construct(
+        private FindConnectorAttributeOptionInterface $findConnectorAttributeOptionQuery,
+        private AssetFamilyExistsInterface $assetFamilyExists,
+        private SecurityFacade $securityFacade,
+    ) {
     }
 
     /**

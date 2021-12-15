@@ -27,8 +27,10 @@ class SqlFindAttributesIndexedByIdentifier implements FindAttributesIndexedByIde
 {
     private array $cachedResults = [];
 
-    public function __construct(private Connection $sqlConnection, private AttributeHydratorRegistry $attributeHydratorRegistry)
-    {
+    public function __construct(
+        private Connection $sqlConnection,
+        private AttributeHydratorRegistry $attributeHydratorRegistry
+    ) {
     }
 
     public function clearCache(): void

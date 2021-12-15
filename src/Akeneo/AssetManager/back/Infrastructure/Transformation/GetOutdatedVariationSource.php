@@ -32,8 +32,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class GetOutdatedVariationSource implements GetOutdatedVariationSourceInterface
 {
-    public function __construct(private AttributeRepositoryInterface $attributeRepository, private ValidatorInterface $validator)
-    {
+    public function __construct(
+        private AttributeRepositoryInterface $attributeRepository,
+        private ValidatorInterface $validator
+    ) {
     }
 
     /**

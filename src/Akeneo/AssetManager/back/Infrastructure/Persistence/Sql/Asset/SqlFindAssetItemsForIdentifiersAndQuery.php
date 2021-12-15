@@ -28,8 +28,10 @@ use Doctrine\DBAL\Connection;
  */
 class SqlFindAssetItemsForIdentifiersAndQuery implements FindAssetItemsForIdentifiersAndQueryInterface
 {
-    public function __construct(private Connection $sqlConnection, private BulkAssetItemHydrator $bulkAssetItemHydrator)
-    {
+    public function __construct(
+        private Connection $sqlConnection,
+        private BulkAssetItemHydrator $bulkAssetItemHydrator
+    ) {
     }
 
     public function find(array $identifiers, AssetQuery $query): array

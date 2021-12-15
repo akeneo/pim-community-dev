@@ -19,13 +19,12 @@ use Webmozart\Assert\Assert;
 
 final class RestrictedProtocolStreamLoader implements LoaderInterface
 {
-    /** @var string[] */
-    private array $allowedProtocols;
-
-    public function __construct(private LoaderInterface $loader, array $allowedProtocols)
-    {
+    /** @param $allowedProtocols string[] */
+    public function __construct(
+        private LoaderInterface $loader,
+        private array $allowedProtocols
+    ) {
         Assert::allString($allowedProtocols);
-        $this->allowedProtocols = $allowedProtocols;
     }
 
     /**

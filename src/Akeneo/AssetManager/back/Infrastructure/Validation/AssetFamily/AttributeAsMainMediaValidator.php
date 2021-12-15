@@ -32,8 +32,10 @@ class AttributeAsMainMediaValidator extends ConstraintValidator
 {
     private const VALID_ATTRIBUTE_TYPES = [MediaLinkAttribute::ATTRIBUTE_TYPE, MediaFileAttribute::ATTRIBUTE_TYPE];
 
-    public function __construct(private AttributeExistsInterface $attributeExists, private GetAttributeTypeInterface $getAttributeType)
-    {
+    public function __construct(
+        private AttributeExistsInterface $attributeExists,
+        private GetAttributeTypeInterface $getAttributeType
+    ) {
     }
 
     public function validate($editAssetFamilyCommand, Constraint $constraint)

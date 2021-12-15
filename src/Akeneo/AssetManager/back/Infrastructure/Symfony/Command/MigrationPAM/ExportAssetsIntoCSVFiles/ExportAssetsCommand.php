@@ -23,13 +23,16 @@ class ExportAssetsCommand extends Command
 
     private ?SymfonyStyle $io = null;
 
-    public function __construct(private FindAssets $findAssets, private FindVariations $findVariations)
+    public function __construct(
+        private FindAssets $findAssets,
+        private FindVariations $findVariations
+    )
     {
         parent::__construct(static::$defaultName);
     }
 
-    protected function configure()
-    {
+    protected function configure(
+    ) {
         $this
             ->setDescription('Export assets and their variations of a 3.x PIM into CSV')
             ->addArgument('fileDir', InputArgument::REQUIRED, 'The fileDir of the file to import.')

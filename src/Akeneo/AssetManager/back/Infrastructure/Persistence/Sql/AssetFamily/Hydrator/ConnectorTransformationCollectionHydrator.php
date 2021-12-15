@@ -33,8 +33,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ConnectorTransformationCollectionHydrator
 {
-    public function __construct(private ValidatorInterface $validator, private OperationFactory $operationFactory)
-    {
+    public function __construct(
+        private ValidatorInterface $validator,
+        private OperationFactory $operationFactory
+    ) {
     }
 
     /**

@@ -24,8 +24,10 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class MassDeleteAssetsLauncher implements MassDeleteAssetsLauncherInterface
 {
-    public function __construct(private PublishJobToQueue $publishJobToQueue, private TokenStorageInterface $tokenStorage)
-    {
+    public function __construct(
+        private PublishJobToQueue $publishJobToQueue,
+        private TokenStorageInterface $tokenStorage
+    ) {
     }
 
     public function launchForAssetFamilyAndQuery(AssetFamilyIdentifier $assetFamilyIdentifier, AssetQuery $assetQuery): void

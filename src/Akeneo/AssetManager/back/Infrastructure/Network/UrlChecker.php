@@ -24,18 +24,15 @@ class UrlChecker
     ];
 
     /** @var string[] */
-    private array $allowedProtocols;
-
-    /** @var string[] */
     private array $networkWhitelist;
 
+    /** @param $allowedProtocols string[] */
     public function __construct(
-        array $allowedProtocols,
+        private array $allowedProtocols,
         private DnsLookupInterface $dnsLookup,
         private IpMatcher $ipMatcher,
         string $networkWhitelist = ''
     ) {
-        $this->allowedProtocols = $allowedProtocols;
         $this->networkWhitelist = empty($networkWhitelist) ? [] : \explode(',', $networkWhitelist);
     }
 

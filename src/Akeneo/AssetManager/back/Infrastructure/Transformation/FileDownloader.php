@@ -32,8 +32,11 @@ class FileDownloader
     /** @var array<string, \SplFileInfo> */
     private array $cachedFiles = [];
 
-    public function __construct(private FilesystemProvider $filesystemProvider, private FileFetcherInterface $fileFetcher, private Filesystem $filesystem)
-    {
+    public function __construct(
+        private FilesystemProvider $filesystemProvider,
+        private FileFetcherInterface $fileFetcher,
+        private Filesystem $filesystem,
+    ) {
     }
 
     public function get(string $key, string $destinationDir, string $originalFilename): File

@@ -2,8 +2,8 @@
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily;
 
-use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\FindConnectorAssetFamilyByAssetFamilyIdentifierInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\Hal\AddHalDownloadLinkToAssetFamilyImage;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -14,8 +14,11 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class GetConnectorAssetFamilyAction
 {
-    public function __construct(private FindConnectorAssetFamilyByAssetFamilyIdentifierInterface $findConnectorAssetFamily, private AddHalDownloadLinkToAssetFamilyImage $addHalLinksToAssetFamilyImage, private SecurityFacade $securityFacade)
-    {
+    public function __construct(
+        private FindConnectorAssetFamilyByAssetFamilyIdentifierInterface $findConnectorAssetFamily,
+        private AddHalDownloadLinkToAssetFamilyImage $addHalLinksToAssetFamilyImage,
+        private SecurityFacade $securityFacade,
+    ) {
     }
 
     /**

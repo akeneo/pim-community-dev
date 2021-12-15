@@ -18,8 +18,10 @@ use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 
 abstract class AttributeAsMainMedia
 {
-    public function __construct(private bool $isScopable, private bool $isLocalizable)
-    {
+    public function __construct(
+        private bool $isScopable,
+        private bool $isLocalizable
+    ) {
     }
 
     public function isScopable(): bool

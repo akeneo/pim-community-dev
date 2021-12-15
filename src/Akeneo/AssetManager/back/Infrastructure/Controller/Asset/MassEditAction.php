@@ -38,8 +38,15 @@ class MassEditAction
 {
     private const MASS_ACTION_TYPE = 'edit';
 
-    public function __construct(private MassEditAssetsCommandFactory $massEditAssetsCommandFactory, private MassEditAssetsHandler $massEditAssetsHandler, private SecurityFacade $securityFacade, private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler, private TokenStorageInterface $tokenStorage, private ValidatorInterface $validator, private NormalizerInterface $normalizer)
-    {
+    public function __construct(
+        private MassEditAssetsCommandFactory $massEditAssetsCommandFactory,
+        private MassEditAssetsHandler $massEditAssetsHandler,
+        private SecurityFacade $securityFacade,
+        private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
+        private TokenStorageInterface $tokenStorage,
+        private ValidatorInterface $validator,
+        private NormalizerInterface $normalizer,
+    ) {
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): Response

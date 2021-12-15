@@ -24,15 +24,17 @@ class IndexAssetEventAggregator implements EventAggregatorInterface
     /** @var AssetIdentifier[] */
     private array $assetsToIndex = [];
 
-    public function __construct(private AssetIndexerInterface $assetIndexer, private IndexByAssetFamilyInBackgroundInterface $indexByAssetFamilyInBackground)
-    {
+    public function __construct(
+        private AssetIndexerInterface $assetIndexer,
+        private IndexByAssetFamilyInBackgroundInterface $indexByAssetFamilyInBackground
+    ) {
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
-    {
+    public static function getSubscribedEvents(
+    ) {
         return [
             AssetUpdatedEvent::class     => 'whenAssetUpdated',
             AssetCreatedEvent::class     => 'whenAssetCreated',

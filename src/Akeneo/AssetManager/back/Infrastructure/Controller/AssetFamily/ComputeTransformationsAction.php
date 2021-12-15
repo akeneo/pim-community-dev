@@ -23,8 +23,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ComputeTransformationsAction
 {
-    public function __construct(private FindAssetFamilyDetailsInterface $findOneAssetFamilyQuery, private ComputeTransformationFromAssetFamilyIdentifierLauncherInterface $computeTransformationsLauncher)
-    {
+    public function __construct(
+        private FindAssetFamilyDetailsInterface $findOneAssetFamilyQuery,
+        private ComputeTransformationFromAssetFamilyIdentifierLauncherInterface $computeTransformationsLauncher
+    ) {
     }
 
     public function __invoke(string $identifier): JsonResponse

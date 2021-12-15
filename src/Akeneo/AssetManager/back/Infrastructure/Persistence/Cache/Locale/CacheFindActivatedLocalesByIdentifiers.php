@@ -24,11 +24,10 @@ use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInt
 class CacheFindActivatedLocalesByIdentifiers implements FindActivatedLocalesByIdentifiersInterface
 {
     /** @var LocaleIdentifier[] */
-    private array $localesCache;
+    private array $localesCache = [];
 
     public function __construct(private FindActivatedLocalesByIdentifiersInterface $findActivatedLocalesByIdentifiers)
     {
-        $this->localesCache = [];
     }
 
     public function find(LocaleIdentifierCollection $localeIdentifiers): LocaleIdentifierCollection

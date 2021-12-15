@@ -24,11 +24,6 @@ class MigratePamAttributesIntoAssetManagerAttributesCommand extends Command
 {
     protected static $defaultName = 'pimee:assets:migrate:migrate-pam-attributes';
 
-    private ?SymfonyStyle $io = null;
-
-    /** @var string */
-    private $assetFamilyCode;
-
     public function __construct(private Connection $connection)
     {
         parent::__construct($this::$defaultName);
@@ -52,17 +47,17 @@ class MigratePamAttributesIntoAssetManagerAttributesCommand extends Command
     {
         $attributeCodes = $input->getArgument('attribute-codes');
 
-        $this->io = new SymfonyStyle($input, $output);
-        $this->assetFamilyCode = $input->getArgument('asset-family-code');
+        $io = new SymfonyStyle($input, $output);
+        $assetFamilyCode = $input->getArgument('asset-family-code');
 
-        $count = (is_countable($attributeCodes) ? count($attributeCodes) : 0) === 0 ? $this->updateAll() : $this->updateFromAttributeCodes($attributeCodes);
+        $count = (is_countable($attributeCodes) ? count($attributeCodes) : 0) === 0 ? $this->updateAll($assetFamilyCode) : $this->updateFromAttributeCodes($assetFamilyCode, $attributeCodes);
 
-        $this->io->success(sprintf('Success! %d former attribute(s) updated.', $count));
+        $io->success(sprintf('Success! %d former attribute(s) updated.', $count));
 
         return 0;
     }
 
-    private function updateAll(): int
+    private function updateAll(string $assetFamilyCode): int
     {
         $sqlCount = <<<SQL
 SELECT COUNT(1)
@@ -80,14 +75,14 @@ SQL;
 
         $this->connection->executeQuery(
             $sql,
-            ['properties' => serialize(['reference_data_name' => $this->assetFamilyCode])],
+            ['properties' => serialize(['reference_data_name' => $assetFamilyCode])],
             ['properties' => \PDO::PARAM_STR]
         );
 
         return $count;
     }
 
-    private function updateFromAttributeCodes(array $attributeCodes): int
+    private function updateFromAttributeCodes(string $assetFamilyCode, array $attributeCodes): int
     {
         $sqlCount = <<<SQL
 SELECT COUNT(1)
@@ -113,7 +108,7 @@ SQL;
             $sql,
             [
                 'attributeCodes' => $attributeCodes,
-                'properties' => serialize(['reference_data_name' => $this->assetFamilyCode])
+                'properties' => serialize(['reference_data_name' => $assetFamilyCode])
             ],
             ['attributeCodes' => Connection::PARAM_STR_ARRAY]
         );

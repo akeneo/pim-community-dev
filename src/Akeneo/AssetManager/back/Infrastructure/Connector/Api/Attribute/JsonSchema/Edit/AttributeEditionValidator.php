@@ -10,16 +10,13 @@ use Webmozart\Assert\Assert;
 
 final class AttributeEditionValidator
 {
-    /** @var AttributeValidatorInterface[] */
-    private iterable $attributeValidator;
-
+    /** @param $attributeValidators AttributeValidatorInterface[] */
     public function __construct(
         private AttributeRepositoryInterface $attributeRepository,
         private GetAttributeIdentifierInterface $getAttributeIdentifier,
-        iterable $attributeValidators
+        private iterable $attributeValidators
     ) {
         Assert::allIsInstanceOf($attributeValidators, AttributeValidatorInterface::class);
-        $this->attributeValidator = $attributeValidators;
     }
 
     /**
@@ -33,7 +30,7 @@ final class AttributeEditionValidator
         $attributeIdentifier = $this->getAttributeIdentifier->withAssetFamilyAndCode($assetFamilyIdentifier, $attributeCode);
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
 
-        foreach ($this->attributeValidator as $attributeValidator) {
+        foreach ($this->attributeValidators as $attributeValidator) {
             if ($attributeValidator->support($attribute)) {
                 return $attributeValidator->validate($normalizedAttribute);
             }

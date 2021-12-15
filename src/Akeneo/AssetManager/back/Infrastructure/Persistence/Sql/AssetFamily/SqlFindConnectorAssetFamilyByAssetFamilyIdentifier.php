@@ -25,8 +25,10 @@ use Doctrine\DBAL\Connection;
  */
 class SqlFindConnectorAssetFamilyByAssetFamilyIdentifier implements FindConnectorAssetFamilyByAssetFamilyIdentifierInterface
 {
-    public function __construct(private Connection $connection, private ConnectorAssetFamilyHydrator $assetFamilyHydrator)
-    {
+    public function __construct(
+        private Connection $connection,
+        private ConnectorAssetFamilyHydrator $assetFamilyHydrator
+    ) {
     }
 
     public function find(AssetFamilyIdentifier $identifier, bool $caseSensitive = true): ?ConnectorAssetFamily

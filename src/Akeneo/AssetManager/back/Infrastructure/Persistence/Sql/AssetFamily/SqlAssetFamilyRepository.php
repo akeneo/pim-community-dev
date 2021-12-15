@@ -36,8 +36,11 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class SqlAssetFamilyRepository implements AssetFamilyRepositoryInterface
 {
-    public function __construct(private Connection $sqlConnection, private EventDispatcherInterface $eventDispatcher, private TransformationCollectionFactory $transformationCollectionFactory)
-    {
+    public function __construct(
+        private Connection $sqlConnection,
+        private EventDispatcherInterface $eventDispatcher,
+        private TransformationCollectionFactory $transformationCollectionFactory,
+    ) {
     }
 
     /**

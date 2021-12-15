@@ -23,8 +23,10 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class NamingConventionLauncher implements NamingConventionLauncherInterface
 {
-    public function __construct(private PublishJobToQueue $publishJobToQueue, private TokenStorageInterface $tokenStorage)
-    {
+    public function __construct(
+        private PublishJobToQueue $publishJobToQueue,
+        private TokenStorageInterface $tokenStorage
+    ) {
     }
 
     public function launchForAllAssetFamilyAssets(AssetFamilyIdentifier $assetFamilyIdentifier): void

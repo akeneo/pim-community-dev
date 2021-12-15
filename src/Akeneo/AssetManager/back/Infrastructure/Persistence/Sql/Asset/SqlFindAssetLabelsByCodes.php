@@ -18,7 +18,6 @@ use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\Asset\FindAssetLabelsByCodesInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlFindAssetFamilyAttributeAsLabel;
 use Doctrine\DBAL\Connection;
-use PDO;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -26,8 +25,10 @@ use PDO;
  */
 class SqlFindAssetLabelsByCodes implements FindAssetLabelsByCodesInterface
 {
-    public function __construct(private Connection $sqlConnection, private SqlFindAssetFamilyAttributeAsLabel $findAssetFamilyAttributeAsLabel)
-    {
+    public function __construct(
+        private Connection $sqlConnection,
+        private SqlFindAssetFamilyAttributeAsLabel $findAssetFamilyAttributeAsLabel
+    ) {
     }
 
     /**

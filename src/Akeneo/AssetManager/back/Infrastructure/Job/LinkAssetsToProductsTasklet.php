@@ -34,8 +34,13 @@ class LinkAssetsToProductsTasklet implements TaskletInterface, TrackableTaskletI
 {
     private ?StepExecution $stepExecution = null;
 
-    public function __construct(private RuleTemplateExecutor $ruleTemplateExecutor, private FindAssetCodesByAssetFamilyInterface $findAssetCodesByAssetFamily, private CountAssetsInterface $countAssets, private JobRepositoryInterface $jobRepository, private int $batchSize)
-    {
+    public function __construct(
+        private RuleTemplateExecutor $ruleTemplateExecutor,
+        private FindAssetCodesByAssetFamilyInterface $findAssetCodesByAssetFamily,
+        private CountAssetsInterface $countAssets,
+        private JobRepositoryInterface $jobRepository,
+        private int $batchSize,
+    ) {
     }
 
     public function setStepExecution(StepExecution $stepExecution): void

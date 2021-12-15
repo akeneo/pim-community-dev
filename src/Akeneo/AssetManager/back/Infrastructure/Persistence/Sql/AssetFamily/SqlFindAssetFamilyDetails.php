@@ -37,8 +37,14 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
 {
-    public function __construct(private Connection $sqlConnection, private FindAttributesDetailsInterface $findAttributesDetails, private FindActivatedLocalesInterface $findActivatedLocales, private ConnectorTransformationCollectionHydrator $transformationCollectionHydrator, private ConnectorProductLinkRulesHydrator $productLinkRulesHydrator, private CountAssetsInterface $assetsCount)
-    {
+    public function __construct(
+        private Connection $sqlConnection,
+        private FindAttributesDetailsInterface $findAttributesDetails,
+        private FindActivatedLocalesInterface $findActivatedLocales,
+        private ConnectorTransformationCollectionHydrator $transformationCollectionHydrator,
+        private ConnectorProductLinkRulesHydrator $productLinkRulesHydrator,
+        private CountAssetsInterface $assetsCount,
+    ) {
     }
 
     /**

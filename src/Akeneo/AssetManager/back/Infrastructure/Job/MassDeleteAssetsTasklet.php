@@ -37,8 +37,15 @@ class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInter
 {
     private ?StepExecution $stepExecution = null;
 
-    public function __construct(private DeleteAssetsHandler $deleteAssetsHandler, private AssetQueryBuilderInterface $assetQueryBuilder, private Client $assetClient, private JobRepositoryInterface $jobRepository, private AssetIndexerInterface $assetIndexer, private JobStopper $jobStopper, private int $batchSize)
-    {
+    public function __construct(
+        private DeleteAssetsHandler $deleteAssetsHandler,
+        private AssetQueryBuilderInterface $assetQueryBuilder,
+        private Client $assetClient,
+        private JobRepositoryInterface $jobRepository,
+        private AssetIndexerInterface $assetIndexer,
+        private JobStopper $jobStopper,
+        private int $batchSize,
+    ) {
     }
 
     public function setStepExecution(StepExecution $stepExecution): void

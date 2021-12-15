@@ -24,8 +24,10 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class MassEditAssetsLauncher implements MassEditAssetsLauncherInterface
 {
-    public function __construct(private PublishJobToQueue $publishJobToQueue, private TokenStorageInterface $tokenStorage)
-    {
+    public function __construct(
+        private PublishJobToQueue $publishJobToQueue,
+        private TokenStorageInterface $tokenStorage
+    ) {
     }
 
     public function launchForAssetFamily(

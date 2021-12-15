@@ -29,8 +29,12 @@ use Symfony\Component\Validator\Validation;
  */
 class ExtrapolatedAttributeValidator
 {
-    public function __construct(private AttributeExistsInterface $attributeExists, private GetAttributeTypeInterface $getAttributeType, private AttributeHasOneValuePerChannelInterface $attributeHasOneValuePerChannel, private AttributeHasOneValuePerLocaleInterface $attributeHasOneValuePerLocale)
-    {
+    public function __construct(
+        private AttributeExistsInterface $attributeExists,
+        private GetAttributeTypeInterface $getAttributeType,
+        private AttributeHasOneValuePerChannelInterface $attributeHasOneValuePerChannel,
+        private AttributeHasOneValuePerLocaleInterface $attributeHasOneValuePerLocale,
+    ) {
     }
 
     /**

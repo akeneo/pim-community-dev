@@ -12,8 +12,10 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 class ElasticSearchAverageMaxNumberOfAssetsPerAssetFamily
 {
-    public function __construct(private Client $assetClient, private int $assetFamilyLimit)
-    {
+    public function __construct(
+        private Client $assetClient,
+        private int $assetFamilyLimit
+    ) {
     }
 
     public function fetch(): AverageMaxVolumes

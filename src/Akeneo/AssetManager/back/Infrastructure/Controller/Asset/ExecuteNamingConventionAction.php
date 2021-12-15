@@ -36,8 +36,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ExecuteNamingConventionAction
 {
-    public function __construct(private AssetRepositoryInterface $assetRepository, private EditAssetHandler $editAssetHandler, private EditAssetCommandFactory $editAssetCommandFactory, private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler, private ValidatorInterface $validator, private NormalizerInterface $violationNormalizer, private TokenStorageInterface $tokenStorage, private SecurityFacade $securityFacade)
-    {
+    public function __construct(
+        private AssetRepositoryInterface $assetRepository,
+        private EditAssetHandler $editAssetHandler,
+        private EditAssetCommandFactory $editAssetCommandFactory,
+        private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
+        private ValidatorInterface $validator,
+        private NormalizerInterface $violationNormalizer,
+        private TokenStorageInterface $tokenStorage,
+        private SecurityFacade $securityFacade,
+    ) {
     }
 
     public function __invoke(string $assetFamilyIdentifier, string $assetCode): JsonResponse

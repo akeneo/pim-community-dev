@@ -23,7 +23,10 @@ use Symfony\Component\Validator\Constraint;
  */
 class NamingConvention extends Constraint
 {
-    public function __construct(private AssetFamilyIdentifier $assetFamilyIdentifier, private ?AttributeCode $attributeAsMainMedia = null)
+    public function __construct(
+        private AssetFamilyIdentifier $assetFamilyIdentifier,
+        private ?AttributeCode $attributeAsMainMedia = null
+    )
     {
         parent::__construct();
     }
@@ -43,8 +46,8 @@ class NamingConvention extends Constraint
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
-    {
+    public function validatedBy(
+    ) {
         return NamingConventionValidator::class;
     }
 }

@@ -27,8 +27,10 @@ use Symfony\Component\Mime\MimeTypesInterface;
  */
 class ImageLoader implements LoaderInterface
 {
-    public function __construct(protected MimeTypesInterface $extensionGuesser, protected FilesystemReader $filesystem)
-    {
+    public function __construct(
+        protected MimeTypesInterface $extensionGuesser,
+        protected FilesystemReader $filesystem
+    ) {
     }
 
     /**

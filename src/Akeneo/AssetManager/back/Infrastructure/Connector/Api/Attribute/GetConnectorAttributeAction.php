@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute;
 
-use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -14,9 +14,9 @@ use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
  * file that was distributed with this source code.
  */
 
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributeByIdentifierAndCodeInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,8 +26,11 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class GetConnectorAttributeAction
 {
-    public function __construct(private FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttributeQuery, private AssetFamilyExistsInterface $assetFamilyExists, private SecurityFacade $securityFacade)
-    {
+    public function __construct(
+        private FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttributeQuery,
+        private AssetFamilyExistsInterface $assetFamilyExists,
+        private SecurityFacade $securityFacade,
+    ) {
     }
 
     /**

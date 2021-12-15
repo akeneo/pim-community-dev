@@ -26,8 +26,10 @@ use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifier
  */
 class AssetValuesValidator
 {
-    public function __construct(private AssetValueValidatorRegistry $assetValueValidatorRegistry, private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier)
-    {
+    public function __construct(
+        private AssetValueValidatorRegistry $assetValueValidatorRegistry,
+        private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
+    ) {
     }
 
     public function validate(AssetFamilyIdentifier $assetFamilyIdentifier, array $normalizedAsset): array

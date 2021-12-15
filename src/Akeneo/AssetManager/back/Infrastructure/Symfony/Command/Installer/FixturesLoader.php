@@ -62,8 +62,12 @@ class FixturesLoader
 
     private ?array $loadedValues = null;
 
-    public function __construct(private AssetFamilyRepositoryInterface $assetFamilyRepository, private AttributeRepositoryInterface $attributeRepository, private AssetRepositoryInterface $assetRepository, private ValueHydratorInterface $valueHydrator)
-    {
+    public function __construct(
+        private AssetFamilyRepositoryInterface $assetFamilyRepository,
+        private AttributeRepositoryInterface $attributeRepository,
+        private AssetRepositoryInterface $assetRepository,
+        private ValueHydratorInterface $valueHydrator,
+    ) {
     }
 
     public function assetFamily(string $identifier): self

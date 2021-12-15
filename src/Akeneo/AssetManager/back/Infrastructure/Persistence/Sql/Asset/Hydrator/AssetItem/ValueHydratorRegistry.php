@@ -21,12 +21,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
  */
 class ValueHydratorRegistry implements ValueHydratorInterface
 {
-    private array $valueHydrators;
-
-    public function __construct()
-    {
-        $this->valueHydrators = [];
-    }
+    private array $valueHydrators = [];
 
     public function register(ValueHydratorInterface $valueHydrator): void
     {

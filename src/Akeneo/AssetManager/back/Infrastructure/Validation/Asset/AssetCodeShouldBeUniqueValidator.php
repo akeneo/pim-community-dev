@@ -30,8 +30,10 @@ class AssetCodeShouldBeUniqueValidator extends ConstraintValidator
 {
     private array $insertedCodes = [];
 
-    public function __construct(private AssetExistsInterface $assetExists, private int $batchSize=100)
-    {
+    public function __construct(
+        private AssetExistsInterface $assetExists,
+        private int $batchSize=100
+    ) {
     }
 
     public function validate($command, Constraint $constraint)
