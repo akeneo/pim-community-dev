@@ -2,54 +2,53 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\CountProductsWithRemovedAttributeInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
 final class CountProductsWithRemovedAttribute implements CountProductsWithRemovedAttributeInterface
 {
-    /** @var Client */
-    private $elasticsearchClient;
+    private SearchQueryBuilder $searchQueryBuilder;
 
     public function __construct(
-        Client $elasticsearchClient
+        private Client $elasticsearchClient
     ) {
-        $this->elasticsearchClient = $elasticsearchClient;
+        $this->searchQueryBuilder = new SearchQueryBuilder();
     }
 
     public function count(array $attributesCodes): int
     {
-        $body = [
-            'query' => [
-                'constant_score' => [
-                    'filter' => [
-                        'bool' => [
-                            'filter' => [
-                                [
-                                    'term' => [
-                                        'document_type' => ProductInterface::class,
-                                    ],
-                                ],
-                                [
-                                    'terms' => [
-                                        'attributes_for_this_level' => $attributesCodes,
-                                    ],
-                                ],
-                            ],
-                            'should' => array_map(function (string $attributeCode) {
-                                return [
-                                    'exists' => ['field' => sprintf('values.%s-*', $attributeCode)],
-                                ];
-                            }, $attributesCodes),
-                            'minimum_should_match' => 1,
-                        ],
-                    ],
-                ],
+        $this->searchQueryBuilder->addFilter([
+            'term' => [
+                'document_type' => ProductInterface::class,
             ],
-        ];
+        ]);
+        $this->searchQueryBuilder->addFilter([
+            'terms' => [
+                'attributes_for_this_level' => $attributesCodes,
+            ],
+        ]);
+        foreach ($attributesCodes as $attributeCode){
+            $this->searchQueryBuilder->addShould([
+                'exists' => ['field' => sprintf('values.%s-*', $attributeCode)],
+            ]);
+        }
+
+        $body = $this->searchQueryBuilder->getQuery();
+        unset($body['_source']);
+        unset($body['sort']);
 
         $result = $this->elasticsearchClient->count($body);
 
+        // Reset query
+        $this->searchQueryBuilder = new SearchQueryBuilder();
+
         return (int)$result['count'];
+    }
+
+    public function getQueryBuilder(): SearchQueryBuilder
+    {
+        return $this->searchQueryBuilder;
     }
 }
