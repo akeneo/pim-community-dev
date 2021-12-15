@@ -6,7 +6,6 @@ import {Override} from '../../../shared';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 
 const ColorInputContainer = styled.div<{readOnly: boolean} & AkeneoThemedProps>`
-  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -29,7 +28,7 @@ const ColorInputContainer = styled.div<{readOnly: boolean} & AkeneoThemedProps>`
     `}
 `;
 
-const ColorPreview = styled.input`
+const ColorPicker = styled.input`
   width: 47px;
   height: 47px;
   border: none;
@@ -48,7 +47,7 @@ const ColorPreview = styled.input`
   }
 `;
 
-const Input = styled.input<{readOnly: boolean} & AkeneoThemedProps>`
+const TextInput = styled.input<{readOnly: boolean} & AkeneoThemedProps>`
   border: none;
   flex: 1;
   outline: none;
@@ -99,8 +98,6 @@ type ColorInputProps = Override<
   }
 >;
 
-const isValidHexaColor = (value: string) => /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(value);
-
 /**
  * The ColorInput component allows the user to enter a color in hexadecimal format.
  */
@@ -113,25 +110,27 @@ const ColorInput = forwardRef<HTMLInputElement, ColorInputProps>(
       [readOnly, onChange]
     );
 
-    if (isValidHexaColor(`#${value}`)) {
+    if (!value.startsWith('#')) {
       value = `#${value}`;
     }
 
+    const isValidHexaColor = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(value);
+
     return (
-      <ColorInputContainer invalid={invalid || !isValidHexaColor(value)} readOnly={readOnly}>
-        {isValidHexaColor(value) ? (
-          <ColorPreview type="color" value={value} onChange={handleChange} disabled={readOnly} />
+      <ColorInputContainer invalid={invalid || !isValidHexaColor} readOnly={readOnly}>
+        {isValidHexaColor ? (
+          <ColorPicker type="color" value={value} onChange={handleChange} disabled={readOnly} />
         ) : (
           <ErrorIcon role="alert" size={16} />
         )}
-        <Input
+        <TextInput
           ref={forwardedRef}
           value={value}
           onChange={handleChange}
           type="text"
           readOnly={readOnly}
           disabled={readOnly}
-          aria-invalid={invalid || !isValidHexaColor(value)}
+          aria-invalid={invalid || !isValidHexaColor}
           {...rest}
         />
         {readOnly && <ReadOnlyIcon size={16} />}
