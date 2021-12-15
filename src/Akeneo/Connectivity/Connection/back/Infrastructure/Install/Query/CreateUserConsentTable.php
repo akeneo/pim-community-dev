@@ -18,7 +18,7 @@ class CreateUserConsentTable
             uuid CHAR(36) CHARACTER SET ascii NOT NULL,
             consent_date DATETIME NOT NULL,
             PRIMARY KEY (user_id, app_id),
-            CONSTRAINT FK_CONNECTIVITY_CONNECTION_user_consent_user_id FOREIGN KEY (user_id) REFERENCES oro_user (id) ON DELETE CASCADE,
+            CONSTRAINT FK_CONNECTIVITY_CONNECTION_user_consent_user_id FOREIGN KEY (user_id) REFERENCES oro_user (id) ON DELETE CASCADE
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB ROW_FORMAT = DYNAMIC
         SQL;
 }
