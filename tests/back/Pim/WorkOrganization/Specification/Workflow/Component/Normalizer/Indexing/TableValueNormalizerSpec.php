@@ -28,7 +28,7 @@ class TableValueNormalizerSpec extends ObjectBehavior
         $tableValue->getLocaleCode()->willReturn('en_US');
         $tableValue->getData()->willReturn(Table::fromNormalized([['parcel' => 'parcel1', 'width' => 95]]));
 
-        $this->normalize($tableValue, 'indexing_product_and_product_model', ['is_published_product' => true])
+        $this->normalize($tableValue, 'indexing_product_and_product_model', ['is_workflow' => true])
              ->shouldReturn(
                  [
                      'packaging-table' => [
