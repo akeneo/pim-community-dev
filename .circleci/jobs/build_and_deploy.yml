@@ -315,12 +315,12 @@ jobs:
                   name: Install back and front dependencies
                   command: |
                     docker-compose run --rm php echo "warm up docker network"
-                    make -j --output-sync dependencies assets css
+                    make -j --output-sync dependencies
                   environment:
                       YARN_REGISTRY: "http://registry.yarnpkg.com"
-#            - run:
-#                  name: Install assets
-#                  command: make assets
+            - run:
+                  name: Install assets
+                  command: make -j --output-sync assets css
 #            - run:
 #                  name: Build css
 #                  command: make css
