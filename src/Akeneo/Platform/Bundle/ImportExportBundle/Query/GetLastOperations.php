@@ -1,9 +1,9 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Query;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Registry\NotVisibleJobsRegistry;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
@@ -16,12 +16,10 @@ use Doctrine\DBAL\Query\QueryBuilder;
 class GetLastOperations implements GetLastOperationsInterface
 {
     private Connection $connection;
-    private NotVisibleJobsRegistry $notVisibleJobs;
 
-    public function __construct(Connection $connection, NotVisibleJobsRegistry $notVisibleJobs)
+    public function __construct(Connection $connection)
     {
         $this->connection = $connection;
-        $this->notVisibleJobs = $notVisibleJobs;
     }
 
     /**
@@ -64,6 +62,7 @@ class GetLastOperations implements GetLastOperationsInterface
                 'step',
                 $qb->expr()->eq('step.job_execution_id', 'execution.id')
             )
+            ->where($qb->expr()->eq('execution.is_visible', 1))
             ->groupBy('execution.id')
             ->orderBy('execution.start_time', 'DESC')
             ->setMaxResults(10);
@@ -71,16 +70,10 @@ class GetLastOperations implements GetLastOperationsInterface
         $parameters = [];
         $types = [];
         if (null !== $user) {
-            $qb->where($qb->expr()->eq('execution.user', ':user'));
+            $qb->andWhere($qb->expr()->eq('execution.user', ':user'));
 
             $parameters['user'] = $user->getUserIdentifier();
             $types['user'] = \PDO::PARAM_STR;
-        }
-        if (!empty($this->notVisibleJobs->getCodes())) {
-            $qb->andWhere($qb->expr()->notIn('instance.code', ':blackList'));
-
-            $parameters['blackList'] = $this->notVisibleJobs->getCodes();
-            $types['blackList'] = Connection::PARAM_STR_ARRAY;
         }
 
         $qb->setParameters($parameters, $types);

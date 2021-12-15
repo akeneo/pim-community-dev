@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class BlacklistedAttributeCodeValidator extends ConstraintValidator
 {
-    private const JOB_TRACKER_ROUTE = 'pim_enrich_job_tracker_show';
+    private const JOB_TRACKER_ROUTE = 'akeneo_job_process_tracker_details';
 
     protected IsAttributeCodeBlacklistedInterface $isAttributeCodeBlacklisted;
     private GetBlacklistedAttributeJobExecutionIdInterface $getBlacklistedAttributeJobExecutionId;

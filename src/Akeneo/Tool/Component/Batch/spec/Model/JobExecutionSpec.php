@@ -28,6 +28,8 @@ class JobExecutionSpec extends ObjectBehavior
         $this->getRawParameters()->shouldHaveCount(0);
         $this->getJobParameters()->shouldBeNull();
         $this->getHealthCheckTime()->shouldBeNull();
+        $this->isStoppable()->shouldReturn(false);
+        $this->getStepCount()->shouldReturn(1);
     }
 
     function it_is_cloneable(
@@ -143,5 +145,11 @@ class JobExecutionSpec extends ObjectBehavior
     function it_is_displayable()
     {
         $this->__toString()->shouldReturn('startTime=, endTime=, updatedTime=, status=2, exitStatus=[UNKNOWN] , exitDescription=[], job=[]');
+    }
+
+    function it_can_count_its_steps()
+    {
+        $this->setStepCount(12);
+        $this->getStepCount()->shouldReturn(12);
     }
 }

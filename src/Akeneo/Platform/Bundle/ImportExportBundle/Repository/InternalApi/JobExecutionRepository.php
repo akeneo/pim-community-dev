@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi;
@@ -16,11 +17,7 @@ use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInter
  */
 class JobExecutionRepository extends EntityRepository implements DatagridRepositoryInterface
 {
-    /**
-     * @param EntityManager $em
-     * @param string        $class
-     */
-    public function __construct(EntityManager $em, $class)
+    public function __construct(EntityManager $em, string $class)
     {
         parent::__construct($em, $em->getClassMetadata($class));
     }
@@ -47,6 +44,7 @@ class JobExecutionRepository extends EntityRepository implements DatagridReposit
         $qb->innerJoin('e.jobInstance', 'j');
         $qb->leftJoin('e.stepExecutions', 's');
         $qb->andWhere('j.type = :jobType');
+        $qb->andWhere('e.isVisible = 1');
 
         $qb->groupBy('e.id');
 

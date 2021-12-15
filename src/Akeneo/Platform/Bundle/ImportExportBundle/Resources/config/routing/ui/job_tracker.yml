@@ -1,11 +1,3 @@
-pim_enrich_job_tracker_index:
-    path: ''
-
-pim_enrich_job_tracker_show:
-    path: show/{id}
-    requirements:
-        id: \d+
-
 pim_enrich_job_tracker_rest_stop:
     path: /{id}/stop
     defaults: { _controller: pim_enrich.controller.job_tracker:stopJobAction }

@@ -416,7 +416,7 @@ class JobInstanceController
 
         return new JsonResponse([
             'redirectUrl' => '#' . $this->router->generate(
-                'pim_enrich_job_tracker_show',
+                'akeneo_job_process_tracker_details',
                 ['id' => $jobExecution->getId()]
             )
         ], 200);

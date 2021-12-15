@@ -15,6 +15,7 @@ import fetchMock from 'jest-fetch-mock';
 import {useSaveConnectedAppMonitoringSettings} from '@src/connect/hooks/use-save-connected-app-monitoring-settings';
 import {ConnectedApp} from '@src/model/Apps/connected-app';
 import {MonitoringSettings} from '@src/model/Apps/monitoring-settings';
+import {ConnectedAppErrorMonitoring} from '@src/connect/components/ConnectedApp/ErrorMonitoring/ConnectedAppErrorMonitoring';
 
 beforeEach(() => {
     window.sessionStorage.clear();
@@ -62,6 +63,10 @@ jest.mock('@src/connect/hooks/use-save-connected-app-monitoring-settings.ts', ()
     useSaveConnectedAppMonitoringSettings: jest
         .fn()
         .mockImplementation((connectionCode: string) => saveConnectedAppMonitoringSettings),
+}));
+jest.mock('@src/connect/components/ConnectedApp/ErrorMonitoring/ConnectedAppErrorMonitoring', () => ({
+    ...jest.requireActual('@src/connect/components/ConnectedApp/ErrorMonitoring/ConnectedAppErrorMonitoring'),
+    ConnectedAppErrorMonitoring: jest.fn(() => null),
 }));
 
 type ConnectedAppPermissionsProps = {
@@ -126,6 +131,9 @@ test('The connected app container renders without permissions tab', async () => 
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings')
     ).toBeInTheDocument();
     expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.error_monitoring')
+    ).toBeInTheDocument();
+    expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.permissions')
     ).not.toBeInTheDocument();
     expect(ConnectedAppSettings).toHaveBeenCalledWith(
@@ -135,6 +143,26 @@ test('The connected app container renders without permissions tab', async () => 
         {}
     );
     expect(ConnectedAppPermissions).not.toHaveBeenCalled();
+    expect(ConnectedAppErrorMonitoring).not.toHaveBeenCalled();
+});
+
+test('The connected app container renders the error monitoring', () => {
+    (usePermissionsFormProviders as jest.Mock).mockImplementation(() => [[], {}, jest.fn()]);
+
+    renderWithProviders(<ConnectedAppContainer connectedApp={connectedApp} />);
+
+    assertPageHeader();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.error_monitoring')
+    ).toBeInTheDocument();
+    expect(ConnectedAppErrorMonitoring).not.toHaveBeenCalled();
+
+    act(() => {
+        userEvent.click(
+            screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.error_monitoring')
+        );
+    });
+    expect(ConnectedAppErrorMonitoring).toHaveBeenCalledWith({connectedApp: connectedApp}, {});
 });
 
 test('The connected app container renders with permissions tab', async () => {

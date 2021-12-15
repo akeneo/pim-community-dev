@@ -14,6 +14,7 @@ import {useHistory} from 'react-router';
 import {useSaveConnectedAppMonitoringSettings} from '../../hooks/use-save-connected-app-monitoring-settings';
 import {useFetchConnectedAppMonitoringSettings} from '../../hooks/use-fetch-connected-app-monitoring-settings';
 import {MonitoringSettings} from '../../../model/Apps/monitoring-settings';
+import {ConnectedAppErrorMonitoring} from './ErrorMonitoring/ConnectedAppErrorMonitoring';
 
 type Props = {
     connectedApp: ConnectedApp;
@@ -21,6 +22,7 @@ type Props = {
 
 const settingsTabName = '#connected-app-tab-settings';
 const permissionsTabName = '#connected-app-tab-permissions';
+const errorMonitoringTabName = '#connected-app-tab-error-monitoring';
 
 export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
     const history = useHistory();
@@ -203,6 +205,15 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                             {translate('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.permissions')}
                         </TabBar.Tab>
                     )}
+                    <TabBar.Tab
+                        isActive={isCurrent(errorMonitoringTabName)}
+                        onClick={() => {
+                            setActiveTab(errorMonitoringTabName);
+                            switchTo(errorMonitoringTabName);
+                        }}
+                    >
+                        {translate('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.error_monitoring')}
+                    </TabBar.Tab>
                 </TabBar>
 
                 {isCurrent(settingsTabName) && (
@@ -220,6 +231,8 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                         permissions={permissions}
                     />
                 )}
+
+                {isCurrent(errorMonitoringTabName) && <ConnectedAppErrorMonitoring connectedApp={connectedApp} />}
             </PageContent>
         </>
     );

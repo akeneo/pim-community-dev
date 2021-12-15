@@ -126,7 +126,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
 
         $notification->setMessage('pim_mass_edit.notification.mass_edit.success')->willReturn($notification);
         $notification->setMessageParams(['%label%' => 'Product mass edit'])->willReturn($notification);
-        $notification->setRoute('pim_enrich_job_tracker_show')->willReturn($notification);
+        $notification->setRoute('akeneo_job_process_tracker_details')->willReturn($notification);
         $notification->setRouteParams(['id' => 5])->willReturn($notification);
         $notification->setContext(['actionType' => 'mass_edit'])->willReturn($notification);
 
