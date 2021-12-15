@@ -123,10 +123,18 @@ akeneo_connectivity.connection:
                     previous: Previous
                     next: Next
                     allow_and_next: Allow and next
+                    allow_and_finish: Allow and finish
                 progress:
+                    authentication: Authentication
                     authorizations: Authorizations
                     permissions: Permissions
                     summary: Well done!
+                authentication:
+                    title: '{{ app_name }} needs to'
+                    helper: More information about app authentication on the
+                    helper_link: App page.
+                    scope_profile: View your firstname and your lastname
+                    scope_email: View your email address
                 authorize:
                     title: '{{ app_name }} needs to'
                     no_scope_title: 'The {{ app_name }} App would like to access your PIM.'

@@ -1,7 +1,18 @@
 import {useRoute} from '../../shared/router';
 import {useCallback} from 'react';
 
-export const useFetchAppWizardData = (clientId: string) => {
+type Result = {
+    appName: string;
+    appLogo: string;
+    scopeMessages: Array<{
+        icon: string;
+        type: string;
+        entities: string;
+    }>;
+    authenticationScopes: Array<'email' | 'profile'>;
+};
+
+export const useFetchAppWizardData = (clientId: string): (() => Promise<Result>) => {
     const url = useRoute('akeneo_connectivity_connection_apps_rest_get_wizard_data', {clientId: clientId});
 
     return useCallback(async () => {

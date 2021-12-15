@@ -7,10 +7,12 @@ namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthenticationUserProviderInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\ConnectedPimUserProviderInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\CreateUserConsentQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Clock;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -24,6 +26,7 @@ final class ConsentAppAuthenticationHandler
     private CreateUserConsentQueryInterface $createUserConsentQuery;
     private Clock $clock;
     private ConnectedPimUserProviderInterface $connectedPimUserProvider;
+    private ValidatorInterface $validator;
 
     public function __construct(
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
@@ -31,7 +34,8 @@ final class ConsentAppAuthenticationHandler
         AppAuthenticationUserProviderInterface $appAuthenticationUserProvider,
         CreateUserConsentQueryInterface $createUserConsentQuery,
         Clock $clock,
-        ConnectedPimUserProviderInterface $connectedPimUserProvider
+        ConnectedPimUserProviderInterface $connectedPimUserProvider,
+        ValidatorInterface $validator
     ) {
         $this->getAppConfirmationQuery = $getAppConfirmationQuery;
         $this->appAuthorizationSession = $appAuthorizationSession;
@@ -39,11 +43,15 @@ final class ConsentAppAuthenticationHandler
         $this->createUserConsentQuery = $createUserConsentQuery;
         $this->clock = $clock;
         $this->connectedPimUserProvider = $connectedPimUserProvider;
+        $this->validator = $validator;
     }
 
     public function handle(ConsentAppAuthenticationCommand $command): void
     {
-        // @TODO validate command
+        $violations = $this->validator->validate($command);
+        if (count($violations) > 0) {
+            throw new InvalidAppAuthorizationRequest($violations);
+        }
 
         $appId = $command->getClientId();
 

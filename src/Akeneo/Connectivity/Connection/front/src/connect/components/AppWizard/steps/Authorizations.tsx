@@ -1,8 +1,8 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
 import {getColor, getFontSize} from 'akeneo-design-system';
-import {useTranslate} from '../../../shared/translate';
-import {ScopeListContainer} from '../AppWizard/ScopeListContainer';
+import {useTranslate} from '../../../../shared/translate';
+import {ScopeListContainer} from '../ScopeListContainer';
 
 const InfoContainer = styled.div`
     grid-area: INFO;

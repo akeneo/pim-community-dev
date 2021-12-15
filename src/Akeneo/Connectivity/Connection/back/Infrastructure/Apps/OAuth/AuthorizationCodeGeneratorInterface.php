@@ -8,5 +8,5 @@ use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
 
 interface AuthorizationCodeGeneratorInterface
 {
-    public function generate(AppConfirmation $appConfirmation, int $pimUserId, string $redirectUriWithoutCode, string $scope): string;
+    public function generate(AppConfirmation $appConfirmation, int $pimUserId, string $redirectUriWithoutCode): string;
 }
