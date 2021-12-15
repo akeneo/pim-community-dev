@@ -12,7 +12,7 @@ pim_menu:
         connection_audit: Connection dashboard
         connection_settings: Connections
         connection_settings_edit: Connection settings
-        connection_monitoring: Monitoring
+        connection_monitoring: Error monitoring
         connection_webhook_edit: Event subscription
         connection_webhook_event_logs: Event logs
         data_flows: Data flows
@@ -434,7 +434,7 @@ akeneo_connectivity.connection:
 
     error_management:
         connection_monitoring:
-            title: Monitoring
+            title: Error monitoring
             helper:
                 title: '{0} You have {{ count }} error |[1,Inf] You have {{ count }} errors'
                 description: Here, you can see the detail of each error for this connection over the last 7 days. Error
