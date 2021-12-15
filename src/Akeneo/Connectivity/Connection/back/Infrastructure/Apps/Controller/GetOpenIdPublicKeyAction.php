@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AsymmetricKeys;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\OpenIdKeysNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAsymmetricKeysQueryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,14 +24,14 @@ class GetOpenIdPublicKeyAction
         $this->getAsymmetricKeysQuery = $getAsymmetricKeysQuery;
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request): JsonResponse
     {
         try {
             $asymmetricKeys = $this->getAsymmetricKeysQuery->execute()->normalize();
 
-            return new Response($asymmetricKeys[AsymmetricKeys::PUBLIC_KEY], Response::HTTP_OK);
+            return new JsonResponse([AsymmetricKeys::PUBLIC_KEY => $asymmetricKeys[AsymmetricKeys::PUBLIC_KEY]]);
         } catch (OpenIdKeysNotFoundException $e) {
-            return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return new JsonResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

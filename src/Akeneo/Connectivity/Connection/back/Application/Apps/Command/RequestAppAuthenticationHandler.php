@@ -32,8 +32,19 @@ final class RequestAppAuthenticationHandler
 
     public function handle(RequestAppAuthenticationCommand $command): void
     {
-        if (false === $command->getRequestedAuthenticationScopes()->hasScope(AuthenticationScope::SCOPE_OPENID)) {
-            // @TODO do nothing OR throw a MissingOpenidScopeException and ignore the error in authorize?
+        // @TODO validate Command & throw InvalidAppAuthenticationRequest()
+
+        if (
+            count($command->getRequestedAuthenticationScopes()->getScopes()) > 0
+            && false === $command->getRequestedAuthenticationScopes()->hasScope(AuthenticationScope::SCOPE_OPENID)
+        ) {
+            $this->createUserConsentQuery->execute(
+                $command->getPimUserId(),
+                $command->getAppId(),
+                [],
+                $this->clock->now()
+            );
+
             return;
         }
 

@@ -45,10 +45,7 @@ class GetOpenIdPublicKeyEndToEnd extends WebTestCase
         $result = $this->client->getResponse()->getContent();
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        Assert::assertEquals(
-            'the_public_key',
-            $result
-        );
+        Assert::assertEquals('{"public_key":"the_public_key"}', $result);
     }
 
     public function test_it_gets_an_error_if_there_is_no_openid_public_key_into_database(): void
@@ -60,6 +57,6 @@ class GetOpenIdPublicKeyEndToEnd extends WebTestCase
         $result = $this->client->getResponse()->getContent();
 
         Assert::assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $this->client->getResponse()->getStatusCode());
-        Assert::assertEquals(OpenIdKeysNotFoundException::MESSAGE, $result);
+        Assert::assertEquals(OpenIdKeysNotFoundException::MESSAGE, json_decode($result, true));
     }
 }

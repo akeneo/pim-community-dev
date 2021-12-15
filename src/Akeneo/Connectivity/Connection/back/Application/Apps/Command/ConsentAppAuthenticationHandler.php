@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
 
-use Akeneo\Connectivity\Connection\Application\Apps\AppAuthenticationUserProviderInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
-use Akeneo\Connectivity\Connection\Application\Apps\ConnectedPimUserProviderInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\CreateUserConsentQueryInterface;
@@ -22,27 +20,21 @@ final class ConsentAppAuthenticationHandler
 {
     private GetAppConfirmationQueryInterface $getAppConfirmationQuery;
     private AppAuthorizationSessionInterface $appAuthorizationSession;
-    private AppAuthenticationUserProviderInterface $appAuthenticationUserProvider;
     private CreateUserConsentQueryInterface $createUserConsentQuery;
     private Clock $clock;
-    private ConnectedPimUserProviderInterface $connectedPimUserProvider;
     private ValidatorInterface $validator;
 
     public function __construct(
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         AppAuthorizationSessionInterface $appAuthorizationSession,
-        AppAuthenticationUserProviderInterface $appAuthenticationUserProvider,
         CreateUserConsentQueryInterface $createUserConsentQuery,
         Clock $clock,
-        ConnectedPimUserProviderInterface $connectedPimUserProvider,
         ValidatorInterface $validator
     ) {
         $this->getAppConfirmationQuery = $getAppConfirmationQuery;
         $this->appAuthorizationSession = $appAuthorizationSession;
-        $this->appAuthenticationUserProvider = $appAuthenticationUserProvider;
         $this->createUserConsentQuery = $createUserConsentQuery;
         $this->clock = $clock;
-        $this->connectedPimUserProvider = $connectedPimUserProvider;
         $this->validator = $validator;
     }
 
@@ -50,6 +42,7 @@ final class ConsentAppAuthenticationHandler
     {
         $violations = $this->validator->validate($command);
         if (count($violations) > 0) {
+            // @TODO validate Command & throw InvalidAppAuthenticationRequest()
             throw new InvalidAppAuthorizationRequest($violations);
         }
 
@@ -69,13 +62,8 @@ final class ConsentAppAuthenticationHandler
             throw new \LogicException('The connected app should have been created');
         }
 
-        $appAuthenticationUser = $this->appAuthenticationUserProvider->getAppAuthenticationUser(
-            $appConfirmation->getAppId(),
-            $this->connectedPimUserProvider->getCurrentUserId()
-        );
-
         $this->createUserConsentQuery->execute(
-            $appAuthenticationUser->getPimUserId(),
+            $command->getPimUserId(),
             $appConfirmation->getAppId(),
             $appAuthorization->getAuthenticationScopes()->getScopes(),
             $this->clock->now()

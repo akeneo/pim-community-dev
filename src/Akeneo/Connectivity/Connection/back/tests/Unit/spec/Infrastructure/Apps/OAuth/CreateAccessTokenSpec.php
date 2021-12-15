@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
 
-use Akeneo\Connectivity\Connection\Application\Apps\AppAuthenticationUserProviderInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAccessTokenInterface;
-use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthenticationUser;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetConnectedAppScopesQueryInterface;
-use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetUserConsentedAuthenticationScopesQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetUserConsentedAuthenticationUuidQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateAccessToken;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateJsonWebToken;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RandomCodeGeneratorInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
@@ -31,9 +29,10 @@ class CreateAccessTokenSpec extends ObjectBehavior
         RandomCodeGeneratorInterface $randomCodeGenerator,
         GetAppConfirmationQueryInterface $appConfirmationQuery,
         UserRepositoryInterface $userRepository,
-        AppAuthenticationUserProvider $appAuthenticationUserProvider,
         CreateJsonWebToken $createJsonWebToken,
-        GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery
+        GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
+        GetUserConsentedAuthenticationUuidQueryInterface $getUserConsentedAuthenticationUuidQuery,
+        GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery
     ): void {
         $this->beConstructedWith(
             $storage,
@@ -41,9 +40,10 @@ class CreateAccessTokenSpec extends ObjectBehavior
             $randomCodeGenerator,
             $appConfirmationQuery,
             $userRepository,
-            $appAuthenticationUserProvider,
             $createJsonWebToken,
-            $getConnectedAppScopesQuery
+            $getConnectedAppScopesQuery,
+            $getUserConsentedAuthenticationUuidQuery,
+            $getUserConsentedAuthenticationScopesQuery
         );
     }
 
@@ -64,7 +64,7 @@ class CreateAccessTokenSpec extends ObjectBehavior
         UserRepositoryInterface $userRepository,
         UserInterface $appUser,
         UserInterface $pimUser,
-        AppAuthenticationUserProviderInterface $appAuthenticationUserProvider
+        GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery
     ): void {
         $clientProvider->findClientByAppId('client_id_1234')->willReturn($client);
         $storage->getAuthCode('auth_code_1234')->willReturn($authCode);
@@ -75,15 +75,8 @@ class CreateAccessTokenSpec extends ObjectBehavior
         $userRepository->find(1)
             ->willReturn($appUser);
         $pimUser->getId()->willReturn(2);
-        $appAuthenticationUserProvider->getAppAuthenticationUser('client_id_1234', 2)
-            ->willReturn(new AppAuthenticationUser(
-                2,
-                ScopeList::fromScopes([]),
-                'a_ppid',
-                'an_email',
-                'a_firstname',
-                'a_lastname'
-            ));
+        $getUserConsentedAuthenticationScopesQuery->execute(2, 'client_id_1234')
+            ->willReturn([]);
 
         $authCode->getScope()->willReturn('delete_products');
         $authCode->getData()->willReturn($pimUser);
