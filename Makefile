@@ -1,7 +1,7 @@
 DOCKER_COMPOSE = docker-compose
 NODE_RUN = $(DOCKER_COMPOSE) run --name $$(uuidgen | cut -c1-8) -u node --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 -e PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome node
 YARN_RUN = $(NODE_RUN) yarn
-PHP_RUN = $(DOCKER_COMPOSE) run -u www-data --rm php php
+PHP_RUN = $(DOCKER_COMPOSE) run --name $$(uuidgen | cut -c1-8) -u www-data --rm php php
 PHP_EXEC = $(DOCKER_COMPOSE) exec -u www-data fpm php
 
 .DEFAULT_GOAL := help
@@ -50,7 +50,7 @@ dsm:
 
 .PHONY: assets
 assets:
-	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/bundles public/js
+	rm -rf public/bundles public/js
 	$(PHP_RUN) bin/console --env=prod pim:installer:assets --symlink --clean
 
 .PHONY: css
