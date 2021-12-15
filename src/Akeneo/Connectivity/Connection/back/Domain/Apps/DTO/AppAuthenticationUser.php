@@ -17,27 +17,19 @@ class AppAuthenticationUser
     private string $email;
     private string $firstname;
     private string $lastname;
-    private string $uuid;
 
     public function __construct(
         int $pimUserId,
         ScopeList $consentedAuthenticationScopes,
-        string $uuid,
         string $email,
         string $firstname,
         string $lastname
     ) {
         $this->pimUserId = $pimUserId;
         $this->consentedAuthenticationScopes = $consentedAuthenticationScopes;
-        $this->uuid = $uuid;
         $this->email = $email;
         $this->firstname = $firstname;
         $this->lastname = $lastname;
-    }
-
-    public function getAppUserId(): string
-    {
-        return $this->uuid;
     }
 
     public function getPimUserId(): int

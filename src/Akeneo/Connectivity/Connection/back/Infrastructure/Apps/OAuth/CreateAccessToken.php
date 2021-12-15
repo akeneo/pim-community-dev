@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAccessTokenInt
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetConnectedAppScopesQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetUserConsentedAuthenticationUuidQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
@@ -31,6 +32,7 @@ class CreateAccessToken implements CreateAccessTokenInterface
     private AppAuthenticationUserProvider $appAuthenticationUserProvider;
     private CreateJsonWebToken $createJsonWebToken;
     private GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery;
+    private GetUserConsentedAuthenticationUuidQueryInterface $getUserConsentedAuthenticationUuidQuery;
 
     public function __construct(
         IOAuth2GrantCode $storage,
@@ -41,6 +43,7 @@ class CreateAccessToken implements CreateAccessTokenInterface
         AppAuthenticationUserProvider $appAuthenticationUserProvider,
         CreateJsonWebToken $createJsonWebToken,
         GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
+        GetUserConsentedAuthenticationUuidQueryInterface $getUserConsentedAuthenticationUuidQuery
     ) {
         $this->storage = $storage;
         $this->clientProvider = $clientProvider;
@@ -50,6 +53,7 @@ class CreateAccessToken implements CreateAccessTokenInterface
         $this->appAuthenticationUserProvider = $appAuthenticationUserProvider;
         $this->createJsonWebToken = $createJsonWebToken;
         $this->getConnectedAppScopesQuery = $getConnectedAppScopesQuery;
+        $this->getUserConsentedAuthenticationUuidQuery = $getUserConsentedAuthenticationUuidQuery;
     }
 
     /**
@@ -113,9 +117,9 @@ class CreateAccessToken implements CreateAccessTokenInterface
         $appAuthenticationUser = $this->appAuthenticationUserProvider->getAppAuthenticationUser($appId, $pimUser->getId());
         $authenticationScopes = $appAuthenticationUser->getConsentedAuthenticationScopes();
 
-        if($authenticationScopes->hasScope(AuthenticationScope::SCOPE_OPENID))
-        {
-            $accessToken['id_token'] = $this->createJsonWebToken->create($appId, $appAuthenticationUser);
+        if ($authenticationScopes->hasScope(AuthenticationScope::SCOPE_OPENID)) {
+            $ppid = $this->getUserConsentedAuthenticationUuidQuery->execute($pimUser->getId(), $appId);
+            $accessToken['id_token'] = $this->createJsonWebToken->create($appId, $ppid, $appAuthenticationUser);
 
             $existingScopesList = ScopeList::fromScopeString($accessToken['scope']);
             $newScopeList = $existingScopesList->addScopes($authenticationScopes);

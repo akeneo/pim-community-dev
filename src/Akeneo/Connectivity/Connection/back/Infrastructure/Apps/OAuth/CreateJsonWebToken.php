@@ -32,7 +32,7 @@ class CreateJsonWebToken
         PimUrl $pimUrl,
         GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery
     ) {
-        ['public_key' => $publicKey, 'private_key' => $privateKey] = $getAsymmetricKeysQuery->execute();
+        ['public_key' => $publicKey, 'private_key' => $privateKey] = $getAsymmetricKeysQuery->execute()->normalize();
         $this->privateKey = InMemory::plainText($privateKey);
         $this->publicKey = InMemory::plainText($publicKey);
 
@@ -40,7 +40,7 @@ class CreateJsonWebToken
         $this->pimUrl = $pimUrl;
     }
 
-    public function create(string $clientId, AppAuthenticationUser $appAuthenticationUser): string
+    public function create(string $clientId, string $ppid, AppAuthenticationUser $appAuthenticationUser): string
     {
         $jwtConfig = Configuration::forAsymmetricSigner(
             new Sha256(),
@@ -54,7 +54,7 @@ class CreateJsonWebToken
         $jwtTokenBuilder = $jwtConfig->builder()
             ->issuedBy($this->pimUrl->getPimUrl())
             ->identifiedBy($uuid)
-            ->relatedTo($appAuthenticationUser->getAppUserId())
+            ->relatedTo($ppid)
             ->permittedFor($clientId)
             ->issuedAt($now)
             ->expiresAt($now->modify('+1 hour'));

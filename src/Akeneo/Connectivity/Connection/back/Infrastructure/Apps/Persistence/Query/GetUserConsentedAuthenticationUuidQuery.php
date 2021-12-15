@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query;
@@ -30,6 +31,10 @@ class GetUserConsentedAuthenticationUuidQuery implements GetUserConsentedAuthent
             'userId' => $userId,
             'appId' => $appId,
         ]);
+
+        if (!$uuid) {
+            throw new \Exception();
+        }
 
         return $uuid;
     }

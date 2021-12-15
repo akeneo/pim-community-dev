@@ -10,6 +10,7 @@ use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthenticationUser;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetConnectedAppScopesQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetUserConsentedAuthenticationUuidQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateAccessToken;
@@ -33,7 +34,8 @@ class CreateAccessTokenSpec extends ObjectBehavior
         UserRepositoryInterface $userRepository,
         AppAuthenticationUserProvider $appAuthenticationUserProvider,
         CreateJsonWebToken $createJsonWebToken,
-        GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery
+        GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
+        GetUserConsentedAuthenticationUuidQueryInterface $getUserConsentedAuthenticationUuidQuery
     ): void {
         $this->beConstructedWith(
             $storage,
@@ -43,7 +45,8 @@ class CreateAccessTokenSpec extends ObjectBehavior
             $userRepository,
             $appAuthenticationUserProvider,
             $createJsonWebToken,
-            $getConnectedAppScopesQuery
+            $getConnectedAppScopesQuery,
+            $getUserConsentedAuthenticationUuidQuery
         );
     }
 
@@ -64,7 +67,8 @@ class CreateAccessTokenSpec extends ObjectBehavior
         UserRepositoryInterface $userRepository,
         UserInterface $appUser,
         UserInterface $pimUser,
-        AppAuthenticationUserProviderInterface $appAuthenticationUserProvider
+        AppAuthenticationUserProviderInterface $appAuthenticationUserProvider,
+        GetUserConsentedAuthenticationUuidQueryInterface $getUserConsentedAuthenticationUuidQuery
     ): void {
         $clientProvider->findClientByAppId('client_id_1234')->willReturn($client);
         $storage->getAuthCode('auth_code_1234')->willReturn($authCode);
@@ -79,7 +83,6 @@ class CreateAccessTokenSpec extends ObjectBehavior
             ->willReturn(new AppAuthenticationUser(
                 2,
                 ScopeList::fromScopes([]),
-                'a_ppid',
                 'an_email',
                 'a_firstname',
                 'a_lastname'
