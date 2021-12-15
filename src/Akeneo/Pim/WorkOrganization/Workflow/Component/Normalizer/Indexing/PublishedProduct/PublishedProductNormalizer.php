@@ -41,7 +41,7 @@ class PublishedProductNormalizer implements NormalizerInterface, NormalizerAware
             throw new \LogicException('Serializer must be a normalizer');
         }
 
-        $context['is_published_product'] = true;
+        $context['is_workflow'] = true;
 
         $data = [];
 

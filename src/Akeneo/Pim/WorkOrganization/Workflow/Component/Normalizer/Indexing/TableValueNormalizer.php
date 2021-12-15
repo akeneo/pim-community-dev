@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\PublishedProduct;
+namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
@@ -33,7 +33,7 @@ class TableValueNormalizer implements NormalizerInterface, CacheableSupportsMeth
         Assert::isInstanceOf($object, ValueInterface::class);
         Assert::isInstanceOf($object->getData(), Table::class);
 
-        if ($context['is_published_product'] ?? false) {
+        if ($context['is_workflow'] ?? false) {
             return [
                 \sprintf('%s-table', $object->getAttributeCode()) => [
                     $object->getScopeCode() ?? '<all_channels>' => [
