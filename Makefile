@@ -42,7 +42,7 @@ process-tracker-build:
 
 .PHONY: front-packages
 front-packages:
-    $(YARN_RUN) packages:build
+	$(YARN_RUN) packages:build
 
 .PHONY: dsm
 dsm:

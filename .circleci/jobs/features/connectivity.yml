@@ -1,5 +1,6 @@
 jobs:
     test_front_connectivity:
+        resource_class: large
         machine:
             image: ubuntu-2004:202101-01
             docker_layer_caching: true
@@ -29,6 +30,7 @@ jobs:
         machine:
             image: ubuntu-2004:202101-01
             docker_layer_caching: true
+            resource_class: large
         steps:
             -   attach_workspace:
                     at: ~/
