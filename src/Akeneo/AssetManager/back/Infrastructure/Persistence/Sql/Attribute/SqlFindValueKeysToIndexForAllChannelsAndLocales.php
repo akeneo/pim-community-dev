@@ -17,6 +17,7 @@ use Doctrine\DBAL\Connection;
  */
 class SqlFindValueKeysToIndexForAllChannelsAndLocales implements FindValueKeysToIndexForAllChannelsAndLocalesInterface
 {
+    /** @var array<string, array> */
     private array $cachedResult = [];
 
     public function __construct(

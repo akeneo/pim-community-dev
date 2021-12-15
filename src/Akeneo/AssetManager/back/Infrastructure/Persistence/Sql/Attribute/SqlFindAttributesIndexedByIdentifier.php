@@ -25,6 +25,7 @@ use Doctrine\DBAL\Connection;
  */
 class SqlFindAttributesIndexedByIdentifier implements FindAttributesIndexedByIdentifierInterface
 {
+    /** @var array<string, AbstractAttribute[]> */
     private array $cachedResults = [];
 
     public function __construct(

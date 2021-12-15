@@ -28,6 +28,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class AssetCodeShouldBeUniqueValidator extends ConstraintValidator
 {
+    /** @var string[] */
     private array $insertedCodes = [];
 
     public function __construct(
@@ -80,7 +81,7 @@ class AssetCodeShouldBeUniqueValidator extends ConstraintValidator
                 ->addViolation();
             return;
         }
-        $this->insertedCodes[]=strtolower($command->code);
+        $this->insertedCodes[] = strtolower($command->code);
         if (count($this->insertedCodes) > $this->batchSize) {
             array_shift($this->insertedCodes);
         }

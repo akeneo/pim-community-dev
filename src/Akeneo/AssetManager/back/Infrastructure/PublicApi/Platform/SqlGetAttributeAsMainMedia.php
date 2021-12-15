@@ -19,6 +19,7 @@ use Doctrine\DBAL\Connection;
 
 class SqlGetAttributeAsMainMedia implements GetAttributeAsMainMediaInterface
 {
+    /** @var array<string, AttributeAsMainMedia> */
     private array $attributesAsMainMedia = [];
 
     public function __construct(private Connection $connection)

@@ -21,6 +21,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
  */
 class DataHydratorRegistry
 {
+    /** @var DataHydratorInterface[] */
     private array $dataHydrators = [];
 
     public function register(DataHydratorInterface $dataHydrator): void
