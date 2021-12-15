@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql;
 
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\AttributeIsAFamilyVariantAxisInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -14,7 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeIsAFamilyVariantAxis
+class AttributeIsAFamilyVariantAxis implements AttributeIsAFamilyVariantAxisInterface
 {
     /** @var EntityManagerInterface */
     private $entityManager;

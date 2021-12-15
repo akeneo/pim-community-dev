@@ -82,12 +82,9 @@ class IsVariantAxisWithoutAvailableLocalesValidatorSpec extends ObjectBehavior
         IsVariantAxisWithoutAvailableLocales $constraint,
         ExecutionContextInterface $context,
         AttributeInterface $attribute,
-        ArrayCollection $arrayCollection,
     ) {
-        $arrayCollection->count()->willReturn(50);
-
         $attribute->getCode()->willReturn('code');
-        $attribute->getAvailableLocales()->willReturn($arrayCollection);
+        $attribute->isLocaleSpecific()->willReturn(true);
 
         $attributeIsAFamilyVariantAxis->execute('code')->willReturn(false);
 
@@ -101,12 +98,9 @@ class IsVariantAxisWithoutAvailableLocalesValidatorSpec extends ObjectBehavior
         IsVariantAxisWithoutAvailableLocales $constraint,
         ExecutionContextInterface $context,
         AttributeInterface $attribute,
-        ArrayCollection $arrayCollection,
     ) {
-        $arrayCollection->count()->willReturn(0);
-
         $attribute->getCode()->willReturn('code');
-        $attribute->getAvailableLocales()->willReturn($arrayCollection);
+        $attribute->isLocaleSpecific()->willReturn(false);
 
         $attributeIsAFamilyVariantAxis->execute('code')->willReturn(true);
 
@@ -120,12 +114,9 @@ class IsVariantAxisWithoutAvailableLocalesValidatorSpec extends ObjectBehavior
         IsVariantAxisWithoutAvailableLocales $constraint,
         ExecutionContextInterface $context,
         AttributeInterface $attribute,
-        ArrayCollection $arrayCollection,
     ) {
-        $arrayCollection->count()->willReturn(0);
-
         $attribute->getCode()->willReturn('code');
-        $attribute->getAvailableLocales()->willReturn($arrayCollection);
+        $attribute->isLocaleSpecific()->willReturn(false);
 
         $attributeIsAFamilyVariantAxis->execute('code')->willReturn(false);
 
@@ -139,13 +130,10 @@ class IsVariantAxisWithoutAvailableLocalesValidatorSpec extends ObjectBehavior
         IsVariantAxisWithoutAvailableLocales $constraint,
         ExecutionContextInterface $context,
         AttributeInterface $attribute,
-        ArrayCollection $arrayCollection,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
-        $arrayCollection->count()->willReturn(178);
-
         $attribute->getCode()->willReturn('code');
-        $attribute->getAvailableLocales()->willReturn($arrayCollection);
+        $attribute->isLocaleSpecific()->willReturn(true);
 
         $attributeIsAFamilyVariantAxis->execute('code')->willReturn(true);
 

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Component\Validator\Constraints;
 
-use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\AttributeIsAFamilyVariantAxis;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\AttributeIsAFamilyVariantAxisInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class IsVariantAxisWithoutAvailableLocalesValidator extends ConstraintValidator
 {
-    public function __construct(private AttributeIsAFamilyVariantAxis $attributeIsAFamilyVariantAxis)
+    public function __construct(private AttributeIsAFamilyVariantAxisInterface $attributeIsAFamilyVariantAxis)
     {
     }
 
@@ -33,10 +33,9 @@ class IsVariantAxisWithoutAvailableLocalesValidator extends ConstraintValidator
             return;
         }
 
-        $isLocaleSpecific = \count($value->getAvailableLocales()) > 0;
         $isAFamilyVariantAxis = $this->attributeIsAFamilyVariantAxis->execute($value->getCode());
 
-        if ($isAFamilyVariantAxis && $isLocaleSpecific) {
+        if ($isAFamilyVariantAxis && $value->isLocaleSpecific()) {
             $this->context
                 ->buildViolation($constraint->message)
                 ->atPath($constraint->propertyPath)
