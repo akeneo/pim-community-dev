@@ -41,6 +41,10 @@ export type PendingTableFilterValue = {
   value?: FilterValue;
 };
 
+export type NotEmptyTableFilterValue = {
+    operator?: 'NOT EMPTY';
+};
+
 const isFilterValid: (filter: PendingTableFilterValue) => boolean = filter => {
   return (
     typeof filter.row !== 'undefined' &&
