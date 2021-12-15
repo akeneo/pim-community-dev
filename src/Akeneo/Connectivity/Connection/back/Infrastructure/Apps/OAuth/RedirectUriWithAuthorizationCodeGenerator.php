@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
 
-use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthenticationUser;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
 
@@ -24,9 +23,8 @@ class RedirectUriWithAuthorizationCodeGenerator implements RedirectUriWithAuthor
     public function generate(
         AppAuthorization $appAuthorization,
         AppConfirmation $appConfirmation,
-        AppAuthenticationUser $appAuthenticationUser
+        int $pimUserId
     ): string {
-        $pimUserId = $appAuthenticationUser->getPimUserId();
         $redirectUri = $appAuthorization->getRedirectUri();
 
         $code = $this->authorizationCodeGenerator->generate(

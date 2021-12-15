@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
 
-use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthenticationUser;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAsymmetricKeysQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Domain\Clock;
 use Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl;
 use Lcobucci\JWT\Configuration;
@@ -40,8 +40,14 @@ class CreateJsonWebToken
         $this->pimUrl = $pimUrl;
     }
 
-    public function create(string $clientId, string $ppid, AppAuthenticationUser $appAuthenticationUser): string
-    {
+    public function create(
+        string $clientId,
+        string $ppid,
+        ScopeList $consentedAuthenticationScopes,
+        string $firstName,
+        string $lastName,
+        string $email
+    ): string {
         $jwtConfig = Configuration::forAsymmetricSigner(
             new Sha256(),
             $this->privateKey,
@@ -59,18 +65,17 @@ class CreateJsonWebToken
             ->issuedAt($now)
             ->expiresAt($now->modify('+1 hour'));
 
-        $consentedAuthenticationScopes = $appAuthenticationUser->getConsentedAuthenticationScopes();
         if (false === $consentedAuthenticationScopes->hasScope(AuthenticationScope::SCOPE_OPENID)) {
             throw new \LogicException('OpenID must be consented to create a JWT');
         }
         if ($consentedAuthenticationScopes->hasScope(AuthenticationScope::SCOPE_PROFILE)) {
             $jwtTokenBuilder
-                ->withClaim('firstname', $appAuthenticationUser->getFirstname())
-                ->withClaim('lastname', $appAuthenticationUser->getLastname());
+                ->withClaim('firstname', $firstName)
+                ->withClaim('lastname', $lastName);
         }
         if ($consentedAuthenticationScopes->hasScope(AuthenticationScope::SCOPE_EMAIL)) {
             $jwtTokenBuilder
-                ->withClaim('email', $appAuthenticationUser->getEmail());
+                ->withClaim('email', $email);
         }
 
         $jwtToken = $jwtTokenBuilder->getToken(

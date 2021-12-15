@@ -11,12 +11,8 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizat
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\UserConsentRequiredException;
-use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\CreateUserConsentQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
-use Akeneo\Connectivity\Connection\Domain\Clock;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -37,7 +33,6 @@ class AuthorizeAction
     private AppAuthorizationSessionInterface $appAuthorizationSession;
     private GetAppConfirmationQueryInterface $getAppConfirmationQuery;
     private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator;
-    private AppAuthenticationUserProvider $appAuthenticationUserProvider;
     private ConnectedPimUserProvider $connectedPimUserProvider;
     private RequestAppAuthenticationHandler $requestAppAuthenticationHandler;
 
@@ -49,7 +44,6 @@ class AuthorizeAction
         AppAuthorizationSessionInterface $appAuthorizationSession,
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
-        AppAuthenticationUserProvider $appAuthenticationUserProvider,
         ConnectedPimUserProvider $connectedPimUserProvider,
         RequestAppAuthenticationHandler $requestAppAuthenticationHandler
     ) {
@@ -59,7 +53,6 @@ class AuthorizeAction
         $this->appAuthorizationSession = $appAuthorizationSession;
         $this->getAppConfirmationQuery = $getAppConfirmationQuery;
         $this->redirectUriWithAuthorizationCodeGenerator = $redirectUriWithAuthorizationCodeGenerator;
-        $this->appAuthenticationUserProvider = $appAuthenticationUserProvider;
         $this->connectedPimUserProvider = $connectedPimUserProvider;
         $this->requestAppAuthenticationHandler = $requestAppAuthenticationHandler;
     }
@@ -121,15 +114,10 @@ class AuthorizeAction
             );
         }
 
-        $appAuthenticationUser = $this->appAuthenticationUserProvider->getAppAuthenticationUser(
-            $appConfirmation->getAppId(),
-            $connectedPimUserId
-        );
-
         $redirectUrl = $this->redirectUriWithAuthorizationCodeGenerator->generate(
             $appAuthorization,
             $appConfirmation,
-            $appAuthenticationUser
+            $connectedPimUserId
         );
 
         return new RedirectResponse($redirectUrl);

@@ -11,7 +11,6 @@ use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorization
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -34,7 +33,6 @@ class ConfirmAuthenticationAction
     private SecurityFacade $security;
     private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator;
     private AppAuthorizationSessionInterface $appAuthorizationSession;
-    private AppAuthenticationUserProvider $appAuthenticationUserProvider;
     private ConnectedPimUserProvider $connectedPimUserProvider;
     private ConsentAppAuthenticationHandler $consentAppAuthenticationHandler;
     private LoggerInterface $logger;
@@ -46,7 +44,6 @@ class ConfirmAuthenticationAction
         SecurityFacade $security,
         RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
         AppAuthorizationSessionInterface $appAuthorizationSession,
-        AppAuthenticationUserProvider $appAuthenticationUserProvider,
         ConnectedPimUserProvider $connectedPimUserProvider,
         ConsentAppAuthenticationHandler $consentAppAuthenticationHandler,
         LoggerInterface $logger,
@@ -57,7 +54,6 @@ class ConfirmAuthenticationAction
         $this->security = $security;
         $this->redirectUriWithAuthorizationCodeGenerator = $redirectUriWithAuthorizationCodeGenerator;
         $this->appAuthorizationSession = $appAuthorizationSession;
-        $this->appAuthenticationUserProvider = $appAuthenticationUserProvider;
         $this->connectedPimUserProvider = $connectedPimUserProvider;
         $this->consentAppAuthenticationHandler = $consentAppAuthenticationHandler;
         $this->logger = $logger;
@@ -78,8 +74,10 @@ class ConfirmAuthenticationAction
             return new RedirectResponse('/');
         }
 
+        $connectedPimUserId = $this->connectedPimUserProvider->getCurrentUserId();
+
         try {
-            $this->consentAppAuthenticationHandler->handle(new ConsentAppAuthenticationCommand($clientId));
+            $this->consentAppAuthenticationHandler->handle(new ConsentAppAuthenticationCommand($clientId, $connectedPimUserId));
         } catch (InvalidAppAuthorizationRequest $exception) {
             $this->logger->warning(
                 sprintf('App activation failed with validation error "%s"', $exception->getMessage())
@@ -100,15 +98,10 @@ class ConfirmAuthenticationAction
             throw new \LogicException('The connected app should have been created');
         }
 
-        $appAuthenticationUser = $this->appAuthenticationUserProvider->getAppAuthenticationUser(
-            $appConfirmation->getAppId(),
-            $this->connectedPimUserProvider->getCurrentUserId()
-        );
-
         $redirectUrl = $this->redirectUriWithAuthorizationCodeGenerator->generate(
             $appAuthorization,
             $appConfirmation,
-            $appAuthenticationUser
+            $connectedPimUserId
         );
 
         return new JsonResponse([

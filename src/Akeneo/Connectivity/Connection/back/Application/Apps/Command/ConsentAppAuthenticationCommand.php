@@ -11,14 +11,21 @@ namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
 final class ConsentAppAuthenticationCommand
 {
     private string $clientId;
+    private int $pimUserId;
 
-    public function __construct(string $clientId)
+    public function __construct(string $clientId, int $pimUserId)
     {
         $this->clientId = $clientId;
+        $this->pimUserId = $pimUserId;
     }
 
     public function getClientId(): string
     {
         return $this->clientId;
+    }
+
+    public function getPimUserId(): int
+    {
+        return $this->pimUserId;
     }
 }

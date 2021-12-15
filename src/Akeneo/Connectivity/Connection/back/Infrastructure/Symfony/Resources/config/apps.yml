@@ -24,10 +24,8 @@ services:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAppConfirmationQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\CreateUserConsentQuery'
             - '@akeneo_connectivity.connection.clock'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider'
             - '@validator'
 
     Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler:
@@ -93,10 +91,10 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RandomCodeGenerator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAppConfirmationQuery'
             - '@pim_user.repository.user'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateJsonWebToken'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetConnectedAppScopesQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetUserConsentedAuthenticationUuidQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetUserConsentedAuthenticationScopesQuery'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateJsonWebToken:
         arguments:
@@ -120,11 +118,6 @@ services:
             - '@akeneo_connectivity.connection.service.client.delete_client'
             - '@Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUserGroup'
             - '@Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUserRole'
-
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider:
-        arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetUserConsentedAuthenticationScopesQuery'
-            - '@pim_user.repository.user'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider:
         arguments:
