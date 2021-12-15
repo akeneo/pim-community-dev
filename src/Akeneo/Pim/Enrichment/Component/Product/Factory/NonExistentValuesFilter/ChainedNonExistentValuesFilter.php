@@ -20,18 +20,12 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  */
 class ChainedNonExistentValuesFilter implements ChainedNonExistentValuesFilterInterface
 {
-    private iterable $nonExistentValueFilters;
-    private EmptyValuesCleaner $emptyValuesCleaner;
-    private TransformRawValuesCollections $transformRawValuesCollections;
-
     public function __construct(
-        iterable $nonExistentValueFilters,
-        EmptyValuesCleaner $emptyValuesCleaner,
-        TransformRawValuesCollections $transformRawValuesCollections
+        private iterable $nonExistentValueFilters,
+        private NonExistentChannelLocaleValuesFilter $nonExistentChannelLocaleValuesFilter,
+        private EmptyValuesCleaner $emptyValuesCleaner,
+        private TransformRawValuesCollections $transformRawValuesCollections
     ) {
-        $this->nonExistentValueFilters = $nonExistentValueFilters;
-        $this->emptyValuesCleaner = $emptyValuesCleaner;
-        $this->transformRawValuesCollections = $transformRawValuesCollections;
     }
 
     public function filterAll(array $rawValuesCollection): array
@@ -51,6 +45,14 @@ class ChainedNonExistentValuesFilter implements ChainedNonExistentValuesFilterIn
             },
             $onGoingFilteredRawValues
         );
+
+        // PIM-10206: The NonExistentChannelLocaleValuesFilter is a different filter. It must check the values for
+        // all values, filtered or not.
+        $onGoingFilteredRawValuesForChannelAndLocale = new OnGoingFilteredRawValues(
+            [],
+            $result->filteredRawValuesCollectionIndexedByType() + $result->nonFilteredRawValuesCollectionIndexedByType()
+        );
+        $result = $this->nonExistentChannelLocaleValuesFilter->filter($onGoingFilteredRawValuesForChannelAndLocale);
 
         $filteredRawValuesCollectionIndexedByType = $result->addFilteredValuesIndexedByType($result->nonFilteredRawValuesCollectionIndexedByType());
         $filteredRawValuesCollection = $this->emptyValuesCleaner->cleanAllValues($filteredRawValuesCollectionIndexedByType->toRawValueCollection());
