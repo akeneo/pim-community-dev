@@ -106,7 +106,7 @@
         "symfony/http-kernel": "4.4.18",
         "symfony/filesystem": "4.4.18",
         "symfony/config": "4.4.18",
-        "symfony/routing": "4.4.18",
+        "symfony/routing": "4.4.34",
         "symfony/property-access": "4.4.18",
         "symfony/security-core": "4.4.18",
         "symfony/security-http": "4.4.18",
