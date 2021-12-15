@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\CreateUserConsentQueryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -24,8 +25,8 @@ class CreateUserConsentQuery implements CreateUserConsentQueryInterface
     public function execute(int $userId, string $appId, array $authenticationScopes, \DateTimeImmutable $consentDate): void
     {
         $query = <<<SQL
-            INSERT INTO akeneo_connectivity_user_consent (user_id, app_id, scopes, consent_date)
-            VALUES (:userId, :appId, :scopes, :consentDate)
+            INSERT INTO akeneo_connectivity_user_consent (user_id, app_id, scopes, uuid, consent_date)
+            VALUES (:userId, :appId, :scopes, :uuid, :consentDate)
             ON DUPLICATE KEY UPDATE scopes = :scopes, consent_date = :consentDate
             SQL;
 
@@ -33,10 +34,12 @@ class CreateUserConsentQuery implements CreateUserConsentQueryInterface
             'userId' => $userId,
             'appId' => $appId,
             'scopes' => array_values($authenticationScopes),
+            'uuid' => Uuid::uuid4(),
             'consentDate' => $consentDate,
         ], [
             'userId' => Types::INTEGER,
             'scopes' => Types::JSON,
+            'uuid' => Types::ASCII_STRING,
             'consentDate' => Types::DATETIMETZ_IMMUTABLE
         ]);
     }
