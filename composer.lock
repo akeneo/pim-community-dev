@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ba66639a0a72f0826e06e24ffd570c30",
+    "content-hash": "e11af28591898e8738fab4ce7cf8556c",
     "packages": [
         {
             "name": "akeneo/oauth-server-bundle",
