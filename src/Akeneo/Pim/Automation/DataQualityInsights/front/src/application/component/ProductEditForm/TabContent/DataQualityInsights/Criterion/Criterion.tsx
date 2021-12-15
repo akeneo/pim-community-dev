@@ -17,7 +17,7 @@ import Evaluation, {
 } from '../../../../../../domain/Evaluation.interface';
 import {Recommendation, RecommendationType, RecommendationWithAttributesList} from '../Recommendation';
 import {useCatalogContext, useProduct, useProductFamily} from '../../../../../../infrastructure/hooks';
-import {criterionPlaceholder, evaluationPlaceholder, isSimpleProduct, isSuccess} from '../../../../../helper';
+import {criterionPlaceholder, evaluationPlaceholder, isSuccess} from '../../../../../helper';
 import {
   AllowFollowingCriterionRecommendation,
   allowFollowingCriterionRecommendation as defaultAllowFollowingCriterionRecommendation,
@@ -196,7 +196,7 @@ const Criterion: FC<CriterionProps> = ({
 
   return (
     <li data-testid={'dqiProductEvaluationCriterion'} {...rowProps}>
-      <div className={`CriterionMessage ${!isSimpleProduct(product) ? 'CriterionMessage--Variant' : ''}`}>
+      <div className={`CriterionMessage`}>
         {icon}
         <Title criterion={criterion} />
         {recommendation}
