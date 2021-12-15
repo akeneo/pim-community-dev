@@ -150,6 +150,7 @@
 - PIM-10193: fix TypeError(implode(): Argument #2 () must be of type ?array, string given)
 - PIM-10194: Fix pagination for list products/product models endpoints with search_after pagination type
 - PIM-10199: Fix occasional segmentation fault when generating thumbnails
+- PIM-10206: Fix product and product model save when they had values for a deleted channel or locale
 
 ## New features
 

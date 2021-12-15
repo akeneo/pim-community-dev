@@ -46,8 +46,6 @@ class ChainedNonExistentValuesFilter implements ChainedNonExistentValuesFilterIn
             $onGoingFilteredRawValues
         );
 
-        // PIM-10206: The NonExistentChannelLocaleValuesFilter is a different filter. It must check the values for
-        // all values, filtered or not.
         $onGoingFilteredRawValuesForChannelAndLocale = new OnGoingFilteredRawValues(
             [],
             $result->filteredRawValuesCollectionIndexedByType() + $result->nonFilteredRawValuesCollectionIndexedByType()
