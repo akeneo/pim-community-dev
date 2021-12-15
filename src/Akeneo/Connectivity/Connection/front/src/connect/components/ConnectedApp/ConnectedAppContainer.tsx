@@ -39,7 +39,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
 
     useEffect(() => {
         fetchConnectedAppMonitoringSettings().then(setMonitoringSettings);
-    }, [fetchConnectedAppMonitoringSettings]);
+    }, [connectedApp.connection_code]);
 
     const breadcrumb = (
         <Breadcrumb>
