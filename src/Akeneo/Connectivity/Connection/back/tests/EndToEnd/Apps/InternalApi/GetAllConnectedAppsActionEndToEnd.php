@@ -70,7 +70,7 @@ class GetAllConnectedAppsActionEndToEnd extends WebTestCase
     {
         $this->featureFlagMarketplaceActivate->enable();
         $this->authenticateAsAdmin();
-        $this->removeAclFromRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
+        $this->removeAclFromRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');
 
         $this->client->request(
             'GET',
@@ -90,7 +90,7 @@ class GetAllConnectedAppsActionEndToEnd extends WebTestCase
     {
         $this->featureFlagMarketplaceActivate->enable();
         $this->authenticateAsAdmin();
-        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
+        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');
 
         $this->getConnectionLoader()->createConnection('connectionCodeB', 'Connector B', FlowType::DATA_DESTINATION, false);
         $this->getUserGroupLoader()->create(['name' => 'app_7891011ghijkl']);

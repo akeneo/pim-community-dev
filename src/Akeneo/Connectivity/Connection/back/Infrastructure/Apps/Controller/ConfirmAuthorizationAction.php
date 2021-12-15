@@ -10,6 +10,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthentica
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
+use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
@@ -69,7 +70,7 @@ class ConfirmAuthorizationAction
         $this->consentAppAuthenticationHandler = $consentAppAuthenticationHandler;
     }
 
-    public function __invoke(Request $request, string $clientId, bool $hasUserAuthenticationConsent = false): Response
+    public function __invoke(Request $request, string $clientId): Response
     {
         if (!$this->featureFlag->isEnabled()) {
             throw new NotFoundHttpException();
@@ -85,6 +86,15 @@ class ConfirmAuthorizationAction
 
         try {
             $this->createAppWithAuthorizationHandler->handle(new CreateAppWithAuthorizationCommand($clientId));
+
+            $appAuthorization = $this->appAuthorizationSession->getAppAuthorization($clientId);
+            if (null === $appAuthorization) {
+                throw new \LogicException('There is no active app authorization in session');
+            }
+
+            if ($appAuthorization->getAuthenticationScopes()->hasScope(AuthenticationScope::SCOPE_OPENID)) {
+                $this->consentAppAuthenticationHandler->handle(new ConsentAppAuthenticationCommand($clientId));
+            }
         } catch (InvalidAppAuthorizationRequest $exception) {
             $this->logger->warning(
                 sprintf('App activation failed with validation error "%s"', $exception->getMessage())
@@ -93,16 +103,6 @@ class ConfirmAuthorizationAction
             return new JsonResponse([
                 'errors' => $this->violationListNormalizer->normalize($exception->getConstraintViolationList()),
             ], Response::HTTP_BAD_REQUEST);
-        }
-
-        if ($hasUserAuthenticationConsent) {
-            // @TODO handle validation error
-            $this->consentAppAuthenticationHandler->handle(new ConsentAppAuthenticationCommand($clientId));
-        }
-
-        $appAuthorization = $this->appAuthorizationSession->getAppAuthorization($clientId);
-        if (null === $appAuthorization) {
-            throw new \LogicException('There is no active app authorization in session');
         }
 
         $appConfirmation = $this->getAppConfirmationQuery->execute($clientId);

@@ -3,7 +3,7 @@ import {useLocation} from 'react-router-dom';
 import {AuthorizeClientError} from '../components/AuthorizeClientError';
 import {AppWizard} from '../components/AppWizard/AppWizard';
 import {useHistory} from 'react-router';
-import {AppWizardWithSteps} from '../components/AppWizardWithSteps/AppWizardWithSteps';
+import {AppWizardWithPermissions} from '../components/AppWizard/AppWizardWithPermissions';
 import {useFeatureFlags} from '../../shared/feature-flags';
 
 export const AppAuthorizePage: FC = () => {
@@ -24,7 +24,7 @@ export const AppAuthorizePage: FC = () => {
     }
 
     if (true === featureFlags.isEnabled('connect_app_with_permissions')) {
-        return <AppWizardWithSteps clientId={clientId} />;
+        return <AppWizardWithPermissions clientId={clientId} />;
     }
 
     return <AppWizard clientId={clientId} />;
