@@ -40,7 +40,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
 {
     protected static $defaultName = 'pim:product:clean-removed-attributes';
     private const JOB_NAME = 'clean_removed_attribute_job';
-    private const JOB_TRACKER_ROUTE = 'pim_enrich_job_tracker_show';
+    private const JOB_TRACKER_ROUTE = 'akeneo_job_process_tracker_details';
 
     private EntityManagerClearerInterface $entityManagerClearer;
     private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory;
@@ -153,8 +153,8 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         }
 
         $answer = $io->confirm(
-            'This command will remove all values of deleted attributes on all products and product models'."\n".
-            'Do you want to proceed?',
+            'This command will remove all values of deleted attributes on all products and product models' . "\n" .
+                'Do you want to proceed?',
             true
         );
 
@@ -252,12 +252,12 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         );
 
         $confirmMessage = sprintf(
-            "This command will launch a job to remove the values of the attributes:\n".
-            "%s\n".
-            " This will update:\n".
-            " - %d product model(s) (and %d product variant(s))\n".
-            " - %d product(s)\n".
-            " Do you want to proceed?",
+            "This command will launch a job to remove the values of the attributes:\n" .
+                "%s\n" .
+                " This will update:\n" .
+                " - %d product model(s) (and %d product variant(s))\n" .
+                " - %d product(s)\n" .
+                " Do you want to proceed?",
             implode(
                 array_map(function (string $attributeCode) {
                     return sprintf(" - %s\n", $attributeCode);

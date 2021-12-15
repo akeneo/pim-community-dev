@@ -9,6 +9,7 @@ use Akeneo\Tool\Bundle\BatchBundle\Notification\Notifier;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Tool\Component\Batch\Job\JobParametersValidator;
@@ -184,9 +185,10 @@ class BatchCommand extends Command
         }
 
         if (null === $executionId) {
-            $jobParameters = $this->createJobParameters($jobInstance, $input);
-            $this->validateJobParameters($jobInstance, $jobParameters, $code);
-            $jobExecution = $job->getJobRepository()->createJobExecution($jobInstance, $jobParameters);
+            $job = $this->jobRegistry->get($jobInstance->getJobName());
+            $jobParameters = $this->createJobParameters($job, $jobInstance, $input);
+            $this->validateJobParameters($job, $jobInstance, $jobParameters, $code);
+            $jobExecution = $job->getJobRepository()->createJobExecution($job, $jobInstance, $jobParameters);
 
             $username = $input->getOption('username');
             if (null !== $username) {
@@ -324,9 +326,8 @@ class BatchCommand extends Command
      *
      * @return JobParameters
      */
-    protected function createJobParameters(JobInstance $jobInstance, InputInterface $input): JobParameters
+    protected function createJobParameters(JobInterface $job, JobInstance $jobInstance, InputInterface $input): JobParameters
     {
-        $job = $this->jobRegistry->get($jobInstance->getJobName());
         $rawParameters = $jobInstance->getRawParameters();
 
         $config = $input->getOption('config') ? $this->decodeConfiguration($input->getOption('config')) : [];
@@ -344,12 +345,11 @@ class BatchCommand extends Command
      *
      * @throws \RuntimeException
      */
-    protected function validateJobParameters(JobInstance $jobInstance, JobParameters $jobParameters, string $code) : void
+    protected function validateJobParameters(JobInterface $job, JobInstance $jobInstance, JobParameters $jobParameters, string $code) : void
     {
         // We merge the JobInstance from the JobManager EntityManager to the DefaultEntityManager
         // in order to be able to have a working UniqueEntity validation
         $defaultJobInstance = $this->getDefaultEntityManager()->merge($jobInstance);
-        $job = $this->jobRegistry->get($jobInstance->getJobName());
         $errors = $this->jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution']);
 
         if (count($errors) > 0) {

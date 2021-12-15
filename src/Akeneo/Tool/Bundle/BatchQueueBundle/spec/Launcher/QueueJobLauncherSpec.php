@@ -70,7 +70,7 @@ class QueueJobLauncherSpec extends ObjectBehavior
         $jobRegistry->get('job_instance_name')->willReturn($job);
         $jobParametersFactory->create($job, ['foo' => 'bar', 'baz' => 'foz'])->willReturn($jobParameters);
         $jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution'])->willReturn($constraintViolationList);
-        $jobRepository->createJobExecution($jobInstance, $jobParameters)->willReturn($jobExecution);
+        $jobRepository->createJobExecution($job, $jobInstance, $jobParameters)->willReturn($jobExecution);
         $jobExecutionMessageFactory->buildFromJobInstance($jobInstance, 1, ['env' => 'test'])->willReturn(
             DataMaintenanceJobExecutionMessage::createJobExecutionMessage(1, ['env' => 'test'])
         );
@@ -110,7 +110,7 @@ class QueueJobLauncherSpec extends ObjectBehavior
         $jobRegistry->get('job_instance_name')->willReturn($job);
         $jobParametersFactory->create($job, ['foo' => 'bar', 'baz' => 'foz'])->willReturn($jobParameters);
         $jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution'])->willReturn($constraintViolationList);
-        $jobRepository->createJobExecution($jobInstance, $jobParameters)->willReturn($jobExecution);
+        $jobRepository->createJobExecution($job, $jobInstance, $jobParameters)->willReturn($jobExecution);
         $jobExecutionMessageFactory->buildFromJobInstance($jobInstance, 1, ['env' => 'test', 'email' => 'julia@akeneo.com'])->willReturn(
             DataMaintenanceJobExecutionMessage::createJobExecutionMessage(1, ['env' => 'test'])
         );

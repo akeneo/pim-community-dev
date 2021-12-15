@@ -1,12 +1,26 @@
 akeneo_job_process_tracker_index:
-  path: /rac-job
+  path: /job
+
+akeneo_job_process_tracker_details:
+  path: /job/show/{id}
+  requirements:
+    id: \d+
+
+# Used for onboarder compatibility
+pim_enrich_job_tracker_index:
+  path: /job
 
 akeneo_job_index_action:
   path: /rest/process-tracker
-  defaults: { _controller: akeneo.job.controller.index_action }
+  defaults: { _controller: akeneo.job.controller.get_job_execution_action }
   methods: [POST]
 
 akeneo_job_get_job_types_action:
   path: /rest/process-tracker/job-types
   defaults: { _controller: akeneo.job.controller.get_job_types_action }
+  methods: [GET]
+
+akeneo_job_get_job_users_action:
+  path: /rest/process-tracker/job-users
+  defaults: { _controller: akeneo.job.controller.get_job_users_action }
   methods: [GET]

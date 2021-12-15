@@ -146,7 +146,7 @@ class ConsumeJobMessageIntegration extends TestCase
             throw new \RuntimeException('JobExecution could not be created due to invalid job parameters.');
         }
 
-        $jobExecution = $this->get('akeneo_batch.job_repository')->createJobExecution($jobInstance, $jobParameters);
+        $jobExecution = $this->get('akeneo_batch.job_repository')->createJobExecution($job, $jobInstance, $jobParameters);
         $jobExecution->setUser($user);
         $this->get('akeneo_batch.job_repository')->updateJobExecution($jobExecution);
 
