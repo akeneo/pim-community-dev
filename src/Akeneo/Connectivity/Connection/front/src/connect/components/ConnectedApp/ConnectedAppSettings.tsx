@@ -17,7 +17,7 @@ export const ConnectedAppSettings: FC<Props> = ({connectedApp, monitoringSetting
                 monitoringSettings={monitoringSettings}
                 handleSetMonitoringSettings={handleSetMonitoringSettings}
             />
-            <ConnectedAppAuthorizations connectedApp={connectedApp}/>
+            <ConnectedAppAuthorizations connectedApp={connectedApp} />
         </>
     );
 };

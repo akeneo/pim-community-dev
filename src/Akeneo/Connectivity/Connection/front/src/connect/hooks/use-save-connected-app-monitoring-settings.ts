@@ -9,16 +9,19 @@ export const useSaveConnectedAppMonitoringSettings = (connectionCode: string): C
         connectionCode: connectionCode,
     });
 
-    return useCallback(async data => {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: [['X-Requested-With', 'XMLHttpRequest']],
-            body: JSON.stringify(data),
-        });
-        if (false === response.ok) {
-            return Promise.reject(`${response.status} ${response.statusText}`);
-        }
+    return useCallback(
+        async data => {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: [['X-Requested-With', 'XMLHttpRequest']],
+                body: JSON.stringify(data),
+            });
+            if (false === response.ok) {
+                return Promise.reject(`${response.status} ${response.statusText}`);
+            }
 
-        return Promise.resolve();
-    }, [url]);
+            return Promise.resolve();
+        },
+        [url]
+    );
 };

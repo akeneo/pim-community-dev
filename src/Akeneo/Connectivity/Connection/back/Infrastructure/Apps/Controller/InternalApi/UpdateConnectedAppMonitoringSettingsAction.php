@@ -58,7 +58,7 @@ class UpdateConnectedAppMonitoringSettingsAction
         $flowType = $data['flowType'] ?? $connection->flowType();
         $auditable = $data['auditable'] ?? $connection->auditable();
 
-        if (false === is_string($flowType) || false === is_bool($auditable)) {
+        if (false === \is_string($flowType) || false === \is_bool($auditable)) {
             return new JsonResponse(['error' => 'Wrong type for parameters'], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 

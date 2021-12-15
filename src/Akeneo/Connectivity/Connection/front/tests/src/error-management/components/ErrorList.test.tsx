@@ -1,8 +1,9 @@
 import React from 'react';
 import {ErrorList} from '@src/error-management/components/ErrorList';
 import {ConnectionError} from '@src/error-management/model/ConnectionError';
-import {fireEvent, waitForDomChange} from '@testing-library/dom';
+import {fireEvent} from '@testing-library/dom';
 import {fetchMockResponseOnce, renderWithProviders} from '../../../test-utils';
+import {waitFor} from '@testing-library/react';
 
 test('filters errors by search value', async () => {
     fetchMockResponseOnce(
@@ -63,7 +64,9 @@ test('filters errors by search value', async () => {
         {target: {value: 'Error 2'}}
     );
 
-    await waitForDomChange();
+    await waitFor(() => {
+        expect(queryByText('Error 1')).toBeNull();
+    });
 
     expect(queryByText('Error 1')).toBeNull();
     getByText('Error 2');

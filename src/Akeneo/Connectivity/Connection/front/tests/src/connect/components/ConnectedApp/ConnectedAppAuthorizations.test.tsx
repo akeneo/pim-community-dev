@@ -77,7 +77,6 @@ test('The connected app authorizations renders with scopes', async () => {
     );
 });
 
-
 test('The connected app authorizations renders without scopes', async () => {
     const fetchConnectedAppScopeMessagesResponses: MockFetchResponses = {
         'akeneo_connectivity_connection_apps_rest_get_all_connected_app_scope_messages?connectionCode=some_connection_code':

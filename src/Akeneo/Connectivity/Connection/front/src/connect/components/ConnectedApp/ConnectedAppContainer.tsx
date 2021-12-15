@@ -11,7 +11,7 @@ import {ConnectedAppPermissions} from './ConnectedAppPermissions';
 import {NotificationLevel, useNotify} from '../../../shared/notify';
 import usePermissionsFormProviders from '../../hooks/use-permissions-form-providers';
 import {useHistory} from 'react-router';
-import {useSaveConnectedAppMonitoringSettings} from '../../hooks/use-save--connected-app-monitoring-settings';
+import {useSaveConnectedAppMonitoringSettings} from '../../hooks/use-save-connected-app-monitoring-settings';
 import {useFetchConnectedAppMonitoringSettings} from '../../hooks/use-fetch-connected-app-monitoring-settings';
 import {MonitoringSettings} from '../../../model/Apps/monitoring-settings';
 
@@ -33,7 +33,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState<boolean>(false);
     const fetchConnectedAppMonitoringSettings = useFetchConnectedAppMonitoringSettings(connectedApp.connection_code);
     const saveConnectedAppMonitoringSettings = useSaveConnectedAppMonitoringSettings(connectedApp.connection_code);
-    const [monitoringSettings, setMonitoringSettings] = useState<MonitoringSettings|null>(null);
+    const [monitoringSettings, setMonitoringSettings] = useState<MonitoringSettings | null>(null);
     const [activeTab, setActiveTab] = useSessionStorageState(settingsTabName, 'pim_connectedApp_activeTab');
     const [isCurrent, switchTo] = useTabBar(activeTab);
 
@@ -90,7 +90,9 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
     const notifyMonitoringSettingsSaveError = () => {
         notify(
             NotificationLevel.ERROR,
-            translate('akeneo_connectivity.connection.connect.connected_apps.edit.flash.monitoring_settings_error.description')
+            translate(
+                'akeneo_connectivity.connection.connect.connected_apps.edit.flash.monitoring_settings_error.description'
+            )
         );
     };
 
@@ -104,6 +106,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                 hasSavedSomething = true;
             } catch {
                 notifyMonitoringSettingsSaveError();
+                hasStillUnsavedChanged = true;
             }
         }
 
@@ -144,13 +147,16 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
         [setPermissions, setHasUnsavedChanges, permissions]
     );
 
-    const handleSetMonitoringSettings = useCallback((newMonitoringSettings: MonitoringSettings) => {
-        if (JSON.stringify(newMonitoringSettings) === JSON.stringify(monitoringSettings)) {
-            return;
-        }
-        setMonitoringSettings(newMonitoringSettings);
-        setHasUnsavedChanges(true);
-    }, [monitoringSettings, setMonitoringSettings, setHasUnsavedChanges]);
+    const handleSetMonitoringSettings = useCallback(
+        (newMonitoringSettings: MonitoringSettings) => {
+            if (JSON.stringify(newMonitoringSettings) === JSON.stringify(monitoringSettings)) {
+                return;
+            }
+            setMonitoringSettings(newMonitoringSettings);
+            setHasUnsavedChanges(true);
+        },
+        [monitoringSettings, setMonitoringSettings, setHasUnsavedChanges]
+    );
 
     return (
         <>

@@ -29,23 +29,23 @@ test('Connected App Settings renders monitoring settings and authorizations', ()
         return;
     });
 
-    renderWithProviders(<ConnectedAppSettings
-        connectedApp={connectedApp}
-        monitoringSettings={monitoringSettings}
-        handleSetMonitoringSettings={handleSetMonitoringSettings}
-    />);
+    renderWithProviders(
+        <ConnectedAppSettings
+            connectedApp={connectedApp}
+            monitoringSettings={monitoringSettings}
+            handleSetMonitoringSettings={handleSetMonitoringSettings}
+        />
+    );
 
     expect(
-    screen.queryByText(
-        'akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.title',
-        {exact: false}
-    )
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.title', {
+            exact: false,
+        })
     ).toBeInTheDocument();
 
     expect(
-        screen.queryByText(
-            'akeneo_connectivity.connection.connect.connected_apps.edit.settings.monitoring.title',
-            {exact: false}
-        )
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.settings.monitoring.title', {
+            exact: false,
+        })
     ).toBeInTheDocument();
 });

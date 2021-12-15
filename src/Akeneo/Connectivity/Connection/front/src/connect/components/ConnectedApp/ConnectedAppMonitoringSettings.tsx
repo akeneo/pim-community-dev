@@ -30,14 +30,14 @@ export const ConnectedAppMonitoringSettings: FC<Props> = ({monitoringSettings, h
     const onFlowTypeChange = (newFlowType: FlowType) => {
         handleSetMonitoringSettings({
             flowType: newFlowType,
-            auditable: isAuditForbidden(newFlowType) ? false : monitoringSettings.auditable
+            auditable: isAuditForbidden(newFlowType) ? false : monitoringSettings.auditable,
         });
     };
 
-    const onAuditableChange = () => {
+    const onAuditableChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         handleSetMonitoringSettings({
             flowType: monitoringSettings.flowType,
-            auditable: !monitoringSettings.auditable
+            auditable: event.target.checked,
         });
     };
 
@@ -45,14 +45,15 @@ export const ConnectedAppMonitoringSettings: FC<Props> = ({monitoringSettings, h
         <>
             <SectionTitle>
                 <SectionTitle.Title>
-                    {translate(
-                        'akeneo_connectivity.connection.connect.connected_apps.edit.settings.monitoring.title'
-                    )}
+                    {translate('akeneo_connectivity.connection.connect.connected_apps.edit.settings.monitoring.title')}
                 </SectionTitle.Title>
             </SectionTitle>
             <MonitoringField label={translate('akeneo_connectivity.connection.connection.flow_type')}>
                 <FlowTypeSelect value={monitoringSettings.flowType} onChange={onFlowTypeChange} id='flow_type' />
-                <Helper inline level='info'> <FlowTypeHelper /> </Helper>
+                <Helper inline level='info'>
+                    {' '}
+                    <FlowTypeHelper />{' '}
+                </Helper>
             </MonitoringField>
             <MonitoringField label={''}>
                 <Checkbox
@@ -60,10 +61,16 @@ export const ConnectedAppMonitoringSettings: FC<Props> = ({monitoringSettings, h
                     checked={monitoringSettings.auditable}
                     onChange={onAuditableChange}
                     disabled={isAuditForbidden(monitoringSettings.flowType)}
+                    data-testid={'auditable-checkbox'}
                 >
                     <Translate id='akeneo_connectivity.connection.connection.auditable' />
                 </Checkbox>
-                {isAuditForbidden(monitoringSettings.flowType) && <Helper inline level='info'> <AuditableHelper /> </Helper>}
+                {isAuditForbidden(monitoringSettings.flowType) && (
+                    <Helper inline level='info'>
+                        {' '}
+                        <AuditableHelper />{' '}
+                    </Helper>
+                )}
             </MonitoringField>
         </>
     );

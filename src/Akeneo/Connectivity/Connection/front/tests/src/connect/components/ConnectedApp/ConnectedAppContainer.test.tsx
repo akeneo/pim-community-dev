@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {act, screen, waitFor} from '@testing-library/react';
-import {renderWithProviders} from '../../../../test-utils';
+import {mockFetchResponses, MockFetchResponses, renderWithProviders} from '../../../../test-utils';
 import {ConnectedAppContainer} from '@src/connect/components/ConnectedApp/ConnectedAppContainer';
 import {ConnectedAppSettings} from '@src/connect/components/ConnectedApp/ConnectedAppSettings';
 import {ConnectedAppPermissions} from '@src/connect/components/ConnectedApp/ConnectedAppPermissions';
@@ -10,9 +10,15 @@ import usePermissionsFormProviders from '@src/connect/hooks/use-permissions-form
 import {NotificationLevel, NotifyContext} from '@src/shared/notify';
 import {PermissionFormProvider} from '@src/shared/permission-form-registry';
 import {PermissionsByProviderKey} from '@src/model/Apps/permissions-by-provider-key';
+import {FlowType} from '@src/model/flow-type.enum';
+import fetchMock from 'jest-fetch-mock';
+import {useSaveConnectedAppMonitoringSettings} from '@src/connect/hooks/use-save-connected-app-monitoring-settings';
+import {ConnectedApp} from '@src/model/Apps/connected-app';
+import {MonitoringSettings} from '@src/model/Apps/monitoring-settings';
 
 beforeEach(() => {
     window.sessionStorage.clear();
+    fetchMock.resetMocks();
     jest.clearAllMocks();
 });
 
@@ -27,9 +33,35 @@ window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverM
 
 const notify = jest.fn();
 
+type ConnectedAppSettingsProps = {
+    connectedApp: ConnectedApp;
+    monitoringSettings: MonitoringSettings | null;
+    handleSetMonitoringSettings: (monitoringSettings: MonitoringSettings) => void;
+};
 jest.mock('@src/connect/components/ConnectedApp/ConnectedAppSettings', () => ({
     ...jest.requireActual('@src/connect/components/ConnectedApp/ConnectedAppSettings'),
-    ConnectedAppSettings: jest.fn(() => null),
+    ConnectedAppSettings: jest.fn(({handleSetMonitoringSettings}: ConnectedAppSettingsProps) => {
+        const handleClick = () => {
+            handleSetMonitoringSettings({flowType: FlowType.DATA_DESTINATION, auditable: true});
+        };
+
+        return (
+            <div data-testid='set-monitoring-settings' onClick={handleClick}>
+                connected-app-monitoring-settings-form-component
+            </div>
+        );
+    }),
+}));
+
+const saveConnectedAppMonitoringSettings = jest
+    .fn()
+    .mockImplementation((data: MonitoringSettings) => Promise.resolve());
+
+jest.mock('@src/connect/hooks/use-save-connected-app-monitoring-settings.ts', () => ({
+    ...jest.requireActual('@src/connect/hooks/use-save-connected-app-monitoring-settings.ts'),
+    useSaveConnectedAppMonitoringSettings: jest
+        .fn()
+        .mockImplementation((connectionCode: string) => saveConnectedAppMonitoringSettings),
 }));
 
 type ConnectedAppPermissionsProps = {
@@ -72,10 +104,22 @@ const connectedApp = {
     partner: null,
 };
 
-test('The connected app container renders without permissions tab', () => {
+test('The connected app container renders without permissions tab', async () => {
+    const fetchConnectedAppMonitoringSettings: MockFetchResponses = {
+        'akeneo_connectivity_connection_apps_rest_get_connected_app_monitoring_settings?connectionCode=some_connection_code':
+            {
+                json: {flowType: FlowType.DATA_DESTINATION, auditable: true},
+            },
+    };
+
+    mockFetchResponses({
+        ...fetchConnectedAppMonitoringSettings,
+    });
+
     (usePermissionsFormProviders as jest.Mock).mockImplementation(() => [[], {}, jest.fn()]);
 
     renderWithProviders(<ConnectedAppContainer connectedApp={connectedApp} />);
+    await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings'));
 
     assertPageHeader();
     expect(
@@ -84,11 +128,27 @@ test('The connected app container renders without permissions tab', () => {
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.permissions')
     ).not.toBeInTheDocument();
-    expect(ConnectedAppSettings).toHaveBeenCalledWith({connectedApp: connectedApp}, {});
+    expect(ConnectedAppSettings).toHaveBeenCalledWith(
+        expect.objectContaining({
+            connectedApp: connectedApp,
+        }),
+        {}
+    );
     expect(ConnectedAppPermissions).not.toHaveBeenCalled();
 });
 
-test('The connected app container renders with permissions tab', () => {
+test('The connected app container renders with permissions tab', async () => {
+    const fetchConnectedAppMonitoringSettings: MockFetchResponses = {
+        'akeneo_connectivity_connection_apps_rest_get_connected_app_monitoring_settings?connectionCode=some_connection_code':
+            {
+                json: {flowType: FlowType.DATA_DESTINATION, auditable: true},
+            },
+    };
+
+    mockFetchResponses({
+        ...fetchConnectedAppMonitoringSettings,
+    });
+
     const mockedProviders = [
         {
             key: 'providerKey1',
@@ -129,6 +189,7 @@ test('The connected app container renders with permissions tab', () => {
     ]);
 
     renderWithProviders(<ConnectedAppContainer connectedApp={connectedApp} />);
+    await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings'));
 
     assertPageHeader();
     expect(
@@ -138,9 +199,9 @@ test('The connected app container renders with permissions tab', () => {
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.permissions')
     ).toBeInTheDocument();
     expect(ConnectedAppSettings).toHaveBeenCalledWith(
-        {
+        expect.objectContaining({
             connectedApp: connectedApp,
-        },
+        }),
         {}
     );
     expect(ConnectedAppPermissions).not.toHaveBeenCalled();
@@ -161,6 +222,17 @@ test('The connected app container renders with permissions tab', () => {
 });
 
 test('The connected app container saves permissions', async () => {
+    const fetchConnectedAppMonitoringSettings: MockFetchResponses = {
+        'akeneo_connectivity_connection_apps_rest_get_connected_app_monitoring_settings?connectionCode=some_connection_code':
+            {
+                json: {flowType: FlowType.DATA_DESTINATION, auditable: true},
+            },
+    };
+
+    mockFetchResponses({
+        ...fetchConnectedAppMonitoringSettings,
+    });
+
     const mockedProviders = [
         {
             key: 'providerKey1',
@@ -218,6 +290,17 @@ test('The connected app container saves permissions', async () => {
 });
 
 test('The connected app container notifies errors when saving permissions', async () => {
+    const fetchConnectedAppMonitoringSettings: MockFetchResponses = {
+        'akeneo_connectivity_connection_apps_rest_get_connected_app_monitoring_settings?connectionCode=some_connection_code':
+            {
+                json: {flowType: FlowType.DATA_DESTINATION, auditable: true},
+            },
+    };
+
+    mockFetchResponses({
+        ...fetchConnectedAppMonitoringSettings,
+    });
+
     const mockedProviders = [
         {
             key: 'providerKey1',
@@ -278,6 +361,95 @@ test('The connected app container notifies errors when saving permissions', asyn
     expect(screen.queryByText('pim_common.entity_updated')).toBeInTheDocument();
 });
 
+test('The connected app container saves monitoring settings', async () => {
+    const fetchConnectedAppMonitoringSettings: MockFetchResponses = {
+        'akeneo_connectivity_connection_apps_rest_get_connected_app_monitoring_settings?connectionCode=some_connection_code':
+            {
+                json: {flowType: FlowType.DATA_SOURCE, auditable: false},
+            },
+    };
+
+    mockFetchResponses({
+        ...fetchConnectedAppMonitoringSettings,
+    });
+
+    (usePermissionsFormProviders as jest.Mock).mockImplementation(() => [[], {}, jest.fn()]);
+
+    renderWithProviders(
+        <NotifyContext.Provider value={notify}>
+            <ConnectedAppContainer connectedApp={connectedApp} />
+        </NotifyContext.Provider>
+    );
+
+    await waitFor(() => {
+        expect(ConnectedAppSettings).toHaveBeenCalled();
+    });
+
+    expect(screen.queryByText('pim_common.entity_updated')).not.toBeInTheDocument();
+
+    fillTheMonitoringSettingsFormAndSave();
+
+    await waitFor(() => {
+        expect(notify).toHaveBeenCalledTimes(1);
+    });
+
+    expect(useSaveConnectedAppMonitoringSettings).toHaveBeenCalledWith(connectedApp.connection_code);
+    expect(saveConnectedAppMonitoringSettings).toHaveBeenCalledWith({
+        flowType: FlowType.DATA_DESTINATION,
+        auditable: true,
+    });
+    expect(notify).toHaveBeenCalledWith(
+        NotificationLevel.SUCCESS,
+        'akeneo_connectivity.connection.connect.connected_apps.edit.flash.success'
+    );
+    expect(screen.queryByText('pim_common.entity_updated')).not.toBeInTheDocument();
+});
+
+test('The connected app container notifies errors when saving monitoring settings', async () => {
+    const fetchConnectedAppMonitoringSettings: MockFetchResponses = {
+        'akeneo_connectivity_connection_apps_rest_get_connected_app_monitoring_settings?connectionCode=some_connection_code':
+            {
+                json: {flowType: FlowType.DATA_SOURCE, auditable: false},
+            },
+    };
+
+    mockFetchResponses({
+        ...fetchConnectedAppMonitoringSettings,
+    });
+
+    (usePermissionsFormProviders as jest.Mock).mockImplementation(() => [[], {}, jest.fn()]);
+    saveConnectedAppMonitoringSettings.mockImplementation((data: MonitoringSettings) => Promise.reject());
+
+    renderWithProviders(
+        <NotifyContext.Provider value={notify}>
+            <ConnectedAppContainer connectedApp={connectedApp} />
+        </NotifyContext.Provider>
+    );
+
+    await waitFor(() => {
+        expect(ConnectedAppSettings).toHaveBeenCalled();
+    });
+
+    expect(screen.queryByText('pim_common.entity_updated')).not.toBeInTheDocument();
+
+    fillTheMonitoringSettingsFormAndSave();
+
+    await waitFor(() => {
+        expect(notify).toHaveBeenCalledTimes(1);
+    });
+
+    expect(useSaveConnectedAppMonitoringSettings).toHaveBeenCalledWith(connectedApp.connection_code);
+    expect(saveConnectedAppMonitoringSettings).toHaveBeenCalledWith({
+        flowType: FlowType.DATA_DESTINATION,
+        auditable: true,
+    });
+    expect(notify).toHaveBeenCalledWith(
+        NotificationLevel.ERROR,
+        'akeneo_connectivity.connection.connect.connected_apps.edit.flash.monitoring_settings_error.description'
+    );
+    expect(screen.queryByText('pim_common.entity_updated')).toBeInTheDocument();
+});
+
 const assertPageHeader = () => {
     expect(screen.queryByText('pim_menu.tab.connect')).toBeInTheDocument();
     expect(screen.queryByText('pim_menu.item.connected_apps')).toBeInTheDocument();
@@ -298,6 +470,20 @@ const navigateToPermissionsAndFillTheFormAndSave = () => {
     // set some permissions (fill the form)
     act(() => {
         userEvent.click(screen.getByTestId('set-permissions'));
+    });
+
+    expect(screen.queryByText('pim_common.entity_updated')).toBeInTheDocument();
+
+    // click on save button
+    act(() => {
+        userEvent.click(screen.getByText('pim_common.save'));
+    });
+};
+
+const fillTheMonitoringSettingsFormAndSave = () => {
+    // fill the form
+    act(() => {
+        userEvent.click(screen.getByTestId('set-monitoring-settings'));
     });
 
     expect(screen.queryByText('pim_common.entity_updated')).toBeInTheDocument();
