@@ -429,6 +429,9 @@
     "phpmd/phpmd": {
         "version": "2.10.2"
     },
+    "phpseclib/phpseclib": {
+        "version": "2.0.31"
+    },
     "phpspec/php-diff": {
         "version": "v1.1.0"
     },

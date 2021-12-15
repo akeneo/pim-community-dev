@@ -118,3 +118,7 @@ services:
             - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp'
             - '@pim_user.repository.user'
             - '@pim_connector.doctrine.cache_clearer'
+
+    Akeneo\Connectivity\Connection\Tests\CatalogBuilder\PimConfigurationLoader:
+        arguments:
+            - '@database_connection'
