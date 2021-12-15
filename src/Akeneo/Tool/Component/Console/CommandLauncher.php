@@ -77,7 +77,7 @@ class CommandLauncher
         if (null === $logfile) {
             $logfile = sprintf('%s%scommand_execute.log', $this->logsDir, DIRECTORY_SEPARATOR);
         }
-        $cmd = escapeshellcmd($cmd);
+        $cmd = $cmd;
         $cmd .= sprintf(' >> %s 2>&1 &', $logfile);
 
         exec($cmd);
@@ -95,7 +95,7 @@ class CommandLauncher
     public function executeForeground($command)
     {
         $cmd = $this->buildCommandString($command);
-        $cmd = escapeshellcmd($cmd);
+        $cmd = $cmd;
 
         $output = [];
         $status = null;
