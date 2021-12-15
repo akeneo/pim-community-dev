@@ -37,6 +37,12 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
             - '@akeneo_connectivity.connection.marketplace.get_app_query'
 
+    Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthenticationHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetUserConsentedAuthenticationScopesQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\CreateUserConsentQuery'
+            - '@akeneo_connectivity.connection.clock'
+
     Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository'
