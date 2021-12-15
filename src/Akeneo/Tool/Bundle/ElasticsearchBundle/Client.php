@@ -10,6 +10,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Elasticsearch\Client as NativeClient;
 use Elasticsearch\ClientBuilder;
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
+use Elasticsearch\Common\Exceptions\Conflict409Exception;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -32,6 +33,9 @@ class Client
     private NativeClient $client;
     private string $idPrefix;
     private int $maxChunkSize;
+    private int $maxExpectedIndexationLatency;
+    private int $maxNumberOfRetries;
+
 
     /**
      * Configure the PHP Elasticsearch client.
@@ -43,7 +47,9 @@ class Client
         array $hosts,
         string $indexName,
         string $idPrefix = '',
-        int $maxChunkSize = 100000000
+        int $maxChunkSize = 100000000,
+        int $maxExpectedIndexationLatency=0,
+        int $maxNumberOfRetries=3
     ) {
         $this->builder = $builder;
         $this->configurationLoader = $configurationLoader;
@@ -51,6 +57,8 @@ class Client
         $this->indexName = $indexName;
         $this->idPrefix = $idPrefix;
         $this->maxChunkSize = $maxChunkSize;
+        $this->maxExpectedIndexationLatency = $maxExpectedIndexationLatency/1000;
+        $this->maxNumberOfRetries = $maxNumberOfRetries;
 
         $builder->setHosts($hosts);
         $this->client = $builder->build();
@@ -378,13 +386,27 @@ class Client
 
     /**
      * @param array $body an array containing a query compatible with https://www.elastic.co/guide/en/elasticsearch/reference/5.5/docs-delete-by-query.html
+     * @throws Conflict409Exception
      */
     public function deleteByQuery(array $body): void
     {
-        $this->client->deleteByQuery([
-            'index' => $this->indexName,
-            'body' => $body,
-        ]);
+        $attempts = 0;
+        $exception = null;
+        do {
+            $attempts++;
+            try {
+                $this->client->deleteByQuery([
+                    'index' => $this->indexName,
+                    'body' => $body,
+                ]);
+                return;
+            } catch (Conflict409Exception $e) {
+                $exception = $e;
+                sleep($this->maxExpectedIndexationLatency);
+                continue;
+            }
+        } while ($attempts < $this->maxNumberOfRetries);
+        throw $exception;
     }
 
     /**
