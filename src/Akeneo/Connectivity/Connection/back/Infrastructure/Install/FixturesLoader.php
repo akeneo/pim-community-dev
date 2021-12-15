@@ -7,8 +7,6 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Install;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\AsymmetricKeysGenerator;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\SaveAsymmetricKeysQuery;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
@@ -275,7 +273,7 @@ class FixturesLoader
 
     private function uploadImage(string $file): FileInfoInterface
     {
-        $rawFile = new \SplFileInfo(__DIR__.'/../Symfony/Resources/fixtures/images/'.$file);
+        $rawFile = new \SplFileInfo(__DIR__ . '/../Symfony/Resources/fixtures/images/' . $file);
 
         return $this->fileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS);
     }

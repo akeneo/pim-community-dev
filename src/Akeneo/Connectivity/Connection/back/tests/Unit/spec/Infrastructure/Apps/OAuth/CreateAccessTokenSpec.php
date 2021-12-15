@@ -78,8 +78,8 @@ class CreateAccessTokenSpec extends ObjectBehavior
         $appAuthenticationUserProvider->getAppAuthenticationUser('client_id_1234', 2)
             ->willReturn(new AppAuthenticationUser(
                 2,
-                'client_id_1234',
                 ScopeList::fromScopes([]),
+                'a_ppid',
                 'an_email',
                 'a_firstname',
                 'a_lastname'
