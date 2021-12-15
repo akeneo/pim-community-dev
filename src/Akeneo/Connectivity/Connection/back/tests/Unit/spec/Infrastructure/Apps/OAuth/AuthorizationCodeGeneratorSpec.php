@@ -56,7 +56,6 @@ class AuthorizationCodeGeneratorSpec extends ObjectBehavior
         $redirectUri = 'https://foo.example.com/oauth/callback';
         $timestamp = 1634572000;
         $pimUserId = 1;
-        $scope = 'openid email';
 
         $randomCodeGenerator->generate()->willReturn($code);
         $userRepository->find($pimUserId)->willReturn($pimUser);
@@ -69,11 +68,10 @@ class AuthorizationCodeGeneratorSpec extends ObjectBehavior
             $client,
             $pimUser,
             $redirectUri,
-            $timestamp + 30,
-            $scope
+            $timestamp + 30
         )
             ->shouldBeCalled();
 
-        $this->generate($appConfirmation, $pimUserId, $redirectUri, $scope)->shouldReturn($code);
+        $this->generate($appConfirmation, $pimUserId, $redirectUri)->shouldReturn($code);
     }
 }

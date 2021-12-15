@@ -33,13 +33,11 @@ class RedirectUriWithAuthorizationCodeGeneratorSpec extends ObjectBehavior
 
         $appAuthenticationUser->getPimUserId()->willReturn($pimUserId);
         $appAuthorization->getRedirectUri()->willReturn($redirectUriWithoutCode);
-        $appAuthorization->getAllScopes()->willReturn(ScopeList::fromScopes(['a_scope', 'another_scope']));
         $appAuthorization->getState()->willReturn(null);
         $authorizationCodeGenerator->generate(
             $appConfirmation,
             $pimUserId,
-            $redirectUriWithoutCode,
-            'a_scope another_scope'
+            $redirectUriWithoutCode
         )->willReturn($code);
 
         $this->generate($appAuthorization, $appConfirmation, $appAuthenticationUser)
@@ -59,13 +57,11 @@ class RedirectUriWithAuthorizationCodeGeneratorSpec extends ObjectBehavior
 
         $appAuthenticationUser->getPimUserId()->willReturn($pimUserId);
         $appAuthorization->getRedirectUri()->willReturn($redirectUriWithoutCode);
-        $appAuthorization->getAllScopes()->willReturn(ScopeList::fromScopes(['a_scope', 'another_scope']));
         $appAuthorization->getState()->willReturn($state);
         $authorizationCodeGenerator->generate(
             $appConfirmation,
             $pimUserId,
-            $redirectUriWithoutCode,
-            'a_scope another_scope'
+            $redirectUriWithoutCode
         )->willReturn($code);
 
         $this->generate($appAuthorization, $appConfirmation, $appAuthenticationUser)

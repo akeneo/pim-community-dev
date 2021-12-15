@@ -5,11 +5,16 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller;
 
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthenticationCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthenticationHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\UserConsentRequiredException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\CreateUserConsentQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Clock;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\AppAuthenticationUserProvider;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider;
@@ -26,7 +31,7 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class AuthorizeAction
 {
-    private RequestAppAuthorizationHandler $handler;
+    private RequestAppAuthorizationHandler $requestAppAuthorizationHandler;
     private RouterInterface $router;
     private FeatureFlag $featureFlag;
     private AppAuthorizationSessionInterface $appAuthorizationSession;
@@ -34,9 +39,11 @@ class AuthorizeAction
     private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator;
     private AppAuthenticationUserProvider $appAuthenticationUserProvider;
     private ConnectedPimUserProvider $connectedPimUserProvider;
+    private RequestAppAuthenticationHandler $requestAppAuthenticationHandler;
+
 
     public function __construct(
-        RequestAppAuthorizationHandler $handler,
+        RequestAppAuthorizationHandler $requestAppAuthorizationHandler,
         RouterInterface $router,
         FeatureFlag $featureFlag,
         AppAuthorizationSessionInterface $appAuthorizationSession,
@@ -44,8 +51,9 @@ class AuthorizeAction
         RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
         AppAuthenticationUserProvider $appAuthenticationUserProvider,
         ConnectedPimUserProvider $connectedPimUserProvider,
+        RequestAppAuthenticationHandler $requestAppAuthenticationHandler
     ) {
-        $this->handler = $handler;
+        $this->requestAppAuthorizationHandler = $requestAppAuthorizationHandler;
         $this->router = $router;
         $this->featureFlag = $featureFlag;
         $this->appAuthorizationSession = $appAuthorizationSession;
@@ -53,6 +61,7 @@ class AuthorizeAction
         $this->redirectUriWithAuthorizationCodeGenerator = $redirectUriWithAuthorizationCodeGenerator;
         $this->appAuthenticationUserProvider = $appAuthenticationUserProvider;
         $this->connectedPimUserProvider = $connectedPimUserProvider;
+        $this->requestAppAuthenticationHandler = $requestAppAuthenticationHandler;
     }
 
     public function __invoke(Request $request): Response
@@ -71,7 +80,7 @@ class AuthorizeAction
         );
 
         try {
-            $this->handler->handle($command);
+            $this->requestAppAuthorizationHandler->handle($command);
         } catch (InvalidAppAuthorizationRequest $e) {
             return new RedirectResponse(
                 '/#' . $this->router->generate('akeneo_connectivity_connection_connect_apps_authorize', [
@@ -95,28 +104,27 @@ class AuthorizeAction
             );
         }
 
+        $connectedPimUserId = $this->connectedPimUserProvider->getCurrentUserId();
+
+        try {
+            $this->requestAppAuthenticationHandler->handle(new RequestAppAuthenticationCommand(
+                $appConfirmation->getAppId(),
+                $connectedPimUserId,
+                $appAuthorization->getAuthenticationScopes(),
+            ));
+        } catch (UserConsentRequiredException $e) {
+            return new RedirectResponse(
+                '/#' . $this->router->generate('akeneo_connectivity_connection_connect_apps_authenticate', [
+                    'client_id' => $e->getAppId(),
+                    'new_authentication_scopes' => implode(',', $e->getNewAuthenticationScopes()),
+                ])
+            );
+        }
+
         $appAuthenticationUser = $this->appAuthenticationUserProvider->getAppAuthenticationUser(
             $appConfirmation->getAppId(),
-            $this->connectedPimUserProvider->getCurrentUserId()
+            $connectedPimUserId
         );
-
-
-        if ($appAuthorization->getAuthenticationScopes()->hasScope(AuthenticationScope::SCOPE_OPENID)) {
-            // @TODO might loop if it decline the app => redirect on pim, with error ?
-
-            $newAuthenticationScopes = array_diff(
-                $appAuthorization->getAuthenticationScopes()->getScopes(),
-                $appAuthenticationUser->getConsentedAuthenticationScopes()->getScopes()
-            );
-            if (count($newAuthenticationScopes) > 0) {
-                return new RedirectResponse(
-                    '/#' . $this->router->generate('akeneo_connectivity_connection_connect_apps_authenticate', [
-                        'client_id' => $command->getClientId(),
-                        'new_authentication_scopes' => implode(',', array_values($newAuthenticationScopes)),
-                    ])
-                );
-            }
-        }
 
         $redirectUrl = $this->redirectUriWithAuthorizationCodeGenerator->generate(
             $appAuthorization,
