@@ -57,7 +57,7 @@ class Client
         $this->indexName = $indexName;
         $this->idPrefix = $idPrefix;
         $this->maxChunkSize = $maxChunkSize;
-        $this->maxExpectedIndexationLatency = $maxExpectedIndexationLatency/1000;
+        $this->maxExpectedIndexationLatency = $maxExpectedIndexationLatency;
         $this->maxNumberOfRetries = $maxNumberOfRetries;
 
         $builder->setHosts($hosts);

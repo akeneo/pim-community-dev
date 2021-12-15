@@ -41,7 +41,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->integerNode('max_expected_indexation_latency')
                     ->isRequired()
-                    ->info('Latency between api call and document availability for search in milliseconds')
+                    ->info('Latency between api call and document availability for search in micro seconds')
                 ->end()
                 ->integerNode('max_number_of_retries')
                     ->isRequired()
