@@ -37,7 +37,7 @@ class AppAuthenticationUser
 
     public function getAppUserId(): string
     {
-        return md5($this->uuid);
+        return $this->uuid;
     }
 
     public function getPimUserId(): int
