@@ -4,6 +4,7 @@ import {Link, Image, Button} from '../../components';
 import {render, screen, fireEvent} from '../../storybook/test-util';
 import {Checkbox} from '../Checkbox/Checkbox';
 import {Surtitle} from './Surtitle/Surtitle';
+import {GroupsIllustration} from '../../illustrations';
 
 test('it renders its children properly', () => {
   render(
@@ -29,6 +30,26 @@ test('it renders its children properly', () => {
   expect(screen.getByText('Item 1')).toBeInTheDocument();
   expect(screen.getByText('Elements')).toBeInTheDocument();
 });
+
+test('it renders no result information', () => {
+  render(
+    <Dropdown>
+      <Button>Dropdown</Button>
+      <Dropdown.Overlay verticalPosition="down" onClose={jest.fn()}>
+        <Dropdown.Header>
+          <Dropdown.Title>Elements</Dropdown.Title>
+        </Dropdown.Header>
+        <Dropdown.ItemCollection
+          noResultIllustration={<GroupsIllustration />}
+          noResultTitle="Sorry, there is no results."
+        />
+      </Dropdown.Overlay>
+    </Dropdown>
+  );
+
+  expect(screen.getByText('Sorry, there is no results.')).toBeInTheDocument();
+});
+
 test('it renders selectable item', () => {
   const onChange = jest.fn();
 

@@ -1,7 +1,7 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {useHistory, useParams, Prompt} from 'react-router-dom';
 import styled from 'styled-components';
-import {Helper, Button, Breadcrumb, useBooleanState} from 'akeneo-design-system';
+import {Helper, Button, Breadcrumb, useBooleanState, Pill} from 'akeneo-design-system';
 import {
   useTranslate,
   useNotify,
@@ -27,7 +27,6 @@ import {PropertyTab} from './PropertyTab';
 import {addUnit, getMeasurementFamilyLabel, MeasurementFamily} from '../../model/measurement-family';
 import {Unit, UnitCode} from '../../model/unit';
 import {useSaveMeasurementFamilySaver} from './hooks/use-save-measurement-family-saver';
-import {ErrorBadge} from '../../shared/components/ErrorBadge';
 import {CreateUnit} from '../create-unit/CreateUnit';
 import {useUnsavedChanges} from '../../shared/hooks/use-unsaved-changes';
 import {UnsavedChangesContext} from '../../context/unsaved-changes-context';
@@ -271,8 +270,8 @@ const Edit = () => {
             {Object.values(Tab).map((tab: Tab) => (
               <TabSelector key={tab} onClick={() => setCurrentTab(tab)} isActive={currentTab === tab}>
                 {translate(`measurements.family.tab.${tab}`)}
-                {tab === Tab.Units && 0 < unitsErrors.length && <ErrorBadge />}
-                {tab === Tab.Properties && 0 < propertiesErrors.length && <ErrorBadge />}
+                {tab === Tab.Units && 0 < unitsErrors.length && <Pill level="danger" />}
+                {tab === Tab.Properties && 0 < propertiesErrors.length && <Pill level="danger" />}
               </TabSelector>
             ))}
           </Tabs>

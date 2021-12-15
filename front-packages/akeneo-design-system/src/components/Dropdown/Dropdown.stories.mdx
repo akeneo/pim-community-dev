@@ -7,6 +7,8 @@ import {SpaceBetweenContainer, SpaceContainer, useSelection, fakeFetcher} from '
 import {ArrowDownIcon, LinkIcon} from '../../icons';
 import {IconButton} from '../IconButton/IconButton';
 import {action} from '@storybook/addon-actions';
+import {GroupsIllustration} from '../../illustrations';
+import * as Illustrations from '../../illustrations';
 
 <Meta
   title="Components/Dropdown"
@@ -121,6 +123,36 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
   </Story>
 </Canvas>
 
+## No result
+
+<Canvas>
+  <Story name="No result" height={260}>
+    {args => {
+      const [isOpen, open, close] = useBooleanState(true);
+      return (
+        <SpaceContainer height={200}>
+          <Dropdown {...args}>
+            <Button onClick={open}>
+              Dropdown <ArrowDownIcon />
+            </Button>
+            {isOpen && (
+              <Dropdown.Overlay verticalPosition="down" onClose={close}>
+                <Dropdown.Header>
+                  <Dropdown.Title>Elements</Dropdown.Title>
+                </Dropdown.Header>
+                <Dropdown.ItemCollection
+                  noResultIllustration={React.createElement(GroupsIllustration)}
+                  noResultTitle="Sorry, there is no results."
+                />
+              </Dropdown.Overlay>
+            )}
+          </Dropdown>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
 ## Position
 
 <Canvas>
@@ -135,10 +167,10 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
           <SpaceBetweenContainer>
             <Dropdown>
               <Button onClick={openTopLeft}>
-                Down Right  <ArrowDownIcon />
+                Down Right <ArrowDownIcon />
               </Button>
               {isOpenTopLeft && (
-                <Dropdown.Overlay onClose={closeTopLeft} horizontalPosition='right'>
+                <Dropdown.Overlay onClose={closeTopLeft} horizontalPosition="right">
                   <Dropdown.Header>
                     <Dropdown.Title>Elements</Dropdown.Title>
                   </Dropdown.Header>
@@ -153,10 +185,10 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
             </Dropdown>
             <Dropdown>
               <Button onClick={openTopRight}>
-                Down Left  <ArrowDownIcon />
+                Down Left <ArrowDownIcon />
               </Button>
               {isOpenTopRight && (
-                <Dropdown.Overlay onClose={closeTopRight} horizontalPosition='left'>
+                <Dropdown.Overlay onClose={closeTopRight} horizontalPosition="left">
                   <Dropdown.Header>
                     <Dropdown.Title>Elements</Dropdown.Title>
                   </Dropdown.Header>
@@ -174,10 +206,10 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
           <SpaceBetweenContainer>
             <Dropdown>
               <Button onClick={openBottomLeft}>
-                Up Right  <ArrowDownIcon />
+                Up Right <ArrowDownIcon />
               </Button>
               {isOpenBottomLeft && (
-                <Dropdown.Overlay onClose={closeBottomLeft} verticalPosition='up' horizontalPosition='right'>
+                <Dropdown.Overlay onClose={closeBottomLeft} verticalPosition="up" horizontalPosition="right">
                   <Dropdown.Header>
                     <Dropdown.Title>Elements</Dropdown.Title>
                   </Dropdown.Header>
@@ -192,10 +224,10 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
             </Dropdown>
             <Dropdown>
               <Button onClick={openBottomRight}>
-                Up Left  <ArrowDownIcon />
+                Up Left <ArrowDownIcon />
               </Button>
               {isOpenBottomRight && (
-                <Dropdown.Overlay onClose={closeBottomRight} verticalPosition='up' horizontalPosition='left'>
+                <Dropdown.Overlay onClose={closeBottomRight} verticalPosition="up" horizontalPosition="left">
                   <Dropdown.Header>
                     <Dropdown.Title>Elements</Dropdown.Title>
                   </Dropdown.Header>
@@ -244,7 +276,11 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
                     title="Search"
                   />
                 </Dropdown.Header>
-                <Dropdown.ItemCollection onNextPage={handleNextPage}>
+                <Dropdown.ItemCollection
+                  onNextPage={handleNextPage}
+                  noResultIllustration={React.createElement(GroupsIllustration)}
+                  noResultTitle="Sorry, there is no results."
+                >
                   {items.map((item, index) => (
                     <Dropdown.Item key={index}>{item.text}</Dropdown.Item>
                   ))}
@@ -404,11 +440,9 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
                 <Dropdown.ItemCollection>
                   <Dropdown.Item title="Item 1">
                     <Image src="https://picsum.photos/seed/akeneo/200/140" alt="The alt" />
-                    <Dropdown.Surtitle label="Item 1 Annotation">
-                      Item 1
-                    </Dropdown.Surtitle>
+                    <Dropdown.Surtitle label="Item 1 Annotation">Item 1</Dropdown.Surtitle>
                     <Badge>100%</Badge>
-                    <IconButton icon={<LinkIcon/>} ghost="borderless" level="tertiary"/>
+                    <IconButton icon={<LinkIcon />} ghost="borderless" level="tertiary" />
                   </Dropdown.Item>
                   <Dropdown.Item title="Item 2">
                     <Image src="https://picsum.photos/seed/akenep/200/140" alt="The alt" />
@@ -416,15 +450,16 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
                       Item 2
                     </Dropdown.Surtitle>
                     <Badge level="danger">50%</Badge>
-                    <IconButton icon={<LinkIcon/>} ghost="borderless" level="tertiary"/>
+                    <IconButton icon={<LinkIcon />} ghost="borderless" level="tertiary" />
                   </Dropdown.Item>
                   <Dropdown.Item title="Item 3">
                     <Image src="https://picsum.photos/seed/akeneq/200/140" alt="The alt" />
                     <Dropdown.Surtitle label="Item 3 Annotation">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                      labore et dolore magna aliqua.
                     </Dropdown.Surtitle>
                     <Badge level="warning">80%</Badge>
-                    <IconButton icon={<LinkIcon/>} ghost="borderless" level="tertiary"/>
+                    <IconButton icon={<LinkIcon />} ghost="borderless" level="tertiary" />
                   </Dropdown.Item>
                 </Dropdown.ItemCollection>
               </Dropdown.Overlay>
