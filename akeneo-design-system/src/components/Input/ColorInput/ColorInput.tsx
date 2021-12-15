@@ -109,7 +109,7 @@ const ColorInput = forwardRef<HTMLInputElement, ColorInputProps>(
 
     return (
       <ColorInputContainer invalid={invalid} readOnly={readOnly}>
-        <ColorPreview type="color" value={value} onChange={handleChange} />
+        <ColorPreview type="color" value={value} onChange={handleChange} disabled={readOnly} />
         <Input
           ref={forwardedRef}
           value={value}
