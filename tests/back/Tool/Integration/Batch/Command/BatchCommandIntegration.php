@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Test\Integration\integration\BatchBundle\Command;
 
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Driver\Connection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -42,6 +41,8 @@ class BatchCommandIntegration extends TestCase
         $this->assertNotNull(json_decode($jobExecution['raw_parameters'], true));
         $this->assertNull($jobExecution['user']);
         $this->assertEquals('Export csv_product_export has been successfully executed.' . PHP_EOL, $output->fetch());
+        $this->assertTrue((bool) $jobExecution['is_stoppable']);
+        $this->assertEquals(1, $jobExecution['step_count']);
     }
 
     public function testJobExecutionStateWithUsername()
@@ -62,7 +63,7 @@ class BatchCommandIntegration extends TestCase
 
     public function testLaunchJobWithConfigOverridden()
     {
-        $filePath= sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'new_export.csv';
+        $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'new_export.csv';
         if (file_exists($filePath)) {
             unlink($filePath);
         }

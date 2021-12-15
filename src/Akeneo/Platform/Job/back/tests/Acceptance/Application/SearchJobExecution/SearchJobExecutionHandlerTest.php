@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Job\Test\Acceptance\Application\SearchJobExecution;
 
 use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
+use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRowTracking;
 use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionTable;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionHandler;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
+use Akeneo\Platform\Job\Domain\Model\Status;
 use Akeneo\Platform\Job\Test\Acceptance\AcceptanceTestCase;
-use Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryCountJobExecution;
 use Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemorySearchJobExecution;
 
 class SearchJobExecutionHandlerTest extends AcceptanceTestCase
@@ -26,7 +27,7 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
     {
         $query = new SearchJobExecutionQuery();
         $result = $this->getHandler()->search($query);
-        $expectedResult = new JobExecutionTable([], 0, 0);
+        $expectedResult = new JobExecutionTable([], 0);
 
         $this->assertEquals($expectedResult, $result);
     }
@@ -43,11 +44,9 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
                 'export',
                 new \DateTimeImmutable('2020-01-02T00:00:00+00:00'),
                 'admin',
-                'COMPLETED',
-                3,
-                0,
-                1,
-                2
+                Status::fromLabel('COMPLETED'),
+                false,
+                new JobExecutionRowTracking(1, 2, []),
             ),
             new JobExecutionRow(
                 2,
@@ -55,29 +54,74 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
                 'export',
                 new \DateTimeImmutable('2020-01-03T00:00:00+00:00'),
                 'admin',
-                'FAILED',
-                4,
-                1,
-                1,
-                2
+                Status::fromLabel('FAILED'),
+                true,
+                new JobExecutionRowTracking(1, 2, []),
             ),
         ];
 
-        $this->getCountJobExecution()->mockResult(3);
         $this->getSearchJobExecution()->mockSearchResult($jobExecutionRows);
 
         $query = new SearchJobExecutionQuery();
         $query->page = 1;
 
         $result = $this->getHandler()->search($query);
-        $expectedResult = new JobExecutionTable($jobExecutionRows, 2, 3);
+        $expectedResult = new JobExecutionTable($jobExecutionRows, 2);
 
         $this->assertEquals($expectedResult, $result);
     }
 
-    private function getCountJobExecution(): InMemoryCountJobExecution
+    /**
+     * @test
+     */
+    public function it_throws_invalid_argument_exception_when_sort_column_is_not_supported()
     {
-        return $this->get('Akeneo\Platform\Job\Domain\Query\CountJobExecutionInterface');
+        $query = new SearchJobExecutionQuery();
+        $query->sortColumn = 'invalid_column';
+
+        $this->expectExceptionObject(new \InvalidArgumentException('Sort column "invalid_column" is not supported'));
+
+        $this->getHandler()->search($query);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_invalid_argument_exception_when_sort_direction_is_not_supported()
+    {
+        $query = new SearchJobExecutionQuery();
+        $query->sortDirection = 'DASC';
+
+        $this->expectExceptionObject(new \InvalidArgumentException('Sort direction "DASC" is not supported'));
+
+        $this->getHandler()->search($query);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_exception_when_page_is_greater_than_50_and_no_filter(): void
+    {
+        $query = new SearchJobExecutionQuery();
+        $query->page = 51;
+
+        $this->expectExceptionObject(new \InvalidArgumentException('Page can not be greater than 50'));
+
+        $this->getHandler()->search($query);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_exception_when_page_is_greater_than_50_and_at_least_one_filter_is_set(): void
+    {
+        $query = new SearchJobExecutionQuery();
+        $query->type = ['export'];
+        $query->page = 51;
+
+        $this->expectExceptionObject(new \InvalidArgumentException('Page can not be greater than 50'));
+
+        $this->getHandler()->search($query);
     }
 
     private function getSearchJobExecution(): InMemorySearchJobExecution
