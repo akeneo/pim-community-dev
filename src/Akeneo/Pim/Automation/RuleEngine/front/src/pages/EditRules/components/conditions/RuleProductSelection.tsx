@@ -27,6 +27,7 @@ import {
   createSimpleMultiOptionsAttributeCondition,
   createSimpleMultiReferenceEntitiesAttributeCondition,
   createStatusCondition,
+  createTableAttributeCondition,
   createTextareaAttributeCondition,
   createTextAttributeCondition,
   Locale,
@@ -156,6 +157,7 @@ const RuleProductSelection: React.FC<Props> = ({
       createPictureAttributeCondition,
       createSimpleMultiOptionsAttributeCondition,
       createSimpleMultiReferenceEntitiesAttributeCondition,
+      createTableAttributeCondition,
       createTextAttributeCondition,
       createTextareaAttributeCondition,
       createPriceCollectionAttributeCondition,
@@ -206,6 +208,7 @@ const RuleProductSelection: React.FC<Props> = ({
     AttributeType.PRICE_COLLECTION,
     AttributeType.REFERENCE_ENTITY_COLLECTION,
     AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
+    AttributeType.TABLE,
     AttributeType.TEXT,
     AttributeType.TEXTAREA,
   ];

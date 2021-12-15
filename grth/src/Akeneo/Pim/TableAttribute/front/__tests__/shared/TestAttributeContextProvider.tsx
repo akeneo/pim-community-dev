@@ -1,6 +1,5 @@
 import React from 'react';
-import {AttributeContext} from '../../src/contexts';
-import {TableAttribute} from '../../src/models';
+import {AttributeContext, TableAttribute} from '../../src';
 
 export const TestAttributeContextProvider: React.FC<{attribute: TableAttribute}> = ({attribute, children}) => {
   const [attributeState, setAttributeState] = React.useState<TableAttribute>(attribute);

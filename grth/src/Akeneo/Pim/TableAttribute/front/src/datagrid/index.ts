@@ -1,3 +1,4 @@
+export * from './FilterSelectorList';
 export * from './FilterValues';
 export * from './ColumnDefinitionSelector';
 export * from './DatagridTableFilter';

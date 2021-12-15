@@ -1,7 +1,7 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, screen} from '@testing-library/react';
-import {TableStructureApp} from '../../../src/attribute';
+import {TableStructureApp} from '../../../src';
 import {
   columnDefinitionPropertiesMapping,
   defaultDataTypesMapping,

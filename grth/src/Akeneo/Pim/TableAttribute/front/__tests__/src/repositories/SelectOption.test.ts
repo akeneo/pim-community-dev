@@ -1,4 +1,4 @@
-import {SelectOptionRepository} from '../../../src/repositories';
+import {SelectOptionRepository} from '../../../src';
 import 'jest-fetch-mock';
 import {getComplexTableAttribute} from '../../factories';
 

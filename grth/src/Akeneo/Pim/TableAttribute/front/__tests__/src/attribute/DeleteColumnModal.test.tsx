@@ -1,7 +1,7 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen} from '@testing-library/react';
-import {DeleteColumnModal} from '../../../src/attribute';
+import {DeleteColumnModal} from '../../../src';
 
 describe('DeleteColumnModal', () => {
   it('renders a disabled delete button when the column code is not filled', async () => {

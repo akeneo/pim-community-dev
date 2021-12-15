@@ -11,7 +11,6 @@ import {
   PendingTableProductExportFilterValue,
   ProductExportBuilderFilter,
 } from '../datagrid/ProductExportBuilderFilter';
-import {FilterValuesProvider} from './filter-values-provider';
 
 type TemplateContext = {
   attribute: Attribute;
@@ -33,7 +32,6 @@ class ProductExportTableFilter extends AbstractFilter {
     }
 
     this.element = document.createElement('div');
-    const filterValuesMapping = FilterValuesProvider.getMapping();
     const {attribute} = templateContext;
     const handleChange = this.updateState.bind(this);
 
@@ -44,7 +42,6 @@ class ProductExportTableFilter extends AbstractFilter {
         <ThemeProvider theme={pimTheme}>
           <ProductExportBuilderFilter
             attribute={attribute as TableAttribute}
-            filterValuesMapping={filterValuesMapping}
             onChange={handleChange}
             initialDataFilter={initialDataFilter}
           />

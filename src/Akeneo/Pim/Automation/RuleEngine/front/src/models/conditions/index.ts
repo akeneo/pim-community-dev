@@ -14,6 +14,7 @@ export * from './PictureAttributeCondition';
 export * from './PimCondition';
 export * from './StatusCondition';
 export * from './SimpleMultiOptionsAttributeCondition';
+export * from './TableAttributeCondition';
 export * from './TextAttributeCondition';
 export * from './TextareaAttributeCondition';
 export * from './GroupCondition';

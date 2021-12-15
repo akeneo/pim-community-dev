@@ -1,4 +1,4 @@
-import {CellMatchersMapping} from '../../src/product';
+import {CellMatchersMapping} from '../../src';
 import {default as TableMatcherSelect} from '../../src/product/CellMatchers/SelectMatcher';
 import {default as TableMatcherNumber} from '../../src/product/CellMatchers/NumberMatcher';
 import {default as TableMatcherText} from '../../src/product/CellMatchers/TextMatcher';

@@ -4,17 +4,11 @@ import {act, fireEvent, screen} from '@testing-library/react';
 import MultiSelectFilterValue from '../../../../src/datagrid/FilterValues/MultiSelectFilterValue';
 import {getComplexTableAttribute} from '../../../factories';
 import {TestAttributeContextProvider} from '../../../shared/TestAttributeContextProvider';
-import {AttributeContext} from '../../../../src/contexts';
+import {AttributeContext} from '../../../../src';
+import {mockScroll} from '../../../shared/mockScroll';
 
 jest.mock('../../../../src/fetchers/SelectOptionsFetcher');
-
-type EntryCallback = (entries: {isIntersecting: boolean}[]) => void;
-let entryCallback: EntryCallback | undefined = undefined;
-const intersectionObserverMock = (callback: EntryCallback) => ({
-  observe: jest.fn(() => (entryCallback = callback)),
-  unobserve: jest.fn(),
-});
-window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
+const scroll = mockScroll();
 
 describe('MultiSelectFilterValue', () => {
   it('should display current value', async () => {
@@ -32,9 +26,7 @@ describe('MultiSelectFilterValue', () => {
     });
     expect(screen.getByText('T')).toBeInTheDocument();
     expect(screen.queryByText('U')).not.toBeInTheDocument();
-    act(() => {
-      entryCallback?.([{isIntersecting: true}]);
-    });
+    act(() => scroll());
     expect(screen.getByText('U')).toBeInTheDocument();
   });
 
