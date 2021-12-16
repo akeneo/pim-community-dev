@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTransla
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Channel\GetChannelTranslations;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Localization\LanguageTranslator;
+use Webmozart\Assert\Assert;
 
 class AttributeTranslator
 {
@@ -33,38 +34,41 @@ class AttributeTranslator
     }
 
     /**
-     * For example it translates "nutrition-en_US-ecommerce" into "Nutrition (English US, Ecommerce)"
+     * For example, it translates "nutrition-en_US-ecommerce" into "Nutrition (English US, Ecommerce)"
      */
-    public function translate(string $attributeLocaleScope, string $localeCode): string
+    public function translate(string $attributeLocaleScope, string $displayLocale): string
     {
         $attributeParts = \explode('-', $attributeLocaleScope);
         $attributeCode = $attributeParts[0];
 
         $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
-        $translation = $attribute->getTranslation($localeCode);
+        $translation = $attribute->getTranslation($displayLocale);
         $attributeLabel = null !== $translation && null !== $translation->getLabel()
             ? $translation->getLabel()
             : \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $attributeCode)
         ;
 
         if ($attribute->isLocalizable() && $attribute->isScopable()) {
+            Assert::count($attributeParts, 3);
             return \sprintf(
                 '%s (%s, %s)',
                 $attributeLabel,
-                $this->getLocaleLabel($attributeParts[1], $localeCode),
-                $this->getScopeLabel($attributeParts[2], $localeCode)
+                $this->getLocaleLabel($attributeParts[1], $displayLocale),
+                $this->getScopeLabel($attributeParts[2], $displayLocale)
             );
         } elseif ($attribute->isLocalizable()) {
+            Assert::count($attributeParts, 2);
             return \sprintf(
                 '%s (%s)',
                 $attributeLabel,
-                $this->getLocaleLabel($attributeParts[1], $localeCode),
+                $this->getLocaleLabel($attributeParts[1], $displayLocale),
             );
         } elseif ($attribute->isScopable()) {
+            Assert::count($attributeParts, 2);
             return \sprintf(
                 '%s (%s)',
                 $attributeLabel,
-                $this->getScopeLabel($attributeParts[1], $localeCode)
+                $this->getScopeLabel($attributeParts[1], $displayLocale)
             );
         }
 

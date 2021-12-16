@@ -19,8 +19,8 @@ use Webmozart\Assert\Assert;
 
 class TableValueTranslatorRegistry
 {
-    /** @var iterable<TableValueTranslator> */
-    private iterable $tableValueTranslators;
+    /** @var array<string, TableValueTranslator> */
+    private array $tableValueTranslators = [];
 
     /**
      * @param iterable<TableValueTranslator> $tableValueTranslators

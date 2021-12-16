@@ -50,9 +50,9 @@ class AttributeTranslatorSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('localizable_nutrition')->willReturn($attribute);
 
         $languageTranslator->translate('fr_FR', 'en_US', \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, 'fr_FR'))
-            ->willReturn('Français');
+            ->willReturn('French');
 
-        $this->translate('localizable_nutrition-fr_FR', 'en_US')->shouldReturn('Nutrition (Français)');
+        $this->translate('localizable_nutrition-fr_FR', 'en_US')->shouldReturn('Nutrition (French)');
     }
 
     function it_translates_a_scopable_attribute_column(
@@ -83,10 +83,10 @@ class AttributeTranslatorSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('localizable_scopable_nutrition')->willReturn($attribute);
 
         $languageTranslator->translate('fr_FR', 'en_US', \sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, 'fr_FR'))
-            ->willReturn('Français');
+            ->willReturn('French');
         $getChannelTranslations->byLocale('en_US')->willReturn(['eco' => 'Ecommerce']);
 
-        $this->translate('localizable_scopable_nutrition-fr_FR-eco', 'en_US')->shouldReturn('Nutrition (Français, Ecommerce)');
+        $this->translate('localizable_scopable_nutrition-fr_FR-eco', 'en_US')->shouldReturn('Nutrition (French, Ecommerce)');
     }
 
     function it_translates_a_localizable_scopable_attribute_column_with_fallbacks(
