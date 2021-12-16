@@ -11,8 +11,5 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\PublicApi;
  */
 interface GetUnit
 {
-    /**
-     * @return string[]
-     */
-    public function byMeasurementFamilyCodeAndUnitCode(string $measurementFamilyCode, string $unitCode): array;
+    public function byMeasurementFamilyCodeAndUnitCode(string $measurementFamilyCode, string $unitCode): Unit;
 }

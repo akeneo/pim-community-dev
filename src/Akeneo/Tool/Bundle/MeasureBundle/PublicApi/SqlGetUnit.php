@@ -6,13 +6,18 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\PublicApi;
 
 use Doctrine\DBAL\Connection;
 
+/**
+ * @author Pierre Jolly <pierre.jolly@akeneo.com>
+ * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
+ * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
 class SqlGetUnit implements GetUnit
 {
     public function __construct(private Connection $connection)
     {
     }
 
-    public function byMeasurementFamilyCodeAndUnitCode(string $measurementFamilyCode, string $unitCode): array
+    public function byMeasurementFamilyCodeAndUnitCode(string $measurementFamilyCode, string $unitCode): Unit
     {
         $sql = <<<SQL
 SELECT unit.*
@@ -28,12 +33,20 @@ WHERE measurement.code = :measurementFamilyCode
 AND unit.code = :unitCode;
 SQL;
 
-        return $this->connection->executeQuery(
+        $result = $this->connection->executeQuery(
             $sql,
             [
                 'unitCode' => $unitCode,
                 'measurementFamilyCode' => $measurementFamilyCode
             ]
         )->fetchAssociative();
+
+        $unit = new Unit();
+        $unit->code = $result['code'];
+        $unit->labels = json_decode($result['labels']);
+        $unit->symbol = $result['symbol'];
+        $unit->convertFromStandard = json_decode($result['convert_from_standard']);
+
+        return $unit;
     }
 }
