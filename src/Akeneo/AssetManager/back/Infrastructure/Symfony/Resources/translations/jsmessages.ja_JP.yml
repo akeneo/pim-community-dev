@@ -566,6 +566,11 @@ pim_import_export:
           with_prefix_suffix:
             title: プレフィックスとサフィックスのエクスポート
             help: メディアリンクのアセット属性のプレフィックスとサフィックスをエクスポート
+akeneo_job_process_tracker:
+  type:
+    asset_manager_execute_naming_convention: アセットファミリーの命名規則を実行する
+    asset_manager_link_assets_to_products: アセットを商品にリンク
+    asset_manager_compute_transformations: アセット変換を計算
 pim_datagrid:
   cells:
     type:
