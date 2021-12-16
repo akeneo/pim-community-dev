@@ -4,16 +4,18 @@ import {DependenciesProvider, useTranslate} from '@akeneo-pim-community/legacy-b
 import {ImageUploader} from './ImageUploader';
 import {pimTheme} from 'akeneo-design-system';
 
-const Container = styled.div`
+const FieldContainer = styled.div`
   margin-top: 40px;
 `;
 
 type Branding = {
   image: string | null;
+  cover_image: string | null;
 };
 
 type BrandingError = {
   image: string;
+  cover_image: string;
 };
 
 type BrandingProps = {
@@ -34,13 +36,24 @@ const BrandingForm = ({branding, validationErrors, onBrandingChange}: BrandingPr
   const translate = useTranslate();
 
   return (
-    <Container>
-      <ImageUploader
-        image={branding.image}
-        validationErrors={validationErrors.map(error => translate(error.image))}
-        onChange={image => onBrandingChange({...branding, image})}
-      />
-    </Container>
+    <>
+      <FieldContainer>
+        <ImageUploader
+          label={translate('shared_catalog.branding.upload.logo')}
+          image={branding.image}
+          validationErrors={validationErrors.map(error => translate(error.image))}
+          onChange={image => onBrandingChange({...branding, image})}
+        />
+      </FieldContainer>
+      <FieldContainer>
+        <ImageUploader
+          label={translate('shared_catalog.branding.upload.cover')}
+          image={branding.cover_image}
+          validationErrors={validationErrors.map(error => translate(error.cover_image))}
+          onChange={cover_image => onBrandingChange({...branding, cover_image})}
+        />
+      </FieldContainer>
+    </>
   );
 };
 
