@@ -42,8 +42,7 @@ class ScopeMapperRegistrySpec extends ObjectBehavior
 
     public function it_forbids_to_support_a_scope_more_than_once(): void
     {
-        $anyScopeMapper = new class implements ScopeMapperInterface
-        {
+        $anyScopeMapper = new class implements ScopeMapperInterface {
             public function getScopes(): array
             {
                 return ['read_something'];
@@ -64,8 +63,7 @@ class ScopeMapperRegistrySpec extends ObjectBehavior
                 return [];
             }
         };
-        $anotherScopeMapper = new class implements ScopeMapperInterface
-        {
+        $anotherScopeMapper = new class implements ScopeMapperInterface {
             public function getScopes(): array
             {
                 return ['read_something'];
