@@ -40,8 +40,8 @@ final class ConsentAppAuthenticationHandler
     public function handle(ConsentAppAuthenticationCommand $command): void
     {
         $violations = $this->validator->validate($command);
-        if (count($violations) > 0) {
-            throw new \InvalidArgumentException();
+        if ($violations->count() > 0) {
+            throw new \InvalidArgumentException($violations->get(0)->getMessage());
         }
 
         $appId = $command->getClientId();
