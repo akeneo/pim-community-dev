@@ -4,7 +4,7 @@ import RecordInput from '../../../../src/product/CellInputs/RecordInput';
 import {getComplexTableAttribute, getTableValueWithId} from '../../../factories';
 import {screen, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {mockScroll} from "../../../shared/mockScroll";
+import {mockScroll} from '../../../shared/mockScroll';
 
 jest.mock('../../../../src/fetchers/RecordFetcher');
 mockScroll();
@@ -48,7 +48,7 @@ describe('RecordInput', () => {
     expect(onChange).toBeCalledWith('lannion00893335_2e73_41e3_ac34_763fb6a35107');
   });
 
-  it('should not render any value when cell it is undefined', () => {
+  it('should not render anything within the cell when cell value is undefined', () => {
     renderWithProviders(
       <RecordInput
         columnDefinition={tableAttribute.table_configuration[0]}
