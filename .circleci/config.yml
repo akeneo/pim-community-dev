@@ -32,9 +32,9 @@ workflows:
 
     merge_config_workflow:
         jobs:
-            - merge_config
             -   path-filtering/filter:
                     mapping: |
                         upgrades/.* run-database-migration-tests true
                     base-revision: master
                     config-path: .circleci/workflows/migrations.yml
+            - merge_config
