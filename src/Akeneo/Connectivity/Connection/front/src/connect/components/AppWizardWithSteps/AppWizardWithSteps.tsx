@@ -1,6 +1,6 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
 import {useHistory} from 'react-router';
-import {Button, Modal, ProgressIndicator, useProgress, CodingIllustration} from 'akeneo-design-system';
+import {Button, Modal, ProgressIndicator, useProgress} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {Permissions} from './Permissions';
 import {PermissionsSummary} from './PermissionsSummary';
@@ -9,8 +9,6 @@ import {AppWizardData} from '../../../model/Apps/wizard-data';
 import {useFetchAppWizardData} from '../../hooks/use-fetch-app-wizard-data';
 import {useTranslate} from '../../../shared/translate';
 import {PermissionFormProvider, usePermissionFormRegistry} from '../../../shared/permission-form-registry';
-import {useConfirmAuthorization} from '../../hooks/use-confirm-authorization';
-import {useNotify} from '../../../shared/notify';
 import {PermissionsByProviderKey} from '../../../model/Apps/permissions-by-provider-key';
 import {useConfirmHandler} from './useConfirmHandler';
 import loaderImage from '../../../common/assets/illustrations/main-loader.gif';
@@ -71,7 +69,6 @@ interface Props {
 export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
     const translate = useTranslate();
     const history = useHistory();
-    const notify = useNotify();
     const [wizardData, setWizardData] = useState<AppWizardData | null>(null);
     const fetchWizardData = useFetchAppWizardData(clientId);
     const steps: string[] = ['authorizations', 'permissions', 'summary'];
@@ -80,8 +77,6 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
     const permissionFormRegistry = usePermissionFormRegistry();
     const [providers, setProviders] = useState<PermissionFormProvider<any>[]>([]);
     const [permissions, setPermissions] = useState<PermissionsByProviderKey>({});
-
-    const confirmAuthorization = useConfirmAuthorization(clientId);
 
     useEffect(() => {
         permissionFormRegistry.all().then(providers => setProviders(providers));
