@@ -12,7 +12,7 @@ Feature: Activate an OAuth2 client application in the PIM
     And I am on the marketplace page
     And I should see "App prototype" app
     When I click on "App prototype" activate button
-    And the url matches "https://yell-openid-3y7kipcsrq-ew.a.run.app/activate?pim_url=http%3A%2F%2Fhttpd"
+    And the url matches "https://yell-extension-t2omu7tdaq-uc.a.run.app/activate?pim_url=http%3A%2F%2Fhttpd"
     And I click on the button "Connect"
     And the url matches "http://httpd/#/connect/apps/authorize?client_id=6ff52991-1144-45cf-933a-5c45ae58e71a"
     And I see "View, edit and delete products and product models"

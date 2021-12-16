@@ -13,8 +13,8 @@
             "url": "https:\/\/help.akeneo.com\/pim\/serenity\/articles\/how-to-connect-my-pim-with-apps.html",
             "categories": [],
             "certified": false,
-            "activate_url": "https://yell-openid-3y7kipcsrq-ew.a.run.app/activate",
-            "callback_url": "https://yell-openid-3y7kipcsrq-ew.a.run.app/oauth2"
+            "activate_url": "https://yell-extension-t2omu7tdaq-uc.a.run.app/activate",
+            "callback_url": "https://yell-extension-t2omu7tdaq-uc.a.run.app/oauth2"
         }
     ]
 }
