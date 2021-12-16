@@ -86,3 +86,6 @@ pim_import_export:
     last_operations:
       job_type:
         execute_rules: Выполнение правил
+akeneo_job_process_tracker:
+  type:
+    execute_rules: Выполнение правил

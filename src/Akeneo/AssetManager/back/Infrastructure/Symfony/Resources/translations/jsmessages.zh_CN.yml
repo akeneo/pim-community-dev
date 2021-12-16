@@ -566,6 +566,11 @@ pim_import_export:
           with_prefix_suffix:
             title: 导出前缀和后缀
             help: 导出媒体链接资产属性的前缀和后缀
+akeneo_job_process_tracker:
+  type:
+    asset_manager_execute_naming_convention: 执行资产品类命名约定
+    asset_manager_link_assets_to_products: 将资产链接到产品
+    asset_manager_compute_transformations: 计算资产转换
 pim_datagrid:
   cells:
     type:

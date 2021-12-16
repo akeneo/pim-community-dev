@@ -2,18 +2,19 @@
 
 namespace Specification\Akeneo\Pim\Permission\Component\Merger;
 
-use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
-use Akeneo\Tool\Component\Classification\Repository\ItemCategoryRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
-use Doctrine\Common\Util\ClassUtils;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\Merger\NotGrantedCategoryMerger;
 use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
+use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Util\ClassUtils;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class NotGrantedCategoryMergerSpec extends ObjectBehavior
@@ -36,18 +37,16 @@ class NotGrantedCategoryMergerSpec extends ObjectBehavior
     }
 
     function it_merges_not_granted_categories_and_removed_a_granted_category(
-        $authorizationChecker,
-        $categorySetter,
+        AuthorizationCheckerInterface $authorizationChecker,
+        FieldSetterInterface $categorySetter,
         ProductInterface $filteredProduct,
-        ProductInterface $fullProduct,
-        CategoryInterface $categoryA,
-        CategoryInterface $categoryB,
-        CategoryInterface $categoryC
+        ProductInterface $fullProduct
     ) {
-        $fullProduct->getCategories()->willReturn([$categoryA, $categoryB, $categoryC]);
-        $filteredProduct->getCategoryCodes()->willReturn(['category_b']);
-
-        $categoryA->getCode()->willReturn('category_a');
+        $categoryA = $this->buildCategory('category_a');
+        $categoryB = $this->buildCategory('category_b');
+        $categoryC = $this->buildCategory('category_c');
+        $fullProduct->getCategoriesForVariation()->willReturn(new ArrayCollection([$categoryA, $categoryB, $categoryC]));
+        $filteredProduct->getCategoriesForVariation()->willReturn(new ArrayCollection([$categoryB]));
 
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryA)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryB)->willReturn(true);
@@ -58,17 +57,58 @@ class NotGrantedCategoryMergerSpec extends ObjectBehavior
         $this->merge($filteredProduct, $fullProduct)->shouldReturn($fullProduct);
     }
 
-    function it_merges_not_granted_categories_and_add_a_granted_category(
-        $authorizationChecker,
-        $categorySetter,
-        ProductInterface $filteredProduct,
-        ProductInterface $fullProduct,
-        CategoryInterface $categoryA
+    function it_merges_not_granted_categories_and_removed_a_granted_category_on_product_model(
+        AuthorizationCheckerInterface $authorizationChecker,
+        FieldSetterInterface $categorySetter,
+        ProductModelInterface $filteredProductModel,
+        ProductModelInterface $fullProductModel
     ) {
-        $fullProduct->getCategories()->willReturn([$categoryA]);
-        $filteredProduct->getCategoryCodes()->willReturn(['category_b']);
+        $categoryA = $this->buildCategory('category_a');
+        $categoryB = $this->buildCategory('category_b');
+        $categoryC = $this->buildCategory('category_c');
+        $fullProductModel->getCategoriesForCurrentLevel()->willReturn(new ArrayCollection([$categoryA, $categoryB, $categoryC]));
+        $filteredProductModel->getCategoriesForCurrentLevel()->willReturn(new ArrayCollection([$categoryB]));
 
-        $categoryA->getCode()->willReturn('category_a');
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryA)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryB)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryC)->willReturn(true);
+
+        $categorySetter->setFieldData($fullProductModel, 'categories', ['category_b', 'category_a'])->shouldBeCalled();
+
+        $this->merge($filteredProductModel, $fullProductModel)->shouldReturn($fullProductModel);
+    }
+
+    function it_merges_not_granted_categories_and_removed_a_granted_category_on_category_aware_entity(
+        AuthorizationCheckerInterface $authorizationChecker,
+        FieldSetterInterface $categorySetter,
+        CategoryAwareInterface $filteredEntity,
+        CategoryAwareInterface $fullEntity
+    ) {
+        $categoryA = $this->buildCategory('category_a');
+        $categoryB = $this->buildCategory('category_b');
+        $categoryC = $this->buildCategory('category_c');
+        $fullEntity->getCategories()->willReturn(new ArrayCollection([$categoryA, $categoryB, $categoryC]));
+        $filteredEntity->getCategories()->willReturn(new ArrayCollection([$categoryB]));
+
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryA)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryB)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryC)->willReturn(true);
+
+        $categorySetter->setFieldData($fullEntity, 'categories', ['category_b', 'category_a'])->shouldBeCalled();
+
+        $this->merge($filteredEntity, $fullEntity)->shouldReturn($fullEntity);
+    }
+
+    function it_merges_not_granted_categories_and_add_a_granted_category(
+        AuthorizationCheckerInterface $authorizationChecker,
+        FieldSetterInterface $categorySetter,
+        ProductInterface $filteredProduct,
+        ProductInterface $fullProduct
+    ) {
+        $categoryA = $this->buildCategory('category_a');
+        $categoryB = $this->buildCategory('category_b');
+        $fullProduct->getCategoriesForVariation()->willReturn(new ArrayCollection([$categoryA]));
+        $filteredProduct->getCategoriesForVariation()->willReturn(new ArrayCollection([$categoryB]));
 
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryA)->willReturn(false);
 
@@ -78,12 +118,13 @@ class NotGrantedCategoryMergerSpec extends ObjectBehavior
     }
 
     function it_add_categories_on_a_new_product(
-        $categorySetter,
+        FieldSetterInterface $categorySetter,
         ProductInterface $filteredProduct,
         ProductInterface $fullProduct
     ) {
-        $fullProduct->getCategories()->willReturn([]);
-        $filteredProduct->getCategoryCodes()->willReturn(['category_b']);
+        $categoryB = $this->buildCategory('category_b');
+        $fullProduct->getCategoriesForVariation()->willReturn(new ArrayCollection([]));
+        $filteredProduct->getCategoriesForVariation()->willReturn(new ArrayCollection([$categoryB]));
 
         $categorySetter->setFieldData($fullProduct, 'categories', ['category_b'])->shouldBeCalled();
 
@@ -91,18 +132,16 @@ class NotGrantedCategoryMergerSpec extends ObjectBehavior
     }
 
     function it_removes_all_granted_categories(
-        $authorizationChecker,
-        $categorySetter,
+        AuthorizationCheckerInterface $authorizationChecker,
+        FieldSetterInterface $categorySetter,
         ProductInterface $filteredProduct,
-        ProductInterface $fullProduct,
-        CategoryInterface $categoryA,
-        CategoryInterface $categoryB,
-        CategoryInterface $categoryC
+        ProductInterface $fullProduct
     ) {
-        $fullProduct->getCategories()->willReturn([$categoryA, $categoryB, $categoryC]);
-        $filteredProduct->getCategoryCodes()->willReturn([]);
-
-        $categoryA->getCode()->willReturn('category_a');
+        $categoryA = $this->buildCategory('category_a');
+        $categoryB = $this->buildCategory('category_b');
+        $categoryC = $this->buildCategory('category_c');
+        $fullProduct->getCategoriesForVariation()->willReturn(new ArrayCollection([$categoryA, $categoryB, $categoryC]));
+        $filteredProduct->getCategoriesForVariation()->willReturn(new ArrayCollection([]));
 
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryA)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryB)->willReturn(true);
@@ -123,5 +162,13 @@ class NotGrantedCategoryMergerSpec extends ObjectBehavior
     {
         $this->shouldThrow(InvalidObjectException::objectExpected(ClassUtils::getClass(new \stdClass()), CategoryAwareInterface::class))
             ->during('merge', [new Product(), new \stdClass()]);
+    }
+
+    private function buildCategory(string $code): Category
+    {
+        $category = new Category();
+        $category->setCode($code);
+
+        return $category;
     }
 }

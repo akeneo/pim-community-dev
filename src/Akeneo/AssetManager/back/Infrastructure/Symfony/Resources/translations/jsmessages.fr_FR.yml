@@ -566,6 +566,11 @@ pim_import_export:
           with_prefix_suffix:
             title: Exporter le préfixe et le suffixe
             help: Exporter le préfixe et le suffixe des attributs de lien média
+akeneo_job_process_tracker:
+  type:
+    asset_manager_execute_naming_convention: Exécuter la convention de nommage pour toutes les ressources de la famille
+    asset_manager_link_assets_to_products: Lier les ressources aux produits
+    asset_manager_compute_transformations: Exécuter les transformations de ressources
 pim_datagrid:
   cells:
     type:

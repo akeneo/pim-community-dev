@@ -1,4 +1,4 @@
-import {CellInputsMapping} from '../../src/product';
+import {CellInputsMapping} from '../../src';
 import {default as TableInputSelect} from '../../src/product/CellInputs/SelectInput';
 import {default as TableInputNumber} from '../../src/product/CellInputs/NumberInput';
 import {default as TableInputText} from '../../src/product/CellInputs/TextInput';

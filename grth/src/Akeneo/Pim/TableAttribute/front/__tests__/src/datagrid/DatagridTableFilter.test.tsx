@@ -1,19 +1,12 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {defaultFilterValuesMapping} from '../../factories';
-import {DatagridTableFilter} from '../../../src/datagrid';
+import {DatagridTableFilter} from '../../../src';
 import {act, fireEvent, screen} from '@testing-library/react';
+import {mockScroll} from '../../shared/mockScroll';
 
 jest.mock('../../../src/fetchers/AttributeFetcher');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
-
-type EntryCallback = (entries: {isIntersecting: boolean}[]) => void;
-let entryCallback: EntryCallback | undefined = undefined;
-const intersectionObserverMock = (callback: EntryCallback) => ({
-  observe: jest.fn(() => (entryCallback = callback)),
-  unobserve: jest.fn(),
-});
-window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
+const scroll = mockScroll();
 
 const openDropdown = async () => {
   expect(await screen.findByText('Nutrition')).toBeInTheDocument();
@@ -55,7 +48,6 @@ describe('DatagridTableFilter', () => {
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
-        filterValuesMapping={defaultFilterValuesMapping}
         initialDataFilter={{}}
       />
     );
@@ -72,7 +64,6 @@ describe('DatagridTableFilter', () => {
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
-        filterValuesMapping={defaultFilterValuesMapping}
         initialDataFilter={{
           value: 10000,
           row: 'salt',
@@ -102,7 +93,6 @@ describe('DatagridTableFilter', () => {
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
-        filterValuesMapping={defaultFilterValuesMapping}
         initialDataFilter={{
           value: 10000,
           row: 'salt',
@@ -135,7 +125,6 @@ describe('DatagridTableFilter', () => {
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
-        filterValuesMapping={defaultFilterValuesMapping}
         initialDataFilter={{
           value: 10000,
           row: 'salt',
@@ -165,7 +154,6 @@ describe('DatagridTableFilter', () => {
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
-        filterValuesMapping={defaultFilterValuesMapping}
         initialDataFilter={{}}
       />
     );
@@ -196,7 +184,6 @@ describe('DatagridTableFilter', () => {
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
-        filterValuesMapping={defaultFilterValuesMapping}
         initialDataFilter={{}}
       />
     );
@@ -231,7 +218,6 @@ describe('DatagridTableFilter', () => {
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
-        filterValuesMapping={defaultFilterValuesMapping}
         initialDataFilter={{}}
       />
     );
@@ -262,7 +248,6 @@ describe('DatagridTableFilter', () => {
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
-        filterValuesMapping={defaultFilterValuesMapping}
         initialDataFilter={{}}
       />
     );
@@ -292,7 +277,6 @@ describe('DatagridTableFilter', () => {
         attributeCode={'nutrition'}
         canDisable={true}
         onDisable={jest.fn()}
-        filterValuesMapping={defaultFilterValuesMapping}
         initialDataFilter={{}}
       />
     );
@@ -306,9 +290,7 @@ describe('DatagridTableFilter', () => {
     });
     expect(await screen.findByText('Salt')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Salt'));
-    act(() => {
-      entryCallback?.([{isIntersecting: true}]);
-    });
+    act(() => scroll());
     expect(await screen.findByText('Pepper')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Pepper'));
     fireEvent.click(screen.getByText('pim_common.update'));

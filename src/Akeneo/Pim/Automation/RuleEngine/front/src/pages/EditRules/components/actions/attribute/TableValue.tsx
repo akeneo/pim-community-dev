@@ -1,8 +1,4 @@
 import React, {useContext} from 'react';
-import {
-  TableAttribute,
-  TableValue,
-} from '@akeneo-pim-ge/table_attribute/src/models';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import styled from 'styled-components';
 import {
@@ -11,8 +7,10 @@ import {
   TableValueWithId,
   useToggleRow,
   useUniqueIds,
-} from '@akeneo-pim-ge/table_attribute/src/product';
-import {AttributeContext} from '@akeneo-pim-ge/table_attribute/src/contexts';
+  AttributeContext,
+  TableAttribute,
+  TableValue,
+} from '@akeneo-pim-ge/table_attribute';
 import {getLabel, useUserContext} from '@akeneo-pim-community/shared';
 import {ConfigContext} from '../../../../../context/ConfigContext';
 import {InputValueProps} from './AttributeValue';

@@ -128,10 +128,11 @@ services:
                 - '@pimee_teamwork_assistant.step.project_calculation'
                 - '@pimee_teamwork_assistant.step.clean_contributor_group'
                 - '@pimee_teamwork_assistant.step.end_project_completeness_computing'
+            - false
+            - false
         public: false
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_teamwork_assistant.project_calculation.connector_name%', type: '%pimee_teamwork_assistant.project_calculation.job_type%' }
-            - name: akeneo_batch.job.not_visible
 
     ### Calculation step
     pimee_teamwork_assistant.calculation_step.add_user_group:
@@ -214,14 +215,14 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pimee_teamwork_assistant.step.refresh_project_completeness_calculation'
+            - false
+            - false
         public: false
         tags:
             -
                 name: akeneo_batch.job
                 connector: '%pimee_teamwork_assistant.project_calculation.connector_name%'
                 type: '%pimee_teamwork_assistant.refresh_project_completeness_calculation.job_type%'
-            -
-                name: akeneo_batch.job.not_visible
 
     ### Job launcher
     pimee_teamwork_assistant.launcher.job.refresh_project_completeness_calculation:

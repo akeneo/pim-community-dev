@@ -9,7 +9,7 @@ import {AttributeValueConfig, ConfigContext} from '../context/ConfigContext';
 import {
   CellInputsMapping,
   CellMatchersMapping,
-} from '@akeneo-pim-ge/table_attribute/src/product';
+} from '@akeneo-pim-ge/table_attribute';
 
 class EditRules extends ReactController {
   private isDirty = false;

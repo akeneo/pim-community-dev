@@ -3,7 +3,7 @@ import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/fro
 import {screen} from '@testing-library/react';
 import NumberProperties from '../../../../src/attribute/ColumDefinitionProperties/NumberProperties';
 import {getComplexTableAttribute} from '../../../factories';
-import {NumberColumnDefinition} from '../../../../src/models';
+import {NumberColumnDefinition} from '../../../../src';
 import {fireEvent} from '@testing-library/dom';
 
 const selectedColumn = getComplexTableAttribute().table_configuration.find(

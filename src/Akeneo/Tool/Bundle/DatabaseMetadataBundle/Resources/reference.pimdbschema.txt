@@ -201,8 +201,8 @@ akeneo_asset_manager_attribute | is_read_only | NO | tinyint(1) |
 akeneo_batch_job_execution | id | NO | int | PRI
 akeneo_batch_job_execution | job_instance_id | NO | int | MUL
 akeneo_batch_job_execution | pid | YES | int |
-akeneo_batch_job_execution | user | YES | varchar(255) |
-akeneo_batch_job_execution | status | NO | int |
+akeneo_batch_job_execution | user | YES | varchar(255) | MUL
+akeneo_batch_job_execution | status | NO | int | MUL
 akeneo_batch_job_execution | start_time | YES | datetime |
 akeneo_batch_job_execution | end_time | YES | datetime |
 akeneo_batch_job_execution | create_time | YES | datetime |
@@ -213,6 +213,9 @@ akeneo_batch_job_execution | exit_description | YES | longtext |
 akeneo_batch_job_execution | failure_exceptions | YES | longtext |
 akeneo_batch_job_execution | log_file | YES | varchar(255) |
 akeneo_batch_job_execution | raw_parameters | NO | json |
+akeneo_batch_job_execution | is_stoppable | NO | tinyint(1) |
+akeneo_batch_job_execution | step_count | NO | int |
+akeneo_batch_job_execution | is_visible | NO | tinyint(1) | MUL
 akeneo_batch_job_instance | id | NO | int | PRI
 akeneo_batch_job_instance | code | NO | varchar(100) | UNI
 akeneo_batch_job_instance | label | YES | varchar(255) |
@@ -238,6 +241,7 @@ akeneo_batch_step_execution | errors | NO | longtext |
 akeneo_batch_step_execution | summary | NO | longtext |
 akeneo_batch_step_execution | tracking_data | YES | json |
 akeneo_batch_step_execution | warning_count | NO | int |
+akeneo_batch_step_execution | is_trackable | NO | tinyint(1) |
 akeneo_batch_warning | id | NO | int | PRI
 akeneo_batch_warning | step_execution_id | YES | int | MUL
 akeneo_batch_warning | reason | YES | longtext |

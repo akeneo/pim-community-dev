@@ -1,6 +1,6 @@
 import React, {FunctionComponent, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
-import {TextAttributesContextListener} from '../../../listener';
+import {TextAttributesContextListenerOnFocus} from '../../../listener';
 import {Product} from '../../../../domain';
 import {
   ATTRIBUTE_TO_IMPROVE_SESSION_STORAGE_KEY,
@@ -27,7 +27,7 @@ const BaseAttributesTabContent: FunctionComponent<AttributesTabContentProps> = (
 
   return (
     <AttributeGroupsStatusProvider>
-      <TextAttributesContextListener />
+      <TextAttributesContextListenerOnFocus />
       <AttributeToImproveContextListener />
 
       {spellcheckSupportedLocales !== null && locale && spellcheckSupportedLocales.includes(locale) && (

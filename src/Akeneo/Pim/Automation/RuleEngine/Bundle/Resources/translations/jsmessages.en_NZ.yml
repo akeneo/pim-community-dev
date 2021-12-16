@@ -92,3 +92,7 @@ pim_import_export:
     last_operations:
       job_type:
         execute_rules: Rules execution
+akeneo_job_process_tracker:
+  type:
+    mass_edit_rule: Mass edit rule
+    execute_rules: Rules execution

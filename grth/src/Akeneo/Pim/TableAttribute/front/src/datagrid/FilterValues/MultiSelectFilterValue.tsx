@@ -6,7 +6,7 @@ import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shar
 import {SelectOptionCode} from '../../models';
 import {useAttributeContext} from '../../contexts';
 
-const StringFilterValue: TableFilterValueRenderer = ({value, onChange, columnCode}) => {
+const MultiSelectFilterValue: TableFilterValueRenderer = ({value, onChange, columnCode}) => {
   const translate = useTranslate();
   const userContext = useUserContext();
   const catalogLocale = userContext.get('catalogLocale');
@@ -65,4 +65,4 @@ const useValueRenderer: FilteredValueRenderer = () => {
 };
 
 export {useValueRenderer};
-export default StringFilterValue;
+export default MultiSelectFilterValue;

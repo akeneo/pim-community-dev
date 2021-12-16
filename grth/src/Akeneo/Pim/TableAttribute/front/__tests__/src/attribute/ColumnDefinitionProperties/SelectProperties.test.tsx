@@ -3,7 +3,7 @@ import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/fro
 import {screen} from '@testing-library/react';
 import SelectProperties from '../../../../src/attribute/ColumDefinitionProperties/SelectProperties';
 import {getComplexTableAttribute} from '../../../factories';
-import {SelectColumnDefinition} from '../../../../src/models';
+import {SelectColumnDefinition} from '../../../../src';
 import {fireEvent} from '@testing-library/dom';
 
 jest.mock('../../../../src/attribute/ManageOptionsModal');

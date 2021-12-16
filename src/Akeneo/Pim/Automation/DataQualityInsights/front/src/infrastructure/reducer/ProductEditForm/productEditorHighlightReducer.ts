@@ -223,10 +223,8 @@ const widgetsReducer: Reducer<WidgetsState, WidgetElementsAction & WidgetAction>
   switch (type) {
     case INITIALIZE_WIDGETS_LIST:
       const {widgets} = payload;
-      return {
-        ...previousState,
-        ...widgets,
-      };
+
+      return widgets;
 
     case SHOW_WIDGET: {
       const {widget} = payload;

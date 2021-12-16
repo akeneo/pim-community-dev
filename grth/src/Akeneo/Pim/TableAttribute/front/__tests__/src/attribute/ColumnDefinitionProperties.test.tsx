@@ -1,6 +1,6 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {ColumnDefinitionProperties} from '../../../src/attribute';
+import {ColumnDefinitionProperties} from '../../../src';
 import {fireEvent, screen} from '@testing-library/react';
 import {
   columnDefinitionPropertiesMapping,

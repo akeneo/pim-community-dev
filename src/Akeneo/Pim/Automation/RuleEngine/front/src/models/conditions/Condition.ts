@@ -16,6 +16,7 @@ import {
   MeasurementAttributeCondition,
   NumberAttributeCondition,
   StatusCondition,
+  TableAttributeCondition,
 } from './';
 
 export type Condition =
@@ -34,6 +35,7 @@ export type Condition =
   | GroupsCondition
   | MeasurementAttributeCondition
   | NumberAttributeCondition
+  | TableAttributeCondition
   | StatusCondition;
 
 export type ConditionFactory = (
