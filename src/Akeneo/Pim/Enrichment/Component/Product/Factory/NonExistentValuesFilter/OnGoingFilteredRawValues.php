@@ -37,16 +37,10 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilte
  */
 final class OnGoingFilteredRawValues
 {
-    /** @var array */
-    private $filteredRawValuesCollectionIndexedByType;
-
-    /** @var array */
-    private $nonFilteredRawValuesCollectionIndexedByType;
-
-    public function __construct(array $filteredRawValuesCollectionIndexedByType, array $nonFilteredRawValuesCollectionByType)
-    {
-        $this->filteredRawValuesCollectionIndexedByType = $filteredRawValuesCollectionIndexedByType;
-        $this->nonFilteredRawValuesCollectionIndexedByType = $nonFilteredRawValuesCollectionByType;
+    public function __construct(
+        private array $filteredRawValuesCollectionIndexedByType,
+        private array $nonFilteredRawValuesCollectionIndexedByType
+    ) {
     }
 
     public static function fromNonFilteredValuesCollectionIndexedByType(array $nonFilteredValuesCollectionIndexedByType)
@@ -84,7 +78,7 @@ final class OnGoingFilteredRawValues
     {
         $products = [];
 
-        foreach ($this->filteredRawValuesCollectionIndexedByType as $type => $attributeCodes) {
+        foreach ($this->filteredRawValuesCollectionIndexedByType as $attributeCodes) {
             foreach ($attributeCodes as $attributeCode => $values) {
                 foreach ($values as $value) {
                     $products[$value['identifier']][$attributeCode] = $value['values'];
