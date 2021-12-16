@@ -15,6 +15,7 @@ namespace Akeneo\SharedCatalog\Connector;
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Channel;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FilterStructureLocale;
+use Akeneo\SharedCatalog\Validation\CssColor;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\All;
@@ -23,6 +24,7 @@ use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Type;
 
 class ConstraintCollectionProvider implements ConstraintCollectionProviderInterface
@@ -86,8 +88,13 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
                 'image' => [
                     new Type(['type' => ['string', 'null']]),
                     new Length(['max' => self::MAX_LENGTH_BASE64, 'maxMessage' => 'shared_catalog.branding.filesize_too_large'])
-                ]
-            ]
+                ],
+                'cover_image' => new Optional([
+                    new Type(['type' => ['string', 'null']]),
+                    new Length(['max' => self::MAX_LENGTH_BASE64, 'maxMessage' => 'shared_catalog.branding.filesize_too_large'])
+                ]),
+                'color' => new Optional(new CssColor()),
+            ],
         ]);
         $constraintFields['filters'] = [
             new Collection(

@@ -57,6 +57,8 @@ class SharedCatalog
             'attributes' => $this->filters['structure']['attributes'] ?? [],
             'branding' => [
                 'logo' => $this->branding['image'] ?? null,
+                'cover_image' => $this->branding['cover_image'] ?? null,
+                'color' => $this->branding['color'] ?? null,
             ],
         ];
     }

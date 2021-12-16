@@ -80,6 +80,8 @@ class SharedCatalogSpec extends ObjectBehavior
             ],
             [
                 'image' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABKoAAAJFCAYAAAD9Ih9',
+                'cover_image' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABKoAAAJFCAYAAAD9Ih9',
+                'color' => '#FFFFFF',
             ]
         );
 
@@ -99,6 +101,8 @@ class SharedCatalogSpec extends ObjectBehavior
             ],
             'branding' => [
                 'logo' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABKoAAAJFCAYAAAD9Ih9',
+                'cover_image' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABKoAAAJFCAYAAAD9Ih9',
+                'color' => '#FFFFFF',
             ],
         ]);
     }

@@ -62,6 +62,8 @@ class SharedCatalogListActionEndToEnd extends ApiTestCase
                 ],
                 'branding' => [
                     'image' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABKoAAAJFCAYAAAD9Ih9',
+                    'cover_image' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABKoAAAJFCAYAAAD9Ih9',
+                    'color' => '#00ff00',
                 ],
             ]
         );
@@ -90,6 +92,8 @@ class SharedCatalogListActionEndToEnd extends ApiTestCase
                     ],
                     'branding' => [
                         'logo' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABKoAAAJFCAYAAAD9Ih9',
+                        'cover_image' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABKoAAAJFCAYAAAD9Ih9',
+                        'color' => '#00ff00',
                     ],
                 ],
             ],
