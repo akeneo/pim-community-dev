@@ -2,7 +2,7 @@ version: 2.1
 workflows:
     version: 2
 
-    octopus_workflow:
+    octopus_pull_request:
         when:
             not:
                 equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
@@ -35,11 +35,32 @@ workflows:
                       - test_back_connectivity
                       - test_back_data_migrations
 
-    weekly_octopus_code_quality:
+    octopus_deploy:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            - deploy_pr_environment?:
+                  type: approval
+                  filters:
+                      branches:
+                          only:
+                              - /CXP-.*/
+            - checkout_ee:
+                  requires:
+                      - deploy_pr_environment?
+            - build_prod:
+                  requires:
+                      - checkout_ee
+            - deploy_pr_environment:
+                  requires:
+                      - build_prod
+
+    octopus_weekly_code_quality:
         when:
             and:
                 - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
-                - equal: [ "weekly_octopus_code_quality", << pipeline.schedule.name >> ]
+                - equal: [ "octopus_weekly_code_quality", << pipeline.schedule.name >> ]
         jobs:
             - checkout_ce
             - build_dev:
