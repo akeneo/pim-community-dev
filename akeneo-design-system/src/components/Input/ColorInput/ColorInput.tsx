@@ -4,6 +4,7 @@ import {InputProps} from '../InputProps';
 import {DangerIcon, LockIcon} from '../../../icons';
 import {Override} from '../../../shared';
 import {AkeneoThemedProps, getColor} from '../../../theme';
+import {isValidColor, convertColorToLongHexColor} from './Color';
 
 const ColorInputContainer = styled.div<{readOnly: boolean} & AkeneoThemedProps>`
   display: flex;
@@ -98,9 +99,6 @@ type ColorInputProps = Override<
   }
 >;
 
-const convertShortHexToLong = (hex: string): string =>
-  4 === hex.length ? `#${hex[1]}${hex[1]}${hex[2]}${hex[2]}${hex[3]}${hex[3]}` : hex;
-
 /**
  * The ColorInput component allows the user to enter a color in hexadecimal format.
  */
@@ -117,12 +115,15 @@ const ColorInput = forwardRef<HTMLInputElement, ColorInputProps>(
       value = `#${value}`;
     }
 
-    const isValidHexaColor = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(value);
-
     return (
-      <ColorInputContainer invalid={invalid || !isValidHexaColor} readOnly={readOnly}>
-        {isValidHexaColor ? (
-          <ColorPicker type="color" value={convertShortHexToLong(value)} onChange={handleChange} disabled={readOnly} />
+      <ColorInputContainer invalid={invalid || !isValidColor(value)} readOnly={readOnly}>
+        {isValidColor(value) ? (
+          <ColorPicker
+            type="color"
+            value={convertColorToLongHexColor(value)}
+            onChange={handleChange}
+            disabled={readOnly}
+          />
         ) : (
           <ErrorIcon role="alert" size={16} />
         )}
@@ -133,7 +134,7 @@ const ColorInput = forwardRef<HTMLInputElement, ColorInputProps>(
           type="text"
           readOnly={readOnly}
           disabled={readOnly}
-          aria-invalid={invalid || !isValidHexaColor}
+          aria-invalid={invalid || !isValidColor(value)}
           {...rest}
         />
         {readOnly && <ReadOnlyIcon size={16} />}
