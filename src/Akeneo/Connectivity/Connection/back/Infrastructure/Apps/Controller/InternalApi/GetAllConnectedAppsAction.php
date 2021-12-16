@@ -7,12 +7,10 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Repository\ConnectedAppRepositoryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -22,16 +20,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 final class GetAllConnectedAppsAction
 {
     private FeatureFlag $featureFlag;
-    private SecurityFacade $security;
     private ConnectedAppRepositoryInterface $connectedAppRepository;
 
     public function __construct(
         FeatureFlag $featureFlag,
-        SecurityFacade $security,
         ConnectedAppRepositoryInterface $connectedAppRepository
     ) {
         $this->featureFlag = $featureFlag;
-        $this->security = $security;
         $this->connectedAppRepository = $connectedAppRepository;
     }
 
@@ -43,10 +38,6 @@ final class GetAllConnectedAppsAction
 
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
-        }
-
-        if (!$this->security->isGranted('akeneo_connectivity_connection_open_apps')) {
-            throw new AccessDeniedHttpException();
         }
 
         $connectedApps = $this->connectedAppRepository->findAll();
