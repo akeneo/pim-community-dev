@@ -39,7 +39,7 @@ class Configuration implements ConfigurationInterface
                     ->isRequired()
                     ->info('Determines the maximum size of an individual bulk request in characters')
                 ->end()
-                ->integerNode('max_expected_indexation_latency')
+                ->integerNode('max_expected_indexation_latency_in_milliseconds')
                     ->defaultValue(1000)
                     ->info('Latency between api call and document availability for search in milliseconds')
                 ->end()
