@@ -285,7 +285,7 @@ pim_enrich.export.product:
     title: Globale Einstellungen
 pim_enrich.mass_edit.product:
   title: Massenbearbeitung Produkte
-  confirm: "{0}Sie sind dabei, einige Produkte mit den folgenden Informationen zu aktualisieren, bitte bestätigen.{1}Sie sind dabei, ein Produkt mit den folgenden Informationen zu aktualisieren, bitte bestätigen. ]1, Inf[Sie sind dabei, {{ itemsCount }} Produkte mit den folgenden Informationen zu aktualisieren, bitte bestätigen."
+  confirm: "{0}Sie sind dabei, einige Produkte mit den folgenden Informationen zu aktualisieren, bitte bestätigen.|{1}Sie sind dabei, ein Produkt mit den folgenden Informationen zu aktualisieren, bitte bestätigen.|]1, Inf[Sie sind dabei, {{ itemsCount }} Produkte mit den folgenden Informationen zu aktualisieren, bitte bestätigen."
   step:
     select:
       label: Produkte auswählen
