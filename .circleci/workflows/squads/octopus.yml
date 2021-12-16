@@ -21,6 +21,8 @@ workflows:
                         upgrades/.* run-migration-tests true
                     base-revision: master
                     config-path: .circleci/workflows/migrations.yml
+                    requires:
+                        - checkout_ce
     #            -   debug_octo:
     #                    requires:
     #                        - checkout_ce
