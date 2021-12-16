@@ -15,7 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Measur
 
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitSymbolSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementValueAndUnitLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementValueAndUnitSymbolSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementValueSelection;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
 use Symfony\Component\Validator\Constraint;
@@ -46,10 +48,11 @@ class MeasurementSelectionValidator extends ConstraintValidator
                         [
                             'choices' => [
                                 MeasurementUnitCodeSelection::TYPE,
+                                MeasurementUnitSymbolSelection::TYPE,
                                 MeasurementUnitLabelSelection::TYPE,
                                 MeasurementValueSelection::TYPE,
-                                MeasurementValueSelection::TYPE,
                                 MeasurementValueAndUnitLabelSelection::TYPE,
+                                MeasurementValueAndUnitSymbolSelection::TYPE,
                             ],
                         ]
                     ),
@@ -76,7 +79,9 @@ class MeasurementSelectionValidator extends ConstraintValidator
             return;
         }
 
-        if (MeasurementUnitLabelSelection::TYPE === $selection['type']) {
+        if (MeasurementUnitLabelSelection::TYPE === $selection['type']
+            || MeasurementValueAndUnitLabelSelection::TYPE === $selection['type']
+        ) {
             $violations = $validator->validate($selection['locale'], [
                 new NotBlank(),
                 new LocaleShouldBeActive()

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Domain\Query;
 
-interface FindUnitLabelInterface
+interface FindUnitSymbolInterface
 {
-    public function byFamilyCodeAndUnitCode(string $familyCode, string $unitCode, string $locale): ?string;
+    public function byFamilyCodeAndUnitCode(string $familyCode, string $unitCode): ?string;
 }

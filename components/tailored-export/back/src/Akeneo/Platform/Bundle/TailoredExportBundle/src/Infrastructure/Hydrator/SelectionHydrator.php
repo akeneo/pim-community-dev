@@ -27,7 +27,9 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\Groups\GroupsCod
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Groups\GroupsLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitSymbolSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementValueAndUnitLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementValueAndUnitSymbolSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementValueSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\MultiSelect\MultiSelectCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\MultiSelect\MultiSelectLabelSelection;
@@ -189,6 +191,10 @@ class SelectionHydrator
                 return new MeasurementValueSelection($selectionConfiguration['decimal_separator'] ?? '.');
             case MeasurementUnitCodeSelection::TYPE:
                 return new MeasurementUnitCodeSelection();
+            case MeasurementUnitSymbolSelection::TYPE:
+                return new MeasurementUnitSymbolSelection(
+                    $attribute->metricFamily()
+                );
             case MeasurementUnitLabelSelection::TYPE:
                 return new MeasurementUnitLabelSelection(
                     $attribute->metricFamily(),
@@ -199,6 +205,11 @@ class SelectionHydrator
                     $selectionConfiguration['decimal_separator'],
                     $attribute->metricFamily(),
                     $selectionConfiguration['locale']
+                );
+            case MeasurementValueAndUnitSymbolSelection::TYPE:
+                return new MeasurementValueAndUnitSymbolSelection(
+                    $selectionConfiguration['decimal_separator'],
+                    $attribute->metricFamily(),
                 );
             default:
                 throw new \LogicException(

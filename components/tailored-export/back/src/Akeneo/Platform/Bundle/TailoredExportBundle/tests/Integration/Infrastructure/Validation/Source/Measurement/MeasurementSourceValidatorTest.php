@@ -72,6 +72,19 @@ class MeasurementSourceValidatorTest extends AbstractValidationTest
                     'operations' => [],
                 ],
             ],
+            'a valid measurement unit symbol selection' => [
+                [
+                    'uuid' => '51120b12-a2bc-41bf-aa53-cd73daf330d0',
+                    'code' => 'a_metric',
+                    'type' => 'attribute',
+                    'channel' => null,
+                    'locale' => null,
+                    'selection' => [
+                        'type' => 'unit_symbol',
+                    ],
+                    'operations' => [],
+                ],
+            ],
             'a valid measurement value selection' => [
                 [
                     'uuid' => '51120b12-a2bc-41bf-aa53-cd73daf330d0',
@@ -81,6 +94,33 @@ class MeasurementSourceValidatorTest extends AbstractValidationTest
                     'locale' => null,
                     'selection' => [
                         'type' => 'value',
+                    ],
+                    'operations' => [],
+                ],
+            ],
+            'a valid measurement value and unit label selection' => [
+                [
+                    'uuid' => '51120b12-a2bc-41bf-aa53-cd73daf330d0',
+                    'code' => 'a_metric',
+                    'type' => 'attribute',
+                    'channel' => null,
+                    'locale' => null,
+                    'selection' => [
+                        'type' => 'value_and_unit_label',
+                        'locale' => 'en_US',
+                    ],
+                    'operations' => [],
+                ],
+            ],
+            'a valid measurement value and unit symbol selection' => [
+                [
+                    'uuid' => '51120b12-a2bc-41bf-aa53-cd73daf330d0',
+                    'code' => 'a_metric',
+                    'type' => 'attribute',
+                    'channel' => null,
+                    'locale' => null,
+                    'selection' => [
+                        'type' => 'value_and_unit_symbol',
                     ],
                     'operations' => [],
                 ],
