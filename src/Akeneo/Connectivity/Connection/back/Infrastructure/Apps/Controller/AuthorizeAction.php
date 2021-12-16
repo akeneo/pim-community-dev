@@ -68,7 +68,10 @@ class AuthorizeAction
             throw new NotFoundHttpException();
         }
 
-        if (!$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
+        if (
+            !$this->security->isGranted('akeneo_connectivity_connection_manage_apps')
+            && !$this->security->isGranted('akeneo_connectivity_connection_open_apps')
+        ) {
             throw new AccessDeniedHttpException();
         }
 
