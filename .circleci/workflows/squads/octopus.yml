@@ -1,10 +1,10 @@
 version: 2.1
 
-setup: true
+#setup: true
 
-orbs:
-    continuation: circleci/continuation@0.2.0
-    path-filtering: circleci/path-filtering@0.1.1
+#orbs:
+#    continuation: circleci/continuation@0.2.0
+#    path-filtering: circleci/path-filtering@0.1.1
 
 workflows:
     version: 2
@@ -19,13 +19,13 @@ workflows:
                         branches:
                             only:
                                 - /CXP-.*/
-            -   path-filtering/filter:
-                    mapping: |
-                        upgrades/.* run-migration-tests true
-                    base-revision: master
-                    config-path: .circleci/workflows/migrations.yml
-                    requires:
-                        - checkout_ce
+#            -   path-filtering/filter:
+#                    mapping: |
+#                        upgrades/.* run-migration-tests true
+#                    base-revision: master
+#                    config-path: .circleci/workflows/migrations.yml
+#                    requires:
+#                        - checkout_ce
     #            -   debug_octo:
     #                    requires:
     #                        - checkout_ce
