@@ -1,0 +1,12 @@
+version: 2.1
+
+parameters:
+    run-migration-tests:
+        type: boolean
+        default: false
+
+workflows:
+    migrations:
+        when: << pipeline.parameters.run-migration-tests >>
+        jobs:
+            -   test_back_data_migrations: ~
