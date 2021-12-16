@@ -12,12 +12,8 @@ use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
  */
 class NonExistentChannelLocaleValuesFilter implements NonExistentValuesFilter
 {
-    /** @var ChannelExistsWithLocaleInterface */
-    private $channelsLocales;
-
-    public function __construct(ChannelExistsWithLocaleInterface $channelsLocales)
+    public function __construct(private ChannelExistsWithLocaleInterface $channelsLocales)
     {
-        $this->channelsLocales = $channelsLocales;
     }
 
     public function filter(OnGoingFilteredRawValues $onGoingFilteredRawValues): OnGoingFilteredRawValues

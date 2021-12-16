@@ -135,6 +135,69 @@ class AuthorizeEndToEnd extends WebTestCase
         Assert::matchesRegularExpression('^http:\/\/shopware\.example\.com\/callback\?code=[a-zA-Z0-9@=]+&state=foo$');
     }
 
+    public function test_it_throws_access_denied_exception_with_missing_acl(): void
+    {
+        $this->featureFlagMarketplaceActivate->enable();
+        $this->authenticateAsAdmin();
+        $this->removeAclFromRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');
+        $this->removeAclFromRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
+
+        $this->client->request(
+            'GET',
+            '/connect/apps/v1/authorize',
+            [
+                'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
+                'response_type' => 'code',
+                'state' => 'foo',
+            ]
+        );
+        $response = $this->client->getResponse();
+
+        Assert::assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    }
+
+    public function test_it_authorizes_with_acl_open_apps(): void
+    {
+        $this->featureFlagMarketplaceActivate->enable();
+        $this->authenticateAsAdmin();
+        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');
+        $this->removeAclFromRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
+
+        $this->client->request(
+            'GET',
+            '/connect/apps/v1/authorize',
+            [
+                'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
+                'response_type' => 'code',
+                'state' => 'foo',
+            ]
+        );
+        $response = $this->client->getResponse();
+
+        Assert::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
+    }
+
+    public function test_it_authorizes_with_acl_manage_apps(): void
+    {
+        $this->featureFlagMarketplaceActivate->enable();
+        $this->authenticateAsAdmin();
+        $this->removeAclFromRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');
+        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
+
+        $this->client->request(
+            'GET',
+            '/connect/apps/v1/authorize',
+            [
+                'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
+                'response_type' => 'code',
+                'state' => 'foo',
+            ]
+        );
+        $response = $this->client->getResponse();
+
+        Assert::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
+    }
+
     private function loadAppsFixtures(): void
     {
         $apps = [

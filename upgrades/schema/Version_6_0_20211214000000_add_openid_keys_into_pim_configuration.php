@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Pim\Upgrade\schema;
+namespace Pim\Upgrade\Schema;
 
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\AsymmetricKeysGenerator;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\SaveAsymmetricKeysQuery;

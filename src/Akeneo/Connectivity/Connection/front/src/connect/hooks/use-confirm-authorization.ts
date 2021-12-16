@@ -10,9 +10,7 @@ interface ConfirmReturn {
 type hookType = (clientId: string) => () => Promise<ConfirmReturn>;
 
 export const useConfirmAuthorization: hookType = clientId => {
-    const url = useRoute('akeneo_connectivity_connection_apps_rest_confirm_authorization', {
-        clientId: clientId,
-    });
+    const url = useRoute('akeneo_connectivity_connection_apps_rest_confirm_authorization', {clientId: clientId});
 
     return useCallback(async () => {
         const response = await fetch(url, {

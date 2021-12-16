@@ -9,15 +9,18 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthentica
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthenticationHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthenticationRequest;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\UserConsentRequiredException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -36,6 +39,7 @@ class AuthorizeAction
     private ConnectedPimUserProvider $connectedPimUserProvider;
     private RequestAppAuthenticationHandler $requestAppAuthenticationHandler;
 
+    private SecurityFacade $security;
 
     public function __construct(
         RequestAppAuthorizationHandler $requestAppAuthorizationHandler,
@@ -45,7 +49,8 @@ class AuthorizeAction
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
         ConnectedPimUserProvider $connectedPimUserProvider,
-        RequestAppAuthenticationHandler $requestAppAuthenticationHandler
+        RequestAppAuthenticationHandler $requestAppAuthenticationHandler,
+        SecurityFacade $security,
     ) {
         $this->requestAppAuthorizationHandler = $requestAppAuthorizationHandler;
         $this->router = $router;
@@ -55,12 +60,20 @@ class AuthorizeAction
         $this->redirectUriWithAuthorizationCodeGenerator = $redirectUriWithAuthorizationCodeGenerator;
         $this->connectedPimUserProvider = $connectedPimUserProvider;
         $this->requestAppAuthenticationHandler = $requestAppAuthenticationHandler;
+        $this->security = $security;
     }
 
     public function __invoke(Request $request): Response
     {
         if (!$this->featureFlag->isEnabled()) {
             throw new NotFoundHttpException();
+        }
+
+        if (
+            !$this->security->isGranted('akeneo_connectivity_connection_manage_apps')
+            && !$this->security->isGranted('akeneo_connectivity_connection_open_apps')
+        ) {
+            throw new AccessDeniedHttpException();
         }
 
         $clientId = $request->query->get('client_id', '');
