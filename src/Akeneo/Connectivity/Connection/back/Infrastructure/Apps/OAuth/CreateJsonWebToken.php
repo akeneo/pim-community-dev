@@ -21,23 +21,18 @@ use Ramsey\Uuid\Uuid;
  */
 class CreateJsonWebToken
 {
-    private Key $privateKey;
-    private Key $publicKey;
-
     private Clock $clock;
     private PimUrl $pimUrl;
+    private GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery;
 
     public function __construct(
         Clock $clock,
         PimUrl $pimUrl,
         GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery
     ) {
-        ['public_key' => $publicKey, 'private_key' => $privateKey] = $getAsymmetricKeysQuery->execute()->normalize();
-        $this->privateKey = InMemory::plainText($privateKey);
-        $this->publicKey = InMemory::plainText($publicKey);
-
         $this->clock = $clock;
         $this->pimUrl = $pimUrl;
+        $this->getAsymmetricKeysQuery = $getAsymmetricKeysQuery;
     }
 
     public function create(
@@ -48,10 +43,16 @@ class CreateJsonWebToken
         string $lastName,
         string $email
     ): string {
+
+        ['public_key' => $publicKey, 'private_key' => $privateKey] = $this->getAsymmetricKeysQuery->execute(
+        )->normalize();
+        $privateKey = InMemory::plainText($privateKey);
+        $publicKey = InMemory::plainText($publicKey);
+
         $jwtConfig = Configuration::forAsymmetricSigner(
             new Sha256(),
-            $this->privateKey,
-            $this->publicKey
+            $privateKey,
+            $publicKey
         );
 
         $uuid = Uuid::uuid4()->toString();
