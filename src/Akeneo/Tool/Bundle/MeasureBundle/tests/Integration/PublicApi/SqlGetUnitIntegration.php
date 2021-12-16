@@ -7,6 +7,7 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\tests\Integration\PublicApi;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\SqlGetUnit;
+use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\Unit;
 
 final class SqlGetUnitIntegration extends TestCase
 {
@@ -14,15 +15,22 @@ final class SqlGetUnitIntegration extends TestCase
     {
         $query = $this->getQuery();
 
-        $expected = [
-            'code' => 'MICROGRAM',
-            'labels' => '{"en_US": "Microgram", "fr_FR": "Microgramme"}',
-            'symbol' => 'μg',
-            'convert_from_standard' => '[{"value": "0.000000001", "operator": "mul"}]'
+        $expectedUnit = new Unit();
+        $expectedUnit->code = 'MICROGRAM';
+        $expectedUnit->labels = [
+            'en_US' => 'Microgram',
+            'fr_FR' => 'Microgramme',
+        ];
+        $expectedUnit->symbol = 'μg';
+        $expectedUnit->convertFromStandard = [
+            [
+                'value' => '0.000000001',
+                'operator' => 'mul',
+            ]
         ];
 
         $this->assertEqualsCanonicalizing(
-            $expected,
+            $expectedUnit,
             $query->byMeasurementFamilyCodeAndUnitCode('Weight', 'MICROGRAM')
         );
     }

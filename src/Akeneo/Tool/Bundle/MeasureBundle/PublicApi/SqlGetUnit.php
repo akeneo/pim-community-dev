@@ -43,9 +43,9 @@ SQL;
 
         $unit = new Unit();
         $unit->code = $result['code'];
-        $unit->labels = json_decode($result['labels']);
+        $unit->labels = json_decode($result['labels'], true);
         $unit->symbol = $result['symbol'];
-        $unit->convertFromStandard = json_decode($result['convert_from_standard']);
+        $unit->convertFromStandard = json_decode($result['convert_from_standard'], true);
 
         return $unit;
     }
