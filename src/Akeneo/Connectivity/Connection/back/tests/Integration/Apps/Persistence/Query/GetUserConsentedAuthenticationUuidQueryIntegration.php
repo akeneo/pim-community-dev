@@ -82,4 +82,9 @@ class GetUserConsentedAuthenticationUuidQueryIntegration extends WebTestCase
 
         $this->assertEquals($uuid, $result);
     }
+
+    public function test_it_throws_an_exception_when_there_is_no_uuid_into_database(): void
+    {
+
+    }
 }
