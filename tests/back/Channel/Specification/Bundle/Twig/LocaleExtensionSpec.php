@@ -71,7 +71,6 @@ class LocaleExtensionSpec extends ObjectBehavior
         $userContext->getCurrentLocale()->willReturn($en);
         $this->currencyLabel('XSU')->shouldReturn(null);
         $this->currencyLabel('XSU', 'fr_FR')->shouldReturn(null);
-
     }
 
     function getMatchers(): array
