@@ -26,7 +26,6 @@ jobs:
                       yq eval-all '. as $item ireduce ({}; . *+ $item )' .circleci/*/*.yml  .circleci/*/*/*.yml > .circleci/merged_config.yml
                       cat .circleci/merged_config.yml
             - set-parameters:
-                  name: Check code source changes
                   base-revision: master
                   mapping: |
                       upgrades/.* run-database-migration-tests true
