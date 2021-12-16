@@ -9,16 +9,16 @@ version: 2.1
 workflows:
     version: 2
 
-    octopus_pull_request:
-        when:
-            not:
-                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
-        jobs:
-            -   checkout_ce:
-                    filters:
-                        branches:
-                            only:
-                                - /CXP-.*/
+#    octopus_pull_request:
+#        when:
+#            not:
+#                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+#        jobs:
+#            -   checkout_ce:
+#                    filters:
+#                        branches:
+#                            only:
+#                                - /CXP-.*/
 #            -   path-filtering/filter:
 #                    mapping: |
 #                        upgrades/.* run-migration-tests true
@@ -52,38 +52,38 @@ workflows:
     #                      - test_back_connectivity
     #                      - test_back_data_migrations
 
-    octopus_deploy:
-        when:
-            not:
-                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
-        jobs:
-            -   deploy_pr_environment?:
-                    type: approval
-                    filters:
-                        branches:
-                            only:
-                                - /CXP-.*/
-            -   checkout_ee:
-                    requires:
-                        - deploy_pr_environment?
-            -   build_prod:
-                    requires:
-                        - checkout_ee
-            -   deploy_pr_environment:
-                    requires:
-                        - build_prod
-
-    octopus_weekly_code_quality:
-        when:
-            and:
-                -   equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
-                -   equal: [ "octopus_weekly_code_quality", << pipeline.schedule.name >> ]
-        jobs:
-            - checkout_ce
-            -   build_dev:
-                    is_ee_built: false
-                    requires:
-                        - checkout_ce
-            -   test_octopus_code_quality:
-                    requires:
-                        - build_dev
+#    octopus_deploy:
+#        when:
+#            not:
+#                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+#        jobs:
+#            -   deploy_pr_environment?:
+#                    type: approval
+#                    filters:
+#                        branches:
+#                            only:
+#                                - /CXP-.*/
+#            -   checkout_ee:
+#                    requires:
+#                        - deploy_pr_environment?
+#            -   build_prod:
+#                    requires:
+#                        - checkout_ee
+#            -   deploy_pr_environment:
+#                    requires:
+#                        - build_prod
+#
+#    octopus_weekly_code_quality:
+#        when:
+#            and:
+#                -   equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+#                -   equal: [ "octopus_weekly_code_quality", << pipeline.schedule.name >> ]
+#        jobs:
+#            - checkout_ce
+#            -   build_dev:
+#                    is_ee_built: false
+#                    requires:
+#                        - checkout_ce
+#            -   test_octopus_code_quality:
+#                    requires:
+#                        - build_dev
