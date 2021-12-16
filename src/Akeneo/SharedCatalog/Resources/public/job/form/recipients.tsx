@@ -1,6 +1,6 @@
-import React, {useState, useEffect, useRef, useCallback, ChangeEvent, SyntheticEvent} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import styled, {ThemeProvider} from 'styled-components';
-import {Key, useAutoFocus, useShortcut, SearchBar} from '@akeneo-pim-community/shared';
+import {Key, useShortcut, SearchBar} from '@akeneo-pim-community/shared';
 import {DependenciesProvider, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {HeaderCell, LabelCell, Row, Table} from 'akeneosharedcatalog/common/Table';
 import {
@@ -8,9 +8,11 @@ import {
   Button,
   Checkbox,
   CloseIcon,
+  Field,
   Helper,
   NoResultsIllustration,
   pimTheme,
+  TagInput,
   SurveyIllustration,
 } from 'akeneo-design-system';
 
@@ -49,35 +51,8 @@ const Form = styled.div`
   width: 100%;
 `;
 
-const InputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Input = styled.textarea<{isInvalid: boolean}>`
-  border-radius: 2px;
-  border: 1px solid;
-  border-color: ${({theme, isInvalid}: AkeneoThemedProps & {isInvalid: boolean}) =>
-    isInvalid ? theme.color.red100 : theme.color.grey80};
-  color: ${({theme}: AkeneoThemedProps & {isInvalid: boolean}) => theme.color.grey140};
-  height: auto;
-  line-height: 15px;
-  min-height: 40px;
-  max-height: 150px;
-  margin-right: 10px;
-  padding: 10px 10px 0 10px;
-  width: 450px;
-  z-index: 1;
-  resize: none;
-
-  :disabled {
-    color: ${({theme}: AkeneoThemedProps & {isInvalid: boolean}) => theme.color.grey60};
-    background-color: ${({theme}: AkeneoThemedProps & {isInvalid: boolean}) => theme.color.grey60};
-    background-image: url('/bundles/pimui/images/icon-lock2.svg');
-    background-size: 18px;
-    background-position: 98% center;
-    background-repeat: no-repeat;
-  }
+const LargeField = styled(Field)`
+  width: 50%;
 `;
 
 const ErrorMessage = styled.span`
@@ -105,12 +80,6 @@ const NoResults = styled.div`
   color: ${({theme}: AkeneoThemedProps) => theme.color.grey140};
   line-height: 28px;
   margin-top: 40px;
-`;
-
-const InputWithButton = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 8px;
 `;
 
 const RecipientCheckbox = styled(Checkbox)`
@@ -163,59 +132,49 @@ const Container = (props: RecipientsProps) => {
 const Recipients = ({recipients, validationErrors, onRecipientsChange}: RecipientsProps) => {
   const translate = useTranslate();
   const [currentRecipients, setCurrentRecipients] = useState<Recipient[]>(recipients);
-  const [recipientToAdd, setRecipientToAdd] = useState<string>('');
+  const [recipientsToAdd, setRecipientsToAdd] = useState<Recipient[]>([]);
   const [emailIsValid, setEmailIsValid] = useState<boolean>(true);
   const [emailIsDuplicated, setEmailIsDuplicated] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>('');
   const [recipientSelection, setRecipientSelection] = useState<Recipient[]>([]);
-  const inputRef = useRef<null | HTMLTextAreaElement>(null);
 
-  const handleAddNewRecipient = useCallback(
-    (event: SyntheticEvent) => {
-      event.preventDefault();
+  const handleRecipientsInputChange = useCallback(
+    (addresses: string[]) => {
+      setEmailIsValid(true);
+      setEmailIsDuplicated(false);
 
-      if (emailIsDuplicated || !emailIsValid || '' === recipientToAdd) return;
-
-      const addresses = recipientToAdd.split(/[\n\s,;]+/);
-
-      if (1 < addresses.length) {
-        const currentAddresses = currentRecipients.map(recipient => recipient.email);
-        const newRecipients = addresses
-          .filter(
-            (recipient, index) =>
-              isValidEmail(recipient) && !currentAddresses.includes(recipient) && index === addresses.indexOf(recipient)
-          )
-          .map(recipient => ({email: recipient}));
-        setRecipientToAdd('');
-        setCurrentRecipients(currentRecipients => [
-          ...currentRecipients,
-          ...newRecipients.slice(0, MAX_RECIPIENT_COUNT - currentAddresses.length),
-        ]);
-      } else {
-        if (isValidEmail(addresses[0])) {
-          setRecipientToAdd('');
-          setCurrentRecipients(currentRecipients => [...currentRecipients, {email: addresses[0]}]);
-        } else {
+      addresses.forEach(address => {
+        if (!isValidEmail(address)) {
           setEmailIsValid(false);
         }
-      }
+
+        if (currentRecipients.some(recipient => recipient.email === address)) {
+          setEmailIsDuplicated(true);
+        }
+      });
+
+      setRecipientsToAdd(addresses.map(address => ({email: address})));
     },
-    [recipientToAdd, setEmailIsValid, emailIsDuplicated, currentRecipients]
+    [recipientsToAdd, setRecipientsToAdd, setEmailIsValid, setEmailIsDuplicated]
   );
 
-  useAutoFocus(inputRef);
-  useShortcut(Key.Enter, handleAddNewRecipient);
-  useShortcut(Key.NumpadEnter, handleAddNewRecipient);
+  const handleAddRecipients = useCallback(() => {
+    if (0 === recipientsToAdd.length || !emailIsValid || emailIsDuplicated) return;
 
-  useEffect(() => {
-    setEmailIsDuplicated(currentRecipients.map(recipient => recipient.email).includes(recipientToAdd));
-
-    // Adapt height to content on each input change
-    if (null !== inputRef.current) {
-      inputRef.current.style.height = 'auto';
-      inputRef.current.style.height = `${inputRef.current.scrollHeight}px`;
+    if (MAX_RECIPIENT_COUNT <= currentRecipients.length + recipientsToAdd.length) {
+      setCurrentRecipients([
+        ...currentRecipients,
+        ...recipientsToAdd.slice(0, MAX_RECIPIENT_COUNT - currentRecipients.length),
+      ]);
+      setRecipientsToAdd(recipientsToAdd.slice(MAX_RECIPIENT_COUNT - currentRecipients.length));
+    } else {
+      setCurrentRecipients([...currentRecipients, ...recipientsToAdd]);
+      setRecipientsToAdd([]);
     }
-  }, [recipientToAdd, currentRecipients]);
+  }, [currentRecipients, setCurrentRecipients, recipientsToAdd, setRecipientsToAdd]);
+
+  useShortcut(Key.Enter, handleAddRecipients);
+  useShortcut(Key.NumpadEnter, handleAddRecipients);
 
   useEffect(() => {
     onRecipientsChange(currentRecipients);
@@ -242,45 +201,42 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
       <Helper level="info">{translate('shared_catalog.recipients.helper')}</Helper>
       {'string' === typeof validationErrors && <Helper level="error">{translate(validationErrors)}</Helper>}
       <Form>
-        <InputContainer>
-          {translate('shared_catalog.recipients.add')}
-          <InputWithButton>
-            <Input
-              ref={inputRef}
-              placeholder={translate('shared_catalog.recipients.placeholder')}
-              value={recipientToAdd}
-              disabled={maxRecipientLimitReached}
-              isInvalid={emailIsDuplicated || !emailIsValid}
-              onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
-                setEmailIsValid(true);
-                setRecipientToAdd(event.currentTarget.value);
-              }}
-            />
+        <LargeField
+          label={translate('shared_catalog.recipients.add')}
+          actions={
             <Button
               level="tertiary"
-              onClick={handleAddNewRecipient}
-              disabled={emailIsDuplicated || '' === recipientToAdd || maxRecipientLimitReached}
               ghost={true}
+              onClick={handleAddRecipients}
+              size="small"
+              disabled={0 === recipientsToAdd.length || !emailIsValid || emailIsDuplicated || maxRecipientLimitReached}
             >
               {translate('pim_common.add')}
             </Button>
-          </InputWithButton>
+          }
+        >
+          <TagInput
+            disabled={maxRecipientLimitReached}
+            onChange={handleRecipientsInputChange}
+            placeholder={translate('shared_catalog.recipients.placeholder')}
+            value={recipientsToAdd.map(recipient => recipient.email)}
+          />
           {maxRecipientLimitReached && (
             <Helper inline={true} level="info">
               {translate('shared_catalog.recipients.max_limit_reached')}
             </Helper>
           )}
-          {false === emailIsValid && (
+          {!emailIsValid && (
             <Helper inline={true} level="error">
               {translate('shared_catalog.recipients.invalid_email')}
             </Helper>
           )}
-          {true === emailIsDuplicated && (
+          {emailIsDuplicated && (
             <Helper inline={true} level="error">
               {translate('shared_catalog.recipients.duplicates')}
             </Helper>
           )}
-        </InputContainer>
+        </LargeField>
       </Form>
       <SearchBar count={filteredRecipients.length} searchValue={searchValue} onSearchChange={setSearchValue} />
       <Table title="recipients">
