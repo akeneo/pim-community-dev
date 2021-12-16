@@ -33,7 +33,7 @@ class Client
     private NativeClient $client;
     private string $idPrefix;
     private int $maxChunkSize;
-    private int $maxExpectedIndexationLatency;
+    private int $maxExpectedIndexationLatencyInMicroseconds;
     private int $maxNumberOfRetries;
 
 
@@ -48,7 +48,7 @@ class Client
         string $indexName,
         string $idPrefix = '',
         int $maxChunkSize = 100000000,
-        int $maxExpectedIndexationLatency=0,
+        int $maxExpectedIndexationLatencyInMilliseconds=0,
         int $maxNumberOfRetries=3
     ) {
         $this->builder = $builder;
@@ -57,7 +57,7 @@ class Client
         $this->indexName = $indexName;
         $this->idPrefix = $idPrefix;
         $this->maxChunkSize = $maxChunkSize;
-        $this->maxExpectedIndexationLatency = $maxExpectedIndexationLatency;
+        $this->maxExpectedIndexationLatencyInMicroseconds = $maxExpectedIndexationLatencyInMilliseconds*1000;
         $this->maxNumberOfRetries = $maxNumberOfRetries;
 
         $builder->setHosts($hosts);
@@ -402,7 +402,7 @@ class Client
                 return;
             } catch (Conflict409Exception $e) {
                 $exception = $e;
-                usleep($this->maxExpectedIndexationLatency);
+                usleep($this->maxExpectedIndexationLatencyInMicroseconds);
                 continue;
             }
         } while ($attempts < $this->maxNumberOfRetries);

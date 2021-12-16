@@ -1,7 +1,7 @@
 akeneo_elasticsearch:
     hosts: "%index_hosts%"
     max_chunk_size: "%env(int:APP_ELASTICSEARCH_MAX_CHUNK_SIZE_CHARACTERS)%"
-    max_expected_indexation_latency: 1000000
+    max_expected_indexation_latency: 1000
     max_number_of_retries: 3
     indexes:
         -
