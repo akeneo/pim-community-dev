@@ -18,13 +18,11 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
+/** Use CssColorValidator from Symfony when we use symfony/validator 5.4 */
 class CssColorValidator extends ConstraintValidator
 {
     private const PATTERN_HEX = '/^#([a-f0-9]{6}|[a-f0-9]{3})$/i';
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof CssColor) {

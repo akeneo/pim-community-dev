@@ -93,7 +93,7 @@ class DefaultValueProvider implements DefaultValuesProviderInterface
         $parameters['recipients'] = [];
         $parameters['branding'] = [
             'image' => null,
-            'cover_mage' => null,
+            'cover_image' => null,
             'color' => null,
         ];
 
