@@ -34,10 +34,7 @@ final class RequestAppAuthenticationHandler
     {
         // @TODO validate Command & throw InvalidAppAuthenticationRequest()
 
-        if (
-            count($command->getRequestedAuthenticationScopes()->getScopes()) > 0
-            && false === $command->getRequestedAuthenticationScopes()->hasScope(AuthenticationScope::SCOPE_OPENID)
-        ) {
+        if (false === $command->getRequestedAuthenticationScopes()->hasScope(AuthenticationScope::SCOPE_OPENID)) {
             $this->createUserConsentQuery->execute(
                 $command->getPimUserId(),
                 $command->getAppId(),
