@@ -5,15 +5,20 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Value\Query;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
-use Akeneo\Pim\Enrichment\Component\Product\Query\CountProductsWithRemovedAttributeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductModelIdentifiersWithRemovedAttributeInterface;
 
-final class CountProductsWithRemovedAttributes implements CountProductsWithRemovedAttributeInterface
+final class GetProductModelIdentifiersWithRemovedAttributes implements GetProductModelIdentifiersWithRemovedAttributeInterface
 {
-     public function __construct(private CountProductsWithRemovedAttributeInterface $decoratedQuery)
-     {
-     }
+    public function __construct(private GetProductModelIdentifiersWithRemovedAttributeInterface $decoratedQuery)
+    {
+    }
 
-     public function count(array $attributesCodes): int
+    public function getQueryBuilder(): SearchQueryBuilder
+    {
+        return $this->decoratedQuery->getQueryBuilder();
+    }
+
+    public function nextBatch(array $attributesCodes, int $batchSize): iterable
     {
         foreach ($attributesCodes as $attributeCode) {
             $this->getQueryBuilder()->addShould(
@@ -37,11 +42,6 @@ final class CountProductsWithRemovedAttributes implements CountProductsWithRemov
             );
         }
 
-        return $this->decoratedQuery->count($attributesCodes);
-    }
-
-    public function getQueryBuilder(): SearchQueryBuilder
-    {
-        return $this->decoratedQuery->getQueryBuilder();
+        return $this->decoratedQuery->nextBatch($attributesCodes, $batchSize);
     }
 }

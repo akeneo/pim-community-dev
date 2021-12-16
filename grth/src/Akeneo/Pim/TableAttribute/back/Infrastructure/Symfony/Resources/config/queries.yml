@@ -16,3 +16,16 @@ services:
     decoration_inner_name: 'akeneo.pim.enrichment.product.query.count_products_with_removed_attribute_decorated'
     arguments:
       - '@akeneo.pim.enrichment.product.query.count_products_with_removed_attribute_decorated'
+
+  Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\GetProductModelIdentifiersWithRemovedAttributes:
+    decorates: 'akeneo.pim.enrichment.product.query.get_product_model_identifiers_with_removed_attribute'
+    decoration_inner_name: 'akeneo.pim.enrichment.product.query.get_product_model_identifiers_with_removed_attribute_decorated'
+    arguments:
+      - '@akeneo.pim.enrichment.product.query.get_product_model_identifiers_with_removed_attribute_decorated'
+
+  Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\CountProductModelsWithRemovedAttributes:
+    decorates: 'akeneo.pim.enrichment.product.query.count_product_models_with_removed_attribute'
+    decoration_inner_name: 'akeneo.pim.enrichment.product.query.count_product_models_with_removed_attribute_decorated'
+    arguments:
+      - '@akeneo.pim.enrichment.product.query.count_product_models_with_removed_attribute_decorated'
+
