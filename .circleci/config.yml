@@ -11,6 +11,11 @@ jobs:
         executor: continuation/default
         steps:
             - checkout
+            -   path-filtering/filter:
+                    mapping: |
+                        upgrades/.* run-database-migration-tests true
+                    base-revision: master
+#                    config-path: .circleci/workflows/migrations.yml
             - run:
                   name: Install yq
                   command: |
@@ -32,9 +37,4 @@ workflows:
 
     merge_config_workflow:
         jobs:
-            -   path-filtering/filter:
-                    mapping: |
-                        upgrades/.* run-database-migration-tests true
-                    base-revision: master
-                    config-path: .circleci/workflows/migrations.yml
             - merge_config
