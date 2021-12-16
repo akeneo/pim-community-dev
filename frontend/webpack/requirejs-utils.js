@@ -84,7 +84,6 @@ const utils = {
           summernote: path.resolve(baseDir, 'node_modules/summernote/dist/summernote.js'),
           jquery: require.resolve('jquery'),
           underscore: require.resolve('underscore'),
-          'pim/dropzonejs': require.resolve('dropzone'),
         });
 
         return { config, aliases };

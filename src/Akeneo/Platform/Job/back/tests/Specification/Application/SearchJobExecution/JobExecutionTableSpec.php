@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\Job\Application\SearchJobExecution;
 
 use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
+use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRowTracking;
 use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionTable;
+use Akeneo\Platform\Job\Domain\Model\Status;
 use PhpSpec\ObjectBehavior;
 
 class JobExecutionTableSpec extends ObjectBehavior
@@ -26,15 +28,12 @@ class JobExecutionTableSpec extends ObjectBehavior
                     'export',
                     new \DateTimeImmutable('2021-11-02T11:20:27+02:00'),
                     'admin',
-                    'COMPLETED',
-                    10,
-                    0,
-                    1,
-                    2,
+                    Status::fromLabel('COMPLETED'),
+                    true,
+                    new JobExecutionRowTracking(1, 2, []),
                 ),
             ],
             1,
-            2,
         );
 
         $this->normalize()->shouldReturn([
@@ -46,22 +45,23 @@ class JobExecutionTableSpec extends ObjectBehavior
                     'started_at' => '2021-11-02T11:20:27+02:00',
                     'username' => 'admin',
                     'status' => 'COMPLETED',
-                    'warning_count' => 10,
+                    'warning_count' => 0,
                     'error_count' => 0,
                     'tracking' => [
                         'current_step' => 1,
                         'total_step' => 2,
+                        'steps' => [],
                     ],
+                    'is_stoppable' => true,
                 ],
             ],
             'matches_count' => 1,
-            'total_count' => 2,
         ]);
     }
 
     public function it_can_be_constructed_only_with_a_list_of_job_execution_row()
     {
-        $this->beConstructedWith([1], 5, 10);
+        $this->beConstructedWith([1], 5);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 }

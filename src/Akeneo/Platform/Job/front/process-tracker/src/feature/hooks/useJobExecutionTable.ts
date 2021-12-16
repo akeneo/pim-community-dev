@@ -1,42 +1,62 @@
-import {useEffect, useState} from 'react';
-import {useRoute, useIsMounted} from '@akeneo-pim-community/shared';
-import {JobExecutionTable, JobStatus} from '../models';
+import {useCallback, useEffect, useRef, useState} from 'react';
+import {useRoute, useIsMounted, useDocumentVisibility} from '@akeneo-pim-community/shared';
+import {JobExecutionFilter, JobExecutionTable} from '../models';
 
-const useJobExecutionTable = (
-  page: number,
-  size: number,
-  type: string[],
-  status: JobStatus[]
-): JobExecutionTable | null => {
+const AUTO_REFRESH_FREQUENCY = 5000;
+
+const useJobExecutionTable = ({page, size, sort, type, status, code, user, search}: JobExecutionFilter) => {
   const [jobExecutionTable, setJobExecutionTable] = useState<JobExecutionTable | null>(null);
   const route = useRoute('akeneo_job_index_action');
   const isMounted = useIsMounted();
+  const isDocumentVisible = useDocumentVisibility();
+  const isFetching = useRef<boolean>(false);
+
+  const searchJobExecution = useCallback(async () => {
+    if (isFetching.current) return;
+
+    isFetching.current = true;
+    const response = await fetch(route, {
+      body: JSON.stringify({
+        page: page.toString(),
+        size: size.toString(),
+        sort,
+        status,
+        type,
+        user,
+        search,
+        code,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      method: 'POST',
+    });
+
+    isFetching.current = false;
+    const jobExecutionTable = await response.json();
+    if (isMounted()) {
+      setJobExecutionTable(jobExecutionTable);
+    }
+  }, [isMounted, route, page, size, sort, type, status, search, user, code]);
 
   useEffect(() => {
-    const searchJobExecution = async () => {
-      const response = await fetch(route, {
-        body: JSON.stringify({
-          page: page.toString(),
-          size: size.toString(),
-          status,
-          type,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-        method: 'POST',
-      });
+    void searchJobExecution();
+  }, [searchJobExecution]);
 
-      if (isMounted()) {
-        setJobExecutionTable(await response.json());
-      }
+  useEffect(() => {
+    if (!isDocumentVisible) return;
+
+    const interval = setInterval(() => {
+      void searchJobExecution();
+    }, AUTO_REFRESH_FREQUENCY);
+
+    return () => {
+      clearInterval(interval);
     };
+  }, [isDocumentVisible, searchJobExecution, page, size, sort, type, status, search, user, code]);
 
-    searchJobExecution();
-  }, [isMounted, route, page, size, type, status]);
-
-  return jobExecutionTable;
+  return [jobExecutionTable, searchJobExecution] as const;
 };
 
 export {useJobExecutionTable};

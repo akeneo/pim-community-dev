@@ -137,7 +137,7 @@ akeneo_connectivity.connection:
                     scope_email: View your email address
                 authorize:
                     title: '{{ app_name }} needs to'
-                    no_scope_title: 'The {{ app_name }} App would like to access your PIM.'
+                    no_scope_title: '{{ app_name }} would like to access your PIM.'
                     no_scope: No specific authorizations have been requested.
                     helper: To know more about app authorization,
                     helper_link: check out our Help Center article.

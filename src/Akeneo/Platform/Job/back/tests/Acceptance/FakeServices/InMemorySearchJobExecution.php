@@ -12,6 +12,9 @@ class InMemorySearchJobExecution implements SearchJobExecutionInterface
 {
     private array $jobExecutionRows = [];
 
+    /**
+     * @param JobExecutionRow[] $jobExecutionRows
+     */
     public function mockSearchResult(array $jobExecutionRows): void
     {
         $this->jobExecutionRows = $jobExecutionRows;

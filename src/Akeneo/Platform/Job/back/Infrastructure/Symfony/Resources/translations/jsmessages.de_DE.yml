@@ -4,31 +4,7 @@ akeneo_job_process_tracker:
   job_execution_list:
     table:
       headers:
-        job_name: Auftrag
         type: Typ
         started_at: Gestartet am
         username: Benutzername
         status: Status
-        warnings: Warnungen
-  type:
-    label: Typ
-    all: Alle
-    quick_export: Schnellexport
-    import: Import
-    export: Export
-    mass_edit: Massenbearbeitung
-    mass_delete: Massenlöschung
-    compute_family_variant_structure_changes: Ändern der Familienvariantenstruktur berechnen
-    compute_completeness_of_products_family: Berechnen der Vollständigkeit der Produktfamilie
-    clean_removed_attribute_job: Entfernte Attributwerte werden bereinigt
-  status:
-    label: Status
-    all: Alle
-    abandoned: Abgebrochen
-    completed: Vollständig
-    failed: Fehlgeschlagen
-    started: Gestartet
-    starting: Wird gestartet...
-    stopped: Beendet
-    stopping: Beende...
-    unknown: Unbekannt
