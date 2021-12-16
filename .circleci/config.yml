@@ -33,9 +33,6 @@ workflows:
     merge_config_workflow:
         jobs:
             - merge_config
-
-    dynamic_workflow:
-        jobs:
             -   path-filtering/filter:
                     mapping: |
                         upgrades/.* run-database-migration-tests true
