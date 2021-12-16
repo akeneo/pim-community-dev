@@ -94,6 +94,7 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGenerator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthenticationHandler'
+            - '@oro_security.security_facade'
 
     akeneo_connectivity.connection.public.controller.apps.token:
         public: true
