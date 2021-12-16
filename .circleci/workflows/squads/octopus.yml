@@ -13,13 +13,13 @@ workflows:
                             only:
                                 - /CXP-.*/
             -   path-filtering/filter:
-                   mapping: |
-                       upgrades/.* run-migration-tests true
-                   base-revision: master
-                   config-path: .circleci/workflows/migrations.yml
-#            -   debug_octo:
-#                    requires:
-#                        - checkout_ce
+                    mapping: |
+                        upgrades/.* run-migration-tests true
+                    base-revision: master
+                    config-path: .circleci/workflows/migrations.yml
+    #            -   debug_octo:
+    #                    requires:
+    #                        - checkout_ce
     #            - build_dev:
     #                  name: build_dev_ce
     #                  is_ee_built: false
@@ -70,7 +70,7 @@ workflows:
                 -   equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
                 -   equal: [ "octopus_weekly_code_quality", << pipeline.schedule.name >> ]
         jobs:
-            -   checkout_ce: ~
+            - checkout_ce
             -   build_dev:
                     is_ee_built: false
                     requires:
