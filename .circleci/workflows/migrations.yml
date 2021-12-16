@@ -9,4 +9,4 @@ workflows:
     migrations:
         when: << pipeline.parameters.run-migration-tests >>
         jobs:
-            -   test_back_data_migrations: ~
+            -   test_back_data_migrations
