@@ -98,6 +98,9 @@ type ColorInputProps = Override<
   }
 >;
 
+const convertShortHexToLong = (hex: string): string =>
+  4 === hex.length ? `#${hex[1]}${hex[1]}${hex[2]}${hex[2]}${hex[3]}${hex[3]}` : hex;
+
 /**
  * The ColorInput component allows the user to enter a color in hexadecimal format.
  */
@@ -119,7 +122,7 @@ const ColorInput = forwardRef<HTMLInputElement, ColorInputProps>(
     return (
       <ColorInputContainer invalid={invalid || !isValidHexaColor} readOnly={readOnly}>
         {isValidHexaColor ? (
-          <ColorPicker type="color" value={value} onChange={handleChange} disabled={readOnly} />
+          <ColorPicker type="color" value={convertShortHexToLong(value)} onChange={handleChange} disabled={readOnly} />
         ) : (
           <ErrorIcon role="alert" size={16} />
         )}
