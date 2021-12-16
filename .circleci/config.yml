@@ -30,6 +30,9 @@ jobs:
                   mapping: |
                       upgrades/.* run-database-migration-tests true
                   output-path: /tmp/pipeline-parameters.json
+            - run:
+                  name: Debug parameters
+                  command: cat /tmp/pipeline-parameters.json
             - continuation/continue:
                   configuration_path: .circleci/merged_config.yml
                   parameters: /tmp/pipeline-parameters.json
