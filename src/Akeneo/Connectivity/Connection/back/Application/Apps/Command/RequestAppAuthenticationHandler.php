@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\CreateUserConsentQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetUserConsentedAuthenticationScopesQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Clock;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -19,20 +20,26 @@ final class RequestAppAuthenticationHandler
     private GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery;
     private CreateUserConsentQueryInterface $createUserConsentQuery;
     private Clock $clock;
+    private ValidatorInterface $validator;
 
     public function __construct(
         GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
         CreateUserConsentQueryInterface $createUserConsentQuery,
-        Clock $clock
+        Clock $clock,
+        ValidatorInterface $validator
     ) {
         $this->getUserConsentedAuthenticationScopesQuery = $getUserConsentedAuthenticationScopesQuery;
         $this->createUserConsentQuery = $createUserConsentQuery;
         $this->clock = $clock;
+        $this->validator = $validator;
     }
 
     public function handle(RequestAppAuthenticationCommand $command): void
     {
-        // @TODO validate Command & throw InvalidAppAuthenticationRequest()
+        $violations = $this->validator->validate($command);
+        if (count($violations) > 0) {
+            throw new \InvalidArgumentException();
+        }
 
         if (false === $command->getRequestedAuthenticationScopes()->hasScope(AuthenticationScope::SCOPE_OPENID)) {
             $this->createUserConsentQuery->execute(
