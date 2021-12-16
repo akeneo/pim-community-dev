@@ -80,7 +80,7 @@ test("The Manage App button is disabled when the user doesn't have the permissio
     manageAppButton.toHaveAttribute('aria-disabled', 'true');
 });
 
-test("The Open App button is disabled when the user doesn't have the permission to Open Apps", async () => {
+test('The Open App button is disabled when the user doesnt have the permission to Open Apps', async () => {
     const isGranted = jest.fn(acl => {
         if (acl === 'akeneo_connectivity_connection_open_apps') {
             return false;
