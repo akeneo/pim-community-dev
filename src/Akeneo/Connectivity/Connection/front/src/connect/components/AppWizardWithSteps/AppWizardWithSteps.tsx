@@ -13,6 +13,7 @@ import {useConfirmAuthorization} from '../../hooks/use-confirm-authorization';
 import {useNotify} from '../../../shared/notify';
 import {PermissionsByProviderKey} from '../../../model/Apps/permissions-by-provider-key';
 import {useConfirmHandler} from './useConfirmHandler';
+import loaderImage from '../../../common/assets/illustrations/main-loader.gif';
 
 const Content = styled.div`
     display: grid;
@@ -53,10 +54,14 @@ const FullScreen = styled.div`
     right: 0;
     background: #fff;
     z-index: 900;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+`;
+const Loader = styled.div`
+    width: 940px;
+    font-size: 28px;
+    display: block;
+    margin: 200px auto 0;
+    text-align: center;
+    line-height: 40px;
 `;
 
 interface Props {
@@ -106,7 +111,12 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
     if (processing) {
         return (
             <FullScreen>
-                <CodingIllustration width={300}/>
+                <Loader>
+                    <h3>
+                        {translate('akeneo_connectivity.connection.connect.apps.loader.message')}
+                    </h3>
+                    <img src={loaderImage} />
+                </Loader>
             </FullScreen>
         );
     }
