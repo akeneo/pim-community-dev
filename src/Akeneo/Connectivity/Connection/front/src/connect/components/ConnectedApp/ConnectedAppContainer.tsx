@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useState} from 'react';
+import React, {FC, useCallback, useEffect, useState} from 'react';
 import {Breadcrumb, TabBar, useTabBar} from 'akeneo-design-system';
 import {Translate, useTranslate} from '../../../shared/translate';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
@@ -11,6 +11,9 @@ import {ConnectedAppPermissions} from './ConnectedAppPermissions';
 import {NotificationLevel, useNotify} from '../../../shared/notify';
 import usePermissionsFormProviders from '../../hooks/use-permissions-form-providers';
 import {useHistory} from 'react-router';
+import {useSaveConnectedAppMonitoringSettings} from '../../hooks/use-save-connected-app-monitoring-settings';
+import {useFetchConnectedAppMonitoringSettings} from '../../hooks/use-fetch-connected-app-monitoring-settings';
+import {MonitoringSettings} from '../../../model/Apps/monitoring-settings';
 import {ConnectedAppErrorMonitoring} from './ErrorMonitoring/ConnectedAppErrorMonitoring';
 
 type Props = {
@@ -30,8 +33,15 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
     const connectedAppsListHref = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps')}`;
     const [providers, permissions, setPermissions] = usePermissionsFormProviders(connectedApp.user_group_name);
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState<boolean>(false);
+    const fetchConnectedAppMonitoringSettings = useFetchConnectedAppMonitoringSettings(connectedApp.connection_code);
+    const saveConnectedAppMonitoringSettings = useSaveConnectedAppMonitoringSettings(connectedApp.connection_code);
+    const [monitoringSettings, setMonitoringSettings] = useState<MonitoringSettings | null>(null);
     const [activeTab, setActiveTab] = useSessionStorageState(settingsTabName, 'pim_connectedApp_activeTab');
     const [isCurrent, switchTo] = useTabBar(activeTab);
+
+    useEffect(() => {
+        fetchConnectedAppMonitoringSettings().then(setMonitoringSettings);
+    }, [connectedApp.connection_code]);
 
     const breadcrumb = (
         <Breadcrumb>
@@ -79,9 +89,28 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
         );
     };
 
+    const notifyMonitoringSettingsSaveError = () => {
+        notify(
+            NotificationLevel.ERROR,
+            translate(
+                'akeneo_connectivity.connection.connect.connected_apps.edit.flash.monitoring_settings_error.description'
+            )
+        );
+    };
+
     const handleSave = async () => {
         let hasStillUnsavedChanged = false;
         let hasSavedSomething = false;
+
+        if (null !== monitoringSettings) {
+            try {
+                await saveConnectedAppMonitoringSettings(monitoringSettings);
+                hasSavedSomething = true;
+            } catch {
+                notifyMonitoringSettingsSaveError();
+                hasStillUnsavedChanged = true;
+            }
+        }
 
         if (null !== providers) {
             for (const provider of providers) {
@@ -118,6 +147,17 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
             setHasUnsavedChanges(true);
         },
         [setPermissions, setHasUnsavedChanges, permissions]
+    );
+
+    const handleSetMonitoringSettings = useCallback(
+        (newMonitoringSettings: MonitoringSettings) => {
+            if (JSON.stringify(newMonitoringSettings) === JSON.stringify(monitoringSettings)) {
+                return;
+            }
+            setMonitoringSettings(newMonitoringSettings);
+            setHasUnsavedChanges(true);
+        },
+        [monitoringSettings, setMonitoringSettings, setHasUnsavedChanges]
     );
 
     return (
@@ -176,7 +216,13 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                     </TabBar.Tab>
                 </TabBar>
 
-                {isCurrent(settingsTabName) && <ConnectedAppSettings connectedApp={connectedApp} />}
+                {isCurrent(settingsTabName) && (
+                    <ConnectedAppSettings
+                        connectedApp={connectedApp}
+                        monitoringSettings={monitoringSettings}
+                        handleSetMonitoringSettings={handleSetMonitoringSettings}
+                    />
+                )}
 
                 {isCurrent(permissionsTabName) && null !== providers && (
                     <ConnectedAppPermissions
