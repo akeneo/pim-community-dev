@@ -130,9 +130,9 @@ jobs:
     debug_octo:
         machine:
             image: ubuntu-2004:202101-01
-            steps:
-                -   attach_workspace:
-                        at: ~/
+        steps:
+            -   attach_workspace:
+                    at: ~/
 #                -   run: |
 #                        changes=`git show --name-only ${CIRCLE_SHA1} | tail -n +7`
 #                        echo $changes
