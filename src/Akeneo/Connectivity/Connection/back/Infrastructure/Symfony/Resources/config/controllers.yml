@@ -145,7 +145,6 @@ services:
         class: 'Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetAllConnectedAppsAction'
         arguments:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
-            - '@oro_security.security_facade'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository'
 
     akeneo_connectivity.connection.internal_api.controller.apps.get_connected_app:
