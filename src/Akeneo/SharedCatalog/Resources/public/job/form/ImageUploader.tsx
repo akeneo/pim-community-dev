@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {MediaFileInput, FileInfo, Field} from 'akeneo-design-system';
+import {MediaFileInput, FileInfo, Field, Helper} from 'akeneo-design-system';
 
 const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png'];
 const FILESIZE_LIMIT = 2000 * 1000;
@@ -26,60 +26,42 @@ type ImageUploaderProps = {
 
 const ImageUploader = ({label, image, validationErrors, onChange}: ImageUploaderProps) => {
   const [currentImage, setCurrentImage] = useState<string | null>(image);
-  const [errors, setErrors] = useState<string[]>([]);
   const translate = useTranslate();
 
   const handleUpload = async (file: File, onProgress: (progress: number) => void) => {
-    const fileInfo = {
-      filePath: await getBase64(file),
-      originalFilename: file.name,
-      size: file.size,
-    };
-    onProgress(100);
-    return fileInfo;
-  };
-
-  const handleChange = async (fileInfo: FileInfo) => {
-    setErrors([]);
-
-    if (null === fileInfo) {
-      setCurrentImage(null);
-      return;
-    }
-
-    const {filePath, originalFilename, size} = fileInfo;
-
-    if (size && FILESIZE_LIMIT < size) {
-      setErrors(errors => [...errors, translate('shared_catalog.branding.filesize_too_large')]);
-      return;
+    if (file.size && FILESIZE_LIMIT < file.size) {
+      throw new Error(translate('shared_catalog.branding.filesize_too_large'));
     }
 
     if (
       !ALLOWED_EXTENSIONS.includes(
-        originalFilename
+        file.name
           .toLowerCase()
           .split('.')
           .pop() || ''
       )
     ) {
-      setErrors(errors => [
-        ...errors,
-        translate('shared_catalog.branding.invalid_extension', {allowed_extensions: ALLOWED_EXTENSIONS.join(', ')}),
-      ]);
-      return;
+      throw new Error(translate('shared_catalog.branding.invalid_extension'));
     }
 
-    setCurrentImage(filePath);
+    const fileInfo = {
+      filePath: await getBase64(file),
+      originalFilename: file.name,
+      size: file.size,
+    };
+
+    onProgress(100);
+
+    return fileInfo;
+  };
+
+  const handleChange = async (fileInfo: FileInfo) => {
+    setCurrentImage(fileInfo?.filePath);
   };
 
   useEffect(() => {
     onChange(currentImage);
-    setErrors([]);
   }, [currentImage]);
-
-  useEffect(() => {
-    setErrors(validationErrors);
-  }, []);
 
   return (
     <Field label={label}>
@@ -87,11 +69,16 @@ const ImageUploader = ({label, image, validationErrors, onChange}: ImageUploader
         clearTitle={translate('pim_common.remove')}
         onChange={handleChange}
         thumbnailUrl={currentImage}
-        uploadErrorLabel={errors[0]}
+        uploadErrorLabel={translate('shared_catalog.branding.invalid_file')}
         uploader={handleUpload}
         uploadingLabel={translate('shared_catalog.branding.uploading')}
         value={currentImage ? {filePath: currentImage, originalFilename: ''} : null}
       />
+      {validationErrors.map(error => (
+        <Helper key={error} inline={true} level="error">
+          {error}
+        </Helper>
+      ))}
     </Field>
   );
 };

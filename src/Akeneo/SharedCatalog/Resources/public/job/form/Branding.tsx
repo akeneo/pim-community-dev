@@ -2,7 +2,7 @@ import React from 'react';
 import styled, {ThemeProvider} from 'styled-components';
 import {DependenciesProvider, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {ImageUploader} from './ImageUploader';
-import {pimTheme} from 'akeneo-design-system';
+import {pimTheme, ColorInput, Field, Helper} from 'akeneo-design-system';
 
 const FieldContainer = styled.div`
   margin-top: 40px;
@@ -11,11 +11,13 @@ const FieldContainer = styled.div`
 type Branding = {
   image: string | null;
   cover_image: string | null;
+  color: string;
 };
 
 type BrandingError = {
   image: string;
   cover_image: string;
+  color: string;
 };
 
 type BrandingProps = {
@@ -41,7 +43,7 @@ const BrandingForm = ({branding, validationErrors, onBrandingChange}: BrandingPr
         <ImageUploader
           label={translate('shared_catalog.branding.upload.logo')}
           image={branding.image}
-          validationErrors={validationErrors.map(error => translate(error.image))}
+          validationErrors={validationErrors.filter(error => 'image' in error).map(error => translate(error.image))}
           onChange={image => onBrandingChange({...branding, image})}
         />
       </FieldContainer>
@@ -49,9 +51,20 @@ const BrandingForm = ({branding, validationErrors, onBrandingChange}: BrandingPr
         <ImageUploader
           label={translate('shared_catalog.branding.upload.cover')}
           image={branding.cover_image}
-          validationErrors={validationErrors.map(error => translate(error.cover_image))}
+          validationErrors={validationErrors.filter(error => 'cover_image' in error).map(error => translate(error.cover_image))}
           onChange={cover_image => onBrandingChange({...branding, cover_image})}
         />
+      </FieldContainer>
+      <FieldContainer>
+        <Field label={translate('shared_catalog.branding.color')}>
+          <ColorInput
+            onChange={(color) => onBrandingChange({...branding, color})}
+            value={branding.color}
+          />
+        </Field>
+        {validationErrors.filter(error => 'color' in error).map(error => (
+          <Helper>{translate(error.color)}</Helper>
+        ))}
       </FieldContainer>
     </>
   );

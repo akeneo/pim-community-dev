@@ -26,6 +26,10 @@ define([
 
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.onValidationError.bind(this));
 
+      this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', () => {
+        this.validationErrors = [];
+      });
+
       return BaseForm.prototype.configure.apply(this, arguments);
     },
 
