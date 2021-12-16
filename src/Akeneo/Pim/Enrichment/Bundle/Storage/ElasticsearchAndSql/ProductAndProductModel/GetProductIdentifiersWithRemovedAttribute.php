@@ -24,6 +24,11 @@ final class GetProductIdentifiersWithRemovedAttribute implements GetProductIdent
                 'document_type' => ProductInterface::class,
             ],
         ]);
+        $this->searchQueryBuilder->addFilter([
+            'terms' => [
+                'attributes_for_this_level' => $attributesCodes,
+            ],
+        ]);
         foreach ($attributesCodes as $attributeCode){
             $this->searchQueryBuilder->addShould([
                 'exists' => ['field' => sprintf('values.%s-*', $attributeCode)],
