@@ -24,19 +24,18 @@ jobs:
                   command: |
                       yq eval-all '. as $item ireduce ({}; . *+ $item )' .circleci/*/*.yml  .circleci/*/*/*.yml > .circleci/merged_config.yml
                       cat .circleci/merged_config.yml
-            - continuation/continue:
-                  configuration_path: .circleci/merged_config.yml
+            -   path-filtering/filter:
+                    name: enable_dynamic_jobs
+                    mapping: |
+                        upgrades/.* run-database-migration-tests true
+                    base-revision: master
+                    config-path: .circleci/merged_config.yml
+#            - continuation/continue:
+#                  configuration_path: .circleci/merged_config.yml
 
 workflows:
     version: 2
 
     merge_config_workflow:
         jobs:
-            -   path-filtering/filter:
-                    name: enable_dynamic_jobs
-                    mapping: |
-                        upgrades/.* run-database-migration-tests true
-                    base-revision: master
-            - merge_config:
-                requires:
-                    - enable_dynamic_jobs
+            - merge_config
