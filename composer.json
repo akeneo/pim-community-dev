@@ -112,7 +112,7 @@
         "symfony/requirements-checker": "^1.1",
         "symfony/routing": "4.4.25",
         "symfony/security-acl": "3.0.2",
-        "symfony/security-bundle": "4.4.25",
+        "symfony/security-bundle": "4.4.34",
         "symfony/security-core": "4.4.25",
         "symfony/security-csrf": "4.4.25",
         "symfony/security-http": "4.4.25",
