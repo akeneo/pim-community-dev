@@ -1,4 +1,4 @@
-import {css} from 'styled-components';
+import {css, keyframes} from 'styled-components';
 import {Color, FontSize, getColor, getFontSize, Palette, FontFamily} from './theme';
 
 const CommonStyle = css`
@@ -6,6 +6,32 @@ const CommonStyle = css`
   color: ${getColor('grey', 120)};
   font-size: ${getFontSize('default')};
   line-height: 20px;
+`;
+
+const loadingBreath = keyframes`
+  0% {background-position:0 50%}
+  50% {background-position:100% 50%}
+  100% {background-position:0 50%}
+`;
+
+const placeholderStyle = css`
+  animation: ${loadingBreath} 2s infinite;
+  background: linear-gradient(270deg, #fdfdfd, #eee);
+  background-size: 400% 400%;
+  border-color: transparent;
+  border-style: none;
+  color: transparent;
+  border-radius: 3px;
+  cursor: default;
+  outline: none;
+  :hover,
+  :last-child,
+  ::placeholder {
+    color: transparent;
+  }
+  > * {
+    opacity: 0;
+  }
 `;
 
 const color: Color = {
@@ -86,4 +112,4 @@ const fontFamily: FontFamily = {
   monospace: 'Courier, "MS Courier New", Prestige, "Everson Mono"',
 };
 
-export {color, fontSize, palette, CommonStyle, fontFamily};
+export {color, fontSize, palette, CommonStyle, fontFamily, placeholderStyle};
