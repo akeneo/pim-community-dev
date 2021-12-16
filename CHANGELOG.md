@@ -151,6 +151,7 @@
 - PIM-10194: Fix pagination for list products/product models endpoints with search_after pagination type
 - PIM-10199: Fix occasional segmentation fault when generating thumbnails
 - PIM-10198: Fixed error message display when saving family variant
+- PIM-10206: Fix product and product model save when they had values for a deleted channel or locale
 
 ## New features
 
