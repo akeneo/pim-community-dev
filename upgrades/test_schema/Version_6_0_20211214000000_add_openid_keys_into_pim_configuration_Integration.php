@@ -15,7 +15,7 @@ class Version_6_0_20211214000000_add_openid_keys_into_pim_configuration_Integrat
 {
     use ExecuteMigrationTrait;
 
-    private const MIGRATION_LABEL = '6_0_20211214000000_add_openid_keys_into_pim_configuration';
+    private const MIGRATION_LABEL = '_6_0_20211214000000_add_openid_keys_into_pim_configuration';
 
     private Connection $connection;
 
