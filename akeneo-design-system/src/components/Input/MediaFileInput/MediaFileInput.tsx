@@ -34,9 +34,6 @@ const MediaFileInputContainer = styled.div<{isCompact: boolean; readOnly: boolea
       &:focus {
         box-shadow: 0 0 0 2px ${getColor('blue', 40)};
       }
-      &:hover {
-        ${ImportIllustration.animatedMixin}
-      }
     `}
 `;
 
