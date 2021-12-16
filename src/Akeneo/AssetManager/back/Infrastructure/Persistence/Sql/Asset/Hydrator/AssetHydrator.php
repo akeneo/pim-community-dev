@@ -30,11 +30,10 @@ use Doctrine\DBAL\Types\Types;
  */
 class AssetHydrator implements AssetHydratorInterface
 {
-    private AbstractPlatform $platform;
-
-    public function __construct(Connection $connection, private ValueHydratorInterface $valueHydrator)
-    {
-        $this->platform = $connection->getDatabasePlatform();
+    public function __construct(
+        private Connection $connection,
+        private ValueHydratorInterface $valueHydrator
+    ) {
     }
 
     public function hydrate(
@@ -42,15 +41,17 @@ class AssetHydrator implements AssetHydratorInterface
         ValueKeyCollection $valueKeyCollection,
         array $attributes
     ): Asset {
+        $platform = $this->connection->getDatabasePlatform();
+
         $assetIdentifier = Type::getType(Types::STRING)
-            ->convertToPHPValue($row['identifier'], $this->platform);
+            ->convertToPHPValue($row['identifier'], $platform);
         $assetFamilyIdentifier = Type::getType(Types::STRING)
-            ->convertToPHPValue($row['asset_family_identifier'], $this->platform);
+            ->convertToPHPValue($row['asset_family_identifier'], $platform);
         $assetCode = Type::getType(Types::STRING)
-            ->convertToPHPValue($row['code'], $this->platform);
+            ->convertToPHPValue($row['code'], $platform);
         $valueCollection = json_decode($row['value_collection'], true);
-        $createdAt = Type::getType(Types::DATETIME_IMMUTABLE)->convertToPHPValue($row['created_at'], $this->platform);
-        $updatedAt = Type::getType(Types::DATETIME_IMMUTABLE)->convertToPHPValue($row['updated_at'], $this->platform);
+        $createdAt = Type::getType(Types::DATETIME_IMMUTABLE)->convertToPHPValue($row['created_at'], $platform);
+        $updatedAt = Type::getType(Types::DATETIME_IMMUTABLE)->convertToPHPValue($row['updated_at'], $platform);
 
         return Asset::fromState(
             AssetIdentifier::fromString($assetIdentifier),

@@ -31,8 +31,8 @@ class ExportAssetsCommand extends Command
         parent::__construct(static::$defaultName);
     }
 
-    protected function configure(
-    ) {
+    protected function configure()
+    {
         $this
             ->setDescription('Export assets and their variations of a 3.x PIM into CSV')
             ->addArgument('fileDir', InputArgument::REQUIRED, 'The fileDir of the file to import.')

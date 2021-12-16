@@ -21,6 +21,9 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
     /** The limit above which we do not try to generate a preview, in bytes */
     private const PREVIEW_SIZE_LIMIT = 60_000_000;
 
+    /**
+     * @param ?string[] $supportedMimeTypes
+     */
     public function __construct(
         protected DataManager $dataManager,
         protected CacheManager $cacheManager,

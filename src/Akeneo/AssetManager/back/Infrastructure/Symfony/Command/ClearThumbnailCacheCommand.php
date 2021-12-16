@@ -31,16 +31,15 @@ class ClearThumbnailCacheCommand extends Command
     public function __construct(
         private CacheManager $cacheManager,
         private FilterConfiguration $filterConfiguration
-    )
-    {
+    ) {
         parent::__construct();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function configure(
-    ) {
+    protected function configure()
+    {
         $this
             ->addArgument(
                 'preview_type',

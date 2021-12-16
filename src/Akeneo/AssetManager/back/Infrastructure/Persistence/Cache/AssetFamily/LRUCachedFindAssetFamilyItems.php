@@ -13,11 +13,10 @@ use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyItemsInterface;
 class LRUCachedFindAssetFamilyItems implements FindAssetFamilyItemsInterface
 {
     /** @var array<AssetFamilyItem>|null */
-    private ?array $cachedAssetFamilyItems;
+    private ?array $cachedAssetFamilyItems = null;
 
     public function __construct(private FindAssetFamilyItemsInterface $findAssetFamilyItems)
     {
-        $this->cachedAssetFamilyItems = null;
     }
 
     /**

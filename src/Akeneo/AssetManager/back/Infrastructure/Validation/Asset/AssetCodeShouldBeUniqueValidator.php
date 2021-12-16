@@ -33,7 +33,7 @@ class AssetCodeShouldBeUniqueValidator extends ConstraintValidator
 
     public function __construct(
         private AssetExistsInterface $assetExists,
-        private int $batchSize=100
+        private int $batchSize = 100
     ) {
     }
 

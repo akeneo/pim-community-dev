@@ -44,8 +44,8 @@ class PurgeOrphanAssetsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure(
-    ) {
+    protected function configure()
+    {
         $this
             ->setDescription('Identify all the file info lines not linked to an asset anymore and remove them.');
     }

@@ -29,7 +29,7 @@ class RuleEngineValidatorACL implements RuleEngineValidatorACLInterface
     public function __construct(
         private DenormalizerInterface $actionDenormalizer,
         private ValidatorInterface $productConditionValidator,
-        private ValidatorInterface $productAtionValidator,
+        private ValidatorInterface $productActionValidator,
     ) {
     }
 
@@ -45,7 +45,7 @@ class RuleEngineValidatorACL implements RuleEngineValidatorACLInterface
     {
         $productAction = $this->createProductAction($normalizedProductAssignment);
 
-        $ruleEngineViolations = $this->productAtionValidator->validate($productAction);
+        $ruleEngineViolations = $this->productActionValidator->validate($productAction);
 
         return $this->removeCannotFindAssetViolation($ruleEngineViolations);
     }

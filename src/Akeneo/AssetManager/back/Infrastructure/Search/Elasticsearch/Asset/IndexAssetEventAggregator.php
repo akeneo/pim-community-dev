@@ -33,8 +33,8 @@ class IndexAssetEventAggregator implements EventAggregatorInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents(
-    ) {
+    public static function getSubscribedEvents()
+    {
         return [
             AssetUpdatedEvent::class     => 'whenAssetUpdated',
             AssetCreatedEvent::class     => 'whenAssetCreated',

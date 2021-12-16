@@ -65,9 +65,8 @@ class ComputeTransformations implements TaskletInterface, TrackableTaskletInterf
     ) {
     }
 
-    public function setStepExecution(
-        StepExecution $stepExecution,
-    ) {
+    public function setStepExecution(StepExecution $stepExecution)
+    {
         $this->stepExecution = $stepExecution;
     }
 
