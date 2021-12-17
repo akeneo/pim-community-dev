@@ -104,3 +104,23 @@ test('It displays a validation error when a file with an invalid extension is pr
 
   expect(screen.getByText('shared_catalog.branding.invalid_file')).toBeInTheDocument();
 });
+
+test('It can update the branding color', async () => {
+  const branding = {image: null};
+  const onChange = jest.fn();
+
+  renderWithProviders(<Branding branding={branding} validationErrors={[]} onBrandingChange={onChange} />);
+
+  const colorInput = screen.getByLabelText('shared_catalog.branding.color');
+
+  await act(async () => {
+    fireEvent.change(colorInput, {
+      target: {
+        value: '#ffffff',
+      },
+    });
+    await flushPromises();
+  });
+
+  expect(onChange).toHaveBeenCalledWith({image: null, color: '#ffffff'});
+});

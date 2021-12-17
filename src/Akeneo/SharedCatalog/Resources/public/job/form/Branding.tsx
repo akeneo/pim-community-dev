@@ -65,12 +65,12 @@ const BrandingForm = ({branding, validationErrors, onBrandingChange}: BrandingPr
             }}
             value={branding.color ?? sharedCatalogsTheme.color.brand100}
           />
+          {validationErrors
+            .filter(error => 'color' in error)
+            .map(error => (
+              <Helper key={error.color}>{translate(error.color)}</Helper>
+            ))}
         </Field>
-        {validationErrors
-          .filter(error => 'color' in error)
-          .map(error => (
-            <Helper>{translate(error.color)}</Helper>
-          ))}
       </FieldContainer>
     </>
   );
