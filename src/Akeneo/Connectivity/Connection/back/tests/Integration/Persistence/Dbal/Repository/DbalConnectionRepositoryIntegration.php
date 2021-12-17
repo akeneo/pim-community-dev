@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Repository;
 
-use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionImage;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionLabel;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository\DbalConnectionRepository;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection as DbalConnection;
@@ -70,7 +70,7 @@ class DbalConnectionRepositoryIntegration extends TestCase
         Assert::assertSame('magento', $result['code']);
         Assert::assertSame('Pimgento', $result['label']);
         Assert::assertSame(FlowType::OTHER, $result['flow_type']);
-        Assert::assertSame('a/b/c/app_image.jpg' , $result['image']);
+        Assert::assertSame('a/b/c/app_image.jpg', $result['image']);
         Assert::assertNotNull($result['client_id']);
         Assert::assertNotNull($result['user_id']);
     }
@@ -102,7 +102,7 @@ class DbalConnectionRepositoryIntegration extends TestCase
         Assert::assertNotNull($result['client_id']);
         Assert::assertNotNull($result['user_id']);
         Assert::assertTrue((bool) $result['auditable']);
-        Assert::assertSame('connection_type' , $result['type']);
+        Assert::assertSame('connection_type', $result['type']);
     }
 
     protected function getConfiguration(): Configuration

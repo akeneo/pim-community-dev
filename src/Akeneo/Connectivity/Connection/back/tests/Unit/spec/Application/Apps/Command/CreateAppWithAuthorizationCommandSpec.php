@@ -27,5 +27,4 @@ class CreateAppWithAuthorizationCommandSpec extends ObjectBehavior
     {
         $this->getClientId()->shouldReturn('test');
     }
-
 }

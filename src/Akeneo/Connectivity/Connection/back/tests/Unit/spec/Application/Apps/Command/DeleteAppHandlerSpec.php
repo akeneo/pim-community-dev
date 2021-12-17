@@ -15,8 +15,8 @@ use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\DeleteConnected
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppDeletionQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ClientId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
 use PhpSpec\ObjectBehavior;
 
 class DeleteAppHandlerSpec extends ObjectBehavior
