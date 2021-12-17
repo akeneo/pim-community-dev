@@ -139,17 +139,25 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
 
   const emailToAddContainInvalid = recipientsToAdd.some(recipientToAdd => !isValidEmail(recipientToAdd.email));
   const currentRecipientEmail = currentRecipients.map(currentRecipient => currentRecipient.email);
-  const emailToAddIsDuplicated = recipientsToAdd.some(recipientToAdd => currentRecipientEmail.includes(recipientToAdd.email));
+  const emailToAddIsDuplicated = recipientsToAdd.some(recipientToAdd =>
+    currentRecipientEmail.includes(recipientToAdd.email)
+  );
   const maxRecipientLimitReached = MAX_RECIPIENT_COUNT <= currentRecipients.length;
 
-  const handleRecipientsInputChange = useCallback((addresses: string[]) => {
-    setRecipientsToAdd(addresses.map(address => ({email: address})));
-  }, [recipientsToAdd]);
+  const handleRecipientsInputChange = useCallback(
+    (addresses: string[]) => {
+      setRecipientsToAdd(addresses.map(address => ({email: address})));
+    },
+    [recipientsToAdd]
+  );
 
   const handleAddRecipients = useCallback(() => {
     if (0 === recipientsToAdd.length || emailToAddContainInvalid) return;
 
-    const newRecipients = arrayUnique<Recipient>([...currentRecipients, ...recipientsToAdd], (first, second) => first.email === second.email);
+    const newRecipients = arrayUnique<Recipient>(
+      [...currentRecipients, ...recipientsToAdd],
+      (first, second) => first.email === second.email
+    );
     setCurrentRecipients(newRecipients.slice(0, MAX_RECIPIENT_COUNT));
     setRecipientsToAdd(newRecipients.slice(MAX_RECIPIENT_COUNT));
   }, [currentRecipients, recipientsToAdd, emailToAddContainInvalid]);

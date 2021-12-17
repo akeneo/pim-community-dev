@@ -67,7 +67,7 @@ test('It warn and ignore duplicate email', () => {
     userEvent.click(button);
   });
 
-  expect(mockOnRecipientsChange).toBeCalledWith([{email}])
+  expect(mockOnRecipientsChange).toBeCalledWith([{email}]);
 });
 
 test('I can see a backend validation error', () => {
