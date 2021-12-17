@@ -100,6 +100,8 @@ describe('RecordInput', () => {
     );
 
     await openDropDown();
+
+    expect(await screen.findByTitle('Vannes')).toBeInTheDocument();
     expect(screen.getAllByTitle('default').length).toBe(2);
   });
 });
