@@ -29,7 +29,7 @@ final class CountProductModelsWithRemovedAttribute implements CountProductModels
                 'attributes_for_this_level' => $attributesCodes,
             ],
         ]);
-        foreach ($attributesCodes as $attributeCode){
+        foreach ($attributesCodes as $attributeCode) {
             $this->searchQueryBuilder->addShould([
                 'exists' => ['field' => sprintf('values.%s-*', $attributeCode)],
             ]);
