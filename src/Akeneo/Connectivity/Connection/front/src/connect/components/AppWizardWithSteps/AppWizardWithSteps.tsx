@@ -94,7 +94,7 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
         (providerKey: string, providerPermissions: object) => {
             setPermissions(state => ({...state, [providerKey]: providerPermissions}));
         },
-        [setPermissions],
+        [setPermissions]
     );
 
     const {confirm, processing} = useConfirmHandler(clientId, providers, permissions);
@@ -107,9 +107,7 @@ export const AppWizardWithSteps: FC<Props> = ({clientId}) => {
         return (
             <FullScreen>
                 <Loader>
-                    <h3>
-                        {translate('akeneo_connectivity.connection.connect.apps.loader.message')}
-                    </h3>
+                    <h3>{translate('akeneo_connectivity.connection.connect.apps.loader.message')}</h3>
                     <img src={loaderImage} />
                 </Loader>
             </FullScreen>

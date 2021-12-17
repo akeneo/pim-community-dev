@@ -6,8 +6,8 @@ import {PermissionFormProvider} from '../../../shared/permission-form-registry';
 import {PermissionsByProviderKey} from '../../../model/Apps/permissions-by-provider-key';
 
 type Result = {
-  confirm: () => Promise<void>;
-  processing: boolean;
+    confirm: () => Promise<void>;
+    processing: boolean;
 };
 
 export const useConfirmHandler = (
