@@ -12,8 +12,19 @@ use PhpSpec\ObjectBehavior;
  */
 class CreateJsonWebTokenSpec  extends ObjectBehavior
 {
-    public function it_(): void
+    public function it_creates_jwt_token(): void
     {
+    }
 
+    public function it_creates_jwt_token_with_scope_profile(): void
+    {
+    }
+
+    public function it_creates_jwt_token_with_scope_email(): void
+    {
+    }
+
+    public function it_throws_exception_because_openid_scope_has_not_been_consented(): void
+    {
     }
 }
