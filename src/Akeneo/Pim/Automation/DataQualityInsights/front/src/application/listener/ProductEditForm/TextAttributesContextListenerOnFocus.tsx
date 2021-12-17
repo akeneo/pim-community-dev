@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useLayoutEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useLayoutEffect, useMemo} from 'react';
 import {useDispatch} from 'react-redux';
 import {
   useGetEditorHighlightWidgetsList,
@@ -6,10 +6,10 @@ import {
   useProduct,
   useProductFamily,
 } from '../../../infrastructure/hooks';
-import {createWidget, EditorElement, WidgetsCollection} from '../../helper';
+import {createWidget, EditorElement} from '../../helper';
 import {Product} from '../../../domain';
 import {Attribute, Family} from '@akeneo-pim-community/data-quality-insights/src/domain';
-import {initializeWidgetsListAction} from '../../../infrastructure/reducer';
+import {initializeWidgetsListAction} from '../../../infrastructure';
 import useFetchActiveLocales from '../../../infrastructure/hooks/EditorHighlight/useFetchActiveLocales';
 import {useAttributeGroupsStatusContext} from '@akeneo-pim-community/data-quality-insights/src/application';
 import {AttributeGroupsStatusCollection} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks';
