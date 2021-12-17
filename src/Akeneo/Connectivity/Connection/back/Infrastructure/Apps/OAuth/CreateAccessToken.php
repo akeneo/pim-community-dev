@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAccessTokenInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetConnectedAppScopesQueryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAccessTokenQuery;
 use OAuth2\IOAuth2GrantCode;
 use OAuth2\Model\IOAuth2AuthCode;
 
@@ -16,21 +17,13 @@ use OAuth2\Model\IOAuth2AuthCode;
  */
 class CreateAccessToken implements CreateAccessTokenInterface
 {
-    private IOAuth2GrantCode $storage;
-    private ClientProviderInterface $clientProvider;
-    private RandomCodeGeneratorInterface $randomCodeGenerator;
-    private GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery;
-
     public function __construct(
-        IOAuth2GrantCode $storage,
-        ClientProviderInterface $clientProvider,
-        RandomCodeGeneratorInterface $randomCodeGenerator,
-        GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery
+        private IOAuth2GrantCode $storage,
+        private ClientProviderInterface $clientProvider,
+        private RandomCodeGeneratorInterface $randomCodeGenerator,
+        private GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
+        private GetAccessTokenQuery $getAccessTokenQuery,
     ) {
-        $this->storage = $storage;
-        $this->clientProvider = $clientProvider;
-        $this->randomCodeGenerator = $randomCodeGenerator;
-        $this->getConnectedAppScopesQuery = $getConnectedAppScopesQuery;
     }
 
     /**
@@ -49,14 +42,15 @@ class CreateAccessToken implements CreateAccessTokenInterface
             throw new \InvalidArgumentException('Unknown authorization code.');
         }
 
-        $token = $this->randomCodeGenerator->generate();
-
-        /* @phpstan-ignore-next-line */
-        $this->storage->createAccessToken($token, $client, $authCode->getData(), null);
-
-        $this->storage->markAuthCodeAsUsed($code);
-
         $scopes = $this->getConnectedAppScopesQuery->execute($clientId);
+        if (null === $token = $this->getAccessTokenQuery->execute($clientId, $scopes)) {
+            $token = $this->randomCodeGenerator->generate();
+
+            /* @phpstan-ignore-next-line */
+            $this->storage->createAccessToken($token, $client, $authCode->getData(), null);
+
+            $this->storage->markAuthCodeAsUsed($code);
+        }
 
         return [
             'access_token' => $token,
