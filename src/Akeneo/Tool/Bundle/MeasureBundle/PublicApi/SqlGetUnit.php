@@ -41,6 +41,14 @@ SQL;
             ]
         )->fetchAssociative();
 
+        if (!$result) {
+            throw new \Exception(sprintf(
+                'Unit code %s with family code %s was not found',
+                $unitCode,
+                $measurementFamilyCode
+            ));
+        }
+
         $unit = new Unit();
         $unit->code = $result['code'];
         $unit->labels = json_decode($result['labels'], true);

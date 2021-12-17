@@ -35,6 +35,14 @@ final class SqlGetUnitIntegration extends TestCase
         );
     }
 
+    public function test_it_throws_an_exception_when_unit_is_not_found(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Unit code BAR with family code Foo was not found');
+
+        $this->getQuery()->byMeasurementFamilyCodeAndUnitCode('Foo', 'BAR');
+    }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
