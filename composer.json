@@ -114,7 +114,7 @@
         "symfony/options-resolver": "4.4.18",
         "symfony/intl": "4.4.18",
         "symfony/finder": "4.4.18",
-        "symfony/templating": "4.4.18",
+        "symfony/templating": "4.4.30",
         "symfony/proxy-manager-bridge": "4.4.18",
         "aws/aws-sdk-php": "3.172"
     },
