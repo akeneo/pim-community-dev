@@ -51,20 +51,26 @@ const BrandingForm = ({branding, validationErrors, onBrandingChange}: BrandingPr
         <ImageUploader
           label={translate('shared_catalog.branding.upload.cover')}
           image={branding.cover_image ?? null}
-          validationErrors={validationErrors.filter(error => 'cover_image' in error).map(error => translate(error.cover_image))}
+          validationErrors={validationErrors
+            .filter(error => 'cover_image' in error)
+            .map(error => translate(error.cover_image))}
           onChange={cover_image => onBrandingChange({...branding, cover_image})}
         />
       </FieldContainer>
       <FieldContainer>
         <Field label={translate('shared_catalog.branding.color')}>
           <ColorInput
-            onChange={(color) => {console.log('call on branding change', color); onBrandingChange({...branding, color})}}
+            onChange={color => {
+              onBrandingChange({...branding, color});
+            }}
             value={branding.color ?? sharedCatalogsTheme.color.brand100}
           />
         </Field>
-        {validationErrors.filter(error => 'color' in error).map(error => (
-          <Helper>{translate(error.color)}</Helper>
-        ))}
+        {validationErrors
+          .filter(error => 'color' in error)
+          .map(error => (
+            <Helper>{translate(error.color)}</Helper>
+          ))}
       </FieldContainer>
     </>
   );
