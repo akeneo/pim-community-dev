@@ -25,7 +25,6 @@ use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
-use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -65,7 +64,6 @@ class ProductModelController
     protected IdentifiableObjectRepositoryInterface $channelRepository;
     protected PaginatorInterface $offsetPaginator;
     protected PaginatorInterface $searchAfterPaginator;
-    protected PrimaryKeyEncrypter $primaryKeyEncrypter;
     protected array $apiConfiguration;
     protected ObjectUpdaterInterface $updater;
     protected SimpleFactoryInterface $factory;
@@ -95,7 +93,6 @@ class ProductModelController
         IdentifiableObjectRepositoryInterface $channelRepository,
         PaginatorInterface $offsetPaginator,
         PaginatorInterface $searchAfterPaginator,
-        PrimaryKeyEncrypter $primaryKeyEncrypter,
         ObjectUpdaterInterface $updater,
         SimpleFactoryInterface $factory,
         SaverInterface $saver,
@@ -124,7 +121,6 @@ class ProductModelController
         $this->channelRepository = $channelRepository;
         $this->offsetPaginator = $offsetPaginator;
         $this->searchAfterPaginator = $searchAfterPaginator;
-        $this->primaryKeyEncrypter = $primaryKeyEncrypter;
         $this->updater = $updater;
         $this->factory = $factory;
         $this->saver = $saver;
@@ -546,7 +542,7 @@ class ProductModelController
             $parameters = [
                 'query_parameters'    => $queryParameters,
                 'search_after'        => [
-                    'next' => false !== $lastProductModel ? $this->primaryKeyEncrypter->encrypt($lastProductModel->id()) : null,
+                    'next' => false !== $lastProductModel ? $lastProductModel->code() : null,
                     'self' => $query->searchAfter,
                 ],
                 'list_route_name'     => 'pim_api_product_model_list',

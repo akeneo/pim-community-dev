@@ -2,7 +2,7 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import fetchMock from 'jest-fetch-mock';
 import {historyMock, renderWithProviders} from '../../../test-utils';
-import {screen, waitForElement} from '@testing-library/react';
+import {screen, waitFor} from '@testing-library/react';
 import {AppAuthorizePage} from '@src/connect/pages/AppAuthorizePage';
 import {FeatureFlagsContext} from '@src/shared/feature-flags';
 import {useLocation} from 'react-router-dom';
@@ -30,7 +30,7 @@ jest.mock('react-router-dom', () => ({
 
 test('The wizard renders app wizard', async () => {
     renderWithProviders(<AppAuthorizePage />);
-    await waitForElement(() => screen.getByText('AppWizard'));
+    await waitFor(() => screen.getByText('AppWizard'));
 
     expect(screen.queryByText('AppWizard')).toBeInTheDocument();
     expect(screen.queryByText('AppWizardWithSteps')).not.toBeInTheDocument();
@@ -43,7 +43,7 @@ test('The wizard renders app wizard with steps', async () => {
             <AppAuthorizePage />
         </FeatureFlagsContext.Provider>
     );
-    await waitForElement(() => screen.getByText('AppWizardWithSteps'));
+    await waitFor(() => screen.getByText('AppWizardWithSteps'));
 
     expect(screen.queryByText('AppWizard')).not.toBeInTheDocument();
     expect(screen.queryByText('AuthorizeClientError')).not.toBeInTheDocument();
@@ -55,7 +55,7 @@ test('The wizard renders client error', async () => {
         search: '?error=toto',
     }));
     renderWithProviders(<AppAuthorizePage />);
-    await waitForElement(() => screen.getByText('AuthorizeClientError'));
+    await waitFor(() => screen.getByText('AuthorizeClientError'));
 
     expect(screen.queryByText('AuthorizeClientError')).toBeInTheDocument();
     expect(screen.queryByText('AppWizard')).not.toBeInTheDocument();

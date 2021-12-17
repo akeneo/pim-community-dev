@@ -34,6 +34,6 @@ class CountChannelsSpec extends ObjectBehavior
     {
         $connection->executeQuery(Argument::type('string'))->willReturn($statement);
         $statement->fetchAssociative()->willReturn(['count' => '4']);
-        $this->fetch()->shouldBeLike(new CountVolume(4, 12, 'count_channels'));
+        $this->fetch()->shouldBeLike(new CountVolume(4, 'count_channels'));
     }
 }

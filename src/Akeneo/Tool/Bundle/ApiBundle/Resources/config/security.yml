@@ -1,7 +1,6 @@
 parameters:
     pim_api.security.voter.action_acl.class: Akeneo\Tool\Bundle\ApiBundle\Security\ActionAclVoter
     pim_api.security.access_denied_handler.class: Akeneo\Tool\Bundle\ApiBundle\Security\AccessDeniedHandler
-    pim_api.security.primary_key_encrypter.class: Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter
     fos_oauth_server.server.class: Akeneo\Tool\Bundle\ApiBundle\Security\OAuth2
 
 services:
@@ -15,13 +14,6 @@ services:
 
     pim_api.security.access_denied_handler:
         class: '%pim_api.security.access_denied_handler.class%'
-
-    pim_api.security.primary_key_encrypter:
-        class: '%pim_api.security.primary_key_encrypter.class%'
-        arguments:
-            - 'AES-256-OFB'
-            - '%env(APP_SECRET)%'
-            - '%env(APP_SECRET)%'
 
     fos_oauth_server.server:
         class: '%fos_oauth_server.server.class%'

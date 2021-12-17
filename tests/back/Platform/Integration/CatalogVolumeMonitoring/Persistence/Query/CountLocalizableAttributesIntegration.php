@@ -20,6 +20,5 @@ class CountLocalizableAttributesIntegration extends QueryTestCase
 
         Assert::assertEquals(4, $volume->getVolume());
         Assert::assertEquals('count_localizable_attributes', $volume->getVolumeName());
-        Assert::assertEquals(false, $volume->hasWarning());
     }
 }

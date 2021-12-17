@@ -21,7 +21,6 @@ class CountCategoryTreesIntegration extends QueryTestCase
         //in minimal catalogue we have one root category
         Assert::assertEquals(4, $volume->getVolume());
         Assert::assertEquals('count_category_trees', $volume->getVolumeName());
-        Assert::assertEquals(false, $volume->hasWarning());
     }
 
     /**

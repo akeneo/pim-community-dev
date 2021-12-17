@@ -1,5 +1,27 @@
 # 5.0.x
 
+# 5.0.63 (2021-12-14)
+
+## Bug fixes
+
+- PIM-10204: Use catalog locale for option labels in simple/multi select attributes
+
+# 5.0.62 (2021-12-10)
+
+# 5.0.61 (2021-12-02)
+
+## Bug fixes
+
+- PIM-10147: Make timezones offset dynamic with summer/winter time change in user interface settings
+
+# 5.0.60 (2021-11-30)
+
+# 5.0.59 (2021-11-26)
+
+## Bug fixes
+
+- PIM-10179: Fix migrations on tables job_execution_queue and pim_datagrid_view
+
 # 5.0.58 (2021-11-23)
 
 ## Bug fixes
@@ -17,6 +39,7 @@
 ## Bug fixes
 
 - PIM-10141: [Backport] PIM-9711: Check that a category root isn't linked to a user or a channel before moving it to a sub-category
+- PIM-10128: Fixed disabled user activation after password reset
 
 # 5.0.55 (2021-11-03)
 

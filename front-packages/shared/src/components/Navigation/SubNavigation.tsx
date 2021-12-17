@@ -108,7 +108,7 @@ const SubNavigation: FC<Props> = ({
                     {subEntry.title}
                     {subEntry.disabled && freeTrialEnabled && (
                       <Tag tint="blue">
-                        <StyledLockIcon size={16} color={theme.color.blue100}/>
+                        <StyledLockIcon size={16} color={theme.color.blue100} />
                       </Tag>
                     )}
                     {subEntry.new && <Tag tint="green">New</Tag>}
@@ -150,17 +150,18 @@ const Backlink = styled.div`
   padding-bottom: 10px;
 `;
 
-const StyledSubNavigationItem = styled(SubNavigationItem)<{disabled: boolean, hasIconTag: boolean} & AkeneoThemedProps>`
+const StyledSubNavigationItem = styled(SubNavigationItem)<{disabled: boolean; hasIconTag: boolean} & AkeneoThemedProps>`
   ${Tag} {
     align-self: center;
     box-sizing: content-box;
 
-    ${({hasIconTag}) => hasIconTag && css`
-      height: 24px;
-      padding: 0;
-      box-sizing: border-box;
-    `
-  }
+    ${({hasIconTag}) =>
+      hasIconTag &&
+      css`
+        height: 24px;
+        padding: 0;
+        box-sizing: border-box;
+      `}
 
   ${({disabled}) =>
     disabled &&

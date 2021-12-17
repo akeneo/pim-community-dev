@@ -12,7 +12,6 @@ services:
       - 'another_product_export'
     tags:
       - { name: akeneo_batch.job, connector: 'Akeneo Job Test', type: 'export' }
-      - name: akeneo_batch.job.not_visible_test
 
   akeneo_job.test.integration.job.prepare_evaluation:
     class: Akeneo\Platform\Job\Test\Integration\FakeServices\Job
@@ -20,8 +19,6 @@ services:
       - 'prepare_evaluation'
     tags:
       - { name: akeneo_batch.job, connector: 'Akeneo Job Test', type: 'data_quality_insights' }
-      - name: akeneo_batch.job.not_visible_test
 
-  Akeneo\Platform\Job\Infrastructure\Registry\NotVisibleJobsRegistry:
-    arguments:
-      - !tagged akeneo_batch.job.not_visible_test
+  Akeneo\Platform\Job\Application\SearchJobExecution\ClockInterface:
+    class: Akeneo\Platform\Job\Test\Integration\FakeServices\SystemClock

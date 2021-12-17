@@ -1,0 +1,8 @@
+services:
+  Akeneo\Pim\Enrichment\Component\Product\Command\GroupProductsHandler:
+    arguments:
+      - '@akeneo.pim.enrichment.product.query.find_product_identifiers'
+      - '@pim_catalog.repository.group'
+      - '@pim_catalog.saver.product'
+      - '@pim_catalog.repository.product'
+      - '%pim_job_product_batch_size%'

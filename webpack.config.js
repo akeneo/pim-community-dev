@@ -212,7 +212,10 @@ const webpackConfig = {
           path.resolve(rootDir, 'vendor'),
           path.resolve(rootDir, 'tests'),
           path.resolve(__dirname, 'tests'),
-          path.resolve(rootDir, 'src')
+          path.resolve(rootDir, 'src'),
+          /node_modules\/@testing-library/,
+          /node_modules\/immutable/,
+          /node_modules\/react-test-renderer/
         ],
       },
 

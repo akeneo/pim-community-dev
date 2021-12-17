@@ -1,4 +1,0 @@
-config:
-    paths:
-        pimimportexport/js/JobExecutionStatus: pimimportexport/js/JobExecutionStatus
-        pimimportexport/js/datagrid/Actions: pimimportexport/js/datagrid/Actions

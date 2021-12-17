@@ -2,7 +2,7 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import fetchMock from 'jest-fetch-mock';
 import {historyMock, renderWithProviders} from '../../../test-utils';
-import {wait} from '@testing-library/react';
+import {waitFor} from '@testing-library/react';
 import {PermissionsForm} from '@src/connect/components/PermissionsForm';
 
 beforeEach(() => {
@@ -29,5 +29,5 @@ test('The permissions form renders', async () => {
         />
     );
 
-    await wait(() => expect(myProvider.renderForm).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(myProvider.renderForm).toHaveBeenCalledTimes(1));
 });

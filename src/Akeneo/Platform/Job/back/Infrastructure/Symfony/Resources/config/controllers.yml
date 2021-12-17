@@ -1,12 +1,24 @@
 services:
-    akeneo.job.controller.index_action:
-        class: 'Akeneo\Platform\Job\Infrastructure\Controller\IndexAction'
+    akeneo.job.controller.get_job_execution_action:
+        class: 'Akeneo\Platform\Job\Infrastructure\Controller\GetJobExecutionAction'
         public: true
         arguments:
+            - '@security.helper'
+            - '@oro_security.security_facade'
             - '@Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionHandler'
+            - '@oro_security.security_facade'
 
     akeneo.job.controller.get_job_types_action:
         class: 'Akeneo\Platform\Job\Infrastructure\Controller\GetJobTypesAction'
         public: true
         arguments:
-            - '@Akeneo\Platform\Job\Domain\Query\FindJobTypesInterface'
+            - '@Akeneo\Platform\Job\Application\SearchJobExecution\FindJobTypesInterface'
+            - '@oro_security.security_facade'
+
+    akeneo.job.controller.get_job_users_action:
+        class: 'Akeneo\Platform\Job\Infrastructure\Controller\GetJobUsersAction'
+        public: true
+        arguments:
+            - '@security.helper'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersInterface'

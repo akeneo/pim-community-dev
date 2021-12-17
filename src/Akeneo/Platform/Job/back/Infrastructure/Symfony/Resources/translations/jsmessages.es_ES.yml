@@ -1,0 +1,10 @@
+pim_title:
+  akeneo_job_process_tracker_index: Seguimiento de procesos
+akeneo_job_process_tracker:
+  job_execution_list:
+    table:
+      headers:
+        type: Tipo
+        started_at: Ejecutado el
+        username: Nombre de usuario
+        status: Estado

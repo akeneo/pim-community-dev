@@ -29,22 +29,14 @@ class GroupUpdater implements ObjectUpdaterInterface
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var ProductQueryBuilderFactoryInterface */
-    protected $productQueryBuilderFactory;
 
-    /**
-     * @param GroupTypeRepositoryInterface        $groupTypeRepository
-     * @param AttributeRepositoryInterface        $attributeRepository
-     * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
-     */
+
     public function __construct(
         GroupTypeRepositoryInterface $groupTypeRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $this->groupTypeRepository = $groupTypeRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
     }
 
     /**
@@ -95,9 +87,6 @@ class GroupUpdater implements ObjectUpdaterInterface
             case 'labels':
                 $this->setLabels($group, $data);
                 break;
-            case 'products':
-                $this->setProducts($group, $data);
-                break;
         }
     }
 
@@ -144,38 +133,6 @@ class GroupUpdater implements ObjectUpdaterInterface
             $translation = $group->getTranslation();
             Assert::implementsInterface($translation, GroupTranslationInterface::class);
             $translation->setLabel($label);
-        }
-    }
-
-    /**
-     * @todo Find a better solution than a database query to determine what are the products that have been added.
-     *       (it will certainly cause a BC-break)
-     */
-    protected function setProducts(GroupInterface $group, array $productIdentifiers)
-    {
-        $oldProductIdentifiers = [];
-        foreach ($group->getProducts() as $product) {
-            $oldProductIdentifiers[] = $product->getIdentifier();
-            // Remove products that are no longer in the group
-            if (!in_array($product->getIdentifier(), $productIdentifiers)) {
-                $group->removeProduct($product);
-            }
-        }
-
-        // Extract the products that are not already in the group to add them to it
-        $productIdentifiersToAdd = array_values(array_diff($productIdentifiers, $oldProductIdentifiers));
-
-        if (empty($productIdentifiersToAdd)) {
-            return;
-        }
-
-        $pqb = $this->productQueryBuilderFactory->create();
-        $pqb->addFilter('identifier', Operators::IN_LIST, $productIdentifiersToAdd);
-
-        $products = $pqb->execute();
-
-        foreach ($products as $product) {
-            $group->addProduct($product);
         }
     }
 }

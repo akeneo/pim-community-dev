@@ -59,6 +59,14 @@ akeneo_connectivity.connection:
         empty: 没有与您的版本兼容的应用
       unreachable: 无法访问商城，请稍后再试。
       scroll_to_top: 滚动到顶部
+    connected_apps:
+      edit:
+        tabs:
+          settings: 设置 
+          permissions: 权限
+      delete:
+        title: 确认删除 
+        link: 此处可查看产生的影响。
     apps:
       wizard:
         title: 连接
@@ -71,13 +79,8 @@ akeneo_connectivity.connection:
         progress:
           authorizations: 授权
           permissions: 权限
-          well_done: 做得好！
         authorize:
-          title: '应用 {{ app_name }} 需要'
-          no_scope_title: '应用 {{ app_name }} 想要访问您的 PIM。'
           no_scope: 未请求特定的授权。
-          helper: 要了解更多关于应用授权的信息，
-          helper_link: 查看我们的“帮助中心”获取更多信息。
       title: 连接
       activate:
         flash:
@@ -104,8 +107,6 @@ akeneo_connectivity.connection:
         response_type:
           not_blank: response_type 为必填项。
           must_be_code: response_type 必须为“代码”。
-        scope:
-          must_be_valid: 范围无效。
         redirect_uri:
           not_blank: redirect_uri 为必填项。
           must_be_url: redirect_uri 不是有效的 URL。
@@ -387,3 +388,8 @@ akeneo_connectivity.connection:
     error_message: 哎呀！发生错误...
     reload_helper: 请重新加载页面并重试。
     reload_button: 重新加载
+pim_permissions:
+  widget:
+    action:
+      all: 所有
+    all: 所有

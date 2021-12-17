@@ -1,9 +1,0 @@
-parameters:
-    env(FLAG_CONTROL_VOLUME_MONITORING_NEW_PAGE_ENABLED): 0
-
-services:
-    akeneo_control_volume_monitoring_new_page.feature:
-        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
-        arguments:
-            - '%env(bool:FLAG_CONTROL_VOLUME_MONITORING_NEW_PAGE_ENABLED)%'
-        public: true

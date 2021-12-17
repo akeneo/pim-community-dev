@@ -59,6 +59,14 @@ akeneo_connectivity.connection:
         empty: No hay aplicaciones compatibles con su versión
       unreachable: No podemos llegar al mercado, vuelva más tarde.
       scroll_to_top: Desplazar hasta la parte superior
+    connected_apps:
+      edit:
+        tabs:
+          settings: Configuración
+          permissions: Permisos
+      delete:
+        title: Confirmar la eliminación
+        link: Esto es lo que sucederá.
     apps:
       wizard:
         title: Conectar
@@ -71,13 +79,8 @@ akeneo_connectivity.connection:
         progress:
           authorizations: Autorizaciones
           permissions: Permisos
-          well_done: '¡Bien hecho!'
         authorize:
-          title: 'La aplicación {{ app_name }} necesita'
-          no_scope_title: 'La aplicación {{ app_name }} desea acceder a su PIM.'
           no_scope: No se han solicitado autorizaciones específicas.
-          helper: Para saber más sobre la autorización de aplicaciones,
-          helper_link: consulte nuestro Centro de Ayuda para obtener más información.
       title: Conectar
       activate:
         flash:
@@ -104,8 +107,6 @@ akeneo_connectivity.connection:
         response_type:
           not_blank: El response_type es obligatorio.
           must_be_code: El response_type debe ser «código».
-        scope:
-          must_be_valid: Los ámbitos no son válidos.
         redirect_uri:
           not_blank: El redirect_uri es obligatorio.
           must_be_url: El redirect_uri no es una url válida.
@@ -139,6 +140,9 @@ akeneo_connectivity.connection:
         invalid: El tipo de flujo de conexión solo puede ser 'data_source', 'data_destination' u 'otro'.
       image:
         must_exist: No se encontró la imagen. Por favor, inténtelo de nuevo.
+      type:
+        required: Se requiere un tipo de conexión.
+        too_long: El tipo de conexión es demasiado largo. Debe tener 30 caracteres o menos.
   flow_type:
     data_source: Fuente de datos | Fuentes de datos
     data_destination: Destino de datos | Destinos de datos
@@ -387,3 +391,8 @@ akeneo_connectivity.connection:
     error_message: '¡Oh! Se ha producido un error...'
     reload_helper: Por favor, recargue la página e inténtelo de nuevo.
     reload_button: Recargar
+pim_permissions:
+  widget:
+    action:
+      all: Todo
+    all: Todo

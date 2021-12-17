@@ -81,7 +81,6 @@ class AuthorizeEndToEnd extends WebTestCase
             [
                 'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
                 'response_type' => 'code',
-                'redirect_uri' => 'http://shopware.example.com/callback',
                 'state' => 'foo',
                 'scope' => 'read_catalog_structure SOME_UNKNOWN_SCOPE write_categories'
             ]
@@ -125,7 +124,6 @@ class AuthorizeEndToEnd extends WebTestCase
             [
                 'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
                 'response_type' => 'code',
-                'redirect_uri' => 'http://shopware.example.com/callback',
                 'state' => 'foo',
             ]
         );
@@ -134,6 +132,26 @@ class AuthorizeEndToEnd extends WebTestCase
         Assert::assertEquals(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
         assert($response instanceof RedirectResponse);
         Assert::matchesRegularExpression('^http:\/\/shopware\.example\.com\/callback\?code=[a-zA-Z0-9@=]+&state=foo$');
+    }
+
+    public function test_it_throws_access_denied_exception_with_missing_acl(): void
+    {
+        $this->featureFlagMarketplaceActivate->enable();
+        $this->authenticateAsAdmin();
+        $this->removeAclFromRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
+
+        $this->client->request(
+            'GET',
+            '/connect/apps/v1/authorize',
+            [
+                'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
+                'response_type' => 'code',
+                'state' => 'foo',
+            ]
+        );
+        $response = $this->client->getResponse();
+
+        Assert::assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
     private function loadAppsFixtures(): void

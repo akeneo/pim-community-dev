@@ -198,7 +198,7 @@ SQL;
                 'values' => $this->valueCollectionNormalizer->normalize($row['values'], ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX),
                 'value_collection' => $row['values'],
                 'parent_id' => $row['parent_id'] ? (int) $row['parent_id'] : null,
-                'labels' => isset($values[$row['attribute_as_label_code']]) ? $values[$row['attribute_as_label_code']] : [],
+                'labels' => $values[$row['attribute_as_label_code']] ?? [],
             ];
         }
 
@@ -382,15 +382,17 @@ SQL;
      * @param array $rows [
      *          [
      *              'code' => 'foo',
-     *              'raw_values' => ['attribute' => ['channel' => ['locale' => 'data' ]]]
+     *              'raw_values' => '{"attribute": {"channel": {"locale": "data"}}}',
+     *              ... => ...,
      *          ]
      *        ]
      *
      * @return array [
      *          'foo' => [
      *              'code' => 'foo',
-     *              'raw_values' => ['attribute' => ['channel' => ['locale' => 'data' ]]]
-     *              'values' => ValueCollection(...)
+     *              'raw_values' => ['attribute' => ['channel' => ['locale' =>  'data']]],
+     *              'values' => ValueCollection(...),
+     *              ... => ...
      *          ]
      *        ]
      */

@@ -848,6 +848,14 @@ class ProductModel implements ProductModelInterface
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function getCategoriesForCurrentLevel(): Collection
+    {
+        return new ArrayCollection($this->categories->toArray());
+    }
+
+    /**
      * @param EntityWithFamilyVariantInterface $entity
      * @param WriteValueCollection  $valueCollection
      *

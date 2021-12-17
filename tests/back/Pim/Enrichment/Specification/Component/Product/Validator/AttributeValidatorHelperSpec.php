@@ -82,6 +82,21 @@ class AttributeValidatorHelperSpec extends ObjectBehavior
         $this->validateScope($name, null);
     }
 
+    function it_throws_an_exception_when_attribute_localizable_is_not_in_locale_specific(
+        AttributeInterface $description,
+        AttributeInterface $name
+    ) {
+        $description->getCode()->willReturn('description');
+        $description->isLocalizable()->willReturn(true);
+        $description->isLocaleSpecific()->willReturn(true);
+        $description->getAvailableLocaleCodes()->willReturn(['en_US', 'de_DE']);
+        $name->isLocalizable()->willReturn(false);
+        $name->getCode()->willReturn('name');
+
+        $this->shouldThrow(new \LogicException('Attribute "description" is locale specific and expects one of these locales: en_US, de_DE, "fr_FR" given.'))
+            ->during('validateLocale', [$description, 'fr_FR']);
+    }
+
     function it_throws_an_exception_when_attribute_scopable_requirement_is_not_respected(
         AttributeInterface $description,
         AttributeInterface $name

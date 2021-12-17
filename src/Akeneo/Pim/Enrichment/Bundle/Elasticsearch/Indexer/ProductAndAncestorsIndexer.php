@@ -21,14 +21,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerI
  */
 class ProductAndAncestorsIndexer
 {
-    /** @var ProductIndexerInterface */
-    private $productIndexer;
-
-    /** @var ProductModelIndexerInterface */
-    private $productModelIndexer;
-
-    /** @var GetAncestorProductModelCodes */
-    private $getAncestorProductModelCodes;
+    private ProductIndexerInterface $productIndexer;
+    private ProductModelIndexerInterface $productModelIndexer;
+    private GetAncestorProductModelCodes $getAncestorProductModelCodes;
 
     public function __construct(
         ProductIndexerInterface $productIndexer,

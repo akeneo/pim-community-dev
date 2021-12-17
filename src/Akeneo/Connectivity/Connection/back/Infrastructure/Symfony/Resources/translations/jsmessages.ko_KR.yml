@@ -59,6 +59,14 @@ akeneo_connectivity.connection:
         empty: 사용 중인 버전과 호환되는 앱이 없습니다
       unreachable: 마켓플레이스에 연결할 수 없습니다. 잠시 후 다시 시도하십시오.
       scroll_to_top: 맨 위로 스크롤
+    connected_apps:
+      edit:
+        tabs:
+          settings: 설정
+          permissions: 권한
+      delete:
+        title: 삭제 확인
+        link: 다음과 같이 진행됩니다.
     apps:
       wizard:
         title: 연결
@@ -71,13 +79,8 @@ akeneo_connectivity.connection:
         progress:
           authorizations: 권한 부여
           permissions: 권한
-          well_done: 잘하셨습니다!
         authorize:
-          title: '{{ app_name }} 앱에서 다음을 요청'
-          no_scope_title: '{{ app_name }} 앱이 PIM에 액세스하려고 합니다.'
           no_scope: 특정 권한 부여 요청이 없습니다.
-          helper: 앱 권한 부여에 관해 자세히 알아보려면
-          helper_link: 도움말 센터를 확인하십시오.
       title: 연결
       activate:
         flash:
@@ -104,8 +107,6 @@ akeneo_connectivity.connection:
         response_type:
           not_blank: response_type이 필요합니다.
           must_be_code: response_type은 '코드'여야 합니다.
-        scope:
-          must_be_valid: 범위가 유효하지 않습니다.
         redirect_uri:
           not_blank: redirect_uri가 필요합니다.
           must_be_url: redirect_uri는 유효한 URL이 아닙니다.
@@ -387,3 +388,8 @@ akeneo_connectivity.connection:
     error_message: 죄송합니다! 오류가 발생했습니다...
     reload_helper: 페이지를 다시 로드하고 다시 시도하십시오.
     reload_button: 다시 로드
+pim_permissions:
+  widget:
+    action:
+      all: 모두
+    all: 모두

@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -19,15 +20,18 @@ final class RequestAppAuthorizationHandler
     private ValidatorInterface $validator;
     private AppAuthorizationSessionInterface $session;
     private ScopeMapperRegistry $scopeMapper;
+    private GetAppQueryInterface $getAppQuery;
 
     public function __construct(
         ValidatorInterface $validator,
         AppAuthorizationSessionInterface $session,
-        ScopeMapperRegistry $scopeMapper
+        ScopeMapperRegistry $scopeMapper,
+        GetAppQueryInterface $getAppQuery
     ) {
         $this->validator = $validator;
         $this->session = $session;
         $this->scopeMapper = $scopeMapper;
+        $this->getAppQuery = $getAppQuery;
     }
 
     public function handle(RequestAppAuthorizationCommand $command): void
@@ -37,6 +41,11 @@ final class RequestAppAuthorizationHandler
             throw new InvalidAppAuthorizationRequest($violations);
         }
 
+        $app = $this->getAppQuery->execute($command->getClientId());
+        if (null === $app) {
+            throw new \ErrorException('App should exists when validating the authorization wizard');
+        }
+
         $supportedScopes = $this->scopeMapper->getAllScopes();
         $requestedScopes = \explode(' ', $command->getScope());
         $allowedScopes = \array_intersect($requestedScopes, $supportedScopes);
@@ -44,7 +53,7 @@ final class RequestAppAuthorizationHandler
         $authorization = AppAuthorization::createFromRequest(
             $command->getClientId(),
             \implode(' ', $allowedScopes),
-            $command->getRedirectUri(),
+            $app->getCallbackUrl(),
             $command->getState(),
         );
 

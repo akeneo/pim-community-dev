@@ -21,7 +21,6 @@ class AverageMaxScopableAttributesPerFamilyIntegration extends QueryTestCase
         Assert::assertEquals(84, $volume->getMaxVolume());
         Assert::assertEquals(40, $volume->getAverageVolume());
         Assert::assertEquals('average_max_scopable_attributes_per_family', $volume->getVolumeName());
-        Assert::assertEquals(false, $volume->hasWarning());
     }
 
     /**

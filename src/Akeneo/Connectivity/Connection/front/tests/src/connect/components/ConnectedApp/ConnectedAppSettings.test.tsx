@@ -1,6 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {screen, wait, waitForElement} from '@testing-library/react';
+import {screen, waitFor} from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
 import {renderWithProviders, historyMock, MockFetchResponses, mockFetchResponses} from '../../../../test-utils';
 import {ScopeList} from '@src/connect/components/ScopeList';
@@ -60,7 +60,7 @@ test('The connected app settings renders with scopes', async () => {
     };
 
     renderWithProviders(<ConnectedAppSettings connectedApp={connectedApp} />);
-    await wait(() => expect(ScopeList).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(ScopeList).toHaveBeenCalledTimes(1));
 
     expect(
         screen.queryByText(
@@ -103,7 +103,7 @@ test('The connected app settings renders without scopes', async () => {
     };
 
     renderWithProviders(<ConnectedAppSettings connectedApp={connectedApp} />);
-    await waitForElement(() =>
+    await waitFor(() =>
         screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.no_scope')
     );
 

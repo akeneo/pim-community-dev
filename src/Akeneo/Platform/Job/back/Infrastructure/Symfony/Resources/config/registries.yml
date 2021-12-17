@@ -1,4 +1,0 @@
-services:
-  Akeneo\Platform\Job\Infrastructure\Registry\NotVisibleJobsRegistry:
-    arguments:
-      - !tagged akeneo_batch.job.not_visible

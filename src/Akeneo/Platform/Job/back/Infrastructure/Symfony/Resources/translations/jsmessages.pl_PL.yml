@@ -1,0 +1,10 @@
+pim_title:
+  akeneo_job_process_tracker_index: Śledzenie procesu
+akeneo_job_process_tracker:
+  job_execution_list:
+    table:
+      headers:
+        type: Typ
+        started_at: Rozpoczęto o
+        username: Nazwa użytkownika
+        status: Status
