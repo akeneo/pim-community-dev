@@ -193,7 +193,7 @@ Each CRON instance will evaluate as much products as possible within a 28 minute
 - Consolidate dashboard rates
 - Purge old data
 
-> **Note:** This Job is only added to the queue by the `pimee:data-quality-insights:schedule-periodic-tasks` command
+> **Note:** This Job is only added to the queue by the `pim:data-quality-insights:schedule-periodic-tasks` command
 
 ### Job `data_quality_insights_prepare_evaluations`:
 
