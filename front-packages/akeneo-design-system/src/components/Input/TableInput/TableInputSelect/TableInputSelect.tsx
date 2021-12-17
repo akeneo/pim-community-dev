@@ -72,6 +72,7 @@ type TableInputSelectProps = {
   closeTick?: boolean;
   bottomHelper?: ReactElement;
   withSearch?: boolean;
+  onOpenChange?: (isOpen: boolean) => void;
 };
 
 const TableInputSelect: React.FC<TableInputSelectProps> = ({
@@ -90,9 +91,19 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
   closeTick = false,
   bottomHelper,
   withSearch = true,
+  onOpenChange,
   ...rest
 }) => {
   const [isOpen, open, close] = useBooleanState(false);
+  const handleOpen = () => {
+    open();
+    onOpenChange?.(true);
+  };
+  const handleClose = () => {
+    close();
+    onOpenChange?.(false);
+  };
+
   const searchRef = React.createRef<HTMLInputElement>();
 
   const focus = (ref: React.RefObject<HTMLInputElement>) => {
@@ -106,11 +117,11 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
   }, [isOpen]);
 
   React.useEffect(() => {
-    isOpen ? close() : open();
+    isOpen ? handleClose() : handleOpen();
   }, [closeTick]);
 
   React.useEffect(() => {
-    close();
+    handleClose();
     handleSearchChange('');
   }, [value]);
 
@@ -129,7 +140,7 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
       <SelectButton
         onClick={(e: MouseEvent) => {
           e.preventDefault();
-          open();
+          handleOpen();
         }}
         tabIndex={-1}
         highlighted={highlighted}
@@ -155,11 +166,11 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
           title={openDropdownLabel}
           ghost="borderless"
           level="tertiary"
-          onClick={open}
+          onClick={handleOpen}
         />
       </IconsPart>
       {isOpen && (
-        <Dropdown.Overlay onClose={close} dropdownOpenerVisible={true} horizontalPosition="left">
+        <Dropdown.Overlay onClose={handleClose} dropdownOpenerVisible={true} horizontalPosition="left">
           {withSearch && (
             <Dropdown.Header>
               <Search
