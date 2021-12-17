@@ -80,7 +80,6 @@ akeneo_connectivity.connection:
           authorizations: 授权
           permissions: 权限
         authorize:
-          no_scope_title: '应用 {{ app_name }} 想要访问您的 PIM。'
           no_scope: 未请求特定的授权。
       title: 连接
       activate:

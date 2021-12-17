@@ -80,7 +80,6 @@ akeneo_connectivity.connection:
           authorizations: Autoryzacje
           permissions: Uprawnienia
         authorize:
-          no_scope_title: 'Aplikacja {{ app_name }} chciałaby uzyskać dostęp do Twojego PIM.'
           no_scope: Nie zażądano żadnych określonych autoryzacji.
       title: Połącz
       activate:
