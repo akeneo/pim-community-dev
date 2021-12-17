@@ -222,7 +222,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_table_attribute.reader.database.product_model.table_values'
             - '@pim_table_attribute.processor.normalization.product_model_table_values'
-            - '@pim_table_attribute.writer.table_values.file.csv'
+            - '@pim_table_attribute.writer.table_values_with_label.file.csv'
             - 1000
             - '@akeneo_batch.job.job_stopper'
 
@@ -234,7 +234,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_table_attribute.reader.database.product_model.table_values'
             - '@pim_table_attribute.processor.normalization.product_model_table_values'
-            - '@pim_table_attribute.writer.table_values.file.xlsx'
+            - '@pim_table_attribute.writer.table_values_with_label.file.xlsx'
             - 1000
             - '@akeneo_batch.job.job_stopper'
 

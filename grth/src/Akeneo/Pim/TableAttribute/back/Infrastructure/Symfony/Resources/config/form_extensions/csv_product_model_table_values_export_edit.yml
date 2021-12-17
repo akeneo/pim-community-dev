@@ -143,7 +143,7 @@ extensions:
       tooltip: pim_import_export.form.job_instance.tab.properties.enclosure.help
 
   pim-job-instance-csv-product-model-table-values-export-edit-properties-with-header:
-    module: pim/job/product/edit/field/with-label
+    module: pim/job/common/edit/field/switch
     parent: pim-job-instance-csv-product-model-table-values-export-edit-global
     position: 150
     targetZone: properties
@@ -154,7 +154,7 @@ extensions:
       tooltip: pim_import_export.form.job_instance.tab.properties.with_header.help
 
   pim-job-instance-csv-product-model-table-values-export-edit-properties-with-labels:
-    module: pim/job/common/edit/field/switch
+    module: pim/job/product/edit/field/with-label
     parent: pim-job-instance-csv-product-model-table-values-export-edit-global
     position: 160
     targetZone: properties
@@ -175,16 +175,16 @@ extensions:
       label: pim_import_export.form.job_instance.tab.properties.header_with_label.title
       tooltip: pim_import_export.form.job_instance.tab.properties.header_with_label.help
 
-    pim-job-instance-csv-product-model-table-values-export-edit-properties-file-locale:
-      module: pim/job/product/edit/field/file-locale
-      parent: pim-job-instance-csv-product-model-table-values-export-edit-global
-      position: 180
-      targetZone: properties
-      config:
-        fieldCode: configuration.file_locale
-        readOnly: false
-        label: pim_import_export.form.job_instance.tab.properties.file_locale.title
-        tooltip: pim_import_export.form.job_instance.tab.properties.file_locale.help
+  pim-job-instance-csv-product-model-table-values-export-edit-properties-file-locale:
+    module: pim/job/product/edit/field/file-locale
+    parent: pim-job-instance-csv-product-model-table-values-export-edit-global
+    position: 180
+    targetZone: properties
+    config:
+      fieldCode: configuration.file_locale
+      readOnly: false
+      label: pim_import_export.form.job_instance.tab.properties.file_locale.title
+      tooltip: pim_import_export.form.job_instance.tab.properties.file_locale.help
 
   pim-job-instance-csv-product-model-table-values-export-edit-label:
     module: pim/job/common/edit/label
