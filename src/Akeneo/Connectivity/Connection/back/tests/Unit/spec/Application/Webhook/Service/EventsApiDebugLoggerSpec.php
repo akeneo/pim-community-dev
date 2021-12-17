@@ -174,12 +174,7 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
 
     private function createEvent(): EventInterface
     {
-        $event = new class (
-            Author::fromNameAndType('julia', Author::TYPE_UI),
-            [],
-            0,
-            '9979c367-595d-42ad-9070-05f62f31f49b'
-        ) extends Event {
+        $event = new class(Author::fromNameAndType('julia', Author::TYPE_UI), [], 0, '9979c367-595d-42ad-9070-05f62f31f49b') extends Event {
             public function getName(): string
             {
                 return 'my_event';

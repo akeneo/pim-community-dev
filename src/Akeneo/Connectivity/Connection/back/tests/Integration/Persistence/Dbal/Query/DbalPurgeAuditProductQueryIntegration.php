@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
 
-use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\AuditLoader;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
-use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\PurgeAuditProductQuery;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\AuditLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;

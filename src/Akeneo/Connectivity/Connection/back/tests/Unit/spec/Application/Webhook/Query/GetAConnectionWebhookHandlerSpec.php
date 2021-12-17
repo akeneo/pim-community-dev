@@ -20,8 +20,6 @@ class GetAConnectionWebhookHandlerSpec extends ObjectBehavior
         GetAConnectionWebhookQuery $getAConnectionWebhookQuery,
         CountActiveEventSubscriptionsQuery $countActiveEventSubscriptionsQuery
     ): void {
-
-
         $this->beConstructedWith(
             $getAConnectionWebhookQuery,
             self::ACTIVE_EVENT_SUBSCRIPTIONS_LIMIT,
