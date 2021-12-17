@@ -23,5 +23,6 @@ shared_catalog:
         invalid_extension: "Invalid file extension, allowed extensions are: {{ allowed_extensions }}"
         filesize_too_large: The file you provided is too large, the max size is 2MB
         invalid_file: The file is invalid
+        color: Define your branding color
     button:
         save: Save and share
