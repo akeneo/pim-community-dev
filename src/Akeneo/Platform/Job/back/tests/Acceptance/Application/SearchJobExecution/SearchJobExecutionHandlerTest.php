@@ -15,8 +15,13 @@ use Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemorySearchJobExecution;
 
 class SearchJobExecutionHandlerTest extends AcceptanceTestCase
 {
+    private InMemorySearchJobExecution $searchJobExecution;
+    private SearchJobExecutionHandler $handler;
+
     protected function setUp(): void
     {
+        $this->searchJobExecution = $this->get('Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface');
+        $this->handler = $this->get('Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionHandler');
         static::bootKernel(['debug' => false]);
     }
 
@@ -26,7 +31,7 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
     public function it_returns_an_empty_job_execution_table_when_no_result()
     {
         $query = new SearchJobExecutionQuery();
-        $result = $this->getHandler()->search($query);
+        $result = $this->handler->search($query);
         $expectedResult = new JobExecutionTable([], 0);
 
         $this->assertEquals($expectedResult, $result);
@@ -60,12 +65,12 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
             ),
         ];
 
-        $this->getSearchJobExecution()->mockSearchResult($jobExecutionRows);
+        $this->searchJobExecution->mockSearchResult($jobExecutionRows);
 
         $query = new SearchJobExecutionQuery();
         $query->page = 1;
 
-        $result = $this->getHandler()->search($query);
+        $result = $this->handler->search($query);
         $expectedResult = new JobExecutionTable($jobExecutionRows, 2);
 
         $this->assertEquals($expectedResult, $result);
@@ -81,7 +86,7 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
 
         $this->expectExceptionObject(new \InvalidArgumentException('Sort column "invalid_column" is not supported'));
 
-        $this->getHandler()->search($query);
+        $this->handler->search($query);
     }
 
     /**
@@ -94,7 +99,7 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
 
         $this->expectExceptionObject(new \InvalidArgumentException('Sort direction "DASC" is not supported'));
 
-        $this->getHandler()->search($query);
+        $this->handler->search($query);
     }
 
     /**
@@ -107,7 +112,7 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
 
         $this->expectExceptionObject(new \InvalidArgumentException('Page can not be greater than 50'));
 
-        $this->getHandler()->search($query);
+        $this->handler->search($query);
     }
 
     /**
@@ -121,16 +126,6 @@ class SearchJobExecutionHandlerTest extends AcceptanceTestCase
 
         $this->expectExceptionObject(new \InvalidArgumentException('Page can not be greater than 50'));
 
-        $this->getHandler()->search($query);
-    }
-
-    private function getSearchJobExecution(): InMemorySearchJobExecution
-    {
-        return $this->get('Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface');
-    }
-
-    private function getHandler(): SearchJobExecutionHandler
-    {
-        return $this->get('Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionHandler');
+        $this->handler->search($query);
     }
 }

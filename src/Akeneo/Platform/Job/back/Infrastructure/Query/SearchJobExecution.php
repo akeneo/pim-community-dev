@@ -29,6 +29,7 @@ class SearchJobExecution implements SearchJobExecutionInterface
     public function search(SearchJobExecutionQuery $query): array
     {
         $sql = $this->buildSqlQuery($query);
+
         return $this->fetchJobExecutionRows($sql, $query);
     }
 

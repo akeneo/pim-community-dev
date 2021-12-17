@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Acceptance\FakeServices;
 
-use Akeneo\Platform\Job\Application\SearchJobUsers\SearchJobUsersInterface;
-use Akeneo\Platform\Job\Application\SearchJobUsers\SearchJobUsersQuery;
+use Akeneo\Platform\Job\Application\SearchJobUser\SearchJobUserInterface;
+use Akeneo\Platform\Job\Application\SearchJobUser\SearchJobUserQuery;
 
-class InMemorySearchJobUsers implements SearchJobUsersInterface
+class InMemorySearchJobUser implements SearchJobUserInterface
 {
     private array $jobUsers = [];
 
@@ -16,7 +16,7 @@ class InMemorySearchJobUsers implements SearchJobUsersInterface
         $this->jobUsers = $jobUsers;
     }
 
-    public function search(SearchJobUsersQuery $query): array
+    public function search(SearchJobUserQuery $query): array
     {
         return $this->jobUsers;
     }

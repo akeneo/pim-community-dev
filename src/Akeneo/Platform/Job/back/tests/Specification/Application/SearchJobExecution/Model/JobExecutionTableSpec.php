@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Platform\Job\Application\SearchJobExecution;
+namespace Specification\Akeneo\Platform\Job\Application\SearchJobExecution\Model;
 
-use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
-use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRowTracking;
-use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionTable;
+use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionRow;
+use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionTable;
+use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionTracking;
 use Akeneo\Platform\Job\Domain\Model\Status;
 use PhpSpec\ObjectBehavior;
 
@@ -30,7 +30,7 @@ class JobExecutionTableSpec extends ObjectBehavior
                     'admin',
                     Status::fromLabel('COMPLETED'),
                     true,
-                    new JobExecutionRowTracking(1, 2, []),
+                    new JobExecutionTracking(1, 2, []),
                 ),
             ],
             1,

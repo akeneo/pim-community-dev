@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Acceptance\FakeServices;
 
-use Akeneo\Platform\Job\Application\FindJobTypes\FindJobTypesInterface;
+use Akeneo\Platform\Job\Application\FindJobType\FindJobTypeInterface;
 
-class InMemoryFindJobTypes implements FindJobTypesInterface
+class InMemoryFindJobType implements FindJobTypeInterface
 {
     private array $jobTypes = [];
 

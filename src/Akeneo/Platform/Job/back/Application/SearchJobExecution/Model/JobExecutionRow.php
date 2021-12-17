@@ -31,7 +31,7 @@ final class JobExecutionRow
             'job_execution_id' => $this->jobExecutionId,
             'job_name' => $this->jobName,
             'type' => $this->type,
-            'started_at' => $this->startedAt ? $this->startedAt->format(DATE_ATOM) : null,
+            'started_at' => $this->startedAt?->format(DATE_ATOM),
             'username' => $this->username,
             'status' => $this->status->getLabel(),
             'warning_count' => $this->tracking->getWarningCount(),

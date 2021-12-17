@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Infrastructure\Query;
 
-use Akeneo\Platform\Job\Application\FindJobTypes\FindJobTypesInterface;
+use Akeneo\Platform\Job\Application\FindJobType\FindJobTypeInterface;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -12,7 +12,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class FindJobTypes implements FindJobTypesInterface
+class FindJobType implements FindJobTypeInterface
 {
     public function __construct(
         private Connection $connection,

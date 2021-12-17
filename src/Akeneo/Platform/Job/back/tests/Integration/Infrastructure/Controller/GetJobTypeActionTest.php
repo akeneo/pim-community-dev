@@ -8,9 +8,9 @@ use Akeneo\Platform\Job\Test\Integration\ControllerIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetJobTypesActionTest extends ControllerIntegrationTestCase
+class GetJobTypeActionTest extends ControllerIntegrationTestCase
 {
-    private const ROUTE = 'akeneo_job_get_job_types_action';
+    private const ROUTE = 'akeneo_job_get_job_type_action';
 
     public function setUp(): void
     {
