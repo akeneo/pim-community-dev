@@ -5,6 +5,7 @@ import {DependenciesProvider, useTranslate} from '@akeneo-pim-community/legacy-b
 import {HeaderCell, LabelCell, Row, Table} from 'akeneosharedcatalog/common/Table';
 import {
   AkeneoThemedProps,
+  arrayUnique,
   Button,
   Checkbox,
   CloseIcon,
@@ -133,45 +134,25 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
   const translate = useTranslate();
   const [currentRecipients, setCurrentRecipients] = useState<Recipient[]>(recipients);
   const [recipientsToAdd, setRecipientsToAdd] = useState<Recipient[]>([]);
-  const [emailIsValid, setEmailIsValid] = useState<boolean>(true);
-  const [emailIsDuplicated, setEmailIsDuplicated] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>('');
   const [recipientSelection, setRecipientSelection] = useState<Recipient[]>([]);
 
-  const handleRecipientsInputChange = useCallback(
-    (addresses: string[]) => {
-      setEmailIsValid(true);
-      setEmailIsDuplicated(false);
+  const emailToAddContainInvalid = recipientsToAdd.some(recipientToAdd => !isValidEmail(recipientToAdd.email));
+  const currentRecipientEmail = currentRecipients.map(currentRecipient => currentRecipient.email);
+  const emailToAddIsDuplicated = recipientsToAdd.some(recipientToAdd => currentRecipientEmail.includes(recipientToAdd.email));
+  const maxRecipientLimitReached = MAX_RECIPIENT_COUNT <= currentRecipients.length;
 
-      addresses.forEach(address => {
-        if (!isValidEmail(address)) {
-          setEmailIsValid(false);
-        }
-
-        if (currentRecipients.some(recipient => recipient.email === address)) {
-          setEmailIsDuplicated(true);
-        }
-      });
-
-      setRecipientsToAdd(addresses.map(address => ({email: address})));
-    },
-    [recipientsToAdd, setRecipientsToAdd, setEmailIsValid, setEmailIsDuplicated]
-  );
+  const handleRecipientsInputChange = useCallback((addresses: string[]) => {
+    setRecipientsToAdd(addresses.map(address => ({email: address})));
+  }, [recipientsToAdd]);
 
   const handleAddRecipients = useCallback(() => {
-    if (0 === recipientsToAdd.length || !emailIsValid || emailIsDuplicated) return;
+    if (0 === recipientsToAdd.length || emailToAddContainInvalid) return;
 
-    if (MAX_RECIPIENT_COUNT <= currentRecipients.length + recipientsToAdd.length) {
-      setCurrentRecipients([
-        ...currentRecipients,
-        ...recipientsToAdd.slice(0, MAX_RECIPIENT_COUNT - currentRecipients.length),
-      ]);
-      setRecipientsToAdd(recipientsToAdd.slice(MAX_RECIPIENT_COUNT - currentRecipients.length));
-    } else {
-      setCurrentRecipients([...currentRecipients, ...recipientsToAdd]);
-      setRecipientsToAdd([]);
-    }
-  }, [currentRecipients, setCurrentRecipients, recipientsToAdd, setRecipientsToAdd]);
+    const newRecipients = arrayUnique<Recipient>([...currentRecipients, ...recipientsToAdd], (first, second) => first.email === second.email);
+    setCurrentRecipients(newRecipients.slice(0, MAX_RECIPIENT_COUNT));
+    setRecipientsToAdd(newRecipients.slice(MAX_RECIPIENT_COUNT));
+  }, [currentRecipients, recipientsToAdd, emailToAddContainInvalid]);
 
   useShortcut(Key.Enter, handleAddRecipients);
   useShortcut(Key.NumpadEnter, handleAddRecipients);
@@ -183,8 +164,6 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
   const filteredRecipients = currentRecipients.filter(
     recipient => -1 !== recipient.email.toLowerCase().indexOf(searchValue.toLowerCase())
   );
-
-  const maxRecipientLimitReached = MAX_RECIPIENT_COUNT <= currentRecipients.length;
 
   const toggleRecipient = useCallback(
     (recipient: Recipient) =>
@@ -209,7 +188,7 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
               ghost={true}
               onClick={handleAddRecipients}
               size="small"
-              disabled={0 === recipientsToAdd.length || !emailIsValid || emailIsDuplicated || maxRecipientLimitReached}
+              disabled={0 === recipientsToAdd.length || emailToAddContainInvalid || maxRecipientLimitReached}
             >
               {translate('pim_common.add')}
             </Button>
@@ -226,14 +205,14 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
               {translate('shared_catalog.recipients.max_limit_reached')}
             </Helper>
           )}
-          {!emailIsValid && (
+          {emailToAddContainInvalid && (
             <Helper inline={true} level="error">
               {translate('shared_catalog.recipients.invalid_email')}
             </Helper>
           )}
-          {emailIsDuplicated && (
-            <Helper inline={true} level="error">
-              {translate('shared_catalog.recipients.duplicates')}
+          {emailToAddIsDuplicated && (
+            <Helper inline={true} level="warning">
+              {translate('shared_catalog.recipients.duplicate_email')}
             </Helper>
           )}
         </LargeField>

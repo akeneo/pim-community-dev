@@ -4,6 +4,8 @@ namespace Akeneo\SharedCatalog\Model;
 
 class SharedCatalog
 {
+    public const DEFAULT_COLOR = '#f9b53f';
+
     /** @var string */
     private $code;
     /** @var string|null */
@@ -58,7 +60,7 @@ class SharedCatalog
             'branding' => [
                 'logo' => $this->branding['image'] ?? null,
                 'cover_image' => $this->branding['cover_image'] ?? null,
-                'color' => $this->branding['color'] ?? null,
+                'color' => $this->branding['color'] ?? self::DEFAULT_COLOR,
             ],
         ];
     }
