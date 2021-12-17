@@ -12,9 +12,16 @@ import {
   Dropdown,
   MoreIcon,
 } from 'akeneo-design-system';
-import {useTranslate, Section, ValidationError, useSecurity} from '@akeneo-pim-community/shared';
+import {
+  useTranslate,
+  Section,
+  ValidationError,
+  useSecurity,
+  PageHeader,
+  UnsavedChanges,
+  PimView,
+} from '@akeneo-pim-community/shared';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
-import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import NamingConvention from 'akeneoassetmanager/domain/model/asset-family/naming-convention';
@@ -199,11 +206,8 @@ const ProductLinkRule = ({assetFamily, context, form, errors, events, rights}: S
   const translate = useTranslate();
   const {isGranted} = useSecurity();
   const [isExecuteRulesModalOpen, openExecuteRulesModal, closeExecuteRulesModal] = useBooleanState();
-  const [
-    isExecuteNamingConventionModalOpen,
-    openExecuteNamingConventionModal,
-    closeExecuteNamingConventionModal,
-  ] = useBooleanState();
+  const [isExecuteNamingConventionModalOpen, openExecuteNamingConventionModal, closeExecuteNamingConventionModal] =
+    useBooleanState();
   const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
 
   const canEditNamingConvention =
@@ -225,29 +229,30 @@ const ProductLinkRule = ({assetFamily, context, form, errors, events, rights}: S
 
   return (
     <>
-      <Header
-        label={translate('pim_asset_manager.asset_family.tab.product_link_rules')}
-        image={null}
-        primaryAction={(defaultFocus: React.RefObject<any>) =>
-          canEditNamingConvention ? (
-            <Button onClick={events.onSaveEditForm} ref={defaultFocus}>
-              {translate('pim_asset_manager.asset_family.button.save')}
-            </Button>
-          ) : null
-        }
-        secondaryActions={
+      <PageHeader>
+        <PageHeader.Breadcrumb>
+          <AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />
+        </PageHeader.Breadcrumb>
+        <PageHeader.UserActions>
+          <PimView
+            className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
+            viewName="pim-asset-family-index-user-navigation"
+          />
+        </PageHeader.UserActions>
+        <PageHeader.Actions>
           <SecondaryActions
             canExecuteRules={canExecuteProductLinkRules}
             onExecuteRules={openExecuteRulesModal}
             canExecuteNamingConvention={canExecuteNamingConvention}
             onExecuteNamingConvention={openExecuteNamingConventionModal}
           />
-        }
-        withLocaleSwitcher={false}
-        withChannelSwitcher={false}
-        isDirty={form.state.isDirty}
-        breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
-      />
+          {canEditNamingConvention && (
+            <Button onClick={events.onSaveEditForm}>{translate('pim_asset_manager.asset_family.button.save')}</Button>
+          )}
+        </PageHeader.Actions>
+        <PageHeader.State>{form.state.isDirty && <UnsavedChanges />}</PageHeader.State>
+        <PageHeader.Title>{translate('pim_asset_manager.asset_family.tab.product_link_rules')}</PageHeader.Title>
+      </PageHeader>
       <Section>
         <div>
           <SectionTitle>

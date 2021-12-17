@@ -1,10 +1,19 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Button, SectionTitle} from 'akeneo-design-system';
-import {useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
+import {Button, Link, SectionTitle, UserGroupsIllustration} from 'akeneo-design-system';
+import {
+  NoDataSection,
+  NoDataText,
+  NoDataTitle,
+  PageHeader,
+  PimView,
+  UnsavedChanges,
+  useRouter,
+  useSecurity,
+  useTranslate,
+} from '@akeneo-pim-community/shared';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import {PermissionCollectionEditor} from 'akeneoassetmanager/tools/component/permission';
 import {FormState} from 'akeneoassetmanager/application/reducer/state';
@@ -46,51 +55,52 @@ const Permission = ({assetFamily, context, canEditFamily, permission, events}: S
 
   return (
     <>
-      <Header
-        label={translate('pim_asset_manager.asset_family.tab.permission')}
-        image={assetFamily.image}
-        primaryAction={(defaultFocus: React.RefObject<any>) =>
-          canEditPermission && !permission.data.isEmpty() ? (
-            <Button onClick={events.onSavePermissionEditForm} ref={defaultFocus}>
+      <PageHeader>
+        <PageHeader.Breadcrumb>
+          <AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />
+        </PageHeader.Breadcrumb>
+        <PageHeader.UserActions>
+          <PimView
+            className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
+            viewName="pim-asset-family-index-user-navigation"
+          />
+        </PageHeader.UserActions>
+        <PageHeader.Actions>
+          {canEditPermission && !permission.data.isEmpty() && (
+            <Button onClick={events.onSavePermissionEditForm}>
               {translate('pim_asset_manager.asset_family.button.save_permission')}
             </Button>
-          ) : null
-        }
-        withLocaleSwitcher={false}
-        withChannelSwitcher={false}
-        isDirty={permission.state.isDirty}
-        breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
-      />
-      <div className="AknSubsection">
-        <SectionTitle sticky={136}>
-          <SectionTitle.Title>{translate('pim_asset_manager.asset_family.permission.title')}</SectionTitle.Title>
-        </SectionTitle>
-        <div className="AknFormContainer AknFormContainer--wide">
-          {!permission.data.isEmpty() ? (
-            <PermissionCollectionEditor
-              readOnly={!canEditPermission}
-              value={permission.data}
-              prioritizedRightLevels={[RightLevel.View, RightLevel.Edit]}
-              onChange={events.onPermissionUpdated}
-            />
-          ) : (
-            <div className="AknGridContainer-noData">
-              <div className="AknGridContainer-noDataImage AknGridContainer-noDataImage--user-group" />
-              <div className="AknGridContainer-noDataTitle">
-                {translate('pim_asset_manager.permission.no_data.title')}
-              </div>
-              <div className="AknGridContainer-noDataSubtitle">
-                {translate('pim_asset_manager.permission.no_data.subtitle')}{' '}
-                {canEditUserGroup && (
-                  <a href={`#${router.generate('pim_user_group_index')}`} target="_blank">
-                    {translate('pim_asset_manager.permission.no_data.link')}
-                  </a>
-                )}
-              </div>
-            </div>
           )}
-        </div>
-      </div>
+        </PageHeader.Actions>
+        <PageHeader.State>{permission.state.isDirty && <UnsavedChanges />}</PageHeader.State>
+        <PageHeader.Title>{translate('pim_asset_manager.asset_family.tab.permission')}</PageHeader.Title>
+      </PageHeader>
+      <SectionTitle sticky={136}>
+        <SectionTitle.Title>{translate('pim_asset_manager.asset_family.permission.title')}</SectionTitle.Title>
+      </SectionTitle>
+      {permission.data.isEmpty() ? (
+        <NoDataSection>
+          <UserGroupsIllustration size={256} />
+          <NoDataTitle>{translate('pim_asset_manager.permission.no_data.title')}</NoDataTitle>
+          <NoDataText>
+            {translate('pim_asset_manager.permission.no_data.subtitle')}
+            {canEditUserGroup && (
+              <p>
+                <Link href={`#${router.generate('pim_user_group_index')}`} target="_blank">
+                  {translate('pim_asset_manager.permission.no_data.link')}
+                </Link>
+              </p>
+            )}
+          </NoDataText>
+        </NoDataSection>
+      ) : (
+        <PermissionCollectionEditor
+          readOnly={!canEditPermission}
+          value={permission.data}
+          prioritizedRightLevels={[RightLevel.View, RightLevel.Edit]}
+          onChange={events.onPermissionUpdated}
+        />
+      )}
     </>
   );
 };

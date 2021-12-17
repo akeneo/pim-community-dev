@@ -1,7 +1,7 @@
 import React, {isValidElement, ReactNode, useEffect, useCallback, useState} from 'react';
 import styled from 'styled-components';
 import {Checkbox, Toolbar, Button, useSelection, useBooleanState, Dropdown, ArrowDownIcon} from 'akeneo-design-system';
-import {useNotify, NotificationLevel, useTranslate, getLabel} from '@akeneo-pim-community/shared';
+import {useNotify, NotificationLevel, useTranslate, getLabel, PageHeader, PimView} from '@akeneo-pim-community/shared';
 import {SearchBar} from 'akeneoassetmanager/application/component/asset/list/search-bar';
 import Mosaic from 'akeneoassetmanager/application/component/asset/list/mosaic';
 import {Context} from 'akeneoassetmanager/domain/model/context';
@@ -13,7 +13,6 @@ import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {useFetchResult, createQuery} from 'akeneoassetmanager/application/hooks/grid';
 import FilterCollection, {useFilterViews} from 'akeneoassetmanager/application/component/asset/list/filter-collection';
 import {AssetFamilySelector} from 'akeneoassetmanager/application/component/library/AssetFamilySelector';
-import {HeaderView} from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {UploadModal} from 'akeneoassetmanager/application/asset-upload/component/modal';
 import {useAssetFamily} from 'akeneoassetmanager/application/hooks/asset-family';
 import {CreateModal} from 'akeneoassetmanager/application/component/asset/create';
@@ -42,12 +41,6 @@ import {
   AssetLibraryPlaceholder,
 } from 'akeneoassetmanager/application/component/library/components';
 import {MassEdit} from 'akeneoassetmanager/application/component/library/MassEdit/MassEdit';
-
-const Header = styled.div`
-  padding-left: 40px;
-  padding-right: 40px;
-  height: 136px;
-`;
 
 const Content = styled.div`
   flex: 1;
@@ -146,15 +139,13 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
   const [context, setContext] = useStoredState<Context>('akeneo.asset_manager.grid.context', initialContext);
   const [isCreateAssetModalOpen, openCreateAssetModal, closeCreateAssetModal] = useBooleanState(false);
   const [isUploadModalOpen, openUploadModal, closeUploadModal] = useBooleanState(false);
-  const [isCreateAssetFamilyModalOpen, openCreateAssetFamilyModal, closeCreateAssetFamilyModal] = useBooleanState(
-    false
-  );
+  const [isCreateAssetFamilyModalOpen, openCreateAssetFamilyModal, closeCreateAssetFamilyModal] =
+    useBooleanState(false);
   const notify = useNotify();
   const translate = useTranslate();
 
-  const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] = useSelection<
-    AssetCode
-  >(searchResult.matchesCount);
+  const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] =
+    useSelection<AssetCode>(searchResult.matchesCount);
 
   const channels = useChannels(dataProvider.channelFetcher);
   const locales = getLocales(channels, context.channel);
@@ -246,65 +237,56 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
         />
       </Column>
       <Content>
-        <Header>
-          <HeaderView
-            label={
-              isInitialized
-                ? translate(
-                    'pim_asset_manager.result_counter',
-                    {count: searchResult.matchesCount},
-                    searchResult.matchesCount
-                  )
-                : ''
-            }
-            image={null}
-            primaryAction={() => (
-              <>
-                {null !== currentAssetFamilyIdentifier && (
-                  <Button
-                    ghost={true}
-                    level="tertiary"
-                    onClick={() => redirectToAssetFamily(currentAssetFamilyIdentifier)}
-                  >
-                    {translate(`pim_asset_manager.asset_family.button.${rights.assetFamily.edit ? 'edit' : 'view'}`)}
-                  </Button>
-                )}
-                <CreateButton>
-                  {null !== currentAssetFamilyIdentifier && rights.asset.create && (
-                    <Dropdown.Item onClick={openCreateAssetModal}>
-                      {translate('pim_asset_manager.asset.button.create')}
-                    </Dropdown.Item>
-                  )}
-                  {null !== currentAssetFamilyIdentifier && (rights.asset.upload || hasMediaLinkAsMainMedia) && (
-                    <Dropdown.Item
-                      title={translate(
-                        `pim_asset_manager.asset.upload.${
-                          hasMediaLinkAsMainMedia ? 'disabled_for_media_link' : 'title'
-                        }`
-                      )}
-                      disabled={hasMediaLinkAsMainMedia}
-                      onClick={openUploadModal}
-                    >
-                      {translate('pim_asset_manager.asset.upload.title')}
-                    </Dropdown.Item>
-                  )}
-                  {rights.assetFamily.create && (
-                    <Dropdown.Item onClick={openCreateAssetFamilyModal}>
-                      {translate('pim_asset_manager.asset_family.button.create')}
-                    </Dropdown.Item>
-                  )}
-                </CreateButton>
-              </>
+        <PageHeader>
+          <PageHeader.Breadcrumb>
+            <AssetFamilyBreadcrumb assetFamilyLabel={currentAssetFamilyLabel} />
+          </PageHeader.Breadcrumb>
+          <PageHeader.UserActions>
+            <PimView
+              className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
+              viewName="pim-asset-family-index-user-navigation"
+            />
+          </PageHeader.UserActions>
+          <PageHeader.Actions>
+            {null !== currentAssetFamilyIdentifier && (
+              <Button ghost={true} level="tertiary" onClick={() => redirectToAssetFamily(currentAssetFamilyIdentifier)}>
+                {translate(`pim_asset_manager.asset_family.button.${rights.assetFamily.edit ? 'edit' : 'view'}`)}
+              </Button>
             )}
-            context={context}
-            withLocaleSwitcher={true}
-            withChannelSwitcher={true}
-            isDirty={false}
-            isLoading={false}
-            breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={currentAssetFamilyLabel} />}
-            displayActions={true}
-          />
-        </Header>
+            <CreateButton>
+              {null !== currentAssetFamilyIdentifier && rights.asset.create && (
+                <Dropdown.Item onClick={openCreateAssetModal}>
+                  {translate('pim_asset_manager.asset.button.create')}
+                </Dropdown.Item>
+              )}
+              {null !== currentAssetFamilyIdentifier && (rights.asset.upload || hasMediaLinkAsMainMedia) && (
+                <Dropdown.Item
+                  title={translate(
+                    `pim_asset_manager.asset.upload.${hasMediaLinkAsMainMedia ? 'disabled_for_media_link' : 'title'}`
+                  )}
+                  disabled={hasMediaLinkAsMainMedia}
+                  onClick={openUploadModal}
+                >
+                  {translate('pim_asset_manager.asset.upload.title')}
+                </Dropdown.Item>
+              )}
+              {rights.assetFamily.create && (
+                <Dropdown.Item onClick={openCreateAssetFamilyModal}>
+                  {translate('pim_asset_manager.asset_family.button.create')}
+                </Dropdown.Item>
+              )}
+            </CreateButton>
+          </PageHeader.Actions>
+          <PageHeader.Title>
+            {isInitialized
+              ? translate(
+                  'pim_asset_manager.result_counter',
+                  {count: searchResult.matchesCount},
+                  searchResult.matchesCount
+                )
+              : ''}
+          </PageHeader.Title>
+        </PageHeader>
         <Grid>
           {!isInitialized ? (
             <AssetLibraryPlaceholder assetFamily={currentAssetFamily} />

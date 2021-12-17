@@ -1,7 +1,15 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Button, Dropdown, IconButton, MoreIcon, SectionTitle, useBooleanState} from 'akeneo-design-system';
-import {useTranslate, DeleteModal, Section, useSecurity} from '@akeneo-pim-community/shared';
+import {
+  useTranslate,
+  DeleteModal,
+  Section,
+  useSecurity,
+  PageHeader,
+  UnsavedChanges,
+  PimView,
+} from '@akeneo-pim-community/shared';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {EditForm} from 'akeneoassetmanager/application/component/asset-family/edit/form';
 import {
@@ -12,7 +20,6 @@ import {
 import {deleteAssetFamily} from 'akeneoassetmanager/application/action/asset-family/delete';
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
@@ -105,25 +112,26 @@ const Properties = ({events, attributes, context, form, rights}: StateProps & Di
 
   return (
     <>
-      <Header
-        label={translate('pim_asset_manager.asset_family.tab.properties')}
-        image={assetFamily.image}
-        primaryAction={(defaultFocus: React.RefObject<any>) =>
-          canEditAssetFamily ? (
-            <Button onClick={events.onSaveEditForm} ref={defaultFocus}>
-              {translate('pim_asset_manager.asset_family.button.save')}
-            </Button>
-          ) : null
-        }
-        secondaryActions={
+      <PageHeader>
+        <PageHeader.Breadcrumb>
+          <AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />
+        </PageHeader.Breadcrumb>
+        <PageHeader.UserActions>
+          <PimView
+            className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
+            viewName="pim-asset-family-index-user-navigation"
+          />
+        </PageHeader.UserActions>
+        <PageHeader.Actions>
           <SecondaryActions canDeleteAssetFamily={canDeleteAssetFamily} onDeleteAssetFamily={openDeleteModal} />
-        }
-        withLocaleSwitcher={true}
-        withChannelSwitcher={false}
-        isDirty={form.state.isDirty}
-        breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
-        displayActions={canEditAssetFamily}
-      />
+          {canEditAssetFamily && (
+            <Button onClick={events.onSaveEditForm}>{translate('pim_asset_manager.asset_family.button.save')}</Button>
+          )}
+        </PageHeader.Actions>
+        <PageHeader.State>{form.state.isDirty && <UnsavedChanges />}</PageHeader.State>
+        <PageHeader.Title>{translate('pim_asset_manager.asset_family.tab.properties')}</PageHeader.Title>
+        {/* TODO Add locale switcher */}
+      </PageHeader>
       <Section>
         <SectionTitle>
           <SectionTitle.Title>{translate('pim_asset_manager.asset_family.properties.title')}</SectionTitle.Title>

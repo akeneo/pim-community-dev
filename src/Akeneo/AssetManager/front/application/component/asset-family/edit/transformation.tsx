@@ -3,9 +3,16 @@ import {connect} from 'react-redux';
 import {JsonEditor as Editor} from 'jsoneditor-react';
 import 'jsoneditor-react/es/editor.min.css';
 import {Link, Button, Helper, SectionTitle} from 'akeneo-design-system';
-import {Section, useSecurity, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
+import {
+  PageHeader,
+  PimView,
+  Section,
+  UnsavedChanges,
+  useSecurity,
+  useTranslate,
+  ValidationError,
+} from '@akeneo-pim-community/shared';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
-import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {TransformationCollection} from 'akeneoassetmanager/domain/model/asset-family/transformation';
@@ -69,8 +76,10 @@ const AssetFamilyTransformationEditor = ({
         schema={schema}
         ajv={ajv}
       />
-      {getErrorsView(errors, 'transformations', (field: string) => (error: ValidationError) =>
-        error.propertyPath.indexOf(field) === 0
+      {getErrorsView(
+        errors,
+        'transformations',
+        (field: string) => (error: ValidationError) => error.propertyPath.indexOf(field) === 0
       )}
     </div>
   );
@@ -96,26 +105,27 @@ const Transformation = ({assetFamily, context, events, rights, form, errors}: St
 
   return (
     <>
-      <Header
-        label={translate('pim_asset_manager.asset_family.tab.transformations')}
-        image={null}
-        primaryAction={(defaultFocus: React.RefObject<any>) => (
-          <>
-            <Button ghost={true} level="tertiary" onClick={events.onLaunchComputeTransformations}>
-              {translate('pim_asset_manager.asset.button.launch_transformations')}
-            </Button>
-            {canEditTransformations && (
-              <Button onClick={events.onSaveEditForm} ref={defaultFocus}>
-                {translate('pim_asset_manager.asset_family.button.save')}
-              </Button>
-            )}
-          </>
-        )}
-        withLocaleSwitcher={false}
-        withChannelSwitcher={false}
-        isDirty={form.state.isDirty}
-        breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
-      />
+      <PageHeader>
+        <PageHeader.Breadcrumb>
+          <AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />
+        </PageHeader.Breadcrumb>
+        <PageHeader.UserActions>
+          <PimView
+            className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
+            viewName="pim-asset-family-index-user-navigation"
+          />
+        </PageHeader.UserActions>
+        <PageHeader.Actions>
+          <Button ghost={true} level="tertiary" onClick={events.onLaunchComputeTransformations}>
+            {translate('pim_asset_manager.asset.button.launch_transformations')}
+          </Button>
+          {canEditTransformations && (
+            <Button onClick={events.onSaveEditForm}>{translate('pim_asset_manager.asset_family.button.save')}</Button>
+          )}
+        </PageHeader.Actions>
+        <PageHeader.State>{form.state.isDirty && <UnsavedChanges />}</PageHeader.State>
+        <PageHeader.Title>{translate('pim_asset_manager.asset_family.tab.transformations')}</PageHeader.Title>
+      </PageHeader>
       <Section>
         <div>
           <SectionTitle>
