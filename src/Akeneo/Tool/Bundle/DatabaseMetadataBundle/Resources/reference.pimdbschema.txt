@@ -290,6 +290,7 @@ akeneo_connectivity_connection_wrong_credentials_combination | authentication_da
 akeneo_connectivity_user_consent | user_id | NO | int | PRI
 akeneo_connectivity_user_consent | app_id | NO | varchar(36) | PRI
 akeneo_connectivity_user_consent | scopes | NO | json |
+akeneo_connectivity_user_consent | uuid | NO | char(36) |
 akeneo_connectivity_user_consent | consent_date | NO | datetime |
 akeneo_file_storage_file_info | id | NO | int | PRI
 akeneo_file_storage_file_info | file_key | NO | varchar(255) | UNI
