@@ -566,6 +566,11 @@ pim_import_export:
           with_prefix_suffix:
             title: 접두사 및 접미사 내보내기
             help: 미디어 링크 애셋 특성의 접두사 및 접미사 내보내기
+akeneo_job_process_tracker:
+  type:
+    asset_manager_execute_naming_convention: 애셋 패밀리 명명 규칙 실행
+    asset_manager_link_assets_to_products: 제품에 애셋 링크 연결
+    asset_manager_compute_transformations: 애셋 변환 계산
 pim_datagrid:
   cells:
     type:

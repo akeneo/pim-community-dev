@@ -566,6 +566,11 @@ pim_import_export:
           with_prefix_suffix:
             title: Voorvoegsel en achtervoegsel exporteren
             help: Voorvoegsel en achtervoegsel van de mediakoppelingskenmerken exporteren
+akeneo_job_process_tracker:
+  type:
+    asset_manager_execute_naming_convention: Toepassen asset familie naamgevingsregels
+    asset_manager_link_assets_to_products: Koppel assets aan producten
+    asset_manager_compute_transformations: Bereken asset transformaties
 pim_datagrid:
   cells:
     type:

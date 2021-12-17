@@ -481,6 +481,10 @@ pim_import_export:
       job_type:
         asset_manager_compute_transformations: "Muodosta assetin muunnokset"
         asset_manager_link_assets_to_products: "Linkitä assetit tuotteisiin"
+akeneo_job_process_tracker:
+  type:
+    asset_manager_link_assets_to_products: Linkitä assetit tuotteisiin
+    asset_manager_compute_transformations: Muodosta assetin muunnokset
 pim_datagrid:
   cells:
     type:
