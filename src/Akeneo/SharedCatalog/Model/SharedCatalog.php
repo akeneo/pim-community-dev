@@ -4,7 +4,7 @@ namespace Akeneo\SharedCatalog\Model;
 
 class SharedCatalog
 {
-    const DEFAULT_COLOR = '#f9b53f';
+    public const DEFAULT_COLOR = '#f9b53f';
 
     /** @var string */
     private $code;
