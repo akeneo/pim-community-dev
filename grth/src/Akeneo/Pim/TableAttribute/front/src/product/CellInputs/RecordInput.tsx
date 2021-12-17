@@ -16,6 +16,7 @@ const RecordInput: CellInput = ({columnDefinition, highlighted, inError, row, on
   const catalogLocale = userContext.get('catalogLocale');
 
   const [option, setOption] = useState<ReferenceEntityRecord | null | undefined>();
+  const [isVisible, setIsVisible] = useState<boolean>(false);
   const [searchValue, setSearchValue] = React.useState<string>('');
   const debouncedSearchValue = useDebounce(searchValue, 200);
 
@@ -25,6 +26,7 @@ const RecordInput: CellInput = ({columnDefinition, highlighted, inError, row, on
   const {items, handleNextPage} = useRecords({
     referenceEntityCode,
     searchValue: debouncedSearchValue,
+    isVisible,
   });
 
   useEffect(() => {
@@ -80,6 +82,7 @@ const RecordInput: CellInput = ({columnDefinition, highlighted, inError, row, on
       searchTitle={translate('pim_common.search')}
       onNextPage={handleNextPage}
       inError={inError}
+      onOpenChange={setIsVisible}
     >
       {items?.map(record => {
         const label = getLabel(record.labels, catalogLocale, record.code);

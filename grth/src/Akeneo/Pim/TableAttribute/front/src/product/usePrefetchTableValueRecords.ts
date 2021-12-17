@@ -1,28 +1,38 @@
 import React from 'react';
 import {useRouter, useUserContext} from '@akeneo-pim-community/shared';
-import {RecordCode} from '../models';
+import {RecordCode, RecordColumnDefinition} from '../models';
 import {ReferenceEntityRecordRepository} from '../repositories';
 import {useAttributeContext} from '../contexts';
 import {TableValueWithId} from './TableFieldApp';
 
-const usePrefetchTableValueRecords = (valueData: TableValueWithId) => {
+const usePrefetchTableValueRecords: (valueData: TableValueWithId) => boolean = valueData => {
   const {attribute} = useAttributeContext();
   const userContext = useUserContext();
   const [isPrefetched, setIsPrefetched] = React.useState<boolean>(false);
 
   const router = useRouter();
+  const isAttributeDefined = typeof attribute !== 'undefined';
   React.useEffect(() => {
-    if (attribute) {
-      if (attribute.table_configuration[0].data_type === 'record') {
-        const firstCellCodes = valueData.map(row => row[attribute.table_configuration[0].code] as RecordCode);
-        ReferenceEntityRecordRepository.search(router, attribute.table_configuration[0].reference_entity_identifier, {
-          locale: userContext.get('catalogLocale'),
-          channel: userContext.get('catalogScope'),
-          codes: firstCellCodes,
-        }).then(() => setIsPrefetched(true));
-      }
+    if (isAttributeDefined && attribute) {
+      const prefetchPromises = attribute.table_configuration
+        .filter(columnDefinition => columnDefinition.data_type === 'record')
+        .map(column => {
+          const cellCodes = valueData
+            .map(row => row[column.code] as RecordCode | undefined)
+            .filter(cellCode => typeof cellCode !== 'undefined') as RecordCode[];
+          return ReferenceEntityRecordRepository.search(
+            router,
+            (column as RecordColumnDefinition).reference_entity_identifier,
+            {
+              locale: userContext.get('catalogLocale'),
+              channel: userContext.get('catalogScope'),
+              codes: cellCodes,
+            }
+          );
+        });
+      Promise.all(prefetchPromises).then(() => setIsPrefetched(true));
     }
-  }, [attribute]);
+  }, [isAttributeDefined]);
 
   return isPrefetched;
 };

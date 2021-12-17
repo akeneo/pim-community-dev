@@ -247,7 +247,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
         value={row[firstColumn.code] as SelectOptionCode}
       />
     ) : (
-      areRecordsPrefetched && <RecordCellIndex searchText={searchText} value={row[firstColumn.code] as RecordCode} />
+      <RecordCellIndex searchText={searchText} value={row[firstColumn.code] as RecordCode} />
     );
   };
 
@@ -255,7 +255,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
 
   return (
     <>
-      {attribute && (
+      {attribute && areRecordsPrefetched && (
         <TableInputContainer isCopying={isCopying}>
           <TableInput
             readOnly={readOnly}
