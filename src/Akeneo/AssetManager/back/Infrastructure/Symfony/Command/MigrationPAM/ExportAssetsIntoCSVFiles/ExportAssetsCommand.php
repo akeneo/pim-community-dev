@@ -26,8 +26,7 @@ class ExportAssetsCommand extends Command
     public function __construct(
         private FindAssets $findAssets,
         private FindVariations $findVariations
-    )
-    {
+    ) {
         parent::__construct(static::$defaultName);
     }
 

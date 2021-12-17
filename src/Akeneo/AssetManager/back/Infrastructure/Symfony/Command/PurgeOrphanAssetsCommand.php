@@ -36,8 +36,7 @@ class PurgeOrphanAssetsCommand extends Command
     public function __construct(
         private Connection $connection,
         private FilesystemProvider $filesystemProvider
-    )
-    {
+    ) {
         parent::__construct();
     }
 
