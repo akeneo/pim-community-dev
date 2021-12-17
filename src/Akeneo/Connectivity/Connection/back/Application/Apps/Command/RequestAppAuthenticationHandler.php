@@ -38,7 +38,7 @@ final class RequestAppAuthenticationHandler
     {
         $violations = $this->validator->validate($command);
         if ($violations->count() > 0) {
-            throw new \InvalidArgumentException($violations->get(0)->getMessage());
+            throw new \InvalidArgumentException((string)$violations->get(0)->getMessage());
         }
 
         $userId = $command->getPimUserId();
