@@ -43,7 +43,7 @@ test('The connected app card renders', async () => {
     ).toBeInTheDocument();
 });
 
-test("The Manage App button is disabled when the user doesn't have the permission to Manage Apps", async () => {
+test('The Manage App button is disabled when the user doesnt have the permission to Manage Apps', async () => {
     const isGranted = jest.fn(acl => {
         if (acl === 'akeneo_connectivity_connection_manage_apps') {
             return false;
