@@ -42,16 +42,17 @@ class AuthorizationCodeGenerator implements AuthorizationCodeGeneratorInterface
 
     public function generate(
         AppConfirmation $appConfirmation,
+        int $pimUserId,
         string $redirectUriWithoutCode
     ): string {
         $code = $this->randomCodeGenerator->generate();
         $client = $this->findFosClient($appConfirmation->getFosClientId());
-        $user = $this->findAppUser($appConfirmation->getUserId());
+        $pimUser = $this->findUser($pimUserId);
 
         $this->storage->createAuthCode(
             $code,
             $client,
-            $user,
+            $pimUser,
             $redirectUriWithoutCode,
             $this->clock->now()->getTimestamp() + self::AUTH_CODE_LIFETIME
         );
@@ -59,7 +60,7 @@ class AuthorizationCodeGenerator implements AuthorizationCodeGeneratorInterface
         return $code;
     }
 
-    private function findAppUser(int $userId): UserInterface
+    private function findUser(int $userId): UserInterface
     {
         $user = $this->userRepository->find($userId);
 

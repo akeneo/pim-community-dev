@@ -186,7 +186,7 @@ SQL;
         ], array_keys($payload));
 
         Assert::assertEquals('bearer', $payload['token_type']);
-        Assert::assertEquals('read_catalog_structure read_attribute_options read_categories read_channel_localization read_channel_settings read_association_types write_products delete_products', $payload['scope']);
+        Assert::assertEquals('delete_products read_association_types read_attribute_options read_catalog_structure read_categories read_channel_localization read_channel_settings write_products', $payload['scope']);
     }
 
     private function getCreatedAuthorizationCode(): ?string
