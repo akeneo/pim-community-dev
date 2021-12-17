@@ -100,7 +100,7 @@
         "symfony/http-foundation": "4.4.25",
         "symfony/http-kernel": "4.4.25",
         "symfony/intl": "4.4.25",
-        "symfony/lock": "4.4.25",
+        "symfony/lock": "5.3.10",
         "symfony/messenger": "^4.4",
         "symfony/monolog-bundle": "^3.4",
         "symfony/options-resolver": "4.4.25",
