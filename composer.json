@@ -115,7 +115,7 @@
         "symfony/security-bundle": "4.4.25",
         "symfony/security-core": "4.4.25",
         "symfony/security-csrf": "4.4.25",
-        "symfony/security-http": "4.4.25",
+        "symfony/security-http": "4.4.34",
         "symfony/swiftmailer-bundle": "^3.2",
         "symfony/templating": "4.4.25",
         "symfony/translation": "4.4.25",
