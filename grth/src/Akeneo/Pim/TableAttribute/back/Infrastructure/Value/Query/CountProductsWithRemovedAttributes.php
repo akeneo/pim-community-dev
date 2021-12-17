@@ -9,11 +9,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\CountProductsWithRemovedAttrib
 
 final class CountProductsWithRemovedAttributes implements CountProductsWithRemovedAttributeInterface
 {
-     public function __construct(private CountProductsWithRemovedAttributeInterface $decoratedQuery)
-     {
-     }
+    public function __construct(private CountProductsWithRemovedAttributeInterface $decoratedQuery)
+    {
+    }
 
-     public function count(array $attributesCodes): int
+    public function count(array $attributesCodes): int
     {
         foreach ($attributesCodes as $attributeCode) {
             $this->getQueryBuilder()->addShould(
