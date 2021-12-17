@@ -53,7 +53,7 @@ class FindSharedCatalogQueryIntegration extends TestCase
             'channel' => null,
             'catalogLocales' => [],
             'attributes' => [],
-            'branding' => ['logo' => null, 'cover_image' => null, 'color' => null],
+            'branding' => ['logo' => null, 'cover_image' => null, 'color' => '#f9b53f'],
         ], $normalizedResult);
     }
 

@@ -10,7 +10,7 @@ shared_catalog:
         placeholder: betty@akeneo.com
         email: Email address
         invalid_email: This value is not a valid email address.
-        duplicates: You already shared with this recipient
+        duplicate_email: Some recipients are already in the list, they will be ignored.
         helper: "Add recipients to give them access to your new shared catalog. You could fill in an address list with separators: space, comma, semicolon & line break."
         no_result: Sorry, no email is matching your search
         no_data: No email address declared yet

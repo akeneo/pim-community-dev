@@ -52,7 +52,7 @@ test('I cannot add an invalid email', () => {
   expect(screen.getByText('shared_catalog.recipients.invalid_email')).toBeInTheDocument();
 });
 
-test('I cannot add a duplicate email', () => {
+test('It warn and ignore duplicate email', () => {
   const email = 'michel@akeneo.com';
   const mockOnRecipientsChange = jest.fn();
 
@@ -61,12 +61,13 @@ test('I cannot add a duplicate email', () => {
   const input = screen.getByPlaceholderText('shared_catalog.recipients.placeholder');
   userEvent.type(input, `${email} `);
   const button = screen.getByText('pim_common.add');
+  expect(screen.getByText('shared_catalog.recipients.duplicate_email')).toBeInTheDocument();
 
   act(() => {
     userEvent.click(button);
   });
 
-  expect(screen.getByText('shared_catalog.recipients.duplicates')).toBeInTheDocument();
+  expect(mockOnRecipientsChange).toBeCalledWith([{email}])
 });
 
 test('I can see a backend validation error', () => {
@@ -148,7 +149,7 @@ test('It displays a helper when the max limit is reached', () => {
   expect(screen.getByText('shared_catalog.recipients.max_limit_reached')).toBeInTheDocument();
 });
 
-test('It can add multiple recipients at once (separated by comma, semicolon, space or new line)', () => {
+test('It can add multiple recipients at once (separated by comma, semicolon, space or new line) and filters out duplicates', () => {
   const mockOnRecipientsChange = jest.fn();
 
   render(
@@ -165,7 +166,7 @@ test('It can add multiple recipients at once (separated by comma, semicolon, spa
   fireEvent.change(input, {
     target: {
       value: `hello@akeneo.com; bonjour@akeneo.com nice@raccoon.net
-  salut@michel.fr salut@michel.fr`,
+  salut@michel.fr salut@michel.fr coucou@akeneo.com`,
     },
   });
 
