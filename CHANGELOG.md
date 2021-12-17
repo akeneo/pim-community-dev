@@ -152,6 +152,7 @@
 - PIM-10199: Fix occasional segmentation fault when generating thumbnails
 - PIM-10206: Fix product and product model save when they had values for a deleted channel or locale
 - PIM-10197: Added safeguards against attribute change to locale specific when the same attribute is a variant axis for a family
+- PIM-10208: Fix currency settings page crashing when label is not found
 
 ## New features
 
