@@ -63,7 +63,8 @@ services:
             - '@pim_user.saver.role_with_permissions'
         public: true
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\AsymmetricKeysGenerator: ~
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\AsymmetricKeysGenerator:
+        public: true
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository:
         arguments:
