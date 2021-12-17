@@ -27,6 +27,5 @@ class GenerateAsymmetricKeysHandler
     {
         $keys = $this->asymmetricKeysGenerator->generate();
         $this->saveAsymmetricKeysQuery->execute($keys);
-
     }
 }

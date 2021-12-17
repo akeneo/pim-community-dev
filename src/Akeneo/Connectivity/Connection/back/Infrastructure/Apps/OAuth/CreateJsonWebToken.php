@@ -43,7 +43,6 @@ class CreateJsonWebToken
         string $lastName,
         string $email
     ): string {
-
         ['public_key' => $publicKey, 'private_key' => $privateKey] = $this->getAsymmetricKeysQuery->execute(
         )->normalize();
         $privateKey = InMemory::plainText($privateKey);
