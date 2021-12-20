@@ -63,8 +63,12 @@ connectivity-connection-coupling-back:
 connectivity-connection-lint-back:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
+	$(PHP_RUN) vendor/bin/php-cs-fixer fix --diff --dry-run --config=src/Akeneo/Connectivity/Connection/back/tests/.php_cs.php
 	$(PHP_RUN) vendor/bin/phpstan analyse --level=8 src/Akeneo/Connectivity/Connection/back/Application src/Akeneo/Connectivity/Connection/back/Domain
 	$(PHP_RUN) vendor/bin/phpstan analyse --level=5 src/Akeneo/Connectivity/Connection/back/Infrastructure
+
+connectivity-connection-lint-back_fix:
+	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=src/Akeneo/Connectivity/Connection/back/tests/.php_cs.php
 
 connectivity-connection-unit-back:
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Connectivity/Connection/back/tests/Unit/spec/
@@ -79,14 +83,14 @@ connectivity-connection-integration-back:
 ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Connectivity_Connection_Integration
 else
-	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Connectivity_Connection_Integration $(0)
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Connectivity_Connection_Integration --log-junit var/tests/phpunit/phpunit_connectivity_integration.xml $(0)
 endif
 
 connectivity-connection-e2e-back:
 ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Connectivity_Connection_EndToEnd
 else
-	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Connectivity_Connection_EndToEnd $(0)
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Connectivity_Connection_EndToEnd --log-junit var/tests/phpunit/phpunit_connectivity_e2e.xml $(0)
 endif
 
 connectivity-connection-back:

@@ -21,7 +21,8 @@ class AppAuthorizationSessionIntegration extends TestCase
         $appAuthorization = AppAuthorization::createFromNormalized([
             'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
             'redirect_uri' => 'http://shopware.example.com/callback',
-            'scope' => 'read_catalog_structure write_products',
+            'authorization_scope' => 'read_catalog_structure write_products',
+            'authentication_scope' => 'openid profile',
             'state' => 'foo',
         ]);
         $this->appAuthorizationSession->initialize($appAuthorization);
@@ -30,7 +31,8 @@ class AppAuthorizationSessionIntegration extends TestCase
         Assert::assertNotEmpty($authorizationInSession);
         Assert::assertEquals([
             'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
-            'scope' => 'read_catalog_structure write_products',
+            'authorization_scope' => 'read_catalog_structure write_products',
+            'authentication_scope' => 'openid profile',
             'redirect_uri' => 'http://shopware.example.com/callback',
             'state' => 'foo',
         ], json_decode($authorizationInSession, true));
@@ -43,7 +45,8 @@ class AppAuthorizationSessionIntegration extends TestCase
             json_encode([
                 'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
                 'redirect_uri' => 'http://shopware.example.com/callback',
-                'scope' => 'read_catalog_structure write_products',
+                'authorization_scope' => 'read_catalog_structure write_products',
+                'authentication_scope' => 'openid profile',
                 'state' => 'foo',
             ])
         );
@@ -55,7 +58,8 @@ class AppAuthorizationSessionIntegration extends TestCase
             [
                 'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
                 'redirect_uri' => 'http://shopware.example.com/callback',
-                'scope' => 'read_catalog_structure write_products',
+                'authorization_scope' => 'read_catalog_structure write_products',
+                'authentication_scope' => 'openid profile',
                 'state' => 'foo',
             ],
             $authorizationInSession->normalize()

@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Apps\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserGroupLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;

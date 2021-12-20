@@ -257,7 +257,6 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         EventsApiRequestLogger $debugLogger,
         EventDispatcherInterface $eventDispatcher
     ): void {
-
         $container = [];
         $history = Middleware::history($container);
 

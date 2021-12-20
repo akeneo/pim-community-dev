@@ -86,6 +86,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
             properties:
                 - auto_option_sorting
                 - default_value
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\IsVariantAxisWithoutAvailableLocales: ~
     properties:
         type:
             - Type: string
