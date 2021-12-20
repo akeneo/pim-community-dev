@@ -27,7 +27,7 @@ class OptionCode
         Assert::regex(
             $code,
             self::REGULAR_EXPRESSION,
-            'Option code may contain only letters, numbers and underscores. "%s" given',
+            'Option code may contain only letters, numbers and underscores. %s given',
         );
 
         $this->code = $code;

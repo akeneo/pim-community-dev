@@ -34,7 +34,7 @@ class AssetCode
         Assert::regex(
             $code,
             '/^[a-zA-Z0-9_]+$/',
-            'Asset code may contain only letters, numbers and underscores. "%s" given',
+            'Asset code may contain only letters, numbers and underscores. %s given',
         );
 
         $this->code = $code;

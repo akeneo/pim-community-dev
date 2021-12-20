@@ -35,7 +35,7 @@ class AttributeIdentifier implements \Stringable
         Assert::regex(
             $identifier,
             '/^[a-zA-Z0-9_-]+$/',
-            'Attribute identifier may contain only letters, numbers, underscores and dashes. "%s" given',
+            'Attribute identifier may contain only letters, numbers, underscores and dashes. %s given',
         );
     }
 
@@ -50,21 +50,21 @@ class AttributeIdentifier implements \Stringable
         Assert::regex(
             $referenceEntityIdentifier,
             '/^[a-zA-Z0-9_]+$/',
-            'Reference entity identifier may contain only letters, numbers and underscores. "%s" given',
+            'Reference entity identifier may contain only letters, numbers and underscores. %s given',
         );
 
         Assert::stringNotEmpty($attributeCode, 'Attribute code cannot be empty');
         Assert::regex(
             $attributeCode,
             '/^[a-zA-Z0-9_]+$/',
-            'Attribute code may contain only letters, numbers and underscores. "%s" given',
+            'Attribute code may contain only letters, numbers and underscores. %s given',
         );
 
         Assert::stringNotEmpty($fingerprint, 'Fingerprint cannot be empty');
         Assert::regex(
             $fingerprint,
             '/^[a-zA-Z0-9_-]+$/',
-            'Fingerprint may contain only letters, numbers, underscores and dashes. "%s" given',
+            'Fingerprint may contain only letters, numbers, underscores and dashes. %s given',
         );
 
         return new self(

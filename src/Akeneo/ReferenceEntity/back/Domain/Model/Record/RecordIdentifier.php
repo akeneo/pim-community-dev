@@ -36,7 +36,7 @@ class RecordIdentifier implements \Stringable
         Assert::regex(
             $identifier,
             '/^[a-zA-Z0-9_-]+$/',
-            'Record identifier may contain only letters, numbers, underscores and dashes. "%s" given',
+            'Record identifier may contain only letters, numbers, underscores and dashes. %s given',
         );
     }
 
@@ -46,19 +46,19 @@ class RecordIdentifier implements \Stringable
         Assert::regex(
             $referenceEntityIdentifier,
             '/^[a-zA-Z0-9_]+$/',
-            'Reference entity identifier may contain only letters, numbers and underscores. "%s" given',
+            'Reference entity identifier may contain only letters, numbers and underscores. %s given',
         );
         Assert::stringNotEmpty($code, 'Record code cannot be empty');
         Assert::regex(
             $code,
             '/^[a-zA-Z0-9_]+$/',
-            'Record code may contain only letters, numbers and underscores. "%s" given',
+            'Record code may contain only letters, numbers and underscores. %s given',
         );
         Assert::stringNotEmpty($fingerprint, 'Fingerprint cannot be empty');
         Assert::regex(
             $fingerprint,
             '/^[a-zA-Z0-9_-]+$/',
-            'Fingerprint may contain only letters, numbers, underscores and dashes. "%s" given',
+            'Fingerprint may contain only letters, numbers, underscores and dashes. %s given',
         );
 
 

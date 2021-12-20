@@ -33,7 +33,7 @@ class RecordCode implements \Stringable
         Assert::regex(
             $code,
             '/^[a-zA-Z0-9_]+$/',
-            'Record code may contain only letters, numbers and underscores. "%s" given',
+            'Record code may contain only letters, numbers and underscores. %s given',
         );
     }
 

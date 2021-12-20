@@ -35,7 +35,7 @@ class AttributeCode implements \Stringable
         Assert::regex(
             $code,
             '/^[a-zA-Z0-9_]+$/',
-            'Attribute code may contain only letters, numbers and underscores. "%s" given'
+            'Attribute code may contain only letters, numbers and underscores. %s given'
         );
     }
 

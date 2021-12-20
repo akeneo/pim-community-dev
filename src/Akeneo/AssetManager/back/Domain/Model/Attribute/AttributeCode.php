@@ -38,7 +38,7 @@ class AttributeCode
         Assert::regex(
             $code,
             self::REGEX,
-            'Attribute code may contain only letters, numbers and underscores. "%s" given',
+            'Attribute code may contain only letters, numbers and underscores. %s given',
         );
 
         $this->code = $code;
