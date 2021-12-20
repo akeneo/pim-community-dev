@@ -37,6 +37,7 @@ class AclPrivilegesEventSubscriber implements EventSubscriberInterface
             $event->getPrivileges()->filter(
                 fn (AclPrivilege $privilege) =>
                 'action:akeneo_connectivity_connection_manage_apps' !== $privilege->getIdentity()->getId()
+                    && 'action:akeneo_connectivity_connection_open_apps' !== $privilege->getIdentity()->getId()
             )
         );
     }

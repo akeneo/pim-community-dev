@@ -49,3 +49,6 @@ services:
 
     akeneo.pim.structure.query.is_attribute_code_blacklisted:
         class: AkeneoTest\Acceptance\Attribute\InMemoryIsAttributeCodeBlacklisted
+
+    akeneo.pim.structure.query.attribute_is_an_family_variant_axis:
+        class: 'Akeneo\Test\Acceptance\Attribute\InMemoryAttributeIsAFamilyVariantAxis'

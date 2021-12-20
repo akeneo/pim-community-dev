@@ -70,6 +70,8 @@ class AkeneoElasticsearchExtension extends Extension
                         $index['index_name'],
                         $index['id_prefix'],
                         $config['max_chunk_size'],
+                        $config['max_expected_indexation_latency_in_milliseconds'],
+                        $config['max_number_of_retries'],
                         new Reference($index['activate_dual_indexation_with_service']),
                     ])
                     ->setPublic(true);
@@ -81,7 +83,9 @@ class AkeneoElasticsearchExtension extends Extension
                         $config['hosts'],
                         $index['index_name'],
                         $index['id_prefix'],
-                        $config['max_chunk_size']
+                        $config['max_chunk_size'],
+                        $config['max_expected_indexation_latency_in_milliseconds'],
+                        $config['max_number_of_retries']
                     ])
                     ->setPublic(true);
             }

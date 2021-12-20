@@ -64,3 +64,9 @@ services:
             - '@akeneo_connectivity.connection.marketplace_fake_apps.feature'
         tags:
             - { name: validator.constraint_validator }
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\UserIdMustBeValidValidator:
+        arguments:
+            - '@pim_user.repository.user'
+        tags:
+            - { name: validator.constraint_validator }

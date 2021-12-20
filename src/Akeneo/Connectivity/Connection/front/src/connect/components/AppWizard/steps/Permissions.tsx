@@ -2,8 +2,9 @@ import React, {FC} from 'react';
 import styled from 'styled-components';
 import {getColor, getFontSize, Link} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/connectivity-connection/src/shared/translate';
-import {PermissionFormProvider} from '../../../shared/permission-form-registry';
-import {PermissionsByProviderKey} from '../../../model/Apps/permissions-by-provider-key';
+import {PermissionFormProvider} from '../../../../shared/permission-form-registry';
+import {PermissionsByProviderKey} from '../../../../model/Apps/permissions-by-provider-key';
+import {PermissionsForm} from '../../PermissionsForm';
 
 const InfoContainer = styled.div`
     grid-area: INFO;
@@ -38,21 +39,14 @@ const Helper = styled.div`
     width: 280px;
 `;
 
-type PermissionsSummarySectionProps = {
-    provider: PermissionFormProvider<any>;
-    permissions: PermissionsByProviderKey;
-};
-
-const PermissionsSummarySection: FC<PermissionsSummarySectionProps> = React.memo(({provider, permissions}) => (
-    <div>{provider.renderSummary(permissions)}</div>
-));
-
 type Props = {
     appName: string;
     providers: PermissionFormProvider<any>[];
+    setProviderPermissions: (providerKey: string, providerPermissions: object) => void;
     permissions: PermissionsByProviderKey;
 };
-export const PermissionsSummary: FC<Props> = ({appName, providers, permissions}) => {
+
+export const Permissions: FC<Props> = ({appName, providers, setProviderPermissions, permissions}) => {
     const translate = useTranslate();
 
     return (
@@ -61,18 +55,28 @@ export const PermissionsSummary: FC<Props> = ({appName, providers, permissions})
             <AppTitle>{appName}</AppTitle>
             <Helper>
                 <p>{translate('akeneo_connectivity.connection.connect.apps.wizard.permission.helper')}</p>
-                <Link href={'https://help.akeneo.com/'}>
+                <Link
+                    href={
+                        'https://help.akeneo.com/pim/serenity/articles/how-to-connect-my-pim-with-apps.html#give-permissions-to-your-app-ee'
+                    }
+                >
                     {translate('akeneo_connectivity.connection.connect.apps.wizard.permission.helper_link')}
                 </Link>
             </Helper>
             {providers.map(provider => {
+                const readOnly = false === permissions[provider.key];
                 const providerPermissions = false === permissions[provider.key] ? undefined : permissions[provider.key];
+                const handlePermissionsChange = (providerPermissions: object) => {
+                    setProviderPermissions(provider.key, providerPermissions);
+                };
 
                 return (
-                    <PermissionsSummarySection
+                    <PermissionsForm
                         key={provider.key}
                         provider={provider}
+                        onPermissionsChange={handlePermissionsChange}
                         permissions={providerPermissions}
+                        readOnly={readOnly}
                     />
                 );
             })}

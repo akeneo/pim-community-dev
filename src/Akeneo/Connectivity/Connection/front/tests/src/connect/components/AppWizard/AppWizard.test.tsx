@@ -38,6 +38,7 @@ test('The wizard renders without error', async () => {
                 appName: 'MyApp',
                 appLogo: '',
                 scopeMessages: [],
+                authenticationScopes: [],
             },
         },
     };
@@ -59,6 +60,7 @@ test('The wizard redirect to the marketplace when closed', async () => {
                 appName: 'MyApp',
                 appLogo: '',
                 scopeMessages: [],
+                authenticationScopes: [],
             },
         },
     };
@@ -84,6 +86,7 @@ test('The wizard display a notification and redirects on success', async done =>
                 appName: 'MyApp',
                 appLogo: '',
                 scopeMessages: [],
+                authenticationScopes: [],
             },
         },
         'akeneo_connectivity_connection_apps_rest_confirm_authorization?clientId=8d8a7dc1-0827-4cc9-9ae5-577c6419230b':
