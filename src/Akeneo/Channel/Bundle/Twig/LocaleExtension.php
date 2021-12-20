@@ -4,6 +4,7 @@ namespace Akeneo\Channel\Bundle\Twig;
 
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\Intl;
+use Symfony\Component\Intl\Exception\MissingResourceException;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -96,12 +97,16 @@ class LocaleExtension extends AbstractExtension
         return Intl\Currencies::getSymbol($code, $language);
     }
 
-    public function currencyLabel(string $code, ?string $translateIn = null): string
+    public function currencyLabel(string $code, ?string $translateIn = null): ?string
     {
         $translateIn = $translateIn ?: $this->getCurrentLocaleCode();
         $language = \Locale::getPrimaryLanguage($translateIn);
 
-        return Intl\Currencies::getName($code, $language);
+        try {
+            return Intl\Currencies::getName($code, $language);
+        } catch (MissingResourceException) {
+            return null;
+        }
     }
 
     /**

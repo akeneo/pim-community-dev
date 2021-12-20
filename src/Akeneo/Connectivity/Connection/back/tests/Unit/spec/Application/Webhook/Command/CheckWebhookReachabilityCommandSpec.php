@@ -33,4 +33,3 @@ class CheckWebhookReachabilityCommandSpec extends ObjectBehavior
         $this->secret()->shouldReturn('1234');
     }
 }
-

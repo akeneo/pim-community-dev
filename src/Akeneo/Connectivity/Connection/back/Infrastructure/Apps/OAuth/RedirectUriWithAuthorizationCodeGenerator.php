@@ -22,12 +22,17 @@ class RedirectUriWithAuthorizationCodeGenerator implements RedirectUriWithAuthor
 
     public function generate(
         AppAuthorization $appAuthorization,
-        AppConfirmation $appConfirmation
+        AppConfirmation $appConfirmation,
+        int $pimUserId
     ): string {
         $redirectUri = $appAuthorization->getRedirectUri();
-        $state = $appAuthorization->getState();
 
-        $code = $this->authorizationCodeGenerator->generate($appConfirmation, $redirectUri);
+        $code = $this->authorizationCodeGenerator->generate(
+            $appConfirmation,
+            $pimUserId,
+            $redirectUri
+        );
+        $state = $appAuthorization->getState();
 
         return $this->appendQueryParams($redirectUri, [
             'code' => $code,

@@ -7,6 +7,8 @@ namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
+use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
+use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -46,13 +48,18 @@ final class RequestAppAuthorizationHandler
             throw new \ErrorException('App should exists when validating the authorization wizard');
         }
 
-        $supportedScopes = $this->scopeMapper->getAllScopes();
-        $requestedScopes = \explode(' ', $command->getScope());
-        $allowedScopes = \array_intersect($requestedScopes, $supportedScopes);
+        $requestedScopes = ScopeList::fromScopeString($command->getScope())->getScopes();
+
+        $supportedAuthorizationScopes = $this->scopeMapper->getAllScopes();
+        $allowedAuthorizationScopes = ScopeList::fromScopes(\array_intersect($requestedScopes, $supportedAuthorizationScopes));
+
+        $supportedAuthenticationScopes = AuthenticationScope::getAllScopes();
+        $allowedAuthenticationScopes = ScopeList::fromScopes(\array_intersect($requestedScopes, $supportedAuthenticationScopes));
 
         $authorization = AppAuthorization::createFromRequest(
             $command->getClientId(),
-            \implode(' ', $allowedScopes),
+            $allowedAuthorizationScopes,
+            $allowedAuthenticationScopes,
             $app->getCallbackUrl(),
             $command->getState(),
         );

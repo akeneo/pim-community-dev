@@ -19,12 +19,12 @@ class AppUrlGeneratorSpec extends ObjectBehavior
         $this->beConstructedWith($pimUrl);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(AppUrlGenerator::class);
     }
 
-    function it_generates_app_query_parameters(
+    public function it_generates_app_query_parameters(
         PimUrl $pimUrl
     ): void {
         $pimUrl->getPimUrl()->willReturn('http://my-akeneo.test');

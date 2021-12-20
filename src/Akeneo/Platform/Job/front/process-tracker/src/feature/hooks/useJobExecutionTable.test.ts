@@ -91,46 +91,46 @@ test('It does not fetch a job execution table while the previous fetch is not fi
   expect(global.fetch).toHaveBeenCalledTimes(1);
 });
 
-// test('It automatically refreshes the job execution table', async () => {
-//   jest.useFakeTimers();
+test('It automatically refreshes the job execution table', async () => {
+  jest.useFakeTimers();
 
-//   const filter = getDefaultJobExecutionFilter();
-//   const {result, waitForNextUpdate} = renderHookWithProviders(() => useJobExecutionTable(filter));
+  const filter = getDefaultJobExecutionFilter();
+  const {result, waitForNextUpdate} = renderHookWithProviders(() => useJobExecutionTable(filter));
 
-//   await act(async () => {
-//     await waitForNextUpdate();
-//   });
+  await act(async () => {
+    await waitForNextUpdate();
+  });
 
-//   expect(global.fetch).toHaveBeenCalledTimes(1);
-//   expect(result.current[0]).toBe(expectedFetchedJobExecutionTable);
+  expect(global.fetch).toHaveBeenCalledTimes(1);
+  expect(result.current[0]).toBe(expectedFetchedJobExecutionTable);
 
-//   await act(async () => {
-//     jest.advanceTimersByTime(5000);
-//     await waitForNextUpdate();
-//   });
+  await act(async () => {
+    jest.advanceTimersByTime(5000);
+    await waitForNextUpdate();
+  });
 
-//   expect(global.fetch).toHaveBeenCalledTimes(2);
-//   expect(result.current[0]).toBe(expectedFetchedJobExecutionTable);
-// });
+  expect(global.fetch).toHaveBeenCalledTimes(2);
+  expect(result.current[0]).toBe(expectedFetchedJobExecutionTable);
+});
 
-// test('It does not refresh the job execution table when document is not visible', async () => {
-//   jest.useFakeTimers();
-//   mockedDocumentVisibility = false;
+test('It does not refresh the job execution table when document is not visible', async () => {
+  jest.useFakeTimers();
+  mockedDocumentVisibility = false;
 
-//   const filter = getDefaultJobExecutionFilter();
-//   const {result, waitForNextUpdate} = renderHookWithProviders(() => useJobExecutionTable(filter));
+  const filter = getDefaultJobExecutionFilter();
+  const {result, waitForNextUpdate} = renderHookWithProviders(() => useJobExecutionTable(filter));
 
-//   await act(async () => {
-//     jest.advanceTimersByTime(1500);
-//     await waitForNextUpdate();
-//   });
+  await act(async () => {
+    jest.advanceTimersByTime(1500);
+    await waitForNextUpdate();
+  });
 
-//   expect(global.fetch).toHaveBeenCalledTimes(1);
-//   expect(result.current[0]).toBe(expectedFetchedJobExecutionTable);
+  expect(global.fetch).toHaveBeenCalledTimes(1);
+  expect(result.current[0]).toBe(expectedFetchedJobExecutionTable);
 
-//   await act(async () => {
-//     jest.advanceTimersByTime(5000);
-//   });
+  await act(async () => {
+    jest.advanceTimersByTime(5000);
+  });
 
-//   expect(global.fetch).toHaveBeenCalledTimes(1);
-// });
+  expect(global.fetch).toHaveBeenCalledTimes(1);
+});

@@ -2,14 +2,14 @@ import React, {useCallback, MouseEvent} from 'react';
 import {Table} from 'akeneo-design-system';
 import {useDateFormatter, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {JobExecutionRow, JobExecutionFilterSort, jobCanBeStopped, canShowJobExecutionDetail} from '../../models';
-import {JobExecutionStatus, StopJobAction} from '../common';
+import {JobExecutionStatus, ProgressCell, StopJobAction} from '../common';
 
 const COLUMN_HEADERS = [
   {name: 'job_name', isSortable: true},
   {name: 'type', isSortable: true},
   {name: 'started_at', isSortable: true},
   {name: 'username', isSortable: true},
-  // {name: 'progress', isSortable: false},
+  {name: 'progress', isSortable: false},
   {name: 'status', isSortable: true},
   {name: 'warning_count', isSortable: false},
 ];
@@ -98,7 +98,7 @@ const JobExecutionTable = ({
                 : '-'}
             </Table.Cell>
             <Table.Cell>{jobExecutionRow.username}</Table.Cell>
-            {/* <ProgressCell jobExecutionRow={jobExecutionRow} /> */}
+            <ProgressCell jobExecutionRow={jobExecutionRow} />
             <Table.Cell>
               <JobExecutionStatus
                 status={jobExecutionRow.status}

@@ -11,8 +11,8 @@ use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionQue
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateClientInterface;
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Client;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\User;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;

@@ -134,7 +134,6 @@
     "css-loader": "^3.3.0",
     "dep-diff": "1.0.1",
     "diff": "^5.0.0",
-    "dropzone": "4.0.1",
     "formik": "^2.0.6",
     "jquery": "^3.6.0",
     "json-schema-ref-parser": "^7.1.2",

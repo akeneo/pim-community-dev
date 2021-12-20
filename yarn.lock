@@ -5512,11 +5512,6 @@ draftjs-utils@^0.10.2:
   resolved "https://registry.yarnpkg.com/draftjs-utils/-/draftjs-utils-0.10.2.tgz#a7f16d2c1c174ac38ba3bbf700c256f176b2699c"
   integrity sha512-EstHqr3R3JVcilJrBaO/A+01GvwwKmC7e4TCjC7S94ZeMh4IVmf60OuQXtHHpwItK8C2JCi3iljgN5KHkJboUg==
 
-dropzone@4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/dropzone/-/dropzone-4.0.1.tgz#9e6e3430a85bd5ee8f430f058abd0c877b25fbec"
-  integrity sha1-nm40MKhb1e6PQw8Fir0Mh3sl++w=
-
 duplexer@^0.1.1:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/duplexer/-/duplexer-0.1.2.tgz#3abe43aef3835f8ae077d136ddce0f276b0400e6"

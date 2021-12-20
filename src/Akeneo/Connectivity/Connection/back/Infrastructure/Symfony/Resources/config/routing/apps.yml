@@ -13,6 +13,11 @@ akeneo_connectivity_connection_apps_rest_confirm_authorization:
     controller: akeneo_connectivity.connection.apps.controller.apps.confirm_authorization
     methods: [POST]
 
+akeneo_connectivity_connection_apps_rest_confirm_authentication:
+    path: '/confirm-authentication/{clientId}'
+    controller: akeneo_connectivity.connection.apps.controller.apps.confirm_authentication
+    methods: [POST]
+
 akeneo_connectivity_connection_apps_rest_get_all_connected_app_scope_messages:
     path: '/connected-apps/{connectionCode}/scope-messages'
     controller: akeneo_connectivity.connection.internal_api.controller.apps.connected_app.get_all_scope_messages

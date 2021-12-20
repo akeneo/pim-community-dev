@@ -94,7 +94,6 @@ class ProductAndProductModelReader implements
             }
             $this->stepExecution->incrementSummaryInfo('read');
         }
-        $this->firstRead = false;
 
         $this->firstRead = false;
 
