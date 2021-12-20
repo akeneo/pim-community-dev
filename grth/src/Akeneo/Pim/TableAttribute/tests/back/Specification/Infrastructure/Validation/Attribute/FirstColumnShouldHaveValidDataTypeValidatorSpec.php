@@ -100,7 +100,9 @@ final class FirstColumnShouldHaveValidDataTypeValidatorSpec extends ObjectBehavi
             $constraint->message,
             [
                 '{{ data_type }}' => 'number',
-                '{{ allowed_data_types }}' => implode(', ', $this->getAllowedFirstColumnDatatypes()),
+                '{{ allowed_data_types }}' => 'select',
+                '{{ allowed_data_types_except_last }}' => '',
+                '{{ last_allowed_data_types }}' => 'select',
                 '%count%' => count($this->getAllowedFirstColumnDatatypes()),
             ]
             )->shouldBeCalled()

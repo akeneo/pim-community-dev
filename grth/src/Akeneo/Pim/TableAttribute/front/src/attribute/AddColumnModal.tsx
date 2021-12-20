@@ -207,7 +207,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
             <Helper>
               {translate(
                 featureFlags.isEnabled('reference_entity')
-                  ? 'pim_table_attribute.form.attribute.first_column_type_helper_with_record'
+                  ? 'pim_table_attribute.form.attribute.first_column_type_helper_with_reference_entity'
                   : 'pim_table_attribute.form.attribute.first_column_type_helper'
               )}
             </Helper>

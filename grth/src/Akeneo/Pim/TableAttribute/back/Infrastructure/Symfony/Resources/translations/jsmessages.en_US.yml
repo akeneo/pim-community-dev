@@ -145,7 +145,8 @@ pim_table_attribute:
             column_code: Column code
             properties_helper: You must define the table structure and at least 2 columns before you can save your table attribute
             table_structure_helper_text: A table attribute must contain at least 2 columns. The first one is always a “select” column type. Once you’ve created the first column, you must add options. To do so, click on “manage options” and add up to {{ limit }} options! Then, you’ll be able to use each of these options as rows in your product tables.
-            table_structure_helper_link: This article may help you to learn more about table attributes.
+            table_structure_helper_text_with_reference_entity: A table attribute must contain at least 2 columns. Once you've created the first one, using either “Select“ or “Reference Entities“ column types, define and manage rows based on options or records.
+            table_structure_helper_link: Check out our help center for more information.
             limit_option_reached: You reached the limit of {{ limit }} options.
             template_label: Select the standard of your "{{ templateLabel }}" table
             delete_column_helper: When you delete this column, all of its values are removed from all the products using the "{{ attributeLabel }}" table attribute.
@@ -155,7 +156,7 @@ pim_table_attribute:
             no_options: No options found
             please_try_again: Please try again
             first_column_type_helper: The first column of a Table is always a Select column type.
-            first_column_type_helper_with_record: The first column of a Table is always a Select or Record column type.
+            first_column_type_helper_with_reference_entity: The first column of a Table is always a Select or Reference Entity column type.
             discard_changes: You will lose changes to the select options if you leave the page.
             completeness: Completeness
             required_for_completeness: Required for completeness

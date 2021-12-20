@@ -42,12 +42,21 @@ final class FirstColumnShouldHaveValidDataTypeValidator extends ConstraintValida
         $firstColumnDataType = $firstColumnDefinition['data_type'] ?? null;
 
         if (\is_string($firstColumnDataType) && !\in_array($firstColumnDataType, $this->allowedFirstColumnDataTypes)) {
+            $allowedDataTypesExceptLast = \array_slice($this->allowedFirstColumnDataTypes, 0, \count($this->allowedFirstColumnDataTypes) - 1);
             $this->context
                 ->buildViolation(
                     $constraint->message,
                     [
                         '{{ data_type }}' => $firstColumnDataType,
                         '{{ allowed_data_types }}' => implode(', ', $this->allowedFirstColumnDataTypes),
+                        '{{ allowed_data_types_except_last }}' => \implode(
+                            ', ',
+                            array_map(
+                                fn (string $dataType) => \sprintf('"%s"', $dataType),
+                                $allowedDataTypesExceptLast
+                            )
+                        ),
+                        '{{ last_allowed_data_types }}' => \end($this->allowedFirstColumnDataTypes),
                         '%count%' => count($this->allowedFirstColumnDataTypes)
                     ]
                 )

@@ -17,7 +17,7 @@ import {
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import styled, {ThemeProvider} from 'styled-components';
 import {ColumnCode, ColumnDefinition, TableAttribute, TableConfiguration} from '../models';
-import {getLabel, Locale, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {getLabel, Locale, useFeatureFlags, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {AddColumnModal, DataTypesMapping} from './AddColumnModal';
 import {DeleteColumnModal} from './DeleteColumnModal';
 import {ColumnDefinitionProperties} from './ColumnDefinitionProperties';
@@ -67,6 +67,7 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
   const translate = useTranslate();
   const router = useRouter();
   const userContext = useUserContext();
+  const featureFlags = useFeatureFlags();
   const [tableConfiguration, setTableConfiguration] = React.useState<TableConfigurationWithId>(
     initialTableConfiguration.map(columnDefinition => {
       return {...columnDefinition, id: uuid()};
@@ -253,7 +254,12 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
     <DependenciesProvider>
       <ThemeProvider theme={pimTheme}>
         <Helper level='info'>
-          {translate('pim_table_attribute.form.attribute.table_structure_helper_text', {limit: LIMIT_OPTIONS})}{' '}
+          {translate(
+            featureFlags.isEnabled('reference_entity')
+              ? 'pim_table_attribute.form.attribute.table_structure_helper_text_with_reference_entity'
+              : 'pim_table_attribute.form.attribute.table_structure_helper_text',
+            {limit: LIMIT_OPTIONS}
+          )}{' '}
           <Link
             href='https://help.akeneo.com/pim/serenity/articles/manage-multidimensional-data-in-a-table.html'
             target='_blank'

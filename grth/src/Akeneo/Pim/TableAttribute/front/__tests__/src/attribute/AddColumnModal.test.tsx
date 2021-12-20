@@ -144,7 +144,7 @@ describe('AddColumnModal', () => {
 
     fireEvent.change(screen.getByLabelText(/pim_common.label/), {target: {value: 'Record column'}});
     expect(
-      screen.getByText('pim_table_attribute.form.attribute.first_column_type_helper_with_record')
+      screen.getByText('pim_table_attribute.form.attribute.first_column_type_helper_with_reference_entity')
     ).toBeInTheDocument();
     fireEvent.click(screen.getByTitle('pim_common.open'));
     fireEvent.click(await screen.findByText('pim_table_attribute.properties.data_type.record'));
