@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Application\Settings\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\CountAllConnectionsQueryInterface;
 
-class IsConnectionsNumberLimitReachedQuery
+class IsConnectionsNumberLimitReachedHandler
 {
     public function __construct(
         private CountAllConnectionsQueryInterface $countAllConnectionsQuery,

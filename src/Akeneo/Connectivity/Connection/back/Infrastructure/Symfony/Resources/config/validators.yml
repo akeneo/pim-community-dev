@@ -1,6 +1,6 @@
 parameters:
     env(ALLOWED_NETWORK_WHITELIST): ''
-
+    akeneo_connectivity.connection.max_limit: 50
 services:
     akeneo_connectivity.connection.validators.connection.code_must_be_unique:
         class: Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\CodeMustBeUniqueValidator

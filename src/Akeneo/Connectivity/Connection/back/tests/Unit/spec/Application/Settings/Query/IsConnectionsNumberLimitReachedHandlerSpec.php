@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Application\Settings\Query;
 
-use Akeneo\Connectivity\Connection\Application\Settings\Query\IsConnectionsNumberLimitReachedQuery;
+use Akeneo\Connectivity\Connection\Application\Settings\Query\IsConnectionsNumberLimitReachedHandler;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\CountAllConnectionsQueryInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -12,7 +12,7 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class IsConnectionsNumberLimitReachedQuerySpec extends ObjectBehavior
+class IsConnectionsNumberLimitReachedHandlerSpec extends ObjectBehavior
 {
     public function let(CountAllConnectionsQueryInterface $countAllConnectionsQuery)
     {
@@ -21,7 +21,7 @@ class IsConnectionsNumberLimitReachedQuerySpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldBeAnInstanceOf(IsConnectionsNumberLimitReachedQuery::class);
+        $this->shouldBeAnInstanceOf(IsConnectionsNumberLimitReachedHandler::class);
     }
 
     public function it_returns_true_when_connection_count_is_above_the_limit(

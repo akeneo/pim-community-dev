@@ -184,3 +184,8 @@ services:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
             - '@oro_security.security_facade'
             - '@akeneo_connectivity.connection.application.handler.find_a_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\IsConnectionsNumberLimitReachedAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Query\IsConnectionsNumberLimitReachedHandler'
