@@ -48,9 +48,9 @@ class CreateAccessToken implements CreateAccessTokenInterface
 
             /* @phpstan-ignore-next-line */
             $this->storage->createAccessToken($token, $client, $authCode->getData(), null);
-
-            $this->storage->markAuthCodeAsUsed($code);
         }
+
+        $this->storage->markAuthCodeAsUsed($code);
 
         return [
             'access_token' => $token,
