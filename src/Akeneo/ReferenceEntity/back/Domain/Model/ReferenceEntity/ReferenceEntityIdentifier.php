@@ -36,10 +36,7 @@ class ReferenceEntityIdentifier implements \Stringable
         Assert::regex(
             $identifier,
             '/^[a-zA-Z0-9_]+$/',
-            sprintf(
-                'Reference entity identifier may contain only letters, numbers and underscores. "%s" given',
-                $identifier
-            )
+            'Reference entity identifier may contain only letters, numbers and underscores. "%s" given',
         );
     }
 

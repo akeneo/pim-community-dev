@@ -108,8 +108,8 @@ class AssetQuery
             ChannelReference::noReference(),
             LocaleIdentifierCollection::empty(),
             self::PAGINATE_USING_OFFSET,
-            $normalizedQuery['size'],
-            $normalizedQuery['page'],
+            (int) $normalizedQuery['size'],
+            (int) $normalizedQuery['page'],
             null
         );
     }

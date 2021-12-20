@@ -26,7 +26,7 @@ class OptionCode implements \Stringable
         Assert::regex(
             $code,
             self::REGULAR_EXPRESSION,
-            sprintf('Option code may contain only letters, numbers and underscores. "%s" given', $code)
+            'Option code may contain only letters, numbers and underscores. "%s" given',
         );
     }
 
