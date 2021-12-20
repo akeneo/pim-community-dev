@@ -47,7 +47,7 @@
         "ext-exif": "*",
         "ext-fileinfo": "*",
         "ext-gd": ">=2.0",
-        "ext-imagick": "*",
+        "ext-gmagick": "*",
         "ext-intl": "*",
         "ext-mbstring": "*",
         "ext-openssl": "*",
