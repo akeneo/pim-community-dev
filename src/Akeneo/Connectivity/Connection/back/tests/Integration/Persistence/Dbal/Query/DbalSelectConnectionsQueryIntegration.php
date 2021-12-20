@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
 
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionType;
-use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Connection;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionsQuery;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
