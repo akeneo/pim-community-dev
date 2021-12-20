@@ -15,6 +15,10 @@ services:
         tags:
             - { name: 'liip_imagine.filter.loader', loader: icc_strip }
 
+    Akeneo\Platform\Bundle\UIBundle\Imagine\GifFilter:
+        tags:
+            - { name: 'liip_imagine.filter.loader', loader: gif_filter }
+
     pim_enrich.resolver.locale:
         class: 'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver'
         arguments:
