@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Connection;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionsQuery;
 use Doctrine\DBAL\Connection as DbalConnection;
 
@@ -33,7 +32,7 @@ class DbalSelectConnectionsQuery implements SelectConnectionsQuery
         $parametersTypes = [];
 
         $selectSQL = <<<SQL
-SELECT code, label, flow_type, image, auditable
+SELECT code, label, flow_type, image, auditable, type
 FROM akeneo_connectivity_connection
 SQL;
         if (!empty($types)) {
@@ -59,7 +58,8 @@ SQL;
                 $dataRow['label'],
                 $dataRow['flow_type'],
                 $dataRow['image'],
-                (bool) $dataRow['auditable']
+                (bool) $dataRow['auditable'],
+                $dataRow['type'],
             );
         }
 
