@@ -6,8 +6,10 @@ use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQue
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
 use Akeneo\Tool\Component\Analytics\ActiveEventSubscriptionCountQuery;
 use Akeneo\Tool\Component\Analytics\ApiConnectionCountQuery;
+use Akeneo\Tool\Component\Analytics\CountConnectedAppsQueryInterface;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Akeneo\Tool\Component\Analytics\EmailDomainsQuery;
+use Akeneo\Tool\Component\Analytics\GetConnectedAppsIdentifiersQueryInterface;
 use Akeneo\Tool\Component\Analytics\IsDemoCatalogQuery;
 use Akeneo\Tool\Component\Analytics\MediaCountQuery;
 
@@ -60,6 +62,10 @@ class DBDataCollector implements DataCollectorInterface
 
     private ActiveEventSubscriptionCountQuery $activeEventSubscriptionCountQuery;
 
+    private GetConnectedAppsIdentifiersQueryInterface $getConnectedAppsIdentifiersQuery;
+
+    private CountConnectedAppsQueryInterface $countConnectedAppsQuery;
+
     public function __construct(
         CountQuery $channelCountQuery,
         CountQuery $productCountQuery,
@@ -80,7 +86,9 @@ class DBDataCollector implements DataCollectorInterface
         ApiConnectionCountQuery $apiConnectionCountQuery,
         MediaCountQuery $mediaCountQuery,
         IsDemoCatalogQuery $isDemoCatalogQuery,
-        ActiveEventSubscriptionCountQuery $activeEventSubscriptionCountQuery
+        ActiveEventSubscriptionCountQuery $activeEventSubscriptionCountQuery,
+        GetConnectedAppsIdentifiersQueryInterface $getConnectedAppsIdentifiersQuery,
+        CountConnectedAppsQueryInterface $countConnectedAppsQuery,
     ) {
         $this->channelCountQuery = $channelCountQuery;
         $this->productCountQuery = $productCountQuery;
@@ -102,6 +110,8 @@ class DBDataCollector implements DataCollectorInterface
         $this->mediaCountQuery = $mediaCountQuery;
         $this->isDemoCatalogQuery = $isDemoCatalogQuery;
         $this->activeEventSubscriptionCountQuery = $activeEventSubscriptionCountQuery;
+        $this->getConnectedAppsIdentifiersQuery = $getConnectedAppsIdentifiersQuery;
+        $this->countConnectedAppsQuery = $countConnectedAppsQuery;
     }
 
     /**
@@ -132,6 +142,8 @@ class DBDataCollector implements DataCollectorInterface
             'nb_media_images_in_products' => $this->mediaCountQuery->countImages(),
             'is_demo_catalog' => $this->isDemoCatalogQuery->fetch(),
             'nb_active_event_subscription' => $this->activeEventSubscriptionCountQuery->fetch(),
+            'activated_app_ids' => $this->getConnectedAppsIdentifiersQuery->execute(),
+            'nb_activated_apps' => $this->countConnectedAppsQuery->execute(),
         ];
     }
 }
