@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller;
 
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -49,12 +50,18 @@ class GetWizardDataAction
             throw new NotFoundHttpException("Invalid app identifier");
         }
 
-        $scopeMessages = $this->scopeMapperRegistry->getMessages($appAuthorization->getScopeList());
+        $authorizationScopeMessages = $this->scopeMapperRegistry->getMessages($appAuthorization->getAuthorizationScopes()->getScopes());
+
+        $authenticationScopesThatRequireConsent = array_filter(
+            $appAuthorization->getAuthenticationScopes()->getScopes(),
+            fn (string $scope) => $scope !== AuthenticationScope::SCOPE_OPENID
+        );
 
         return new JsonResponse([
             'appName' => $app->getName(),
             'appLogo' => $app->getLogo(),
-            'scopeMessages' => $scopeMessages,
+            'scopeMessages' => $authorizationScopeMessages,
+            'authenticationScopes' => array_values($authenticationScopesThatRequireConsent)
         ]);
     }
 }

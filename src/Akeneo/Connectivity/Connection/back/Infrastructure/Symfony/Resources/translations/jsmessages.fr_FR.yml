@@ -126,7 +126,6 @@ akeneo_connectivity.connection:
           summary: Bien joué !
         authorize:
           title: '{{ app_name }} a besoin de'
-          no_scope_title: 'L''app {{ app_name }} aimerait accéder à votre PIM.'
           no_scope: Aucune autorisation spécifique n'a été demandée.
           helper: Pour en savoir plus sur les autorisations accordées aux apps,
           helper_link: consultez notre Help Center.

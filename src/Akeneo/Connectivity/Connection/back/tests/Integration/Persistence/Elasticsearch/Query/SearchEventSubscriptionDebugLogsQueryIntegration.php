@@ -677,7 +677,6 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
                     ],
                 ],
             ],
-
         );
 
         $filters = [

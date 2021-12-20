@@ -21,4 +21,4 @@ services:
       - '@pim_user.factory.group'
       - '@pim_user.updater.group'
       - '@pim_user.saver.group'
-      - '@pim_catalog.repository.category'
+      - '@Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler'

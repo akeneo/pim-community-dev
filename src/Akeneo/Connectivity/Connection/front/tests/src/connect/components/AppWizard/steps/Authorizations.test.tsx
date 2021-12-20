@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect';
 import {render, screen, waitFor} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
-import {Authorizations} from '@src/connect/components/AppWizardWithSteps/Authorizations';
+import {Authorizations} from '@src/connect/components/AppWizard/steps/Authorizations';
 
 jest.mock('@src/connect/components/AppWizard/ScopeListContainer', () => ({
     ScopeListContainer: () => <div>ScopeListContainerComponent</div>,

@@ -15,6 +15,12 @@ services:
         tags:
             - { name: 'console.command' }
 
+    Akeneo\Connectivity\Connection\Infrastructure\Cli\CreateOpenIdKeysCommand:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler'
+        tags:
+            - { name: 'console.command' }
+
     Akeneo\Connectivity\Connection\Infrastructure\Cli\PurgeConnectionErrorsCommand:
         arguments:
             - '@akeneo_connectivity_connection.persistence.query.select_all_auditable_connection_code'

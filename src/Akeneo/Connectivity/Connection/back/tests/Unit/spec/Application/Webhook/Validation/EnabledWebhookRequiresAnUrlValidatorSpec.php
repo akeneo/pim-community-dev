@@ -135,4 +135,6 @@ class EnabledWebhookRequiresAnUrlValidatorSpec extends ObjectBehavior
     }
 }
 
-class LocalConstraint extends Constraint {}
+class LocalConstraint extends Constraint
+{
+}

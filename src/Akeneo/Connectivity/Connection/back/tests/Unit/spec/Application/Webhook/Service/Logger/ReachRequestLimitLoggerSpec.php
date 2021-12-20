@@ -36,7 +36,8 @@ class ReachRequestLimitLoggerSpec extends ObjectBehavior
         $this->log(
             666,
             new \DateTimeImmutable('2021-01-01T00:00:00+00:00'),
-            90)
+            90
+        )
         ;
     }
 }

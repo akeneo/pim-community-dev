@@ -7,9 +7,9 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Audit\Command;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountCommand;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountHandler;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
-use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCountRepository;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -19,17 +19,17 @@ use PhpSpec\ObjectBehavior;
  */
 class UpdateDataDestinationProductEventCountHandlerSpec extends ObjectBehavior
 {
-    function let(EventCountRepository $eventCountRepository)
+    public function let(EventCountRepository $eventCountRepository)
     {
         $this->beConstructedWith($eventCountRepository);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldBeAnInstanceOf(UpdateDataDestinationProductEventCountHandler::class);
     }
 
-    function it_save_data_destination_product_event_count($eventCountRepository)
+    public function it_save_data_destination_product_event_count($eventCountRepository)
     {
         $command = new UpdateDataDestinationProductEventCountCommand(
             'ecommerce',

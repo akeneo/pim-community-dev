@@ -24,13 +24,13 @@ class MarketplaceUrlGeneratorSpec extends ObjectBehavior
         );
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(MarketplaceUrlGenerator::class);
         $this->shouldImplement(MarketplaceUrlGeneratorInterface::class);
     }
 
-    function it_generates_an_url_to_the_serenity_marketplace(
+    public function it_generates_an_url_to_the_serenity_marketplace(
         VersionProviderInterface $versionProvider,
         GetUserProfileQueryInterface $getUserProfileQuery
     ): void {
@@ -49,7 +49,7 @@ class MarketplaceUrlGeneratorSpec extends ObjectBehavior
             );
     }
 
-    function it_generates_an_url_to_the_ge_marketplace(
+    public function it_generates_an_url_to_the_ge_marketplace(
         VersionProviderInterface $versionProvider,
         GetUserProfileQueryInterface $getUserProfileQuery
     ): void {
@@ -68,7 +68,7 @@ class MarketplaceUrlGeneratorSpec extends ObjectBehavior
             );
     }
 
-    function it_generates_a_default_url(
+    public function it_generates_a_default_url(
         VersionProviderInterface $versionProvider,
         GetUserProfileQueryInterface $getUserProfileQuery
     ): void {
@@ -85,7 +85,7 @@ class MarketplaceUrlGeneratorSpec extends ObjectBehavior
             );
     }
 
-    function it_throws_an_exception_if_the_market_place_url_is_not_an_url(
+    public function it_throws_an_exception_if_the_market_place_url_is_not_an_url(
         VersionProviderInterface $versionProvider,
         GetUserProfileQueryInterface $getUserProfileQuery
     ): void {
