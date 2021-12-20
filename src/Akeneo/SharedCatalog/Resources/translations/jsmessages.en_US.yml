@@ -30,7 +30,6 @@ shared_catalog:
             file_information_helper: "Max size: 2MB; File Format: PNG or JPG"
         cover:
             label: Upload your cover
-            file_information_helper: "Max size: 2MB; File Format: PNG or JPG"
-            usage_helper: This image will be used on the catalog login page and on the cover of the PDF exports. Keep in mind that if you want the cover page to appear correctly after printing, its dimensions should be above 1600px x 2227px.
+            file_information_helper: This image will be used on the catalog login page and on the cover of the PDF exports. Keep in mind that if you want the cover page to appear correctly after printing, its dimensions should be above 1600px x 2227px.
     button:
         save: Save and share

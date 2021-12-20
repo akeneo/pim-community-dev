@@ -59,7 +59,6 @@ const BrandingForm = ({branding, validationErrors, onBrandingChange}: BrandingPr
           onChange={cover_image => onBrandingChange({...branding, cover_image})}
         >
           <Helper>{translate('shared_catalog.branding.cover.file_information_helper')}</Helper>
-          <Helper>{translate('shared_catalog.branding.cover.usage_helper')}</Helper>
         </ImageUploader>
       </FieldContainer>
       <FieldContainer>
