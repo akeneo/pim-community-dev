@@ -1,4 +1,4 @@
-import React, {ReactElement, useState, useEffect} from 'react';
+import React, {ReactElement} from 'react';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {MediaFileInput, FileInfo, Field, Helper, HelperProps} from 'akeneo-design-system';
 
@@ -33,7 +33,6 @@ const getFileExtension = (file: File) => {
 }
 
 const ImageUploader = ({label, image, validationErrors, onChange, children}: ImageUploaderProps) => {
-  const [currentImage, setCurrentImage] = useState<string | null>(image);
   const translate = useTranslate();
 
   const handleUpload = async (file: File, onProgress: (progress: number) => void) => {
@@ -57,23 +56,19 @@ const ImageUploader = ({label, image, validationErrors, onChange, children}: Ima
   };
 
   const handleChange = async (fileInfo: FileInfo) => {
-    setCurrentImage(fileInfo?.filePath ?? null);
+    onChange(fileInfo?.filePath ?? null);
   };
-
-  useEffect(() => {
-    onChange(currentImage);
-  }, [currentImage]);
 
   return (
     <Field label={label}>
       <MediaFileInput
         clearTitle={translate('pim_common.remove')}
         onChange={handleChange}
-        thumbnailUrl={currentImage}
+        thumbnailUrl={image}
         uploadErrorLabel={translate('shared_catalog.branding.validation.invalid_file')}
         uploader={handleUpload}
         uploadingLabel={translate('shared_catalog.branding.uploading')}
-        value={currentImage ? {filePath: currentImage, originalFilename: ''} : null}
+        value={image ? {filePath: image, originalFilename: ''} : null}
         placeholder={translate('shared_catalog.branding.upload_placeholder')}
       />
       {children}
