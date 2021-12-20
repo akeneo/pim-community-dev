@@ -17,9 +17,8 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\Meas
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\MeasurementValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
-use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplierInterface;
 
-class MeasurementUnitCodeSelectionApplier implements SelectionApplierInterface
+class MeasurementUnitCodeSelectionApplier implements MeasurementApplierInterface
 {
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {

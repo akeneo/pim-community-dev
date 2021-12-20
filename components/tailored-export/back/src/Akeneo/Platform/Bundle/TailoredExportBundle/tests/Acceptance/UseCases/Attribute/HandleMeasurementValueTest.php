@@ -17,6 +17,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOper
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\MeasurementConversionOperation;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitSymbolSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementValueAndUnitLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementValueSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
@@ -25,6 +26,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Measurement\InMemoryFindUnitLabel;
+use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Measurement\InMemoryFindUnitSymbol;
 use PHPUnit\Framework\Assert;
 
 final class HandleMeasurementValueTest extends AttributeTestCase
@@ -64,6 +66,12 @@ final class HandleMeasurementValueTest extends AttributeTestCase
                 'value' => new MeasurementValue('10', 'KILOGRAM'),
                 'expected' => [self::TARGET_NAME => 'KILOGRAM'],
             ],
+            'it selects the unit symbol' => [
+                'operations' => [],
+                'selection' => new MeasurementUnitSymbolSelection('Weight'),
+                'value' => new MeasurementValue('10', 'KILOGRAM'),
+                'expected' => [self::TARGET_NAME => 'Kg'],
+            ],
             'it selects the unit label' => [
                 'operations' => [],
                 'selection' => new MeasurementUnitLabelSelection('Weight', 'fr_FR'),
@@ -87,6 +95,12 @@ final class HandleMeasurementValueTest extends AttributeTestCase
                 'selection' => new MeasurementValueAndUnitLabelSelection(',', 'Weight', 'fr_FR'),
                 'value' => new MeasurementValue('8.4', 'GRAM'),
                 'expected' => [self::TARGET_NAME => '8,4 [GRAM]'],
+            ],
+            'it selects the value and unit symbol then applies the provided decimal separator' => [
+                'operations' => [],
+                'selection' => new MeasurementValueAndUnitLabelSelection(',', 'Weight', 'fr_FR'),
+                'value' => new MeasurementValue('10.5', 'KILOGRAM'),
+                'expected' => [self::TARGET_NAME => '10,5 Kilogramme'],
             ],
             'it applies default value operation when value is null' => [
                 'operations' => [
@@ -117,9 +131,14 @@ final class HandleMeasurementValueTest extends AttributeTestCase
 
     private function loadOptions(): void
     {
-        /** @var InMemoryFindUnitLabel $unitLabels */
-        $unitLabels = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface');
-        $unitLabels->addUnitLabel('Weight', 'KILOGRAM', 'fr_FR', 'Kilogramme');
-        $unitLabels->addUnitLabel('Weight', 'KILOGRAM', 'en_US', 'Kilogram');
+        /** @var InMemoryFindUnitLabel $findUnitLabel */
+        $findUnitLabel = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface');
+        $findUnitLabel->addUnitLabel('Weight', 'KILOGRAM', 'fr_FR', 'Kilogramme');
+        $findUnitLabel->addUnitLabel('Weight', 'KILOGRAM', 'en_US', 'Kilogram');
+
+        /** @var InMemoryFindUnitSymbol $findUnitSymbol */
+        $findUnitSymbol = self::getContainer()->get('Akeneo\Platform\TailoredExport\Domain\Query\FindUnitSymbolInterface');
+        $findUnitSymbol->addUnitSymbol('Weight', 'KILOGRAM', 'Kg');
+        $findUnitSymbol->addUnitSymbol('Weight', 'GRAM', 'g');
     }
 }

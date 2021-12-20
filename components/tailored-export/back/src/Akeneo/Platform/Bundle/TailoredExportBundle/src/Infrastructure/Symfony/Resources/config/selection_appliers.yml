@@ -140,6 +140,13 @@ services:
     tags:
       - { name: akeneo.tailored_export.selection_applier }
 
+  Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Measurement\MeasurementUnitSymbolSelectionApplier:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindUnitSymbolInterface'
+    tags:
+      - { name: akeneo.tailored_export.selection_applier }
+
   Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Measurement\MeasurementUnitLabelSelectionApplier:
     public: true
     arguments:
@@ -151,6 +158,13 @@ services:
     public: true
     arguments:
       - '@Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface'
+    tags:
+      - { name: akeneo.tailored_export.selection_applier }
+
+  Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Measurement\MeasurementValueAndUnitSymbolSelectionApplier:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindUnitSymbolInterface'
     tags:
       - { name: akeneo.tailored_export.selection_applier }
 

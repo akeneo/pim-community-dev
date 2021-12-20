@@ -13,44 +13,40 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Measurement;
 
-use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementValueAndUnitSymbolSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\MeasurementValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
-use Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindUnitSymbolInterface;
 
-class MeasurementUnitLabelSelectionApplier implements MeasurementApplierInterface
+class MeasurementValueAndUnitSymbolSelectionApplier implements MeasurementApplierInterface
 {
-    private FindUnitLabelInterface $findUnitLabels;
-
-    public function __construct(FindUnitLabelInterface $findUnitLabels)
-    {
-        $this->findUnitLabels = $findUnitLabels;
+    public function __construct(
+        private FindUnitSymbolInterface $findUnitSymbol
+    ) {
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {
         if (
-            !$selection instanceof MeasurementUnitLabelSelection
+            !$selection instanceof MeasurementValueAndUnitSymbolSelection
             || !$value instanceof MeasurementValue
         ) {
-            throw new \InvalidArgumentException('Cannot apply Measurement unit label selection on this entity');
+            throw new \InvalidArgumentException('Cannot apply Measurement value and unit symbol selection on this entity');
         }
 
-        $unitCode = $value->getUnitCode();
-
-        $unitTranslation = $this->findUnitLabels->byFamilyCodeAndUnitCode(
+        $measurementValue = str_replace(self::DEFAULT_DECIMAL_SEPARATOR, $selection->getDecimalSeparator(), $value->getValue());
+        $measurementUnitSymbol = $this->findUnitSymbol->byFamilyCodeAndUnitCode(
             $selection->getMeasurementFamilyCode(),
-            $unitCode,
-            $selection->getLocale()
+            $value->getUnitCode(),
         );
 
-        return $unitTranslation ?? sprintf('[%s]', $unitCode);
+        return sprintf('%s %s', $measurementValue, $measurementUnitSymbol);
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool
     {
-        return $selection instanceof MeasurementUnitLabelSelection
+        return $selection instanceof MeasurementValueAndUnitSymbolSelection
             && $value instanceof MeasurementValue;
     }
 }

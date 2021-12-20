@@ -13,17 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Measurement;
 
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementValueAndUnitLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\MeasurementValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
-use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplierInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface;
 
-class MeasurementValueAndUnitLabelSelectionApplier implements SelectionApplierInterface
+class MeasurementValueAndUnitLabelSelectionApplier implements MeasurementApplierInterface
 {
-    private const DEFAULT_DECIMAL_SEPARATOR = '.';
-
     private FindUnitLabelInterface $findUnitLabels;
 
     public function __construct(FindUnitLabelInterface $findUnitLabels)
@@ -48,7 +46,7 @@ class MeasurementValueAndUnitLabelSelectionApplier implements SelectionApplierIn
             $selection->getLocale()
         );
 
-        $measurementValue = str_replace(static::DEFAULT_DECIMAL_SEPARATOR, $selection->getDecimalSeparator(), $value->getValue());
+        $measurementValue = str_replace(self::DEFAULT_DECIMAL_SEPARATOR, $selection->getDecimalSeparator(), $value->getValue());
         $measurementUnitLabel = $unitTranslation ?? sprintf('[%s]', $unitCode);
 
         return sprintf('%s %s', $measurementValue, $measurementUnitLabel);
