@@ -17,13 +17,10 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\Meas
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\MeasurementValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
-use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplierInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindUnitSymbolInterface;
 
-class MeasurementValueAndUnitSymbolSelectionApplier implements SelectionApplierInterface
+class MeasurementValueAndUnitSymbolSelectionApplier implements MeasurementApplierInterface
 {
-    private const DEFAULT_DECIMAL_SEPARATOR = '.';
-
     public function __construct(
         private FindUnitSymbolInterface $findUnitSymbol
     ) {
@@ -38,7 +35,7 @@ class MeasurementValueAndUnitSymbolSelectionApplier implements SelectionApplierI
             throw new \InvalidArgumentException('Cannot apply Measurement value and unit symbol selection on this entity');
         }
 
-        $measurementValue = str_replace(static::DEFAULT_DECIMAL_SEPARATOR, $selection->getDecimalSeparator(), $value->getValue());
+        $measurementValue = str_replace(self::DEFAULT_DECIMAL_SEPARATOR, $selection->getDecimalSeparator(), $value->getValue());
         $measurementUnitSymbol = $this->findUnitSymbol->byFamilyCodeAndUnitCode(
             $selection->getMeasurementFamilyCode(),
             $value->getUnitCode(),

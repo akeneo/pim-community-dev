@@ -25,6 +25,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FileNameSel
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FilePathSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Groups\GroupsCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Groups\GroupsLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitSymbolSelection;
@@ -55,6 +56,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleAssociatio
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleAssociations\SimpleAssociationsSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleSelect\SimpleSelectCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleSelect\SimpleSelectLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Measurement\MeasurementApplierInterface;
 
 class SelectionHydrator
 {
@@ -188,7 +190,9 @@ class SelectionHydrator
     {
         switch ($selectionConfiguration['type']) {
             case MeasurementValueSelection::TYPE:
-                return new MeasurementValueSelection($selectionConfiguration['decimal_separator'] ?? '.');
+                return new MeasurementValueSelection(
+                    $selectionConfiguration['decimal_separator'] ?? MeasurementApplierInterface::DEFAULT_DECIMAL_SEPARATOR
+                );
             case MeasurementUnitCodeSelection::TYPE:
                 return new MeasurementUnitCodeSelection();
             case MeasurementUnitSymbolSelection::TYPE:
@@ -202,13 +206,13 @@ class SelectionHydrator
                 );
             case MeasurementValueAndUnitLabelSelection::TYPE:
                 return new MeasurementValueAndUnitLabelSelection(
-                    $selectionConfiguration['decimal_separator'],
+                    $selectionConfiguration['decimal_separator'] ?? MeasurementApplierInterface::DEFAULT_DECIMAL_SEPARATOR,
                     $attribute->metricFamily(),
                     $selectionConfiguration['locale']
                 );
             case MeasurementValueAndUnitSymbolSelection::TYPE:
                 return new MeasurementValueAndUnitSymbolSelection(
-                    $selectionConfiguration['decimal_separator'],
+                    $selectionConfiguration['decimal_separator'] ?? MeasurementApplierInterface::DEFAULT_DECIMAL_SEPARATOR,
                     $attribute->metricFamily(),
                 );
             default:

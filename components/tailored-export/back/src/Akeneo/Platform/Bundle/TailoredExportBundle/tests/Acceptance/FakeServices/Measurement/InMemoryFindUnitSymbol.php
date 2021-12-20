@@ -8,15 +8,15 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindUnitSymbolInterface;
 
 final class InMemoryFindUnitSymbol implements FindUnitSymbolInterface
 {
-    private array $units = [];
+    private array $unitSymbols = [];
 
     public function addUnitSymbol(string $familyCode, string $unitCode, string $symbol): void
     {
-        $this->units[$familyCode][$unitCode]['symbol'] = $symbol;
+        $this->unitSymbols[$familyCode][$unitCode]['symbol'] = $symbol;
     }
 
     public function byFamilyCodeAndUnitCode(string $familyCode, string $unitCode): ?string
     {
-        return $this->units[$familyCode][$unitCode]['symbol'] ?? null;
+        return $this->unitSymbols[$familyCode][$unitCode]['symbol'] ?? null;
     }
 }
