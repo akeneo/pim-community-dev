@@ -12,7 +12,7 @@ type Props = {
     onClick: () => void;
 };
 
-export const BusinessErrorCard: FC<Props> = ({code, label, image, errorCount, onClick}) => {
+export const BusinessErrorCard: FC<Props> = ({label, image, errorCount, onClick}) => {
     const generateMediaUrl = useMediaUrlGenerator();
     const connectionImageUrl = null === image ? imgUrl : generateMediaUrl(image, 'thumbnail');
 

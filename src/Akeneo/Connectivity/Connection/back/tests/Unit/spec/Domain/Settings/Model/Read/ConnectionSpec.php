@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Domain\Settings\Model\Read;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Connection;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use PhpSpec\ObjectBehavior;
 
@@ -68,6 +69,11 @@ class ConnectionSpec extends ObjectBehavior
         $this->auditable()->shouldReturn(true);
     }
 
+    public function it_returns_the_type()
+    {
+        $this->type()->shouldReturn(ConnectionType::DEFAULT_TYPE);
+    }
+
     public function it_normalizes_a_connection()
     {
         $this->normalize()->shouldReturn([
@@ -75,7 +81,8 @@ class ConnectionSpec extends ObjectBehavior
             'label' => 'Magento Connector',
             'flowType' => FlowType::DATA_DESTINATION,
             'image' => 'a/b/c/the_path.jpg',
-            'auditable' => true
+            'auditable' => true,
+            'type' => ConnectionType::DEFAULT_TYPE,
         ]);
     }
 }
