@@ -46,9 +46,7 @@ const BrandingForm = ({branding, validationErrors, onBrandingChange}: BrandingPr
           validationErrors={validationErrors.filter(error => 'image' in error).map(error => translate(error.image))}
           onChange={image => onBrandingChange({...branding, image})}
         >
-          <Helper>
-            {translate('shared_catalog.branding.logo.file_information_helper')}
-          </Helper>
+          <Helper>{translate('shared_catalog.branding.logo.file_information_helper')}</Helper>
         </ImageUploader>
       </FieldContainer>
       <FieldContainer>
@@ -60,12 +58,8 @@ const BrandingForm = ({branding, validationErrors, onBrandingChange}: BrandingPr
             .map(error => translate(error.cover_image))}
           onChange={cover_image => onBrandingChange({...branding, cover_image})}
         >
-          <Helper>
-            {translate('shared_catalog.branding.cover.file_information_helper')}
-          </Helper>
-          <Helper>
-            {translate('shared_catalog.branding.cover.usage_helper')}
-          </Helper>
+          <Helper>{translate('shared_catalog.branding.cover.file_information_helper')}</Helper>
+          <Helper>{translate('shared_catalog.branding.cover.usage_helper')}</Helper>
         </ImageUploader>
       </FieldContainer>
       <FieldContainer>
@@ -77,7 +71,9 @@ const BrandingForm = ({branding, validationErrors, onBrandingChange}: BrandingPr
           {validationErrors
             .filter(error => 'color' in error)
             .map(error => (
-              <Helper key={error.color} inline={true} level="error">{translate(error.color)}</Helper>
+              <Helper key={error.color} inline={true} level="error">
+                {translate(error.color)}
+              </Helper>
             ))}
         </Field>
       </FieldContainer>

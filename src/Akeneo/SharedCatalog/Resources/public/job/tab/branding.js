@@ -34,18 +34,22 @@ define([
     },
 
     render: function() {
-      this.renderReact(Branding, {
-        branding: this.getFormData().configuration.branding || {image: null},
-        validationErrors: this.validationErrors,
-        onBrandingChange: branding => {
-          const data = {...this.getFormData()};
-          const configuration = {...data.configuration, branding};
-          const updatedData = {...data, configuration};
+      this.renderReact(
+        Branding,
+        {
+          branding: this.getFormData().configuration.branding || {image: null},
+          validationErrors: this.validationErrors,
+          onBrandingChange: branding => {
+            const data = {...this.getFormData()};
+            const configuration = {...data.configuration, branding};
+            const updatedData = {...data, configuration};
 
-          this.setData(updatedData);
-          this.render();
+            this.setData(updatedData);
+            this.render();
+          },
         },
-      }, this.el);
+        this.el
+      );
 
       return this;
     },

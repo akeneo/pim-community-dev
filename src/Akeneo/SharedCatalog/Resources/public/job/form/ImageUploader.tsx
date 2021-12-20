@@ -26,11 +26,13 @@ type ImageUploaderProps = {
 };
 
 const getFileExtension = (file: File) => {
-  return file.name
-    .toLowerCase()
-    .split('.')
-    .pop() || ''
-}
+  return (
+    file.name
+      .toLowerCase()
+      .split('.')
+      .pop() || ''
+  );
+};
 
 const ImageUploader = ({label, image, validationErrors, onChange, children}: ImageUploaderProps) => {
   const translate = useTranslate();
