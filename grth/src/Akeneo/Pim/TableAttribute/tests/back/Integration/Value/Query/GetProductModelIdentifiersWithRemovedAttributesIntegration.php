@@ -159,4 +159,3 @@ final class GetProductModelIdentifiersWithRemovedAttributesIntegration extends T
         );
     }
 }
-

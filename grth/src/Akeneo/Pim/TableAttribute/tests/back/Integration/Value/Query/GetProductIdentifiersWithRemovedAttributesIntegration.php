@@ -114,7 +114,8 @@ final class GetProductIdentifiersWithRemovedAttributesIntegration extends TestCa
                 'nutrition2' => [['locale' => null, 'scope' => null, 'data' => [['ingredient' => 'butter', 'quantity' => 20]]]]
             ]
         ]);
-        $this->query = $this->get('akeneo.pim.enrichment.product.query.get_product_identifiers_with_removed_attribute');
+        $this->query = $this->get(
+            'akeneo.pim.enrichment.product.query.get_product_identifiers_with_removed_attribute'
+        );
     }
 }
-
