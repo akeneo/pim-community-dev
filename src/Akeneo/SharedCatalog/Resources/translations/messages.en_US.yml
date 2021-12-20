@@ -1,4 +1,0 @@
-akeneo_shared_catalog:
-  validation:
-    css_color:
-      invalid_color: 'This value is not a valid CSS color.'

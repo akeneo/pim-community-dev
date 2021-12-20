@@ -41,34 +41,43 @@ const BrandingForm = ({branding, validationErrors, onBrandingChange}: BrandingPr
     <>
       <FieldContainer>
         <ImageUploader
-          label={translate('shared_catalog.branding.upload.logo')}
+          label={translate('shared_catalog.branding.logo.label')}
           image={branding.image}
           validationErrors={validationErrors.filter(error => 'image' in error).map(error => translate(error.image))}
           onChange={image => onBrandingChange({...branding, image})}
-        />
+        >
+          <Helper>
+            {translate('shared_catalog.branding.logo.file_information_helper')}
+          </Helper>
+        </ImageUploader>
       </FieldContainer>
       <FieldContainer>
         <ImageUploader
-          label={translate('shared_catalog.branding.upload.cover')}
+          label={translate('shared_catalog.branding.cover.label')}
           image={branding.cover_image ?? null}
           validationErrors={validationErrors
             .filter(error => 'cover_image' in error)
             .map(error => translate(error.cover_image))}
           onChange={cover_image => onBrandingChange({...branding, cover_image})}
-        />
+        >
+          <Helper>
+            {translate('shared_catalog.branding.cover.file_information_helper')}
+          </Helper>
+          <Helper>
+            {translate('shared_catalog.branding.cover.usage_helper')}
+          </Helper>
+        </ImageUploader>
       </FieldContainer>
       <FieldContainer>
-        <Field label={translate('shared_catalog.branding.color')}>
+        <Field label={translate('shared_catalog.branding.color.label')}>
           <ColorInput
-            onChange={color => {
-              onBrandingChange({...branding, color});
-            }}
+            onChange={color => onBrandingChange({...branding, color})}
             value={branding.color ?? sharedCatalogsTheme.color.brand100}
           />
           {validationErrors
             .filter(error => 'color' in error)
             .map(error => (
-              <Helper key={error.color}>{translate(error.color)}</Helper>
+              <Helper key={error.color} inline={true} level="error">{translate(error.color)}</Helper>
             ))}
         </Field>
       </FieldContainer>

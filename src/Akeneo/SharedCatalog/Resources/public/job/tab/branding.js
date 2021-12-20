@@ -34,10 +34,7 @@ define([
     },
 
     render: function() {
-      ReactDOM.unmountComponentAtNode(this.el);
-      this.$el.empty();
-
-      const Component = React.createElement(Branding, {
+      this.renderReact(Branding, {
         branding: this.getFormData().configuration.branding || {image: null},
         validationErrors: this.validationErrors,
         onBrandingChange: branding => {
@@ -46,10 +43,9 @@ define([
           const updatedData = {...data, configuration};
 
           this.setData(updatedData);
+          this.render();
         },
-      });
-
-      ReactDOM.render(Component, this.el);
+      }, this.el);
 
       return this;
     },
