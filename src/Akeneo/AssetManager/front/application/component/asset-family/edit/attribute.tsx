@@ -1,7 +1,20 @@
 import React, {memo} from 'react';
 import {connect} from 'react-redux';
 import {Key, Button, SectionTitle} from 'akeneo-design-system';
-import {useTranslate, Translate, useSecurity, PageHeader, PimView} from '@akeneo-pim-community/shared';
+import {
+  useTranslate,
+  Translate,
+  useSecurity,
+  PageHeader,
+  LocaleCode,
+  LocaleSelector,
+  Locale,
+  NoDataSection,
+  NoDataTitle,
+  NoDataText,
+  Section,
+  PageContent,
+} from '@akeneo-pim-community/shared';
 import {attributeCreationStart} from 'akeneoassetmanager/domain/event/attribute/create';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {CreateState} from 'akeneoassetmanager/application/reducer/attribute/create';
@@ -18,10 +31,16 @@ import {getAttributeIcon} from 'akeneoassetmanager/application/configuration/att
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import {EditOptionState} from 'akeneoassetmanager/application/reducer/attribute/type/option';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
+import {catalogLocaleChanged} from 'akeneoassetmanager/domain/event/user';
+import {ContextSwitchers} from 'akeneoassetmanager/application/component/app/layout';
+import {UserNavigation} from 'akeneoassetmanager/application/component/app/user-navigation';
 
 interface StateProps {
   context: {
     locale: string;
+  };
+  structure: {
+    locales: Locale[];
   };
   rights: {
     locale: {
@@ -42,6 +61,7 @@ interface DispatchProps {
   events: {
     onAttributeCreationStart: () => void;
     onAttributeEdit: (attributeIdentifier: AttributeIdentifier) => void;
+    onLocaleChanged: (localeCode: LocaleCode) => void;
   };
 }
 interface CreateProps extends StateProps, DispatchProps {}
@@ -202,12 +222,11 @@ const AttributesView = ({
   createAttribute,
   editAttribute,
   options,
+  structure,
 }: CreateProps) => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
-
   const canCreateAttribute = isGranted('akeneo_assetmanager_attribute_create') && rights.assetFamily.edit;
-
   const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
 
   return (
@@ -217,11 +236,7 @@ const AttributesView = ({
           <AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />
         </PageHeader.Breadcrumb>
         <PageHeader.UserActions>
-          {/* TODO Isolate Asset Manager PimView in dedicated file */}
-          <PimView
-            className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
-            viewName="pim-asset-family-index-user-navigation"
-          />
+          <UserNavigation />
         </PageHeader.UserActions>
         <PageHeader.Actions>
           {canCreateAttribute && (
@@ -231,57 +246,65 @@ const AttributesView = ({
           )}
         </PageHeader.Actions>
         <PageHeader.Title>{translate('pim_asset_manager.asset_family.tab.attribute')}</PageHeader.Title>
-        {/* TODO Add locale switcher */}
+        <PageHeader.Content>
+          {0 < structure.locales.length && (
+            <ContextSwitchers>
+              <LocaleSelector value={context.locale} values={structure.locales} onChange={events.onLocaleChanged} />
+            </ContextSwitchers>
+          )}
+        </PageHeader.Content>
       </PageHeader>
-      <SectionTitle sticky={160}>
-        <SectionTitle.Title>{translate('pim_asset_manager.asset_family.attribute.title')}</SectionTitle.Title>
-      </SectionTitle>
-      {firstLoading || 0 < attributes.length ? (
-        <div className="AknSubsection-container">
-          <div className="AknFormContainer AknFormContainer--withPadding">
-            {renderSystemAttributes(translate)}
-            {firstLoading ? (
-              <AttributePlaceholders />
-            ) : (
-              <>
-                {attributes.map((attribute: NormalizedAttribute) => (
-                  <ErrorBoundary
-                    key={attribute.identifier}
-                    errorMessage={translate('pim_asset_manager.asset_family.attribute.error.render_list')}
-                  >
-                    <AttributeView
-                      normalizedAttribute={attribute}
-                      onAttributeEdit={events.onAttributeEdit}
-                      locale={context.locale}
-                      rights={rights}
-                    />
-                  </ErrorBoundary>
-                ))}
-              </>
-            )}
-          </div>
-          {editAttribute && <AttributeEditForm rights={rights} />}
-        </div>
-      ) : (
-        <>
-          <div className="AknSubsection-container">
-            <div className="AknFormContainer AknFormContainer--withPadding">{renderSystemAttributes(translate)}</div>
-          </div>
-          <div className="AknGridContainer-noData AknGridContainer-noData--small">
-            <div className="AknGridContainer-noDataTitle">
-              {translate('pim_asset_manager.attribute.no_data.title', {entityLabel: assetFamilyLabel})}
+      <PageContent>
+        <Section>
+          <SectionTitle sticky={0}>
+            <SectionTitle.Title>{translate('pim_asset_manager.asset_family.attribute.title')}</SectionTitle.Title>
+          </SectionTitle>
+          {firstLoading || 0 < attributes.length ? (
+            <div className="AknSubsection-container">
+              <div className="AknFormContainer">
+                {renderSystemAttributes(translate)}
+                {firstLoading ? (
+                  <AttributePlaceholders />
+                ) : (
+                  <>
+                    {attributes.map((attribute: NormalizedAttribute) => (
+                      <ErrorBoundary
+                        key={attribute.identifier}
+                        errorMessage={translate('pim_asset_manager.asset_family.attribute.error.render_list')}
+                      >
+                        <AttributeView
+                          normalizedAttribute={attribute}
+                          onAttributeEdit={events.onAttributeEdit}
+                          locale={context.locale}
+                          rights={rights}
+                        />
+                      </ErrorBoundary>
+                    ))}
+                  </>
+                )}
+              </div>
+              {editAttribute && <AttributeEditForm rights={rights} />}
             </div>
-            <div className="AknGridContainer-noDataSubtitle">
-              {translate('pim_asset_manager.attribute.no_data.subtitle')}
-            </div>
-            <button className="AknButton AknButton--action" onClick={events.onAttributeCreationStart}>
-              {translate('pim_asset_manager.attribute.button.add')}
-            </button>
-          </div>
-        </>
-      )}
-      {createAttribute.active && <CreateAttributeModal />}
-      {options.isActive && <ManageOptionsView rights={rights} />}
+          ) : (
+            <>
+              <div className="AknFormContainer">{renderSystemAttributes(translate)}</div>
+              <NoDataSection>
+                <NoDataTitle>
+                  {translate('pim_asset_manager.attribute.no_data.title', {entityLabel: assetFamilyLabel})}
+                </NoDataTitle>
+                <NoDataText>{translate('pim_asset_manager.attribute.no_data.subtitle')}</NoDataText>
+                <NoDataTitle>
+                  <Button level="secondary" onClick={events.onAttributeCreationStart}>
+                    {translate('pim_asset_manager.attribute.button.add')}
+                  </Button>
+                </NoDataTitle>
+              </NoDataSection>
+            </>
+          )}
+          {createAttribute.active && <CreateAttributeModal />}
+          {options.isActive && <ManageOptionsView rights={rights} />}
+        </Section>
+      </PageContent>
     </>
   );
 };
@@ -293,6 +316,9 @@ export default connect(
     return {
       context: {
         locale: locale,
+      },
+      structure: {
+        locales: state.structure.locales,
       },
       rights: {
         locale: {
@@ -318,6 +344,9 @@ export default connect(
         },
         onAttributeEdit: (attributeIdentifier: AttributeIdentifier) => {
           dispatch(attributeEditionStartByIdentifier(attributeIdentifier));
+        },
+        onLocaleChanged: (localeCode: LocaleCode) => {
+          dispatch(catalogLocaleChanged(localeCode));
         },
       },
     };

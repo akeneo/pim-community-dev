@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Sidebar} from 'akeneoassetmanager/application/component/app/Sidebar';
 import sidebarProvider from 'akeneoassetmanager/application/configuration/sidebar';
+import {ScrollablePageContent} from 'akeneoassetmanager/application/component/app/layout';
 
 type AssetFamilyEditProps = {
   initialTab: string;
@@ -18,11 +19,9 @@ const AssetFamilyEdit = ({initialTab, onTabChange}: AssetFamilyEditProps) => {
       <div className="AknDefault-thirdColumnContainer">
         <div className="AknDefault-thirdColumn" />
       </div>
-      <div className="AknDefault-contentWithBottom">
-        <div className="AknDefault-mainContent AknDefault-mainContent--withoutBottomPadding" data-tab={currentTab}>
-          <TabView code={currentTab} />
-        </div>
-      </div>
+      <ScrollablePageContent data-tab={currentTab}>
+        <TabView code={currentTab} />
+      </ScrollablePageContent>
       <Sidebar
         tabs={tabs}
         currentTab={currentTab}

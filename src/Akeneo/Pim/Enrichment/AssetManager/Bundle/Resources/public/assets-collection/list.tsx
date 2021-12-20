@@ -9,6 +9,7 @@ import {
   Link,
   LockIcon,
   MoreIcon,
+  Pill,
   SectionTitle,
   useBooleanState,
 } from 'akeneo-design-system';
@@ -38,7 +39,6 @@ import {
   ChannelLabel,
   LocaleLabel,
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/context';
-import {Pill} from 'akeneoassetmanager/application/component/app/pill';
 import {AssetCollection} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection';
 import {hasValues, isValueComplete} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
 import {Family} from 'akeneoassetmanager/platform/model/structure/family';
@@ -109,6 +109,9 @@ type DisplayValuesProps = {
 
 const IncompleteIndicator = styled.div`
   display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 5px;
 `;
 
 const AssetCollectionContainer = styled.div`

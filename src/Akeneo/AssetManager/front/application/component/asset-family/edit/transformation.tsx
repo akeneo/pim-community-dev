@@ -4,8 +4,8 @@ import {JsonEditor as Editor} from 'jsoneditor-react';
 import 'jsoneditor-react/es/editor.min.css';
 import {Link, Button, Helper, SectionTitle} from 'akeneo-design-system';
 import {
+  PageContent,
   PageHeader,
-  PimView,
   Section,
   UnsavedChanges,
   useSecurity,
@@ -26,6 +26,7 @@ import Ajv from 'ajv';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
 import schema from 'akeneoassetmanager/infrastructure/model/asset-family/transformations.schema.json';
+import {UserNavigation} from 'akeneoassetmanager/application/component/app/user-navigation';
 
 const ajv = new Ajv({allErrors: true, verbose: true});
 
@@ -110,10 +111,7 @@ const Transformation = ({assetFamily, context, events, rights, form, errors}: St
           <AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />
         </PageHeader.Breadcrumb>
         <PageHeader.UserActions>
-          <PimView
-            className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
-            viewName="pim-asset-family-index-user-navigation"
-          />
+          <UserNavigation />
         </PageHeader.UserActions>
         <PageHeader.Actions>
           <Button ghost={true} level="tertiary" onClick={events.onLaunchComputeTransformations}>
@@ -126,28 +124,30 @@ const Transformation = ({assetFamily, context, events, rights, form, errors}: St
         <PageHeader.State>{form.state.isDirty && <UnsavedChanges />}</PageHeader.State>
         <PageHeader.Title>{translate('pim_asset_manager.asset_family.tab.transformations')}</PageHeader.Title>
       </PageHeader>
-      <Section>
-        <div>
-          <SectionTitle>
-            <SectionTitle.Title>
-              {translate('pim_asset_manager.asset_family.transformations.subsection')}
-            </SectionTitle.Title>
-          </SectionTitle>
-          <Helper>
-            {translate('pim_asset_manager.asset_family.transformations.help.description')}
-            <Link href="https://help.akeneo.com/pim/serenity/articles/assets-transformation.html" target="_blank">
-              &nbsp;
-              {translate('pim_asset_manager.asset_family.transformations.help.link')}
-            </Link>
-          </Helper>
-        </div>
-        <AssetFamilyTransformationEditor
-          transformations={assetFamily.transformations}
-          errors={errors}
-          onAssetFamilyTransformationsChange={events.onAssetFamilyTransformationsUpdated}
-          editMode={canEditTransformations}
-        />
-      </Section>
+      <PageContent>
+        <Section>
+          <div>
+            <SectionTitle sticky={0}>
+              <SectionTitle.Title>
+                {translate('pim_asset_manager.asset_family.transformations.subsection')}
+              </SectionTitle.Title>
+            </SectionTitle>
+            <Helper>
+              {translate('pim_asset_manager.asset_family.transformations.help.description')}
+              <Link href="https://help.akeneo.com/pim/serenity/articles/assets-transformation.html" target="_blank">
+                &nbsp;
+                {translate('pim_asset_manager.asset_family.transformations.help.link')}
+              </Link>
+            </Helper>
+          </div>
+          <AssetFamilyTransformationEditor
+            transformations={assetFamily.transformations}
+            errors={errors}
+            onAssetFamilyTransformationsChange={events.onAssetFamilyTransformationsUpdated}
+            editMode={canEditTransformations}
+          />
+        </Section>
+      </PageContent>
     </>
   );
 };

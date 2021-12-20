@@ -4,11 +4,14 @@ import {Button, Dropdown, IconButton, MoreIcon, SectionTitle, useBooleanState} f
 import {
   useTranslate,
   DeleteModal,
-  Section,
   useSecurity,
   PageHeader,
   UnsavedChanges,
-  PimView,
+  Locale,
+  LocaleSelector,
+  LocaleCode,
+  PageContent,
+  Section,
 } from '@akeneo-pim-community/shared';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {EditForm} from 'akeneoassetmanager/application/component/asset-family/edit/form';
@@ -24,12 +27,18 @@ import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/ap
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {catalogLocaleChanged} from 'akeneoassetmanager/domain/event/user';
+import {UserNavigation} from 'akeneoassetmanager/application/component/app/user-navigation';
+import {ContextSwitchers} from 'akeneoassetmanager/application/component/app/layout';
 
 interface StateProps {
   form: EditionFormState;
   attributes: NormalizedAttribute[] | null;
   context: {
     locale: string;
+  };
+  structure: {
+    locales: Locale[];
   };
   rights: {
     locale: {
@@ -50,6 +59,7 @@ interface DispatchProps {
     };
     onDelete: (assetFamily: AssetFamily) => void;
     onSaveEditForm: () => void;
+    onLocaleChanged: (localeCode: LocaleCode) => void;
   };
 }
 
@@ -96,7 +106,7 @@ const SecondaryActions = ({canDeleteAssetFamily, onDeleteAssetFamily}: Secondary
   );
 };
 
-const Properties = ({events, attributes, context, form, rights}: StateProps & DispatchProps) => {
+const Properties = ({events, attributes, context, form, rights, structure}: StateProps & DispatchProps) => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
   const [isDeleteModalOpen, openDeleteModal, closeDeleteModal] = useBooleanState();
@@ -117,10 +127,7 @@ const Properties = ({events, attributes, context, form, rights}: StateProps & Di
           <AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />
         </PageHeader.Breadcrumb>
         <PageHeader.UserActions>
-          <PimView
-            className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
-            viewName="pim-asset-family-index-user-navigation"
-          />
+          <UserNavigation />
         </PageHeader.UserActions>
         <PageHeader.Actions>
           <SecondaryActions canDeleteAssetFamily={canDeleteAssetFamily} onDeleteAssetFamily={openDeleteModal} />
@@ -130,23 +137,31 @@ const Properties = ({events, attributes, context, form, rights}: StateProps & Di
         </PageHeader.Actions>
         <PageHeader.State>{form.state.isDirty && <UnsavedChanges />}</PageHeader.State>
         <PageHeader.Title>{translate('pim_asset_manager.asset_family.tab.properties')}</PageHeader.Title>
-        {/* TODO Add locale switcher */}
+        <PageHeader.Content>
+          {0 < structure.locales.length && (
+            <ContextSwitchers>
+              <LocaleSelector value={context.locale} values={structure.locales} onChange={events.onLocaleChanged} />
+            </ContextSwitchers>
+          )}
+        </PageHeader.Content>
       </PageHeader>
-      <Section>
-        <SectionTitle>
-          <SectionTitle.Title>{translate('pim_asset_manager.asset_family.properties.title')}</SectionTitle.Title>
-        </SectionTitle>
-        <EditForm
-          attributes={attributes}
-          onLabelUpdated={events.form.onLabelUpdated}
-          onAttributeAsMainMediaUpdated={events.form.onAttributeAsMainMediaUpdated}
-          onSubmit={events.form.onSubmit}
-          locale={context.locale}
-          data={form.data}
-          errors={form.errors}
-          rights={rights}
-        />
-      </Section>
+      <PageContent>
+        <Section>
+          <SectionTitle>
+            <SectionTitle.Title>{translate('pim_asset_manager.asset_family.properties.title')}</SectionTitle.Title>
+          </SectionTitle>
+          <EditForm
+            attributes={attributes}
+            onLabelUpdated={events.form.onLabelUpdated}
+            onAttributeAsMainMediaUpdated={events.form.onAttributeAsMainMediaUpdated}
+            onSubmit={events.form.onSubmit}
+            locale={context.locale}
+            data={form.data}
+            errors={form.errors}
+            rights={rights}
+          />
+        </Section>
+      </PageContent>
       {isDeleteModalOpen && (
         <DeleteModal
           title={translate('pim_asset_manager.asset_family.delete.title')}
@@ -169,6 +184,9 @@ export default connect(
       form: state.form,
       context: {
         locale: locale,
+      },
+      structure: {
+        locales: state.structure.locales,
       },
       rights: {
         locale: {
@@ -199,6 +217,9 @@ export default connect(
         },
         onSaveEditForm: () => {
           dispatch(saveAssetFamily());
+        },
+        onLocaleChanged: (localeCode: LocaleCode) => {
+          dispatch(catalogLocaleChanged(localeCode));
         },
       },
     };

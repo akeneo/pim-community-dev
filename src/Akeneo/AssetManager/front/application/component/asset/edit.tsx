@@ -13,13 +13,13 @@ import {
   getLabel,
   Channel,
   ChannelCode,
+  UnsavedChanges,
 } from '@akeneo-pim-community/shared';
 import {EditState as State} from 'akeneoassetmanager/application/reducer/asset/edit';
 import sidebarProvider from 'akeneoassetmanager/application/configuration/sidebar';
 import {AssetBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import {saveAsset} from 'akeneoassetmanager/application/action/asset/edit';
 import {deleteAsset} from 'akeneoassetmanager/application/action/asset/delete';
-import EditState from 'akeneoassetmanager/application/component/app/edit-state';
 import {channelChanged, localeChanged} from 'akeneoassetmanager/application/action/asset/user';
 import {ChannelSwitcher} from 'akeneoassetmanager/application/component/app/channel-switcher';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
@@ -136,7 +136,6 @@ const AssetEditView = ({form, asset, context, structure, events, hasEditRightOnA
     closeDeleteModal();
   };
 
-  const editState = form.isDirty ? <EditState /> : '';
   const label = getLabel(asset.labels, context.locale, asset.code);
   const TabView = sidebarProvider.getView('akeneo_asset_manager_asset_edit', 'enrich');
   const completeness = getEditionAssetCompleteness(asset, context.channel, context.locale);
@@ -201,7 +200,7 @@ const AssetEditView = ({form, asset, context, structure, events, hasEditRightOnA
                     </div>
                     <div className="AknTitleContainer-line">
                       <div className="AknTitleContainer-title">{label}</div>
-                      {editState}
+                      {form.isDirty && <UnsavedChanges />}
                     </div>
                   </div>
                   <ButtonContainer>

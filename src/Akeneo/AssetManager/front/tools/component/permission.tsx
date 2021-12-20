@@ -89,7 +89,6 @@ const PermissionCollectionEditor = ({
 }: PermissionCollectionEditorProps) => {
   const translate = useTranslate();
   const tableHeadRef = useRef<HTMLTableSectionElement>(null);
-  const topPosition = tableHeadRef.current ? tableHeadRef.current.getBoundingClientRect().top - 20 : 0;
   const onPermissionUpdated = (groupCode: GroupName, newValue: RightLevel) => {
     if (!readOnly) {
       onChange(value.setPermission(groupCode, newValue));
@@ -103,47 +102,38 @@ const PermissionCollectionEditor = ({
   };
 
   return (
-    <div className="AknGridContainer">
-      <table className="AknPermission AknGrid">
-        <thead className="AknPermission-header" ref={tableHeadRef}>
-          <tr className="AknGrid-bodyRow">
-            <th
-              className="AknGrid-headerCell AknGrid-headerCell--center AknGrid-headerCell--sticky"
-              style={{top: `${topPosition}px`}}
-            />
-            {prioritizedRightLevels.map((rightLevel: RightLevel) => (
-              <th
-                key={rightLevel}
-                className="AknGrid-headerCell AknGrid-headerCell--center AknGrid-headerCell--sticky"
-                style={{top: `${topPosition}px`}}
+    <table className="AknPermission AknGrid">
+      <thead className="AknPermission-header" ref={tableHeadRef}>
+        <tr className="AknGrid-bodyRow">
+          <th className="AknGrid-headerCell AknGrid-headerCell--center" />
+          {prioritizedRightLevels.map((rightLevel: RightLevel) => (
+            <th key={rightLevel} className="AknGrid-headerCell AknGrid-headerCell--center">
+              <Button
+                level="tertiary"
+                ghost={true}
+                onClick={() => onAllPermissionUpdated(rightLevel)}
+                title={translate('permission.mass_action', {rightLevel})}
+                data-right-level={rightLevel}
               >
-                <Button
-                  level="tertiary"
-                  ghost={true}
-                  onClick={() => onAllPermissionUpdated(rightLevel)}
-                  title={translate('permission.mass_action', {rightLevel})}
-                  data-right-level={rightLevel}
-                >
-                  {rightLevel}
-                </Button>
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {value.map((permission: Permission) => (
-            <PermissionEditor
-              key={permission.getUserGroupIdentifier()}
-              readOnly={readOnly}
-              groupCode={permission.getUserGroupName()}
-              value={permission.getRightLevel()}
-              prioritizedRightLevels={prioritizedRightLevels}
-              onChange={onPermissionUpdated}
-            />
+                {rightLevel}
+              </Button>
+            </th>
           ))}
-        </tbody>
-      </table>
-    </div>
+        </tr>
+      </thead>
+      <tbody>
+        {value.map((permission: Permission) => (
+          <PermissionEditor
+            key={permission.getUserGroupIdentifier()}
+            readOnly={readOnly}
+            groupCode={permission.getUserGroupName()}
+            value={permission.getRightLevel()}
+            prioritizedRightLevels={prioritizedRightLevels}
+            onChange={onPermissionUpdated}
+          />
+        ))}
+      </tbody>
+    </table>
   );
 };
 

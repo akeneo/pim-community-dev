@@ -14,12 +14,12 @@ import {
 } from 'akeneo-design-system';
 import {
   useTranslate,
-  Section,
   ValidationError,
   useSecurity,
   PageHeader,
   UnsavedChanges,
-  PimView,
+  PageContent,
+  Section,
 } from '@akeneo-pim-community/shared';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
@@ -42,6 +42,7 @@ import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-fam
 import {ConfirmModal} from 'akeneoassetmanager/application/component/app/modal';
 import namingConventionSchema from 'akeneoassetmanager/infrastructure/model/asset-family/naming-convention.schema.json';
 import productLinkRulesSchema from 'akeneoassetmanager/infrastructure/model/asset-family/product-link-rules.schema.json';
+import {UserNavigation} from 'akeneoassetmanager/application/component/app/user-navigation';
 
 const ajv = new Ajv({allErrors: true, verbose: true});
 
@@ -234,10 +235,7 @@ const ProductLinkRule = ({assetFamily, context, form, errors, events, rights}: S
           <AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />
         </PageHeader.Breadcrumb>
         <PageHeader.UserActions>
-          <PimView
-            className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
-            viewName="pim-asset-family-index-user-navigation"
-          />
+          <UserNavigation />
         </PageHeader.UserActions>
         <PageHeader.Actions>
           <SecondaryActions
@@ -253,53 +251,55 @@ const ProductLinkRule = ({assetFamily, context, form, errors, events, rights}: S
         <PageHeader.State>{form.state.isDirty && <UnsavedChanges />}</PageHeader.State>
         <PageHeader.Title>{translate('pim_asset_manager.asset_family.tab.product_link_rules')}</PageHeader.Title>
       </PageHeader>
-      <Section>
-        <div>
-          <SectionTitle>
-            <SectionTitle.Title>
-              {translate('pim_asset_manager.asset_family.product_link_rules.naming_convention_subsection')}
-            </SectionTitle.Title>
-          </SectionTitle>
-          <Helper>
-            {translate('pim_asset_manager.asset_family.naming_convention.help.description')}&nbsp;
-            <Link
-              href="https://help.akeneo.com/pim/serenity/articles/assets-product-link-rules.html#focus-on-the-naming-convention"
-              target="_blank"
-            >
-              {translate('pim_asset_manager.asset_family.naming_convention.help.link')}
-            </Link>
-          </Helper>
-        </div>
-        <AssetFamilyNamingConventionEditor
-          namingConvention={assetFamily.namingConvention}
-          errors={errors}
-          onAssetFamilyNamingConventionChange={events.onAssetFamilyNamingConventionUpdated}
-          editMode={canEditNamingConvention}
-        />
-      </Section>
-      <Section>
-        <div>
-          <SectionTitle>
-            <SectionTitle.Title>
-              {translate('pim_asset_manager.asset_family.product_link_rules.product_link_rules_subsection')}
-            </SectionTitle.Title>
-          </SectionTitle>
-          <Helper>
-            {translate('pim_asset_manager.asset_family.product_link_rules.help.description')}&nbsp;
-            <Link href="https://help.akeneo.com/pim/serenity/articles/assets-product-link-rules.html" target="_blank">
-              {translate('pim_asset_manager.asset_family.product_link_rules.help.link')}
-            </Link>
-          </Helper>
-        </div>
-        <AssetFamilyProductLinkRulesEditor
-          productLinkRules={assetFamily.productLinkRules}
-          errors={errors}
-          onAssetFamilyProductLinkRulesChange={(productLinkRules: ProductLinkRuleCollection) => {
-            events.onAssetFamilyProductLinkRulesUpdated(productLinkRules);
-          }}
-          editMode={canEditProductLinkRules}
-        />
-      </Section>
+      <PageContent>
+        <Section>
+          <div>
+            <SectionTitle sticky={0}>
+              <SectionTitle.Title>
+                {translate('pim_asset_manager.asset_family.product_link_rules.naming_convention_subsection')}
+              </SectionTitle.Title>
+            </SectionTitle>
+            <Helper>
+              {translate('pim_asset_manager.asset_family.naming_convention.help.description')}&nbsp;
+              <Link
+                href="https://help.akeneo.com/pim/serenity/articles/assets-product-link-rules.html#focus-on-the-naming-convention"
+                target="_blank"
+              >
+                {translate('pim_asset_manager.asset_family.naming_convention.help.link')}
+              </Link>
+            </Helper>
+          </div>
+          <AssetFamilyNamingConventionEditor
+            namingConvention={assetFamily.namingConvention}
+            errors={errors}
+            onAssetFamilyNamingConventionChange={events.onAssetFamilyNamingConventionUpdated}
+            editMode={canEditNamingConvention}
+          />
+        </Section>
+        <Section>
+          <div>
+            <SectionTitle sticky={0}>
+              <SectionTitle.Title>
+                {translate('pim_asset_manager.asset_family.product_link_rules.product_link_rules_subsection')}
+              </SectionTitle.Title>
+            </SectionTitle>
+            <Helper>
+              {translate('pim_asset_manager.asset_family.product_link_rules.help.description')}&nbsp;
+              <Link href="https://help.akeneo.com/pim/serenity/articles/assets-product-link-rules.html" target="_blank">
+                {translate('pim_asset_manager.asset_family.product_link_rules.help.link')}
+              </Link>
+            </Helper>
+          </div>
+          <AssetFamilyProductLinkRulesEditor
+            productLinkRules={assetFamily.productLinkRules}
+            errors={errors}
+            onAssetFamilyProductLinkRulesChange={(productLinkRules: ProductLinkRuleCollection) => {
+              events.onAssetFamilyProductLinkRulesUpdated(productLinkRules);
+            }}
+            editMode={canEditProductLinkRules}
+          />
+        </Section>
+      </PageContent>
       {isExecuteRulesModalOpen && (
         <ConfirmModal
           titleContent={translate('pim_asset_manager.asset_family.product_link_rules.execute_rules.confirm_title')}
