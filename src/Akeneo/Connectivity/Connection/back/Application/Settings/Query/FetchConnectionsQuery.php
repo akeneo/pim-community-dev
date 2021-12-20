@@ -18,7 +18,7 @@ final class FetchConnectionsQuery
      */
     public function __construct(array $search)
     {
-        $this->types = array_key_exists('types', $search) ? $search['types'] : [];
+        $this->types = $search['types'] ?? [];
     }
 
     /**
