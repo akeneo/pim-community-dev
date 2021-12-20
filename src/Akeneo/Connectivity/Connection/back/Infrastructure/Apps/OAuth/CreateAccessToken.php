@@ -5,7 +5,14 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAccessTokenInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetConnectedAppScopesQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetUserConsentedAuthenticationScopesQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetUserConsentedAuthenticationUuidQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use OAuth2\IOAuth2GrantCode;
 use OAuth2\Model\IOAuth2AuthCode;
 
@@ -19,26 +26,41 @@ class CreateAccessToken implements CreateAccessTokenInterface
     private IOAuth2GrantCode $storage;
     private ClientProviderInterface $clientProvider;
     private RandomCodeGeneratorInterface $randomCodeGenerator;
+    private GetAppConfirmationQueryInterface $appConfirmationQuery;
+    private UserRepositoryInterface $userRepository;
+    private CreateJsonWebToken $createJsonWebToken;
     private GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery;
+    private GetUserConsentedAuthenticationUuidQueryInterface $getUserConsentedAuthenticationUuidQuery;
+    private GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery;
 
     public function __construct(
         IOAuth2GrantCode $storage,
         ClientProviderInterface $clientProvider,
         RandomCodeGeneratorInterface $randomCodeGenerator,
-        GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery
+        GetAppConfirmationQueryInterface $appConfirmationQuery,
+        UserRepositoryInterface $userRepository,
+        CreateJsonWebToken $createJsonWebToken,
+        GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
+        GetUserConsentedAuthenticationUuidQueryInterface $getUserConsentedAuthenticationUuidQuery,
+        GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery
     ) {
         $this->storage = $storage;
         $this->clientProvider = $clientProvider;
         $this->randomCodeGenerator = $randomCodeGenerator;
+        $this->appConfirmationQuery = $appConfirmationQuery;
+        $this->userRepository = $userRepository;
+        $this->createJsonWebToken = $createJsonWebToken;
         $this->getConnectedAppScopesQuery = $getConnectedAppScopesQuery;
+        $this->getUserConsentedAuthenticationUuidQuery = $getUserConsentedAuthenticationUuidQuery;
+        $this->getUserConsentedAuthenticationScopesQuery = $getUserConsentedAuthenticationScopesQuery;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function create(string $clientId, string $code): array
+    public function create(string $appId, string $code): array
     {
-        $client = $this->clientProvider->findClientByAppId($clientId);
+        $client = $this->clientProvider->findClientByAppId($appId);
         if (null === $client) {
             throw new \InvalidArgumentException('No client found with the given client id.');
         }
@@ -51,17 +73,66 @@ class CreateAccessToken implements CreateAccessTokenInterface
 
         $token = $this->randomCodeGenerator->generate();
 
-        /* @phpstan-ignore-next-line */
-        $this->storage->createAccessToken($token, $client, $authCode->getData(), null);
+        $authorizationScopesList = ScopeList::fromScopes($this->getConnectedAppScopesQuery->execute($appId));
 
+        $appUser = $this->getAppUser($appId);
+        /* @phpstan-ignore-next-line */
+        $this->storage->createAccessToken($token, $client, $appUser, null, $authorizationScopesList->toScopeString());
         $this->storage->markAuthCodeAsUsed($code);
 
-        $scopes = $this->getConnectedAppScopesQuery->execute($clientId);
-
-        return [
+        $accessToken = [
             'access_token' => $token,
             'token_type' => 'bearer',
-            'scope' => \implode(' ', $scopes),
+            'scope' => $authorizationScopesList->toScopeString()
         ];
+
+        $accessToken = $this->appendOpenIdData($authCode, $appId, $accessToken);
+
+        return $accessToken;
+    }
+
+    private function getAppUser(string $appId): UserInterface
+    {
+        $appConfirmation = $this->appConfirmationQuery->execute($appId);
+        $appUserId = $appConfirmation->getUserId();
+
+        /** @var UserInterface|null */
+        $appUser = $this->userRepository->find($appUserId);
+        if (null === $appUser) {
+            throw new \LogicException(sprintf('User %s not found', $appUserId));
+        }
+
+        return $appUser;
+    }
+
+    private function appendOpenIdData(IOAuth2AuthCode $authCode, string $appId, array $accessToken): array
+    {
+        /** @var UserInterface|mixed */
+        $pimUser = $authCode->getData();
+        if (false === $pimUser instanceof UserInterface) {
+            throw new \LogicException();
+        }
+
+        $authenticationScopes = ScopeList::fromScopes(
+            $this->getUserConsentedAuthenticationScopesQuery->execute($pimUser->getId(), $appId)
+        );
+
+        if ($authenticationScopes->hasScope(AuthenticationScope::SCOPE_OPENID)) {
+            $ppid = $this->getUserConsentedAuthenticationUuidQuery->execute($pimUser->getId(), $appId);
+            $accessToken['id_token'] = $this->createJsonWebToken->create(
+                $appId,
+                $ppid,
+                $authenticationScopes,
+                $pimUser->getFirstName(),
+                $pimUser->getLastName(),
+                $pimUser->getEmail()
+            );
+
+            $existingScopesList = ScopeList::fromScopeString($accessToken['scope']);
+            $newScopeList = $existingScopesList->addScopes($authenticationScopes);
+            $accessToken['scope'] = $newScopeList->toScopeString();
+        }
+
+        return $accessToken;
     }
 }

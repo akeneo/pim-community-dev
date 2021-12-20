@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
@@ -10,6 +11,7 @@ interface RedirectUriWithAuthorizationCodeGeneratorInterface
 {
     public function generate(
         AppAuthorization $appAuthorization,
-        AppConfirmation $appConfirmation
+        AppConfirmation $appConfirmation,
+        int $pimUserId
     ): string;
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Apps;
 
+use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler;
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
@@ -22,6 +24,7 @@ class RequestAccessTokenActionEndToEnd extends WebTestCase
     private ClientProvider $clientProvider;
     private RequestAppAuthorizationHandler $appAuthorizationHandler;
     private string $clientId;
+    private GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler;
 
     public function test_the_endpoint_is_not_found_if_the_feature_flag_is_disabled(): void
     {
@@ -59,7 +62,7 @@ class RequestAccessTokenActionEndToEnd extends WebTestCase
         Assert::assertArrayHasKey('token_type', $content);
         Assert::assertEquals('bearer', $content['token_type']);
         Assert::assertArrayHasKey('scope', $content);
-        Assert::assertEquals('write_catalog_structure delete_products read_association_types', $content['scope']);
+        Assert::assertEquals('delete_products read_association_types write_catalog_structure', $content['scope']);
     }
 
     public function test_to_get_a_bad_request_if_the_request_is_wrong(): void
@@ -93,6 +96,7 @@ class RequestAccessTokenActionEndToEnd extends WebTestCase
         $this->webMarketplaceApi = $this->get('akeneo_connectivity.connection.marketplace.web_marketplace_api');
         $this->featureFlagMarketplaceActivate = $this->get('akeneo_connectivity.connection.marketplace_activate.feature');
         $this->clientProvider = $this->get('akeneo_connectivity.connection.service.apps.client_provider');
+        $this->generateAsymmetricKeysHandler = $this->get(GenerateAsymmetricKeysHandler::class);
         $this->appAuthorizationHandler = $this->get(RequestAppAuthorizationHandler::class);
         $this->clientId = '90741597-54c5-48a1-98da-a68e7ee0a715';
         $this->loadAppsFixtures();
@@ -148,6 +152,8 @@ class RequestAccessTokenActionEndToEnd extends WebTestCase
 
     private function loadAppsFixtures(): void
     {
+        $this->generateAsymmetricKeysHandler->handle(new GenerateAsymmetricKeysCommand());
+
         $apps = [
             [
                 'id' => $this->clientId,

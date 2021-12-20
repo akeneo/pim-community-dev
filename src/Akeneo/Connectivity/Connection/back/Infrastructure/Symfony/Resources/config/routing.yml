@@ -1,4 +1,3 @@
-
 # Public Urls
 
 akeneo_connectivity_connection_connect_apps_v1_authorize:
@@ -7,9 +6,14 @@ akeneo_connectivity_connection_connect_apps_v1_authorize:
     methods: [ GET ]
 
 akeneo_connectivity_connection_connect_apps_v1_token:
-  path: '/connect/apps/v1/oauth2/token'
-  controller: akeneo_connectivity.connection.public.controller.apps.token
-  methods: [ POST ]
+    path: '/connect/apps/v1/oauth2/token'
+    controller: akeneo_connectivity.connection.public.controller.apps.token
+    methods: [ POST ]
+
+akeneo_connectivity_connection_connect_apps_v1_openid_public_key:
+    path: '/connect/apps/v1/openid/public-key'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\GetOpenIdPublicKeyAction
+    methods: [ GET ]
 
 # Internal API
 
@@ -63,13 +67,16 @@ akeneo_connectivity_connection_connect_apps_activate:
 akeneo_connectivity_connection_connect_apps_authorize:
     path: '/connect/apps/authorize'
 
+akeneo_connectivity_connection_connect_apps_authenticate:
+    path: '/connect/apps/authenticate'
+
 ## Error Management
 akeneo_connectivity_connection_error_management_dashboard:
-   path: '/connect/data-flows/business-errors'
+    path: '/connect/data-flows/business-errors'
 
 akeneo_connectivity_connection_error_management_connection_monitoring:
-   path: '/connect/connection-settings/{code}/monitoring'
-   requirements:
+    path: '/connect/connection-settings/{code}/monitoring'
+    requirements:
         code: '[a-zA-Z0-9_]+'
 
 ## Audit
@@ -82,7 +89,7 @@ akeneo_connectivity_connection_audit_any:
         any: .*
 
 akeneo_connectivity_connection_redirect_audit:
-  path: '/connection/dashboard'
+    path: '/connection/dashboard'
 
 ## Webhook
 akeneo_connectivity_connection_webhook_regenerate_secret:
@@ -102,7 +109,7 @@ akeneo_connectivity_connection_webhook_event_logs:
 
 ## Settings
 akeneo_connectivity_connection_settings_redirect:
-  path: '/connections'
+    path: '/connections'
 
 akeneo_connectivity_connection_settings_index:
     path: '/connect/connection-settings'
@@ -124,9 +131,9 @@ akeneo_connectivity_connection_connect_connected_apps:
 akeneo_connectivity_connection_connect_connected_apps_edit:
     path: '/connect/connected-apps/{connectionCode}'
     requirements:
-      connectionCode: '[a-zA-Z0-9_-]+'
+        connectionCode: '[a-zA-Z0-9_-]+'
 
 akeneo_connectivity_connection_connect_connected_apps_delete:
     path: '/connect/connected-apps/{connectionCode}/delete'
     requirements:
-      connectionCode: '[a-zA-Z0-9_-]+'
+        connectionCode: '[a-zA-Z0-9_-]+'

@@ -66,31 +66,11 @@ class GetAllConnectedAppsActionEndToEnd extends WebTestCase
         Assert::assertEquals('/', $response->getTargetUrl());
     }
 
-    public function test_it_throws_access_denied_exception_with_missing_acl(): void
-    {
-        $this->featureFlagMarketplaceActivate->enable();
-        $this->authenticateAsAdmin();
-        $this->removeAclFromRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
-
-        $this->client->request(
-            'GET',
-            '/rest/apps/connected-apps',
-            [],
-            [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ]
-        );
-        $response = $this->client->getResponse();
-
-        Assert::assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-    }
-
     public function test_it_gets_connected_apps(): void
     {
         $this->featureFlagMarketplaceActivate->enable();
         $this->authenticateAsAdmin();
-        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
+        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');
 
         $this->getConnectionLoader()->createConnection('connectionCodeB', 'Connector B', FlowType::DATA_DESTINATION, false);
         $this->getUserGroupLoader()->create(['name' => 'app_7891011ghijkl']);

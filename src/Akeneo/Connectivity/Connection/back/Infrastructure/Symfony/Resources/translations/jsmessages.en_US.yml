@@ -25,6 +25,7 @@ pim_title:
     akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
     akeneo_connectivity_connection_connect_apps_activate: Connect
     akeneo_connectivity_connection_connect_apps_authorize: Connect
+    akeneo_connectivity_connection_connect_apps_authenticate: Connect
     akeneo_connectivity_connection_settings_index: Connections settings
     akeneo_connectivity_connection_settings_edit: Connection settings
     akeneo_connectivity_connection_settings_any: Connection settings
@@ -123,10 +124,18 @@ akeneo_connectivity.connection:
                     previous: Previous
                     next: Next
                     allow_and_next: Allow and next
+                    allow_and_finish: Allow and finish
                 progress:
+                    authentication: Authentication
                     authorizations: Authorizations
                     permissions: Permissions
                     summary: Well done!
+                authentication:
+                    title: '{{ app_name }} needs to'
+                    helper: To know more about App authentication please check our article
+                    helper_link: How to connect my PIM with Apps?
+                    scope_profile: View your firstname and your lastname
+                    scope_email: View your email address
                 authorize:
                     title: '{{ app_name }} needs to'
                     no_scope_title: '{{ app_name }} would like to access your PIM.'

@@ -106,3 +106,10 @@ services:
         class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\AttributePropertyTypeValidator'
         tags:
             - { name: 'validator.constraint_validator', alias: 'pim_structure_attribute_property_type_validator' }
+
+    pim_catalog.validator.constraint.is_variant_axis_without_available_locales:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\IsVariantAxisWithoutAvailableLocalesValidator'
+        arguments:
+            - '@akeneo.pim.structure.query.attribute_is_an_family_variant_axis'
+        tags:
+            - { name: validator.constraint_validator, alias: 'pim_structure.validator.constraint.available_locales.is_variant_axis_without_available_locales' }

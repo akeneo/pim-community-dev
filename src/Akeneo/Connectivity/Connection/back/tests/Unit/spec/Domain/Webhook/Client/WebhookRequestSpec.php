@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Domain\Webhook\Client;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
-use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
+use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\Event;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 use PhpSpec\ObjectBehavior;
@@ -99,8 +99,7 @@ class WebhookRequestSpec extends ObjectBehavior
         $timestamp = 1577836800;
         $uuid = '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c';
 
-        return new class($author, $data, $timestamp, $uuid) extends Event
-        {
+        return new class($author, $data, $timestamp, $uuid) extends Event {
             public function getName(): string
             {
                 return 'product.created';

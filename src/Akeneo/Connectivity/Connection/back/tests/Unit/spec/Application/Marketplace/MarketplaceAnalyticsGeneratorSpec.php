@@ -29,12 +29,12 @@ class MarketplaceAnalyticsGeneratorSpec extends ObjectBehavior
         );
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(MarketplaceAnalyticsGenerator::class);
     }
 
-    function it_generates_extension_query_parameters_without_campaign_when_undefined(
+    public function it_generates_extension_query_parameters_without_campaign_when_undefined(
         GetUserProfileQueryInterface $getUserProfileQuery,
         WebMarketplaceAliasesInterface $webMarketplaceAliases,
         PimUrl $pimUrl
@@ -55,7 +55,7 @@ class MarketplaceAnalyticsGeneratorSpec extends ObjectBehavior
             );
     }
 
-    function it_generates_extension_query_parameters_for_the_growth_edition_environment(
+    public function it_generates_extension_query_parameters_for_the_growth_edition_environment(
         GetUserProfileQueryInterface $getUserProfileQuery,
         WebMarketplaceAliasesInterface $webMarketplaceAliases,
         PimUrl $pimUrl
@@ -77,7 +77,7 @@ class MarketplaceAnalyticsGeneratorSpec extends ObjectBehavior
             );
     }
 
-    function it_generates_extension_query_parameters_without_profile_when_missing(
+    public function it_generates_extension_query_parameters_without_profile_when_missing(
         GetUserProfileQueryInterface $getUserProfileQuery,
         WebMarketplaceAliasesInterface $webMarketplaceAliases,
         PimUrl $pimUrl

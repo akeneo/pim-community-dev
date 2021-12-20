@@ -15,6 +15,7 @@ use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
+use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
@@ -190,10 +191,10 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
 
         $getAppQuery->execute('an_app_id')->willReturn($app);
         $appAuthorizationSession->getAppAuthorization('an_app_id')->willReturn($appAuthorization);
+        $appAuthorization->getAuthorizationScopes()->willReturn(ScopeList::fromScopes([]));
         $clientProvider->findClientByAppId('an_app_id')->willReturn($client);
         $createUserGroup->execute(Argument::any())->willReturn($userGroup);
         $userGroup->getName()->willReturn('foo');
-        $appAuthorization->getScopeList()->willReturn([]);
         $appRoleWithScopesFactory->createRole('an_app_id', [])->willReturn($role);
         $role->getRole()->willReturn(null);
 
@@ -228,10 +229,10 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
 
         $getAppQuery->execute('an_app_id')->willReturn($app);
         $appAuthorizationSession->getAppAuthorization('an_app_id')->willReturn($appAuthorization);
+        $appAuthorization->getAuthorizationScopes()->willReturn(ScopeList::fromScopes(['a_scope']));
         $clientProvider->findClientByAppId('an_app_id')->willReturn($client);
         $createUserGroup->execute(Argument::any())->willReturn($userGroup);
         $userGroup->getName()->willReturn('a_group');
-        $appAuthorization->getScopeList()->willReturn(['a_scope']);
         $appRoleWithScopesFactory->createRole('an_app_id', ['a_scope'])->willReturn($role);
         $role->getRole()->willReturn('ROLE_APP');
         $createUser->execute(Argument::any(), Argument::any(), Argument::any(), ['a_group'], ['ROLE_APP'])->willReturn($user);
