@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaEvaluationRegistry;
+use Akeneo\Pim\Automation\DataQualityInsights\back\Application\ProductEvaluation\CompleteEvaluationWithImprovableAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
@@ -38,25 +39,18 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
  */
 class GetProductEvaluation
 {
-    private GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery;
-
-    private GetLocalesByChannelQueryInterface $getLocalesByChannelQuery;
-
-    private CriteriaEvaluationRegistry $criteriaEvaluationRegistry;
-
     public function __construct(
-        GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
-        GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
-        CriteriaEvaluationRegistry $criteriaEvaluationRegistry
+        private GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
+        private GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
+        private CriteriaEvaluationRegistry $criteriaEvaluationRegistry,
+        private CompleteEvaluationWithImprovableAttributes $completeEvaluationWithImprovableAttributes
     ) {
-        $this->getCriteriaEvaluationsByProductIdQuery = $getCriteriaEvaluationsByProductIdQuery;
-        $this->getLocalesByChannelQuery = $getLocalesByChannelQuery;
-        $this->criteriaEvaluationRegistry = $criteriaEvaluationRegistry;
     }
 
     public function get(ProductId $productId): array
     {
         $criteriaEvaluations = $this->getCriteriaEvaluationsByProductIdQuery->execute($productId);
+        $criteriaEvaluations = ($this->completeEvaluationWithImprovableAttributes)($criteriaEvaluations);
         $channelsLocales = $this->getLocalesByChannelQuery->getChannelLocaleCollection();
 
         $formattedProductEvaluation = [];

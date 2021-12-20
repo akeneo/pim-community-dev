@@ -24,6 +24,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.query.get_up_to_date_product_criteria_evaluations'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
             - '@akeneo.pim.automation.data_quality_insights.product_criteria_evaluation_registry'
+            - '@akeneo.pim.automation.data_quality_insights.product.complete_evaluation_with_improvable_attributes'
 
     akeneo.pim.automation.data_quality_insights.get_product_model_evaluation:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductEvaluation
@@ -31,6 +32,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.query.get_up_to_date_product_model_criteria_evaluations'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
             - '@akeneo.pim.automation.data_quality_insights.product_model_criteria_evaluation_registry'
+            - '@akeneo.pim.automation.data_quality_insights.product_model.complete_evaluation_with_improvable_attributes'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateDashboardRates:
         arguments:
@@ -185,3 +187,17 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetProductKeyIndicatorsQuery'
             - !php/const Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithGoodEnrichment::CODE
             - !php/const Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithImage::CODE
+
+    akeneo.pim.automation.data_quality_insights.product.complete_evaluation_with_improvable_attributes:
+        class: Akeneo\Pim\Automation\DataQualityInsights\back\Application\ProductEvaluation\CompleteEvaluationWithImprovableAttributes
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
+            - '@akeneo.pim.automation.calculate_product_completeness_of_required_attributes'
+            - '@akeneo.pim.automation.calculate_product_completeness_of_non_required_attributes'
+
+    akeneo.pim.automation.data_quality_insights.product_model.complete_evaluation_with_improvable_attributes:
+        class: Akeneo\Pim\Automation\DataQualityInsights\back\Application\ProductEvaluation\CompleteEvaluationWithImprovableAttributes
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
+            - '@akeneo.pim.automation.calculate_product_model_completeness_of_required_attributes'
+            - '@akeneo.pim.automation.calculate_product_model_completeness_of_non_required_attributes'
