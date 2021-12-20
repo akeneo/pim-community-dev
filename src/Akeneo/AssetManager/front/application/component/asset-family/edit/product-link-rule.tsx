@@ -207,8 +207,11 @@ const ProductLinkRule = ({assetFamily, context, form, errors, events, rights}: S
   const translate = useTranslate();
   const {isGranted} = useSecurity();
   const [isExecuteRulesModalOpen, openExecuteRulesModal, closeExecuteRulesModal] = useBooleanState();
-  const [isExecuteNamingConventionModalOpen, openExecuteNamingConventionModal, closeExecuteNamingConventionModal] =
-    useBooleanState();
+  const [
+    isExecuteNamingConventionModalOpen,
+    openExecuteNamingConventionModal,
+    closeExecuteNamingConventionModal,
+  ] = useBooleanState();
   const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
 
   const canEditNamingConvention =

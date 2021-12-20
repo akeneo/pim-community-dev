@@ -139,13 +139,15 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
   const [context, setContext] = useStoredState<Context>('akeneo.asset_manager.grid.context', initialContext);
   const [isCreateAssetModalOpen, openCreateAssetModal, closeCreateAssetModal] = useBooleanState(false);
   const [isUploadModalOpen, openUploadModal, closeUploadModal] = useBooleanState(false);
-  const [isCreateAssetFamilyModalOpen, openCreateAssetFamilyModal, closeCreateAssetFamilyModal] =
-    useBooleanState(false);
+  const [isCreateAssetFamilyModalOpen, openCreateAssetFamilyModal, closeCreateAssetFamilyModal] = useBooleanState(
+    false
+  );
   const notify = useNotify();
   const translate = useTranslate();
 
-  const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] =
-    useSelection<AssetCode>(searchResult.matchesCount);
+  const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] = useSelection<
+    AssetCode
+  >(searchResult.matchesCount);
 
   const channels = useChannels(dataProvider.channelFetcher);
   const locales = getLocales(channels, context.channel);
