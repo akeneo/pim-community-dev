@@ -51,9 +51,6 @@ final class GetProductIdentifiersWithRemovedAttribute implements GetProductIdent
             $body['search_after'] = end($rows['hits']['hits'])['sort'];
             $rows = $this->elasticsearchClient->search($body);
         }
-
-        // Reset query
-        $this->searchQueryBuilder = new SearchQueryBuilder();
     }
 
     public function getQueryBuilder(): SearchQueryBuilder
