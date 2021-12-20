@@ -17,10 +17,10 @@ akeneo_job_index_action:
 
 akeneo_job_get_job_type_action:
   path: /rest/process-tracker/job-type
-  defaults: { _controller: akeneo.job.controller.get_job_types_action }
+  defaults: { _controller: akeneo.job.controller.get_job_type_action }
   methods: [GET]
 
 akeneo_job_get_job_user_action:
   path: /rest/process-tracker/job-user
-  defaults: { _controller: akeneo.job.controller.get_job_users_action }
+  defaults: { _controller: akeneo.job.controller.get_job_user_action }
   methods: [GET]
