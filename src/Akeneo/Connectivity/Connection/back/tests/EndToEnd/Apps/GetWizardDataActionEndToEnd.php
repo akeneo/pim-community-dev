@@ -70,6 +70,124 @@ class GetWizardDataActionEndToEnd extends WebTestCase
         ], json_decode($response->getContent(), true));
     }
 
+    public function test_it_throws_an_exception_when_app_not_found_into_session(): void
+    {
+        $this->authenticateAsAdmin();
+        $app = App::fromWebMarketplaceValues($this->webMarketplaceApi->getApp('90741597-54c5-48a1-98da-a68e7ee0a715'));
+        $this->clientProvider->findOrCreateClient($app);
+
+        $this->client->request(
+            'GET',
+            '/rest/apps/load-wizard-data/90741597-54c5-48a1-98da-a68e7ee0a715',
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+        $response = $this->client->getResponse();
+        Assert::assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+    }
+
+    public function test_it_throws_an_exception_when_app_not_found_into_database(): void
+    {
+        $this->client->request(
+            'GET',
+            '/rest/apps/load-wizard-data/not_an_existing_app',
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+        $response = $this->client->getResponse();
+        Assert::assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+    }
+
+    public function test_authentication_scopes_empty(): void
+    {
+        $this->authenticateAsAdmin();
+        $app = App::fromWebMarketplaceValues($this->webMarketplaceApi->getApp('90741597-54c5-48a1-98da-a68e7ee0a715'));
+        $this->clientProvider->findOrCreateClient($app);
+
+        $command = new RequestAppAuthorizationCommand(
+            '90741597-54c5-48a1-98da-a68e7ee0a715',
+            'code',
+            'write_catalog_structure delete_products read_association_types',
+            'http://anyurl.test'
+        );
+        $this->appAuthorizationHandler->handle($command);
+
+        $this->client->request(
+            'GET',
+            '/rest/apps/load-wizard-data/90741597-54c5-48a1-98da-a68e7ee0a715',
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+        $response = $this->client->getResponse();
+
+        Assert::assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        Assert::assertEquals([
+            'appName' => 'Akeneo Shopware 6 Connector by EIKONA Media',
+            'appLogo' => 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
+            'scopeMessages' => [
+                [
+                    'icon' => 'products',
+                    'type' => 'delete',
+                    'entities' => 'products',
+                ],
+                [
+                    'icon' => 'association_types',
+                    'type' => 'view',
+                    'entities' => 'association_types',
+                ],
+                [
+                    'icon' => 'catalog_structure',
+                    'type' => 'edit',
+                    'entities' => 'catalog_structure',
+                ],
+            ],
+            'authenticationScopes' => [],
+        ], json_decode($response->getContent(), true));
+    }
+
+    public function test_authorization_scopes_empty(): void
+    {
+        $this->authenticateAsAdmin();
+        $app = App::fromWebMarketplaceValues($this->webMarketplaceApi->getApp('90741597-54c5-48a1-98da-a68e7ee0a715'));
+        $this->clientProvider->findOrCreateClient($app);
+
+        $command = new RequestAppAuthorizationCommand(
+            '90741597-54c5-48a1-98da-a68e7ee0a715',
+            'code',
+            '',
+            'http://anyurl.test'
+        );
+        $this->appAuthorizationHandler->handle($command);
+
+        $this->client->request(
+            'GET',
+            '/rest/apps/load-wizard-data/90741597-54c5-48a1-98da-a68e7ee0a715',
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+        $response = $this->client->getResponse();
+
+        Assert::assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        Assert::assertEquals([
+            'appName' => 'Akeneo Shopware 6 Connector by EIKONA Media',
+            'appLogo' => 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
+            'scopeMessages' => [],
+            'authenticationScopes' => [],
+        ], json_decode($response->getContent(), true));
+    }
+
     protected function setUp(): void
     {
         parent::setUp();

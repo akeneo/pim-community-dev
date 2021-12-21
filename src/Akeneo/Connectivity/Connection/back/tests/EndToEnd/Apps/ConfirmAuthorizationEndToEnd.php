@@ -141,6 +141,16 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
         Assert::assertIsString($responseContent['redirectUrl']);
     }
 
+    public function test_it_throws_a_logic_exception_because_there_is_no_active_app_authorization_into_session(): void
+    {
+        // TODO
+    }
+
+    public function test_it_returns_an_error_because_app_validation_failed(): void
+    {
+        // TODO
+    }
+
     private function loadAppsFixtures(): void
     {
         $apps = [

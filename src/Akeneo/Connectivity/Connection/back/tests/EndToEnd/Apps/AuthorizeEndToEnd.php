@@ -198,6 +198,39 @@ class AuthorizeEndToEnd extends WebTestCase
         Assert::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
     }
 
+    public function test_it_throws_user_consent_required_exception_when_new_scope_consent_is_needed(): void
+    {
+        $this->featureFlagMarketplaceActivate->enable();
+        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
+        $app = App::fromWebMarketplaceValues($this->webMarketplaceApi->getApp('90741597-54c5-48a1-98da-a68e7ee0a715'));
+        $this->clientProvider->findOrCreateClient($app);
+        $this->appAuthorizationHandler->handle(new RequestAppAuthorizationCommand(
+            '90741597-54c5-48a1-98da-a68e7ee0a715',
+            'code',
+            'write_catalog_structure delete_products read_association_types openid',
+            'http://anyurl.test'
+        ));
+        $this->createAppWithAuthorizationHandler->handle(new CreateAppWithAuthorizationCommand(
+            '90741597-54c5-48a1-98da-a68e7ee0a715'
+        ));
+        $this->authenticateAsAdmin();
+
+        $this->client->request(
+            'GET',
+            '/connect/apps/v1/authorize',
+            [
+                'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
+                'response_type' => 'code',
+                'state' => 'foo',
+            ]
+        );
+        $response = $this->client->getResponse();
+
+        Assert::assertEquals(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
+        assert($response instanceof RedirectResponse);
+        Assert::matchesRegularExpression('^http:\/\/shopware\.example\.com\/callback\?code=[a-zA-Z0-9@=]+&state=foo$');
+    }
+
     private function loadAppsFixtures(): void
     {
         $apps = [
