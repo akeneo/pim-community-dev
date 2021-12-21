@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Dropdown, SelectInput, useBooleanState} from 'akeneo-design-system';
-import {AttributeCode, NotEmptyTableFilterValue, TableAttribute,} from '../models';
+import {AttributeCode, NotEmptyTableFilterValue, TableAttribute} from '../models';
 import {AttributeFetcher} from '../fetchers';
 import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {useIsMounted} from '../shared';
@@ -10,9 +10,9 @@ import {
   FilterButtonContainer,
   FilterContainer,
   FilterSectionTitle,
-  FilterSectionTitleTitle
-} from "../shared/DatagridTableFilterStyle";
-
+  FilterSectionTitleTitle,
+} from '../shared/DatagridTableFilterStyle';
+import styled from 'styled-components';
 
 type NotEmptyDatagridTableFilterProps = {
   showLabel: boolean;
@@ -23,13 +23,17 @@ type NotEmptyDatagridTableFilterProps = {
   initialDataFilter: NotEmptyTableFilterValue;
 };
 
+const StyledSelectInput = styled(SelectInput)`
+  margin: 20px 0 10px 0;
+`;
+
 const NotEmptyDatagridTableFilter: React.FC<NotEmptyDatagridTableFilterProps> = ({
   showLabel,
   canDisable,
   onDisable,
   attributeCode,
   onChange,
-  initialDataFilter={},
+  initialDataFilter = {},
   ...rest
 }) => {
   const router = useRouter();
@@ -57,7 +61,7 @@ const NotEmptyDatagridTableFilter: React.FC<NotEmptyDatagridTableFilterProps> = 
   };
 
   const handleClose = () => {
-    if (!filterValue) {
+    if (!filterValue?.operator) {
       close();
       onChange({});
       setFilterValue({});
@@ -66,11 +70,13 @@ const NotEmptyDatagridTableFilter: React.FC<NotEmptyDatagridTableFilterProps> = 
     }
   };
 
-  const handleChange = (value: string|null) => {
-    setFilterValue({operator: (value as 'NOT EMPTY'|null) || undefined});
+  const handleChange = (value: string | null) => {
+    setFilterValue({operator: (value as 'NOT EMPTY' | null) || undefined});
   };
 
-  const criteriaHint = translate(filterValue?.operator === 'NOT EMPTY' ? `pim_common.operators.NOT EMPTY` : 'pim_common.all');
+  const criteriaHint = translate(
+    filterValue?.operator === 'NOT EMPTY' ? `pim_common.operators.NOT EMPTY` : 'pim_common.all'
+  );
 
   return (
     <AttributeContext.Provider value={{attribute, setAttribute}}>
@@ -83,23 +89,21 @@ const NotEmptyDatagridTableFilter: React.FC<NotEmptyDatagridTableFilterProps> = 
                   {getLabel(attribute.labels, catalogLocale, attribute.code)}
                 </FilterSectionTitleTitle>
               </FilterSectionTitle>
-              <SelectInput
-                  clearLabel={translate('pim_common.clear_value')}
-                  clearable
-                  emptyResultLabel={translate('pim_common.no_result')}
-                  onChange={handleChange}
-                  placeholder={translate('pim_table_attribute.datagrid.select_your_operator')}
-                  value={(filterValue.operator as string) || null}
-                  openLabel={translate('pim_common.open')}
+              <StyledSelectInput
+                clearLabel={translate('pim_common.clear_value')}
+                clearable
+                emptyResultLabel={translate('pim_common.no_result')}
+                onChange={handleChange}
+                placeholder={translate('pim_table_attribute.datagrid.select_your_operator')}
+                value={(filterValue.operator as string) || null}
+                openLabel={translate('pim_common.open')}
               >
                 <SelectInput.Option title={translate(`pim_common.operators.NOT EMPTY`)} value='NOT EMPTY'>
                   {translate(`pim_common.operators.NOT EMPTY`)}
                 </SelectInput.Option>
-              </SelectInput>
+              </StyledSelectInput>
               <FilterButtonContainer>
-                <Button onClick={handleValidate}>
-                  {translate('pim_common.update')}
-                </Button>
+                <Button onClick={handleValidate}>{translate('pim_common.update')}</Button>
               </FilterButtonContainer>
             </FilterContainer>
           </Dropdown.Overlay>

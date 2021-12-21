@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import {getColor, SectionTitle} from "akeneo-design-system";
+import styled from 'styled-components';
+import {getColor, SectionTitle} from 'akeneo-design-system';
 
 const FilterBox = styled.div`
   margin-bottom: 10px;

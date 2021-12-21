@@ -6,11 +6,11 @@ import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
 import {DatagridTableFilter} from '../datagrid';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {NotEmptyDatagridTableFilter} from "../datagrid/NotEmptyDatagridTableFilter";
+import {NotEmptyDatagridTableFilter} from '../datagrid/NotEmptyDatagridTableFilter';
 
 class TableFilter extends AbstractFilter {
   private initialDataFilter = {};
-  private gridName: string|undefined;
+  private gridName: string | undefined;
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -45,7 +45,7 @@ class TableFilter extends AbstractFilter {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private _readDOMValue() {}
 
-  setDatagrid(gridName: string): void{
+  setDatagrid(gridName: string): void {
     this.gridName = gridName;
   }
 
@@ -57,24 +57,25 @@ class TableFilter extends AbstractFilter {
     ReactDOM.render(
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
-          {notEmptyGridNames.includes(this.gridName as string) ? <NotEmptyDatagridTableFilter
+          {notEmptyGridNames.includes(this.gridName as string) ? (
+            <NotEmptyDatagridTableFilter
               showLabel={this.showLabel}
               canDisable={this.canDisable}
               onDisable={onDisable}
               attributeCode={this.name}
               onChange={onChange}
               initialDataFilter={this.initialDataFilter}
-          />
-          :
-          <DatagridTableFilter
-            showLabel={this.showLabel}
-            canDisable={this.canDisable}
-            onDisable={onDisable}
-            attributeCode={this.name}
-            onChange={onChange}
-            initialDataFilter={this.initialDataFilter}
-          />
-          }
+            />
+          ) : (
+            <DatagridTableFilter
+              showLabel={this.showLabel}
+              canDisable={this.canDisable}
+              onDisable={onDisable}
+              attributeCode={this.name}
+              onChange={onChange}
+              initialDataFilter={this.initialDataFilter}
+            />
+          )}
         </ThemeProvider>
       </DependenciesProvider>,
       this.el

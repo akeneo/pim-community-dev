@@ -42,7 +42,7 @@ export type PendingTableFilterValue = {
 };
 
 export type NotEmptyTableFilterValue = {
-    operator?: 'NOT EMPTY';
+  operator?: 'NOT EMPTY';
 };
 
 const isFilterValid: (filter: PendingTableFilterValue) => boolean = filter => {

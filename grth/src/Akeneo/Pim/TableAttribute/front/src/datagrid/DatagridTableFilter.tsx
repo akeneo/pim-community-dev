@@ -21,8 +21,8 @@ import {
   FilterButtonContainer,
   FilterContainer,
   FilterSectionTitle,
-  FilterSectionTitleTitle
-} from "../shared/DatagridTableFilterStyle";
+  FilterSectionTitleTitle,
+} from '../shared/DatagridTableFilterStyle';
 
 type DatagridTableFilterProps = {
   showLabel: boolean;
