@@ -14,6 +14,7 @@ final class GifFilter implements LoaderInterface
     {
         if ($image instanceof Image) {
             $image->getImagick()->coalesceImages();
+            $image->getImagick()->setImage($image->getImagick()->getImage());
         }
 
         return $image;
