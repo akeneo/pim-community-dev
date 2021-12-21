@@ -6,7 +6,6 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Platform\Bundle\AnalyticsBundle\Query\ElasticsearchAndSql\MediaCount;
 use Akeneo\Platform\Bundle\AnalyticsBundle\Query\Sql\ApiConnectionCount;
 use Akeneo\Tool\Component\Analytics\ActiveEventSubscriptionCountQuery;
-use Akeneo\Tool\Component\Analytics\CountConnectedAppsQueryInterface;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Akeneo\Tool\Component\Analytics\EmailDomainsQuery;
 use Akeneo\Tool\Component\Analytics\GetConnectedAppsIdentifiersQueryInterface;
@@ -42,7 +41,6 @@ class DBDataCollectorSpec extends ObjectBehavior
         IsDemoCatalogQuery $isDemoCatalogQuery,
         ActiveEventSubscriptionCountQuery $activeEventSubscriptionCountQuery,
         GetConnectedAppsIdentifiersQueryInterface $getConnectedAppsIdentifiersQuery,
-        CountConnectedAppsQueryInterface $countConnectedAppsQuery,
     ) {
         $this->beConstructedWith(
             $channelCountQuery,
@@ -66,7 +64,6 @@ class DBDataCollectorSpec extends ObjectBehavior
             $isDemoCatalogQuery,
             $activeEventSubscriptionCountQuery,
             $getConnectedAppsIdentifiersQuery,
-            $countConnectedAppsQuery,
         );
     }
 
@@ -98,7 +95,6 @@ class DBDataCollectorSpec extends ObjectBehavior
         IsDemoCatalogQuery $isDemoCatalogQuery,
         ActiveEventSubscriptionCountQuery $activeEventSubscriptionCountQuery,
         GetConnectedAppsIdentifiersQueryInterface $getConnectedAppsIdentifiersQuery,
-        CountConnectedAppsQueryInterface $countConnectedAppsQuery,
     ) {
         $channelCountQuery->fetch()->willReturn(new CountVolume(3, 'count_channels'));
         $productCountQuery->fetch()->willReturn(new CountVolume(1121, 'count_products'));
@@ -126,7 +122,6 @@ class DBDataCollectorSpec extends ObjectBehavior
         $isDemoCatalogQuery->fetch()->willreturn(true);
         $activeEventSubscriptionCountQuery->fetch()->willReturn(42);
         $getConnectedAppsIdentifiersQuery->execute()->willReturn(['00528c5a-9aef-4f9a-8a04-cdebf34176db']);
-        $countConnectedAppsQuery->execute()->willReturn(1);
 
         $this->collect()->shouldReturn(
             [

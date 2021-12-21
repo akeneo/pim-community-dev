@@ -62,7 +62,6 @@ services:
             - '@pim_analytics.query.is_demo_catalog'
             - '@pim_analytics.query.active_event_subscription_count'
             - '@pim_analytics.query.get_connected_apps_identifiers'
-            - '@pim_analytics.query.count_connected_apps'
         tags:
             - { name: pim_analytics.data_collector, type: update_checker }
             - { name: pim_analytics.data_collector, type: system_info_report }

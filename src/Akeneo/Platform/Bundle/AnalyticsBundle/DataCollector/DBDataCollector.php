@@ -64,8 +64,6 @@ class DBDataCollector implements DataCollectorInterface
 
     private GetConnectedAppsIdentifiersQueryInterface $getConnectedAppsIdentifiersQuery;
 
-    private CountConnectedAppsQueryInterface $countConnectedAppsQuery;
-
     public function __construct(
         CountQuery $channelCountQuery,
         CountQuery $productCountQuery,
@@ -88,7 +86,6 @@ class DBDataCollector implements DataCollectorInterface
         IsDemoCatalogQuery $isDemoCatalogQuery,
         ActiveEventSubscriptionCountQuery $activeEventSubscriptionCountQuery,
         GetConnectedAppsIdentifiersQueryInterface $getConnectedAppsIdentifiersQuery,
-        CountConnectedAppsQueryInterface $countConnectedAppsQuery,
     ) {
         $this->channelCountQuery = $channelCountQuery;
         $this->productCountQuery = $productCountQuery;
@@ -111,7 +108,6 @@ class DBDataCollector implements DataCollectorInterface
         $this->isDemoCatalogQuery = $isDemoCatalogQuery;
         $this->activeEventSubscriptionCountQuery = $activeEventSubscriptionCountQuery;
         $this->getConnectedAppsIdentifiersQuery = $getConnectedAppsIdentifiersQuery;
-        $this->countConnectedAppsQuery = $countConnectedAppsQuery;
     }
 
     /**
@@ -119,6 +115,8 @@ class DBDataCollector implements DataCollectorInterface
      */
     public function collect()
     {
+        $activatedAppIds = $this->getConnectedAppsIdentifiersQuery->execute();
+
         return [
             'nb_channels' => $this->channelCountQuery->fetch()->getVolume(),
             'nb_locales' => $this->localeCountQuery->fetch()->getVolume(),
@@ -142,8 +140,8 @@ class DBDataCollector implements DataCollectorInterface
             'nb_media_images_in_products' => $this->mediaCountQuery->countImages(),
             'is_demo_catalog' => $this->isDemoCatalogQuery->fetch(),
             'nb_active_event_subscription' => $this->activeEventSubscriptionCountQuery->fetch(),
-            'activated_app_ids' => $this->getConnectedAppsIdentifiersQuery->execute(),
-            'nb_activated_apps' => $this->countConnectedAppsQuery->execute(),
+            'activated_app_ids' => $activatedAppIds,
+            'nb_activated_apps' => count($activatedAppIds),
         ];
     }
 }
