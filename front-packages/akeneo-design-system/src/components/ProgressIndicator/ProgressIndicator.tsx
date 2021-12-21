@@ -1,4 +1,4 @@
-import React, {Ref, ReactNode, isValidElement} from 'react';
+import React, {Ref, ReactNode, isValidElement, HTMLAttributes, forwardRef, Children, cloneElement} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
@@ -19,7 +19,6 @@ const StepCircle = styled.div<{state: StepState} & AkeneoThemedProps>`
   border: 1px solid ${({state}) => (state !== 'todo' ? 'transparent' : getColor('grey', 80))};
 `;
 
-// TODO RAC-331: Typography caption in uppercase
 const StepLabel = styled.div`
   font-size: ${getFontSize('small')};
   font-weight: normal;
@@ -57,27 +56,27 @@ const ProgressIndicatorContainer = styled.ul`
 `;
 
 type StepProps = Override<
-  React.HTMLAttributes<HTMLLIElement>,
+  HTMLAttributes<HTMLLIElement>,
   {
     /**
-     * Set to true if the step is the current step in the progress indicator
+     * Set to true if the step is the current step in the progress indicator.
      */
     current?: boolean;
 
     /**
-     * This property is handheld by the ProgressIndicator component. You should not set it yourself.
-     * @private
+     * The state of the step.
+     * This prop is not mandatory as the component can calculate its state based on the `current` prop.
      */
     state?: StepState;
 
     /**
-     * The label of the step
+     * The label of the step.
      */
-    children: ReactNode;
+    children?: ReactNode;
   }
 >;
 
-const Step = React.forwardRef<HTMLLIElement, StepProps>(
+const Step = forwardRef<HTMLLIElement, StepProps>(
   ({state, children, ...rest}: StepProps, forwardedRef: Ref<HTMLLIElement>) => {
     if (undefined === state) {
       throw new Error('ProgressIndicator.Step cannot be used outside a ProgressIndicator component');
@@ -100,31 +99,33 @@ const Step = React.forwardRef<HTMLLIElement, StepProps>(
 );
 
 type ProgressIndicatorProps = Override<
-  React.HTMLAttributes<HTMLUListElement>,
+  HTMLAttributes<HTMLUListElement>,
   {
     /**
-     * The progress steps
+     * The progress steps.
      */
     children?: ReactNode;
   }
 >;
 
 /**
- * Progress indicator display progress through a sequence of logical and numbered steps
+ * Progress indicator display progress through a sequence of logical and numbered steps.
  */
 const ProgressIndicator = ({children, ...rest}: ProgressIndicatorProps) => {
-  const currentStepIndex = React.Children.toArray(children).reduce((result, child, index) => {
+  const currentStepIndex = Children.toArray(children).reduce((result, child, index) => {
     return isValidElement<StepProps>(child) && child.type === Step && child.props.current === true ? index : result;
   }, 0);
 
-  const decoratedChildren = React.Children.map(children, (child, index) => {
-    if (!(isValidElement(child) && child.type === Step)) {
-      throw new Error('ProgressIndicator only accepts `ProgressIndicator.Step` elements as children');
+  const decoratedChildren = Children.map(children, (child, index) => {
+    if (!(isValidElement<StepProps>(child) && child.type === Step)) {
+      return child;
     }
 
-    return React.cloneElement(child, {
-      state: index > currentStepIndex ? 'todo' : index < currentStepIndex ? 'done' : 'inprogress',
-    });
+    return undefined === child.props.state
+      ? cloneElement(child, {
+          state: index > currentStepIndex ? 'todo' : index < currentStepIndex ? 'done' : 'inprogress',
+        })
+      : child;
   });
 
   return (
