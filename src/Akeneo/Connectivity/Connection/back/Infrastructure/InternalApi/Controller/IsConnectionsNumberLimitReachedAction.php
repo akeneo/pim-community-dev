@@ -6,6 +6,9 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Query\IsConnectionsNumberLimitReachedHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -17,8 +20,12 @@ class IsConnectionsNumberLimitReachedAction
     {
     }
 
-    public function __invoke()
+    public function __invoke(Request $request): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         return new JsonResponse(['limit_reached' => $this->isConnectionsNumberLimitReachedHandler->execute()]);
     }
 }
