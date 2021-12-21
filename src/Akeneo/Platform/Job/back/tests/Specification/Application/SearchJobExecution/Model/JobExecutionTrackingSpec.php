@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Platform\Job\Application\SearchJobExecution;
+namespace Specification\Akeneo\Platform\Job\Application\SearchJobExecution\Model;
 
-use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRowTracking;
-use Akeneo\Platform\Job\Application\SearchJobExecution\StepExecutionTracking;
+use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionTracking;
+use Akeneo\Platform\Job\Application\SearchJobExecution\Model\StepExecutionTracking;
 use Akeneo\Platform\Job\Domain\Model\Status;
 use PhpSpec\ObjectBehavior;
 
-class JobExecutionRowTrackingSpec extends ObjectBehavior
+class JobExecutionTrackingSpec extends ObjectBehavior
 {
     public function let(): void
     {
@@ -40,7 +40,7 @@ class JobExecutionRowTrackingSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldBeAnInstanceOf(JobExecutionRowTracking::class);
+        $this->shouldBeAnInstanceOf(JobExecutionTracking::class);
     }
 
     public function it_normalizes_itself()

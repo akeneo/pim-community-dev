@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\Job\Application\SearchJobExecution;
+namespace Akeneo\Platform\Job\Application\SearchJobExecution\Model;
 
 use Akeneo\Platform\Job\Domain\Model\Status;
 
@@ -21,7 +21,7 @@ final class JobExecutionRow
         private ?string $username,
         private Status $status,
         private bool $isStoppable,
-        private JobExecutionRowTracking $tracking
+        private JobExecutionTracking $tracking,
     ) {
     }
 
@@ -31,7 +31,7 @@ final class JobExecutionRow
             'job_execution_id' => $this->jobExecutionId,
             'job_name' => $this->jobName,
             'type' => $this->type,
-            'started_at' => $this->startedAt ? $this->startedAt->format(DATE_ATOM) : null,
+            'started_at' => $this->startedAt?->format(DATE_ATOM),
             'username' => $this->username,
             'status' => $this->status->getLabel(),
             'warning_count' => $this->tracking->getWarningCount(),

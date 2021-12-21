@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Integration\FakeServices;
 
-use Akeneo\Platform\Job\Application\SearchJobExecution\ClockInterface;
+use Akeneo\Platform\Job\Infrastructure\Clock\ClockInterface;
 
 /**
  * @author Grégoire Houssard <gregoire.houssard@akeneo.com>
