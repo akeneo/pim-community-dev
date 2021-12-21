@@ -41,7 +41,7 @@ class GetConnectedAppsIdentifiersQueryIntegration extends TestCase
         $this->connectedAppLoader->createConnectedAppWithUserAndTokens('6a304013-35af-45f1-bf35-826b57c83893', 'bar');
 
         $result = $this->query->execute();
-        Assert::assertEquals([
+        Assert::assertEqualsCanonicalizing([
             '00528c5a-9aef-4f9a-8a04-cdebf34176db',
             '6a304013-35af-45f1-bf35-826b57c83893',
         ], $result);
