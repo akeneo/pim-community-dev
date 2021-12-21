@@ -3,6 +3,8 @@ import {Section} from '@akeneo-pim-community/shared';
 
 const ContextSwitchers = styled.div`
   margin-top: 10px;
+  display: flex;
+  gap: 10px;
 `;
 
 const FormGroup = styled(Section)`

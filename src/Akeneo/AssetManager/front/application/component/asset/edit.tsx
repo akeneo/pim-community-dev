@@ -6,7 +6,6 @@ import {
   useSecurity,
   useTranslate,
   DeleteModal,
-  PimView,
   LocaleSelector,
   LocaleCode,
   Locale,
@@ -14,6 +13,7 @@ import {
   Channel,
   ChannelCode,
   UnsavedChanges,
+  PageHeader,
 } from '@akeneo-pim-community/shared';
 import {EditState as State} from 'akeneoassetmanager/application/reducer/asset/edit';
 import sidebarProvider from 'akeneoassetmanager/application/configuration/sidebar';
@@ -34,7 +34,8 @@ import {formatDateForUILocale} from 'akeneoassetmanager/tools/format-date';
 import {Label} from 'akeneoassetmanager/application/component/app/label';
 import {saveAndExecuteNamingConvention} from 'akeneoassetmanager/application/action/asset/save-and-execute-naming-convention';
 import {ReloadPreviewProvider} from 'akeneoassetmanager/application/hooks/useReloadPreview';
-import {ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
+import {UserNavigation} from 'akeneoassetmanager/application/component/app/user-navigation';
+import {ContextSwitchers, ScrollablePageContent} from 'akeneoassetmanager/application/component/app/layout';
 
 interface StateProps {
   form: {
@@ -75,6 +76,7 @@ const DateLabel = styled(Label)`
 const MetaContainer = styled.div`
   display: flex;
   align-items: center;
+  margin-top: 20px;
 `;
 
 const SecondaryActions = ({
@@ -152,119 +154,87 @@ const AssetEditView = ({form, asset, context, structure, events, hasEditRightOnA
 
   return (
     <ReloadPreviewProvider>
-      <div className="AknDefault-contentWithColumn">
-        <div className="AknDefault-thirdColumnContainer">
-          <div className="AknDefault-thirdColumn" />
-        </div>
-        <div className="AknDefault-contentWithBottom">
-          <div className="AknDefault-mainContent" data-tab="enrich">
-            <header className="AknTitleContainer">
-              <div className="AknTitleContainer-line">
-                <MainMediaThumbnail asset={asset} context={context} />
-                <div className="AknTitleContainer-mainContainer AknTitleContainer-mainContainer--contained">
-                  <div>
-                    <div className="AknTitleContainer-line">
-                      <div className="AknTitleContainer-breadcrumbs">
-                        <AssetBreadcrumb
-                          assetFamilyIdentifier={assetFamilyIdentifierStringValue(asset.assetFamily.identifier)}
-                          assetCode={asset.code}
-                        />
-                      </div>
-                      <div className="AknTitleContainer-buttonsContainer">
-                        <div className="AknTitleContainer-userMenuContainer user-menu">
-                          <PimView
-                            className={`AknTitleContainer-userMenu ${
-                              canEditAsset ? '' : 'AknTitleContainer--withoutMargin'
-                            }`}
-                            viewName="pim-asset-family-index-user-navigation"
-                          />
-                        </div>
-                        <ButtonContainer className="AknTitleContainer-actionsContainer AknButtonList">
-                          <SecondaryActions
-                            canExecuteNamingConvention={executeNamingConventions}
-                            canDelete={canDeleteAsset}
-                            onSaveAndExecuteNamingConvention={() => {
-                              events.onSaveAndExecuteNamingConvention(asset);
-                            }}
-                            onDelete={openDeleteModal}
-                          />
-                          {canEditAsset ? (
-                            <div className="AknTitleContainer-rightButton">
-                              <Button onClick={events.onSaveEditForm}>
-                                {translate('pim_asset_manager.asset.button.save')}
-                              </Button>
-                            </div>
-                          ) : null}
-                        </ButtonContainer>
-                      </div>
-                    </div>
-                    <div className="AknTitleContainer-line">
-                      <div className="AknTitleContainer-title">{label}</div>
-                      {form.isDirty && <UnsavedChanges />}
-                    </div>
-                  </div>
-                  <ButtonContainer>
-                    <ChannelSwitcher
-                      channelCode={context.channel}
-                      channels={structure.channels}
-                      locale={context.locale}
-                      onChannelChange={events.onChannelChanged}
-                    />
-                    <LocaleSelector
-                      value={context.locale}
-                      values={structure.locales}
-                      onChange={events.onLocaleChanged}
-                    />
-                  </ButtonContainer>
-                  <MetaContainer>
-                    {completeness.hasRequiredAttribute() && (
-                      <>
-                        {translate('pim_common.completeness')}:&nbsp;
-                        <CompletenessBadge completeness={completeness} />
-                      </>
-                    )}
-                    <span>
-                      <DateLabel>
-                        {translate('pim_asset_manager.asset.created_at')}:{' '}
-                        {formatDateForUILocale(context.createdAt, {
-                          year: 'numeric',
-                          month: 'numeric',
-                          day: 'numeric',
-                          hour: 'numeric',
-                          minute: 'numeric',
-                        })}
-                      </DateLabel>
-                      |
-                      <DateLabel>
-                        {translate('pim_asset_manager.asset.updated_at')}:{' '}
-                        {formatDateForUILocale(context.updatedAt, {
-                          year: 'numeric',
-                          month: 'numeric',
-                          day: 'numeric',
-                          hour: 'numeric',
-                          minute: 'numeric',
-                        })}
-                      </DateLabel>
-                    </span>
-                  </MetaContainer>
-                </div>
-              </div>
-            </header>
-            <div className="content">
-              <TabView code="enrich" />
-            </div>
-          </div>
-        </div>
-      </div>
-      {isDeleteModalOpen && (
-        <DeleteModal
-          title={translate('pim_asset_manager.asset.delete.title')}
-          onConfirm={onConfirmedDelete}
-          onCancel={closeDeleteModal}
-        >
-          {translate('pim_asset_manager.asset.delete.message', {assetLabel: label})}
-        </DeleteModal>
-      )}
+      <ScrollablePageContent>
+        <PageHeader>
+          <PageHeader.Illustration>
+            <MainMediaThumbnail asset={asset} context={context} />
+          </PageHeader.Illustration>
+          <PageHeader.Breadcrumb>
+            <AssetBreadcrumb
+              assetFamilyIdentifier={assetFamilyIdentifierStringValue(asset.assetFamily.identifier)}
+              assetCode={asset.code}
+            />
+          </PageHeader.Breadcrumb>
+          <PageHeader.UserActions>
+            <UserNavigation />
+          </PageHeader.UserActions>
+          <PageHeader.Actions>
+            <SecondaryActions
+              canExecuteNamingConvention={executeNamingConventions}
+              canDelete={canDeleteAsset}
+              onSaveAndExecuteNamingConvention={() => events.onSaveAndExecuteNamingConvention(asset)}
+              onDelete={openDeleteModal}
+            />
+            {canEditAsset && (
+              <Button onClick={events.onSaveEditForm}>{translate('pim_asset_manager.asset.button.save')}</Button>
+            )}
+          </PageHeader.Actions>
+          <PageHeader.State>{form.isDirty && <UnsavedChanges />}</PageHeader.State>
+          <PageHeader.Title>{label}</PageHeader.Title>
+          <PageHeader.Content>
+            <ContextSwitchers>
+              <ChannelSwitcher
+                channelCode={context.channel}
+                channels={structure.channels}
+                locale={context.locale}
+                onChannelChange={events.onChannelChanged}
+              />
+              <LocaleSelector value={context.locale} values={structure.locales} onChange={events.onLocaleChanged} />
+            </ContextSwitchers>
+            <MetaContainer>
+              {completeness.hasRequiredAttribute() && (
+                <>
+                  {translate('pim_common.completeness')}:&nbsp;
+                  <CompletenessBadge completeness={completeness} />
+                </>
+              )}
+              <span>
+                <DateLabel>
+                  {translate('pim_asset_manager.asset.created_at')}:{' '}
+                  {formatDateForUILocale(context.createdAt, {
+                    year: 'numeric',
+                    month: 'numeric',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                  })}
+                </DateLabel>
+                |
+                <DateLabel>
+                  {translate('pim_asset_manager.asset.updated_at')}:{' '}
+                  {formatDateForUILocale(context.updatedAt, {
+                    year: 'numeric',
+                    month: 'numeric',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                  })}
+                </DateLabel>
+              </span>
+            </MetaContainer>
+          </PageHeader.Content>
+        </PageHeader>
+        <TabView code="enrich" />
+        {isDeleteModalOpen && (
+          <DeleteModal
+            title={translate('pim_asset_manager.asset.delete.title')}
+            onConfirm={onConfirmedDelete}
+            onCancel={closeDeleteModal}
+          >
+            {translate('pim_asset_manager.asset.delete.message', {assetLabel: label})}
+          </DeleteModal>
+        )}
+      </ScrollablePageContent>
     </ReloadPreviewProvider>
   );
 };

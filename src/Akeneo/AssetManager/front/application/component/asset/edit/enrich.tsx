@@ -17,6 +17,7 @@ import {MainMediaPreview} from 'akeneoassetmanager/application/component/asset/e
 const Container = styled.div`
   display: flex;
   flex-direction: row;
+  padding: 0 40px;
 `;
 
 const LeftColumn = styled.div`
@@ -65,7 +66,7 @@ const Enrich = ({form, context, events, canEditCurrentLocale, canEditCurrentFami
     <Container>
       <LeftColumn>
         <Section>
-          <SectionTitle sticky={192}>
+          <SectionTitle sticky={202}>
             <SectionTitle.Title>{translate('pim_asset_manager.asset.enrich.edit_subsection')}</SectionTitle.Title>
           </SectionTitle>
           <ValueCollection

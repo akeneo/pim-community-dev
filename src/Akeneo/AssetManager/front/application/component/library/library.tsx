@@ -1,7 +1,7 @@
 import React, {isValidElement, ReactNode, useEffect, useCallback, useState} from 'react';
 import styled from 'styled-components';
 import {Checkbox, Toolbar, Button, useSelection, useBooleanState, Dropdown, ArrowDownIcon} from 'akeneo-design-system';
-import {useNotify, NotificationLevel, useTranslate, getLabel, PageHeader, PimView} from '@akeneo-pim-community/shared';
+import {useNotify, NotificationLevel, useTranslate, getLabel, PageHeader} from '@akeneo-pim-community/shared';
 import {SearchBar} from 'akeneoassetmanager/application/component/asset/list/search-bar';
 import Mosaic from 'akeneoassetmanager/application/component/asset/list/mosaic';
 import {Context} from 'akeneoassetmanager/domain/model/context';
@@ -41,6 +41,7 @@ import {
   AssetLibraryPlaceholder,
 } from 'akeneoassetmanager/application/component/library/components';
 import {MassEdit} from 'akeneoassetmanager/application/component/library/MassEdit/MassEdit';
+import {UserNavigation} from 'akeneoassetmanager/application/component/app/user-navigation';
 
 const Content = styled.div`
   flex: 1;
@@ -244,10 +245,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
             <AssetFamilyBreadcrumb assetFamilyLabel={currentAssetFamilyLabel} />
           </PageHeader.Breadcrumb>
           <PageHeader.UserActions>
-            <PimView
-              className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
-              viewName="pim-asset-family-index-user-navigation"
-            />
+            <UserNavigation />
           </PageHeader.UserActions>
           <PageHeader.Actions>
             {null !== currentAssetFamilyIdentifier && (

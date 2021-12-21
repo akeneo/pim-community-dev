@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {getColor} from 'akeneo-design-system';
+import {Image} from 'akeneo-design-system';
 import {ChannelCode, LocaleCode, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import EditionAsset, {
   getEditionAssetLabel,
@@ -20,25 +20,7 @@ type MainMediaThumbnailProps = {
 };
 
 const Container = styled.div`
-  position: relative;
-  width: 142px;
-  height: 142px;
-  border: 1px solid ${getColor('grey', 80)};
   margin-right: 20px;
-  border-radius: 4px;
-  display: flex;
-  overflow: hidden;
-  flex-basis: 142px;
-  flex-shrink: 0;
-`;
-
-const Img = styled.img`
-  margin: auto;
-  width: 100%;
-  max-height: 140px;
-  transition: filter 0.3s;
-  z-index: 0;
-  object-fit: contain;
 `;
 
 const MainMediaThumbnail = ({asset, context}: MainMediaThumbnailProps) => {
@@ -56,15 +38,14 @@ const MainMediaThumbnail = ({asset, context}: MainMediaThumbnailProps) => {
     }
   }, [reloadPreview]);
 
-  return regenerate ? (
-    <div className="AknLoadingPlaceHolderContainer" title={label}>
-      <Container />
-    </div>
-  ) : (
+  return (
     <Container>
-      <Img
+      <Image
+        fit="contain"
+        width={142}
+        height={142}
         alt={translate('pim_asset_manager.asset.img', {label})}
-        src={refreshedUrl}
+        src={regenerate ? null : refreshedUrl}
         onError={event => (event.target as HTMLInputElement).setAttribute('src', emptyMediaUrl)}
       />
     </Container>

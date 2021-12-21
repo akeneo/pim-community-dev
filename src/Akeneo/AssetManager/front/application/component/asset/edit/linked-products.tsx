@@ -69,7 +69,7 @@ const LinkedProducts = ({
   if (!isLoaded) {
     return (
       <Section>
-        <SectionTitle sticky={192}>
+        <SectionTitle sticky={202}>
           <SectionTitle.Title>{translate('pim_asset_manager.asset.enrich.product_subsection')}</SectionTitle.Title>
         </SectionTitle>
       </Section>
@@ -78,7 +78,7 @@ const LinkedProducts = ({
 
   return (
     <Section>
-      <SectionTitle sticky={192}>
+      <SectionTitle sticky={202}>
         <SectionTitle.Title>{translate('pim_asset_manager.asset.enrich.product_subsection')}</SectionTitle.Title>
         <SectionTitle.Spacer />
         <SectionTitle.Information>
