@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Model;
 
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Webmozart\Assert\Assert;
 
 /**
