@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo, useRef, useState} from 'react';
 import {useTranslate, getLabel} from '@akeneo-pim-community/shared';
 import {FilterView, FilterViewProps} from 'akeneoassetmanager/application/configuration/value';
 import {isOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
@@ -7,9 +7,7 @@ import Select2 from 'akeneoassetmanager/application/component/app/select2';
 import {isOptionCollectionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option-collection';
 import {getAttributeFilterKey} from 'akeneoassetmanager/tools/filter';
 import OptionCode from 'akeneoassetmanager/domain/model/attribute/type/option/option-code';
-
-const memo = (React as any).memo;
-const useState = (React as any).useState;
+import {ColumnTitle} from 'akeneoassetmanager/application/component/app/column';
 
 type OptionFilterViewProps = FilterViewProps & {
   context: {
@@ -51,8 +49,8 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
   const labels = value.map((optionCode: OptionCode) =>
     undefined !== availableOptions[optionCode] ? availableOptions[optionCode] : `[${optionCode}]`
   );
-  const [position, setPosition] = React.useState({top: 0, left: 0});
-  const labelRef = React.useRef<HTMLSpanElement>(null);
+  const [position, setPosition] = useState({top: 0, left: 0});
+  const labelRef = useRef<HTMLDivElement>(null);
   const openPanel = () => {
     setIsOpen(true);
     if (null !== labelRef.current) {
@@ -63,9 +61,9 @@ const OptionFilterView: FilterView = memo(({attribute, filter, onFilterUpdated, 
 
   return (
     <>
-      <span ref={labelRef} className="AknFilterBox-filterLabel" onClick={openPanel}>
+      <ColumnTitle ref={labelRef} onClick={openPanel}>
         {getLabel(attribute.labels, context.locale, attribute.code)}
-      </span>
+      </ColumnTitle>
       <span className="AknFilterBox-filterCriteria AknFilterBox-filterCriteria--limited" onClick={openPanel}>
         <span className="AknFilterBox-filterCriteriaHint">
           {0 === labels.length ? translate('pim_asset_manager.asset.grid.filter.option.all') : labels.join(', ')}
