@@ -10,11 +10,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class JobInstaller implements EventSubscriberInterface
 {
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
-    {
-        $this->connection = $connection;
+    public function __construct(
+        private Connection $connection,
+    ) {
     }
 
     /**
