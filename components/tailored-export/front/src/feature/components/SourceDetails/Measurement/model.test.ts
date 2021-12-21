@@ -1,4 +1,9 @@
-import {isMeasurementSource, MeasurementSource, isMeasurementConversionOperation} from './model';
+import {
+  isMeasurementSource,
+  MeasurementSource,
+  isMeasurementConversionOperation,
+  isMeasurementDecimalSeparator,
+} from './model';
 
 const source: MeasurementSource = {
   uuid: '123',
@@ -9,6 +14,13 @@ const source: MeasurementSource = {
   operations: {},
   selection: {type: 'unit_code'},
 };
+
+test('it validates that something is a measurement decimal separator', () => {
+  expect(isMeasurementDecimalSeparator('.')).toBe(true);
+  expect(isMeasurementDecimalSeparator(undefined)).toBe(true);
+
+  expect(isMeasurementDecimalSeparator('=')).toBe(false);
+});
 
 test('it validates that something is a measurement source', () => {
   expect(isMeasurementSource(source)).toEqual(true);

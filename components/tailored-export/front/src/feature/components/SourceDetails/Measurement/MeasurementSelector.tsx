@@ -51,8 +51,6 @@ const MeasurementSelector = ({selection, validationErrors, onSelectionChange}: M
             onChange={type => {
               switch (type) {
                 case 'unit_code':
-                  onSelectionChange({type});
-                  break;
                 case 'unit_symbol':
                   onSelectionChange({type});
                   break;
@@ -155,15 +153,13 @@ const MeasurementSelector = ({selection, validationErrors, onSelectionChange}: M
           </>
         )}
         {'value_and_unit_symbol' === selection.type && (
-          <>
-            <DecimalSeparatorDropdown
-              label={translate('akeneo.tailored_export.column_details.sources.selection.decimal_separator.title')}
-              value={selection.decimal_separator}
-              validationErrors={decimalSeparatorErrors}
-              decimalSeparators={availableDecimalSeparators}
-              onChange={updatedValue => onSelectionChange({...selection, decimal_separator: updatedValue})}
-            />
-          </>
+          <DecimalSeparatorDropdown
+            label={translate('akeneo.tailored_export.column_details.sources.selection.decimal_separator.title')}
+            value={selection.decimal_separator}
+            validationErrors={decimalSeparatorErrors}
+            decimalSeparators={availableDecimalSeparators}
+            onChange={updatedValue => onSelectionChange({...selection, decimal_separator: updatedValue})}
+          />
         )}
       </Section>
     </Collapse>
