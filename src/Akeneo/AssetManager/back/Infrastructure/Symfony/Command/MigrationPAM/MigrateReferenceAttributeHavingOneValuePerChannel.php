@@ -40,8 +40,7 @@ class MigrateReferenceAttributeHavingOneValuePerChannel extends Command
         private ConnectionFactory $connectionFactory,
         private Connection $writeConnection,
         private CountAssets $countAssets
-    )
-    {
+    ) {
         parent::__construct($this::$defaultName);
     }
 

@@ -122,26 +122,35 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
                 if (empty($filter['value'])) {
                     return $query;
                 }
-                $query['filter'][] = match ($filter['operator']) {
-                    '<' => ['range' => ['updated_at' => [
-                        'lt' => $this->getFormattedDate($filter['value']),
-                    ]]],
-                    '>' => ['range' => ['updated_at' => [
-                        'gt' => $this->getFormattedDate($filter['value']),
-                    ]]],
-                    'BETWEEN' => ['range' => ['updated_at' => [
-                        'gt' => $this->getFormattedDate($filter['value'][0]),
-                        'lt' => $this->getFormattedDate($filter['value'][1]),
-                    ]]],
-                    'NOT BETWEEN' => ['range' => ['updated_at' => [
-                        'gt' => $this->getFormattedDate($filter['value'][0]),
-                        'lt' => $this->getFormattedDate($filter['value'][1]),
-                    ]]],
-                    'SINCE LAST N DAYS' => ['range' => ['updated_at' => [
-                        'gt' => $this->getFormattedDate(sprintf('%s days ago', $filter['value'])),
-                    ]]],
-                    default => $query,
-                };
+                switch ($filter['operator']) {
+                    case '<':
+                        $query['filter'][] = ['range' => ['updated_at' => [
+                            'lt' => $this->getFormattedDate($filter['value']),
+                        ]]];
+                        break;
+                    case '>':
+                        $query['filter'][] = ['range' => ['updated_at' => [
+                            'gt' => $this->getFormattedDate($filter['value']),
+                        ]]];
+                        break;
+                    case 'BETWEEN':
+                        $query['filter'][] = ['range' => ['updated_at' => [
+                            'gt' => $this->getFormattedDate($filter['value'][0]),
+                            'lt' => $this->getFormattedDate($filter['value'][1]),
+                        ]]];
+                        break;
+                    case 'NOT BETWEEN':
+                        $query['must_not'][] = ['range' => ['updated_at' => [
+                            'gt' => $this->getFormattedDate($filter['value'][0]),
+                            'lt' => $this->getFormattedDate($filter['value'][1]),
+                        ]]];
+                        break;
+                    case 'SINCE LAST N DAYS':
+                        $query['filter'][] = ['range' => ['updated_at' => [
+                            'gt' => $this->getFormattedDate(sprintf('%s days ago', $filter['value'])),
+                        ]]];
+                        break;
+                }
                 return $query;
             },
             $query['query']['constant_score']['filter']['bool']
