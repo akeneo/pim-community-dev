@@ -112,9 +112,6 @@ const MeasurementSelector = ({selection, validationErrors, onSelectionChange}: M
               {translate('akeneo.tailored_export.column_details.sources.selection.measurement.value_and_unit_symbol')}
             </SelectInput.Option>
           </SelectInput>
-          <Helper inline={true} level="info">
-            {translate('akeneo.tailored_export.column_details.sources.selection.measurement.information')}
-          </Helper>
           {typeErrors.map((error, index) => (
             <Helper key={index} inline={true} level="error">
               {translate(error.messageTemplate, error.parameters)}

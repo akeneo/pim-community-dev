@@ -97,7 +97,6 @@ akeneo.tailored_export:
             locale: If the attribute used as label has a value per locale, you may select a specific locale.
             channel: If the attribute used as label has a value per channel, you may select a specific channel.
         measurement:
-          information: For this attribute, you can export either the value, the unit code, the unit label or the value and the unit label.
           value: Value
           unit_locale: Unit locale
           unit_code: Unit code
