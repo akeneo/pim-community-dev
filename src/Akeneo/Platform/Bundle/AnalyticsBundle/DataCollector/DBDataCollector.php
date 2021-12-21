@@ -6,7 +6,6 @@ use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQue
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
 use Akeneo\Tool\Component\Analytics\ActiveEventSubscriptionCountQuery;
 use Akeneo\Tool\Component\Analytics\ApiConnectionCountQuery;
-use Akeneo\Tool\Component\Analytics\CountConnectedAppsQueryInterface;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Akeneo\Tool\Component\Analytics\EmailDomainsQuery;
 use Akeneo\Tool\Component\Analytics\GetConnectedAppsIdentifiersQueryInterface;
