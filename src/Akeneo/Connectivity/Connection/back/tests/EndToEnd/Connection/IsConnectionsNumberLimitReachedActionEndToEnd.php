@@ -40,6 +40,6 @@ class IsConnectionsNumberLimitReachedActionEndToEnd extends WebTestCase
         $result = \json_decode($response->getContent(), true);
 
         Assert::assertEquals(Response::HTTP_OK, $response->getStatusCode());
-        Assert::assertEquals(['limit_reached' => false], $result);
+        Assert::assertEquals(['limitReached' => false], $result);
     }
 }

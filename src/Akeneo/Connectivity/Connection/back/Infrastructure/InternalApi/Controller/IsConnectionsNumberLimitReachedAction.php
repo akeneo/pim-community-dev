@@ -26,6 +26,6 @@ class IsConnectionsNumberLimitReachedAction
             return new RedirectResponse('/');
         }
 
-        return new JsonResponse(['limit_reached' => $this->isConnectionsNumberLimitReachedHandler->execute()]);
+        return new JsonResponse(['limitReached' => $this->isConnectionsNumberLimitReachedHandler->execute()]);
     }
 }

@@ -40,6 +40,6 @@ class IsConnectionsNumberLimitReachedActionSpec extends ObjectBehavior
         $request->isXmlHttpRequest()->willReturn(true);
         $isConnectionsNumberLimitReachedHandler->execute()->willReturn(true);
 
-        $this->__invoke($request)->shouldBeLike(new JsonResponse(['limit_reached' => true]));
+        $this->__invoke($request)->shouldBeLike(new JsonResponse(['limitReached' => true]));
     }
 }
