@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Platform\Job\Infrastructure\Symfony;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;

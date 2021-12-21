@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Integration\Infrastructure\Query;
 
-use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
-use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRowTracking;
+use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionRow;
+use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionTracking;
+use Akeneo\Platform\Job\Application\SearchJobExecution\Model\StepExecutionTracking;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
-use Akeneo\Platform\Job\Application\SearchJobExecution\StepExecutionTracking;
 use Akeneo\Platform\Job\Domain\Model\Status;
 use Akeneo\Platform\Job\Test\Integration\IntegrationTestCase;
 
 class SearchJobExecutionTest extends IntegrationTestCase
 {
+    private SearchJobExecutionInterface $query;
     private array $jobExecutionIds;
     private array $stepExecutionIds;
     private array $cachedExpectedJobExecutionRows;
@@ -21,6 +22,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->query = $this->get('Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface');
         $this->jobExecutionIds = [];
         $this->stepExecutionIds = [];
         $this->cachedExpectedJobExecutionRows = [];
@@ -41,7 +43,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             $this->getExpectedJobExecutionRow($this->jobExecutionIds[0]),
         ];
 
-        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+        $this->assertEquals($expectedJobExecutions, $this->query->search($query));
 
         $query = new SearchJobExecutionQuery();
         $query->size = 2;
@@ -52,7 +54,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             $this->getExpectedJobExecutionRow($this->jobExecutionIds[3]),
         ];
 
-        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+        $this->assertEquals($expectedJobExecutions, $this->query->search($query));
     }
 
     /**
@@ -70,7 +72,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             $this->getExpectedJobExecutionRow($this->jobExecutionIds[3]),
         ];
 
-        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+        $this->assertEquals($expectedJobExecutions, $this->query->search($query));
     }
 
     /**
@@ -89,7 +91,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             $this->getExpectedJobExecutionRow($this->jobExecutionIds[3]),
         ];
 
-        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+        $this->assertEquals($expectedJobExecutions, $this->query->search($query));
     }
 
     /**
@@ -109,7 +111,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             $this->getExpectedJobExecutionRow($this->jobExecutionIds[2]),
         ];
 
-        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+        $this->assertEquals($expectedJobExecutions, $this->query->search($query));
     }
 
     /**
@@ -127,7 +129,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             $this->getExpectedJobExecutionRow($this->jobExecutionIds[0]),
         ];
 
-        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+        $this->assertEquals($expectedJobExecutions, $this->query->search($query));
     }
 
     /**
@@ -139,7 +141,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
 
         $query = new SearchJobExecutionQuery();
 
-        $this->assertEquals(4, $this->getQuery()->count($query));
+        $this->assertEquals(4, $this->query->count($query));
     }
 
     /**
@@ -177,7 +179,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
         ]);
 
         $query = new SearchJobExecutionQuery();
-        $this->assertEquals(1, $this->getQuery()->count($query));
+        $this->assertEquals(1, $this->query->count($query));
     }
 
     /**
@@ -190,7 +192,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $query = new SearchJobExecutionQuery();
         $query->type = ['export'];
 
-        $this->assertEquals(1, $this->getQuery()->count($query));
+        $this->assertEquals(1, $this->query->count($query));
     }
 
     /**
@@ -208,7 +210,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             $this->getExpectedJobExecutionRow($this->jobExecutionIds[3]),
         ];
 
-        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+        $this->assertEquals($expectedJobExecutions, $this->query->search($query));
     }
 
     /**
@@ -228,7 +230,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             $this->getExpectedJobExecutionRow($this->jobExecutionIds[0]),
         ];
 
-        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+        $this->assertEquals($expectedJobExecutions, $this->query->search($query));
     }
 
     /**
@@ -248,7 +250,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             $this->getExpectedJobExecutionRow($this->jobExecutionIds[0]),
         ];
 
-        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+        $this->assertEquals($expectedJobExecutions, $this->query->search($query));
     }
 
     /**
@@ -268,7 +270,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             $this->getExpectedJobExecutionRow($this->jobExecutionIds[3]),
         ];
 
-        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+        $this->assertEquals($expectedJobExecutions, $this->query->search($query));
     }
 
     /**
@@ -287,7 +289,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             $this->getExpectedJobExecutionRow($this->jobExecutionIds[0]),
         ];
 
-        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+        $this->assertEquals($expectedJobExecutions, $this->query->search($query));
     }
 
     /**
@@ -307,7 +309,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             $this->getExpectedJobExecutionRow($this->jobExecutionIds[2]),
         ];
 
-        $this->assertEquals($expectedJobExecutions, $this->getQuery()->search($query));
+        $this->assertEquals($expectedJobExecutions, $this->query->search($query));
     }
 
     /**
@@ -331,7 +333,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
         ]);
 
         $query = new SearchJobExecutionQuery();
-        $this->assertEquals([], $this->getQuery()->search($query));
+        $this->assertEquals([], $this->query->search($query));
     }
 
     /**
@@ -344,7 +346,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $query = new SearchJobExecutionQuery();
         $query->search = 'Import product';
 
-        $this->assertEquals(3, $this->getQuery()->count($query));
+        $this->assertEquals(3, $this->query->count($query));
     }
 
     /**
@@ -357,7 +359,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $query = new SearchJobExecutionQuery();
         $query->code = ['a_product_export'];
 
-        $this->assertEquals(1, $this->getQuery()->count($query));
+        $this->assertEquals(1, $this->query->count($query));
     }
 
     private function loadFixtures()
@@ -369,7 +371,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             'type' => 'import',
         ]);
 
-        $anotherProductImportJobInstanceId = $this->fixturesJobHelper->createJobInstance([
+        $this->fixturesJobHelper->createJobInstance([
             'code' => 'another_product_import',
             'job_name' => 'another_product_import',
             'label' => 'Another product import',
@@ -427,7 +429,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             'tracking_data' => [
                 'totalItems' => 100,
                 'processedItems' => 100,
-            ]
+            ],
         ]);
 
         $this->stepExecutionIds[] = $this->fixturesJobHelper->createStepExecution([
@@ -440,7 +442,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             'tracking_data' => [
                 'totalItems' => 100,
                 'processedItems' => 100,
-            ]
+            ],
         ]);
 
         $this->stepExecutionIds[] = $this->fixturesJobHelper->createStepExecution([
@@ -455,7 +457,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
             'tracking_data' => [
                 'totalItems' => 1000,
                 'processedItems' => 300,
-            ]
+            ],
         ]);
     }
 
@@ -471,7 +473,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                     'julia',
                     Status::fromLabel('COMPLETED'),
                     false,
-                    new JobExecutionRowTracking(3, 3, [
+                    new JobExecutionTracking(3, 3, [
                         new StepExecutionTracking(
                             $this->stepExecutionIds[0],
                             5,
@@ -512,7 +514,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                     'peter',
                     Status::fromLabel('IN_PROGRESS'),
                     true,
-                    new JobExecutionRowTracking(1, 3, [
+                    new JobExecutionTracking(1, 3, [
                         new StepExecutionTracking(
                             $this->stepExecutionIds[3],
                             3600,
@@ -523,7 +525,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                             true,
                             Status::fromLabel('IN_PROGRESS'),
                         ),
-                    ])
+                    ]),
                 ),
                 $this->jobExecutionIds[2] => new JobExecutionRow(
                     $this->jobExecutionIds[2],
@@ -533,7 +535,7 @@ class SearchJobExecutionTest extends IntegrationTestCase
                     null,
                     Status::fromLabel('STARTING'),
                     true,
-                    new JobExecutionRowTracking(0, 3, [])
+                    new JobExecutionTracking(0, 3, []),
                 ),
                 $this->jobExecutionIds[3] => new JobExecutionRow(
                     $this->jobExecutionIds[3],
@@ -543,16 +545,11 @@ class SearchJobExecutionTest extends IntegrationTestCase
                     null,
                     Status::fromLabel('STARTING'),
                     true,
-                    new JobExecutionRowTracking(0, 3, [])
+                    new JobExecutionTracking(0, 3, []),
                 ),
             ];
         }
 
         return $this->cachedExpectedJobExecutionRows[$jobExecutionId];
-    }
-
-    private function getQuery(): SearchJobExecutionInterface
-    {
-        return $this->get('Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface');
     }
 }

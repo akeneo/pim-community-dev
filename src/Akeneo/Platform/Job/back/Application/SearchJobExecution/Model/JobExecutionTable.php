@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\Job\Application\SearchJobExecution;
+namespace Akeneo\Platform\Job\Application\SearchJobExecution\Model;
 
 use Webmozart\Assert\Assert;
 
@@ -16,17 +16,12 @@ final class JobExecutionTable
     private const ROWS = 'rows';
     private const MATCHES_COUNT = 'matches_count';
 
-    /** @var JobExecutionRow[] */
-    public array $rows;
-    public int $matchesCount;
-
     public function __construct(
-        array $jobExecutionRows,
-        int $matchesCount
+        /** @var JobExecutionRow[] */
+        public array $rows,
+        public int $matchesCount,
     ) {
-        Assert::allIsInstanceOf($jobExecutionRows, JobExecutionRow::class);
-        $this->rows = $jobExecutionRows;
-        $this->matchesCount = $matchesCount;
+        Assert::allIsInstanceOf($rows, JobExecutionRow::class);
     }
 
     public function normalize(): array

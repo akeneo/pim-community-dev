@@ -28,7 +28,7 @@ class Status
         self::STOPPED => 'STOPPED',
         self::FAILED => 'FAILED',
         self::ABANDONED => 'ABANDONED',
-        self::UNKNOWN => 'UNKNOWN'
+        self::UNKNOWN => 'UNKNOWN',
     ];
 
     public static function fromStatus(int $status): self
