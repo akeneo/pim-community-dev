@@ -101,8 +101,10 @@ akeneo.tailored_export:
           value: Value
           unit_locale: Unit locale
           unit_code: Unit code
+          unit_symbol: Unit symbol
           unit_label: Unit label
           value_and_unit_label: Value and unit label
+          value_and_unit_symbol: Value and unit symbol
         price:
           currency_code: Currency code
           currency_label: Currency label

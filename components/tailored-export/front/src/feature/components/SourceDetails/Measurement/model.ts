@@ -12,6 +12,9 @@ type MeasurementSelection =
       type: 'unit_code';
     }
   | {
+      type: 'unit_symbol';
+    }
+  | {
       type: 'unit_label';
       locale: LocaleCode;
     }
@@ -23,6 +26,10 @@ type MeasurementSelection =
       type: 'value_and_unit_label';
       decimal_separator: MeasurementDecimalSeparator;
       locale: LocaleCode;
+    }
+  | {
+      type: 'value_and_unit_symbol';
+      decimal_separator: MeasurementDecimalSeparator;
     };
 
 const isMeasurementDecimalSeparator = (separator?: string): separator is MeasurementDecimalSeparator =>
@@ -33,11 +40,13 @@ const isMeasurementSelection = (selection: any): selection is MeasurementSelecti
 
   return (
     'unit_code' === selection.type ||
+    'unit_symbol' === selection.type ||
     ('unit_label' === selection.type && 'locale' in selection) ||
     ('value' === selection.type && isMeasurementDecimalSeparator(selection.decimal_separator)) ||
     ('value_and_unit_label' === selection.type &&
       'locale' in selection &&
-      isMeasurementDecimalSeparator(selection.decimal_separator))
+      isMeasurementDecimalSeparator(selection.decimal_separator)) ||
+    ('value_and_unit_symbol' === selection.type && isMeasurementDecimalSeparator(selection.decimal_separator))
   );
 };
 
