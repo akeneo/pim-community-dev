@@ -7,18 +7,29 @@ import {
   IconButton,
   Information,
   Link,
+  Locale as LocaleFlag,
   LockIcon,
   MoreIcon,
   Pill,
   SectionTitle,
   useBooleanState,
 } from 'akeneo-design-system';
-import {NoDataSection, NoDataTitle, useTranslate, LocaleCode, Channel} from '@akeneo-pim-community/shared';
+import {
+  NoDataSection,
+  NoDataTitle,
+  useTranslate,
+  LocaleCode,
+  Channel,
+  Locale,
+  getLabel,
+} from '@akeneo-pim-community/shared';
 import {AssetCollectionState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/asset-collection';
 import {
   selectAttributeGroupList,
   selectAttributeList,
+  selectChannels,
   selectFamily,
+  selectLocales,
   selectRuleRelations,
 } from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
 import {
@@ -35,10 +46,6 @@ import {
 import {selectContext} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import {Label} from 'akeneoassetmanager/application/component/app/label';
 import {Attribute, getAttributeLabel} from 'akeneoassetmanager/platform/model/structure/attribute';
-import {
-  ChannelLabel,
-  LocaleLabel,
-} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/context';
 import {AssetCollection} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection';
 import {hasValues, isValueComplete} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
 import {Family} from 'akeneoassetmanager/platform/model/structure/family';
@@ -51,7 +58,6 @@ import {AssetPicker} from 'akeneopimenrichmentassetmanager/assets-collection/inf
 import ListAsset, {addAssetsToCollection, emptyCollection} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {MassUploader} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/mass-uploader';
-import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import {
   AttributeGroupCode,
   AttributeGroupCollection,
@@ -89,6 +95,8 @@ type ListStateProps = {
   context: Context;
   rulesNumberByAttribute: RulesNumberByAttribute;
   errors: ValidationError[];
+  locales: Locale[];
+  channels: Channel[];
 };
 type ListDispatchProps = {
   onChange: (value: Value) => void;
@@ -103,8 +111,10 @@ type DisplayValuesProps = {
   context: Context;
   rulesNumberByAttribute: RulesNumberByAttribute;
   errors: ValidationError[];
-  onChange: (value: Value) => void;
   dataProvider: DataProvider;
+  locales: Locale[];
+  channels: Channel[];
+  onChange: (value: Value) => void;
 };
 
 const IncompleteIndicator = styled.div`
@@ -130,7 +140,7 @@ const getAttributeGroupLabel = (
   attributeGroups: AttributeGroupCollection,
   code: AttributeGroupCode,
   locale: LocaleCode
-): string => getLabelInCollection(attributeGroups[code].labels, locale, true, code);
+): string => getLabel(attributeGroups[code].labels, locale, code);
 
 const DisplayValues = ({
   values,
@@ -143,6 +153,8 @@ const DisplayValues = ({
   productIdentifier,
   productLabels,
   dataProvider,
+  locales,
+  channels,
 }: DisplayValuesProps) => {
   const translate = useTranslate();
 
@@ -169,8 +181,18 @@ const DisplayValues = ({
             {(value.channel !== null || value.locale !== null) && (
               <>
                 <SectionTitle.Separator />
-                {value.channel !== null && <ChannelLabel channelCode={value.channel} />}
-                {value.locale !== null && <LocaleLabel localeCode={value.locale} />}
+                {value.channel !== null &&
+                  getLabel(
+                    channels.find(({code}) => code === value.channel)?.labels ?? {},
+                    context.locale,
+                    value.channel
+                  )}
+                {value.locale !== null && (
+                  <LocaleFlag
+                    code={value.locale}
+                    languageLabel={locales.find(({code}) => code === value.locale)?.label ?? `[${value.locale}]`}
+                  />
+                )}
               </>
             )}
             {value.editable && (
@@ -266,6 +288,8 @@ const List = ({
   productLabels,
   onChange,
   dataProvider,
+  locales,
+  channels,
 }: ListStateProps &
   ListDispatchProps & {
     dataProvider: DataProvider;
@@ -287,6 +311,8 @@ const List = ({
             productIdentifier={productIdentifier}
             productLabels={productLabels}
             dataProvider={dataProvider}
+            locales={locales}
+            channels={channels}
           />
         ) : (
           <>
@@ -321,6 +347,8 @@ export default connect(
     family: selectFamily(state),
     rulesNumberByAttribute: selectRuleRelations(state),
     errors: selectErrors(state),
+    locales: selectLocales(state),
+    channels: selectChannels(state),
   }),
   (dispatch: any): ListDispatchProps => ({
     onChange: (value: Value) => {

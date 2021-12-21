@@ -7,7 +7,6 @@ import {
   NoDataTitle,
   PageContent,
   PageHeader,
-  Section,
   UnsavedChanges,
   useRouter,
   useSecurity,
@@ -75,34 +74,32 @@ const Permission = ({assetFamily, context, canEditFamily, permission, events}: S
         <PageHeader.Title>{translate('pim_asset_manager.asset_family.tab.permission')}</PageHeader.Title>
       </PageHeader>
       <PageContent>
-        <Section>
-          <SectionTitle sticky={0}>
-            <SectionTitle.Title>{translate('pim_asset_manager.asset_family.permission.title')}</SectionTitle.Title>
-          </SectionTitle>
-          {permission.data.isEmpty() ? (
-            <NoDataSection>
-              <UserGroupsIllustration size={256} />
-              <NoDataTitle>{translate('pim_asset_manager.permission.no_data.title')}</NoDataTitle>
-              <NoDataText>
-                {translate('pim_asset_manager.permission.no_data.subtitle')}
-                {canEditUserGroup && (
-                  <p>
-                    <Link href={`#${router.generate('pim_user_group_index')}`} target="_blank">
-                      {translate('pim_asset_manager.permission.no_data.link')}
-                    </Link>
-                  </p>
-                )}
-              </NoDataText>
-            </NoDataSection>
-          ) : (
-            <PermissionCollectionEditor
-              readOnly={!canEditPermission}
-              value={permission.data}
-              prioritizedRightLevels={[RightLevel.View, RightLevel.Edit]}
-              onChange={events.onPermissionUpdated}
-            />
-          )}
-        </Section>
+        <SectionTitle sticky={0}>
+          <SectionTitle.Title>{translate('pim_asset_manager.asset_family.permission.title')}</SectionTitle.Title>
+        </SectionTitle>
+        {permission.data.isEmpty() ? (
+          <NoDataSection>
+            <UserGroupsIllustration size={256} />
+            <NoDataTitle>{translate('pim_asset_manager.permission.no_data.title')}</NoDataTitle>
+            <NoDataText>
+              {translate('pim_asset_manager.permission.no_data.subtitle')}
+              {canEditUserGroup && (
+                <p>
+                  <Link href={`#${router.generate('pim_user_group_index')}`} target="_blank">
+                    {translate('pim_asset_manager.permission.no_data.link')}
+                  </Link>
+                </p>
+              )}
+            </NoDataText>
+          </NoDataSection>
+        ) : (
+          <PermissionCollectionEditor
+            readOnly={!canEditPermission}
+            value={permission.data}
+            prioritizedRightLevels={[RightLevel.View, RightLevel.Edit]}
+            onChange={events.onPermissionUpdated}
+          />
+        )}
       </PageContent>
     </>
   );
