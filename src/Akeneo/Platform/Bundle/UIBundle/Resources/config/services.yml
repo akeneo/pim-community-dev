@@ -15,9 +15,9 @@ services:
         tags:
             - { name: 'liip_imagine.filter.loader', loader: icc_strip }
 
-    Akeneo\Platform\Bundle\UIBundle\Imagine\GifFilter:
+    Akeneo\Platform\Bundle\UIBundle\Imagine\FlattenLayersFilter:
         tags:
-            - { name: 'liip_imagine.filter.loader', loader: gif_filter }
+            - { name: 'liip_imagine.filter.loader', loader: flatten_layers }
 
     pim_enrich.resolver.locale:
         class: 'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver'

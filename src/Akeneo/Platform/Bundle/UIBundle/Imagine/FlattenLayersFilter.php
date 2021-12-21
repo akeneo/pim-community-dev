@@ -8,7 +8,7 @@ use Imagine\Image\ImageInterface;
 use Imagine\Imagick\Image;
 use Liip\ImagineBundle\Imagine\Filter\Loader\LoaderInterface;
 
-final class GifFilter implements LoaderInterface
+final class FlattenLayersFilter implements LoaderInterface
 {
     public function load(ImageInterface $image, array $options = []): ImageInterface
     {
