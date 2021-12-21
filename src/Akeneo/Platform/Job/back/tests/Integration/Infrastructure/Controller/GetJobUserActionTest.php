@@ -8,9 +8,9 @@ use Akeneo\Platform\Job\Test\Integration\ControllerIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetJobUsersActionTest extends ControllerIntegrationTestCase
+class GetJobUserActionTest extends ControllerIntegrationTestCase
 {
-    private const ROUTE = 'akeneo_job_get_job_users_action';
+    private const ROUTE = 'akeneo_job_get_job_user_action';
 
     public function setUp(): void
     {
@@ -52,7 +52,7 @@ class GetJobUsersActionTest extends ControllerIntegrationTestCase
     {
         $this->logAs('betty');
 
-        $this->webClientHelper->callApiRoute($this->client, self::ROUTE, [], 'GET');
+        $this->webClientHelper->callApiRoute($this->client, self::ROUTE, []);
 
         $response = $this->client->getResponse();
         Assert::assertSame($response->getStatusCode(), Response::HTTP_FORBIDDEN);

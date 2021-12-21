@@ -1,24 +1,3 @@
 services:
-  akeneo_job.test.integration.job.a_product_export:
-    class: Akeneo\Platform\Job\Test\Integration\FakeServices\Job
-    arguments:
-      - 'a_product_export'
-    tags:
-      - { name: akeneo_batch.job, connector: 'Akeneo Job Test', type: 'export' }
-
-  akeneo_job.test.integration.job.another_product_export:
-    class: Akeneo\Platform\Job\Test\Integration\FakeServices\Job
-    arguments:
-      - 'another_product_export'
-    tags:
-      - { name: akeneo_batch.job, connector: 'Akeneo Job Test', type: 'export' }
-
-  akeneo_job.test.integration.job.prepare_evaluation:
-    class: Akeneo\Platform\Job\Test\Integration\FakeServices\Job
-    arguments:
-      - 'prepare_evaluation'
-    tags:
-      - { name: akeneo_batch.job, connector: 'Akeneo Job Test', type: 'data_quality_insights' }
-
-  Akeneo\Platform\Job\Application\SearchJobExecution\ClockInterface:
+  Akeneo\Platform\Job\Infrastructure\Clock\ClockInterface:
     class: Akeneo\Platform\Job\Test\Integration\FakeServices\SystemClock

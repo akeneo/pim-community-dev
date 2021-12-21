@@ -4,25 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Infrastructure\Query;
 
-use Akeneo\Platform\Job\Application\SearchJobExecution\ClockInterface;
-use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRow;
-use Akeneo\Platform\Job\Application\SearchJobExecution\JobExecutionRowTracking;
+use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionRow;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface;
 use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
-use Akeneo\Platform\Job\Application\SearchJobExecution\StepExecutionTracking;
 use Akeneo\Platform\Job\Domain\Model\Status;
+use Akeneo\Platform\Job\Infrastructure\Hydrator\JobExecutionRowHydrator;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Types\Types;
 
 /**
- * TODO: RAC-1103
- * Should we extract this class into multiple classes ?
- *  - To manage filters: instead of managing both at the same time in private classes buildQueryParams and buildQueryParamsTypes ?
- *      - TypeFilter class: responsible for handling type filter
- *      - StatusFilter class: responsible for handling the Status filtering
- *  - To manage JobExecutionRow hydration in a dedicated class too (if possible)
- *
  * @author Grégoire Houssard <gregoire.houssard@akeneo.com>
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
@@ -33,89 +22,24 @@ class SearchJobExecution implements SearchJobExecutionInterface
 
     public function __construct(
         private Connection $connection,
-        private ClockInterface $clock
+        private JobExecutionRowHydrator $jobExecutionRowHydrator,
     ) {
     }
 
     public function search(SearchJobExecutionQuery $query): array
     {
-        // TODO: RAC-1102
-        // I'd split this public into 2 private for clarity,
-        // the body of this function becomes:
-        // $sql = $this->buildSqlQuery($query);
-        // return $this->fetchJobExecutionRow($sql);
+        $sql = $this->buildSqlQuery($query);
 
-        $sql = <<<SQL
-    WITH job_executions AS (
-        SELECT
-            je.id,
-            je.job_instance_id,
-            ji.label,
-            ji.type,
-            je.start_time,
-            je.user,
-            je.status,
-            je.is_stoppable,
-            je.step_count
-        FROM akeneo_batch_job_execution je
-        JOIN akeneo_batch_job_instance ji ON je.job_instance_id = ji.id
-        WHERE je.is_visible = 1
-        %s
-        %s
-        LIMIT :offset, :limit
-    )
-    SELECT
-        je.*,
-        COUNT(se.job_execution_id) AS current_step_number,
-        JSON_ARRAYAGG(JSON_OBJECT(
-            'id', se.id,
-            'start_time', se.start_time,
-            'end_time', se.end_time,
-            'warning_count', se.warning_count,
-            'errors', JSON_ARRAY(IFNULL(se.failure_exceptions, 'a:0:{}'), IFNULL(se.errors, 'a:0:{}')),
-            'total_items', JSON_EXTRACT(se.tracking_data, '$.totalItems'),
-            'processed_items', JSON_EXTRACT(se.tracking_data, '$.processedItems'),
-            'status', se.status,
-            'is_trackable', se.is_trackable
-        )) AS steps
-    FROM job_executions je
-    LEFT JOIN akeneo_batch_step_execution se ON je.id = se.job_execution_id
-    GROUP BY je.id
-    %s
-SQL;
-
-        $whereSqlPart = $this->buildSqlWherePart($query);
-        $orderBySqlPart = $this->buildSqlOrderByPart($query);
-
-        $sql = sprintf($sql, $whereSqlPart, $orderBySqlPart, str_replace('ji', 'je', $orderBySqlPart));
-        $queryParams = $this->buildQueryParams($query);
-        $queryParamsTypes = $this->buildQueryParamsTypes();
-
-        $page = $query->page;
-        $size = $query->size;
-
-        $rawJobExecutions = $this->connection->executeQuery(
-            $sql,
-            array_merge($queryParams, [
-                'offset' => ($page - 1) * $size,
-                'limit' => $size,
-            ]),
-            array_merge($queryParamsTypes, [
-                'offset' => \PDO::PARAM_INT,
-                'limit' => \PDO::PARAM_INT,
-            ]),
-        )->fetchAllAssociative();
-
-        return $this->buildJobExecutionRows($rawJobExecutions);
+        return $this->fetchJobExecutionRows($sql, $query);
     }
 
     public function count(SearchJobExecutionQuery $query): int
     {
         $sql = <<<SQL
     SELECT count(*)
-    FROM akeneo_batch_job_execution je
-    JOIN akeneo_batch_job_instance ji on je.job_instance_id = ji.id
-    WHERE je.is_visible = 1
+    FROM akeneo_batch_job_execution job_execution
+    JOIN akeneo_batch_job_instance job_instance on job_execution.job_instance_id = job_instance.id
+    WHERE job_execution.is_visible = 1
     %s
 SQL;
         $whereSqlPart = $this->buildSqlWherePart($query);
@@ -131,6 +55,53 @@ SQL;
         )->fetchOne();
     }
 
+    private function buildSqlQuery(SearchJobExecutionQuery $query): string
+    {
+        $sql = <<<SQL
+    WITH job_executions AS (
+        SELECT
+            job_execution.id,
+            job_execution.job_instance_id,
+            job_instance.label,
+            job_instance.type,
+            job_execution.start_time,
+            job_execution.user,
+            job_execution.status,
+            job_execution.is_stoppable,
+            job_execution.step_count
+        FROM akeneo_batch_job_execution job_execution
+        JOIN akeneo_batch_job_instance job_instance ON job_execution.job_instance_id = job_instance.id
+        WHERE job_execution.is_visible = 1
+        %s
+        %s
+        LIMIT :offset, :limit
+    )
+    SELECT
+        job_execution.*,
+        COUNT(step_execution.job_execution_id) AS current_step_number,
+        JSON_ARRAYAGG(JSON_OBJECT(
+            'id', step_execution.id,
+            'start_time', step_execution.start_time,
+            'end_time', step_execution.end_time,
+            'warning_count', step_execution.warning_count,
+            'errors', JSON_ARRAY(IFNULL(step_execution.failure_exceptions, 'a:0:{}'), IFNULL(step_execution.errors, 'a:0:{}')),
+            'total_items', JSON_EXTRACT(step_execution.tracking_data, '$.totalItems'),
+            'processed_items', JSON_EXTRACT(step_execution.tracking_data, '$.processedItems'),
+            'status', step_execution.status,
+            'is_trackable', step_execution.is_trackable
+        )) AS steps
+    FROM job_executions job_execution
+    LEFT JOIN akeneo_batch_step_execution step_execution ON job_execution.id = step_execution.job_execution_id
+    GROUP BY job_execution.id
+    %s
+SQL;
+
+        $whereSqlPart = $this->buildSqlWherePart($query);
+        $orderBySqlPart = $this->buildSqlOrderByPart($query);
+
+        return sprintf($sql, $whereSqlPart, $orderBySqlPart, str_replace('job_instance', 'job_execution', $orderBySqlPart));
+    }
+
     private function buildSqlWherePart(SearchJobExecutionQuery $query): string
     {
         $sqlWhereParts = [];
@@ -141,29 +112,71 @@ SQL;
         $code = $query->code;
 
         if (!empty($type)) {
-            $sqlWhereParts[] = 'ji.type IN (:type)';
+            $sqlWhereParts[] = 'job_instance.type IN (:type)';
         }
 
         if (!empty($code)) {
-            $sqlWhereParts[] = 'ji.code IN (:code)';
+            $sqlWhereParts[] = 'job_instance.code IN (:code)';
         }
 
         if (!empty($status)) {
-            $sqlWhereParts[] = 'je.status IN (:status)';
+            $sqlWhereParts[] = 'job_execution.status IN (:status)';
         }
 
         if (!empty($user)) {
-            $sqlWhereParts[] = 'je.user IN (:user)';
+            $sqlWhereParts[] = 'job_execution.user IN (:user)';
         }
 
         if (!empty($search)) {
             $searchParts = explode(' ', $search);
             foreach ($searchParts as $index => $searchPart) {
-                $sqlWhereParts[] = sprintf('ji.label LIKE :%s_%s', self::SEARCH_PART_PARAM_SUFFIX, $index);
+                $sqlWhereParts[] = sprintf('job_instance.label LIKE :%s_%s', self::SEARCH_PART_PARAM_SUFFIX, $index);
             }
         }
 
         return empty($sqlWhereParts) ? '' : 'AND ' . implode(' AND ', $sqlWhereParts);
+    }
+
+    private function buildSqlOrderByPart(SearchJobExecutionQuery $query): string
+    {
+        $sortDirection = $query->sortDirection;
+
+        $orderByColumn = match ($query->sortColumn) {
+            'job_name' => sprintf("job_instance.label %s", $sortDirection),
+            'type' => sprintf("job_instance.type %s", $sortDirection),
+            'started_at' => sprintf("job_execution.start_time %s", $sortDirection),
+            'username' => sprintf("job_execution.user %s", $sortDirection),
+            'status' => sprintf("job_execution.status %s", $sortDirection),
+            default => throw new \InvalidArgumentException(sprintf('Unknown sort column "%s"', $query->sortColumn)),
+        };
+
+        return sprintf('ORDER BY %s', $orderByColumn);
+    }
+
+    private function fetchJobExecutionRows(string $sql, SearchJobExecutionQuery $query): array
+    {
+        $queryParams = $this->buildQueryParams($query);
+        $queryParamsTypes = $this->buildQueryParamsTypes();
+
+        $page = $query->page;
+        $size = $query->size;
+
+        $jobExecutions = $this->connection->executeQuery(
+            $sql,
+            array_merge($queryParams, [
+                'offset' => ($page - 1) * $size,
+                'limit' => $size,
+            ]),
+            array_merge($queryParamsTypes, [
+                'offset' => \PDO::PARAM_INT,
+                'limit' => \PDO::PARAM_INT,
+            ]),
+        )->fetchAllAssociative();
+
+        return array_map(
+            fn ($jobExecution): JobExecutionRow => $this->jobExecutionRowHydrator->hydrate($jobExecution),
+            $jobExecutions,
+        );
     }
 
     private function buildQueryParams(SearchJobExecutionQuery $query): array
@@ -192,105 +205,5 @@ SQL;
             'user' => Connection::PARAM_STR_ARRAY,
             'code' => Connection::PARAM_STR_ARRAY,
         ];
-    }
-
-    private function buildSqlOrderByPart(SearchJobExecutionQuery $query): string
-    {
-        $sortDirection = $query->sortDirection;
-
-        $orderByColumn = match ($query->sortColumn) {
-            'job_name' => sprintf("ji.label %s", $sortDirection),
-            'type' => sprintf("ji.type %s", $sortDirection),
-            'started_at' => sprintf("je.start_time %s", $sortDirection),
-            'username' => sprintf("je.user %s", $sortDirection),
-            'status' => sprintf("je.status %s", $sortDirection),
-            default => throw new \InvalidArgumentException(sprintf('Unknown sort column "%s"', $query->sortColumn)),
-        };
-
-        return sprintf('ORDER BY %s', $orderByColumn);
-    }
-
-    private function buildJobExecutionRows(array $rawJobExecutions): array
-    {
-        $platform = $this->connection->getDatabasePlatform();
-
-        return array_map(function (array $rawJobExecution) use ($platform): JobExecutionRow {
-            $startTime = Type::getType(Types::DATETIME_IMMUTABLE)->convertToPHPValue($rawJobExecution['start_time'], $platform);
-            $tracking = $this->buildTracking($rawJobExecution);
-
-            return new JobExecutionRow(
-                (int) $rawJobExecution['id'],
-                $rawJobExecution['label'],
-                $rawJobExecution['type'],
-                $startTime,
-                $rawJobExecution['user'],
-                Status::fromStatus((int) $rawJobExecution['status']),
-                (bool) $rawJobExecution['is_stoppable'],
-                $tracking,
-            );
-        }, $rawJobExecutions);
-    }
-
-    private function buildTracking(array $rawJobExecution): JobExecutionRowTracking
-    {
-        $currentStepNumber = (int) $rawJobExecution['current_step_number'] ?? 0;
-        $stepCount = (int) $rawJobExecution['step_count'];
-
-        if (0 === $currentStepNumber) {
-            return new JobExecutionRowTracking(
-                $currentStepNumber,
-                $stepCount,
-                [],
-            );
-        }
-
-        $steps = array_map(function ($step) {
-            $startTime = $step['start_time'] ? \DateTimeImmutable::createFromFormat('Y-m-d H:i:s.u', $step['start_time']) : null;
-            $endTime = $step['end_time'] ? \DateTimeImmutable::createFromFormat('Y-m-d H:i:s.u', $step['end_time']) : null;
-            $errorCount = array_reduce(
-                $step['errors'],
-                static fn (int $errorCount, string $error) => $errorCount + count(unserialize($error)),
-                0,
-            );
-            $status = Status::fromStatus((int) $step['status']);
-            $duration = $this->computeDuration($status, $startTime, $endTime);
-
-            return new StepExecutionTracking(
-                (int) $step['id'],
-                $duration,
-                (int) $step['warning_count'],
-                $errorCount,
-                (int) $step['total_items'],
-                (int) $step['processed_items'],
-                (bool) $step['is_trackable'],
-                $status,
-            );
-        }, json_decode($rawJobExecution['steps'], true));
-
-        usort(
-            $steps,
-            static fn (StepExecutionTracking $step1, StepExecutionTracking $step2) => $step1->getId() <=> $step2->getId(),
-        );
-
-        return new JobExecutionRowTracking(
-            $currentStepNumber,
-            $stepCount,
-            $steps,
-        );
-    }
-
-    private function computeDuration(Status $status, ?\DateTimeImmutable $startTime, ?\DateTimeImmutable $endTime): int
-    {
-        $now = $this->clock->now();
-        if ($status->getStatus() === Status::STARTING || null === $startTime) {
-            return 0;
-        }
-
-        $duration = $now->getTimestamp() - $startTime->getTimestamp();
-        if (null !== $endTime) {
-            $duration = $endTime->getTimestamp() - $startTime->getTimestamp();
-        }
-
-        return $duration;
     }
 }
