@@ -189,14 +189,14 @@ services:
             - !php/const Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithImage::CODE
 
     akeneo.pim.automation.data_quality_insights.product.complete_evaluation_with_improvable_attributes:
-        class: Akeneo\Pim\Automation\DataQualityInsights\back\Application\ProductEvaluation\CompleteEvaluationWithImprovableAttributes
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CompleteEvaluationWithImprovableAttributes
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
             - '@akeneo.pim.automation.calculate_product_completeness_of_required_attributes'
             - '@akeneo.pim.automation.calculate_product_completeness_of_non_required_attributes'
 
     akeneo.pim.automation.data_quality_insights.product_model.complete_evaluation_with_improvable_attributes:
-        class: Akeneo\Pim\Automation\DataQualityInsights\back\Application\ProductEvaluation\CompleteEvaluationWithImprovableAttributes
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CompleteEvaluationWithImprovableAttributes
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
             - '@akeneo.pim.automation.calculate_product_model_completeness_of_required_attributes'
