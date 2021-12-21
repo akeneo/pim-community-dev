@@ -16,15 +16,17 @@ test('it renders its children properly', () => {
   expect(screen.getByText('Third step')).toBeInTheDocument();
   expect(screen.getByText('Second step').parentElement).toHaveAttribute('aria-current', 'step');
 });
-test('it cannot render random childrens', () => {
-  const mockConsole = jest.spyOn(console, 'error').mockImplementation();
 
-  expect(() => {
-    render(<ProgressIndicator>nice</ProgressIndicator>);
-  }).toThrowError('ProgressIndicator only accepts `ProgressIndicator.Step` elements as children');
+test('it can render custom children', () => {
+  render(
+    <ProgressIndicator>
+      <span>Custom child</span>
+    </ProgressIndicator>
+  );
 
-  mockConsole.mockRestore();
+  expect(screen.getByText('Custom child')).toBeInTheDocument();
 });
+
 test('a step cannot be used outside of a component', () => {
   const mockConsole = jest.spyOn(console, 'error').mockImplementation();
 
@@ -37,5 +39,6 @@ test('a step cannot be used outside of a component', () => {
 
 test('ProgressIndicator supports ...rest props', () => {
   render(<ProgressIndicator data-testid="my_value" />);
+
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
