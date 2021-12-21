@@ -13,8 +13,7 @@ final class GifFilter implements LoaderInterface
     public function load(ImageInterface $image, array $options = []): ImageInterface
     {
         if ($image instanceof Image) {
-            $image->getImagick()->coalesceImages();
-            $image->getImagick()->setImage($image->getImagick()->getImage());
+            $image->getImagick()->mergeImageLayers(\Imagick::LAYERMETHOD_FLATTEN);
         }
 
         return $image;
