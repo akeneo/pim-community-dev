@@ -1,54 +1,67 @@
 import React from 'react';
-import {waitFor, fireEvent, screen} from '@testing-library/react';
+import {fireEvent, screen, waitForElementToBeRemoved} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import {Branding} from 'akeneosharedcatalog/job/form/Branding';
-
-test('It renders an empty file input when the provided branding is empty', () => {
-  const branding = {image: null};
-  const onChange = jest.fn();
-
-  renderWithProviders(<Branding branding={branding} validationErrors={[]} onBrandingChange={onChange} />);
-
-  const placeholderImage = screen.getByAltText('pim_common.branding') as HTMLImageElement;
-  const fileInput = screen.getByRole('file-input') as HTMLInputElement;
-
-  expect(placeholderImage.src).toEqual('http://localhost/bundles/pimui/images/illustrations/Import.svg');
-  expect(fileInput.value).toEqual('');
-});
 
 test('It displays validation errors if applicable', () => {
   const branding = {image: null};
   const onChange = jest.fn();
-  const validationErrors = [{image: 'This is NOT right'}, {image: 'and this also!'}];
+  const validationErrors = [{image: 'This is NOT right'}, {cover_image: 'and this also!'}, {color: 'This is wrong :('}];
 
   renderWithProviders(<Branding branding={branding} validationErrors={validationErrors} onBrandingChange={onChange} />);
 
   expect(screen.getByText('This is NOT right')).toBeInTheDocument();
   expect(screen.getByText('and this also!')).toBeInTheDocument();
+  expect(screen.getByText('This is wrong :(')).toBeInTheDocument();
 });
 
-test('It triggers the onChange event when a file is selected', async () => {
+test('It can update the branding image', async () => {
   const branding = {image: null};
   const onChange = jest.fn();
 
   renderWithProviders(<Branding branding={branding} validationErrors={[]} onBrandingChange={onChange} />);
 
-  let placeholderImage: HTMLImageElement;
   const file = new File(['Angry Raccoon'], 'angry-raccoon.png', {type: 'image/png'});
   const expectedSrc = `data:image/png;base64,${btoa('Angry Raccoon')}`;
 
-  const fileInput = screen.getByRole('file-input') as HTMLInputElement;
-  fireEvent.change(fileInput, {target: {files: [file]}});
+  const mediaFileInput = screen.getByLabelText('shared_catalog.branding.logo.label');
 
-  await waitFor(() => {
-    placeholderImage = screen.getByAltText('pim_common.branding') as HTMLImageElement;
+  fireEvent.change(mediaFileInput, {
+    target: {
+      files: [file],
+    },
   });
 
-  expect(placeholderImage.src).toEqual(expectedSrc);
+  await waitForElementToBeRemoved(() => screen.getByText('shared_catalog.branding.uploading'));
+
   expect(onChange).toHaveBeenCalledWith({image: expectedSrc});
 });
 
+test('It can update the branding cover image', async () => {
+  const branding = {image: null};
+  const onChange = jest.fn();
+
+  renderWithProviders(<Branding branding={branding} validationErrors={[]} onBrandingChange={onChange} />);
+
+  const file = new File(['Angry Raccoon'], 'angry-raccoon.png', {type: 'image/png'});
+  const expectedSrc = `data:image/png;base64,${btoa('Angry Raccoon')}`;
+
+  const mediaFileInput = screen.getByLabelText('shared_catalog.branding.cover.label');
+
+  fireEvent.change(mediaFileInput, {
+    target: {
+      files: [file],
+    },
+  });
+
+  await waitForElementToBeRemoved(() => screen.getByText('shared_catalog.branding.uploading'));
+
+  expect(onChange).toHaveBeenCalledWith({image: null, cover_image: expectedSrc});
+});
+
 test('It displays a validation error when a oversized file is selected', async () => {
+  jest.spyOn(global.console, 'error').mockImplementation(jest.fn());
+
   const branding = {image: null};
   const onChange = jest.fn();
 
@@ -56,45 +69,55 @@ test('It displays a validation error when a oversized file is selected', async (
 
   const oversizedFile = new File([new ArrayBuffer(20000001)], 'fat-raccoon.png', {type: 'image/png'});
 
-  const fileInput = screen.getByRole('file-input') as HTMLInputElement;
-  fireEvent.change(fileInput, {target: {files: [oversizedFile]}});
+  const mediaFileInput = screen.getByLabelText('shared_catalog.branding.cover.label');
 
-  await waitFor(() => {
-    screen.getByAltText('pim_common.branding') as HTMLImageElement;
+  fireEvent.change(mediaFileInput, {
+    target: {
+      files: [oversizedFile],
+    },
   });
 
-  expect(screen.getByText('shared_catalog.branding.filesize_too_large')).toBeInTheDocument();
+  await waitForElementToBeRemoved(() => screen.getByText('shared_catalog.branding.uploading'));
+
+  expect(screen.getByText('shared_catalog.branding.validation.invalid_file')).toBeInTheDocument();
 });
 
 test('It displays a validation error when a file with an invalid extension is provided', async () => {
+  jest.spyOn(global.console, 'error').mockImplementation(jest.fn());
+
   const branding = {image: null};
   const onChange = jest.fn();
 
   renderWithProviders(<Branding branding={branding} validationErrors={[]} onBrandingChange={onChange} />);
 
-  const oversizedFile = new File(['PDF Raccoon'], 'fat-raccoon.pdf', {type: 'image/png'});
+  const fileWithInvalidExtension = new File(['PDF Raccoon'], 'fat-raccoon.pdf', {type: 'image/png'});
 
-  const fileInput = screen.getByRole('file-input') as HTMLInputElement;
-  fireEvent.change(fileInput, {target: {files: [oversizedFile]}});
+  const mediaFileInput = screen.getByLabelText('shared_catalog.branding.cover.label');
 
-  await waitFor(() => {
-    screen.getByAltText('pim_common.branding') as HTMLImageElement;
+  fireEvent.change(mediaFileInput, {
+    target: {
+      files: [fileWithInvalidExtension],
+    },
   });
 
-  expect(screen.getByText('shared_catalog.branding.invalid_extension')).toBeInTheDocument();
+  await waitForElementToBeRemoved(() => screen.getByText('shared_catalog.branding.uploading'));
+
+  expect(screen.getByText('shared_catalog.branding.validation.invalid_file')).toBeInTheDocument();
 });
 
-test('It clears the file input when the remove button is clicked', async () => {
-  const branding = {image: 'niceBase64image'};
+test('It can update the branding color', async () => {
+  const branding = {image: null};
   const onChange = jest.fn();
 
   renderWithProviders(<Branding branding={branding} validationErrors={[]} onBrandingChange={onChange} />);
 
-  fireEvent.click(screen.getByTitle('pim_common.remove'));
+  const colorInput = screen.getByLabelText('shared_catalog.branding.color.label');
 
-  await waitFor(() => {
-    screen.getByAltText('pim_common.branding') as HTMLImageElement;
+  fireEvent.change(colorInput, {
+    target: {
+      value: '#ffffff',
+    },
   });
 
-  expect(onChange).toHaveBeenCalledWith({image: null});
+  expect(onChange).toHaveBeenCalledWith({image: null, color: '#ffffff'});
 });

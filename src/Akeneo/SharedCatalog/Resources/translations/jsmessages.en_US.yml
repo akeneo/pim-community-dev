@@ -16,8 +16,20 @@ shared_catalog:
         no_data: No email address declared yet
         max_limit_reached: You have reached the limit of 500 recipients.
     branding:
-        upload: "Upload your logo (Max size: 2MB; File Format: PNG or JPG)"
-        invalid_extension: "Invalid file extension, allowed extensions are: {{ allowed_extensions }}"
-        filesize_too_large: The file you provided is too large, the max size is 2MB
+        upload_placeholder: "Drag and drop your files or click here"
+        uploading: Uploading...
+        validation:
+            invalid_extension: "Invalid file extension, allowed extensions are: {{ allowed_extensions }}"
+            filesize_too_large: The file you provided is too large, the max size is 2MB
+            invalid_file: The file is invalid
+            invalid_color: This value is not a valid CSS color.
+        color:
+            label: Define your branding color
+        logo:
+            label: Upload your logo
+            file_information_helper: "Max size: 2MB; File Format: PNG or JPG"
+        cover:
+            label: Upload your cover
+            file_information_helper: This image will be used on the catalog login page and on the cover of the PDF exports. Keep in mind that if you want the cover page to appear correctly after printing, its dimensions should be above 1600px x 2227px.
     button:
         save: Save and share

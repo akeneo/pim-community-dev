@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraint;
 
 class CssColor extends Constraint
 {
-    public const INVALID_COLOR_MESSAGE = 'akeneo_shared_catalog.validation.css_color.invalid_color';
+    public const INVALID_COLOR_MESSAGE = 'shared_catalog.branding.validation.invalid_color';
 
     public function validatedBy(): string
     {
