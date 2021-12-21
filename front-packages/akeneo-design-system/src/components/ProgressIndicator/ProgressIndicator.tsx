@@ -26,11 +26,13 @@ const StepLabel = styled.div`
   text-transform: uppercase;
 `;
 
-const StepContainer = styled.li<{state: StepState} & AkeneoThemedProps>`
+const StepContainer = styled.li<StepProps & AkeneoThemedProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
+  cursor: ${({disabled}) => (disabled ? 'not-allowed' : 'pointer')};
+  opacity: ${({disabled}) => (disabled ? 0.6 : 1)};
 
   &:before {
     display: block;
@@ -70,6 +72,11 @@ type StepProps = Override<
     state?: StepState;
 
     /**
+     * Define if the step is disabled.
+     */
+    disabled?: boolean;
+
+    /**
      * The label of the step.
      */
     children?: ReactNode;
@@ -77,7 +84,7 @@ type StepProps = Override<
 >;
 
 const Step = forwardRef<HTMLLIElement, StepProps>(
-  ({state, children, ...rest}: StepProps, forwardedRef: Ref<HTMLLIElement>) => {
+  ({state, children, disabled, onClick, ...rest}: StepProps, forwardedRef: Ref<HTMLLIElement>) => {
     if (undefined === state) {
       throw new Error('ProgressIndicator.Step cannot be used outside a ProgressIndicator component');
     }
@@ -87,6 +94,9 @@ const Step = forwardRef<HTMLLIElement, StepProps>(
         aria-current={'inprogress' === state ? 'step' : undefined}
         state={state}
         ref={forwardedRef}
+        aria-disabled={disabled}
+        onClick={disabled ? undefined : onClick}
+        disabled={disabled}
         {...rest}
       >
         <StepCircle aria-hidden state={state}>
