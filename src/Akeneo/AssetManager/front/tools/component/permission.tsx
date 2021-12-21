@@ -18,11 +18,6 @@ const FullWidthProgressIndicator = styled(ProgressIndicator)`
   width: 100%;
 `;
 
-const RightButton = styled(ProgressIndicator.Step)<{readOnly: boolean}>`
-  cursor: ${({readOnly}) => (readOnly ? 'not-allowed' : 'pointer')};
-  opacity: ${({readOnly}) => (readOnly ? 0.6 : 1)};
-`;
-
 type PermissionEditorProps = {
   groupCode: string;
   prioritizedRightLevels: RightLevel[];
@@ -49,9 +44,9 @@ const PermissionEditor = ({groupCode, prioritizedRightLevels, value, readOnly, o
                 : onChange(groupCode, rightLevel);
 
             return (
-              <RightButton
-                readOnly={readOnly}
+              <ProgressIndicator.Step
                 key={rightLevel}
+                disabled={readOnly}
                 onClick={readOnly ? undefined : handleStepClick}
                 state={pillIsLowerOrAtThisLevel ? 'done' : 'todo'}
               />
