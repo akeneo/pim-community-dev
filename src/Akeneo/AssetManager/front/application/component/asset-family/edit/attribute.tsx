@@ -1,6 +1,6 @@
-import React, {memo} from 'react';
+import React, {memo, useRef} from 'react';
 import {connect} from 'react-redux';
-import {Key, Button, SectionTitle} from 'akeneo-design-system';
+import {Key, Button, SectionTitle, useAutoFocus} from 'akeneo-design-system';
 import {
   useTranslate,
   Translate,
@@ -228,6 +228,9 @@ const AttributesView = ({
   const {isGranted} = useSecurity();
   const canCreateAttribute = isGranted('akeneo_assetmanager_attribute_create') && rights.assetFamily.edit;
   const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useAutoFocus(buttonRef);
 
   return (
     <>
@@ -240,7 +243,7 @@ const AttributesView = ({
         </PageHeader.UserActions>
         <PageHeader.Actions>
           {canCreateAttribute && (
-            <Button level="secondary" onClick={events.onAttributeCreationStart} tabIndex={0}>
+            <Button level="secondary" onClick={events.onAttributeCreationStart} ref={buttonRef}>
               {translate('pim_asset_manager.attribute.button.add')}
             </Button>
           )}
