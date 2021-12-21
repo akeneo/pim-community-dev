@@ -9,27 +9,8 @@ import {Authorizations} from './steps/Authorizations';
 import {Permissions} from './steps/Permissions';
 import {PermissionsSummary} from './steps/PermissionsSummary';
 import {WizardModal} from './WizardModal';
-import styled from 'styled-components';
 import {useConfirmHandler} from '../../hooks/use-confirm-handler';
 import {FullScreenLoader} from './FullScreenLoader';
-
-const FullScreen = styled.div`
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #fff;
-    z-index: 900;
-`;
-const Loader = styled.div`
-    width: 940px;
-    font-size: 28px;
-    display: block;
-    margin: 200px auto 0;
-    text-align: center;
-    line-height: 40px;
-`;
 
 type Step = {
     name: 'authentication' | 'authorizations' | 'permissions' | 'summary';
