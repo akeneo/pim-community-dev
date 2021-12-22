@@ -1,10 +1,9 @@
 import React from 'react';
 import styled, {ThemeProvider} from 'styled-components';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {useTranslate, useFeatureFlags} from '@akeneo-pim-community/shared';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ImageUploader} from './ImageUploader';
 import {pimTheme, ColorInput, Field, Helper, sharedCatalogsTheme} from 'akeneo-design-system';
-import {useFeatureFlags} from "@akeneo-pim-community/connectivity-connection/src/shared/feature-flags";
 
 const FieldContainer = styled.div`
   margin-top: 40px;
