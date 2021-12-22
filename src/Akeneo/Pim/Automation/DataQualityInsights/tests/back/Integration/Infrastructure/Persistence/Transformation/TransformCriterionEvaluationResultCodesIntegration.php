@@ -51,6 +51,16 @@ final class TransformCriterionEvaluationResultCodesIntegration extends DataQuali
                         'de_DE' => 0,
                     ],
                 ],
+                'number_of_improvable_attributes' => [
+                    'ecommerce' => [
+                        'en_US' => 2,
+                        'fr_FR' => 1,
+                    ],
+                    'mobile' => [
+                        'en_US' => 1,
+                        'de_DE' => 0,
+                    ],
+                ],
             ],
             'rates' => [
                 'ecommerce' => [
@@ -98,6 +108,16 @@ final class TransformCriterionEvaluationResultCodesIntegration extends DataQuali
                     ],
                     $mobileId => [
                         $enUsId => 6,
+                        $deDeId => 0,
+                    ],
+                ],
+                TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['number_of_improvable_attributes'] => [
+                    $ecommerceId => [
+                        $enUsId => 2,
+                        $frFrId => 1,
+                    ],
+                    $mobileId => [
+                        $enUsId => 1,
                         $deDeId => 0,
                     ],
                 ],
