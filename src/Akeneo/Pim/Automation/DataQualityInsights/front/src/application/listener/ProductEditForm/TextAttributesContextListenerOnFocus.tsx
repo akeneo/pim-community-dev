@@ -1,10 +1,15 @@
-import React, {useCallback, useEffect, useLayoutEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useLayoutEffect, useMemo} from 'react';
 import {useDispatch} from 'react-redux';
-import {usePageContext, useProduct, useProductFamily} from '../../../infrastructure/hooks';
-import {createWidget, EditorElement, WidgetsCollection} from '../../helper';
+import {
+  useGetEditorHighlightWidgetsList,
+  usePageContext,
+  useProduct,
+  useProductFamily,
+} from '../../../infrastructure/hooks';
+import {createWidget, EditorElement} from '../../helper';
 import {Product} from '../../../domain';
 import {Attribute, Family} from '@akeneo-pim-community/data-quality-insights/src/domain';
-import {initializeWidgetsListAction} from '../../../infrastructure/reducer';
+import {initializeWidgetsListAction} from '../../../infrastructure';
 import useFetchActiveLocales from '../../../infrastructure/hooks/EditorHighlight/useFetchActiveLocales';
 import {useAttributeGroupsStatusContext} from '@akeneo-pim-community/data-quality-insights/src/application';
 import {AttributeGroupsStatusCollection} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks';
@@ -102,7 +107,8 @@ const TextAttributesContextListenerOnFocus = () => {
     }
     return getTextAttributes(family, product, activeLocales.length);
   }, [family, product, activeLocales]);
-  const [widgetsList, setWidgetsList] = useState<WidgetsCollection>({});
+
+  const widgetsList = useGetEditorHighlightWidgetsList();
 
   const addWidget = useCallback(
     (element: Element) => {
@@ -117,23 +123,23 @@ const TextAttributesContextListenerOnFocus = () => {
         return;
       }
 
-      setWidgetsList(list => {
-        const widgetId = uuidV5(`${product.meta.id}-${attribute}`, WIDGET_UUID_NAMESPACE);
+      const widgetId = uuidV5(`${product.meta.id}-${attribute}`, WIDGET_UUID_NAMESPACE);
 
-        let widgetsArray = Object.values(list);
-        if (widgetsArray.length >= WIDGET_LIST_LIMIT) {
-          widgetsArray.shift();
-        }
+      let widgetsArray = Object.values(widgetsList);
+      if (widgetsArray.length >= WIDGET_LIST_LIMIT) {
+        widgetsArray.shift();
+      }
 
-        const widgetsCollection = widgetsArray.reduce((previousValue, currentValue) => {
-          return {...previousValue, [currentValue.attribute]: currentValue};
-        }, {});
+      const widgetsCollection = widgetsArray.reduce((previousValue, currentValue) => {
+        return {...previousValue, [currentValue.attribute]: currentValue};
+      }, {});
 
-        return {
+      dispatchAction(
+        initializeWidgetsListAction({
           ...widgetsCollection,
           [attribute]: createWidget(widgetId, editor as EditorElement, editorId, attribute),
-        };
-      });
+        })
+      );
     },
     [widgetsList, textAttributes, attributeGroupsStatus]
   );
@@ -141,14 +147,6 @@ const TextAttributesContextListenerOnFocus = () => {
   useEffect(() => {
     load();
   }, []);
-
-  useEffect(() => {
-    if (Object.entries(widgetsList).length === 0) {
-      return;
-    }
-
-    dispatchAction(initializeWidgetsListAction(widgetsList));
-  }, [widgetsList]);
 
   useLayoutEffect(() => {
     const container = document.querySelector(PRODUCT_ATTRIBUTES_CONTAINER_SELECTOR);
