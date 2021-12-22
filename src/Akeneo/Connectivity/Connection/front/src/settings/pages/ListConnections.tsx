@@ -20,8 +20,7 @@ import {
 import {Breadcrumb} from 'akeneo-design-system';
 import {UserButtons} from '../../shared/user';
 import {useRouter} from '../../shared/router/use-router';
-
-const MAXIMUM_NUMBER_OF_ALLOWED_CONNECTIONS = 50;
+import {useConnectionsLimitReached} from '../../shared/hooks/use-connections-limit-reached';
 
 type ResultConnections = Array<Connection>;
 
@@ -35,6 +34,9 @@ export const ListConnections = () => {
     const dispatchCombinations = useWrongCredentialsCombinationsDispatch();
 
     const listConnectionRoute = useRoute('akeneo_connectivity_connection_rest_list');
+
+    const isLimitReached = useConnectionsLimitReached();
+
     useEffect(() => {
         let cancelled = false;
         fetchResult<ResultConnections, never>(listConnectionRoute).then(
@@ -73,7 +75,7 @@ export const ListConnections = () => {
     const createButton = (
         <ApplyButton
             onClick={handleCreate}
-            disabled={Object.keys(connections).length >= MAXIMUM_NUMBER_OF_ALLOWED_CONNECTIONS}
+            disabled={false !== isLimitReached}
             classNames={['AknButtonList-item']}
         >
             <Translate id='pim_common.create' />

@@ -5,6 +5,12 @@ import fetchMock from 'jest-fetch-mock';
 import {renderWithProviders, historyMock} from '../../../test-utils';
 import {ActivateAppButton} from '@src/connect/components/ActivateAppButton';
 
+jest.mock('@src/shared/hooks/use-connections-limit-reached', () => ({
+    useConnectionsLimitReached: jest.fn(() => {
+        return false;
+    }),
+}));
+
 beforeEach(() => {
     fetchMock.resetMocks();
     historyMock.reset();

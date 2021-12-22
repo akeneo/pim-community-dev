@@ -1,0 +1,35 @@
+import {useRoute} from '../router';
+import {useState, useEffect, useCallback} from 'react';
+
+interface MaxLimitReached {
+    limitReached: boolean
+}
+
+export const useConnectionsLimitReached = (): boolean | null => {
+    const url = useRoute('akeneo_connectivity_connection_rest_connections_max_limit_reached');
+
+    const [isLimitReached, setLimitReached] = useState<boolean | null>(null);
+
+    const fetchCallback = useCallback(async () => {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: [['X-Requested-With', 'XMLHttpRequest']],
+        });
+
+        if (!response.ok) {
+            setLimitReached(null);
+            return Promise.reject(`${response.status} ${response.statusText}`);
+        }
+
+        response.json()
+            .then((content: MaxLimitReached) => content.limitReached)
+            .then(setLimitReached);
+    }, [url]);
+
+    useEffect(() => {
+        fetchCallback();
+    }, [fetchCallback]);
+
+    return isLimitReached;
+};
+
