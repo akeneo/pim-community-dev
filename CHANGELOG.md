@@ -155,6 +155,7 @@
 - PIM-10197: Added safeguards against attribute change to locale specific when the same attribute is a variant axis for a family
 - PIM-10208: Fix currency settings page crashing when label is not found
 - PIM-10192: Retry mechanism in delete action of ES documents
+- PIM-10214: Fix cannot create a measurement attribute if measurement family or unit code is too long
 - PIM-10210: Fix notifications can't be displayed
 
 ## New features
