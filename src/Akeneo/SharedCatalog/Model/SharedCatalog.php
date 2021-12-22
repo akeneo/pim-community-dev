@@ -4,6 +4,8 @@ namespace Akeneo\SharedCatalog\Model;
 
 class SharedCatalog
 {
+    public const DEFAULT_COLOR = '#f9b53f';
+
     /** @var string */
     private $code;
     /** @var string|null */
@@ -14,15 +16,19 @@ class SharedCatalog
     private $filters;
     /** @var array|null */
     private $branding;
+    /** @var string */
+    private $label;
 
     public function __construct(
         string $code,
+        string $label,
         ?string $publisher,
         array $recipients,
         ?array $filters,
         ?array $branding
     ) {
         $this->code = $code;
+        $this->label = $label;
         $this->publisher = $publisher;
         $this->recipients = $recipients;
         $this->filters = $filters;
@@ -43,6 +49,7 @@ class SharedCatalog
     {
         return [
             'code' => $this->code,
+            'label' => $this->label,
             'publisher' => $this->publisher,
             'recipients' => array_map(function ($recipient) {
                 return $recipient['email'];
@@ -52,6 +59,8 @@ class SharedCatalog
             'attributes' => $this->filters['structure']['attributes'] ?? [],
             'branding' => [
                 'logo' => $this->branding['image'] ?? null,
+                'cover_image' => $this->branding['cover_image'] ?? null,
+                'color' => $this->branding['color'] ?? self::DEFAULT_COLOR,
             ],
         ];
     }

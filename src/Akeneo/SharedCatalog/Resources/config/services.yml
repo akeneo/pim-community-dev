@@ -2,6 +2,7 @@ parameters:
     akeneo.shared_catalog.connector.name: Akeneo Shared Catalogs
     akeneo.shared_catalog.connector.code: 'akeneo_shared_catalog'
     akeneo.shared_catalog.default_products_page_size: 10000
+    env(FLAG_NEW_SHARED_CATALOG_BRANDING_ENABLED): 'false'
 
 services:
     _defaults:
@@ -104,3 +105,9 @@ services:
             - '@pim_user.saver.user'
         tags:
             - { name: console.command }
+
+    akeneo.shared_catalog.feature.new_shared_catalog_branding:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+        arguments:
+            - '%env(bool:FLAG_NEW_SHARED_CATALOG_BRANDING_ENABLED)%'
+        public: true
