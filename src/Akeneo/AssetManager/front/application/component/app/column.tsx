@@ -9,11 +9,12 @@ const ColumnTitle = styled.div`
   text-transform: uppercase;
   font-size: ${getFontSize('small')};
   white-space: nowrap;
-  margin-bottom: 3px;
+`;
 
-  :not(:first-child) {
-    margin-top: 30px;
-  }
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 `;
 
 type ColumnProps = {
@@ -33,8 +34,10 @@ const Column = ({title, children}: ColumnProps) => {
       closeTitle={translate('pim_common.close')}
       openTitle={translate('pim_common.open')}
     >
-      <ColumnTitle>{title}</ColumnTitle>
-      {children}
+      <Content>
+        <ColumnTitle>{title}</ColumnTitle>
+        {children}
+      </Content>
     </SubNavigationPanel>
   );
 };
