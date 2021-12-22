@@ -1,21 +1,25 @@
 import React from 'react';
 import {fireEvent, screen, waitForElementToBeRemoved} from '@testing-library/react';
-import {renderWithProviders} from '@akeneo-pim-community/shared';
+import {useFeatureFlags, renderWithProviders} from '@akeneo-pim-community/shared';
 import {Branding} from 'akeneosharedcatalog/job/form/Branding';
+
+let mockedActivatedFeatureFlag = ['new_shared_catalog_branding'];
+jest.mock('@akeneo-pim-community/shared/lib/hooks/useFeatureFlags', () => ({
+  useFeatureFlags: () => ({
+    isEnabled: (featureFlag: string) => mockedActivatedFeatureFlag.includes(featureFlag),
+  }),
+}));
+
+beforeEach(() => {
+  mockedActivatedFeatureFlag = ['new_shared_catalog_branding'];
+});
 
 test('It displays validation errors if applicable', () => {
   const branding = {image: null};
   const onChange = jest.fn();
   const validationErrors = [{image: 'This is NOT right'}, {cover_image: 'and this also!'}, {color: 'This is wrong :('}];
 
-  renderWithProviders(
-    <Branding
-      branding={branding}
-      validationErrors={validationErrors}
-      onBrandingChange={onChange}
-      featureFlagIsEnabled={featureFlag => featureFlag === 'new_shared_catalog_branding'}
-    />
-  );
+  renderWithProviders(<Branding branding={branding} validationErrors={validationErrors} onBrandingChange={onChange} />);
 
   expect(screen.getByText('This is NOT right')).toBeInTheDocument();
   expect(screen.getByText('and this also!')).toBeInTheDocument();
@@ -24,15 +28,9 @@ test('It displays validation errors if applicable', () => {
 
 test('It did not display cover and color if feature flag is not activated', () => {
   const branding = {image: null};
+  mockedActivatedFeatureFlag = [];
 
-  renderWithProviders(
-    <Branding
-      branding={branding}
-      validationErrors={[]}
-      onBrandingChange={jest.fn()}
-      featureFlagIsEnabled={() => false}
-    />
-  );
+  renderWithProviders(<Branding branding={branding} validationErrors={[]} onBrandingChange={jest.fn()} />);
 
   const mediaFileInput = screen.queryByLabelText('shared_catalog.branding.cover.label');
   const colorInput = screen.queryByLabelText('shared_catalog.branding.color.label');
@@ -45,14 +43,7 @@ test('It can update the branding image', async () => {
   const branding = {image: null};
   const onChange = jest.fn();
 
-  renderWithProviders(
-    <Branding
-      branding={branding}
-      validationErrors={[]}
-      onBrandingChange={onChange}
-      featureFlagIsEnabled={featureFlag => featureFlag === 'new_shared_catalog_branding'}
-    />
-  );
+  renderWithProviders(<Branding branding={branding} validationErrors={[]} onBrandingChange={onChange} />);
 
   const file = new File(['Angry Raccoon'], 'angry-raccoon.png', {type: 'image/png'});
   const expectedSrc = `data:image/png;base64,${btoa('Angry Raccoon')}`;
@@ -74,14 +65,7 @@ test('It can update the branding cover image', async () => {
   const branding = {image: null};
   const onChange = jest.fn();
 
-  renderWithProviders(
-    <Branding
-      branding={branding}
-      validationErrors={[]}
-      onBrandingChange={onChange}
-      featureFlagIsEnabled={featureFlag => featureFlag === 'new_shared_catalog_branding'}
-    />
-  );
+  renderWithProviders(<Branding branding={branding} validationErrors={[]} onBrandingChange={onChange} />);
 
   const file = new File(['Angry Raccoon'], 'angry-raccoon.png', {type: 'image/png'});
   const expectedSrc = `data:image/png;base64,${btoa('Angry Raccoon')}`;
@@ -105,14 +89,7 @@ test('It displays a validation error when a oversized file is selected', async (
   const branding = {image: null};
   const onChange = jest.fn();
 
-  renderWithProviders(
-    <Branding
-      branding={branding}
-      validationErrors={[]}
-      onBrandingChange={onChange}
-      featureFlagIsEnabled={featureFlag => featureFlag === 'new_shared_catalog_branding'}
-    />
-  );
+  renderWithProviders(<Branding branding={branding} validationErrors={[]} onBrandingChange={onChange} />);
 
   const oversizedFile = new File([new ArrayBuffer(20000001)], 'fat-raccoon.png', {type: 'image/png'});
 
@@ -135,14 +112,7 @@ test('It displays a validation error when a file with an invalid extension is pr
   const branding = {image: null};
   const onChange = jest.fn();
 
-  renderWithProviders(
-    <Branding
-      branding={branding}
-      validationErrors={[]}
-      onBrandingChange={onChange}
-      featureFlagIsEnabled={featureFlag => featureFlag === 'new_shared_catalog_branding'}
-    />
-  );
+  renderWithProviders(<Branding branding={branding} validationErrors={[]} onBrandingChange={onChange} />);
 
   const fileWithInvalidExtension = new File(['PDF Raccoon'], 'fat-raccoon.pdf', {type: 'image/png'});
 
@@ -163,14 +133,7 @@ test('It can update the branding color', async () => {
   const branding = {image: null};
   const onChange = jest.fn();
 
-  renderWithProviders(
-    <Branding
-      branding={branding}
-      validationErrors={[]}
-      onBrandingChange={onChange}
-      featureFlagIsEnabled={featureFlag => featureFlag === 'new_shared_catalog_branding'}
-    />
-  );
+  renderWithProviders(<Branding branding={branding} validationErrors={[]} onBrandingChange={onChange} />);
 
   const colorInput = screen.getByLabelText('shared_catalog.branding.color.label');
 
