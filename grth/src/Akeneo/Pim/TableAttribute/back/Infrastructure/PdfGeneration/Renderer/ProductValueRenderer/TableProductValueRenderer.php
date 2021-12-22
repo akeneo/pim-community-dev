@@ -27,6 +27,10 @@ class TableProductValueRenderer implements ProductValueRenderer
 
     public function render(Environment $environment, AttributeInterface $attribute, ?ValueInterface $value, string $localeCode): ?string
     {
+        if (null === $value) {
+            return '';
+        }
+
         $tableConfiguration = $this->tableConfigurationFactory->createFromNormalized(
             $attribute->getRawTableConfiguration()
         );
