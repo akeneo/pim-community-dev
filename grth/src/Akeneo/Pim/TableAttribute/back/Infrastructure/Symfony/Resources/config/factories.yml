@@ -12,4 +12,4 @@ services:
                 number: Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn
                 boolean: Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn
                 select: Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn
-                record: Akeneo\Pim\TableAttribute\Domain\TableConfiguration\RecordColumn
+                reference_entity: Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn

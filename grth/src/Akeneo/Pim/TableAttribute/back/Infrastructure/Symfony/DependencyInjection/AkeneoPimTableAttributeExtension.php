@@ -71,11 +71,11 @@ class AkeneoPimTableAttributeExtension extends Extension
         }
 
         $allowedColumnDatatypes = $container->getParameter('pim_catalog_table_allowed_column_datatypes');
-        $allowedColumnDatatypes[] = 'record';
+        $allowedColumnDatatypes[] = 'reference_entity';
         $container->setParameter('pim_catalog_table_allowed_column_datatypes', $allowedColumnDatatypes);
 
         $allowedFirstColumnDataTypes = $container->getParameter('pim_catalog_table_allowed_first_column_datatypes');
-        $allowedFirstColumnDataTypes[] = 'record';
+        $allowedFirstColumnDataTypes[] = 'reference_entity';
         $container->setParameter('pim_catalog_table_allowed_first_column_datatypes', $allowedFirstColumnDataTypes);
     }
 }

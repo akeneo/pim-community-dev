@@ -244,9 +244,9 @@ describe('TableInputValue', () => {
 
   it('should not render anything if record cell inputs are undefined', () => {
     renderWithProviders(
-      <TestAttributeContextProvider attribute={getComplexTableAttribute('record')}>
+      <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
         <CellMappingContext.Provider value={{cellMatchersMapping: {}, cellInputsMapping: {}}}>
-          <TableInputValue valueData={getTableValueWithId('record')} searchText={''} onChange={jest.fn()} />
+          <TableInputValue valueData={getTableValueWithId('reference_entity')} searchText={''} onChange={jest.fn()} />
         </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
@@ -254,13 +254,13 @@ describe('TableInputValue', () => {
   });
 
   it('should render records as fist column', async () => {
-    const valueDataWithUnknownRecord = getTableValueWithId('record');
+    const valueDataWithUnknownRecord = getTableValueWithId('reference_entity');
     valueDataWithUnknownRecord.push({
       [UNIQUE_ID_KEY]: 'unknown_record_uniqueid',
       city: 'unknown_record',
     });
     renderWithProviders(
-      <TestAttributeContextProvider attribute={getComplexTableAttribute('record')}>
+      <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
         <CellMappingContext.Provider
           value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
         >

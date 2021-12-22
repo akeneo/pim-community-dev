@@ -6,7 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonE
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\RecordColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
@@ -32,8 +32,8 @@ class NonExistentTableValueFilterSpec extends ObjectBehavior
                 SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
                 SelectColumn::fromNormalized(['id' => ColumnIdGenerator::supplier(), 'code' => 'supplier']),
-                RecordColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'origin', 'reference_entity_identifier' => 'record']),
-                RecordColumn::fromNormalized(['id' => self::COLUMNID_RECORDBRAND, 'code' => 'brand', 'reference_entity_identifier' => 'brand']),
+                ReferenceEntityColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'origin', 'reference_entity_identifier' => 'record']),
+                ReferenceEntityColumn::fromNormalized(['id' => self::COLUMNID_RECORDBRAND, 'code' => 'brand', 'reference_entity_identifier' => 'brand']),
             ])
         );
 
@@ -128,7 +128,7 @@ class NonExistentTableValueFilterSpec extends ObjectBehavior
     ) {
         $tableConfigurationRepository->getByAttributeCode('food_composition')->willReturn(
             TableConfiguration::fromColumnDefinitions([
-                RecordColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'origin', 'reference_entity_identifier' => 'record', 'is_required_for_completeness' => true]),
+                ReferenceEntityColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'origin', 'reference_entity_identifier' => 'record', 'is_required_for_completeness' => true]),
                 SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
                 ])

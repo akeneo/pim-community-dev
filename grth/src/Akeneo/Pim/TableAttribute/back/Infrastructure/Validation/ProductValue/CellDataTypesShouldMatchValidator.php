@@ -58,7 +58,7 @@ class CellDataTypesShouldMatchValidator extends ConstraintValidator
                 switch ($column->dataType()->asString()) {
                     case 'text':
                     // TODO CPM-451 Add tests for this case
-                    case 'record':
+                    case 'reference_entity':
                     case 'select':
                         if (!is_string($data)) {
                             $this->addViolation('string', $data, $rowIndex, $stringColumnCode);

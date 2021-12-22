@@ -11,7 +11,7 @@ jest.mock('../../../../src/fetchers/RecordFetcher');
 describe('RecordCellIndex', () => {
   it('should render code if record is not found', async () => {
     renderWithProviders(
-      <TestAttributeContextProvider attribute={getComplexTableAttribute('record')}>
+      <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
         <CellMappingContext.Provider
           value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
         >

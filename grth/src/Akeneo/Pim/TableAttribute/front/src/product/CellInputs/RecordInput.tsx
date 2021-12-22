@@ -4,7 +4,7 @@ import {Dropdown, IconButton, Image, LinkIcon, TableInput, useDebounce} from 'ak
 import {useRecords} from '../useRecords';
 import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {CompletenessBadge} from './CompletenessBadge';
-import {RecordCode, RecordColumnDefinition, ReferenceEntityRecord} from '../../models';
+import {RecordCode, ReferenceEntityColumnDefinition, ReferenceEntityRecord} from '../../models';
 import {ReferenceEntityRecordRepository} from '../../repositories';
 
 const DEFAULT_IMAGE_PATH = '/bundles/pimui/img/image_default.png';
@@ -20,7 +20,7 @@ const RecordInput: CellInput = ({columnDefinition, highlighted, inError, row, on
   const [searchValue, setSearchValue] = React.useState<string>('');
   const debouncedSearchValue = useDebounce(searchValue, 200);
 
-  const referenceEntityCode = (columnDefinition as RecordColumnDefinition).reference_entity_identifier;
+  const referenceEntityCode = (columnDefinition as ReferenceEntityColumnDefinition).reference_entity_identifier;
   const cell = row[columnDefinition.code] as RecordCode | undefined;
 
   const {items, handleNextPage} = useRecords({

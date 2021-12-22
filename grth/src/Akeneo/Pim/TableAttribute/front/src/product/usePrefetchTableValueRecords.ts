@@ -1,6 +1,6 @@
 import React from 'react';
 import {useRouter, useUserContext} from '@akeneo-pim-community/shared';
-import {RecordCode, RecordColumnDefinition} from '../models';
+import {RecordCode, ReferenceEntityColumnDefinition} from '../models';
 import {ReferenceEntityRecordRepository} from '../repositories';
 import {useAttributeContext} from '../contexts';
 import {TableValueWithId} from './TableFieldApp';
@@ -15,14 +15,14 @@ const usePrefetchTableValueRecords: (valueData: TableValueWithId) => boolean = v
   React.useEffect(() => {
     if (isAttributeDefined && attribute) {
       const prefetchPromises = attribute.table_configuration
-        .filter(columnDefinition => columnDefinition.data_type === 'record')
+        .filter(columnDefinition => columnDefinition.data_type === 'reference_entity')
         .map(column => {
           const cellCodes = valueData
             .map(row => row[column.code] as RecordCode | undefined)
             .filter(cellCode => typeof cellCode !== 'undefined') as RecordCode[];
           return ReferenceEntityRecordRepository.search(
             router,
-            (column as RecordColumnDefinition).reference_entity_identifier,
+            (column as ReferenceEntityColumnDefinition).reference_entity_identifier,
             {
               locale: userContext.get('catalogLocale'),
               channel: userContext.get('catalogScope'),

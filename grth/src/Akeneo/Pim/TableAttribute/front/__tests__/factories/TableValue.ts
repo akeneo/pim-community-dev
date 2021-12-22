@@ -10,7 +10,7 @@ export const getTableValueSelectRow: () => TableRow = () => {
   };
 };
 
-export const getTableValueWithId: (firstColumnType?: 'select' | 'record') => TableValueWithId = (
+export const getTableValueWithId: (firstColumnType?: 'select' | 'reference_entity') => TableValueWithId = (
   firstColumnType = 'select'
 ) => {
   return firstColumnType === 'select'

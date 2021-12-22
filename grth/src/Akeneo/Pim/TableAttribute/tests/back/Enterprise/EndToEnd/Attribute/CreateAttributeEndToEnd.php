@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class CreateAttributeEndToEnd extends AbstractAttributeApiTestCase
 {
-    public function testItCreatesAValidTableAttributeWithARecordColumn(): void
+    public function testItCreatesAValidTableAttributeWithAReferenceEntityColumn(): void
     {
         $client = $this->createAuthenticatedClient();
         $data =
@@ -35,7 +35,7 @@ final class CreateAttributeEndToEnd extends AbstractAttributeApiTestCase
             },
             {
                 "code": "record",
-                "data_type": "record",
+                "data_type": "reference_entity",
                 "reference_entity_identifier": "entity"
             }
         ]
@@ -65,7 +65,7 @@ JSON;
             ],
             [
                 'code' => 'record',
-                'data_type' => 'record',
+                'data_type' => 'reference_entity',
                 'labels' => [],
                 'validations' => [],
                 'is_required_for_completeness' => false,

@@ -1,5 +1,5 @@
 import React from 'react';
-import {RecordCode, RecordColumnDefinition, ReferenceEntityRecord} from '../../models';
+import {RecordCode, ReferenceEntityColumnDefinition, ReferenceEntityRecord} from '../../models';
 import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {useAttributeContext} from '../../contexts';
 import {ReferenceEntityRecordRepository} from '../../repositories';
@@ -29,13 +29,15 @@ const RecordCellIndex: React.FC<RecordCellIndexProps> = ({searchText, value}) =>
   const firstColumn = attribute?.table_configuration?.[0];
   const [record, setRecord] = React.useState<ReferenceEntityRecord | undefined | null>();
   const cellMatchersMapping = useCellMatchersMapping();
-  const isMatching = cellMatchersMapping['record'] ? cellMatchersMapping['record'].default() : () => false;
+  const isMatching = cellMatchersMapping['reference_entity']
+    ? cellMatchersMapping['reference_entity'].default()
+    : () => false;
 
   React.useEffect(() => {
     if (attribute) {
       ReferenceEntityRecordRepository.findByCode(
         router,
-        (firstColumn as RecordColumnDefinition).reference_entity_identifier,
+        (firstColumn as ReferenceEntityColumnDefinition).reference_entity_identifier,
         value
       ).then(record => {
         setRecord(record);

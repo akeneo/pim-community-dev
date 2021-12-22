@@ -215,9 +215,9 @@ final class CreateAttributeContext implements Context
     }
 
     /**
-     * @When I create a table attribute with record first column
+     * @When I create a table attribute with reference entity first column
      */
-    public function iCreateATableAttributeWithRecordFirstColumn(): void
+    public function iCreateATableAttributeWithReferenceEntityFirstColumn(): void
     {
         $attribute = $this->attributeBuilder
             ->withCode('table')
@@ -226,7 +226,7 @@ final class CreateAttributeContext implements Context
             ->build();
         $attribute->setRawTableConfiguration([
             [
-                'data_type' => 'record',
+                'data_type' => 'reference_entity',
                 'code' => 'brand',
                 'reference_entity_identifier' => 'brands',
             ],

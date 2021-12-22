@@ -14,7 +14,7 @@ import {
   useDebounce,
 } from 'akeneo-design-system';
 import {getLabel, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {RecordColumnDefinition, SelectOptionCode} from '../models';
+import {ReferenceEntityColumnDefinition, SelectOptionCode} from '../models';
 import {useAttributeContext} from '../contexts';
 import {RECORD_FETCHER_DEFAULT_LIMIT} from '../fetchers';
 import {useRecords} from './useRecords';
@@ -57,7 +57,7 @@ const RecordAddRowsButton: React.FC<RecordAddRowsButtonProps> = ({
     () => checkedOptionCodes.map(code => code.toLowerCase()),
     [checkedOptionCodes]
   );
-  const referenceEntityCode = (attribute?.table_configuration[0] as RecordColumnDefinition)
+  const referenceEntityCode = (attribute?.table_configuration[0] as ReferenceEntityColumnDefinition)
     ?.reference_entity_identifier;
   const {items, isLoading, handleNextPage} = useRecords({
     itemsPerPage,

@@ -31,7 +31,7 @@ describe('AddRowsButton', () => {
   it('should render record rows button', async () => {
     const toggleChange = jest.fn();
     renderWithProviders(
-      <TestAttributeContextProvider attribute={getComplexTableAttribute('record')}>
+      <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
         <AddRowsButton checkedOptionCodes={[]} toggleChange={toggleChange} />
       </TestAttributeContextProvider>
     );

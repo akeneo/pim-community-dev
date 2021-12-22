@@ -65,7 +65,7 @@ final class ExportTableAttributeIntegration extends TestCase
                 ],
                 [
                     'code' => 'brand',
-                    'data_type' => 'record',
+                    'data_type' => 'reference_entity',
                     'labels' => [
                         'en_US' => 'Brand',
                     ],
@@ -134,7 +134,7 @@ final class ExportTableAttributeIntegration extends TestCase
                 ],
                 [
                     'code' => 'brand',
-                    'data_type' => 'record',
+                    'data_type' => 'reference_entity',
                     'labels' => [
                         'en_US' => 'Brand',
                     ],
@@ -217,7 +217,7 @@ final class ExportTableAttributeIntegration extends TestCase
                 ],
                 [
                     'code' => 'brand',
-                    'data_type' => 'record',
+                    'data_type' => 'reference_entity',
                     'labels' => [
                         'en_US' => 'Brand',
                     ],

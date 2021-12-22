@@ -9,7 +9,7 @@ import {mockScroll} from '../../../shared/mockScroll';
 jest.mock('../../../../src/fetchers/RecordFetcher');
 mockScroll();
 
-const tableAttribute = getComplexTableAttribute('record');
+const tableAttribute = getComplexTableAttribute('reference_entity');
 
 const openDropDown = async () => {
   userEvent.click(await screen.findByTitle('pim_common.open'));
@@ -23,7 +23,7 @@ describe('RecordInput', () => {
         columnDefinition={tableAttribute.table_configuration[0]}
         highlighted={false}
         inError={false}
-        row={getTableValueWithId('record')[0]}
+        row={getTableValueWithId('reference_entity')[0]}
         onChange={onChange}
         attribute={tableAttribute}
         setAttribute={jest.fn()}
@@ -70,7 +70,7 @@ describe('RecordInput', () => {
         columnDefinition={tableAttribute.table_configuration[0]}
         highlighted={false}
         inError={false}
-        row={getTableValueWithId('record')[0]}
+        row={getTableValueWithId('reference_entity')[0]}
         onChange={jest.fn()}
         attribute={tableAttribute}
         setAttribute={jest.fn()}
@@ -92,7 +92,7 @@ describe('RecordInput', () => {
         columnDefinition={tableAttribute.table_configuration[0]}
         highlighted={false}
         inError={false}
-        row={getTableValueWithId('record')[0]}
+        row={getTableValueWithId('reference_entity')[0]}
         onChange={jest.fn()}
         attribute={tableAttribute}
         setAttribute={jest.fn()}

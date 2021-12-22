@@ -11,7 +11,7 @@ describe('RecordMatcher', () => {
   it('should match if search text match', () => {
     const wrapper = ({children}: PropsWithChildren<{}>) => (
       <DependenciesProvider>
-        <TestAttributeContextProvider attribute={getComplexTableAttribute('record')}>
+        <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
           {children}
         </TestAttributeContextProvider>
       </DependenciesProvider>

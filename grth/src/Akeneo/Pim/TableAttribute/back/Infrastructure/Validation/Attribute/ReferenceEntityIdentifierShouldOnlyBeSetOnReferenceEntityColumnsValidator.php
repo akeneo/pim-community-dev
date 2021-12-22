@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute;
 
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\RecordColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
-final class ReferenceEntityIdentifierShouldOnlyBeSetOnRecordColumnsValidator extends ConstraintValidator
+final class ReferenceEntityIdentifierShouldOnlyBeSetOnReferenceEntityColumnsValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint): void
     {
-        Assert::isInstanceOf($constraint, ReferenceEntityIdentifierShouldOnlyBeSetOnRecordColumns::class);
+        Assert::isInstanceOf($constraint, ReferenceEntityIdentifierShouldOnlyBeSetOnReferenceEntityColumns::class);
         if (!\is_array($value) ||
             !isset($value['data_type']) ||
             !\is_string($value['data_type'])
@@ -32,14 +32,14 @@ final class ReferenceEntityIdentifierShouldOnlyBeSetOnRecordColumnsValidator ext
 
         if (
             !isset($value['reference_entity_identifier']) &&
-            RecordColumn::DATATYPE === $value['data_type']
+            ReferenceEntityColumn::DATATYPE === $value['data_type']
         ) {
             $this->context->buildViolation(
                 'pim_table_configuration.validation.table_configuration.reference_entity_identifier_must_be_filled'
             )->addViolation();
         } elseif (
             isset($value['reference_entity_identifier']) &&
-            RecordColumn::DATATYPE !== $value['data_type']
+            ReferenceEntityColumn::DATATYPE !== $value['data_type']
         ) {
             $this->context->buildViolation(
                 'pim_table_configuration.validation.table_configuration.reference_entity_identifier_cannot_be_set',

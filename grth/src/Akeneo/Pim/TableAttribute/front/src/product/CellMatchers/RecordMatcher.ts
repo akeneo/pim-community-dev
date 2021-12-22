@@ -2,7 +2,7 @@ import {CellMatcher} from './index';
 import {useAttributeContext} from '../../contexts';
 import {getLabel, useUserContext} from '@akeneo-pim-community/shared';
 import {ReferenceEntityRecordRepository} from '../../repositories';
-import {RecordCode, RecordColumnDefinition} from '../../models';
+import {RecordCode, ReferenceEntityColumnDefinition} from '../../models';
 
 const useSearch: CellMatcher = () => {
   const {attribute} = useAttributeContext();
@@ -16,7 +16,7 @@ const useSearch: CellMatcher = () => {
 
     const column = attribute.table_configuration.find(
       columnDefinition => columnDefinition.code === columnCode
-    ) as RecordColumnDefinition;
+    ) as ReferenceEntityColumnDefinition;
     const referenceEntityIdentifier = column.reference_entity_identifier;
     const record = ReferenceEntityRecordRepository.getCachedByCode(referenceEntityIdentifier, cell as RecordCode);
 

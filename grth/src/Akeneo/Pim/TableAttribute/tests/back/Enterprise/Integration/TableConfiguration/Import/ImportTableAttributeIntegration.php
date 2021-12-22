@@ -40,7 +40,7 @@ class ImportTableAttributeIntegration extends TestCase
     {
         $csv = <<<CSV
 code;type;localizable;scopable;group;unique;sort_order;table_configuration
-nutrition;pim_catalog_table;0;0;other;0;2;[{"code":"ingredients","data_type":"select","labels":{"en_US":"Ingredients"},"options":[{"code":"salt","labels":{"en_US":"Salt"}}]},{"code":"quantity","data_type":"text","labels":{"en_US":"Quantity"},"validations":{"max_length":50},"is_required_for_completeness":true},{"code":"brand","data_type":"record","is_required_for_completeness":false,"reference_entity_identifier":"brands"}]
+nutrition;pim_catalog_table;0;0;other;0;2;[{"code":"ingredients","data_type":"select","labels":{"en_US":"Ingredients"},"options":[{"code":"salt","labels":{"en_US":"Salt"}}]},{"code":"quantity","data_type":"text","labels":{"en_US":"Quantity"},"validations":{"max_length":50},"is_required_for_completeness":true},{"code":"brand","data_type":"reference_entity","is_required_for_completeness":false,"reference_entity_identifier":"brands"}]
 CSV;
         $this->jobLauncher->launchImport(self::CSV_IMPORT_JOB_CODE, $csv);
 
@@ -50,7 +50,7 @@ CSV;
             [
                 ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients'], 'validations' => (object) [], 'is_required_for_completeness' => true],
                 ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity'], 'validations' => ['max_length' => 50], 'is_required_for_completeness' => true],
-                ['code' => 'brand', 'data_type' => 'record', 'labels' => (object) [], 'validations' => (object) [], 'is_required_for_completeness' => false, 'reference_entity_identifier' => 'brands'],
+                ['code' => 'brand', 'data_type' => 'reference_entity', 'labels' => (object) [], 'validations' => (object) [], 'is_required_for_completeness' => false, 'reference_entity_identifier' => 'brands'],
             ],
             $this->getRawTableConfigurationWithoutIds($nutritionAttribute)
         );
@@ -73,7 +73,7 @@ CSV;
                     'other',
                     '0',
                     '5',
-                    '[{"code":"ingredients","data_type":"select","labels":{"en_US":"Ingredients"},"options":[{"code":"salt","labels":{"en_US":"Salt"}}]},{"code":"quantity","data_type":"text","labels":{"en_US":"Quantity"}},{"code":"brand","data_type":"record","is_required_for_completeness":false,"reference_entity_identifier":"brands"}]',
+                    '[{"code":"ingredients","data_type":"select","labels":{"en_US":"Ingredients"},"options":[{"code":"salt","labels":{"en_US":"Salt"}}]},{"code":"quantity","data_type":"text","labels":{"en_US":"Quantity"}},{"code":"brand","data_type":"reference_entity","is_required_for_completeness":false,"reference_entity_identifier":"brands"}]',
                 ]),
             ]
         );
@@ -94,7 +94,7 @@ CSV;
             [
                 ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients'], 'validations' => (object) [], 'is_required_for_completeness' => true],
                 ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity'], 'validations' => (object) [], 'is_required_for_completeness' => false],
-                ['code' => 'brand', 'data_type' => 'record', 'labels' => (object) [], 'validations' => (object) [], 'is_required_for_completeness' => false, 'reference_entity_identifier' => 'brands'],
+                ['code' => 'brand', 'data_type' => 'reference_entity', 'labels' => (object) [], 'validations' => (object) [], 'is_required_for_completeness' => false, 'reference_entity_identifier' => 'brands'],
             ],
             $this->getRawTableConfigurationWithoutIds($nutritionAttribute)
         );

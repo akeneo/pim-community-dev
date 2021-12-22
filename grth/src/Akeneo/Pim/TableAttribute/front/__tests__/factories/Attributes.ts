@@ -1,7 +1,7 @@
 import {TableAttribute} from '../../src';
 import {getComplexTableConfiguration} from './TableConfiguration';
 
-const getComplexTableAttribute: (firstColumnType?: 'select' | 'record') => TableAttribute = (
+const getComplexTableAttribute: (firstColumnType?: 'select' | 'reference_entity') => TableAttribute = (
   firstColumnType = 'select'
 ) => {
   return {

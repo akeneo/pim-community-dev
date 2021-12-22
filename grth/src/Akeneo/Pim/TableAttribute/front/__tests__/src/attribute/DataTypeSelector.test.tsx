@@ -22,16 +22,16 @@ describe('DataTypeSelector', () => {
 
     fireEvent.click(screen.getByTitle('pim_common.open'));
     Object.keys(defaultDataTypesMapping).forEach(dataType => {
-      if (dataType !== 'record') {
+      if (dataType !== 'reference_entity') {
         expect(screen.getByText(`pim_table_attribute.properties.data_type.${dataType}`)).toBeInTheDocument();
       }
     });
-    expect(screen.queryByText('pim_table_attribute.properties.data_type.record')).not.toBeInTheDocument();
+    expect(screen.queryByText('pim_table_attribute.properties.data_type.reference_entity')).not.toBeInTheDocument();
     fireEvent.click(screen.getByText('pim_table_attribute.properties.data_type.boolean'));
     expect(handleChange).toBeCalledWith('boolean');
   });
 
-  it('should display display record data type', () => {
+  it('should display display reference entity data type', () => {
     renderWithFeatureFlag(
       <DataTypeSelector
         dataType={null}
@@ -43,7 +43,7 @@ describe('DataTypeSelector', () => {
     );
 
     fireEvent.click(screen.getByTitle('pim_common.open'));
-    expect(screen.getByText('pim_table_attribute.properties.data_type.record')).toBeInTheDocument();
+    expect(screen.getByText('pim_table_attribute.properties.data_type.reference_entity')).toBeInTheDocument();
   });
 
   it('should only display first column data types', async () => {
@@ -59,7 +59,7 @@ describe('DataTypeSelector', () => {
 
     fireEvent.click(screen.getByTitle('pim_common.open'));
     expect(screen.getByText('pim_table_attribute.properties.data_type.select')).toBeInTheDocument();
-    expect(screen.getByText('pim_table_attribute.properties.data_type.record')).toBeInTheDocument();
+    expect(screen.getByText('pim_table_attribute.properties.data_type.reference_entity')).toBeInTheDocument();
     expect(screen.queryByText('pim_table_attribute.properties.data_type.boolean')).not.toBeInTheDocument();
   });
 

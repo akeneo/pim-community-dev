@@ -16,7 +16,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Value\Factory\NonExistentValu
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentValuesFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\RecordColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
@@ -160,8 +160,8 @@ class NonExistentTableValueFilter implements NonExistentValuesFilter
         $firstColumnId = $tableConfiguration->getFirstColumnId()->asString();
 
         $recordColumnObject = [];
-        foreach ($tableConfiguration->getRecordColumns() as $recordColumn) {
-            /** @var RecordColumn $recordColumn */
+        foreach ($tableConfiguration->getReferenceEntityColumns() as $recordColumn) {
+            /** @var ReferenceEntityColumn $recordColumn */
             $recordColumnObject[\strtolower($recordColumn->id()->asString())] = $recordColumn;
         }
 

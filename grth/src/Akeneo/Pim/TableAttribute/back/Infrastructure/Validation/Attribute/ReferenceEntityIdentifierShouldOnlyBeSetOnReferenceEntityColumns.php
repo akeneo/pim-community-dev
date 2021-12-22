@@ -15,6 +15,6 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute;
 
 use Symfony\Component\Validator\Constraint;
 
-final class ReferenceEntityIdentifierShouldOnlyBeSetOnRecordColumns extends Constraint
+final class ReferenceEntityIdentifierShouldOnlyBeSetOnReferenceEntityColumns extends Constraint
 {
 }

@@ -5,7 +5,7 @@ import {
   ColumnDefinition,
   DataType,
   isColumnCodeNotAvailable,
-  RecordColumnDefinition,
+  ReferenceEntityColumnDefinition,
   ReferenceEntityIdentifierOrCode,
 } from '../models';
 import {LabelCollection, useFeatureFlags, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
@@ -136,7 +136,8 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
   const isValid = (silent: boolean) => {
     if (validateCode(columnDefinition.code, silent) + validateDataType(columnDefinition.data_type, silent) > 0)
       return false;
-    if (columnDefinition.data_type === 'record' && !columnDefinition.reference_entity_identifier) return false;
+    if (columnDefinition.data_type === 'reference_entity' && !columnDefinition.reference_entity_identifier)
+      return false;
     return true;
   };
 
@@ -151,7 +152,8 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
       validations: {},
     } as ColumnDefinition;
     if (columnDefinition.reference_entity_identifier) {
-      (newColumn as RecordColumnDefinition).reference_entity_identifier = columnDefinition.reference_entity_identifier;
+      (newColumn as ReferenceEntityColumnDefinition).reference_entity_identifier =
+        columnDefinition.reference_entity_identifier;
     }
     onCreate(newColumn);
   };
@@ -213,7 +215,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
             </Helper>
           )}
         </Field>
-        {columnDefinition.data_type === 'record' && (
+        {columnDefinition.data_type === 'reference_entity' && (
           <Field label={translate('pim_table_attribute.form.attribute.reference_entity')}>
             <ReferenceEntitySelector
               emptyResultLabel={translate('pim_common.no_result')}

@@ -189,7 +189,7 @@ pim_table_attribute:
             number: Number
             boolean: Yes/No
             select: Select
-            record: Reference entity
+            reference_entity: Reference entity
     validations:
         column_code_must_be_filled: The code must be filled
         not_available_code: This column code is not available
