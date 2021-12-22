@@ -111,3 +111,9 @@ services:
     Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\ConstraintGuesser\TableGuesser:
         tags:
             - { name: 'pim_catalog.constraint_guesser.attribute' }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ImmutableReferenceEntityIdentifierValidator:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
+        tags:
+            - { name: 'validator.constraint_validator' }

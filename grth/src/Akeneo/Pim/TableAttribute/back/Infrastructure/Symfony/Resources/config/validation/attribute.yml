@@ -3,6 +3,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
     - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsTableAttributeConfigured: ~
     - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnCodeCannotBeChanged: ~
     - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsMaximumTableAttributesReached: ~
+    - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ImmutableReferenceEntityIdentifier: ~
   properties:
     rawTableConfiguration:
       - Type: array

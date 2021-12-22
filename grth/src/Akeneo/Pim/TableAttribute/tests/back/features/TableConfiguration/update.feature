@@ -25,3 +25,9 @@ Feature: Update a table attribute
     And a valid table attribute
     When I update a table attribute with a valid configuration
     Then There is no violation
+
+  @only-ee
+  Scenario: Cannot update the identifier of a reference entity column
+    Given a table attribute with the following configuration '{"data_type": "record", "code": "brand", "reference_entity_identifier": "brands"}'
+    When I update the reference entity identifier of the "brand" column
+    Then There is a violation with message: The reference_entity_identifier cannot be updated

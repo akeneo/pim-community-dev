@@ -157,6 +157,33 @@ final class UpdateAttributeContext implements Context
     }
 
     /**
+     * @When I update the reference entity identifier of the :columnCode column
+     */
+    public function iUpdateTheReferenceEntityIdentifierForColumn(string $columnCode): void
+    {
+        $attribute = $this->attributeRepository->findOneByIdentifier(self::ATTRIBUTE_IDENTIFIER);
+        $rawTableConfiguration = $attribute->getRawTableConfiguration();
+
+        // we update and validate the clone in order not to modify the attribute stored in the in memory repo
+        $updatedAttribute = clone $attribute;
+        foreach ($rawTableConfiguration as $index => $columnDefinition) {
+            if ($columnDefinition['code'] === $columnCode) {
+                $rawTableConfiguration[$index]['reference_entity_identifier'] = 'designers';
+            }
+        }
+        $updatedAttribute->setRawTableConfiguration($rawTableConfiguration);
+
+        $violations = $this->validator->validate($updatedAttribute);
+        if (0 < $violations->count()) {
+            $this->constraintViolationsContext->add($violations);
+
+            return;
+        }
+
+        $this->attributeRepository->save($updatedAttribute);
+    }
+
+    /**
      * @Then the attribute contains the ":columnCode" column
      */
     public function theAttributeContainsTheColumn(string $columnCode): void

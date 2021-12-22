@@ -129,6 +129,7 @@ final class CreateAttributeContext implements Context
     }
 
     /**
+     * @Given /^a table attribute with the following configuration '([^']*)'$/
      * @When /^I create a table attribute with a configuration '([^']*)'$/
      */
     public function iCreateATableAttributeWithAConfiguration(string $jsonAsString): void
