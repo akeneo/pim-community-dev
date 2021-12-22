@@ -24,6 +24,8 @@ type BrandingProps = {
   branding: Branding;
   validationErrors: BrandingError[];
   onBrandingChange: (updatedBranding: Branding) => void;
+  /** TODO pullup master: replace by useFeatureFlags() hook */
+  featureFlagIsEnabled: (featureFlag: string) => boolean;
 };
 
 const Branding = (props: BrandingProps) => (
@@ -34,7 +36,7 @@ const Branding = (props: BrandingProps) => (
   </DependenciesProvider>
 );
 
-const BrandingForm = ({branding, validationErrors, onBrandingChange}: BrandingProps) => {
+const BrandingForm = ({branding, validationErrors, onBrandingChange, featureFlagIsEnabled}: BrandingProps) => {
   const translate = useTranslate();
 
   return (
@@ -49,33 +51,37 @@ const BrandingForm = ({branding, validationErrors, onBrandingChange}: BrandingPr
           <Helper>{translate('shared_catalog.branding.logo.file_information_helper')}</Helper>
         </ImageUploader>
       </FieldContainer>
-      <FieldContainer>
-        <ImageUploader
-          label={translate('shared_catalog.branding.cover.label')}
-          image={branding.cover_image ?? null}
-          validationErrors={validationErrors
-            .filter(error => 'cover_image' in error)
-            .map(error => translate(error.cover_image))}
-          onChange={cover_image => onBrandingChange({...branding, cover_image})}
-        >
-          <Helper>{translate('shared_catalog.branding.cover.file_information_helper')}</Helper>
-        </ImageUploader>
-      </FieldContainer>
-      <FieldContainer>
-        <Field label={translate('shared_catalog.branding.color.label')}>
-          <ColorInput
-            onChange={color => onBrandingChange({...branding, color})}
-            value={branding.color ?? sharedCatalogsTheme.color.brand100}
-          />
-          {validationErrors
-            .filter(error => 'color' in error)
-            .map(error => (
-              <Helper key={error.color} inline={true} level="error">
-                {translate(error.color)}
-              </Helper>
-            ))}
-        </Field>
-      </FieldContainer>
+      {featureFlagIsEnabled('new_shared_catalog_branding') && (
+        <>
+          <FieldContainer>
+            <ImageUploader
+              label={translate('shared_catalog.branding.cover.label')}
+              image={branding.cover_image ?? null}
+              validationErrors={validationErrors
+                .filter(error => 'cover_image' in error)
+                .map(error => translate(error.cover_image))}
+              onChange={cover_image => onBrandingChange({...branding, cover_image})}
+            >
+              <Helper>{translate('shared_catalog.branding.cover.file_information_helper')}</Helper>
+            </ImageUploader>
+          </FieldContainer>
+          <FieldContainer>
+            <Field label={translate('shared_catalog.branding.color.label')}>
+              <ColorInput
+                onChange={color => onBrandingChange({...branding, color})}
+                value={branding.color ?? sharedCatalogsTheme.color.brand100}
+              />
+              {validationErrors
+                .filter(error => 'color' in error)
+                .map(error => (
+                  <Helper key={error.color} inline={true} level="error">
+                    {translate(error.color)}
+                  </Helper>
+                ))}
+            </Field>
+          </FieldContainer>
+        </>
+      )}
     </>
   );
 };
