@@ -35,3 +35,21 @@ test('it returns false when max connections limit is false ', async () => {
 
     expect(result.current).toStrictEqual(false);
 });
+
+test('it returns true on fetch error', async () => {
+    mockFetchResponses({
+        'akeneo_connectivity_connection_rest_connections_max_limit_reached':
+            {
+                reject: true,
+                json: {},
+            },
+    });
+
+    const {result, waitForNextUpdate} = renderHook(() => useConnectionsLimitReached());
+
+    expect(result.current).toBeNull();
+
+    await waitForNextUpdate();
+
+    expect(result.current).toStrictEqual(true);
+});

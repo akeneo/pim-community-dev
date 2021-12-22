@@ -17,18 +17,20 @@ export const useConnectionsLimitReached = (): boolean | null => {
         });
 
         if (!response.ok) {
-            setLimitReached(null);
             return Promise.reject(`${response.status} ${response.statusText}`);
         }
 
-        response.json()
-            .then((content: MaxLimitReached) => content.limitReached)
-            .then(setLimitReached);
+        return response.json()
+            .then((content: MaxLimitReached) => content.limitReached);
     }, [url]);
 
     useEffect(() => {
-        fetchCallback();
-    }, [fetchCallback]);
+        fetchCallback()
+            .then(setLimitReached)
+            .catch(() => {
+                setLimitReached(true);
+            });
+    }, [fetchCallback, setLimitReached]);
 
     return isLimitReached;
 };
