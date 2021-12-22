@@ -4,10 +4,9 @@ import {useConnectionsLimitReached} from '@src/shared/hooks/use-connections-limi
 
 test('it returns true when max connections limit is true ', async () => {
     mockFetchResponses({
-        'akeneo_connectivity_connection_rest_connections_max_limit_reached':
-            {
-                json: {limitReached: true},
-            },
+        akeneo_connectivity_connection_rest_connections_max_limit_reached: {
+            json: {limitReached: true},
+        },
     });
 
     const {result, waitForNextUpdate} = renderHook(() => useConnectionsLimitReached());
@@ -21,10 +20,9 @@ test('it returns true when max connections limit is true ', async () => {
 
 test('it returns false when max connections limit is false ', async () => {
     mockFetchResponses({
-        'akeneo_connectivity_connection_rest_connections_max_limit_reached':
-            {
-                json: {limitReached: false},
-            },
+        akeneo_connectivity_connection_rest_connections_max_limit_reached: {
+            json: {limitReached: false},
+        },
     });
 
     const {result, waitForNextUpdate} = renderHook(() => useConnectionsLimitReached());
@@ -38,11 +36,10 @@ test('it returns false when max connections limit is false ', async () => {
 
 test('it returns true on fetch error', async () => {
     mockFetchResponses({
-        'akeneo_connectivity_connection_rest_connections_max_limit_reached':
-            {
-                reject: true,
-                json: {},
-            },
+        akeneo_connectivity_connection_rest_connections_max_limit_reached: {
+            reject: true,
+            json: {},
+        },
     });
 
     const {result, waitForNextUpdate} = renderHook(() => useConnectionsLimitReached());

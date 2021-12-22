@@ -2,7 +2,7 @@ import {useRoute} from '../router';
 import {useState, useEffect, useCallback} from 'react';
 
 interface MaxLimitReached {
-    limitReached: boolean
+    limitReached: boolean;
 }
 
 export const useConnectionsLimitReached = (): boolean | null => {
@@ -20,8 +20,7 @@ export const useConnectionsLimitReached = (): boolean | null => {
             return Promise.reject(`${response.status} ${response.statusText}`);
         }
 
-        return response.json()
-            .then((content: MaxLimitReached) => content.limitReached);
+        return response.json().then((content: MaxLimitReached) => content.limitReached);
     }, [url]);
 
     useEffect(() => {
@@ -34,4 +33,3 @@ export const useConnectionsLimitReached = (): boolean | null => {
 
     return isLimitReached;
 };
-

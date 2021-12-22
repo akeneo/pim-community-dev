@@ -73,11 +73,7 @@ export const ListConnections = () => {
     );
 
     const createButton = (
-        <ApplyButton
-            onClick={handleCreate}
-            disabled={false !== isLimitReached}
-            classNames={['AknButtonList-item']}
-        >
+        <ApplyButton onClick={handleCreate} disabled={false !== isLimitReached} classNames={['AknButtonList-item']}>
             <Translate id='pim_common.create' />
         </ApplyButton>
     );
