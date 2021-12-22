@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\PublishedProduct;
+namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing;
 
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
