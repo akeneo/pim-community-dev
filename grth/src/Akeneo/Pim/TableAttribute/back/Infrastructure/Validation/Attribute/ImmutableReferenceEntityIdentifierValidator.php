@@ -44,7 +44,7 @@ final class ImmutableReferenceEntityIdentifierValidator extends ConstraintValida
         $columnCode = $value['code'] ?? null;
         $dataType = $value['data_type'] ?? null;
         $referenceEntityIdentifier = $value['reference_entity_identifier'] ?? null;
-        if (null === $columnCode || null === $referenceEntityIdentifier || RecordColumn::DATATYPE !== $dataType) {
+        if (null === $columnCode || !is_string($referenceEntityIdentifier) || RecordColumn::DATATYPE !== $dataType) {
             return;
         }
 

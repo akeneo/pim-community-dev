@@ -100,6 +100,15 @@ class ImmutableReferenceEntityIdentifierValidatorSpec extends ObjectBehavior
         $this->validate(['data_type' => RecordColumn::DATATYPE, 'code' => 'brand'], new ImmutableReferenceEntityIdentifier());
     }
 
+    function it_does_nothing_if_the_reference_entity_identifier_is_not_a_string(
+        ExecutionContextInterface $context,
+        AttributeInterface $attribute
+    ): void {
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $this->validate(['data_type' => RecordColumn::DATATYPE, 'code' => 'brand', 'reference_entity_identifier' => 42], new ImmutableReferenceEntityIdentifier());
+    }
+    
     function it_does_nothing_if_the_attribute_is_new(
         ExecutionContextInterface $context,
         TableConfigurationRepository $tableConfigurationRepository,
