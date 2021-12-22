@@ -26,6 +26,15 @@ class TableProductValueRendererSpec extends ObjectBehavior
         $this->beConstructedWith($tableConfigurationFactory, $translator);
     }
 
+    function it_renders_nothing_without_value(
+        AttributeInterface $attribute,
+        LoaderInterface $loader
+    ) {
+        $environment = new Environment($loader->getWrappedObject());
+
+        $this->render($environment, $attribute, null, 'en_US')->shouldReturn('');
+    }
+
     function it_renders_a_table(
         TableConfigurationFactory $tableConfigurationFactory,
         TranslatorInterface $translator,
