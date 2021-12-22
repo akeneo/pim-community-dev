@@ -1,5 +1,6 @@
 free_trial:
   menu:
+    assets: Ressources
     entities: Entités
     proposals: Propositions
     rules: Règles
