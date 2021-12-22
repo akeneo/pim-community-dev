@@ -97,6 +97,7 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetConnectedAppScopesQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetUserConsentedAuthenticationUuidQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetUserConsentedAuthenticationScopesQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAccessTokenQuery'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateJsonWebToken:
         arguments:
@@ -170,3 +171,7 @@ services:
         arguments:
             - '@database_connection'
             - '@akeneo_connectivity.connection.clock'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAccessTokenQuery:
+        arguments:
+            - '@database_connection'
