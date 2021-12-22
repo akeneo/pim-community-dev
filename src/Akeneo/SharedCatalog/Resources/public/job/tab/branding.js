@@ -26,26 +26,30 @@ define([
 
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.onValidationError.bind(this));
 
+      this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', () => {
+        this.validationErrors = [];
+      });
+
       return BaseForm.prototype.configure.apply(this, arguments);
     },
 
     render: function() {
-      ReactDOM.unmountComponentAtNode(this.el);
-      this.$el.empty();
+      this.renderReact(
+        Branding,
+        {
+          branding: this.getFormData().configuration.branding || {image: null},
+          validationErrors: this.validationErrors,
+          onBrandingChange: branding => {
+            const data = {...this.getFormData()};
+            const configuration = {...data.configuration, branding};
+            const updatedData = {...data, configuration};
 
-      const Component = React.createElement(Branding, {
-        branding: this.getFormData().configuration.branding || {image: null},
-        validationErrors: this.validationErrors,
-        onBrandingChange: branding => {
-          const data = {...this.getFormData()};
-          const configuration = {...data.configuration, branding};
-          const updatedData = {...data, configuration};
-
-          this.setData(updatedData);
+            this.setData(updatedData);
+            this.render();
+          },
         },
-      });
-
-      ReactDOM.render(Component, this.el);
+        this.el
+      );
 
       return this;
     },
