@@ -6,33 +6,14 @@ class SharedCatalog
 {
     public const DEFAULT_COLOR = '#f9b53f';
 
-    /** @var string */
-    private $code;
-    /** @var string|null */
-    private $publisher;
-    /** @var array|null */
-    private $recipients;
-    /** @var array|null */
-    private $filters;
-    /** @var array|null */
-    private $branding;
-    /** @var string */
-    private $label;
-
     public function __construct(
-        string $code,
-        string $label,
-        ?string $publisher,
-        array $recipients,
-        ?array $filters,
-        ?array $branding
+        private  string $code,
+        private string $label,
+        private ?string $publisher,
+        private array $recipients,
+        private ?array $filters,
+        private ?array $branding
     ) {
-        $this->code = $code;
-        $this->label = $label;
-        $this->publisher = $publisher;
-        $this->recipients = $recipients;
-        $this->filters = $filters;
-        $this->branding = $branding;
     }
 
     public function getDefaultScope(): ?string
