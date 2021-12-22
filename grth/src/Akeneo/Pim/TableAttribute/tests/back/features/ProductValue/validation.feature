@@ -30,10 +30,22 @@ Feature: Enrich a table attribute value
 
   Scenario: Filling a cell with the wrong data type raises an error
     When a product is created with values:
-      | attribute | json_data                                 |
-      | nutrition | [{"ingredient": 1, "quantity": "abcdef"}] |
+      | attribute | json_data                                                                        |
+      | nutrition | [{"ingredient": 1, "quantity": "abcdef", "isAllergen": "ghijk", "comments": 25}] |
     Then the error 'The "quantity" column expects a numeric, string given' is raised
     And the error 'The "ingredient" column expects a string, integer given' is raised
+    And the error 'The "isAllergen" column expects a boolean, string given' is raised
+    And the error 'The "comments" column expects a string, integer given' is raised
+
+  @only-ee
+  Scenario: Filling a cell with the wrong data type raises an error
+    Given the following attributes:
+      | code        | type                     | table_configuration                                                                                                                                                                                |
+      | brands      | pim_catalog_table        | [{"id": "brand_f6492fb4-d815-4d30-a912-8db321a3e38a", "code": "brand", "data_type": "record", "reference_entity_identifier": "brands"}, {"id": "quantity_f6492fb4-d815-4d30-a912-8db321a3e39a", "code": "quantity", "data_type": "number"}] |
+    When a product is created with values:
+      | attribute | json_data       |
+      | brands    | [{"brand": 1}]  |
+    Then the error 'The "brand" column expects a string, integer given' is raised
 
   Scenario: Not filling the first column raises an error
     When a product is created with values:
