@@ -5,7 +5,7 @@ import LocaleReference from 'akeneoassetmanager/domain/model/locale-reference';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 
-export class InvalidArgument extends Error {}
+class InvalidArgument extends Error {}
 
 type ViewGeneratorProps = {
   id?: string;
@@ -18,11 +18,11 @@ type ViewGeneratorProps = {
   invalid?: boolean;
 };
 
-export type ViewGenerator = React.FC<ViewGeneratorProps>;
+type ViewGenerator = React.FC<ViewGeneratorProps>;
 /**
  * @api
  */
-export type FilterViewProps = {
+type FilterViewProps = {
   attribute: NormalizedAttribute;
   filter: Filter | undefined;
   onFilterUpdated: (filter: Filter) => void;
@@ -32,7 +32,7 @@ export type FilterViewProps = {
   };
 };
 
-export type FilterView = React.FC<FilterViewProps>;
+type FilterView = React.FC<FilterViewProps>;
 
 type ValueConfig = {
   [type: string]: {
@@ -45,11 +45,11 @@ type ValueConfig = {
   };
 };
 
-export const hasFilterView = (config: ValueConfig) => (attributeType: string): boolean => {
+const hasFilterView = (config: ValueConfig, attributeType: string): boolean => {
   return undefined !== config[attributeType] && undefined !== config[attributeType].filter;
 };
 
-export const getFieldView = (config: ValueConfig) => (value: EditionValue): ViewGenerator => {
+const getFieldView = (config: ValueConfig, value: EditionValue): ViewGenerator => {
   const attributeType = value.attribute.type;
   const typeConfiguration = config[attributeType];
 
@@ -85,9 +85,9 @@ ${moduleExample}`
   }
 
   return typeConfiguration.view.view;
-};
+}
 
-export const getFilterView = (config: ValueConfig) => (attributeType: string): FilterView => {
+const getFilterView = (config: ValueConfig, attributeType: string): FilterView => {
   const typeConfiguration = config[attributeType];
   if (undefined === typeConfiguration || undefined === typeConfiguration.filter) {
     const expectedConfiguration = `config:
@@ -121,32 +121,21 @@ ${moduleExample}`
   return typeConfiguration.filter.filter;
 };
 
-export type FilterViewCollection = {
+type FilterViewCollection = {
   view: FilterView;
   attribute: NormalizedAttribute;
 }[];
 
-export const getFilterViews = (config: ValueConfig) => (attributes: NormalizedAttribute[]): FilterViewCollection => {
-  const attributesWithFilterViews = attributes.filter(({type}: NormalizedAttribute) => hasFilterView(config)(type));
+const getFilterViews = (config: ValueConfig, attributes: NormalizedAttribute[]): FilterViewCollection => {
+  const attributesWithFilterViews = attributes.filter(({type}: NormalizedAttribute) => hasFilterView(config, type));
+
   const filterViews = attributesWithFilterViews.map((attribute: NormalizedAttribute) => ({
-    view: getFilterView(config)(attribute.type),
+    view: getFilterView(config, attribute.type),
     attribute: attribute,
   }));
 
   return filterViews;
-};
+}
 
-/**
- * Explanation about the __moduleConfig variable:
- * It is automatically added by a webpack loader that you can check here:
- * https://github.com/akeneo/pim-community-dev/blob/master/webpack/config-loader.js
- * This loader looks at the requirejs.yml file and find every configuration related to this module. It transform it
- * into a javascript object and add it automatically to the file on the fly.
- */
-export const getValueConfig = () => __moduleConfig as ValueConfig;
-export const getDataFieldView = getFieldView(__moduleConfig as ValueConfig);
-export const getDataFilterView = getFilterView(__moduleConfig as ValueConfig);
-export const hasDataFilterView = hasFilterView(__moduleConfig as ValueConfig);
-export const getDataFilterViews = getFilterViews(__moduleConfig as ValueConfig);
-
-export {ValueConfig, ViewGeneratorProps};
+export {getFieldView, getFilterViews};
+export type {FilterView, FilterViewProps, ViewGenerator, ViewGeneratorProps, FilterViewCollection, ValueConfig};

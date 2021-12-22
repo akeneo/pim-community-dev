@@ -1,13 +1,9 @@
 import React, {ReactNode, useContext} from 'react';
-import {getValueConfig, ValueConfig} from '../configuration/value';
-
-const config = {
-  value: getValueConfig(),
-};
+import {ValueConfig} from '../configuration/value';
 
 type Config = {value: ValueConfig};
 
-const ConfigContext = React.createContext<Config>(config);
+const ConfigContext = React.createContext<Config | null>(null);
 
 type ConfigProviderProps = {
   config: Config;
@@ -18,14 +14,6 @@ const ConfigProvider = ({config, children}: ConfigProviderProps) => {
   return <ConfigContext.Provider value={config}>{children}</ConfigContext.Provider>;
 };
 
-const useConfig = (key: keyof Config) => {
-  const config = useContext(ConfigContext);
-
-  if (!(undefined !== config && key in config && undefined !== config[key])) {
-    throw new Error('Invalid config key');
-  }
-
-  return config[key];
-};
+const useConfig = () => useContext(ConfigContext);
 
 export {useConfig, ConfigProvider};
