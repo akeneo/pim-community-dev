@@ -16,6 +16,7 @@ interface FilterModule extends Backbone.View<any> {
   setValue: (value: FilterValue | number) => FilterModule;
   extend: (filterDefinition: FilterDefinition) => any;
   moveFilter?: (collection: any, element: any) => void;
+  setDatagrid?: (datagridName: string) => void;
 }
 
 interface FilterDefinition {
