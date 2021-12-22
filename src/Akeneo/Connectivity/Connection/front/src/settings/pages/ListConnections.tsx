@@ -33,7 +33,11 @@ export const ListConnections = () => {
     const wrongCredentialsCombinations = useWrongCredentialsCombinationsState();
     const dispatchCombinations = useWrongCredentialsCombinationsDispatch();
 
-    const listConnectionRoute = useRoute('akeneo_connectivity_connection_rest_list');
+    const listConnectionRoute = useRoute('akeneo_connectivity_connection_rest_list', {
+        search: JSON.stringify({
+            types: ['default'],
+        }),
+    });
 
     const isLimitReached = useConnectionsLimitReached();
 

@@ -65,6 +65,38 @@ class RequestAccessTokenActionEndToEnd extends WebTestCase
         Assert::assertEquals('delete_products read_association_types write_catalog_structure', $content['scope']);
     }
 
+    public function test_to_get_again_the_access_token(): void
+    {
+        $this->createApp();
+        $authCode = $this->getAuthCode();
+
+        $this->featureFlagMarketplaceActivate->enable();
+        $this->client->request(
+            'POST',
+            '/connect/apps/v1/oauth2/token',
+            [
+                'client_id' => $this->clientId,
+                'code' => $authCode,
+                'code_identifier' => 'any_code',
+                'code_challenge' => 'code_challenge_hash',
+                'grant_type' => 'authorization_code',
+            ]
+        );
+        $creationResponse = $this->client->getResponse();
+        Assert::assertEquals(Response::HTTP_OK, $creationResponse->getStatusCode());
+        $creationContent = json_decode($creationResponse->getContent(), true);
+        Assert::assertArrayHasKey('access_token', $creationContent);
+        Assert::assertIsString($creationContent['access_token']);
+        $createdToken = $creationContent['access_token'];
+
+        $secondResponse = $this->client->getResponse();
+        $content = json_decode($secondResponse->getContent(), true);
+
+        Assert::assertIsArray($content);
+        Assert::assertArrayHasKey('access_token', $content);
+        Assert::assertSame($createdToken, $content['access_token']);
+    }
+
     public function test_to_get_a_bad_request_if_the_request_is_wrong(): void
     {
         $this->createApp();

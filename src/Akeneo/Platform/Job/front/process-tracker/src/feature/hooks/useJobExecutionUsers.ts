@@ -3,7 +3,7 @@ import {useRoute, useIsMounted} from '@akeneo-pim-community/shared';
 
 const useJobExecutionUsers = (): string[] | null => {
   const [jobExecutionUsers, setJobExecutionUsers] = useState<string[] | null>(null);
-  const route = useRoute('akeneo_job_get_job_users_action');
+  const route = useRoute('akeneo_job_get_job_user_action');
   const isMounted = useIsMounted();
 
   useEffect(() => {

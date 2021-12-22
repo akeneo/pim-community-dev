@@ -1,3 +1,9 @@
 services:
   Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface:
     class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemorySearchJobExecution
+
+  Akeneo\Platform\Job\Application\SearchJobUser\SearchJobUserInterface:
+    class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemorySearchJobUser
+
+  Akeneo\Platform\Job\Application\FindJobType\FindJobTypeInterface:
+    class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryFindJobType
