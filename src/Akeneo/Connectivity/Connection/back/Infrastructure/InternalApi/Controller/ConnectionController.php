@@ -15,6 +15,7 @@ use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnec
 use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionCommand;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Query\FetchConnectionsHandler;
+use Akeneo\Connectivity\Connection\Application\Settings\Query\FetchConnectionsQuery;
 use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionQuery;
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
@@ -76,12 +77,14 @@ class ConnectionController
         $this->securityFacade = $securityFacade;
     }
 
-    public function list(): JsonResponse
+    public function list(Request $request): JsonResponse
     {
-        $connections = $this->fetchConnectionsHandler->query();
+        $query = new FetchConnectionsQuery(\json_decode($request->get('search', "[]"), true));
+
+        $connections = $this->fetchConnectionsHandler->handle($query);
 
         return new JsonResponse(
-            array_map(function (Connection $connection) {
+            \array_map(function (Connection $connection) {
                 return $connection->normalize();
             }, $connections)
         );

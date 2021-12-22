@@ -15,6 +15,7 @@ use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnec
 use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionCommand;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Query\FetchConnectionsHandler;
+use Akeneo\Connectivity\Connection\Application\Settings\Query\FetchConnectionsQuery;
 use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionQuery;
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
@@ -96,7 +97,9 @@ class ConnectionContext implements Context
      */
     public function iDisplayTheConnections(): void
     {
-        $this->fetchConnectionsHandler->query();
+        $query = new FetchConnectionsQuery([]);
+
+        $this->fetchConnectionsHandler->handle($query);
     }
 
     /**

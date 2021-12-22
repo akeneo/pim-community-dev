@@ -1,8 +1,7 @@
-import React, {FC, useContext} from 'react';
+import React, {FC} from 'react';
 import imgUrl from '../../../common/assets/illustrations/NewAPI.svg';
 import styled from '../../../common/styled-with-theme';
 import {useMediaUrlGenerator} from '../../../settings/use-media-url-generator';
-import {RouterContext, useRoute} from '../../../shared/router';
 import {Translate} from '../../../shared/translate';
 
 type Props = {
@@ -10,21 +9,15 @@ type Props = {
     label: string;
     image: string | null;
     errorCount: number;
+    onClick: () => void;
 };
 
-export const BusinessErrorCard: FC<Props> = ({code, label, image, errorCount}) => {
+export const BusinessErrorCard: FC<Props> = ({label, image, errorCount, onClick}) => {
     const generateMediaUrl = useMediaUrlGenerator();
-    const {redirect} = useContext(RouterContext);
-
-    const routeToConnectionMonitoring = useRoute(
-        'akeneo_connectivity_connection_error_management_connection_monitoring',
-        {code}
-    );
-
     const connectionImageUrl = null === image ? imgUrl : generateMediaUrl(image, 'thumbnail');
 
     return (
-        <Card onClick={() => redirect(routeToConnectionMonitoring)}>
+        <Card onClick={onClick}>
             <CardImage src={connectionImageUrl} alt={label} />
             <CardContent>
                 <ConnectionLabel title={label}>{label}</ConnectionLabel>

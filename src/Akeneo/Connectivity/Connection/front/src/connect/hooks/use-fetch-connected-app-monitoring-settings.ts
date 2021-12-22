@@ -16,6 +16,6 @@ export const useFetchConnectedAppMonitoringSettings = (connectionCode: string): 
             return Promise.reject(`${response.status} ${response.statusText}`);
         }
 
-        return Promise.resolve(response.json());
+        return response.json();
     }, [url]);
 };

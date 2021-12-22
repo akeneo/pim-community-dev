@@ -124,7 +124,7 @@ class GetConnectedAppMonitoringSettingsActionEndToEnd extends WebTestCase
         $connectionLoader->createConnection('connectionCodeC', 'Connector C', FlowType::OTHER, true);
 
         $expectedResult = [
-            'flow_type' => FlowType::DATA_SOURCE,
+            'flowType' => FlowType::DATA_SOURCE,
             'auditable' => true,
         ];
 
