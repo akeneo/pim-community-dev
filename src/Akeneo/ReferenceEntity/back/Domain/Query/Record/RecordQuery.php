@@ -53,7 +53,6 @@ class RecordQuery
         if (!in_array($paginationMethod, [self::PAGINATE_USING_OFFSET, self::PAGINATE_USING_SEARCH_AFTER])) {
             throw new \InvalidArgumentException(sprintf('"%s" is not a supported pagination method', $paginationMethod));
         }
-        $this->paginationMethod = $paginationMethod;
     }
 
     public static function createFromNormalized(array $normalizedQuery): RecordQuery
@@ -73,8 +72,8 @@ class RecordQuery
             ChannelReference::noReference(),
             LocaleIdentifierCollection::empty(),
             self::PAGINATE_USING_OFFSET,
-            $normalizedQuery['size'],
-            $normalizedQuery['page'],
+            (int) $normalizedQuery['size'],
+            (int) $normalizedQuery['page'],
             null
         );
     }

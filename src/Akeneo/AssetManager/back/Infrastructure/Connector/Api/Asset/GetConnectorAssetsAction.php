@@ -181,7 +181,7 @@ class GetConnectorAssetsAction
         }
 
         $filters = json_decode($search, true);
-        if (null === $filters) {
+        if (!is_array($filters)) {
             throw new BadRequestHttpException('The search query parameter must be a valid JSON.');
         }
 

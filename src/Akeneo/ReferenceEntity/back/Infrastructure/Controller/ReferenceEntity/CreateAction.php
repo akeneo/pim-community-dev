@@ -66,8 +66,8 @@ class CreateAction
         $normalizedCommand = json_decode($request->getContent(), true);
 
         return new CreateReferenceEntityCommand(
-            $normalizedCommand['code'],
-            $normalizedCommand['labels']
+            $normalizedCommand['code'] ?? '',
+            $normalizedCommand['labels'] ?? '',
         );
     }
 }

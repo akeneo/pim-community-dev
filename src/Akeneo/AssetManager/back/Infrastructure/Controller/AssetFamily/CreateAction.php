@@ -78,8 +78,8 @@ class CreateAction
         $normalizedCommand = json_decode($request->getContent(), true);
 
         return new CreateAssetFamilyCommand(
-            $normalizedCommand['code'],
-            $normalizedCommand['labels']
+            $normalizedCommand['code'] ?? '',
+            $normalizedCommand['labels'] ?? '',
         );
     }
 }

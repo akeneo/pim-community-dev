@@ -37,10 +37,7 @@ class AssetFamilyIdentifier
         Assert::regex(
             $identifier,
             '/^[a-zA-Z0-9_]+$/',
-            sprintf(
-                'Asset family identifier may contain only letters, numbers and underscores. "%s" given',
-                $identifier
-            )
+            'Asset family identifier may contain only letters, numbers and underscores. %s given',
         );
 
         $this->identifier = $identifier;
