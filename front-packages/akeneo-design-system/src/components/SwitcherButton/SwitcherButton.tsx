@@ -26,11 +26,7 @@ const LabelAndValueContainer = styled.button<{$inline: boolean} & AkeneoThemedPr
   padding: 0;
   display: flex;
   align-items: baseline;
-  ${({$inline}) =>
-    !$inline &&
-    css`
-      flex-direction: column;
-    `}
+  flex-direction: ${({$inline}) => ($inline ? 'row' : 'column')};
 `;
 
 const Label = styled.label<{$inline: boolean} & AkeneoThemedProps>`
