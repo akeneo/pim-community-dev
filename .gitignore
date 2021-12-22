@@ -41,3 +41,4 @@ deployments/terraform/pim/Chart.lock
 deployments/cloud-customers-dev
 /pim-enterprise-cloud
 connectors/*
+.terraform*
