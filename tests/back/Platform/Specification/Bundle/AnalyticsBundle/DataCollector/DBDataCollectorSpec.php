@@ -8,6 +8,7 @@ use Akeneo\Platform\Bundle\AnalyticsBundle\Query\Sql\ApiConnectionCount;
 use Akeneo\Tool\Component\Analytics\ActiveEventSubscriptionCountQuery;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Akeneo\Tool\Component\Analytics\EmailDomainsQuery;
+use Akeneo\Tool\Component\Analytics\GetConnectedAppsIdentifiersQueryInterface;
 use Akeneo\Tool\Component\Analytics\IsDemoCatalogQuery;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector\DBDataCollector;
@@ -38,7 +39,8 @@ class DBDataCollectorSpec extends ObjectBehavior
         ApiConnectionCount $apiConnectionCount,
         MediaCount $mediaCount,
         IsDemoCatalogQuery $isDemoCatalogQuery,
-        ActiveEventSubscriptionCountQuery $activeEventSubscriptionCountQuery
+        ActiveEventSubscriptionCountQuery $activeEventSubscriptionCountQuery,
+        GetConnectedAppsIdentifiersQueryInterface $getConnectedAppsIdentifiersQuery,
     ) {
         $this->beConstructedWith(
             $channelCountQuery,
@@ -60,7 +62,8 @@ class DBDataCollectorSpec extends ObjectBehavior
             $apiConnectionCount,
             $mediaCount,
             $isDemoCatalogQuery,
-            $activeEventSubscriptionCountQuery
+            $activeEventSubscriptionCountQuery,
+            $getConnectedAppsIdentifiersQuery,
         );
     }
 
@@ -90,7 +93,8 @@ class DBDataCollectorSpec extends ObjectBehavior
         ApiConnectionCount $apiConnectionCount,
         MediaCount $mediaCount,
         IsDemoCatalogQuery $isDemoCatalogQuery,
-        ActiveEventSubscriptionCountQuery $activeEventSubscriptionCountQuery
+        ActiveEventSubscriptionCountQuery $activeEventSubscriptionCountQuery,
+        GetConnectedAppsIdentifiersQueryInterface $getConnectedAppsIdentifiersQuery,
     ) {
         $channelCountQuery->fetch()->willReturn(new CountVolume(3, 'count_channels'));
         $productCountQuery->fetch()->willReturn(new CountVolume(1121, 'count_products'));
@@ -117,6 +121,7 @@ class DBDataCollectorSpec extends ObjectBehavior
         $mediaCount->countImages()->willReturn(1);
         $isDemoCatalogQuery->fetch()->willreturn(true);
         $activeEventSubscriptionCountQuery->fetch()->willReturn(42);
+        $getConnectedAppsIdentifiersQuery->execute()->willReturn(['00528c5a-9aef-4f9a-8a04-cdebf34176db']);
 
         $this->collect()->shouldReturn(
             [
@@ -146,6 +151,8 @@ class DBDataCollectorSpec extends ObjectBehavior
                 'nb_media_images_in_products' => 1,
                 'is_demo_catalog' => true,
                 'nb_active_event_subscription' => 42,
+                'activated_app_ids' => ['00528c5a-9aef-4f9a-8a04-cdebf34176db'],
+                'nb_activated_apps' => 1,
             ]
         );
     }
