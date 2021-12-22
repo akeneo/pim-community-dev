@@ -17,8 +17,4 @@ use Symfony\Component\Validator\Constraint;
 
 final class ImmutableReferenceEntityIdentifier extends Constraint
 {
-    public function getTargets(): array
-    {
-        return [Constraint::CLASS_CONSTRAINT];
-    }
 }

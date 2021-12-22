@@ -37,44 +37,43 @@ final class ImmutableReferenceEntityIdentifierValidator extends ConstraintValida
     {
         Assert::isInstanceOf($constraint, ImmutableReferenceEntityIdentifier::class);
 
-        if (!$value instanceof AttributeInterface || $value->getType() !== AttributeTypes::TABLE) {
-            return;
-        }
-        if (null === $value->getRawTableConfiguration() || !\is_string($value->getCode())) {
+        if (!\is_array($value)) {
             return;
         }
 
-        $rawTableConfiguration = $value->getRawTableConfiguration();
+        $columnCode = $value['code'] ?? null;
+        $dataType = $value['data_type'] ?? null;
+        $referenceEntityIdentifier = $value['reference_entity_identifier'] ?? null;
+        if (null === $columnCode || null === $referenceEntityIdentifier || RecordColumn::DATATYPE !== $dataType) {
+            return;
+        }
+
+        $attribute = $this->context->getRoot();
+        if (!$attribute instanceof AttributeInterface || null === $attribute->getCode()) {
+            return;
+        }
+
         try {
-            $formerTableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($value->getCode());
+            $formerTableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($attribute->getCode());
         } catch (TableConfigurationNotFoundException) {
             return;
         }
 
-        foreach ($rawTableConfiguration as $index => $newColumnDefinition) {
-            $columnCode = $newColumnDefinition['code'] ?? null;
-            $dataType = $newColumnDefinition['data_type'] ?? null;
-            if (null === $columnCode || RecordColumn::DATATYPE !== $dataType) {
-                continue;
-            }
-            $formerColumnDefinition = $formerTableConfiguration->getColumnByCode(ColumnCode::fromString($columnCode));
-            if (!$formerColumnDefinition instanceof RecordColumn) {
-                continue;
-            }
-            try {
-                $newReferenceEntityIdentifier = ReferenceEntityIdentifier::fromString(
-                    $newColumnDefinition['reference_entity_identifier'] ?? null
-                );
-            } catch (\InvalidArgumentException) {
-                continue;
-            }
+        $formerColumnDefinition = $formerTableConfiguration->getColumnByCode(ColumnCode::fromString($columnCode));
+        if (!$formerColumnDefinition instanceof RecordColumn) {
+            return;
+        }
+        try {
+            $newReferenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
+        } catch (\InvalidArgumentException) {
+            return;
+        }
 
-            if (!$newReferenceEntityIdentifier->equals($formerColumnDefinition->referenceEntityIdentifier())) {
-                $this->context
-                    ->buildViolation('pim_table_configuration.validation.table_configuration.reference_entity_identifier_is_immutable')
-                    ->atPath(\sprintf('table_configuration[%d].reference_entity_identifier', $index))
-                    ->addViolation();
-            }
+        if (!$newReferenceEntityIdentifier->equals($formerColumnDefinition->referenceEntityIdentifier())) {
+            $this->context
+                ->buildViolation('pim_table_configuration.validation.table_configuration.reference_entity_identifier_is_immutable')
+                ->atPath('reference_entity_identifier')
+                ->addViolation();
         }
     }
 }

@@ -3,7 +3,6 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
     - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsTableAttributeConfigured: ~
     - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnCodeCannotBeChanged: ~
     - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsMaximumTableAttributesReached: ~
-    - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ImmutableReferenceEntityIdentifier: ~
   properties:
     rawTableConfiguration:
       - Type: array
@@ -19,6 +18,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
           - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ValidationShouldMatchColumnType: ~
           - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\OptionsShouldOnlyBeSetOnSelectColumns: ~
           - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ReferenceEntityIdentifierShouldOnlyBeSetOnReferenceEntityColumns: ~
+          - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ImmutableReferenceEntityIdentifier: ~
           - Collection:
               fields:
                 code:

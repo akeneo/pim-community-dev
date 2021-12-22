@@ -22,21 +22,23 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class ImmutableReferenceEntityIdentifierValidatorSpec extends ObjectBehavior
 {
-    function let(ExecutionContextInterface $context, TableConfigurationRepository $tableConfigurationRepository): void
+    function let(ExecutionContextInterface $context, TableConfigurationRepository $tableConfigurationRepository, AttributeInterface $attribute): void
     {
-        $tableConfigurationRepository->getByAttributeCode(Argument::any())->willReturn(
-            TableConfiguration::fromColumnDefinitions([
-                SelectColumn::fromNormalized(
-                    [
-                        'id' => ColumnIdGenerator::generateAsString('code'),
-                        'code' => 'code',
-                        'data_type' => 'select',
-                        'is_required_for_completeness' => true,
-                    ]
-                ),
-                NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
-            ])
-        );
+        $attribute->getCode()->willReturn('nutrition');
+        $context->getRoot()->willReturn($attribute);
+//        $tableConfigurationRepository->getByAttributeCode(Argument::any())->willReturn(
+//            TableConfiguration::fromColumnDefinitions([
+//                SelectColumn::fromNormalized(
+//                    [
+//                        'id' => ColumnIdGenerator::generateAsString('code'),
+//                        'code' => 'code',
+//                        'data_type' => 'select',
+//                        'is_required_for_completeness' => true,
+//                    ]
+//                ),
+//                NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
+//            ])
+//        );
 
         $this->beConstructedWith($tableConfigurationRepository);
         $this->initialize($context);
@@ -53,60 +55,62 @@ class ImmutableReferenceEntityIdentifierValidatorSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [[], new IsString()]);
     }
 
-    function it_does_nothing_if_the_value_is_not_an_attribute(ExecutionContextInterface $context): void
+    function it_does_nothing_if_the_value_is_not_an_array(ExecutionContextInterface $context): void
     {
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate(new \stdClass(), new ImmutableReferenceEntityIdentifier());
     }
 
-    function it_does_nothing_if_the_value_is_not_a_table_attribute(
-        ExecutionContextInterface $context,
-        AttributeInterface $attribute
-    ): void {
-        $attribute->getType()->willReturn(AttributeTypes::DATE);
+    function it_does_nothing_if_the_column_code_is_null(ExecutionContextInterface $context): void
+    {
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate($attribute, new ImmutableReferenceEntityIdentifier());
+        $this->validate(['data_type' => RecordColumn::DATATYPE, 'reference_entity_identifier' => 'brands'], new ImmutableReferenceEntityIdentifier());
     }
 
     function it_does_nothing_if_the_attribute_code_is_null(
         ExecutionContextInterface $context,
         AttributeInterface $attribute
     ): void {
-        $attribute->getType()->willReturn(AttributeTypes::TABLE);
         $attribute->getCode()->willReturn(null);
-        $attribute->getRawTableConfiguration()->willReturn([
-            ['code' => 'code', 'data_type' => 'select'],
-            ['code' => 'quantity', 'data_type' => 'number'],
-            ['code' => 'brand', 'data_type' => RecordColumn::DATATYPE, 'reference_entity_identifier' => 'brands'],
-        ]);
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate($attribute, new ImmutableReferenceEntityIdentifier());
+        $this->validate(['data_type' => RecordColumn::DATATYPE, 'reference_entity_identifier' => 'brands'], new ImmutableReferenceEntityIdentifier());
     }
 
-    function it_does_nothing_if_the_raw_table_configuration_is_null(
+    function it_does_nothing_if_the_column_definition_is_not_an_array(ExecutionContextInterface $context): void
+    {
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $this->validate('test', new ImmutableReferenceEntityIdentifier());
+    }
+
+    function it_does_nothing_if_the_column_is_not_a_reference_entity_column(
         ExecutionContextInterface $context,
         AttributeInterface $attribute
     ): void {
-        $attribute->getType()->willReturn(AttributeTypes::TABLE);
-        $attribute->getRawTableConfiguration()->willReturn(null);
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate($attribute, new ImmutableReferenceEntityIdentifier());
+        $this->validate(['data_type' => SelectColumn::DATATYPE, 'code' => 'ingredient'], new ImmutableReferenceEntityIdentifier());
     }
 
-    function it_does_nothing_if_the_raw_table_configuration_is_not_valid(
+    function it_does_nothing_if_the_column_does_not_have_a_datatype(
         ExecutionContextInterface $context,
         AttributeInterface $attribute
     ): void {
-        $attribute->getType()->willReturn(AttributeTypes::TABLE);
-        $attribute->getCode()->willReturn('test');
-        $attribute->getRawTableConfiguration()->willReturn(['invalid']);
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate($attribute, new ImmutableReferenceEntityIdentifier());
+        $this->validate(['code' => 'brand', 'reference_entity_identifier' => 'brands'], new ImmutableReferenceEntityIdentifier());
+    }
+
+    function it_does_nothing_if_the_column_does_not_have_a_reference_entity_identifier(
+        ExecutionContextInterface $context,
+        AttributeInterface $attribute
+    ): void {
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $this->validate(['data_type' => RecordColumn::DATATYPE, 'code' => 'brand'], new ImmutableReferenceEntityIdentifier());
     }
 
     function it_does_nothing_if_the_attribute_is_new(
@@ -114,50 +118,20 @@ class ImmutableReferenceEntityIdentifierValidatorSpec extends ObjectBehavior
         TableConfigurationRepository $tableConfigurationRepository,
         AttributeInterface $attribute
     ): void {
-        $attribute->getType()->willReturn(AttributeTypes::TABLE);
-        $attribute->getCode()->willReturn('attribute');
-        $attribute->getRawTableConfiguration()->willReturn([
-            ['code' => 'code', 'data_type' => 'select'],
-            ['code' => 'quantity', 'data_type' => 'number'],
-            ['code' => 'brand', 'data_type' => RecordColumn::DATATYPE, 'reference_entity_identifier' => 'brands'],
-        ]);
-        $tableConfigurationRepository->getByAttributeCode('attribute')->shouldBeCalled()->willThrow(
-            TableConfigurationNotFoundException::forAttributeCode('attribute')
+        $tableConfigurationRepository->getByAttributeCode('nutrition')->shouldBeCalled()->willThrow(
+            TableConfigurationNotFoundException::forAttributeCode('nutrition')
         );
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate($attribute, new ImmutableReferenceEntityIdentifier());
-    }
-
-    function it_does_not_add_any_violation_if_attribute_has_no_reference_entity_column(
-        ExecutionContextInterface $context,
-        AttributeInterface $attribute
-    ): void {
-        $attribute->getType()->willReturn(AttributeTypes::TABLE);
-        $attribute->getCode()->willReturn('test');
-        $attribute->getRawTableConfiguration()->willReturn([
-            ['code' => 'ingredients', 'data_type' => 'select'],
-            ['code' => 'quantity', 'data_type' => 'number'],
-        ]);
-        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
-
-        $this->validate($attribute, new ImmutableReferenceEntityIdentifier());
+        $this->validate(['data_type' => RecordColumn::DATATYPE, 'code' => 'brand', 'reference_entity_identifier' => 'brands'], new ImmutableReferenceEntityIdentifier());
     }
 
     function it_does_not_add_any_violation_if_the_reference_entity_column_is_new(
         ExecutionContextInterface $context,
         TableConfigurationRepository $tableConfigurationRepository,
-        AttributeInterface $attribute
     ): void {
-        $attribute->getType()->willReturn(AttributeTypes::TABLE);
-        $attribute->getCode()->willReturn('attribute');
-        $attribute->getRawTableConfiguration()->willReturn([
-            ['code' => 'code', 'data_type' => 'select'],
-            ['code' => 'quantity', 'data_type' => 'number'],
-            ['code' => 'brand', 'data_type' => RecordColumn::DATATYPE, 'reference_entity_identifier' => 'brands'],
-        ]);
-        $tableConfigurationRepository->getByAttributeCode('attribute')->shouldBeCalled()->willReturn(
+        $tableConfigurationRepository->getByAttributeCode('nutrition')->shouldBeCalled()->willReturn(
             TableConfiguration::fromColumnDefinitions([
                 SelectColumn::fromNormalized(
                     [
@@ -173,22 +147,14 @@ class ImmutableReferenceEntityIdentifierValidatorSpec extends ObjectBehavior
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate($attribute, new ImmutableReferenceEntityIdentifier());
+        $this->validate(['data_type' => RecordColumn::DATATYPE, 'code' => 'brand', 'reference_entity_identifier' => 'brands'], new ImmutableReferenceEntityIdentifier());
     }
 
     function it_does_not_add_any_violation_if_the_reference_entity_identifier_was_not_updated(
         ExecutionContextInterface $context,
         TableConfigurationRepository $tableConfigurationRepository,
-        AttributeInterface $attribute
     ): void {
-        $attribute->getType()->willReturn(AttributeTypes::TABLE);
-        $attribute->getCode()->willReturn('attribute');
-        $attribute->getRawTableConfiguration()->willReturn([
-            ['code' => 'code', 'data_type' => 'select'],
-            ['code' => 'quantity', 'data_type' => 'number'],
-            ['code' => 'supplier', 'data_type' => RecordColumn::DATATYPE, 'reference_entity_identifier' => 'brands'],
-        ]);
-        $tableConfigurationRepository->getByAttributeCode('attribute')->shouldBeCalled()->willReturn(
+        $tableConfigurationRepository->getByAttributeCode('nutrition')->shouldBeCalled()->willReturn(
             TableConfiguration::fromColumnDefinitions([
                 SelectColumn::fromNormalized(
                     [
@@ -211,22 +177,14 @@ class ImmutableReferenceEntityIdentifierValidatorSpec extends ObjectBehavior
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate($attribute, new ImmutableReferenceEntityIdentifier());
+        $this->validate(['data_type' => RecordColumn::DATATYPE, 'code' => 'brand', 'reference_entity_identifier' => 'brands'], new ImmutableReferenceEntityIdentifier());
     }
 
     function it_does_not_add_any_violation_if_the_reference_entity_identifier_does_not_have_the_same_case(
         ExecutionContextInterface $context,
         TableConfigurationRepository $tableConfigurationRepository,
-        AttributeInterface $attribute
     ): void {
-        $attribute->getType()->willReturn(AttributeTypes::TABLE);
-        $attribute->getCode()->willReturn('attribute');
-        $attribute->getRawTableConfiguration()->willReturn([
-            ['code' => 'code', 'data_type' => 'select'],
-            ['code' => 'quantity', 'data_type' => 'number'],
-            ['code' => 'supplier', 'data_type' => RecordColumn::DATATYPE, 'reference_entity_identifier' => 'BRANDS'],
-        ]);
-        $tableConfigurationRepository->getByAttributeCode('attribute')->shouldBeCalled()->willReturn(
+        $tableConfigurationRepository->getByAttributeCode('nutrition')->shouldBeCalled()->willReturn(
             TableConfiguration::fromColumnDefinitions([
                 SelectColumn::fromNormalized(
                     [
@@ -249,23 +207,15 @@ class ImmutableReferenceEntityIdentifierValidatorSpec extends ObjectBehavior
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate($attribute, new ImmutableReferenceEntityIdentifier());
+        $this->validate(['data_type' => RecordColumn::DATATYPE, 'code' => 'brand', 'reference_entity_identifier' => 'BRANDS'], new ImmutableReferenceEntityIdentifier());
     }
 
     function it_adds_a_violation_if_the_reference_entity_identifier_was_updated(
         ExecutionContextInterface $context,
         TableConfigurationRepository $tableConfigurationRepository,
-        AttributeInterface $attribute,
         ConstraintViolationBuilderInterface $violationBuilder,
     ): void {
-        $attribute->getType()->willReturn(AttributeTypes::TABLE);
-        $attribute->getCode()->willReturn('attribute');
-        $attribute->getRawTableConfiguration()->willReturn([
-            ['code' => 'code', 'data_type' => 'select'],
-            ['code' => 'quantity', 'data_type' => 'number'],
-            ['code' => 'supplier', 'data_type' => RecordColumn::DATATYPE, 'reference_entity_identifier' => 'designers'],
-        ]);
-        $tableConfigurationRepository->getByAttributeCode('attribute')->shouldBeCalled()->willReturn(
+        $tableConfigurationRepository->getByAttributeCode('nutrition')->shouldBeCalled()->willReturn(
             TableConfiguration::fromColumnDefinitions([
                 SelectColumn::fromNormalized(
                     [
@@ -278,8 +228,8 @@ class ImmutableReferenceEntityIdentifierValidatorSpec extends ObjectBehavior
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
                 RecordColumn::fromNormalized(
                     [
-                        'id' => ColumnIdGenerator::supplier(),
-                        'code' => 'supplier',
+                        'id' => ColumnIdGenerator::generateAsString('brand'),
+                        'code' => 'brand',
                         'reference_entity_identifier' => 'brands',
                     ]
                 ),
@@ -288,11 +238,11 @@ class ImmutableReferenceEntityIdentifierValidatorSpec extends ObjectBehavior
 
         $context->buildViolation(Argument::type('string'))->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder
-            ->atPath('table_configuration[2].reference_entity_identifier')
+            ->atPath('reference_entity_identifier')
             ->shouldBeCalled()
             ->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
-        $this->validate($attribute, new ImmutableReferenceEntityIdentifier());
+        $this->validate(['data_type' => RecordColumn::DATATYPE, 'code' => 'brand', 'reference_entity_identifier' => 'designers'], new ImmutableReferenceEntityIdentifier());
     }
 }
