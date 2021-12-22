@@ -29,7 +29,6 @@ class IsConnectionsNumberLimitReachedActionSpec extends ObjectBehavior
 
     public function it_redirects_on_missing_xmlhttprequest_header(Request $request): void
     {
-
         $this->__invoke($request)->shouldBeLike(new RedirectResponse('/'));
     }
 

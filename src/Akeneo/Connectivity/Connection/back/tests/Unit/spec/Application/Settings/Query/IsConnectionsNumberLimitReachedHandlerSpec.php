@@ -49,5 +49,4 @@ class IsConnectionsNumberLimitReachedHandlerSpec extends ObjectBehavior
         $countAllConnectionsQuery->execute()->willReturn(49);
         $this->execute()->shouldReturn(false);
     }
-
 }
