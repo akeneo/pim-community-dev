@@ -36,6 +36,7 @@ class FindSharedCatalogsQueryIntegration extends TestCase
     {
         $this->createJobInstance(
             'shared_catalog_1',
+            'Shared catalog 1',
             'akeneo_shared_catalog',
             'export',
             JobInstance::STATUS_READY,
@@ -50,12 +51,13 @@ class FindSharedCatalogsQueryIntegration extends TestCase
         self::assertEquals([
             [
                 'code' => 'shared_catalog_1',
+                'label' => 'Shared catalog 1',
                 'publisher' => 'admin@example.com',
                 'recipients' => [],
                 'channel' => null,
                 'catalogLocales' => [],
                 'attributes' => [],
-                'branding' => ['logo' => null],
+                'branding' => ['logo' => null, 'cover_image' => null, 'color' => '#f9b53f'],
             ],
         ], $normalizedResults);
     }
@@ -67,6 +69,7 @@ class FindSharedCatalogsQueryIntegration extends TestCase
     {
         $this->createJobInstance(
             'shared_catalog_1',
+            'Shared catalog 1',
             'akeneo_shared_catalog',
             'export',
             JobInstance::STATUS_READY,
@@ -92,6 +95,8 @@ class FindSharedCatalogsQueryIntegration extends TestCase
                 ],
                 'branding' => [
                     'image' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABKoAAAJFCAYAAAD9Ih9',
+                    'cover_image' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII',
+                    'color' => '#ff0000',
                 ],
             ]
         );
@@ -104,6 +109,7 @@ class FindSharedCatalogsQueryIntegration extends TestCase
         self::assertEquals([
             [
                 'code' => 'shared_catalog_1',
+                'label' => 'Shared catalog 1',
                 'publisher' => 'admin@example.com',
                 'recipients' => [
                     'betty@akeneo.com',
@@ -118,6 +124,8 @@ class FindSharedCatalogsQueryIntegration extends TestCase
                 ],
                 'branding' => [
                     'logo' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABKoAAAJFCAYAAAD9Ih9',
+                    'cover_image' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII',
+                    'color' => '#ff0000',
                 ],
             ],
         ], $normalizedResults);
@@ -130,6 +138,7 @@ class FindSharedCatalogsQueryIntegration extends TestCase
     {
         $this->createJobInstance(
             'shared_catalog_1',
+            'Shared catalog 1',
             'akeneo_shared_catalog',
             'export',
             JobInstance::STATUS_DRAFT,
@@ -148,6 +157,7 @@ class FindSharedCatalogsQueryIntegration extends TestCase
     {
         $this->createJobInstance(
             'shared_catalog_1',
+            'Shared catalog 1',
             'something_else',
             'export',
             JobInstance::STATUS_READY,

@@ -13,6 +13,7 @@ class SharedCatalogSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             'shared_catalog',
+            'Shared catalog',
             null,
             [],
             null,
@@ -29,6 +30,7 @@ class SharedCatalogSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             'shared_catalog',
+            'Shared catalog',
             'julia',
             [
                 [
@@ -58,6 +60,7 @@ class SharedCatalogSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             'shared_catalog',
+            'Shared catalog',
             'julia',
             [
                 [
@@ -77,11 +80,14 @@ class SharedCatalogSpec extends ObjectBehavior
             ],
             [
                 'image' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABKoAAAJFCAYAAAD9Ih9',
+                'cover_image' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABKoAAAJFCAYAAAD9Ih9',
+                'color' => '#FFFFFF',
             ]
         );
 
         $this->normalizeForExternalApi()->shouldBeLike([
             'code' => 'shared_catalog',
+            'label' => 'Shared catalog',
             'publisher' => 'julia',
             'recipients' => [
                 'betty@akeneo.com',
@@ -95,6 +101,8 @@ class SharedCatalogSpec extends ObjectBehavior
             ],
             'branding' => [
                 'logo' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABKoAAAJFCAYAAAD9Ih9',
+                'cover_image' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABKoAAAJFCAYAAAD9Ih9',
+                'color' => '#FFFFFF',
             ],
         ]);
     }
@@ -103,6 +111,7 @@ class SharedCatalogSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             'shared_catalog',
+            'Shared catalog',
             'julia',
             [],
             [
@@ -120,6 +129,7 @@ class SharedCatalogSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             'shared_catalog',
+            'Shared catalog',
             'julia',
             [],
             [],
@@ -133,6 +143,7 @@ class SharedCatalogSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             'shared_catalog',
+            'Shared catalog',
             'julia',
             [],
             [
@@ -160,6 +171,7 @@ class SharedCatalogSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             'shared_catalog',
+            'Shared catalog',
             'julia',
             [],
             [],
