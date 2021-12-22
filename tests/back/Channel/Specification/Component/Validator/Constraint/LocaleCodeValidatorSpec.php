@@ -33,7 +33,7 @@ class LocaleCodeValidatorSpec extends ObjectBehavior
         $constraint = new LocaleCode();
         $context->buildViolation($constraint->message)->willReturn($violation);
 
-        $violation->addViolation()->shouldBeCalledTimes(8);
+        $violation->addViolation()->shouldBeCalledTimes(10);
 
         $this->validate('aa', $constraint);
         $this->validate('aa_', $constraint);
@@ -43,5 +43,7 @@ class LocaleCodeValidatorSpec extends ObjectBehavior
         $this->validate('AA_', $constraint);
         $this->validate('aA_A', $constraint);
         $this->validate('A_AA', $constraint);
+        $this->validate(' aa_AA', $constraint);
+        $this->validate('aa_AA ', $constraint);
     }
 }
