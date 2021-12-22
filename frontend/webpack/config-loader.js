@@ -40,8 +40,14 @@ module.exports = function(content) {
 
   modulePath = modulePath.replace(moduleExt, '');
 
-  const moduleName = aliases[modulePath];
-  const moduleConfig = JSON.stringify(options.configMap[formatModuleName(moduleName)] || {});
+  const moduleName = formatModuleName(aliases[modulePath]);
+  if (moduleName === 'pim/config-registry') {
+    const moduleConfig = JSON.stringify(options.configMap || {});
+
+    return `var __moduleConfig = ${replaceRequire(moduleConfig)} ; ${content}`;
+  }
+
+  const moduleConfig = JSON.stringify(options.configMap[moduleName] || {});
 
   return `var __moduleConfig = ${replaceRequire(moduleConfig)} ; ${content}`;
 };
