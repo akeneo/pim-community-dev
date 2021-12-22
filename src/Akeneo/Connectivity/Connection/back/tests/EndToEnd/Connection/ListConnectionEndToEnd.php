@@ -32,6 +32,7 @@ class ListConnectionEndToEnd extends WebTestCase
                 'flowType' => FlowType::DATA_SOURCE,
                 'image' => null,
                 'auditable' => true,
+                'type' => 'default',
             ],
             [
                 'code' => 'dam',
@@ -39,6 +40,7 @@ class ListConnectionEndToEnd extends WebTestCase
                 'flowType' => FlowType::OTHER,
                 'image' => null,
                 'auditable' => false,
+                'type' => 'default',
             ],
         ];
 

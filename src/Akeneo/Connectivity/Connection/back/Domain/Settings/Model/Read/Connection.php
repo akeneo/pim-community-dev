@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\Read;
 
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionType;
+
 /**
  * @author Romain Monceau <romain@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -21,18 +23,22 @@ class Connection
 
     private bool $auditable;
 
+    private string $type;
+
     public function __construct(
         string $code,
         string $label,
         string $flowType,
         ?string $image = null,
-        bool $auditable = false
+        bool $auditable = false,
+        string $type = ConnectionType::DEFAULT_TYPE
     ) {
         $this->code = $code;
         $this->label = $label;
         $this->flowType = $flowType;
         $this->image = $image;
         $this->auditable = $auditable;
+        $this->type = $type;
     }
 
     public function code(): string
@@ -60,13 +66,19 @@ class Connection
         return $this->auditable;
     }
 
+    public function type(): string
+    {
+        return $this->type;
+    }
+
     /**
      * @return array{
      *  code: string,
      *  label: string,
      *  flowType: string,
      *  image: ?string,
-     *  auditable: bool
+     *  auditable: bool,
+     *  type: string,
      * }
      */
     public function normalize(): array
@@ -77,6 +89,7 @@ class Connection
             'flowType' => $this->flowType,
             'image' => $this->image,
             'auditable' => $this->auditable,
+            'type' => $this->type,
         ];
     }
 }
