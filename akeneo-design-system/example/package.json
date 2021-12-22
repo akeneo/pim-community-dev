@@ -12,6 +12,11 @@
     "react-scripts": "3.4.3",
     "styled-components": "^5.2.0"
   },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(jpg|ico|jpeg|png|gif|svg)$": "<rootDir>/../__mocks__/fileMock.js"
+    }
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
