@@ -60,7 +60,6 @@ final class RecordsShouldExistValidator extends ConstraintValidator
             }
         }
 
-        // @todo: is it possible to satisfy this condition ? how to test it ?
         if ($indexedRecordCodes === []) {
             return;
         }

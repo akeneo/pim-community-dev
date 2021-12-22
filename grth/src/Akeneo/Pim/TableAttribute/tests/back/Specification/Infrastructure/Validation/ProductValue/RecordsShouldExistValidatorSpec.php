@@ -84,6 +84,30 @@ class RecordsShouldExistValidatorSpec extends ObjectBehavior
         $this->validate(new \stdClass(), new RecordsShouldExist());
     }
 
+    function it_does_nothing_when_value_is_a_table_value_but_has_no_record_values(
+        ExecutionContext $context,
+        GetExistingRecordCodes $getExistingRecordCodes
+    )
+    {
+        $tableValue = TableValue::value('nutrition', Table::fromNormalized([
+            [
+                ColumnIdGenerator::record() => null,
+                ColumnIdGenerator::ingredient() => 'sugar',
+                ColumnIdGenerator::quantity() => 10,
+                self::COLUMNID_RECORDBRAND => null
+            ],
+            [
+                ColumnIdGenerator::record() => null,
+                ColumnIdGenerator::ingredient() => 'vanilla',
+                ColumnIdGenerator::quantity() => 10,
+                self::COLUMNID_RECORDBRAND => null
+            ],
+        ]));
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $this->validate($tableValue, new RecordsShouldExist());
+    }
+
     function it_does_not_build_a_violation_when_all_records_in_table_attribute_exists(
         ExecutionContext $context,
         GetExistingRecordCodes $getExistingRecordCodes
