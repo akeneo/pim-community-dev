@@ -26,19 +26,6 @@ class ImmutableReferenceEntityIdentifierValidatorSpec extends ObjectBehavior
     {
         $attribute->getCode()->willReturn('nutrition');
         $context->getRoot()->willReturn($attribute);
-//        $tableConfigurationRepository->getByAttributeCode(Argument::any())->willReturn(
-//            TableConfiguration::fromColumnDefinitions([
-//                SelectColumn::fromNormalized(
-//                    [
-//                        'id' => ColumnIdGenerator::generateAsString('code'),
-//                        'code' => 'code',
-//                        'data_type' => 'select',
-//                        'is_required_for_completeness' => true,
-//                    ]
-//                ),
-//                NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
-//            ])
-//        );
 
         $this->beConstructedWith($tableConfigurationRepository);
         $this->initialize($context);
