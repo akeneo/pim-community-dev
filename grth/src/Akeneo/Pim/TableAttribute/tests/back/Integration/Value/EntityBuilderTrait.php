@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\TableAttribute\Integration\Value;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PHPUnit\Framework\Assert;
 
 trait EntityBuilderTrait
@@ -40,7 +42,7 @@ trait EntityBuilderTrait
         $this->get('pim_catalog.saver.channel')->save($channel);
     }
 
-    protected function createAttribute(array $data): void
+    protected function createAttribute(array $data): AttributeInterface
     {
         $attribute = $this->get('pim_catalog.factory.attribute')->create();
         $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
@@ -48,6 +50,8 @@ trait EntityBuilderTrait
         $violations = $this->get('validator')->validate($attribute);
         Assert::assertCount(0, $violations, \sprintf('The attribute is not valid: %s', $violations));
         $this->get('pim_catalog.saver.attribute')->save($attribute);
+
+        return $attribute;
     }
 
     protected function createFamily(array $data): void
@@ -68,6 +72,20 @@ trait EntityBuilderTrait
         $violations = $this->get('pim_catalog.validator.product')->validate($product);
         Assert::assertCount(0, $violations, \sprintf('The product is not valid: %s', $violations));
         $this->get('pim_catalog.saver.product')->save($product);
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+    }
+
+    protected function createProductModel(array $data): void
+    {
+        $productModel = $this->get('pim_catalog.factory.product_model')->create();
+        $this->get('pim_catalog.updater.product_model')->update(
+            $productModel,
+            $data
+        );
+
+        $violations = $this->get('pim_catalog.validator.product_model')->validate($productModel);
+        Assert::assertCount(0, $violations, \sprintf('The product model is not valid: %s', $violations));
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 }

@@ -87,6 +87,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\AbstractValueDataNormalizer',
             'Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AbstractAttributeCopier',
+            'Akeneo\Pim\Enrichment\Component\Product\Query',
             'Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\ProductValueRenderer',
             'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentValuesFilter',
             'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues',

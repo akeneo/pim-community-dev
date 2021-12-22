@@ -4,3 +4,28 @@ services:
       - '@database_connection'
     tags:
       - { name: akeneo.pim.structure.query.get_required_attributes_masks_per_attribute_type }
+
+  Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\GetProductIdentifiersWithRemovedAttributes:
+    decorates: 'akeneo.pim.enrichment.product.query.get_product_identifiers_with_removed_attribute'
+    decoration_inner_name: 'akeneo.pim.enrichment.product.query.get_product_identifiers_with_removed_attribute_decorated'
+    arguments:
+      - '@akeneo.pim.enrichment.product.query.get_product_identifiers_with_removed_attribute_decorated'
+
+  Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\CountProductsWithRemovedAttributes:
+    decorates: 'akeneo.pim.enrichment.product.query.count_products_with_removed_attribute'
+    decoration_inner_name: 'akeneo.pim.enrichment.product.query.count_products_with_removed_attribute_decorated'
+    arguments:
+      - '@akeneo.pim.enrichment.product.query.count_products_with_removed_attribute_decorated'
+
+  Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\GetProductModelIdentifiersWithRemovedAttributes:
+    decorates: 'akeneo.pim.enrichment.product.query.get_product_model_identifiers_with_removed_attribute'
+    decoration_inner_name: 'akeneo.pim.enrichment.product.query.get_product_model_identifiers_with_removed_attribute_decorated'
+    arguments:
+      - '@akeneo.pim.enrichment.product.query.get_product_model_identifiers_with_removed_attribute_decorated'
+
+  Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\CountProductModelsWithRemovedAttributes:
+    decorates: 'akeneo.pim.enrichment.product.query.count_product_models_with_removed_attribute'
+    decoration_inner_name: 'akeneo.pim.enrichment.product.query.count_product_models_with_removed_attribute_decorated'
+    arguments:
+      - '@akeneo.pim.enrichment.product.query.count_product_models_with_removed_attribute_decorated'
+
