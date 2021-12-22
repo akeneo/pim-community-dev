@@ -7,8 +7,7 @@ define([
   'react',
   'react-dom',
   'akeneosharedcatalog/job/form/Branding',
-  'pim/feature-flags',
-], function(_, BaseForm, __, React, ReactDOM, {Branding}, {isEnabled}) {
+], function(_, BaseForm, __, React, ReactDOM, {Branding}) {
   return BaseForm.extend({
     className: 'tabbable branding',
     validationErrors: [],
@@ -40,7 +39,6 @@ define([
         {
           branding: this.getFormData().configuration.branding || {image: null},
           validationErrors: this.validationErrors,
-          featureFlagIsEnabled: isEnabled,
           onBrandingChange: branding => {
             const data = {...this.getFormData()};
             const configuration = {...data.configuration, branding};

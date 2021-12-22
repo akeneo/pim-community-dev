@@ -4,6 +4,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ImageUploader} from './ImageUploader';
 import {pimTheme, ColorInput, Field, Helper, sharedCatalogsTheme} from 'akeneo-design-system';
+import {useFeatureFlags} from "@akeneo-pim-community/connectivity-connection/src/shared/feature-flags";
 
 const FieldContainer = styled.div`
   margin-top: 40px;
@@ -25,8 +26,6 @@ type BrandingProps = {
   branding: Branding;
   validationErrors: BrandingError[];
   onBrandingChange: (updatedBranding: Branding) => void;
-  /** TODO pullup master: replace by useFeatureFlags() hook */
-  featureFlagIsEnabled: (featureFlag: string) => boolean;
 };
 
 const Branding = (props: BrandingProps) => (
@@ -37,8 +36,9 @@ const Branding = (props: BrandingProps) => (
   </DependenciesProvider>
 );
 
-const BrandingForm = ({branding, validationErrors, onBrandingChange, featureFlagIsEnabled}: BrandingProps) => {
+const BrandingForm = ({branding, validationErrors, onBrandingChange}: BrandingProps) => {
   const translate = useTranslate();
+  const {isEnabled} = useFeatureFlags();
 
   return (
     <>
@@ -52,7 +52,7 @@ const BrandingForm = ({branding, validationErrors, onBrandingChange, featureFlag
           <Helper>{translate('shared_catalog.branding.logo.file_information_helper')}</Helper>
         </ImageUploader>
       </FieldContainer>
-      {featureFlagIsEnabled('new_shared_catalog_branding') && (
+      {isEnabled('new_shared_catalog_branding') && (
         <>
           <FieldContainer>
             <ImageUploader
