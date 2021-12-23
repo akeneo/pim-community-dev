@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Connections;
 
 /**
- * The following class is introduced to easy testability of classes that might require it.
+ * The following class is introduced to ease testability of classes that might require it.
  * As the set limit is relatively high, without it integration tests would create a great amount
  * of connections, dampening tests performance
  *
