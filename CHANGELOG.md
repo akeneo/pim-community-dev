@@ -156,6 +156,7 @@
 - PIM-10208: Fix currency settings page crashing when label is not found
 - PIM-10192: Retry mechanism in delete action of ES documents
 - PIM-10210: Fix notifications can't be displayed
+- PIM-10211: Fix cannot quick export product model when id is not present in grid context
 
 ## New features
 

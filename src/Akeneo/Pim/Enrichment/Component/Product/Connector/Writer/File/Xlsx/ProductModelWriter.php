@@ -28,6 +28,6 @@ class ProductModelWriter extends AbstractItemMediaWriter
      */
     protected function getItemIdentifier(array $productModel): string
     {
-        return $productModel['code'];
+        return $productModel['code'] ?? $productModel['identifier'];
     }
 }
