@@ -19,7 +19,7 @@ variable "source_domain" {
 
 variable "google_project_secret" {
   type    = string
-  default = "akeneo_cloud"
+  default = "akeneo-cloud"
 }
 
 variable "dns_zone" {
