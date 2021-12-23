@@ -27,7 +27,7 @@ final class SqlGetMainMediaFileInfoCollection implements GetMainMediaFileInfoCol
         string $assetFamilyIdentifier,
         array $assetCodes
     ): array {
-        if ([] === $assetCodes) {
+        if (empty($assetCodes)) {
             return [];
         }
 

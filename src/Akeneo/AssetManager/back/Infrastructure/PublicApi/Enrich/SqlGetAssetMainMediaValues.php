@@ -31,7 +31,7 @@ final class SqlGetAssetMainMediaValues implements GetAssetMainMediaValuesInterfa
      */
     public function forAssetFamilyAndAssetCodes(string $assetFamilyIdentifier, array $assetCodes): array
     {
-        if ([] === $assetCodes) {
+        if (empty($assetCodes)) {
             return [];
         }
 

@@ -109,7 +109,7 @@ class MassEditAssetsTasklet implements TaskletInterface, TrackableTaskletInterfa
             return;
         }
 
-        if ($assetCodesToEdit !== []) {
+        if (!empty($assetCodesToEdit)) {
             $this->editAssets($assetFamilyIdentifier, $assetCodesToEdit, $editAssetValueCommands);
         }
 

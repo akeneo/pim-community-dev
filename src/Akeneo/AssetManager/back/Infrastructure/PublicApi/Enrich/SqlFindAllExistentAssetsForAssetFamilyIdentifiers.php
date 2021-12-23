@@ -53,7 +53,7 @@ final class SqlFindAllExistentAssetsForAssetFamilyIdentifiers
      */
     private function batchedQuery(array $queryParams): array
     {
-        if ([] === $queryParams) {
+        if (empty($queryParams)) {
             return [];
         }
 

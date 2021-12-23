@@ -130,7 +130,7 @@ class MigrateReferenceAttributeHavingOneValuePerChannel extends Command
             }
         }
 
-        if ([] !== $updatedAssets) {
+        if (!empty($updatedAssets)) {
             $this->writeFixedAssetsInDB($updatedAssets);
         }
         $this->io->progressFinish();

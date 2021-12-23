@@ -103,7 +103,7 @@ class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInter
             return;
         }
 
-        if ($assetCodesToDelete !== []) {
+        if (!empty($assetCodesToDelete)) {
             $this->deleteAssets($assetFamilyIdentifier, $assetCodesToDelete);
         }
 

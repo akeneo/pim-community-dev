@@ -24,7 +24,7 @@ class SqlGetAssetMainMediaData implements GetAssetMainMediaDataInterface
 
     public function forAssetFamilyAndAssetCodes(string $assetFamilyIdentifier, array $assetCodes, ?string $channel, ?string $locale): array
     {
-        if ([] === $assetCodes) {
+        if (empty($assetCodes)) {
             return [];
         }
 
@@ -56,7 +56,7 @@ SQL;
                 $channel,
                 $locale
             );
-            if ([] === $assetMainMediaDataValue) {
+            if (empty($assetMainMediaDataValue)) {
                 continue;
             }
             $assetMainMediaData[$rawResult['code']] = $this->extractDataFromMainMediaValue($assetMainMediaDataValue[0]);

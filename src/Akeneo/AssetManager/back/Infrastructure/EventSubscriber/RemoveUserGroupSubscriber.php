@@ -47,7 +47,7 @@ class RemoveUserGroupSubscriber implements EventSubscriberInterface
 
         $assetFamilyIdentifiers = $this->findAssetFamilyWhereUserGroupIsLastToHaveEditRight->find($userGroup->getId());
 
-        if ($assetFamilyIdentifiers !== []) {
+        if (!empty($assetFamilyIdentifiers)) {
             throw new ResourceDeletionDeniedException(
                 sprintf(
                     'You cannot delete this group, it is the only user group with "edit" permission on asset family "%s".',

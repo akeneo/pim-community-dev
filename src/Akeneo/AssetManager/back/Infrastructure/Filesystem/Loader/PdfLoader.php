@@ -31,9 +31,8 @@ class PdfLoader implements LoaderInterface
     ) {
     }
 
-    public function find(
-        $path
-    ) {
+    public function find($path)
+    {
         $file = $this->loader->find($path);
 
         $gsExists = !empty(shell_exec('which gs'));

@@ -85,7 +85,7 @@ class AssetItemHydrator implements AssetItemHydratorInterface
         $normalizedRequiredValueKeys = $this->getRequiredValueKeys($query)->normalize();
 
         $completeness = ['complete' => 0, 'required' => 0];
-        if ($normalizedRequiredValueKeys !== []) {
+        if (!empty($normalizedRequiredValueKeys)) {
             $existingValueKeys = array_keys($valueCollection);
             $completeness['complete'] = count(
                 array_intersect($normalizedRequiredValueKeys, $existingValueKeys)
