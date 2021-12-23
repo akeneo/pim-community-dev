@@ -51,3 +51,5 @@ pim_table_configuration:
             too_many_rows: You have reached the maximum number of rows in your table ({{ limit }}).
         product_value_collection:
             too_many_cells: You have reached the maximum number of table cells in your product ({{ count }} cells, only {{ limit }} allowed).
+        reference_entity:
+            should_not_be_linked: 'This reference entity is used in a product attribute, therefore it cannot be removed.'

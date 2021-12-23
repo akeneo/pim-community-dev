@@ -159,20 +159,20 @@ class NonExistentTableValueFilter implements NonExistentValuesFilter
     ): array {
         $firstColumnId = $tableConfiguration->getFirstColumnId()->asString();
 
-        $recordColumnObject = [];
-        foreach ($tableConfiguration->getReferenceEntityColumns() as $recordColumn) {
-            /** @var ReferenceEntityColumn $recordColumn */
-            $recordColumnObject[\strtolower($recordColumn->id()->asString())] = $recordColumn;
+        $referenceEntityColumnObject = [];
+        foreach ($tableConfiguration->getReferenceEntityColumns() as $referenceEntityColumn) {
+            /** @var ReferenceEntityColumn $referenceEntityColumn */
+            $referenceEntityColumnObject[\strtolower($referenceEntityColumn->id()->asString())] = $referenceEntityColumn;
         }
 
         $recordCodes = [];
         foreach ($rawTableValue as $row) {
             foreach ($row as $columnId => $value) {
-                $foundRecordColumn = $recordColumnObject[\strtolower($columnId)] ?? null;
-                if (null === $foundRecordColumn) {
+                $foundReferenceEntityColumn = $referenceEntityColumnObject[\strtolower($columnId)] ?? null;
+                if (null === $foundReferenceEntityColumn) {
                     continue;
                 }
-                $recordCodes[$foundRecordColumn->referenceEntityIdentifier()->asString()][] = $value;
+                $recordCodes[$foundReferenceEntityColumn->referenceEntityIdentifier()->asString()][] = $value;
             }
         }
 
@@ -183,12 +183,12 @@ class NonExistentTableValueFilter implements NonExistentValuesFilter
 
         foreach ($rawTableValue as $rowIndex => $row) {
             foreach ($row as $columnId => $value) {
-                $foundRecordColumn = $recordColumnObject[\strtolower($columnId)] ?? null;
-                if (null === $foundRecordColumn) {
+                $foundReferenceEntityColumn = $referenceEntityColumnObject[\strtolower($columnId)] ?? null;
+                if (null === $foundReferenceEntityColumn) {
                     continue;
                 }
 
-                $filteredRecordCodes = $existingRecordCodes[$foundRecordColumn->referenceEntityIdentifier()->asString()];
+                $filteredRecordCodes = $existingRecordCodes[$foundReferenceEntityColumn->referenceEntityIdentifier()->asString()];
                 $valueIndex = array_search(
                     strtolower($value),
                     array_map('strtolower', $filteredRecordCodes)

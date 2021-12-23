@@ -15,6 +15,7 @@ namespace Akeneo\Test\Pim\TableAttribute\Acceptance\Context;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\WriteSelectOptionCollection;
@@ -215,6 +216,30 @@ final class CreateAttributeContext implements Context
     }
 
     /**
+     * @When I create a table attribute with :referenceEntityIdentifier reference entity link column
+     */
+    public function iCreateATableAttributeWithReferenceEntityLinkColumn(string $referenceEntityIdentifier): void
+    {
+        $attribute = $this->attributeBuilder
+            ->withCode('table')
+            ->withGroupCode('marketing')
+            ->withType(AttributeTypes::TABLE)
+            ->build();
+        $attribute->setRawTableConfiguration([
+            [
+                'data_type' => ReferenceEntityColumn::DATATYPE,
+                'code' => 'brand',
+                'reference_entity_identifier' => $referenceEntityIdentifier,
+            ],
+            [
+                'data_type' => 'number',
+                'code' => 'quantity',
+            ],
+        ]);
+        $this->saveAttribute($attribute);
+    }
+
+    /**
      * @When I create a table attribute with reference entity first column
      */
     public function iCreateATableAttributeWithReferenceEntityFirstColumn(): void
@@ -226,7 +251,7 @@ final class CreateAttributeContext implements Context
             ->build();
         $attribute->setRawTableConfiguration([
             [
-                'data_type' => 'reference_entity',
+                'data_type' => ReferenceEntityColumn::DATATYPE,
                 'code' => 'brand',
                 'reference_entity_identifier' => 'brands',
             ],
