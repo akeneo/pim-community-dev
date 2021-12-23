@@ -2,6 +2,7 @@
 
 namespace Akeneo\Channel\Component\Validator\Constraint;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -11,10 +12,14 @@ final class LocaleCodeValidator extends ConstraintValidator
     {
         // PIM-10212 For newly created locales, we do a proper check, for existing ones, we keep the old check to avoid BC breaks
         $locale = $this->context->getRoot();
-        if (null !== $locale && null === $locale->getId()) {
-            if (! preg_match('#^[a-z0-9]{2,}_[a-z0-9_]{2,}$#i', $value)) {
-                $this->context->buildViolation($constraint->message)->addViolation();
-            }
+
+        if (!$locale instanceof LocaleInterface) {
+            return;
+        }
+
+        if (null === $locale->getId() && !preg_match('#^[a-z]{2,}_[a-z0-9_]{2,}$#i', $value)) {
+            $this->context->buildViolation($constraint->message)->addViolation();
+
             return;
         }
 
