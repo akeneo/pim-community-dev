@@ -641,8 +641,8 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     {
         return [
             'Should not be too long' => [
-                str_repeat('a', 256),
-                'This value is too long. It should have 255 characters or less.'
+                str_repeat('a', 101),
+                'This value is too long. It should have 100 characters or less.'
             ],
             'Should not blank' => [null, 'This value should not be blank.'],
             'Should not a string' => [123, 'This value should be of type string.'],
@@ -692,7 +692,7 @@ class SaveMeasurementFamilyTest extends AcceptanceTestCase
     public function invalidUnitSymbol()
     {
         return [
-            'Should not be too long' => [str_repeat('a', 256), 'This value is too long. It should have 255 characters or less.'],
+            'Should not be too long' => [str_repeat('a', 101), 'This value is too long. It should have 100 characters or less.'],
             'Should be a string' => [123, 'This value should be of type string.'],
         ];
     }
