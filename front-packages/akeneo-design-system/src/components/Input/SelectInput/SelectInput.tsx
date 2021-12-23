@@ -355,11 +355,11 @@ const SelectInput = ({
           value={searchValue}
           readOnly={readOnly}
           invalid={invalid}
-          placeholder={null === value ? placeholder : ''}
+          placeholder={placeholder}
           onChange={handleSearch}
-          onClick={e => {
+          onClick={event => {
             openOverlay();
-            e.preventDefault();
+            event.preventDefault();
           }}
           aria-labelledby={ariaLabelledby}
           onKeyDown={handleInputKeyDown}

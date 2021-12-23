@@ -53,6 +53,7 @@ const LabelAndArrow = styled.div`
 const Value = styled.span<{$inline: boolean} & AkeneoThemedProps>`
   color: ${({$inline}) => ($inline ? getColor('brand', 100) : getColor('grey', 140))};
   margin-right: 5px;
+  text-align: left;
 `;
 
 const CloseButton = styled.button`
