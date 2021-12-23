@@ -50,6 +50,7 @@ pim_table_configuration:
             value_integer_required: 'The required value is an integer'
             max_length_validation: This value should contain {{ limit }} characters or less.
             too_many_rows: You have reached the maximum number of rows in your table ({{ limit }}).
+            record_should_exist: 'The "{{ recordCode }}" record in the "{{ referenceEntityIdentifier }}" reference entity does not exist'
         product_value_collection:
             too_many_cells: You have reached the maximum number of table cells in your product ({{ count }} cells, only {{ limit }} allowed).
         reference_entity:

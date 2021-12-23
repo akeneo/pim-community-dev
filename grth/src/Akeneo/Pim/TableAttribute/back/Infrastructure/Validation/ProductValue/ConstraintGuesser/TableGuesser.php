@@ -18,6 +18,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\CellDataTypesShouldMatch;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\FirstColumnShouldBeFilled;
+use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\RecordsShouldExist;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\SelectOptionsShouldExist;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\TableColumnsShouldExist;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\TableShouldNotHaveTooManyRows;
@@ -39,6 +40,7 @@ final class TableGuesser implements ConstraintGuesserInterface
             new SelectOptionsShouldExist(),
             new TableValidationsShouldMatch(),
             new TableShouldNotHaveTooManyRows(),
+            new RecordsShouldExist(),
         ];
     }
 }

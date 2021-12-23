@@ -26,8 +26,7 @@ final class RecordsShouldExistValidator extends ConstraintValidator
     public function __construct(
         private TableConfigurationRepository $tableConfigurationRepository,
         private GetExistingRecordCodes $getExistingRecordCodes
-    )
-    {
+    ) {
     }
 
     public function validate($value, Constraint $constraint): void
@@ -39,11 +38,11 @@ final class RecordsShouldExistValidator extends ConstraintValidator
         }
 
         $tableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($value->getAttributeCode());
-        $indexedRecordColumns = [];
-        foreach ($tableConfiguration->getRecordColumns() as $recordColumn) {
-            $indexedRecordColumns[$recordColumn->id()->asString()] = $recordColumn;
+        $indexedReferenceEntityColumns = [];
+        foreach ($tableConfiguration->getReferenceEntityColumns() as $referenceEntityColumn) {
+            $indexedReferenceEntityColumns[$referenceEntityColumn->id()->asString()] = $referenceEntityColumn;
         }
-        if ($indexedRecordColumns === []) {
+        if ($indexedReferenceEntityColumns === []) {
             return;
         }
 
@@ -51,11 +50,11 @@ final class RecordsShouldExistValidator extends ConstraintValidator
         foreach ($value->getData() as $rowIndex => $row) {
             /** @var Cell $cell */
             foreach ($row as $stringColumnId => $cell) {
-                $recordColumn = $indexedRecordColumns[$stringColumnId] ?? null;
-                if (null !== $recordColumn) {
-                    $recordColumnIdentifier = $recordColumn->referenceEntityIdentifier()->asString();
-                    $cellInformation = $rowIndex . '_' . $recordColumn->code()->asString() . '_' . $recordColumnIdentifier;
-                    $indexedRecordCodes[$stringColumnId][$cellInformation] = $cell->normalize();
+                $referenceEntityColumn = $indexedReferenceEntityColumns[$stringColumnId] ?? null;
+                if (null !== $referenceEntityColumn && is_string($cell->normalize())) {
+                    $referenceEntityIdentifier = $referenceEntityColumn->referenceEntityIdentifier()->asString();
+                    $cellInformation = $rowIndex . '-' . $referenceEntityColumn->code()->asString();
+                    $indexedRecordCodes[$referenceEntityIdentifier][$cellInformation] = $cell->normalize();
                 }
             }
         }
@@ -66,13 +65,12 @@ final class RecordsShouldExistValidator extends ConstraintValidator
 
         $existingRecordCodes = $this->getExistingRecordCodes->fromReferenceEntityIdentifierAndRecordCodes($indexedRecordCodes);
 
-        foreach ($indexedRecordCodes as $stringColumnId => $recordCodes) {
-            $nonExistingRecordCodes = array_diff($recordCodes, $existingRecordCodes[$stringColumnId] ?? []);
+        foreach ($indexedRecordCodes as $referenceEntityIdentifier => $recordCodes) {
+            $nonExistingRecordCodes = array_diff($recordCodes, $existingRecordCodes[$referenceEntityIdentifier] ?? []);
             foreach ($nonExistingRecordCodes as $cellCoordinates => $nonExistingRecordCode) {
-                $cellData = explode('_', $cellCoordinates);
+                $cellData = explode('-', $cellCoordinates);
                 $rowIndex = $cellData[0];
                 $columnCode = $cellData[1];
-                $referenceEntityIdentifier = $cellData[2];
 
                 $this->context->buildViolation(
                     $constraint->message,

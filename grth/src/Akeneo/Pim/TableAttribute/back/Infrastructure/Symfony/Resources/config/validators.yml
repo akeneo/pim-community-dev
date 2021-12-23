@@ -89,6 +89,13 @@ services:
         tags:
             - { name: 'validator.constraint_validator' }
 
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\RecordsShouldExistValidator:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\GetExistingRecordCodes'
+        tags:
+            - { name: 'validator.constraint_validator' }
+
     Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ReferenceEntityIdentifierShouldExist:
         tags:
             - { name: 'validator.constraint_validator' }

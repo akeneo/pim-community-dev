@@ -15,7 +15,7 @@ namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Validation\Prod
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\RecordColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
@@ -46,7 +46,7 @@ class RecordsShouldExistValidatorSpec extends ObjectBehavior
 
         $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(
             TableConfiguration::fromColumnDefinitions([
-                RecordColumn::fromNormalized([
+                ReferenceEntityColumn::fromNormalized([
                     'id' => ColumnIdGenerator::record(),
                     'code' => 'origin',
                     'reference_entity_identifier' => 'city',
@@ -54,7 +54,7 @@ class RecordsShouldExistValidatorSpec extends ObjectBehavior
                 ]),
                 TextColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
-                RecordColumn::fromNormalized([
+                ReferenceEntityColumn::fromNormalized([
                     'id' => self::COLUMNID_RECORDBRAND,
                     'code' => 'company',
                     'reference_entity_identifier' => 'brand'
@@ -129,21 +129,21 @@ class RecordsShouldExistValidatorSpec extends ObjectBehavior
 
         $getExistingRecordCodes->fromReferenceEntityIdentifierAndRecordCodes(
             [
-                ColumnIdGenerator::record() => [
-                    '0_origin_city' => 'Dublin',
-                    '1_origin_city' => 'Paris'
+                'city' => [
+                    '0-origin' => 'Dublin',
+                    '1-origin' => 'Paris'
                 ],
-                self::COLUMNID_RECORDBRAND  => [
-                    '0_company_brand' => 'Guiness',
-                    '1_company_brand' => 'Ladurée'
+                'brand'  => [
+                    '0-company' => 'Guiness',
+                    '1-company' => 'Ladurée'
                 ]
             ]
         )->willReturn(
             [
-                ColumnIdGenerator::record() => [
+                'city' => [
                     'Dublin', 'Paris'
                 ],
-                self::COLUMNID_RECORDBRAND => [
+                'brand' => [
                     'Guiness',
                     'Ladurée'
                 ]
@@ -179,21 +179,21 @@ class RecordsShouldExistValidatorSpec extends ObjectBehavior
 
         $getExistingRecordCodes->fromReferenceEntityIdentifierAndRecordCodes(
             [
-                ColumnIdGenerator::record() => [
-                    '0_origin_city' => 'London',
-                    '1_origin_city' => 'Paris'
+                'city' => [
+                    '0-origin' => 'London',
+                    '1-origin' => 'Paris'
                 ],
-                self::COLUMNID_RECORDBRAND => [
-                    '0_company_brand' => 'Guiness',
-                    '1_company_brand' => 'LU'
+                'brand' => [
+                    '0-company' => 'Guiness',
+                    '1-company' => 'LU'
                 ]
             ]
         )->willReturn(
             [
-                ColumnIdGenerator::record() => [
+                'city' => [
                     'Paris'
                 ],
-                self::COLUMNID_RECORDBRAND => [
+                'brand' => [
                     'Guiness'
                 ]
             ]

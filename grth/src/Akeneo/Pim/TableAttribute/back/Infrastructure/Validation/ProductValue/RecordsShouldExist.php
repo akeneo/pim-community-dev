@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraint;
 
 final class RecordsShouldExist extends Constraint
 {
-    public string $message = "todo: {{ recordCode }} => {{ referenceEntityIdentifier }}";
+    public string $message = 'pim_table_configuration.validation.product_value.record_should_exist';
 
     public function getTargets(): array
     {

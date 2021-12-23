@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\TableAttribute\Acceptance\Context;
 
+use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
+use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityCommand;
@@ -20,6 +22,7 @@ use Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\Del
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 
@@ -31,6 +34,7 @@ class ReferenceEntityContext implements Context
         private CreateReferenceEntityHandler $createReferenceEntityHandler,
         private DeleteReferenceEntityHandler $deleteReferenceEntityHandler,
         private ReferenceEntityExistsInterface $referenceEntityExists,
+        private CreateRecordHandler $createRecordHandler,
     ) {
     }
 
@@ -86,5 +90,24 @@ class ReferenceEntityContext implements Context
             $this->referenceEntityExists->withIdentifier(ReferenceEntityIdentifier::fromString($identifier)),
             \sprintf('the %s reference entity was deleted.', $identifier)
         );
+    }
+
+    /**
+     * @Given /^the following records?:$/
+     */
+    public function theFollowingRecords(TableNode $records): void
+    {
+        foreach ($records as $normalizedRecord) {
+            $createRecordCommand = new CreateRecordCommand(
+                $normalizedRecord['ref entity'],
+                $normalizedRecord['code'],
+                []
+            );
+
+            $violations = $this->validator->validate($createRecordCommand);
+
+            Assert::count($violations, 0, (string) $violations);
+            $this->createRecordHandler->__invoke($createRecordCommand);
+        }
     }
 }
