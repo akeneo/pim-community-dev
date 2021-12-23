@@ -16,7 +16,8 @@ class LocaleCodeValidatorSpec extends ObjectBehavior
         $this->initialize($context);
     }
 
-    function it_validates_a_valid_locale_code($context, Locale $contextLocale) {
+    function it_validates_a_valid_locale_code($context, Locale $contextLocale)
+    {
         $constraint = new LocaleCode();
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
@@ -32,7 +33,8 @@ class LocaleCodeValidatorSpec extends ObjectBehavior
         $this->validate('en_029', $constraint);
     }
 
-    function it_add_a_violation_with_an_invalid_locale_code(ConstraintViolationBuilderInterface $violation, $context, Locale $contextLocale) {
+    function it_add_a_violation_with_an_invalid_locale_code(ConstraintViolationBuilderInterface $violation, $context, Locale $contextLocale)
+    {
         $constraint = new LocaleCode();
         $context->buildViolation($constraint->message)->willReturn($violation);
         $context->getRoot()->willReturn($contextLocale);
@@ -52,7 +54,8 @@ class LocaleCodeValidatorSpec extends ObjectBehavior
         $this->validate('aa AA ', $constraint);
     }
 
-    function it_validates_an_old_pattern_if_locale_already_exists(ConstraintViolationBuilderInterface $violation, $context, Locale $contextLocale) {
+    function it_validates_an_old_pattern_if_locale_already_exists(ConstraintViolationBuilderInterface $violation, $context, Locale $contextLocale)
+    {
         $constraint = new LocaleCode();
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
@@ -62,6 +65,25 @@ class LocaleCodeValidatorSpec extends ObjectBehavior
         $violation->addViolation()->shouldNotBeCalled();
 
         $this->validate('aa_AA-test', $constraint);
+        $this->validate(' aa_AA', $constraint);
+    }
+
+    function it_add_a_violation_with_an_invalid_locale_code_with_existing_locale(ConstraintViolationBuilderInterface $violation, $context, Locale $contextLocale)
+    {
+        $constraint = new LocaleCode();
+        $context->buildViolation($constraint->message)->willReturn($violation);
+        $context->getRoot()->willReturn($contextLocale);
+        $contextLocale->getId()->willReturn(null);
+
+        $violation->addViolation()->shouldBeCalledTimes(8);
+
+        $this->validate('aa', $constraint);
+        $this->validate('aa_', $constraint);
+        $this->validate('a_aa', $constraint);
+        $this->validate('aA', $constraint);
+        $this->validate('AA_', $constraint);
+        $this->validate('aA_A', $constraint);
+        $this->validate('A_AA', $constraint);
         $this->validate(' aa_AA', $constraint);
     }
 }
