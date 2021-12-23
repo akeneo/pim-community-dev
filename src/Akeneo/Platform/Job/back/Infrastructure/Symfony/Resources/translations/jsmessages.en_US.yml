@@ -41,6 +41,7 @@ akeneo_job_process_tracker:
     clean_removed_attribute_job: Cleaning removed attribute values
     execute_rules: Execute rules
     asset_manager_mass_delete_assets: Mass Delete
+    asset_manager_mass_edit_assets: Mass Edit
     reference_entity_mass_delete_records: Mass Delete
   user_filter:
     label: User

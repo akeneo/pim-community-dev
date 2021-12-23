@@ -175,6 +175,7 @@ pim_import_export:
                 mass_delete: Mass delete products
                 clean_removed_attribute_job: Cleaning removed attribute values
                 asset_manager_mass_delete_assets: Mass Delete
+                asset_manager_mass_edit_assets: Mass Edit
                 reference_entity_mass_delete_records: Mass Delete
             header.view_all: View all
     batch_status:
