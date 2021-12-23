@@ -4,7 +4,14 @@ import {OperatorSelector} from './OperatorSelector';
 import {ValueSelector} from './ValueSelector';
 import React, {useState} from 'react';
 import styled, {css} from 'styled-components';
-import {ColumnDefinition, FilterOperator, FilterValue, PendingTableFilterValue, SelectOption} from '../models';
+import {
+  ColumnDefinition,
+  FilterOperator,
+  FilterValue,
+  PendingTableFilterValue,
+  ReferenceEntityRecord,
+  SelectOption,
+} from '../models';
 import {AkeneoThemedProps} from 'akeneo-design-system';
 
 const FilterSelectorListContainer = styled.div<{inline: boolean} & AkeneoThemedProps>`
@@ -59,7 +66,7 @@ const FilterSelectorList: React.FC<FilterSelectorListProps> = ({onChange, inline
     updateFilter({...filter, operator, value: undefined});
   };
 
-  const handleRowChange = (row: SelectOption | undefined | null) => {
+  const handleRowChange = (row: SelectOption | ReferenceEntityRecord | undefined | null) => {
     updateFilter({...filter, row});
   };
 

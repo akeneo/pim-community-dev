@@ -54,7 +54,7 @@ const brest: ReferenceEntityRecord = {
   reference_entity_identifier: 'city',
   values: {},
 };
-const items = [lannion, vannes, nantes, coueron, brest];
+export const items = [lannion, vannes, nantes, coueron, brest];
 
 const search: (
   _router: Router,

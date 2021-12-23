@@ -7,6 +7,7 @@ import {
   isFilterValid,
   PendingBackendTableFilterValue,
   PendingTableFilterValue,
+  ReferenceEntityRecord,
   TableAttribute,
 } from '../models';
 import {AttributeFetcher} from '../fetchers';
@@ -16,6 +17,7 @@ import {useFetchOptions} from '../product';
 import {useIsMounted} from '../shared';
 import {AttributeContext} from '../contexts';
 import {DatagridTableCriteria} from './DatagridTableCriteria';
+import {ReferenceEntityRecordRepository} from '../repositories';
 import {
   FilterBox,
   FilterButtonContainer,
@@ -44,12 +46,14 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
 }) => {
   const router = useRouter();
   const translate = useTranslate();
-  const catalogLocale = useUserContext().get('catalogLocale');
+  const userContext = useUserContext();
+  const catalogLocale = userContext.get('catalogLocale');
   const [isOpen, open, close] = useBooleanState();
   const [attribute, setAttribute] = useState<TableAttribute | undefined>();
   const [filterValue, setFilterValue] = useState<PendingTableFilterValue | undefined>();
   const {getOptionsFromColumnCode} = useFetchOptions(attribute, setAttribute);
   const isMounted = useIsMounted();
+  const [referenceEntities, setReferenceEntities] = useState<ReferenceEntityRecord[] | null | undefined>();
 
   useEffect(() => {
     AttributeFetcher.fetch(router, attributeCode).then(attribute => {
@@ -60,7 +64,26 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
     });
   }, []);
 
-  const optionsForFirstColumn = attribute ? getOptionsFromColumnCode(attribute.table_configuration[0].code) : undefined;
+  useEffect(() => {
+    const firstColumn = attribute?.table_configuration[0];
+    if (firstColumn?.data_type !== 'record') return;
+
+    ReferenceEntityRecordRepository.search(router, firstColumn.reference_entity_identifier, {
+      locale: catalogLocale,
+      channel: userContext.get('catalogScope'),
+    }).then(records => {
+      setReferenceEntities(records);
+    });
+  }, [attribute?.table_configuration, router]);
+
+  const optionsForFirstColumn = React.useMemo(() => {
+    if (!attribute) return undefined;
+    const firstColumn = attribute.table_configuration[0];
+    if (firstColumn.data_type === 'record') {
+      return referenceEntities;
+    }
+    return getOptionsFromColumnCode(attribute.table_configuration[0].code);
+  }, [attribute, getOptionsFromColumnCode, referenceEntities]);
 
   React.useEffect(() => {
     if (!attribute || !isMounted() || typeof optionsForFirstColumn === 'undefined' || optionsForFirstColumn === null)
