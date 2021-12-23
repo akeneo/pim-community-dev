@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute;
 
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\RecordColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
@@ -44,12 +43,12 @@ final class ImmutableReferenceEntityIdentifierValidator extends ConstraintValida
         $columnCode = $value['code'] ?? null;
         $dataType = $value['data_type'] ?? null;
         $referenceEntityIdentifier = $value['reference_entity_identifier'] ?? null;
-        if (null === $columnCode || !is_string($referenceEntityIdentifier) || RecordColumn::DATATYPE !== $dataType) {
+        if (null === $columnCode || !is_string($referenceEntityIdentifier) || ReferenceEntityColumn::DATATYPE !== $dataType) {
             return;
         }
 
         $attribute = $this->context->getRoot();
-        if (!$attribute instanceof AttributeInterface || null === $attribute->getCode()) {
+        if (!$attribute instanceof AttributeInterface || !\is_string($attribute->getCode())) {
             return;
         }
 
@@ -60,7 +59,7 @@ final class ImmutableReferenceEntityIdentifierValidator extends ConstraintValida
         }
 
         $formerColumnDefinition = $formerTableConfiguration->getColumnByCode(ColumnCode::fromString($columnCode));
-        if (!$formerColumnDefinition instanceof RecordColumn) {
+        if (!$formerColumnDefinition instanceof ReferenceEntityColumn) {
             return;
         }
         try {

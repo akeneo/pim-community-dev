@@ -3,10 +3,9 @@
 namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute;
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\RecordColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
@@ -53,7 +52,7 @@ class ImmutableReferenceEntityIdentifierValidatorSpec extends ObjectBehavior
     {
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate(['data_type' => RecordColumn::DATATYPE, 'reference_entity_identifier' => 'brands'], new ImmutableReferenceEntityIdentifier());
+        $this->validate(['data_type' => ReferenceEntityColumn::DATATYPE, 'reference_entity_identifier' => 'brands'], new ImmutableReferenceEntityIdentifier());
     }
 
     function it_does_nothing_if_the_attribute_code_is_null(
@@ -63,7 +62,7 @@ class ImmutableReferenceEntityIdentifierValidatorSpec extends ObjectBehavior
         $attribute->getCode()->willReturn(null);
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate(['data_type' => RecordColumn::DATATYPE, 'reference_entity_identifier' => 'brands'], new ImmutableReferenceEntityIdentifier());
+        $this->validate(['data_type' => ReferenceEntityColumn::DATATYPE, 'reference_entity_identifier' => 'brands'], new ImmutableReferenceEntityIdentifier());
     }
 
     function it_does_nothing_if_the_column_definition_is_not_an_array(ExecutionContextInterface $context): void
@@ -97,7 +96,7 @@ class ImmutableReferenceEntityIdentifierValidatorSpec extends ObjectBehavior
     ): void {
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate(['data_type' => RecordColumn::DATATYPE, 'code' => 'brand'], new ImmutableReferenceEntityIdentifier());
+        $this->validate(['data_type' => ReferenceEntityColumn::DATATYPE, 'code' => 'brand'], new ImmutableReferenceEntityIdentifier());
     }
 
     function it_does_nothing_if_the_reference_entity_identifier_is_not_a_string(
@@ -106,9 +105,9 @@ class ImmutableReferenceEntityIdentifierValidatorSpec extends ObjectBehavior
     ): void {
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate(['data_type' => RecordColumn::DATATYPE, 'code' => 'brand', 'reference_entity_identifier' => 42], new ImmutableReferenceEntityIdentifier());
+        $this->validate(['data_type' => ReferenceEntityColumn::DATATYPE, 'code' => 'brand', 'reference_entity_identifier' => 42], new ImmutableReferenceEntityIdentifier());
     }
-    
+
     function it_does_nothing_if_the_attribute_is_new(
         ExecutionContextInterface $context,
         TableConfigurationRepository $tableConfigurationRepository,
@@ -120,7 +119,7 @@ class ImmutableReferenceEntityIdentifierValidatorSpec extends ObjectBehavior
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate(['data_type' => RecordColumn::DATATYPE, 'code' => 'brand', 'reference_entity_identifier' => 'brands'], new ImmutableReferenceEntityIdentifier());
+        $this->validate(['data_type' => ReferenceEntityColumn::DATATYPE, 'code' => 'brand', 'reference_entity_identifier' => 'brands'], new ImmutableReferenceEntityIdentifier());
     }
 
     function it_does_not_add_any_violation_if_the_reference_entity_column_is_new(
@@ -143,7 +142,7 @@ class ImmutableReferenceEntityIdentifierValidatorSpec extends ObjectBehavior
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate(['data_type' => RecordColumn::DATATYPE, 'code' => 'brand', 'reference_entity_identifier' => 'brands'], new ImmutableReferenceEntityIdentifier());
+        $this->validate(['data_type' => ReferenceEntityColumn::DATATYPE, 'code' => 'brand', 'reference_entity_identifier' => 'brands'], new ImmutableReferenceEntityIdentifier());
     }
 
     function it_does_not_add_any_violation_if_the_reference_entity_identifier_was_not_updated(
@@ -161,7 +160,7 @@ class ImmutableReferenceEntityIdentifierValidatorSpec extends ObjectBehavior
                     ]
                 ),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
-                RecordColumn::fromNormalized(
+                ReferenceEntityColumn::fromNormalized(
                     [
                         'id' => ColumnIdGenerator::supplier(),
                         'code' => 'supplier',
@@ -173,7 +172,7 @@ class ImmutableReferenceEntityIdentifierValidatorSpec extends ObjectBehavior
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate(['data_type' => RecordColumn::DATATYPE, 'code' => 'brand', 'reference_entity_identifier' => 'brands'], new ImmutableReferenceEntityIdentifier());
+        $this->validate(['data_type' => ReferenceEntityColumn::DATATYPE, 'code' => 'brand', 'reference_entity_identifier' => 'brands'], new ImmutableReferenceEntityIdentifier());
     }
 
     function it_does_not_add_any_violation_if_the_reference_entity_identifier_does_not_have_the_same_case(
@@ -191,7 +190,7 @@ class ImmutableReferenceEntityIdentifierValidatorSpec extends ObjectBehavior
                     ]
                 ),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
-                RecordColumn::fromNormalized(
+                ReferenceEntityColumn::fromNormalized(
                     [
                         'id' => ColumnIdGenerator::supplier(),
                         'code' => 'supplier',
@@ -203,7 +202,7 @@ class ImmutableReferenceEntityIdentifierValidatorSpec extends ObjectBehavior
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate(['data_type' => RecordColumn::DATATYPE, 'code' => 'brand', 'reference_entity_identifier' => 'BRANDS'], new ImmutableReferenceEntityIdentifier());
+        $this->validate(['data_type' => ReferenceEntityColumn::DATATYPE, 'code' => 'brand', 'reference_entity_identifier' => 'BRANDS'], new ImmutableReferenceEntityIdentifier());
     }
 
     function it_adds_a_violation_if_the_reference_entity_identifier_was_updated(
@@ -222,7 +221,7 @@ class ImmutableReferenceEntityIdentifierValidatorSpec extends ObjectBehavior
                     ]
                 ),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
-                RecordColumn::fromNormalized(
+                ReferenceEntityColumn::fromNormalized(
                     [
                         'id' => ColumnIdGenerator::generateAsString('brand'),
                         'code' => 'brand',
@@ -239,6 +238,6 @@ class ImmutableReferenceEntityIdentifierValidatorSpec extends ObjectBehavior
             ->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
-        $this->validate(['data_type' => RecordColumn::DATATYPE, 'code' => 'brand', 'reference_entity_identifier' => 'designers'], new ImmutableReferenceEntityIdentifier());
+        $this->validate(['data_type' => ReferenceEntityColumn::DATATYPE, 'code' => 'brand', 'reference_entity_identifier' => 'designers'], new ImmutableReferenceEntityIdentifier());
     }
 }

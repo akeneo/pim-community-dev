@@ -28,13 +28,15 @@ Feature: Update a table attribute
 
   @only-ee
   Scenario: Cannot update the identifier of a reference entity column
-    Given a table attribute with the following configuration '{"data_type": "record", "code": "brand", "reference_entity_identifier": "brands"}'
+    Given the brands reference entity
+    And a table attribute with the following configuration '{"data_type": "reference_entity", "code": "brand", "reference_entity_identifier": "brands"}'
     When I update the reference entity identifier of the "brand" column
     Then There is a violation with message: The reference_entity_identifier cannot be updated
 
   @only-ee
   Scenario: Can update a reference entity column definition when keeping the same reference entity identifier
-    Given a table attribute with the following configuration '{"data_type": "record", "code": "brand", "reference_entity_identifier": "brands"}'
+    Given the brands reference entity
+    And a table attribute with the following configuration '{"data_type": "reference_entity", "code": "brand", "reference_entity_identifier": "brands"}'
     When I update the "en_US" label of the "brand" column as "Brand"
     Then There is no violation
     And the "en_US" label of the "brand" column should be "Brand"
