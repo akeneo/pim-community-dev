@@ -9,3 +9,11 @@ services:
             - '@pim_api.negotiator.content_type_negotiator'
         tags:
             - { name: kernel.event_subscriber, event: kernel.request, method: onKernelRequest }
+
+    Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\ApiRequestLogSubscriber:
+        arguments:
+            - '@security.firewall.map'
+            - '@security.token_storage'
+            - '@monolog.logger.api_requests'
+        tags:
+            - { name: kernel.event_subscriber }
