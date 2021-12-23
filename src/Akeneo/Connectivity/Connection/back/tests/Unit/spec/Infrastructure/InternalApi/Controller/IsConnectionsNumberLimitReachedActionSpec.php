@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
 
-use Akeneo\Connectivity\Connection\Application\Settings\Query\IsConnectionsNumberLimitReachedHandler;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\IsConnectionsNumberLimitReachedQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\IsConnectionsNumberLimitReachedAction;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,9 +17,9 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class IsConnectionsNumberLimitReachedActionSpec extends ObjectBehavior
 {
-    public function let(IsConnectionsNumberLimitReachedHandler $isConnectionsNumberLimitReachedHandler)
+    public function let(IsConnectionsNumberLimitReachedQueryInterface $isConnectionsNumberLimitReachedQuery)
     {
-        $this->beConstructedWith($isConnectionsNumberLimitReachedHandler);
+        $this->beConstructedWith($isConnectionsNumberLimitReachedQuery);
     }
 
     public function it_is_initializable(): void
@@ -33,11 +33,11 @@ class IsConnectionsNumberLimitReachedActionSpec extends ObjectBehavior
     }
 
     public function it_returns_limit_reached_flag(
-        IsConnectionsNumberLimitReachedHandler $isConnectionsNumberLimitReachedHandler,
+        IsConnectionsNumberLimitReachedQueryInterface $isConnectionsNumberLimitReachedQuery,
         Request $request
     ): void {
         $request->isXmlHttpRequest()->willReturn(true);
-        $isConnectionsNumberLimitReachedHandler->execute()->willReturn(true);
+        $isConnectionsNumberLimitReachedQuery->execute()->willReturn(true);
 
         $this->__invoke($request)->shouldBeLike(new JsonResponse(['limitReached' => true]));
     }

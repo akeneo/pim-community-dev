@@ -29,7 +29,7 @@ export const useConnectionsLimitReached = (): boolean | null => {
             .catch(() => {
                 setLimitReached(true);
             });
-    }, [fetchCallback, setLimitReached]);
+    }, []);
 
     return isLimitReached;
 };

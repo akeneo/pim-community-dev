@@ -117,8 +117,3 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.webhook.generate_secret'
             - '@akeneo_connectivity.connection.persistence.query.save_webhook_secret'
-
-    Akeneo\Connectivity\Connection\Application\Settings\Query\IsConnectionsNumberLimitReachedHandler:
-        arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\CountAllConnectionsQuery'
-            - '%akeneo_connectivity.connection.max_limit%'

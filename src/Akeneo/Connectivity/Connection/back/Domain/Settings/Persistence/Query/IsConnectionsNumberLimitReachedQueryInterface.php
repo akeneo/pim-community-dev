@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query;
 
-interface CountAllConnectionsQueryInterface
+interface IsConnectionsNumberLimitReachedQueryInterface
 {
-    public function execute(): int;
+    public function execute(): bool;
 }

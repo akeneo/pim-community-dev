@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
 
-use Akeneo\Connectivity\Connection\Application\Settings\Query\IsConnectionsNumberLimitReachedHandler;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\IsConnectionsNumberLimitReachedQueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class IsConnectionsNumberLimitReachedAction
 {
-    public function __construct(private IsConnectionsNumberLimitReachedHandler $isConnectionsNumberLimitReachedHandler)
+    public function __construct(private IsConnectionsNumberLimitReachedQueryInterface $isConnectionsNumberLimitReachedHandler)
     {
     }
 
