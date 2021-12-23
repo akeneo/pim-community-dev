@@ -9,7 +9,7 @@ monolog:
       level:      '%env(LOGGING_LEVEL)%'
       path:       'php://stderr'
       formatter:  'monolog.formatter.json'
-      channels:   ['!event_api', '!business_event']
+      channels:   ['!event_api', '!business_event', '!api_requests']
       include_stacktraces: true
     event_and_business_api:
       type: stream
