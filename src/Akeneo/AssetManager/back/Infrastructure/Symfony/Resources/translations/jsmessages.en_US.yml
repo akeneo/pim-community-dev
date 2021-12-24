@@ -580,6 +580,9 @@ akeneo_job_process_tracker:
     asset_manager_compute_transformations: Compute asset transformations
     asset_manager_mass_delete_assets: Mass delete assets
     asset_manager_mass_edit_assets: Mass edit assets
+  type_filter:
+    asset_manager_mass_delete_assets: Mass delete assets
+    asset_manager_mass_edit_assets: Mass edit assets
 
 pim_datagrid:
     cells:

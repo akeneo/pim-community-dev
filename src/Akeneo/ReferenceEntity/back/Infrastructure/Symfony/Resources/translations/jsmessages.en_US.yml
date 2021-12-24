@@ -371,6 +371,8 @@ pim_notification:
 akeneo_job_process_tracker:
   type:
     reference_entity_mass_delete_records: Mass delete records
+  type_filter:
+    reference_entity_mass_delete_records: Mass delete records
 
 pim_analytics:
     info_type:
