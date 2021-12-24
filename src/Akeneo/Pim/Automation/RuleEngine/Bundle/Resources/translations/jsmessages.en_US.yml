@@ -479,6 +479,6 @@ pim_import_export:
                 execute_rules: Rules execution
 
 akeneo_job_process_tracker:
-    type:
+    type_filter:
         mass_edit_rule: Mass edit rule
         execute_rules: Rules execution
