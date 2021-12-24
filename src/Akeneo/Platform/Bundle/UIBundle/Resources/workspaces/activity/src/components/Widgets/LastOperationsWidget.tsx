@@ -67,7 +67,7 @@ const LastOperationsWidget = () => {
                 <Table.Row key={`operation${operation.id}`}>
                   <Table.Cell>{operation.date}</Table.Cell>
                   <Table.Cell>
-                    {translate(`pim_import_export.widget.last_operations.job_type.${operation.type}`)}
+                    {translate(`akeneo_job_process_tracker.type_filter.${operation.type}`)}
                   </Table.Cell>
                   <Table.Cell>{operation.label}</Table.Cell>
                   <Table.Cell>{operation.username}</Table.Cell>
