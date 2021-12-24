@@ -140,6 +140,8 @@ class ProductAndProductModelProcessor extends AbstractProcessor
                 );
             } elseif (in_array($codeProperty, $selectedProperties) || 'identifier' === $codeProperty) {
                 $propertiesToExport[$codeProperty] = $property;
+            } elseif ('code' === $codeProperty) {
+                $propertiesToExport['identifier'] = $property;
             }
         }
 
