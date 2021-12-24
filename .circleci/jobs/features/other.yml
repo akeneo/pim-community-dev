@@ -298,7 +298,7 @@ jobs:
                       rm -f docker-compose.override.yml
                       PIM_VERSION=master SETUP_FOR_CI=1 PIM_CONTEXT=onboarder make setup-onboarder-parameters
                       PIM_VERSION=master PIM_CONTEXT=onboarder make setup-onboarder-tests
-                      docker-compose run --rm php php /usr/local/bin/composer dumpautoload
+                      docker-compose run --rm php php /usr/local/bin/composer dumpautoload --no-interaction
             - run:
                   name: Change owner of PIM as some files have been created with wrong owner
                   command: sudo chown -R 1000:1000 ~/project
@@ -322,6 +322,9 @@ jobs:
             - run:
                   name: Execute acceptance tests
                   command: PIM_CONTEXT=onboarder make test-acceptance
+            - run:
+                  name: "[workaround to revert] Use phpunit executable instead of composer proxy"
+                  command: cd vendor/bin && rm -f ./phpunit && ln -s ../phpunit/phpunit/phpunit ./phpunit
             - run:
                   name: Execute PHPUnit integration tests
                   command: PIM_CONTEXT=onboarder make test-integration
