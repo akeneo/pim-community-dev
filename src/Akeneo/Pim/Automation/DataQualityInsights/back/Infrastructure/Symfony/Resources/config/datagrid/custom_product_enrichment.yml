@@ -6,11 +6,14 @@ datagrid:
                 data_name:     data_quality_insights_score
                 type:          field
                 frontend_type: quality-score-badge
+                feature_flag: data_quality_insights
+
         sorters:
             columns:
                 data_quality_insights_score:
                     data_name: quality_score
                     sorter: data_quality_insights_score
+                    feature_flag: data_quality_insights
         filters:
             columns:
                 data_quality_insights_score:
@@ -27,3 +30,4 @@ datagrid:
                                 C: 3
                                 D: 4
                                 E: 5
+                    feature_flag: data_quality_insights
