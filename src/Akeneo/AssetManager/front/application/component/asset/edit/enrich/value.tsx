@@ -15,7 +15,7 @@ import {getValuesForChannelAndLocale, isValueEmpty} from 'akeneoassetmanager/dom
 import {hasFieldAsTarget} from 'akeneoassetmanager/domain/model/asset-family/transformation';
 import {attributeIdentifierStringValue} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {isTextAreaAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
-import {useViewInputGenerator} from "../../../../hooks/useViewInputGenerator";
+import {useInputViewGenerator} from '../../../../hooks/useInputViewGenerator';
 
 const ValueCollectionContainer = styled.div`
   display: flex;
@@ -46,7 +46,7 @@ const ValueCollection = ({
   canEditAsset,
 }: ValueCollectionProps) => {
   const translate = useTranslate();
-  const viewInputGenerator = useViewInputGenerator();
+  const inputViewGenerator = useInputViewGenerator();
   const visibleValues = getValuesForChannelAndLocale(asset.values, channel, locale).sort(
     (firstValue: EditionValue, secondValue: EditionValue) => firstValue.attribute.order - secondValue.attribute.order
   );
@@ -54,7 +54,7 @@ const ValueCollection = ({
   return (
     <ValueCollectionContainer>
       {visibleValues.map((value: EditionValue) => {
-        const InputView = viewInputGenerator(value);
+        const InputView = inputViewGenerator(value);
         const attributeLabel = getLabelInCollection(
           value.attribute.labels,
           localeReferenceStringValue(locale),

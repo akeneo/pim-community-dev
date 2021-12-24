@@ -1,12 +1,12 @@
 import {useConfig} from './useConfig';
 
-const useValueConfig = () => {
+const useAttributeConfig = () => {
   const config = useConfig();
   if (!config) {
     throw new Error('ConfigContext has not been properly initiated');
   }
 
-  return config.value;
+  return config.attribute;
 };
 
-export {useValueConfig};
+export {useAttributeConfig};

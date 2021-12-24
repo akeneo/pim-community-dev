@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {fireEvent, screen} from '@testing-library/react';
 import FilterCollection, {
   useFilterViews,
@@ -7,6 +7,20 @@ import FilterCollection, {
 import {denormalize} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import {renderHook} from '@testing-library/react-hooks';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
+import {ConfigProvider} from "akeneoassetmanager/application/hooks/useConfig";
+import {AssetAttributeFetcher} from "akeneoassetmanager/application/component/library/library";
+import {FilterView} from "akeneoassetmanager/application/configuration/value";
+import {Filter} from "akeneoassetmanager/application/reducer/grid";
+
+const Provider: FC = ({children}) => (
+  <ConfigProvider config={{
+    value: {},
+    sidebar: {},
+    attribute: {}
+  }}>
+    {children}
+  </ConfigProvider>
+);
 
 const attributes = [
   {
@@ -36,7 +50,7 @@ const attributes = [
     options: [],
   },
 ];
-const dataProvider = {
+const dataProvider: {assetAttributeFetcher: AssetAttributeFetcher} = {
   assetAttributeFetcher: {
     fetchAll: () => {
       return new Promise(resolve => resolve(attributes));
@@ -45,8 +59,8 @@ const dataProvider = {
 };
 
 describe('Tests filter collection', () => {
-  it('It displays a filter collection in order of the attribute order', () => {
-    const FilterView = ({attribute}) => <div data-code={attribute.code}></div>;
+  it('It displays a filter collection in order of the attribute order', async () => {
+    const FilterView: FilterView = ({attribute}) => <div data-code={attribute.code}></div>;
 
     const {container} = renderWithProviders(
       <FilterCollection
@@ -97,7 +111,8 @@ describe('Tests filter collection', () => {
       </div>
     );
 
-    let actualFilterCollection = [{field: attributes[0].code, operator: 'IN', value: []}];
+    const handleFilterCollectionChange = jest.fn();
+    const actualFilterCollection: Filter[] = [{field: attributes[0].code, operator: 'IN', value: [], context: {}}];
     renderWithProviders(
       <FilterCollection
         orderedFilterViews={[{view: ClickableFilterView, attribute: denormalize(attributes[0])}]}
@@ -106,15 +121,13 @@ describe('Tests filter collection', () => {
         filterCollection={actualFilterCollection}
         assetFamilyIdentifier={'packshot'}
         context={{channel: 'ecommerce', locale: 'locale'}}
-        onFilterCollectionChange={filterCollection => {
-          actualFilterCollection = filterCollection;
-        }}
+        onFilterCollectionChange={handleFilterCollectionChange}
       />
     );
 
     fireEvent.click(screen.getByTestId('my-filter'));
 
-    expect(actualFilterCollection).toEqual(expectedFilterCollection);
+    expect(handleFilterCollectionChange).toBeCalledWith(expectedFilterCollection);
   });
 
   test('I get a null collection view if there is no attributes', async () => {
@@ -123,7 +136,8 @@ describe('Tests filter collection', () => {
         assetAttributeFetcher: {
           fetchAll: () => new Promise(resolve => resolve([])),
         },
-      })
+      }),
+      {wrapper: Provider}
     );
 
     expect(result.current).toBe(null);
@@ -133,7 +147,7 @@ describe('Tests filter collection', () => {
   });
 
   test('I get an empty collection view if there is no attributes', async () => {
-    const {result, waitForNextUpdate} = renderHook(() => useFilterViews('notice', dataProvider));
+    const {result, waitForNextUpdate} = renderHook(() => useFilterViews('notice', dataProvider), {wrapper: Provider});
 
     expect(result.current).toBe(null);
     await waitForNextUpdate();
@@ -142,7 +156,7 @@ describe('Tests filter collection', () => {
   });
 
   test('I get an empty collection view if the asset family is null', () => {
-    const {result} = renderHook(() => useFilterViews(null, dataProvider));
+    const {result} = renderHook(() => useFilterViews(null, dataProvider), {wrapper: Provider});
 
     expect(result.current).toBe(null);
   });

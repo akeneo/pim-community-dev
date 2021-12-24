@@ -27,8 +27,10 @@ import {ThemeProvider} from 'styled-components';
 import {pimTheme, Key} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ConfigProvider} from 'akeneoassetmanager/application/hooks/useConfig';
-import {ValueConfig} from "../../../application/configuration/value";
-import {getConfig} from "pimui/js/config-registry";
+import {ValueConfig} from '../../../application/configuration/value';
+import {getConfig} from 'pimui/js/config-registry';
+import {TabsConfiguration} from '../../../application/configuration/sidebar';
+import {AttributeConfig} from '../../../application/configuration/attribute';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
@@ -84,9 +86,14 @@ class AssetEditController extends BaseController {
           <Provider store={this.store}>
             <DependenciesProvider>
               <ThemeProvider theme={pimTheme}>
-                <ConfigProvider config={{
-                  value: getConfig<ValueConfig>('akeneoassetmanager/application/configuration/value') ?? {}
-                }}>
+                <ConfigProvider
+                  config={{
+                    value: getConfig<ValueConfig>('akeneoassetmanager/application/configuration/value') ?? {},
+                    sidebar: getConfig<TabsConfiguration>('akeneoassetmanager/application/configuration/sidebar') ?? {},
+                    attribute:
+                      getConfig<AttributeConfig>('akeneoassetmanager/application/configuration/attribute') ?? {},
+                  }}
+                >
                   <AssetView />
                 </ConfigProvider>
               </ThemeProvider>

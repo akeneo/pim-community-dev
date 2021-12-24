@@ -8,7 +8,7 @@ import {NormalizedOptionCollectionAttribute} from 'akeneoassetmanager/domain/mod
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {AssetAttributeFetcher} from 'akeneoassetmanager/application/component/library/library';
-import {useFilterViewsGenerator} from "../../../hooks/useFilterViewsGenerator";
+import {useFilterViewsGenerator} from '../../../hooks/useFilterViewsGenerator';
 
 export type FilterableAttribute = NormalizedOptionAttribute | NormalizedOptionCollectionAttribute;
 

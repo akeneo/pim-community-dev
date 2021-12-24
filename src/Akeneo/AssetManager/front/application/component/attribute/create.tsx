@@ -14,7 +14,7 @@ import {
   attributeCreationValuePerChannelUpdated,
 } from 'akeneoassetmanager/domain/event/attribute/create';
 import {createAttribute} from 'akeneoassetmanager/application/action/attribute/create';
-import {getAttributeTypes} from 'akeneoassetmanager/application/configuration/attribute';
+import {useAttributeTypes} from '../../hooks/attribute/useAttributeTypes';
 
 const AttributeTypeIcon = styled.img`
   width: 25px;
@@ -56,8 +56,7 @@ interface CreateProps extends StateProps, DispatchProps {}
 const Create = ({data, errors, context, events}: CreateProps) => {
   const translate = useTranslate();
   const labelInputRef = useRef<HTMLInputElement>(null);
-  const attributeTypes = getAttributeTypes();
-
+  const attributeTypes = useAttributeTypes();
   const handleLabelChange = (value: string) => events.onLabelUpdated(value, context.locale);
 
   useAutoFocus(labelInputRef);

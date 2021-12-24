@@ -17,7 +17,7 @@ import {LocaleDropdown} from 'akeneoassetmanager/application/component/app/Local
 import {ChannelDropdown} from 'akeneoassetmanager/application/component/app/ChannelDropdown';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
-import {useViewInputGenerator} from "../../../../hooks/useViewInputGenerator";
+import {useInputViewGenerator} from '../../../../hooks/useInputViewGenerator';
 
 /** @TODO RAC-331 use body style bold */
 const AttributeName = styled.label`
@@ -56,8 +56,8 @@ type UpdaterRowProps = {
 
 const UpdaterRow = ({updater, uiLocale, readOnly = false, errors, onChange, onRemove, channels}: UpdaterRowProps) => {
   const translate = useTranslate();
-  const viewInputGenerator = useViewInputGenerator();
-  const InputView = viewInputGenerator(updater);
+  const inputViewGenerator = useInputViewGenerator();
+  const InputView = inputViewGenerator(updater);
 
   const handleDataChange = (editionValue: EditionValue) => {
     onChange({...updater, data: editionValue.data});

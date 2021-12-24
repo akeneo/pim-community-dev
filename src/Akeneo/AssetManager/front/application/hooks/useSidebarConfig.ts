@@ -1,12 +1,12 @@
 import {useConfig} from './useConfig';
 
-const useValueConfig = () => {
+const useSidebarConfig = () => {
   const config = useConfig();
   if (!config) {
     throw new Error('ConfigContext has not been properly initiated');
   }
 
-  return config.value;
+  return config.sidebar;
 };
 
-export {useValueConfig};
+export {useSidebarConfig};

@@ -129,12 +129,10 @@ type FilterViewCollection = {
 const getFilterViews = (config: ValueConfig, attributes: NormalizedAttribute[]): FilterViewCollection => {
   const attributesWithFilterViews = attributes.filter(({type}: NormalizedAttribute) => hasFilterView(config, type));
 
-  const filterViews = attributesWithFilterViews.map((attribute: NormalizedAttribute) => ({
+  return attributesWithFilterViews.map((attribute: NormalizedAttribute) => ({
     view: getFilterView(config, attribute.type),
     attribute: attribute,
   }));
-
-  return filterViews;
 }
 
 export {getFieldView, getFilterViews};

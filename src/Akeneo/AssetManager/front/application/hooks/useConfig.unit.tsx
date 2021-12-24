@@ -3,7 +3,7 @@ import {renderHook} from '@testing-library/react-hooks';
 import {useConfig, ConfigProvider} from './useConfig';
 
 test('It returns the config', () => {
-  const {result} = renderHook(() => useConfig('value'), {
+  const {result} = renderHook(() => useConfig(), {
     wrapper: ({children}) => (
       <ConfigProvider
         config={{
@@ -15,13 +15,7 @@ test('It returns the config', () => {
     ),
   });
 
-  expect(result.current).toEqual({some: 'thing'});
-});
-
-test('It throws when the config is undefined', () => {
-  const {result} = renderHook(() => useConfig('value'), {
-    wrapper: ({children}) => <ConfigProvider config={{}}>{children}</ConfigProvider>,
+  expect(result.current).toEqual({
+    value: {some: 'thing'},
   });
-
-  expect(result.error).toEqual(new Error('Invalid config key'));
 });

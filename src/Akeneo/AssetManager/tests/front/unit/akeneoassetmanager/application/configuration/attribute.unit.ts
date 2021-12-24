@@ -5,36 +5,109 @@ import {
   getDenormalizer,
   getReducer,
 } from 'akeneoassetmanager/application/configuration/attribute';
+import {AttributeConfig} from "../../../../../../front/application/configuration/attribute";
+import * as TextDenormalize from 'akeneoassetmanager/domain/model/attribute/type/text';
+import * as TextReducer from 'akeneoassetmanager/application/reducer/attribute/type/text';
+import * as MediaFileDenormalize from 'akeneoassetmanager/domain/model/attribute/type/media-file';
+import * as MediaFileReducer from 'akeneoassetmanager/application/reducer/attribute/type/media-file';
+import {
+  NormalizedTextAttribute,
+  TextAttribute,
+  ValidationRuleOption
+} from "../../../../../../front/domain/model/attribute/type/text";
 
-jest.mock('require-context', name => {});
+const baseNormalizedAttribute: NormalizedTextAttribute = {
+  code: 'attribute_code',
+  type: 'text',
+  asset_family_identifier: 'packshot',
+  labels: {},
+  value_per_locale: false,
+  value_per_channel: false,
+  identifier: 'attribute_identifier',
+  order: 2,
+  is_required: false,
+  is_read_only: false,
+  max_length: 1,
+  is_textarea: false,
+  is_rich_text_editor: false,
+  validation_rule: ValidationRuleOption.None,
+  regular_expression: null
+};
+
+const baseAttribute: TextAttribute = {
+  assetFamilyIdentifier: 'packshot',
+  code: 'attribute_code',
+  labelCollection: {},
+  type: 'text',
+  valuePerLocale: false,
+  valuePerChannel: false,
+  getCode: () => 'attribute_code',
+  getAssetFamilyIdentifier: () => 'packshot',
+  getType: () => 'text',
+  getLabel: (_locale: string, _fallbackOnCode?: boolean) => 'attribute_code',
+  getLabelCollection: () => ({}),
+  normalize: () => baseNormalizedAttribute,
+  identifier: 'attribute_identifier',
+  order: 2,
+  isRequired: false,
+  isReadOnly: false,
+  equals: () => false,
+  getIdentifier: () => 'attribute_identifier',
+  maxLength: 1,
+  isTextarea: false,
+  isRichTextEditor: false,
+  validationRule: ValidationRuleOption.None,
+  regularExpression: null
+};
+
+const baseAttributeConfig: AttributeConfig = {
+  text: {
+    icon: 'bundles/pimui/images/attribute/icon-text.svg',
+    denormalize: TextDenormalize,
+    reducer: TextReducer,
+    view: require('akeneoassetmanager/application/component/attribute/edit/text'),
+  },
+  media_file: {
+    icon: 'bundles/pimui/images/attribute/icon-mediafile.svg',
+    denormalize: MediaFileDenormalize,
+    reducer: MediaFileReducer,
+    view: require('akeneoassetmanager/application/component/attribute/edit/media-file'),
+  },
+};
 
 describe('akeneo > asset family > application > configuration --- attribute', () => {
   test('I can get an attribute denormalizer', () => {
-    const getAttributeDenormalizer = getDenormalizer({
-      text: {
-        denormalize: {
-          denormalize: normalizedAttribute => {
-            expect(normalizedAttribute.code).toEqual('attribute_to_denormalize');
+    const getAttributeDenormalizer = getDenormalizer(baseAttributeConfig);
 
-            return true;
-          },
-        },
-      },
+    const normalizedAttribute = {...baseNormalizedAttribute, code: 'attribute_to_denormalize'};
+    expect(getAttributeDenormalizer(normalizedAttribute)(normalizedAttribute)).toEqual({
+      "assetFamilyIdentifier": "packshot",
+      "code": "attribute_to_denormalize",
+      "identifier": "attribute_identifier",
+      "isReadOnly": false,
+      "isRequired": false,
+      "isRichTextEditor": false,
+      "isTextarea": false,
+      "labelCollection": {},
+      "maxLength": 1,
+      "order": 2,
+      "regularExpression": null,
+      "type": "text",
+      "validationRule": "none",
+      "valuePerChannel": false,
+      "valuePerLocale": false
     });
-
-    const normalizedAttribute = {code: 'attribute_to_denormalize', type: 'text'};
-    expect(getAttributeDenormalizer(normalizedAttribute)(normalizedAttribute)).toBe(true);
-    expect.assertions(2);
   });
 
   test('I get an error if the configuration does not have an proper text denormalizer', () => {
     const getAttributeDenormalizer = getDenormalizer({
       text: {
+        // @ts-expect-error invalid attribute configuration
         denormalize: {},
       },
     });
 
-    const normalizedAttribute = {code: 'attribute_to_denormalize', type: 'text'};
+    const normalizedAttribute = {...baseNormalizedAttribute, code: 'attribute_to_denormalize'};
     expect(() => {
       getAttributeDenormalizer(normalizedAttribute);
     }).toThrowError(`The module you are exposing to denormalize an attribute of type "text" needs to
@@ -47,10 +120,11 @@ export const denormalize = (normalizedTextAttribute: NormalizedAttribute) => {
 
   test('I get an error if the configuration does not have valid configurations', () => {
     const getAttributeDenormalizer = getDenormalizer({
+      // @ts-expect-error invalid attribute configuration
       text: {},
     });
 
-    const normalizedAttribute = {code: 'attribute_to_denormalize', type: 'text'};
+    const normalizedAttribute = {...baseNormalizedAttribute, code: 'attribute_to_denormalize'};
     expect(() => {
       getAttributeDenormalizer(normalizedAttribute);
     }).toThrowError(`Cannot get the attribute denormalizer for type "text". The configuration should look like this:
@@ -64,33 +138,31 @@ Actual conf: ${JSON.stringify({text: {}})}`);
   });
 
   test('I can get an attribute view', () => {
-    const getAttributeView = getView({
+    const View = require('akeneoassetmanager/application/component/attribute/edit/media-file.tsx');
+    const attributeConfig: AttributeConfig = {
       text: {
+        ...baseAttributeConfig.text,
         view: {
-          view: attribute => {
-            expect(attribute.code).toEqual('attribute_to_render');
-
-            return true;
-          },
+          view: View,
         },
       },
-    });
+    };
 
-    const attribute = {code: 'attribute_to_render', getType: () => 'text'};
-    expect(getAttributeView(attribute)(attribute)).toBe(true);
-    expect.assertions(2);
+    const attribute = {...baseAttribute, code: 'attribute_to_render', getType: () => 'text'};
+    expect(getView(attributeConfig, attribute)).toBe(View);
   });
 
   test('I get an error if the configuration does not have an proper text view', () => {
-    const getAttributeView = getView({
+    const attributeConfig: AttributeConfig = {
       text: {
+        // @ts-expect-error invalid attribute configuration
         view: {},
       },
-    });
+    };
 
-    const attribute = {code: 'attribute_to_render', getType: () => 'text'};
+    const attribute = {...baseAttribute, code: 'attribute_to_render', getType: () => 'text'};
     expect(() => {
-      getAttributeView(attribute);
+      getView(attributeConfig, attribute);
     }).toThrowError(`
 const TextView = ({
   attribute,
@@ -144,14 +216,14 @@ export view = TextView;`);
   });
 
   test('I get an error if the configuration does not have valid configurations', () => {
-    const getAttributeView = getView({
+    const attributeConfig: AttributeConfig = {
+      // @ts-expect-error invalid attribute configuration
       text: {},
-    });
+    };
 
-    const attribute = {code: 'attribute_to_render', getType: () => 'text'};
-    expect(() => {
-      getAttributeView(attribute);
-    }).toThrowError(`Cannot get the attribute view for type "text". The configuration should look like this:
+    const attribute = {...baseAttribute, code: 'attribute_to_render', getType: () => 'text'};
+    expect(() => {getView(attributeConfig, attribute)})
+      .toThrowError(`Cannot get the attribute view for type "text". The configuration should look like this:
 config:
     config:
         akeneoassetmanager/application/configuration/attribute:
@@ -162,32 +234,22 @@ Actual conf: ${JSON.stringify({text: {}})}`);
   });
 
   test('I can get an attribute reducer', () => {
-    const getAttributeReducer = getReducer({
-      text: {
-        reducer: {
-          reducer: attribute => {
-            expect(attribute.code).toEqual('attribute_to_reduce');
+    const getAttributeReducer = getReducer(baseAttributeConfig);
 
-            return true;
-          },
-        },
-      },
-    });
-
-    const attribute = {code: 'attribute_to_reduce', type: 'text'};
-    expect(getAttributeReducer(attribute)(attribute)).toBe(true);
-    expect.assertions(2);
+    const attribute = {...baseNormalizedAttribute, code: 'attribute_to_reduce'};
+    expect(getAttributeReducer(attribute)(attribute, 'max_length', 10)).toEqual({...attribute, max_length: 10});
   });
 
   test('I get an error if the configuration does not have an proper text cell view', () => {
     const getAttributeReducer = getReducer({
       text: {
+        // @ts-expect-error invalid attribute configuration
         reducer: {},
       },
     });
 
     expect(() => {
-      getAttributeReducer({type: 'text'});
+      getAttributeReducer(baseNormalizedAttribute);
     }).toThrowError(`The module you are exposing as reducer for attribute of type "text" needs to
 export a "reducer" property. Here is an example of a valid reducer es6 module:
 
@@ -211,11 +273,12 @@ export reducer = (
 
   test('I get an error if the configuration does not have valid configurations', () => {
     const getAttributeReducer = getReducer({
+      // @ts-expect-error invalid attribute configuration
       text: {},
     });
 
     expect(() => {
-      getAttributeReducer({type: 'text'});
+      getAttributeReducer({...baseNormalizedAttribute});
     }).toThrowError(`Cannot get the attribute reducer for type "text". The configuration should look like this:
 config:
     config:
@@ -227,35 +290,35 @@ Actual conf: ${JSON.stringify({text: {}})}`);
   });
 
   test('I can get the list of the attribute types', () => {
-    expect(
-      getTypes({
-        text: {
-          icon: 'icon.svg',
-          reducer: {},
-        },
-        media_file: {
-          icon: 'icon.svg',
-          reducer: {},
-        },
-      })()
-    ).toEqual([
+    const attributeConfig: AttributeConfig = {
+      text: {
+        ...baseAttributeConfig.text,
+        icon: 'icon.svg',
+      },
+      media_file: {
+        ...baseAttributeConfig.media_file,
+        icon: 'icon.svg',
+      },
+    };
+
+    expect(getTypes(attributeConfig)).toEqual([
       {icon: 'icon.svg', identifier: 'text', label: 'pim_asset_manager.attribute.type.text'},
       {icon: 'icon.svg', identifier: 'media_file', label: 'pim_asset_manager.attribute.type.media_file'},
     ]);
   });
 
   test('I can get an attribute icon', () => {
-    expect(
-      getIcon({
-        text: {
-          icon: 'icon_text.svg',
-          reducer: {},
-        },
-        media_file: {
-          icon: 'icon_image.svg',
-          reducer: {},
-        },
-      })('text')
-    ).toEqual('icon_text.svg');
+    const attributeConfig: AttributeConfig = {
+      text: {
+        ...baseAttributeConfig.text,
+        icon: 'icon_text.svg',
+      },
+      media_file: {
+        ...baseAttributeConfig.media_file,
+        icon: 'icon_image.svg',
+      },
+    };
+
+    expect(getIcon(attributeConfig, 'text')).toEqual('icon_text.svg');
   });
 });
