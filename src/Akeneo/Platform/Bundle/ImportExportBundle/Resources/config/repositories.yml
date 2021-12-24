@@ -9,6 +9,8 @@ services:
         class: 'Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobInstanceRepository'
         public: true
         arguments:
+            - '@feature_flags'
+            - '@akeneo_batch.job.job_registry'
             - '@doctrine.orm.entity_manager'
             - '%akeneo_batch.entity.job_instance.class%'
 
