@@ -47,7 +47,12 @@ const ConnectionMonitoring: FC = memo(() => {
                 ) : !connection.auditable ? (
                     <NotAuditableConnection />
                 ) : (
-                    <ConnectionErrors connectionCode={connectionCode} />
+                    <ConnectionErrors
+                        connectionCode={connectionCode}
+                        description={
+                            'akeneo_connectivity.connection.error_management.connection_monitoring.helper.description'
+                        }
+                    />
                 )}
             </PageContent>
         </>

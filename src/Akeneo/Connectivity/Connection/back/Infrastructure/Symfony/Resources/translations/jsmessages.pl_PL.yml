@@ -11,7 +11,6 @@ pim_menu:
     connection_audit: Panel połączenia
     connection_settings: Połączenia
     connection_settings_edit: Ustawienia połączeń
-    connection_monitoring: Monitorowanie
     connection_webhook_edit: Subskrypcja zdarzeń
     connection_webhook_event_logs: Dziennik zdarzeń
     data_flows: Przepływy danych
@@ -64,6 +63,12 @@ akeneo_connectivity.connection:
         tabs:
           settings: Ustawienia
           permissions: Uprawnienia
+        error_monitoring:
+          not_auditable:
+            description:
+              1: To track errors on this app,
+              2: aktywuj monitorowanie
+              3: w ustawieniach.
       delete:
         title: Potwierdź usunięcie
         link: Oto co się stanie.
@@ -80,7 +85,6 @@ akeneo_connectivity.connection:
           authorizations: Autoryzacje
           permissions: Uprawnienia
         authorize:
-          no_scope_title: 'Aplikacja {{ app_name }} chciałaby uzyskać dostęp do Twojego PIM.'
           no_scope: Nie zażądano żadnych określonych autoryzacji.
       title: Połącz
       activate:
@@ -119,7 +123,6 @@ akeneo_connectivity.connection:
     label: Nazwa
     flow_type: Typ przepływu
     image: Obraz
-    auditable: Śledź to połączenie na pulpicie nawigacyjnym
     client_id: ID klienta
     secret: Sekret
     username: Nazwa użytkownika
@@ -251,9 +254,6 @@ akeneo_connectivity.connection:
       content: Twoja opinia jest dla nas bardzo cenna. Pomóż nam wybrać następny widżet odpowiadając na jedno pytanie!
       button: Zaczynajmy!
     connection_selector:
-      title:
-        source: Połączenia źródeł
-        destination: Docelowe połączenie
       all: Wszystkie
     charts:
       inbound: Przychodzące
@@ -267,12 +267,10 @@ akeneo_connectivity.connection:
     error_management:
       data_source_error_chart:
         section:
-          title: Błędy w połączeniach źródłowych
           helper: Tutaj możesz zobaczyć łączną liczbę błędów, w tym błędy biznesowe.
         chart:
           title: Licznik błędów dziennie
       widget:
-        title: Błędy biznesowe dla połączenia źródłowego
         over_the_last_seven_days: W ciągu ostatnich 7 dni
         business_errors: błędy biznesowe
     no_connection:
@@ -358,7 +356,6 @@ akeneo_connectivity.connection:
           message: Wiadomość
   error_management:
     connection_monitoring:
-      title: Monitorowanie
       helper:
         title: '{0} Masz {{ count }} błąd |[1,Inf] Masz {{ count }} błędów'
         description: Tutaj możesz zobaczyć szczegóły każdego błędu dla tego połączenia w ciągu ostatnich 7 dni. Liczba błędów jest ograniczona do 100 błędów.

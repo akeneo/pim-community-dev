@@ -66,6 +66,13 @@ class LocaleExtensionSpec extends ObjectBehavior
 
     }
 
+    function it_returns_null_when_the_currency_label_is_not_found($userContext, LocaleInterface $en)
+    {
+        $userContext->getCurrentLocale()->willReturn($en);
+        $this->currencyLabel('XSU')->shouldReturn(null);
+        $this->currencyLabel('XSU', 'fr_FR')->shouldReturn(null);
+    }
+
     function getMatchers(): array
     {
         $filterArgs = new Node();

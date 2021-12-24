@@ -11,7 +11,6 @@ pim_menu:
     connection_audit: Panel de conexión
     connection_settings: Conexiones
     connection_settings_edit: Ajustes de conexión
-    connection_monitoring: Monitoreo
     connection_webhook_edit: Subscripciones a eventos
     connection_webhook_event_logs: Registro de eventos
     data_flows: Flujos de datos
@@ -64,6 +63,12 @@ akeneo_connectivity.connection:
         tabs:
           settings: Configuración
           permissions: Permisos
+        error_monitoring:
+          not_auditable:
+            description:
+              1: To track errors on this app,
+              2: activar monitoreo
+              3: en la configuración.
       delete:
         title: Confirmar la eliminación
         link: Esto es lo que sucederá.
@@ -80,7 +85,6 @@ akeneo_connectivity.connection:
           authorizations: Autorizaciones
           permissions: Permisos
         authorize:
-          no_scope_title: 'La aplicación {{ app_name }} desea acceder a su PIM.'
           no_scope: No se han solicitado autorizaciones específicas.
       title: Conectar
       activate:
@@ -119,7 +123,6 @@ akeneo_connectivity.connection:
     label: Etiqueta
     flow_type: Tipo de flujo
     image: Imagen
-    auditable: Rastrea esta conexión en el tablero
     client_id: ID de cliente
     secret: Secreto
     username: Nombre de usuario
@@ -251,9 +254,6 @@ akeneo_connectivity.connection:
       content: Sus comentarios son realmente valiosos para nosotros. Ayúdenos a elegir el próximo widget respondiendo a esta encuesta de una sola pregunta.
       button: '¡Vamos!'
     connection_selector:
-      title:
-        source: Conexiones de origen
-        destination: Conexiones de destino
       all: Todo
     charts:
       inbound: Entrante
@@ -267,12 +267,10 @@ akeneo_connectivity.connection:
     error_management:
       data_source_error_chart:
         section:
-          title: Error en las conexiones de origen
           helper: Aquí puede ver el número total de errores, incluyendo errores de negocio.
         chart:
           title: Número de errores por día
       widget:
-        title: Errores de negocio por conexión de origen
         over_the_last_seven_days: En los últimos 7 días
         business_errors: errores de negocio
     no_connection:
@@ -358,7 +356,6 @@ akeneo_connectivity.connection:
           message: Mensaje
   error_management:
     connection_monitoring:
-      title: Monitoreo
       helper:
         title: '{0} Tienes {{ count }} error |[1,Inf] Tienes {{ count }} errores'
         description: Aquí puedes ver los detalles de cada error para esta conexión en los últimos 7 días. El número de error está limitado a 100 errores.

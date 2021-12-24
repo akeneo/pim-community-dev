@@ -1,11 +1,11 @@
 services:
-    Akeneo\Platform\Job\Application\SearchJobExecution\FindJobTypesInterface:
-        class: Akeneo\Platform\Job\Infrastructure\Query\FindJobTypes
+    Akeneo\Platform\Job\Application\FindJobType\FindJobTypeInterface:
+        class: Akeneo\Platform\Job\Infrastructure\Query\FindJobType
         arguments:
             - '@database_connection'
 
-    Akeneo\Platform\Job\Application\SearchJobExecution\FindJobUsersInterface:
-        class: Akeneo\Platform\Job\Infrastructure\Query\FindJobUsers
+    Akeneo\Platform\Job\Application\SearchJobUser\SearchJobUserInterface:
+        class: Akeneo\Platform\Job\Infrastructure\Query\SearchJobUser
         arguments:
             - '@database_connection'
 
@@ -13,7 +13,4 @@ services:
         class: Akeneo\Platform\Job\Infrastructure\Query\SearchJobExecution
         arguments:
             - '@database_connection'
-            - '@Akeneo\Platform\Job\Application\SearchJobExecution\ClockInterface'
-
-    Akeneo\Platform\Job\Application\SearchJobExecution\ClockInterface:
-        class: Akeneo\Platform\Job\Infrastructure\Clock\SystemClock
+            - '@Akeneo\Platform\Job\Infrastructure\Hydrator\JobExecutionRowHydrator'

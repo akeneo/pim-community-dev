@@ -11,7 +11,6 @@ pim_menu:
     connection_audit: Verbindungs-Dashboard
     connection_settings: Verbindungen
     connection_settings_edit: Verbindungseinstellungen
-    connection_monitoring: Überwachung
     connection_webhook_edit: Event-Abonnement
     connection_webhook_event_logs: Ereignis-Logs
     data_flows: Datenfluss
@@ -94,6 +93,12 @@ akeneo_connectivity.connection:
             information: 'Um mehr über App-Autorisierungen zu erfahren, schauen Sie sich unseren {{ link }} an.'
             information_link_anchor: Hilfe-Center-Artikel
             no_scope: Es wurden keine spezifischen Berechtigungen angefordert.
+        error_monitoring:
+          not_auditable:
+            description:
+              1: To track errors on this app,
+              2: aktiviere Überwachung
+              3: in den Einstellungen.
         flash:
           load_permissions_error.title: 'Berechtigungen auf {{ entity }} konnten nicht geladen werden.'
           load_permissions_error.description: Bitte später versuchen.
@@ -126,7 +131,6 @@ akeneo_connectivity.connection:
           summary: Gut gemacht!
         authorize:
           title: '{{ app_name }} muss'
-          no_scope_title: 'Die {{ app_name }} App möchte auf Ihr PIM zugreifen.'
           no_scope: Es wurden keine spezifischen Genehmigungen angefordert.
           helper: Um mehr über die App-Autorisierung zu erfahren,
           helper_link: lesen Sie unseren Hilfe-Center-Artikel.
@@ -178,7 +182,6 @@ akeneo_connectivity.connection:
     label: Bezeichnung
     flow_type: Fluss-Typ
     image: Bild
-    auditable: Diese Verbindung im Dashboard verfolgen
     client_id: Client-ID
     secret: Passwort (Secret)
     username: Benutzername
@@ -310,9 +313,6 @@ akeneo_connectivity.connection:
       content: Ihr Feedback ist für uns wirklich wertvoll. Helfen Sie uns, das nächste Widget auszuwählen, indem Sie diese Umfrage mit einer Frage beantworten!
       button: Lass uns loslegen!
     connection_selector:
-      title:
-        source: Quellverbindungen
-        destination: Zielverbindungen
       all: Alle
     charts:
       inbound: Empfangen
@@ -326,12 +326,10 @@ akeneo_connectivity.connection:
     error_management:
       data_source_error_chart:
         section:
-          title: Fehler bei Quellverbindungen
           helper: Hier sehen Sie die Gesamtzahl der Fehler, einschließlich der Geschäftsfehler.
         chart:
           title: Fehleranzahl pro Tag
       widget:
-        title: Geschäftsfehler pro Verbindung
         over_the_last_seven_days: In den letzten 7 Tagen
         business_errors: Geschäftsfehler
     no_connection:
@@ -417,7 +415,6 @@ akeneo_connectivity.connection:
           message: Nachricht
   error_management:
     connection_monitoring:
-      title: Überwachung
       helper:
         title: '{0} Sie haben {{ count }} Fehler|[1,Inf] Sie haben {{ count }} Fehler'
         description: Hier sehen Sie die Details jedes Fehlers für diese Verbindung in den letzten 7 Tagen. Die Fehlernummer ist auf 100 Fehler beschränkt.

@@ -96,6 +96,10 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.persistence.repository.events_api_debug'
 
+    Akeneo\Connectivity\Connection\Tests\CatalogBuilder\UserConsentLoader:
+        arguments:
+            - '@database_connection'
+
     akeneo_connectivity.connection.fixtures.events_api_request_count_loader:
         class: Akeneo\Connectivity\Connection\Tests\CatalogBuilder\EventsApiRequestCountLoader
         arguments:
@@ -114,3 +118,7 @@ services:
             - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp'
             - '@pim_user.repository.user'
             - '@pim_connector.doctrine.cache_clearer'
+
+    Akeneo\Connectivity\Connection\Tests\CatalogBuilder\PimConfigurationLoader:
+        arguments:
+            - '@database_connection'

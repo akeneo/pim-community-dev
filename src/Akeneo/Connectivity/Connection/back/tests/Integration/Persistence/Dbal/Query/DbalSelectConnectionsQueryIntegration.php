@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
 
-use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Connection;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionsQuery;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
@@ -41,12 +42,17 @@ class DbalSelectConnectionsQueryIntegration extends TestCase
         sleep(1);
         $this->connectionLoader->createConnection('app', 'App', FlowType::OTHER, false, 'app');
 
-        $connections = $this->selectConnectionsQuery->execute();
+        $connections = $this->selectConnectionsQuery->execute([ConnectionType::DEFAULT_TYPE]);
 
         Assert::assertCount(2, $connections);
         Assert::assertContainsOnlyInstancesOf(Connection::class, $connections);
         Assert::assertSame('magento', $connections[0]->code());
         Assert::assertSame('bynder', $connections[1]->code());
+
+        $connections = $this->selectConnectionsQuery->execute([ConnectionType::APP_TYPE]);
+
+        Assert::assertCount(1, $connections);
+        Assert::assertSame('app', $connections[0]->code());
     }
 
     public function test_it_fetches_without_connection()

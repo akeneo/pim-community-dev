@@ -26,12 +26,17 @@ class RedirectUriWithAuthorizationCodeGeneratorSpec extends ObjectBehavior
     ): void {
         $code = 'MjE3NTE3Y';
         $redirectUriWithoutCode = 'https://foo.example.com/oauth/callback';
+        $pimUserId = 1;
 
         $appAuthorization->getRedirectUri()->willReturn($redirectUriWithoutCode);
         $appAuthorization->getState()->willReturn(null);
-        $authorizationCodeGenerator->generate($appConfirmation, $redirectUriWithoutCode)->willReturn($code);
+        $authorizationCodeGenerator->generate(
+            $appConfirmation,
+            $pimUserId,
+            $redirectUriWithoutCode
+        )->willReturn($code);
 
-        $this->generate($appAuthorization, $appConfirmation)
+        $this->generate($appAuthorization, $appConfirmation, $pimUserId)
             ->shouldReturn('https://foo.example.com/oauth/callback?code=MjE3NTE3Y');
     }
 
@@ -43,12 +48,17 @@ class RedirectUriWithAuthorizationCodeGeneratorSpec extends ObjectBehavior
         $code = 'MjE3NTE3Y';
         $state = 'NzFkOGRhOG';
         $redirectUriWithoutCode = 'https://foo.example.com/oauth/callback';
+        $pimUserId = 1;
 
         $appAuthorization->getRedirectUri()->willReturn($redirectUriWithoutCode);
         $appAuthorization->getState()->willReturn($state);
-        $authorizationCodeGenerator->generate($appConfirmation, $redirectUriWithoutCode)->willReturn($code);
+        $authorizationCodeGenerator->generate(
+            $appConfirmation,
+            $pimUserId,
+            $redirectUriWithoutCode
+        )->willReturn($code);
 
-        $this->generate($appAuthorization, $appConfirmation)
+        $this->generate($appAuthorization, $appConfirmation, $pimUserId)
             ->shouldReturn('https://foo.example.com/oauth/callback?code=MjE3NTE3Y&state=NzFkOGRhOG');
     }
 }

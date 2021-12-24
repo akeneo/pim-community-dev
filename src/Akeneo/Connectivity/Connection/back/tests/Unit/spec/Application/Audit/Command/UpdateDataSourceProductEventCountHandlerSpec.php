@@ -16,12 +16,12 @@ use PhpSpec\ObjectBehavior;
  */
 class UpdateDataSourceProductEventCountHandlerSpec extends ObjectBehavior
 {
-    function let(ExtractConnectionsProductEventCountQuery $extractConnectionsEventCountQuery, EventCountRepository $eventCountRepository)
+    public function let(ExtractConnectionsProductEventCountQuery $extractConnectionsEventCountQuery, EventCountRepository $eventCountRepository)
     {
         $this->beConstructedWith($extractConnectionsEventCountQuery, $eventCountRepository);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldBeAnInstanceOf(UpdateDataSourceProductEventCountHandler::class);
     }

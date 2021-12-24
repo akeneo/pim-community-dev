@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model;
 
+use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
@@ -18,7 +19,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
@@ -1313,6 +1313,26 @@ class ProductModelSpec extends ObjectBehavior
 
         $this->getAssociatedGroups('x_sell')->shouldBeLike(new ArrayCollection([$plate, $spoon]));
         $this->getAssociatedGroups('another_association_type')->shouldReturn(null);
+    }
+
+    function it_returns_categories_for_the_current_level()
+    {
+        $categoryA = new Category();
+        $categoryA->setCode('A');
+        $categoryB = new Category();
+        $categoryB->setCode('B');
+        $categoryC = new Category();
+        $categoryC->setCode('C');
+        $rootProductModel = new ProductModel();
+        $rootProductModel->addCategory($categoryA);
+
+        $this->setParent($rootProductModel);
+        $this->addCategory($categoryB);
+        $this->addCategory($categoryC);
+
+        $categories = $this->getCategoriesForCurrentLevel();
+        $categories->shouldBeAnInstanceOf(ArrayCollection::class);
+        $categories->toArray()->shouldBe([$categoryB, $categoryC]);
     }
 
     private function someRawQuantifiedAssociations(): array
