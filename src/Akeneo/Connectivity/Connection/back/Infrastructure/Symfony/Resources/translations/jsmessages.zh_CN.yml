@@ -11,7 +11,6 @@ pim_menu:
     connection_audit: 连接仪表板
     connection_settings: 连接
     connection_settings_edit: 连接设置
-    connection_monitoring: 监测
     connection_webhook_edit: 事件订阅
     connection_webhook_event_logs: 事件日志
     data_flows: 数据流
@@ -64,6 +63,12 @@ akeneo_connectivity.connection:
         tabs:
           settings: 设置 
           permissions: 权限
+        error_monitoring:
+          not_auditable:
+            description:
+              1: To track errors on this app,
+              2: 请在设置中
+              3: 激活监测。
       delete:
         title: 确认删除 
         link: 此处可查看产生的影响。
@@ -118,7 +123,6 @@ akeneo_connectivity.connection:
     label: 标签
     flow_type: 流类型
     image: 图像
-    auditable: 在仪表盘中跟踪此连接
     client_id: 客户 ID
     secret: 密钥
     username: 用户名
@@ -247,9 +251,6 @@ akeneo_connectivity.connection:
       content: 您的反馈对我们非常宝贵。恳请您参与此简短调查，帮助我们选择下一个小部件！
       button: 开始吧！
     connection_selector:
-      title:
-        source: 源连接
-        destination: 目的地连接
       all: 所有
     charts:
       inbound: 入站
@@ -263,12 +264,10 @@ akeneo_connectivity.connection:
     error_management:
       data_source_error_chart:
         section:
-          title: 源连接错误
           helper: 在这里可以查看错误总数，包括业务错误。
         chart:
           title: 每天的错误数
       widget:
-        title: 每个源连接的业务错误
         over_the_last_seven_days: 过去 7 天
         business_errors: 业务错误
     no_connection:
@@ -354,7 +353,6 @@ akeneo_connectivity.connection:
           message: 消息
   error_management:
     connection_monitoring:
-      title: 监测
       helper:
         title: '{0} 您有 {{ count }} 个错误 |[1,Inf] 您有 {{ count }} 个错误'
         description: 在这里，您可以看到过去 7 天内此连接的每个错误的详细信息。错误数限制为 100 个。

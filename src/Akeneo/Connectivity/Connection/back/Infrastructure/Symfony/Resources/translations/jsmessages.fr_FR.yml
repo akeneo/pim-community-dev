@@ -11,7 +11,6 @@ pim_menu:
     connection_audit: Tableau de bord des connexions
     connection_settings: Connexions
     connection_settings_edit: Paramètres de connexion
-    connection_monitoring: Supervision
     connection_webhook_edit: Souscription aux événements
     connection_webhook_event_logs: Journal des événements
     data_flows: Flux de données
@@ -94,6 +93,12 @@ akeneo_connectivity.connection:
             information: 'Pour en savoir plus sur les autorisations liées aux apps, consultez notre article: {{ link }}.'
             information_link_anchor: Article sur le Help Center
             no_scope: Aucune autorisation spécifique n'a été demandée.
+        error_monitoring:
+          not_auditable:
+            description:
+              1: To track errors on this app,
+              2: activer la surveillance
+              3: dans les paramètres.
         flash:
           load_permissions_error.title: 'Les permissions enregistrées sur {{ entity }} n''ont pas pu être affichées.'
           load_permissions_error.description: Veuillez réessayer plus tard.
@@ -177,7 +182,6 @@ akeneo_connectivity.connection:
     label: Libellé
     flow_type: Type de flux
     image: Image
-    auditable: Suivre cette connexion dans le tableau de bord
     client_id: Client ID
     secret: Secret
     username: Username
@@ -309,9 +313,6 @@ akeneo_connectivity.connection:
       content: Vos retours sont très précieux à nos yeux. Voter pour le prochain widget que vous souhaitez voir apparaître sur ce tableau de bord !
       button: C'est parti !
     connection_selector:
-      title:
-        source: Connexions sources
-        destination: Connexions destinations
       all: Toutes
     charts:
       inbound: En entrée du PIM
@@ -325,12 +326,10 @@ akeneo_connectivity.connection:
     error_management:
       data_source_error_chart:
         section:
-          title: Erreurs sur les connexions sources
           helper: Ici vous pouvez voir le nombre total d'erreurs, y compris les erreurs métier.
         chart:
           title: Nombre d'erreurs par jour
       widget:
-        title: Erreurs métier par connexion source
         over_the_last_seven_days: Au cours des 7 derniers jours
         business_errors: erreurs métier
     no_connection:
@@ -416,7 +415,6 @@ akeneo_connectivity.connection:
           message: Message
   error_management:
     connection_monitoring:
-      title: Supervision
       helper:
         title: '{0} Vous avez {{ count }} erreur |[1,Inf] Vous avez {{ count }} erreurs'
         description: Ici, vous pouvez voir le détail de chaque erreur métier pour cette connexion au cours des 7 derniers jours. Le nombre d'erreur est limité à 100 erreurs.
