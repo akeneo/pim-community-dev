@@ -1,4 +1,3 @@
-batch_jobs.akeneo_shared_catalog.label: Send to shared catalogs
 pim_common:
   recipients: Recipients
   branding: Branding
@@ -10,14 +9,13 @@ shared_catalog:
     placeholder: betty@akeneo.com
     email: Email address
     invalid_email: This value is not a valid email address.
-    duplicates: You already shared with this recipient
     helper: "Add recipients to give them access to your new shared catalog. You could fill in an address list with separators: space, comma, semicolon & line break."
     no_result: Sorry, no email is matching your search
     no_data: No email address declared yet
     max_limit_reached: You have reached the limit of 500 recipients.
   branding:
-    upload: "Upload your logo (Max size: 2MB; File Format: PNG or JPG)"
-    invalid_extension: "Invalid file extension, allowed extensions are: {{ allowed_extensions }}"
-    filesize_too_large: The file you provided is too large, the max size is 2MB
+    validation:
+      invalid_extension: "Invalid file extension, allowed extensions are: {{ allowed_extensions }}"
+      filesize_too_large: The file you provided is too large, the max size is 2MB
   button:
     save: Save and share
