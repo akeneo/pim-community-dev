@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React from 'react';
 import {fireEvent, screen} from '@testing-library/react';
 import FilterCollection, {
   useFilterViews,
@@ -7,22 +7,10 @@ import FilterCollection, {
 import {denormalize} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import {renderHook} from '@testing-library/react-hooks';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {ConfigProvider} from 'akeneoassetmanager/application/hooks/useConfig';
 import {AssetAttributeFetcher} from 'akeneoassetmanager/application/component/library/library';
 import {FilterView} from 'akeneoassetmanager/application/configuration/value';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
-
-const Provider: FC = ({children}) => (
-  <ConfigProvider
-    config={{
-      value: {},
-      sidebar: {},
-      attribute: {},
-    }}
-  >
-    {children}
-  </ConfigProvider>
-);
+import {FakeConfigProvider} from '../../../../utils/FakeConfigProvider';
 
 const attributes = [
   {
@@ -140,7 +128,7 @@ describe('Tests filter collection', () => {
             fetchAll: () => new Promise(resolve => resolve([])),
           },
         }),
-      {wrapper: Provider}
+      {wrapper: FakeConfigProvider}
     );
 
     expect(result.current).toBe(null);
@@ -150,7 +138,7 @@ describe('Tests filter collection', () => {
   });
 
   test('I get an empty collection view if there is no attributes', async () => {
-    const {result, waitForNextUpdate} = renderHook(() => useFilterViews('notice', dataProvider), {wrapper: Provider});
+    const {result, waitForNextUpdate} = renderHook(() => useFilterViews('notice', dataProvider), {wrapper: FakeConfigProvider});
 
     expect(result.current).toBe(null);
     await waitForNextUpdate();
@@ -159,7 +147,7 @@ describe('Tests filter collection', () => {
   });
 
   test('I get an empty collection view if the asset family is null', () => {
-    const {result} = renderHook(() => useFilterViews(null, dataProvider), {wrapper: Provider});
+    const {result} = renderHook(() => useFilterViews(null, dataProvider), {wrapper: FakeConfigProvider});
 
     expect(result.current).toBe(null);
   });
