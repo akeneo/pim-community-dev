@@ -16,6 +16,12 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: connection_image_must_exist }
 
+    Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\IsConnectionsNumberLimitReachedValidator:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\IsConnectionsNumberLimitReachedQuery'
+        tags:
+            - { name: validator.constraint_validator }
+
     akeneo_connectivity.connection.validators.webhook.connection_must_exist:
         class: Akeneo\Connectivity\Connection\Application\Webhook\Validation\ConnectionMustExistValidator
         arguments:

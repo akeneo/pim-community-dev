@@ -2,6 +2,8 @@ Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionComm
     group_sequence:
       - CreateConnectionCommand
       - Business
+    constraints:
+        -   Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\IsConnectionsNumberLimitReached: ~
     properties:
         code:
             - Callback: [Akeneo\Connectivity\Connection\Domain\Settings\Validation\Connection\ConnectionCodeMustBeValid, validate]

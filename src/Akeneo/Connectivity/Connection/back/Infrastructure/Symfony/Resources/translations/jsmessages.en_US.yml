@@ -213,6 +213,7 @@ akeneo_connectivity.connection:
         user_role_id: Role
         user_group_id: Group
         constraint:
+            connections_number_limit_reached: You have reached the maximum allowed limit of connections.
             code:
                 required: Connection code is required.
                 invalid: Connection code may contain only letters, numbers and underscores.

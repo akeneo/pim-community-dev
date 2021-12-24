@@ -3,7 +3,7 @@ import {useHistory} from 'react-router';
 import {AppWizardData} from '../../../model/Apps/wizard-data';
 import {NotificationLevel, useNotify} from '../../../shared/notify';
 import {useTranslate} from '../../../shared/translate';
-import {useConfirmAuthorization} from '../../hooks/use-confirm-authorization';
+import {RejectReason, useConfirmAuthorization} from '../../hooks/use-confirm-authorization';
 import {useFetchAppWizardData} from '../../hooks/use-fetch-app-wizard-data';
 import {Authentication} from './steps/Authentication/Authentication';
 import {Authorizations} from './steps/Authorizations';
@@ -65,7 +65,12 @@ export const AppWizard: FC<Props> = ({clientId}) => {
                 translate('akeneo_connectivity.connection.connect.apps.wizard.flash.success')
             );
             window.location.assign(redirectUrl);
-        } catch (e) {
+        } catch (e:RejectReason) {
+            if (400 <= e.status && e.status < 500) {
+                e.errors.map(error => notify(NotificationLevel.ERROR, translate(error.message)));
+                return;
+            }
+
             notify(
                 NotificationLevel.ERROR,
                 translate('akeneo_connectivity.connection.connect.apps.wizard.flash.error')
