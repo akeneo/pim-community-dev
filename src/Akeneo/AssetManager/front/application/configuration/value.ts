@@ -85,7 +85,7 @@ ${moduleExample}`
   }
 
   return typeConfiguration.view.view;
-}
+};
 
 const getFilterView = (config: ValueConfig, attributeType: string): FilterView => {
   const typeConfiguration = config[attributeType];
@@ -133,7 +133,15 @@ const getFilterViews = (config: ValueConfig, attributes: NormalizedAttribute[]):
     view: getFilterView(config, attribute.type),
     attribute: attribute,
   }));
-}
+};
 
-export {getFieldView, getFilterViews};
-export type {FilterView, FilterViewProps, ViewGenerator, ViewGeneratorProps, FilterViewCollection, ValueConfig};
+export {
+  getFieldView,
+  getFilterViews,
+  FilterView,
+  FilterViewProps,
+  ViewGenerator,
+  ViewGeneratorProps,
+  FilterViewCollection,
+  ValueConfig,
+};

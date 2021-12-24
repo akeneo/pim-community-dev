@@ -62,7 +62,7 @@ config:
 
       return {code, label: tabConf.label};
     });
-}
+};
 
 const getView = (configuration: TabsConfiguration, sidebarIdentifier: string, code: string): typeof React.Component => {
   const viewPathIsNotWellConfigured =
@@ -89,7 +89,6 @@ Actual conf: ${JSON.stringify(configuration)}`
   const viewModulePath = configuration[sidebarIdentifier].tabs[code].view;
 
   return viewModulePath.default;
-}
+};
 
-export {getTabs, getView};
-export type {Tab, TabsConfiguration};
+export {getTabs, getView, Tab, TabsConfiguration};

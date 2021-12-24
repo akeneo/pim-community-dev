@@ -1,7 +1,8 @@
-import {getFieldView, getFilterViews, ValueConfig} from "../../../../../../front/application/configuration/value";
-import EditionValue from "../../../../../../front/domain/model/asset/edition-value";
-import {NormalizedOptionAttribute} from "../../../../../../front/domain/model/attribute/type/option";
-import {NormalizedTextAttribute, ValidationRuleOption} from "../../../../../../front/domain/model/attribute/type/text";
+import {getFieldView, getFilterViews, ValueConfig} from 'akeneoassetmanager/application/configuration/value';
+import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
+import {NormalizedTextAttribute, ValidationRuleOption} from 'akeneoassetmanager/domain/model/attribute/type/text';
+import {view as TextEditView} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/text';
+import {fakeConfig} from '../../utils/FakeConfigProvider';
 
 const textAttribute: NormalizedTextAttribute = {
   code: 'attribute_code',
@@ -21,24 +22,16 @@ const textAttribute: NormalizedTextAttribute = {
   regular_expression: null,
 };
 
-const baseValue: EditionValue = {
+const editionValue: EditionValue = {
   data: 'data to render',
-  channel : 'ecommerce',
+  channel: 'ecommerce',
   locale: 'en_US',
-  attribute: textAttribute
-}
+  attribute: textAttribute,
+};
 
 describe('akeneo > asset family > application > configuration --- value', () => {
   test('I can get a value view', () => {
-    const TextView = require('akeneoassetmanager/application/component/asset/edit/enrich/data/text.tsx');
-    const valueConfig: ValueConfig = {
-      text: {
-        view: TextView,
-      },
-    };
-
-    const value: EditionValue = {...baseValue, data: 'data to render'};
-    expect(getFieldView(valueConfig, value)).toBe(TextView.view);
+    expect(getFieldView(fakeConfig.value, editionValue)).toBe(TextEditView);
   });
 
   test('I get an error if the configuration does not have an proper text view', () => {
@@ -49,9 +42,8 @@ describe('akeneo > asset family > application > configuration --- value', () => 
       },
     };
 
-    const value = {...baseValue, data: 'data to render'};
     expect(() => {
-      getFieldView(valueConfig, value);
+      getFieldView(valueConfig, editionValue);
     }).toThrowError(`The module you are exposing to provide a view for a data of type "text" needs to
 export a "view" property. Here is an example of a valid view es6 module for the "text" type:
 
@@ -68,9 +60,8 @@ export const view = (value: TextValue, onChange: (value: Value) => void) => {
       text: {},
     };
 
-    const value = {...baseValue, data: 'data to render'};
     expect(() => {
-      getFieldView(valueConfig, value);
+      getFieldView(valueConfig, editionValue);
     }).toThrowError(`Cannot get the data field view generator for type "text". The configuration should look like this:
 config:
     config:
@@ -82,23 +73,7 @@ Actual conf: ${JSON.stringify({text: {}})}`);
   });
 
   test('I can get a filter value list of views', () => {
-    const valueConfig: ValueConfig = {
-      text: {
-        view: require('akeneoassetmanager/application/component/asset/edit/enrich/data/text.tsx'),
-      },
-      option: {
-        view: require('akeneoassetmanager/application/component/asset/edit/enrich/data/option.tsx'),
-        filter: {
-          filter: (attribute, filter, onFilterUpdated) => {
-            expect(attribute.getCode()).toEqual('color');
-
-            return true;
-          },
-        },
-      },
-    };
-
-    const attributes: NormalizedOptionAttribute[] | NormalizedTextAttribute[] = [
+    const attributes = [
       textAttribute,
       {
         type: 'option',
@@ -111,10 +86,10 @@ Actual conf: ${JSON.stringify({text: {}})}`);
         value_per_locale: false,
         value_per_channel: false,
         options: [],
-        is_read_only: false
+        is_read_only: false,
       },
     ];
 
-    expect(getFilterViews(valueConfig, attributes)[0].attribute.code).toEqual('color');
+    expect(getFilterViews(fakeConfig.value, attributes)[0].attribute.code).toEqual('color');
   });
 });

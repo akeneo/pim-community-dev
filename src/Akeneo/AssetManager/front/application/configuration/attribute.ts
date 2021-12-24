@@ -232,5 +232,4 @@ ${moduleExample}`
 export const getAttributeDenormalizer = getDenormalizer(__moduleConfig as AttributeConfig);
 export const getAttributeReducer = getReducer(__moduleConfig as AttributeConfig);
 
-export type {View, Reducer, Denormalizer, AttributeConfig}
-export {getDenormalizer, getIcon, getReducer, getTypes, getView}
+export {getDenormalizer, getIcon, getReducer, getTypes, getView, View, Reducer, Denormalizer, AttributeConfig};

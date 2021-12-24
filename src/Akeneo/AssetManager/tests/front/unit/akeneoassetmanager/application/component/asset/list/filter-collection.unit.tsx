@@ -7,17 +7,19 @@ import FilterCollection, {
 import {denormalize} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import {renderHook} from '@testing-library/react-hooks';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {ConfigProvider} from "akeneoassetmanager/application/hooks/useConfig";
-import {AssetAttributeFetcher} from "akeneoassetmanager/application/component/library/library";
-import {FilterView} from "akeneoassetmanager/application/configuration/value";
-import {Filter} from "akeneoassetmanager/application/reducer/grid";
+import {ConfigProvider} from 'akeneoassetmanager/application/hooks/useConfig';
+import {AssetAttributeFetcher} from 'akeneoassetmanager/application/component/library/library';
+import {FilterView} from 'akeneoassetmanager/application/configuration/value';
+import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 
 const Provider: FC = ({children}) => (
-  <ConfigProvider config={{
-    value: {},
-    sidebar: {},
-    attribute: {}
-  }}>
+  <ConfigProvider
+    config={{
+      value: {},
+      sidebar: {},
+      attribute: {},
+    }}
+  >
     {children}
   </ConfigProvider>
 );
@@ -131,12 +133,13 @@ describe('Tests filter collection', () => {
   });
 
   test('I get a null collection view if there is no attributes', async () => {
-    const {result, waitForNextUpdate} = renderHook(() =>
-      useFilterViews('notice', {
-        assetAttributeFetcher: {
-          fetchAll: () => new Promise(resolve => resolve([])),
-        },
-      }),
+    const {result, waitForNextUpdate} = renderHook(
+      () =>
+        useFilterViews('notice', {
+          assetAttributeFetcher: {
+            fetchAll: () => new Promise(resolve => resolve([])),
+          },
+        }),
       {wrapper: Provider}
     );
 

@@ -1,27 +1,22 @@
 import {TabsConfiguration, getTabs} from 'akeneoassetmanager/application/configuration/sidebar';
-import {getView} from "../../../../../../front/application/configuration/sidebar";
+import {getView} from 'akeneoassetmanager/application/configuration/sidebar';
+import {fakeConfig} from '../../utils/FakeConfigProvider';
+import {default as AttributeEditView} from 'akeneoassetmanager/application/component/asset-family/edit/attribute';
 
 describe('akeneo > asset family > application > configuration --- sidebar', () => {
   test('I can get the tab list', () => {
-
-    const tabConfig: TabsConfiguration = {
-      my_view: {
-        tabs: {
-          first: {
-            label: 'First tab',
-            view: require('akeneoassetmanager/application/component/asset-family/edit/attribute.tsx'),
-          },
-        },
+    expect(getTabs(fakeConfig.sidebar, 'akeneo_asset_manager_asset_family_edit')).toEqual([
+      {
+        code: 'attribute',
+        label: 'First tab',
       },
-    };
-
-    expect(getTabs(tabConfig, 'my_view')).toEqual([{code: 'first', label: 'First tab'}]);
+    ]);
   });
 
   test('I get a SidebarMissConfigurationError exception if the tabs are not well configured', () => {
     const tabConfig: TabsConfiguration = {
       // @ts-expect-error invalid tab configuration
-      my_view: {}
+      my_view: {},
     };
 
     try {
@@ -69,34 +64,9 @@ config:
   });
 
   test('I can get a view', () => {
-    const view = require('akeneoassetmanager/application/component/asset-family/edit/attribute.tsx');
-    const tabConfig: TabsConfiguration = {
-      my_view: {
-        tabs: {
-          first: {
-            label: 'First tab',
-            view,
-          },
-        },
-      },
-    };
-
-    expect(getView(tabConfig, 'my_view', 'first')).toEqual(view.default);
-  });
-
-  test('I can get a label view', () => {
-    const tabConfig: TabsConfiguration = {
-      my_view: {
-        tabs: {
-          first: {
-            label: 'my_view',
-            view: require('akeneoassetmanager/application/component/asset-family/edit/attribute.tsx')
-          },
-        },
-      },
-    };
-
-    expect(getTabs(tabConfig, 'my_view')).toEqual([{code: 'first', label: 'my_view'}]);
+    expect(getView(fakeConfig.sidebar, 'akeneo_asset_manager_asset_family_edit', 'attribute')).toEqual(
+      AttributeEditView
+    );
   });
 
   test('I get a SidebarMissConfigurationError exception if the view is not well configured', () => {
