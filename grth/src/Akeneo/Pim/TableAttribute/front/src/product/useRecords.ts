@@ -1,6 +1,6 @@
+import {useCallback, useEffect, useState} from 'react';
 import {ReferenceEntityIdentifierOrCode, ReferenceEntityRecord} from '../models';
 import {ReferenceEntityRecordRepository} from '../repositories';
-import {useCallback, useEffect, useState} from 'react';
 import {useRouter, useUserContext} from '@akeneo-pim-community/shared';
 import {RECORD_FETCHER_DEFAULT_LIMIT} from '../fetchers';
 

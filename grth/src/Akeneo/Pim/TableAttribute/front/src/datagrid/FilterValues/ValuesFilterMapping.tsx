@@ -7,6 +7,10 @@ import {
 } from './MultiSelectFilterValue';
 import {default as EmptyFilterValue, useValueRenderer as EmptyUseValueRenderer} from './EmptyFilterValue';
 import {ColumnCode, FilterValue} from '../../models';
+import {
+  default as MultiSelectReferenceEntityFilterValue,
+  useValueRenderer as RecordUseValueRenderer,
+} from './MultiSelectReferenceEntityFilterValue';
 
 type DatagridTableFilterValueProps = {
   value?: FilterValue;
@@ -58,6 +62,12 @@ const ValuesFilterMapping: FilterValuesMapping = {
     'NOT EMPTY': {default: EmptyFilterValue, useValueRenderer: EmptyUseValueRenderer},
     IN: {default: MultiSelectFilterValue, useValueRenderer: MultiSelectUseValueRenderer},
     'NOT IN': {default: MultiSelectFilterValue, useValueRenderer: MultiSelectUseValueRenderer},
+  },
+  record: {
+    EMPTY: {default: EmptyFilterValue, useValueRenderer: EmptyUseValueRenderer},
+    'NOT EMPTY': {default: EmptyFilterValue, useValueRenderer: EmptyUseValueRenderer},
+    IN: {default: MultiSelectReferenceEntityFilterValue, useValueRenderer: RecordUseValueRenderer},
+    'NOT IN': {default: MultiSelectReferenceEntityFilterValue, useValueRenderer: RecordUseValueRenderer},
   },
 };
 

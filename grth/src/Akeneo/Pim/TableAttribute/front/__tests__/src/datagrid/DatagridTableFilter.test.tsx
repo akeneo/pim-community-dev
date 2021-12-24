@@ -3,9 +3,12 @@ import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/fro
 import {DatagridTableFilter} from '../../../src';
 import {act, fireEvent, screen} from '@testing-library/react';
 import {mockScroll} from '../../shared/mockScroll';
+import {getComplexTableAttribute} from "../../factories";
+import {TestAttributeContextProvider} from "../../shared/TestAttributeContextProvider";
 
 jest.mock('../../../src/fetchers/AttributeFetcher');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
+jest.mock('../../../src/fetchers/RecordFetcher');
 const scroll = mockScroll();
 
 const openDropdown = async () => {
@@ -303,5 +306,23 @@ describe('DatagridTableFilter', () => {
       operator: 'IN',
       value: ['salt', 'pepper'],
     });
+  });
+
+  it('should render records values for first column', async () => {
+    renderWithProviders(
+      <TestAttributeContextProvider attribute={getComplexTableAttribute('record')}>
+        <DatagridTableFilter
+          showLabel={true}
+          canDisable={true}
+          onDisable={jest.fn()}
+          attributeCode={'city'}
+          onChange={jest.fn()}
+          initialDataFilter={{}}
+        />
+      </TestAttributeContextProvider>
+    );
+
+    await openDropdown();
+    expect(await screen.findByText('Lannion')).toBeInTheDocument();
   });
 });
