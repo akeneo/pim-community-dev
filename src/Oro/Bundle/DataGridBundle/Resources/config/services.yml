@@ -72,3 +72,10 @@ services:
         public: true
         arguments:
             - '@oro_datagrid.datagrid.manager'
+
+    oro_datagrid.event_listener.feature_flag_datagrid_listener:
+        class: 'Oro\Bundle\DataGridBundle\EventListener\FeatureFlagDatagridFilterListener'
+        arguments:
+            - '@feature_flags'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: filterColumns, priority: -10 }
