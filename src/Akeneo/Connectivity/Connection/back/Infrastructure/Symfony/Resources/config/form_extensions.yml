@@ -138,7 +138,7 @@ extensions:
     pim-menu-connect-connected-apps:
         module: pim/menu/item
         parent: pim-menu-connect-navigation-block
-        aclResourceId: akeneo_connectivity_connection_manage_apps
+        feature: marketplace_activate
         position: 40
         config:
             title: pim_menu.item.connected_apps

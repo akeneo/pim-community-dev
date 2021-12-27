@@ -13,3 +13,6 @@ services:
 
     pim_analytics.query.is_demo_catalog:
         class: AkeneoTest\Platform\Acceptance\Analytics\Query\InMemory\IsDemoCatalogInMemory
+
+    pim_analytics.query.get_connected_apps_identifiers:
+        class: AkeneoTest\Platform\Acceptance\Analytics\Query\InMemory\GetConnectedAppsIdentifiersQueryInMemory

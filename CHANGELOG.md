@@ -152,7 +152,11 @@
 - PIM-10199: Fix occasional segmentation fault when generating thumbnails
 - PIM-10198: Fixed error message display when saving family variant
 - PIM-10206: Fix product and product model save when they had values for a deleted channel or locale
+- PIM-10197: Added safeguards against attribute change to locale specific when the same attribute is a variant axis for a family
 - PIM-10208: Fix currency settings page crashing when label is not found
+- PIM-10192: Retry mechanism in delete action of ES documents
+- PIM-10210: Fix notifications can't be displayed
+- PIM-10217: Fix cannot quick export product model when id is not present in grid context
 
 ## New features
 

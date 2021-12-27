@@ -2,58 +2,44 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductModelIdentifiersWithRemovedAttributeInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
 final class GetProductModelIdentifiersWithRemovedAttribute implements GetProductModelIdentifiersWithRemovedAttributeInterface
 {
-    /** @var Client */
-    private $elasticsearchClient;
+    private SearchQueryBuilder $searchQueryBuilder;
 
     public function __construct(
-        Client $elasticsearchClient
+        private Client $elasticsearchClient
     ) {
-        $this->elasticsearchClient = $elasticsearchClient;
+        $this->searchQueryBuilder = new SearchQueryBuilder();
     }
 
     public function nextBatch(array $attributesCodes, int $batchSize): iterable
     {
-        $body = [
-            'size' => $batchSize,
-            '_source' => [
-                'identifier',
+        $this->searchQueryBuilder->addFilter([
+            'term' => [
+                'document_type' => ProductModelInterface::class,
             ],
-            'query' => [
-                'constant_score' => [
-                    'filter' => [
-                        'bool' => [
-                            'filter' => [
-                                [
-                                    'term' => [
-                                        'document_type' => ProductModelInterface::class,
-                                    ],
-                                ],
-                                [
-                                    'terms' => [
-                                        'attributes_for_this_level' => $attributesCodes,
-                                    ],
-                                ],
-                            ],
-                            'should' => array_map(function (string $attributeCode) {
-                                return [
-                                    'exists' => ['field' => sprintf('values.%s-*', $attributeCode)],
-                                ];
-                            }, $attributesCodes),
-                            'minimum_should_match' => 1,
-                        ],
-                    ],
-                ],
+        ]);
+        $this->searchQueryBuilder->addFilter([
+            'terms' => [
+                'attributes_for_this_level' => $attributesCodes,
             ],
-            'sort' => [
-                'identifier' => 'asc',
-            ],
-        ];
+        ]);
+        foreach ($attributesCodes as $attributeCode) {
+            $this->searchQueryBuilder->addShould([
+                'exists' => ['field' => sprintf('values.%s-*', $attributeCode)],
+            ]);
+        }
+
+        $this->searchQueryBuilder->addSort([
+            'identifier' => 'asc',
+        ]);
+
+        $body = \array_merge(['size' => $batchSize, '_source' => 'identifier'], $this->searchQueryBuilder->getQuery());
 
         $rows = $this->elasticsearchClient->search($body);
 
@@ -65,5 +51,10 @@ final class GetProductModelIdentifiersWithRemovedAttribute implements GetProduct
             $body['search_after'] = end($rows['hits']['hits'])['sort'];
             $rows = $this->elasticsearchClient->search($body);
         }
+    }
+
+    public function getQueryBuilder(): SearchQueryBuilder
+    {
+        return $this->searchQueryBuilder;
     }
 }
