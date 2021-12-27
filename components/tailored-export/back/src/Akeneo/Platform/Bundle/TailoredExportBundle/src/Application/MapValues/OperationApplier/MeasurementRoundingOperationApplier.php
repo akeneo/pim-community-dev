@@ -51,11 +51,23 @@ class MeasurementRoundingOperationApplier implements OperationApplierInterface
     private function round(float $value, int $precision, $type): float
     {
         $roundedValue = match ($type) {
-            'standard' => round($value, $precision),
-            'up' => round($value, $precision, PHP_ROUND_HALF_UP),
-            'down' => round($value, $precision, PHP_ROUND_HALF_DOWN),
+            MeasurementRoundingOperation::TYPE_STANDARD => round($value, $precision),
+            MeasurementRoundingOperation::TYPE_UP => $this->roundUp($value, $precision),
+            MeasurementRoundingOperation::TYPE_DOWN => $this->roundDown($value, $precision),
         };
 
         return $roundedValue;
+    }
+
+    private function roundUp(float $number, int $precision): float
+    {
+        $fig = (int) str_pad('1', $precision + 1, '0');
+
+        return (ceil($number * $fig) / $fig);
+    }
+
+    private function roundDown(float $value, int $precision): float
+    {
+        return floor(pow(10, $precision) * $value) / pow(10, $precision);
     }
 }

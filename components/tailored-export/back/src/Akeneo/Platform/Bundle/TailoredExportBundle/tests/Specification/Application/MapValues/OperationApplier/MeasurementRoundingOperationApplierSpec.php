@@ -37,7 +37,7 @@ class MeasurementRoundingOperationApplierSpec extends ObjectBehavior
         $this->supports($notSupportedSelection, $notSupportedValue)->shouldReturn(false);
     }
 
-    public function it_applies_measurement_rounding_up_operation()
+    public function it_applies_measurement_rounding_standard_operation()
     {
         $operation = new MeasurementRoundingOperation('standard', 2);
         $value = new MeasurementValue('10.4184', 'GRAM');
@@ -45,21 +45,21 @@ class MeasurementRoundingOperationApplierSpec extends ObjectBehavior
         $this->applyOperation($operation, $value)->shouldBeLike(new MeasurementValue('10.42', 'GRAM'));
     }
 
-//    public function it_applies_measurement_rounding_up_operation()
-//    {
-//        $operation = new MeasurementRoundingOperation('up', 2);
-//        $value = new MeasurementValue('10.4184', 'GRAM');
-//
-//        $this->applyOperation($operation, $value)->shouldBeLike(new MeasurementValue('10.42', 'GRAM'));
-//    }
+    public function it_applies_measurement_rounding_up_operation()
+    {
+        $operation = new MeasurementRoundingOperation('up', 2);
+        $value = new MeasurementValue('10.4184', 'GRAM');
 
-//    public function it_applies_measurement_rounding_down_operation()
-//    {
-//        $operation = new MeasurementRoundingOperation('down', 2);
-//        $value = new MeasurementValue('10.4184', 'GRAM');
-//
-//        $this->applyOperation($operation, $value)->shouldBeLike(new MeasurementValue('10.41', 'GRAM'));
-//    }
+        $this->applyOperation($operation, $value)->shouldBeLike(new MeasurementValue('10.42', 'GRAM'));
+    }
+
+    public function it_applies_measurement_rounding_down_operation()
+    {
+        $operation = new MeasurementRoundingOperation('down', 2);
+        $value = new MeasurementValue('10.4184', 'GRAM');
+
+        $this->applyOperation($operation, $value)->shouldBeLike(new MeasurementValue('10.41', 'GRAM'));
+    }
 
     public function it_throws_when_operation_or_value_is_invalid()
     {

@@ -31,4 +31,19 @@ class MeasurementRoundingOperationSpec extends ObjectBehavior
     {
         $this->getPrecision()->shouldReturn(3);
     }
+
+    public function it_throws_an_exception_when_type_is_not_authorized()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during('__construct', ['foo', 1]);
+    }
+
+    public function it_throws_an_exception_when_precision_is_less_than_0()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during('__construct', ['foo', -1]);
+    }
+
+    public function it_throws_an_exception_when_precision_is_greater_than_12()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during('__construct', ['foo', 13]);
+    }
 }
