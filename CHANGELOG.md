@@ -157,6 +157,7 @@
 - PIM-10192: Retry mechanism in delete action of ES documents
 - PIM-10214: Fix cannot create a measurement attribute if measurement family or unit code is too long
 - PIM-10210: Fix notifications can't be displayed
+- PIM-10220: Fixed issues where association has NaN error
 - PIM-10217: Fix cannot quick export product model when id is not present in grid context
 
 ## New features
