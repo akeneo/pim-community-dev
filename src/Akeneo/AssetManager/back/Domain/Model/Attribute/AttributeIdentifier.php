@@ -37,10 +37,7 @@ class AttributeIdentifier
         Assert::regex(
             $identifier,
             '/^[a-zA-Z0-9_-]+$/',
-            sprintf(
-                'Attribute identifier may contain only letters, numbers, underscores and dashes. "%s" given',
-                $identifier
-            )
+            'Attribute identifier may contain only letters, numbers, underscores and dashes. %s given',
         );
 
         $this->identifier = $identifier;
@@ -57,30 +54,21 @@ class AttributeIdentifier
         Assert::regex(
             $assetFamilyIdentifier,
             '/^[a-zA-Z0-9_]+$/',
-            sprintf(
-                'Asset family identifier may contain only letters, numbers and underscores. "%s" given',
-                $attributeCode
-            )
+            'Asset family identifier may contain only letters, numbers and underscores. %s given',
         );
 
         Assert::stringNotEmpty($attributeCode, 'Attribute code cannot be empty');
         Assert::regex(
             $attributeCode,
             '/^[a-zA-Z0-9_]+$/',
-            sprintf(
-                'Attribute code may contain only letters, numbers and underscores. "%s" given',
-                $attributeCode
-            )
+            'Attribute code may contain only letters, numbers and underscores. %s given',
         );
 
         Assert::stringNotEmpty($fingerprint, 'Fingerprint cannot be empty');
         Assert::regex(
             $fingerprint,
             '/^[a-zA-Z0-9_-]+$/',
-            sprintf(
-                'Fingerprint may contain only letters, numbers, underscores and dashes. "%s" given',
-                $fingerprint
-            )
+            'Fingerprint may contain only letters, numbers, underscores and dashes. %s given',
         );
 
         return new self(

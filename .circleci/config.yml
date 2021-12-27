@@ -995,6 +995,9 @@ jobs:
                 name: Execute acceptance tests
                 command: PIM_CONTEXT=onboarder make test-acceptance
           - run:
+                name: "[workaround to revert] Use phpunit executable instead of composer proxy"
+                command: cd vendor/bin && rm -f ./phpunit && ln -s ../phpunit/phpunit/phpunit ./phpunit
+          - run:
                 name: Execute PHPUnit integration tests
                 command: PIM_CONTEXT=onboarder make test-integration
           - run:
@@ -1692,6 +1695,12 @@ jobs:
       - set_gcloud_config_dev
       - restore_persisted_env_vars
       - run:
+          name: Rename release if not on master
+          command: |
+            if [ "${CIRCLE_BRANCH}" != "master" ]; then
+                echo export RELEASE_NAME="RC-${RELEASE_NAME}" >> $BASH_ENV
+            fi
+      - run:
           name: Push Terraform modules to GCS
           command: |
             BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${TYPE_LONG}-edition-dev/${IMAGE_TAG} gs://akecld-terraform-modules/${TYPE_LONG}-edition-dev/${RELEASE_NAME}
@@ -1700,6 +1709,10 @@ jobs:
           name: Tag the Docker image with the definitive tag
           command: |
             OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${RELEASE_NAME} make -C deployments/ release
+      - run:
+          name: Show the definitive tag
+          command: |
+            echo "RELEASE_NAME=${RELEASE_NAME}"
 
   ##################
   # Deploy         #
@@ -2021,6 +2034,9 @@ jobs:
         PRODUCT_TYPE:
           type: string
           default: "srnt"
+        CHECK_AGAINST:
+          type: string
+          default: "top"
       environment:
           <<: *envVarsDeployDev
       machine:
@@ -2032,9 +2048,13 @@ jobs:
           - run:
                 name: Run the tool zdd_compliancy_checker
                 command: |
+                    OPTIONS=""
+                    if [ "<< parameters.CHECK_AGAINST >>" == "oldest" ]; then
+                        OPTIONS="-o"
+                    fi
                     VERSIONS_FILE=/tmp/zdd_versions.env
                     touch ${VERSIONS_FILE}
-                    VERSIONS_FILE=${VERSIONS_FILE} TYPE=<<parameters.PRODUCT_TYPE>> bash deployments/bin/zdd_compliancy_checker.sh
+                    VERSIONS_FILE=${VERSIONS_FILE} TYPE=<<parameters.PRODUCT_TYPE>> bash deployments/bin/zdd_compliancy_checker.sh ${OPTIONS}
           - store_artifacts:
               path: /tmp/zdd_versions.env
               destination: versions
@@ -2090,6 +2110,22 @@ jobs:
                 path: deployments/test/e2e/cypress/screenshots/
           - store_artifacts:
                 path: deployments/test/e2e/cypress/videos/
+
+  list_production_version:
+    parameters:
+        PRODUCT_TYPE:
+            type: string
+            default: "srnt"
+    docker:
+        - image: cimg/base:2021.12
+    resource_class: small
+    steps:
+          - run:
+                name: Versions in production
+                command: |
+                    CURRENT_TIME=$(date +%s)
+                    LAST_HOUR_TIME=$(( CURRENT_TIME - 60*60 ))
+                    curl --location -s -g -H "Content-Type: application/json" -H "DD-API-KEY: ${DATADOG_API_KEY}" -H "DD-APPLICATION-KEY: ${DATADOG_APP_KEY}" --request GET "https://api.datadoghq.eu/api/v1/query?from=${LAST_HOUR_TIME}&to=${CURRENT_TIME}&query=top(sum:kubernetes.containers.running{project:akecld-saas-prod,short_image:pim-enterprise-dev,app:pim,component:pim-web,type:<<parameters.PRODUCT_TYPE>>}by{image_tag},%20100,%20%27max%27,%20%27desc%27)" | jq -r .series[].tag_set[0] | cut -c11- | sort
 
 workflows:
   pull_request:
@@ -2291,7 +2327,8 @@ workflows:
           type: approval
           filters:
             branches:
-              only: master
+              only:
+                 - master
       - checkout:
           name: "[<< matrix.PRODUCT_TYPE >>] Checkout"
           matrix:
@@ -2746,22 +2783,55 @@ workflows:
             type: approval
             filters:
               branches:
-                only: master
+                only:
+                    - master
         - zdd_compliancy_diff:
-            name: "[<< matrix.PRODUCT_TYPE >>] Get ZDD compliancy files"
+            name: "[<< matrix.PRODUCT_TYPE >>][top] Get ZDD compliancy files"
             matrix:
                 parameters:
                     PRODUCT_TYPE: ["grth", "srnt"]
+                    CHECK_AGAINST: ["top"]
             requires:
                 - ready_to_build?
         - zdd_compliancy_checker:
-            name: "[<< matrix.PRODUCT_TYPE >>] [<< matrix.CONTEXT >>] Check ZDD compliancy"
+            name: "[<< matrix.PRODUCT_TYPE >>][top][<< matrix.CONTEXT >>] Check ZDD compliancy"
             matrix:
                 parameters:
                     PRODUCT_TYPE: ["grth", "srnt"]
                     CONTEXT: ["infra", "db"]
             requires:
-                - "[<< matrix.PRODUCT_TYPE >>] Get ZDD compliancy files"
+                - "[<< matrix.PRODUCT_TYPE >>][top] Get ZDD compliancy files"
+        - list_production_version:
+            name: "[<< matrix.PRODUCT_TYPE >>] Versions currently in production"
+            matrix:
+                parameters:
+                    PRODUCT_TYPE: ["grth", "srnt"]
+            requires:
+                - ready_to_build?
+        - execute_compliancy_check:
+            type: approval
+            name: "[<< matrix.PRODUCT_TYPE >>] Execute compliancy check on oldest version"
+            matrix:
+                parameters:
+                    PRODUCT_TYPE: ["grth", "srnt"]
+            requires:
+                - "[<< matrix.PRODUCT_TYPE >>] Versions currently in production"
+        - zdd_compliancy_diff:
+            name: "[<< matrix.PRODUCT_TYPE >>][<< matrix.CHECK_AGAINST >>] Get ZDD compliancy files"
+            matrix:
+                parameters:
+                    PRODUCT_TYPE: ["grth", "srnt"]
+                    CHECK_AGAINST: ["oldest"]
+            requires:
+                - "[<< matrix.PRODUCT_TYPE >>] Execute compliancy check on oldest version"
+        - zdd_compliancy_checker:
+            name: "[<< matrix.PRODUCT_TYPE >>][oldest][<< matrix.CONTEXT >>] Check ZDD compliancy"
+            matrix:
+                parameters:
+                    PRODUCT_TYPE: ["grth", "srnt"]
+                    CONTEXT: ["infra", "db"]
+            requires:
+                - "[<< matrix.PRODUCT_TYPE >>][oldest] Get ZDD compliancy files"
 
 commands:
   set_gcloud_config_dev:

@@ -3,22 +3,14 @@ import 'jest-fetch-mock';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen} from '@testing-library/react';
 import SelectInput from '../../../../src/product/CellInputs/SelectInput';
-import {ColumnDefinition, SelectColumnDefinition, SelectOption} from '../../../../src/models';
+import {ColumnDefinition, SelectColumnDefinition, SelectOption, SelectOptionRepository} from '../../../../src';
 import {getComplexTableAttribute} from '../../../factories';
 import {nutritionScoreSelectOptions} from '../../../../src/fetchers/__mocks__/SelectOptionsFetcher';
-import {SelectOptionRepository} from '../../../../src/repositories';
 import {TestAttributeContextProvider} from '../../../shared/TestAttributeContextProvider';
+import {mockScroll} from '../../../shared/mockScroll';
 
 jest.mock('../../../../src/attribute/ManageOptionsModal');
-
-type EntryCallback = (entries: {isIntersecting: boolean}[]) => void;
-
-let entryCallback: EntryCallback | undefined = undefined;
-const intersectionObserverMock = (callback: EntryCallback) => ({
-  observe: jest.fn(() => (entryCallback = callback)),
-  unobserve: jest.fn(),
-});
-window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
+const scroll = mockScroll();
 
 const fetchGetSelectOptions = (options: SelectOption[]) => {
   fetchMock.mockResponse((request: Request) => {
@@ -133,9 +125,7 @@ describe('SelectInput', () => {
 
     expect(screen.queryByText('U')).not.toBeInTheDocument();
 
-    act(() => {
-      entryCallback?.([{isIntersecting: true}]);
-    });
+    act(() => scroll());
     expect(await screen.findByText('U')).toBeInTheDocument();
   });
 

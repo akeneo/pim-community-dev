@@ -21,6 +21,7 @@ import {
   getNumberAttributeConditionModule,
   getParentConditionModule,
   getPictureAttributeConditionModule,
+  getTableAttributeConditionModule,
   getPimConditionModule,
   getPriceCollectionAttributeConditionModule,
   getSimpleMultiOptionsAttributeConditionModule,
@@ -66,6 +67,7 @@ const getConditionModule: (
     getPriceCollectionAttributeConditionModule,
     getMeasurementAttributeConditionModule,
     getDateAttributeConditionModule,
+    getTableAttributeConditionModule,
     // Fallback
     getPimConditionModule,
   ];

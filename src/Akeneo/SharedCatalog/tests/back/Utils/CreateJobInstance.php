@@ -11,6 +11,7 @@ trait CreateJobInstance
 {
     private function createJobInstance(
         string $code,
+        string $label,
         string $jobName,
         string $type,
         int $status,
@@ -20,7 +21,7 @@ trait CreateJobInstance
 
         $jobInstance = new JobInstance();
         $jobInstance->setCode($code);
-        $jobInstance->setLabel($code);
+        $jobInstance->setLabel($label);
         $jobInstance->setJobName($jobName);
         $jobInstance->setStatus($status);
         $jobInstance->setConnector('Some connector name');

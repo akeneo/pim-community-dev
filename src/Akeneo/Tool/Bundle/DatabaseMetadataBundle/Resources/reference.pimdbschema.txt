@@ -18,6 +18,7 @@ akeneo_connectivity_connection_audit_error | BASE TABLE
 akeneo_connectivity_connection_audit_product | BASE TABLE
 akeneo_connectivity_connection_events_api_request_count | BASE TABLE
 akeneo_connectivity_connection_wrong_credentials_combination | BASE TABLE
+akeneo_connectivity_user_consent | BASE TABLE
 akeneo_file_storage_file_info | BASE TABLE
 akeneo_measurement | BASE TABLE
 akeneo_onboarder_message | BASE TABLE
@@ -201,8 +202,8 @@ akeneo_asset_manager_attribute | is_read_only | NO | tinyint(1) |
 akeneo_batch_job_execution | id | NO | int | PRI
 akeneo_batch_job_execution | job_instance_id | NO | int | MUL
 akeneo_batch_job_execution | pid | YES | int |
-akeneo_batch_job_execution | user | YES | varchar(255) |
-akeneo_batch_job_execution | status | NO | int |
+akeneo_batch_job_execution | user | YES | varchar(255) | MUL
+akeneo_batch_job_execution | status | NO | int | MUL
 akeneo_batch_job_execution | start_time | YES | datetime |
 akeneo_batch_job_execution | end_time | YES | datetime |
 akeneo_batch_job_execution | create_time | YES | datetime |
@@ -213,6 +214,9 @@ akeneo_batch_job_execution | exit_description | YES | longtext |
 akeneo_batch_job_execution | failure_exceptions | YES | longtext |
 akeneo_batch_job_execution | log_file | YES | varchar(255) |
 akeneo_batch_job_execution | raw_parameters | NO | json |
+akeneo_batch_job_execution | is_stoppable | NO | tinyint(1) |
+akeneo_batch_job_execution | step_count | NO | int |
+akeneo_batch_job_execution | is_visible | NO | tinyint(1) | MUL
 akeneo_batch_job_instance | id | NO | int | PRI
 akeneo_batch_job_instance | code | NO | varchar(100) | UNI
 akeneo_batch_job_instance | label | YES | varchar(255) |
@@ -238,6 +242,7 @@ akeneo_batch_step_execution | errors | NO | longtext |
 akeneo_batch_step_execution | summary | NO | longtext |
 akeneo_batch_step_execution | tracking_data | YES | json |
 akeneo_batch_step_execution | warning_count | NO | int |
+akeneo_batch_step_execution | is_trackable | NO | tinyint(1) |
 akeneo_batch_warning | id | NO | int | PRI
 akeneo_batch_warning | step_execution_id | YES | int | MUL
 akeneo_batch_warning | reason | YES | longtext |
@@ -282,6 +287,11 @@ akeneo_connectivity_connection_events_api_request_count | updated | NO | datetim
 akeneo_connectivity_connection_wrong_credentials_combination | connection_code | NO | varchar(100) | PRI
 akeneo_connectivity_connection_wrong_credentials_combination | username | NO | varchar(100) | PRI
 akeneo_connectivity_connection_wrong_credentials_combination | authentication_date | NO | datetime |
+akeneo_connectivity_user_consent | user_id | NO | int | PRI
+akeneo_connectivity_user_consent | app_id | NO | varchar(36) | PRI
+akeneo_connectivity_user_consent | scopes | NO | json |
+akeneo_connectivity_user_consent | uuid | NO | char(36) |
+akeneo_connectivity_user_consent | consent_date | NO | datetime |
 akeneo_file_storage_file_info | id | NO | int | PRI
 akeneo_file_storage_file_info | file_key | NO | varchar(255) | UNI
 akeneo_file_storage_file_info | original_filename | NO | varchar(255) |
@@ -502,8 +512,8 @@ pim_catalog_attribute | decimals_allowed | YES | tinyint(1) |
 pim_catalog_attribute | negative_allowed | YES | tinyint(1) |
 pim_catalog_attribute | date_min | YES | datetime |
 pim_catalog_attribute | date_max | YES | datetime |
-pim_catalog_attribute | metric_family | YES | varchar(30) |
-pim_catalog_attribute | default_metric_unit | YES | varchar(30) |
+pim_catalog_attribute | metric_family | YES | varchar(100) |
+pim_catalog_attribute | default_metric_unit | YES | varchar(100) |
 pim_catalog_attribute | max_file_size | YES | decimal(6,2) |
 pim_catalog_attribute | allowed_extensions | YES | varchar(255) |
 pim_catalog_attribute | minimumInputLength | YES | smallint |

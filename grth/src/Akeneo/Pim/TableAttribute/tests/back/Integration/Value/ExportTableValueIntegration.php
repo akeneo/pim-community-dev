@@ -58,12 +58,12 @@ CSV;
         }
         $header = \array_shift($lines);
 
-        $expectedNutritionVlaue = '[{"ingredient":"salt","is_allergenic":false},{"ingredient":"egg","quantity":2},{"ingredient":"butter","quantity":25,"is_allergenic":true}]';
+        $expectedNutritionValue = '[{"ingredient":"salt","is_allergenic":false},{"ingredient":"egg","quantity":2},{"ingredient":"butter","quantity":25,"is_allergenic":true}]';
 
         Assert::assertCount(1, $lines);
         foreach ($lines as $row) {
             $row = \array_combine($header->toArray(), $row->toArray());
-            Assert::assertSame($expectedNutritionVlaue, $row['nutrition']);
+            Assert::assertSame($expectedNutritionValue, $row['nutrition']);
         }
     }
 

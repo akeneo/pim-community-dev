@@ -2,6 +2,7 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {screen} from '@testing-library/react';
 import ProposalDiffTable from '../../../src/proposals/ProposalDiffTable';
+
 jest.mock('../../../src/fetchers/AttributeFetcher');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 

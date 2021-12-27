@@ -1,19 +1,18 @@
 import React from 'react';
 import {SelectInput} from 'akeneo-design-system';
-import {FilterValuesMapping} from './FilterValues';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {DataType, FilterOperator, FilterValue} from '../models';
+import {ValuesFilterMapping} from './FilterValues';
 
 type OperatorSelectorProps = {
   dataType?: DataType;
   value?: FilterValue;
   onChange: (operator?: FilterOperator) => void;
-  filterValuesMapping: FilterValuesMapping;
 };
 
-const OperatorSelector: React.FC<OperatorSelectorProps> = ({dataType, value, onChange, filterValuesMapping}) => {
+const OperatorSelector: React.FC<OperatorSelectorProps> = ({dataType, value, onChange}) => {
   const translate = useTranslate();
-  const operators = Object.keys(filterValuesMapping[dataType || ''] || {}) as FilterOperator[];
+  const operators = Object.keys(ValuesFilterMapping[dataType || ''] || {}) as FilterOperator[];
 
   const handleChange = (operator: string | null) => {
     onChange(null === operator ? undefined : (operator as FilterOperator));

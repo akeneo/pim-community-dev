@@ -1,4 +1,4 @@
-import {DataType, TableConfiguration} from '../../src/models';
+import {DataType, TableConfiguration} from '../../src';
 
 export const getComplexTableConfiguration: (firstColumnType?: DataType) => TableConfiguration = (
   firstColumnType = 'select'

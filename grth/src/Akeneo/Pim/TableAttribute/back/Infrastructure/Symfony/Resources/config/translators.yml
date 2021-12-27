@@ -1,0 +1,41 @@
+services:
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableValueTranslatorRegistry:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
+            - !tagged_iterator pim_table_attribute.translator.value_translator
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableTranslator:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableValueTranslatorRegistry'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableColumnTranslator'
+        tags:
+            - { name: pim_enrich.connector.flat_translators.attribute_value }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableBooleanTranslator:
+        arguments:
+            - '@pim_catalog.localization.translator.label'
+        tags:
+            - { name: pim_table_attribute.translator.value_translator}
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableSelectTranslator:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository'
+        tags:
+            - { name: pim_table_attribute.translator.value_translator}
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValuesTranslator:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableValueTranslatorRegistry'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\AttributeTranslator'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableColumnTranslator'
+            - '@translator'
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\AttributeTranslator:
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.localization.translator.language'
+            - '@akeneo.pim.structure.query.get_channel_translations'
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableColumnTranslator:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'

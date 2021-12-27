@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Component\Merger;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
@@ -86,16 +88,31 @@ class NotGrantedCategoryMerger implements NotGrantedDataMergerInterface
         }
 
         $notGrantedCategoryCodes = [];
-        foreach ($fullEntityWithCategories->getCategories() as $category) {
+        foreach ($this->getCategoriesForEntity($fullEntityWithCategories) as $category) {
             if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $category)) {
                 $notGrantedCategoryCodes[] = $category->getCode();
             }
         }
 
-        $categoryCodes = array_merge($filteredEntityWithCategories->getCategoryCodes(), $notGrantedCategoryCodes);
+        $categoryCodes = [];
+        foreach ($this->getCategoriesForEntity($filteredEntityWithCategories) as $category) {
+            $categoryCodes[] = $category->getCode();
+        }
 
+        $categoryCodes = array_merge($categoryCodes, $notGrantedCategoryCodes);
         $this->categorySetter->setFieldData($fullEntityWithCategories, 'categories', $categoryCodes);
 
         return $fullEntityWithCategories;
+    }
+
+    private function getCategoriesForEntity(CategoryAwareInterface $entity): \Traversable
+    {
+        if ($entity instanceof ProductInterface) {
+            return $entity->getCategoriesForVariation();
+        } elseif ($entity instanceof ProductModelInterface) {
+            return $entity->getCategoriesForCurrentLevel();
+        }
+
+        return $entity->getCategories();
     }
 }

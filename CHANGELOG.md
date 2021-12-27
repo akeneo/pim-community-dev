@@ -130,6 +130,9 @@
 - PIM-10194: Fix pagination for list published products endpoint with search_after pagination type
 - PIM-10195: Fix Asset Manager thumbnail generation on image/x-eps files
 - PIM-10199: Fix occasional segmentation fault when generating thumbnails
+- PIM-10203: Fix product variants are not all uncategorized after a mass "Remove from categories" action
+- PIM-10211: Flatten image layers during thumbnail and preview transformations in AM
+- PIM-10216: Fix PDF renderer in case of empty tables
 
 ## Improvements
 

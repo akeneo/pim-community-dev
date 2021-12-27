@@ -21,6 +21,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -54,6 +55,10 @@ class GetProductsLinkedToAnAssetAction
     {
         $channelCode = $request->query->get('channel');
         $localeCode = $request->query->get('locale');
+
+        if ($localeCode === null || $channelCode === null) {
+            return new JsonResponse('The locale or channel code is missing', Response::HTTP_BAD_REQUEST);
+        }
 
         try {
             $rows = $this->findProductAndProductModelsIdentifiers($assetCode, $attributeCode, $localeCode, $channelCode);

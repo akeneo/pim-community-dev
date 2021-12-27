@@ -107,7 +107,7 @@ Cypress.Commands.add('exportProductList', (productType) => {
     cy.findByText('Exports').click();
     cy.wait('@getProductList');
 
-    cy.intercept('GET', /\/datagrid\/last-export-executions-grid\/load.*/).as('getLastExports');
+    cy.intercept('POST', '/rest/process-tracker').as('getLastExports');
     cy.get('table.AknGrid.grid tbody tr:first td.AknGrid-bodyCell--highlight:first').click();
     cy.wait('@getLastExports');
 

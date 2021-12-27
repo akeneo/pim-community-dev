@@ -17,10 +17,9 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\Meas
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\MeasurementValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
-use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplierInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface;
 
-class MeasurementUnitLabelSelectionApplier implements SelectionApplierInterface
+class MeasurementUnitLabelSelectionApplier implements MeasurementApplierInterface
 {
     private FindUnitLabelInterface $findUnitLabels;
 

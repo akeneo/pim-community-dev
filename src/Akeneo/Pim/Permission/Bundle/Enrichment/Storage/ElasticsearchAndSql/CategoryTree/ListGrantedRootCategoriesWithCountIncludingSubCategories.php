@@ -117,7 +117,7 @@ SQL;
             $sql,
             [
                 'locale' => $translationLocaleCode,
-                'user_id' => $userId
+                'user_id' => $userId,
             ]
         )->fetchAllAssociative();
 

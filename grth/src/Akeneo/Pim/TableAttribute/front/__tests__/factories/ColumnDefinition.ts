@@ -1,5 +1,4 @@
-import {ColumnDefinitionWithId, DataTypesMapping} from '../../src/attribute';
-import {SelectColumnDefinition} from '../../src/models';
+import {ColumnDefinitionWithId, DataTypesMapping, SelectColumnDefinition} from '../../src';
 
 export const getSelectColumnDefinitionWithId: () => ColumnDefinitionWithId = () => {
   return {...getSelectColumnDefinition(), id: 'uniqueidingredient'};

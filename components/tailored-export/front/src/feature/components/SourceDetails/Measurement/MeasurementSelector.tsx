@@ -51,6 +51,7 @@ const MeasurementSelector = ({selection, validationErrors, onSelectionChange}: M
             onChange={type => {
               switch (type) {
                 case 'unit_code':
+                case 'unit_symbol':
                   onSelectionChange({type});
                   break;
                 case 'unit_label':
@@ -61,6 +62,9 @@ const MeasurementSelector = ({selection, validationErrors, onSelectionChange}: M
                   break;
                 case 'value_and_unit_label':
                   onSelectionChange({type, decimal_separator: '.', locale: locales[0].code});
+                  break;
+                case 'value_and_unit_symbol':
+                  onSelectionChange({type, decimal_separator: '.'});
                   break;
               }
             }}
@@ -78,6 +82,12 @@ const MeasurementSelector = ({selection, validationErrors, onSelectionChange}: M
               {translate('akeneo.tailored_export.column_details.sources.selection.measurement.unit_code')}
             </SelectInput.Option>
             <SelectInput.Option
+              title={translate('akeneo.tailored_export.column_details.sources.selection.measurement.unit_symbol')}
+              value="unit_symbol"
+            >
+              {translate('akeneo.tailored_export.column_details.sources.selection.measurement.unit_symbol')}
+            </SelectInput.Option>
+            <SelectInput.Option
               title={translate('akeneo.tailored_export.column_details.sources.selection.measurement.value')}
               value="value"
             >
@@ -91,10 +101,15 @@ const MeasurementSelector = ({selection, validationErrors, onSelectionChange}: M
             >
               {translate('akeneo.tailored_export.column_details.sources.selection.measurement.value_and_unit_label')}
             </SelectInput.Option>
+            <SelectInput.Option
+              title={translate(
+                'akeneo.tailored_export.column_details.sources.selection.measurement.value_and_unit_symbol'
+              )}
+              value="value_and_unit_symbol"
+            >
+              {translate('akeneo.tailored_export.column_details.sources.selection.measurement.value_and_unit_symbol')}
+            </SelectInput.Option>
           </SelectInput>
-          <Helper inline={true} level="info">
-            {translate('akeneo.tailored_export.column_details.sources.selection.measurement.information')}
-          </Helper>
           {typeErrors.map((error, index) => (
             <Helper key={index} inline={true} level="error">
               {translate(error.messageTemplate, error.parameters)}
@@ -136,6 +151,15 @@ const MeasurementSelector = ({selection, validationErrors, onSelectionChange}: M
               onChange={updatedValue => onSelectionChange({...selection, locale: updatedValue})}
             />
           </>
+        )}
+        {'value_and_unit_symbol' === selection.type && (
+          <DecimalSeparatorDropdown
+            label={translate('akeneo.tailored_export.column_details.sources.selection.decimal_separator.title')}
+            value={selection.decimal_separator}
+            validationErrors={decimalSeparatorErrors}
+            decimalSeparators={availableDecimalSeparators}
+            onChange={updatedValue => onSelectionChange({...selection, decimal_separator: updatedValue})}
+          />
         )}
       </Section>
     </Collapse>

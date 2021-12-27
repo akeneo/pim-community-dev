@@ -54,7 +54,7 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
         $configuration = array_merge($jobInstance->getRawParameters(), $configuration);
         $jobParameters = $this->get('akeneo_batch.job_parameters_factory')->create($job, $configuration);
 
-        return $this->get('akeneo_batch.job_repository')->createJobExecution($jobInstance, $jobParameters);
+        return $this->get('akeneo_batch.job_repository')->createJobExecution($job, $jobInstance, $jobParameters);
     }
 
     /**

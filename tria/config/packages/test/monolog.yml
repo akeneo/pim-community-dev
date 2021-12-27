@@ -2,4 +2,4 @@ monolog:
   handlers:
     console:
       type:  console
-      channels: ['!event', '!doctrine', '!event_api', '!business_event']
+      channels: ['!event', '!doctrine', '!event_api', '!business_event', '!api_requests']

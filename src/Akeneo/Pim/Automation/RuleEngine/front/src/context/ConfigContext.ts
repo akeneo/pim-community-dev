@@ -3,7 +3,7 @@ import {InputValueProps} from '../pages/EditRules/components/actions/attribute';
 import {
   CellInputsMapping,
   CellMatchersMapping,
-} from '@akeneo-pim-ge/table_attribute/src/product';
+} from '@akeneo-pim-ge/table_attribute';
 
 export type AttributeValueConfig = {
   [attributeType: string]: {

@@ -1,7 +1,7 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {screen, fireEvent} from '@testing-library/react';
-import {AttributeSelector} from '../../../src/jobs';
+import {AttributeSelector} from '../../../src';
 
 jest.mock('../../../src/fetchers/AttributeFetcher');
 

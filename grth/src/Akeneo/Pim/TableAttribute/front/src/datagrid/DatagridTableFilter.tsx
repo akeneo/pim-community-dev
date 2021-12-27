@@ -10,8 +10,7 @@ import {
   TableAttribute,
 } from '../models';
 import {AttributeFetcher} from '../fetchers';
-import {useRouter, useTranslate, getLabel, useUserContext} from '@akeneo-pim-community/shared';
-import {FilterValuesMapping} from './FilterValues';
+import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {FilterSelectorList} from './FilterSelectorList';
 import {useFetchOptions} from '../product';
@@ -46,7 +45,6 @@ type DatagridTableFilterProps = {
   onDisable: () => void;
   attributeCode: AttributeCode;
   onChange: (value: BackendTableFilterValue) => void;
-  filterValuesMapping: FilterValuesMapping;
   initialDataFilter: PendingBackendTableFilterValue;
 };
 
@@ -56,7 +54,6 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
   onDisable,
   attributeCode,
   onChange,
-  filterValuesMapping,
   initialDataFilter,
   ...rest
 }) => {
@@ -130,11 +127,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
                   {getLabel(attribute.labels, catalogLocale, attribute.code)}
                 </FilterSectionTitleTitle>
               </FilterSectionTitle>
-              <FilterSelectorList
-                filterValuesMapping={filterValuesMapping}
-                onChange={setFilterValue}
-                initialFilter={filterValue}
-              />
+              <FilterSelectorList onChange={setFilterValue} initialFilter={filterValue} />
               <FilterButtonContainer>
                 <Button onClick={handleValidate} disabled={!isFilterValid(filterValue)}>
                   {translate('pim_common.update')}
@@ -149,7 +142,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
               {getLabel(attribute.labels, catalogLocale, attribute.code)}
             </span>
           )}
-          <DatagridTableCriteria filterValue={filterValue} filterValuesMapping={filterValuesMapping} />
+          <DatagridTableCriteria filterValue={filterValue} />
           <span className='AknFilterBox-filterCaret' />
         </FilterBox>
         {canDisable && (

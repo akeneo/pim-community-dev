@@ -323,6 +323,14 @@ pim:
         requests:
           cpu: "10m"
           memory: "10Mi"
+    connectivity-openid-keys-regenerate:
+      enabled: true
+      pimCommand: "akeneo:connectivity-connection:openid-keys:create --no-interaction"
+      schedule: "4 21 * * 0"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "10Mi"
 
 # Onboarder
 onboarder:

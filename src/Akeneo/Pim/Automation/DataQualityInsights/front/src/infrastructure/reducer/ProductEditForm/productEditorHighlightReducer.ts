@@ -56,6 +56,9 @@ interface PopoverAction extends Action {
   };
 }
 
+const CHANGE_PRODUCT_TAB = 'CHANGE_PRODUCT_TAB';
+const INITIALIZE_PRODUCT = 'INITIALIZE_PRODUCT';
+
 const INITIALIZE_WIDGETS_LIST = 'INITIALIZE_WIDGETS_LIST';
 export const initializeWidgetsListAction: ActionCreator<WidgetElementsAction> = (widgets: WidgetsCollection) => {
   return {
@@ -221,12 +224,14 @@ const widgetsReducer: Reducer<WidgetsState, WidgetElementsAction & WidgetAction>
   {type, payload}
 ) => {
   switch (type) {
+    case INITIALIZE_PRODUCT:
+    case CHANGE_PRODUCT_TAB:
+      return {};
+
     case INITIALIZE_WIDGETS_LIST:
       const {widgets} = payload;
-      return {
-        ...previousState,
-        ...widgets,
-      };
+
+      return widgets;
 
     case SHOW_WIDGET: {
       const {widget} = payload;

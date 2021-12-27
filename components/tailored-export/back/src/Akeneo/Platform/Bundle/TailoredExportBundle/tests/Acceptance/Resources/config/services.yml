@@ -38,5 +38,8 @@ services:
     Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface:
         class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Measurement\InMemoryFindUnitLabel
 
+    Akeneo\Platform\TailoredExport\Domain\Query\FindUnitSymbolInterface:
+        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Measurement\InMemoryFindUnitSymbol
+
     Akeneo\Platform\TailoredExport\Domain\Query\FindQualityScoresInterface:
         class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\QualityScore\InMemoryFindQualityScores

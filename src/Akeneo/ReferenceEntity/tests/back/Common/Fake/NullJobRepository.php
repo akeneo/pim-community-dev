@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Job\StoppableJobInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -29,11 +31,12 @@ class NullJobRepository implements JobRepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function createJobExecution(JobInstance $jobInstance, JobParameters $jobParameters)
+    public function createJobExecution(JobInterface $job, JobInstance $jobInstance, JobParameters $jobParameters): JobExecution
     {
         $jobExecution = new JobExecution();
         $jobExecution->setJobInstance($jobInstance);
         $jobExecution->setJobParameters($jobParameters);
+        $jobExecution->setIsStoppable($job instanceof StoppableJobInterface && $job->isStoppable());
 
         return $jobExecution;
     }
@@ -41,23 +44,21 @@ class NullJobRepository implements JobRepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function updateJobExecution(JobExecution $jobExecution)
+    public function updateJobExecution(JobExecution $jobExecution): void
     {
-        return $jobExecution;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function updateStepExecution(StepExecution $stepExecution)
+    public function updateStepExecution(StepExecution $stepExecution): void
     {
-        return $stepExecution;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getLastJobExecution(JobInstance $jobInstance, $status)
+    public function getLastJobExecution(JobInstance $jobInstance, $status): ?JobExecution
     {
         return null;
     }
@@ -65,15 +66,7 @@ class NullJobRepository implements JobRepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function findPurgeables($days)
-    {
-        return [];
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function remove(array $jobsExecutions)
+    public function remove(array $jobsExecutions): void
     {
     }
 

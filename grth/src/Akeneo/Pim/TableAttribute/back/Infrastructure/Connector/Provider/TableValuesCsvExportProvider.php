@@ -13,15 +13,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\Provider;
 
+use Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectory;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 final class TableValuesCsvExportProvider implements ConstraintCollectionProviderInterface, DefaultValuesProviderInterface
 {
@@ -85,6 +88,27 @@ final class TableValuesCsvExportProvider implements ConstraintCollectionProvider
                             ],
                         ]
                     ),
+                    'with_label' => new Type(
+                        [
+                            'type'   => 'bool',
+                            'groups' => ['Default', 'FileConfiguration'],
+                        ]
+                    ),
+                    'header_with_label' => new Type([
+                        'type' => 'bool',
+                        'groups' => ['Default', 'FileConfiguration'],
+                    ]),
+                    'file_locale' => [
+                        new ActivatedLocale(['groups' => ['Default', 'FileConfiguration']]),
+                        new Callback(function ($value, ExecutionContextInterface $context) {
+                            $fields = $context->getRoot();
+                            if (true === $fields['with_label'] && empty($value)) {
+                                $context
+                                    ->buildViolation('The locale cannot be empty.')
+                                    ->addViolation();
+                            }
+                        })
+                    ],
                 ],
             ]
         );
@@ -113,6 +137,9 @@ final class TableValuesCsvExportProvider implements ConstraintCollectionProvider
             'filters' => [
                 'table_attribute_code' => null,
             ],
+            'with_label' => false,
+            'header_with_label' => false,
+            'file_locale' => null,
         ];
     }
 }

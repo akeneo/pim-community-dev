@@ -100,4 +100,15 @@ class LabelCollectionSpec extends ObjectBehavior
         $newLabels->shouldBeLike(LabelCollection::fromNormalized(['en_US' => 'Sugar']));
         $newLabels->normalize()->shouldReturn(['en_US' => 'Sugar']);
     }
+
+    function it_returns_a_label()
+    {
+        $this->beConstructedThrough('fromNormalized', [[
+            'en_US' => 'Sugar',
+            'fr_FR' => 'Suc',
+        ]]);
+        $this->getLabel('en_US')->shouldReturn('Sugar');
+        $this->getLabel('fr_FR')->shouldReturn('Suc');
+        $this->getLabel('de_DE')->shouldReturn(null);
+    }
 }

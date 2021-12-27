@@ -5,7 +5,6 @@ import {ValueSelector} from './ValueSelector';
 import React, {useState} from 'react';
 import styled, {css} from 'styled-components';
 import {ColumnDefinition, FilterOperator, FilterValue, PendingTableFilterValue, SelectOption} from '../models';
-import {FilterValuesMapping} from './FilterValues';
 import {AkeneoThemedProps} from 'akeneo-design-system';
 
 const FilterSelectorListContainer = styled.div<{inline: boolean} & AkeneoThemedProps>`
@@ -39,18 +38,12 @@ const FilterSelectorListContainer = styled.div<{inline: boolean} & AkeneoThemedP
 `;
 
 type FilterSelectorListProps = {
-  filterValuesMapping: FilterValuesMapping;
   onChange: (value: PendingTableFilterValue) => void;
   inline?: boolean;
   initialFilter: PendingTableFilterValue;
 };
 
-const FilterSelectorList: React.FC<FilterSelectorListProps> = ({
-  filterValuesMapping,
-  onChange,
-  inline = false,
-  initialFilter,
-}) => {
+const FilterSelectorList: React.FC<FilterSelectorListProps> = ({onChange, inline = false, initialFilter}) => {
   const [filter, setFilter] = useState<PendingTableFilterValue>(initialFilter);
 
   const updateFilter = (newFilter: PendingTableFilterValue) => {
@@ -78,19 +71,13 @@ const FilterSelectorList: React.FC<FilterSelectorListProps> = ({
     <FilterSelectorListContainer inline={inline}>
       <RowSelector value={filter.row} onChange={handleRowChange} />
       <ColumnDefinitionSelector onChange={handleColumnChange} value={filter.column} />
-      <OperatorSelector
-        dataType={filter.column?.data_type}
-        value={filter.operator}
-        onChange={handleOperatorChange}
-        filterValuesMapping={filterValuesMapping}
-      />
+      <OperatorSelector dataType={filter.column?.data_type} value={filter.operator} onChange={handleOperatorChange} />
       {filter.operator && filter.column && (
         <ValueSelector
           dataType={filter.column?.data_type}
           operator={filter.operator}
           onChange={handleValueChange}
           value={filter.value}
-          filterValuesMapping={filterValuesMapping}
           columnCode={filter.column.code}
         />
       )}

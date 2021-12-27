@@ -12,9 +12,10 @@ services:
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.evaluate_attribute_options'
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.evaluate_family_criteria'
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.evaluate_products_and_product_models_criteria'
+            - false
+            - false
         tags:
             - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
-            - name: akeneo_batch.job.not_visible
 
     akeneo.pim.automation.data_quality_insights.job.periodic_tasks:
         class: '%pim_connector.job.simple_job.class%'
@@ -26,9 +27,10 @@ services:
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.generate_dictionary'
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.purge_outdated_data'
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.consolidate_dashboard_rates'
+            - false
+            - false
         tags:
             - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
-            - name: akeneo_batch.job.not_visible
 
     #Steps
     akeneo.pim.automation.data_quality_insights.connector.step.generate_dictionary:

@@ -2,7 +2,8 @@
 
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {render, screen, fireEvent} from '@testing-library/react';
+import {render, screen, fireEvent, act} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import Recipients, {MAX_RECIPIENT_COUNT} from 'akeneosharedcatalog/job/form/recipients';
 
 test('I can see the existing recipients', () => {
@@ -24,9 +25,12 @@ test('I can add a valid email', () => {
   render(<Recipients recipients={[]} validationErrors={[]} onRecipientsChange={mockOnRecipientsChange} />);
 
   const input = screen.getByPlaceholderText('shared_catalog.recipients.placeholder');
-  fireEvent.change(input, {target: {value: email}});
+  userEvent.type(input, 'hello@akeneo.com ');
   const button = screen.getByText('pim_common.add');
-  fireEvent.click(button);
+
+  act(() => {
+    userEvent.click(button);
+  });
 
   expect(mockOnRecipientsChange).toHaveBeenCalledWith([{email}]);
 });
@@ -38,24 +42,32 @@ test('I cannot add an invalid email', () => {
   render(<Recipients recipients={[]} validationErrors={[]} onRecipientsChange={mockOnRecipientsChange} />);
 
   const input = screen.getByPlaceholderText('shared_catalog.recipients.placeholder');
-  fireEvent.change(input, {target: {value: email}});
+  userEvent.type(input, `${email} `);
   const button = screen.getByText('pim_common.add');
-  fireEvent.click(button);
+
+  act(() => {
+    userEvent.click(button);
+  });
 
   expect(screen.getByText('shared_catalog.recipients.invalid_email')).toBeInTheDocument();
 });
 
-test('I cannot add a duplicate email', () => {
+test('It warn and ignore duplicate email', () => {
   const email = 'michel@akeneo.com';
   const mockOnRecipientsChange = jest.fn();
 
   render(<Recipients recipients={[{email}]} validationErrors={[]} onRecipientsChange={mockOnRecipientsChange} />);
 
-  const input = screen.getByPlaceholderText('shared_catalog.recipients.placeholder') as HTMLInputElement;
-  fireEvent.change(input, {target: {value: email}});
-  fireEvent.keyDown(input, {key: 'Enter', code: 'Enter', keyCode: 13, charCode: 13});
+  const input = screen.getByPlaceholderText('shared_catalog.recipients.placeholder');
+  userEvent.type(input, `${email} `);
+  const button = screen.getByText('pim_common.add');
+  expect(screen.getByText('shared_catalog.recipients.duplicate_email')).toBeInTheDocument();
 
-  expect(screen.getByText('shared_catalog.recipients.duplicates')).toBeInTheDocument();
+  act(() => {
+    userEvent.click(button);
+  });
+
+  expect(mockOnRecipientsChange).toBeCalledWith([{email}]);
 });
 
 test('I can see a backend validation error', () => {
@@ -153,10 +165,11 @@ test('It can add multiple recipients at once (separated by comma, semicolon, spa
   const input = screen.getByPlaceholderText('shared_catalog.recipients.placeholder');
   fireEvent.change(input, {
     target: {
-      value: `coucou@akeneo.com,hello@akeneo.com;INVALID bonjour@akeneo.com nice@raccoon.net
- ANOTHER_INVALID salut@michel.fr salut@michel.fr`,
+      value: `hello@akeneo.com; bonjour@akeneo.com nice@raccoon.net
+  salut@michel.fr salut@michel.fr coucou@akeneo.com`,
     },
   });
+
   fireEvent.click(screen.getByText('pim_common.add'));
 
   expect(screen.getAllByTitle('pim_common.remove').length).toEqual(5);

@@ -62,4 +62,9 @@ final class LabelCollection
     {
         return LabelCollection::fromNormalized(\array_replace($this->labels, $labels));
     }
+
+    public function getLabel(string $localeCode): ?string
+    {
+        return $this->labels[$localeCode] ?? null;
+    }
 }

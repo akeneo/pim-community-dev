@@ -1,5 +1,17 @@
 # 5.0.x
 
+# 5.0.66 (2021-12-22)
+
+# 5.0.65 (2021-12-22)
+
+# 5.0.64 (2021-12-17)
+
+# 5.0.63 (2021-12-14)
+
+## Bug fixes
+
+- PIM-10201: [Backport PIM-9723] Fix Mysql memory size issue during ordering in SQL when getting category trees in product grid
+
 # 5.0.62 (2021-12-10)
 
 ## Bug fixes
