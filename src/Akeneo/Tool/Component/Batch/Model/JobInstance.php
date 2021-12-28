@@ -24,7 +24,7 @@ use Doctrine\Common\Collections\Collection;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class JobInstance
+class JobInstance implements \Akeneo\Tool\Component\Logging\BusinessContext
 {
     const STATUS_READY = 0;
     const STATUS_DRAFT = 1;
@@ -314,5 +314,10 @@ class JobInstance
         $this->connector = $connector;
 
         return $this;
+    }
+
+    function getContext(): array
+    {
+        return ['job_instance'=> ['id'=>$this->getId(), 'code'=>$this->getCode()]];
     }
 }
