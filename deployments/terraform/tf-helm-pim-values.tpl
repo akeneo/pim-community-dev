@@ -2,6 +2,25 @@ image:
   pim:
     tag: ${pim.version}
 
+global:
+  extraLabels: &global_extraLabels
+    tags.akeneo.com/instance_fqdn: ${pim.fqdn}
+    tags.akeneo.com/instance_type: ${pim.type}
+    tags.akeneo.com/instance_dns_record: ${pim.dns_record}
+    tags.akeneo.com/instance_dns_zone: ${pim.dns_zone}
+    tags.akeneo.com/portal_project_code: ${portal.project_code}
+    tags.akeneo.com/product_reference_code: ${pim.product_reference_code}
+    tags.akeneo.com/product_reference_type: ${pim.product_reference_type}
+    tags.akeneo.com/product_reference_size: ${pim.product_reference_size}
+    type: ${pim.type} # deprecated
+    instanceName: ${pim.dns_record} # deprecated
+    pfid: ${pim.pfid} # deprecated
+    instance_dns_record: ${pim.dns_record} # deprecated
+    instance_dns_zone: ${pim.dns_zone} # deprecated
+    papo_project_code: ${portal.project_code} # deprecated
+    papo_project_code_truncated: ${portal.project_code_truncated} # deprecated
+    papo_project_code_hashed: ${portal.project_code_hashed} # deprecated
+
 connectors:
   bigcommerce:
     enabled: ${bigcommerce_connector.enabled}
@@ -19,50 +38,36 @@ elasticsearch:
       cluster.routing.allocation.disk.watermark.flood_stage: .99
   master:
     podAnnotations:
-      tags.akeneo.com/pfid: ${pim.pfid}
-      tags.akeneo.com/product_reference: serenity
-      tags.akeneo.com/instance_dns_zone: ${pim.dns_zone}
-      tags.akeneo.com/instance_dns_record: ${pim.dns_record}
-      tags.akeneo.com/papo_project_code: ${portal.project_code}
+      tags.akeneo.com/pfid: ${pim.pfid} # deprecated
+      tags.akeneo.com/product_reference: serenity # deprecated
+      tags.akeneo.com/papo_project_code: ${portal.project_code} # deprecated
+      <<: *global_extraLabels
     heapSize: ${elasticsearch.master.heap_size}
     ${indent(4,replace(yamlencode({resources: "${elasticsearch.master.resources}"}),"\"",""))}
   client:
     podAnnotations:
-      tags.akeneo.com/pfid: ${pim.pfid}
-      tags.akeneo.com/product_reference: serenity
-      tags.akeneo.com/instance_dns_zone: ${pim.dns_zone}
-      tags.akeneo.com/instance_dns_record: ${pim.dns_record}
-      tags.akeneo.com/papo_project_code: ${portal.project_code}
+      tags.akeneo.com/pfid: ${pim.pfid} # deprecated
+      tags.akeneo.com/product_reference: serenity # deprecated
+      tags.akeneo.com/papo_project_code: ${portal.project_code} # deprecated
+      <<: *global_extraLabels
     heapSize: ${elasticsearch.client.heap_size}
     ${indent(4,replace(yamlencode({resources: "${elasticsearch.client.resources}"}),"\"",""))}
   data:
     podAnnotations:
-      tags.akeneo.com/pfid: ${pim.pfid}
-      tags.akeneo.com/product_reference: serenity
-      tags.akeneo.com/instance_dns_zone: ${pim.dns_zone}
-      tags.akeneo.com/instance_dns_record: ${pim.dns_record}
-      tags.akeneo.com/papo_project_code: ${portal.project_code}
+      tags.akeneo.com/pfid: ${pim.pfid} # deprecated
+      tags.akeneo.com/product_reference: serenity # deprecated
+      tags.akeneo.com/papo_project_code: ${portal.project_code} # deprecated
+      <<: *global_extraLabels
     heapSize: ${elasticsearch.data.heap_size}
     ${indent(4,replace(yamlencode({resources: "${elasticsearch.data.resources}"}),"\"",""))}
 memcached:
   podAnnotations:
-    tags.akeneo.com/pfid: ${pim.pfid}
     app.kubernetes.io/component: memcached
-    tags.akeneo.com/product_reference: serenity
-    tags.akeneo.com/instance_dns_zone: ${pim.dns_zone}
-    tags.akeneo.com/instance_dns_record: ${pim.dns_record}
-    tags.akeneo.com/papo_project_code: ${portal.project_code}
+    tags.akeneo.com/pfid: ${pim.pfid} # deprecated
+    tags.akeneo.com/product_reference: serenity # deprecated
+    tags.akeneo.com/papo_project_code: ${portal.project_code} # deprecated
+    <<: *global_extraLabels
   ${indent(2,replace(yamlencode({resources: "${memcached.resources}"}),"\"",""))}
-global:
-  extraLabels:
-    type: ${pim.type}
-    instanceName: ${pim.dns_record}
-    pfid: ${pim.pfid}
-    instance_dns_record: ${pim.dns_record}
-    instance_dns_zone: ${pim.dns_zone}
-    papo_project_code: ${portal.project_code}
-    papo_project_code_truncated: ${portal.project_code_truncated}
-    papo_project_code_hashed: ${portal.project_code_hashed}
 
 common:
   gcpProjectID: ${google_cloud_project.id}

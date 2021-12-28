@@ -16,6 +16,7 @@ locals {
   jvm-heap-unit     = "m"
   k8s-memory-unit   = "Mi"
   k8s-cpu-unit      = "m"
+  fqdn              = trimsuffix(var.dns_external, ".")
 }
 
 resource "local_file" "helm_pim_config" {
@@ -35,8 +36,12 @@ resource "local_file" "helm_pim_config" {
 
       pim = {
         type                            = local.type
+        product_reference_code          = var.product_reference_code
+        product_reference_type          = var.product_reference_type
+        product_reference_size          = var.product_reference_size
         pfid                            = local.pfid
         version                         = var.pim_version
+        fqdn                            = local.fqdn
         dns_record                      = var.instance_name
         dns_zone                        = replace(data.google_dns_managed_zone.main.dns_name, "/\\.$/", "")
         master_dns_name                 = replace(google_dns_record_set.main.name, "/\\.$/", "")
