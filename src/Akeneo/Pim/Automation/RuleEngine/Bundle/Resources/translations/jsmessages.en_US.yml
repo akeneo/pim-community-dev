@@ -424,8 +424,6 @@ flash:
         enabled: The rule has been enabled
         disabled: The rule has been disabled
 
-pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Rules settings
-
 batch_jobs:
     add_attribute_value:
         execute_rules.label: Rules execution
