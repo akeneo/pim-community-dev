@@ -48,6 +48,7 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
             throw new \LogicException('Serializer must be a normalizer');
         }
 
+        $context['is_workflow'] = true;
         $data = [];
 
         $data[self::FIELD_ID] = self::PRODUCT_IDENTIFIER_PREFIX. (string) $productProposal->getId();
@@ -69,7 +70,8 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
         $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$productProposal->getValues()->isEmpty()
             ? $this->serializer->normalize(
                 $productProposal->getValues(),
-                ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+                ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+                $context
             ) : [];
 
         $attributeAsLabel = null !== $product->getFamily() ? $product->getFamily()->getAttributeAsLabel() : null;

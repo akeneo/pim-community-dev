@@ -1,21 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Dropdown, useBooleanState} from 'akeneo-design-system';
-import {
-  AttributeCode,
-  BackendTableFilterValue,
-  ColumnDefinition,
-  isFilterValid,
-  PendingBackendTableFilterValue,
-  PendingTableFilterValue,
-  TableAttribute,
-} from '../models';
+import {Button, Dropdown, SelectInput, useBooleanState} from 'akeneo-design-system';
+import {AttributeCode, NotEmptyTableFilterValue, TableAttribute} from '../models';
 import {AttributeFetcher} from '../fetchers';
 import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {FilterSelectorList} from './FilterSelectorList';
-import {useFetchOptions} from '../product';
 import {useIsMounted} from '../shared';
 import {AttributeContext} from '../contexts';
-import {DatagridTableCriteria} from './DatagridTableCriteria';
 import {
   FilterBox,
   FilterButtonContainer,
@@ -23,23 +12,28 @@ import {
   FilterSectionTitle,
   FilterSectionTitleTitle,
 } from '../shared/DatagridTableFilterStyle';
+import styled from 'styled-components';
 
-type DatagridTableFilterProps = {
+type NotEmptyDatagridTableFilterProps = {
   showLabel: boolean;
   canDisable: boolean;
   onDisable: () => void;
   attributeCode: AttributeCode;
-  onChange: (value: BackendTableFilterValue) => void;
-  initialDataFilter: PendingBackendTableFilterValue;
+  onChange: (value: NotEmptyTableFilterValue) => void;
+  initialDataFilter: NotEmptyTableFilterValue;
 };
 
-const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
+const StyledSelectInput = styled(SelectInput)`
+  margin: 20px 0 10px 0;
+`;
+
+const NotEmptyDatagridTableFilter: React.FC<NotEmptyDatagridTableFilterProps> = ({
   showLabel,
   canDisable,
   onDisable,
   attributeCode,
   onChange,
-  initialDataFilter,
+  initialDataFilter = {},
   ...rest
 }) => {
   const router = useRouter();
@@ -47,8 +41,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
   const catalogLocale = useUserContext().get('catalogLocale');
   const [isOpen, open, close] = useBooleanState();
   const [attribute, setAttribute] = useState<TableAttribute | undefined>();
-  const [filterValue, setFilterValue] = useState<PendingTableFilterValue | undefined>();
-  const {getOptionsFromColumnCode} = useFetchOptions(attribute, setAttribute);
+  const [filterValue, setFilterValue] = useState<NotEmptyTableFilterValue>(initialDataFilter);
   const isMounted = useIsMounted();
 
   useEffect(() => {
@@ -60,39 +53,15 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
     });
   }, []);
 
-  const optionsForFirstColumn = attribute ? getOptionsFromColumnCode(attribute.table_configuration[0].code) : undefined;
-
-  React.useEffect(() => {
-    if (!attribute || !isMounted() || typeof optionsForFirstColumn === 'undefined' || optionsForFirstColumn === null)
-      return;
-
-    const column = attribute.table_configuration.find(column => column.code === initialDataFilter.column);
-    const row =
-      optionsForFirstColumn.find(option => option.code === initialDataFilter.row) ||
-      (initialDataFilter.operator ? null : undefined);
-    const pendingFilter = {
-      row,
-      column,
-      value: initialDataFilter.value,
-      operator: initialDataFilter.operator,
-    };
-    setFilterValue(pendingFilter);
-  }, [optionsForFirstColumn, attribute]);
-
   const handleValidate = () => {
-    if (filterValue && isFilterValid(filterValue)) {
+    if (filterValue) {
       close();
-      onChange({
-        row: filterValue.row?.code,
-        column: (filterValue.column as ColumnDefinition).code,
-        operator: filterValue.operator,
-        value: filterValue.value,
-      });
+      onChange(filterValue);
     }
   };
 
   const handleClose = () => {
-    if (!filterValue || !isFilterValid(filterValue)) {
+    if (!filterValue?.operator) {
       close();
       onChange({});
       setFilterValue({});
@@ -101,10 +70,18 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
     }
   };
 
+  const handleChange = (value: string | null) => {
+    setFilterValue({operator: (value as 'NOT EMPTY' | null) || undefined});
+  };
+
+  const criteriaHint = translate(
+    filterValue?.operator === 'NOT EMPTY' ? `pim_common.operators.NOT EMPTY` : 'pim_common.all'
+  );
+
   return (
     <AttributeContext.Provider value={{attribute, setAttribute}}>
       <Dropdown {...rest}>
-        {isOpen && attribute && filterValue && (
+        {isOpen && attribute && (
           <Dropdown.Overlay onClose={handleClose}>
             <FilterContainer>
               <FilterSectionTitle title={getLabel(attribute.labels, catalogLocale, attribute.code)}>
@@ -112,11 +89,21 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
                   {getLabel(attribute.labels, catalogLocale, attribute.code)}
                 </FilterSectionTitleTitle>
               </FilterSectionTitle>
-              <FilterSelectorList onChange={setFilterValue} initialFilter={filterValue} />
+              <StyledSelectInput
+                clearLabel={translate('pim_common.clear_value')}
+                clearable
+                emptyResultLabel={translate('pim_common.no_result')}
+                onChange={handleChange}
+                placeholder={translate('pim_table_attribute.datagrid.select_your_operator')}
+                value={(filterValue.operator as string) || null}
+                openLabel={translate('pim_common.open')}
+              >
+                <SelectInput.Option title={translate(`pim_common.operators.NOT EMPTY`)} value='NOT EMPTY'>
+                  {translate(`pim_common.operators.NOT EMPTY`)}
+                </SelectInput.Option>
+              </StyledSelectInput>
               <FilterButtonContainer>
-                <Button onClick={handleValidate} disabled={!isFilterValid(filterValue)}>
-                  {translate('pim_common.update')}
-                </Button>
+                <Button onClick={handleValidate}>{translate('pim_common.update')}</Button>
               </FilterButtonContainer>
             </FilterContainer>
           </Dropdown.Overlay>
@@ -127,7 +114,9 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
               {getLabel(attribute.labels, catalogLocale, attribute.code)}
             </span>
           )}
-          <DatagridTableCriteria filterValue={filterValue} />
+          <span className='AknFilterBox-filterCriteria AknFilterBox-filterCriteria--limited' title={criteriaHint}>
+            {criteriaHint}
+          </span>
           <span className='AknFilterBox-filterCaret' />
         </FilterBox>
         {canDisable && (
@@ -138,4 +127,4 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
   );
 };
 
-export {DatagridTableFilter};
+export {NotEmptyDatagridTableFilter};
