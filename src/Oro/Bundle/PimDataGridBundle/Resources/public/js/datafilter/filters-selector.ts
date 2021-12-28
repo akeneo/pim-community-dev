@@ -107,7 +107,7 @@ class FiltersSelector extends BaseView {
       const filterModule: FilterModule = this.getFilterModule(filter);
 
       if (true === filter.enabled || state[filter.name]) {
-        if(typeof filterModule.setDatagrid === 'function') {
+        if (typeof filterModule.setDatagrid === 'function') {
           filterModule.setDatagrid(this.datagridCollection.inputName);
         }
         filterModule.render();
