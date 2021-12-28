@@ -86,7 +86,7 @@ class PublishedProductNormalizerSpec extends ObjectBehavior
         $normalizer->normalize(
             $completenessCollection,
             PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,
-            ['is_published_product' => true]
+            ['is_workflow' => true]
         )->willReturn(
             [
                 'ecommerce' => [
@@ -103,7 +103,7 @@ class PublishedProductNormalizerSpec extends ObjectBehavior
             ]
         );
         $publishedProduct->getValues()->willReturn($values);
-        $normalizer->normalize($values, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, ['is_published_product' => true])->willReturn(
+        $normalizer->normalize($values, PublishedProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, ['is_workflow' => true])->willReturn(
             [
                 'name-text' => [
                     '<all_channels>' => [

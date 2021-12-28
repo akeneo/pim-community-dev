@@ -1,10 +1,10 @@
 <?php
 
-namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\PublishedProduct;
+namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing;
 
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\PublishedProduct\TableValueNormalizer;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\TableValueNormalizer;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -28,7 +28,7 @@ class TableValueNormalizerSpec extends ObjectBehavior
         $tableValue->getLocaleCode()->willReturn('en_US');
         $tableValue->getData()->willReturn(Table::fromNormalized([['parcel' => 'parcel1', 'width' => 95]]));
 
-        $this->normalize($tableValue, 'indexing_product_and_product_model', ['is_published_product' => true])
+        $this->normalize($tableValue, 'indexing_product_and_product_model', ['is_workflow' => true])
              ->shouldReturn(
                  [
                      'packaging-table' => [

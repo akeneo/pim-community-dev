@@ -50,7 +50,7 @@ services:
             - { name: pim_indexing_serializer.normalizer }
 
     pimee_workflow.normalizer.indexing.published_product_table_values:
-        class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\PublishedProduct\TableValueNormalizer'
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\TableValueNormalizer'
         decorates: 'Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Indexing\TableValueNormalizer'
         decoration_inner_name: 'base_indexing_table_value_normalizer'
         arguments:
