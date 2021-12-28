@@ -14,5 +14,5 @@ interface BusinessContext
      * ['entity_name'=> ['id'=><ID>,'code'=><code>]]
      * @return array
      */
-    function getContext(): array;
+    public function getContext(): array;
 }
