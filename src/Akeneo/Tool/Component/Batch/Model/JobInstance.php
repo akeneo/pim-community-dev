@@ -316,7 +316,11 @@ class JobInstance implements \Akeneo\Tool\Component\Logging\BusinessContext
         return $this;
     }
 
-    function getContext(): array
+    /**
+     * @inheritdoc
+     * @return array[]
+     */
+    public function getContext(): array
     {
         return ['job_instance'=> ['id'=>$this->getId(), 'code'=>$this->getCode()]];
     }
