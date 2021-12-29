@@ -65,7 +65,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
                 translate('akeneo_connectivity.connection.connect.apps.wizard.flash.success')
             );
             window.location.assign(redirectUrl);
-        } catch (e:RejectReason) {
+        } catch (e: RejectReason) {
             if (400 <= e.status && e.status < 500) {
                 e.errors.map(error => notify(NotificationLevel.ERROR, translate(error.message)));
                 return;

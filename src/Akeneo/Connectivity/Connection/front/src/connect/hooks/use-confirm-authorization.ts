@@ -15,7 +15,7 @@ interface Error {
 export interface RejectReason {
     status: string;
     statusText: string;
-    errors: Error[]
+    errors: Error[];
 }
 
 type hookType = (clientId: string) => () => Promise<ConfirmReturn>;
@@ -34,7 +34,7 @@ export const useConfirmAuthorization: hookType = clientId => {
             return Promise.reject({
                 status: response.status,
                 statusText: response.statusText,
-                errors: json?.errors ?? []
+                errors: json?.errors ?? [],
             });
         }
 
