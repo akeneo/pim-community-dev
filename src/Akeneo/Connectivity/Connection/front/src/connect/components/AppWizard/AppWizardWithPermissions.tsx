@@ -104,6 +104,11 @@ export const AppWizardWithPermissions: FC<Props> = ({clientId}) => {
         try {
             ({userGroup, redirectUrl} = await confirmAuthorization());
         } catch (e) {
+            if (400 <= e.status && e.status < 500) {
+                e.errors.map(error => notify(NotificationLevel.ERROR, translate(error.message)));
+                return;
+            }
+
             notify(
                 NotificationLevel.ERROR,
                 translate('akeneo_connectivity.connection.connect.apps.wizard.flash.error')
