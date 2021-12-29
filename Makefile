@@ -167,7 +167,7 @@ pim-prod: #Doc: run docker-compose up, clean symfony cache, reinstall assets, bu
 pim-saas-like: export COMPOSE_PROJECT_NAME = pim-saas-like
 pim-saas-like: export COMPOSE_FILE = docker-compose.saas-like.yml
 pim-saas-like: #Doc: run docker-compose up, install PIM database and create PIM admin user
-	$(DOCKER_COMPOSE) up --detach --remove-orphan
+	$(DOCKER_COMPOSE) up --detach --remove-orphans
 	docker/wait_docker_up.sh
 	$(DOCKER_COMPOSE) run fpm bin/console pim:installer:db
 	$(DOCKER_COMPOSE) run fpm bin/console pim:user:create --admin -n -- admin admin test@example.com John Doe en_US
@@ -188,7 +188,7 @@ php-image-dev: #Doc: pull docker image for pim-enterprise-dev with the dev tag
 
 .PHONY: up
 up: #Doc: run docker-compose up
-	$(DOCKER_COMPOSE) up -d --remove-orphan ${C}
+	$(DOCKER_COMPOSE) up -d --remove-orphans ${C}
 
 .PHONY: down
 down: #Doc: shutdown all docker containers
