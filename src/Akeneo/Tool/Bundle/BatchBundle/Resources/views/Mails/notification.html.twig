@@ -1,32 +1,174 @@
-<p>
-    Akeneo successfully completed your batch {{ jobExecution.jobInstance.type }}.<br/>
-    <br/>
-    Started on {{ jobExecution.startTime|date("Y-m-d") }} at {{ jobExecution.startTime|date("H:i:s") }}.<br/>
-    Ended on {{ jobExecution.endTime|date("Y-m-d") }} at {{ jobExecution.endTime|date("H:i:s") }}.<br/>
-</p>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<p>
-    Results:<br/>
-    <ul>
-        {% for stepExecution in jobExecution.stepExecutions %}
-            <li>
-                {{ stepExecution.stepName|trans }} [{{ stepExecution.status }}]
-                {{ 0 < stepExecution.warnings|length ? 'With ' ~ stepExecution.warnings|length ~ ' warning(s)' : '' }}
-            </li>
-        {% endfor %}
-    </ul>
-</p>
+        <title>Akeneo batch {{ jobExecution.jobInstance.type }}</title>
 
-<p>
-{% if akeneo_pim_url is not empty %}
-    You can view full summary page in the
-    <a href="{{ akeneo_pim_url }}/#{{ path('akeneo_job_process_tracker_details', {'id': jobExecution.id}) }}">Process Tracker</a>.
-{% else %}
-    You should set the AKENEO_PIM_URL environment variable to have a link to the Process Tracker
-{% endif %}
-</p>
+        <link href="//fonts.googleapis.com/css?family=Lato:500,900" rel="stylesheet" type="text/css"/>
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+                max-width: 600px;
+                font-family: 'Lato', sans-serif;
+                color: #11324D;
+                font-weight: 500;
+            }
 
-<p>
-    -- <br/>
-    Akeneo Batch<br/>
-</p>
+            .logo {
+                width: 100%;
+                height: auto;
+                max-width: 242px;
+                max-height: 59px;
+                background-color: #9452ba;
+            }
+
+            .message-container {
+                max-width: 444px;
+                margin-bottom: 30px;
+                text-align: center;
+            }
+
+            .message {
+                margin-bottom: 30px;
+                font-size: 20px;
+            }
+
+            .detail {
+                margin-bottom: 30px;
+                font-size: 12px;
+            }
+
+            .result {
+                text-align: start;
+                font-size: 12px;
+            }
+
+            .result ul {
+                list-style-type: '- ';
+                padding-inline-start: 5px;
+            }
+
+            .button-container {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 167px;
+                height: 32px;
+                margin-bottom: 30px;
+                border-radius: 25px;
+                background-color: #9452ba;
+            }
+
+            .button-container a {
+                -webkit-appearance: button;
+                -moz-appearance: button;
+                appearance: auto;
+                text-decoration: none;
+                font-size: 15px;
+                font-weight: 900;
+                text-transform: uppercase;
+                color: white;
+            }
+
+            .warning {
+                margin-bottom: 30px;
+                font-size: 12px;
+                font-style: italic;
+            }
+
+            .footer-container {
+                max-width: 520px;
+                max-height: 230px;
+                margin: 0 40px;
+                padding: 15px 88px;
+                background-color: #9452ba;
+                border-radius: 10px 10px 0 0;
+                color: #F5F9FC;
+                font-weight: 500;
+                text-align: center;
+            }
+
+            .helpcenter {
+                font-size: 12px;
+            }
+
+            .copyright {
+                font-size: 9px;
+            }
+
+            .signature {
+                width: 100%;
+                height: auto;
+                max-height: 32px;
+                max-width: 131px;
+                margin-top: 15px;
+            }
+
+        </style>
+    </head>
+    <body>
+        <!-- header-->
+        <img class="logo" src="{{ absolute_url(asset('bundles/akeneobatch/images/email_logo.png')) }}" alt="Akeneo logo"/>
+
+        <!-- message -->
+        <div class="message-container">
+            <p class="message">
+                Dear <strong>{{ email }}</strong>,<br/>
+                Akeneo successfully completed your batch {{ jobExecution.jobInstance.type }}.
+            </p>
+            <p class="detail">
+                Started on {{ jobExecution.startTime|date("Y-m-d") }} at {{ jobExecution.startTime|date("H:i:s") }}.<br/>
+                Ended on {{ jobExecution.endTime|date("Y-m-d") }} at {{ jobExecution.endTime|date("H:i:s") }}.
+            </p>
+            <div class="result">
+                <p>Results:</p>
+                <ul>
+                    {% for stepExecution in jobExecution.stepExecutions %}
+                        <li>
+                            {{ stepExecution.stepName|trans }} [{{ stepExecution.status }}]
+                            {{ 0 < stepExecution.warnings|length ? 'With ' ~ stepExecution.warnings|length ~ ' warning(s)' : '' }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- action -->
+        {% if akeneo_pim_url is not empty %}
+            <div class="button-container">
+                <a href="{{ akeneo_pim_url }}/#{{ path('akeneo_job_process_tracker_details', {'id': jobExecution.id}) }}"
+                   role="button">View summary</a>
+            </div>
+        {% else %}
+            <div class="warning">
+                <p> You should set the AKENEO_PIM_URL environment variable to view summary.</p>
+            </div>
+        {% endif %}
+
+        <!-- footer -->
+        <div class="footer-container">
+            <p class="helpcenter">
+                If you have any questions regarding Akeneo PIM,<br/>you can visit our helpcenter.
+            </p>
+            <div class="copyright">
+                <p>Copyright © 2021 Akeneo, All rights reserved.</p>
+                <p>
+                    You are receiving this email because you have been invited to use Akeneo Shared Catalogs. As it is not
+                    direct marketing emails, you cannot unsubscribe to this email.
+                </p>
+                <p>
+                    Our mailing address is:<br/>
+                    2, Place du Général Mellinet<br/>
+                    44100 Nantes, France<br/>
+                </p>
+            </div>
+            <img class="signature" src="{{ absolute_url(asset('bundles/akeneobatch/images/email_signature.png')) }}" alt="Akeneo logo"/>
+        </div>
+    </body>
+</html>
