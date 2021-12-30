@@ -11,7 +11,8 @@ import React, {
 import styled from 'styled-components';
 import {Key, Override} from '../../../shared';
 import {InputProps, Overlay} from '../common';
-import {IconButton, TextInput} from '../../../components';
+import {IconButton} from '../../../components';
+import {TextInput} from '../../../components/Input/TextInput/TextInput';
 import {useBooleanState, useShortcut, VerticalPosition} from '../../../hooks';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {ArrowDownIcon, CloseIcon} from '../../../icons';
@@ -33,6 +34,12 @@ const SelectInputContainer = styled.div<{value: string | null; readOnly: boolean
 const InputContainer = styled.div`
   position: relative;
   background: ${getColor('white')};
+`;
+
+const SearchInput = styled(TextInput)<{isPlaceholderVisible: boolean}>`
+  &::placeholder {
+    opacity: ${({isPlaceholderVisible}) => (isPlaceholderVisible ? 1 : 0)};
+  }
 `;
 
 const ActionContainer = styled.div`
@@ -349,13 +356,14 @@ const SelectInput = ({
             {currentValueElement}
           </SelectedOptionContainer>
         )}
-        <TextInput
+        <SearchInput
           id={id}
           ref={inputRef}
           value={searchValue}
           readOnly={readOnly}
           invalid={invalid}
           placeholder={placeholder}
+          isPlaceholderVisible={null === value}
           onChange={handleSearch}
           onClick={event => {
             openOverlay();
