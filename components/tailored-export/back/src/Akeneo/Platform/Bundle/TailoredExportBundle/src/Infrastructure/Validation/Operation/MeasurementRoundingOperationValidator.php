@@ -16,12 +16,17 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\EqualTo;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Range;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class MeasurementRoundingOperationValidator extends ConstraintValidator
 {
+    private const PRECISION_NOT_BLANK_MESSAGE = 'akeneo.tailored_export.column_details.sources.operation.measurement_rounding.precision.validation.precision_should_not_be_blank';
+    private const PRECISION_OUT_OF_RANGE_MESSAGE = 'akeneo.tailored_export.column_details.sources.operation.measurement_rounding.precision.validation.precision_is_out_of_range';
+
     public function validate($operation, Constraint $constraint): void
     {
         if (!$constraint instanceof MeasurementRoundingOperationConstraint) {
@@ -34,7 +39,13 @@ class MeasurementRoundingOperationValidator extends ConstraintValidator
                 'fields' => [
                     'type' => new EqualTo(['value' => 'measurement_rounding']),
                     'rounding_type' => new EqualTo(['value' => 'standard']),
-                    'precision' => new Optional(new Range(['min' => 0, 'max' => 12]))
+                    'precision' => new Optional(
+                        [
+                            new NotBlank(['message' => self::PRECISION_NOT_BLANK_MESSAGE]),
+                            new Type('int'),
+                            new Range(['min' => 0, 'max' => 12], notInRangeMessage: self::PRECISION_OUT_OF_RANGE_MESSAGE),
+                        ]
+                    ),
                 ]
             ]));
     }
