@@ -60,6 +60,7 @@ class MailNotifier implements Notifier
         $parameters = [
             'jobExecution' => $jobExecution,
             'log'          => $this->logger->getFilename(),
+            'email'       => $email
         ];
 
         $txtBody = $this->twig->render('@AkeneoBatch/Mails/notification.txt.twig', $parameters);
