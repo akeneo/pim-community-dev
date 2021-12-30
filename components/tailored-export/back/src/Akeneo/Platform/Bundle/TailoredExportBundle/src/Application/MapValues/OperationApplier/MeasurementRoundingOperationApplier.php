@@ -21,8 +21,6 @@ use Akeneo\Platform\TailoredExport\Domain\Query\MeasurementConverterInterface;
 
 class MeasurementRoundingOperationApplier implements OperationApplierInterface
 {
-    private MeasurementConverterInterface $measurementConverter;
-
     public function applyOperation(
         OperationInterface $operation,
         SourceValueInterface $value
@@ -34,40 +32,13 @@ class MeasurementRoundingOperationApplier implements OperationApplierInterface
             throw new \InvalidArgumentException('Cannot apply Measurement Rounding operation');
         }
 
-        $roundedValue = $this->round(
-            floatval($value->getValue()),
-            $operation->getPrecision(),
-            $operation->getType()
-        );
+        $roundedValue = round((float) $value->getValue(), $operation->getPrecision());
 
-        return new MeasurementValue((string)$roundedValue, $value->getUnitCode());
+        return new MeasurementValue((string) $roundedValue, $value->getUnitCode());
     }
 
     public function supports(OperationInterface $operation, SourceValueInterface $value): bool
     {
         return $value instanceof MeasurementValue && $operation instanceof MeasurementRoundingOperation;
-    }
-
-    private function round(float $value, int $precision, $type): float
-    {
-        $roundedValue = match ($type) {
-            MeasurementRoundingOperation::TYPE_STANDARD => round($value, $precision),
-            MeasurementRoundingOperation::TYPE_UP => $this->roundUp($value, $precision),
-            MeasurementRoundingOperation::TYPE_DOWN => $this->roundDown($value, $precision),
-        };
-
-        return $roundedValue;
-    }
-
-    private function roundUp(float $number, int $precision): float
-    {
-        $fig = (int) str_pad('1', $precision + 1, '0');
-
-        return (ceil($number * $fig) / $fig);
-    }
-
-    private function roundDown(float $value, int $precision): float
-    {
-        return floor(pow(10, $precision) * $value) / pow(10, $precision);
     }
 }

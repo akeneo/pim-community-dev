@@ -16,7 +16,7 @@ namespace Akeneo\Platform\TailoredExport\Domain\Query;
 interface MeasurementConverterInterface
 {
     public function convert(
-        string $measurementFamily,
+        string $measurementFamilyCode,
         string $currentUnitCode,
         string $targetUnitCode,
         string $value
