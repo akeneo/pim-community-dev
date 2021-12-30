@@ -293,7 +293,8 @@ class CreateAccessTokenSpec extends ObjectBehavior
             ->during('create', ['client_id_1234', 'auth_code_1234']);
     }
 
-    public function it_throw_an_exception_when_pim_user_has_not_been_found(  IOAuth2GrantCode $storage,
+    public function it_throw_an_exception_when_pim_user_has_not_been_found(
+        IOAuth2GrantCode $storage,
         Client $client,
         IOAuth2AuthCode $authCode,
         ClientProviderInterface $clientProvider,

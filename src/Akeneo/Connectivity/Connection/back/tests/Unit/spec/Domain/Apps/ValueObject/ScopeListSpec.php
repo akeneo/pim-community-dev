@@ -16,7 +16,9 @@ class ScopeListSpec extends ObjectBehavior
 
     public function it_is_instantiable_from_a_string_of_scopes(): void
     {
-        $this->beConstructedThrough('fromScopeString', [
+        $this->beConstructedThrough(
+            'fromScopeString',
+            [
                 sprintf(
                     "%s %s %s",
                     AuthenticationScope::SCOPE_EMAIL,
@@ -29,7 +31,9 @@ class ScopeListSpec extends ObjectBehavior
 
     public function it_is_instantiable_from_an_array_of_scopes(): void
     {
-        $this->beConstructedThrough('fromScopes', [
+        $this->beConstructedThrough(
+            'fromScopes',
+            [
                 [
                     AuthenticationScope::SCOPE_EMAIL,
                     AuthenticationScope::SCOPE_PROFILE,
@@ -41,7 +45,9 @@ class ScopeListSpec extends ObjectBehavior
 
     public function it_gets_scopes(): void
     {
-        $this->beConstructedThrough('fromScopeString', [
+        $this->beConstructedThrough(
+            'fromScopeString',
+            [
                 sprintf(
                     "%s %s %s",
                     AuthenticationScope::SCOPE_EMAIL,
@@ -60,7 +66,9 @@ class ScopeListSpec extends ObjectBehavior
 
     public function it_adds_scopes(): void
     {
-        $this->beConstructedThrough('fromScopes', [
+        $this->beConstructedThrough(
+            'fromScopes',
+            [
                 [
                     AuthenticationScope::SCOPE_EMAIL,
                     AuthenticationScope::SCOPE_PROFILE,

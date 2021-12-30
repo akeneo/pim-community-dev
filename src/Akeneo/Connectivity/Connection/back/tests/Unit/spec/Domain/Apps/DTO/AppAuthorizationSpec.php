@@ -20,7 +20,8 @@ class AppAuthorizationSpec extends ObjectBehavior
 
     public function it_creates_from_request(): void
     {
-        $this->beConstructedThrough('createFromRequest',
+        $this->beConstructedThrough(
+            'createFromRequest',
             [
                 'a_client_id',
                 ScopeList::fromScopeString('an_authorization_scope'),
@@ -34,7 +35,8 @@ class AppAuthorizationSpec extends ObjectBehavior
 
     public function it_creates_from_normalized(): void
     {
-        $this->beConstructedThrough('createFromNormalized',
+        $this->beConstructedThrough(
+            'createFromNormalized',
             [
                 [
                     'client_id' => 'a_client_id',
@@ -50,7 +52,8 @@ class AppAuthorizationSpec extends ObjectBehavior
 
     public function it_normalizes_app_authorization(): void
     {
-        $this->beConstructedThrough('createFromRequest',
+        $this->beConstructedThrough(
+            'createFromRequest',
             [
                 'a_client_id',
                 ScopeList::fromScopeString('an_authorization_scope'),
@@ -71,7 +74,8 @@ class AppAuthorizationSpec extends ObjectBehavior
 
     public function it_gets_all_scopes(): void
     {
-        $this->beConstructedThrough('createFromRequest',
+        $this->beConstructedThrough(
+            'createFromRequest',
             [
                 'a_client_id',
                 ScopeList::fromScopeString('an_authorization_scope'),
@@ -86,7 +90,8 @@ class AppAuthorizationSpec extends ObjectBehavior
 
     public function it_gets_only_authorization_scopes(): void
     {
-        $this->beConstructedThrough('createFromRequest',
+        $this->beConstructedThrough(
+            'createFromRequest',
             [
                 'a_client_id',
                 ScopeList::fromScopeString('an_authorization_scope'),
@@ -101,7 +106,8 @@ class AppAuthorizationSpec extends ObjectBehavior
 
     public function it_gets_only_authentication_scopes(): void
     {
-        $this->beConstructedThrough('createFromRequest',
+        $this->beConstructedThrough(
+            'createFromRequest',
             [
                 'a_client_id',
                 ScopeList::fromScopeString('an_authorization_scope'),
@@ -116,7 +122,8 @@ class AppAuthorizationSpec extends ObjectBehavior
 
     public function it_gets_state(): void
     {
-        $this->beConstructedThrough('createFromRequest',
+        $this->beConstructedThrough(
+            'createFromRequest',
             [
                 'a_client_id',
                 ScopeList::fromScopeString('an_authorization_scope'),
@@ -131,7 +138,8 @@ class AppAuthorizationSpec extends ObjectBehavior
 
     public function it_gets_redirect_uri(): void
     {
-        $this->beConstructedThrough('createFromRequest',
+        $this->beConstructedThrough(
+            'createFromRequest',
             [
                 'a_client_id',
                 ScopeList::fromScopeString('an_authorization_scope'),
