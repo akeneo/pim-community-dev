@@ -21,15 +21,15 @@ use PhpSpec\ObjectBehavior;
 
 class MeasurementRoundingOperationApplierSpec extends ObjectBehavior
 {
-    public function it_supports_measurement_rounding_operation_and_measurement_value()
+    public function it_supports_measurement_rounding_operation_and_measurement_value(): void
     {
-        $operation = new MeasurementRoundingOperation('up', 3);
+        $operation = new MeasurementRoundingOperation('standard', 3);
         $value = new MeasurementValue('10.4', 'KILOGRAM');
 
         $this->supports($operation, $value)->shouldReturn(true);
     }
 
-    public function it_does_not_support_other_selections_and_values()
+    public function it_does_not_support_other_selections_and_values(): void
     {
         $notSupportedSelection = new DefaultValueOperation('n/a');
         $notSupportedValue = new StringValue('name');
@@ -37,7 +37,7 @@ class MeasurementRoundingOperationApplierSpec extends ObjectBehavior
         $this->supports($notSupportedSelection, $notSupportedValue)->shouldReturn(false);
     }
 
-    public function it_applies_measurement_rounding_standard_operation()
+    public function it_applies_measurement_rounding_standard_operation(): void
     {
         $operation = new MeasurementRoundingOperation('standard', 2);
         $value = new MeasurementValue('10.4184', 'GRAM');
@@ -45,23 +45,7 @@ class MeasurementRoundingOperationApplierSpec extends ObjectBehavior
         $this->applyOperation($operation, $value)->shouldBeLike(new MeasurementValue('10.42', 'GRAM'));
     }
 
-    public function it_applies_measurement_rounding_up_operation()
-    {
-        $operation = new MeasurementRoundingOperation('up', 2);
-        $value = new MeasurementValue('10.4184', 'GRAM');
-
-        $this->applyOperation($operation, $value)->shouldBeLike(new MeasurementValue('10.42', 'GRAM'));
-    }
-
-    public function it_applies_measurement_rounding_down_operation()
-    {
-        $operation = new MeasurementRoundingOperation('down', 2);
-        $value = new MeasurementValue('10.4184', 'GRAM');
-
-        $this->applyOperation($operation, $value)->shouldBeLike(new MeasurementValue('10.41', 'GRAM'));
-    }
-
-    public function it_throws_when_operation_or_value_is_invalid()
+    public function it_throws_when_operation_or_value_is_invalid(): void
     {
         $notSupportedSelection = new DefaultValueOperation('n/a');
         $notSupportedValue = new StringValue('name');

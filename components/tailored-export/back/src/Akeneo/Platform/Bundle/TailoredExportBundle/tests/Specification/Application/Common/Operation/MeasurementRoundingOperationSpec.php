@@ -17,32 +17,32 @@ use PhpSpec\ObjectBehavior;
 
 class MeasurementRoundingOperationSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
-        $this->beConstructedWith('up', 3);
+        $this->beConstructedWith('standard', 3);
     }
 
-    public function it_returns_the_type()
+    public function it_returns_the_type(): void
     {
-        $this->getType()->shouldReturn('up');
+        $this->getType()->shouldReturn('standard');
     }
 
-    public function it_returns_the_precision()
+    public function it_returns_the_precision(): void
     {
         $this->getPrecision()->shouldReturn(3);
     }
 
-    public function it_throws_an_exception_when_type_is_not_authorized()
+    public function it_throws_an_exception_when_type_is_not_authorized(): void
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('__construct', ['foo', 1]);
     }
 
-    public function it_throws_an_exception_when_precision_is_less_than_0()
+    public function it_throws_an_exception_when_precision_is_less_than_0(): void
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('__construct', ['foo', -1]);
     }
 
-    public function it_throws_an_exception_when_precision_is_greater_than_12()
+    public function it_throws_an_exception_when_precision_is_greater_than_12(): void
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('__construct', ['foo', 13]);
     }
