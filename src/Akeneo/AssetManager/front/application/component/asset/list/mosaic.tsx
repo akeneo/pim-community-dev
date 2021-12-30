@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {RefObject, useRef} from 'react';
 import styled from 'styled-components';
-import {CardGrid, Helper} from 'akeneo-design-system';
+import {AssetsIllustration, CardGrid, Helper, Information} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import AssetCard from 'akeneoassetmanager/application/component/asset/list/mosaic/asset-card';
@@ -16,12 +16,13 @@ const Container = styled.div`
   flex: 1;
   padding-top: 20px;
 `;
+
 const MoreResults = styled.div`
   margin-top: 20px;
 `;
 
 type MosaicProps = {
-  scrollContainerRef?: React.RefObject<HTMLDivElement>;
+  scrollContainerRef?: RefObject<HTMLDivElement>;
   assetCollection: ListAsset[];
   context: Context;
   resultCount: number | null;
@@ -34,7 +35,7 @@ type MosaicProps = {
 };
 
 const Mosaic = ({
-  scrollContainerRef = React.useRef<null | HTMLDivElement>(null),
+  scrollContainerRef = useRef<null | HTMLDivElement>(null),
   context,
   onSelectionChange,
   isItemSelected,
@@ -46,9 +47,11 @@ const Mosaic = ({
   assetWithLink = false,
 }: MosaicProps) => {
   const translate = useTranslate();
+  const shouldDisplayMoreResultsHelper =
+    null !== resultCount && resultCount >= MAX_DISPLAYED_ASSETS && assetCollection.length === MAX_DISPLAYED_ASSETS;
 
   return (
-    <React.Fragment>
+    <>
       {hasReachMaximumSelection && (
         <Helper>
           {translate('pim_asset_manager.asset_collection.notification.limit', {limit: ASSET_COLLECTION_LIMIT})}
@@ -75,31 +78,23 @@ const Mosaic = ({
             })}
           </CardGrid>
           <MoreResults>
-            {null !== resultCount &&
-            resultCount >= MAX_DISPLAYED_ASSETS &&
-            assetCollection.length === MAX_DISPLAYED_ASSETS ? (
-              <div className="AknDescriptionHeader AknDescriptionHeader--sticky">
-                <div
-                  className="AknDescriptionHeader-icon"
-                  style={{backgroundImage: 'url("/bundles/pimui/images/illustrations/Product.svg")'}}
-                />
-                <div className="AknDescriptionHeader-title">
-                  {translate('pim_asset_manager.asset.grid.more_result.title')}
-                  <div className="AknDescriptionHeader-description">
-                    {translate('pim_asset_manager.asset.grid.more_result.description', {
-                      total: resultCount,
-                      maxDisplayedAssets: MAX_DISPLAYED_ASSETS,
-                    })}
-                  </div>
-                </div>
-              </div>
-            ) : null}
+            {shouldDisplayMoreResultsHelper && (
+              <Information
+                illustration={<AssetsIllustration />}
+                title={translate('pim_asset_manager.asset.grid.more_result.title')}
+              >
+                {translate('pim_asset_manager.asset.grid.more_result.description', {
+                  total: resultCount,
+                  maxDisplayedAssets: MAX_DISPLAYED_ASSETS,
+                })}
+              </Information>
+            )}
           </MoreResults>
         </Container>
       ) : (
         <EmptyResult />
       )}
-    </React.Fragment>
+    </>
   );
 };
 
