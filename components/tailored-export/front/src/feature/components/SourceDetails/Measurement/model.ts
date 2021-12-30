@@ -73,10 +73,19 @@ const getDefaultMeasurementConversionOperation = (): MeasurementConversionOperat
 const isDefaultMeasurementConversionOperation = (operation?: MeasurementConversionOperation): boolean =>
   operation?.type === 'measurement_conversion' && operation.target_unit_code === null;
 
+type RoundingType = 'standard' | 'no_rounding';
 type MeasurementRoundingOperation = {
   type: 'measurement_rounding';
-  rounding_type: 'standard' | 'no_rounding';
-};
+} & (
+  | {
+      rounding_type: 'no_rounding';
+    }
+  | {
+      rounding_type: 'standard';
+      precision: number;
+    }
+);
+const DEFAULT_PRECISION = 2;
 
 const isMeasurementRoundingOperation = (operation?: any): operation is MeasurementRoundingOperation =>
   undefined !== operation &&
@@ -86,15 +95,16 @@ const isMeasurementRoundingOperation = (operation?: any): operation is Measureme
 
 const getDefaultMeasurementRoundingOperation = (): MeasurementRoundingOperation => ({
   type: 'measurement_rounding',
-  rounding_type: 'standard',
+  rounding_type: 'no_rounding',
 });
 
 const isDefaultMeasurementRoundingOperation = (operation?: MeasurementRoundingOperation): boolean =>
-  operation?.type === 'measurement_rounding' && operation.rounding_type === 'standard';
+  operation?.type === 'measurement_rounding' && operation.rounding_type === 'no_rounding';
 
 type MeasurementOperations = {
   default_value?: DefaultValueOperation;
   measurement_conversion?: MeasurementConversionOperation;
+  measurement_rounding?: MeasurementRoundingOperation;
 };
 
 type MeasurementSource = {
@@ -128,6 +138,8 @@ const isMeasurementOperations = (operations: Object): operations is MeasurementO
         return isDefaultValueOperation(operation);
       case 'measurement_conversion':
         return isMeasurementConversionOperation(operation);
+      case 'measurement_rounding':
+        return isMeasurementRoundingOperation(operation);
       default:
         return false;
     }
@@ -136,7 +148,14 @@ const isMeasurementOperations = (operations: Object): operations is MeasurementO
 const isMeasurementSource = (source: Source): source is MeasurementSource =>
   isMeasurementSelection(source.selection) && isMeasurementOperations(source.operations);
 
-export type {MeasurementSelection, MeasurementSource, MeasurementConversionOperation, MeasurementDecimalSeparator};
+export type {
+  MeasurementSelection,
+  MeasurementSource,
+  MeasurementConversionOperation,
+  MeasurementRoundingOperation,
+  MeasurementDecimalSeparator,
+  RoundingType,
+};
 export {
   availableDecimalSeparators,
   getDefaultMeasurementSource,
@@ -150,4 +169,5 @@ export {
   isDefaultMeasurementRoundingOperation,
   getDefaultMeasurementRoundingOperation,
   isMeasurementRoundingOperation,
+  DEFAULT_PRECISION,
 };
