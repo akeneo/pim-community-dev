@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
 import {AssetsIllustration, Button, getColor, SectionTitle} from 'akeneo-design-system';
-import {useTranslate, Locale, LocaleCode} from '@akeneo-pim-community/shared';
+import {useTranslate, LocaleCode} from '@akeneo-pim-community/shared';
 import {Spacer} from 'akeneoassetmanager/application/component/app/spacer';
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import Row from 'akeneoassetmanager/application/asset-upload/component/row';
@@ -69,7 +69,6 @@ type LineListProps = {
   lines: Line[];
   locale: LocaleCode;
   channels: Channel[];
-  locales: Locale[];
   onLineRemove: (line: Line) => void;
   onLineRemoveAll: () => void;
   onLineChange: (line: Line) => void;
@@ -82,7 +81,6 @@ const LineList = ({
   lines,
   locale,
   channels,
-  locales,
   onLineRemove,
   onLineRemoveAll,
   onLineChange,
@@ -135,7 +133,6 @@ const LineList = ({
               line={line}
               locale={locale}
               channels={channels}
-              locales={locales}
               onLineChange={onLineChange}
               onLineRemove={onLineRemove}
               onLineUploadRetry={onLineUploadRetry}

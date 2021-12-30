@@ -1,5 +1,5 @@
 import React from 'react';
-import {act, fireEvent, screen} from '@testing-library/react';
+import {fireEvent, screen} from '@testing-library/react';
 import FilterCollection, {
   useFilterViews,
   sortFilterViewsByAttributeOrder,
@@ -45,7 +45,7 @@ const dataProvider = {
 };
 
 describe('Tests filter collection', () => {
-  it('It displays a filter collection in order of the attribute order', async () => {
+  it('It displays a filter collection in order of the attribute order', () => {
     const FilterView = ({attribute}) => <div data-code={attribute.code}></div>;
 
     const {container} = renderWithProviders(
@@ -67,7 +67,7 @@ describe('Tests filter collection', () => {
     expect(filters.map(({dataset}) => dataset.code)).toEqual(['created_by', 'shooted_by']);
   });
 
-  it('It displays an empty filter collection', async () => {
+  it('It displays an empty filter collection', () => {
     const {container} = renderWithProviders(
       <FilterCollection
         orderedFilterViews={[]}
@@ -76,14 +76,14 @@ describe('Tests filter collection', () => {
         filterCollection={[]}
         assetFamilyIdentifier={'packshot'}
         context={{channel: 'ecommerce', locale: 'locale'}}
-        onFilterCollectionChange={filterCollection => {}}
+        onFilterCollectionChange={jest.fn()}
       />
     );
 
-    expect(container.childNodes[0].childNodes.length).toEqual(0);
+    expect(container.querySelectorAll('[data-attribute]')).toHaveLength(0);
   });
 
-  it('It updates the filter collection', async () => {
+  it('It updates the filter collection', () => {
     const filterContent = 'MY_FILTER';
     const expectedFilterCollection = [{field: attributes[0].code, operator: '=', value: 'nice'}];
     const ClickableFilterView = ({onFilterUpdated}) => (

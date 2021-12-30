@@ -42,4 +42,4 @@ const Column = ({title, children}: ColumnProps) => {
   );
 };
 
-export {Column, ColumnTitle};
+export {Column};

@@ -6,8 +6,6 @@ import {LineList} from 'akeneoassetmanager/application/asset-upload/component/li
 import {createFakeAssetFamily, createFakeLine} from '../tools';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 
-jest.mock('akeneoassetmanager/application/component/app/select2');
-
 describe('Test line-list component', () => {
   test('It renders without errors', () => {
     const valuePerLocale = false;

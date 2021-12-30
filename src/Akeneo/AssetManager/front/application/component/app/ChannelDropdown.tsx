@@ -1,11 +1,11 @@
 import React from 'react';
 import {SelectInput} from 'akeneo-design-system';
-import {useTranslate, LocaleCode, getLabel, ChannelCode, Channel} from '@akeneo-pim-community/shared';
+import {useTranslate, LocaleCode, getLabel, ChannelCode, Channel, ChannelReference} from '@akeneo-pim-community/shared';
 
 type ChannelDropdownProps = {
   title?: string;
   readOnly?: boolean;
-  channel: ChannelCode;
+  channel: ChannelReference;
   uiLocale: LocaleCode;
   onChange: (newChannel: ChannelCode) => void;
   channels: Channel[];
@@ -13,16 +13,12 @@ type ChannelDropdownProps = {
 
 const ChannelDropdown = ({channel, uiLocale, channels, ...rest}: ChannelDropdownProps) => {
   const translate = useTranslate();
-  const currentChannel = channels.find(channelItem => channelItem.code === channel);
-
-  if (undefined === currentChannel) {
-    return null;
-  }
 
   return (
     <SelectInput
-      value={currentChannel.code}
+      value={channel}
       clearable={false}
+      placeholder={translate('pim_asset_manager.asset.mass_edit.select.channel')}
       emptyResultLabel={translate('pim_asset_manager.result_counter', {count: 0}, 0)}
       openLabel={translate('pim_common.open')}
       {...rest}
