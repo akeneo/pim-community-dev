@@ -32,7 +32,6 @@ class ConsentAppAuthenticationHandlerSpec extends ObjectBehavior
         Clock $clock,
         ValidatorInterface $validator
     ): void {
-
         $clock->now()->willReturn(
             \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, '2021-02-03T00:00:00Z')
         );
