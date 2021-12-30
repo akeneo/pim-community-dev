@@ -8,6 +8,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\CleanHTMLTagsOperation;
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOperation;
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\MeasurementConversionOperation;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\MeasurementRoundingOperation;
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\OperationCollection;
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\OperationInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\ReplacementOperation;
@@ -21,15 +22,17 @@ class OperationCollectionHydrator
         return OperationCollection::create(array_filter(
             array_map(
                 function (array $normalizedOperation) use ($attribute) {
-                    switch ($normalizedOperation['type']) {
-                        case 'measurement_conversion':
-                            return new MeasurementConversionOperation(
-                                $attribute->metricFamily(),
-                                $normalizedOperation['target_unit_code'],
-                            );
-                        default:
-                            return $this->createCommonOperation($normalizedOperation);
-                    }
+                    return match ($normalizedOperation['type']) {
+                        'measurement_conversion' => new MeasurementConversionOperation(
+                            $attribute->metricFamily(),
+                            $normalizedOperation['target_unit_code'],
+                        ),
+                        'measurement_rounding' => new MeasurementRoundingOperation(
+                            $normalizedOperation['rounding_type'],
+                            $normalizedOperation['precision'],
+                        ),
+                        default => $this->createCommonOperation($normalizedOperation),
+                    };
                 },
                 $normalizedOperations,
             ),

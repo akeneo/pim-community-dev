@@ -126,6 +126,7 @@ final class HandleMeasurementValueTest extends AttributeTestCase
                 'value' => new MeasurementValue('10.4123', 'KILOGRAM'),
                 'expected' => [self::TARGET_NAME => '10412,3'],
             ],
+            // Rounding operations usecases
         ];
     }
 
