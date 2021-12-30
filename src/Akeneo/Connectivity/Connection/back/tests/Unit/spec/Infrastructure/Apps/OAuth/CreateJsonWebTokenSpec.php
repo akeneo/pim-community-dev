@@ -43,6 +43,10 @@ class CreateJsonWebTokenSpec extends ObjectBehavior
     public function let(GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery, Clock $clock, PimUrl $pimUrl): void
     {
         $this->setCommonData();
+        $getAsymmetricKeysQuery->execute()->willReturn(AsymmetricKeys::create($this->publicKey, $this->privateKey));
+        $clock->now()->willReturn($this->now);
+        $pimUrl->getPimUrl()->willReturn($this->pimUrl);
+
         $this->beConstructedWith($clock, $pimUrl, $getAsymmetricKeysQuery);
     }
 
@@ -51,15 +55,8 @@ class CreateJsonWebTokenSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(CreateJsonWebToken::class);
     }
 
-    public function it_creates_jwt_token(
-        GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery,
-        Clock $clock,
-        PimUrl $pimUrl
-    ): void {
-        $getAsymmetricKeysQuery->execute()->willReturn(AsymmetricKeys::create($this->publicKey, $this->privateKey));
-        $clock->now()->willReturn($this->now);
-        $pimUrl->getPimUrl()->willReturn($this->pimUrl);
-
+    public function it_creates_jwt_token(): void
+    {
         $token = $this->create(
             $this->clientId,
             $this->ppid,
@@ -72,15 +69,8 @@ class CreateJsonWebTokenSpec extends ObjectBehavior
         $this->assertToken($token->getWrappedObject());
     }
 
-    public function it_creates_jwt_token_with_scope_profile(
-        GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery,
-        Clock $clock,
-        PimUrl $pimUrl
-    ): void {
-        $getAsymmetricKeysQuery->execute()->willReturn(AsymmetricKeys::create($this->publicKey, $this->privateKey));
-        $clock->now()->willReturn($this->now);
-        $pimUrl->getPimUrl()->willReturn($this->pimUrl);
-
+    public function it_creates_jwt_token_with_scope_profile(): void
+    {
         $token = $this->create(
             $this->clientId,
             $this->ppid,
@@ -93,15 +83,8 @@ class CreateJsonWebTokenSpec extends ObjectBehavior
         $this->assertToken($token->getWrappedObject(), [AuthenticationScope::SCOPE_PROFILE]);
     }
 
-    public function it_creates_jwt_token_with_scope_email(
-        GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery,
-        Clock $clock,
-        PimUrl $pimUrl
-    ): void {
-        $getAsymmetricKeysQuery->execute()->willReturn(AsymmetricKeys::create($this->publicKey, $this->privateKey));
-        $clock->now()->willReturn($this->now);
-        $pimUrl->getPimUrl()->willReturn($this->pimUrl);
-
+    public function it_creates_jwt_token_with_scope_email(): void
+    {
         $token = $this->create(
             $this->clientId,
             $this->ppid,
@@ -114,15 +97,8 @@ class CreateJsonWebTokenSpec extends ObjectBehavior
         $this->assertToken($token->getWrappedObject(), [AuthenticationScope::SCOPE_EMAIL]);
     }
 
-    public function it_throws_exception_because_openid_scope_has_not_been_consented(
-        GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery,
-        Clock $clock,
-        PimUrl $pimUrl
-    ): void {
-        $getAsymmetricKeysQuery->execute()->willReturn(AsymmetricKeys::create($this->publicKey, $this->privateKey));
-        $clock->now()->willReturn($this->now);
-        $pimUrl->getPimUrl()->willReturn($this->pimUrl);
-
+    public function it_throws_exception_because_openid_scope_has_not_been_consented(): void
+    {
         $this->shouldThrow(\LogicException::class)->during('create', [
             $this->clientId,
             $this->ppid,
