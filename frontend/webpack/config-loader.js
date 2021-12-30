@@ -44,7 +44,7 @@ module.exports = function(content) {
   if (moduleName === 'pim/config-registry') {
     const moduleConfig = JSON.stringify(options.configMap || {});
 
-    return `var __moduleConfig = ${replaceRequire(moduleConfig)} ; ${content}`;
+    return `const __moduleConfig = ${replaceRequire(moduleConfig)} as const; ${content}`;
   }
 
   const moduleConfig = JSON.stringify(options.configMap[moduleName] || {});
