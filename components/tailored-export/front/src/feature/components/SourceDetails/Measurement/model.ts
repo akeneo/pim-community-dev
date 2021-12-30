@@ -73,6 +73,25 @@ const getDefaultMeasurementConversionOperation = (): MeasurementConversionOperat
 const isDefaultMeasurementConversionOperation = (operation?: MeasurementConversionOperation): boolean =>
   operation?.type === 'measurement_conversion' && operation.target_unit_code === null;
 
+type MeasurementRoundingOperation = {
+  type: 'measurement_rounding';
+  rounding_type: 'standard' | 'no_rounding';
+};
+
+const isMeasurementRoundingOperation = (operation?: any): operation is MeasurementRoundingOperation =>
+  undefined !== operation &&
+  'type' in operation &&
+  'measurement_rounding' === operation.type &&
+  'rounding_type' in operation;
+
+const getDefaultMeasurementRoundingOperation = (): MeasurementRoundingOperation => ({
+  type: 'measurement_rounding',
+  rounding_type: 'standard',
+});
+
+const isDefaultMeasurementRoundingOperation = (operation?: MeasurementRoundingOperation): boolean =>
+  operation?.type === 'measurement_rounding' && operation.rounding_type === 'standard';
+
 type MeasurementOperations = {
   default_value?: DefaultValueOperation;
   measurement_conversion?: MeasurementConversionOperation;
@@ -128,4 +147,7 @@ export {
   isDefaultMeasurementConversionOperation,
   getDefaultMeasurementConversionOperation,
   isMeasurementConversionOperation,
+  isDefaultMeasurementRoundingOperation,
+  getDefaultMeasurementRoundingOperation,
+  isMeasurementRoundingOperation,
 };
