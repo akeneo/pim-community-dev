@@ -289,7 +289,6 @@ class CreateAccessTokenSpec extends ObjectBehavior
 
         $getAccessTokenQuery->execute('client_id_1234', ['scope1', 'scope2'])->willReturn(null);
 
-
         $this->shouldThrow(\LogicException::class)
             ->during('create', ['client_id_1234', 'auth_code_1234']);
     }

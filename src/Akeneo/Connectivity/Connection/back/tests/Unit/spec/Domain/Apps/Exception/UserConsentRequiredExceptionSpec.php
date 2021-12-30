@@ -20,6 +20,7 @@ class UserConsentRequiredExceptionSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
+        $this->shouldHaveType(\Exception::class);
         $this->shouldHaveType(UserConsentRequiredException::class);
     }
 
