@@ -89,7 +89,7 @@ class GetUserConsentedAuthenticationUuidQueryIntegration extends WebTestCase
 
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage(
-            sprintf('Consent doesn\' exist for user %s on app %s', $user->getId(), 'random_app_id')
+            sprintf('Consent doesn\'t exist for user %s on app %s', $user->getId(), 'random_app_id')
         );
 
         $this->getUserConsentedAuthenticationUuidQuery->execute($user->getId(), 'random_app_id');
