@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- AOB-1428: Fix Reference entity isEqual comparison method
+
 # 5.0.67 (2022-01-03)
 
 # 5.0.66 (2021-12-22)
