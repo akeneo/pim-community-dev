@@ -4,6 +4,7 @@ import {Attribute, Source} from '../../../models';
 import {DefaultValueOperation, isDefaultValueOperation} from '../common';
 
 const availableDecimalSeparators = {'.': 'dot', ',': 'comma', '٫‎': 'arabic_comma'} as const;
+const availableRoundingTypes = ['no_rounding', 'standard', 'round_up', 'round_down'] as const;
 
 type MeasurementDecimalSeparator = keyof typeof availableDecimalSeparators;
 
@@ -160,6 +161,7 @@ export type {
 };
 export {
   availableDecimalSeparators,
+  availableRoundingTypes,
   getDefaultMeasurementSource,
   isDefaultMeasurementSelection,
   isMeasurementDecimalSeparator,

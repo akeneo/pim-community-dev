@@ -42,6 +42,11 @@ test('it validates that something is a measurement source', () => {
           type: 'measurement_conversion',
           target_unit_code: null,
         },
+        measurement_rounding: {
+          type: 'measurement_rounding',
+          rounding_type: 'standard',
+          precision: 2,
+        },
       },
     })
   ).toEqual(true);
