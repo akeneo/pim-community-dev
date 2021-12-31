@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {filterErrors, Section, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {Collapse, Field, Helper, NumberInput, Pill, SelectInput} from 'akeneo-design-system';
 import {
+  availableRoundingTypes,
   DEFAULT_PRECISION,
   getDefaultMeasurementRoundingOperation,
   isDefaultMeasurementRoundingOperation,
@@ -52,9 +53,6 @@ const MeasurementRounding = ({
           <SelectInput
             clearable={false}
             emptyResultLabel={translate('pim_common.no_result')}
-            placeholder={translate(
-              'akeneo.tailored_export.column_details.sources.operation.measurement_rounding.rounding_type.placeholder'
-            )}
             openLabel={translate('pim_common.open')}
             value={operation?.rounding_type ?? 'no_rounding'}
             onChange={(roundingType: string | null) => {
@@ -70,50 +68,19 @@ const MeasurementRounding = ({
               }
             }}
           >
-            <SelectInput.Option
-              key={'no_rounding'}
-              title={translate(
-                'akeneo.tailored_export.column_details.sources.operation.measurement_rounding.rounding_type.types.no_rounding'
-              )}
-              value={'no_rounding'}
-            >
-              {translate(
-                'akeneo.tailored_export.column_details.sources.operation.measurement_rounding.rounding_type.types.no_rounding'
-              )}
-            </SelectInput.Option>
-            <SelectInput.Option
-              key={'round'}
-              title={translate(
-                'akeneo.tailored_export.column_details.sources.operation.measurement_rounding.rounding_type.types.standard'
-              )}
-              value={'standard'}
-            >
-              {translate(
-                'akeneo.tailored_export.column_details.sources.operation.measurement_rounding.rounding_type.types.standard'
-              )}
-            </SelectInput.Option>
-            <SelectInput.Option
-              key={'round_up'}
-              title={translate(
-                'akeneo.tailored_export.column_details.sources.operation.measurement_rounding.rounding_type.types.round_up'
-              )}
-              value={'round_up'}
-            >
-              {translate(
-                'akeneo.tailored_export.column_details.sources.operation.measurement_rounding.rounding_type.types.round_up'
-              )}
-            </SelectInput.Option>
-            <SelectInput.Option
-              key={'round_down'}
-              title={translate(
-                'akeneo.tailored_export.column_details.sources.operation.measurement_rounding.rounding_type.types.round_down'
-              )}
-              value={'round_down'}
-            >
-              {translate(
-                'akeneo.tailored_export.column_details.sources.operation.measurement_rounding.rounding_type.types.round_down'
-              )}
-            </SelectInput.Option>
+            {availableRoundingTypes.map(roundingType => (
+              <SelectInput.Option
+                key={roundingType}
+                title={translate(
+                  `akeneo.tailored_export.column_details.sources.operation.measurement_rounding.rounding_type.types.${roundingType}`
+                )}
+                value={roundingType}
+              >
+                {translate(
+                  `akeneo.tailored_export.column_details.sources.operation.measurement_rounding.rounding_type.types.${roundingType}`
+                )}
+              </SelectInput.Option>
+            ))}
           </SelectInput>
         </Field>
         {'no_rounding' !== operation.rounding_type && (
