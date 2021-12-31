@@ -13,26 +13,21 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\EventSubsc
  * file that was distributed with this source code.
  */
 
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event\SelectOptionWasDeleted;
+use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Query\CreateJobInstanceInterface;
-use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class CleanOptionsJobSubscriber implements EventSubscriberInterface
+class CleanRecordsJobSubscriber implements EventSubscriberInterface
 {
     private JobLauncherInterface $jobLauncher;
     private JobInstanceRepository $jobInstanceRepository;
     private TokenStorageInterface $tokenStorage;
     private CreateJobInstanceInterface $createJobInstance;
     private string $jobName;
-    /** @var array<string, array<int, SelectOptionWasDeleted>> */
-    private array $deletedEventsByAttributeCode = [];
 
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -51,39 +46,24 @@ class CleanOptionsJobSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            SelectOptionWasDeleted::class => 'aSelectOptionWasDeleted',
-            StorageEvents::POST_SAVE => 'createCleanOptionsJobIfNeeded',
+            RecordDeletedEvent::class => 'whenRecordDeleted'
         ];
     }
 
-    public function aSelectOptionWasDeleted(SelectOptionWasDeleted $selectOptionWasDeleted): void
+    public function whenRecordDeleted(RecordDeletedEvent $recordDeletedEvent): void
     {
-        $this->deletedEventsByAttributeCode[$selectOptionWasDeleted->attributeCode()][] = $selectOptionWasDeleted;
-    }
-
-    public function createCleanOptionsJobIfNeeded(GenericEvent $postSaveEvent): void
-    {
-        $subject = $postSaveEvent->getSubject();
-        if (!$subject instanceof AttributeInterface
-            || !isset($this->deletedEventsByAttributeCode[$subject->getCode()])
-        ) {
-            return;
-        }
-
-        $removedOptionPerColumncode = [];
-        foreach ($this->deletedEventsByAttributeCode[$subject->getCode()] as $event) {
-            $removedOptionPerColumncode[$event->columnCode()->asString()][] = $event->optionCode()->asString();
-        }
+        // @todo: validation ?
 
         $configuration = [
-            'clean_option_attribute_code' => $postSaveEvent->getSubject()->getCode(),
-            'clean_option_removed_options_per_column_code' => $removedOptionPerColumncode,
+            $recordDeletedEvent::class => [
+                'clean_record_reference_entity_identifier' => $recordDeletedEvent->getReferenceEntityIdentifier()->normalize(), //todo brand
+                'clean_record_record_code' => $recordDeletedEvent->getRecordCode(), //todo Alessi
+            ]
         ];
 
         $user = $this->tokenStorage->getToken()->getUser();
 
         $this->jobLauncher->launch($this->getOrCreateJobInstance(), $user, $configuration);
-        unset($this->deletedEventsByAttributeCode[$subject->getCode()]);
     }
 
     private function getOrCreateJobInstance(): JobInstance
@@ -93,6 +73,8 @@ class CleanOptionsJobSubscriber implements EventSubscriberInterface
             $this->createJobInstance->createJobInstance([
                 'code' => $this->jobName,
                 'label' => 'Remove the non existing table option values from product and product models',
+// @todo: one description for the job here and in CleanOptionsJobSubscriber ???
+//                'label' => 'Remove the non existing record values from product and product models table attribute',
                 'job_name' => $this->jobName,
                 'type' => $this->jobName,
             ]);
