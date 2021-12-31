@@ -5,3 +5,9 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory'
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository'
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Controller\InternalApi\GetSelectAttributesWithOptionsCountController:
+        public: true
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute_option'
