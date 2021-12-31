@@ -17,11 +17,11 @@ final class InMemoryMeasurementConverter implements MeasurementConverterInterfac
     ];
 
     public function convert(
-        string $measurementFamilyCodeCode,
+        string $measurementFamilyCode,
         string $currentUnitCode,
         string $targetUnitCode,
         string $value
     ): string {
-        return (string) ($this->conversions[$measurementFamilyCodeCode][$currentUnitCode][$targetUnitCode] * (float) $value);
+        return (string) ($this->conversions[$measurementFamilyCode][$currentUnitCode][$targetUnitCode] * (float) $value);
     }
 }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Integration\Infrastructure\Validation\Operation;
 
-use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation\MeasurementRoundingOperationConstraint;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation\MeasurementConversionOperationConstraint;
 use Akeneo\Platform\TailoredExport\Test\Integration\Infrastructure\Validation\AbstractValidationTest;
 use Akeneo\Test\Integration\Configuration;
 
@@ -24,7 +24,7 @@ class MeasurementConversionOperationValidatorTest extends AbstractValidationTest
      */
     public function test_it_does_not_build_violations_on_valid_operation(array $value): void
     {
-        $violations = $this->getValidator()->validate($value, new MeasurementRoundingOperationConstraint(['attributeCode' => 'a_metric']));
+        $violations = $this->getValidator()->validate($value, new MeasurementConversionOperationConstraint(['attributeCode' => 'a_metric']));
 
         $this->assertNoViolation($violations);
     }
@@ -37,7 +37,7 @@ class MeasurementConversionOperationValidatorTest extends AbstractValidationTest
         string $expectedErrorPath,
         array $value
     ): void {
-        $violations = $this->getValidator()->validate($value, new MeasurementRoundingOperationConstraint(['attributeCode' => 'a_metric']));
+        $violations = $this->getValidator()->validate($value, new MeasurementConversionOperationConstraint(['attributeCode' => 'a_metric']));
 
         $this->assertHasValidationError($expectedErrorMessage, $expectedErrorPath, $violations);
     }
