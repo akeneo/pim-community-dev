@@ -133,7 +133,7 @@ akeneo.tailored_export:
           target_unit_code.label: Convert to
         measurement_rounding:
           title: Rounding
-          label: should round ?
+          label: Should round ?
           precision:
             label: Precision
             placeholder: Define the number of digits after the decimal separator
