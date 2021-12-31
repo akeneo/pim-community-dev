@@ -15,6 +15,7 @@ namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOperation;
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\MeasurementConversionOperation;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\MeasurementRoundingOperation;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitSymbolSelection;
@@ -126,7 +127,14 @@ final class HandleMeasurementValueTest extends AttributeTestCase
                 'value' => new MeasurementValue('10.4123', 'KILOGRAM'),
                 'expected' => [self::TARGET_NAME => '10412,3'],
             ],
-            // Rounding operations usecases
+            'it selects the value and applies the standard rounding operation' => [
+                'operations' => [
+                    new MeasurementRoundingOperation('standard', 2),
+                ],
+                'selection' => new MeasurementValueSelection(','),
+                'value' => new MeasurementValue('10.417', 'KILOGRAM'),
+                'expected' => [self::TARGET_NAME => '10,42'],
+            ],
         ];
     }
 

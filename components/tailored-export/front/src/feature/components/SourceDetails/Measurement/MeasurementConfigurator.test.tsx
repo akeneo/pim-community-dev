@@ -3,7 +3,7 @@ import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {MeasurementConfigurator} from './MeasurementConfigurator';
-import {MeasurementSelection, getDefaultMeasurementSource} from './model';
+import {MeasurementSelection, getDefaultMeasurementSource, MeasurementRoundingOperation} from './model';
 import {getDefaultDateSource} from '../Date/model';
 import {MeasurementConversionOperation} from 'feature/components/SourceDetails/Measurement/MeasurementConversion';
 
@@ -47,6 +47,25 @@ jest.mock('./MeasurementConversion', () => ({
       }
     >
       Measurement conversion
+    </button>
+  ),
+}));
+
+jest.mock('./MeasurementRounding', () => ({
+  MeasurementRounding: ({
+    onOperationChange,
+  }: {
+    onOperationChange: (updatedOperation: MeasurementRoundingOperation) => void;
+  }) => (
+    <button
+      onClick={() =>
+        onOperationChange({
+          type: 'measurement_rounding',
+          rounding_type: 'no_rounding',
+        })
+      }
+    >
+      Measurement rounding
     </button>
   ),
 }));
@@ -131,6 +150,35 @@ test('it can update measurement conversion operation', () => {
       measurement_conversion: {
         type: 'measurement_conversion',
         target_unit_code: 'meter',
+      },
+    },
+    uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+  });
+});
+
+test('it can update measurement rounding operation', () => {
+  const onSourceChange = jest.fn();
+
+  renderWithProviders(
+    <MeasurementConfigurator
+      source={{
+        ...getDefaultMeasurementSource(attribute, null, null),
+        uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+      }}
+      attribute={attribute}
+      validationErrors={[]}
+      onSourceChange={onSourceChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('Measurement rounding'));
+
+  expect(onSourceChange).toHaveBeenCalledWith({
+    ...getDefaultMeasurementSource(attribute, null, null),
+    operations: {
+      measurement_rounding: {
+        type: 'measurement_rounding',
+        rounding_type: 'no_rounding',
       },
     },
     uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',

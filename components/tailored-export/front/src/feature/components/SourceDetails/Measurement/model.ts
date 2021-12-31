@@ -86,6 +86,8 @@ type MeasurementRoundingOperation = {
     }
 );
 const DEFAULT_PRECISION = 2;
+const MIN_PRECISION = 0;
+const MAX_PRECISION = 12;
 
 const isMeasurementRoundingOperation = (operation?: any): operation is MeasurementRoundingOperation =>
   undefined !== operation &&
@@ -170,4 +172,6 @@ export {
   getDefaultMeasurementRoundingOperation,
   isMeasurementRoundingOperation,
   DEFAULT_PRECISION,
+  MIN_PRECISION,
+  MAX_PRECISION,
 };

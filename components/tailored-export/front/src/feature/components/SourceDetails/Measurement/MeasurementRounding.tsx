@@ -5,7 +5,9 @@ import {
   DEFAULT_PRECISION,
   getDefaultMeasurementRoundingOperation,
   isDefaultMeasurementRoundingOperation,
+  MAX_PRECISION,
   MeasurementRoundingOperation,
+  MIN_PRECISION,
   RoundingType,
 } from './model';
 
@@ -79,8 +81,8 @@ const MeasurementRounding = ({
                 const newOperation = {...operation, precision: parseInt(value)};
                 onOperationChange(newOperation);
               }}
-              min={0}
-              max={12}
+              min={MIN_PRECISION}
+              max={MAX_PRECISION}
             />
             {precisionErrors.map((error, index) => (
               <Helper key={index} inline={true} level="error">
