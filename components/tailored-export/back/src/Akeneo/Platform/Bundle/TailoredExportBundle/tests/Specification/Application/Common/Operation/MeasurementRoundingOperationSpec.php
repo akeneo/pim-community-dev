@@ -17,19 +17,23 @@ use PhpSpec\ObjectBehavior;
 
 class MeasurementRoundingOperationSpec extends ObjectBehavior
 {
-    public function let(): void
+    public function it_can_be_a_standard_rounding_operation(): void
     {
-        $this->beConstructedWith('standard', 3);
-    }
+        $precision = 3;
+        $this->beConstructedWith('standard', $precision);
 
-    public function it_returns_the_type(): void
-    {
         $this->getType()->shouldReturn('standard');
+        $this->getPrecision()->shouldReturn($precision);
     }
 
-    public function it_returns_the_precision(): void
+    public function it_can_be_a_round_up_operation(): void
     {
-        $this->getPrecision()->shouldReturn(3);
+        $this->beConstructedWith('round_up', 3);
+    }
+
+    public function it_can_be_a_round_down_operation(): void
+    {
+        $this->beConstructedWith('round_down', 3);
     }
 
     public function it_throws_an_exception_when_type_is_not_authorized(): void

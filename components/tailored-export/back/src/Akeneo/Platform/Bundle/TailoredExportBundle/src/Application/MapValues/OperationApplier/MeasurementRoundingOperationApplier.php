@@ -32,9 +32,38 @@ class MeasurementRoundingOperationApplier implements OperationApplierInterface
             throw new \InvalidArgumentException('Cannot apply Measurement Rounding operation');
         }
 
-        $roundedValue = round((float) $value->getValue(), $operation->getPrecision());
+        $valueToRound = (float)$value->getValue();
+        $precision = $operation->getPrecision();
+        $roundingType = $operation->getType();
 
-        return new MeasurementValue((string) $roundedValue, $value->getUnitCode());
+        $roundedValue = match ($roundingType) {
+            'standard' => round($valueToRound, $precision),
+            'round_up' => $this->ceil($valueToRound, $precision),
+            'round_down' => $this->floor($valueToRound, $precision),
+            default => throw new \RuntimeException(sprintf('Unsupported rounding type %s', $roundingType))
+        };
+
+        return new MeasurementValue((string)$roundedValue, $value->getUnitCode());
+    }
+
+    /**
+     * @link https://gist.github.com/gh640/6d65226c6203f2cb0ebe42fbddca8ece
+     */
+    private function ceil(float $value, int $precision): float
+    {
+        $reg = $value + 0.5 / (10 ** $precision);
+
+        return round($reg, $precision, $reg > 0 ? PHP_ROUND_HALF_DOWN : PHP_ROUND_HALF_UP);
+    }
+
+    /**
+     * @link https://gist.github.com/gh640/6d65226c6203f2cb0ebe42fbddca8ece
+     */
+    private function floor(float $value, int $precision): float
+    {
+        $reg = $value - 0.5 / (10 ** $precision);
+
+        return round($reg, $precision, $reg > 0 ? PHP_ROUND_HALF_UP : PHP_ROUND_HALF_DOWN);
     }
 
     public function supports(OperationInterface $operation, SourceValueInterface $value): bool

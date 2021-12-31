@@ -17,7 +17,11 @@ use Webmozart\Assert\Assert;
 
 class MeasurementRoundingOperation implements OperationInterface
 {
-    public const TYPE_STANDARD = 'standard';
+    public const ROUNDING_TYPES = [self::TYPE_STANDARD, self::TYPE_ROUND_UP, self::TYPE_ROUND_DOWN];
+
+    private const TYPE_STANDARD = 'standard';
+    private const TYPE_ROUND_UP = 'round_up';
+    private const TYPE_ROUND_DOWN = 'round_down';
     private const MIN_PRECISION_SUPPORTED = 0;
     private const MAX_PRECISION_SUPPORTED = 12;
 
@@ -25,7 +29,7 @@ class MeasurementRoundingOperation implements OperationInterface
         private string $type,
         private int $precision
     ) {
-        Assert::eq($type, self::TYPE_STANDARD);
+        Assert::oneOf($type, self::ROUNDING_TYPES);
         Assert::greaterThanEq($precision, self::MIN_PRECISION_SUPPORTED);
         Assert::lessThanEq($precision, self::MAX_PRECISION_SUPPORTED);
     }

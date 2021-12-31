@@ -135,6 +135,22 @@ final class HandleMeasurementValueTest extends AttributeTestCase
                 'value' => new MeasurementValue('10.417', 'KILOGRAM'),
                 'expected' => [self::TARGET_NAME => '10,42'],
             ],
+            'it selects the value and applies the rounding up operation' => [
+                'operations' => [
+                    new MeasurementRoundingOperation('round_up', 2),
+                ],
+                'selection' => new MeasurementValueSelection(','),
+                'value' => new MeasurementValue('10.412', 'KILOGRAM'),
+                'expected' => [self::TARGET_NAME => '10,42'],
+            ],
+            'it selects the value and applies the rounding down operation' => [
+                'operations' => [
+                    new MeasurementRoundingOperation('round_down', 2),
+                ],
+                'selection' => new MeasurementValueSelection(','),
+                'value' => new MeasurementValue('10.417', 'KILOGRAM'),
+                'expected' => [self::TARGET_NAME => '10,41'],
+            ],
         ];
     }
 

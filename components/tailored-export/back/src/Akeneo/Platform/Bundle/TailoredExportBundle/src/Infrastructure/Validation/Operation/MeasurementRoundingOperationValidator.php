@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation;
 
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\MeasurementRoundingOperation;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Range;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -38,14 +39,12 @@ class MeasurementRoundingOperationValidator extends ConstraintValidator
             ->validate($operation, new Collection([
                 'fields' => [
                     'type' => new EqualTo(['value' => 'measurement_rounding']),
-                    'rounding_type' => new EqualTo(['value' => 'standard']),
-                    'precision' => new Optional(
-                        [
+                    'rounding_type' => [new NotBlank(), new Choice(['choices' => MeasurementRoundingOperation::ROUNDING_TYPES])],
+                    'precision' => [
                             new NotBlank(['message' => self::PRECISION_NOT_BLANK_MESSAGE]),
                             new Type('int'),
                             new Range(['min' => 0, 'max' => 12], notInRangeMessage: self::PRECISION_OUT_OF_RANGE_MESSAGE),
                         ]
-                    ),
                 ]
             ]));
     }

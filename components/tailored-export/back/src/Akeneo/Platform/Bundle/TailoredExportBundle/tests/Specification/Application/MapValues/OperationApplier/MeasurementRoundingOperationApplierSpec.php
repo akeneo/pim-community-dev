@@ -21,9 +21,22 @@ use PhpSpec\ObjectBehavior;
 
 class MeasurementRoundingOperationApplierSpec extends ObjectBehavior
 {
-    public function it_supports_measurement_rounding_operation_and_measurement_value(): void
+    public function it_supports_measurement_rounding_operations_and_measurement_value(): void
     {
-        $operation = new MeasurementRoundingOperation('standard', 3);
+        $value = new MeasurementValue('10.4', 'KILOGRAM');
+        $rounding = new MeasurementRoundingOperation('standard', 3);
+        $roundUp = new MeasurementRoundingOperation('round_up', 3);
+        $roundDown = new MeasurementRoundingOperation('round_down', 3);
+
+        $this->supports($rounding, $value)->shouldReturn(true);
+        $this->supports($roundUp, $value)->shouldReturn(true);
+        $this->supports($roundDown, $value)->shouldReturn(true);
+        $this->supports($roundDown, $value)->shouldReturn(true);
+    }
+
+    public function it_supports_measurement_rounding_up_operation_and_measurement_value(): void
+    {
+        $operation = new MeasurementRoundingOperation('round_up', 3);
         $value = new MeasurementValue('10.4', 'KILOGRAM');
 
         $this->supports($operation, $value)->shouldReturn(true);
