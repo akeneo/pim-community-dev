@@ -95,8 +95,6 @@ config:
         oro/datafilter/asset-family-collection-filter: akeneoassetmanager/infrastructure/product-grid/filter/attribute/asset-family-collection
         oro/datagrid/asset-multiple-link-cell: akeneoassetmanager/infrastructure/product-grid/cell/attribute/asset-multiple-link-cell
 
-        pim/form/common/fields/values/asset: akeneoassetmanager/infrastructure/product/axis/asset.js
-
         pimee/filter/attribute/asset-family-collection: pimenterpriseui/js/filter/attribute/asset-family-collection
         pimee/filter/attribute/assets-collection: pimenterpriseui/js/filter/attribute/assets-collection
 

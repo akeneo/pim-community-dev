@@ -15,8 +15,8 @@ import {getFieldView} from 'akeneoassetmanager/application/configuration/value';
 import {useConfig} from 'akeneoassetmanager/application/hooks/useConfig';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {getLocaleFromChannel, getLocalesFromChannel} from 'akeneoassetmanager/application/reducer/structure';
-import {LocaleDropdown} from 'akeneoassetmanager/application/component/library/MassEdit/components/LocaleDropdown';
-import {ChannelDropdown} from 'akeneoassetmanager/application/component/library/MassEdit/components/ChannelDropdown';
+import {LocaleDropdown} from 'akeneoassetmanager/application/component/app/LocaleDropdown';
+import {ChannelDropdown} from 'akeneoassetmanager/application/component/app/ChannelDropdown';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 

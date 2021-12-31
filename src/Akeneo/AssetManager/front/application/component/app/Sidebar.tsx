@@ -1,15 +1,28 @@
-import React, {KeyboardEvent} from 'react';
-import {MenuDropdown} from 'akeneoassetmanager/application/component/app/MenuDropdown';
-import {getColor, getFontSize, Key, Link, useBooleanState} from 'akeneo-design-system';
-import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
+import React from 'react';
 import styled from 'styled-components';
+import {
+  getColor,
+  getFontSize,
+  Link,
+  SubNavigationItem,
+  SubNavigationPanel,
+  useBooleanState,
+} from 'akeneo-design-system';
+import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
+import {MenuDropdown} from 'akeneoassetmanager/application/component/app/MenuDropdown';
 import {Tab} from 'akeneoassetmanager/application/configuration/sidebar';
 
 const BackLink = styled(Link)`
-  display: block;
   font-size: ${getFontSize('big')};
-  margin: 0 0 20px 0;
   color: ${getColor('grey', 120)};
+`;
+
+const SectionTitle = styled.div`
+  margin: 30px 0 20px;
+  color: ${getColor('grey', 100)};
+  text-transform: uppercase;
+  font-size: ${getFontSize('small')};
+  white-space: nowrap;
 `;
 
 type SidebarProps = {
@@ -19,51 +32,41 @@ type SidebarProps = {
 };
 
 const Sidebar = ({tabs, currentTab, onTabChange}: SidebarProps) => {
-  const [isSidebarOpen, open, close] = useBooleanState();
+  const [isSidebarOpen, open, close] = useBooleanState(true);
   const router = useRouter();
   const translate = useTranslate();
 
   return (
-    <div className={`AknColumn ${isSidebarOpen ? 'AknColumn--collapsed' : ''}`}>
-      <div className="AknColumn-inner column-inner">
-        <div className="AknColumn-navigation">
-          <MenuDropdown
-            label={translate('pim_asset_manager.asset_family.breadcrumb')}
-            tabs={tabs}
-            onTabChange={tab => onTabChange(tab.code)}
-          />
-        </div>
-        <div className="AknColumn-innerTop">
-          <div className="AknColumn-block">
-            <BackLink decorated={false} href={`#${router.generate('akeneo_asset_manager_asset_family_index')}`}>
-              {translate('pim_asset_manager.asset.button.back')}
-            </BackLink>
-            <div className="AknColumn-title">{translate('pim_asset_manager.asset_family.breadcrumb')}</div>
-            {tabs.map((tab: any) => {
-              const activeClass = currentTab === tab.code ? 'AknColumn-navigationLink--active' : '';
-
-              return (
-                <span
-                  key={tab.code}
-                  role="button"
-                  tabIndex={0}
-                  className={`AknColumn-navigationLink ${activeClass}`}
-                  data-tab={tab.code}
-                  onClick={() => onTabChange(tab.code)}
-                  onKeyPress={(event: KeyboardEvent<HTMLSpanElement>) => {
-                    if (Key.Space === event.key) onTabChange(tab.code);
-                  }}
-                >
-                  {'string' === typeof tab.label ? translate(tab.label) : <tab.label />}
-                </span>
-              );
-            })}
-          </div>
-        </div>
-        <div className="AknColumn-innerBottom" />
-      </div>
-      <div className="AknColumn-collapseButton" onClick={() => (isSidebarOpen ? close() : open())} />
-    </div>
+    <SubNavigationPanel
+      isOpen={isSidebarOpen}
+      open={open}
+      close={close}
+      closeTitle={translate('pim_common.close')}
+      openTitle={translate('pim_common.open')}
+    >
+      <SubNavigationPanel.Collapsed>
+        <MenuDropdown
+          label={translate('pim_asset_manager.asset_family.breadcrumb')}
+          tabs={tabs}
+          onTabChange={({code}) => onTabChange(code)}
+        />
+      </SubNavigationPanel.Collapsed>
+      <BackLink decorated={false} href={`#${router.generate('akeneo_asset_manager_asset_family_index')}`}>
+        {translate('pim_asset_manager.asset.button.back')}
+      </BackLink>
+      <SectionTitle>{translate('pim_asset_manager.asset_family.breadcrumb')}</SectionTitle>
+      {tabs.map(({code, label}) => (
+        <SubNavigationItem
+          key={code}
+          id={code}
+          active={code === currentTab}
+          onClick={() => onTabChange(code)}
+          role="menuitem"
+        >
+          {translate(label)}
+        </SubNavigationItem>
+      ))}
+    </SubNavigationPanel>
   );
 };
 

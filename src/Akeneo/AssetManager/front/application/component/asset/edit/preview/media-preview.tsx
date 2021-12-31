@@ -1,5 +1,6 @@
 import React, {useEffect, useState, SyntheticEvent} from 'react';
 import styled from 'styled-components';
+import {Image} from 'akeneo-design-system';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {
   NormalizedMediaLinkAttribute,
@@ -16,7 +17,6 @@ import MediaLinkData, {
   getVimeoEmbedUrl,
 } from 'akeneoassetmanager/domain/model/asset/data/media-link';
 import {isMediaFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
-import useImageLoader from 'akeneoassetmanager/application/hooks/image-loader';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {MediaPreviewType, emptyMediaPreview} from 'akeneoassetmanager/domain/model/asset/media-preview';
 import {getMediaData, MediaData, isDataEmpty} from 'akeneoassetmanager/domain/model/asset/data';
@@ -25,9 +25,9 @@ import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
 import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {useReloadPreview} from 'akeneoassetmanager/application/hooks/useReloadPreview';
 
-const Image = styled.img`
+const PreviewImage = styled(Image)`
+  border: none;
   width: auto;
-  object-fit: contain;
   min-height: 250px;
   max-width: 100%;
   max-height: calc(100vh - 250px);
@@ -42,29 +42,6 @@ const EmbedPlayer = styled.iframe`
   height: 360px;
   border: none;
 `;
-
-const ImagePlaceholder = styled.div`
-  width: 400px;
-  height: 300px;
-`;
-
-type LazyLoadedImageProps = {
-  src: string;
-  alt: string;
-  isLoading?: boolean;
-};
-
-const LazyLoadedImage = ({src, alt, isLoading = false, ...props}: LazyLoadedImageProps) => {
-  const loadedSrc = useImageLoader(src);
-
-  return undefined === loadedSrc || isLoading ? (
-    <div className="AknLoadingPlaceHolderContainer">
-      <ImagePlaceholder title={alt} {...props} />
-    </div>
-  ) : (
-    <Image src={loadedSrc} alt={alt} {...props} />
-  );
-};
 
 const MediaDataPreview = ({
   label,
@@ -100,13 +77,7 @@ const MediaDataPreview = ({
 
   return (
     <>
-      {regenerate ? (
-        <div className="AknLoadingPlaceHolderContainer">
-          <ImagePlaceholder title={label} />
-        </div>
-      ) : (
-        <Image src={refreshedUrl} alt={label} onError={handlePreviewError} />
-      )}
+      <PreviewImage fit="contain" src={regenerate ? null : refreshedUrl} alt={label} onError={handlePreviewError} />
       {(previewError || attribute.media_type === MediaTypes.other) && (
         <Message title={translate('pim_asset_manager.asset_preview.other_main_media')}>
           {translate('pim_asset_manager.asset_preview.other_main_media')}
@@ -139,13 +110,13 @@ const MediaLinkPreview = ({
   }
 };
 
-export const EmptyMediaPreview = ({label = ''}: {label?: string}) => {
+const EmptyMediaPreview = ({label}: {label: string}) => {
   const translate = useTranslate();
   const router = useRouter();
 
   return (
     <>
-      <LazyLoadedImage src={getMediaPreviewUrl(router, emptyMediaPreview())} alt={label} />
+      <PreviewImage src={getMediaPreviewUrl(router, emptyMediaPreview())} alt={label} />
       <Message title={translate('pim_asset_manager.asset_preview.empty_main_media')}>
         {translate('pim_asset_manager.asset_preview.empty_main_media')}
       </Message>
@@ -177,7 +148,7 @@ const Preview = ({data, label, attribute}: MediaPreviewProps) => {
   }
 };
 
-export const MediaPreview = ({data, label, attribute}: MediaPreviewProps) => {
+const MediaPreview = ({data, label, attribute}: MediaPreviewProps) => {
   const translate = useTranslate();
 
   return (
@@ -186,3 +157,5 @@ export const MediaPreview = ({data, label, attribute}: MediaPreviewProps) => {
     </ErrorBoundary>
   );
 };
+
+export {MediaPreview};

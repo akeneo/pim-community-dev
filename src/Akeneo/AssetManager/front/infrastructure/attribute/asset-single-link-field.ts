@@ -1,7 +1,8 @@
 const BaseField = require('pim/form/common/fields/field');
 import $ from 'jquery';
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
-import {AssetFamilyListItem, getAssetFamilyListItemLabel} from 'akeneoassetmanager/domain/model/asset-family/list';
+import {AssetFamilyListItem} from 'akeneoassetmanager/domain/model/asset-family/list';
+import {getLabel} from '@akeneo-pim-community/shared';
 const __ = require('oro/translator');
 const _ = require('underscore');
 const UserContext = require('pim/user-context');
@@ -58,7 +59,11 @@ class AssetFamilyField extends (BaseField as {new (config: any): any}) {
 
   getChoices() {
     return this.assetFamilies.reduce((result: {[key: string]: string}, assetFamily: AssetFamilyListItem) => {
-      result[assetFamily.identifier] = getAssetFamilyListItemLabel(assetFamily, UserContext.get('catalogLocale'));
+      result[assetFamily.identifier] = getLabel(
+        assetFamily.labels,
+        UserContext.get('catalogLocale'),
+        assetFamily.identifier
+      );
 
       return result;
     }, {});

@@ -88,7 +88,7 @@ describe('Tests media preview component', () => {
       </ReloadPreviewProvider>
     );
 
-    expect(screen.getByTitle('loading')).toBeInTheDocument();
+    expect(screen.getByAltText('loading')).toBeInTheDocument();
 
     global.fetch.mockClear();
     delete global.fetch;

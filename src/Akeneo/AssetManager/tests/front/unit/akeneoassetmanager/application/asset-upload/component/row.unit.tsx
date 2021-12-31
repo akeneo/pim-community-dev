@@ -8,8 +8,6 @@ import {createFakeAssetFamily, createFakeChannel, createFakeError, createFakeLin
 import Line, {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 
-jest.mock('akeneoassetmanager/application/component/app/select2');
-
 describe('Test row component', () => {
   test('It renders without errors', () => {
     const valuePerLocale = false;
@@ -98,7 +96,7 @@ describe('Test row component', () => {
     const valuePerLocale = true;
     const valuePerChannel = false;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
-    const channels: Channel[] = [];
+    const channels: Channel[] = [createFakeChannel('ecommerce', ['en_US', 'fr_FR'])];
     const locales: Locale[] = [createFakeLocale('en_US'), createFakeLocale('fr_FR')];
     const line = createFakeLine('foo-en_US.png', assetFamily, channels, locales);
     const onLineChange = jest.fn();
@@ -116,39 +114,13 @@ describe('Test row component', () => {
       />
     );
 
-    const input = screen.getByLabelText('pim_asset_manager.asset.upload.list.locale') as HTMLSelectElement;
-    expect(input.value).toEqual('en_US');
+    fireEvent.click(screen.getByPlaceholderText('pim_asset_manager.asset.mass_edit.select.locale'));
+    fireEvent.click(screen.getByText('fr_FR'));
 
-    fireEvent.change(input, {target: {value: 'fr_FR'}});
     expect(onLineChange).toHaveBeenCalledWith({
       ...line,
       locale: 'fr_FR',
     });
-  });
-
-  test('It renders a row with the locale selectable from a list with flags', () => {
-    const valuePerLocale = true;
-    const valuePerChannel = false;
-    const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
-    const channels: Channel[] = [];
-    const locales: Locale[] = [createFakeLocale('en_US'), createFakeLocale('fr_FR')];
-    const line = createFakeLine('foo-en_US.png', assetFamily, channels, locales);
-    const onLineChange = jest.fn();
-
-    renderWithProviders(
-      <Row
-        line={line}
-        locale="en_US"
-        channels={channels}
-        locales={locales}
-        onLineRemove={() => {}}
-        onLineChange={onLineChange}
-        valuePerLocale={valuePerLocale}
-        valuePerChannel={valuePerChannel}
-      />
-    );
-
-    const input = screen.getByLabelText('pim_asset_manager.asset.upload.list.locale') as HTMLSelectElement;
   });
 
   test('It renders a row with the locale non-editable during asset creation', () => {
@@ -156,7 +128,7 @@ describe('Test row component', () => {
     const valuePerChannel = false;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
     const channels: Channel[] = [];
-    const locales: Locale[] = [];
+    const locales: Locale[] = [createFakeLocale('en_US')];
     const line = {
       ...createFakeLine('foo-en_US.png', assetFamily, channels, locales),
       isAssetCreating: true,
@@ -176,8 +148,7 @@ describe('Test row component', () => {
       />
     );
 
-    const input = screen.getByLabelText('pim_asset_manager.asset.upload.list.locale') as HTMLSelectElement;
-    expect(input.disabled).toEqual(true);
+    expect(screen.getByPlaceholderText('pim_asset_manager.asset.mass_edit.select.locale')).toBeDisabled();
   });
 
   test('It renders a row with the channel editable', () => {
@@ -202,10 +173,9 @@ describe('Test row component', () => {
       />
     );
 
-    const input = screen.getByLabelText('pim_asset_manager.asset.upload.list.channel') as HTMLSelectElement;
-    expect(input.value).toEqual('ecommerce');
+    fireEvent.click(screen.getByPlaceholderText('pim_asset_manager.asset.mass_edit.select.channel'));
+    fireEvent.click(screen.getByText('mobile'));
 
-    fireEvent.change(input, {target: {value: 'mobile'}});
     expect(onLineChange).toHaveBeenCalledWith({
       ...line,
       channel: 'mobile',
@@ -216,13 +186,12 @@ describe('Test row component', () => {
     const valuePerLocale = false;
     const valuePerChannel = true;
     const assetFamily = createFakeAssetFamily(valuePerLocale, valuePerChannel);
-    const channels: Channel[] = [];
+    const channels: Channel[] = [createFakeChannel('ecommerce', ['en_US'])];
     const locales: Locale[] = [];
     const line = {
       ...createFakeLine('foo-ecommerce.png', assetFamily, channels, locales),
       isAssetCreating: true,
     };
-    const onLineChange = jest.fn();
 
     renderWithProviders(
       <Row
@@ -230,15 +199,14 @@ describe('Test row component', () => {
         locale="en_US"
         channels={channels}
         locales={locales}
-        onLineRemove={() => {}}
-        onLineChange={onLineChange}
+        onLineRemove={jest.fn()}
+        onLineChange={jest.fn()}
         valuePerLocale={valuePerLocale}
         valuePerChannel={valuePerChannel}
       />
     );
 
-    const input = screen.getByLabelText('pim_asset_manager.asset.upload.list.channel') as HTMLSelectElement;
-    expect(input.disabled).toEqual(true);
+    expect(screen.getByPlaceholderText('pim_asset_manager.asset.mass_edit.select.channel')).toBeDisabled();
   });
 
   test('It renders a row and I can remove it', () => {

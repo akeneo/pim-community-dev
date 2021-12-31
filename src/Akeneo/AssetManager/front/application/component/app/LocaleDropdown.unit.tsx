@@ -62,9 +62,3 @@ test('it calls onChange handler when selecting another locale', async () => {
 
   expect(handleOnChange).toHaveBeenCalledWith('de_DE');
 });
-
-test('it returns nothing when locale is not found', () => {
-  renderWithProviders(<LocaleDropdown locales={locales} locale="unknown_locale" onChange={jest.fn()} />);
-
-  expect(screen.queryByText('unknown_locale')).not.toBeInTheDocument();
-});
