@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {filterErrors, Section, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {BooleanInput, Collapse, Field, Helper, NumberInput, Pill} from 'akeneo-design-system';
+import {Collapse, Field, Helper, NumberInput, Pill, SelectInput} from 'akeneo-design-system';
 import {
   DEFAULT_PRECISION,
   getDefaultMeasurementRoundingOperation,
@@ -44,27 +44,77 @@ const MeasurementRounding = ({
       onCollapse={toggleMeasurementRoundingCollapse}
     >
       <Section>
-        <Field label={translate('akeneo.tailored_export.column_details.sources.operation.measurement_rounding.label')}>
-          <BooleanInput
-            value={operation.rounding_type === 'standard'}
-            onChange={(shouldRound: boolean) => {
-              // TODO: I'm sure team will have a more elegant way of doing this
-              if (!shouldRound) {
+        <Field
+          label={translate(
+            'akeneo.tailored_export.column_details.sources.operation.measurement_rounding.rounding_type.label'
+          )}
+        >
+          <SelectInput
+            clearable={false}
+            emptyResultLabel={translate('pim_common.no_result')}
+            placeholder={translate(
+              'akeneo.tailored_export.column_details.sources.operation.measurement_rounding.rounding_type.placeholder'
+            )}
+            openLabel={translate('pim_common.open')}
+            value={operation?.rounding_type ?? 'no_rounding'}
+            onChange={(roundingType: string | null) => {
+              if (null === roundingType || 'no_rounding' === roundingType) {
                 onOperationChange(undefined);
-                return;
               } else {
                 const newOperation = {
                   ...operation,
-                  rounding_type: 'standard' as RoundingType,
+                  rounding_type: roundingType as RoundingType,
                   precision: DEFAULT_PRECISION,
                 };
                 onOperationChange(newOperation);
               }
             }}
-            noLabel={translate('pim_common.no')}
-            yesLabel={translate('pim_common.yes')}
-            readOnly={false}
-          />
+          >
+            <SelectInput.Option
+              key={'no_rounding'}
+              title={translate(
+                'akeneo.tailored_export.column_details.sources.operation.measurement_rounding.rounding_type.types.no_rounding'
+              )}
+              value={'no_rounding'}
+            >
+              {translate(
+                'akeneo.tailored_export.column_details.sources.operation.measurement_rounding.rounding_type.types.no_rounding'
+              )}
+            </SelectInput.Option>
+            <SelectInput.Option
+              key={'round'}
+              title={translate(
+                'akeneo.tailored_export.column_details.sources.operation.measurement_rounding.rounding_type.types.standard'
+              )}
+              value={'standard'}
+            >
+              {translate(
+                'akeneo.tailored_export.column_details.sources.operation.measurement_rounding.rounding_type.types.standard'
+              )}
+            </SelectInput.Option>
+            <SelectInput.Option
+              key={'round_up'}
+              title={translate(
+                'akeneo.tailored_export.column_details.sources.operation.measurement_rounding.rounding_type.types.round_up'
+              )}
+              value={'round_up'}
+            >
+              {translate(
+                'akeneo.tailored_export.column_details.sources.operation.measurement_rounding.rounding_type.types.round_up'
+              )}
+            </SelectInput.Option>
+            <SelectInput.Option
+              key={'round_down'}
+              title={translate(
+                'akeneo.tailored_export.column_details.sources.operation.measurement_rounding.rounding_type.types.round_down'
+              )}
+              value={'round_down'}
+            >
+              {translate(
+                'akeneo.tailored_export.column_details.sources.operation.measurement_rounding.rounding_type.types.round_down'
+              )}
+            </SelectInput.Option>
+          </SelectInput>
         </Field>
         {'no_rounding' !== operation.rounding_type && (
           <Field
