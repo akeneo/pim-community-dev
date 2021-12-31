@@ -64,6 +64,55 @@ final class GetSelectAttributesWithOptionsCountControllerIntegration extends Con
         );
     }
 
+    /** @test */
+    public function it_returns_the_options_of_a_select_column_with_limit_and_page_number(): void
+    {
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
+        $this->webClientHelper->callApiRoute(
+            $this->client,
+            'pim_table_attribute_get_select_attributes_with_options_count',
+            [],
+            'GET',
+            [
+                'limit' => 1,
+                'page' => 1,
+            ]
+        );
+        $response = $this->client->getResponse();
+        Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
+        Assert::assertEqualsCanonicalizing(
+            [
+                'brand' => [
+                    'options_count' => 10,
+                    'labels' => ['en_US' => 'Brand label', 'fr_FR' => 'Marque label']
+                ],
+            ],
+            json_decode($response->getContent(), true)
+        );
+
+        $this->webClientHelper->callApiRoute(
+            $this->client,
+            'pim_table_attribute_get_select_attributes_with_options_count',
+            [],
+            'GET',
+            [
+                'limit' => 1,
+                'page' => 2,
+            ]
+        );
+        $response = $this->client->getResponse();
+        Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
+        Assert::assertEqualsCanonicalizing(
+            [
+                'color' => [
+                    'options_count' => 5,
+                    'labels' => ['en_US' => 'Color label', 'fr_FR' => 'Couleur label']
+                ],
+            ],
+            json_decode($response->getContent(), true)
+        );
+    }
+
     protected function setUp(): void
     {
         parent::setUp();

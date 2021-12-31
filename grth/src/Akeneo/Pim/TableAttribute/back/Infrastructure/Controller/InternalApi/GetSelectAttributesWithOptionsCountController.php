@@ -23,6 +23,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class GetSelectAttributesWithOptionsCountController
 {
+    private const PAGE_SIZE = 25;
+
     public function __construct(
         private AttributeRepositoryInterface $attributeRepository,
         private AttributeOptionRepositoryInterface $attributeOptionRepository
@@ -35,22 +37,34 @@ final class GetSelectAttributesWithOptionsCountController
             return new RedirectResponse('/');
         }
 
-        $simpleSelects = $this->attributeRepository->getAttributeCodesByType(AttributeTypes::OPTION_SIMPLE_SELECT);
-        $multiSelects = $this->attributeRepository->getAttributeCodesByType(AttributeTypes::OPTION_MULTI_SELECT);
+        $limit = (int) $request->get('limit', self::PAGE_SIZE);
+        $page = (int) $request->get('page', 1);
+        $offset = \abs($page - 1) * $limit;
+
+        $selectAttributes = $this->attributeRepository->findBy(
+            [
+                'type' => [
+                    AttributeTypes::OPTION_SIMPLE_SELECT,
+                    AttributeTypes::OPTION_MULTI_SELECT,
+                ],
+            ],
+            ['code' => 'ASC'],
+            $limit,
+            $offset
+        );
 
         $options = [];
-        foreach (\array_merge($simpleSelects, $multiSelects) as $selectAttributeCode) {
-            $attribute = $this->attributeRepository->findOneByCode($selectAttributeCode);
-            $optionsCount = $this->attributeOptionRepository->count(['attribute' => $attribute->getId()]);
+        foreach ($selectAttributes as $selectAttribute) {
+            $optionsCount = $this->attributeOptionRepository->count(['attribute' => $selectAttribute->getId()]);
 
             $labels = [];
-            foreach($attribute->getTranslations()->toArray() as $translation) {
+            foreach ($selectAttribute->getTranslations()->toArray() as $translation) {
                 $labels[$translation->getLocale()] = $translation->getLabel();
             }
 
-            $options[$attribute->getCode()] = [
-                "options_count" => $optionsCount,
-                "labels" => $labels,
+            $options[$selectAttribute->getCode()] = [
+                'options_count' => $optionsCount,
+                'labels' => $labels,
             ];
         }
 
