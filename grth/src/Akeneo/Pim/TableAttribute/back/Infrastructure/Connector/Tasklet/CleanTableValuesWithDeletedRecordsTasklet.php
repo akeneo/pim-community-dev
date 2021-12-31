@@ -13,7 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetTableAttributes;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
@@ -24,34 +24,25 @@ use Webmozart\Assert\Assert;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class CleanTableValuesWithDeletedOptionsTasklet implements TaskletInterface
+final class CleanTableValuesWithDeletedRecordsTasklet implements TaskletInterface
 {
     private const ALL_CHANNELS = '<all_channels>';
     private const ALL_LOCALES = '<all_locales>';
 
-    private ProductQueryBuilderFactoryInterface $pqbFactory;
-    private GetAttributes $getAttributes;
-    private GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes;
-    private BulkSaverInterface $productSaver;
-    private BulkSaverInterface $productModelSaver;
     private ?StepExecution $stepExecution = null;
-    private int $batchSize;
     private array $channelsAndLocales = [];
 
     public function __construct(
-        ProductQueryBuilderFactoryInterface $pqbFactory,
-        GetAttributes $getAttributes,
-        GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes,
-        BulkSaverInterface $productSaver,
-        BulkSaverInterface $productModelSaver,
-        int $batchSize
+        private ProductQueryBuilderFactoryInterface $pqbFactory,
+        private GetAttributes $getAttributes,
+
+        private GetTableAttributes $getTableAttributes,
+
+        private GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes,
+        private BulkSaverInterface $productSaver,
+        private BulkSaverInterface $productModelSaver,
+        private int $batchSize
     ) {
-        $this->pqbFactory = $pqbFactory;
-        $this->getAttributes = $getAttributes;
-        $this->getChannelCodeWithLocaleCodes = $getChannelCodeWithLocaleCodes;
-        $this->productSaver = $productSaver;
-        $this->productModelSaver = $productModelSaver;
-        $this->batchSize = $batchSize;
     }
 
     public function execute(): void
@@ -60,37 +51,41 @@ final class CleanTableValuesWithDeletedOptionsTasklet implements TaskletInterfac
         $jobParameters = $this->stepExecution->getJobParameters();
 
         if (
-            !$jobParameters->has('clean_option_attribute_code')
-            || !$jobParameters->has('clean_option_removed_options_per_column_code')
+            !$jobParameters->has('clean_record_reference_entity_identifier')
+            || !$jobParameters->has('clean_record_record_code')
         ) {
             return;
         }
 
-        $attributeCode = $jobParameters->get('clean_option_attribute_code');
+        $referenceEntityIdentifier = $jobParameters->get('clean_record_reference_entity_identifier'); // todo brand
+        $recordCode = $jobParameters->get('clean_record_record_code'); //todo alessi
 
-        $attribute = $this->getAttributes->forCode($attributeCode);
-        Assert::notNull($attribute);
-        Assert::same($attribute->type(), AttributeTypes::TABLE);
+        // get table attributes and columns with reference_entity_identifier
+        $referenceEntityColumns = $this->getTableAttributes->forReferenceEntityIdentifier($referenceEntityIdentifier);
 
-        $removedOptionsByColumnCode = $jobParameters->get('clean_option_removed_options_per_column_code');
+
+
+//        $attribute = $this->getAttributes->forCode($attributeCode);
+//        Assert::notNull($attribute);
+//        Assert::same($attribute->type(), AttributeTypes::TABLE);
+
+        $removedOptionsByColumnCode = $jobParameters->get('removed_options_per_column_code');
+
         $channelsAndLocales = $this->getAttributeChannelsAndLocales($attribute);
 
         foreach (['root_pm', 'sub_pm', 'product'] as $entityType) {
-            foreach ($removedOptionsByColumnCode as $columnCode => $removedOptions) {
-                foreach ($channelsAndLocales as $channel => $locales) {
-                    if (self::ALL_CHANNELS === $channel) {
-                        $channel = null;
-                    }
-                    foreach ($locales as $locale) {
-                        $this->cleanEntities(
-                            $entityType,
-                            $attributeCode,
-                            $columnCode,
-                            $removedOptions,
-                            $locale === self::ALL_LOCALES ? null : $locale,
-                            $channel
-                        );
-                    }
+            foreach ($channelsAndLocales as $channel => $locales) {
+                if (self::ALL_CHANNELS === $channel) {
+                    $channel = null;
+                }
+                foreach ($locales as $locale) {
+                    $this->cleanEntities(
+                        $entityType,
+                        $recordCode,
+                        $referenceEntityColumn,
+                        $locale === self::ALL_LOCALES ? null : $locale,
+                        $channel
+                    );
                 }
             }
         }
@@ -106,15 +101,15 @@ final class CleanTableValuesWithDeletedOptionsTasklet implements TaskletInterfac
 
     private function cleanEntities(
         string $entityType,
-        string $attributeCode,
-        string $columnCode,
-        array $removedOptionCodes,
+        string $recordCode,
+        string $referenceEntityColumn,
         ?string $locale,
         ?string $channel
     ): void {
         $pqb = $this->getProductQueryBuilder($entityType);
+        // @todo make sure to add correct addFilter's parameters
         $pqb->addFilter(
-            $attributeCode,
+            $tableAttributeName, //@todo pass attribute name
             Operators::IN_LIST,
             ['column' => $columnCode, 'value' => $removedOptionCodes],
             ['locale' => $locale, 'scope' => $channel]
