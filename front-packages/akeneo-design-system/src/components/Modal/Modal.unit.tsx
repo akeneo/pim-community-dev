@@ -61,16 +61,19 @@ test('it calls the onClose handler when hitting the Escape key', () => {
 test('it does not forward click on parent node by default', () => {
   const handleRowClick = jest.fn();
   const handleButtonClick = jest.fn();
+
   render(
     <Table>
-      <Table.Row>
-        <Table.Cell onClick={handleRowClick}>
-          <Modal closeTitle="Close" onClose={jest.fn()}>
-            Modal content
-            <Button onClick={handleButtonClick}>Button</Button>
-          </Modal>
-        </Table.Cell>
-      </Table.Row>
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell onClick={handleRowClick}>
+            <Modal closeTitle="Close" onClose={jest.fn()}>
+              Modal content
+              <Button onClick={handleButtonClick}>Button</Button>
+            </Modal>
+          </Table.Cell>
+        </Table.Row>
+      </Table.Body>
     </Table>
   );
 
@@ -86,9 +89,8 @@ const Component = () => {
 };
 
 test('it provides a hook to know if an element is inside a modal', () => {
-  const onClose = jest.fn();
   render(
-    <Modal closeTitle="Close" onClose={onClose}>
+    <Modal closeTitle="Close" onClose={jest.fn()}>
       <Component />
     </Modal>
   );
@@ -98,10 +100,9 @@ test('it provides a hook to know if an element is inside a modal', () => {
 });
 
 test('it provides a hook to know if an element is outside a modal', () => {
-  const onClose = jest.fn();
   render(
     <>
-      <Modal closeTitle="Close" onClose={onClose}></Modal>
+      <Modal closeTitle="Close" onClose={jest.fn()}></Modal>
       <Component />
     </>
   );

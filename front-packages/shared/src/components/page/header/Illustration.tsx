@@ -1,36 +1,24 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
+import {Image} from 'akeneo-design-system';
 
 const Container = styled.div`
-  position: relative;
-  width: 142px;
-  height: 142px;
-  border: 1px solid ${({theme}) => theme.color.grey80};
   margin-right: 20px;
-  display: flex;
-  overflow: hidden;
-  flex-basis: 142px;
-  flex-shrink: 0;
-
-  img {
-    max-height: 140px;
-    max-width: 140px;
-    width: auto;
-  }
 `;
 
 type IllustrationProps = {
-  src: string;
+  src?: string;
   title?: string;
 };
 
-const Illustration: FC<IllustrationProps> = ({src, title = ''}) => {
-  return (
+const Illustration: FC<IllustrationProps> = ({src, title = '', children}) =>
+  src ? (
     <Container>
-      <img src={src} alt={title} />
+      <Image fit="contain" width={142} height={142} src={src} alt={title} />
     </Container>
+  ) : (
+    <>{children}</>
   );
-};
 
 export {Illustration};
 export type {IllustrationProps};
