@@ -1,5 +1,8 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10477: [Backport PIM-10220] Fixed issues where association has NaN error
 - PIM-10472: Fix attributes list limit in the family mass edit
 
 # 5.0.97 (2022-05-30)
