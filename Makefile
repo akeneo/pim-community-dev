@@ -31,6 +31,7 @@ javascript-extensions:
 .PHONY: front-packages
 front-packages:
 	$(YARN_RUN) packages:build
+	$(YARN_RUN) microfrontends:build
 
 .PHONY: dsm
 dsm:
