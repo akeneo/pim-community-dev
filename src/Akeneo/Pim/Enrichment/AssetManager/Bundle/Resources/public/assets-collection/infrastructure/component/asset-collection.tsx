@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import {AkeneoThemedProps, AssetsIllustration, getColor, Helper, useBooleanState} from 'akeneo-design-system';
+import {AkeneoThemedProps, AssetsIllustration, getColor, Helper, Pill, useBooleanState} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {ProductIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
-import {Pill} from 'akeneoassetmanager/application/component/app/pill';
 import {Label} from 'akeneoassetmanager/application/component/app/label';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import {Thumbnail} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection/thumbnail';
@@ -40,10 +39,7 @@ const AssetTitle = styled.div`
   width: 140px;
   align-items: baseline;
   min-height: 15px;
-`;
-
-const BaselinePill = styled(Pill)`
-  align-self: unset;
+  gap: 5px;
 `;
 
 const EmptyAssetCollection = styled.div<{readonly: boolean} & AkeneoThemedProps>`
@@ -161,7 +157,7 @@ const AssetCollection = ({
                     <Label readOnly={readonly} isCode={isCode}>
                       {assetLabel}
                     </Label>
-                    {!isComplete(asset) && <BaselinePill />}
+                    {!isComplete(asset) && <Pill />}
                   </AssetTitle>
                 </AssetCard>
               );

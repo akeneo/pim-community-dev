@@ -1,27 +1,23 @@
 import React from 'react';
 import {Locale as LocaleFlag, SelectInput} from 'akeneo-design-system';
-import {useTranslate, LocaleCode, Locale} from '@akeneo-pim-community/shared';
+import {useTranslate, LocaleCode, Locale, LocaleReference} from '@akeneo-pim-community/shared';
 
 type LocaleDropdownProps = {
   title?: string;
   readOnly?: boolean;
-  locale: LocaleCode;
+  locale: LocaleReference;
   onChange: (newLocale: LocaleCode) => void;
   locales: Locale[];
 };
 
 const LocaleDropdown = ({locale, locales, ...rest}: LocaleDropdownProps) => {
   const translate = useTranslate();
-  const currentLocale = locales.find(localeItem => localeItem.code === locale);
-
-  if (undefined === currentLocale) {
-    return null;
-  }
 
   return (
     <SelectInput
-      value={currentLocale.code}
+      value={locale}
       clearable={false}
+      placeholder={translate('pim_asset_manager.asset.mass_edit.select.locale')}
       emptyResultLabel={translate('pim_asset_manager.result_counter', {count: 0}, 0)}
       openLabel={translate('pim_common.open')}
       {...rest}

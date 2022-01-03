@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   CopyIcon,
   DownloadIcon,
@@ -29,11 +29,19 @@ import {useReloadPreview} from 'akeneoassetmanager/application/hooks/useReloadPr
 import {ViewGeneratorProps} from 'akeneoassetmanager/application/configuration/value';
 import {FullscreenPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/fullscreen-preview';
 
-const View = ({id, value, locale, onChange, onSubmit, canEditData}: ViewGeneratorProps) => {
+const View = ({id, value: initialValue, locale, onChange, onSubmit, canEditData}: ViewGeneratorProps) => {
   const translate = useTranslate();
   const router = useRouter();
   const [reloadPreview, onReloadPreview] = useReloadPreview();
   const [isFullscreenModalOpen, openFullscreenModal, closeFullScreenModal] = useBooleanState();
+  const [value, setValue] = useState(initialValue);
+
+  const handleChange = (newValue: string) => {
+    const editionValue = setValueData(value, mediaLinkDataFromString(newValue));
+
+    setValue(editionValue);
+    onChange(editionValue);
+  };
 
   if (id === undefined) {
     id = `pim_asset_manager.asset.enrich.${value.attribute.code}`;
@@ -72,7 +80,7 @@ const View = ({id, value, locale, onChange, onSubmit, canEditData}: ViewGenerato
         id={id}
         thumbnailUrl={regenerate ? null : refreshedUrl}
         value={mediaLinkDataStringValue(value.data)}
-        onChange={newValue => onChange(setValueData(value, mediaLinkDataFromString(newValue)))}
+        onChange={handleChange}
         readOnly={!canEditData}
         placeholder={!canEditData ? '' : translate('pim_asset_manager.attribute.media_link.placeholder')}
         onSubmit={onSubmit}

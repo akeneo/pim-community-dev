@@ -1,19 +1,15 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
 import {CloseIcon, RefreshIcon, DangerIcon, getColor, IconButton} from 'akeneo-design-system';
-import {useTranslate, Locale, LocaleCode} from '@akeneo-pim-community/shared';
+import {useTranslate, LocaleCode, getLocalesFromChannel} from '@akeneo-pim-community/shared';
 import Line, {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
 import RowStatus from 'akeneoassetmanager/application/asset-upload/component/row-status';
 import {getAllErrorsOfLineByTarget, getStatusFromLine} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import Spacer from 'akeneoassetmanager/application/component/app/spacer';
 import {ColumnWidths} from 'akeneoassetmanager/application/asset-upload/component/line-list';
 import Channel from 'akeneoassetmanager/domain/model/channel';
-import Select2, {Select2Options} from 'akeneoassetmanager/application/component/app/select2';
-import {
-  formatLocaleOption,
-  getOptionsFromChannels,
-  getOptionsFromLocales,
-} from 'akeneoassetmanager/application/asset-upload/utils/select2';
+import {ChannelDropdown} from 'akeneoassetmanager/application/component/app/ChannelDropdown';
+import {LocaleDropdown} from 'akeneoassetmanager/application/component/app/LocaleDropdown';
 
 const Container = styled.div<{status?: LineStatus; isReadOnly?: boolean}>`
   border-bottom: 1px solid ${getColor('grey', 80)};
@@ -33,11 +29,13 @@ const Container = styled.div<{status?: LineStatus; isReadOnly?: boolean}>`
       user-select: none;
     `}
 `;
+
 const Cells = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
+
 const Cell = styled.div<{width?: number}>`
   color: ${getColor('grey', 140)};
   display: flex;
@@ -53,23 +51,27 @@ const Cell = styled.div<{width?: number}>`
       width: ${props.width}px;
     `}
 `;
+
 const ActionsCell = styled(Cell)`
   flex-direction: row;
   justify-content: flex-end;
   gap: 10px;
 `;
+
 const StyledFilename = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
   word-break: break-all;
 `;
+
 const Thumbnail = styled.img`
   height: 48px;
   object-fit: cover;
   width: 48px;
   border: 1px solid ${getColor('grey', 80)};
 `;
+
 const Input = styled.input<{readOnly?: boolean; isValid?: boolean}>`
   border-radius: 2px;
   border: 1px solid ${getColor('grey', 80)};
@@ -84,11 +86,13 @@ const Input = styled.input<{readOnly?: boolean; isValid?: boolean}>`
       border-color: ${getColor('red', 100)};
     `}
 `;
+
 const Errors = styled.div`
   align-items: flex-start;
   display: flex;
   justify-content: space-between;
 `;
+
 const StyledError = styled.div`
   align-items: center;
   color: ${getColor('red', 100)};
@@ -111,74 +115,22 @@ const Error = ({message, ...props}: {message: string} & any) => (
   </StyledError>
 );
 
-type ChannelDropdownProps = {
-  options: Select2Options;
-  value: string | null;
-  readOnly: boolean;
-  onChange: (value: string) => void;
-};
-const ChannelDropdown = React.memo(({options, value, readOnly, onChange}: ChannelDropdownProps) => {
-  const translate = useTranslate();
-
-  return (
-    <Select2
-      data={options}
-      value={null === value ? '' : value}
-      multiple={false}
-      readOnly={readOnly}
-      configuration={{
-        allowClear: true,
-      }}
-      onChange={onChange}
-      aria-label={translate('pim_asset_manager.asset.upload.list.channel')}
-    />
-  );
-});
-
-type LocaleDropdownProps = {
-  options: Select2Options;
-  value: string | null;
-  readOnly: boolean;
-  onChange: (value: string) => void;
-};
-//TODO Use DSM SelectInput
-const LocaleDropdown = React.memo(({options, value, readOnly, onChange}: LocaleDropdownProps) => {
-  const translate = useTranslate();
-
-  return (
-    <Select2
-      data={options}
-      value={null === value ? '' : value}
-      multiple={false}
-      readOnly={readOnly}
-      configuration={{
-        allowClear: true,
-        formatResult: formatLocaleOption,
-        formatSelection: formatLocaleOption,
-      }}
-      onChange={onChange}
-      aria-label={translate('pim_asset_manager.asset.upload.list.locale')}
-    />
-  );
-});
-
 type RowProps = {
   line: Line;
   locale: LocaleCode;
   channels: Channel[];
-  locales: Locale[];
   onLineRemove: (line: Line) => void;
   onLineChange: (line: Line) => void;
   onLineUploadRetry: (line: Line) => void;
   valuePerLocale: boolean;
   valuePerChannel: boolean;
 };
+
 const Row = React.memo(
   ({
     line,
     locale,
     channels,
-    locales,
     onLineRemove,
     onLineChange,
     onLineUploadRetry,
@@ -188,8 +140,6 @@ const Row = React.memo(
     const translate = useTranslate();
     const status = getStatusFromLine(line, valuePerLocale, valuePerChannel);
     const errors = getAllErrorsOfLineByTarget(line);
-    const channelOptions = getOptionsFromChannels(channels, locale);
-    const localeOptions = getOptionsFromLocales(channels, locales, line.channel);
     const isReadOnly = line.isAssetCreating || line.assetCreated;
 
     const handleCodeChange = React.useCallback(
@@ -228,7 +178,7 @@ const Row = React.memo(
           <Cell width={ColumnWidths.filename}>
             <StyledFilename title={line.filename}>{line.filename}</StyledFilename>
           </Cell>
-          <Cell className={'edit-asset-code-input'} width={ColumnWidths.code}>
+          <Cell width={ColumnWidths.code}>
             <Input
               type="text"
               value={line.code}
@@ -241,8 +191,9 @@ const Row = React.memo(
           {valuePerChannel && (
             <Cell width={ColumnWidths.channel}>
               <ChannelDropdown
-                options={channelOptions}
-                value={line.channel}
+                channel={line.channel}
+                channels={channels}
+                uiLocale={locale}
                 readOnly={isReadOnly}
                 onChange={handleChannelChange}
               />
@@ -251,8 +202,8 @@ const Row = React.memo(
           {valuePerLocale && (
             <Cell width={ColumnWidths.locale}>
               <LocaleDropdown
-                options={localeOptions}
-                value={line.locale}
+                locale={line.locale}
+                locales={getLocalesFromChannel(channels, line.channel)}
                 readOnly={isReadOnly}
                 onChange={handleLocaleChange}
               />

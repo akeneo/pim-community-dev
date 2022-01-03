@@ -1,9 +1,15 @@
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  AssetsIllustration,
+  Dropdown,
+  Search,
+  SwitcherButton,
+  useAutoFocus,
+  useBooleanState,
+} from 'akeneo-design-system';
 import {useTranslate, getLabel, LocaleCode} from '@akeneo-pim-community/shared';
 import {AssetFamilyListItem} from 'akeneoassetmanager/domain/model/asset-family/list';
-import Select2 from 'akeneoassetmanager/application/component/app/select2';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {ColumnTitle} from 'akeneoassetmanager/application/component/app/column';
 import {AssetFamilyDataProvider} from 'akeneoassetmanager/application/hooks/asset-family';
 
 type AssetFamilySelectorProps = {
@@ -13,15 +19,15 @@ type AssetFamilySelectorProps = {
   onChange: (assetFamilyIdentifier: AssetFamilyIdentifier | null) => void;
 };
 
-export const useAssetFamilyList = (
+const useAssetFamilyList = (
   currentAssetFamilyIdentifier: AssetFamilyIdentifier | null,
   dataProvider: AssetFamilyDataProvider,
   onChange: (assetFamily: AssetFamilyIdentifier | null) => void
 ): [AssetFamilyListItem[], boolean] => {
-  const [assetFamilyList, setAssetFamilyList] = React.useState<AssetFamilyListItem[]>([]);
-  const [isFetching, setIsFetching] = React.useState(true);
+  const [assetFamilyList, setAssetFamilyList] = useState<AssetFamilyListItem[]>([]);
+  const [isFetching, setIsFetching] = useState(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isFetching) return;
 
     if (0 === assetFamilyList.length) {
@@ -37,7 +43,7 @@ export const useAssetFamilyList = (
     }
   }, [assetFamilyList, isFetching]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     dataProvider.assetFamilyFetcher.fetchAll().then((assetFamilyList: AssetFamilyListItem[]) => {
       setAssetFamilyList(assetFamilyList);
       setIsFetching(false);
@@ -48,40 +54,74 @@ export const useAssetFamilyList = (
 };
 
 /* istanbul ignore next */
-export const AssetFamilySelector = ({
-  assetFamilyIdentifier,
-  locale,
-  dataProvider,
-  onChange,
-}: AssetFamilySelectorProps) => {
+const AssetFamilySelector = ({assetFamilyIdentifier, locale, dataProvider, onChange}: AssetFamilySelectorProps) => {
   const translate = useTranslate();
+  const [isOpen, open, close] = useBooleanState();
+  const [searchValue, setSearchValue] = useState<string>('');
+  const inputRef = useRef<HTMLInputElement>(null);
+  const focus = useAutoFocus(inputRef);
   const [assetFamilyList, isFetching] = useAssetFamilyList(assetFamilyIdentifier, dataProvider, onChange);
 
-  const data = assetFamilyList.reduce(
-    (result, assetFamily) => ({
-      ...result,
-      [assetFamily.identifier]: getLabel(assetFamily.labels, locale, assetFamily.identifier),
-    }),
-    {}
+  const handleClose = () => {
+    close();
+    setSearchValue('');
+  };
+
+  const handleItemClick = (assetFamilyIdentifier: AssetFamilyIdentifier) => () => {
+    handleClose();
+    onChange(assetFamilyIdentifier);
+  };
+
+  useEffect(() => {
+    isOpen && focus();
+  }, [isOpen, focus]);
+
+  const selectedAssetFamily = assetFamilyList.find(({identifier}) => identifier === assetFamilyIdentifier) ?? null;
+
+  const filteredAssetFamilyList = assetFamilyList.filter(
+    ({identifier, labels}) =>
+      identifier.toLowerCase().includes(searchValue.toLowerCase()) ||
+      getLabel(labels, locale, identifier)
+        .toLowerCase()
+        .includes(searchValue.toLowerCase())
   );
 
-  return (
-    <>
-      <ColumnTitle>{translate('pim_asset_manager.asset_family.column.selector.title')}</ColumnTitle>
-      {null !== assetFamilyIdentifier && !isFetching ? (
-        //TODO Use DSM Dropdown?
-        <Select2
-          light
-          data={data}
-          value={assetFamilyIdentifier}
-          multiple={false}
-          readOnly={false}
-          configuration={{}}
-          onChange={onChange}
-        />
-      ) : (
-        translate('pim_asset_manager.asset_family.column.selector.no_data')
+  return null !== assetFamilyIdentifier && !isFetching ? (
+    <Dropdown>
+      <SwitcherButton
+        inline={false}
+        label={translate('pim_asset_manager.asset_family.column.selector.title')}
+        onClick={open}
+      >
+        {getLabel(selectedAssetFamily?.labels ?? {}, locale, assetFamilyIdentifier)}
+      </SwitcherButton>
+      {isOpen && (
+        <Dropdown.Overlay verticalPosition="down" onClose={handleClose}>
+          <Dropdown.Header>
+            <Search
+              inputRef={inputRef}
+              searchValue={searchValue}
+              onSearchChange={setSearchValue}
+              title={translate('pim_common.search')}
+              placeholder={translate('pim_common.search')}
+            />
+          </Dropdown.Header>
+          <Dropdown.ItemCollection
+            noResultIllustration={<AssetsIllustration />}
+            noResultTitle={translate('pim_common.no_result')}
+          >
+            {filteredAssetFamilyList.map(({identifier, labels}) => (
+              <Dropdown.Item key={identifier} onClick={handleItemClick(identifier)}>
+                {getLabel(labels, locale, identifier)}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.ItemCollection>
+        </Dropdown.Overlay>
       )}
-    </>
+    </Dropdown>
+  ) : (
+    <>{translate('pim_asset_manager.asset_family.column.selector.no_data')}</>
   );
 };
+
+export {AssetFamilySelector, useAssetFamilyList};

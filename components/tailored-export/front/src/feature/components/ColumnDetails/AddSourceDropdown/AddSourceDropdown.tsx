@@ -1,10 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react';
-import styled from 'styled-components';
 import {
   ArrowDownIcon,
   Button,
   Dropdown,
-  getColor,
   GroupsIllustration,
   Search,
   useAutoFocus,
@@ -15,15 +13,6 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {flattenSections} from './flattenSections';
 import {useOffsetAvailableSources} from '../../../hooks';
 import {MAX_SOURCE_COUNT} from '../../../models';
-
-const NoResultsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  line-height: normal;
-  margin: 10px 0 24px 0;
-  color: ${getColor('grey', 140)};
-`;
 
 type AddSourceDropdownProps = {
   canAddSource: boolean;
@@ -75,7 +64,11 @@ const AddSourceDropdown = ({canAddSource, onSourceSelected}: AddSourceDropdownPr
               title={translate('pim_common.search')}
             />
           </Dropdown.Header>
-          <Dropdown.ItemCollection onNextPage={handleNextPage}>
+          <Dropdown.ItemCollection
+            noResultTitle={translate('akeneo.tailored_export.column_details.sources.no_result')}
+            noResultIllustration={<GroupsIllustration />}
+            onNextPage={handleNextPage}
+          >
             {flattenSections(items).map((item, index) =>
               'section' === item.type ? (
                 <Dropdown.Section key={`section_${item.code}_${index}`}>{item.label}</Dropdown.Section>
@@ -90,12 +83,6 @@ const AddSourceDropdown = ({canAddSource, onSourceSelected}: AddSourceDropdownPr
                   {item.label}
                 </Dropdown.Item>
               )
-            )}
-            {0 === items.length && (
-              <NoResultsContainer>
-                <GroupsIllustration size={128} />
-                {translate('akeneo.tailored_export.column_details.sources.no_result')}
-              </NoResultsContainer>
             )}
           </Dropdown.ItemCollection>
         </Dropdown.Overlay>

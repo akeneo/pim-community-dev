@@ -130,11 +130,3 @@ test('it calls onChange handler when clicking on another channel', async () => {
 
   expect(handleOnChange).toHaveBeenCalledWith('mobile');
 });
-
-test('it returns nothing when locale is not found', () => {
-  renderWithProviders(
-    <ChannelDropdown uiLocale="en_US" channels={channels} channel="unknown_channel" onChange={jest.fn()} />
-  );
-
-  expect(screen.queryByText('unknown_channel')).not.toBeInTheDocument();
-});

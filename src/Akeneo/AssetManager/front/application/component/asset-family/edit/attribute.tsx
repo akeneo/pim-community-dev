@@ -1,7 +1,20 @@
-import React, {memo} from 'react';
+import React, {memo, useRef} from 'react';
 import {connect} from 'react-redux';
-import {Key, Button, SectionTitle} from 'akeneo-design-system';
-import {useTranslate, Translate, useSecurity} from '@akeneo-pim-community/shared';
+import {Key, Button, SectionTitle, useAutoFocus} from 'akeneo-design-system';
+import {
+  useTranslate,
+  Translate,
+  useSecurity,
+  PageHeader,
+  LocaleCode,
+  LocaleSelector,
+  Locale,
+  NoDataSection,
+  NoDataTitle,
+  NoDataText,
+  Section,
+  PageContent,
+} from '@akeneo-pim-community/shared';
 import {attributeCreationStart} from 'akeneoassetmanager/domain/event/attribute/create';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {CreateState} from 'akeneoassetmanager/application/reducer/attribute/create';
@@ -11,7 +24,6 @@ import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/ident
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {attributeEditionStartByIdentifier} from 'akeneoassetmanager/application/action/attribute/edit';
 import AttributeEditForm from 'akeneoassetmanager/application/component/attribute/edit';
-import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
@@ -19,10 +31,16 @@ import {getAttributeIcon} from 'akeneoassetmanager/application/configuration/att
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import {EditOptionState} from 'akeneoassetmanager/application/reducer/attribute/type/option';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
+import {catalogLocaleChanged} from 'akeneoassetmanager/domain/event/user';
+import {ContextSwitchers} from 'akeneoassetmanager/application/component/app/layout';
+import {UserNavigation} from 'akeneoassetmanager/application/component/app/user-navigation';
 
 interface StateProps {
   context: {
     locale: string;
+  };
+  structure: {
+    locales: Locale[];
   };
   rights: {
     locale: {
@@ -43,6 +61,7 @@ interface DispatchProps {
   events: {
     onAttributeCreationStart: () => void;
     onAttributeEdit: (attributeIdentifier: AttributeIdentifier) => void;
+    onLocaleChanged: (localeCode: LocaleCode) => void;
   };
 }
 interface CreateProps extends StateProps, DispatchProps {}
@@ -203,83 +222,92 @@ const AttributesView = ({
   createAttribute,
   editAttribute,
   options,
+  structure,
 }: CreateProps) => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
-
   const canCreateAttribute = isGranted('akeneo_assetmanager_attribute_create') && rights.assetFamily.edit;
-
   const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useAutoFocus(buttonRef);
 
   return (
     <>
-      <Header
-        label={translate('pim_asset_manager.asset_family.tab.attribute')}
-        image={assetFamily.image}
-        primaryAction={(defaultFocus: React.RefObject<any>) =>
-          canCreateAttribute ? (
-            <Button level="secondary" onClick={events.onAttributeCreationStart} ref={defaultFocus} tabIndex={0}>
+      <PageHeader>
+        <PageHeader.Breadcrumb>
+          <AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />
+        </PageHeader.Breadcrumb>
+        <PageHeader.UserActions>
+          <UserNavigation />
+        </PageHeader.UserActions>
+        <PageHeader.Actions>
+          {canCreateAttribute && (
+            <Button level="secondary" onClick={events.onAttributeCreationStart} ref={buttonRef}>
               {translate('pim_asset_manager.attribute.button.add')}
             </Button>
-          ) : null
-        }
-        withLocaleSwitcher={true}
-        withChannelSwitcher={false}
-        isDirty={false}
-        breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
-        displayActions={canCreateAttribute}
-      />
-      <div className="AknSubsection">
-        <SectionTitle sticky={160}>
-          <SectionTitle.Title>{translate('pim_asset_manager.asset_family.attribute.title')}</SectionTitle.Title>
-        </SectionTitle>
-        {firstLoading || 0 < attributes.length ? (
-          <div className="AknSubsection-container">
-            <div className="AknFormContainer AknFormContainer--withPadding">
-              {renderSystemAttributes(translate)}
-              {firstLoading ? (
-                <AttributePlaceholders />
-              ) : (
-                <>
-                  {attributes.map((attribute: NormalizedAttribute) => (
-                    <ErrorBoundary
-                      key={attribute.identifier}
-                      errorMessage={translate('pim_asset_manager.asset_family.attribute.error.render_list')}
-                    >
-                      <AttributeView
-                        normalizedAttribute={attribute}
-                        onAttributeEdit={events.onAttributeEdit}
-                        locale={context.locale}
-                        rights={rights}
-                      />
-                    </ErrorBoundary>
-                  ))}
-                </>
-              )}
-            </div>
-            {editAttribute && <AttributeEditForm rights={rights} />}
-          </div>
-        ) : (
-          <>
+          )}
+        </PageHeader.Actions>
+        <PageHeader.Title>{translate('pim_asset_manager.asset_family.tab.attribute')}</PageHeader.Title>
+        <PageHeader.Content>
+          {0 < structure.locales.length && (
+            <ContextSwitchers>
+              <LocaleSelector value={context.locale} values={structure.locales} onChange={events.onLocaleChanged} />
+            </ContextSwitchers>
+          )}
+        </PageHeader.Content>
+      </PageHeader>
+      <PageContent>
+        <Section>
+          <SectionTitle sticky={0}>
+            <SectionTitle.Title>{translate('pim_asset_manager.asset_family.attribute.title')}</SectionTitle.Title>
+          </SectionTitle>
+          {firstLoading || 0 < attributes.length ? (
             <div className="AknSubsection-container">
-              <div className="AknFormContainer AknFormContainer--withPadding">{renderSystemAttributes(translate)}</div>
-            </div>
-            <div className="AknGridContainer-noData AknGridContainer-noData--small">
-              <div className="AknGridContainer-noDataTitle">
-                {translate('pim_asset_manager.attribute.no_data.title', {entityLabel: assetFamilyLabel})}
+              <div className="AknFormContainer">
+                {renderSystemAttributes(translate)}
+                {firstLoading ? (
+                  <AttributePlaceholders />
+                ) : (
+                  <>
+                    {attributes.map((attribute: NormalizedAttribute) => (
+                      <ErrorBoundary
+                        key={attribute.identifier}
+                        errorMessage={translate('pim_asset_manager.asset_family.attribute.error.render_list')}
+                      >
+                        <AttributeView
+                          normalizedAttribute={attribute}
+                          onAttributeEdit={events.onAttributeEdit}
+                          locale={context.locale}
+                          rights={rights}
+                        />
+                      </ErrorBoundary>
+                    ))}
+                  </>
+                )}
               </div>
-              <div className="AknGridContainer-noDataSubtitle">
-                {translate('pim_asset_manager.attribute.no_data.subtitle')}
-              </div>
-              <button className="AknButton AknButton--action" onClick={events.onAttributeCreationStart}>
-                {translate('pim_asset_manager.attribute.button.add')}
-              </button>
+              {editAttribute && <AttributeEditForm rights={rights} />}
             </div>
-          </>
-        )}
-        {createAttribute.active && <CreateAttributeModal />}
-        {options.isActive && <ManageOptionsView rights={rights} />}
-      </div>
+          ) : (
+            <>
+              <div className="AknFormContainer">{renderSystemAttributes(translate)}</div>
+              <NoDataSection>
+                <NoDataTitle>
+                  {translate('pim_asset_manager.attribute.no_data.title', {entityLabel: assetFamilyLabel})}
+                </NoDataTitle>
+                <NoDataText>{translate('pim_asset_manager.attribute.no_data.subtitle')}</NoDataText>
+                <NoDataTitle>
+                  <Button level="secondary" onClick={events.onAttributeCreationStart}>
+                    {translate('pim_asset_manager.attribute.button.add')}
+                  </Button>
+                </NoDataTitle>
+              </NoDataSection>
+            </>
+          )}
+          {createAttribute.active && <CreateAttributeModal />}
+          {options.isActive && <ManageOptionsView rights={rights} />}
+        </Section>
+      </PageContent>
     </>
   );
 };
@@ -291,6 +319,9 @@ export default connect(
     return {
       context: {
         locale: locale,
+      },
+      structure: {
+        locales: state.structure.locales,
       },
       rights: {
         locale: {
@@ -316,6 +347,9 @@ export default connect(
         },
         onAttributeEdit: (attributeIdentifier: AttributeIdentifier) => {
           dispatch(attributeEditionStartByIdentifier(attributeIdentifier));
+        },
+        onLocaleChanged: (localeCode: LocaleCode) => {
+          dispatch(catalogLocaleChanged(localeCode));
         },
       },
     };
