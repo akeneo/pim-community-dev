@@ -5,7 +5,7 @@ import {AppWizardData} from '../../../model/Apps/wizard-data';
 import {NotificationLevel, useNotify} from '../../../shared/notify';
 import {PermissionFormProvider, usePermissionFormRegistry} from '../../../shared/permission-form-registry';
 import {useTranslate} from '../../../shared/translate';
-import {useConfirmAuthorization} from '../../hooks/use-confirm-authorization';
+import {RejectReason, useConfirmAuthorization} from '../../hooks/use-confirm-authorization';
 import {useFetchAppWizardData} from '../../hooks/use-fetch-app-wizard-data';
 import {Authentication} from './steps/Authentication/Authentication';
 import {Authorizations} from './steps/Authorizations';
@@ -104,10 +104,9 @@ export const AppWizardWithPermissions: FC<Props> = ({clientId}) => {
         try {
             ({userGroup, redirectUrl} = await confirmAuthorization());
         } catch (e) {
-            // @ts-ignore
-            if (400 <= e.status && e.status < 500) {
-                // @ts-ignore
-                e.errors.map(error => notify(NotificationLevel.ERROR, translate(error.message)));
+            const { status, errors} = e as RejectReason;
+            if (400 <= status && status < 500) {
+                errors.map(error => notify(NotificationLevel.ERROR, translate(error.message)));
                 return;
             }
 

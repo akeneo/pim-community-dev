@@ -13,7 +13,7 @@ interface Error {
 }
 
 export interface RejectReason {
-    status: string;
+    status: number;
     statusText: string;
     errors: Error[];
 }
