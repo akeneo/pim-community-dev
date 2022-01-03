@@ -104,7 +104,7 @@ export const AppWizardWithPermissions: FC<Props> = ({clientId}) => {
         try {
             ({userGroup, redirectUrl} = await confirmAuthorization());
         } catch (e) {
-            const { status, errors} = e as RejectReason;
+            const {status, errors} = e as RejectReason;
             if (400 <= status && status < 500) {
                 errors.map(error => notify(NotificationLevel.ERROR, translate(error.message)));
                 return;
