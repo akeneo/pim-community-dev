@@ -26,6 +26,9 @@ $rules = [
         [
             'Akeneo\Pim\Automation\DataQualityInsights\Domain',
 
+            //To fix: Create an interface or extract its call in a subscriber
+            'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductsIndex',
+
             //External dependencies
             'Psr\Log\LoggerInterface',
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
