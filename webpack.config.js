@@ -251,6 +251,10 @@ const webpackConfig = {
       'process.env.NODE_ENV': isProd ? JSON.stringify('production') : JSON.stringify('development'),
       'process.env.EDITION': JSON.stringify(process.env.EDITION),
     }),
+
+    new webpack.IgnorePlugin({
+      resourceRegExp: /__mocks__/
+    })
   ],
 };
 
