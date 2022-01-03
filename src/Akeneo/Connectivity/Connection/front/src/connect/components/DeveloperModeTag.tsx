@@ -27,9 +27,7 @@ const DeveloperModeTag = (): ReactElement => {
     const translate = useTranslate();
     return (
         <BadgeContainer>
-            <Badge level="primary">
-                {translate('akeneo_connectivity.connection.developer_mode')}
-            </Badge>
+            <Badge level='primary'>{translate('akeneo_connectivity.connection.developer_mode')}</Badge>
         </BadgeContainer>
     );
 };

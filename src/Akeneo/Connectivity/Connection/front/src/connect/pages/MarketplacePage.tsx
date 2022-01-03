@@ -69,7 +69,7 @@ export const MarketplacePage: FC = () => {
         </Breadcrumb>
     );
 
-    const tag = featureFlag.isEnabled('app_developer_mode') ? <DeveloperModeTag/> : null;
+    const tag = featureFlag.isEnabled('app_developer_mode') ? <DeveloperModeTag /> : null;
 
     return (
         <>
