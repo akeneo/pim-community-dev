@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.67 (2022-01-03)
+
 ## Bug fixes
 
 - PIM-10222: Fixed selected category glitch on product grid category filter
