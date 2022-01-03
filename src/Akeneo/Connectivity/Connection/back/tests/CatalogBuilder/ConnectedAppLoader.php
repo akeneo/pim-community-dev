@@ -103,7 +103,7 @@ SQL;
         );
     }
 
-    public function createConnectedAppWithUserAndTokens(string $id, string $code): void
+    public function createConnectedAppWithUserAndTokens(string $id, string $code, array $scopes = ['read_products']): void
     {
         $marketplaceApp = App::fromWebMarketplaceValues([
             'id' => $id,
@@ -138,7 +138,7 @@ SQL;
         );
         $this->createApp->execute(
             $marketplaceApp,
-            ['read_products'],
+            $scopes,
             $connection->code(),
             $group->getName()
         );

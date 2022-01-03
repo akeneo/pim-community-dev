@@ -82,7 +82,7 @@ class AuthorizeEndToEnd extends WebTestCase
                 'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
                 'response_type' => 'code',
                 'state' => 'foo',
-                'scope' => 'read_catalog_structure SOME_UNKNOWN_SCOPE write_categories'
+                'scope' => 'read_catalog_structure SOME_UNKNOWN_SCOPE write_categories openid profile'
             ]
         );
         $response = $this->client->getResponse();
@@ -95,7 +95,8 @@ class AuthorizeEndToEnd extends WebTestCase
         Assert::assertNotEmpty($authorizationInSession);
         Assert::assertEquals([
             'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
-            'scope' => 'read_catalog_structure write_categories',
+            'authorization_scope' => 'read_catalog_structure write_categories',
+            'authentication_scope' => 'openid profile',
             'redirect_uri' => 'http://shopware.example.com/callback',
             'state' => 'foo',
         ], json_decode($authorizationInSession, true));
@@ -138,6 +139,7 @@ class AuthorizeEndToEnd extends WebTestCase
     {
         $this->featureFlagMarketplaceActivate->enable();
         $this->authenticateAsAdmin();
+        $this->removeAclFromRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');
         $this->removeAclFromRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
 
         $this->client->request(
@@ -152,6 +154,48 @@ class AuthorizeEndToEnd extends WebTestCase
         $response = $this->client->getResponse();
 
         Assert::assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    }
+
+    public function test_it_authorizes_with_acl_open_apps(): void
+    {
+        $this->featureFlagMarketplaceActivate->enable();
+        $this->authenticateAsAdmin();
+        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');
+        $this->removeAclFromRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
+
+        $this->client->request(
+            'GET',
+            '/connect/apps/v1/authorize',
+            [
+                'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
+                'response_type' => 'code',
+                'state' => 'foo',
+            ]
+        );
+        $response = $this->client->getResponse();
+
+        Assert::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
+    }
+
+    public function test_it_authorizes_with_acl_manage_apps(): void
+    {
+        $this->featureFlagMarketplaceActivate->enable();
+        $this->authenticateAsAdmin();
+        $this->removeAclFromRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');
+        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
+
+        $this->client->request(
+            'GET',
+            '/connect/apps/v1/authorize',
+            [
+                'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
+                'response_type' => 'code',
+                'state' => 'foo',
+            ]
+        );
+        $response = $this->client->getResponse();
+
+        Assert::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
     }
 
     private function loadAppsFixtures(): void

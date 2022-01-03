@@ -7,17 +7,17 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Service\UrlReachabilityCh
 use Akeneo\Connectivity\Connection\Domain\Webhook\DTO\UrlReachabilityStatus;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
 use GuzzleHttp\ClientInterface;
-use PhpSpec\ObjectBehavior;
+use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\Assert;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use PHPUnit\Framework\Assert;
-use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Exception\TransferException;
-use GuzzleHttp\Exception\RequestException;
 
 /**
  * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Acceptance;
 
-use Akeneo\Tool\Bundle\MeasureBundle\Installer\MeasurementInstaller;
-use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 abstract class AcceptanceTestCase extends KernelTestCase

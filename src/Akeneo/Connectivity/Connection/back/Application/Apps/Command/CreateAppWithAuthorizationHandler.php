@@ -25,9 +25,9 @@ final class CreateAppWithAuthorizationHandler
     private ValidatorInterface $validator;
     private AppAuthorizationSessionInterface $session;
     private GetAppQueryInterface $getAppQuery;
-    private CreateConnectionInterface $createConnection;
     private CreateUserInterface $createUser;
     private CreateUserGroupInterface $createUserGroup;
+    private CreateConnectionInterface $createConnection;
     private AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory;
     private ClientProviderInterface $clientProvider;
     private CreateConnectedAppInterface $createApp;
@@ -41,7 +41,7 @@ final class CreateAppWithAuthorizationHandler
         CreateConnectionInterface $createConnection,
         AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory,
         ClientProviderInterface $clientProvider,
-        CreateConnectedAppInterface $createApp
+        CreateConnectedAppInterface $createApp,
     ) {
         $this->validator = $validator;
         $this->session = $session;
@@ -85,7 +85,7 @@ final class CreateAppWithAuthorizationHandler
             throw new \LogicException('The user group should have a name, got null.');
         }
 
-        $role = $this->appRoleWithScopesFactory->createRole($appId, $appAuthorization->getScopeList());
+        $role = $this->appRoleWithScopesFactory->createRole($appId, $appAuthorization->getAuthorizationScopes()->getScopes());
         if (null === $role->getRole()) {
             throw new \LogicException('The user role should have a role code, like ROLE_*, got null.');
         }
@@ -108,7 +108,7 @@ final class CreateAppWithAuthorizationHandler
 
         $this->createApp->execute(
             $marketplaceApp,
-            $appAuthorization->getScopeList(),
+            $appAuthorization->getAuthorizationScopes()->getScopes(),
             $connection->code(),
             $group->getName()
         );

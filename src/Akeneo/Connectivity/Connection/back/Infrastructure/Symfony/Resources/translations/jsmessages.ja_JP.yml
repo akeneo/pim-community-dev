@@ -11,7 +11,6 @@ pim_menu:
     connection_audit: 接続ダッシュボード
     connection_settings: 接続
     connection_settings_edit: 接続設定
-    connection_monitoring: モニタリング
     connection_webhook_edit: イベントサブスクリプション
     connection_webhook_event_logs: イベントログ
     data_flows: データフロー
@@ -64,6 +63,12 @@ akeneo_connectivity.connection:
         tabs:
           settings: 設定
           permissions: 許可
+        error_monitoring:
+          not_auditable:
+            description:
+              1: To track errors on this app,
+              2: モニタリングの有効化
+              3: 設定
       delete:
         title: 削除を確認
         link: 何が起こるかご確認ください。
@@ -118,7 +123,6 @@ akeneo_connectivity.connection:
     label: ラベル
     flow_type: フロータイプ
     image: 画像
-    auditable: この接続をダッシュボード上で追跡
     client_id: クライアントID
     secret: 非公開
     username: ユーザー名
@@ -250,9 +254,6 @@ akeneo_connectivity.connection:
       content: フィードバックは私たちにとってとても貴重です。このアンケート調査に回答して、次のウィジェットを選択する参考にさせてください。
       button: はじめよう！
     connection_selector:
-      title:
-        source: ソース接続
-        destination: 接続宛先
       all: すべて
     charts:
       inbound: 受信
@@ -266,12 +267,10 @@ akeneo_connectivity.connection:
     error_management:
       data_source_error_chart:
         section:
-          title: ソース接続時のエラー
           helper: ここでは、ビジネスエラーを含むエラーの合計数を確認できます。
         chart:
           title: 1日あたりのエラー数
       widget:
-        title: ソース接続ごとのビジネスエラー
         over_the_last_seven_days: 過去１週間
         business_errors: ビジネスエラー
     no_connection:
@@ -357,7 +356,6 @@ akeneo_connectivity.connection:
           message: メッセージ
   error_management:
     connection_monitoring:
-      title: モニタリング
       helper:
         title: '{0} あなたには {{ count }} エラーがあります |[1,Inf] あなたには {{ count }} エラーがあります'
         description: ここでは、過去7日間のこの接続の各エラーの詳細を見ることができます。エラー番号は100個までです。

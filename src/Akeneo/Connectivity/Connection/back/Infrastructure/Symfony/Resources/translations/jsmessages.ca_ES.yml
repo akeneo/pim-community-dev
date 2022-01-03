@@ -5,7 +5,6 @@ pim_menu:
     connection_audit: Panell de connexions
     connection_settings: Connexions
     connection_settings_edit: Configuració de la connexió
-    connection_monitoring: Monitorització
     connect_connection_settings: Configuració de la connexió
 pim_title:
   akeneo_connectivity_connection_settings_edit: Configuració de la connexió
@@ -37,7 +36,6 @@ akeneo_connectivity.connection:
     label: Etiqueta
     flow_type: Tipus de flux
     image: Imatge
-    auditable: Rastreja aquesta connexió en el taulell
     client_id: ID de client
     secret: Secret
     username: Nom d’usuari
@@ -153,8 +151,6 @@ akeneo_connectivity.connection:
       content: Els seus comentaris són realment valuosos per a nosaltres. Ajuda'ns a escollir el proper widget responent aquesta enquesta de només una pregunta.
       button: Som-hi!
     connection_selector:
-      title:
-        source: Connexions de la font
       all: Tot
     charts:
       number_of_products_created: Productes creats
@@ -204,7 +200,6 @@ akeneo_connectivity.connection:
           all: Tot
   error_management:
     connection_monitoring:
-      title: Monitoritzant
       helper:
         title: '{0} Te {{ count }} error |[1,Inf] Tens {{ count }} errores'
       search_filter:

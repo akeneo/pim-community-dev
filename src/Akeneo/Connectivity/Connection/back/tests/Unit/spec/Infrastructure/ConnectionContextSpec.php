@@ -19,7 +19,7 @@ use PhpSpec\ObjectBehavior;
  */
 class ConnectionContextSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         AreCredentialsValidCombinationQuery $areCredentialsValidCombinationQuery,
         SelectConnectionCodeByClientIdQuery $selectConnectionCode,
         ConnectionRepository $connectionRepository

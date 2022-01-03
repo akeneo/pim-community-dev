@@ -2,7 +2,7 @@ version: 2.1
 workflows:
     version: 2
 
-    octopus_workflow:
+    octopus_pull_request:
         when:
             not:
                 equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
@@ -26,16 +26,12 @@ workflows:
             - test_marketplace_activate_e2e:
                   requires:
                       - build_dev_ce
-            - test_back_data_migrations:
-                  requires:
-                      - build_dev_ce
             - pull_request_success:
                   requires:
                       - test_front_connectivity
                       - test_back_connectivity
-                      - test_back_data_migrations
 
-    weekly_octopus_code_quality:
+    octopus_weekly_code_quality:
         when:
             and:
                 - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]

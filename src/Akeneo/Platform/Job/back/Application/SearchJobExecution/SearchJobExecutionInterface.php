@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Application\SearchJobExecution;
 
+use Akeneo\Platform\Job\Application\SearchJobExecution\Model\JobExecutionRow;
+
 /**
  * @author Grégoire Houssard <gregoire.houssard@akeneo.com>
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
