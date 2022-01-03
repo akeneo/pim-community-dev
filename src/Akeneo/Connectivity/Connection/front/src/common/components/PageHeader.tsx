@@ -7,6 +7,7 @@ type Props = PropsWithChildren<{
     userButtons?: ReactNode;
     state?: ReactNode;
     imageSrc?: string;
+    tag?: ReactNode;
 }>;
 
 const ButtonCollection = styled.div.attrs(() => ({className: 'AknTitleContainer-actionsContainer AknButtonList'}))`
@@ -19,7 +20,7 @@ const AknTitleContainerBreadcrumbs = styled.div.attrs(() => ({className: 'AknTit
     min-height: 32px;
 `;
 
-export const PageHeader = ({children: title, breadcrumb, buttons, userButtons, state, imageSrc}: Props) => (
+export const PageHeader = ({children: title, breadcrumb, buttons, userButtons, state, imageSrc, tag}: Props) => (
     <Header>
         <div className='AknTitleContainer-line'>
             {imageSrc && (
@@ -33,6 +34,7 @@ export const PageHeader = ({children: title, breadcrumb, buttons, userButtons, s
                     <div className='AknTitleContainer-line'>
                         <AknTitleContainerBreadcrumbs>{breadcrumb}</AknTitleContainerBreadcrumbs>
                         <div className='AknTitleContainer-buttonsContainer'>
+                            {tag}
                             {userButtons}
                             {buttons && (
                                 <ButtonCollection>

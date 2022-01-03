@@ -13,6 +13,7 @@ import {Marketplace} from '../components/Marketplace';
 import {MarketplaceIsLoading} from '../components/MarketplaceIsLoading';
 import {useFetchApps} from '../hooks/use-fetch-apps';
 import {useFeatureFlags} from '../../shared/feature-flags';
+import {DeveloperModeTag} from '../components/DeveloperModeTag';
 
 export const MarketplacePage: FC = () => {
     const translate = useTranslate();
@@ -68,9 +69,11 @@ export const MarketplacePage: FC = () => {
         </Breadcrumb>
     );
 
+    const tag = featureFlag.isEnabled('app_developer_mode') ? <DeveloperModeTag/> : null;
+
     return (
         <>
-            <PageHeader breadcrumb={breadcrumb} userButtons={<UserButtons />}>
+            <PageHeader breadcrumb={breadcrumb} userButtons={<UserButtons />} tag={tag}>
                 {translate('pim_menu.item.marketplace')}
             </PageHeader>
 
