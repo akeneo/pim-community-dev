@@ -1,6 +1,7 @@
 import {Router} from '@akeneo-pim-community/shared';
 import {Attribute, AttributeCode} from '../../models';
 import {AttributeFetcherIndexParams} from '../AttributeFetcher';
+import {getComplexTableAttribute} from '../../../__tests__/factories';
 
 const attribute: Attribute = {
   code: 'nutrition',
@@ -66,6 +67,9 @@ const getAttribute = (overrideAttributes: any) => {
 const fetchAttribute = async (_router: Router, attributeCode: AttributeCode): Promise<Attribute> => {
   if (attributeCode === 'nutrition') {
     return new Promise(resolve => resolve(attribute));
+  }
+  if (attributeCode === 'city') {
+    return new Promise(resolve => resolve(getComplexTableAttribute('record')));
   }
 
   throw new Error(`Non mocked attribute ${attributeCode}`);

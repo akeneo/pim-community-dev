@@ -45,7 +45,10 @@ const search: (
     ],
   };
 
-  if (codes) body.filters.push({field: 'code', operator: 'IN', value: codes});
+  if (codes) {
+    if (codes.length === 0) return [];
+    body.filters.push({field: 'code', operator: 'IN', value: codes});
+  }
 
   const response = await fetch(url, {
     method: 'PUT',

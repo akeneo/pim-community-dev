@@ -3,8 +3,8 @@ import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/fro
 import {DatagridTableFilter} from '../../../src';
 import {act, fireEvent, screen} from '@testing-library/react';
 import {mockScroll} from '../../shared/mockScroll';
-import {getComplexTableAttribute} from "../../factories";
-import {TestAttributeContextProvider} from "../../shared/TestAttributeContextProvider";
+import {getComplexTableAttribute} from '../../factories';
+import {TestAttributeContextProvider} from '../../shared/TestAttributeContextProvider';
 
 jest.mock('../../../src/fetchers/AttributeFetcher');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
@@ -309,6 +309,7 @@ describe('DatagridTableFilter', () => {
   });
 
   it('should render records values for first column', async () => {
+    const handleChange = jest.fn();
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute('record')}>
         <DatagridTableFilter
@@ -316,13 +317,56 @@ describe('DatagridTableFilter', () => {
           canDisable={true}
           onDisable={jest.fn()}
           attributeCode={'city'}
-          onChange={jest.fn()}
+          onChange={handleChange}
           initialDataFilter={{}}
         />
       </TestAttributeContextProvider>
     );
 
     await openDropdown();
-    expect(await screen.findByText('Lannion')).toBeInTheDocument();
+    await selectRow('pim_table_attribute.datagrid.any_row');
+    selectColumn('City');
+    selectOperator('IN');
+    act(() => {
+      fireEvent.click(screen.getAllByTitle('pim_common.open')[3]);
+    });
+    expect(await screen.findByText('Vannes')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Vannes'));
+    act(() => scroll());
+    expect(await screen.findByText('Coueron')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Coueron'));
+    fireEvent.click(screen.getByText('pim_common.update'));
+
+    expect(
+      await screen.findByTitle('pim_table_attribute.datagrid.any City pim_common.operators.IN Vannes, Coueron')
+    ).toBeInTheDocument();
+    expect(handleChange).toBeCalledWith({
+      column: 'city',
+      operator: 'IN',
+      value: ['vannes00bcf56a_2aa9_47c5_ac90_a973460b18a3', 'coueron00893335_2e73_41e3_ac34_763fb6a35107'],
+    });
+  });
+
+  it('should render criteria with record', async () => {
+    const handleChange = jest.fn();
+    renderWithProviders(
+      <TestAttributeContextProvider attribute={getComplexTableAttribute('record')}>
+        <DatagridTableFilter
+          showLabel={true}
+          canDisable={true}
+          onDisable={jest.fn()}
+          attributeCode={'city'}
+          onChange={handleChange}
+          initialDataFilter={{
+            row: 'nantes00e3cffd_f60e_4a51_925b_d2952bd947e1',
+            column: 'city',
+            operator: 'IN',
+            value: ['vannes00bcf56a_2aa9_47c5_ac90_a973460b18a3', 'coueron00893335_2e73_41e3_ac34_763fb6a35107'],
+          }}
+        />
+      </TestAttributeContextProvider>
+    );
+
+    expect(await screen.findByTitle('Nantes City pim_common.operators.IN Vannes, Coueron')).toBeInTheDocument();
   });
 });

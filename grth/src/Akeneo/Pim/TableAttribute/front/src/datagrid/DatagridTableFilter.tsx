@@ -7,7 +7,10 @@ import {
   isFilterValid,
   PendingBackendTableFilterValue,
   PendingTableFilterValue,
+  RecordCode,
+  RecordColumnDefinition,
   ReferenceEntityRecord,
+  SelectOption,
   TableAttribute,
 } from '../models';
 import {AttributeFetcher} from '../fetchers';
@@ -53,7 +56,9 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
   const [filterValue, setFilterValue] = useState<PendingTableFilterValue | undefined>();
   const {getOptionsFromColumnCode} = useFetchOptions(attribute, setAttribute);
   const isMounted = useIsMounted();
-  const [referenceEntities, setReferenceEntities] = useState<ReferenceEntityRecord[] | null | undefined>();
+  const [records, setRecords] = useState<ReferenceEntityRecord[] | undefined>();
+
+  const firstColumnType = attribute?.table_configuration[0]?.data_type;
 
   useEffect(() => {
     AttributeFetcher.fetch(router, attributeCode).then(attribute => {
@@ -63,35 +68,42 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
       }
     });
   }, []);
+  const optionsFromFirstSelectColumn = attribute
+    ? getOptionsFromColumnCode(attribute.table_configuration[0].code)
+    : undefined;
 
   useEffect(() => {
-    const firstColumn = attribute?.table_configuration[0];
-    if (firstColumn?.data_type !== 'record') return;
+    if (!attribute) return;
+    const firstColumn = attribute?.table_configuration[0] as RecordColumnDefinition;
+
+    let codes: RecordCode[] = [];
+    if (initialDataFilter.row && firstColumnType === 'record') codes.push(initialDataFilter.row);
+    const filteredColumn = attribute?.table_configuration.find(({code}) => code === initialDataFilter.column);
+    if (Array.isArray(initialDataFilter.value) && filteredColumn?.data_type === 'record')
+      codes = codes.concat(initialDataFilter.value);
 
     ReferenceEntityRecordRepository.search(router, firstColumn.reference_entity_identifier, {
       locale: catalogLocale,
       channel: userContext.get('catalogScope'),
+      codes,
     }).then(records => {
-      setReferenceEntities(records);
+      setRecords(records);
     });
-  }, [attribute?.table_configuration, router]);
-
-  const optionsForFirstColumn = React.useMemo(() => {
-    if (!attribute) return undefined;
-    const firstColumn = attribute.table_configuration[0];
-    if (firstColumn.data_type === 'record') {
-      return referenceEntities;
-    }
-    return getOptionsFromColumnCode(attribute.table_configuration[0].code);
-  }, [attribute, getOptionsFromColumnCode, referenceEntities]);
+  }, [attribute, catalogLocale, router, userContext]);
 
   React.useEffect(() => {
-    if (!attribute || !isMounted() || typeof optionsForFirstColumn === 'undefined' || optionsForFirstColumn === null)
+    if (
+      !attribute ||
+      !isMounted() ||
+      typeof records === 'undefined' ||
+      (firstColumnType === 'select' && typeof optionsFromFirstSelectColumn === 'undefined')
+    )
       return;
 
     const column = attribute.table_configuration.find(column => column.code === initialDataFilter.column);
+    const optionsOrRecords = firstColumnType === 'select' ? (optionsFromFirstSelectColumn as SelectOption[]) : records;
     const row =
-      optionsForFirstColumn.find(option => option.code === initialDataFilter.row) ||
+      optionsOrRecords.find(({code}) => code === initialDataFilter.row) ||
       (initialDataFilter.operator ? null : undefined);
     const pendingFilter = {
       row,
@@ -100,7 +112,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
       operator: initialDataFilter.operator,
     };
     setFilterValue(pendingFilter);
-  }, [optionsForFirstColumn, attribute]);
+  }, [optionsFromFirstSelectColumn, attribute, isMounted, records, firstColumnType]);
 
   const handleValidate = () => {
     if (filterValue && isFilterValid(filterValue)) {

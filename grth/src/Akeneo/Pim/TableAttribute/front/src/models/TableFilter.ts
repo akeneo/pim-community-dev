@@ -1,4 +1,5 @@
 import {ColumnCode, ColumnDefinition, SelectOption, SelectOptionCode} from './TableConfiguration';
+import {RecordCode} from './ReferenceEntityRecord';
 
 export type FilterOperator =
   | 'STARTS WITH'
@@ -16,7 +17,7 @@ export type FilterOperator =
   | 'IN'
   | 'NOT IN';
 
-export type FilterValue = string | string[] | number | boolean;
+export type FilterValue = string | number | boolean | RecordCode[] | SelectOptionCode[];
 
 export type BackendTableFilterValue =
   | {}
@@ -28,7 +29,7 @@ export type BackendTableFilterValue =
     };
 
 export type PendingBackendTableFilterValue = {
-  row?: SelectOptionCode;
+  row?: SelectOptionCode | RecordCode;
   column?: ColumnCode;
   operator?: FilterOperator;
   value?: FilterValue;
