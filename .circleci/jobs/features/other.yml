@@ -296,8 +296,8 @@ jobs:
                   name: Add configuration files to run the bundle tests from the PIM
                   command: |
                       rm -f docker-compose.override.yml
-                      PIM_VERSION=master SETUP_FOR_CI=1 PIM_CONTEXT=onboarder make setup-onboarder-parameters
-                      PIM_VERSION=master PIM_CONTEXT=onboarder make setup-onboarder-tests
+                      PIM_VERSION=6.0 SETUP_FOR_CI=1 PIM_CONTEXT=onboarder make setup-onboarder-parameters
+                      PIM_VERSION=6.0 PIM_CONTEXT=onboarder make setup-onboarder-tests
                       docker-compose run --rm php php /usr/local/bin/composer dumpautoload --no-interaction
             - run:
                   name: Change owner of PIM as some files have been created with wrong owner
