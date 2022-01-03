@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Application\Settings\Query;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Query\FetchConnectionsHandler;
+use Akeneo\Connectivity\Connection\Application\Settings\Query\FetchConnectionsQuery;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Connection;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionsQuery;
 use PhpSpec\ObjectBehavior;
@@ -27,15 +29,17 @@ class FetchConnectionsHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(FetchConnectionsHandler::class);
     }
 
-    public function it_fetches_connections($selectConnectionsQuery)
+    public function it_fetches_connections(SelectConnectionsQuery $selectConnectionsQuery)
     {
         $connections = [
             new Connection('42', 'magento', 'Magento Connector', FlowType::DATA_DESTINATION, true),
             new Connection('43', 'bynder', 'Bynder DAM', FlowType::OTHER, false),
         ];
 
-        $selectConnectionsQuery->execute()->willReturn($connections);
+        $selectConnectionsQuery->execute([ConnectionType::DEFAULT_TYPE])->willReturn($connections);
 
-        $this->query()->shouldReturn($connections);
+        $query = new FetchConnectionsQuery(['types' => [ConnectionType::DEFAULT_TYPE]]);
+
+        $this->handle($query)->shouldReturn($connections);
     }
 }

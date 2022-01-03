@@ -24,8 +24,10 @@ class FetchConnectionsHandler
     /**
      * @return Connection[]
      */
-    public function query(): array
+    public function handle(FetchConnectionsQuery $fetchConnectionsQuery): array
     {
-        return $this->selectConnectionsQuery->execute();
+        $connectionTypes = $fetchConnectionsQuery->getTypes();
+
+        return $this->selectConnectionsQuery->execute($connectionTypes);
     }
 }

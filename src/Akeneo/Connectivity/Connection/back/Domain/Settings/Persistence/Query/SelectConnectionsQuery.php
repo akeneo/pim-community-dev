@@ -14,7 +14,8 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Connection;
 interface SelectConnectionsQuery
 {
     /**
+     * @param string[] $types
      * @return Connection[]
      */
-    public function execute(): array;
+    public function execute(array $types = []): array;
 }

@@ -12,7 +12,7 @@ pim_menu:
         connection_audit: Connection dashboard
         connection_settings: Connections
         connection_settings_edit: Connection settings
-        connection_monitoring: Monitoring
+        connection_monitoring: Error monitoring
         connection_webhook_edit: Event subscription
         connection_webhook_event_logs: Event logs
         data_flows: Data flows
@@ -92,18 +92,33 @@ akeneo_connectivity.connection:
                 tabs:
                     settings: Settings
                     permissions: Permissions
+                    error_monitoring: Error monitoring
                 settings:
+                    monitoring:
+                        title: General settings
                     authorizations:
                         title: authorizations
                         information: 'To know more about app authorizations, check out our {{ link }}.'
                         information_link_anchor: Help Center article
                         no_scope: No specific authorizations have been requested.
+                error_monitoring:
+                    error: Oups, something went wrong!
+                    helper:
+                        description: Here, you can see the detail of each error for this app over the last 7 days. Error number is limited to 100 errors.
+                    not_data_source: For now, monitoring page is only available for source app.
+                    not_auditable:
+                        title: Unmonitored app
+                        description:
+                            1: To track errors on this app,
+                            2: activate monitoring
+                            3: in the settings.
                 flash:
                     load_permissions_error.title: 'Saved permissions on {{ entity }} could not be loaded.'
                     load_permissions_error.description: Please retry later.
                     save_permissions_error.title: 'Permissions on {{ entity }} could not be updated.'
                     save_permissions_error.description: Please check the App permission settings.
                     success: App settings successfully updated.
+                    monitoring_settings_error.description: Sorry, an error occurred while editing the app.
             delete:
                 subtitle: Apps
                 title: Confirm deletion
@@ -192,7 +207,7 @@ akeneo_connectivity.connection:
         label: Label
         flow_type: Flow type
         image: Image
-        auditable: Track this connection in the dashboard
+        auditable: Track in Data flows dashboard
         client_id: Client ID
         secret: Secret
         username: Username
@@ -326,8 +341,8 @@ akeneo_connectivity.connection:
             button: Let's go!
         connection_selector:
             title:
-                source: Source connections
-                destination: Destination connections
+                source: Data connections
+                destination: Destinations
             all: All
         charts:
             inbound: Inbound
@@ -341,12 +356,12 @@ akeneo_connectivity.connection:
         error_management:
             data_source_error_chart:
                 section:
-                    title: Errors on source connections
+                    title: Errors on data sources
                     helper: Here you can see the total number of errors, including business errors.
                 chart:
                     title: Error count per day
             widget:
-                title: Business errors per source connection
+                title: Business errors per data source
                 over_the_last_seven_days : Over the last 7 days
                 business_errors : business errors
         no_connection:
@@ -433,7 +448,7 @@ akeneo_connectivity.connection:
 
     error_management:
         connection_monitoring:
-            title: Monitoring
+            title: Error monitoring
             helper:
                 title: '{0} You have {{ count }} error |[1,Inf] You have {{ count }} errors'
                 description: Here, you can see the detail of each error for this connection over the last 7 days. Error
