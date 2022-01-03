@@ -170,7 +170,7 @@ test('The wizard renders steps and is able to navigate between steps', async () 
     assertAuthorizationsScreen();
 });
 
-test('The wizard notifies of the error on app confirm ', async () => {
+test('The wizard notifies an unspecified error occurred on app confirm ', async () => {
     const clientId = '8d8a7dc1-0827-4cc9-9ae5-577c6419230b';
     const fetchAppWizardDataResponses: MockFetchResponses = {
         [`akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=${clientId}`]: {
@@ -182,7 +182,7 @@ test('The wizard notifies of the error on app confirm ', async () => {
             },
         },
         [`akeneo_connectivity_connection_apps_rest_confirm_authorization?clientId=${clientId}`]: {
-            status: 400,
+            status: 500,
             json: '',
         },
     };
@@ -205,6 +205,43 @@ test('The wizard notifies of the error on app confirm ', async () => {
         NotificationLevel.ERROR,
         'akeneo_connectivity.connection.connect.apps.wizard.flash.error'
     );
+});
+
+test('The wizard notifies a specific error occurred on app confirm ', async () => {
+    const clientId = '8d8a7dc1-0827-4cc9-9ae5-577c6419230b';
+    const fetchAppWizardDataResponses: MockFetchResponses = {
+        [`akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=${clientId}`]: {
+            json: {
+                appName: 'MyApp',
+                appLogo: '',
+                scopeMessages: [],
+                authenticationScopes: [],
+            },
+        },
+        [`akeneo_connectivity_connection_apps_rest_confirm_authorization?clientId=${clientId}`]: {
+            status: 400,
+            statusText: 'Bad request',
+            json: {
+                errors: [{message: 'Specific Error Message', property_path: ''}],
+            },
+        },
+    };
+
+    mockFetchResponses({
+        ...fetchAppWizardDataResponses,
+    });
+
+    renderWithProviders(
+        <NotifyContext.Provider value={notify}>
+            <AppWizardWithPermissions clientId={clientId} />
+        </NotifyContext.Provider>
+    );
+
+    await navigateToSummaryAndClickConfirm();
+
+    await waitFor(() => expect(notify).toHaveBeenCalledTimes(1));
+
+    expect(notify).toBeCalledWith(NotificationLevel.ERROR, 'Specific Error Message');
 });
 
 test('The wizard saves app and permissions on confirm', async () => {
