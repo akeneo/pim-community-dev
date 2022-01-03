@@ -79,3 +79,10 @@ services:
             - '@feature_flags'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: filterColumns, priority: -10 }
+
+    oro_datagrid.event_listener.feature_flag_datagrid_listener_attribute:
+        class: 'Oro\Bundle\DataGridBundle\EventListener\FeatureFlagDatagridFilterListener'
+        arguments:
+            - '@feature_flags'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.attribute-grid, method: filterColumns, priority: -10 }
