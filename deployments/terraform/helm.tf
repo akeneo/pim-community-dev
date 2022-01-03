@@ -11,7 +11,7 @@ locals {
     L  = 2
     XL = 3
   }
-  tshirt-size-index = can(regex("^[2-9][0-9]*XL$", var.product_reference_size)) ? local.tshirt-size-index-mapping["XL"] + trimsuffix(var.product_reference_size, "XL") - 1 : local.tshirt-size-index-mapping[var.product_reference_size]
+  tshirt-size-index = can(regex("^[1-9][0-9]*XL$", var.product_reference_size)) ? local.tshirt-size-index-mapping["XL"] + trimsuffix(var.product_reference_size, "XL") - 1 : local.tshirt-size-index-mapping[var.product_reference_size]
   mysql-memory-unit = "M"
   jvm-heap-unit     = "m"
   k8s-memory-unit   = "Mi"
