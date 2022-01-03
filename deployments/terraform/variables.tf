@@ -161,7 +161,7 @@ variable "product_reference_size" {
   default = "S"
 
   validation {
-    condition     = can(regex("^(S|M|L|XL)|([2-9][0-9]*XL)$", var.product_reference_size))
+    condition     = can(regex("^(S|M|L|XL)|([1-9][0-9]*XL)$", var.product_reference_size))
     error_message = "Allowed values for product_reference_size are:\n- S\n- M\n- L\n- XL\n- 2XL\n- 3XL\n- ..."
   }
 }
