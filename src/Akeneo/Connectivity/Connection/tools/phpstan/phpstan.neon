@@ -1,0 +1,10 @@
+parameters:
+    customRulesetUsed: true
+    paths:
+        - ../../back/Domain
+        - ../../back/Application
+        - ../../back/Infrastructure
+rules:
+    - Akeneo\Connectivity\Connection\tools\phpstan\Rule\InterfaceSuffixRule
+    - Akeneo\Connectivity\Connection\tools\phpstan\Rule\ExceptionSuffixRule
+    - Akeneo\Connectivity\Connection\tools\phpstan\Rule\TraitSuffixRule

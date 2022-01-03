@@ -174,3 +174,8 @@ connectivity-connection-insight:
 
 connectivity-connection-psalm:
 	$(PHP_RUN) vendor/bin/psalm -c src/Akeneo/Connectivity/Connection/back/tests/psalm.xml
+
+octorules:
+	#$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
+	#APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
+	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/Connectivity/Connection/tools/phpstan/phpstan.neon
