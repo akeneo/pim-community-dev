@@ -38,6 +38,10 @@ class InMemoryGetExistingRecordCodes implements GetExistingRecordCodes
                     unset($indexedRecordCodes[$referenceEntityIdentifier][$recordIndex]);
                 }
             }
+
+            if ($indexedRecordCodes[$referenceEntityIdentifier] === []) {
+                unset($indexedRecordCodes[$referenceEntityIdentifier]);
+            }
         }
 
         return $indexedRecordCodes;
