@@ -40,7 +40,7 @@ export const MarketplacePage: FC = () => {
         fetchExtensions()
             .then(setExtensions)
             .catch(() => setExtensions(false));
-    }, [fetchExtensions]);
+    }, []);
     useEffect(() => {
         if (!featureFlag.isEnabled('marketplace_activate')) {
             setApps({
@@ -53,7 +53,7 @@ export const MarketplacePage: FC = () => {
         fetchApps()
             .then(setApps)
             .catch(() => setApps(false));
-    }, [fetchApps]);
+    }, []);
 
     if (null === userProfile) {
         return null;
