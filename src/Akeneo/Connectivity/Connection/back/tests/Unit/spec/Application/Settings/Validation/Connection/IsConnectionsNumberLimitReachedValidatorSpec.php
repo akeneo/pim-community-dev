@@ -47,7 +47,6 @@ class IsConnectionsNumberLimitReachedValidatorSpec extends ObjectBehavior
         IsConnectionsNumberLimitReachedQueryInterface $isConnectionsNumberLimitReachedQuery,
         ExecutionContextInterface $context
     ): void {
-
         $isConnectionsNumberLimitReachedQuery->execute()->willReturn(false);
 
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
@@ -60,7 +59,6 @@ class IsConnectionsNumberLimitReachedValidatorSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $builder
     ): void {
-
         $constraint = new IsConnectionsNumberLimitReached();
 
         $isConnectionsNumberLimitReachedQuery->execute()->willReturn(true);

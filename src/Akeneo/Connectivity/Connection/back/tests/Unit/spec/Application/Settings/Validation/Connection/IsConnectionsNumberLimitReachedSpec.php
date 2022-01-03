@@ -33,5 +33,4 @@ class IsConnectionsNumberLimitReachedSpec extends ObjectBehavior
     {
         $this->message->shouldBeString();
     }
-
 }
