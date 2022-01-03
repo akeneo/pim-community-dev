@@ -11,7 +11,6 @@ pim_menu:
     connection_audit: Yhteyksien hallinta
     connection_settings: Yhteydet
     connection_settings_edit: API-yhteyksien asetukset
-    connection_monitoring: Monitorointi
     connection_webhook_edit: Tapahtumatilaus
     connection_webhook_event_logs: Tapahtumalokit
     data_flows: Tietovirrat
@@ -64,6 +63,12 @@ akeneo_connectivity.connection:
         tabs:
           settings: Asetukset
           permissions: Käyttöoikeudet
+        error_monitoring:
+          not_auditable:
+            description:
+              1: To track errors on this app,
+              2: aktivoi seuranta
+              3: asetuksissa.
       delete:
         title: Vahvista poisto
         link: Tässä on mitä tapahtuu.
@@ -103,7 +108,6 @@ akeneo_connectivity.connection:
     label: Nimike
     flow_type: Tietovirran tyyppi
     image: Kuva
-    auditable: Seuraa tätä API-yhteyttä monitoroinnissa
     client_id: Asiakastunnus
     secret: Salausavain
     username: Käyttäjänimi
@@ -226,9 +230,6 @@ akeneo_connectivity.connection:
       content: Palautteesi on meille todella kallisarvoinen. Auta meitä valitsemaan seuraava sovellus vastaamalla tähän yhden kysymyksen kyselyyn!
       button: Mennään!
     connection_selector:
-      title:
-        source: Tietolähteet
-        destination: Kohteiden API-yhteydet
       all: Kaikki
     charts:
       inbound: Sisääntuleva
@@ -242,12 +243,10 @@ akeneo_connectivity.connection:
     error_management:
       data_source_error_chart:
         section:
-          title: Lähdeyhteyksien virheet
           helper: Täällä näet virheiden kokonaismäärän, mukaan lukien liiketoiminnalliset virheet.
         chart:
           title: Virheiden määrä päivässä
       widget:
-        title: Liiketoiminnalliset virheet lähdeyhteyttä kohden
         over_the_last_seven_days: Viimeisten 7 päivän aikana
         business_errors: liiketoiminnalliset virheet
     no_connection:
@@ -305,7 +304,6 @@ akeneo_connectivity.connection:
           datetime: Aika
   error_management:
     connection_monitoring:
-      title: Monitorointi
       helper:
         title: '{0} Sinulla on {{ count }} virhe |[1,Inf] Sinulla on {{ count }} virhettä'
         description: Täällä näet yksityiskohtaisesti kunkin virheen tämän yhteyden osalta viimeisten 7 päivän aikana. Virhemäärä on rajoitettu 100 virheeseen.

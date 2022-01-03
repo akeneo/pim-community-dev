@@ -237,6 +237,8 @@ $rules = [
             'Akeneo\Connectivity\Connection\Infrastructure\Service\Encrypter',
 
             'Symfony\Component\OptionsResolver\OptionsResolver',
+
+            'Akeneo\Connectivity\Connection\Infrastructure\Connections\GetConnectionsNumberLimit'
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Persistence'),
 
