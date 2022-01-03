@@ -22,10 +22,6 @@ class FeatureFlagDatagridFilterListener
     {
         $datagridConfiguration = $event->getConfig();
 
-        if ('product-grid' !== $datagridConfiguration->getName()) {
-            return;
-        }
-
         $this->featureFlagOnFilter($datagridConfiguration);
         $this->featureFlagOnDefaultColumns($datagridConfiguration);
         $this->featureFlagOnSorter($datagridConfiguration);
