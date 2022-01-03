@@ -28,10 +28,12 @@ table-attribute-end-to-end-back:
 
 .PHONY: table-attribute-lint-back
 table-attribute-lint-back:
-	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/Pim/TableAttribute/back
-	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/Pim/TableAttribute/tests/back/Acceptance
-	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/Pim/TableAttribute/tests/back/EndToEnd
-	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/Pim/TableAttribute/tests/back/Integration
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php \
+		src/Akeneo/Pim/TableAttribute/back \
+		src/Akeneo/Pim/TableAttribute/tests/back/Acceptance/Context \
+		src/Akeneo/Pim/TableAttribute/tests/back/Acceptance/InMemory \
+		src/Akeneo/Pim/TableAttribute/tests/back/EndToEnd \
+		src/Akeneo/Pim/TableAttribute/tests/back/Integration
 
 .PHONY: table-attribute-unit-front
 table-attribute-unit-front:
