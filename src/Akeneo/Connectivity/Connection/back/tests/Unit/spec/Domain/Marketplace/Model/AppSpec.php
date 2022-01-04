@@ -94,4 +94,32 @@ class AppSpec extends ObjectBehavior
             'connected' => false,
         ]);
     }
+
+    public function it_is_instantiable_with_test_values()
+    {
+        $this->beConstructedThrough('fromTestAppValues', [
+            [
+                'id' => 'ce8cf07f-321e-4dd2-a52f-30ac00881ba7',
+                'name' => 'Shopify App',
+                'author' => 'Akeneo',
+                'activate_url' => 'https:\/\/fake.shopify.akeneo.com\/activate',
+                'callback_url' => 'https:\/\/fake.shopify.akeneo.com\/oauth2\/callback',
+            ],
+        ]);
+
+        $this->normalize()->shouldBe([
+            'id' => 'ce8cf07f-321e-4dd2-a52f-30ac00881ba7',
+            'name' => 'Shopify App',
+            'logo' => null,
+            'author' => 'Akeneo',
+            'partner' => null,
+            'description' => null,
+            'url' => null,
+            'categories' => [],
+            'certified' => false,
+            'activate_url' => 'https:\/\/fake.shopify.akeneo.com\/activate',
+            'callback_url' => 'https:\/\/fake.shopify.akeneo.com\/oauth2\/callback',
+            'connected' => false,
+        ]);
+    }
 }

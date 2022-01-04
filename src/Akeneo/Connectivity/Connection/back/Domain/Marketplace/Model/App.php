@@ -12,11 +12,11 @@ class App
 {
     private string $id;
     private string $name;
-    private string $logo;
-    private string $author;
+    private ?string $logo;
+    private ?string $author;
     private ?string $partner;
     private ?string $description;
-    private string $url;
+    private ?string $url;
     private bool $certified;
     /** @var array<string> */
     private array $categories;
@@ -24,13 +24,21 @@ class App
     private string $callbackUrl;
     private bool $connected;
 
-    private const REQUIRED_KEYS = [
+    private const MARKETPLACE_REQUIRED_KEYS = [
         'id',
         'name',
         'logo',
         'author',
         'url',
         'categories',
+        'activate_url',
+        'callback_url',
+    ];
+
+    private const TEST_APP_REQUIRED_KEYS = [
+        'id',
+        'name',
+        'author',
         'activate_url',
         'callback_url',
     ];
@@ -57,7 +65,7 @@ class App
      */
     public static function fromWebMarketplaceValues(array $values): self
     {
-        foreach (self::REQUIRED_KEYS as $key) {
+        foreach (self::MARKETPLACE_REQUIRED_KEYS as $key) {
             if (!isset($values[$key])) {
                 throw new \InvalidArgumentException(sprintf('Missing property "%s" in given app', $key));
             }
@@ -74,6 +82,42 @@ class App
         $self->url = $values['url'];
         $self->categories = $values['categories'];
         $self->certified = $values['certified'] ?? false;
+        $self->activateUrl = $values['activate_url'];
+        $self->callbackUrl = $values['callback_url'];
+        $self->connected = $values['connected'] ?? false;
+
+        return $self;
+    }
+
+    /**
+     * @param array{
+     *     id: string,
+     *     name: string,
+     *     author: string|null,
+     *     activate_url: string,
+     *     callback_url: string,
+     *     connected?: bool,
+     * } $values
+     */
+    public static function fromTestAppValues(array $values): self
+    {
+        foreach (self::TEST_APP_REQUIRED_KEYS as $key) {
+            if (!isset($values[$key])) {
+                throw new \InvalidArgumentException(sprintf('Missing property "%s" in given app', $key));
+            }
+        }
+
+        $self = new self();
+
+        $self->id = $values['id'];
+        $self->name = $values['name'];
+        $self->logo = null;
+        $self->author = $values['author'];
+        $self->partner = null;
+        $self->description = null;
+        $self->url = null;
+        $self->categories = [];
+        $self->certified = false;
         $self->activateUrl = $values['activate_url'];
         $self->callbackUrl = $values['callback_url'];
         $self->connected = $values['connected'] ?? false;

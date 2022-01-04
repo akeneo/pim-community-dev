@@ -67,3 +67,10 @@ services:
         class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAppQuery
         arguments:
             - '@akeneo_connectivity.connection.marketplace.web_marketplace_api'
+            - '@akeneo_connectivity.connection.app_developer_mode.feature'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetTestAppQuery'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetTestAppQuery:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetTestAppQuery
+        arguments:
+            - '@database_connection'
