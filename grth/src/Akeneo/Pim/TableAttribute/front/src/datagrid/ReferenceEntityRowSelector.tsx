@@ -1,5 +1,5 @@
 import React from 'react';
-import {RecordColumnDefinition, ReferenceEntityRecord, SelectOption} from '../models';
+import {ReferenceEntityColumnDefinition, ReferenceEntityRecord, SelectOption} from '../models';
 import {useDebounce} from 'akeneo-design-system';
 import {useAttributeContext} from '../contexts';
 import {useRecords} from '../product/useRecords';
@@ -24,7 +24,8 @@ const ReferenceEntityRowSelector: React.FC<ReferenceEntityRowSelectorProps> = ({
   const debouncedSearchValue = useDebounce(searchValue, 200);
 
   const {items, handleNextPage} = useRecords({
-    referenceEntityCode: (attribute?.table_configuration[0] as RecordColumnDefinition).reference_entity_identifier,
+    referenceEntityCode: (attribute?.table_configuration[0] as ReferenceEntityColumnDefinition)
+      .reference_entity_identifier,
     isVisible: true,
     searchValue: debouncedSearchValue,
   });

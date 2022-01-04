@@ -8,7 +8,7 @@ import {
   PendingBackendTableFilterValue,
   PendingTableFilterValue,
   RecordCode,
-  RecordColumnDefinition,
+  ReferenceEntityColumnDefinition,
   ReferenceEntityRecord,
   SelectOption,
   TableAttribute,
@@ -74,12 +74,12 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
 
   useEffect(() => {
     if (!attribute) return;
-    const firstColumn = attribute?.table_configuration[0] as RecordColumnDefinition;
+    const firstColumn = attribute?.table_configuration[0] as ReferenceEntityColumnDefinition;
 
     let codes: RecordCode[] = [];
-    if (initialDataFilter.row && firstColumnType === 'record') codes.push(initialDataFilter.row);
+    if (initialDataFilter.row && firstColumnType === 'reference_entity') codes.push(initialDataFilter.row);
     const filteredColumn = attribute?.table_configuration.find(({code}) => code === initialDataFilter.column);
-    if (Array.isArray(initialDataFilter.value) && filteredColumn?.data_type === 'record')
+    if (Array.isArray(initialDataFilter.value) && filteredColumn?.data_type === 'reference_entity')
       codes = codes.concat(initialDataFilter.value);
 
     ReferenceEntityRecordRepository.search(router, firstColumn.reference_entity_identifier, {

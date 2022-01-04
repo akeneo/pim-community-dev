@@ -50,7 +50,7 @@ services:
     tags:
       - { name: pim_table_attribute.product_and_product_model.column_filter }
 
-  pim_table_attribute.product_and_product_model.filter.reference_entity:
+  pim_table_attribute.product_and_product_model.filter.reference_entity_link:
     class: Akeneo\Pim\TableAttribute\Infrastructure\Value\Filter\ColumnFilter
     arguments:
       - 'reference_entity'

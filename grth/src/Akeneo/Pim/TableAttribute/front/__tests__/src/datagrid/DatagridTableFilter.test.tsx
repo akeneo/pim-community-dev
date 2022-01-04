@@ -311,7 +311,7 @@ describe('DatagridTableFilter', () => {
   it('should render records values for first column', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TestAttributeContextProvider attribute={getComplexTableAttribute('record')}>
+      <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
         <DatagridTableFilter
           showLabel={true}
           canDisable={true}
@@ -350,7 +350,7 @@ describe('DatagridTableFilter', () => {
   it('should render criteria with record', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TestAttributeContextProvider attribute={getComplexTableAttribute('record')}>
+      <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
         <DatagridTableFilter
           showLabel={true}
           canDisable={true}

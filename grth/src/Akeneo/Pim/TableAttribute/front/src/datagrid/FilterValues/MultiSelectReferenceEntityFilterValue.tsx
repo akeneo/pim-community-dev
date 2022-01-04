@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {FilteredValueRenderer, TableFilterValueRenderer} from './index';
 import {MultiSelectInput, useDebounce} from 'akeneo-design-system';
 import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {RecordCode, RecordColumnDefinition, ReferenceEntityRecord} from '../../models';
+import {RecordCode, ReferenceEntityColumnDefinition, ReferenceEntityRecord} from '../../models';
 import {useAttributeContext} from '../../contexts';
 import {ReferenceEntityRecordRepository} from '../../repositories';
 import {useRecords} from '../../product/useRecords';
@@ -23,7 +23,7 @@ const MultiSelectReferenceEntityFilterValue: TableFilterValueRenderer = ({value,
     (
       attribute?.table_configuration.find(
         columnDefinition => columnDefinition.code === columnCode
-      ) as RecordColumnDefinition
+      ) as ReferenceEntityColumnDefinition
     )?.reference_entity_identifier || '';
 
   const {items, handleNextPage} = useRecords({
@@ -78,7 +78,7 @@ const useValueRenderer: FilteredValueRenderer = () => {
   return (value, columnCode) => {
     const catalogLocale = userContext.get('catalogLocale');
     const referenceEntityIdentifier = (
-      attribute?.table_configuration.find(({code}) => code === columnCode) as RecordColumnDefinition
+      attribute?.table_configuration.find(({code}) => code === columnCode) as ReferenceEntityColumnDefinition
     )?.reference_entity_identifier;
 
     return ((value as RecordCode[]) || [])

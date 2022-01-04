@@ -13,7 +13,7 @@ const scroll = mockScroll();
 describe('MultiSelectReferenceEntityFilterValue', () => {
   it('should display current value', async () => {
     renderWithProviders(
-      <TestAttributeContextProvider attribute={getComplexTableAttribute('record')}>
+      <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
         <MultiSelectReferenceEntityFilterValue
           value={['lannion00893335_2e73_41e3_ac34_763fb6a35107', 'vannes00bcf56a_2aa9_47c5_ac90_a973460b18a3']}
           onChange={jest.fn()}

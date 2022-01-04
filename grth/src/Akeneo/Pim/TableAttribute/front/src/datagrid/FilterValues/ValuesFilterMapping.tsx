@@ -63,7 +63,7 @@ const ValuesFilterMapping: FilterValuesMapping = {
     IN: {default: MultiSelectFilterValue, useValueRenderer: MultiSelectUseValueRenderer},
     'NOT IN': {default: MultiSelectFilterValue, useValueRenderer: MultiSelectUseValueRenderer},
   },
-  record: {
+  reference_entity: {
     EMPTY: {default: EmptyFilterValue, useValueRenderer: EmptyUseValueRenderer},
     'NOT EMPTY': {default: EmptyFilterValue, useValueRenderer: EmptyUseValueRenderer},
     IN: {default: MultiSelectReferenceEntityFilterValue, useValueRenderer: RecordUseValueRenderer},

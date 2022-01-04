@@ -1,7 +1,6 @@
 import {Router} from '@akeneo-pim-community/shared';
 import {Attribute, AttributeCode} from '../../models';
 import {AttributeFetcherIndexParams} from '../AttributeFetcher';
-import {getComplexTableAttribute} from '../../../__tests__/factories';
 
 const attribute: Attribute = {
   code: 'nutrition',
@@ -69,7 +68,28 @@ const fetchAttribute = async (_router: Router, attributeCode: AttributeCode): Pr
     return new Promise(resolve => resolve(attribute));
   }
   if (attributeCode === 'city') {
-    return new Promise(resolve => resolve(getComplexTableAttribute('record')));
+    const recordAttribute = getAttribute({
+      table_configuration: [
+        {
+          data_type: 'reference_entity',
+          code: 'city',
+          labels: {en_US: 'City'},
+          validations: {},
+          reference_entity_identifier: 'city',
+        },
+        {data_type: 'number', code: 'quantity', labels: {en_US: 'Quantity'}, validations: {}},
+        {data_type: 'boolean', code: 'is_allergenic', labels: {en_US: 'Is allergenic'}, validations: {}},
+        {data_type: 'text', code: 'part', labels: {en_US: 'For 1 part'}, validations: {}},
+        {
+          data_type: 'select',
+          code: 'nutrition_score',
+          labels: {en_US: 'Nutrition score'},
+          validations: {},
+          options: [{code: 'A'}, {code: 'B'}, {code: 'C'}],
+        },
+      ],
+    });
+    return new Promise(resolve => resolve(recordAttribute));
   }
 
   throw new Error(`Non mocked attribute ${attributeCode}`);

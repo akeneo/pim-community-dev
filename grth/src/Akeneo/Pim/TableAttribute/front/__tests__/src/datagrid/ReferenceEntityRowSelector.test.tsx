@@ -13,7 +13,7 @@ const scroll = mockScroll();
 describe('ReferenceEntityRowSelector', () => {
   it('should display current row', async () => {
     renderWithProviders(
-      <TestAttributeContextProvider attribute={getComplexTableAttribute('record')}>
+      <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
         <RowSelector value={items[0]} onChange={jest.fn()} />
       </TestAttributeContextProvider>
     );
@@ -24,7 +24,7 @@ describe('ReferenceEntityRowSelector', () => {
   it('should display all rows, then update it', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TestAttributeContextProvider attribute={getComplexTableAttribute('record')}>
+      <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
         <RowSelector value={items[0]} onChange={handleChange} />
       </TestAttributeContextProvider>
     );
@@ -44,7 +44,7 @@ describe('ReferenceEntityRowSelector', () => {
   it('should remove current row', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TestAttributeContextProvider attribute={getComplexTableAttribute('record')}>
+      <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
         <RowSelector value={items[0]} onChange={handleChange} />
       </TestAttributeContextProvider>
     );
@@ -57,7 +57,7 @@ describe('ReferenceEntityRowSelector', () => {
   it('should select any row', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TestAttributeContextProvider attribute={getComplexTableAttribute('record')}>
+      <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
         <RowSelector value={items[0]} onChange={handleChange} />
       </TestAttributeContextProvider>
     );
