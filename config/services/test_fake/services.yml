@@ -40,7 +40,7 @@ imports:
     # Rule Engine
     - { resource: ../../../src/Akeneo/Pim/Automation/RuleEngine/tests/back/Acceptance/Resources/config/services.yml }
     # Tailored Exports
-    - { resource: ../../../components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/Acceptance/Resources/config/services.yml }
+    - { resource: ../../../components/tailored-export/back/tests/Acceptance/Resources/config/services.yml }
 
     - { resource: ../../../vendor/akeneo/pim-community-dev/config/services/test/test_services.yml }
     # Table Attribute

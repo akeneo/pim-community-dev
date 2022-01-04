@@ -25,7 +25,6 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FileNameSel
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FilePathSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Groups\GroupsCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Groups\GroupsLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitSymbolSelection;
