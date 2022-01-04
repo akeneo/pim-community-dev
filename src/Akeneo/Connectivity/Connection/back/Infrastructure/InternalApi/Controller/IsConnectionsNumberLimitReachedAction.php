@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class IsConnectionsNumberLimitReachedAction
 {
-    public function __construct(private IsConnectionsNumberLimitReachedQueryInterface $isConnectionsNumberLimitReachedHandler)
+    public function __construct(private IsConnectionsNumberLimitReachedQueryInterface $isConnectionsNumberLimitReachedQuery)
     {
     }
 
@@ -26,6 +26,6 @@ class IsConnectionsNumberLimitReachedAction
             return new RedirectResponse('/');
         }
 
-        return new JsonResponse(['limitReached' => $this->isConnectionsNumberLimitReachedHandler->execute()]);
+        return new JsonResponse(['limitReached' => $this->isConnectionsNumberLimitReachedQuery->execute()]);
     }
 }
