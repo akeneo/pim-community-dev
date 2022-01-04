@@ -49,12 +49,20 @@ const LastOperationsWidget = () => {
       {data !== null && data.length > 0 && (
         <Table>
           <Table.Header>
-            <Table.HeaderCell>{translate('akeneo_job_process_tracker.job_execution_list.table.headers.started_at')}</Table.HeaderCell>
+            <Table.HeaderCell>
+              {translate('akeneo_job_process_tracker.job_execution_list.table.headers.started_at')}
+            </Table.HeaderCell>
             <Table.HeaderCell>{translate('pim_common.type')}</Table.HeaderCell>
-            <Table.HeaderCell>{translate('akeneo_job_process_tracker.job_execution_list.table.headers.job_name')}</Table.HeaderCell>
-            <Table.HeaderCell>{translate('akeneo_job_process_tracker.job_execution_list.table.headers.username')}</Table.HeaderCell>
+            <Table.HeaderCell>
+              {translate('akeneo_job_process_tracker.job_execution_list.table.headers.job_name')}
+            </Table.HeaderCell>
+            <Table.HeaderCell>
+              {translate('akeneo_job_process_tracker.job_execution_list.table.headers.username')}
+            </Table.HeaderCell>
             <Table.HeaderCell>{translate('pim_common.status')}</Table.HeaderCell>
-            <Table.HeaderCell>{translate('akeneo_job_process_tracker.job_execution_list.table.headers.warning_count')}</Table.HeaderCell>
+            <Table.HeaderCell>
+              {translate('akeneo_job_process_tracker.job_execution_list.table.headers.warning_count')}
+            </Table.HeaderCell>
             <Table.HeaderCell />
           </Table.Header>
           <Table.Body>
@@ -66,9 +74,7 @@ const LastOperationsWidget = () => {
               return (
                 <Table.Row key={`operation${operation.id}`}>
                   <Table.Cell>{operation.date}</Table.Cell>
-                  <Table.Cell>
-                    {translate(`akeneo_job_process_tracker.filter_type.${operation.type}`)}
-                  </Table.Cell>
+                  <Table.Cell>{translate(`akeneo_job_process_tracker.filter_type.${operation.type}`)}</Table.Cell>
                   <Table.Cell>{operation.label}</Table.Cell>
                   <Table.Cell>{operation.username}</Table.Cell>
                   <Table.Cell>
@@ -81,12 +87,7 @@ const LastOperationsWidget = () => {
                   <Table.Cell>{counter > 0 ? counter : '-'}</Table.Cell>
                   <TableActionCell>
                     {operation.canSeeReport && (
-                      <Button
-                        ghost={true}
-                        size="small"
-                        level="tertiary"
-                        onClick={() => redirectToJob(operation.id)}
-                      >
+                      <Button ghost={true} size="small" level="tertiary" onClick={() => redirectToJob(operation.id)}>
                         {translate('pim_import_export.widget.last_operations.details')}
                       </Button>
                     )}
