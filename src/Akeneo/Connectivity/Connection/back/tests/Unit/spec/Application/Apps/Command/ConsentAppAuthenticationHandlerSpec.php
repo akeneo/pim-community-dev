@@ -15,6 +15,7 @@ use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmat
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Domain\Clock;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -54,7 +55,9 @@ class ConsentAppAuthenticationHandlerSpec extends ObjectBehavior
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         AppAuthorizationSessionInterface $appAuthorizationSession,
         ValidatorInterface $validator,
-        ConstraintViolationListInterface $constraintViolationList
+        ConstraintViolationListInterface $constraintViolationList,
+        CreateUserConsentQueryInterface $createUserConsentQuery,
+        Clock $clock
     ): void {
         $userGroup = 'a_user_group';
         $clientId = 'a_client_id';
@@ -84,11 +87,17 @@ class ConsentAppAuthenticationHandlerSpec extends ObjectBehavior
         );
         $validator->validate($consentAppAuthenticationCommand)->willReturn($constraintViolationList);
 
+        $createUserConsentQuery->execute(
+            $consentAppAuthenticationCommand->getPimUserId(),
+            $appConfirmation->getAppId(),
+            $appAuthorization->getAuthenticationScopes()->getScopes(),
+            Argument::any()
+        )->shouldBeCalledOnce();
+
         $this->handle($consentAppAuthenticationCommand);
     }
 
     public function it_throws_when_the_scope_openid_is_not_requested(
-        GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         AppAuthorizationSessionInterface $appAuthorizationSession,
         ValidatorInterface $validator,
         ConstraintViolationListInterface $constraintViolationList
@@ -138,7 +147,6 @@ class ConsentAppAuthenticationHandlerSpec extends ObjectBehavior
     }
 
     public function it_throws_when_the_app_authorization_is_not_found(
-        GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         AppAuthorizationSessionInterface $appAuthorizationSession,
         ValidatorInterface $validator,
         ConstraintViolationListInterface $constraintViolationList
