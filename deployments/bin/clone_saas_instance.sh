@@ -34,7 +34,7 @@ SOURCE_GOOGLE_PROJECT_ID=${SOURCE_GOOGLE_PROJECT_ID:-"akecld-saas-prod"}
 DESTINATION_GOOGLE_PROJECT_ID="akecld-saas-dev"
 TARGET_DNS_FQDN="${INSTANCE_NAME}.dev.cloud.akeneo.com."
 PIMUSER="adminakeneo"
-PIMPASSWORD="Q7sKB5xP2ttc5KnqFPOF1BrOkTRSulmEj528BpJzbDcLbYSHU1"
+PIMPASSWORD=$(pwgen -s 32 1)
 
 echo "- Get mysql and ES disk informations about prod source instance"
 SELF_LINK_MYSQL=$(gcloud --project=${SOURCE_GOOGLE_PROJECT_ID} compute snapshots list --filter="labels.backup-ns=${SOURCE_PFID} AND labels.pvc_name=data-mysql-server-0" --limit=1 --sort-by="~creationTimestamp" --uri)

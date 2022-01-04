@@ -21,22 +21,19 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
  */
 class ConnectorValueTransformerRegistry
 {
-    /** @var ConnectorValueTransformerInterface[] */
-    private iterable $ConnectorValueTransformers;
-
-    public function __construct(iterable $ConnectorValueTransformers)
+    /** @param iterable<ConnectorValueTransformerInterface> $connectorValueTransformers */
+    public function __construct(private iterable $connectorValueTransformers)
     {
-        $this->ConnectorValueTransformers = $ConnectorValueTransformers;
     }
 
     public function getTransformer(AbstractAttribute $attribute): ConnectorValueTransformerInterface
     {
-        foreach ($this->ConnectorValueTransformers as $ConnectorValueTransformer) {
-            if ($ConnectorValueTransformer->supports($attribute)) {
-                return $ConnectorValueTransformer;
+        foreach ($this->connectorValueTransformers as $connectorValueTransformer) {
+            if ($connectorValueTransformer->supports($attribute)) {
+                return $connectorValueTransformer;
             }
         }
 
-        throw new \RuntimeException(sprintf('There was no transformer found for attribute %s', get_class($attribute)));
+        throw new \RuntimeException(sprintf('There was no transformer found for attribute %s', $attribute::class));
     }
 }

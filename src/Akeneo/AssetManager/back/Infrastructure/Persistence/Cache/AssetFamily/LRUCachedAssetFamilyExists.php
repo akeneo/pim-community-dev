@@ -19,13 +19,10 @@ use Akeneo\Tool\Component\StorageUtils\Cache\LRUCache;
 
 class LRUCachedAssetFamilyExists implements AssetFamilyExistsInterface
 {
-    private AssetFamilyExistsInterface $assetFamilyExists;
-
     private LRUCache $cache;
 
-    public function __construct(AssetFamilyExistsInterface $assetFamilyExists)
+    public function __construct(private AssetFamilyExistsInterface $assetFamilyExists)
     {
-        $this->assetFamilyExists = $assetFamilyExists;
         $this->cache = new LRUCache(100);
     }
 

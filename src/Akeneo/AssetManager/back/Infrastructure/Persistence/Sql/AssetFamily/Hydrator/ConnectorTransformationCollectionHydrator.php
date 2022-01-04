@@ -33,24 +33,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ConnectorTransformationCollectionHydrator
 {
-    private ValidatorInterface $validator;
-
-    private OperationFactory $operationFactory;
-
-    public function __construct(ValidatorInterface $validator, OperationFactory $operationFactory)
-    {
-        $this->validator = $validator;
-        $this->operationFactory = $operationFactory;
+    public function __construct(
+        private ValidatorInterface $validator,
+        private OperationFactory $operationFactory
+    ) {
     }
 
     /**
      * When we hydrate we also check the validity of each transformation.
      * If a transformation is no more valid (for example the target attribute does not exist anymore) then we skip it.
      * This way we return only valid data to end user.
-     *
-     * @param array                 $transformations
-     * @param AssetFamilyIdentifier $assetFamilyIdentifier
-     * @return ConnectorTransformationCollection
      */
     public function hydrate(
         array $transformations,

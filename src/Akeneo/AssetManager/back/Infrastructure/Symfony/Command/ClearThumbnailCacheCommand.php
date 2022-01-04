@@ -26,18 +26,13 @@ class ClearThumbnailCacheCommand extends Command
 {
     protected static $defaultName = 'akeneo:asset-manager:thumbnail-cache:clear';
 
-    const ASSET_MANAGER_CACHE_RESOLVER = 'asset_manager_flysystem_cache';
+    public const ASSET_MANAGER_CACHE_RESOLVER = 'asset_manager_flysystem_cache';
 
-    private CacheManager $cacheManager;
-
-    private FilterConfiguration $filterConfiguration;
-
-    public function __construct(CacheManager $cacheManager, FilterConfiguration $filterConfiguration)
-    {
+    public function __construct(
+        private CacheManager $cacheManager,
+        private FilterConfiguration $filterConfiguration
+    ) {
         parent::__construct();
-
-        $this->cacheManager = $cacheManager;
-        $this->filterConfiguration = $filterConfiguration;
     }
 
     /**
@@ -109,9 +104,7 @@ class ClearThumbnailCacheCommand extends Command
     private function getSupportedPreviewTypes(): array
     {
         return array_keys(
-            array_filter($this->filterConfiguration->all(), function ($filterConfiguration) {
-                return isset($filterConfiguration['cache']) && $filterConfiguration['cache'] === self::ASSET_MANAGER_CACHE_RESOLVER;
-            })
+            array_filter($this->filterConfiguration->all(), fn ($filterConfiguration) => isset($filterConfiguration['cache']) && $filterConfiguration['cache'] === self::ASSET_MANAGER_CACHE_RESOLVER)
         );
     }
 

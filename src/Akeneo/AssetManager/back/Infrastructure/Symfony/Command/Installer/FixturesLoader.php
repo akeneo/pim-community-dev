@@ -46,14 +46,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 class FixturesLoader
 {
-    private AssetFamilyRepositoryInterface $assetFamilyRepository;
-
-    private AttributeRepositoryInterface $attributeRepository;
-
-    private AssetRepositoryInterface $assetRepository;
-
-    private ValueHydratorInterface $valueHydrator;
-
     private ?string $loadedAssetFamily = null;
 
     /** @var string[] */
@@ -71,15 +63,11 @@ class FixturesLoader
     private ?array $loadedValues = null;
 
     public function __construct(
-        AssetFamilyRepositoryInterface $assetFamilyRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        AssetRepositoryInterface $assetRepository,
-        ValueHydratorInterface $valueHydrator
+        private AssetFamilyRepositoryInterface $assetFamilyRepository,
+        private AttributeRepositoryInterface $attributeRepository,
+        private AssetRepositoryInterface $assetRepository,
+        private ValueHydratorInterface $valueHydrator,
     ) {
-        $this->assetFamilyRepository = $assetFamilyRepository;
-        $this->attributeRepository = $attributeRepository;
-        $this->assetRepository = $assetRepository;
-        $this->valueHydrator = $valueHydrator;
     }
 
     public function assetFamily(string $identifier): self
@@ -355,8 +343,6 @@ class FixturesLoader
     }
 
     /**
-     * @param AssetFamilyIdentifier $assetFamilyIdentifier
-     *
      * @return AbstractAttribute[]
      */
     private function loadAttributes(AssetFamilyIdentifier $assetFamilyIdentifier): array

@@ -34,32 +34,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class SetAction
 {
-    private SetAssetFamilyPermissionsHandler $setAssetFamilyPermissionsHandler;
-
-    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
-
-    private TokenStorageInterface $tokenStorage;
-
-    private SecurityFacade $securityFacade;
-
-    private ValidatorInterface $validator;
-
-    private Serializer $serializer;
-
     public function __construct(
-        SetAssetFamilyPermissionsHandler $setAssetFamilyPermissionsHandler,
-        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        TokenStorageInterface $tokenStorage,
-        SecurityFacade $securityFacade,
-        ValidatorInterface $validator,
-        Serializer $serializer
+        private SetAssetFamilyPermissionsHandler $setAssetFamilyPermissionsHandler,
+        private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
+        private TokenStorageInterface $tokenStorage,
+        private SecurityFacade $securityFacade,
+        private ValidatorInterface $validator,
+        private Serializer $serializer,
     ) {
-        $this->setAssetFamilyPermissionsHandler = $setAssetFamilyPermissionsHandler;
-        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
-        $this->tokenStorage = $tokenStorage;
-        $this->securityFacade = $securityFacade;
-        $this->validator = $validator;
-        $this->serializer = $serializer;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier)

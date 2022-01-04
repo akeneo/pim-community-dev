@@ -36,30 +36,14 @@ class IndexAssetsCommand extends Command
     public const INDEX_ASSETS_COMMAND_NAME = 'akeneo:asset-manager:index-assets';
     private const ERROR_CODE_USAGE = 1;
 
-    private Client $assetClient;
-
-    private AssetFamilyRepositoryInterface $assetFamilyRepository;
-
-    private AssetIndexerInterface $assetIndexer;
-
-    private AssetFamilyExistsInterface $assetFamilyExists;
-
-    private string $assetIndexName;
-
     public function __construct(
-        Client $client,
-        AssetFamilyRepositoryInterface $assetFamilyRepository,
-        AssetIndexerInterface $assetIndexer,
-        AssetFamilyExistsInterface $assetFamilyExists,
-        string $assetIndexName
+        private Client $assetClient,
+        private AssetFamilyRepositoryInterface $assetFamilyRepository,
+        private AssetIndexerInterface $assetIndexer,
+        private AssetFamilyExistsInterface $assetFamilyExists,
+        private string $assetIndexName
     ) {
         parent::__construct();
-
-        $this->assetClient = $client;
-        $this->assetFamilyRepository = $assetFamilyRepository;
-        $this->assetIndexer = $assetIndexer;
-        $this->assetFamilyExists = $assetFamilyExists;
-        $this->assetIndexName = $assetIndexName;
     }
 
     /**
@@ -95,7 +79,7 @@ class IndexAssetsCommand extends Command
 
         if ($isIndexAll) {
             $this->indexAll($output);
-        } elseif (0 < count($assetFamilyCodes)) {
+        } elseif (0 < (is_countable($assetFamilyCodes) ? count($assetFamilyCodes) : 0)) {
             $this->indexByAssetFamily($assetFamilyCodes, $output);
         } else {
             $output->writeln('<error>Please specify a list of asset family codes to index or use the flag --all to index all assets</error>');
@@ -121,10 +105,6 @@ class IndexAssetsCommand extends Command
         }
     }
 
-    /**
-     * @param OutputInterface $output
-     *
-     */
     protected function indexAll(OutputInterface $output): void
     {
         $allAssetFamilies = $this->assetFamilyRepository->all();

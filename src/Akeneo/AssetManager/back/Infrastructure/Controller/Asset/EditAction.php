@@ -38,34 +38,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditAction
 {
-    private EditAssetCommandFactory $editAssetCommandFactory;
-    private EditAssetHandler $editAssetHandler;
-    private ValidatorInterface $validator;
-    private NormalizerInterface $normalizer;
-    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
-    private TokenStorageInterface $tokenStorage;
-    private EventAggregatorInterface $indexAssetEventAggregator;
-
-    private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator;
-
     public function __construct(
-        EditAssetCommandFactory $editAssetCommandFactory,
-        EditAssetHandler $editAssetHandler,
-        ValidatorInterface $validator,
-        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        TokenStorageInterface $tokenStorage,
-        NormalizerInterface $normalizer,
-        EventAggregatorInterface $indexAssetEventAggregator,
-        ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator
+        private EditAssetCommandFactory $editAssetCommandFactory,
+        private EditAssetHandler $editAssetHandler,
+        private ValidatorInterface $validator,
+        private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
+        private TokenStorageInterface $tokenStorage,
+        private NormalizerInterface $normalizer,
+        private EventAggregatorInterface $indexAssetEventAggregator,
+        private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator,
     ) {
-        $this->editAssetCommandFactory = $editAssetCommandFactory;
-        $this->editAssetHandler = $editAssetHandler;
-        $this->validator = $validator;
-        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
-        $this->tokenStorage = $tokenStorage;
-        $this->normalizer = $normalizer;
-        $this->indexAssetEventAggregator = $indexAssetEventAggregator;
-        $this->computeTransformationEventAggregator = $computeTransformationEventAggregator;
     }
 
     public function __invoke(Request $request): Response
@@ -92,7 +74,7 @@ class EditAction
 
         try {
             ($this->editAssetHandler)($command);
-        } catch (AssetNotFoundException $e) {
+        } catch (AssetNotFoundException) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 

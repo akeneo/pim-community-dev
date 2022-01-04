@@ -38,36 +38,18 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 class MassEditAssetsTasklet implements TaskletInterface, TrackableTaskletInterface
 {
     private ?StepExecution $stepExecution = null;
-    private AssetQueryBuilderInterface $assetQueryBuilder;
-    private Client $assetClient;
-    private EditAssetHandler $editAssetsHandler;
-    private JobRepositoryInterface $jobRepository;
-    private int $batchSize;
-    private EventAggregatorInterface $indexAssetEventAggregator;
-    private JobStopper $jobStopper;
-    private EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry;
-    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
 
     public function __construct(
-        EditAssetHandler $editAssetsHandler,
-        AssetQueryBuilderInterface $assetQueryBuilder,
-        Client $assetClient,
-        JobRepositoryInterface $jobRepository,
-        EventAggregatorInterface $indexAssetEventAggregator,
-        JobStopper $jobStopper,
-        EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry,
-        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
-        int $batchSize
+        private EditAssetHandler $editAssetsHandler,
+        private AssetQueryBuilderInterface $assetQueryBuilder,
+        private Client $assetClient,
+        private JobRepositoryInterface $jobRepository,
+        private EventAggregatorInterface $indexAssetEventAggregator,
+        private JobStopper $jobStopper,
+        private EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry,
+        private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
+        private int $batchSize,
     ) {
-        $this->editAssetsHandler = $editAssetsHandler;
-        $this->assetQueryBuilder = $assetQueryBuilder;
-        $this->assetClient = $assetClient;
-        $this->jobRepository = $jobRepository;
-        $this->indexAssetEventAggregator = $indexAssetEventAggregator;
-        $this->jobStopper = $jobStopper;
-        $this->editValueCommandFactoryRegistry = $editValueCommandFactoryRegistry;
-        $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
-        $this->batchSize = $batchSize;
     }
 
     public function setStepExecution(StepExecution $stepExecution): void
@@ -127,7 +109,7 @@ class MassEditAssetsTasklet implements TaskletInterface, TrackableTaskletInterfa
             return;
         }
 
-        if (count($assetCodesToEdit) > 0) {
+        if (!empty($assetCodesToEdit)) {
             $this->editAssets($assetFamilyIdentifier, $assetCodesToEdit, $editAssetValueCommands);
         }
 

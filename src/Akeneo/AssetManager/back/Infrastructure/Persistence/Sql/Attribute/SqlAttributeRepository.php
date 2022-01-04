@@ -36,20 +36,11 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class SqlAttributeRepository implements AttributeRepositoryInterface
 {
-    private Connection $sqlConnection;
-
-    private AttributeHydratorRegistry $attributeHydratorRegistry;
-
-    private EventDispatcherInterface $eventDispatcher;
-
     public function __construct(
-        Connection $sqlConnection,
-        AttributeHydratorRegistry $attributeHydratorRegistry,
-        EventDispatcherInterface $eventDispatcher
+        private Connection $sqlConnection,
+        private AttributeHydratorRegistry $attributeHydratorRegistry,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
-        $this->sqlConnection = $sqlConnection;
-        $this->attributeHydratorRegistry = $attributeHydratorRegistry;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function create(AbstractAttribute $attribute): void
@@ -229,7 +220,6 @@ SQL;
     }
 
     /**
-     * @param AssetFamilyIdentifier $assetFamilyIdentifier
      *
      * @return AbstractAttribute[]
      * @throws DBALException

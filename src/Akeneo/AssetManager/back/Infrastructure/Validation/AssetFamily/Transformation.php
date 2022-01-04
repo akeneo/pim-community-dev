@@ -25,13 +25,9 @@ class Transformation extends Constraint
     public const FILENAME_PREFIX_SUFFIX_EMPTY_ERROR = 'pim_asset_manager.asset_family.validation.transformation.filename_prefix_suffix_empty';
     public const EMPTY_OPERATION_LIST_ERROR = 'pim_asset_manager.asset_family.validation.transformation.empty_operation_list';
 
-    private AssetFamilyIdentifier $assetFamilyIdentifier;
-
-    public function __construct(AssetFamilyIdentifier $assetFamilyIdentifier)
+    public function __construct(private AssetFamilyIdentifier $assetFamilyIdentifier)
     {
         parent::__construct();
-
-        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
     }
 
     public function getAssetFamilyIdentifier(): AssetFamilyIdentifier

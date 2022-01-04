@@ -22,16 +22,12 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class RawLocaleShouldBeActivatedValidator extends ConstraintValidator
 {
-    private FindActivatedLocalesByIdentifiersInterface $findActivatedLocales;
-
-    public function __construct(FindActivatedLocalesByIdentifiersInterface $findActivatedLocales)
+    public function __construct(private FindActivatedLocalesByIdentifiersInterface $findActivatedLocales)
     {
-        $this->findActivatedLocales = $findActivatedLocales;
     }
 
     /**
      * @param string|LocaleIdentifier|null $localeIdentifier
-     * @param Constraint $constraint
      */
     public function validate($localeIdentifier, Constraint $constraint)
     {
@@ -49,7 +45,7 @@ class RawLocaleShouldBeActivatedValidator extends ConstraintValidator
             throw new \InvalidArgumentException(sprintf(
                 'Expected argument to be of class "%s", "%s" given',
                 LocaleIdentifierCollection::class,
-                get_class($localeIdentifier)
+                $localeIdentifier::class
             ));
         }
 

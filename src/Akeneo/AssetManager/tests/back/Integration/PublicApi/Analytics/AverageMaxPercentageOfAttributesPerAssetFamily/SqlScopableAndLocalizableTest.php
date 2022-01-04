@@ -49,8 +49,8 @@ class SqlScopableAndLocalizableTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_the_average_and_max_percentage_of_scopable_and_localizable_attributes_per_asset_family(
-    ) {
+    public function it_returns_the_average_and_max_percentage_of_scopable_and_localizable_attributes_per_asset_family()
+    {
         $assetFamilyIdentifier = $this->createAssetFamily();
         $this->createAttributesHelper->loadLocalizableAndScopableAttributesForAssetFamily(
             $assetFamilyIdentifier,

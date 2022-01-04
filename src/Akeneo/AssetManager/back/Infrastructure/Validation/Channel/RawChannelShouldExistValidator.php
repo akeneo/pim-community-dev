@@ -22,11 +22,8 @@ use Symfony\Component\Validator\Validation;
 
 class RawChannelShouldExistValidator extends ConstraintValidator
 {
-    private ChannelExistsInterface $channelExists;
-
-    public function __construct(ChannelExistsInterface $channelExists)
+    public function __construct(private ChannelExistsInterface $channelExists)
     {
-        $this->channelExists = $channelExists;
     }
 
     /**
