@@ -6,6 +6,8 @@ config:
                     module: pim/controller/connectivity/connection/connect/marketplace
                 akeneo_connectivity_connection_connect_marketplace_profile:
                     module: pim/controller/connectivity/connection/connect/marketplace
+                akeneo_connectivity_connection_connect_marketplace_test_app_create:
+                    module: pim/controller/connectivity/connection/connect/marketplace
                 akeneo_connectivity_connection_connect_apps_activate:
                     module: pim/controller/connectivity/connection/connect/apps
                 akeneo_connectivity_connection_connect_apps_authorize:
