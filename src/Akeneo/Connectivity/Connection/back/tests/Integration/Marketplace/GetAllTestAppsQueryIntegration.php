@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Marketplace;
 
-use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetTestAppQuery;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\GetAllTestAppsResult;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
+use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllTestAppsQuery;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -13,17 +15,17 @@ use Doctrine\DBAL\Connection;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetTestAppQueryIntegration extends TestCase
+class GetAllTestAppsQueryIntegration extends TestCase
 {
     private Connection $connection;
-    private GetTestAppQuery $query;
+    private GetAllTestAppsQuery $query;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->connection = $this->get('database_connection');
-        $this->query = $this->get(GetTestAppQuery::class);
+        $this->query = $this->get(GetAllTestAppsQuery::class);
     }
 
     protected function getConfiguration(): Configuration
@@ -31,7 +33,7 @@ class GetTestAppQueryIntegration extends TestCase
         return $this->catalog->useTechnicalCatalog();
     }
 
-    public function test_it_returns_a_test_app_with_an_user()
+    public function test_it_returns_test_apps()
     {
         $this->createTestApp([
             'client_id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
@@ -41,36 +43,36 @@ class GetTestAppQueryIntegration extends TestCase
             'callback_url' => 'http://shopware.example.com/callback',
             'user_id' => $this->findUserId('admin'),
         ]);
-
-        $result = $this->query->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9');
-        $this->assertEquals([
-            'id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
-            'name' => 'My test app',
-            'author' => 'John Doe',
-            'activate_url' => 'http://shopware.example.com/activate',
-            'callback_url' => 'http://shopware.example.com/callback',
-        ], $result);
-    }
-
-    public function test_it_returns_a_test_app_without_an_user()
-    {
         $this->createTestApp([
-            'client_id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
+            'client_id' => '42b9ecb1-ddd7-4874-9ad6-21a02d08ed50',
             'client_secret' => 'foobar',
-            'name' => 'My test app',
+            'name' => 'My test app 2',
             'activate_url' => 'http://shopware.example.com/activate',
             'callback_url' => 'http://shopware.example.com/callback',
             'user_id' => null,
         ]);
 
-        $result = $this->query->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9');
-        $this->assertEquals([
-            'id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
-            'name' => 'My test app',
-            'author' => null,
-            'activate_url' => 'http://shopware.example.com/activate',
-            'callback_url' => 'http://shopware.example.com/callback',
-        ], $result);
+        $result = $this->query->execute();
+
+        $this->assertEquals(
+            GetAllTestAppsResult::create(2, [
+                App::fromTestAppValues([
+                    'id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
+                    'name' => 'My test app',
+                    'author' => 'John Doe',
+                    'activate_url' => 'http://shopware.example.com/activate',
+                    'callback_url' => 'http://shopware.example.com/callback',
+                ]),
+                App::fromTestAppValues([
+                    'id' => '42b9ecb1-ddd7-4874-9ad6-21a02d08ed50',
+                    'name' => 'My test app 2',
+                    'author' => null,
+                    'activate_url' => 'http://shopware.example.com/activate',
+                    'callback_url' => 'http://shopware.example.com/callback',
+                ]),
+            ]),
+            $result
+        );
     }
 
     /**
@@ -80,7 +82,7 @@ class GetTestAppQueryIntegration extends TestCase
      *     name: string,
      *     activate_url: string,
      *     callback_url: string,
-     *     user_id: string|null,
+     *     user_id: int|null,
      * } $data
      */
     private function createTestApp(array $data): void

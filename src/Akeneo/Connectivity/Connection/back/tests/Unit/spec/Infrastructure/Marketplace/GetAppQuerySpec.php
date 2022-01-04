@@ -110,8 +110,7 @@ class GetAppQuerySpec extends ObjectBehavior
         WebMarketplaceApiInterface $webMarketplaceApi,
         FeatureFlag $appDeveloperModeFeatureFlag,
         GetTestAppQuery $getTestAppQuery,
-    ): void
-    {
+    ): void {
         $appDeveloperModeFeatureFlag->isEnabled()->willReturn(true);
         $getTestAppQuery->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9')->willReturn(null);
         $webMarketplaceApi->getApp('100eedac-ff5c-497b-899d-e2d64b6c59f9')->willReturn(null);

@@ -38,7 +38,6 @@ class App
     private const TEST_APP_REQUIRED_KEYS = [
         'id',
         'name',
-        'author',
         'activate_url',
         'callback_url',
     ];
@@ -93,7 +92,7 @@ class App
      * @param array{
      *     id: string,
      *     name: string,
-     *     author: string|null,
+     *     author?: string,
      *     activate_url: string,
      *     callback_url: string,
      *     connected?: bool,
@@ -112,7 +111,7 @@ class App
         $self->id = $values['id'];
         $self->name = $values['name'];
         $self->logo = null;
-        $self->author = $values['author'];
+        $self->author = $values['author'] ?? null;
         $self->partner = null;
         $self->description = null;
         $self->url = null;

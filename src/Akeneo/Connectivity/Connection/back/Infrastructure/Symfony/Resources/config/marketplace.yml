@@ -74,3 +74,8 @@ services:
         class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetTestAppQuery
         arguments:
             - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllTestAppsQuery:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllTestAppsQuery
+        arguments:
+            - '@database_connection'
