@@ -49,6 +49,10 @@ variable "mailgun_domain" {
   default = "mg.cloud.akeneo.com"
 }
 
+variable "mailgun_region" {
+  default = "us"
+}
+
 variable "mailgun_host" {
   default = "smtp.mailgun.org"
 }
