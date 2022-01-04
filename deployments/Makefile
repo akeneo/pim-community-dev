@@ -167,14 +167,6 @@ delete:
 		ENV_NAME=$(ENV_NAME) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(DEPLOYMENT_DIR)/bin/delete_instance.sh ;\
 	fi
 
-.PHONY: delete_clone_flexibility
-delete_clone_flexibility:
-	if [ -f "$(INSTANCE_DIR)/main.tf.json" ]; then \
-		cd $(INSTANCE_DIR) ;\
-		echo "Destroying $(INSTANCE_DIR) ..." ;\
-		TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(DEPLOYMENT_DIR)/bin/delete_clone_flexibility.sh ;\
-	fi
-
 .PHONY: create-ci-release-files
 create-ci-release-files: create-ci-values create-pim-main-tf
 
@@ -532,12 +524,8 @@ clone_saas_instance:
 
 .PHONY: clone_flexibility
 clone_flexibility:
-	INSTANCE_NAME=${INSTANCE_NAME}  IMAGE_TAG=$(PED_TAG) INSTANCE_NAME_PREFIX=pimflex  make create-ci-release-files && \
-	docker run -v $(PIM_ROOT_DIR):/root/project -ti -e ENV_NAME=dev -e GCLOUD_SERVICE_KEY -e SOURCE_PFID=$(SOURCE_PFID) -e PED_TAG -e INSTANCE_NAME=$(INSTANCE_NAME) eu.gcr.io/akeneo-cloud/cloud-deployer:2.8 /root/project/deployments/bin/clone_flexibility.sh
-
-.PHONY: test_upgrade_from_flexibility_clone
-test_upgrade_from_flexibility_clone:
-	FLEXIBILITY_CUSTOMER_LIST=$(FLEXIBILITY_CUSTOMER_LIST) bash $(DEPLOYMENT_DIR)/bin/clone_flexibility.sh
+	TYPE=$(TYPE) INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files
+	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) SOURCE_PROJECT_ID=$(SOURCE_PROJECT_ID) PED_TAG=$(IMAGE_TAG) INSTANCE_NAME=$(INSTANCE_NAME) BUCKET=$(BUCKET) bash $(DEPLOYMENT_DIR)/bin/clone_flexibility.sh
 
 .PHONY: php-image-prod
 php-image-prod: #Doc: build docker image for pim-enterprise-dev with the prod tag
