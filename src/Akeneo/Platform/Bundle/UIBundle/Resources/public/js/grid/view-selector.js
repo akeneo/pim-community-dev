@@ -61,7 +61,7 @@ define([
      * {@inheritdoc}
      */
     initialize: function (meta) {
-      this.config = meta.config;
+      this.config = Object.assign({}, meta.config);
 
       BaseForm.prototype.initialize.apply(this, arguments);
     },

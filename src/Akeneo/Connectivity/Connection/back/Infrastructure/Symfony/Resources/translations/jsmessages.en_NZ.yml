@@ -5,7 +5,6 @@ pim_menu:
     connection_audit: Connection dashboard
     connection_settings: Connections
     connection_settings_edit: Connection settings
-    connection_monitoring: Monitoring
     connect_connection_settings: Connection settings
 pim_title:
   akeneo_connectivity_connection_settings_edit: Connection settings
@@ -37,7 +36,6 @@ akeneo_connectivity.connection:
     label: Label
     flow_type: Flow type
     image: Image
-    auditable: Track this connection in the dashboard
     client_id: Client ID
     secret: Secret
     username: Username
@@ -160,9 +158,6 @@ akeneo_connectivity.connection:
       content: Your feedback is really precious to us. Help us choose the next widget by answering this one-question survey!
       button: Let's go!
     connection_selector:
-      title:
-        source: Source connections
-        destination: Destination connections
       all: All
     charts:
       inbound: Inbound
@@ -176,12 +171,10 @@ akeneo_connectivity.connection:
     error_management:
       data_source_error_chart:
         section:
-          title: Errors on source connections
           helper: Here you can see the total number of errors, including business errors.
         chart:
           title: Error count per day
       widget:
-        title: Business errors per source connection
         over_the_last_seven_days: Over the last 7 days
         business_errors: business errors
     no_connection:

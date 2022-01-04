@@ -11,7 +11,6 @@ pim_menu:
     connection_audit: 연결 대시보드
     connection_settings: 연결
     connection_settings_edit: 연결 설정
-    connection_monitoring: 모니터링
     connection_webhook_edit: 이벤트 구독
     connection_webhook_event_logs: 이벤트 로그
     data_flows: 데이터 흐름
@@ -64,6 +63,12 @@ akeneo_connectivity.connection:
         tabs:
           settings: 설정
           permissions: 권한
+        error_monitoring:
+          not_auditable:
+            description:
+              1: To track errors on this app,
+              2: 설정에서
+              3: 모니터링을 활성화하십시오.
       delete:
         title: 삭제 확인
         link: 다음과 같이 진행됩니다.
@@ -118,7 +123,6 @@ akeneo_connectivity.connection:
     label: 레이블
     flow_type: 흐름 유형
     image: 이미지
-    auditable: 대시보드에서 이 연결 추적
     client_id: 클라이언트 ID
     secret: 비밀번호
     username: 사용자 이름
@@ -247,9 +251,6 @@ akeneo_connectivity.connection:
       content: 여러분의 피드백은 매우 중요합니다. 질문 하나가 나오는 이 설문조사에 답하여 다음 위젯을 선택하는 데 도움을 주시기 바랍니다.
       button: 시작!
     connection_selector:
-      title:
-        source: 소스 연결
-        destination: 대상 연결
       all: 모두
     charts:
       inbound: 인바운드
@@ -263,12 +264,10 @@ akeneo_connectivity.connection:
     error_management:
       data_source_error_chart:
         section:
-          title: 소스 연결에서 오류 발생
           helper: 여기에서 비즈니스 오류를 포함한 총 오류 개수를 확인할 수 있습니다.
         chart:
           title: 1일 오류 개수
       widget:
-        title: 소스 연결별 비즈니스 오류
         over_the_last_seven_days: 지난 7일간
         business_errors: 비즈니스 오류
     no_connection:
@@ -354,7 +353,6 @@ akeneo_connectivity.connection:
           message: 메시지
   error_management:
     connection_monitoring:
-      title: 모니터링
       helper:
         title: '{0} {{ count }}개 오류가 있습니다. |[1,Inf] {{ count }}개 오류가 있습니다.'
         description: 지난 7일간 이 연결에 대한 각 오류의 세부 정보를 여기서 볼 수 있습니다. 오류 개수는 100개 오류로 제한됩니다.

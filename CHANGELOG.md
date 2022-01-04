@@ -155,7 +155,12 @@
 - PIM-10197: Added safeguards against attribute change to locale specific when the same attribute is a variant axis for a family
 - PIM-10208: Fix currency settings page crashing when label is not found
 - PIM-10192: Retry mechanism in delete action of ES documents
+- PIM-10214: Fix cannot create a measurement attribute if measurement family or unit code is too long
 - PIM-10210: Fix notifications can't be displayed
+- PIM-10220: Fixed issues where association has NaN error
+- PIM-10217: Fix cannot quick export product model when id is not present in grid context
+- PIM-10212: Prevent spaces in locale codes
+- PIM-10218: Remove previous scope filter before moving the new one
 
 ## New features
 

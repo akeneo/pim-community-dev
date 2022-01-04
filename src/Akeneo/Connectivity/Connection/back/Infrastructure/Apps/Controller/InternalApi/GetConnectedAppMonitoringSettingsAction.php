@@ -49,7 +49,7 @@ class GetConnectedAppMonitoringSettingsAction
         }
 
         return new JsonResponse([
-            'flow_type' => $connection->flowType(),
+            'flowType' => $connection->flowType(),
             'auditable' => $connection->auditable(),
         ]);
     }
