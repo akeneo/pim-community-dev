@@ -32,8 +32,7 @@ final class GetSelectAttributesWithOptionsCountControllerIntegration extends Con
     {
         $this->webClientHelper->callApiRoute(
             $this->client,
-            'pim_table_attribute_get_select_options',
-            ['attributeCode' => 'nutrition', 'columnCode' => 'ingredients']
+            'pim_table_attribute_get_select_attributes_with_options_count'
         );
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
@@ -131,14 +130,13 @@ final class GetSelectAttributesWithOptionsCountControllerIntegration extends Con
         Assert::assertCount(0, $violations, \sprintf('The attribute is not valid: %s', $violations));
         $this->get('pim_catalog.saver.attribute')->save($attribute);
 
-        for ($i=0;$i<10;$i++) {
+        for ($i=0; $i<10; $i++) {
             $attributeOption = $this->get('pim_catalog.factory.attribute_option')->create();
             $this->get('pim_catalog.updater.attribute_option')->update($attributeOption, [
                 'code' => 'brand_'.$i,
                 'attribute' => 'brand',
                 'labels' => ['en_US' => 'Brand_'.$i, 'fr_FR' => 'Marque_'.$i]
             ]);
-            $violations = $this->get('validator')->validate($attribute);
             Assert::assertCount(0, $violations, \sprintf('The attribute option is not valid: %s', $violations));
             $this->get('pim_catalog.saver.attribute_option')->save($attributeOption);
         }
@@ -156,14 +154,13 @@ final class GetSelectAttributesWithOptionsCountControllerIntegration extends Con
         Assert::assertCount(0, $violations, \sprintf('The attribute is not valid: %s', $violations));
         $this->get('pim_catalog.saver.attribute')->save($attribute);
 
-        for ($i=0;$i<5;$i++) {
+        for ($i=0; $i<5; $i++) {
             $attributeOption = $this->get('pim_catalog.factory.attribute_option')->create();
             $this->get('pim_catalog.updater.attribute_option')->update($attributeOption, [
                 'code' => 'color_'.$i,
                 'attribute' => 'color',
                 'labels' => ['en_US' => 'Color_'.$i, 'fr_FR' => 'Couleur_'.$i]
             ]);
-            $violations = $this->get('validator')->validate($attribute);
             Assert::assertCount(0, $violations, \sprintf('The attribute option is not valid: %s', $violations));
             $this->get('pim_catalog.saver.attribute_option')->save($attributeOption);
         }

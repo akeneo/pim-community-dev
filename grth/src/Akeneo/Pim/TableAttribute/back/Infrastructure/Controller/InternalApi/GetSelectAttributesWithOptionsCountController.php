@@ -58,7 +58,7 @@ final class GetSelectAttributesWithOptionsCountController
             $optionsCount = $this->attributeOptionRepository->count(['attribute' => $selectAttribute->getId()]);
 
             $labels = [];
-            foreach ($selectAttribute->getTranslations()->toArray() as $translation) {
+            foreach ($selectAttribute->getTranslations() as $translation) {
                 $labels[$translation->getLocale()] = $translation->getLabel();
             }
 
