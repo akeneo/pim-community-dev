@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
-import {ThemeProvider} from "styled-components";
+import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
-import {DependenciesProvider} from "@akeneo-pim-community/legacy-bridge";
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {fireEvent, screen} from '@testing-library/react';
 import FilterCollection, {
   useFilterViews,
@@ -14,7 +14,7 @@ import {AssetAttributeFetcher} from 'akeneoassetmanager/application/component/li
 import {FilterView} from 'akeneoassetmanager/application/configuration/value';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import {fakeConfig, FakeConfigProvider} from '../../../../utils/FakeConfigProvider';
-import {ConfigProvider} from "../../../../../../../../front/application/hooks/useConfig";
+import {ConfigProvider} from '../../../../../../../../front/application/hooks/useConfig';
 
 const attributes = [
   {
