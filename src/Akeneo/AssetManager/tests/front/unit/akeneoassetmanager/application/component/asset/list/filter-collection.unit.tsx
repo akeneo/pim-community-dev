@@ -138,7 +138,9 @@ describe('Tests filter collection', () => {
   });
 
   test('I get an empty collection view if there is no attributes', async () => {
-    const {result, waitForNextUpdate} = renderHook(() => useFilterViews('notice', dataProvider), {wrapper: FakeConfigProvider});
+    const {result, waitForNextUpdate} = renderHook(() => useFilterViews('notice', dataProvider), {
+      wrapper: FakeConfigProvider,
+    });
 
     expect(result.current).toBe(null);
     await waitForNextUpdate();
