@@ -1187,6 +1187,10 @@ jobs:
                 name: Setup tests results folder and log folder
                 command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer ~/.cache/Cypress
           - run:
+                name: Modify the password for the sanity check
+                command: |
+                    sed -i "s/Q7sKB5xP2ttc5KnqFPOF1BrOkTRSulmEj528BpJzbDcLbYSHU1/${PIM_ADMIN_PASSWORD}/g" tests/front/e2e/product/edit.js
+          - run:
                 name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
                 command: |
                     sudo chown -R 1000:1000 ../project
@@ -1579,6 +1583,8 @@ jobs:
           - run:
               name: Persist env vars for next jobs
               command: |
+                PIM_ADMIN_PASSWORD=$(yq r /root/project/deployments/instances/${TYPE}-${INSTANCE_NAME}/values.yaml pim.defaultAdminUser.password)
+                echo export PIM_ADMIN_PASSWORD=${PIM_ADMIN_PASSWORD} >> persisted_env_vars
                 echo export SOURCE_PFID=${SOURCE_PFID} >> persisted_env_vars
                 echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> persisted_env_vars
                 echo export INSTANCE_NAME=${INSTANCE_NAME} >> persisted_env_vars
