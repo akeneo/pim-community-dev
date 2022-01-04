@@ -14,9 +14,9 @@ unit-back: #Doc: launch PHPSpec for tailored import
 .PHONY: integration-back
 integration-back: #Doc: launch PHPUnit integration tests for tailored import
 ifeq ($(CI),true)
-	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit -c . --testsuite Tailoredimport_Integration_Test --log-junit var/tests/phpunit/phpunit_tailored-import-integration.xml $(O)
+	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit -c components/tailored-import/back/tests/phpunit-grth.xml --testsuite Tailoredimport_Integration_Test --log-junit var/tests/phpunit/phpunit_tailored-import-integration.xml $(O)
 else
-	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit -c . --testsuite Tailoredimport_Integration_Test $(O)
+	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit -c components/tailored-import/back/tests/phpunit-grth.xml --testsuite Tailoredimport_Integration_Test $(O)
 endif
 
 .PHONY: acceptance-back

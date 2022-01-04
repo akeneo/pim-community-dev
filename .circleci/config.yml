@@ -633,6 +633,9 @@ jobs:
           - run:
                 name: Tailored Export
                 command: PIM_CONTEXT=tailored-export make integration-back
+          - run:
+              name: Tailored Import
+              command: PIM_CONTEXT=tailored-import make integration-back
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:
@@ -1073,6 +1076,9 @@ jobs:
           - run:
                 name: Tailored Export Back Tests
                 command: PIM_CONTEXT=tailored-export make ci-back
+          - run:
+              name: Tailored Import Back Tests
+              command: PIM_CONTEXT=tailored-import make ci-back
           - run:
                 name: Install assets & css
                 command: make assets css
