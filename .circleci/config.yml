@@ -1360,7 +1360,9 @@ jobs:
               command: |
                   ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
                   export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-                  make -C deployments/ uncommit-instance
+                  UNCOMMIT_INSTANCE_STATUS_CODE=0
+                  for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
+                  exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
               when: always
           - persist_to_workspace:
               root: ~/
@@ -1435,7 +1437,9 @@ jobs:
             command: |
                 ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
                 export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-                make -C deployments/ uncommit-instance
+                UNCOMMIT_INSTANCE_STATUS_CODE=0
+                for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
+                exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
             when: on_fail
         - persist_to_workspace:
             root: ~/
@@ -1522,7 +1526,9 @@ jobs:
             command: |
                 ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
                 export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-                make -C deployments/ uncommit-instance
+                UNCOMMIT_INSTANCE_STATUS_CODE=0
+                for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
+                exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
             when: always
 
   test_clone_from_customer_db:
@@ -1587,7 +1593,9 @@ jobs:
               command: |
                   ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
                   export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-                  make -C deployments/ uncommit-instance
+                  UNCOMMIT_INSTANCE_STATUS_CODE=0
+                  for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
+                  exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
               when: on_fail
           - persist_to_workspace:
               root: ~/
@@ -1669,7 +1677,9 @@ jobs:
               command: |
                   ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
                   export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-                  make -C deployments/ uncommit-instance
+                  UNCOMMIT_INSTANCE_STATUS_CODE=0
+                  for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
+                  exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
               when: on_fail
           - persist_to_workspace:
               root: ~/
@@ -1935,7 +1945,9 @@ jobs:
           command: |
               ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
               export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-              make -C deployments/ uncommit-instance
+              UNCOMMIT_INSTANCE_STATUS_CODE=0
+              for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
+              exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
           when: on_fail
       - store_artifacts:
           path: ~/artifacts/infra
@@ -1994,7 +2006,9 @@ jobs:
                 command: |
                     ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
                     export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-                    make -C deployments/ uncommit-instance
+                    UNCOMMIT_INSTANCE_STATUS_CODE=0
+                    for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
+                    exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
 
 
   delete_expired_uptime_check:
