@@ -16,6 +16,7 @@
         "psr-4": {
             "Akeneo\\Pim\\TableAttribute\\": "src/Akeneo/Pim/TableAttribute/back",
             "Akeneo\\Platform\\TailoredExport\\": "components/tailored-export/back/src/",
+            "Akeneo\\Platform\\TailoredImport\\": "components/tailored-import/back/src/",
             "Akeneo\\Platform\\": "src/Akeneo/Platform"
         },
         "exclude-from-classmap": [
@@ -39,7 +40,8 @@
             "Pim\\Upgrade\\Schema\\Tests\\": "vendor/akeneo/pim-community-dev/upgrades/test_schema/",
             "Akeneo\\Platform\\CommunicationChannel\\Test\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests",
             "Akeneo\\Test\\Pim\\TableAttribute\\": "src/Akeneo/Pim/TableAttribute/tests/back",
-            "Akeneo\\Platform\\TailoredExport\\Test\\": "components/tailored-export/back/tests"
+            "Akeneo\\Platform\\TailoredExport\\Test\\": "components/tailored-export/back/tests",
+            "Akeneo\\Platform\\TailoredImport\\Test\\": "components/tailored-import/back/tests"
         }
     },
     "require": {
