@@ -6,7 +6,7 @@
 
         <title>Akeneo batch {{ jobExecution.jobInstance.type }}</title>
 
-        <link href="//fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet" type="text/css"/>
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet" type="text/css"/>
 
         <style>
             @media only screen and (max-width: 500px) {
@@ -34,7 +34,7 @@
                 <tr style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;">
                     <td style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;padding-bottom: 20px;">
                         <img style="width: 100%; height: auto; max-width: 242px; max-height: 59px;"
-                             src="{{ absolute_url(asset('bundles/akeneobatch/images/email_logo.png')) }}"
+                             src="{{ asset('bundles/akeneobatch/images/email_logo.png') }}"
                              alt="Akeneo logo" />
                     </td>
                 </tr>
@@ -48,13 +48,13 @@
                             Akeneo successfully completed your batch {{ jobExecution.jobInstance.type }}.
                         </p>
                         <p style="margin: 0 0 20px 0; font-size: 12px;">
-                            SStarted on {{ jobExecution.startTime|date("Y-m-d") }} at {{ jobExecution.startTime|date("H:i:s") }}.<br/>
+                            Started on {{ jobExecution.startTime|date("Y-m-d") }} at {{ jobExecution.startTime|date("H:i:s") }}.<br/>
                             Ended on {{ jobExecution.endTime|date("Y-m-d") }} at {{ jobExecution.endTime|date("H:i:s") }}.
                         </p>
                         <div style="margin: auto; width: 80%; text-align: start; font-size: 12px;"
                              id="result">
                             <p>Results:</p>
-                            <ul style="list-style-type: '- '; padding-inline-start: 5px;">
+                            <ul style="list-style-type:'- ';padding-inline-start: 5px;">
                                 {% for stepExecution in jobExecution.stepExecutions %}
                                     <li>
                                         {{ stepExecution.stepName|trans }} [{{ stepExecution.status }}]
@@ -98,12 +98,12 @@
                         <div style="font-size: 9px;">
                             <p>Copyright © {{ 'now' | date('Y') }} Akeneo, All rights reserved.</p>
                             <p>
-                                Yu are receiving this email because you have been invited to use Akeneo Shared Catalogs.
+                                You have been invited to use Akeneo Shared Catalogs.
                                 As it is not direct marketing emails, you cannot unsubscribe to this email.
                             </p>
                         </div>
                         <img style="width: 100%; height: auto; max-height: 32px; max-width: 131px; margin-top: 15px;"
-                             src="{{ absolute_url(asset('bundles/akeneobatch/images/email_signature.png')) }}"
+                             src="{{ asset('bundles/akeneobatch/images/email_signature.png') }}"
                              alt="Akeneo signature" />
                     </td>
                 </tr>
