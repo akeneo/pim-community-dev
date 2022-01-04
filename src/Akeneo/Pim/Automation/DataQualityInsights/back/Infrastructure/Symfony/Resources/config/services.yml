@@ -206,7 +206,7 @@ services:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.evaluate_products_pending_criteria'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductsIndex'
+            - '@event_dispatcher'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels:
         arguments:

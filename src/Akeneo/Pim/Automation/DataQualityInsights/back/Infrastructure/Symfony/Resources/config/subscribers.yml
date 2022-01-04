@@ -38,3 +38,9 @@ services:
             - '@logger'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\UpdateProductsIndexSubscriber:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductsIndex'
+        tags:
+            - { name: kernel.event_subscriber }
