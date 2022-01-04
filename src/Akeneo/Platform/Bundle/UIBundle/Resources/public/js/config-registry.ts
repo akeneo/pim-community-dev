@@ -1,6 +1,7 @@
 type ModuleConfig = typeof __moduleConfig;
-const getConfig = (configPath: keyof ModuleConfig) => {
-  return __moduleConfig[configPath] ?? null;
+
+const getConfig = <T>(configPath: keyof ModuleConfig): T | null => {
+  return __moduleConfig[configPath] as unknown as T ?? null;
 };
 
 export {getConfig};
