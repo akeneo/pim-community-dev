@@ -6,168 +6,108 @@
 
         <title>Akeneo batch {{ jobExecution.jobInstance.type }}</title>
 
-        <link href="//fonts.googleapis.com/css?family=Lato:500,900" rel="stylesheet" type="text/css"/>
+        <link href="//fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet" type="text/css"/>
 
         <style>
-            body {
-                display: flex;
-                flex-direction: column;
-                flex-wrap: wrap;
-                justify-content: center;
-                align-items: center;
-                max-width: 600px;
-                font-family: 'Lato', sans-serif;
-                color: #11324D;
-                font-weight: 500;
+            @media only screen and (max-width: 500px) {
+                #footerContainer {
+                    padding: 15px 50px;
+                }
+                #result {
+                    width: 90%;
+                }
             }
 
-            .logo {
-                width: 100%;
-                height: auto;
-                max-width: 242px;
-                max-height: 59px;
-            }
-
-            .message-container {
-                max-width: 444px;
-                margin-bottom: 30px;
-                text-align: center;
-            }
-
-            .message {
-                margin-bottom: 30px;
-                font-size: 20px;
-            }
-
-            .detail {
-                margin-bottom: 30px;
-                font-size: 12px;
-            }
-
-            .result {
-                text-align: start;
-                font-size: 12px;
-            }
-
-            .result ul {
-                list-style-type: '- ';
-                padding-inline-start: 5px;
-            }
-
-            .button-container {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 167px;
-                height: 32px;
-                margin-bottom: 30px;
-                border-radius: 25px;
-                background-color: #9452ba;
-            }
-
-            .button-container a {
-                -webkit-appearance: button;
-                -moz-appearance: button;
-                appearance: auto;
-                text-decoration: none;
-                font-size: 15px;
-                font-weight: 900;
-                text-transform: uppercase;
-                color: white;
-            }
-
-            .warning {
-                margin-bottom: 30px;
-                font-size: 12px;
-                font-style: italic;
-            }
-
-            .footer-container {
-                max-width: 520px;
-                max-height: 230px;
-                margin: 0 40px;
-                padding: 15px 88px;
-                background-color: #9452ba;
-                border-radius: 10px 10px 0 0;
-                color: #F5F9FC;
-                font-weight: 500;
-                text-align: center;
-            }
-
-            .helpcenter {
-                font-size: 12px;
-            }
-
-            .copyright {
-                font-size: 9px;
-            }
-
-            .signature {
-                width: 100%;
-                height: auto;
-                max-height: 32px;
-                max-width: 131px;
-                margin-top: 15px;
+            @media only screen and (min-width: 660px) {
+                #result {
+                    width: 70%;
+                }
             }
         </style>
     </head>
-    <body>
-        <!-- header-->
-        <img class="logo" src="{{ absolute_url(asset('bundles/akeneobatch/images/email_logo.png')) }}" alt="Akeneo logo"/>
+    <body style="margin: 30px 40px 0 40px; max-width: 600px; height: auto; font-family: 'Lato', sans-serif; color: #11324D;
+    font-weight: 400; text-align: center;">
+        <table style="border: none; border-spacing: 0; border-collapse: collapse; vertical-align: top;">
+            <tbody style="border: none; border-spacing: 0; border-collapse: collapse; vertical-align: top;">
 
-        <!-- message -->
-        <div class="message-container">
-            <p class="message">
-                Dear <strong>{{ email }}</strong>,<br/>
-                Akeneo successfully completed your batch {{ jobExecution.jobInstance.type }}.
-            </p>
-            <p class="detail">
-                Started on {{ jobExecution.startTime|date("Y-m-d") }} at {{ jobExecution.startTime|date("H:i:s") }}.<br/>
-                Ended on {{ jobExecution.endTime|date("Y-m-d") }} at {{ jobExecution.endTime|date("H:i:s") }}.
-            </p>
-            <div class="result">
-                <p>Results:</p>
-                <ul>
-                    {% for stepExecution in jobExecution.stepExecutions %}
-                        <li>
-                            {{ stepExecution.stepName|trans }} [{{ stepExecution.status }}]
-                            {{ 0 < stepExecution.warnings|length ? 'With ' ~ stepExecution.warnings|length ~ ' warning(s)' : '' }}
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
+                <!-- header -->
+                <tr style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;">
+                    <td style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;padding-bottom: 20px;">
+                        <img style="width: 100%; height: auto; max-width: 242px; max-height: 59px;"
+                             src="{{ absolute_url(asset('bundles/akeneobatch/images/email_logo.png')) }}"
+                             alt="Akeneo logo" />
+                    </td>
+                </tr>
 
-        <!-- action -->
-        {% if akeneo_pim_url is not empty %}
-            <div class="button-container">
-                <a href="{{ akeneo_pim_url }}/#{{ path('akeneo_job_process_tracker_details', {'id': jobExecution.id}) }}"
-                   role="button">View summary</a>
-            </div>
-        {% else %}
-            <div class="warning">
-                <p> You should set the AKENEO_PIM_URL environment variable to view summary.</p>
-            </div>
-        {% endif %}
+                <!-- message -->
+                <tr style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;">
+                    <td style="border: none; border-spacing: 0; border-collapse: collapse; vertical-align: top;
+                    padding-bottom: 30px; width: 100%; max-width: 444px;">
+                        <p style="margin: 0 0 30px 0; font-size: 20px;">
+                            Dear <strong>{{ email }}</strong>,<br/>
+                            Akeneo successfully completed your batch {{ jobExecution.jobInstance.type }}.
+                        </p>
+                        <p style="margin: 0 0 20px 0; font-size: 12px;">
+                            SStarted on {{ jobExecution.startTime|date("Y-m-d") }} at {{ jobExecution.startTime|date("H:i:s") }}.<br/>
+                            Ended on {{ jobExecution.endTime|date("Y-m-d") }} at {{ jobExecution.endTime|date("H:i:s") }}.
+                        </p>
+                        <div style="margin: auto; width: 80%; text-align: start; font-size: 12px;"
+                             id="result">
+                            <p>Results:</p>
+                            <ul style="list-style-type: '- '; padding-inline-start: 5px;">
+                                {% for stepExecution in jobExecution.stepExecutions %}
+                                    <li>
+                                        {{ stepExecution.stepName|trans }} [{{ stepExecution.status }}]
+                                        {{ 0 < stepExecution.warnings|length ? 'With ' ~ stepExecution.warnings|length ~ ' warning(s)' : '' }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
 
-        <!-- footer -->
-        <div class="footer-container">
-            <p class="helpcenter">
-                If you have any questions regarding Akeneo PIM,<br/>you can visit our helpcenter.
-            </p>
-            <div class="copyright">
-                <p>Copyright © {{ 'now' | date('Y') }} Akeneo, All rights reserved.</p>
-                <p>
-                    You are receiving this email because you have been invited to use Akeneo Shared Catalogs. As it is not
-                    direct marketing emails, you cannot unsubscribe to this email.
-                </p>
-                <p>
-                    Our mailing address is:<br/>
-                    2, Place du Général Mellinet<br/>
-                    44100 Nantes, France<br/>
-                </p>
-            </div>
-            <img class="signature" src="{{ absolute_url(asset('bundles/akeneobatch/images/email_signature.png')) }}" alt="Akeneo logo"/>
-        </div>
+                <!-- action -->
+                <tr style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;">
+                    <td style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top; padding-bottom: 30px;">
+                        {% if akeneo_pim_url is not empty %}
+                            <span>
+                                <a target="_blank"
+                                   role="button"
+                                   style="-webkit-appearance: button; -moz-appearance: button; appearance: auto;
+                                   padding: 10px 20px; border-radius: 25px; background-color: #9452ba; color: white;
+                                   text-decoration: none; text-transform: uppercase; font-size: 15px; font-weight: 900;"
+                                   href="{{ akeneo_pim_url }}/#{{ path('akeneo_job_process_tracker_details', {'id': jobExecution.id}) }}">View summary</a>
+                            </span>
+                        {% else %}
+                            <p style="margin: unset; font-size: 12px; font-style: italic;">
+                                You should set the AKENEO_PIM_URL environment variable to view summary.
+                            </p>
+                        {% endif %}
+                    </td>
+                </tr>
+
+                <!-- footer -->
+                <tr style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;">
+                    <td style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;
+                    width: 100%; max-width: 520px; max-height: 230px; padding: 15px 88px; background-color: #9452ba;
+                    border-radius: 10px 10px 0 0; color: #F5F9FC; font-weight: 500;"
+                        id="footerContainer">
+                        <p style="font-size: 12px;">
+                            If you have any questions regarding Akeneo PIM,<br/>you can visit our helpcenter.
+                        </p>
+                        <div style="font-size: 9px;">
+                            <p>Copyright © {{ 'now' | date('Y') }} Akeneo, All rights reserved.</p>
+                            <p>
+                                Yu are receiving this email because you have been invited to use Akeneo Shared Catalogs.
+                                As it is not direct marketing emails, you cannot unsubscribe to this email.
+                            </p>
+                        </div>
+                        <img style="width: 100%; height: auto; max-height: 32px; max-width: 131px; margin-top: 15px;"
+                             src="{{ absolute_url(asset('bundles/akeneobatch/images/email_signature.png')) }}"
+                             alt="Akeneo signature" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </body>
 </html>
