@@ -66,8 +66,10 @@ config:
                 number: '@akeneopimtableattribute/product/CellInputs/NumberInput'
                 text: '@akeneopimtableattribute/product/CellInputs/TextInput'
                 boolean: '@akeneopimtableattribute/product/CellInputs/BooleanInput'
+                reference_entity: '@akeneopimtableattribute/product/CellInputs/RecordInput'
             cell_matchers:
                 select: '@akeneopimtableattribute/product/CellMatchers/SelectMatcher'
                 number: '@akeneopimtableattribute/product/CellMatchers/NumberMatcher'
                 text: '@akeneopimtableattribute/product/CellMatchers/TextMatcher'
                 boolean: '@akeneopimtableattribute/product/CellMatchers/BooleanMatcher'
+                reference_entity: '@akeneopimtableattribute/product/CellMatchers/RecordMatcher'

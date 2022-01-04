@@ -53,18 +53,14 @@ const TableAttributeConditionLine: React.FC<TableAttributeConditionLineProps> = 
 }) => {
   const router = useBackboneRouter();
   const translate = useTranslate();
-  const field = condition.field;
-  const operator = condition.operator;
-  const value = condition.value.value;
-  const column = condition.value.column;
-  const row = condition.value.row;
+  const {field, operator, value} = condition;
+  const {column, row} = value;
   const [attribute, setAttribute] = React.useState<Attribute | null>();
   React.useEffect(() => {
-    getAttributeByIdentifier(condition.field, router).then(attribute =>
+    getAttributeByIdentifier(field, router).then(attribute =>
       setAttribute(attribute)
     );
-  }, []);
-
+  }, [field, router]);
   const title =
     attribute && attribute.labels[currentCatalogLocale]
       ? attribute.labels[currentCatalogLocale]

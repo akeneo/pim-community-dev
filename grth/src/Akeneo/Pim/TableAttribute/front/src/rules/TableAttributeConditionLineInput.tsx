@@ -1,9 +1,17 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {FilterSelectorList} from '../datagrid';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {AttributeContext, LocaleCodeContext} from '../contexts';
 import {PendingBackendTableFilterValue, PendingTableFilterValue, TableAttribute} from '../models';
+import {AttributeContext} from '../contexts';
+import {
+  PendingBackendTableFilterValue,
+  PendingTableFilterValue,
+  ReferenceEntityRecord,
+  TableAttribute,
+} from '../models';
 import {useFetchOptions} from '../product';
+import {ReferenceEntityRecordRepository} from '../repositories';
 import {useUserContext} from '@akeneo-pim-community/shared';
 
 type TableAttributeConditionLineProps = {
@@ -28,17 +36,42 @@ const TableAttributeConditionLineInput: React.FC<TableAttributeConditionLineProp
 const InnerTableAttributeConditionLine: React.FC<TableAttributeConditionLineProps> = ({attribute, value, onChange}) => {
   const [attributeState, setAttributeState] = React.useState<TableAttribute | undefined>(attribute);
   const {getOptionsFromColumnCode} = useFetchOptions(attribute, setAttributeState);
+  const [records, setRecords] = React.useState<ReferenceEntityRecord[] | undefined>();
+  const firstColumn = attributeState?.table_configuration[0];
+  const router = useRouter();
+  const userContext = useUserContext();
+  const catalogLocale = userContext.get('catalogLocale');
 
-  if (!attributeState || !getOptionsFromColumnCode(attributeState.table_configuration[0].code)) {
+  const selectOptionsFromColumnCode = getOptionsFromColumnCode(firstColumn?.code || '');
+
+  useEffect(() => {
+    if (!attribute) return;
+    if (firstColumn?.data_type !== 'reference_entity') return;
+    ReferenceEntityRecordRepository.search(router, firstColumn.reference_entity_identifier, {
+      locale: catalogLocale,
+      channel: userContext.get('catalogScope'),
+    }).then(records => {
+      setRecords(records);
+    });
+  }, [attribute, catalogLocale, router, userContext]);
+
+  const optionsOrRecords = React.useMemo(
+    () => (firstColumn?.data_type === 'reference_entity' ? records : selectOptionsFromColumnCode),
+    [records, selectOptionsFromColumnCode]
+  );
+
+  if (
+    !attributeState ||
+    (firstColumn?.data_type === 'select' && !selectOptionsFromColumnCode) ||
+    (firstColumn?.data_type === 'reference_entity' && !records)
+  ) {
     return <></>;
   }
 
   const initialFilter = {
     ...value,
     column: attributeState.table_configuration.find(column => column.code === value.column),
-    row: getOptionsFromColumnCode(attributeState.table_configuration[0].code)?.find(
-      option => option.code === value.row
-    ),
+    row: optionsOrRecords?.find(({code}) => code === value.row),
   };
 
   const handleChange = (value: PendingTableFilterValue) => {
