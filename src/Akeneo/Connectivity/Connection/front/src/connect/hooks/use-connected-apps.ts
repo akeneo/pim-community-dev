@@ -15,6 +15,8 @@ export const useConnectedApps = (): ConnectedApp[] | null | false => {
     const [connectedApps, setConnectedApps] = useState<ConnectedApp[] | null | false>(null);
 
     useEffect(() => {
+        let mounted = true;
+
         if (!featureFlag.isEnabled('marketplace_activate')) {
             setConnectedApps([]);
             return;
@@ -25,9 +27,9 @@ export const useConnectedApps = (): ConnectedApp[] | null | false => {
 
             try {
                 connectedApps = await fetchConnectedApps();
-                setConnectedApps(connectedApps);
+                mounted && setConnectedApps(connectedApps);
             } catch (e) {
-                setConnectedApps(false);
+                mounted && setConnectedApps(false);
                 notify(
                     NotificationLevel.ERROR,
                     translate('akeneo_connectivity.connection.connect.connected_apps.list.flash.error')
@@ -58,6 +60,10 @@ export const useConnectedApps = (): ConnectedApp[] | null | false => {
                 return;
             }
         })();
+
+        return () => {
+            mounted = false;
+        };
     }, [fetchConnectedApps]);
 
     return connectedApps;

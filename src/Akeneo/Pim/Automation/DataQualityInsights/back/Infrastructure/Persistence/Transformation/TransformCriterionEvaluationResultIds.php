@@ -62,6 +62,10 @@ final class TransformCriterionEvaluationResultIds
                     $dataByCodes['total_number_of_attributes'] =
                         $this->transformChannelLocaleDataFromIdsToCodes($dataByIds, fn ($number) => $number);
                     break;
+                case TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['number_of_improvable_attributes']:
+                    $dataByCodes['number_of_improvable_attributes'] =
+                        $this->transformChannelLocaleDataFromIdsToCodes($dataByIds, fn ($number) => $number);
+                    break;
                 default:
                     throw new CriterionEvaluationResultTransformationFailedException(sprintf('Unknown data type id "%s"', $dataType));
             }

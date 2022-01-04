@@ -1,13 +1,12 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
 import {useHistory} from 'react-router';
 import {AppWizardData} from '../../../model/Apps/wizard-data';
-import {NotificationLevel, useNotify} from '../../../shared/notify';
-import {useTranslate} from '../../../shared/translate';
-import {useConfirmAuthorization} from '../../hooks/use-confirm-authorization';
 import {useFetchAppWizardData} from '../../hooks/use-fetch-app-wizard-data';
 import {Authentication} from './steps/Authentication/Authentication';
 import {Authorizations} from './steps/Authorizations';
 import {WizardModal} from './WizardModal';
+import {FullScreenLoader} from './FullScreenLoader';
+import {useConfirmHandler} from '../../hooks/use-confirm-handler';
 
 type Step = {
     name: 'authentication' | 'authorizations';
@@ -19,12 +18,9 @@ interface Props {
 }
 
 export const AppWizard: FC<Props> = ({clientId}) => {
-    const translate = useTranslate();
-    const notify = useNotify();
     const history = useHistory();
     const [wizardData, setWizardData] = useState<AppWizardData | null>(null);
     const fetchWizardData = useFetchAppWizardData(clientId);
-    const confirmAuthorization = useConfirmAuthorization(clientId);
     const [steps, setSteps] = useState<Step[]>([]);
 
     useEffect(() => {
@@ -57,24 +53,14 @@ export const AppWizard: FC<Props> = ({clientId}) => {
         history.push('/connect/marketplace');
     }, [history]);
 
-    const handleConfirm = useCallback(async () => {
-        try {
-            const {redirectUrl} = await confirmAuthorization();
-            notify(
-                NotificationLevel.SUCCESS,
-                translate('akeneo_connectivity.connection.connect.apps.wizard.flash.success')
-            );
-            window.location.assign(redirectUrl);
-        } catch (e) {
-            notify(
-                NotificationLevel.ERROR,
-                translate('akeneo_connectivity.connection.connect.apps.wizard.flash.error')
-            );
-        }
-    }, [confirmAuthorization, notify, translate]);
+    const {confirm, processing} = useConfirmHandler(clientId, [], {});
 
     if (wizardData === null) {
         return null;
+    }
+
+    if (processing) {
+        return <FullScreenLoader />;
     }
 
     return (
@@ -82,7 +68,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
             appLogo={wizardData.appLogo}
             appName={wizardData.appName}
             onClose={redirectToMarketplace}
-            onConfirm={handleConfirm}
+            onConfirm={confirm}
             steps={steps}
         >
             {step => (
