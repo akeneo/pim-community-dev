@@ -28,20 +28,12 @@ class RefreshAssetsCommand extends Command
     public const REFRESH_ASSETS_COMMAND_NAME = 'akeneo:asset-manager:refresh-assets';
     private const BULK_SIZE = 100;
 
-    private FindAllAssetIdentifiers $findAllAssetIdentifiers;
-    private RefreshAsset $refreshAsset;
-    private CountAssetsInterface $countAssets;
-
     public function __construct(
-        FindAllAssetIdentifiers $findAllAssetIdentifiers,
-        RefreshAsset $refreshAsset,
-        CountAssetsInterface $countAssets
+        private FindAllAssetIdentifiers $findAllAssetIdentifiers,
+        private RefreshAsset $refreshAsset,
+        private CountAssetsInterface $countAssets
     ) {
         parent::__construct(self::REFRESH_ASSETS_COMMAND_NAME);
-
-        $this->findAllAssetIdentifiers = $findAllAssetIdentifiers;
-        $this->refreshAsset = $refreshAsset;
-        $this->countAssets = $countAssets;
     }
 
     /**

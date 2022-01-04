@@ -28,11 +28,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 final class CleanAssetFamilyIdentifierOnAttributeCreationSubscriber implements EventSubscriberInterface
 {
-    private AssetFamilyRepositoryInterface $assetFamilyRepository;
-
-    public function __construct(AssetFamilyRepositoryInterface $assetFamilyRepository)
+    public function __construct(private AssetFamilyRepositoryInterface $assetFamilyRepository)
     {
-        $this->assetFamilyRepository = $assetFamilyRepository;
     }
 
     public static function getSubscribedEvents()
@@ -55,7 +52,7 @@ final class CleanAssetFamilyIdentifierOnAttributeCreationSubscriber implements E
 
         try {
             $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(strval($attribute->getProperty('reference_data_name')));
-        } catch (\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException) {
             return;
         }
 

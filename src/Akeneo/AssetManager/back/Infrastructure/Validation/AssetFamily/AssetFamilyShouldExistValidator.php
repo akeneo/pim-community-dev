@@ -28,11 +28,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class AssetFamilyShouldExistValidator extends ConstraintValidator
 {
-    private AssetFamilyExistsInterface $assetFamilyExists;
-
-    public function __construct(AssetFamilyExistsInterface $assetExists)
+    public function __construct(private AssetFamilyExistsInterface $assetFamilyExists)
     {
-        $this->assetFamilyExists = $assetExists;
     }
 
     public function validate($command, Constraint $constraint): void

@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Asset;
 
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\Connector\ConnectorAsset;
 use Akeneo\AssetManager\Domain\Query\Asset\Connector\FindConnectorAssetByAssetFamilyAndCodeInterface;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\Hal\AddHalDownloadLinkToAssetImages;
@@ -30,24 +31,12 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  */
 class GetConnectorAssetAction
 {
-    private FindConnectorAssetByAssetFamilyAndCodeInterface $findConnectorAsset;
-
-    private AssetFamilyExistsInterface $assetFamilyExists;
-
-    private AddHalDownloadLinkToAssetImages $addHalLinksToImageValues;
-
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        FindConnectorAssetByAssetFamilyAndCodeInterface $findConnectorAsset,
-        AssetFamilyExistsInterface $assetFamilyExists,
-        AddHalDownloadLinkToAssetImages $addHalLinksToImageValues,
-        SecurityFacade $securityFacade
+        private FindConnectorAssetByAssetFamilyAndCodeInterface $findConnectorAsset,
+        private AssetFamilyExistsInterface $assetFamilyExists,
+        private AddHalDownloadLinkToAssetImages $addHalLinksToImageValues,
+        private SecurityFacade $securityFacade,
     ) {
-        $this->assetFamilyExists = $assetFamilyExists;
-        $this->findConnectorAsset = $findConnectorAsset;
-        $this->addHalLinksToImageValues = $addHalLinksToImageValues;
-        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -71,7 +60,7 @@ class GetConnectorAssetAction
 
         $asset = $this->findConnectorAsset->find($assetFamilyIdentifier, $assetCode);
 
-        if (null === $asset) {
+        if (!$asset instanceof ConnectorAsset) {
             throw new NotFoundHttpException(sprintf('Asset "%s" does not exist for the asset family "%s".', $assetCode, $assetFamilyIdentifier));
         }
 

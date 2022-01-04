@@ -31,14 +31,8 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlAttributeHasOneValuePerChannel implements AttributeHasOneValuePerChannelInterface
 {
-    private Connection $sqlConnection;
-
-    /**
-     * @param Connection $sqlConnection
-     */
-    public function __construct(Connection $sqlConnection)
+    public function __construct(private Connection $sqlConnection)
     {
-        $this->sqlConnection = $sqlConnection;
     }
 
     public function withAssetFamilyAndCode(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeCode $attributeCode): bool

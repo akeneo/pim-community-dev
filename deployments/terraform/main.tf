@@ -16,6 +16,19 @@ provider "helm" {
   }
 }
 
+terraform {
+  required_providers {
+    mailgun = {
+      source = "wgebis/mailgun"
+      version = "0.7.1"
+    }
+  }
+}
+
+provider "mailgun" {
+  api_key = var.mailgun_api_key
+}
+
 locals {
   type                            = var.types[var.product_reference_type]
   pfid                            = "${local.type}-${var.instance_name}"

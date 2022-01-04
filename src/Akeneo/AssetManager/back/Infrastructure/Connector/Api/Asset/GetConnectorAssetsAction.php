@@ -43,40 +43,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class GetConnectorAssetsAction
 {
-    private AssetFamilyExistsInterface $assetFamilyExists;
-
     private Limit $limit;
 
-    private SearchConnectorAsset $searchConnectorAsset;
-
-    private PaginatorInterface $halPaginator;
-
-    private AddHalDownloadLinkToAssetImages $addHalLinksToImageValues;
-
-    private ValidatorInterface $validator;
-
-    private SearchFiltersValidator $searchFiltersValidator;
-
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        AssetFamilyExistsInterface $assetFamilyExists,
-        SearchConnectorAsset $searchConnectorAsset,
-        PaginatorInterface $halPaginator,
-        AddHalDownloadLinkToAssetImages $addHalLinksToImageValues,
+        private AssetFamilyExistsInterface $assetFamilyExists,
+        private SearchConnectorAsset $searchConnectorAsset,
+        private PaginatorInterface $halPaginator,
+        private AddHalDownloadLinkToAssetImages $addHalLinksToImageValues,
         int $limit,
-        ValidatorInterface $validator,
-        SearchFiltersValidator $searchFiltersValidator,
-        SecurityFacade $securityFacade
+        private ValidatorInterface $validator,
+        private SearchFiltersValidator $searchFiltersValidator,
+        private SecurityFacade $securityFacade
     ) {
-        $this->assetFamilyExists = $assetFamilyExists;
-        $this->searchConnectorAsset = $searchConnectorAsset;
         $this->limit = new Limit($limit);
-        $this->halPaginator = $halPaginator;
-        $this->addHalLinksToImageValues = $addHalLinksToImageValues;
-        $this->validator = $validator;
-        $this->searchFiltersValidator = $searchFiltersValidator;
-        $this->securityFacade = $securityFacade;
     }
 
     /**

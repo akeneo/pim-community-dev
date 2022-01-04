@@ -27,15 +27,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 class RawSourceValidator extends ConstraintValidator
 {
     private const ASSET_CODE_PROPERTY = 'code';
-    private AttributeRepositoryInterface $attributeRepository;
-    private FindAssetFamilyAttributeAsMainMediaInterface $findAttributeAsMainMedia;
 
     public function __construct(
-        AttributeRepositoryInterface $attributeRepository,
-        FindAssetFamilyAttributeAsMainMediaInterface $findAttributeAsMainMedia
+        private AttributeRepositoryInterface $attributeRepository,
+        private FindAssetFamilyAttributeAsMainMediaInterface $findAttributeAsMainMedia
     ) {
-        $this->attributeRepository = $attributeRepository;
-        $this->findAttributeAsMainMedia = $findAttributeAsMainMedia;
     }
 
     public function validate($rawSource, Constraint $constraint)
@@ -67,7 +63,7 @@ class RawSourceValidator extends ConstraintValidator
         }
 
         // attribute as main media is specified in the command
-        if ($constraint->getAttributeAsMainMedia()) {
+        if ($constraint->getAttributeAsMainMedia() !== null) {
             if (!$constraint->getAttributeAsMainMedia()->equals($attribute->getCode())) {
                 $this->context->buildViolation(
                     RawSource::ATTRIBUTE_IS_NOT_MAIN_MEDIA,

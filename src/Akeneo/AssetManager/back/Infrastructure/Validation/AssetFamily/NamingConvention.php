@@ -23,15 +23,11 @@ use Symfony\Component\Validator\Constraint;
  */
 class NamingConvention extends Constraint
 {
-    private AssetFamilyIdentifier $assetFamilyIdentifier;
-    private ?AttributeCode $attributeAsMainMedia;
-
-    public function __construct(AssetFamilyIdentifier $assetFamilyIdentifier, ?AttributeCode $attributeAsMainMedia = null)
-    {
+    public function __construct(
+        private AssetFamilyIdentifier $assetFamilyIdentifier,
+        private ?AttributeCode $attributeAsMainMedia = null
+    ) {
         parent::__construct();
-
-        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
-        $this->attributeAsMainMedia = $attributeAsMainMedia;
     }
 
     public function getAssetFamilyIdentifier(): AssetFamilyIdentifier

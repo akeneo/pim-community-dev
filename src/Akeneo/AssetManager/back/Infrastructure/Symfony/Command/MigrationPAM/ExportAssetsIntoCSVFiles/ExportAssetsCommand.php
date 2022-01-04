@@ -23,15 +23,11 @@ class ExportAssetsCommand extends Command
 
     private ?SymfonyStyle $io = null;
 
-    private FindAssets $findAssets;
-
-    private FindVariations $findVariations;
-
-    public function __construct(FindAssets $findAssets, FindVariations $findVariations)
-    {
+    public function __construct(
+        private FindAssets $findAssets,
+        private FindVariations $findVariations
+    ) {
         parent::__construct(static::$defaultName);
-        $this->findAssets = $findAssets;
-        $this->findVariations = $findVariations;
     }
 
     protected function configure()

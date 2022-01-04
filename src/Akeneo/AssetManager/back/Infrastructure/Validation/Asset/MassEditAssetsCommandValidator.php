@@ -26,11 +26,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class MassEditAssetsCommandValidator extends ConstraintValidator
 {
-    private ValidatorInterface $validator;
-
-    public function __construct(ValidatorInterface $validator)
+    public function __construct(private ValidatorInterface $validator)
     {
-        $this->validator = $validator;
     }
 
     public function validate($massEditAssetsCommand, Constraint $constraint)
@@ -80,7 +77,7 @@ class MassEditAssetsCommandValidator extends ConstraintValidator
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
                     MassEditAssetsCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

@@ -17,14 +17,8 @@ class AggregatedAverageMaxNumberOfValuePerAsset implements AverageMaxQuery
 {
     private const VOLUME_NAME = 'average_max_number_of_values_per_asset';
 
-    private Connection $connection;
-
-    /**
-     * @param Connection $connection
-     */
-    public function __construct(Connection $connection)
+    public function __construct(private Connection $connection)
     {
-        $this->connection = $connection;
     }
 
     /**
@@ -43,8 +37,6 @@ SQL;
         $maxValue = isset($sqlResult['max']) ? (int) $sqlResult['max'] : 0;
         $averageValue = isset($sqlResult['average']) ? (int) $sqlResult['average'] : 0;
 
-        $volume = new AverageMaxVolumes($maxValue, $averageValue, self::VOLUME_NAME);
-
-        return $volume;
+        return new AverageMaxVolumes($maxValue, $averageValue, self::VOLUME_NAME);
     }
 }

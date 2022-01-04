@@ -31,28 +31,13 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlFindAssetDetails implements FindAssetDetailsInterface
 {
-    private Connection $sqlConnection;
-
-    private AssetDetailsHydratorInterface $assetDetailsHydrator;
-
-    private GenerateEmptyValuesInterface $generateEmptyValues;
-
-    private FindValueKeyCollectionInterface $findValueKeyCollection;
-
-    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
-
     public function __construct(
-        Connection $sqlConnection,
-        AssetDetailsHydratorInterface $assetDetailsHydrator,
-        GenerateEmptyValuesInterface $generateEmptyValues,
-        FindValueKeyCollectionInterface $findValueKeyCollection,
-        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
+        private Connection $sqlConnection,
+        private AssetDetailsHydratorInterface $assetDetailsHydrator,
+        private GenerateEmptyValuesInterface $generateEmptyValues,
+        private FindValueKeyCollectionInterface $findValueKeyCollection,
+        private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
     ) {
-        $this->sqlConnection = $sqlConnection;
-        $this->assetDetailsHydrator = $assetDetailsHydrator;
-        $this->generateEmptyValues = $generateEmptyValues;
-        $this->findValueKeyCollection = $findValueKeyCollection;
-        $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
     }
 
     /**
