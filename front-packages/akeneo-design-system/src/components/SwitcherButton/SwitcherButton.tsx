@@ -25,14 +25,8 @@ const LabelAndValueContainer = styled.button<{$inline: boolean} & AkeneoThemedPr
   cursor: pointer;
   padding: 0;
   display: flex;
-  ${({$inline}) =>
-    $inline
-      ? css`
-          align-items: baseline;
-        `
-      : css`
-          flex-direction: column;
-        `}
+  align-items: baseline;
+  flex-direction: ${({$inline}) => ($inline ? 'row' : 'column')};
 `;
 
 const Label = styled.label<{$inline: boolean} & AkeneoThemedProps>`
@@ -48,8 +42,6 @@ const Label = styled.label<{$inline: boolean} & AkeneoThemedProps>`
           color: ${getColor('grey', 100)};
           text-transform: uppercase;
           font-size: ${getFontSize('small')};
-          line-height: ${getFontSize('small')};
-          margin-bottom: -2px;
         `}
 `;
 
@@ -59,8 +51,9 @@ const LabelAndArrow = styled.div`
 `;
 
 const Value = styled.span<{$inline: boolean} & AkeneoThemedProps>`
-  color: ${({$inline}) => ($inline ? getColor('purple', 100) : getColor('grey', 140))};
+  color: ${({$inline}) => ($inline ? getColor('brand', 100) : getColor('grey', 140))};
   margin-right: 5px;
+  text-align: left;
 `;
 
 const CloseButton = styled.button`
@@ -121,7 +114,7 @@ const SwitcherButton = forwardRef<HTMLDivElement, SwitcherButtonProps>(
       <SwitcherButtonContainer ref={forwardedRef} {...rest}>
         <LabelAndValueContainer id={buttonId} onClick={onClick} $inline={inline}>
           <Label htmlFor={buttonId} $inline={inline}>
-            {label && `${label}:`}
+            {label ? (inline ? `${label}:` : label) : ''}
           </Label>
           <LabelAndArrow>
             <Value $inline={inline}>{children}</Value>

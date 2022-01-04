@@ -21,6 +21,7 @@ final class TransformCriterionEvaluationResultCodes
     public const DATA_TYPES_ID = [
         'attributes_with_rates' => 1,
         'total_number_of_attributes' => 2,
+        'number_of_improvable_attributes' => 3,
     ];
 
     public const STATUS_ID = [
@@ -77,8 +78,9 @@ final class TransformCriterionEvaluationResultCodes
                     $resultDataByIds[self::DATA_TYPES_ID['attributes_with_rates']] =
                         $this->transformResultAttributeRatesCodesToIds($dataByCodes);
                     break;
+                case 'number_of_improvable_attributes':
                 case 'total_number_of_attributes':
-                    $resultDataByIds[self::DATA_TYPES_ID['total_number_of_attributes']] =
+                    $resultDataByIds[self::DATA_TYPES_ID[$dataType]] =
                         $this->transformChannelLocaleDataFromCodesToIds($dataByCodes, fn ($number) => $number);
                     break;
                 default:

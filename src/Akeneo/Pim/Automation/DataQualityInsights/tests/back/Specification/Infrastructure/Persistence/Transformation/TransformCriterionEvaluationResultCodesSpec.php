@@ -51,6 +51,12 @@ final class TransformCriterionEvaluationResultCodesSpec extends ObjectBehavior
                         'fr_FR' => 5,
                     ],
                 ],
+                'number_of_improvable_attributes' => [
+                    'ecommerce' => [
+                        'en_US' => 2,
+                        'fr_FR' => 1,
+                    ],
+                ],
             ],
             'rates' => [
                 'ecommerce' => [
@@ -176,6 +182,12 @@ final class TransformCriterionEvaluationResultCodesSpec extends ObjectBehavior
                         'en_US' => 3,
                     ],
                 ],
+                'number_of_improvable_attributes' => [
+                    'ecommerce' => [
+                        'en_US' => 2,
+                        'fr_FR' => 1,
+                    ],
+                ],
             ],
             'rates' => [
                 'ecommerce' => [
@@ -227,6 +239,13 @@ final class TransformCriterionEvaluationResultCodesSpec extends ObjectBehavior
                         'fo_FO' => 3,
                     ],
                 ],
+                'number_of_improvable_attributes' => [
+                    'ecommerce' => [
+                        'en_US' => 2,
+                        'fr_FR' => 1,
+                        'fo_FO' => 1,
+                    ],
+                ],
             ],
             'rates' => [
                 'ecommerce' => [
@@ -266,6 +285,12 @@ final class TransformCriterionEvaluationResultCodesSpec extends ObjectBehavior
                     1 => [
                         58 => 4,
                         90 => 5,
+                    ],
+                ],
+                3 => [
+                    1 => [
+                        58 => 2,
+                        90 => 1,
                     ],
                 ],
             ],
