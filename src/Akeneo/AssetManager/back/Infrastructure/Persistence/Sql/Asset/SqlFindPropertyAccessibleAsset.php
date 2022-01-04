@@ -29,18 +29,11 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlFindPropertyAccessibleAsset implements FindPropertyAccessibleAssetInterface
 {
-    private Connection $sqlConnection;
-    private PropertyAccessibleAssetHydrator $accessibleAssetHydrator;
-    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
-
     public function __construct(
-        Connection $sqlConnection,
-        PropertyAccessibleAssetHydrator $accessibleAssetHydrator,
-        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
+        private Connection $sqlConnection,
+        private PropertyAccessibleAssetHydrator $accessibleAssetHydrator,
+        private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
     ) {
-        $this->sqlConnection = $sqlConnection;
-        $this->accessibleAssetHydrator = $accessibleAssetHydrator;
-        $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
     }
 
     public function find(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $assetCode): ?PropertyAccessibleAsset

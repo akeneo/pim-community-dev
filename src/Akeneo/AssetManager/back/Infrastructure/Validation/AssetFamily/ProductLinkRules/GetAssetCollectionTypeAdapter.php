@@ -14,11 +14,8 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
  */
 class GetAssetCollectionTypeAdapter implements GetAssetCollectionTypeAdapterInterface
 {
-    private AttributeRepositoryInterface $attributeRepository;
-
-    public function __construct(AttributeRepositoryInterface $attributeRepository)
+    public function __construct(private AttributeRepositoryInterface $attributeRepository)
     {
-        $this->attributeRepository = $attributeRepository;
     }
 
     public function fetch(string $productAttributeCode): string

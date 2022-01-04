@@ -22,11 +22,8 @@ use Webmozart\Assert\Assert;
 
 class ThereShouldBeLessTransformationThanLimitValidator extends ConstraintValidator
 {
-    private int $maxTransformationByAssetFamilyLimit;
-
-    public function __construct(int $maxTransformationByAssetFamilyLimit)
+    public function __construct(private int $maxTransformationByAssetFamilyLimit)
     {
-        $this->maxTransformationByAssetFamilyLimit = $maxTransformationByAssetFamilyLimit;
     }
 
     public function validate($command, Constraint $constraint): void
@@ -40,7 +37,7 @@ class ThereShouldBeLessTransformationThanLimitValidator extends ConstraintValida
             return;
         }
 
-        $total = count($command->transformations);
+        $total = is_countable($command->transformations) ? count($command->transformations) : 0;
 
         if ($total > $this->maxTransformationByAssetFamilyLimit) {
             $this->context->buildViolation(ThereShouldBeLessTransformationThanLimit::ERROR_MESSAGE)
@@ -62,7 +59,7 @@ class ThereShouldBeLessTransformationThanLimitValidator extends ConstraintValida
                     'Expected argument to be of class "%s" or "%s", "%s" given',
                     CreateAssetFamilyCommand::class,
                     EditAssetFamilyCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

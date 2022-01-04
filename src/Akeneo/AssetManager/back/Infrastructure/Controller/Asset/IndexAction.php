@@ -30,11 +30,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class IndexAction
 {
-    private SearchAsset $searchAsset;
-
-    public function __construct(SearchAsset $searchAsset)
+    public function __construct(private SearchAsset $searchAsset)
     {
-        $this->searchAsset = $searchAsset;
     }
 
     /**

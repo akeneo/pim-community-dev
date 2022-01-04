@@ -35,26 +35,14 @@ class GetConnectorAssetFamiliesAction
 {
     private Limit $limit;
 
-    private FindConnectorAssetFamilyItemsInterface $findConnectorAssetFamilyItems;
-
-    private PaginatorInterface $halPaginator;
-
-    private AddHalDownloadLinkToAssetFamilyImage $addHalDownloadLinkToImage;
-
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        FindConnectorAssetFamilyItemsInterface $findConnectorAssetFamilyItems,
-        PaginatorInterface $halPaginator,
-        AddHalDownloadLinkToAssetFamilyImage $addHalDownloadLinkToImage,
+        private FindConnectorAssetFamilyItemsInterface $findConnectorAssetFamilyItems,
+        private PaginatorInterface $halPaginator,
+        private AddHalDownloadLinkToAssetFamilyImage $addHalDownloadLinkToImage,
         int $limit,
-        SecurityFacade $securityFacade
+        private SecurityFacade $securityFacade
     ) {
-        $this->findConnectorAssetFamilyItems = $findConnectorAssetFamilyItems;
         $this->limit = new Limit($limit);
-        $this->halPaginator = $halPaginator;
-        $this->addHalDownloadLinkToImage = $addHalDownloadLinkToImage;
-        $this->securityFacade = $securityFacade;
     }
 
     /**

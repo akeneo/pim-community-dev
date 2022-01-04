@@ -31,24 +31,14 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 class NamingConventionTasklet implements TaskletInterface, TrackableTaskletInterface
 {
     private ?StepExecution $stepExecution = null;
-    private ExecuteNamingConvention $executeNamingConvention;
-    private FindAssetIdentifiersByAssetFamilyInterface $findAssetIdentifiersByAssetFamily;
-    private CountAssetsInterface $countAssets;
-    private JobRepositoryInterface $jobRepository;
-    private int $batchSize;
 
     public function __construct(
-        ExecuteNamingConvention $executeNamingConvention,
-        FindAssetIdentifiersByAssetFamilyInterface $findAssetIdentifiersByAssetFamily,
-        CountAssetsInterface $countAssets,
-        JobRepositoryInterface $jobRepository,
-        int $batchSize
+        private ExecuteNamingConvention $executeNamingConvention,
+        private FindAssetIdentifiersByAssetFamilyInterface $findAssetIdentifiersByAssetFamily,
+        private CountAssetsInterface $countAssets,
+        private JobRepositoryInterface $jobRepository,
+        private int $batchSize,
     ) {
-        $this->executeNamingConvention = $executeNamingConvention;
-        $this->findAssetIdentifiersByAssetFamily = $findAssetIdentifiersByAssetFamily;
-        $this->countAssets = $countAssets;
-        $this->jobRepository = $jobRepository;
-        $this->batchSize = $batchSize;
     }
 
     public function setStepExecution(StepExecution $stepExecution): void
@@ -74,7 +64,7 @@ class NamingConventionTasklet implements TaskletInterface, TrackableTaskletInter
             try {
                 $this->executeNamingConvention->executeOnAsset($assetFamilyIdentifier, $assetIdentifier);
                 $this->stepExecution->incrementSummaryInfo('assets');
-            } catch (AbstractExecuteNamingConventionException $exception) {
+            } catch (AbstractExecuteNamingConventionException) {
                 $this->stepExecution->addWarning(
                     'pim_asset_manager.jobs.asset_manager_execute_naming_convention.error',
                     [

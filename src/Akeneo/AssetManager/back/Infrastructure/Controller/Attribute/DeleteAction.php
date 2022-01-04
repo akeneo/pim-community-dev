@@ -32,24 +32,12 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class DeleteAction
 {
-    private SecurityFacade $securityFacade;
-
-    private DeleteAttributeHandler $deleteAttributeHandler;
-
-    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
-
-    private TokenStorageInterface $tokenStorage;
-
     public function __construct(
-        DeleteAttributeHandler $deleteAttributeHandler,
-        SecurityFacade $securityFacade,
-        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        TokenStorageInterface $tokenStorage
+        private DeleteAttributeHandler $deleteAttributeHandler,
+        private SecurityFacade $securityFacade,
+        private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
+        private TokenStorageInterface $tokenStorage,
     ) {
-        $this->securityFacade = $securityFacade;
-        $this->deleteAttributeHandler = $deleteAttributeHandler;
-        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
-        $this->tokenStorage = $tokenStorage;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier, string $attributeIdentifier): Response
@@ -65,7 +53,7 @@ class DeleteAction
 
         try {
             ($this->deleteAttributeHandler)($command);
-        } catch (AttributeNotFoundException $e) {
+        } catch (AttributeNotFoundException) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 

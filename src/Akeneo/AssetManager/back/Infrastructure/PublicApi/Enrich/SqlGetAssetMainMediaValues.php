@@ -22,11 +22,8 @@ use Webmozart\Assert\Assert;
  */
 final class SqlGetAssetMainMediaValues implements GetAssetMainMediaValuesInterface
 {
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private Connection $connection)
     {
-        $this->connection = $connection;
     }
 
     /**
@@ -34,7 +31,7 @@ final class SqlGetAssetMainMediaValues implements GetAssetMainMediaValuesInterfa
      */
     public function forAssetFamilyAndAssetCodes(string $assetFamilyIdentifier, array $assetCodes): array
     {
-        if (0 === count($assetCodes)) {
+        if (empty($assetCodes)) {
             return [];
         }
 

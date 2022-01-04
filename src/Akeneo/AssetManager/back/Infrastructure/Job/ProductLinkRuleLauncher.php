@@ -27,11 +27,8 @@ use Webmozart\Assert\Assert;
  */
 class ProductLinkRuleLauncher implements ProductLinkRuleLauncherInterface
 {
-    private PublishJobToQueue $publishJobToQueue;
-
-    public function __construct(PublishJobToQueue $publishJobToQueue)
+    public function __construct(private PublishJobToQueue $publishJobToQueue)
     {
-        $this->publishJobToQueue = $publishJobToQueue;
     }
 
     public function launchForAssetFamilyAndAssetCodes(

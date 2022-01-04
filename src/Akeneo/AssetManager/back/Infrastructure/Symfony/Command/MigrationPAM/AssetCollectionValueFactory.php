@@ -55,7 +55,7 @@ class AssetCollectionValueFactory implements ValueFactory
 
         try {
             Assert::allString($data);
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             throw InvalidPropertyTypeException::validArrayStructureExpected(
                 $attribute->code(),
                 'one of the reference data code is not a string',

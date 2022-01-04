@@ -34,21 +34,14 @@ class MigrateReferenceAttributeHavingOneValuePerChannel extends Command
 
     private ?Connection $readConnection = null;
 
-    private Connection $writeConnection;
-
     private ?SymfonyStyle $io = null;
 
-    private CountAssets $countAssets;
-
-    private ConnectionFactory $connectionFactory;
-
-    public function __construct(ConnectionFactory $connectionFactory, Connection $connection, CountAssets $countAssets)
-    {
+    public function __construct(
+        private ConnectionFactory $connectionFactory,
+        private Connection $writeConnection,
+        private CountAssets $countAssets
+    ) {
         parent::__construct($this::$defaultName);
-
-        $this->writeConnection = $connection;
-        $this->connectionFactory = $connectionFactory;
-        $this->countAssets = $countAssets;
     }
 
     private function getReadConnection()
@@ -137,7 +130,7 @@ class MigrateReferenceAttributeHavingOneValuePerChannel extends Command
             }
         }
 
-        if (0 !== count($updatedAssets)) {
+        if (!empty($updatedAssets)) {
             $this->writeFixedAssetsInDB($updatedAssets);
         }
         $this->io->progressFinish();

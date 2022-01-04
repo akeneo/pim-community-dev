@@ -21,11 +21,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class OperationValidator extends ConstraintValidator
 {
-    private OperationFactory $operationFactory;
-
-    public function __construct(OperationFactory $operationFactory)
+    public function __construct(private OperationFactory $operationFactory)
     {
-        $this->operationFactory = $operationFactory;
     }
 
     public function validate($operation, Constraint $constraint)

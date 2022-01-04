@@ -21,16 +21,19 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
  */
 class ConnectorValueTransformerRegistry
 {
+    /**
+     * @param iterable<ConnectorValueTransformerInterface> $connectorValueTransformers
+     */
     public function __construct(
-        private iterable $ConnectorValueTransformers
+        private iterable $connectorValueTransformers
     ) {
     }
 
     public function getTransformer(AbstractAttribute $attribute): ConnectorValueTransformerInterface
     {
-        foreach ($this->ConnectorValueTransformers as $ConnectorValueTransformer) {
-            if ($ConnectorValueTransformer->supports($attribute)) {
-                return $ConnectorValueTransformer;
+        foreach ($this->connectorValueTransformers as $connectorValueTransformer) {
+            if ($connectorValueTransformer->supports($attribute)) {
+                return $connectorValueTransformer;
             }
         }
 

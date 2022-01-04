@@ -37,27 +37,14 @@ class ValidateMassEditAction
 {
     private const MASS_ACTION_TYPE = 'edit';
 
-    private SecurityFacade $securityFacade;
-    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
-    private TokenStorageInterface $tokenStorage;
-    private ValidatorInterface $validator;
-    private NormalizerInterface $normalizer;
-    private MassEditAssetsCommandFactory $massEditAssetsCommandFactory;
-
     public function __construct(
-        MassEditAssetsCommandFactory $massEditAssetsCommandFactory,
-        SecurityFacade $securityFacade,
-        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        TokenStorageInterface $tokenStorage,
-        ValidatorInterface $validator,
-        NormalizerInterface $normalizer
+        private MassEditAssetsCommandFactory $massEditAssetsCommandFactory,
+        private SecurityFacade $securityFacade,
+        private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
+        private TokenStorageInterface $tokenStorage,
+        private ValidatorInterface $validator,
+        private NormalizerInterface $normalizer,
     ) {
-        $this->securityFacade = $securityFacade;
-        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
-        $this->tokenStorage = $tokenStorage;
-        $this->validator = $validator;
-        $this->normalizer = $normalizer;
-        $this->massEditAssetsCommandFactory = $massEditAssetsCommandFactory;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): Response

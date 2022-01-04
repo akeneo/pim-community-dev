@@ -37,38 +37,25 @@ class AssetItemHydrator implements AssetItemHydratorInterface
 {
     public const THUMBNAIL_PREVIEW_TYPE = 'thumbnail';
 
-    private AbstractPlatform $platform;
-
-    private FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocales;
-
-    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
-
-    private ValueHydratorInterface $valueHydrator;
-
-    private ImagePreviewUrlGenerator $imagePreviewUrlGenerator;
-
     public function __construct(
-        Connection $connection,
-        FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocales,
-        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
-        ValueHydratorInterface $valueHydrator,
-        ImagePreviewUrlGenerator $imagePreviewUrlGenerator
+        private Connection $connection,
+        private FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocales,
+        private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
+        private ValueHydratorInterface $valueHydrator,
+        private ImagePreviewUrlGenerator $imagePreviewUrlGenerator
     ) {
-        $this->platform = $connection->getDatabasePlatform();
-        $this->findRequiredValueKeyCollectionForChannelAndLocales = $findRequiredValueKeyCollectionForChannelAndLocales;
-        $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
-        $this->valueHydrator = $valueHydrator;
-        $this->imagePreviewUrlGenerator = $imagePreviewUrlGenerator;
     }
 
     public function hydrate(array $row, AssetQuery $query, array $context = []): AssetItem
     {
-        $identifier = Type::getType(Types::STRING)->convertToPHPValue($row['identifier'], $this->platform);
+        $platform = $this->connection->getDatabasePlatform();
+
+        $identifier = Type::getType(Types::STRING)->convertToPHPValue($row['identifier'], $platform);
         $assetFamilyIdentifier = Type::getType(Types::STRING)->convertToPHPValue(
             $row['asset_family_identifier'],
-            $this->platform
+            $platform
         );
-        $code = Type::getType(Types::STRING)->convertToPHPValue($row['code'], $this->platform);
+        $code = Type::getType(Types::STRING)->convertToPHPValue($row['code'], $platform);
 
         $indexedAttributes = $this->findAttributesIndexedByIdentifier->find(
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier)
@@ -76,9 +63,9 @@ class AssetItemHydrator implements AssetItemHydratorInterface
         $valueCollection = ValuesDecoder::decode($row['value_collection']);
         $valueCollection = $this->hydrateValues($valueCollection, $indexedAttributes, $context);
 
-        $attributeAsLabel = Type::getType(Types::STRING)->convertToPHPValue($row['attribute_as_label'], $this->platform);
+        $attributeAsLabel = Type::getType(Types::STRING)->convertToPHPValue($row['attribute_as_label'], $platform);
         $labels = $this->getLabels($valueCollection, $attributeAsLabel);
-        $attributeAsMainMediaIdentifier = Type::getType(Types::STRING)->convertToPHPValue($row['attribute_as_main_media'], $this->platform);
+        $attributeAsMainMediaIdentifier = Type::getType(Types::STRING)->convertToPHPValue($row['attribute_as_main_media'], $platform);
         $images = $this->getImages($query, $valueCollection, $attributeAsMainMediaIdentifier);
 
         $assetItem = new AssetItem();
@@ -98,7 +85,7 @@ class AssetItemHydrator implements AssetItemHydratorInterface
         $normalizedRequiredValueKeys = $this->getRequiredValueKeys($query)->normalize();
 
         $completeness = ['complete' => 0, 'required' => 0];
-        if (count($normalizedRequiredValueKeys) > 0) {
+        if (!empty($normalizedRequiredValueKeys)) {
             $existingValueKeys = array_keys($valueCollection);
             $completeness['complete'] = count(
                 array_intersect($normalizedRequiredValueKeys, $existingValueKeys)

@@ -13,11 +13,8 @@ namespace Akeneo\AssetManager\Infrastructure\PublicApi\Analytics;
  */
 class CountVolume
 {
-    private int $volume;
-
-    public function __construct(int $volume)
+    public function __construct(private int $volume)
     {
-        $this->volume = $volume;
     }
 
     public function getVolume(): int

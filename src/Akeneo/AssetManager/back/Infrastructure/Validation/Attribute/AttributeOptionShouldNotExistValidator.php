@@ -25,16 +25,10 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class AttributeOptionShouldNotExistValidator extends ConstraintValidator
 {
-    private GetAttributeIdentifierInterface $getAttributeIdentifier;
-
-    private AttributeRepositoryInterface $attributeRepository;
-
     public function __construct(
-        GetAttributeIdentifierInterface $getAttributeIdentifier,
-        AttributeRepositoryInterface $attributeRepository
+        private GetAttributeIdentifierInterface $getAttributeIdentifier,
+        private AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->getAttributeIdentifier = $getAttributeIdentifier;
-        $this->attributeRepository = $attributeRepository;
     }
 
     public function validate($command, Constraint $constraint): void
@@ -54,7 +48,7 @@ class AttributeOptionShouldNotExistValidator extends ConstraintValidator
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
                     AppendAttributeOptionCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

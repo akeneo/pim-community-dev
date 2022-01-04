@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
+use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributeByIdentifierAndCodeInterface;
 
 /**
@@ -29,11 +30,8 @@ class ValidateAttributePropertiesImmutability
         'asset_family_code',
     ];
 
-    private FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttribute;
-
-    public function __construct(FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttribute)
+    public function __construct(private FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttribute)
     {
-        $this->findConnectorAttribute = $findConnectorAttribute;
     }
 
     /**
@@ -49,7 +47,7 @@ class ValidateAttributePropertiesImmutability
         array $editedProperties
     ): array {
         $attribute = $this->findConnectorAttribute->find($assetFamilyIdentifier, $attributeCode);
-        if (null === $attribute) {
+        if (!$attribute instanceof ConnectorAttribute) {
             throw new \RuntimeException(sprintf('Attribute %s was not found.', $editedProperties['code']));
         }
 

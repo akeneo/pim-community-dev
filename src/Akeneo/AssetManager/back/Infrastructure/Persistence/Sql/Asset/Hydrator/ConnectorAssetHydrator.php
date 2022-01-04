@@ -29,28 +29,24 @@ use Webmozart\Assert\Assert;
  */
 class ConnectorAssetHydrator
 {
-    private AbstractPlatform $platform;
-
-    private ConnectorValueTransformerRegistry $valueTransformerRegistry;
-
     public function __construct(
-        Connection $connection,
-        ConnectorValueTransformerRegistry $valueTransformerRegistry
+        private Connection $connection,
+        private ConnectorValueTransformerRegistry $valueTransformerRegistry
     ) {
-        $this->platform = $connection->getDatabasePlatform();
-        $this->valueTransformerRegistry = $valueTransformerRegistry;
     }
 
     public function hydrate(array $row, ValueKeyCollection $valueKeyCollection, array $attributes): ConnectorAsset
     {
+        $platform = $this->connection->getDatabasePlatform();
+
         $valueCollection = Type::getType(Types::JSON)
-            ->convertToPHPValue($row['value_collection'], $this->platform);
+            ->convertToPHPValue($row['value_collection'], $platform);
         $assetCode = Type::getType(Types::STRING)
-            ->convertToPHPValue($row['code'], $this->platform);
+            ->convertToPHPValue($row['code'], $platform);
         $createdAt = Type::getType(Types::DATETIME_IMMUTABLE)
-            ->convertToPHPValue($row['created_at'], $this->platform);
+            ->convertToPHPValue($row['created_at'], $platform);
         $updatedAt = Type::getType(Types::DATETIME_IMMUTABLE)
-            ->convertToPHPValue($row['updated_at'], $this->platform);
+            ->convertToPHPValue($row['updated_at'], $platform);
 
         $filteredRawValues = [];
         foreach ($valueKeyCollection as $valueKey) {

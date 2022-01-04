@@ -26,20 +26,11 @@ class RuleEngineValidatorACL implements RuleEngineValidatorACLInterface
 {
     private const ASSET_CODE_DUMMY = 'VALIDATION_TEST';
 
-    private DenormalizerInterface $actionDenormalizer;
-
-    private ValidatorInterface $productConditionValidator;
-
-    private ValidatorInterface $productAtionValidator;
-
     public function __construct(
-        DenormalizerInterface $actionDenormalizer,
-        ValidatorInterface $productConditionValidator,
-        ValidatorInterface $productActionValidator
+        private DenormalizerInterface $actionDenormalizer,
+        private ValidatorInterface $productConditionValidator,
+        private ValidatorInterface $productActionValidator,
     ) {
-        $this->productConditionValidator = $productConditionValidator;
-        $this->productAtionValidator = $productActionValidator;
-        $this->actionDenormalizer = $actionDenormalizer;
     }
 
     public function validateProductSelection(array $normalizedProductSelection): ConstraintViolationListInterface
@@ -54,7 +45,7 @@ class RuleEngineValidatorACL implements RuleEngineValidatorACLInterface
     {
         $productAction = $this->createProductAction($normalizedProductAssignment);
 
-        $ruleEngineViolations = $this->productAtionValidator->validate($productAction);
+        $ruleEngineViolations = $this->productActionValidator->validate($productAction);
 
         return $this->removeCannotFindAssetViolation($ruleEngineViolations);
     }

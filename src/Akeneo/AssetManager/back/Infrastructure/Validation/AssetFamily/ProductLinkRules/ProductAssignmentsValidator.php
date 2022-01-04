@@ -23,24 +23,12 @@ class ProductAssignmentsValidator
     private const LOCALE_FIELD = 'locale';
     private const MODE_FIELD = 'mode';
 
-    private RuleEngineValidatorACLInterface $ruleEngineValidatorACL;
-
-    private ExtrapolatedAttributeValidator $extrapolatedAttributeValidator;
-
-    private ChannelAndLocaleValidator $channelAndLocaleValidator;
-
-    private GetAssetCollectionTypeAdapterInterface $findAssetCollectionTypeACL;
-
     public function __construct(
-        RuleEngineValidatorACLInterface $ruleEngineValidatorACL,
-        ExtrapolatedAttributeValidator $extrapolatedAttributeValidator,
-        ChannelAndLocaleValidator $channelAndLocaleValidator,
-        GetAssetCollectionTypeAdapterInterface $findAssetCollectionTypeACL
+        private RuleEngineValidatorACLInterface $ruleEngineValidatorACL,
+        private ExtrapolatedAttributeValidator $extrapolatedAttributeValidator,
+        private ChannelAndLocaleValidator $channelAndLocaleValidator,
+        private GetAssetCollectionTypeAdapterInterface $findAssetCollectionTypeACL,
     ) {
-        $this->ruleEngineValidatorACL = $ruleEngineValidatorACL;
-        $this->extrapolatedAttributeValidator = $extrapolatedAttributeValidator;
-        $this->channelAndLocaleValidator = $channelAndLocaleValidator;
-        $this->findAssetCollectionTypeACL = $findAssetCollectionTypeACL;
     }
 
     public function validate(array $productAssignments, string $assetFamilyIdentifier): ConstraintViolationListInterface
@@ -181,12 +169,12 @@ class ProductAssignmentsValidator
                             )
                             ->addViolation();
                         }
-                    } catch (ProductAttributeCannotContainAssetsException $exception) {
+                    } catch (ProductAttributeCannotContainAssetsException) {
                         $context->buildViolation(
                             ProductLinkRulesShouldBeExecutable::ASSIGNMENT_ATTRIBUTE_IS_NOT_AN_ASSET_COLLECTION,
                             ['%product_attribute_code%' => $productAttributeCode]
                         )->addViolation();
-                    } catch (ProductAttributeDoesNotExistException $exception) {
+                    } catch (ProductAttributeDoesNotExistException) {
                         $context->buildViolation(
                             ProductLinkRulesShouldBeExecutable::ASSIGNMENT_ATTRIBUTE_DOES_NOT_EXISTS,
                             ['%product_attribute_code%' => $productAttributeCode]

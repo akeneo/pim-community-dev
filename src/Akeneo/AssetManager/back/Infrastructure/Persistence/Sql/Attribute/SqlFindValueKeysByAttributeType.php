@@ -25,13 +25,10 @@ use Doctrine\DBAL\Connection;
  */
 class SqlFindValueKeysByAttributeType implements FindValueKeysByAttributeTypeInterface
 {
-    private Connection $sqlConnection;
-
     private ?array $cachedResult = null;
 
-    public function __construct(Connection $sqlConnection)
+    public function __construct(private Connection $sqlConnection)
     {
-        $this->sqlConnection = $sqlConnection;
     }
 
     /**
