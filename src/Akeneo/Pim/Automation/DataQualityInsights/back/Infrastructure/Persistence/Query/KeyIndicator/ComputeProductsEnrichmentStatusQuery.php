@@ -95,17 +95,16 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
 
         //Handle the products without family (so the completeness couldn't be calculated)
         if (
-            !isset($nonRequiredAttributesEvaluation['attributes_with_rates'][$channelId][$localeId]) ||
-            !isset($requiredAttributesEvaluation['attributes_with_rates'][$channelId][$localeId]) ||
+            !isset($nonRequiredAttributesEvaluation['number_of_improvable_attributes'][$channelId][$localeId]) ||
+            !isset($requiredAttributesEvaluation['number_of_improvable_attributes'][$channelId][$localeId]) ||
             !isset($nonRequiredAttributesEvaluation['total_number_of_attributes'][$channelId][$localeId]) ||
             !isset($requiredAttributesEvaluation['total_number_of_attributes'][$channelId][$localeId])
         ) {
             return null;
         }
 
-        $missingNonRequiredAttributesNumber = count($nonRequiredAttributesEvaluation['attributes_with_rates'][$channelId][$localeId]);
-        $missingRequiredAttributesNumber = count($requiredAttributesEvaluation['attributes_with_rates'][$channelId][$localeId]);
-
+        $missingNonRequiredAttributesNumber = $nonRequiredAttributesEvaluation['number_of_improvable_attributes'][$channelId][$localeId];
+        $missingRequiredAttributesNumber = $requiredAttributesEvaluation['number_of_improvable_attributes'][$channelId][$localeId];
         $numberOfNonRequiredAttributes = $nonRequiredAttributesEvaluation['total_number_of_attributes'][$channelId][$localeId];
         $numberOfRequiredAttributes = $requiredAttributesEvaluation['total_number_of_attributes'][$channelId][$localeId];
 
@@ -159,10 +158,18 @@ SQL;
         $evaluations = [];
         while ($evaluation = $stmt->fetchAssociative()) {
             $evaluationResult = isset($evaluation['result']) ? json_decode($evaluation['result'], true) : null;
+            $evaluationResultData = $evaluationResult[TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data']] ?? [];
+
             $evaluations[$evaluation['product_id']] = [
-                'attributes_with_rates' => $evaluationResult[TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data']][TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['attributes_with_rates']] ?? [],
-                'total_number_of_attributes' => $evaluationResult[TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data']][TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['total_number_of_attributes']] ?? 0,
+                'total_number_of_attributes' => $evaluationResultData[TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['total_number_of_attributes']] ?? 0,
             ];
+
+            if (isset($evaluationResultData[TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['number_of_improvable_attributes']])) {
+                $evaluations[$evaluation['product_id']]['number_of_improvable_attributes'] = $evaluationResultData[TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['number_of_improvable_attributes']];
+            } elseif (isset($evaluationResultData[TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['attributes_with_rates']])) {
+                // The data 'attributes_with_rates' is deprecated, but can still exist because of no migration data. (See PLG-468)
+                $evaluations[$evaluation['product_id']]['number_of_improvable_attributes'] = count($evaluationResultData[TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['attributes_with_rates']]);
+            }
         }
 
         return $evaluations;
