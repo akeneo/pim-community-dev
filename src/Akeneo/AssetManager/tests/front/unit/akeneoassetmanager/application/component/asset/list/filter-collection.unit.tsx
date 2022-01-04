@@ -1,4 +1,7 @@
-import React from 'react';
+import React, {FC} from 'react';
+import {ThemeProvider} from "styled-components";
+import {pimTheme} from 'akeneo-design-system';
+import {DependenciesProvider} from "@akeneo-pim-community/legacy-bridge";
 import {fireEvent, screen} from '@testing-library/react';
 import FilterCollection, {
   useFilterViews,
@@ -10,7 +13,8 @@ import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/fro
 import {AssetAttributeFetcher} from 'akeneoassetmanager/application/component/library/library';
 import {FilterView} from 'akeneoassetmanager/application/configuration/value';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
-import {FakeConfigProvider} from '../../../../utils/FakeConfigProvider';
+import {fakeConfig, FakeConfigProvider} from '../../../../utils/FakeConfigProvider';
+import {ConfigProvider} from "../../../../../../../../front/application/hooks/useConfig";
 
 const attributes = [
   {
@@ -138,8 +142,16 @@ describe('Tests filter collection', () => {
   });
 
   test('I get an empty collection view if there is no attributes', async () => {
+    const DefaultProviders: FC = ({children}) => (
+      <DependenciesProvider>
+        <ThemeProvider theme={pimTheme}>
+          <ConfigProvider config={{...fakeConfig, value: {}}}>{children}</ConfigProvider>
+        </ThemeProvider>
+      </DependenciesProvider>
+    );
+
     const {result, waitForNextUpdate} = renderHook(() => useFilterViews('notice', dataProvider), {
-      wrapper: FakeConfigProvider,
+      wrapper: DefaultProviders,
     });
 
     expect(result.current).toBe(null);
