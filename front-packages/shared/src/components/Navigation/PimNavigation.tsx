@@ -161,6 +161,7 @@ const MainNavContainer = styled.div`
   border-right: 1px solid ${({theme}) => theme.color.grey80};
   z-index: 803;
   background: white;
+  overflow: auto;
 `;
 
 const LogoContainer = styled.div`
