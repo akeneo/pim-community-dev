@@ -470,12 +470,6 @@ pim_title:
     pimee_catalog_rule_edit: Edit rule
     pimee_catalog_rule_new: Rules
 
-pim_import_export:
-    widget:
-        last_operations:
-            job_type:
-                execute_rules: Rules execution
-
 akeneo_job_process_tracker:
     type:
         mass_edit_rule: Mass edit rule
