@@ -1,4 +1,4 @@
-import React, {Ref} from 'react';
+import React, {forwardRef, Ref} from 'react';
 import styled from 'styled-components';
 import {getEmoji} from '../../shared';
 import {getFontSize} from '../../theme';
@@ -6,6 +6,7 @@ import {getFontSize} from '../../theme';
 const LocaleContainer = styled.span`
   display: inline-flex;
   align-items: center;
+  white-space: nowrap;
 `;
 
 const Emoji = styled.span`
@@ -28,7 +29,7 @@ type LocaleProps = {
 /**
  * Component to display a locale (country and language).
  */
-const Locale = React.forwardRef<HTMLSpanElement, LocaleProps>(
+const Locale = forwardRef<HTMLSpanElement, LocaleProps>(
   ({code, languageLabel, ...rest}: LocaleProps, forwardedRef: Ref<HTMLSpanElement>) => {
     const {0: languageCode, length, [length - 1]: countryCode} = code.split('_');
 

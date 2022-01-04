@@ -51,6 +51,12 @@ final class TransformCriterionEvaluationResultIdsSpec extends ObjectBehavior
                         90 => 5,
                     ],
                 ],
+                3 => [
+                    1 => [
+                        58 => 2,
+                        90 => 1,
+                    ],
+                ],
             ],
             TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => [
                 1 => [
@@ -190,7 +196,13 @@ final class TransformCriterionEvaluationResultIdsSpec extends ObjectBehavior
                     42 => [
                         58 => 6,
                     ],
-                ]
+                ],
+                3 => [
+                    1 => [
+                        58 => 2,
+                        90 => 1,
+                    ],
+                ],
             ],
             TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => [
                 1 => [
@@ -244,6 +256,12 @@ final class TransformCriterionEvaluationResultIdsSpec extends ObjectBehavior
                         987 => 6
                     ],
                 ],
+                3 => [
+                    1 => [
+                        58 => 2,
+                        90 => 1,
+                    ],
+                ],
             ],
             TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => [
                 1 => [
@@ -283,6 +301,12 @@ final class TransformCriterionEvaluationResultIdsSpec extends ObjectBehavior
                     'ecommerce' => [
                         'en_US' => 4,
                         'fr_FR' => 5,
+                    ],
+                ],
+                'number_of_improvable_attributes' => [
+                    'ecommerce' => [
+                        'en_US' => 2,
+                        'fr_FR' => 1,
                     ],
                 ],
             ],

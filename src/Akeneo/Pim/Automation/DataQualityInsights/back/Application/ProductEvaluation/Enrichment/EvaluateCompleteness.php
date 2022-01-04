@@ -53,21 +53,14 @@ final class EvaluateCompleteness
         }
 
         $missingAttributes = $completenessResult->getMissingAttributes()->getByChannelAndLocale($channelCode, $localeCode);
-
-        $attributesRates = [];
-
-        if (null !== $missingAttributes) {
-            foreach ($missingAttributes as $attributeCode) {
-                $attributesRates[$attributeCode] = 0;
-            }
-        }
+        $missingAttributesCount = null === $missingAttributes ? 0 : count($missingAttributes);
 
         $totalNumberOfAttributes = $completenessResult->getTotalNumberOfAttributes()->getByChannelAndLocale($channelCode, $localeCode);
 
         $evaluationResult
             ->addRate($channelCode, $localeCode, $rate)
             ->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::done())
-            ->addRateByAttributes($channelCode, $localeCode, $attributesRates)
+            ->addData('number_of_improvable_attributes', $channelCode, $localeCode, $missingAttributesCount)
             ->addData('total_number_of_attributes', $channelCode, $localeCode, $totalNumberOfAttributes)
         ;
     }
