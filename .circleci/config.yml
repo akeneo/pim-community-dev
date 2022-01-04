@@ -995,9 +995,6 @@ jobs:
                 name: Execute acceptance tests
                 command: PIM_CONTEXT=onboarder make test-acceptance
           - run:
-                name: "[workaround to revert] Use phpunit executable instead of composer proxy"
-                command: cd vendor/bin && rm -f ./phpunit && ln -s ../phpunit/phpunit/phpunit ./phpunit
-          - run:
                 name: Execute PHPUnit integration tests
                 command: PIM_CONTEXT=onboarder make test-integration
           - run:
