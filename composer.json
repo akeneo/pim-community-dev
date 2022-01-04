@@ -22,6 +22,7 @@
                 "grth/src/Akeneo/Platform"
             ],
             "Akeneo\\Platform\\TailoredExport\\": "components/tailored-export/back/src/",
+            "Akeneo\\Platform\\TailoredImport\\": "components/tailored-import/back/src",
             "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/back",
             "AkeneoEnterprise\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
             "Pim\\Upgrade\\": "upgrades/"

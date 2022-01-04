@@ -58,5 +58,6 @@ return [
     Akeneo\Platform\Bundle\AuthenticationBundle\AkeneoAuthenticationBundle::class => ['all' => true],
     Akeneo\Platform\Job\Infrastructure\Symfony\AkeneoJobBundle::class => ['all' => true],
     Akeneo\Platform\TailoredExport\Infrastructure\Symfony\AkeneoTailoredExportBundle::class => ['all' => true],
+    Akeneo\Platform\TailoredImport\Infrastructure\Symfony\AkeneoTailoredImportBundle::class => ['all' => true],
     Akeneo\Pim\TableAttribute\Infrastructure\Symfony\AkeneoPimTableAttributeBundle::class => ['all' => true],
 ];
