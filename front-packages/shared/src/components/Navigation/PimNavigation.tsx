@@ -154,7 +154,7 @@ const NavContainer = styled.nav`
 
 const MainNavContainer = styled.div`
   display: flex;
-  width: 80px;
+  width: 100%;
   flex-direction: column;
   justify-content: start;
   height: 100%;
