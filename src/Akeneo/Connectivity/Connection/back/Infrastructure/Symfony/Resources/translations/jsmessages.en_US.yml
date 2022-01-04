@@ -128,6 +128,8 @@ akeneo_connectivity.connection:
                     success: App successfully deleted.
                     error: Sorry, an error occured while deleting the app.
         apps:
+            loader:
+                message: Loading ...
             flash:
                 permissions_error.title: 'Permissions on {{ entity }} could not be saved.'
                 permissions_error.description: Please check the App permission settings.
