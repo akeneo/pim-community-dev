@@ -40,7 +40,7 @@ pim_title:
     akeneo_connectivity_connection_connect_connected_apps: Apps
     akeneo_connectivity_connection_connect_connected_apps_edit: App settings
     akeneo_connectivity_connection_connect_connected_apps_delete: App delete
-
+    akeneo_connectivity_connection_connect_marketplace_test_app_create: Create a test app
 akeneo_connectivity.connection:
     connect:
         marketplace:
@@ -68,6 +68,13 @@ akeneo_connectivity.connection:
                 empty: No apps compatible with your version
             unreachable: We can't reach the marketplace, please come back later.
             scroll_to_top: Scroll to the top
+            test_app:
+                create_a_test_app: Create a test app
+                modal:
+                    subtitle: Create a test app
+                    title: App information
+                    description: If you need help, please check our article
+                    link: How to test my App before publishing it?
         connected_apps:
             list:
                 apps:
