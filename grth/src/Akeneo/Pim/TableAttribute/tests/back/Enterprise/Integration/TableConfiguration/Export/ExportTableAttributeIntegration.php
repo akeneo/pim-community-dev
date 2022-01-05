@@ -17,6 +17,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
+use Akeneo\Test\Pim\TableAttribute\Helper\EntityBuilderTrait;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
 use Box\Spout\Common\Entity\Row;
 use Box\Spout\Reader\Common\Creator\ReaderFactory;
@@ -24,6 +25,8 @@ use PHPUnit\Framework\Assert;
 
 final class ExportTableAttributeIntegration extends TestCase
 {
+    use EntityBuilderTrait;
+
     private const CSV_EXPORT_JOB_CODE = 'csv_attribute_export';
     private const XLSX_EXPORT_JOB_CODE = 'xlsx_attribute_export';
     private JobLauncher $jobLauncher;
@@ -187,6 +190,7 @@ final class ExportTableAttributeIntegration extends TestCase
             ]
         );
 
+        $this->createReferenceEntity('brands');
         $attribute = $this->get('pim_catalog.factory.attribute')->create();
         $this->get('pim_catalog.updater.attribute')->update($attribute, [
             'code' => 'nutrition',

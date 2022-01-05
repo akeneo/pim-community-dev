@@ -16,11 +16,10 @@ namespace Akeneo\Test\Pim\TableAttribute\Enterprise\Integration\TableConfigurati
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
+use Akeneo\Test\Pim\TableAttribute\Helper\EntityBuilderTrait;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
 use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
 use Box\Spout\Writer\Common\Creator\WriterFactory;
@@ -28,12 +27,13 @@ use PHPUnit\Framework\Assert;
 
 class ImportTableAttributeIntegration extends TestCase
 {
+    use EntityBuilderTrait;
+
     private const CSV_IMPORT_JOB_CODE = 'csv_attribute_import';
     private const XLSX_IMPORT_JOB_CODE = 'xlsx_attribute_import';
 
     private JobLauncher $jobLauncher;
     private AttributeRepositoryInterface $attributeRepository;
-    private SelectOptionCollectionRepository $optionCollectionRepository;
 
     /** @test */
     public function it_imports_table_attributes_from_a_csv_file(): void
@@ -109,7 +109,6 @@ CSV;
 
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
         $this->attributeRepository = $this->get('pim_catalog.repository.attribute');
-        $this->optionCollectionRepository = $this->get(SelectOptionCollectionRepository::class);
 
         $this->get(SqlCreateJobInstance::class)->createJobInstance(
             [
@@ -155,8 +154,9 @@ CSV;
         );
         $violations = $this->get('validator')->validate($attribute);
         Assert::assertCount(0, $violations, \sprintf('The attribute is not valid: %s', $violations));
-
         $this->get('pim_catalog.saver.attribute')->save($attribute);
+
+        $this->createReferenceEntity('brands');
     }
 
     private function getRawTableConfigurationWithoutIds(AttributeInterface $tableAttribute): array

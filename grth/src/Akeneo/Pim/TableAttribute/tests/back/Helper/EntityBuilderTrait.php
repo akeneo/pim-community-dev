@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Test\Pim\TableAttribute\Integration\Value;
+namespace Akeneo\Test\Pim\TableAttribute\Helper;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
 use PHPUnit\Framework\Assert;
 
 trait EntityBuilderTrait
@@ -87,5 +87,14 @@ trait EntityBuilderTrait
         Assert::assertCount(0, $violations, \sprintf('The product model is not valid: %s', $violations));
         $this->get('pim_catalog.saver.product_model')->save($productModel);
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+    }
+
+    protected function createReferenceEntity(string $referenceEntityIdentifier): void
+    {
+        $createCommand = new CreateReferenceEntityCommand($referenceEntityIdentifier, []);
+        $violations = $this->get('validator')->validate($createCommand);
+        Assert::assertCount(0, $violations, (string) $violations);
+        $handler = $this->get('akeneo_referenceentity.application.reference_entity.create_reference_entity_handler');
+        $handler($createCommand);
     }
 }

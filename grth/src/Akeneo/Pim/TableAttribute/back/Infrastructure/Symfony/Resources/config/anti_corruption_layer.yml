@@ -1,0 +1,9 @@
+services:
+    Akeneo\Pim\TableAttribute\Infrastructure\AntiCorruptionLayer\Feature:
+        arguments:
+            - '@feature_flags'
+
+    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\ReferenceEntityExists:
+        class: Akeneo\Pim\TableAttribute\Infrastructure\AntiCorruptionLayer\ACLReferenceEntityExists
+        arguments:
+            - '@?akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'

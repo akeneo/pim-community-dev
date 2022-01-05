@@ -14,13 +14,17 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\tests\back\Enterprise\EndToEnd\Attribute;
 
 use Akeneo\Test\Pim\TableAttribute\EndToEnd\Attribute\AbstractAttributeApiTestCase;
+use Akeneo\Test\Pim\TableAttribute\Helper\EntityBuilderTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class CreateAttributeEndToEnd extends AbstractAttributeApiTestCase
 {
+    use EntityBuilderTrait;
+
     public function testItCreatesAValidTableAttributeWithAReferenceEntityColumn(): void
     {
+        $this->createReferenceEntity('entity');
         $client = $this->createAuthenticatedClient();
         $data =
             <<<JSON

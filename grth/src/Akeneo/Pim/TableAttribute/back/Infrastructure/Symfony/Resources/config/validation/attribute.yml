@@ -99,6 +99,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                           message: The required value is a string
                       - NotNull:
                           message: The "reference_entity_identifier" option requires a value
+                      - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ReferenceEntityIdentifierShouldExist: ~
                 options:
                   - Optional:
                       - Type:
