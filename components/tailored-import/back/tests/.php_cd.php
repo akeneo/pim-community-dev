@@ -37,6 +37,7 @@ $rules = [
             'Symfony\Component',
             'Akeneo\Platform\TailoredImport\Application',
             'Akeneo\Platform\TailoredImport\Domain',
+            'Akeneo\Tool',
         ],
     )->in('Akeneo\Platform\TailoredImport\Infrastructure'),
 ];
