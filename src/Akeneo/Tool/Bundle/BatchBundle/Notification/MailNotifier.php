@@ -5,6 +5,7 @@ namespace Akeneo\Tool\Bundle\BatchBundle\Notification;
 use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Email\SenderAddress;
+use Swift_Image;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Twig\Environment;
 
@@ -17,25 +18,16 @@ use Twig\Environment;
  */
 class MailNotifier implements Notifier
 {
-    protected BatchLogHandler $logger;
-    protected TokenStorageInterface $tokenStorage;
-    protected Environment $twig;
-    protected \Swift_Mailer $mailer;
-    protected string $mailerUrl;
     protected ?string $recipientEmail = null;
 
     public function __construct(
-        BatchLogHandler $logger,
-        TokenStorageInterface $tokenStorage,
-        Environment $twig,
-        \Swift_Mailer $mailer,
-        string $mailerUrl
+        protected BatchLogHandler       $logger,
+        protected TokenStorageInterface $tokenStorage,
+        protected Environment           $twig,
+        protected \Swift_Mailer         $mailer,
+        protected string                $mailerUrl,
+        protected string                $imagePath
     ) {
-        $this->logger = $logger;
-        $this->tokenStorage = $tokenStorage;
-        $this->twig = $twig;
-        $this->mailer = $mailer;
-        $this->mailerUrl = $mailerUrl;
     }
 
     /**
@@ -57,18 +49,29 @@ class MailNotifier implements Notifier
             return;
         }
 
+        $message = $this->mailer->createMessage();
+
+        // Add embedded images
+        $cidLogo = $message->embed(Swift_Image::fromPath($this->imagePath . '/email_logo.png'));
+        $cidSignature = $message->embed(Swift_Image::fromPath($this->imagePath . '/email_signature.png')
+            ->setDisposition('inline'));
+
         $parameters = [
             'jobExecution' => $jobExecution,
-            'log'          => $this->logger->getFilename(),
-            'email'       => $email
+            'log' => $this->logger->getFilename(),
+            'email' => $email,
+            'images' => [
+                'logo' => $cidLogo,
+                'signature' => $cidSignature
+            ]
         ];
 
         $txtBody = $this->twig->render('@AkeneoBatch/Mails/notification.txt.twig', $parameters);
         $htmlBody = $this->twig->render('@AkeneoBatch/Mails/notification.html.twig', $parameters);
 
-        $message = $this->mailer->createMessage();
+        // Prepare message
         $message->setSubject('Job has been executed');
-        $message->setFrom((string) SenderAddress::fromMailerUrl($this->mailerUrl));
+        $message->setFrom((string)SenderAddress::fromMailerUrl($this->mailerUrl));
         $message->setTo($email);
         $message->setBody($txtBody, 'text/plain');
         $message->addPart($htmlBody, 'text/html');

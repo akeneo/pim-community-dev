@@ -12,6 +12,7 @@ parameters:
     akeneo_batch.entity_manager.persisted_connection_entity_manager.class: Akeneo\Tool\Bundle\BatchBundle\EntityManager\PersistedConnectionEntityManager
     akeneo_batch.connectors_config:                           ~
     akeneo_batch.jobs_config:                                 ~
+    akeneo_batch.image_path:                                  '%kernel.project_dir%/src/Akeneo/Tool/Bundle/BatchBundle/Resources/public/images'
 
 services:
     akeneo_batch.job_instance_factory:
@@ -48,6 +49,7 @@ services:
             - '@twig'
             - '@mailer'
             - '%mailer_url%'
+            - '%akeneo_batch.image_path%'
 
     akeneo_batch.logger.batch_log_handler:
         class: '%akeneo_batch.logger.batch_log_handler.class%'
