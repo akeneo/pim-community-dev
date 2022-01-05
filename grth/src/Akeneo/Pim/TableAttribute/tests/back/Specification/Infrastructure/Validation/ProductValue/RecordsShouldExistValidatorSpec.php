@@ -50,14 +50,14 @@ class RecordsShouldExistValidatorSpec extends ObjectBehavior
                     'id' => ColumnIdGenerator::record(),
                     'code' => 'origin',
                     'reference_entity_identifier' => 'city',
-                    'is_required_for_completeness' => true
+                    'is_required_for_completeness' => true,
                 ]),
                 TextColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
                 ReferenceEntityColumn::fromNormalized([
                     'id' => self::COLUMNID_RECORDBRAND,
                     'code' => 'company',
-                    'reference_entity_identifier' => 'brand'
+                    'reference_entity_identifier' => 'brand',
                 ]),
             ])
         );
@@ -94,13 +94,13 @@ class RecordsShouldExistValidatorSpec extends ObjectBehavior
                 ColumnIdGenerator::record() => null,
                 ColumnIdGenerator::ingredient() => 'sugar',
                 ColumnIdGenerator::quantity() => 10,
-                self::COLUMNID_RECORDBRAND => null
+                self::COLUMNID_RECORDBRAND => null,
             ],
             [
                 ColumnIdGenerator::record() => null,
                 ColumnIdGenerator::ingredient() => 'vanilla',
                 ColumnIdGenerator::quantity() => 10,
-                self::COLUMNID_RECORDBRAND => null
+                self::COLUMNID_RECORDBRAND => null,
             ],
         ]));
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
@@ -117,13 +117,13 @@ class RecordsShouldExistValidatorSpec extends ObjectBehavior
                 ColumnIdGenerator::record() => 'Dublin',
                 ColumnIdGenerator::ingredient() => 'sugar',
                 ColumnIdGenerator::quantity() => 10,
-                self::COLUMNID_RECORDBRAND => 'Guiness'
+                self::COLUMNID_RECORDBRAND => 'Guiness',
             ],
             [
                 ColumnIdGenerator::record() => 'Paris',
                 ColumnIdGenerator::ingredient() => 'vanilla',
                 ColumnIdGenerator::quantity() => 10,
-                self::COLUMNID_RECORDBRAND => 'Ladurée'
+                self::COLUMNID_RECORDBRAND => 'Ladurée',
             ],
         ]));
 
@@ -131,21 +131,22 @@ class RecordsShouldExistValidatorSpec extends ObjectBehavior
             [
                 'city' => [
                     '0-origin' => 'Dublin',
-                    '1-origin' => 'Paris'
+                    '1-origin' => 'Paris',
                 ],
                 'brand'  => [
                     '0-company' => 'Guiness',
-                    '1-company' => 'Ladurée'
+                    '1-company' => 'Ladurée',
                 ]
             ]
         )->willReturn(
             [
                 'city' => [
-                    'Dublin', 'Paris'
+                    'Dublin',
+                    'Paris',
                 ],
                 'brand' => [
                     'Guiness',
-                    'Ladurée'
+                    'Ladurée',
                 ]
             ]
         );
@@ -167,13 +168,13 @@ class RecordsShouldExistValidatorSpec extends ObjectBehavior
                 ColumnIdGenerator::record() => 'London',
                 ColumnIdGenerator::ingredient() => 'sugar',
                 ColumnIdGenerator::quantity() => 10,
-                self::COLUMNID_RECORDBRAND => 'Guiness'
+                self::COLUMNID_RECORDBRAND => 'Guiness',
             ],
             [
                 ColumnIdGenerator::record() => 'Paris',
                 ColumnIdGenerator::ingredient() => 'butter',
                 ColumnIdGenerator::quantity() => 10,
-                self::COLUMNID_RECORDBRAND => 'LU'
+                self::COLUMNID_RECORDBRAND => 'LU',
             ],
         ]));
 
@@ -181,20 +182,20 @@ class RecordsShouldExistValidatorSpec extends ObjectBehavior
             [
                 'city' => [
                     '0-origin' => 'London',
-                    '1-origin' => 'Paris'
+                    '1-origin' => 'Paris',
                 ],
                 'brand' => [
                     '0-company' => 'Guiness',
-                    '1-company' => 'LU'
+                    '1-company' => 'LU',
                 ]
             ]
         )->willReturn(
             [
                 'city' => [
-                    'Paris'
+                    'Paris',
                 ],
                 'brand' => [
-                    'Guiness'
+                    'Guiness',
                 ]
             ]
         );
@@ -203,7 +204,7 @@ class RecordsShouldExistValidatorSpec extends ObjectBehavior
             $constraint->message,
             [
                 '{{ recordCode }}' => 'London',
-                '{{ referenceEntityIdentifier }}' => 'city'
+                '{{ referenceEntityIdentifier }}' => 'city',
             ]
         )->shouldBeCalled()->willreturn($violationBuilder);
         $violationBuilder->atPath('[0].origin')->shouldBeCalled()->willReturn($violationBuilder);
@@ -213,7 +214,7 @@ class RecordsShouldExistValidatorSpec extends ObjectBehavior
             $constraint->message,
             [
                 '{{ recordCode }}' => 'LU',
-                '{{ referenceEntityIdentifier }}' => 'brand'
+                '{{ referenceEntityIdentifier }}' => 'brand',
             ]
         )->shouldBeCalled()->willreturn($violationBuilder);
         $violationBuilder->atPath('[1].company')->shouldBeCalled()->willReturn($violationBuilder);
