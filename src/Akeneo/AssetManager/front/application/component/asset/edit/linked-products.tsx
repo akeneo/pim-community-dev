@@ -1,5 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import styled from 'styled-components';
 import {
   CardGrid,
@@ -11,34 +10,20 @@ import {
   SwitcherButton,
   useBooleanState,
 } from 'akeneo-design-system';
-import {Section, useTranslate} from '@akeneo-pim-community/shared';
-import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
-import {NormalizedProduct} from 'akeneoassetmanager/domain/model/product/product';
+import {Section, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {ProductCard} from 'akeneoassetmanager/application/component/asset/edit/linked-products/ProductCard';
-import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
-import {attributeSelected} from 'akeneoassetmanager/application/action/product/attribute';
-import {denormalizeAttributeCode} from 'akeneoassetmanager/domain/model/attribute/code';
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import {Limit} from 'akeneoassetmanager/application/component/asset/edit/linked-products/limit';
+import {ProductAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import {useProductAttributes} from 'akeneoassetmanager/application/component/asset/edit/linked-products/useProductAttributes';
+import {useLinkedProducts} from 'akeneoassetmanager/application/component/asset/edit/linked-products/useLinkedProducts';
 
-interface StateProps {
-  assetCode: string;
-  context: {
-    locale: string;
-    channel: string;
-  };
-  products: NormalizedProduct[];
-  totalCount: number;
-  isLoaded: boolean;
-  attributes: NormalizedAttribute[];
-  selectedAttribute: NormalizedAttribute | null;
-}
-
-interface DispatchProps {
-  events: {
-    onLinkedAttributeChange: (attributeCode: string) => void;
-  };
-}
+type LinkedProductsProps = {
+  assetFamilyIdentifier: AssetFamilyIdentifier;
+  assetCode: AssetCode;
+};
 
 const NoResults = styled.div`
   display: flex;
@@ -48,25 +33,31 @@ const NoResults = styled.div`
   font-size: ${getFontSize('big')};
 `;
 
-const LinkedProducts = ({
-  assetCode,
-  products,
-  totalCount,
-  isLoaded,
-  context,
-  attributes,
-  selectedAttribute,
-  events,
-}: StateProps & DispatchProps) => {
+const LinkedProducts = ({assetFamilyIdentifier, assetCode}: LinkedProductsProps) => {
   const translate = useTranslate();
+  const locale = useUserContext().get('catalogLocale');
+  const channel = useUserContext().get('catalogScope');
   const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
+  const [attributes, selectedAttribute, setSelectedAttribute] = useProductAttributes(assetFamilyIdentifier);
+  const [products, totalCount] = useLinkedProducts(
+    assetFamilyIdentifier,
+    assetCode,
+    selectedAttribute,
+    channel,
+    locale
+  );
 
   const handleAttributeChange = (attributeCode: string) => () => {
-    closeDropdown();
-    events.onLinkedAttributeChange(attributeCode);
+    if (null !== attributes) {
+      closeDropdown();
+
+      const selectedAttribute = attributes.find(attribute => attribute.code === attributeCode);
+
+      setSelectedAttribute(selectedAttribute ?? null);
+    }
   };
 
-  if (!isLoaded) {
+  if (null === attributes || null === products) {
     return (
       <Section>
         <SectionTitle sticky={202}>
@@ -92,7 +83,7 @@ const LinkedProducts = ({
                 label={translate('pim_asset_manager.asset.product.dropdown.attribute')}
                 onClick={openDropdown}
               >
-                {getLabelInCollection(selectedAttribute.labels, context.locale, true, selectedAttribute.code)}
+                {getLabelInCollection(selectedAttribute.labels, locale, true, selectedAttribute.code)}
               </SwitcherButton>
               {isDropdownOpen && (
                 <Dropdown.Overlay onClose={closeDropdown}>
@@ -100,13 +91,13 @@ const LinkedProducts = ({
                     <Dropdown.Title>{translate('pim_asset_manager.asset.product.attribute')}</Dropdown.Title>
                   </Dropdown.Header>
                   <Dropdown.ItemCollection>
-                    {attributes.map((attribute: NormalizedAttribute) => (
+                    {attributes.map((attribute: ProductAttribute) => (
                       <Dropdown.Item
                         key={attribute.code}
                         isActive={selectedAttribute.code === attribute.code}
                         onClick={handleAttributeChange(attribute.code)}
                       >
-                        {getLabelInCollection(attribute.labels, context.locale, true, attribute.code)}
+                        {getLabelInCollection(attribute.labels, locale, true, attribute.code)}
                       </Dropdown.Item>
                     ))}
                   </Dropdown.ItemCollection>
@@ -124,7 +115,7 @@ const LinkedProducts = ({
       ) : (
         <CardGrid>
           {products.map(product => (
-            <ProductCard key={product.id} product={product} locale={context.locale} />
+            <ProductCard key={product.id} product={product} locale={locale} />
           ))}
         </CardGrid>
       )}
@@ -138,28 +129,4 @@ const LinkedProducts = ({
   );
 };
 
-export default connect(
-  (state: EditState): StateProps => {
-    return {
-      assetCode: state.form.data.code,
-      context: {
-        locale: state.user.catalogLocale,
-        channel: state.user.catalogChannel,
-      },
-      products: state.products.products,
-      totalCount: state.products.totalCount,
-      isLoaded: state.products.isLoaded,
-      attributes: state.products.attributes,
-      selectedAttribute: state.products.selectedAttribute,
-    };
-  },
-  (dispatch: any): DispatchProps => {
-    return {
-      events: {
-        onLinkedAttributeChange: (attributeCode: string) => {
-          dispatch(attributeSelected(denormalizeAttributeCode(attributeCode)));
-        },
-      },
-    };
-  }
-)(LinkedProducts);
+export {LinkedProducts};

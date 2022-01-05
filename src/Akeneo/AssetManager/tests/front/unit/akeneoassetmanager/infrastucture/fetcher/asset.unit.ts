@@ -3,21 +3,23 @@
 const {getRequestContract} = require('../../../../acceptance/cucumber/tools');
 
 import fetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
-import * as fetch from 'akeneoassetmanager/tools/fetch';
 
-jest.mock('pim/router', () => {});
-jest.mock('pim/security-context', () => {}, {virtual: true});
-jest.mock('routing');
 jest.mock('akeneoassetmanager/application/configuration/attribute');
 
 describe('akeneoassetmanager/infrastructure/fetcher/asset', () => {
   it('It fetches one asset', async () => {
     // @ts-ignore
-    fetch.getJSON = jest
+    global.fetch = jest
       .fn()
-      .mockImplementationOnce(() => Promise.resolve(getRequestContract('Asset/AssetDetails/ok.json').response.body))
       .mockImplementationOnce(() =>
-        Promise.resolve(getRequestContract('AssetFamily/AssetFamilyDetails/ok.json').response.body)
+        Promise.resolve({
+          json: () => Promise.resolve(getRequestContract('Asset/AssetDetails/ok.json').response.body),
+        })
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          json: () => Promise.resolve(getRequestContract('AssetFamily/AssetFamilyDetails/ok.json').response.body),
+        })
       );
 
     const response = await fetcher.fetch('designer', 'starck');
@@ -54,9 +56,11 @@ describe('akeneoassetmanager/infrastructure/fetcher/asset', () => {
 
   it('It search for assets', async () => {
     // @ts-ignore
-    fetch.putJSON = jest
-      .fn()
-      .mockImplementationOnce(() => Promise.resolve(getRequestContract('Asset/Search/ok.json').response.body));
+    global.fetch = jest.fn().mockImplementationOnce(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(getRequestContract('Asset/Search/ok.json').response.body),
+      })
+    );
 
     const response = await fetcher.search({
       locale: 'en_US',
@@ -150,10 +154,11 @@ describe('akeneoassetmanager/infrastructure/fetcher/asset', () => {
   });
 
   it('It search for empty assets', async () => {
-    // @ts-ignore
-    fetch.putJSON = jest
-      .fn()
-      .mockImplementationOnce(() => Promise.resolve(getRequestContract('Asset/Search/no_result.json').response.body));
+    global.fetch = jest.fn().mockImplementationOnce(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(getRequestContract('Asset/Search/no_result.json').response.body),
+      })
+    );
 
     const response = await fetcher.search({
       locale: 'en_US',

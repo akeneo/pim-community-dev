@@ -11,7 +11,7 @@ import {ValueCollection} from 'akeneoassetmanager/application/component/asset/ed
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
 import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
-import LinkedProducts from 'akeneoassetmanager/application/component/asset/edit/linked-products';
+import {LinkedProducts} from 'akeneoassetmanager/application/component/asset/edit/linked-products';
 import {MainMediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/main-media-preview';
 
 const Container = styled.div`
@@ -84,7 +84,7 @@ const Enrich = ({form, context, events, canEditCurrentLocale, canEditCurrentFami
       <Separator />
       <RightColumn>
         <MainMediaPreview asset={asset} context={context} />
-        <LinkedProducts />
+        <LinkedProducts assetFamilyIdentifier={asset.assetFamily.identifier} assetCode={asset.code} />
       </RightColumn>
     </Container>
   );

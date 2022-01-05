@@ -1,22 +1,25 @@
 import React from 'react';
 import {Badge} from 'akeneo-design-system';
 import {Translate, useTranslate} from '@akeneo-pim-community/shared';
-import {ProductType, PRODUCT_TYPE} from 'akeneoassetmanager/domain/model/product/product';
-import Completeness from 'akeneoassetmanager/domain/model/product/completeness';
+import {Completeness, ProductType, PRODUCT_TYPE} from 'akeneoassetmanager/domain/model/product/product';
 
 const getLabel = (translate: Translate, completeness: Completeness, type: ProductType) => {
   switch (type) {
     case PRODUCT_TYPE:
-      return null === completeness.getRatio() ? translate('pim_common.not_available') : `${completeness.getRatio()} %`;
+      return null === completeness.ratio ? translate('pim_common.not_available') : `${completeness.ratio} %`;
     default:
-      return `${completeness.getCompleteChildren()}/${completeness.getTotalChildren()}`;
+      return `${completeness.completeChildren}/${completeness.totalChildren}`;
   }
 };
 
 const getLevel = (completeness: Completeness) => {
-  if (completeness.isComplete()) {
+  if (
+    completeness.completeChildren === 0 && completeness.totalChildren === 0
+      ? completeness.ratio === 100
+      : completeness.completeChildren === completeness.totalChildren
+  ) {
     return 'primary';
-  } else if (completeness.hasCompleteItems()) {
+  } else if ((null !== completeness.ratio && completeness.ratio > 0) || completeness.completeChildren > 0) {
     return 'warning';
   } else {
     return 'danger';

@@ -2,13 +2,11 @@ import AssetFetcher from 'akeneoassetmanager/domain/fetcher/asset';
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import EditionAsset from 'akeneoassetmanager/domain/model/asset/edition-asset';
-import {getJSON, putJSON} from 'akeneoassetmanager/tools/fetch';
 import AssetFamilyIdentifier, {
   assetFamilyIdentifierStringValue,
   denormalizeAssetFamilyIdentifier,
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AssetCode, {assetCodeStringValue} from 'akeneoassetmanager/domain/model/asset/code';
-import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import {AssetFamilyPermission} from 'akeneoassetmanager/domain/model/permission/asset-family';
 import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
@@ -19,8 +17,6 @@ import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-fa
 import {validateBackendListAsset} from 'akeneoassetmanager/infrastructure/validator/list-asset';
 import {validateBackendEditionAsset} from 'akeneoassetmanager/infrastructure/validator/edition-asset';
 import {denormalizeAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-
-const routing = require('routing');
 
 class InvalidArgument extends Error {}
 
@@ -56,6 +52,14 @@ const denormalizeListAsset = (backendAsset: BackendListAsset): ListAsset => {
   };
 };
 
+const generateAssetGetUrl = (assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) =>
+  `/rest/asset_manager/${assetFamilyIdentifierStringValue(assetFamilyIdentifier)}/asset/${assetCodeStringValue(
+    assetCode
+  )}`;
+
+const generateAssetSearchUrl = (assetFamilyIdentifier: AssetFamilyIdentifier) =>
+  `/rest/asset_manager/${assetFamilyIdentifier}/asset`;
+
 export class AssetFetcherImplementation implements AssetFetcher {
   private assetsByCodesCache: {
     [key: string]: Promise<SearchResult<ListAsset>>;
@@ -63,12 +67,7 @@ export class AssetFetcherImplementation implements AssetFetcher {
 
   async fetch(assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode): Promise<AssetResult> {
     const [assetData, assetFamilyResult] = await Promise.all([
-      await getJSON(
-        routing.generate('akeneo_asset_manager_asset_get_rest', {
-          assetFamilyIdentifier: assetFamilyIdentifierStringValue(assetFamilyIdentifier),
-          assetCode: assetCodeStringValue(assetCode),
-        })
-      ).catch(errorHandler),
+      (await fetch(generateAssetGetUrl(assetFamilyIdentifier, assetCode))).json(),
       assetFamilyFetcher.fetch(denormalizeAssetFamilyIdentifier(assetFamilyIdentifier)),
     ]);
 
@@ -85,17 +84,20 @@ export class AssetFetcherImplementation implements AssetFetcher {
   }
 
   async search(query: Query): Promise<SearchResult<ListAsset>> {
-    const assetFamilyCode = query.filters.find((filter: Filter) => 'asset_family' === filter.field);
-    if (undefined === assetFamilyCode) {
+    const assetFamilyCodeFilter = query.filters.find((filter: Filter) => 'asset_family' === filter.field);
+    if (undefined === assetFamilyCodeFilter) {
       throw new InvalidArgument('The search repository expects a asset_family filter');
     }
 
-    const backendAssets = await putJSON(
-      routing.generate('akeneo_asset_manager_asset_index_rest', {
-        assetFamilyIdentifier: assetFamilyCode.value,
-      }),
-      query
-    ).catch(errorHandler);
+    const response = await fetch(generateAssetSearchUrl(assetFamilyCodeFilter.value), {
+      method: 'PUT',
+      body: JSON.stringify(query),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const backendAssets = await response.json();
 
     const listAssets = backendAssets.items.map((assetData: any) => {
       const backendListAsset = validateBackendListAsset(assetData);

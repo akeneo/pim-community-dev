@@ -21,7 +21,6 @@ import {updateActivatedLocales} from 'akeneoassetmanager/application/action/loca
 import {updateChannels} from 'akeneoassetmanager/application/action/channel';
 import {denormalizeAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
 import {LocalePermission} from 'akeneoassetmanager/domain/model/permission/locale';
-import {updateAttributeList} from 'akeneoassetmanager/application/action/product/attribute';
 import {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme, Key} from 'akeneo-design-system';
@@ -52,8 +51,6 @@ class AssetEditController extends BaseController {
     mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-asset-family'});
     $(window).on('beforeunload', this.beforeUnload);
 
-    const assetFamilyIdentifier = denormalizeAssetFamilyIdentifier(route.params.assetFamilyIdentifier);
-
     assetFetcher
       .fetch(
         denormalizeAssetFamilyIdentifier(route.params.assetFamilyIdentifier),
@@ -69,7 +66,6 @@ class AssetEditController extends BaseController {
         this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')) as any);
         this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
         this.store.dispatch(updateActivatedLocales() as any);
-        this.store.dispatch(updateAttributeList(assetFamilyIdentifier) as any);
         document.addEventListener('keydown', shortcutDispatcher(this.store));
 
         fetcherRegistry
