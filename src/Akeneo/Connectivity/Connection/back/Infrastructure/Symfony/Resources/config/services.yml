@@ -116,3 +116,5 @@ services:
         class: Akeneo\Connectivity\Connection\Infrastructure\ContentSecurityPolicy\MarketplaceContentSecurityPolicy
         tags:
             - { name: akeneo.pim.security.content_security_policy_provider }
+
+    Akeneo\Connectivity\Connection\Infrastructure\Service\RandomCodeGenerator: ~

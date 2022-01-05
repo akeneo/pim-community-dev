@@ -222,6 +222,21 @@ akeneo_connectivity.connection:
                 redirect_uri:
                     not_blank: The redirect_uri is required.
                     must_be_url: The redirect_uri is not a valid url.
+    test_app:
+        errors:
+            creation:
+                name:
+                    max_length: The name of the test app is too long. It must have 255 characters or less.
+                    not_blank: The name of the test app must not be empty.
+                client_id:
+                    max_length: The client id of the test app is too long. It must have 36 characters or less.
+                    not_blank: The client id of the test app must not be empty.
+                activate_url:
+                    max_length: The activate url of the test app is too long. It must have 255 characters or less.
+                    must_be_url: The activate url must be a valid URL.
+                callback_url:
+                    max_length: The callback url of the test app is too long. It must have 255 characters or less.
+                    must_be_url: The callback url must be a valid URL.
     connections: Connections
     secondary_actions:
         title: Other actions

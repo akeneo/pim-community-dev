@@ -1,0 +1,29 @@
+Akeneo\Connectivity\Connection\Application\TestApps\Command\CreateTestAppCommand:
+    properties:
+        clientId:
+            - Length:
+                  max: 36
+                  maxMessage: 'akeneo_connectivity.connection.test_app.errors.creation.client_id.max_length'
+            - NotBlank:
+                  message: 'akeneo_connectivity.connection.test_app.errors.creation.client_id.not_blank'
+
+        name:
+            - Length:
+                  max: 255
+                  maxMessage: 'akeneo_connectivity.connection.test_app.errors.creation.name.max_length'
+            - NotBlank:
+                  message: 'akeneo_connectivity.connection.test_app.errors.creation.name.not_blank'
+
+        activateUrl:
+            - Length:
+                  max: 255
+                  maxMessage: 'akeneo_connectivity.connection.test_app.errors.creation.activate_url.max_length'
+            - Url:
+                  message: 'akeneo_connectivity.connection.test_app.errors.creation.activate_url.must_be_url'
+
+        callbackUrl:
+            - Length:
+                  max: 255
+                  maxMessage: 'akeneo_connectivity.connection.test_app.errors.creation.callback_url.max_length'
+            - Url:
+                  message: 'akeneo_connectivity.connection.test_app.errors.creation.callback_url.must_be_url'

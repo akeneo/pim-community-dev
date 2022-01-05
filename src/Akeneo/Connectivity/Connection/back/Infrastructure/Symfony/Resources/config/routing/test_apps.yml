@@ -1,0 +1,4 @@
+akeneo_connectivity_connection_test_apps_rest_create:
+    path: '/rest/test-apps'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\TestApps\Controller\InternalApi\CreateTestAppsAction
+    methods: [POST]

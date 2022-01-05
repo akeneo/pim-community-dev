@@ -251,6 +251,32 @@ $rules = [
             'Akeneo\Connectivity\Connection\Domain\Marketplace',
         ]
     )->in('Akeneo\Connectivity\Connection\Domain\Marketplace'),
+
+    $builder->only(
+        [
+            'Akeneo\Connectivity\Connection\Domain\TestApps',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Domain\TestApps'),
+
+    $builder->only(
+        [
+            'Akeneo\Connectivity\Connection\Domain\TestApps',
+            'Akeneo\Connectivity\Connection\Application\TestApps',
+            'Akeneo\Connectivity\Connection\Application\RandomCodeGeneratorInterface',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Application\TestApps'),
+
+    $builder->only(
+        [
+            'Akeneo\Connectivity\Connection\Domain\TestApps',
+            'Akeneo\Connectivity\Connection\Application\TestApps',
+
+            'Symfony\Component',
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
+            'Akeneo\UserManagement\Component\Model\UserInterface',
+            'Doctrine\DBAL\Connection',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Infrastructure\TestApps'),
 ];
 
 $config = new Configuration($rules, $finder);

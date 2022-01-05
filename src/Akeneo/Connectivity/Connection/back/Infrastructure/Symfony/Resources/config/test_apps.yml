@@ -1,0 +1,22 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\TestApps\Controller\InternalApi\CreateTestAppsAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.app_developer_mode.feature'
+            - '@validator'
+            - '@security.token_storage'
+            - '@Akeneo\Connectivity\Connection\Application\TestApps\Command\CreateTestAppCommandHandler'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\TestApps\Persistence\GetTestAppSecretQuery'
+
+    Akeneo\Connectivity\Connection\Infrastructure\TestApps\Persistence\CreateTestAppQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\TestApps\Persistence\GetTestAppSecretQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Application\TestApps\Command\CreateTestAppCommandHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\RandomCodeGenerator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\TestApps\Persistence\CreateTestAppQuery'
