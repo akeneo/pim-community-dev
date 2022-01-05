@@ -355,11 +355,6 @@ batch_jobs:
     label: Reference entity record import in XLSX
     import.label: Record import
 
-pim_datagrid:
-  cells:
-    type:
-      reference_entity_mass_delete_records: Execute records mass delete
-
 job_execution:
   summary:
     records: Records

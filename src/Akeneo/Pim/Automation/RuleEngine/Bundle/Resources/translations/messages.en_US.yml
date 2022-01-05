@@ -94,8 +94,3 @@ job_execution:
         executed_rules: successfully executed rules
         errored_rules: skipped rules (invalid)
 
-pim_datagrid:
-    cells:
-        type:
-            mass_edit_rule: Rules Settings
-            execute_rules: Rules execution
