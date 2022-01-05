@@ -22,6 +22,7 @@ $rules = [
     $builder->only(
         [
             'Webmozart\Assert\Assert',
+            'Akeneo\Platform\TailoredImport\Domain',
         ],
     )->in('Akeneo\Platform\TailoredImport\Application'),
 
@@ -34,6 +35,8 @@ $rules = [
     $builder->only(
         [
             'Symfony\Component',
+            'Akeneo\Platform\TailoredImport\Application',
+            'Akeneo\Platform\TailoredImport\Domain',
         ],
     )->in('Akeneo\Platform\TailoredImport\Infrastructure'),
 ];

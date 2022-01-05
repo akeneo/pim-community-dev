@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\TailoredImport\back\tests\Integration\Domain;
+namespace Akeneo\Platform\TailoredImport\Tests\Integration\Domain;
 
 use Akeneo\Platform\TailoredImport\Domain\Dummy;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

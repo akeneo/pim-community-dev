@@ -59,6 +59,7 @@
             "Akeneo\\Onboarder\\Test\\": "vendor/akeneo/pim-onboarder/tests/",
             "spec\\Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/tests/back/spec",
             "Akeneo\\Platform\\TailoredExport\\Test\\": "components/tailored-export/back/tests",
+            "Akeneo\\Platform\\TailoredImport\\Test\\": "components/tailored-import/back/tests",
             "Akeneo\\Test\\Pim\\TableAttribute\\": "grth/src/Akeneo/Pim/TableAttribute/tests/back"
         }
     },
