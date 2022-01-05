@@ -130,6 +130,11 @@ class App
     public function withAnalytics(array $queryParameters): self
     {
         $values = $this->normalize();
+
+        if (null === $values['url']) {
+            return $this;
+        }
+
         $values['url'] = static::appendQueryParametersToUrl($values['url'], $queryParameters);
 
         /* @phpstan-ignore-next-line */
@@ -178,11 +183,11 @@ class App
      * @return array{
      *  id: string,
      *  name: string,
-     *  logo: string,
-     *  author: string,
+     *  logo: string|null,
+     *  author: string|null,
      *  partner: string|null,
      *  description: string|null,
-     *  url: string,
+     *  url: string|null,
      *  categories: array<string>,
      *  certified: bool,
      *  activate_url: string,
@@ -228,12 +233,12 @@ class App
         return $this->name;
     }
 
-    public function getLogo(): string
+    public function getLogo(): ?string
     {
         return $this->logo;
     }
 
-    public function getAuthor(): string
+    public function getAuthor(): ?string
     {
         return $this->author;
     }
@@ -248,7 +253,7 @@ class App
         return $this->description;
     }
 
-    public function getUrl(): string
+    public function getUrl(): ?string
     {
         return $this->url;
     }

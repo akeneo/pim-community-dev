@@ -26,7 +26,13 @@ SELECT
     app.name,
     IF(app.user_id IS NOT NULL, CONCAT_WS(' ', user.name_prefix, user.first_name, user.middle_name, user.last_name, user.name_suffix), NULL) AS author,
     app.activate_url,
-    app.callback_url
+    app.callback_url,
+    (
+        SELECT COUNT(connected_app.id)
+        FROM akeneo_connectivity_connected_app connected_app
+        JOIN akeneo_connectivity_connection connection on connection.code = connected_app.connection_code
+        JOIN pim_api_client client on client.marketplace_public_app_id = app.client_id
+    ) AS connected
 FROM akeneo_connectivity_test_app AS app
 LEFT JOIN oro_user user on user.id = app.user_id
 SQL;
@@ -36,6 +42,8 @@ SQL;
         return GetAllTestAppsResult::create(
             count($rows),
             array_map(function ($row) {
+                $row['connected'] = (bool) $row['connected'];
+
                 return App::fromTestAppValues($row);
             }, $rows)
         );

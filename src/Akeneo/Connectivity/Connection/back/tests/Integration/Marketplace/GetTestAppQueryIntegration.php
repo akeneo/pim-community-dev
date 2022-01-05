@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Marketplace;
 
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetTestAppQuery;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -16,6 +17,7 @@ use Doctrine\DBAL\Connection;
 class GetTestAppQueryIntegration extends TestCase
 {
     private Connection $connection;
+    private ConnectedAppLoader $connectedAppLoader;
     private GetTestAppQuery $query;
 
     protected function setUp(): void
@@ -23,6 +25,7 @@ class GetTestAppQueryIntegration extends TestCase
         parent::setUp();
 
         $this->connection = $this->get('database_connection');
+        $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
         $this->query = $this->get(GetTestAppQuery::class);
     }
 
@@ -49,6 +52,7 @@ class GetTestAppQueryIntegration extends TestCase
             'author' => 'John Doe',
             'activate_url' => 'http://shopware.example.com/activate',
             'callback_url' => 'http://shopware.example.com/callback',
+            'connected' => false,
         ], $result);
     }
 
@@ -70,6 +74,30 @@ class GetTestAppQueryIntegration extends TestCase
             'author' => null,
             'activate_url' => 'http://shopware.example.com/activate',
             'callback_url' => 'http://shopware.example.com/callback',
+            'connected' => false,
+        ], $result);
+    }
+
+    public function test_it_returns_a_test_app_which_is_connected()
+    {
+        $this->createTestApp([
+            'client_id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
+            'client_secret' => 'foobar',
+            'name' => 'My test app',
+            'activate_url' => 'http://shopware.example.com/activate',
+            'callback_url' => 'http://shopware.example.com/callback',
+            'user_id' => null,
+        ]);
+        $this->connectedAppLoader->createConnectedAppWithUserAndTokens('100eedac-ff5c-497b-899d-e2d64b6c59f9', 'foo');
+
+        $result = $this->query->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9');
+        $this->assertEquals([
+            'id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
+            'name' => 'My test app',
+            'author' => null,
+            'activate_url' => 'http://shopware.example.com/activate',
+            'callback_url' => 'http://shopware.example.com/callback',
+            'connected' => true,
         ], $result);
     }
 

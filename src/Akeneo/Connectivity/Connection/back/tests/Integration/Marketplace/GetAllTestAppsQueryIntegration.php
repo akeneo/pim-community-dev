@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Tests\Integration\Marketplace;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\GetAllTestAppsResult;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllTestAppsQuery;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -18,6 +19,7 @@ use Doctrine\DBAL\Connection;
 class GetAllTestAppsQueryIntegration extends TestCase
 {
     private Connection $connection;
+    private ConnectedAppLoader $connectedAppLoader;
     private GetAllTestAppsQuery $query;
 
     protected function setUp(): void
@@ -25,6 +27,7 @@ class GetAllTestAppsQueryIntegration extends TestCase
         parent::setUp();
 
         $this->connection = $this->get('database_connection');
+        $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
         $this->query = $this->get(GetAllTestAppsQuery::class);
     }
 
@@ -43,6 +46,7 @@ class GetAllTestAppsQueryIntegration extends TestCase
             'callback_url' => 'http://shopware.example.com/callback',
             'user_id' => $this->findUserId('admin'),
         ]);
+        $this->connectedAppLoader->createConnectedAppWithUserAndTokens('100eedac-ff5c-497b-899d-e2d64b6c59f9', 'foo');
         $this->createTestApp([
             'client_id' => '42b9ecb1-ddd7-4874-9ad6-21a02d08ed50',
             'client_secret' => 'foobar',
@@ -62,6 +66,7 @@ class GetAllTestAppsQueryIntegration extends TestCase
                     'author' => 'John Doe',
                     'activate_url' => 'http://shopware.example.com/activate',
                     'callback_url' => 'http://shopware.example.com/callback',
+                    'connected' => true,
                 ]),
                 App::fromTestAppValues([
                     'id' => '42b9ecb1-ddd7-4874-9ad6-21a02d08ed50',
@@ -69,6 +74,7 @@ class GetAllTestAppsQueryIntegration extends TestCase
                     'author' => null,
                     'activate_url' => 'http://shopware.example.com/activate',
                     'callback_url' => 'http://shopware.example.com/callback',
+                    'connected' => false,
                 ]),
             ]),
             $result
