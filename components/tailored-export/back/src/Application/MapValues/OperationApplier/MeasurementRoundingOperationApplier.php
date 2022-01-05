@@ -17,7 +17,6 @@ use Akeneo\Platform\TailoredExport\Application\Common\Operation\MeasurementRound
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\OperationInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\MeasurementValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
-use Akeneo\Platform\TailoredExport\Domain\Query\MeasurementConverterInterface;
 
 class MeasurementRoundingOperationApplier implements OperationApplierInterface
 {
