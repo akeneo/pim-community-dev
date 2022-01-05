@@ -29,3 +29,11 @@ endif
 
 .PHONY: ci-back
 ci-back: lint-back coupling-back unit-back acceptance-back integration-back
+
+.PHONY: ci-front
+ci-front:
+	$(YARN_RUN) run --cwd=components/tailored-import/front test:unit:run
+	$(YARN_RUN) run --cwd=components/tailored-import/front lint:check
+
+.PHONY: ci
+ci: ci-back ci-front

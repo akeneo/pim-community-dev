@@ -1,5 +1,5 @@
 {
-  "name": "@akeneo-pim-enterprise/tailored-export",
+  "name": "@akeneo-pim-enterprise/tailored-import",
   "version": "0.1.0",
   "private": true,
   "config": {
@@ -71,8 +71,7 @@
     ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/src/index.tsx",
-      "<rootDir>/src/FakePIM.tsx",
-      "<rootDir>/src/feature/ColumnsTab.tsx"
+      "<rootDir>/src/FakePIM.tsx"
     ],
     "coverageThreshold": {
       "global": {

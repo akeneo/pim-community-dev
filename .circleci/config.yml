@@ -205,9 +205,10 @@ jobs:
               find vendor/akeneo/pim-community-dev/front-packages/measurement -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/measurement.hash
               find vendor/akeneo/pim-community-dev/front-packages/shared -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/shared.hash
               find components/tailored-export/front/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/tailored-export.hash
+              find components/tailored-import/front/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/tailored-import.hash
               find vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/front/process-tracker -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/process-tracker.hash
               find vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/catalog-volume-monitoring.hash
-              date +%F | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/tailored-export.hash ~/catalog-volume-monitoring.hash ~/process-tracker.hash
+              date +%F | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/tailored-export.hash ~/tailored-import.hash ~/catalog-volume-monitoring.hash ~/process-tracker.hash
       - run:
           name: Set front package directories owner to circleci
           command: sudo chown -R 1001:1001 vendor/akeneo/pim-community-dev/ front-packages/
@@ -223,6 +224,9 @@ jobs:
       - restore_cache:
             name: Restore front package Tailored Export cache
             key: front-packages-tailored-export-{{ checksum "~/tailored-export.hash" }}
+      - restore_cache:
+            name: Restore front package Tailored Import cache
+            key: front-packages-tailored-import-{{ checksum "~/tailored-import.hash" }}
       - restore_cache:
             name: Restore micro frontend Process Tracker cache
             key: micro-frontend-process-tracker-{{ checksum "~/process-tracker.hash" }}
@@ -271,6 +275,11 @@ jobs:
             key: front-packages-tailored-export-{{ checksum "~/tailored-export.hash" }}
             paths:
                 - front-packages/tailored-export/
+      - save_cache:
+            name: Save front package Tailored Import cache
+            key: front-packages-tailored-import-{{ checksum "~/tailored-import.hash" }}
+            paths:
+                - front-packages/tailored-import/
       - save_cache:
             name: Save micro frontend Process Tracker cache
             key: micro-frontend-process-tracker-{{ checksum "~/process-tracker.hash" }}
@@ -1100,6 +1109,9 @@ jobs:
           - run:
               name: Tailored Export Front Tests
               command: PIM_CONTEXT=tailored-export make ci-front
+          - run:
+              name: Tailored Export Front Tests
+              command: PIM_CONTEXT=tailored-import make ci-front
           - store_test_results:
                 path: ${TYPE}/var/tests
           - store_artifacts:
