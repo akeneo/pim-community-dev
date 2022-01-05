@@ -61,10 +61,10 @@ const TableAttributeConditionLine: React.FC<TableAttributeConditionLineProps> = 
 
   const [attribute, setAttribute] = React.useState<Attribute | null>();
   React.useEffect(() => {
-    getAttributeByIdentifier(field, router).then(attribute =>
+    getAttributeByIdentifier(condition.field, router).then(attribute =>
       setAttribute(attribute)
     );
-  }, [field, router]);
+  }, []);
   const title =
     attribute && attribute.labels[currentCatalogLocale]
       ? attribute.labels[currentCatalogLocale]

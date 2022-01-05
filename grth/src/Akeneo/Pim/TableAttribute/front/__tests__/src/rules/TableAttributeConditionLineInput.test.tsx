@@ -10,7 +10,7 @@ jest.mock('../../../src/fetchers/RecordFetcher');
 mockScroll();
 
 describe('TableAttributeConditionLineInput', () => {
-  it('should render the before component and call changes', async () => {
+  it('should render the component with select options and call changes', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableAttributeConditionLineInput
@@ -42,7 +42,7 @@ describe('TableAttributeConditionLineInput', () => {
     });
   });
 
-  it('should render the before component and call changes', async () => {
+  it('should render the component with reference entity and call changes', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableAttributeConditionLineInput
