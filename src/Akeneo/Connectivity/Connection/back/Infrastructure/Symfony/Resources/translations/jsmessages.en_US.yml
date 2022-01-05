@@ -66,6 +66,8 @@ akeneo_connectivity.connection:
                 title: Apps
                 total: '{0} No apps|{1} 1 app|[2,Inf] {{ total }} apps'
                 empty: No apps compatible with your version
+            test_apps:
+                title: My test apps
             unreachable: We can't reach the marketplace, please come back later.
             scroll_to_top: Scroll to the top
         connected_apps:

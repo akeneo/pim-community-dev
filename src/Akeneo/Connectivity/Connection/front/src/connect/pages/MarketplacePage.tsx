@@ -14,6 +14,7 @@ import {MarketplaceIsLoading} from '../components/MarketplaceIsLoading';
 import {useFetchApps} from '../hooks/use-fetch-apps';
 import {useFeatureFlags} from '../../shared/feature-flags';
 import {DeveloperModeTag} from '../components/DeveloperModeTag';
+import {useFetchTestApps} from '../hooks/use-fetch-test-apps';
 
 export const MarketplacePage: FC = () => {
     const translate = useTranslate();
@@ -27,6 +28,7 @@ export const MarketplacePage: FC = () => {
     const [userProfile, setUserProfile] = useState<string | null>(null);
     const [extensions, setExtensions] = useState<Extensions | null | false>(null);
     const [apps, setApps] = useState<Apps | null | false>(null);
+    const {isLoading: isTestAppsLoading, testApps} = useFetchTestApps();
 
     useEffect(() => {
         const profile = user.get<string | null>('profile');
@@ -59,7 +61,7 @@ export const MarketplacePage: FC = () => {
         return null;
     }
 
-    const isLoading = null === extensions || null === apps;
+    const isLoading = null === extensions || null === apps || isTestAppsLoading;
     const isUnreachable = false === extensions || false === apps;
 
     const breadcrumb = (
@@ -80,7 +82,7 @@ export const MarketplacePage: FC = () => {
             <PageContent>
                 {isLoading && <MarketplaceIsLoading />}
                 {isUnreachable && <UnreachableMarketplace />}
-                {!!extensions && !!apps && <Marketplace extensions={extensions} apps={apps} />}
+                {!!extensions && !!apps && <Marketplace extensions={extensions} apps={apps} testApps={testApps} />}
             </PageContent>
         </>
     );
