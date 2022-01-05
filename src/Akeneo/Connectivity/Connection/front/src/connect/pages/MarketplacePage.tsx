@@ -62,9 +62,7 @@ export const MarketplacePage: FC = () => {
     const isLoading = null === extensions || null === apps;
     const isUnreachable = false === extensions || false === apps;
     const handleCreateTestApp = () => {
-        history.push(
-            generateUrl('akeneo_connectivity_connection_connect_marketplace_test_app_create')
-        );
+        history.push(generateUrl('akeneo_connectivity_connection_connect_marketplace_test_app_create'));
     };
 
     const breadcrumb = (
@@ -79,7 +77,7 @@ export const MarketplacePage: FC = () => {
     const CreateTestAppButton = () => {
         return !featureFlag.isEnabled('app_developer_mode') ? null : (
             <ApplyButton classNames={['AknButtonList-item']} onClick={handleCreateTestApp}>
-                <Translate id='akeneo_connectivity.connection.connect.marketplace.test_app.create_a_test_app'/>
+                <Translate id='akeneo_connectivity.connection.connect.marketplace.test_app.create_a_test_app' />
             </ApplyButton>
         );
     };
@@ -88,11 +86,10 @@ export const MarketplacePage: FC = () => {
         <>
             <PageHeader
                 breadcrumb={breadcrumb}
-                buttons={[
-                    <CreateTestAppButton key={0} />,
-                ]}
+                buttons={[<CreateTestAppButton key={0} />]}
                 userButtons={<UserButtons />}
-                tag={tag}>
+                tag={tag}
+            >
                 {translate('pim_menu.item.marketplace')}
             </PageHeader>
 

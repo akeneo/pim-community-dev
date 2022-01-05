@@ -30,7 +30,9 @@ test('The marketplace page display the developer mode tag and the "create a test
 
     await waitFor(() => expect(Marketplace).toHaveBeenCalled());
     expect(screen.queryByText('akeneo_connectivity.connection.developer_mode')).toBeInTheDocument();
-    expect(screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_app.create_a_test_app')).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_app.create_a_test_app')
+    ).toBeInTheDocument();
 });
 
 test('The marketplace page do not display the developer mode tag and the "create a test app" when not enabled', async () => {
@@ -42,5 +44,7 @@ test('The marketplace page do not display the developer mode tag and the "create
 
     await waitFor(() => expect(Marketplace).toHaveBeenCalled());
     expect(screen.queryByText('akeneo_connectivity.connection.developer_mode')).not.toBeInTheDocument();
-    expect(screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_app.create_a_test_app')).not.toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_app.create_a_test_app')
+    ).not.toBeInTheDocument();
 });
