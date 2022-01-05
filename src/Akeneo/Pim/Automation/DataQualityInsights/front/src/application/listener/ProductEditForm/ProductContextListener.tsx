@@ -4,6 +4,7 @@ import {Product} from '../../../domain';
 import {getProductFamilyInformationAction, initializeProductAction} from '../../../infrastructure/reducer';
 import {fetchFamilyInformation} from '../../../infrastructure/fetcher';
 import ProductFetcher from '../../../infrastructure/fetcher/ProductEditForm/ProductFetcher';
+import {useEvaluateProduct} from '../../../infrastructure/hooks';
 
 interface ProductContextListenerProps {
   product: Product;
@@ -19,15 +20,16 @@ export const DATA_QUALITY_INSIGHTS_PRODUCT_SAVED = 'data-quality:product:saved';
 export const DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB = 'data-quality:redirect:dqi-tab';
 
 const ProductContextListener: FunctionComponent<ProductContextListenerProps> = ({product, productFetcher}) => {
-  const [productHasToBeReloaded, setProductHasToBeReloaded] = useState(false);
+  const [productHasBeenSaved, setProductHasBeenSaved] = useState(false);
   const dispatchAction = useDispatch();
+  const evaluateProduct = useEvaluateProduct(product);
 
   useEffect(() => {
     const handleProductSaving = () => {
       // do nothing
     };
     const handleProductSaved = () => {
-      setProductHasToBeReloaded(true);
+      setProductHasBeenSaved(true);
     };
 
     window.addEventListener(DATA_QUALITY_INSIGHTS_PRODUCT_SAVING, handleProductSaving);
@@ -55,14 +57,18 @@ const ProductContextListener: FunctionComponent<ProductContextListenerProps> = (
   }, [product.family]);
 
   useEffect(() => {
-    if (productHasToBeReloaded) {
+    if (productHasBeenSaved) {
+      (async () => {
+        await evaluateProduct();
+      })();
+
       (async () => {
         const data = await productFetcher(product.meta.id as number);
         dispatchAction(initializeProductAction(data));
-        setProductHasToBeReloaded(false);
+        setProductHasBeenSaved(false);
       })();
     }
-  }, [productHasToBeReloaded]);
+  }, [productHasBeenSaved]);
 
   return <></>;
 };
