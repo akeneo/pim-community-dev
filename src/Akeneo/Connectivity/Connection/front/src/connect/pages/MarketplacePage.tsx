@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useContext, useEffect, useState} from 'react';
+import React, {FC, useContext, useEffect, useState} from 'react';
 import {Breadcrumb} from 'akeneo-design-system';
 import {Translate, useTranslate} from '../../shared/translate';
 import {ApplyButton, PageContent, PageHeader} from '../../common';
