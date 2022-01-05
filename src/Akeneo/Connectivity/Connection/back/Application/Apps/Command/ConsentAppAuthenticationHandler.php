@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
 
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthenticationException;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\CreateUserConsentQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
@@ -41,7 +43,7 @@ final class ConsentAppAuthenticationHandler
     {
         $violations = $this->validator->validate($command);
         if ($violations->count() > 0) {
-            throw new \InvalidArgumentException((string)$violations->get(0)->getMessage());
+            throw new InvalidAppAuthenticationException($violations);
         }
 
         $appId = $command->getClientId();

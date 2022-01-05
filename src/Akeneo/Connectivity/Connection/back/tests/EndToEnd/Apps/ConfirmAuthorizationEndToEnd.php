@@ -32,7 +32,9 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
         parent::setUp();
 
         $this->webMarketplaceApi = $this->get('akeneo_connectivity.connection.marketplace.web_marketplace_api');
-        $this->featureFlagMarketplaceActivate = $this->get('akeneo_connectivity.connection.marketplace_activate.feature');
+        $this->featureFlagMarketplaceActivate = $this->get(
+            'akeneo_connectivity.connection.marketplace_activate.feature'
+        );
         $this->clientProvider = $this->get('akeneo_connectivity.connection.service.apps.client_provider');
         $this->appAuthorizationHandler = $this->get(RequestAppAuthorizationHandler::class);
         $this->loadAppsFixtures();
@@ -112,12 +114,14 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
         $this->authenticateAsAdmin();
         $app = App::fromWebMarketplaceValues($this->webMarketplaceApi->getApp($appId));
         $this->clientProvider->findOrCreateClient($app);
-        $this->appAuthorizationHandler->handle(new RequestAppAuthorizationCommand(
-            $appId,
-            'code',
-            'write_catalog_structure delete_products read_association_types',
-            'http://anyurl.test'
-        ));
+        $this->appAuthorizationHandler->handle(
+            new RequestAppAuthorizationCommand(
+                $appId,
+                'code',
+                'write_catalog_structure delete_products read_association_types',
+                'http://anyurl.test'
+            )
+        );
 
         $this->client->request(
             'POST',
@@ -141,14 +145,44 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
         Assert::assertIsString($responseContent['redirectUrl']);
     }
 
-    public function test_it_throws_a_logic_exception_because_there_is_no_active_app_authorization_into_session(): void
+    public function test_it_returns_json_with_app_id_when_openid_scope(): void
     {
-        // TODO
-    }
+        $appId = '90741597-54c5-48a1-98da-a68e7ee0a715';
 
-    public function test_it_returns_an_error_because_app_validation_failed(): void
-    {
-        // TODO
+        $this->featureFlagMarketplaceActivate->enable();
+        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
+        $this->authenticateAsAdmin();
+        $app = App::fromWebMarketplaceValues($this->webMarketplaceApi->getApp($appId));
+        $this->clientProvider->findOrCreateClient($app);
+        $this->appAuthorizationHandler->handle(
+            new RequestAppAuthorizationCommand(
+                $appId,
+                'code',
+                'write_catalog_structure delete_products read_association_types openid',
+                'http://anyurl.test'
+            )
+        );
+
+        $this->client->request(
+            'POST',
+            sprintf('/rest/apps/confirm-authorization/%s', $appId),
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+
+        $response = $this->client->getResponse();
+        $responseContent = json_decode($response->getContent(), true);
+
+        Assert::assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        Assert::assertArrayHasKey('appId', $responseContent, 'Response missing appId');
+        Assert::assertIsString($responseContent['appId']);
+        Assert::assertArrayHasKey('userGroup', $responseContent, 'Response missing userGroup');
+        Assert::assertIsString($responseContent['userGroup']);
+        Assert::assertArrayHasKey('redirectUrl', $responseContent);
+        Assert::assertIsString($responseContent['redirectUrl']);
     }
 
     private function loadAppsFixtures(): void
