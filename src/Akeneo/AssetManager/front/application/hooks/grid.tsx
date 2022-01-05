@@ -112,14 +112,7 @@ export const useFetchResult = (
     });
   };
 
-  useEffect(executeQuery, [
-    filters,
-    searchValue,
-    context,
-    excludedAssetCollection,
-    isOpen,
-    assetFamilyIdentifier,
-  ]);
+  useEffect(executeQuery, [filters, searchValue, context, excludedAssetCollection, isOpen, assetFamilyIdentifier]);
 
   return () => executeQuery();
 };
