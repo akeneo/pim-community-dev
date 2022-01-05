@@ -78,6 +78,38 @@ describe('Test grid fetching hook', () => {
     expect(handleReceivedSearchResults).toHaveBeenCalledWith(results);
   });
 
+  test('I abort fetch results if another query is launched', async () => {
+    const results = {
+      matchesCount: 50,
+      totalCount: 100,
+      items: [],
+    };
+
+    const search = jest.fn().mockImplementation(() => Promise.resolve(results));
+    const handleReceivedSearchResults = jest.fn();
+
+    const {rerender} = renderHook(() =>
+      useFetchResult(createQuery)(
+        true,
+        {assetFetcher: {search: search}},
+        'ASSET_FAMILY_IDENTIFIER',
+        [],
+        'MY_SEARCH',
+        ['EXCLUDED_ASSET_CODE'],
+        {
+          locale: 'en_US',
+          channel: 'ecommerce',
+        },
+        handleReceivedSearchResults
+      )
+    );
+
+    rerender();
+    await flushPromises();
+    expect(handleReceivedSearchResults).toHaveBeenCalledTimes(1);
+    expect(handleReceivedSearchResults).toHaveBeenCalledWith(results);
+  });
+
   test('It returns an empty result if the asset family identifier is null', async () => {
     const search = jest.fn();
     const handleReceivedSearchResults = jest.fn();
