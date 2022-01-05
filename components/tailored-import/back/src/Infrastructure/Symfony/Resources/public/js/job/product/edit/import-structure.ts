@@ -1,4 +1,4 @@
-const BaseView = require('pimui/js/view/base');
+import BaseView = require('pimui/js/view/base');
 import {Dummy} from '@akeneo-pim-enterprise/tailored-import';
 import {filterErrors, ValidationError} from '@akeneo-pim-community/shared';
 const __ = require('oro/translator');
