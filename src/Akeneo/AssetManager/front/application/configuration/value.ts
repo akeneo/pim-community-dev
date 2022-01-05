@@ -106,15 +106,13 @@ Actual conf: ${JSON.stringify(config)}`
 
   if (undefined === typeConfiguration.filter.filter) {
     const capitalizedAttributeType = attributeType.charAt(0).toUpperCase() + attributeType.slice(1);
-    const moduleExample = `
-export const filter = (value: Normalized${capitalizedAttributeType}Value) => {
-  return <span>{{value.getData()}}</span>;
-};`;
 
     throw new InvalidArgument(
       `The module you are exposing to provide a view for a data of type "${attributeType}" needs to
 export a "filter" property. Here is an example of a valid view es6 module for the "${attributeType}" type:
-${moduleExample}`
+export const filter = (value: Normalized${capitalizedAttributeType}Value) => {
+  return <span>{{value.getData()}}</span>;
+};`
     );
   }
 
@@ -137,6 +135,7 @@ const getFilterViews = (config: ValueConfig, attributes: NormalizedAttribute[]):
 
 export {
   getFieldView,
+  getFilterView,
   getFilterViews,
   FilterView,
   FilterViewProps,

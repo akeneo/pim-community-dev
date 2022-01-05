@@ -1,4 +1,4 @@
-import {getFieldView, getFilterViews, ValueConfig} from 'akeneoassetmanager/application/configuration/value';
+import {getFieldView, getFilterViews, getFilterView, ValueConfig} from 'akeneoassetmanager/application/configuration/value';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {NormalizedTextAttribute, ValidationRuleOption} from 'akeneoassetmanager/domain/model/attribute/type/text';
 import {view as TextEditView} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/text';
@@ -91,5 +91,35 @@ Actual conf: ${JSON.stringify({text: {}})}`);
     ];
 
     expect(getFilterViews(fakeConfig.value, attributes)[0].attribute.code).toEqual('color');
+  });
+
+  test('I get an error if the filter view configuration does not exist', () => {
+    expect(() => {
+      getFilterView(fakeConfig.value, 'text');
+    }).toThrowError(`Cannot get the data filter view generator for type "text". The configuration should look like this:
+config:
+    config:
+        akeneoassetmanager/application/configuration/value:
+            text:
+                filter: '@my_data_filter_view'
+
+Actual conf: ${JSON.stringify({"text": {"view":{}},"option":{"view":{},"filter":{"filter":{"compare":null}}}})}`);
+  });
+
+  test('I get an error if the filter view configuration is invalid', () => {
+    const valueConfig: ValueConfig = {
+      option: {
+        // @ts-expect-error invalid value configuration
+        filter: {},
+      },
+    };
+
+    expect(() => {
+      getFilterView(valueConfig, 'option');
+    }).toThrowError(`The module you are exposing to provide a view for a data of type \"option\" needs to
+export a \"filter\" property. Here is an example of a valid view es6 module for the \"option\" type:
+export const filter = (value: NormalizedOptionValue) => {
+  return <span>{{value.getData()}}</span>;
+};`);
   });
 });
