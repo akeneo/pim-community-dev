@@ -73,7 +73,8 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
     : undefined;
 
   useEffect(() => {
-    if (!attribute) return;
+    if (!attribute || firstColumnType === 'select') return;
+
     const firstColumn = attribute?.table_configuration[0] as ReferenceEntityColumnDefinition;
 
     let codes: RecordCode[] = [];
@@ -95,13 +96,15 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
     if (
       !attribute ||
       !isMounted() ||
-      typeof records === 'undefined' ||
+      (firstColumnType === 'reference_entity' && typeof records === 'undefined') ||
       (firstColumnType === 'select' && typeof optionsFromFirstSelectColumn === 'undefined')
-    )
+    ) {
       return;
+    }
 
     const column = attribute.table_configuration.find(column => column.code === initialDataFilter.column);
-    const optionsOrRecords = firstColumnType === 'select' ? (optionsFromFirstSelectColumn as SelectOption[]) : records;
+    const optionsOrRecords =
+      firstColumnType === 'select' ? (optionsFromFirstSelectColumn as SelectOption[]) : records || [];
     const row =
       optionsOrRecords.find(({code}) => code === initialDataFilter.row) ||
       (initialDataFilter.operator ? null : undefined);
