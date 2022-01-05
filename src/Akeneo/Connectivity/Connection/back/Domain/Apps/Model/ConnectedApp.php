@@ -13,8 +13,8 @@ final class ConnectedApp
     private string $id;
     private string $name;
     private string $connectionCode;
-    private string $logo;
-    private string $author;
+    private ?string $logo;
+    private ?string $author;
     /** @var string[] $scopes */
     private array $scopes;
     private string $userGroupName;
@@ -32,8 +32,8 @@ final class ConnectedApp
         string $name,
         array $scopes,
         string $connectionCode,
-        string $logo,
-        string $author,
+        ?string $logo,
+        ?string $author,
         string $userGroupName,
         array $categories = [],
         bool $certified = false,
@@ -74,12 +74,12 @@ final class ConnectedApp
         return $this->connectionCode;
     }
 
-    public function getLogo(): string
+    public function getLogo(): ?string
     {
         return $this->logo;
     }
 
-    public function getAuthor(): string
+    public function getAuthor(): ?string
     {
         return $this->author;
     }
@@ -113,8 +113,8 @@ final class ConnectedApp
      *  name: string,
      *  scopes: array<string>,
      *  connection_code: string,
-     *  logo: string,
-     *  author: string,
+     *  logo: string|null,
+     *  author: string|null,
      *  user_group_name: string,
      *  categories: array<string>,
      *  certified: bool,
