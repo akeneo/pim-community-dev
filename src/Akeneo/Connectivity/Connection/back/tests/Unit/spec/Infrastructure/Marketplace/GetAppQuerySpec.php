@@ -74,6 +74,48 @@ class GetAppQuerySpec extends ObjectBehavior
         );
     }
 
+    public function it_returns_a_known_marketplace_app_even_when_developer_mode_is_enabled(
+        WebMarketplaceApiInterface $webMarketplaceApi,
+        FeatureFlag $appDeveloperModeFeatureFlag,
+        GetTestAppQuery $getTestAppQuery,
+    ): void {
+        $appDeveloperModeFeatureFlag->isEnabled()->willReturn(true);
+        $getTestAppQuery->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9')->willReturn(null);
+        $webMarketplaceApi->getApp('100eedac-ff5c-497b-899d-e2d64b6c59f9')->willReturn([
+            'id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
+            'name' => 'Akeneo Shopware 6 App by EIKONA Media',
+            'logo' => 'https://marketplace.akeneo.com/sites/default/files/styles/app_logo_large/public/app-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
+            'author' => 'EIKONA Media GmbH',
+            'partner' => 'Akeneo Preferred Partner',
+            'description' => 'With the new "Akeneo-Shopware-6-App" from EIKONA Media, you can smoothly export all your product data from Akeneo to Shopware. The app uses the standard interfaces provided for data exchange. Benefit from up-to-date product data in all your e-commerce channels and be faster on the market.',
+            'url' => 'https://marketplace.akeneo.com/app/akeneo-shopware-6-app-eikona-media',
+            'categories' => [
+                'E-commerce',
+            ],
+            'certified' => false,
+            'activate_url' => 'http://shopware.example.com/activate',
+            'callback_url' => 'http://shopware.example.com/callback',
+        ]);
+
+        $this->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9')->shouldBeLike(
+            App::fromWebMarketplaceValues([
+                'id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
+                'name' => 'Akeneo Shopware 6 App by EIKONA Media',
+                'logo' => 'https://marketplace.akeneo.com/sites/default/files/styles/app_logo_large/public/app-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
+                'author' => 'EIKONA Media GmbH',
+                'partner' => 'Akeneo Preferred Partner',
+                'description' => 'With the new "Akeneo-Shopware-6-App" from EIKONA Media, you can smoothly export all your product data from Akeneo to Shopware. The app uses the standard interfaces provided for data exchange. Benefit from up-to-date product data in all your e-commerce channels and be faster on the market.',
+                'url' => 'https://marketplace.akeneo.com/app/akeneo-shopware-6-app-eikona-media',
+                'categories' => [
+                    'E-commerce',
+                ],
+                'certified' => false,
+                'activate_url' => 'http://shopware.example.com/activate',
+                'callback_url' => 'http://shopware.example.com/callback',
+            ])
+        );
+    }
+
     public function it_returns_null_if_unknown_marketplace_app(
         WebMarketplaceApiInterface $webMarketplaceApi,
     ): void {
