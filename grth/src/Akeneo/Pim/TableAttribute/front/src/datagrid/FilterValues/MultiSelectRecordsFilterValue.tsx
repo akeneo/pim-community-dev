@@ -11,7 +11,7 @@ interface RecordOption extends ReferenceEntityRecord {
   hidden?: boolean;
 }
 
-const MultiSelectReferenceEntityFilterValue: TableFilterValueRenderer = ({value, onChange, columnCode}) => {
+const MultiSelectRecordsFilterValue: TableFilterValueRenderer = ({value, onChange, columnCode}) => {
   const translate = useTranslate();
   const userContext = useUserContext();
   const catalogLocale = userContext.get('catalogLocale');
@@ -91,4 +91,4 @@ const useValueRenderer: FilteredValueRenderer = () => {
 };
 
 export {useValueRenderer};
-export default MultiSelectReferenceEntityFilterValue;
+export default MultiSelectRecordsFilterValue;

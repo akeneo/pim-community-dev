@@ -2,7 +2,7 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen} from '@testing-library/react';
 import {RowSelector} from '../../../src';
-import {items} from '../../../src/fetchers/__mocks__/RecordFetcher';
+import {referenceEntityRecordMocks} from '../../../src/fetchers/__mocks__/RecordFetcher';
 import {TestAttributeContextProvider} from '../../shared/TestAttributeContextProvider';
 import {getComplexTableAttribute} from '../../factories';
 import {mockScroll} from '../../shared/mockScroll';
@@ -14,7 +14,7 @@ describe('ReferenceEntityRowSelector', () => {
   it('should display current row', async () => {
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
-        <RowSelector value={items[0]} onChange={jest.fn()} />
+        <RowSelector value={referenceEntityRecordMocks[0]} onChange={jest.fn()} />
       </TestAttributeContextProvider>
     );
 
@@ -25,7 +25,7 @@ describe('ReferenceEntityRowSelector', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
-        <RowSelector value={items[0]} onChange={handleChange} />
+        <RowSelector value={referenceEntityRecordMocks[0]} onChange={handleChange} />
       </TestAttributeContextProvider>
     );
 
@@ -38,14 +38,14 @@ describe('ReferenceEntityRowSelector', () => {
     expect(screen.getAllByText('Lannion')).toHaveLength(2);
     expect(screen.getByTitle('Vannes')).toBeInTheDocument();
     fireEvent.click(screen.getByTitle('Vannes'));
-    expect(handleChange).toBeCalledWith(items[1]);
+    expect(handleChange).toBeCalledWith(referenceEntityRecordMocks[1]);
   });
 
   it('should remove current row', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
-        <RowSelector value={items[0]} onChange={handleChange} />
+        <RowSelector value={referenceEntityRecordMocks[0]} onChange={handleChange} />
       </TestAttributeContextProvider>
     );
 
@@ -58,7 +58,7 @@ describe('ReferenceEntityRowSelector', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
-        <RowSelector value={items[0]} onChange={handleChange} />
+        <RowSelector value={referenceEntityRecordMocks[0]} onChange={handleChange} />
       </TestAttributeContextProvider>
     );
 

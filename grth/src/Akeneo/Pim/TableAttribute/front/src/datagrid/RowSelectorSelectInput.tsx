@@ -1,27 +1,30 @@
 import {SelectInput} from 'akeneo-design-system';
-import {ANY_OPTION_CODE} from './RowSelector';
 import {getLabel, LabelCollection, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import React from 'react';
-import {RecordCode, ReferenceEntityRecord, SelectOption, SelectOptionCode} from '../models';
+import {RecordCode, SelectOptionCode} from '../models';
 
-type RowSelectorSelectInputProps = {
-  value?: SelectOption | ReferenceEntityRecord | null;
-  onChange: (option?: ReferenceEntityRecord | SelectOption | null) => void;
+const ANY_OPTION_CODE = '[any option]';
+
+type RowSelectorSelectInputOption = {
+  code: string;
+  labels: LabelCollection;
+};
+
+type RowSelectorSelectInputProps<T extends RowSelectorSelectInputOption> = {
+  value?: T | null;
+  onChange: (option?: T | null) => void;
   onNextPage: () => void;
-  options: {
-    labels: LabelCollection;
-    code: string;
-  }[];
+  options: T[];
   setSearchValue: (value: string) => void;
 };
 
-const RowSelectorSelectInput: React.FC<RowSelectorSelectInputProps> = ({
+const RowSelectorSelectInput = <T extends RowSelectorSelectInputOption>({
   value,
   onChange,
   onNextPage,
   options,
   setSearchValue,
-}) => {
+}: React.PropsWithChildren<RowSelectorSelectInputProps<T>>) => {
   const translate = useTranslate();
   const catalogLocale = useUserContext().get('catalogLocale');
 
@@ -32,7 +35,7 @@ const RowSelectorSelectInput: React.FC<RowSelectorSelectInputProps> = ({
       } else if (ANY_OPTION_CODE === code) {
         onChange(null);
       } else {
-        onChange(options?.find(option => option?.code === code));
+        onChange(options.find(option => option.code === code));
       }
     },
     [onChange, options]
@@ -50,6 +53,9 @@ const RowSelectorSelectInput: React.FC<RowSelectorSelectInputProps> = ({
       onNextPage={onNextPage}
       onSearchChange={setSearchValue}
     >
+      <SelectInput.Option title={translate('pim_table_attribute.datagrid.any_row')} value={ANY_OPTION_CODE}>
+        {translate('pim_table_attribute.datagrid.any_row')}
+      </SelectInput.Option>
       {options.map(option => {
         const label = getLabel(option.labels, catalogLocale, option.code);
         return (

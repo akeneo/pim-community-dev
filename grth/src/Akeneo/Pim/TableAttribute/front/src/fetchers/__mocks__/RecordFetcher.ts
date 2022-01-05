@@ -54,7 +54,7 @@ const brest: ReferenceEntityRecord = {
   reference_entity_identifier: 'city',
   values: {},
 };
-export const items = [lannion, vannes, nantes, coueron, brest];
+export const referenceEntityRecordMocks = [lannion, vannes, nantes, coueron, brest];
 
 const search: (
   _router: Router,
@@ -76,9 +76,11 @@ const search: (
     return new Promise(resolve => resolve([]));
   }
   if (codes) {
-    return new Promise(resolve => resolve(items.filter(item => codes.includes(item.code))));
+    return new Promise(resolve => resolve(referenceEntityRecordMocks.filter(item => codes.includes(item.code))));
   }
-  const filteredItems = items.filter(item => item.code.toLowerCase().includes(search.toLowerCase()));
+  const filteredItems = referenceEntityRecordMocks.filter(item =>
+    item.code.toLowerCase().includes(search.toLowerCase())
+  );
   return new Promise(resolve => resolve(filteredItems.slice(page * itemsPerPage, (page + 1) * itemsPerPage)));
 };
 
@@ -87,7 +89,7 @@ const findByCode: (
   _referenceEntityIdentifier: ReferenceEntityIdentifierOrCode,
   recordCode: RecordCode
 ) => Promise<ReferenceEntityRecord | null> = async (_router, _referenceEntityIdentifier, recordCode) => {
-  return new Promise(resolve => resolve(items.find(item => item.code === recordCode) || null));
+  return new Promise(resolve => resolve(referenceEntityRecordMocks.find(item => item.code === recordCode) || null));
 };
 
 const RecordFetcher = {

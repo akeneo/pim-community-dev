@@ -14,10 +14,9 @@ type SelectRowSelectorProps = {
    * - a SelectOption: the user has selected a row
    */
   value?: SelectOption | null;
-  anyRowOption: SelectOption;
 };
 
-const SelectRowSelector: React.FC<SelectRowSelectorProps> = ({onChange, value, anyRowOption}) => {
+const SelectRowSelector: React.FC<SelectRowSelectorProps> = ({onChange, value}) => {
   const catalogLocale = useUserContext().get('catalogLocale');
   const {attribute, setAttribute} = useAttributeContext();
   const {getOptionsFromColumnCode} = useFetchOptions(attribute, setAttribute);
@@ -25,8 +24,7 @@ const SelectRowSelector: React.FC<SelectRowSelectorProps> = ({onChange, value, a
   const [page, setPage] = React.useState<number>(0);
   const [searchValue, setSearchValue] = React.useState<string>('');
 
-  const filteredOptions = [anyRowOption]
-    .concat(options || [])
+  const filteredOptions = (options || [])
     .filter(option => {
       return (
         option.code.toLowerCase().includes(searchValue.toLowerCase()) ||
@@ -40,7 +38,7 @@ const SelectRowSelector: React.FC<SelectRowSelectorProps> = ({onChange, value, a
   }, []);
 
   return (
-    <RowSelectorSelectInput
+    <RowSelectorSelectInput<SelectOption>
       onChange={onChange}
       onNextPage={handleNextPage}
       value={value}

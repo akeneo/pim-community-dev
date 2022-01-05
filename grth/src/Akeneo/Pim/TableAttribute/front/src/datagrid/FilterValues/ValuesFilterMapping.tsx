@@ -10,7 +10,7 @@ import {ColumnCode, FilterValue} from '../../models';
 import {
   default as MultiSelectReferenceEntityFilterValue,
   useValueRenderer as RecordUseValueRenderer,
-} from './MultiSelectReferenceEntityFilterValue';
+} from './MultiSelectRecordsFilterValue';
 
 type DatagridTableFilterValueProps = {
   value?: FilterValue;
