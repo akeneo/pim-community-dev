@@ -16,7 +16,6 @@ import {
   PageHeader,
 } from '@akeneo-pim-community/shared';
 import {EditState as State} from 'akeneoassetmanager/application/reducer/asset/edit';
-import sidebarProvider from 'akeneoassetmanager/application/configuration/sidebar';
 import {AssetBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import {saveAsset} from 'akeneoassetmanager/application/action/asset/edit';
 import {deleteAsset} from 'akeneoassetmanager/application/action/asset/delete';
@@ -36,6 +35,7 @@ import {saveAndExecuteNamingConvention} from 'akeneoassetmanager/application/act
 import {ReloadPreviewProvider} from 'akeneoassetmanager/application/hooks/useReloadPreview';
 import {UserNavigation} from 'akeneoassetmanager/application/component/app/user-navigation';
 import {ContextSwitchers, ScrollablePageContent} from 'akeneoassetmanager/application/component/app/layout';
+import {useTabView} from '../../hooks/useTabView';
 
 interface StateProps {
   form: {
@@ -139,7 +139,7 @@ const AssetEditView = ({form, asset, context, structure, events, hasEditRightOnA
   };
 
   const label = getLabel(asset.labels, context.locale, asset.code);
-  const TabView = sidebarProvider.getView('akeneo_asset_manager_asset_edit', 'enrich');
+  const TabView = useTabView('akeneo_asset_manager_asset_edit', 'enrich');
   const completeness = getEditionAssetCompleteness(asset, context.channel, context.locale);
 
   const canEditAsset = isGranted('akeneo_assetmanager_asset_edit') && hasEditRightOnAssetFamily;

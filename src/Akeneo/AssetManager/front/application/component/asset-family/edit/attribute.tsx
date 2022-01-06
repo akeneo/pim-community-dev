@@ -27,13 +27,13 @@ import AttributeEditForm from 'akeneoassetmanager/application/component/attribut
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {getAttributeIcon} from 'akeneoassetmanager/application/configuration/attribute';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import {EditOptionState} from 'akeneoassetmanager/application/reducer/attribute/type/option';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
 import {catalogLocaleChanged} from 'akeneoassetmanager/domain/event/user';
 import {ContextSwitchers} from 'akeneoassetmanager/application/component/app/layout';
 import {UserNavigation} from 'akeneoassetmanager/application/component/app/user-navigation';
+import {useAttributeIcon} from '../../../hooks/attribute/useAttributeIcon';
 
 interface StateProps {
   context: {
@@ -159,7 +159,7 @@ const AttributeView = memo(({normalizedAttribute, onAttributeEdit, locale, right
 
   const canEditAttribute = isGranted('akeneo_assetmanager_attribute_edit') && rights.assetFamily.edit;
   const attribute = denormalizeAttribute(normalizedAttribute);
-  const icon = getAttributeIcon(attribute.getType());
+  const icon = useAttributeIcon(attribute.getType());
 
   return (
     <div
