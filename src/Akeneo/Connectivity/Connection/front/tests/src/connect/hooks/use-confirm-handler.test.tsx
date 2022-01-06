@@ -31,11 +31,13 @@ beforeEach(() => {
 });
 
 test('it notifies when there is an error during the API request', async () => {
-    const confirmAuthorization = jest.fn(() => Promise.reject({
-        status: 500,
-        statusText: 'Server Internal error',
-        errors: [],
-    }));
+    const confirmAuthorization = jest.fn(() =>
+        Promise.reject({
+            status: 500,
+            statusText: 'Server Internal error',
+            errors: [],
+        })
+    );
 
     (useNotify as jest.Mock).mockImplementation(() => notify);
     (useConfirmAuthorization as jest.Mock).mockImplementation(() => confirmAuthorization);
@@ -61,11 +63,13 @@ test('it notifies when there is an error during the API request', async () => {
 });
 
 test('it notifies when there is a specific error during the API request', async () => {
-    const confirmAuthorization = jest.fn(() => Promise.reject({
-        status: 400,
-        statusText: 'Bad request',
-        errors: [{message: 'Specific Error Message', property_path: ''}],
-    }));
+    const confirmAuthorization = jest.fn(() =>
+        Promise.reject({
+            status: 400,
+            statusText: 'Bad request',
+            errors: [{message: 'Specific Error Message', property_path: ''}],
+        })
+    );
 
     (useNotify as jest.Mock).mockImplementation(() => notify);
     (useConfirmAuthorization as jest.Mock).mockImplementation(() => confirmAuthorization);
