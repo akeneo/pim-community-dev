@@ -23,10 +23,17 @@ final class SqlGetOptionsCountAndTranslationsByAttribute implements GetOptionsCo
     }
 
     //todo create really precise PHPDoc for return type
-    public function fromAttributesCode(array $codes): string
+    public function fromAttributesCode(string $search, int $size = null, int $page = null): string
     {
-        if (empty($codes)) {
-            return '';
+        $queryLimit = '';
+        $queryOffset = '';
+        $offset = 0;
+        if (!is_null($size)) {
+            $queryLimit = 'LIMIT :limit';
+            if (!is_null($page) && $page > 1) {
+                $queryOffset = 'OFFSET :offset';
+                $offset = \abs($page - 1) * $size;
+            }
         }
 
         $query = <<<SQL
@@ -48,12 +55,21 @@ FROM pim_catalog_attribute as attribute
      LEFT JOIN attribute_labels ON attribute.id = attribute_labels.foreign_key
      LEFT JOIN options_count ON attribute.id = options_count.attribute_id
 WHERE attribute_type IN ('pim_catalog_simpleselect', 'pim_catalog_multiselect')
-GROUP BY attribute.code, attribute_labels.labels, options_count.total;
+GROUP BY attribute.code, attribute_labels.labels, options_count.total
+$queryLimit $queryOffset
+;
 SQL;
 
         $rawResults = $this->connection->executeQuery(
             $query,
-            [],
+            [
+                'limit' => $size,
+                'offset' => $offset,
+            ],
+            [
+                'limit' => \PDO::PARAM_INT,
+                'offset' => \PDO::PARAM_INT,
+            ],
         )->fetchAllAssociative();
 
         $indexedResults = [];

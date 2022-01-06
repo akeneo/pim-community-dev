@@ -12,5 +12,5 @@ namespace Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption;
 interface GetOptionsCountAndTranslationsByAttribute
 {
 
-    public function fromAttributesCode(array $optionKeys): string;
+    public function fromAttributesCode(string $search, int $size, int $page): string;
 }

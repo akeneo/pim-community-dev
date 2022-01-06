@@ -43,10 +43,7 @@ class SqlGetOptionsCountAndTranslationsByAttributeCodeIntegration extends TestCa
         /** @var GetOptionsCountAndTranslationsByAttribute $getOptionsCountAndTranslationsByAttributeCode */
         $getOptionsCountAndTranslationsByAttributeCode =
             $this->get('akeneo.pim.structure.query.get_options_count_and_translations_by_attribute');
-        $result = $getOptionsCountAndTranslationsByAttributeCode->fromAttributesCode(['size']);
-
-
-        var_dump($result);
+        $result = $getOptionsCountAndTranslationsByAttributeCode->fromAttributesCode('size');
 
         //todo change " to '
         // @todo should return only size
@@ -69,6 +66,43 @@ class SqlGetOptionsCountAndTranslationsByAttributeCodeIntegration extends TestCa
         );
     }
 
+    public function test_it_returns_options_count_and_translations_by_attribute_code_with_limit_and_offset()
+    {
+        /** @var GetOptionsCountAndTranslationsByAttribute $getOptionsCountAndTranslationsByAttributeCode */
+        $getOptionsCountAndTranslationsByAttributeCode =
+            $this->get('akeneo.pim.structure.query.get_options_count_and_translations_by_attribute');
+        $result = $getOptionsCountAndTranslationsByAttributeCode->fromAttributesCode('size', 1, 1);
+
+        //todo change " to '
+        // @todo should return only size
+        $this->assertEquals(
+            [
+                "color" => [
+                    "options_count" => 5,
+                    "labels" => [
+                        'fr_FR' => 'Couleur', 'en_US' => 'Color'
+                    ]
+                ],
+            ],
+            json_decode($result, true),
+        );
+
+        $result = $getOptionsCountAndTranslationsByAttributeCode->fromAttributesCode('size', 1, 2);
+
+        //todo change " to '
+        // @todo should return only size
+        $this->assertEquals(
+            [
+                "size" => [
+                    "options_count" => 3,
+                    "labels" => [
+                        'fr_FR' => 'Taille', 'en_US' => 'Size'
+                    ]
+                ],
+            ],
+            json_decode($result, true),
+        );
+    }
     protected function getConfiguration()
     {
         return $this->catalog->useMinimalCatalog();
