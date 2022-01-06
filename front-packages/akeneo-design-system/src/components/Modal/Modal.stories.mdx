@@ -74,14 +74,12 @@ It can be used with or without an Illustration and adapts its content accordingl
       const close = () => setOpen(false);
       return (
         <>
-          {isOpen && (
-            <Modal {...args} onClose={close} illustration={<Illustrations.ChannelsIllustration />}>
-              Such nice Illustration
-              <Modal.BottomButtons>
-                <Button onClick={close}>Close</Button>
-              </Modal.BottomButtons>
-            </Modal>
-          )}
+          <Modal {...args} isOpen={isOpen} onClose={close} illustration={<Illustrations.ChannelsIllustration />}>
+            Such nice Illustration
+            <Modal.BottomButtons>
+              <Button onClick={close}>Close</Button>
+            </Modal.BottomButtons>
+          </Modal>
           <Button onClick={open}>Open Modal with Illustration</Button>
         </>
       );
