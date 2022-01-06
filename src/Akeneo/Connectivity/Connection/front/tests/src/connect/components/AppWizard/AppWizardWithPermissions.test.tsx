@@ -170,7 +170,7 @@ test('The wizard renders steps and is able to navigate between steps', async () 
     assertAuthorizationsScreen();
 });
 
-test('The wizard notifies of the error on app confirm ', async () => {
+test('The wizard notifies an unspecified error occurred on app confirm ', async () => {
     const clientId = '8d8a7dc1-0827-4cc9-9ae5-577c6419230b';
     const fetchAppWizardDataResponses: MockFetchResponses = {
         [`akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=${clientId}`]: {
@@ -182,7 +182,7 @@ test('The wizard notifies of the error on app confirm ', async () => {
             },
         },
         [`akeneo_connectivity_connection_apps_rest_confirm_authorization?clientId=${clientId}`]: {
-            status: 400,
+            status: 500,
             json: '',
         },
     };

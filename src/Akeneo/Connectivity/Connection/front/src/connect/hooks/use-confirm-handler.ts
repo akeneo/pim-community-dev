@@ -1,7 +1,7 @@
 import {useCallback, useState} from 'react';
 import {NotificationLevel, useNotify} from '../../shared/notify';
 import {useTranslate} from '../../shared/translate';
-import {useConfirmAuthorization} from './use-confirm-authorization';
+import {RejectReason, useConfirmAuthorization} from './use-confirm-authorization';
 import {PermissionFormProvider} from '../../shared/permission-form-registry';
 import {PermissionsByProviderKey} from '../../model/Apps/permissions-by-provider-key';
 
@@ -47,6 +47,12 @@ export const useConfirmHandler = (
         try {
             ({userGroup, redirectUrl} = await confirmAuthorization());
         } catch (e) {
+            const {status, errors} = e as RejectReason;
+            if (400 <= status && status < 500) {
+                errors.map(error => notify(NotificationLevel.ERROR, translate(error.message)));
+                setProcessing(false);
+                return;
+            }
             notify(
                 NotificationLevel.ERROR,
                 translate('akeneo_connectivity.connection.connect.apps.wizard.flash.error')
