@@ -189,6 +189,48 @@ SQL;
         Assert::assertEquals('delete_products read_association_types read_attribute_options read_catalog_structure read_categories read_channel_localization read_channel_settings write_products', $payload['scope']);
     }
 
+    /**
+     * @Then it can exchange the authorization code for an id token
+     */
+    public function itCanExchangeTheAuthorizationCodeForAnIdToken()
+    {
+        if ($this->connectedApp === null) {
+            throw new \LogicException('There is no connected app in the Context');
+        }
+
+        $code = $this->getCreatedAuthorizationCode();
+
+        $client = new KernelBrowser($this->getKernel());
+        $client->request(
+            'POST',
+            '/connect/apps/v1/oauth2/token',
+            [
+                'client_id' => $this->connectedApp['id'],
+                'code' => $code,
+                'code_identifier' => 'foo',
+                'code_challenge' => 'bar',
+                'grant_type' => 'authorization_code',
+            ],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/x-www-form-urlencoded',
+            ],
+        );
+
+        $response = $client->getResponse();
+        $payload = json_decode($response->getContent(), true);
+
+        Assert::assertEquals([
+            'access_token',
+            'token_type',
+            'scope',
+            'id_token'
+        ], array_keys($payload));
+
+        Assert::assertEquals('bearer', $payload['token_type']);
+        Assert::assertEquals('delete_products email openid profile read_association_types read_attribute_options read_catalog_structure read_categories read_channel_localization read_channel_settings write_products', $payload['scope']);
+    }
+
     private function getCreatedAuthorizationCode(): ?string
     {
         if ($this->connectedApp === null) {

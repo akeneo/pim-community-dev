@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Install;
 
+use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateAppTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionAuditErrorTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionAuditTableQuery;
@@ -27,10 +29,11 @@ class InstallSubscriber implements EventSubscriberInterface
     private DbalConnection $dbalConnection;
     private FixturesLoader $fixturesLoader;
 
-    public function __construct(DbalConnection $dbalConnection, FixturesLoader $fixturesLoader)
+    public function __construct(DbalConnection $dbalConnection, FixturesLoader $fixturesLoader, GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler)
     {
         $this->dbalConnection = $dbalConnection;
         $this->fixturesLoader = $fixturesLoader;
+        $this->generateAsymmetricKeysHandler = $generateAsymmetricKeysHandler;
     }
 
     public static function getSubscribedEvents()
@@ -54,10 +57,17 @@ class InstallSubscriber implements EventSubscriberInterface
 
     public function loadFixtures(InstallerEvent $installerEvent): void
     {
+        $this->addOpenIdKeys();
+
         if (substr($installerEvent->getArgument('catalog'), -strlen(self::ICECAT_DEMO_DEV)) !== self::ICECAT_DEMO_DEV) {
             return;
         }
 
         $this->fixturesLoader->loadFixtures();
+    }
+
+    private function addOpenIdKeys(): void
+    {
+        $this->generateAsymmetricKeysHandler->handle(new GenerateAsymmetricKeysCommand());
     }
 }
