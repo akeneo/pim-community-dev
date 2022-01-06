@@ -22,7 +22,19 @@ class GetAllTestAppsActionEndToEnd extends WebTestCase
 
     public function test_it_gets_all_test_app(): void
     {
-        $this->authenticateAsAdmin();
+        $this->get('akeneo_connectivity.connection.app_developer_mode.feature')->enable();
+
+        $adminUser = $this->authenticateAsAdmin();
+        $connection = $this->get('database_connection');
+        $connection->insert('akeneo_connectivity_test_app', [
+            'client_id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
+            'client_secret' => 'foobar',
+            'name' => 'My test app',
+            'activate_url' => 'http://shopware.example.com/activate',
+            'callback_url' => 'http://shopware.example.com/callback',
+            'user_id' => $adminUser->getId(),
+        ]);
+
         $this->client->request(
             'GET',
             '/rest/marketplace/test-apps',
@@ -35,5 +47,8 @@ class GetAllTestAppsActionEndToEnd extends WebTestCase
         $result = json_decode($this->client->getResponse()->getContent(), true);
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        Assert::assertEquals([
+
+        ], $result);
     }
 }
