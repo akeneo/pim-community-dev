@@ -2,11 +2,8 @@ import React from 'react';
 import {screen} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import {renderWithProviders} from '../../../../test-utils';
-import {TestAppCard} from '@src/connect/components/TestApp/TestAppCard';
 import {TestAppList} from '@src/connect/components/TestApp/TestAppList';
 import {useFeatureFlags} from '@src/shared/feature-flags';
-
-const emptyTestApps = {total: 0, apps: []};
 
 jest.mock('@src/shared/feature-flags/use-feature-flags', () => ({
     ...jest.requireActual('@src/shared/feature-flags/use-feature-flags'),
@@ -54,7 +51,9 @@ test('it displays test app', () => {
     ).toBeInTheDocument();
     expect(screen.queryByText('testApp2')).toBeInTheDocument();
     expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.card.developed_by pim_user.removed_user')
+        screen.queryByText(
+            'akeneo_connectivity.connection.connect.marketplace.card.developed_by akeneo_connectivity.connection.connect.marketplace.test_apps.removed_user'
+        )
     ).toBeInTheDocument();
 });
 
@@ -85,18 +84,6 @@ test('it displays nothing when total is 0', () => {
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.title')
     ).not.toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.apps.total', {exact: false})
-    ).not.toBeInTheDocument();
-
-    expect(screen.queryByText('testApp1')).not.toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.card.developed_by AuthorName')
-    ).not.toBeInTheDocument();
-    expect(screen.queryByText('testApp2')).not.toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.card.developed_by pim_user.removed_user')
-    ).not.toBeInTheDocument();
 });
 
 test('it displays nothing when feature flag is disabled', () => {
@@ -126,17 +113,5 @@ test('it displays nothing when feature flag is disabled', () => {
 
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.title')
-    ).not.toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.apps.total', {exact: false})
-    ).not.toBeInTheDocument();
-
-    expect(screen.queryByText('testApp1')).not.toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.card.developed_by AuthorName')
-    ).not.toBeInTheDocument();
-    expect(screen.queryByText('testApp2')).not.toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.card.developed_by pim_user.removed_user')
     ).not.toBeInTheDocument();
 });

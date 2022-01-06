@@ -50,8 +50,6 @@ pim_user.profile:
     translator: I translate product, asset, and/or reference entity data.
     third_party_developer: I develop solutions connected with Akeneo PIM.
 
-pim_user.removed_user: Removed user
-
 pim_user_management:
     entity:
         user:

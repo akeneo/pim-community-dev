@@ -146,13 +146,13 @@ class App
      */
     public function withPimUrlSource(array $queryParameters): App
     {
-        $appWithPimUrlSource = clone $this;
-        $appWithPimUrlSource->activateUrl = static::appendQueryParametersToUrl(
-            $appWithPimUrlSource->activateUrl,
+        $app = clone $this;
+        $app->activateUrl = static::appendQueryParametersToUrl(
+            $app->activateUrl,
             $queryParameters
         );
 
-        return  $appWithPimUrlSource;
+        return  $app;
     }
 
     /**

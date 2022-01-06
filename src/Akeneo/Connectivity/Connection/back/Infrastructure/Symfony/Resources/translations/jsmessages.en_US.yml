@@ -68,6 +68,7 @@ akeneo_connectivity.connection:
                 empty: No apps compatible with your version
             test_apps:
                 title: My test apps
+                removed_user: Removed user
             unreachable: We can't reach the marketplace, please come back later.
             scroll_to_top: Scroll to the top
         connected_apps:

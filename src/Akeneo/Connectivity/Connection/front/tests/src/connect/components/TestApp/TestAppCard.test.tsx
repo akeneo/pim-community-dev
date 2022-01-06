@@ -34,6 +34,8 @@ test('it displays test app with removed author', () => {
 
     expect(screen.queryByText('Name of the test app')).toBeInTheDocument();
     expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.card.developed_by pim_user.removed_user')
+        screen.queryByText(
+            'akeneo_connectivity.connection.connect.marketplace.card.developed_by akeneo_connectivity.connection.connect.marketplace.test_apps.removed_user'
+        )
     ).toBeInTheDocument();
 });

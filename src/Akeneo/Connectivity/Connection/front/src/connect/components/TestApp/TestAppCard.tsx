@@ -73,7 +73,8 @@ type Props = {
 
 export const TestAppCard: FC<Props> = ({testApp, additionalActions}) => {
     const translate = useTranslate();
-    const author = testApp.author ?? translate('pim_user.removed_user');
+    const author =
+        testApp.author ?? translate('akeneo_connectivity.connection.connect.marketplace.test_apps.removed_user');
 
     const onDelete = () => {
         //TODO delete behaviour
