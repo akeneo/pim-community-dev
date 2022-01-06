@@ -48,7 +48,23 @@ class GetAllTestAppsActionEndToEnd extends WebTestCase
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         Assert::assertEquals([
-
+            'total' => 1,
+            'apps' => [
+                [
+                    'id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
+                    'name' => 'My test app',
+                    'logo' => null,
+                    'author' => 'John Doe',
+                    'partner' => null,
+                    'description' => null,
+                    'url' => null,
+                    'categories' => [],
+                    'certified' => false,
+                    'activate_url' => 'http://shopware.example.com/activate?pim_url=http%3A%2F%2Flocalhost%3A8080',
+                    'callback_url' => 'http://shopware.example.com/callback',
+                    'connected' => false,
+                ]
+            ]
         ], $result);
     }
 }

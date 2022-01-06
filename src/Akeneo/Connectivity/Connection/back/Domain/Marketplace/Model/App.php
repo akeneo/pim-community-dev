@@ -144,13 +144,15 @@ class App
     /**
      * @param array<string> $queryParameters
      */
-    public function withPimUrlSource(array $queryParameters): self
+    public function withPimUrlSource(array $queryParameters): App
     {
-        $values = $this->normalize();
-        $values['activate_url'] = static::appendQueryParametersToUrl($values['activate_url'], $queryParameters);
+        $appWithPimUrlSource = clone $this;
+        $appWithPimUrlSource->activateUrl = static::appendQueryParametersToUrl(
+            $appWithPimUrlSource->activateUrl,
+            $queryParameters
+        );
 
-        /* @phpstan-ignore-next-line */
-        return self::fromWebMarketplaceValues($values);
+        return  $appWithPimUrlSource;
     }
 
     /**

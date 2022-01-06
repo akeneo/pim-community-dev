@@ -122,4 +122,34 @@ class AppSpec extends ObjectBehavior
             'connected' => false,
         ]);
     }
+
+    public function it_adds_pim_url_source_for_an_instance_with_test_values(): void
+    {
+        $this->beConstructedThrough('fromTestAppValues', [
+            [
+                'id' => 'ce8cf07f-321e-4dd2-a52f-30ac00881ba7',
+                'name' => 'Shopify App',
+                'author' => 'Akeneo',
+                'activate_url' => 'https:\/\/fake.shopify.akeneo.com\/activate',
+                'callback_url' => 'https:\/\/fake.shopify.akeneo.com\/oauth2\/callback',
+            ],
+        ]);
+
+        $this->withPimUrlSource([
+            'pim_url' => 'http://my-akeneo.test',
+        ])->normalize()->shouldBe([
+            'id' => 'ce8cf07f-321e-4dd2-a52f-30ac00881ba7',
+            'name' => 'Shopify App',
+            'logo' => null,
+            'author' => 'Akeneo',
+            'partner' => null,
+            'description' => null,
+            'url' => null,
+            'categories' => [],
+            'certified' => false,
+            'activate_url' => 'https:\/\/fake.shopify.akeneo.com\/activate?pim_url=http%3A%2F%2Fmy-akeneo.test',
+            'callback_url' => 'https:\/\/fake.shopify.akeneo.com\/oauth2\/callback',
+            'connected' => false,
+        ]);
+    }
 }
