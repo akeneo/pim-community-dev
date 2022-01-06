@@ -24,16 +24,10 @@ use Doctrine\DBAL\Connection;
  */
 class SqlFindConnectorAssetFamilyItems implements FindConnectorAssetFamilyItemsInterface
 {
-    private Connection $connection;
-
-    private ConnectorAssetFamilyHydrator $assetFamilyHydrator;
-
     public function __construct(
-        Connection $connection,
-        ConnectorAssetFamilyHydrator $hydrator
+        private Connection $connection,
+        private ConnectorAssetFamilyHydrator $assetFamilyHydrator
     ) {
-        $this->connection = $connection;
-        $this->assetFamilyHydrator = $hydrator;
     }
 
     public function find(AssetFamilyQuery $query): array

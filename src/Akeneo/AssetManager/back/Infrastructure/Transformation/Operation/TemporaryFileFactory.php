@@ -20,10 +20,6 @@ class TemporaryFileFactory
     /**
      * Creates a file into the tmp directory from a file content
      *
-     * @param string $content
-     * @param string|null $prefix
-
-     * @return File
      */
     public function createFromContent(string $content, ?string $prefix = null): File
     {

@@ -28,14 +28,11 @@ class ValueHydrator implements ValueHydratorInterface
 {
     private AbstractPlatform $platform;
 
-    private DataHydratorRegistry $dataHydratorRegistry;
-
     public function __construct(
         Connection $sqlConnection,
-        DataHydratorRegistry $dataHydratorRegistry
+        private DataHydratorRegistry $dataHydratorRegistry
     ) {
         $this->platform = $sqlConnection->getDatabasePlatform();
-        $this->dataHydratorRegistry = $dataHydratorRegistry;
     }
 
     public function hydrate(array $row, AbstractAttribute $attribute): Value

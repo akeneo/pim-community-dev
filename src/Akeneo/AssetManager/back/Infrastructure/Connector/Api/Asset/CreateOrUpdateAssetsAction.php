@@ -48,72 +48,24 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateOrUpdateAssetsAction
 {
-    private AssetFamilyExistsInterface $assetFamilyExists;
-
-    private AssetExistsInterface $assetExists;
-
-    private \Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\Connector\EditAssetCommandFactory $editAssetCommandFactory;
-
-    private EditAssetHandler $editAssetHandler;
-
-    private CreateAssetHandler $createAssetHandler;
-
-    private Router $router;
-
-    private ValidatorInterface $assetDataValidator;
-
-    private ViolationNormalizer $violationNormalizer;
-
-    private AssetValidator $assetStructureValidator;
-
-    private AssetListValidator $assetListValidator;
-
-    private BatchAssetsToLink $batchAssetsToLink;
-
-    private NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory;
-
-    private \Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface $indexAssetEventAggregator;
-
-    private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator;
-
-    private int $maximumAssetsPerRequest;
-
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        AssetFamilyExistsInterface $assetFamilyExists,
-        AssetExistsInterface $assetExists,
-        EditAssetCommandFactory $editAssetCommandFactory,
-        EditAssetHandler $editAssetHandler,
-        CreateAssetHandler $createAssetHandler,
-        Router $router,
-        ValidatorInterface $assetDataValidator,
-        ViolationNormalizer $violationNormalizer,
-        AssetValidator $assetStructureValidator,
-        AssetListValidator $assetListValidator,
-        BatchAssetsToLink $batchAssetsToLink,
-        NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory,
-        EventAggregatorInterface $indexAssetEventAggregator,
-        int $maximumAssetsPerRequest,
-        ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator,
-        SecurityFacade $securityFacade
+        private AssetFamilyExistsInterface $assetFamilyExists,
+        private AssetExistsInterface $assetExists,
+        private EditAssetCommandFactory $editAssetCommandFactory,
+        private EditAssetHandler $editAssetHandler,
+        private CreateAssetHandler $createAssetHandler,
+        private Router $router,
+        private ValidatorInterface $assetDataValidator,
+        private ViolationNormalizer $violationNormalizer,
+        private AssetValidator $assetStructureValidator,
+        private AssetListValidator $assetListValidator,
+        private BatchAssetsToLink $batchAssetsToLink,
+        private NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory,
+        private EventAggregatorInterface $indexAssetEventAggregator,
+        private int $maximumAssetsPerRequest,
+        private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator,
+        private SecurityFacade $securityFacade
     ) {
-        $this->assetFamilyExists = $assetFamilyExists;
-        $this->assetExists = $assetExists;
-        $this->editAssetCommandFactory = $editAssetCommandFactory;
-        $this->editAssetHandler = $editAssetHandler;
-        $this->createAssetHandler = $createAssetHandler;
-        $this->router = $router;
-        $this->assetDataValidator = $assetDataValidator;
-        $this->violationNormalizer = $violationNormalizer;
-        $this->assetStructureValidator = $assetStructureValidator;
-        $this->assetListValidator = $assetListValidator;
-        $this->batchAssetsToLink = $batchAssetsToLink;
-        $this->namingConventionEditAssetCommandFactory = $namingConventionEditAssetCommandFactory;
-        $this->maximumAssetsPerRequest = $maximumAssetsPerRequest;
-        $this->indexAssetEventAggregator = $indexAssetEventAggregator;
-        $this->computeTransformationEventAggregator = $computeTransformationEventAggregator;
-        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): Response

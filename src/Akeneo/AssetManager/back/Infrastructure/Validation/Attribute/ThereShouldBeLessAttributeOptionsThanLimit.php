@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraint;
 
 class ThereShouldBeLessAttributeOptionsThanLimit extends Constraint
 {
-    const MESSAGE_TOO_MANY_OPTIONS = 'pim_asset_manager.attribute.validation.options.too_many';
+    public const MESSAGE_TOO_MANY_OPTIONS = 'pim_asset_manager.attribute.validation.options.too_many';
 
     public function getTargets()
     {

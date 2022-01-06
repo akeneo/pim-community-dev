@@ -25,9 +25,6 @@ const config = {
 const real = jest.requireActual('akeneoassetmanager/application/configuration/attribute');
 const mock = jest.genMockFromModule('akeneoassetmanager/application/configuration/attribute');
 
-mock.getAttributeTypes = real.getTypes(config);
-mock.getAttributeIcon = real.getIcon(config);
-mock.getAttributeView = real.getView(config);
 mock.getAttributeDenormalizer = real.getDenormalizer(config);
 mock.getAttributeReducer = real.getReducer(config);
 

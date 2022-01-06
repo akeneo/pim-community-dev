@@ -14,13 +14,35 @@ COLOR_BLUE=$(echo -en '\e[34m')
 COLOR_PURPLE=$(echo -en '\e[35m')
 COLOR_RESTORE=$(echo -en '\e[0m')
 
-function downloadArtifacts() {
-    # Get the oldest release to use as a starting point
-    # SRNT
-    CURRENT_TIME=$(date +%s)
-    LAST_HOUR_TIME=$(( CURRENT_TIME - 60*60 ))
-    OLDEST_RELEASE=$(curl --location -s -g -H "Content-Type: application/json" -H "DD-API-KEY: ${DATADOG_API_KEY}" -H "DD-APPLICATION-KEY: ${DATADOG_APP_KEY}" --request GET "https://api.datadoghq.eu/api/v1/query?from=${LAST_HOUR_TIME}&to=${CURRENT_TIME}&query=sum:kubernetes.containers.running{project:akecld-saas-prod,*,*,short_image:pim-enterprise-dev,app:pim,component:pim-web,*,type:${TYPE}}%20by%20{image_tag}" | jq -r .series[].tag_set[0] | sort | head -n1 | cut -c11-)
+CURRENT_TIME=$(date +%s)
+LAST_HOUR_TIME=$(( CURRENT_TIME - 60*60 ))
+SOURCE_RELEASE_TYPE="top"
+SOURCE_RELEASE=""
 
+function getTopReleaseVersion() {
+    echo $(curl --location -s -g -H "Content-Type: application/json" -H "DD-API-KEY: ${DATADOG_API_KEY}" -H "DD-APPLICATION-KEY: ${DATADOG_APP_KEY}" --request GET "https://api.datadoghq.eu/api/v1/query?from=${LAST_HOUR_TIME}&to=${CURRENT_TIME}&query=top(sum:kubernetes.containers.running{project:akecld-saas-prod,*,*,short_image:pim-enterprise-dev,app:pim,component:pim-web,*,type:${TYPE}}%20by%20{image_tag},%201,%20%27max%27,%20%27desc%27)" | jq -r .series[0].tag_set[0] | cut -c11-)
+}
+
+function getOldestReleaseVersion() {
+    echo $(curl --location -s -g -H "Content-Type: application/json" -H "DD-API-KEY: ${DATADOG_API_KEY}" -H "DD-APPLICATION-KEY: ${DATADOG_APP_KEY}" --request GET "https://api.datadoghq.eu/api/v1/query?from=${LAST_HOUR_TIME}&to=${CURRENT_TIME}&query=sum:kubernetes.containers.running{project:akecld-saas-prod,*,*,short_image:pim-enterprise-dev,app:pim,component:pim-web,*,type:${TYPE}}%20by%20{image_tag}" | jq -r .series[].tag_set[0] | sort | head -n1 | cut -c11-)
+}
+
+function getSourceRelease() {
+  case $SOURCE_RELEASE_TYPE in
+    "top")
+      SOURCE_RELEASE=$(getTopReleaseVersion)
+      ;;
+    "oldest")
+      SOURCE_RELEASE=$(getOldestReleaseVersion)
+      ;;
+	  *)
+      echo "Unknown source release type"
+      exit 1
+      ;;
+  esac
+}
+
+function downloadArtifacts() {
     if [[ ${TYPE} = "srnt" ]]; then
         echo "Get srnt target release"
         # Get the target release
@@ -31,22 +53,22 @@ function downloadArtifacts() {
         RELEASE_BUCKET="growth-edition"
     fi
 
-    echo "oldest_release=${OLDEST_RELEASE}" > ${VERSIONS_FILE}
+    echo "source_release=${SOURCE_RELEASE}" > ${VERSIONS_FILE}
     echo "target_release=${TARGET_RELEASE}" >> ${VERSIONS_FILE}
 
-    # Download the oldest release Docker image and Terraform modules
+    # Download the source release Docker image and Terraform modules
     rm -rf ~/zdd_compliancy_checker/
-    mkdir -p ~/zdd_compliancy_checker/${OLDEST_RELEASE}/upgrades
-    mkdir -p ~/zdd_compliancy_checker/${OLDEST_RELEASE}/deployments
-    mkdir -p ~/zdd_compliancy_checker/${OLDEST_RELEASE}/dbschema
-    docker cp $(docker create --rm eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${OLDEST_RELEASE}):/srv/pim/upgrades ~/zdd_compliancy_checker/${OLDEST_RELEASE}/upgrades
+    mkdir -p ~/zdd_compliancy_checker/${SOURCE_RELEASE}/upgrades
+    mkdir -p ~/zdd_compliancy_checker/${SOURCE_RELEASE}/deployments
+    mkdir -p ~/zdd_compliancy_checker/${SOURCE_RELEASE}/dbschema
+    docker cp $(docker create --rm eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${SOURCE_RELEASE}):/srv/pim/upgrades ~/zdd_compliancy_checker/${SOURCE_RELEASE}/upgrades
     if [[ ${TYPE} = "srnt" ]]; then
-        docker cp $(docker create --rm eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${OLDEST_RELEASE}):/srv/pim/src/Akeneo/Tool/Bundle/DatabaseMetadataBundle/Resources/reference.pimdbschema.txt ~/zdd_compliancy_checker/${OLDEST_RELEASE}/dbschema/reference.pimdbschema.txt
+        docker cp $(docker create --rm eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${SOURCE_RELEASE}):/srv/pim/src/Akeneo/Tool/Bundle/DatabaseMetadataBundle/Resources/reference.pimdbschema.txt ~/zdd_compliancy_checker/${SOURCE_RELEASE}/dbschema/reference.pimdbschema.txt
     fi
-    BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${RELEASE_BUCKET}/${OLDEST_RELEASE}/deployments/ ~/zdd_compliancy_checker/${OLDEST_RELEASE}/deployments
-    rm -rf ~/zdd_compliancy_checker/${OLDEST_RELEASE}/deployments/deployments/bin
-    rm -rf ~/zdd_compliancy_checker/${OLDEST_RELEASE}/deployments/deployments/terraform/pim/templates/tests
-    rm -rf ~/zdd_compliancy_checker/${OLDEST_RELEASE}/deployments/deployments/Makefile
+    BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/${RELEASE_BUCKET}/${SOURCE_RELEASE}/deployments/ ~/zdd_compliancy_checker/${SOURCE_RELEASE}/deployments
+    rm -rf ~/zdd_compliancy_checker/${SOURCE_RELEASE}/deployments/deployments/bin
+    rm -rf ~/zdd_compliancy_checker/${SOURCE_RELEASE}/deployments/deployments/terraform/pim/templates/tests
+    rm -rf ~/zdd_compliancy_checker/${SOURCE_RELEASE}/deployments/deployments/Makefile
 
     # Download the target release Docker image and Terraform modules
     mkdir -p ~/zdd_compliancy_checker/${TARGET_RELEASE}/upgrades
@@ -117,15 +139,30 @@ function getDiff() {
   done <<< "$DIFF"
 }
 
+
+# Get the options
+while getopts ":o" option; do
+    case $option in
+        o) # display Help
+            SOURCE_RELEASE_TYPE="oldest"
+            break
+            ;;
+        \?) # Invalid option
+            echo "Error: Invalid option"
+            exit;;
+  esac
+done
+
 case $ZCC_CONTEXT in
     "artifact")
+        getSourceRelease
         downloadArtifacts
         cat ${VERSIONS_FILE}
         ;;
 
     "diff_infra")
         # Diff Docker images and Terraform modules
-        echo -en "\n\n - Differences in infrastructure between the oldest release in production & the next release to deploy :\n\n"
+        echo -en "\n\n - Differences in infrastructure between the source release in production & the next release to deploy :\n\n"
         DIRECTORIES=$(file ~/zdd_compliancy_checker/* | grep directory | cut -d':' -f1 | sort)
         SOURCE=$(echo ${DIRECTORIES} | cut -d ' ' -f1)
         TARGET=$(echo ${DIRECTORIES} | cut -d ' ' -f2)
@@ -133,13 +170,13 @@ case $ZCC_CONTEXT in
         ;;
 
     "diff_db")
-        echo -en "\n\n - Differences in dbschema between the oldest release in production & the next release to deploy :\n\n"
+        echo -en "\n\n - Differences in dbschema between the source release in production & the next release to deploy :\n\n"
         DIRECTORIES=$(file ~/zdd_compliancy_checker/* | grep directory | cut -d':' -f1 | sort)
         SOURCE=$(echo ${DIRECTORIES} | cut -d ' ' -f1)
         TARGET=$(echo ${DIRECTORIES} | cut -d ' ' -f2)
         getDiff "${SOURCE}/dbschema" "${TARGET}/dbschema"
 
-        echo -en "\n\n - Differences in upgrades between the oldest release in production & the next release to deploy :\n\n"
+        echo -en "\n\n - Differences in upgrades between the source release in production & the next release to deploy :\n\n"
         getDiff "${SOURCE}/upgrades" "${TARGET}/upgrades"
 
         exit $?

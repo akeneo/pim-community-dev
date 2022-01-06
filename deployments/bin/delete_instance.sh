@@ -115,9 +115,16 @@ fi
 
 echo "Remove PODS"
 # Quick fix and to remove after actual fix
-LIST_PODS=$(kubectl get pods --no-headers --namespace=${PFID} | awk '{print $1}')
+LIST_PODS=$(kubectl get pods --no-headers --namespace=${PFID} -l 'app notin (mysql,elasticsearch)' | awk '{print $1}')
 if [[ ! -z "${LIST_PODS}" ]]; then
   kubectl delete pod --grace-period=0 --force --namespace ${PFID} --ignore-not-found=true ${LIST_PODS}
+fi
+
+echo "Remove PODS with disks"
+# Quick fix and to remove after actual fix
+LIST_PODS=$(kubectl get pods --no-headers --namespace=${PFID} -l 'app in (mysql,elasticsearch)' | awk '{print $1}')
+if [[ ! -z "${LIST_PODS}" ]]; then
+  kubectl delete pod --grace-period=0 --namespace ${PFID} --ignore-not-found=true ${LIST_PODS}
 fi
 
 echo "Wait MySQL deletion"

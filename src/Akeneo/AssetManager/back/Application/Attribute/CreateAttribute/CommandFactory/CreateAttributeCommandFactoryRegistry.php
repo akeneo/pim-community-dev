@@ -15,12 +15,8 @@ namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFacto
 
 class CreateAttributeCommandFactoryRegistry implements CreateAttributeCommandFactoryRegistryInterface
 {
-    private array $factories;
-
-    public function __construct()
-    {
-        $this->factories = [];
-    }
+    /** @var CreateAttributeCommandFactoryInterface[] */
+    private array $factories = [];
 
     public function register(CreateAttributeCommandFactoryInterface $factory): void
     {

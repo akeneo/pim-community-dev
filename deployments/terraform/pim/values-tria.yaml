@@ -62,7 +62,7 @@ pim:
       schedule: "0 4 * * *"
       resources:
         requests:
-          cpu: "20m"
+          cpu: "10m"
           memory: "80Mi"
     data-quality-insights-periodic-tasks:
       enabled: true
@@ -86,7 +86,7 @@ pim:
       schedule: "*/30 * * * *"
       resources:
         requests:
-          cpu: "200m"
+          cpu: "20m"
           memory: "200Mi"
     purge-events-api-logs:
       enabled: true
@@ -97,7 +97,7 @@ pim:
           memory: "128Mi"
         requests:
           cpu: "100m"
-          memory: "128Mi"
+          memory: "10Mi"
     migrate-job-messages-from-old-queue:
       enabled: true
       pimCommand: "akeneo:batch:migrate-job-messages-from-old-queue --no-interaction"

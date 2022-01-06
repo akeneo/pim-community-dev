@@ -28,16 +28,13 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class AssetCodeShouldBeUniqueValidator extends ConstraintValidator
 {
-    private AssetExistsInterface $assetExists;
+    /** @var string[] */
+    private array $insertedCodes = [];
 
-    private $insertedCodes = [];
-
-    private int $batchSize;
-
-    public function __construct(AssetExistsInterface $assetExists, int $batchSize=100)
-    {
-        $this->assetExists = $assetExists;
-        $this->batchSize = $batchSize;
+    public function __construct(
+        private AssetExistsInterface $assetExists,
+        private int $batchSize = 100
+    ) {
     }
 
     public function validate($command, Constraint $constraint)
@@ -56,7 +53,7 @@ class AssetCodeShouldBeUniqueValidator extends ConstraintValidator
             throw new \InvalidArgumentException(sprintf(
                 'Expected argument to be of class "%s", "%s" given',
                 CreateAssetCommand::class,
-                get_class($command)
+                $command::class
             ));
         }
     }
@@ -84,8 +81,8 @@ class AssetCodeShouldBeUniqueValidator extends ConstraintValidator
                 ->addViolation();
             return;
         }
-        $this->insertedCodes[]=strtolower($command->code);
-        if (sizeof($this->insertedCodes) > $this->batchSize) {
+        $this->insertedCodes[] = strtolower($command->code);
+        if (count($this->insertedCodes) > $this->batchSize) {
             array_shift($this->insertedCodes);
         }
     }

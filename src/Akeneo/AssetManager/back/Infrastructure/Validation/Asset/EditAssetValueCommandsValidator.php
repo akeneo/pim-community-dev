@@ -27,11 +27,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditAssetValueCommandsValidator extends ConstraintValidator
 {
-    private ValidatorInterface $validator;
-
-    public function __construct(ValidatorInterface $validator)
+    public function __construct(private ValidatorInterface $validator)
     {
-        $this->validator = $validator;
     }
 
     public function validate($editAssetCommand, Constraint $constraint)
@@ -98,7 +95,7 @@ class EditAssetValueCommandsValidator extends ConstraintValidator
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
                     EditTextValueCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }

@@ -21,16 +21,10 @@ use Symfony\Component\Validator\Validation;
  */
 class ChannelAndLocaleValidator
 {
-    private ChannelExistsInterface $channelExists;
-
-    private FindActivatedLocalesByIdentifiersInterface $findActivatedLocalesByIdentifiers;
-
     public function __construct(
-        ChannelExistsInterface $channelExists,
-        FindActivatedLocalesByIdentifiersInterface $findActivatedLocalesByIdentifiers
+        private ChannelExistsInterface $channelExists,
+        private FindActivatedLocalesByIdentifiersInterface $findActivatedLocalesByIdentifiers
     ) {
-        $this->channelExists = $channelExists;
-        $this->findActivatedLocalesByIdentifiers = $findActivatedLocalesByIdentifiers;
     }
 
     public function checkChannelExistsIfAny(?string $channelCode): ConstraintViolationListInterface

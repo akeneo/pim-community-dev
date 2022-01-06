@@ -26,20 +26,11 @@ use Symfony\Component\Validator\Validation;
 
 class ThereShouldBeLessAttributeOptionsThanLimitValidator extends ConstraintValidator
 {
-    private GetAttributeIdentifierInterface $getAttributeIdentifier;
-
-    private AttributeRepositoryInterface $attributeRepository;
-
-    private int $attributeOptionsLimit;
-
     public function __construct(
-        GetAttributeIdentifierInterface $getAttributeIdentifier,
-        AttributeRepositoryInterface $attributeRepository,
-        int $attributeOptionsLimit
+        private GetAttributeIdentifierInterface $getAttributeIdentifier,
+        private AttributeRepositoryInterface $attributeRepository,
+        private int $attributeOptionsLimit,
     ) {
-        $this->getAttributeIdentifier = $getAttributeIdentifier;
-        $this->attributeRepository = $attributeRepository;
-        $this->attributeOptionsLimit = $attributeOptionsLimit;
     }
 
     public function validate($command, Constraint $constraint): void
@@ -59,7 +50,7 @@ class ThereShouldBeLessAttributeOptionsThanLimitValidator extends ConstraintVali
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
                     AppendAttributeOptionCommand::class,
-                    get_class($command)
+                    $command::class
                 )
             );
         }
@@ -83,7 +74,7 @@ class ThereShouldBeLessAttributeOptionsThanLimitValidator extends ConstraintVali
         );
         $attribute = $this->attributeRepository->getByIdentifier($identifier);
 
-        if (count($attribute->getAttributeOptions()) >= $this->attributeOptionsLimit - 1) {
+        if ((is_countable($attribute->getAttributeOptions()) ? count($attribute->getAttributeOptions()) : 0) >= $this->attributeOptionsLimit - 1) {
             $this->context->buildViolation(ThereShouldBeLessAttributeOptionsThanLimit::MESSAGE_TOO_MANY_OPTIONS)
                 ->setParameter('{{ limit }}', (string) $this->attributeOptionsLimit)
                 ->setCode(Count::TOO_MANY_ERROR)

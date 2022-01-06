@@ -1,9 +1,13 @@
-#!/usr/bin/env bash 
-set -o pipefail
+#!/bin/bash
+set -eo pipefail
 set -x
 
 if [[ "${SOURCE_PFID}" == "" ]]; then
       echo "ERR : You must choose a prod source instance"
+      exit 9
+fi
+if [[ "${SOURCE_PROJECT_ID}" == "" ]]; then
+      echo "ERR : You must choose source project for the instance"
       exit 9
 fi
 if [[ "${PED_TAG}" == "" ]]; then
@@ -14,232 +18,179 @@ if [[ "${INSTANCE_NAME}" == "" ]]; then
       echo "ERR : You must choose an instance name for the duplicate instance"
       exit 9
 fi
+if [[ "${BUCKET}" == "" ]]; then
+      echo "ERR : You must specify the BUCKET directory"
+      exit 9
+fi
 
 BINDIR=$(dirname $(readlink -f $0))
-PED_DIR="${BINDIR}/../.."
-
+PED_DIR="${BINDIR}/../../"
 
 PFID="srnt-"${INSTANCE_NAME}
-SOURCE_INSTANCE_NAME=$(echo ${SOURCE_PFID}| cut -c 6-)
+SOURCE_INSTANCE_NAME=${SOURCE_PFID}
 DESTINATION_PATH=${DESTINATION_PATH:-${PED_DIR}/deployments/instances/${PFID}}
 TARGET_PAPO_PROJECT_CODE=${TARGET_PAPO_PROJECT_CODE:-"NOT_ON_PAPO_${PFID}"}
-DESTINATION_GOOGLE_CLUSTER_ZONE="europe-west3-a"
-SOURCE_GOOGLE_PROJECT_ID="akecld-saas-prod"
 DESTINATION_GOOGLE_PROJECT_ID="akecld-saas-dev"
+DESTINATION_GOOGLE_CLUSTER_ZONE=${DESTINATION_GOOGLE_CLUSTER_ZONE:-"europe-west3-a"}
+SOURCE_GOOGLE_PROJECT_ID=${SOURCE_GOOGLE_PROJECT_ID:-"akecld-saas-prod"}
+SOURCE_GOOGLE_CLUSTER_ZONE=${SOURCE_GOOGLE_CLUSTER_ZONE:-"europe-west2-b"}
 TARGET_DNS_FQDN="${INSTANCE_NAME}.dev.cloud.akeneo.com."
-
-
-main(){
-{
-      prepare_kubectl_context
-      create_flex_chart
-      create_data_disks
-} ||{
-      exit 1
-}
-{
-      generate_kubeconfig
-      patch_data_disk
-      deploy_instance
-      post_instance_fix
-}||{
-      echo "big clean"
-      big_clean_onerror
-      clean_useless-files
-      exit 1
-}
-      launch_migrations
-      clean_useless-files
-}
+PIM_USER="adminakeneo"
+PIM_PASSWORD=$(pwgen -s 32 1)
+MYSQL_ROOT_PASSWORD=$(pwgen -s 16 1)
+MYSQL_USER_PASSWORD=$(pwgen -s 16 1)
 
 
 
-prepare_kubectl_context()
-{
-      echo "#########################################################################"
-      echo "- Prepare kubectl context -"
-      echo ${GCLOUD_SERVICE_KEY} | gcloud auth activate-service-account --key-file=-
-      gcloud config set project ${DESTINATION_GOOGLE_PROJECT_ID}
-      gcloud config set compute/zone ${DESTINATION_GOOGLE_CLUSTER_ZONE}
+echo "#########################################################################"
+echo "- Get last snapshot selflink and create ES and MySQL disk"
+SELFLINK_FLEX=$(gcloud --project="${SOURCE_PROJECT_ID}" compute snapshots list --filter="labels.backup-name=${SOURCE_PFID}" --limit=1 --sort-by="~creationTimestamp" --uri)
+FLEX_SIZE=$(gcloud compute snapshots describe ${SELFLINK_FLEX} --format=json | jq -r '.diskSizeGb')
+echo "${SELFLINK_FLEX} / ${FLEX_SIZE}"
 
-      gcloud auth configure-docker --quiet
-      gcloud container clusters  get-credentials --project=akecld-saas-prod --zone=europe-west2-b europe-west2-b
-      gcloud container clusters  get-credentials --project=${DESTINATION_GOOGLE_PROJECT_ID} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} ${DESTINATION_GOOGLE_CLUSTER_ZONE}
+echo "- Create Flex disk (delete it before if existing)"
+FLEX_DISK_NAME=${PFID}-flex
+if [[ $( gcloud compute disks describe ${FLEX_DISK_NAME} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --quiet >/dev/null 2>&1 && echo "diskExists" ) == "diskExists" ]]; then
+      gcloud compute disks delete ${FLEX_DISK_NAME} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --quiet
+      sleep 10
+fi
+FLEX_DISK=$(gcloud compute disks create ${FLEX_DISK_NAME} --source-snapshot=${SELFLINK_FLEX} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --type=pd-ssd --format=json)
+if [[ ${FLEX_DISK} == "" ]]; then
+      echo "Flex duplicate disk does not exist, exiting"
+      return 1
+fi
+echo "Flex duplicate disk has been created : ${FLEX_DISK}"
 
-      echo ${GCLOUD_SERVICE_KEY} > ${HOME}/gcloud-service-key.json
-      export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
-}
+echo "- Create ES disk (delete it before if existing)"
+ES_DISK_NAME=${PFID}-es
+ES_DISK_SIZE=20
+if [[ $( gcloud compute disks describe ${ES_DISK_NAME} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --quiet >/dev/null 2>&1 && echo "diskExists" ) == "diskExists" ]]; then
+      gcloud compute disks delete ${ES_DISK_NAME} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --quiet
+      sleep 10
+fi
+ES_DISK=$(gcloud compute disks create ${ES_DISK_NAME} --size=${ES_DISK_SIZE} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --type=pd-ssd --format=json)
+if [[ ${ES_DISK} == "" ]]; then
+      echo "ES duplicate disk does not exist, exiting"
+      return 1
+fi
+echo "ES duplicate disk has been created : ${ES_DISK}"
 
-create_flex_chart() {
-      echo "#########################################################################"
-      echo "- Build a Flex into Serenity helm chart on the Fly!"
-
-      cp -r ${PED_DIR}/deployments/terraform ${DESTINATION_PATH}
-      rm ${DESTINATION_PATH}/terraform/pim/requirements.lock
-      yq d -i  ${DESTINATION_PATH}/terraform/pim/requirements.yaml "dependencies.(name==elasticsearch)"
-      yq w -i  ${DESTINATION_PATH}/terraform/pim/requirements.yaml "dependencies[+].name" "flex-es"
-      yq w -i  ${DESTINATION_PATH}/terraform/pim/requirements.yaml "dependencies.(name==flex-es).repository" "file://${PED_DIR}/deployments/share/flex-es/"
-      yq w -i  ${DESTINATION_PATH}/terraform/pim/requirements.yaml "dependencies.(name==flex-es).alias" "elasticsearch"
-      yq w -i  ${DESTINATION_PATH}/terraform/pim/requirements.yaml "dependencies.(name==flex-es).version" "0.0.0"
-
-      yq d -i  ${DESTINATION_PATH}/terraform/pim/requirements.yaml "dependencies.(name==mysql)"
-      yq w -i  ${DESTINATION_PATH}/terraform/pim/requirements.yaml "dependencies[+].name" "flex-mysql"
-      yq w -i  ${DESTINATION_PATH}/terraform/pim/requirements.yaml "dependencies.(name==flex-mysql).repository" "gs://akeneo-charts/"
-      yq w -i  ${DESTINATION_PATH}/terraform/pim/requirements.yaml "dependencies.(name==flex-mysql).alias" "mysql"
-      yq w -i  ${DESTINATION_PATH}/terraform/pim/requirements.yaml "dependencies.(name==flex-mysql).version" "1.0.0"
-
-      yq w -i ${DESTINATION_PATH}/values.yaml pim.hook.installPim.enabled false
-      yq w -i ${DESTINATION_PATH}/values.yaml pim.hook.addAdmin.enabled false
-      yq w -i ${DESTINATION_PATH}/values.yaml pim.hook.upgradeES.enabled false
-      rm ${DESTINATION_PATH}/terraform/pim/hook_upgrade_pim.yaml
-
-      yq d -i  ${DESTINATION_PATH}/terraform/pim/values.yaml "elasticsearch"
-      yq d -i  ${DESTINATION_PATH}/values.yaml "elasticsearch"
-
-
-      yq w -i  ${DESTINATION_PATH}/values.yaml "mysql.mysql.resetPassword" "true"
-      yq w -i  ${DESTINATION_PATH}/values.yaml "mysql.mysql.mountDiskPath" "/data"
-      yq w -i  ${DESTINATION_PATH}/values.yaml "mysql.mysql.dataDiskPath" "/data/var/lib/mysql"
-      yq w -i  ${DESTINATION_PATH}/values.yaml "mysql.image.mysql.tag" --tag '!!str' 8.0
-}
-
-create_data_disks() {
-      jq  --arg path "./terraform" '.module.pim.source = $path' ${DESTINATION_PATH}/main.tf.json > ${DESTINATION_PATH}/main.tf.json.2
-      jq 'del(.module."pim-monitoring")' ${DESTINATION_PATH}/main.tf.json.2 > ${DESTINATION_PATH}/main.tf.json && rm ${DESTINATION_PATH}/main.tf.json.2
-
-      read -r -a FLEX_INFO <<< $(kubectl --context=gke_akecld-saas-prod_europe-west2-b_europe-west2-b get backups --namespace=paas-backup -l product_type=flexibility_prod -l instance_dns_record=${SOURCE_PFID}   -o jsonpath='{range .items[*]}{.metadata.labels.instance_dns_record}{" "}{.metadata.labels.gcloud_project_id}{" "}{.spec.zone}{"\n"}{end}')
-
-      FLEX_SOURCE_PROJECT=${FLEX_INFO[1]}
-      if [[ $FLEX_SOURCE_PROJECT == "" ]]; then
-            echo "${SOURCE_PFID} is not trouvable"
-            exit 9
-      fi
-      echo "#########################################################################"
-      echo "- Get last snapshot selflink"
-      cd ${PED_DIR}
-      SELFLINK_FLEX=$(gcloud --project="${FLEX_SOURCE_PROJECT}" compute snapshots list --filter="labels.backup-name=${SOURCE_PFID}" --limit=1 --sort-by="~creationTimestamp" --uri)
-
-      FLEX_SIZE=$(gcloud compute snapshots describe $SELFLINK_FLEX --format=json | jq -r '.diskSizeGb')
-      echo "$SELFLINK_FLEX / $FLEX_SIZE"
-
-      echo "- Create disk ES disk (delete before if existing)"
-      ES_DISK_NAME=${PFID}-es
-
-      if [[ $( gcloud compute disks describe ${ES_DISK_NAME} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --quiet >/dev/null 2>&1 && echo "diskExists" ) == "diskExists" ]]; then
-            gcloud compute disks delete ${ES_DISK_NAME} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --quiet
-            sleep 10
-      fi
-      DISKES=$(gcloud compute disks create ${ES_DISK_NAME} --source-snapshot=${SELFLINK_FLEX} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --type=pd-ssd --format=json)
-      if [[ $DISKES == "" ]]; then
-            echo "ES duplicate disk does not exist, exiting"
-            return 1
-      fi
-      echo "ES duplicate disk has been created : $DISKES"
+echo "- Create MySQL disk (delete it before if existing)"
+MYSQL_DISK_NAME=${PFID}-mysql
+MYSQL_DISK_SIZE=50
+if [[ $( gcloud compute disks describe ${MYSQL_DISK_NAME} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --quiet >/dev/null 2>&1 && echo "diskExists" ) == "diskExists" ]]; then
+      gcloud compute disks delete ${MYSQL_DISK_NAME} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --quiet
+      sleep 10
+fi
+MYSQL_DISK=$(gcloud compute disks create ${MYSQL_DISK_NAME} --size=${MYSQL_DISK_SIZE} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --type=pd-ssd --format=json)
+if [[ ${MYSQL_DISK} == "" ]]; then
+      echo "Mysql duplicate disk does not exist, exiting"
+      return 1
+fi
+echo "Mysql duplicate disk has been created : ${MYSQL_DISK}"
 
 
-      echo "- Create disk Mysql disk (delete before if existing)"
-      MYSQL_DISK_NAME=${PFID}-mysql
-      if [[ $( gcloud compute disks describe ${MYSQL_DISK_NAME} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --quiet >/dev/null 2>&1 && echo "diskExists" ) == "diskExists" ]]; then
-            gcloud compute disks delete ${MYSQL_DISK_NAME} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --quiet
-            sleep 10
-      fi
-      DISKMYSQL=$(gcloud compute disks create ${MYSQL_DISK_NAME} --source-snapshot=${SELFLINK_FLEX} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --type=pd-ssd --format=json)
-      if [[ $DISKMYSQL == "" ]]; then
-            echo "Mysql duplicate disk does not exist, exiting"
-            return 1
-      fi
-      echo "Mysql duplicate disk has been created : $DISKMYSQL"
+echo "#########################################################################"
+echo "- Build a Flex into Serenity helm chart on the Fly!"
+yq d -i ${PED_DIR}/deployments/terraform/pim/Chart.yaml "dependencies.(name==elasticsearch)"
+yq w -i ${PED_DIR}/deployments/terraform/pim/Chart.yaml "dependencies[+].name" "flex-es"
+yq w -i ${PED_DIR}/deployments/terraform/pim/Chart.yaml "dependencies.(name==flex-es).alias" "elasticsearch"
+yq w -i ${PED_DIR}/deployments/terraform/pim/Chart.yaml "dependencies.(name==flex-es).repository" "file://${PED_DIR}/deployments/share/flex-es/"
+yq w -i ${PED_DIR}/deployments/terraform/pim/Chart.yaml "dependencies.(name==flex-es).version" "0.0.0"
 
-      yq w -i  ${DESTINATION_PATH}/values.yaml "elasticsearch.single.persistentDisk.size" "$FLEX_SIZE"
-      yq w -i  ${DESTINATION_PATH}/values.yaml "elasticsearch.single.persistentDisk.name" "${ES_DISK_NAME}"
-      yq w -i  ${DESTINATION_PATH}/values.yaml "elasticsearch.image.es.tag" "7.14.1"
-      yq w -i  ${DESTINATION_PATH}/values.yaml "elasticsearch.common.service.name" "elasticsearch-client"
-      yq w -i  ${DESTINATION_PATH}/values.yaml "elasticsearch.fullnameOverride" "elasticsearch"
+yq d -i ${PED_DIR}/deployments/terraform/pim/values.yaml "elasticsearch"
+yq d -i ${DESTINATION_PATH}/values.yaml "elasticsearch"
+yq w -i ${DESTINATION_PATH}/values.yaml "elasticsearch.common.service.name" "elasticsearch-client"
+yq w -i ${DESTINATION_PATH}/values.yaml "elasticsearch.fullnameOverride" "elasticsearch"
+yq w -i ${DESTINATION_PATH}/values.yaml "elasticsearch.fullName" "elasticsearch"
+yq w -i ${DESTINATION_PATH}/values.yaml "elasticsearch.image.es.tag" "7.14.1"
+yq w -i ${DESTINATION_PATH}/values.yaml "elasticsearch.single.persistentDisk.name" "${ES_DISK_NAME}"
+yq w -i ${DESTINATION_PATH}/values.yaml "elasticsearch.single.persistentDisk.size" "${FLEX_SIZE}"
 
-      jq  --arg size "${FLEX_SIZE}" '.module.pim.mysql_disk_size = $size' ${DESTINATION_PATH}/main.tf.json > ${DESTINATION_PATH}/main.tf.json.2
-      jq  --arg snap "${SELFLINK_FLEX}" '.module.pim.mysql_source_snapshot = $snap'  ${DESTINATION_PATH}/main.tf.json.2 > ${DESTINATION_PATH}/main.tf.json.3
-      jq  --arg name "${MYSQL_DISK_NAME}" '.module.pim.mysql_disk_name = $name'  ${DESTINATION_PATH}/main.tf.json.3 > ${DESTINATION_PATH}/main.tf.json && rm ${DESTINATION_PATH}/main.tf.json.*
+yq w -i ${DESTINATION_PATH}/values.yaml pim.hook.addAdmin.enabled false
+yq w -i ${DESTINATION_PATH}/values.yaml pim.hook.installPim.enabled false
+yq w -i ${DESTINATION_PATH}/values.yaml pim.hook.upgradeES.enabled false
+yq w -i ${DESTINATION_PATH}/values.yaml mysql.mysql.resetPassword true
+yq w -i ${DESTINATION_PATH}/values.yaml mysql.mysql.rootPassword "${MYSQL_ROOT_PASSWORD}"
+yq w -i ${DESTINATION_PATH}/values.yaml mysql.mysql.userPassword "${MYSQL_USER_PASSWORD}"
+yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.email "${PIM_USER}"
+yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.login "${PIM_USER}"
+yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.password "${PIM_PASSWORD}"
 
-}
+yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.mysql_disk_size' "${MYSQL_DISK_SIZE}"
+yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.mysql_disk_name' "${MYSQL_DISK_NAME}"
+yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.source' "../../terraform"
 
-generate_kubeconfig (){
-      cd ${DESTINATION_PATH}
-      rm -rf terraform/pim/charts
-      echo "#########################################################################"
-      echo "- Generate kubeconfig -"
+# Remove hook_activate_es_snapshots (not usable in the flex es chart)
+rm -rf ${PED_DIR}/deployments/terraform/pim/templates/hook_activate_es_snapshots.yaml
 
-      terraform init
-      terraform apply -input=false -auto-approve -target=module.pim.local_file.kubeconfig
-}
 
-patch_data_disk(){
-      echo "#########################################################################"
-      echo "- Prepare Mysql and ES disk"
-      export KUBECONFIG=.kubeconfig
+echo "#########################################################################"
+echo "- Generate kubeconfig -"
 
-      kubectl describe namespace ${PFID} || kubectl create namespace ${PFID}
-      DISK_INSTANCE_NAME=${ES_DISK_NAME} SOURCE_PFID=${SOURCE_PFID}  NAMESPACE=${PFID} envsubst < ${BINDIR}/../share/es-data-move.yaml.tpl | kubectl  -n ${PFID} apply -f -
-      DISK_INSTANCE_NAME=${MYSQL_DISK_NAME} SOURCE_PFID=${SOURCE_PFID} NAMESPACE=${PFID}  envsubst < ${BINDIR}/../share/mysql-data-move.yaml.tpl | kubectl  -n ${PFID} apply -f -
+cd ${DESTINATION_PATH}
+terraform init
+terraform apply -input=false -auto-approve -target=module.pim.local_file.kubeconfig
 
-      kubectl -n ${PFID} wait --for=condition=complete --timeout=3m job/es-data-move || true
-      kubectl -n ${PFID} wait --for=condition=complete --timeout=3m job/mysql-data-move || true
-      DISK_INSTANCE_NAME=${ES_DISK_NAME} SOURCE_PFID=${SOURCE_PFID}  NAMESPACE=${PFID} envsubst < ${BINDIR}/../share/es-data-move.yaml.tpl | kubectl  -n ${PFID} delete -f -
-      DISK_INSTANCE_NAME=${MYSQL_DISK_NAME} SOURCE_PFID=${SOURCE_PFID} NAMESPACE=${PFID}  envsubst < ${BINDIR}/../share/mysql-data-move.yaml.tpl | kubectl  -n ${PFID} delete -f -
-      terraform import module.pim.google_compute_disk.mysql-disk projects/${DESTINATION_GOOGLE_PROJECT_ID}/zones/${DESTINATION_GOOGLE_CLUSTER_ZONE}/disks/${MYSQL_DISK_NAME}
-}
 
-deploy_instance(){
-      echo "#########################################################################"
-      echo "- Create Serenity instance"
-      terraform apply -input=false -auto-approve
-}
+echo "#########################################################################"
+echo "- Prepare Mysql and ES disk"
+export KUBECONFIG=.kubeconfig
 
-post_instance_fix ()
-{
-      echo "#########################################################################"
-      echo "- Create disk Migration init (delete before if existing)"
-      MIGRATION_NAME=${PFID}-migration
+kubectl describe namespace ${PFID} || kubectl create namespace ${PFID}
+FLEX_DISK_NAME=${FLEX_DISK_NAME} ES_DISK_NAME=${ES_DISK_NAME} SOURCE_PFID=${SOURCE_PFID}  NAMESPACE=${PFID} envsubst < ${BINDIR}/../share/es-data-move.yaml.tpl | kubectl -n ${PFID} apply -f -
+kubectl -n ${PFID} wait --for=condition=complete --timeout=3m job/es-data-move
+FLEX_DISK_NAME=${FLEX_DISK_NAME} ES_DISK_NAME=${ES_DISK_NAME} SOURCE_PFID=${SOURCE_PFID}  NAMESPACE=${PFID} envsubst < ${BINDIR}/../share/es-data-move.yaml.tpl | kubectl -n ${PFID} delete -f -
 
-      if [[ $( gcloud compute disks describe ${MIGRATION_NAME} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --quiet >/dev/null 2>&1 && echo "diskExists" ) == "diskExists" ]]; then
-            gcloud compute disks delete ${MIGRATION_NAME} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --quiet
-            sleep 10
-      fi
-      MIGDOC=$(gcloud compute disks create ${MIGRATION_NAME} --source-snapshot=${SELFLINK_FLEX} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --type=pd-ssd --format=json)
-      if [[ $MIGDOC == "" ]]; then
-            echo "ES duplicate disk does not exist, exiting"
-            exit 9
-      fi
-      echo "Migration duplicate disk has been created : $MIGDOC"
+# Mysql modification to be able to use the SRNT MySQL chart
+FLEX_DISK_NAME=${FLEX_DISK_NAME} MYSQL_DISK_NAME=${MYSQL_DISK_NAME} SOURCE_PFID=${SOURCE_PFID} NAMESPACE=${PFID}  envsubst < ${BINDIR}/../share/mysql-data-move.yaml.tpl | kubectl -n ${PFID} apply -f -
+kubectl -n ${PFID} wait --for=condition=complete --timeout=3m job/mysql-data-move
+FLEX_DISK_NAME=${FLEX_DISK_NAME} MYSQL_DISK_NAME=${MYSQL_DISK_NAME} SOURCE_PFID=${SOURCE_PFID} NAMESPACE=${PFID}  envsubst < ${BINDIR}/../share/mysql-data-move.yaml.tpl | kubectl -n ${PFID} delete -f -
+MYSQL_DISK_NAME=${MYSQL_DISK_NAME} MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} MYSQL_USER_PASSWORD=${MYSQL_USER_PASSWORD} SOURCE_PFID=${SOURCE_PFID} NAMESPACE=${PFID}  envsubst < ${BINDIR}/../share/mysql-fix-init.yaml.tpl | kubectl -n ${PFID} apply -f -
+kubectl -n ${PFID} wait --for=condition=complete --timeout=3m job/mysql-fix-init
+MYSQL_DISK_NAME=${MYSQL_DISK_NAME} MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} MYSQL_USER_PASSWORD=${MYSQL_USER_PASSWORD} SOURCE_PFID=${SOURCE_PFID} NAMESPACE=${PFID}  envsubst < ${BINDIR}/../share/mysql-fix-init.yaml.tpl | kubectl -n ${PFID} delete -f -
 
-      DISK_INSTANCE_NAME=${MIGRATION_NAME} NAMESPACE=${PFID} envsubst < ../../share/migration-fixer.tpl| kubectl -n ${PFID} apply -f -
-      kubectl -n ${PFID} wait --for=condition=complete --timeout=3m job/migration-fixer || true
+# Import MySQL disk
+terraform import module.pim.google_compute_disk.mysql-disk projects/${DESTINATION_GOOGLE_PROJECT_ID}/zones/${DESTINATION_GOOGLE_CLUSTER_ZONE}/disks/${MYSQL_DISK_NAME}
 
-      DISK_INSTANCE_NAME=${MIGRATION_NAME} NAMESPACE=${PFID} envsubst < ../../share/migration-fixer.tpl| kubectl -n ${PFID} delete -f -
 
-      if [[ $( gcloud compute disks describe ${MIGRATION_NAME} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --quiet >/dev/null 2>&1 && echo "diskExists" ) == "diskExists" ]]; then
-            gcloud compute disks delete ${MIGRATION_NAME} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --quiet
-            sleep 10
-      fi
+echo "#########################################################################"
+echo "- Create Flex/Serenity instance"
+terraform apply -input=false -auto-approve
 
-      echo "Fix Onboarder tables creation"
-      PODDAEMON=$(kubectl get pods --namespace=${PFID} -l component=pim-daemon-default -o jsonpath='{.items[0].metadata.name}')
-      kubectl exec -it -n ${PFID} ${PODDAEMON} -- /bin/bash -c 'bin/console akeneo:onboarder:setup-database --no-interaction'
-}
 
-launch_migrations(){
-      kubectl exec -it -n ${PFID} ${PODDAEMON} -- /bin/bash -c 'bin/console doctrine:migration:migrate -vvv --allow-no-migration --no-interaction'
-      kubectl exec -it -n ${PFID} ${PODDAEMON} -- /bin/bash -c "curl 'elasticsearch-client:9200/_cat/indices?format=json&pretty'"
-}
+echo "#########################################################################"
+echo "- Upgrade the instance by using the same commands as the upgrader hook"
+POD_MYSQL=$(kubectl get pods --namespace=${PFID} -l component=mysql | awk '/mysql/ {print $1}')
+POD_DAEMON=$(kubectl get pods --no-headers --namespace=${PFID} -l component=pim-daemon-webhook-consumer-process | awk 'NR==1{print $1}')
+# echo "Fix Onboarder tables creation"
+# kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c 'bin/console akeneo:onboarder:setup-database --no-interaction'
+#
+kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c "curl 'elasticsearch-client:9200/_cat/indices?format=json&pretty'"
+kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c 'bin/console doctrine:migrations:sync-metadata-storage --no-interaction --quiet'
+kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c 'bin/console doctrine:migration:migrate -vvv --allow-no-migration --no-interaction'
+kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c 'bin/console akeneo:elasticsearch:update-total-fields-limit -vvv --no-interaction'
+kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c "curl 'elasticsearch-client:9200/_cat/indices?format=json&pretty'"
 
-clean_useless-files()
-{
-      rm -rf ${DESTINATION_PATH}/.terraform
-}
 
-big_clean_onerror()
-{
-      cd ${PED_DIR}
-      INSTANCE_NAME=${INSTANCE_NAME} make -C deployments/ delete_clone_flexibility
-}
+echo "#########################################################################"
+echo "- Anonymize users and create admin user"
+kubectl exec -it -n ${PFID} ${POD_MYSQL} -- /bin/bash -c 'mysql -u root -p$(cat /mysql_temp/root_password.txt) -D akeneo_pim -e "UPDATE akeneo_connectivity_connection SET webhook_url = NULL, webhook_enabled = 0;"'
+kubectl exec -it -n ${PFID} ${POD_MYSQL} -- /bin/bash -c 'mysql -u root -p$(cat /mysql_temp/root_password.txt) -D akeneo_pim -e "UPDATE oro_user SET email = LOWER(CONCAT(SUBSTRING(CONCAT(\"support+clone_\", REPLACE(username,\"@\",\"_\")), 1, 64), \"@akeneo.com\"));"'
+kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c 'bin/console pim:user:create '${PIM_USER}' '${PIM_PASSWORD}' product-team@akeneo.com admin1 admin2 en_US --admin -n || echo "WARN: User '${PIM_USER}' exists"'
+# Workarround to be sure to have a admin user
+SQL_COMMAND=$(cat ${BINDIR}/add_user_to_all_groups.sql)
+# _ "${SQL_COMMAND}" -> allow to pass parameter
+kubectl exec -it -n ${PFID} ${POD_MYSQL} -- /bin/bash -c 'mysql -u root -p$(cat /mysql_temp/root_password.txt) -D akeneo_pim -e "$@"' _ "${SQL_COMMAND}"
 
-main
+
+echo "#########################################################################"
+echo "- Check ES indexation"
+(kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c 'bin/es_sync_checker --only-count') || true
+
+
+echo "#########################################################################"
+echo "- Upgrade config files"
+yq d -i ${DESTINATION_PATH}/values.yaml pim.hook
+# To be able to remove the ressources
+yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/${PED_TAG}//deployments/terraform"

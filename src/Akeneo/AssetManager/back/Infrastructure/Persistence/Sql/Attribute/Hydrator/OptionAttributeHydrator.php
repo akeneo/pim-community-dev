@@ -74,8 +74,6 @@ class OptionAttributeHydrator extends AbstractAttributeHydrator
     }
 
     /**
-     * @param array $attributeOptions
-     *
      * @return AttributeOption[]
      */
     private function hydrateOptions(array $attributeOptions): array

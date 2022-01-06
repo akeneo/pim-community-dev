@@ -53,7 +53,7 @@ const MainMediaPreview = ({asset, context}: MainMediaPreviewProps) => {
 
   return (
     <Section>
-      <SectionTitle sticky={192}>
+      <SectionTitle sticky={202}>
         <SectionTitle.Title>{translate('pim_asset_manager.asset.enrich.main_media_preview')}</SectionTitle.Title>
         <SectionTitle.Spacer />
         {!isDataEmpty(data) && (

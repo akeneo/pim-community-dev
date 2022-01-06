@@ -15,7 +15,7 @@
         },
         "psr-4": {
             "Akeneo\\Pim\\TableAttribute\\": "src/Akeneo/Pim/TableAttribute/back",
-            "Akeneo\\Platform\\TailoredExport\\": "components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/src/",
+            "Akeneo\\Platform\\TailoredExport\\": "components/tailored-export/back/src/",
             "Akeneo\\Platform\\": "src/Akeneo/Platform"
         },
         "exclude-from-classmap": [
@@ -39,16 +39,17 @@
             "Pim\\Upgrade\\Schema\\Tests\\": "vendor/akeneo/pim-community-dev/upgrades/test_schema/",
             "Akeneo\\Platform\\CommunicationChannel\\Test\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests",
             "Akeneo\\Test\\Pim\\TableAttribute\\": "src/Akeneo/Pim/TableAttribute/tests/back",
-            "Akeneo\\Platform\\TailoredExport\\Test\\": "components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests"
+            "Akeneo\\Platform\\TailoredExport\\Test\\": "components/tailored-export/back/tests"
         }
     },
     "require": {
         "akeneo/pim-community-dev": "dev-master",
+        "doctrine/doctrine-bundle": "2.5.2",
+        "grpc/grpc": "1.30.0",
         "hslavich/oneloginsaml-bundle": "2.0.*",
         "justinrainbow/json-schema": "^5.2",
-        "phpseclib/phpseclib": "2.0.31",
         "league/flysystem-google-cloud-storage": "^2.0",
-        "grpc/grpc": "1.30.0"
+        "phpseclib/phpseclib": "2.0.31"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "^0.7.0",

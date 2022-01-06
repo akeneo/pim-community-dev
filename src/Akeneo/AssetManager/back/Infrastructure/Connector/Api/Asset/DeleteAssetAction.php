@@ -30,15 +30,10 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  */
 class DeleteAssetAction
 {
-    private DeleteAssetHandler $deleteAssetHandler;
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        DeleteAssetHandler $deleteAssetHandler,
-        SecurityFacade $securityFacade
+        private DeleteAssetHandler $deleteAssetHandler,
+        private SecurityFacade $securityFacade
     ) {
-        $this->deleteAssetHandler = $deleteAssetHandler;
-        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(string $assetFamilyIdentifier, string $code): Response
@@ -56,7 +51,7 @@ class DeleteAssetAction
 
         try {
             ($this->deleteAssetHandler)($command);
-        } catch (AssetNotFoundException $exception) {
+        } catch (AssetNotFoundException) {
             return new JsonResponse([
                 'code'    => Response::HTTP_NOT_FOUND,
                 'message' => sprintf('Resource `%s` does not exist.', $assetCode->normalize()),

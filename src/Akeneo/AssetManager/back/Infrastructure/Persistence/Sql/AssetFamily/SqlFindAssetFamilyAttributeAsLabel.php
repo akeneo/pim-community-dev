@@ -20,11 +20,8 @@ use Doctrine\DBAL\Connection;
 
 class SqlFindAssetFamilyAttributeAsLabel implements FindAssetFamilyAttributeAsLabelInterface
 {
-    private Connection $sqlConnection;
-
-    public function __construct(Connection $sqlConnection)
+    public function __construct(private Connection $sqlConnection)
     {
-        $this->sqlConnection = $sqlConnection;
     }
 
     public function find(AssetFamilyIdentifier $assetFamilyIdentifier): AttributeAsLabelReference

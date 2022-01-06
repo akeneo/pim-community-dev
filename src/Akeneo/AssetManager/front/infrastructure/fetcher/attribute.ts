@@ -1,15 +1,13 @@
 import AttributeFetcher from 'akeneoassetmanager/domain/fetcher/attribute';
-import AssetFamilyIdentifier, {
-  assetFamilyIdentifierStringValue,
-} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import hydrator from 'akeneoassetmanager/application/hydrator/attribute';
 import hydrateAll from 'akeneoassetmanager/application/hydrator/hydrator';
-import {getJSON} from 'akeneoassetmanager/tools/fetch';
 import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {validateBackendAttribute} from 'akeneoassetmanager/infrastructure/validator/attribute';
 
-const routing = require('routing');
+const generateAssetFamilyAttributeListUrl = (identifier: AssetFamilyIdentifier) =>
+  `/rest/asset_manager/${identifier}/attribute`;
 
 export class AttributeFetcherImplementation implements AttributeFetcher {
   async fetchAll(assetFamilyIdentifier: AssetFamilyIdentifier): Promise<Attribute[]> {
@@ -19,11 +17,8 @@ export class AttributeFetcherImplementation implements AttributeFetcher {
   }
 
   async fetchAllNormalized(assetFamilyIdentifier: AssetFamilyIdentifier): Promise<NormalizedAttribute[]> {
-    const backendAttributes = await getJSON(
-      routing.generate('akeneo_asset_manager_attribute_index_rest', {
-        assetFamilyIdentifier: assetFamilyIdentifierStringValue(assetFamilyIdentifier),
-      })
-    ).catch(errorHandler);
+    const response = await fetch(generateAssetFamilyAttributeListUrl(assetFamilyIdentifier)).catch(errorHandler);
+    const backendAttributes = await response.json();
 
     return backendAttributes.map(validateBackendAttribute);
   }

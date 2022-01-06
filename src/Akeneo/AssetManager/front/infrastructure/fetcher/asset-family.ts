@@ -2,7 +2,6 @@ import {SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import hydrator from 'akeneoassetmanager/application/hydrator/asset-family';
 import hydrateAll from 'akeneoassetmanager/application/hydrator/hydrator';
-import {getJSON} from 'akeneoassetmanager/tools/fetch';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
@@ -15,8 +14,6 @@ import {
 } from 'akeneoassetmanager/domain/model/asset-family/list';
 import {AssetFamilyFetcher} from 'akeneoassetmanager/domain/fetcher/asset-family';
 
-const routing = require('routing');
-
 export type AssetFamilyResult = {
   assetFamily: AssetFamily;
   assetCount: number;
@@ -24,13 +21,13 @@ export type AssetFamilyResult = {
   permission: AssetFamilyPermission;
 };
 
+const generateAssetFamilyGetUrl = (identifier: AssetFamilyIdentifier) => `/rest/asset_manager/${identifier}`;
+const generateAssetFamilyListUrl = () => `/rest/asset_manager`;
+
 export class AssetFamilyFetcherImplementation implements AssetFamilyFetcher {
   async fetch(identifier: AssetFamilyIdentifier): Promise<AssetFamilyResult> {
-    const data = await getJSON(
-      routing.generate('akeneo_asset_manager_asset_family_get_rest', {identifier: identifier})
-    ).catch(errorHandler);
-
-    const backendAssetFamily = validateBackendAssetFamily(data);
+    const data = await fetch(generateAssetFamilyGetUrl(identifier));
+    const backendAssetFamily = validateBackendAssetFamily(await data.json());
 
     return {
       assetFamily: hydrator(backendAssetFamily),
@@ -44,17 +41,16 @@ export class AssetFamilyFetcherImplementation implements AssetFamilyFetcher {
   }
 
   async fetchAll(): Promise<AssetFamilyListItem[]> {
-    const backendAssetFamilies = await getJSON(routing.generate('akeneo_asset_manager_asset_family_index_rest')).catch(
-      errorHandler
-    );
+    const response = await fetch(generateAssetFamilyListUrl()).catch(errorHandler);
+
+    const backendAssetFamilies = await response.json();
 
     return hydrateAll<AssetFamilyListItem>(createAssetFamilyListItemFromNormalized)(backendAssetFamilies.items);
   }
 
   async search(): Promise<SearchResult<AssetFamilyListItem>> {
-    const backendAssetFamilies = await getJSON(routing.generate('akeneo_asset_manager_asset_family_index_rest')).catch(
-      errorHandler
-    );
+    const response = await fetch(generateAssetFamilyListUrl()).catch(errorHandler);
+    const backendAssetFamilies = await response.json();
 
     const items = hydrateAll<AssetFamilyListItem>(createAssetFamilyListItemFromNormalized)(backendAssetFamilies.items);
 

@@ -124,7 +124,6 @@ const UploadModal = ({
           lines={state.lines}
           locale={locale}
           channels={channels}
-          locales={locales}
           onLineChange={handleLineChange}
           onLineRemove={handleLineRemove}
           onLineUploadRetry={handleLineUploadRetry}

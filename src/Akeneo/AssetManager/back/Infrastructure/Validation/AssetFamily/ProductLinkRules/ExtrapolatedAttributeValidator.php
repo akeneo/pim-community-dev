@@ -29,24 +29,12 @@ use Symfony\Component\Validator\Validation;
  */
 class ExtrapolatedAttributeValidator
 {
-    private AttributeExistsInterface $attributeExists;
-
-    private GetAttributeTypeInterface $getAttributeType;
-
-    private AttributeHasOneValuePerChannelInterface $attributeHasOneValuePerChannel;
-
-    private AttributeHasOneValuePerLocaleInterface $attributeHasOneValuePerLocale;
-
     public function __construct(
-        AttributeExistsInterface $attributeExists,
-        GetAttributeTypeInterface $getAttributeType,
-        AttributeHasOneValuePerChannelInterface $attributeHasOneValuePerChannel,
-        AttributeHasOneValuePerLocaleInterface $attributeHasOneValuePerLocale
+        private AttributeExistsInterface $attributeExists,
+        private GetAttributeTypeInterface $getAttributeType,
+        private AttributeHasOneValuePerChannelInterface $attributeHasOneValuePerChannel,
+        private AttributeHasOneValuePerLocaleInterface $attributeHasOneValuePerLocale,
     ) {
-        $this->attributeExists = $attributeExists;
-        $this->getAttributeType = $getAttributeType;
-        $this->attributeHasOneValuePerChannel = $attributeHasOneValuePerChannel;
-        $this->attributeHasOneValuePerLocale = $attributeHasOneValuePerLocale;
     }
 
     /**
@@ -57,10 +45,7 @@ class ExtrapolatedAttributeValidator
      * - has not one value per locale
      *
      * @param mixed  $fieldValue
-     * @param string $assetFamilyIdentifier
-     * @param array  $supportedTypes
      *
-     * @return ConstraintViolationListInterface
      */
     public function checkAttribute(
         $fieldValue,

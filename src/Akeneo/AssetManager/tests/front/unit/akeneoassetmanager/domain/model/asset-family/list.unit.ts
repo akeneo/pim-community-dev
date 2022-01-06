@@ -1,8 +1,6 @@
 import {
   createEmptyAssetFamilyListItem,
   createAssetFamilyListItemFromNormalized,
-  assetFamilyListItemAreEqual,
-  getAssetFamilyListItemLabel,
 } from 'akeneoassetmanager/domain/model/asset-family/list';
 import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 
@@ -20,72 +18,6 @@ describe('akeneo > asset family > domain > model --- asset family', () => {
         image: createEmptyFile(),
       }).identifier
     ).toEqual(michelIdentifier);
-  });
-
-  test('I can compare two asset families', () => {
-    const michelLabels = {en_US: 'Michel'};
-    expect(
-      assetFamilyListItemAreEqual(
-        createAssetFamilyListItemFromNormalized({
-          identifier: didierCode,
-          labels: didierLabels,
-          image: createEmptyFile(),
-        }),
-        createAssetFamilyListItemFromNormalized({
-          identifier: didierCode,
-          labels: didierLabels,
-          image: createEmptyFile(),
-        })
-      )
-    ).toBe(true);
-    expect(
-      assetFamilyListItemAreEqual(
-        createAssetFamilyListItemFromNormalized({
-          identifier: didierCode,
-          labels: didierLabels,
-          image: createEmptyFile(),
-        }),
-        createAssetFamilyListItemFromNormalized({
-          identifier: michelIdentifier,
-          labels: michelLabels,
-          image: createEmptyFile(),
-        })
-      )
-    ).toBe(false);
-  });
-
-  test('I can get a label for the given locale', () => {
-    expect(
-      getAssetFamilyListItemLabel(
-        createAssetFamilyListItemFromNormalized({
-          identifier: michelIdentifier,
-          labels: michelLabels,
-          image: createEmptyFile(),
-        }),
-        'en_US'
-      )
-    ).toBe('Michel');
-    expect(
-      getAssetFamilyListItemLabel(
-        createAssetFamilyListItemFromNormalized({
-          identifier: michelIdentifier,
-          labels: michelLabels,
-          image: createEmptyFile(),
-        }),
-        'fr_FR'
-      )
-    ).toBe('[michel]');
-    expect(
-      getAssetFamilyListItemLabel(
-        createAssetFamilyListItemFromNormalized({
-          identifier: michelIdentifier,
-          labels: michelLabels,
-          image: createEmptyFile(),
-        }),
-        'fr_FR',
-        false
-      )
-    ).toBe('');
   });
 
   test('I can get the collection of labels', () => {

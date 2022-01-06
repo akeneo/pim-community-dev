@@ -17,24 +17,12 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 class ProductLinkRulesShouldBeExecutableValidator extends ConstraintValidator
 {
-    private RuleEngineValidatorACLInterface $ruleEngineValidatorACL;
-
-    private AttributeExistsInterface $attributeExists;
-
-    private ProductSelectionsValidator $productSelectionValidator;
-
-    private ProductAssignmentsValidator $productAssignmentsValidator;
-
     public function __construct(
-        RuleEngineValidatorACLInterface $ruleEngineValidatorACL,
-        AttributeExistsInterface $attributeExists,
-        ProductSelectionsValidator $productSelectionValidator,
-        ProductAssignmentsValidator $productAssignmentsValidator
+        private RuleEngineValidatorACLInterface $ruleEngineValidatorACL,
+        private AttributeExistsInterface $attributeExists,
+        private ProductSelectionsValidator $productSelectionValidator,
+        private ProductAssignmentsValidator $productAssignmentsValidator,
     ) {
-        $this->ruleEngineValidatorACL = $ruleEngineValidatorACL;
-        $this->attributeExists = $attributeExists;
-        $this->productSelectionValidator = $productSelectionValidator;
-        $this->productAssignmentsValidator = $productAssignmentsValidator;
     }
 
     public function validate($createOrUpdateAssetFamily, Constraint $constraint): void

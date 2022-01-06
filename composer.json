@@ -21,7 +21,7 @@
                 "src/Akeneo/Platform",
                 "grth/src/Akeneo/Platform"
             ],
-            "Akeneo\\Platform\\TailoredExport\\": "components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/src/",
+            "Akeneo\\Platform\\TailoredExport\\": "components/tailored-export/back/src/",
             "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/back",
             "AkeneoEnterprise\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
             "Pim\\Upgrade\\": "upgrades/"
@@ -57,13 +57,14 @@
             "Akeneo\\Test\\Pim\\Automation\\RuleEngine\\": "src/Akeneo/Pim/Automation/RuleEngine/tests/back",
             "Akeneo\\Onboarder\\Test\\": "vendor/akeneo/pim-onboarder/tests/",
             "spec\\Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/tests/back/spec",
-            "Akeneo\\Platform\\TailoredExport\\Test\\": "components/tailored-export/back/src/Akeneo/Platform/Bundle/TailoredExportBundle/tests",
+            "Akeneo\\Platform\\TailoredExport\\Test\\": "components/tailored-export/back/tests",
             "Akeneo\\Test\\Pim\\TableAttribute\\": "grth/src/Akeneo/Pim/TableAttribute/tests/back"
         }
     },
     "require": {
         "akeneo/pim-community-dev": "dev-master",
         "akeneo/pim-onboarder": "^5.0.6",
+        "doctrine/doctrine-bundle": "2.5.2",
         "grpc/grpc": "^1.30.0",
         "hslavich/oneloginsaml-bundle": "2.0.*",
         "justinrainbow/json-schema": "^5.2.11",

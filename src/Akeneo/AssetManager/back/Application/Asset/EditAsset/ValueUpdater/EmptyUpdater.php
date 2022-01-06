@@ -35,15 +35,10 @@ use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
  */
 class EmptyUpdater implements ValueUpdaterInterface
 {
-    private GetTransformationsSource $getTransformationsSource;
-    private AttributeRepositoryInterface $attributeRepository;
-
     public function __construct(
-        GetTransformationsSource $getTransformationsSource,
-        AttributeRepositoryInterface $attributeRepository
+        private GetTransformationsSource $getTransformationsSource,
+        private AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->getTransformationsSource = $getTransformationsSource;
-        $this->attributeRepository = $attributeRepository;
     }
 
     public function supports(AbstractEditValueCommand $command): bool

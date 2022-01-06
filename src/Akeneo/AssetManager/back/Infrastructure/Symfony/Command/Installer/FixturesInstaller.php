@@ -58,44 +58,17 @@ class FixturesInstaller
     private const ZOOM_ON_MATERIAL_ASSET_FAMILY_IDENTIFIER = 'zoom_on_material';
     private const USER_GUIDE_ASSET_FAMILY_IDENTIFIER = 'user_guide';
 
-    private Connection $sqlConnection;
-
-    private FileStorerInterface $storer;
-
-    private Client $assetClient;
-
-    private CommandLauncher $commandLauncher;
-
-    private AssetFamilyRepositoryInterface $assetFamilyRepository;
-
-    private AttributeRepositoryInterface $attributeRepository;
-
-    private AssetRepositoryInterface $assetRepository;
-
-    private ValueHydratorInterface $valueHydrator;
-
-    private FixturesLoader $fixturesLoader;
-
     public function __construct(
-        Connection $sqlConnection,
-        FileStorerInterface $storer,
-        Client $assetClient,
-        CommandLauncher $commandLauncher,
-        AssetFamilyRepositoryInterface $assetFamilyRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        AssetRepositoryInterface $assetRepository,
-        ValueHydratorInterface $valueHydrator,
-        FixturesLoader $fixturesLoader
+        private Connection $sqlConnection,
+        private FileStorerInterface $storer,
+        private Client $assetClient,
+        private CommandLauncher $commandLauncher,
+        private AssetFamilyRepositoryInterface $assetFamilyRepository,
+        private AttributeRepositoryInterface $attributeRepository,
+        private AssetRepositoryInterface $assetRepository,
+        private ValueHydratorInterface $valueHydrator,
+        private FixturesLoader $fixturesLoader,
     ) {
-        $this->sqlConnection = $sqlConnection;
-        $this->storer = $storer;
-        $this->assetClient = $assetClient;
-        $this->commandLauncher = $commandLauncher;
-        $this->assetFamilyRepository = $assetFamilyRepository;
-        $this->attributeRepository = $attributeRepository;
-        $this->assetRepository = $assetRepository;
-        $this->valueHydrator = $valueHydrator;
-        $this->fixturesLoader = $fixturesLoader;
     }
 
     public function createSchema(): void

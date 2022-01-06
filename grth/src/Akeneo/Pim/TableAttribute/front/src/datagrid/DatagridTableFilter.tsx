@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Dropdown, getColor, SectionTitle, useBooleanState} from 'akeneo-design-system';
+import {Button, Dropdown, useBooleanState} from 'akeneo-design-system';
 import {
   AttributeCode,
   BackendTableFilterValue,
@@ -11,33 +11,18 @@ import {
 } from '../models';
 import {AttributeFetcher} from '../fetchers';
 import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import styled from 'styled-components';
 import {FilterSelectorList} from './FilterSelectorList';
 import {useFetchOptions} from '../product';
 import {useIsMounted} from '../shared';
 import {AttributeContext} from '../contexts';
 import {DatagridTableCriteria} from './DatagridTableCriteria';
-
-const FilterBox = styled.div`
-  margin-bottom: 10px;
-  width: 200px;
-`;
-
-const FilterSectionTitleTitle = styled(SectionTitle.Title)`
-  color: ${getColor('brand', 100)};
-`;
-const FilterSectionTitle = styled(SectionTitle)`
-  border-bottom-color: ${getColor('brand', 100)};
-`;
-
-const FilterContainer = styled.div`
-  width: 280px;
-  padding: 0 20px 10px;
-`;
-
-const FilterButtonContainer = styled.div`
-  text-align: center;
-`;
+import {
+  FilterBox,
+  FilterButtonContainer,
+  FilterContainer,
+  FilterSectionTitle,
+  FilterSectionTitleTitle,
+} from '../shared/DatagridTableFilterStyle';
 
 type DatagridTableFilterProps = {
   showLabel: boolean;

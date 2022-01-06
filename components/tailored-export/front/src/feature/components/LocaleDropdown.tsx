@@ -1,19 +1,12 @@
 import React, {ReactElement} from 'react';
 import {Field, Helper, Locale, SelectInput, HelperProps} from 'akeneo-design-system';
-import {
-  useTranslate,
-  Locale as LocaleModel,
-  LocaleCode,
-  ChannelReference,
-  ValidationError,
-} from '@akeneo-pim-community/shared';
+import {useTranslate, Locale as LocaleModel, LocaleCode, ValidationError} from '@akeneo-pim-community/shared';
 
 type LocaleDropdownProps = {
   label?: string;
   value: LocaleCode;
   locales: LocaleModel[];
   validationErrors: ValidationError[];
-  channel?: ChannelReference;
   onChange: (updatedValue: LocaleCode) => void;
   children?: ReactElement<HelperProps> | null | false;
 };
