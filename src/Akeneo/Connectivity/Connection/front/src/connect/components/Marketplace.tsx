@@ -7,11 +7,10 @@ import {useTranslate} from '../../shared/translate';
 import styled from 'styled-components';
 import {useDisplayScrollTopButton} from '../../shared/scroll/hooks/useDisplayScrollTopButton';
 import findScrollParent from '../../shared/scroll/utils/findScrollParent';
-import {App, Apps, TestApp, TestApps} from '../../model/app';
+import {App, Apps, TestApps} from '../../model/app';
 import {Section} from './Section';
 import {ActivateAppButton} from './ActivateAppButton';
 import {useFeatureFlags} from '../../shared/feature-flags';
-import {TestAppCard} from './TestApp/TestAppCard';
 import {TestAppList} from './TestApp/TestAppList';
 
 const ScrollToTop = styled(IconButton)`
