@@ -4,6 +4,7 @@ const dependencies = {
   router: {
     generate: jest.fn((route: string) => route),
     redirect: jest.fn((url: string) => url),
+    redirectToRoute: jest.fn((route: string, params?: {[param: string]: any}) => `${route}?${JSON.stringify(params)}`),
   },
   translate: jest.fn((key: string) => key),
   viewBuilder: {
