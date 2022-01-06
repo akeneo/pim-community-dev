@@ -55,8 +55,6 @@ config:
                 pim_catalog_table: '@akeneopimtableattribute/proposals/ProposalDiffTable.tsx'
 
         pimee/attribute-edit-form/rules/edit-rules:
-            views:
-                pim_catalog_table: '@akeneopimruleengine/pages/EditRules/components/actions/attribute/TableValue'
             cell_inputs:
                 select: '@akeneopimtableattribute/product/CellInputs/SelectInput'
                 number: '@akeneopimtableattribute/product/CellInputs/NumberInput'
