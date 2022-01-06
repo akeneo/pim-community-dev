@@ -14,7 +14,7 @@ class ACLReferenceEntityExistsSpec extends ObjectBehavior
 {
     function let($referenceEntityExists)
     {
-        FeatureHelper::skipWhenReferenceEntityIsNotActivated();
+        FeatureHelper::skipSpecTestWhenReferenceEntityIsNotActivated();
 
         $referenceEntityExists->beADoubleOf(ReferenceEntityExistsInterface::class);
         $this->beConstructedWith($referenceEntityExists);

@@ -49,3 +49,11 @@ services:
       - ['EMPTY', 'NOT EMPTY', '=', '!=', 'CONTAINS', 'DOES NOT CONTAIN', 'STARTS WITH', 'ENDS WITH']
     tags:
       - { name: pim_table_attribute.product_and_product_model.column_filter }
+
+  pim_table_attribute.product_and_product_model.filter.reference_entity:
+    class: Akeneo\Pim\TableAttribute\Infrastructure\Value\Filter\ColumnFilter
+    arguments:
+      - 'reference_entity'
+      - ['EMPTY', 'NOT EMPTY', 'IN', 'NOT IN']
+    tags:
+      - { name: pim_table_attribute.product_and_product_model.column_filter }

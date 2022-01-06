@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\TableAttribute\Integration\Value\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Test\Pim\TableAttribute\Helper\FeatureHelper;
 
 final class EmptyFilterIntegration extends AbstractFilterIntegration
 {
@@ -219,6 +220,56 @@ final class EmptyFilterIntegration extends AbstractFilterIntegration
             'localizable_scopable_nutrition',
             ['column' => 'ingredient', 'row' => 'flour', 'locale' => 'en_US', 'scope' => 'mobile'],
             ['product']
+        );
+    }
+
+    /** @test */
+    public function it_filters_on_empty_operator_on_reference_entity_column(): void
+    {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
+
+        $this->createNutritionAttributeWithReferenceEntityColumn();
+        $this->createProductWithValues('empty_product', [], 'family_with_table');
+        $this->createProductWithValues('product_with_empty_column', [
+            'nutrition_with_ref_entity' => [[
+                'locale' => null,
+                'scope' => null,
+                'data' => [
+                    [
+                        'ingredient' => 'sugar',
+                    ],
+                    [
+                        'ingredient' => 'egg',
+                    ],
+                ],
+            ]],
+        ]);
+        $this->createProductWithValues('product_with_non_empty_column', [
+            'nutrition_with_ref_entity' => [[
+                'locale' => null,
+                'scope' => null,
+                'data' => [
+                    [
+                        'ingredient' => 'sugar',
+                        'brand_column' => 'Akeneo',
+                    ],
+                ],
+            ]],
+        ]);
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+
+        // Filter on column
+        $this->assertFilter(
+            'nutrition_with_ref_entity',
+            ['column' => 'brand_column'],
+            ['product_with_empty_column']
+        );
+
+        // Filter on column + row
+        $this->assertFilter(
+            'nutrition_with_ref_entity',
+            ['column' => 'brand_column', 'row' => 'sugar'],
+            ['product_with_empty_column']
         );
     }
 }

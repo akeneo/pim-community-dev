@@ -15,16 +15,21 @@ namespace Akeneo\Test\Pim\TableAttribute\Helper;
 
 use Akeneo\ReferenceEntity\Infrastructure\Symfony\AkeneoReferenceEntityBundle;
 use PhpSpec\Exception\Example\SkippingException;
+use PHPUnit\Framework\Assert;
 
 final class FeatureHelper
 {
-    /**
-     * For Specification tests only
-     */
-    public static function skipWhenReferenceEntityIsNotActivated(): void
+    public static function skipSpecTestWhenReferenceEntityIsNotActivated(): void
     {
         if (!\class_exists(AkeneoReferenceEntityBundle::class)) {
             throw new SkippingException('ReferenceEntity are not available in this scope');
+        }
+    }
+
+    public static function skipIntegrationTestWhenReferenceEntityIsNotActivated(): void
+    {
+        if (!\class_exists(AkeneoReferenceEntityBundle::class)) {
+            Assert::markTestSkipped('ReferenceEntity are not available in this scope');
         }
     }
 }
