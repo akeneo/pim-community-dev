@@ -52,7 +52,8 @@ class MailNotifier implements Notifier
         $message = $this->mailer->createMessage();
 
         // Add embedded images
-        $cidLogo = $message->embed(Swift_Image::fromPath($this->imagePath . '/email_logo.png'));
+        $cidLogo = $message->embed(Swift_Image::fromPath($this->imagePath . '/email_logo.png')
+            ->setDisposition('inline'));
         $cidSignature = $message->embed(Swift_Image::fromPath($this->imagePath . '/email_signature.png')
             ->setDisposition('inline'));
 
