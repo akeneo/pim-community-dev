@@ -535,6 +535,7 @@ config:
     pim/init:                           pimui/js/pim-init
     pim/asynctab:                       pimui/js/pim-async-tab
     pim/optionform:                     pimui/js/pim-optionform
+    pim/config-registry:                pimui/js/config-registry
     pim/form-modal:                     pimui/js/form/form-modal
     pim/scopable:                       pimui/js/pim-scopable
     pim/currencyfield:                  pimui/js/pim-currencyfield
