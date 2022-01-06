@@ -4,6 +4,7 @@ import {Modal, AppIllustration, Button, getColor, getFontSize} from 'akeneo-desi
 import styled from '../../common/styled-with-theme';
 import {useTranslate} from '../../shared/translate';
 import {useRouter} from '../../shared/router/use-router';
+import {CreateTestAppForm} from '../components/TestApp/CreateTestAppForm';
 
 const Subtitle = styled.h3`
     color: ${getColor('brand', 100)};
@@ -61,6 +62,7 @@ export const TestAppCreatePage = () => {
                     </Link>
                 </p>
             </Helper>
+            <CreateTestAppForm/>
             <Modal.BottomButtons>
                 <Button onClick={handleCancel} level='tertiary'>
                     {translate('pim_common.cancel')}

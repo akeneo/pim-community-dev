@@ -75,6 +75,23 @@ akeneo_connectivity.connection:
                     title: App information
                     description: If you need help, please check our article
                     link: How to test my App before publishing it?
+                    fields:
+                        name: Name
+                        activate_url: Activate url
+                        callback_url: Callback url
+                    constraint:
+                        name:
+                            required: A test app name is required.
+                            invalid: A test app name may contain only letters, numbers and underscores.
+                            too_long: A test app name is too long. It should have 250 characters or less.
+                        activate_url:
+                            required: An "Activate URL" is required.
+                            invalid: An "Activate URL" must be a valid URL.
+                            too_long: An "Activate URL" is too long. It should have 250 characters or less.
+                        callback_url:
+                            required: A "Callback URL" is required.
+                            invalid: A "Callback URL" must be a valid URL.
+                            too_long: A "Callback URL" is too long. It should have 250 characters or less.
         connected_apps:
             list:
                 apps:
