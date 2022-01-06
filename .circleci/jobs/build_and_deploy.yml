@@ -466,7 +466,7 @@ jobs:
                       UNCOMMIT_INSTANCE_STATUS_CODE=0
                       for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
                       exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
-                when: on_fail
+                  when: on_fail
             - store_artifacts:
                   path: ~/artifacts/infra
 
