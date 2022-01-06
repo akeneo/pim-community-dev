@@ -1,8 +1,9 @@
 import React from 'react';
 import {Badge, IconButton, DeleteIcon, Table} from 'akeneo-design-system';
 import {useTranslate, useRouter} from '@akeneo-pim-community/shared';
-import {AssociationType, NoResults} from '@akeneo-pim-community/settings-ui';
+import {AssociationType} from '@akeneo-pim-community/settings-ui';
 import styled from 'styled-components';
+import {NoResults} from '../../shared';
 
 type Props = {
   associationTypes: AssociationType[];
