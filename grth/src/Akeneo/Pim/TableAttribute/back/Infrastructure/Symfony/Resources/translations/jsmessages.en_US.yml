@@ -174,7 +174,10 @@ pim_table_attribute:
             no_rows_subtitle_no_permission: To be able to edit this attribute, go to the attribute setting page or contact your PIM administrator.
             no_results: There are no results
             no_options: There are no options
+            no_records: There are no records
             no_add_options_unallowed: Contact your PIM administrator to manage the "{{ attributeLabel }}" options
+            edit_records_unallowed: Contact your PIM administrator to manage the "{{ referenceEntityLabel }}" reference entity
+            manage_records: Manage records
             actions:
                 delete_row: Delete this row
                 clear_row: Clear this row

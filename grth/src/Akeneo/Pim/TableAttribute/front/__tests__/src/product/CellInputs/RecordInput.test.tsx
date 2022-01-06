@@ -5,8 +5,11 @@ import {getComplexTableAttribute, getTableValueWithId} from '../../../factories'
 import {screen, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {mockScroll} from '../../../shared/mockScroll';
+import {renderWithRedirectToRoute} from '../../../shared/renderWithRedirectToRoute';
+import {ReferenceEntityColumnDefinition} from '../../../../src';
 
 jest.mock('../../../../src/fetchers/RecordFetcher');
+jest.mock('../../../../src/fetchers/ReferenceEntityFetcher');
 mockScroll();
 
 const tableAttribute = getComplexTableAttribute('reference_entity');
@@ -103,5 +106,54 @@ describe('RecordInput', () => {
 
     expect(await screen.findByTitle('Vannes')).toBeInTheDocument();
     expect(screen.getAllByTitle('default').length).toBe(2);
+  });
+
+  it('should redirect to records edit page', async () => {
+    const redirectToRoute = jest.fn();
+    renderWithRedirectToRoute(
+      <RecordInput
+        columnDefinition={tableAttribute.table_configuration[0]}
+        highlighted={false}
+        inError={false}
+        row={getTableValueWithId('reference_entity')[0]}
+        onChange={jest.fn()}
+        attribute={tableAttribute}
+        setAttribute={jest.fn()}
+      />,
+      redirectToRoute
+    );
+
+    await openDropDown();
+    expect(screen.getByText('pim_table_attribute.form.product.manage_records')).toBeInTheDocument();
+    userEvent.click(screen.getByText('pim_table_attribute.form.product.manage_records'));
+    expect(redirectToRoute).toBeCalledWith('akeneo_reference_entities_reference_entity_edit', {
+      identifier: 'city',
+      tab: 'record',
+    });
+  });
+
+  it('should display no records helper when there are no records in the reference entity', async () => {
+    const attribute = getComplexTableAttribute('reference_entity');
+    attribute.table_configuration.push({
+      code: 'a_code',
+      reference_entity_identifier: 'empty_reference_entity',
+      data_type: 'reference_entity',
+      labels: {},
+      validations: {},
+    } as ReferenceEntityColumnDefinition);
+    renderWithProviders(
+      <RecordInput
+        columnDefinition={attribute.table_configuration[5]}
+        highlighted={false}
+        inError={false}
+        row={getTableValueWithId('reference_entity')[0]}
+        onChange={jest.fn()}
+        attribute={attribute}
+        setAttribute={jest.fn()}
+      />
+    );
+
+    await openDropDown();
+    expect(await screen.findByText('pim_table_attribute.form.product.no_records')).toBeInTheDocument();
   });
 });
