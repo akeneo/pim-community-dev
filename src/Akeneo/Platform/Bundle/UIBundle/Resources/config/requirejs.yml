@@ -449,8 +449,6 @@ config:
     jquery-ui:                     pimui/lib/jquery-ui/jquery-ui-1.12.1.custom.min
     jquery.select2:                pimui/lib/select2/select2
     jquery.select2.placeholder:    pimui/lib/select2/select2-placeholder
-    jquery.jstree:                 pimui/lib/jstree/jquery.jstree
-    jstree/jquery.hotkeys:         pimui/lib/jstree/jquery.hotkeys
     bootstrap:                     pimui/lib/bootstrap/js/bootstrap
     bootstrap-modal:               pimui/lib/bootstrap-modal/bootstrap-modal
     oro/app:                       pimui/js/oro-app
@@ -534,17 +532,15 @@ config:
     pim/controller/system-index:           pimui/js/controller/system-index.tsx
     pim/controller/categories/index:       akeneopimstructure/js/controller/CategoriesSettings
 
-    jstree/jquery.jstree.tree_selector: pimui/js/jstree/jquery.jstree.tree_selector
-    jstree/nested_switch:               pimui/js/jstree/jquery.jstree.nested_switch
     pim/init:                           pimui/js/pim-init
     pim/asynctab:                       pimui/js/pim-async-tab
     pim/optionform:                     pimui/js/pim-optionform
+    pim/config-registry:                pimui/js/config-registry
     pim/form-modal:                     pimui/js/form/form-modal
     pim/scopable:                       pimui/js/pim-scopable
     pim/currencyfield:                  pimui/js/pim-currencyfield
     pim/tree/view:                      pimui/js/TreeView.tsx
     pim/tree/associate:                 pimui/js/TreeAssociate.tsx
-    pim/tree/manage:                    pimui/js/tree-manage.jstree
     pim/attributeoptionview:            pimui/js/pim-attributeoptionview
     pim/i18n:                           pimui/js/i18n
     pim/user-context:                   pimui/js/user-context

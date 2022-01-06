@@ -57,6 +57,15 @@ define([
      * @param {Array} collection
      */
     moveFilter: function (collection) {
+      // Fix the issue that it display the filter on each switch from published and products
+      // @see PIM-10218
+      // @todo Handle the scope as the locale/category filters modules
+      const $previousScopeFilter = $('[data-drop-zone="column-context-switcher"] [data-type="product_scope"]');
+
+      if ($previousScopeFilter.length > 0) {
+        $previousScopeFilter.detach();
+      }
+
       this.$el.prependTo($('[data-drop-zone="column-context-switcher"]'));
 
       let $grid = $('#grid-' + collection.inputName);

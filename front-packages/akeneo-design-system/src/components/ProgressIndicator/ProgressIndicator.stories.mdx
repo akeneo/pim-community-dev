@@ -21,7 +21,7 @@ import {useProgress} from '../../hooks';
 
 ## Usage
 
-Progress indicator display progress through a sequence of logical and numbered steps
+Progress indicator display progress through a sequence of logical and numbered steps.
 
 ## Playground
 
@@ -68,7 +68,7 @@ return (
             </Button>
           </div>
           <ProgressIndicator>
-            {steps.map((step) => {
+            {steps.map(step => {
               return (
                 <ProgressIndicator.Step key={step} current={isCurrent(step)}>
                   {step}
@@ -89,15 +89,23 @@ return (
 <Canvas>
   <Story name="States">
     <ProgressIndicator>
-      <ProgressIndicator.Step>
-        Before current step
+      <ProgressIndicator.Step>Before current step</ProgressIndicator.Step>
+      <ProgressIndicator.Step current={true}>Current step</ProgressIndicator.Step>
+      <ProgressIndicator.Step>After current step</ProgressIndicator.Step>
+    </ProgressIndicator>
+  </Story>
+</Canvas>
+
+## Disabled
+
+<Canvas>
+  <Story name="Disabled">
+    <ProgressIndicator>
+      <ProgressIndicator.Step disabled={true}>Disabled step</ProgressIndicator.Step>
+      <ProgressIndicator.Step disabled={false} current={true}>
+        Current step enabled
       </ProgressIndicator.Step>
-      <ProgressIndicator.Step current={true}>
-        Current step
-      </ProgressIndicator.Step>
-      <ProgressIndicator.Step>
-        After current step
-      </ProgressIndicator.Step>
+      <ProgressIndicator.Step disabled={true}>Next disabled step</ProgressIndicator.Step>
     </ProgressIndicator>
   </Story>
 </Canvas>

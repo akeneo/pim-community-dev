@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsToEvaluateQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductsIndex;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
@@ -23,32 +22,12 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
 
     private ?StepExecution $stepExecution;
 
-    private EvaluatePendingCriteria $evaluatePendingProductCriteria;
-
-    private ConsolidateProductScores $consolidateProductScores;
-
-    private UpdateProductsIndex $updateProductsIndex;
-
-    private GetProductIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery;
-
-    private EvaluatePendingCriteria $evaluatePendingProductModelCriteria;
-
-    private GetProductIdsToEvaluateQueryInterface $getProductModelsIdsToEvaluateQuery;
-
     public function __construct(
-        EvaluatePendingCriteria $evaluatePendingProductCriteria,
-        ConsolidateProductScores $consolidateProductScores,
-        UpdateProductsIndex $updateProductsIndex,
-        GetProductIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery,
-        EvaluatePendingCriteria $evaluatePendingProductModelCriteria,
-        GetProductIdsToEvaluateQueryInterface $getProductModelsIdsToEvaluateQuery
+        private GetProductIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery,
+        private GetProductIdsToEvaluateQueryInterface $getProductModelsIdsToEvaluateQuery,
+        private EvaluateProducts $evaluateProducts,
+        private EvaluateProductModels $evaluateProductModels
     ) {
-        $this->evaluatePendingProductCriteria = $evaluatePendingProductCriteria;
-        $this->consolidateProductScores = $consolidateProductScores;
-        $this->updateProductsIndex = $updateProductsIndex;
-        $this->getProductIdsToEvaluateQuery = $getProductIdsToEvaluateQuery;
-        $this->evaluatePendingProductModelCriteria = $evaluatePendingProductModelCriteria;
-        $this->getProductModelsIdsToEvaluateQuery = $getProductModelsIdsToEvaluateQuery;
     }
 
     public function execute(): void
@@ -85,11 +64,7 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
     {
         $evaluationCount = 0;
         foreach ($this->getProductIdsToEvaluateQuery->execute(self::LIMIT_PER_LOOP, self::BULK_SIZE) as $productIds) {
-            $this->evaluatePendingProductCriteria->evaluateAllCriteria($productIds);
-
-            $this->consolidateProductScores->consolidate($productIds);
-
-            $this->updateProductsIndex->execute($productIds);
+            ($this->evaluateProducts)($productIds);
 
             $evaluationCount += count($productIds);
             $this->stepExecution->setWriteCount($this->stepExecution->getWriteCount() + count($productIds));
@@ -102,7 +77,7 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
     {
         $evaluationCount = 0;
         foreach ($this->getProductModelsIdsToEvaluateQuery->execute(self::LIMIT_PER_LOOP, self::BULK_SIZE) as $productModelIds) {
-            $this->evaluatePendingProductModelCriteria->evaluateAllCriteria($productModelIds);
+            ($this->evaluateProductModels)($productModelIds);
 
             $evaluationCount += count($productModelIds);
             $this->stepExecution->setWriteCount($this->stepExecution->getWriteCount() + count($productModelIds));
