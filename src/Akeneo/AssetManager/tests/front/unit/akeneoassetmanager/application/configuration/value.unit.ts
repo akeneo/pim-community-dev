@@ -1,4 +1,9 @@
-import {getFieldView, getFilterViews, getFilterView, ValueConfig} from 'akeneoassetmanager/application/configuration/value';
+import {
+  getFieldView,
+  getFilterViews,
+  getFilterView,
+  ValueConfig,
+} from 'akeneoassetmanager/application/configuration/value';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import {NormalizedTextAttribute, ValidationRuleOption} from 'akeneoassetmanager/domain/model/attribute/type/text';
 import {view as TextEditView} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/text';
@@ -103,7 +108,7 @@ config:
             text:
                 filter: '@my_data_filter_view'
 
-Actual conf: ${JSON.stringify({"text": {"view":{}},"option":{"view":{},"filter":{"filter":{"compare":null}}}})}`);
+Actual conf: ${JSON.stringify({text: {view: {}}, option: {view: {}, filter: {filter: {compare: null}}}})}`);
   });
 
   test('I get an error if the filter view configuration is invalid', () => {

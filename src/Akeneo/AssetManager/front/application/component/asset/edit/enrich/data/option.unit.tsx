@@ -3,8 +3,8 @@ import {screen} from '@testing-library/react';
 import {OPTION_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import {view as OptionView} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/option';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {NormalizedOptionAttribute} from "akeneoassetmanager/domain/model/attribute/type/option";
-import userEvent from "@testing-library/user-event";
+import {NormalizedOptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
+import userEvent from '@testing-library/user-event';
 
 const optionAttribute: NormalizedOptionAttribute = {
   code: 'tag',
@@ -51,7 +51,9 @@ test('It renders the option attribute', () => {
 test('It renders the placeholder when the value is empty', () => {
   const emptyValue = {...optionValue, data: null};
 
-  renderWithProviders(<OptionView channel={null} value={emptyValue} locale={null} onChange={jest.fn()} canEditData={true} />);
+  renderWithProviders(
+    <OptionView channel={null} value={emptyValue} locale={null} onChange={jest.fn()} canEditData={true} />
+  );
 
   expect(screen.getByPlaceholderText('pim_asset_manager.attribute.options.no_value')).toBeInTheDocument();
 });
@@ -59,7 +61,9 @@ test('It renders the placeholder when the value is empty', () => {
 test('It does not render if the data is not a option data', () => {
   const otherValue = {...optionValue, attribute: {...optionValue.attribute, type: 'invalid_type'}};
 
-  renderWithProviders(<OptionView channel={null} value={otherValue} locale={null} onChange={jest.fn()} canEditData={true} />);
+  renderWithProviders(
+    <OptionView channel={null} value={otherValue} locale={null} onChange={jest.fn()} canEditData={true} />
+  );
 
   expect(screen.queryByText('[tag_1]')).not.toBeInTheDocument();
 });
@@ -67,7 +71,9 @@ test('It does not render if the data is not a option data', () => {
 test('It can change the option value', () => {
   const onChange = jest.fn();
 
-  renderWithProviders(<OptionView channel={null} value={optionValue} locale={null} onChange={onChange} canEditData={true} />);
+  renderWithProviders(
+    <OptionView channel={null} value={optionValue} locale={null} onChange={onChange} canEditData={true} />
+  );
 
   userEvent.click(screen.getByTitle('pim_common.open'));
   userEvent.click(screen.getByText('[tag_2]'));
