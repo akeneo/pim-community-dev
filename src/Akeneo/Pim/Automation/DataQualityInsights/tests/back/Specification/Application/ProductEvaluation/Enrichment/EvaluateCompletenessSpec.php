@@ -60,17 +60,17 @@ final class EvaluateCompletenessSpec extends ObjectBehavior
         $expectedResult = (new Write\CriterionEvaluationResult())
             ->addRate($channelMobile, $localeEn, new Rate(100))
             ->addStatus($channelMobile, $localeEn, CriterionEvaluationResultStatus::done())
-            ->addRateByAttributes($channelMobile, $localeEn, [])
+            ->addData('number_of_improvable_attributes', $channelMobile, $localeEn, 0)
             ->addData('total_number_of_attributes', $channelMobile, $localeEn, 2)
 
             ->addRate($channelMobile, $localeFr, new Rate(85))
             ->addStatus($channelMobile, $localeFr, CriterionEvaluationResultStatus::done())
-            ->addRateByAttributes($channelMobile, $localeFr, ['name' => 0, 'weight' => 0])
+            ->addData('number_of_improvable_attributes', $channelMobile, $localeFr, 2)
             ->addData('total_number_of_attributes', $channelMobile, $localeFr, 6)
 
             ->addRate($channelPrint, $localeEn, new Rate(92))
             ->addStatus($channelPrint, $localeEn, CriterionEvaluationResultStatus::done())
-            ->addRateByAttributes($channelPrint, $localeEn, ['description' => 0])
+            ->addData('number_of_improvable_attributes', $channelPrint, $localeEn, 1)
             ->addData('total_number_of_attributes', $channelPrint, $localeEn, 3)
 
             ->addStatus($channelPrint, $localeFr, CriterionEvaluationResultStatus::notApplicable())

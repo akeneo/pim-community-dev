@@ -7,7 +7,6 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use DateTimeImmutable;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -18,7 +17,7 @@ final class CriterionEvaluation
     private CriterionCode $criterionCode;
     private ProductId $productId;
     private CriterionEvaluationStatus $status;
-    private ?DateTimeImmutable $evaluatedAt = null;
+    private ?\DateTimeImmutable $evaluatedAt = null;
     private ?CriterionEvaluationResult $result = null;
 
     public function __construct(
@@ -41,7 +40,7 @@ final class CriterionEvaluation
     public function end(CriterionEvaluationResult $result): self
     {
         $this->status = CriterionEvaluationStatus::done();
-        $this->evaluatedAt = new DateTimeImmutable();
+        $this->evaluatedAt = new \DateTimeImmutable();
         $this->result = $result;
 
         return $this;
@@ -53,7 +52,7 @@ final class CriterionEvaluation
         $this->status = CriterionEvaluationStatus::pending();
 
         if (false === $criterionApplicability->isApplicable()) {
-            $this->evaluatedAt = new DateTimeImmutable();
+            $this->evaluatedAt = new \DateTimeImmutable();
             $this->status = CriterionEvaluationStatus::done();
         }
 
@@ -84,7 +83,7 @@ final class CriterionEvaluation
         return $this->productId;
     }
 
-    public function getEvaluatedAt(): ?DateTimeImmutable
+    public function getEvaluatedAt(): ?\DateTimeImmutable
     {
         return $this->evaluatedAt;
     }
