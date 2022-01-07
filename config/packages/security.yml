@@ -96,7 +96,6 @@ security:
                 secret:                     "%env(APP_SECRET)%"
                 name:                       BAPRM
                 lifetime:                   1209600   # stay logged for two weeks
-                samesite:                   'strict'
             anonymous:                      false
 
     access_control:

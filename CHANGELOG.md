@@ -149,7 +149,6 @@
 ```bash
 bin/console messenger:consume ui_job import_export_job data_maintenance_job
 ```
-- PIM-10229: Enforce strict samesite policy for session cookies
 
 ## New features
 
