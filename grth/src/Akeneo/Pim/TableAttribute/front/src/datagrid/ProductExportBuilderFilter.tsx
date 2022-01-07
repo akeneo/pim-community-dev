@@ -85,9 +85,6 @@ const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
 
     const codes: RecordCode[] = [];
     if (initialDataFilter.value?.row && firstColumnType === 'reference_entity') codes.push(initialDataFilter.value.row);
-    // const filteredColumn = attribute?.table_configuration.find(({code}) => code === initialDataFilter.column);
-    // if (Array.isArray(initialDataFilter.value) && filteredColumn?.data_type === 'reference_entity')
-    //   codes = codes.concat(initialDataFilter.value);
 
     ReferenceEntityRecordRepository.search(router, firstColumn.reference_entity_identifier, {
       locale: catalogLocale,
