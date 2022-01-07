@@ -350,10 +350,6 @@ batch_jobs:
   xlsx_reference_entity_record_import:
     label: 参照エンティティの記録を XLSX 形式でインポート
     import.label: 記録のインポート
-pim_datagrid:
-  cells:
-    type:
-      reference_entity_mass_delete_records: 記録の一括削除を実行
 job_execution:
   summary:
     records: 記録

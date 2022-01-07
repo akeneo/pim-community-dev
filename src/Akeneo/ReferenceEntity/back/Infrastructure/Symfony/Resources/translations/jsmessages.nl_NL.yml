@@ -350,10 +350,6 @@ batch_jobs:
   xlsx_reference_entity_record_import:
     label: Referentie entiteit record import in XLSX
     import.label: Record importeren
-pim_datagrid:
-  cells:
-    type:
-      reference_entity_mass_delete_records: Groepsgewijze verwijdering van records uitvoeren
 job_execution:
   summary:
     records: Records

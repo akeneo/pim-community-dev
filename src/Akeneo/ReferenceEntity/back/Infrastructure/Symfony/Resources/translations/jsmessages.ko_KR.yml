@@ -350,10 +350,6 @@ batch_jobs:
   xlsx_reference_entity_record_import:
     label: 참조 엔터티 레코드를 XLSX로 가져오기
     import.label: 레코드 가져오기
-pim_datagrid:
-  cells:
-    type:
-      reference_entity_mass_delete_records: 레코드 대량 삭제 실행
 job_execution:
   summary:
     records: 레코드

@@ -421,7 +421,6 @@ flash:
     executed: De uitvoering van de regels is gelanceerd. U wordt op de hoogte gebracht wanneer dit is voltooid.
     enabled: De regel is ingeschakeld
     disabled: De regel is uitgeschakeld
-pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regelinstellingen
 batch_jobs:
   add_attribute_value:
     execute_rules.label: Uitvoering van regels
@@ -464,11 +463,6 @@ pim_title:
   pimee_catalog_rule_rule_index: Regels
   pimee_catalog_rule_edit: Regel bewerken
   pimee_catalog_rule_new: Regels
-pim_import_export:
-  widget:
-    last_operations:
-      job_type:
-        execute_rules: Uitvoering van regels
 akeneo_job_process_tracker:
   type:
     mass_edit_rule: Massa bewerkregel

@@ -34,11 +34,6 @@ pim_analytics:
     average_percentage_localizable_only_attributes: Percentuale media di attributi solo localizzabili per entità di riferimento
     average_percentage_scopable_only_attributes: Percentuale media di attributi a solo scopo per entità di riferimento
     average_percentage_scopable_and_localizable_attributes: Percentuale media di attributi localizzabili e di scopo per entità di riferimento
-pim_datagrid:
-  cells:
-    type:
-      reference_entity_mass_delete_records: Esegui eliminazione di massa registri
-  reference_entity_mass_delete_records: Eliminazione di massa registri
 job_execution:
   summary:
     records: Registri

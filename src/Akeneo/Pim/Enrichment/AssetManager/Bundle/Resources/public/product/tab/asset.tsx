@@ -36,6 +36,8 @@ import attributeFetcher from 'akeneoassetmanager/infrastructure/fetcher/attribut
 import {Query} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {Context} from 'akeneoassetmanager/domain/model/context';
+import {ConfigProvider} from 'akeneoassetmanager/application/hooks/useConfig';
+import {getConfig} from 'pimui/js/config-registry';
 
 const fetcherRegistry = require('pim/fetcher-registry');
 const Form = require('pim/form');
@@ -137,7 +139,15 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
       <Provider store={this.store}>
         <DependenciesProvider>
           <ThemeProvider theme={pimTheme}>
-            <List dataProvider={dataProvider} />
+            <ConfigProvider
+              config={{
+                value: getConfig('akeneoassetmanager/application/configuration/value') ?? {},
+                sidebar: getConfig('akeneoassetmanager/application/configuration/sidebar') ?? {},
+                attribute: getConfig('akeneoassetmanager/application/configuration/attribute') ?? {},
+              }}
+            >
+              <List dataProvider={dataProvider} />
+            </ConfigProvider>
           </ThemeProvider>
         </DependenciesProvider>
       </Provider>,

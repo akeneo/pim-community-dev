@@ -53,7 +53,6 @@ pim_enrich:
 flash:
   rule:
     executed: Начато выполнение правил. Вы будете уведомлены, когда это будет сделано.
-pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Настройки правил
 batch_jobs:
   add_attribute_value:
     execute_rules.label: Выполнение правил
@@ -81,11 +80,6 @@ pim_menu:
 pim_title:
   pimee_catalog_rule_rule_index: Правила
   pimee_catalog_rule_new: Правила
-pim_import_export:
-  widget:
-    last_operations:
-      job_type:
-        execute_rules: Выполнение правил
 akeneo_job_process_tracker:
   type:
     execute_rules: Выполнение правил

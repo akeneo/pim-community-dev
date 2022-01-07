@@ -299,14 +299,6 @@ pim:
         requests:
           cpu: "100m"
           memory: "10Mi"
-    migrate-job-messages-from-old-queue:
-      enabled: true
-      pimCommand: "akeneo:batch:migrate-job-messages-from-old-queue --no-interaction"
-      schedule: "*/15 * * * *"
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "10Mi"
     migrate-records-index-mapping:
       enabled: true
       pimCommand: "akeneo:reference-entity:migrate-records-index-mapping --no-interaction"

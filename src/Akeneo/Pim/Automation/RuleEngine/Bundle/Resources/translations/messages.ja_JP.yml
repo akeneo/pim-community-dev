@@ -89,8 +89,4 @@ job_execution:
     updated_entities: 更新済の商品 / 商品モデル
     executed_rules: ルールを正常に実行しました
     errored_rules: スキップ済のルール (無効)
-pim_datagrid:
-  cells:
-    type:
-      mass_edit_rule: ルールの設定
-      execute_rules: ルールの実行
+

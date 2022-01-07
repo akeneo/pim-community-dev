@@ -30,8 +30,4 @@ btn:
 job_execution:
   summary:
     rule_calculated: Quantitat de regles
-pim_datagrid:
-  cells:
-    type:
-      mass_edit_rule: Configuració de les regles
-      execute_rules: Execució de les regles
+

@@ -350,10 +350,6 @@ batch_jobs:
   xlsx_reference_entity_record_import:
     label: 以 XLSX 格式导入参考实体记录
     import.label: 导入记录
-pim_datagrid:
-  cells:
-    type:
-      reference_entity_mass_delete_records: 执行记录批量删除
 job_execution:
   summary:
     records: 记录
