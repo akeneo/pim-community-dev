@@ -154,7 +154,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
         ], json_decode($response->getContent(), true));
     }
 
-    public function test_authorization_scopes_empty(): void
+    public function test_authorization_scopes_are_empty(): void
     {
         $this->authenticateAsAdmin();
         $app = App::fromWebMarketplaceValues($this->webMarketplaceApi->getApp('90741597-54c5-48a1-98da-a68e7ee0a715'));
