@@ -1,10 +1,14 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ColumnCode,
   FilterOperator,
   FilterValue,
   isFilterValid,
   PendingTableFilterValue,
+  RecordCode,
+  ReferenceEntityColumnDefinition,
+  ReferenceEntityRecord,
+  SelectOption,
   SelectOptionCode,
   TableAttribute,
 } from '../models';
@@ -12,6 +16,8 @@ import {FilterSelectorList} from './FilterSelectorList';
 import styled from 'styled-components';
 import {useFetchOptions} from '../product';
 import {AttributeContext} from '../contexts';
+import {ReferenceEntityRecordRepository} from '../repositories';
+import {useRouter, useUserContext} from '@akeneo-pim-community/shared';
 
 export type BackendTableProductExportFilterValue = {
   operator: FilterOperator;
@@ -46,8 +52,14 @@ const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
   onChange,
   initialDataFilter,
 }) => {
+  const router = useRouter();
+  const userContext = useUserContext();
+  const catalogLocale = userContext.get('catalogLocale');
   const [attributeState, setAttributeState] = React.useState<TableAttribute>(attribute);
   const {getOptionsFromColumnCode} = useFetchOptions(attributeState, setAttributeState);
+  const firstColumnType = attribute.table_configuration[0].data_type;
+  const [records, setRecords] = useState<ReferenceEntityRecord[] | undefined>();
+
   const handleChange = (filter: PendingTableFilterValue) => {
     if (isFilterValid(filter)) {
       onChange({
@@ -62,27 +74,53 @@ const ProductExportBuilderFilter: React.FC<ProductExportBuilderFilterProps> = ({
   };
 
   const [initialFilter, setInitialFilter] = React.useState<PendingTableFilterValue | undefined>();
-  const optionsForFirstColumn = attributeState
+  const optionsFromFirstSelectColumn = attributeState
     ? getOptionsFromColumnCode(attributeState.table_configuration[0].code)
     : [];
 
+  useEffect(() => {
+    if (!attribute || firstColumnType === 'select') return;
+
+    const firstColumn = attribute?.table_configuration[0] as ReferenceEntityColumnDefinition;
+
+    const codes: RecordCode[] = [];
+    if (initialDataFilter.value?.row && firstColumnType === 'reference_entity') codes.push(initialDataFilter.value.row);
+    // const filteredColumn = attribute?.table_configuration.find(({code}) => code === initialDataFilter.column);
+    // if (Array.isArray(initialDataFilter.value) && filteredColumn?.data_type === 'reference_entity')
+    //   codes = codes.concat(initialDataFilter.value);
+
+    ReferenceEntityRecordRepository.search(router, firstColumn.reference_entity_identifier, {
+      locale: catalogLocale,
+      channel: userContext.get('catalogScope'),
+      codes,
+    }).then(records => {
+      setRecords(records);
+    });
+  }, [attribute, catalogLocale, router, userContext]);
+
   React.useEffect(() => {
-    if (attributeState) {
-      const column = attributeState.table_configuration.find(column => column.code === initialDataFilter.value?.column);
-
-      if (typeof optionsForFirstColumn === 'undefined') {
-        return;
-      }
-
-      const row = optionsForFirstColumn.find(option => option.code === initialDataFilter.value?.row);
-      setInitialFilter({
-        row,
-        column,
-        value: initialDataFilter.value?.value,
-        operator: initialDataFilter.operator,
-      });
+    if (
+      !attribute ||
+      (firstColumnType === 'reference_entity' && typeof records === 'undefined') ||
+      (firstColumnType === 'select' && typeof optionsFromFirstSelectColumn === 'undefined')
+    ) {
+      return;
     }
-  }, [attributeState, optionsForFirstColumn]);
+
+    const column = attribute.table_configuration.find(column => column.code === initialDataFilter.value?.column);
+    const optionsOrRecords =
+      firstColumnType === 'select' ? (optionsFromFirstSelectColumn as SelectOption[]) : records || [];
+    const row =
+      optionsOrRecords.find(({code}) => code === initialDataFilter.value?.row) ||
+      (initialDataFilter.operator ? null : undefined);
+    const pendingFilter = {
+      row,
+      column,
+      value: initialDataFilter.value?.value,
+      operator: initialDataFilter.operator,
+    };
+    setInitialFilter(pendingFilter);
+  }, [optionsFromFirstSelectColumn, attribute, records, firstColumnType]);
 
   return (
     <AttributeContext.Provider value={{attribute: attributeState, setAttribute: setAttributeState}}>

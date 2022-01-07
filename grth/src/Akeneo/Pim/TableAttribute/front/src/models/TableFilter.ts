@@ -1,5 +1,5 @@
 import {ColumnCode, ColumnDefinition, SelectOption, SelectOptionCode} from './TableConfiguration';
-import {RecordCode} from './ReferenceEntityRecord';
+import {RecordCode, ReferenceEntityRecord} from './ReferenceEntityRecord';
 
 export type FilterOperator =
   | 'STARTS WITH'
@@ -36,7 +36,7 @@ export type PendingBackendTableFilterValue = {
 };
 
 export type PendingTableFilterValue = {
-  row?: SelectOption | null;
+  row?: SelectOption | ReferenceEntityRecord | null;
   column?: ColumnDefinition;
   operator?: FilterOperator;
   value?: FilterValue;
