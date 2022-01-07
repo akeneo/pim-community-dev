@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import {getColor} from '../../../../theme';
 
 const TableInputTh = styled.th`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-weight: normal;
   padding: 0 10px;
   color: ${getColor('grey', 140)};
