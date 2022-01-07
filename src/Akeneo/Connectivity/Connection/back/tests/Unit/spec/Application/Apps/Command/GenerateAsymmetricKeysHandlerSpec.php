@@ -20,7 +20,6 @@ class GenerateAsymmetricKeysHandlerSpec extends ObjectBehavior
         AsymmetricKeysGeneratorInterface $asymmetricKeysGenerator,
         SaveAsymmetricKeysQueryInterface $saveAsymmetricKeysQuery
     ): void {
-
         $this->beConstructedWith($asymmetricKeysGenerator, $saveAsymmetricKeysQuery);
     }
 

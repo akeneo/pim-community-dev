@@ -24,7 +24,8 @@ class InvalidAppAuthenticationExceptionSpec extends ObjectBehavior
         $this->beAnInstanceOf(InvalidAppAuthenticationException::class);
     }
 
-    public function it_returns_constraint_violation_list(ConstraintViolationListInterface $constraintViolationList
+    public function it_returns_constraint_violation_list(
+        ConstraintViolationListInterface $constraintViolationList
     ): void {
         $constraintViolationList->count()->willReturn(1);
         $constraintViolationList->get(0)->willReturn(

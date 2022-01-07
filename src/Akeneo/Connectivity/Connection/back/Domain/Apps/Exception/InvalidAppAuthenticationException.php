@@ -22,7 +22,7 @@ class InvalidAppAuthenticationException extends \ErrorException
     {
         $message = count($constraintViolationList) > 0 ? $constraintViolationList->get(0)->getMessage() : '';
 
-        parent::__construct($message);
+        parent::__construct(sprintf("%s", $message));
 
         $this->constraintViolationList = $constraintViolationList;
     }
