@@ -14,7 +14,6 @@ framework:
         name: BAPID
         handler_id: session.handler.pdo
         gc_maxlifetime: 3600
-        cookie_samesite: 'strict'
     serializer:
         enabled: true
     http_method_override: true
