@@ -9,7 +9,7 @@ const TableInputCellContainer = styled.div<
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  
+
   ${({rowTitle}) =>
     rowTitle &&
     css`
