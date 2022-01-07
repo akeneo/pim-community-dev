@@ -66,7 +66,7 @@ class ConfirmAuthenticationEndToEnd extends WebTestCase
 
     public function test_it_returns_redirect_url(): void
     {
-        $autenticationScope = ScopeList::fromScopes([
+        $authenticationScope = ScopeList::fromScopes([
             AuthenticationScope::SCOPE_OPENID,
             AuthenticationScope::SCOPE_PROFILE,
         ]);
