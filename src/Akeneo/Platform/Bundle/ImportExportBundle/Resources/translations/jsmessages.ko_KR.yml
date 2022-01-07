@@ -154,21 +154,7 @@ pim_import_export:
   widget:
     last_operations:
       empty: 현재 표시할 작업이 없습니다.
-      date: 날짜
-      profile_name: 프로필 이름
       details: 세부 정보
-      warning_count: 경고
-      username: 사용자 이름
-      job_type:
-        import: 가져오기
-        export: 내보내기
-        mass_edit: 대량 편집
-        mass_edit_rule: 규칙 설정
-        quick_export: 빠른 내보내기
-        compute_family_variant_structure_changes: 패밀리 변형 구조 변경 사항 계산
-        compute_completeness_of_products_family: 제품 패밀리 완성도 계산
-        mass_delete: 제품 대량 삭제
-        clean_removed_attribute_job: 제거된 특성 값 정리
       header.view_all: 모두 보기
   batch_status:
     1: 완료
