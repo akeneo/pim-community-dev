@@ -568,7 +568,7 @@ pim_import_export:
             help: Export prefix and suffix of the media link asset attributes
 
 akeneo_job_process_tracker:
-  type:
+  type_filter:
     asset_manager_execute_naming_convention: Execute Asset Family naming convention
     asset_manager_link_assets_to_products: Link assets to products
     asset_manager_compute_transformations: Compute asset transformations

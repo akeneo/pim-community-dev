@@ -135,6 +135,7 @@
 - PIM-10216: Fix PDF renderer in case of empty tables
 - PIM-10221: Fix media link input caret jumping when manually typing a link
 - PIM-10227: Fix filter not applied properly on the Asset manager grid
+- PIM-10215: Fixed missing translations label in process tracker for mass edit on assets and records jobs
 
 ## Improvements
 
