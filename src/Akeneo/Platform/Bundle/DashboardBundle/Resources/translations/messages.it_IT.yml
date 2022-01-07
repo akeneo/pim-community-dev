@@ -6,5 +6,3 @@ pim_dashboard:
       title: Percentuale di completamento per canale e localizzazione
     last_operations:
       title: Ultime operazioni
-      status: Stato
-      type: Tipo

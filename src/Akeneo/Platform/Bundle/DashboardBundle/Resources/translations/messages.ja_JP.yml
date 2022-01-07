@@ -6,5 +6,3 @@ pim_dashboard:
       title: チャンネルとロケールについての完全性
     last_operations:
       title: 前回の操作
-      status: ステータス
-      type: タイプ
