@@ -104,7 +104,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
         Assert::assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
-    public function test_authentication_scopes_empty(): void
+    public function test_authentication_scopes_are_empty(): void
     {
         $this->authenticateAsAdmin();
         $app = App::fromWebMarketplaceValues($this->webMarketplaceApi->getApp('90741597-54c5-48a1-98da-a68e7ee0a715'));
