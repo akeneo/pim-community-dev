@@ -34,11 +34,6 @@ pim_analytics:
     average_percentage_localizable_only_attributes: Gemiddeld percentage van attributen per referentie-entiteit die alleen kunnen worden vertaald
     average_percentage_scopable_only_attributes: Gemiddeld percentage van attributen per referentie-entiteit die alleen meerdere toepassingsgebieden hebben 
     average_percentage_scopable_and_localizable_attributes: Gemiddelde percentage van attributen per referentie-entiteit die kunnen worden vertaald en meerdere toepassingsgebieden hebben
-pim_datagrid:
-  cells:
-    type:
-      reference_entity_mass_delete_records: Groepsgewijze verwijdering van records uitvoeren
-  reference_entity_mass_delete_records: Groepsgewijs records verwijderen
 job_execution:
   summary:
     records: Records

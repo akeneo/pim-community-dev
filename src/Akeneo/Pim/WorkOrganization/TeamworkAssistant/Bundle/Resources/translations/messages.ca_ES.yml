@@ -38,8 +38,3 @@ job_execution:
 pim_analytics:
   info_type:
     nb_projects: Número de projectes
-pim_datagrid:
-  cells:
-    type:
-      project_calculation: Càlcul de projecte
-      refresh_project_completeness_calculation: Actualitzar el càlcul de completesa del projecte

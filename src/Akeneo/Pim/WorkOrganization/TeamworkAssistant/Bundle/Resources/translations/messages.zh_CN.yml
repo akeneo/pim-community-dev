@@ -41,8 +41,3 @@ job_execution:
 pim_analytics:
   info_type:
     nb_projects: 项目数量
-pim_datagrid:
-  cells:
-    type:
-      project_calculation: 项目计算
-      refresh_project_completeness_calculation: 刷新项目完成度计算

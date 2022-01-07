@@ -34,11 +34,6 @@ pim_analytics:
     average_percentage_localizable_only_attributes: Średni procent tylko tłumaczonych atrybutów na obiekt referencyjny
     average_percentage_scopable_only_attributes: Średni procent tylko zmiennych atrybutów na obiekt referencyjny
     average_percentage_scopable_and_localizable_attributes: Średni procent tłumaczonych i zmiennych atrybutów na obiekt referencyjny
-pim_datagrid:
-  cells:
-    type:
-      reference_entity_mass_delete_records: Wykonaj masowe usuwanie rekordów
-  reference_entity_mass_delete_records: Masowe usuwanie rekordów
 job_execution:
   summary:
     records: Rekordy

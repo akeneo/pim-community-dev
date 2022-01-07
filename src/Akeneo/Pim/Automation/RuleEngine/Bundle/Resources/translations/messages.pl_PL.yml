@@ -89,8 +89,4 @@ job_execution:
     updated_entities: zaktualizowane produkty / modele produktów
     executed_rules: pomyślnie wykonane reguły
     errored_rules: pominięte reguły (nieprawidłowe)
-pim_datagrid:
-  cells:
-    type:
-      mass_edit_rule: Ustawienia reguł
-      execute_rules: Wykonywanie reguł
+

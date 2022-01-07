@@ -350,10 +350,6 @@ batch_jobs:
   xlsx_reference_entity_record_import:
     label: Importazione registro per entità di riferimento in XLSX
     import.label: Importazione registro
-pim_datagrid:
-  cells:
-    type:
-      reference_entity_mass_delete_records: Esegui eliminazione di massa registri
 job_execution:
   summary:
     records: Record

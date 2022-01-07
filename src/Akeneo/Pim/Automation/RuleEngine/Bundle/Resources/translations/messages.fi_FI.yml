@@ -89,8 +89,4 @@ job_execution:
     updated_entities: päivitetyt tuotteet / tuotemallit
     executed_rules: onnistuneesti suoritetut säännöt
     errored_rules: ohitetut säännöt (virheellinen)
-pim_datagrid:
-  cells:
-    type:
-      mass_edit_rule: Sääntöjen asetukset
-      execute_rules: Sääntöjen suorittaminen
+

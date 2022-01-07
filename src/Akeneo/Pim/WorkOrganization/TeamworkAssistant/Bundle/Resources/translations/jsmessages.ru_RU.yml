@@ -43,12 +43,6 @@ teamwork_assistant:
 pim_datagrid:
   view_selector:
     project: Проекты
-pim_dashboard:
-  widget:
-    last_operations:
-      job_type:
-        refresh_project_completeness_calculation: Помощник по команде
-        project_calculation: Помощник по команде
 batch_jobs:
   project_calculation:
     project_calculation.label: Подсчет статистики проекта

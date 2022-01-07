@@ -421,7 +421,6 @@ flash:
     executed: L'esecuzione delle regole è stata lanciata. Sarai avvisato quando finisce.
     enabled: La regola è stata attivata.
     disabled: La regola è stata disattivata
-pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Impostazioni delle regole
 batch_jobs:
   add_attribute_value:
     execute_rules.label: Esecuzione regole
@@ -464,11 +463,6 @@ pim_title:
   pimee_catalog_rule_rule_index: Regole
   pimee_catalog_rule_edit: Modifica regola
   pimee_catalog_rule_new: Regole
-pim_import_export:
-  widget:
-    last_operations:
-      job_type:
-        execute_rules: Esecuzione regole
 akeneo_job_process_tracker:
   type:
     mass_edit_rule: Regola di modifica di massa
