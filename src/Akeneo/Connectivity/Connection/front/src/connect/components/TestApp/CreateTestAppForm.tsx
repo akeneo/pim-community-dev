@@ -1,37 +1,179 @@
-import React from 'react';
-import {TextInput} from 'akeneo-design-system';
-import {useFormik} from 'formik';
+import React, {FC, useState} from 'react';
+import {Button, Field, getColor, getFontSize, Helper, Modal, TextInput} from 'akeneo-design-system';
+import {useTranslate} from '../../../shared/translate';
+import styled from '../../../common/styled-with-theme';
+import {TestAppCredentials} from '../../../model/Apps/test-app-credentials';
 
-import {Translate, useTranslate} from '../../../shared/translate';
+const Title = styled.h2`
+    color: ${getColor('grey', 140)};
+    font-size: 28px;
+    font-weight: normal;
+    line-height: 28px;
+    margin: 0;
+`;
 
-export const CreateTestAppForm = () => {
+const FormHelper = styled.div`
+    color: ${getColor('grey', 120)};
+    font-size: ${getFontSize('default')};
+    font-weight: normal;
+    line-height: 18px;
+    margin: 17px 0 17px 0;
+`;
+
+const Link = styled.a`
+    color: ${getColor('brand', 100)};
+    text-decoration: underline;
+`;
+
+const Form = styled.form`
+    > * {
+        margin: 20px 10px 0px 0px;
+    }
+`;
+
+type Props = {
+    onCancel: () => void;
+    setCredentials: (credentials: TestAppCredentials) => void;
+};
+
+type TestApp = {
+    name: string;
+    activateUrl: string;
+    callbackUrl: string;
+};
+
+type FormErrors = {
+    name: string | null;
+    activateUrl: string | null;
+    callbackUrl: string | null;
+};
+
+export const CreateTestAppForm: FC<Props> = ({onCancel, setCredentials}) => {
     const translate = useTranslate();
+    const [testApp, setTestApp] = useState<TestApp>({name: '', activateUrl: '', callbackUrl: ''});
+    const [errors, setErrors] = useState<FormErrors>({name: null, activateUrl: null, callbackUrl: null});
 
-    const formik = useFormik({
-        initialValues: {
-            name: '',
-            activate_url: '',
-            callback_url: '',
-        },
-        onSubmit: (values) => {
-            console.log(values);
+    const onNameChange = (newName: string) => {
+        setTestApp(testApp => ({
+            ...testApp,
+            name: newName,
+        }));
+    };
+
+    const onActivateUrlChange = (newActivateUrl: string) => {
+        setTestApp(testApp => ({
+            ...testApp,
+            activateUrl: newActivateUrl,
+        }));
+    };
+
+    const onCallbackUrlChange = (newCallbackUrl: string) => {
+        setTestApp(testApp => ({
+            ...testApp,
+            callbackUrl: newCallbackUrl,
+        }));
+    };
+
+    const handleCreate = () => {
+        const currentErrors: FormErrors = {
+            name:
+                '' === testApp.name
+                    ? translate(
+                          'akeneo_connectivity.connection.connect.marketplace.test_apps.modal.app_information.constraint.name.required'
+                      )
+                    : null,
+            activateUrl:
+                '' === testApp.activateUrl
+                    ? translate(
+                          'akeneo_connectivity.connection.connect.marketplace.test_apps.modal.app_information.constraint.activate_url.required'
+                      )
+                    : null,
+            callbackUrl:
+                '' === testApp.callbackUrl
+                    ? translate(
+                          'akeneo_connectivity.connection.connect.marketplace.test_apps.modal.app_information.constraint.callback_url.required'
+                      )
+                    : null,
+        };
+
+        setErrors(currentErrors);
+
+        if (null !== currentErrors.name || null !== currentErrors.activateUrl || null !== currentErrors.callbackUrl) {
+            return;
         }
-    });
+
+        // TODO: call api endpoint to fetch credentials
+        setCredentials({
+            clientId: 'clientId',
+            clientSecret: 'clientSecret',
+        });
+    };
 
     return (
-        <form onSubmit={formik.handleSubmit}>
-            <label htmlFor="name">
-                <Translate id='akeneo_connectivity.connection.connect.marketplace.test_app.modal.fields.name' />
-                &nbsp;
-                <Translate id='pim_common.required_label' />
-            </label>
-            <TextInput
-                id='name'
-                name='name'
-                type='text'
-                value={formik.values.name}
-                onChange={formik.handleChange}
-            />
-        </form>
+        <>
+            <Title>
+                {translate('akeneo_connectivity.connection.connect.marketplace.test_apps.modal.app_information.title')}
+            </Title>
+            <FormHelper>
+                <p>
+                    {translate(
+                        'akeneo_connectivity.connection.connect.marketplace.test_apps.modal.app_information.description'
+                    )}
+                    <span className='cline-any cline-neutral'>&nbsp;</span>
+                    <Link href={'https://help.akeneo.com/pim/articles/manage-your-apps.html#create-a-test-app'}>
+                        {translate(
+                            'akeneo_connectivity.connection.connect.marketplace.test_apps.modal.app_information.link'
+                        )}
+                    </Link>
+                </p>
+            </FormHelper>
+
+            <Form>
+                <Field
+                    requiredLabel={translate('pim_common.required_label')}
+                    label={translate(
+                        'akeneo_connectivity.connection.connect.marketplace.test_apps.modal.app_information.fields.name'
+                    )}
+                >
+                    <TextInput invalid={null !== errors.name} onChange={onNameChange} data-testid={'name-input'} />
+                    {errors.name ? <Helper level='error'>{errors.name}</Helper> : null}
+                </Field>
+                <Field
+                    requiredLabel={translate('pim_common.required_label')}
+                    label={translate(
+                        'akeneo_connectivity.connection.connect.marketplace.test_apps.modal.app_information.fields.activate_url'
+                    )}
+                >
+                    <TextInput
+                        invalid={null !== errors.activateUrl}
+                        onChange={onActivateUrlChange}
+                        data-testid={'activate-url-input'}
+                    />
+                    {errors.activateUrl ? <Helper level='error'>{errors.activateUrl}</Helper> : null}
+                </Field>
+                <Field
+                    requiredLabel={translate('pim_common.required_label')}
+                    label={translate(
+                        'akeneo_connectivity.connection.connect.marketplace.test_apps.modal.app_information.fields.callback_url'
+                    )}
+                >
+                    <TextInput
+                        invalid={null !== errors.callbackUrl}
+                        onChange={onCallbackUrlChange}
+                        data-testid={'callback-url-input'}
+                    />
+                    {errors.callbackUrl ? <Helper level='error'>{errors.callbackUrl}</Helper> : null}
+                </Field>
+            </Form>
+
+            <Modal.BottomButtons>
+                <Button onClick={onCancel} level='tertiary'>
+                    {translate('pim_common.cancel')}
+                </Button>
+                <Button onClick={handleCreate} level='primary'>
+                    {translate('pim_common.create')}
+                </Button>
+            </Modal.BottomButtons>
+        </>
     );
 };
