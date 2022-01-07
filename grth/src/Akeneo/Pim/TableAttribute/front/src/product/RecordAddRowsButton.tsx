@@ -110,9 +110,8 @@ const RecordAddRowsButton: React.FC<RecordAddRowsButtonProps> = ({
                     checked={lowercaseCheckedOptionCodes.includes(item.code.toLowerCase())}
                     onChange={createToggleChange(item.code)}
                     data-testid={`checkbox-${index}`}
-                    title={item.code}
                   >
-                    {label}
+                    <span title={item.code}>{label}</span>
                   </Checkbox>
                 </Dropdown.Item>
               );

@@ -59,7 +59,7 @@ const RowSelectorSelectInput = <T extends RowSelectorSelectInputOption>({
       {options.map(option => {
         const label = getLabel(option.labels, catalogLocale, option.code);
         return (
-          <SelectInput.Option title={label} value={option.code} key={option.code}>
+          <SelectInput.Option title={option.code} value={option.code} key={option.code}>
             {label}
           </SelectInput.Option>
         );

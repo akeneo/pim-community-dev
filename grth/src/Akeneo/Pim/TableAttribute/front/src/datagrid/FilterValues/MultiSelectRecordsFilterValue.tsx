@@ -63,7 +63,7 @@ const MultiSelectRecordsFilterValue: TableFilterValueRenderer = ({value, onChang
       onNextPage={handleNextPage}
     >
       {allItems?.map(option => (
-        <MultiSelectInput.Option value={option.code} key={option.code} hidden={option.hidden}>
+        <MultiSelectInput.Option value={option.code} key={option.code} hidden={option.hidden} title={option.code}>
           {getLabel(option.labels, catalogLocale, option.code)}
         </MultiSelectInput.Option>
       ))}

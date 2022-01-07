@@ -51,6 +51,7 @@ const RecordCellIndex: React.FC<RecordCellIndexProps> = ({searchText, value}) =>
           rowTitle={true}
           highlighted={isMatching(value, searchText, firstColumn.code)}
           inError={record === null}
+          title={value}
         >
           {typeof record === 'undefined' ? (
             <FirstCellLoadingPlaceholderContainer>
