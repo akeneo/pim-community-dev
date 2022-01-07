@@ -28,6 +28,7 @@ class InstallSubscriber implements EventSubscriberInterface
 
     private DbalConnection $dbalConnection;
     private FixturesLoader $fixturesLoader;
+    private GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler;
 
     public function __construct(DbalConnection $dbalConnection, FixturesLoader $fixturesLoader, GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler)
     {
