@@ -144,7 +144,7 @@ class App
     /**
      * @param array<string> $queryParameters
      */
-    public function withPimUrlSource(array $queryParameters): App
+    public function withPimUrlSource(array $queryParameters): self
     {
         $app = clone $this;
         $app->activateUrl = static::appendQueryParametersToUrl(

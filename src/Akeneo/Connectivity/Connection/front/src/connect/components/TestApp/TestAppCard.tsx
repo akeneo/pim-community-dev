@@ -88,9 +88,7 @@ export const TestAppCard: FC<Props> = ({testApp, additionalActions}) => {
             <TextInformation>
                 <Name>{testApp.name}</Name>
                 <Author>
-                    {translate('akeneo_connectivity.connection.connect.marketplace.card.developed_by')}
-                    &nbsp;
-                    {author}
+                    {translate('akeneo_connectivity.connection.connect.marketplace.card.developed_by', {author})}
                 </Author>
             </TextInformation>
             <DeleteButton onClick={onDelete} />

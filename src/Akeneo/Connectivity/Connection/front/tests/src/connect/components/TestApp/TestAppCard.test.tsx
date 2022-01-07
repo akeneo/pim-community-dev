@@ -17,7 +17,7 @@ test('it displays test app', () => {
 
     expect(screen.queryByText('Name of the test app')).toBeInTheDocument();
     expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.card.developed_by Author Name')
+        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.card.developed_by?author=Author+Name')
     ).toBeInTheDocument();
 });
 
@@ -35,7 +35,7 @@ test('it displays test app with removed author', () => {
     expect(screen.queryByText('Name of the test app')).toBeInTheDocument();
     expect(
         screen.queryByText(
-            'akeneo_connectivity.connection.connect.marketplace.card.developed_by akeneo_connectivity.connection.connect.marketplace.test_apps.removed_user'
-        )
+            'akeneo_connectivity.connection.connect.marketplace.card.developed_by?author=akeneo_connectivity.connection.connect.marketplace.test_apps.removed_user'
+        , {exact: false})
     ).toBeInTheDocument();
 });
