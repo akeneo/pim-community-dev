@@ -34,11 +34,6 @@ pim_analytics:
     average_percentage_localizable_only_attributes: Durchschnittlicher Prozentsatz der gebietsschemaspezifischen Attribute pro Referenzentität
     average_percentage_scopable_only_attributes: Durchschnittlicher Prozentsatz der kanalspezifischen Attribute pro Referenzentität
     average_percentage_scopable_and_localizable_attributes: Durchschnittlicher Prozentsatz der gebietsschemaspezifischen und kanalspezifischen Attribute pro Referenzentität
-pim_datagrid:
-  cells:
-    type:
-      reference_entity_mass_delete_records: Massenlöschung von Datensätzen ausführen
-  reference_entity_mass_delete_records: Massenlöschung
 job_execution:
   summary:
     records: Datensätze

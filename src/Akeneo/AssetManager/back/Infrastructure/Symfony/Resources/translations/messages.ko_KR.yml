@@ -31,13 +31,6 @@ akeneo_assetmanager:
       error: '애셋 ''{{ assets }}''에 대한 대량 삭제가 다음 오류와 함께 실패했습니다. ''{{ error }}'''
     asset_manager_mass_edit:
       error: '애셋 ''{{ assets }}''에 대한 대량 편집이 다음 오류와 함께 실패했습니다. ''{{ error }}'''
-pim_import_export:
-  widget:
-    last_operations:
-      job_type:
-        asset_manager_compute_transformations: "애셋 변환 계산"
-        asset_manager_link_assets_to_products: "제품에 애셋 링크 연결"
-        asset_manager_execute_naming_convention: "애셋 패밀리 명명 규칙 실행"
 pim_analytics:
   info_type:
     api_connection: API 연결 수
@@ -60,14 +53,6 @@ pim_analytics:
 #average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
 #average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
 pim_catalog_asset_collection: 애셋 컬렉션
-pim_datagrid:
-  cells:
-    type:
-      asset_manager_execute_naming_convention: 애셋 패밀리 명명 규칙 실행
-      asset_manager_link_assets_to_products: 제품에 애셋 링크 연결
-      asset_manager_compute_transformations: 애셋 변환 계산
-      asset_manager_mass_delete_assets: 애셋 대량 삭제
-      asset_manager_mass_edit_assets: 애셋 대량 편집
 batch_jobs:
   default_steps:
     execute_naming_convention: 애셋 패밀리 명명 규칙 실행

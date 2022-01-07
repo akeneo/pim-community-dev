@@ -52,12 +52,6 @@ teamwork_assistant:
 pim_datagrid:
   view_selector:
     project: Projekty
-pim_dashboard:
-  widget:
-    last_operations:
-      job_type:
-        refresh_project_completeness_calculation: Asystent pracy zespołowej
-        project_calculation: Asystent pracy zespołowej
 batch_jobs:
   project_calculation:
     project_calculation.label: Obliczanie projektu

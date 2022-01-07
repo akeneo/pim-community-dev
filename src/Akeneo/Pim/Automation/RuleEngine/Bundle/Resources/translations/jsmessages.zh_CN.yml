@@ -421,7 +421,6 @@ flash:
     executed: 规则执行已经启动。完成后会通知您。
     enabled: 规则已启用
     disabled: 规则已禁用
-pim_dashboard.widget.last_operations.job_type.mass_edit_rule: 规则设置 
 batch_jobs:
   add_attribute_value:
     execute_rules.label: 执行规则
@@ -464,11 +463,6 @@ pim_title:
   pimee_catalog_rule_rule_index: 规则
   pimee_catalog_rule_edit: 编辑规则
   pimee_catalog_rule_new: 规则
-pim_import_export:
-  widget:
-    last_operations:
-      job_type:
-        execute_rules: 执行规则
 akeneo_job_process_tracker:
   type:
     mass_edit_rule: 批量编辑规则

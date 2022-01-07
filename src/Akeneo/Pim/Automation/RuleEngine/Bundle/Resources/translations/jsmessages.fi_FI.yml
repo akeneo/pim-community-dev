@@ -419,7 +419,6 @@ flash:
     executed: Sääntöjen suoritus on käynnistetty. Sinulle ilmoitetaan kun se on valmis.
     enabled: Sääntö on otettu käyttöön
     disabled: Sääntö on poistettu käytöstä
-pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Sääntöjen asetukset
 batch_jobs:
   add_attribute_value:
     execute_rules.label: Sääntöjen suorittaminen
@@ -462,11 +461,6 @@ pim_title:
   pimee_catalog_rule_rule_index: Säännöt
   pimee_catalog_rule_edit: Muokkaa sääntöä
   pimee_catalog_rule_new: Säännöt
-pim_import_export:
-  widget:
-    last_operations:
-      job_type:
-        execute_rules: Sääntöjen suorittaminen
 akeneo_job_process_tracker:
   type:
     mass_edit_rule: Massamuokkaa sääntöä

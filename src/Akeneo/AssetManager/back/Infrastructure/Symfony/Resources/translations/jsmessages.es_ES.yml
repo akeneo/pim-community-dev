@@ -553,12 +553,6 @@ pim_catalog_volume:
     average_max_assets_per_asset_family: Activos por familia de activos
     average_max_attributes_per_asset_family: Atributos por familia de activos
 pim_import_export:
-  widget:
-    last_operations:
-      job_type:
-        asset_manager_compute_transformations: "Calcular transformaciones de activos"
-        asset_manager_link_assets_to_products: "Vincular activos a productos"
-        asset_manager_execute_naming_convention: Ejecutar la convención de nombres de familia de activos
   form:
     job_instance:
       tab:
@@ -571,12 +565,6 @@ akeneo_job_process_tracker:
     asset_manager_execute_naming_convention: Ejecutar la convención de nombres de familia de activos
     asset_manager_link_assets_to_products: Vincular activos a productos
     asset_manager_compute_transformations: Calcular transformaciones de activos
-pim_datagrid:
-  cells:
-    type:
-      asset_manager_execute_naming_convention: Ejecutar la convención de nombres de familia de activos
-      asset_manager_mass_delete_assets: Ejecutar la eliminación en masa de activos
-      asset_manager_mass_edit_assets: Ejecutar la edición en masa de activos
 batch_jobs:
   default_steps:
     execute_naming_convention: Ejecutar la convención de nombres de familia de activos

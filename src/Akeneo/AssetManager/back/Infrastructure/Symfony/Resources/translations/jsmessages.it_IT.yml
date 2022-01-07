@@ -553,12 +553,6 @@ pim_catalog_volume:
     average_max_assets_per_asset_family: Asset per famiglia di asset
     average_max_attributes_per_asset_family: Attributio per famiglia di asset
 pim_import_export:
-  widget:
-    last_operations:
-      job_type:
-        asset_manager_compute_transformations: "Calcola trasformazioni asset"
-        asset_manager_link_assets_to_products: "Collega asset ai prodotti"
-        asset_manager_execute_naming_convention: Esegui convenzione di denominazione per famiglia di asset
   form:
     job_instance:
       tab:
@@ -571,12 +565,6 @@ akeneo_job_process_tracker:
     asset_manager_execute_naming_convention: Esegui convenzione di denominazione per famiglia di asset
     asset_manager_link_assets_to_products: Collega asset ai prodotti
     asset_manager_compute_transformations: Calcola trasformazioni asset
-pim_datagrid:
-  cells:
-    type:
-      asset_manager_execute_naming_convention: Esegui convenzione di denominazione per famiglia di asset
-      asset_manager_mass_delete_assets: Esegui eliminazione di massa asset
-      asset_manager_mass_edit_assets: Esegui modifica di massa asset
 batch_jobs:
   default_steps:
     execute_naming_convention: Esegui convenzione di denominazione per famiglia di asset

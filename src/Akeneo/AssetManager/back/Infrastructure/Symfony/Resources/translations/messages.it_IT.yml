@@ -31,13 +31,6 @@ akeneo_assetmanager:
       error: 'Eliminazione di massa non riuscita sugli asset "{{ assets }}" con errore: "{{ error }}"'
     asset_manager_mass_edit:
       error: 'Modifica di massa non riuscita sugli asset "{{ assets }}" con errore: "{{ error }}"'
-pim_import_export:
-  widget:
-    last_operations:
-      job_type:
-        asset_manager_compute_transformations: "Calcola trasformazioni asset"
-        asset_manager_link_assets_to_products: "Collega gli asset ai prodotti"
-        asset_manager_execute_naming_convention: "Esegui convenzione di denominazione per famiglia di asset"
 pim_analytics:
   info_type:
     api_connection: Numero di connessioni API
@@ -60,14 +53,6 @@ pim_analytics:
 #average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
 #average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
 pim_catalog_asset_collection: Raccolta di asset
-pim_datagrid:
-  cells:
-    type:
-      asset_manager_execute_naming_convention: Esegui convenzione di denominazione per famiglia di asset
-      asset_manager_link_assets_to_products: Collega gli asset ai prodotti
-      asset_manager_compute_transformations: Calcola trasformazioni asset
-      asset_manager_mass_delete_assets: Eliminazione di massa asset
-      asset_manager_mass_edit_assets: Modifica di massa asset
 batch_jobs:
   default_steps:
     execute_naming_convention: Esegui convenzione di denominazione per famiglia di asset

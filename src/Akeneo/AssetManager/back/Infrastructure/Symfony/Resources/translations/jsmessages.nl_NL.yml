@@ -553,12 +553,6 @@ pim_catalog_volume:
     average_max_assets_per_asset_family: Assets per asset familie
     average_max_attributes_per_asset_family: Attributen per asset familie
 pim_import_export:
-  widget:
-    last_operations:
-      job_type:
-        asset_manager_compute_transformations: "Bereken asset transformaties"
-        asset_manager_link_assets_to_products: "Koppel assets aan producten"
-        asset_manager_execute_naming_convention: Toepassen asset familie naamgevingsregels
   form:
     job_instance:
       tab:
@@ -571,12 +565,6 @@ akeneo_job_process_tracker:
     asset_manager_execute_naming_convention: Toepassen asset familie naamgevingsregels
     asset_manager_link_assets_to_products: Koppel assets aan producten
     asset_manager_compute_transformations: Bereken asset transformaties
-pim_datagrid:
-  cells:
-    type:
-      asset_manager_execute_naming_convention: Toepassen asset familie naamgevingsregels
-      asset_manager_mass_delete_assets: Voer Asset massa verwijderen uit
-      asset_manager_mass_edit_assets: Groepsgewijze bewerking assets uitvoeren
 batch_jobs:
   default_steps:
     execute_naming_convention: Toepassen asset familie naamgevingsregels

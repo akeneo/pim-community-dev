@@ -349,12 +349,6 @@ pim_catalog_volume:
     count_asset_family: Семейства активов
     average_max_assets_per_asset_family: Активы для семейства активов
     average_max_attributes_per_asset_family: Атрибуты для семейства активов
-pim_import_export:
-  widget:
-    last_operations:
-      job_type:
-        asset_manager_compute_transformations: "Вычислить преобразования активов"
-        asset_manager_link_assets_to_products: "Связать активы с продуктами"
 akeneo_job_process_tracker:
   type:
     asset_manager_link_assets_to_products: Связать активы с продуктами
