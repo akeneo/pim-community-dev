@@ -561,7 +561,7 @@ pim_import_export:
             title: Eksportuj prefiks i sufiks
             help: Eksportuj prefiksy i sufiksy atrybutów zasobów linków do multimediów
 akeneo_job_process_tracker:
-  type:
+  type_filter:
     asset_manager_execute_naming_convention: Wykonaj konwencję nazewnictwa rodziny zasobów
     asset_manager_link_assets_to_products: Połącz zasoby z produktami
     asset_manager_compute_transformations: Wykonaj transformację zasobów

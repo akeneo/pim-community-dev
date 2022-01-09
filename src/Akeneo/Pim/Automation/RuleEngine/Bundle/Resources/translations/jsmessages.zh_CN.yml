@@ -464,6 +464,6 @@ pim_title:
   pimee_catalog_rule_edit: 编辑规则
   pimee_catalog_rule_new: 规则
 akeneo_job_process_tracker:
-  type:
+  type_filter:
     mass_edit_rule: 批量编辑规则
     execute_rules: 执行规则

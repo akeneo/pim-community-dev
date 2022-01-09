@@ -464,6 +464,6 @@ pim_title:
   pimee_catalog_rule_edit: Editar regla
   pimee_catalog_rule_new: Reglas
 akeneo_job_process_tracker:
-  type:
+  type_filter:
     mass_edit_rule: Regla de edición masiva
     execute_rules: Ejecución de las reglas
