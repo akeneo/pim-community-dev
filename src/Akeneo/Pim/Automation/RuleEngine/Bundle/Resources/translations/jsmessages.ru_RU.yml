@@ -81,5 +81,5 @@ pim_title:
   pimee_catalog_rule_rule_index: Правила
   pimee_catalog_rule_new: Правила
 akeneo_job_process_tracker:
-  type:
+  type_filter:
     execute_rules: Выполнение правил

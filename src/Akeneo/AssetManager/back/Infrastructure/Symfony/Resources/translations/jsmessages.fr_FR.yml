@@ -561,12 +561,10 @@ pim_import_export:
             title: Exporter le préfixe et le suffixe
             help: Exporter le préfixe et le suffixe des attributs de lien média
 akeneo_job_process_tracker:
-  type:
+  type_filter:
     asset_manager_execute_naming_convention: Exécuter la convention de nommage pour toutes les ressources de la famille
     asset_manager_link_assets_to_products: Lier les ressources aux produits
     asset_manager_compute_transformations: Exécuter les transformations de ressources
-    asset_manager_mass_delete_assets: Suppression en masse des ressources
-    asset_manager_mass_edit_assets: Édition en masse des ressources
 batch_jobs:
   default_steps:
     execute_naming_convention: Exécuter la convention de nommage pour toutes les ressources de la famille

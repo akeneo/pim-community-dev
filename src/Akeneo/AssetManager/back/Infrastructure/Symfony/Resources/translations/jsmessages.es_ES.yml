@@ -561,7 +561,7 @@ pim_import_export:
             title: Exportar prefijo y sufijo
             help: Exportar prefijo y sufijo de los atributos activos del enlace de medios
 akeneo_job_process_tracker:
-  type:
+  type_filter:
     asset_manager_execute_naming_convention: Ejecutar la convención de nombres de familia de activos
     asset_manager_link_assets_to_products: Vincular activos a productos
     asset_manager_compute_transformations: Calcular transformaciones de activos

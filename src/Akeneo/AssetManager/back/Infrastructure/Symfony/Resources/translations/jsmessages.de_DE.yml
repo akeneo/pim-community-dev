@@ -561,7 +561,7 @@ pim_import_export:
             title: Präfix und Suffix exportieren
             help: Präfix und Suffix der Attribute für Medienlink exportieren
 akeneo_job_process_tracker:
-  type:
+  type_filter:
     asset_manager_execute_naming_convention: Asset-Familien-Namenskonvention ausführen
     asset_manager_link_assets_to_products: Assets mit Produkten verknüpfen
     asset_manager_compute_transformations: Asset-Transformationen berechnen

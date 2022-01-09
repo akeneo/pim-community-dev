@@ -430,7 +430,7 @@ pim_catalog_volume:
     average_max_assets_per_asset_family: Assets per asset family
     average_max_attributes_per_asset_family: Attributes per asset family
 akeneo_job_process_tracker:
-  type:
+  type_filter:
     asset_manager_link_assets_to_products: Link assets to products
     asset_manager_compute_transformations: Compute asset transformations
 batch_jobs:

@@ -476,7 +476,7 @@ pim_catalog_volume:
     average_max_assets_per_asset_family: Assettia assettiperhettä kohti
     average_max_attributes_per_asset_family: Attribuuttia assettiperhettä kohti
 akeneo_job_process_tracker:
-  type:
+  type_filter:
     asset_manager_link_assets_to_products: Linkitä assetit tuotteisiin
     asset_manager_compute_transformations: Muodosta assetin muunnokset
 batch_jobs:

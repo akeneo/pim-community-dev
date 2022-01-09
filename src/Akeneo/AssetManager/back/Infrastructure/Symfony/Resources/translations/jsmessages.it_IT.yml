@@ -561,7 +561,7 @@ pim_import_export:
             title: Esporta prefisso e suffisso
             help: Esporta prefisso e suffisso degli attributi asset link multimediali
 akeneo_job_process_tracker:
-  type:
+  type_filter:
     asset_manager_execute_naming_convention: Esegui convenzione di denominazione per famiglia di asset
     asset_manager_link_assets_to_products: Collega asset ai prodotti
     asset_manager_compute_transformations: Calcola trasformazioni asset
