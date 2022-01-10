@@ -154,14 +154,13 @@ const NavContainer = styled.nav`
 
 const MainNavContainer = styled.div`
   display: flex;
-  width: 100%;
+  width: 80px;
   flex-direction: column;
   justify-content: start;
   height: 100%;
   border-right: 1px solid ${({theme}) => theme.color.grey80};
   z-index: 803;
   background: white;
-  overflow: auto;
 `;
 
 const LogoContainer = styled.div`
