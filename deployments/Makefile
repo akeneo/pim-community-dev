@@ -211,7 +211,6 @@ ifeq ($(INSTANCE_NAME),pimci-helpdesk-ge)
 endif
 
 ifeq ($(INSTANCE_NAME_PREFIX),pimci-pr)
-	sed 's/^\(FLAG_.*_ENABLED\).*/  \1: "1"/g' .env | (grep "FLAG_.*_ENABLED" | grep -v "ONBOARDER" | grep -v "FREE_TRIAL" || true) >> $(DEPLOYMENT_DIR)/terraform/pim/templates/env-configmap.yaml
 ifeq ($(TYPE),srnt)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 endif
