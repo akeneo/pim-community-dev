@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Service;
 
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
