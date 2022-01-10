@@ -13,7 +13,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetTableAttributes;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
@@ -35,13 +34,11 @@ final class CleanTableValuesWithDeletedRecordsTasklet implements TaskletInterfac
     public function __construct(
         private ProductQueryBuilderFactoryInterface $pqbFactory,
         private GetAttributes $getAttributes,
-
-        private GetTableAttributes $getTableAttributes,
-
         private GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes,
         private BulkSaverInterface $productSaver,
         private BulkSaverInterface $productModelSaver,
-        private int $batchSize
+        private int $saveBatchSize,
+        private int $queryBatchSize
     ) {
     }
 
@@ -50,42 +47,33 @@ final class CleanTableValuesWithDeletedRecordsTasklet implements TaskletInterfac
         Assert::notNull($this->stepExecution);
         $jobParameters = $this->stepExecution->getJobParameters();
 
-        if (
-            !$jobParameters->has('clean_record_reference_entity_identifier')
-            || !$jobParameters->has('clean_record_record_code')
-        ) {
-            return;
-        }
+        $attributeCode = $jobParameters->get('attribute_code');
+        $columnCode = $jobParameters->get('column_code');
+        $recordCodes = $jobParameters->get('record_codes');
 
-        $referenceEntityIdentifier = $jobParameters->get('clean_record_reference_entity_identifier'); // todo brand
-        $recordCode = $jobParameters->get('clean_record_record_code'); //todo alessi
-
-        // get table attributes and columns with reference_entity_identifier
-        $referenceEntityColumns = $this->getTableAttributes->forReferenceEntityIdentifier($referenceEntityIdentifier);
-
-
-
-//        $attribute = $this->getAttributes->forCode($attributeCode);
-//        Assert::notNull($attribute);
-//        Assert::same($attribute->type(), AttributeTypes::TABLE);
-
-        $removedOptionsByColumnCode = $jobParameters->get('removed_options_per_column_code');
+        $attribute = $this->getAttributes->forCode($attributeCode);
+        Assert::notNull($attribute);
+        Assert::same($attribute->type(), AttributeTypes::TABLE);
 
         $channelsAndLocales = $this->getAttributeChannelsAndLocales($attribute);
 
+        $batchedRecordCodes = \array_chunk($recordCodes, $this->queryBatchSize);
         foreach (['root_pm', 'sub_pm', 'product'] as $entityType) {
             foreach ($channelsAndLocales as $channel => $locales) {
                 if (self::ALL_CHANNELS === $channel) {
                     $channel = null;
                 }
                 foreach ($locales as $locale) {
-                    $this->cleanEntities(
-                        $entityType,
-                        $recordCode,
-                        $referenceEntityColumn,
-                        $locale === self::ALL_LOCALES ? null : $locale,
-                        $channel
-                    );
+                    foreach ($batchedRecordCodes as $recordCodes) {
+                        $this->cleanEntities(
+                            $entityType,
+                            $attributeCode,
+                            $recordCodes,
+                            $columnCode,
+                            $locale === self::ALL_LOCALES ? null : $locale,
+                            $channel
+                        );
+                    }
                 }
             }
         }
@@ -101,17 +89,17 @@ final class CleanTableValuesWithDeletedRecordsTasklet implements TaskletInterfac
 
     private function cleanEntities(
         string $entityType,
-        string $recordCode,
-        string $referenceEntityColumn,
+        string $attributeCode,
+        array $recordCodes,
+        string $columnCode,
         ?string $locale,
         ?string $channel
     ): void {
         $pqb = $this->getProductQueryBuilder($entityType);
-        // @todo make sure to add correct addFilter's parameters
         $pqb->addFilter(
-            $tableAttributeName, //@todo pass attribute name
+            $attributeCode,
             Operators::IN_LIST,
-            ['column' => $columnCode, 'value' => $removedOptionCodes],
+            ['column' => $columnCode, 'value' => $recordCodes],
             ['locale' => $locale, 'scope' => $channel]
         );
         $this->saveEntities($pqb->execute(), 'product' !== $entityType);
@@ -163,7 +151,7 @@ final class CleanTableValuesWithDeletedRecordsTasklet implements TaskletInterfac
         $batch = [];
         foreach ($productOrModels as $productOrModel) {
             $batch[] = $productOrModel;
-            if (\count($batch) >= $this->batchSize) {
+            if (\count($batch) >= $this->saveBatchSize) {
                 $saver->saveAll($batch, ['force_save' => true]);
                 $this->stepExecution->incrementProcessedItems(\count($batch));
                 $batch = [];

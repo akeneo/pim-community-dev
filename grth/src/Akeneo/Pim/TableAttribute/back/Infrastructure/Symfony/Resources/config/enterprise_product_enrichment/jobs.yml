@@ -9,11 +9,12 @@ services:
             - '@pim_catalog.saver.product_model_without_permission'
             - 1000
 
-    Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet\CleanTableValuesWithDeletedRecordTasklet:
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet\CleanTableValuesWithDeletedRecordsTasklet:
         arguments:
             - '@pim_catalog.query.product_and_product_model_query_builder_factory.without_permission'
             - '@akeneo.pim.structure.query.get_attributes'
             - '@pim_channel.query.sql.get_channel_code_with_locale_codes'
             - '@pim_catalog.saver.product_without_permission'
             - '@pim_catalog.saver.product_model_without_permission'
+            - 1000
             - 1000

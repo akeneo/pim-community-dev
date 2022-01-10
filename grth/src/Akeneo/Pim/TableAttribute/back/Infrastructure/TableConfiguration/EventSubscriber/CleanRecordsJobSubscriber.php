@@ -13,7 +13,10 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\EventSubsc
  * file that was distributed with this source code.
  */
 
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetColumnsLinkedToAReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
+use Akeneo\ReferenceEntity\Domain\Event\RecordsDeletedEvent;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -23,47 +26,66 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class CleanRecordsJobSubscriber implements EventSubscriberInterface
 {
-    private JobLauncherInterface $jobLauncher;
-    private JobInstanceRepository $jobInstanceRepository;
-    private TokenStorageInterface $tokenStorage;
-    private CreateJobInstanceInterface $createJobInstance;
-    private string $jobName;
-
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        JobInstanceRepository $jobInstanceRepository,
-        JobLauncherInterface $jobLauncher,
-        CreateJobInstanceInterface $createJobInstance,
-        string $jobName
+        private TokenStorageInterface $tokenStorage,
+        private JobInstanceRepository $jobInstanceRepository,
+        private JobLauncherInterface $jobLauncher,
+        private CreateJobInstanceInterface $createJobInstance,
+        private GetColumnsLinkedToAReferenceEntity $getColumnsLinkedToAReferenceEntity,
+        private string $jobName
     ) {
-        $this->jobLauncher = $jobLauncher;
-        $this->jobInstanceRepository = $jobInstanceRepository;
-        $this->tokenStorage = $tokenStorage;
-        $this->createJobInstance = $createJobInstance;
-        $this->jobName = $jobName;
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            RecordDeletedEvent::class => 'whenRecordDeleted'
+            RecordDeletedEvent::class => 'whenRecordDeleted',
+            RecordsDeletedEvent::class => 'whenRecordsDeleted',
         ];
     }
 
     public function whenRecordDeleted(RecordDeletedEvent $recordDeletedEvent): void
     {
-        // @todo: validation ?
+        if (!$recordDeletedEvent->isUnitary()) {
+            return;
+        }
 
-        $configuration = [
-            $recordDeletedEvent::class => [
-                'clean_record_reference_entity_identifier' => $recordDeletedEvent->getReferenceEntityIdentifier()->normalize(), //todo brand
-                'clean_record_record_code' => $recordDeletedEvent->getRecordCode(), //todo Alessi
-            ]
-        ];
+        $this->launchJobs(
+            $recordDeletedEvent->getReferenceEntityIdentifier()->normalize(),
+            [$recordDeletedEvent->getRecordCode()->normalize()]
+        );
+    }
 
-        $user = $this->tokenStorage->getToken()->getUser();
+    public function whenRecordsDeleted(RecordsDeletedEvent $recordsDeletedEvent): void
+    {
+        $this->launchJobs(
+            $recordsDeletedEvent->getReferenceEntityIdentifier()->normalize(),
+            array_map(
+                static fn (RecordCode $recordCode): string => $recordCode->normalize(),
+                $recordsDeletedEvent->getRecordCodes()
+            )
+        );
+    }
 
-        $this->jobLauncher->launch($this->getOrCreateJobInstance(), $user, $configuration);
+    private function launchJobs(string $referenceEntityIdentifier, array $recordCodes): void
+    {
+        $columns = $this->getColumnsLinkedToAReferenceEntity->forIdentifier($referenceEntityIdentifier);
+
+        $jobInstance = null;
+        foreach ($columns as $column) {
+            $configuration = [
+                'attribute_code' => $column['attribute_code'],
+                'column_code' => $column['column_code'],
+                'record_codes' => $recordCodes,
+            ];
+
+            $user = $this->tokenStorage->getToken()->getUser();
+
+            if ($jobInstance === null) {
+                $jobInstance = $this->getOrCreateJobInstance();
+            }
+            $this->jobLauncher->launch($jobInstance, $user, $configuration);
+        }
     }
 
     private function getOrCreateJobInstance(): JobInstance
@@ -72,9 +94,7 @@ class CleanRecordsJobSubscriber implements EventSubscriberInterface
         if (null === $jobInstance) {
             $this->createJobInstance->createJobInstance([
                 'code' => $this->jobName,
-                'label' => 'Remove the non existing table option values from product and product models',
-// @todo: one description for the job here and in CleanOptionsJobSubscriber ???
-//                'label' => 'Remove the non existing record values from product and product models table attribute',
+                'label' => 'Remove the non existing record values from product and product models table attribute',
                 'job_name' => $this->jobName,
                 'type' => $this->jobName,
             ]);

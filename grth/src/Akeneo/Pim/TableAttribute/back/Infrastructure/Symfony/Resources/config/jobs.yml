@@ -158,8 +158,15 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_table_attribute.step.clean_table_values_following_deleted_options'
-#                @todo
-#                - '@pim_table_attribute.step.clean_table_values_following_deleted_record'
+
+    pim_table_attribute.job.clean_table_values_following_deleted_records:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'clean_table_values_following_deleted_records'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_table_attribute.step.clean_table_values_following_deleted_records'
 
         public: false
         tags:
@@ -321,14 +328,13 @@ services:
             - '@akeneo_batch.job_repository'
             - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet\CleanTableValuesWithDeletedOptionsTasklet'
 
-    # @todo
-#    pim_table_attribute.step.clean_table_values_following_deleted_record:
-#        class: '%pim_connector.step.tasklet.class%'
-#        arguments:
-#            - 'clean'
-#            - '@event_dispatcher'
-#            - '@akeneo_batch.job_repository'
-#            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet\CleanTableValuesWithDeletedRecordTasklet'
+    pim_table_attribute.step.clean_table_values_following_deleted_records:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'clean'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet\CleanTableValuesWithDeletedRecordsTasklet'
 
     # readers
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\Reader\Database\SelectOptionDetailsReader:
