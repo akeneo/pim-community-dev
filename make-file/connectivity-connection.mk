@@ -170,7 +170,7 @@ connectivity-connection-coverage:
 		coverage/Connectivity/Back/Global/
 
 connectivity-connection-insight:
-	$(PHP_RUN) vendor/bin/phpinsights analyse --no-interaction ${O}
+	$(PHP_RUN) vendor/bin/phpinsights analyse --no-interaction -c src/Akeneo/Connectivity/Connection/back/tests/phpinsights.php src/Akeneo/Connectivity/Connection/back/
 
 connectivity-connection-psalm:
 	$(PHP_RUN) vendor/bin/psalm -c src/Akeneo/Connectivity/Connection/back/tests/psalm.xml
