@@ -53,7 +53,7 @@ akeneo_connectivity.connection:
                 description: This is just an overview. For more details, take a look at our web marketplace.
                 link: Go to web marketplace
             card:
-                developed_by: 'Developed by {{ author }}'
+                developed_by: Developed by
                 read_more: read more
                 more_info: More info
                 connect: Connect
@@ -91,6 +91,9 @@ akeneo_connectivity.connection:
                                 required: A "Callback URL" is required.
                     credentials :
                         title: Credentials
+                        warning: Make sure to save these credentials somewhere as we show them only once here.
+                        client_id: Client id
+                        client_secret: Client secret
                 errors:
                     creation:
                         name:
