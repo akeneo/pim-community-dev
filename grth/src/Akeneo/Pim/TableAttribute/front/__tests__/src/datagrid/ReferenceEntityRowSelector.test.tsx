@@ -1,11 +1,10 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen} from '@testing-library/react';
-import {RowSelector} from '../../../src';
-import {referenceEntityRecordMocks} from '../../../src/fetchers/__mocks__/RecordFetcher';
 import {TestAttributeContextProvider} from '../../shared/TestAttributeContextProvider';
 import {getComplexTableAttribute} from '../../factories';
 import {mockScroll} from '../../shared/mockScroll';
+import {ReferenceEntityRowSelector} from '../../../src/datagrid/ReferenceEntityRowSelector';
 
 jest.mock('../../../src/fetchers/RecordFetcher');
 const scroll = mockScroll();
@@ -14,7 +13,7 @@ describe('ReferenceEntityRowSelector', () => {
   it('should display current row', async () => {
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
-        <RowSelector value={referenceEntityRecordMocks[0]} onChange={jest.fn()} />
+        <ReferenceEntityRowSelector value={'lannion00893335_2e73_41e3_ac34_763fb6a35107'} onChange={jest.fn()} />
       </TestAttributeContextProvider>
     );
 
@@ -25,7 +24,7 @@ describe('ReferenceEntityRowSelector', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
-        <RowSelector value={referenceEntityRecordMocks[0]} onChange={handleChange} />
+        <ReferenceEntityRowSelector value={'lannion00893335_2e73_41e3_ac34_763fb6a35107'} onChange={handleChange} />
       </TestAttributeContextProvider>
     );
 
@@ -36,16 +35,16 @@ describe('ReferenceEntityRowSelector', () => {
     });
     act(() => scroll());
     expect(screen.getAllByText('Lannion')).toHaveLength(2);
-    expect(screen.getByTitle('Vannes')).toBeInTheDocument();
-    fireEvent.click(screen.getByTitle('Vannes'));
-    expect(handleChange).toBeCalledWith(referenceEntityRecordMocks[1]);
+    expect(screen.getByTitle('vannes00bcf56a_2aa9_47c5_ac90_a973460b18a3')).toBeInTheDocument();
+    fireEvent.click(screen.getByTitle('vannes00bcf56a_2aa9_47c5_ac90_a973460b18a3'));
+    expect(handleChange).toBeCalledWith('vannes00bcf56a_2aa9_47c5_ac90_a973460b18a3');
   });
 
   it('should remove current row', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
-        <RowSelector value={referenceEntityRecordMocks[0]} onChange={handleChange} />
+        <ReferenceEntityRowSelector value={'lannion00893335_2e73_41e3_ac34_763fb6a35107'} onChange={handleChange} />
       </TestAttributeContextProvider>
     );
 
@@ -58,7 +57,7 @@ describe('ReferenceEntityRowSelector', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
-        <RowSelector value={referenceEntityRecordMocks[0]} onChange={handleChange} />
+        <ReferenceEntityRowSelector value={'lannion00893335_2e73_41e3_ac34_763fb6a35107'} onChange={handleChange} />
       </TestAttributeContextProvider>
     );
 

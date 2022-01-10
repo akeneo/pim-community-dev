@@ -1,27 +1,27 @@
 import React from 'react';
-import {ReferenceEntityRecord, SelectOption} from '../models';
+import {RecordCode, SelectOptionCode} from '../models';
 import {useAttributeContext} from '../contexts';
 import {SelectRowSelector} from './SelectRowSelector';
 import {ReferenceEntityRowSelector} from './ReferenceEntityRowSelector';
 
 type RowSelectorProps = {
-  onChange: (option?: SelectOption | ReferenceEntityRecord | null) => void;
+  onChange: (option?: RecordCode | SelectOptionCode | null) => void;
   /**
    * If value is:
    * - undefined: the placeholder should be displayed
    * - null: the user has selected 'Any row'
    * - a SelectOption: the user has selected a row
    */
-  value?: SelectOption | ReferenceEntityRecord | null;
+  value?: RecordCode | SelectOptionCode | null;
 };
 
 const RowSelector: React.FC<RowSelectorProps> = ({onChange, value}) => {
   const {attribute} = useAttributeContext();
 
   return attribute?.table_configuration[0].data_type === 'select' ? (
-    <SelectRowSelector onChange={onChange} value={value as SelectOption} />
+    <SelectRowSelector onChange={onChange} value={value as SelectOptionCode} />
   ) : (
-    <ReferenceEntityRowSelector onChange={onChange} value={value as ReferenceEntityRecord} />
+    <ReferenceEntityRowSelector onChange={onChange} value={value as RecordCode} />
   );
 };
 

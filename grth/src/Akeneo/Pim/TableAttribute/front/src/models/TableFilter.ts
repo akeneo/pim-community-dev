@@ -1,5 +1,5 @@
-import {ColumnCode, ColumnDefinition, SelectOption, SelectOptionCode} from './TableConfiguration';
-import {RecordCode, ReferenceEntityRecord} from './ReferenceEntityRecord';
+import {ColumnCode, SelectOptionCode} from './TableConfiguration';
+import {RecordCode} from './ReferenceEntityRecord';
 
 export type FilterOperator =
   | 'STARTS WITH'
@@ -19,25 +19,16 @@ export type FilterOperator =
 
 export type FilterValue = string | number | boolean | RecordCode[] | SelectOptionCode[];
 
-export type BackendTableFilterValue =
-  | {}
-  | {
-      row?: SelectOptionCode;
-      column: ColumnCode;
-      operator: FilterOperator;
-      value: FilterValue;
-    };
-
-export type PendingBackendTableFilterValue = {
-  row?: SelectOptionCode | RecordCode;
+export type BackendTableFilterValue = {
+  row?: SelectOptionCode | RecordCode | null;
   column?: ColumnCode;
   operator?: FilterOperator;
   value?: FilterValue;
 };
 
-export type PendingTableFilterValue = {
-  row?: SelectOption | ReferenceEntityRecord | null;
-  column?: ColumnDefinition;
+export type PendingBackendTableFilterValue = {
+  row?: SelectOptionCode | RecordCode | null;
+  column?: ColumnCode;
   operator?: FilterOperator;
   value?: FilterValue;
 };
@@ -46,7 +37,7 @@ export type NotEmptyTableFilterValue = {
   operator?: 'NOT EMPTY';
 };
 
-const isFilterValid: (filter: PendingTableFilterValue) => boolean = filter => {
+const isFilterValid: (filter: PendingBackendTableFilterValue) => boolean = filter => {
   return (
     typeof filter.row !== 'undefined' &&
     typeof filter.column !== 'undefined' &&

@@ -3,7 +3,7 @@ import {ManageOptionsModal} from '../ManageOptionsModal';
 import React from 'react';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {SelectColumnDefinition, SelectOption} from '../../models';
+import {castSelectColumnDefinition, SelectOption} from '../../models';
 import {ColumnProperties} from './index';
 
 const ManageOptionsButtonContainer = styled.div`
@@ -15,7 +15,7 @@ const SelectProperties: ColumnProperties = ({attribute, selectedColumn, handleCh
   const [isManageOptionsOpen, openManageOptions, closeManageOptions] = useBooleanState();
 
   const handleManageOptionChange = (options: SelectOption[]) => {
-    (selectedColumn as SelectColumnDefinition).options = options;
+    castSelectColumnDefinition(selectedColumn).options = options;
     handleChange(selectedColumn);
   };
 
@@ -27,7 +27,7 @@ const SelectProperties: ColumnProperties = ({attribute, selectedColumn, handleCh
       {isManageOptionsOpen && (
         <ManageOptionsModal
           attribute={attribute}
-          columnDefinition={selectedColumn as SelectColumnDefinition}
+          columnDefinition={castSelectColumnDefinition(selectedColumn)}
           onClose={closeManageOptions}
           onChange={handleManageOptionChange}
         />

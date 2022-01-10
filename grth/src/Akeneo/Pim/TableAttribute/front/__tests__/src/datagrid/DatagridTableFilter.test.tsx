@@ -43,7 +43,7 @@ const selectOperator = (operator: string) => {
 };
 
 describe('DatagridTableFilter', () => {
-  it('should display a filter', async () => {
+  it('should display component filtering nothing', async () => {
     renderWithProviders(
       <DatagridTableFilter
         onChange={jest.fn()}
@@ -82,7 +82,7 @@ describe('DatagridTableFilter', () => {
     await openDropdown();
 
     expect(screen.getByTitle('Quantity')).toBeInTheDocument();
-    expect(await screen.findByTitle('Salt')).toBeInTheDocument();
+    expect(await screen.findByTitle('salt')).toBeInTheDocument();
     expect(screen.getByTitle('pim_common.operators.>=')).toBeInTheDocument();
     expect(screen.getByTitle('10000')).toBeInTheDocument();
   });
@@ -169,7 +169,7 @@ describe('DatagridTableFilter', () => {
     fireEvent.change(screen.getByRole('spinbutton'), {target: {value: '4000'}});
     fireEvent.click(screen.getByText('pim_common.update'));
 
-    expect(screen.getByTitle('Pepper Quantity pim_common.operators.> 4000')).toBeInTheDocument();
+    expect(await screen.findByTitle('Pepper Quantity pim_common.operators.> 4000')).toBeInTheDocument();
     expect(handleChange).toBeCalledWith({
       column: 'quantity',
       operator: '>',

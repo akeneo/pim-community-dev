@@ -11,8 +11,8 @@ type RowSelectorSelectInputOption = {
 };
 
 type RowSelectorSelectInputProps<T extends RowSelectorSelectInputOption> = {
-  value?: T | null;
-  onChange: (option?: T | null) => void;
+  value?: RecordCode | SelectOptionCode | null;
+  onChange: (option?: RecordCode | SelectOptionCode | null) => void;
   onNextPage: () => void;
   options: T[];
   setSearchValue: (value: string) => void;
@@ -35,7 +35,7 @@ const RowSelectorSelectInput = <T extends RowSelectorSelectInputOption>({
       } else if (ANY_OPTION_CODE === code) {
         onChange(null);
       } else {
-        onChange(options.find(option => option.code === code));
+        onChange(options.find(option => option.code === code)?.code);
       }
     },
     [onChange, options]
@@ -48,7 +48,7 @@ const RowSelectorSelectInput = <T extends RowSelectorSelectInputOption>({
       emptyResultLabel={translate('pim_common.no_result')}
       onChange={handleChange}
       placeholder={translate('pim_table_attribute.datagrid.select_your_row')}
-      value={typeof value === 'undefined' ? null : value === null ? ANY_OPTION_CODE : value.code}
+      value={typeof value === 'undefined' ? null : value === null ? ANY_OPTION_CODE : value}
       openLabel={translate('pim_common.open')}
       onNextPage={onNextPage}
       onSearchChange={setSearchValue}

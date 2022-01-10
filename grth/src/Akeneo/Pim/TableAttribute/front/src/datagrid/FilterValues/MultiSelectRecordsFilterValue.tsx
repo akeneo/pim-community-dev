@@ -2,10 +2,11 @@ import React, {useState} from 'react';
 import {FilteredValueRenderer, TableFilterValueRenderer} from './index';
 import {MultiSelectInput, useDebounce} from 'akeneo-design-system';
 import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {RecordCode, ReferenceEntityColumnDefinition, ReferenceEntityRecord} from '../../models';
+import {castReferenceEntityColumnDefinition, RecordCode, ReferenceEntityRecord} from '../../models';
 import {useAttributeContext} from '../../contexts';
 import {ReferenceEntityRecordRepository} from '../../repositories';
 import {useRecords} from '../../product/useRecords';
+import {useFetchRecords} from './useFetchRecords';
 
 interface RecordOption extends ReferenceEntityRecord {
   hidden?: boolean;
@@ -18,13 +19,8 @@ const MultiSelectRecordsFilterValue: TableFilterValueRenderer = ({value, onChang
   const {attribute} = useAttributeContext();
   const [searchValue, setSearchValue] = useState('');
   const debouncedSearchValue = useDebounce(searchValue, 200);
-
-  const referenceEntityCode =
-    (
-      attribute?.table_configuration.find(
-        columnDefinition => columnDefinition.code === columnCode
-      ) as ReferenceEntityColumnDefinition
-    )?.reference_entity_identifier || '';
+  const column = attribute?.table_configuration.find(columnDefinition => columnDefinition.code === columnCode);
+  const referenceEntityCode = column ? castReferenceEntityColumnDefinition(column).reference_entity_identifier : '';
 
   const {items, handleNextPage} = useRecords({
     referenceEntityCode,
@@ -71,23 +67,23 @@ const MultiSelectRecordsFilterValue: TableFilterValueRenderer = ({value, onChang
   );
 };
 
-const useValueRenderer: FilteredValueRenderer = () => {
-  const {attribute} = useAttributeContext();
+const useValueRenderer: FilteredValueRenderer = (value, columnCode) => {
   const userContext = useUserContext();
+  const catalogLocale = userContext.get('catalogLocale');
+  const records = useFetchRecords(value, columnCode);
 
-  return (value, columnCode) => {
-    const catalogLocale = userContext.get('catalogLocale');
-    const referenceEntityIdentifier = (
-      attribute?.table_configuration.find(({code}) => code === columnCode) as ReferenceEntityColumnDefinition
-    )?.reference_entity_identifier;
+  if (!Array.isArray(value)) {
+    return null;
+  }
 
-    return ((value as RecordCode[]) || [])
-      .map(recordCode => {
-        const record = ReferenceEntityRecordRepository.getCachedByCode(referenceEntityIdentifier, recordCode);
-        return getLabel(record?.labels || {}, catalogLocale, recordCode);
-      })
-      .join(', ');
-  };
+  return records
+    ? (value as RecordCode[])
+        .map(recordCode => {
+          const record = records.find(({code}) => code === recordCode);
+          return getLabel(record?.labels || {}, catalogLocale, recordCode);
+        })
+        .join(', ')
+    : null;
 };
 
 export {useValueRenderer};

@@ -1,19 +1,19 @@
 import React from 'react';
 import {getLabel, useUserContext} from '@akeneo-pim-community/shared';
-import {ReferenceEntityRecord, SelectOption} from '../models';
+import {RecordCode, SelectOption, SelectOptionCode} from '../models';
 import {useFetchOptions} from '../product';
 import {useAttributeContext} from '../contexts';
 import {RowSelectorSelectInput} from './RowSelectorSelectInput';
 
 type SelectRowSelectorProps = {
-  onChange: (value?: ReferenceEntityRecord | SelectOption | null) => void;
+  onChange: (value?: RecordCode | SelectOptionCode | null) => void;
   /**
    * If value is:
    * - undefined: the placeholder should be displayed
    * - null: the user has selected 'Any row'
    * - a SelectOption: the user has selected a row
    */
-  value?: SelectOption | null;
+  value?: SelectOptionCode | null;
 };
 
 const SelectRowSelector: React.FC<SelectRowSelectorProps> = ({onChange, value}) => {

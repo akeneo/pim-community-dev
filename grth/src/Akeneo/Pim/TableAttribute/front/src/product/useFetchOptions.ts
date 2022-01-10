@@ -1,5 +1,5 @@
 import React from 'react';
-import {ColumnCode, SelectColumnDefinition, SelectOption, TableAttribute} from '../models';
+import {castSelectColumnDefinition, ColumnCode, SelectOption, TableAttribute} from '../models';
 import {getLabel, useRouter} from '@akeneo-pim-community/shared';
 import {SelectOptionRepository} from '../repositories';
 import {useIsMounted} from '../shared';
@@ -24,11 +24,11 @@ const useFetchOptions: (
           columnDefinition => columnDefinition.data_type === 'select'
         )) {
           const i = attribute.table_configuration.findIndex(columnDefinition => columnDefinition.code === column.code);
-          const currentOptions = (attribute.table_configuration[i] as SelectColumnDefinition).options;
+          const currentOptions = castSelectColumnDefinition(attribute.table_configuration[i]).options;
           const newOptions = (await SelectOptionRepository.findFromColumn(router, attribute.code, column.code)) || [];
           if (JSON.stringify(currentOptions) !== JSON.stringify(newOptions)) {
             dirty = true;
-            (attribute.table_configuration[i] as SelectColumnDefinition).options = newOptions;
+            castSelectColumnDefinition(attribute.table_configuration[i]).options = newOptions;
           }
         }
         if (isMounted() && dirty) setAttribute({...attribute});
@@ -39,8 +39,9 @@ const useFetchOptions: (
 
   const getOptionsFromColumnCode: (columnCode: ColumnCode) => SelectOption[] | undefined = columnCode => {
     if (!attribute) return undefined;
-    const i = attribute?.table_configuration.findIndex(columnDefinition => columnDefinition.code === columnCode);
-    return (attribute?.table_configuration[i] as SelectColumnDefinition | undefined)?.options;
+    const column = attribute.table_configuration.find(({code}) => code === columnCode);
+    if (!column) return undefined;
+    return castSelectColumnDefinition(column).options;
   };
 
   /**

@@ -1,8 +1,7 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen} from '@testing-library/react';
-import {RowSelector} from '../../../src';
-import {ingredientsSelectOptions} from '../../../src/fetchers/__mocks__/SelectOptionsFetcher';
+import {SelectRowSelector} from '../../../src';
 import {TestAttributeContextProvider} from '../../shared/TestAttributeContextProvider';
 import {getComplexTableAttribute} from '../../factories';
 import {mockScroll} from '../../shared/mockScroll';
@@ -14,7 +13,7 @@ describe('SelectRowSelector', () => {
   it('should display current row', async () => {
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <RowSelector value={ingredientsSelectOptions[1]} onChange={jest.fn()} />
+        <SelectRowSelector value={'pepper'} onChange={jest.fn()} />
       </TestAttributeContextProvider>
     );
 
@@ -25,7 +24,7 @@ describe('SelectRowSelector', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <RowSelector value={ingredientsSelectOptions[1]} onChange={handleChange} />
+        <SelectRowSelector value={'pepper'} onChange={handleChange} />
       </TestAttributeContextProvider>
     );
 
@@ -40,14 +39,14 @@ describe('SelectRowSelector', () => {
     expect(screen.getByText('[eggs]')).toBeInTheDocument();
     expect(screen.getByText('Sugar')).toBeInTheDocument();
     fireEvent.click(screen.getByText('[eggs]'));
-    expect(handleChange).toBeCalledWith(ingredientsSelectOptions[2]);
+    expect(handleChange).toBeCalledWith('eggs');
   });
 
   it('should remove current row', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <RowSelector value={ingredientsSelectOptions[1]} onChange={handleChange} />
+        <SelectRowSelector value={'pepper'} onChange={handleChange} />
       </TestAttributeContextProvider>
     );
 
@@ -60,7 +59,7 @@ describe('SelectRowSelector', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <RowSelector value={ingredientsSelectOptions[1]} onChange={handleChange} />
+        <SelectRowSelector value={'pepper'} onChange={handleChange} />
       </TestAttributeContextProvider>
     );
 

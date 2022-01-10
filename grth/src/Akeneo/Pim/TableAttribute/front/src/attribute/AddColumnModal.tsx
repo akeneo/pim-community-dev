@@ -1,11 +1,11 @@
 import {AttributesIllustration, Button, Field, Helper, Modal, TextInput} from 'akeneo-design-system';
 import React from 'react';
 import {
+  castReferenceEntityColumnDefinition,
   ColumnCode,
   ColumnDefinition,
   DataType,
   isColumnCodeNotAvailable,
-  ReferenceEntityColumnDefinition,
   ReferenceEntityIdentifierOrCode,
 } from '../models';
 import {LabelCollection, useFeatureFlags, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
@@ -152,7 +152,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
       validations: {},
     } as ColumnDefinition;
     if (columnDefinition.reference_entity_identifier) {
-      (newColumn as ReferenceEntityColumnDefinition).reference_entity_identifier =
+      castReferenceEntityColumnDefinition(newColumn).reference_entity_identifier =
         columnDefinition.reference_entity_identifier;
     }
     onCreate(newColumn);

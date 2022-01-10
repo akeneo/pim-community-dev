@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useMemo, useCallback} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import styled from 'styled-components';
 import {
   AddingValueIllustration,
@@ -6,15 +6,15 @@ import {
   Button,
   Checkbox,
   Dropdown,
+  getColor,
+  LoaderIcon,
   Placeholder,
   Search,
   useBooleanState,
-  LoaderIcon,
-  getColor,
   useDebounce,
 } from 'akeneo-design-system';
 import {getLabel, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {ReferenceEntityColumnDefinition, SelectOptionCode} from '../models';
+import {castReferenceEntityColumnDefinition, SelectOptionCode} from '../models';
 import {useAttributeContext} from '../contexts';
 import {RECORD_FETCHER_DEFAULT_LIMIT} from '../fetchers';
 import {useRecords} from './useRecords';
@@ -57,8 +57,9 @@ const RecordAddRowsButton: React.FC<RecordAddRowsButtonProps> = ({
     () => checkedOptionCodes.map(code => code.toLowerCase()),
     [checkedOptionCodes]
   );
-  const referenceEntityCode = (attribute?.table_configuration[0] as ReferenceEntityColumnDefinition)
-    ?.reference_entity_identifier;
+  const referenceEntityCode = attribute
+    ? castReferenceEntityColumnDefinition(attribute?.table_configuration[0]).reference_entity_identifier
+    : undefined;
   const {items, isLoading, handleNextPage} = useRecords({
     itemsPerPage,
     referenceEntityCode,

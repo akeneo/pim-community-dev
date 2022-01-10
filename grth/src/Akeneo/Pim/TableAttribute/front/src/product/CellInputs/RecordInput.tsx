@@ -14,7 +14,7 @@ import {
 import {useRecords} from '../useRecords';
 import {getLabel, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {CompletenessBadge} from './CompletenessBadge';
-import {RecordCode, ReferenceEntity, ReferenceEntityColumnDefinition, ReferenceEntityRecord} from '../../models';
+import {castReferenceEntityColumnDefinition, RecordCode, ReferenceEntity, ReferenceEntityRecord} from '../../models';
 import {ReferenceEntityRecordRepository, ReferenceEntityRepository} from '../../repositories';
 import styled from 'styled-components';
 import {useLocaleCode} from '../../contexts';
@@ -42,7 +42,7 @@ const RecordInput: CellInput = ({columnDefinition, highlighted, inError, row, on
   const hasEditPermission =
     security.isGranted('akeneo_referenceentity_record_edit') ||
     security.isGranted('akeneo_referenceentity_record_create');
-  const referenceEntityCode = (columnDefinition as ReferenceEntityColumnDefinition).reference_entity_identifier;
+  const referenceEntityCode = castReferenceEntityColumnDefinition(columnDefinition).reference_entity_identifier;
   const cell = row[columnDefinition.code] as RecordCode | undefined;
 
   const {items, handleNextPage} = useRecords({

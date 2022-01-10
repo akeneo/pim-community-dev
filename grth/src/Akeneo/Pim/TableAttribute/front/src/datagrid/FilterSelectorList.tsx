@@ -5,12 +5,12 @@ import {ValueSelector} from './ValueSelector';
 import React, {useState} from 'react';
 import styled, {css} from 'styled-components';
 import {
-  ColumnDefinition,
+  ColumnCode,
   FilterOperator,
   FilterValue,
-  PendingTableFilterValue,
-  ReferenceEntityRecord,
-  SelectOption,
+  PendingBackendTableFilterValue,
+  RecordCode,
+  SelectOptionCode,
 } from '../models';
 import {AkeneoThemedProps} from 'akeneo-design-system';
 
@@ -45,20 +45,20 @@ const FilterSelectorListContainer = styled.div<{inline: boolean} & AkeneoThemedP
 `;
 
 type FilterSelectorListProps = {
-  onChange: (value: PendingTableFilterValue) => void;
+  onChange: (value: PendingBackendTableFilterValue) => void;
   inline?: boolean;
-  initialFilter: PendingTableFilterValue;
+  initialFilter: PendingBackendTableFilterValue;
 };
 
 const FilterSelectorList: React.FC<FilterSelectorListProps> = ({onChange, inline = false, initialFilter}) => {
-  const [filter, setFilter] = useState<PendingTableFilterValue>(initialFilter);
+  const [filter, setFilter] = useState<PendingBackendTableFilterValue>(initialFilter);
 
-  const updateFilter = (newFilter: PendingTableFilterValue) => {
+  const updateFilter = (newFilter: PendingBackendTableFilterValue) => {
     setFilter(newFilter);
     onChange(newFilter);
   };
 
-  const handleColumnChange = (column: ColumnDefinition | undefined) => {
+  const handleColumnChange = (column: ColumnCode | undefined) => {
     updateFilter({...filter, column, operator: undefined, value: undefined});
   };
 
@@ -66,7 +66,7 @@ const FilterSelectorList: React.FC<FilterSelectorListProps> = ({onChange, inline
     updateFilter({...filter, operator, value: undefined});
   };
 
-  const handleRowChange = (row: SelectOption | ReferenceEntityRecord | undefined | null) => {
+  const handleRowChange = (row: SelectOptionCode | RecordCode | undefined | null) => {
     updateFilter({...filter, row});
   };
 
@@ -78,14 +78,13 @@ const FilterSelectorList: React.FC<FilterSelectorListProps> = ({onChange, inline
     <FilterSelectorListContainer inline={inline}>
       <RowSelector value={filter.row} onChange={handleRowChange} />
       <ColumnDefinitionSelector onChange={handleColumnChange} value={filter.column} />
-      <OperatorSelector dataType={filter.column?.data_type} value={filter.operator} onChange={handleOperatorChange} />
+      <OperatorSelector columnCode={filter.column} value={filter.operator} onChange={handleOperatorChange} />
       {filter.operator && filter.column && (
         <ValueSelector
-          dataType={filter.column?.data_type}
           operator={filter.operator}
           onChange={handleValueChange}
           value={filter.value}
-          columnCode={filter.column.code}
+          columnCode={filter.column}
         />
       )}
     </FilterSelectorListContainer>

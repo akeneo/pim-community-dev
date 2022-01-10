@@ -1,6 +1,6 @@
 import React from 'react';
 import {useRouter, useUserContext} from '@akeneo-pim-community/shared';
-import {RecordCode, ReferenceEntityColumnDefinition} from '../models';
+import {castReferenceEntityColumnDefinition, RecordCode} from '../models';
 import {ReferenceEntityRecordRepository} from '../repositories';
 import {useAttributeContext} from '../contexts';
 import {TableValueWithId} from './TableFieldApp';
@@ -22,7 +22,7 @@ const usePrefetchTableValueRecords: (valueData: TableValueWithId) => boolean = v
             .filter(cellCode => typeof cellCode !== 'undefined') as RecordCode[];
           return ReferenceEntityRecordRepository.search(
             router,
-            (column as ReferenceEntityColumnDefinition).reference_entity_identifier,
+            castReferenceEntityColumnDefinition(column).reference_entity_identifier,
             {
               locale: userContext.get('catalogLocale'),
               channel: userContext.get('catalogScope'),

@@ -39,6 +39,13 @@ class ProductExportTableFilter extends AbstractFilter {
     const handleChange = this.updateState.bind(this);
 
     const initialDataFilter = this.getFormData() as PendingTableProductExportFilterValue;
+    if (
+      typeof initialDataFilter?.value !== 'undefined' &&
+      typeof initialDataFilter?.value?.row === 'undefined' &&
+      typeof initialDataFilter?.operator !== 'undefined'
+    ) {
+      initialDataFilter.value.row = null;
+    }
 
     ReactDOM.render(
       <DependenciesProvider>

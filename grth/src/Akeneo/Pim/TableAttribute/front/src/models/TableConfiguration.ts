@@ -92,3 +92,22 @@ export type TableConfiguration = ColumnDefinition[];
 
 export const isColumnCodeNotAvailable: (columnCode: ColumnCode) => boolean = columnCode =>
   ['product', 'product_model', 'attribute'].includes(columnCode.toLowerCase());
+
+const castSelectColumnDefinition: (columnDefinition: ColumnDefinition) => SelectColumnDefinition = columnDefinition => {
+  if (columnDefinition.data_type !== 'select') {
+    throw new Error(`Column definition should have 'select' data_type, '${columnDefinition.data_type}' given)`);
+  }
+  return columnDefinition;
+};
+
+const castReferenceEntityColumnDefinition: (columnDefinition: ColumnDefinition) => ReferenceEntityColumnDefinition =
+  columnDefinition => {
+    if (columnDefinition.data_type !== 'reference_entity') {
+      throw new Error(
+        `Column definition should have 'reference_entity' data_type, '${columnDefinition.data_type}' given)`
+      );
+    }
+    return columnDefinition;
+  };
+
+export {castSelectColumnDefinition, castReferenceEntityColumnDefinition};

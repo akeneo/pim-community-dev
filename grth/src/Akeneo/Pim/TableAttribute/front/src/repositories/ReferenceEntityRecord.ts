@@ -23,7 +23,29 @@ const search: (
     codes?: RecordCode[];
   }
 ) => Promise<ReferenceEntityRecord[]> = async (router, referenceEntityIdentifier, props) => {
-  const records = await RecordFetcher.search(router, referenceEntityIdentifier, props);
+  let codesToFetch: RecordCode[] | undefined = undefined;
+  const alreadyFetchedRecords: ReferenceEntityRecord[] = [];
+  if (props.codes) {
+    const nonFetchedRecords: RecordCode[] = [];
+    props.codes.forEach(recordCode => {
+      const record = referenceEntityRecordsCache[getKey(referenceEntityIdentifier, recordCode)];
+      if (typeof record !== 'undefined') {
+        if (record !== null) {
+          alreadyFetchedRecords.push(record);
+        }
+      } else {
+        nonFetchedRecords.push(recordCode);
+      }
+    });
+    if (nonFetchedRecords.length) {
+      codesToFetch = nonFetchedRecords;
+    } else {
+      return alreadyFetchedRecords;
+    }
+  }
+
+  const records = await RecordFetcher.search(router, referenceEntityIdentifier, {...props, codes: codesToFetch});
+  // const records = await RecordFetcher.search(router, referenceEntityIdentifier, props);
 
   records.forEach(record => {
     if (!(getKey(referenceEntityIdentifier, record.code) in referenceEntityRecordsCache)) {
@@ -32,12 +54,12 @@ const search: (
   });
 
   const foundRecordCodes = records.map(record => record.code);
-  const notFoundRecordCodes = (props.codes || []).filter(item => foundRecordCodes.indexOf(item) < 0);
+  const notFoundRecordCodes = (codesToFetch || []).filter(item => foundRecordCodes.indexOf(item) < 0);
   notFoundRecordCodes.forEach(recordCode => {
     referenceEntityRecordsCache[getKey(referenceEntityIdentifier, recordCode)] = null;
   });
 
-  return records;
+  return records.concat(alreadyFetchedRecords);
 };
 
 const findByCode: (

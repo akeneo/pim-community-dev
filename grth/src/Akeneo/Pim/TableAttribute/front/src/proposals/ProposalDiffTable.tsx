@@ -5,6 +5,7 @@ import {diffChars} from 'diff';
 import styled from 'styled-components';
 import {
   AttributeCode,
+  castReferenceEntityColumnDefinition,
   ColumnCode,
   ColumnDefinition,
   RecordCode,
@@ -115,10 +116,10 @@ const ProposalDiffTableInner: React.FC<ProposalDiffTableProps> = ({accessor, cha
 
   const getRecordLabel = (columnCode: string, recordCode?: RecordCode) => {
     if (!isLoaded || !recordCode) return '';
-    const referenceEntityIdentifier = (
-      attribute?.table_configuration.find(({code}) => code === columnCode) as ReferenceEntityColumnDefinition
-    ).reference_entity_identifier;
-    if (!referenceEntityIdentifier) return recordCode;
+    const column = attribute?.table_configuration.find(({code}) => code === columnCode);
+    const referenceEntityIdentifier = column
+      ? castReferenceEntityColumnDefinition(column).reference_entity_identifier
+      : '';
     const record = ReferenceEntityRecordRepository.getCachedByCode(referenceEntityIdentifier, recordCode);
     return getLabel(record?.labels || {}, catalogLocale, recordCode);
   };

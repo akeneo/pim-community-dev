@@ -87,6 +87,13 @@ const fetchAttribute = async (_router: Router, attributeCode: AttributeCode): Pr
           validations: {},
           options: [{code: 'A'}, {code: 'B'}, {code: 'C'}],
         },
+        {
+          data_type: 'reference_entity',
+          code: 'city_column',
+          labels: {en_US: 'City column'},
+          validations: {},
+          reference_entity_identifier: 'city',
+        },
       ],
     });
     return new Promise(resolve => resolve(recordAttribute));

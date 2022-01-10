@@ -1,12 +1,11 @@
 import React from 'react';
-import {RecordCode, ReferenceEntityColumnDefinition, ReferenceEntityRecord} from '../../models';
+import {castReferenceEntityColumnDefinition, RecordCode, ReferenceEntityRecord} from '../../models';
 import {getLabel, useRouter, useTranslate} from '@akeneo-pim-community/shared';
-import {useAttributeContext, useLocaleCode} from '../../contexts';
+import {useAttributeContext, useCellMatchersMapping, useLocaleCode} from '../../contexts';
 import {ReferenceEntityRecordRepository} from '../../repositories';
 import {LoadingPlaceholderContainer} from '../../shared';
 import styled from 'styled-components';
 import {TableInput} from 'akeneo-design-system';
-import {useCellMatchersMapping} from '../../contexts/CellMappingContext';
 
 const FirstCellLoadingPlaceholderContainer = styled(LoadingPlaceholderContainer)`
   padding-top: 10px;
@@ -33,10 +32,10 @@ const RecordCellIndex: React.FC<RecordCellIndexProps> = ({searchText, value}) =>
     : () => false;
 
   React.useEffect(() => {
-    if (attribute) {
+    if (attribute && firstColumn) {
       ReferenceEntityRecordRepository.findByCode(
         router,
-        (firstColumn as ReferenceEntityColumnDefinition).reference_entity_identifier,
+        castReferenceEntityColumnDefinition(firstColumn).reference_entity_identifier,
         value
       ).then(record => {
         setRecord(record);

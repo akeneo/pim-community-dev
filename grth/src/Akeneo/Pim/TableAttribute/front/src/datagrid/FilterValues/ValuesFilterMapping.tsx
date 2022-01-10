@@ -19,7 +19,7 @@ type DatagridTableFilterValueProps = {
 };
 
 export type TableFilterValueRenderer = React.FC<DatagridTableFilterValueProps>;
-export type FilteredValueRenderer = () => (value: FilterValue, columnCode: ColumnCode) => string;
+export type FilteredValueRenderer = (value?: FilterValue, columnCode?: ColumnCode) => string | null;
 
 export type FilterValuesMapping = {
   [data_type: string]: {

@@ -132,6 +132,7 @@ const TableAttributeConditionLine: React.FC<TableAttributeConditionLineProps> = 
           as={<input type='hidden' />}
           name={formName('value.value')}
           defaultValue={value}
+          rules={{required: false}}
         />
         <Controller
           as={<input type='hidden' />}

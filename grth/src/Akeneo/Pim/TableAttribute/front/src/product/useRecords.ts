@@ -6,7 +6,7 @@ import {RECORD_FETCHER_DEFAULT_LIMIT} from '../fetchers';
 
 type UseRecordProps = {
   itemsPerPage?: number;
-  referenceEntityCode: ReferenceEntityIdentifierOrCode;
+  referenceEntityCode?: ReferenceEntityIdentifierOrCode;
   isVisible?: boolean;
   searchValue?: string;
 };
@@ -37,7 +37,7 @@ const useRecords: (props: UseRecordProps) => {
 
   const loadNextPage = useCallback(
     (forcePage: number = page) => {
-      if (isLoading || hasNoMoreResult) return;
+      if (isLoading || hasNoMoreResult || !referenceEntityCode) return;
 
       setIsLoading(true);
       ReferenceEntityRecordRepository.search(router, referenceEntityCode, {

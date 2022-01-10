@@ -81,6 +81,7 @@ describe('TableAttributeConditionLineInput', () => {
   it('should not render anything when there is no attribute or no correct values', () => {
     renderWithProviders(
       <TableAttributeConditionLineInput
+        attribute={getComplexTableAttribute('reference_entity')}
         value={{
           row: 'nantes00e3cffd_f60e_4a51_925b_d2952bd947e1',
           column: 'city',
