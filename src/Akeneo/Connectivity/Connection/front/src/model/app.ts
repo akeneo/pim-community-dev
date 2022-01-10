@@ -13,21 +13,21 @@ export type App = {
     connected: boolean;
 };
 
-export interface TestApp {
+export type TestApp = {
     id: string;
     name: string;
     author: string | null;
     activate_url: string;
     callback_url: string;
     connected: boolean;
-}
+};
 
 export type Apps = {
     total: number;
     apps: App[];
 };
 
-export interface TestApps {
+export type TestApps = {
     total: number;
     apps: TestApp[];
-}
+};

@@ -36,6 +36,6 @@ test('it displays test app with removed author', () => {
     expect(
         screen.queryByText(
             'akeneo_connectivity.connection.connect.marketplace.card.developed_by?author=akeneo_connectivity.connection.connect.marketplace.test_apps.removed_user'
-        , {exact: false})
+        )
     ).toBeInTheDocument();
 });
