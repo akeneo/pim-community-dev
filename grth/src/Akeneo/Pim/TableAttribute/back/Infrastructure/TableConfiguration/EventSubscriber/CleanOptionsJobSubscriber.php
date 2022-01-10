@@ -76,8 +76,8 @@ class CleanOptionsJobSubscriber implements EventSubscriberInterface
         }
 
         $configuration = [
-            'clean_option_attribute_code' => $postSaveEvent->getSubject()->getCode(),
-            'clean_option_removed_options_per_column_code' => $removedOptionPerColumncode,
+            'attribute_code' => $postSaveEvent->getSubject()->getCode(),
+            'removed_options_per_column_code' => $removedOptionPerColumncode,
         ];
 
         $user = $this->tokenStorage->getToken()->getUser();

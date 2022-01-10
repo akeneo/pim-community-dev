@@ -56,9 +56,3 @@ mappings:
         mapping:
           type: 'keyword'
           normalizer: 'attribute_option_normalizer'
-    -
-      table_values_reference_entity:
-        path_match: 'table_values.*.value-reference_entity'
-        mapping:
-          type: 'keyword'
-          normalizer: 'attribute_option_normalizer'

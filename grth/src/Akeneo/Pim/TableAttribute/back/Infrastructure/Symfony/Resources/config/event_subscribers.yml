@@ -27,14 +27,3 @@ services:
             - 'clean_table_values_following_deleted_options'
         tags:
             - { name: kernel.event_subscriber }
-
-# @todo check validity
-    Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\EventSubscriber\CleanRecordsJobSubscriber:
-        arguments:
-            - '@security.token_storage'
-            - '@akeneo_batch.job.job_instance_repository'
-            - '@akeneo_batch_queue.launcher.queue_job_launcher'
-            - '@Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance'
-            - 'clean_table_values_following_deleted_options'
-        tags:
-            - { name: kernel.event_subscriber }

@@ -13,7 +13,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
@@ -58,21 +57,13 @@ final class CleanTableValuesWithDeletedOptionsTasklet implements TaskletInterfac
     {
         Assert::notNull($this->stepExecution);
         $jobParameters = $this->stepExecution->getJobParameters();
-
-        if (
-            !$jobParameters->has('clean_option_attribute_code')
-            || !$jobParameters->has('clean_option_removed_options_per_column_code')
-        ) {
-            return;
-        }
-
-        $attributeCode = $jobParameters->get('clean_option_attribute_code');
+        $attributeCode = $jobParameters->get('attribute_code');
 
         $attribute = $this->getAttributes->forCode($attributeCode);
         Assert::notNull($attribute);
         Assert::same($attribute->type(), AttributeTypes::TABLE);
 
-        $removedOptionsByColumnCode = $jobParameters->get('clean_option_removed_options_per_column_code');
+        $removedOptionsByColumnCode = $jobParameters->get('removed_options_per_column_code');
         $channelsAndLocales = $this->getAttributeChannelsAndLocales($attribute);
 
         foreach (['root_pm', 'sub_pm', 'product'] as $entityType) {
