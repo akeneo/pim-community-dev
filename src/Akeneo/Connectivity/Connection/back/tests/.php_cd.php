@@ -254,29 +254,33 @@ $rules = [
 
     $builder->only(
         [
-            'Akeneo\Connectivity\Connection\Domain\TestApps',
-        ]
-    )->in('Akeneo\Connectivity\Connection\Domain\TestApps'),
-
-    $builder->only(
-        [
-            'Akeneo\Connectivity\Connection\Domain\TestApps',
-            'Akeneo\Connectivity\Connection\Application\TestApps',
+            'Akeneo\Connectivity\Connection\Domain\Marketplace',
+            'Akeneo\Connectivity\Connection\Application\Marketplace',
             'Akeneo\Connectivity\Connection\Application\RandomCodeGeneratorInterface',
+
+            'Akeneo\Platform\VersionProviderInterface',
+            'Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl',
         ]
-    )->in('Akeneo\Connectivity\Connection\Application\TestApps'),
+    )->in('Akeneo\Connectivity\Connection\Application\Marketplace'),
 
     $builder->only(
         [
-            'Akeneo\Connectivity\Connection\Domain\TestApps',
-            'Akeneo\Connectivity\Connection\Application\TestApps',
+            'Akeneo\Connectivity\Connection\Domain\Marketplace',
+            'Akeneo\Connectivity\Connection\Application\Marketplace',
+
+            'Akeneo\Connectivity\Connection\Domain\Apps',
+
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
+            'Akeneo\Platform\VersionProviderInterface',
+            'Akeneo\UserManagement\Component\Model\UserInterface',
 
             'Symfony\Component',
-            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
-            'Akeneo\UserManagement\Component\Model\UserInterface',
             'Doctrine\DBAL\Connection',
+            'Ramsey\Uuid\Uuid',
+            'GuzzleHttp\ClientInterface',
+            'Psr\Log\LoggerInterface',
         ]
-    )->in('Akeneo\Connectivity\Connection\Infrastructure\TestApps'),
+    )->in('Akeneo\Connectivity\Connection\Infrastructure\Marketplace'),
 ];
 
 $config = new Configuration($rules, $finder);

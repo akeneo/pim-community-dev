@@ -79,3 +79,26 @@ services:
         class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllTestAppsQuery
         arguments:
             - '@database_connection'
+
+    # TestApps
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\InternalApi\CreateTestAppsAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.app_developer_mode.feature'
+            - '@validator'
+            - '@security.token_storage'
+            - '@Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command\CreateTestAppCommandHandler'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppSecretQuery'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\CreateTestAppQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppSecretQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command\CreateTestAppCommandHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\RandomCodeGenerator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\CreateTestAppQuery'
