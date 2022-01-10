@@ -25,8 +25,20 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
     public function findAll(): array
     {
         $selectSQL = <<<SQL
-        SELECT id, name, scopes, connection_code, logo, author, user_group_name, categories, certified, partner
+        SELECT
+               id,
+               akeneo_connectivity_connected_app.name,
+               scopes,
+               connection_code,
+               logo,
+               author,
+               user_group_name,
+               categories,
+               certified,
+               partner,
+               IF(akeneo_connectivity_test_app.client_id IS NULL , FALSE, TRUE) AS test
         FROM akeneo_connectivity_connected_app
+        LEFT JOIN akeneo_connectivity_test_app ON akeneo_connectivity_test_app.client_id = akeneo_connectivity_connected_app.id
         ORDER BY name ASC
         SQL;
 
@@ -121,7 +133,8 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
             $dataRow['user_group_name'],
             \json_decode($dataRow['categories'], true),
             (bool) $dataRow['certified'],
-            $dataRow['partner']
+            $dataRow['partner'],
+            (bool) ($dataRow['test'] ?? false),
         );
     }
 }

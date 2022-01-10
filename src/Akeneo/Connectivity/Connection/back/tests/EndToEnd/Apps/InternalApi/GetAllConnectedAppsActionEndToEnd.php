@@ -114,6 +114,7 @@ class GetAllConnectedAppsActionEndToEnd extends WebTestCase
                 'categories' => ['category A1', 'category A2'],
                 'certified' => false,
                 'partner' => 'partner A',
+                'test' => false,
             ],
             [
                 'id' => '2677e764-f852-4956-bf9b-1a1ec1b0d145',
@@ -126,6 +127,7 @@ class GetAllConnectedAppsActionEndToEnd extends WebTestCase
                 'categories' => ['category B1'],
                 'certified' => true,
                 'partner' => null,
+                'test' => false,
             ],
         ];
 

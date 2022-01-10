@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\back\tests\Integration\Apps\Persistence
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserGroupLoader;
 use Akeneo\Test\Integration\Configuration;
@@ -23,6 +24,7 @@ class DbalConnectedAppRepositoryIntegration extends TestCase
     private Connection $connection;
     private ConnectionLoader $connectionLoader;
     private UserGroupLoader $userGroupLoader;
+    private ConnectedAppLoader $connectedAppLoader;
 
     protected function setUp(): void
     {
@@ -32,6 +34,7 @@ class DbalConnectedAppRepositoryIntegration extends TestCase
         $this->connection = $this->get('database_connection');
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
         $this->userGroupLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.user_group_loader');
+        $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
     }
 
     public function test_it_persist_an_app(): void
@@ -148,14 +151,25 @@ class DbalConnectedAppRepositoryIntegration extends TestCase
             'app_123456abcdef',
             ['category A1', 'category A2'],
             false,
-            'partner A'
+            'partner A',
+            true
         );
         $this->repository->create($createdAppA);
 
+        // created App A is a test app
+        $this->connection->insert('akeneo_connectivity_test_app', [
+            'client_id' => '0dfce574-2238-4b13-b8cc-8d257ce7645b',
+            'client_secret' => 'secret',
+            'name' => 'App A',
+            'activate_url' => 'http://shopware.example.com/activate',
+            'callback_url' => 'http://shopware.example.com/callback',
+            'user_id' => null,
+        ]);
+
         $connectedApps = $this->repository->findAll();
 
-        Assert::assertEquals(serialize($createdAppA), serialize($connectedApps[0]));
-        Assert::assertEquals(serialize($createdAppB), serialize($connectedApps[1]));
+        Assert::assertEquals($createdAppA->normalize(), $connectedApps[0]->normalize());
+        Assert::assertEquals($createdAppB->normalize(), $connectedApps[1]->normalize());
     }
 
     private function fetchApp(string $id): ?array
