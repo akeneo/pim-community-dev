@@ -66,12 +66,11 @@ akeneo_connectivity.connection:
                 title: Apps
                 total: '{0} No apps|{1} 1 app|[2,Inf] {{ total }} apps'
                 empty: No apps compatible with your version
-            test_apps:
-                title: My test apps
-                removed_user: Removed user
             unreachable: We can't reach the marketplace, please come back later.
             scroll_to_top: Scroll to the top
             test_apps:
+                title: My test apps
+                removed_user: Removed user
                 create_a_test_app: Create a test app
                 modal:
                     subtitle: Create a test app
