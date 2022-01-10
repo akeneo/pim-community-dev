@@ -68,13 +68,27 @@ akeneo_connectivity.connection:
                 empty: No apps compatible with your version
             unreachable: We can't reach the marketplace, please come back later.
             scroll_to_top: Scroll to the top
-            test_app:
+            test_apps:
                 create_a_test_app: Create a test app
                 modal:
                     subtitle: Create a test app
-                    title: App information
-                    description: If you need help, please check our article
-                    link: How to test my App before publishing it?
+                    app_information:
+                        title: App information
+                        description: If you need help, please check our article
+                        link: How to test my App before publishing it?
+                        fields:
+                            name: Name
+                            activate_url: Activate url
+                            callback_url: Callback url
+                        constraint:
+                            name:
+                                required: A test app name is required.
+                            activate_url:
+                                required: An "Activate URL" is required.
+                            callback_url:
+                                required: A "Callback URL" is required.
+                    credentials :
+                        title: Credentials
         connected_apps:
             list:
                 apps:

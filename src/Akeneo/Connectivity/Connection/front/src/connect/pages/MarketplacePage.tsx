@@ -77,7 +77,7 @@ export const MarketplacePage: FC = () => {
     const CreateTestAppButton = () => {
         return !featureFlag.isEnabled('app_developer_mode') ? null : (
             <ApplyButton classNames={['AknButtonList-item']} onClick={handleCreateTestApp}>
-                <Translate id='akeneo_connectivity.connection.connect.marketplace.test_app.create_a_test_app' />
+                <Translate id='akeneo_connectivity.connection.connect.marketplace.test_apps.create_a_test_app' />
             </ApplyButton>
         );
     };
