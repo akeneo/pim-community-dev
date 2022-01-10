@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
 
 use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
+use Akeneo\ReferenceEntity\Domain\Event\RecordsDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
@@ -222,6 +223,16 @@ SQL;
             ]
         );
 
+        if ($recordCodes !== []) {
+            $this->eventDispatcher->dispatch(
+                new RecordsDeletedEvent(
+                    $identifiers,
+                    $recordCodes,
+                    $referenceEntityIdentifier
+                ),
+                RecordsDeletedEvent::class
+            );
+        }
         foreach ($recordCodes as $recordCode) {
             if (!array_key_exists($recordCode->normalize(), $identifiers)) {
                 continue;
@@ -231,7 +242,8 @@ SQL;
                 new RecordDeletedEvent(
                     $identifiers[$recordCode->normalize()],
                     $recordCode,
-                    $referenceEntityIdentifier
+                    $referenceEntityIdentifier,
+                    false
                 ),
                 RecordDeletedEvent::class
             );
@@ -264,7 +276,8 @@ SQL;
             new RecordDeletedEvent(
                 $identifiers[$code->normalize()],
                 $code,
-                $referenceEntityIdentifier
+                $referenceEntityIdentifier,
+                true
             ),
             RecordDeletedEvent::class
         );

@@ -7,6 +7,7 @@ namespace Akeneo\ReferenceEntity\Domain\Event;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
@@ -21,7 +22,8 @@ class RecordDeletedEvent extends Event
     public function __construct(
         private RecordIdentifier $recordIdentifier,
         private RecordCode $recordCode,
-        private ReferenceEntityIdentifier $referenceEntityIdentifier
+        private ReferenceEntityIdentifier $referenceEntityIdentifier,
+        private bool $isUnitary = true
     ) {
     }
 
@@ -38,5 +40,10 @@ class RecordDeletedEvent extends Event
     public function getReferenceEntityIdentifier(): ReferenceEntityIdentifier
     {
         return $this->referenceEntityIdentifier;
+    }
+
+    public function isUnitary(): bool
+    {
+        return $this->isUnitary;
     }
 }
