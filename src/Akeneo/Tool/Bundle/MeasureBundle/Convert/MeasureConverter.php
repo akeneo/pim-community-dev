@@ -116,6 +116,8 @@ class MeasureConverter
             return '0';
         }
 
+        $processedValue = \number_format($value, static::SCALE, '.', '');
+
         switch ($operator) {
             case "div":
                 if ($operand !== '0') {
