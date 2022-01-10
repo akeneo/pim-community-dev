@@ -3,11 +3,12 @@ export type ConnectedApp = {
     name: string;
     scopes: string[];
     connection_code: string;
-    logo: string;
-    author: string;
+    logo: string | null;
+    author: string | null;
     user_group_name: string;
     categories: string[];
     certified: boolean;
     partner: string | null;
     activate_url?: string;
+    test: boolean;
 };

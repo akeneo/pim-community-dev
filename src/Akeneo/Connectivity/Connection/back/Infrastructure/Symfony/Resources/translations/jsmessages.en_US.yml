@@ -66,12 +66,11 @@ akeneo_connectivity.connection:
                 title: Apps
                 total: '{0} No apps|{1} 1 app|[2,Inf] {{ total }} apps'
                 empty: No apps compatible with your version
-            test_apps:
-                title: My test apps
-                removed_user: Removed user
             unreachable: We can't reach the marketplace, please come back later.
             scroll_to_top: Scroll to the top
             test_apps:
+                title: My test apps
+                removed_user: Removed user
                 create_a_test_app: Create a test app
                 modal:
                     subtitle: Create a test app
@@ -100,13 +99,16 @@ akeneo_connectivity.connection:
                     empty: No apps connected yet.
                     check_marketplace: 'Check the {{ marketplaceLink }} to browse all the available content and install your first app.'
                     marketplace_link_anchor: Marketplace
+                test_apps:
+                    title: My test apps
+                    removed_user: Removed user
                 helper:
                     title: '[0,1] Your PIM is connected with {{ count }} app.|[2,Inf] Your PIM is connected with {{ count }} apps.'
                     description_1: New apps are developed regularly, so stay tuned and check our Marketplace page frequently to discover how to connect your PIM.
                     description_2: Eager to know more about Apps ?
                     link: Check out our Help Center for more information.
                 card:
-                    developed_by: Developed by
+                    developed_by: 'Developed by {{ author }}'
                     manage_app: Manage app
                     open_app: Open App
                 flash:
