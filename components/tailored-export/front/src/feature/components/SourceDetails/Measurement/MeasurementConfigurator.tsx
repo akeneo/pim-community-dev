@@ -6,6 +6,7 @@ import {MeasurementSelector} from './MeasurementSelector';
 import {InvalidAttributeSourceError} from '../error';
 import {DefaultValue, Operations} from '../common';
 import {MeasurementConversion} from './MeasurementConversion';
+import {MeasurementRounding} from './MeasurementRounding';
 
 const MeasurementConfigurator = ({source, attribute, validationErrors, onSourceChange}: AttributeConfiguratorProps) => {
   if (!isMeasurementSource(source) || undefined === attribute.metric_family) {
@@ -27,6 +28,13 @@ const MeasurementConfigurator = ({source, attribute, validationErrors, onSourceC
         validationErrors={filterErrors(validationErrors, '[operations][measurement_conversion]')}
         onOperationChange={updatedOperation =>
           onSourceChange({...source, operations: {...source.operations, measurement_conversion: updatedOperation}})
+        }
+      />
+      <MeasurementRounding
+        operation={source.operations.measurement_rounding}
+        validationErrors={filterErrors(validationErrors, '[operations][measurement_rounding]')}
+        onOperationChange={updatedOperation =>
+          onSourceChange({...source, operations: {...source.operations, measurement_rounding: updatedOperation}})
         }
       />
       <MeasurementSelector
