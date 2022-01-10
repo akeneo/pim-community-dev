@@ -60,9 +60,9 @@ const textAttribute: TextAttribute = {
 
 describe('akeneo > asset family > application > configuration --- attribute', () => {
   test('I can get an attribute denormalizer', () => {
-    const getAttributeDenormalizer = getDenormalizer(fakeConfig.attribute);
+    const getAttributeDenormalizer = getDenormalizer(fakeConfig.attribute, normalizedTextAttribute);
 
-    expect(getAttributeDenormalizer(normalizedTextAttribute)(normalizedTextAttribute)).toEqual({
+    expect(getAttributeDenormalizer(normalizedTextAttribute)).toEqual({
       assetFamilyIdentifier: 'packshot',
       code: 'attribute_code',
       identifier: 'attribute_identifier',
@@ -82,14 +82,17 @@ describe('akeneo > asset family > application > configuration --- attribute', ()
   });
 
   test('I get an error if the configuration does not have an proper text denormalizer', () => {
-    const getAttributeDenormalizer = getDenormalizer({
-      text: {
-        // @ts-expect-error invalid attribute configuration
-        denormalize: {},
-      },
-    });
-
     expect(() => {
+      const getAttributeDenormalizer = getDenormalizer(
+        {
+          text: {
+            // @ts-expect-error invalid attribute configuration
+            denormalize: {},
+          },
+        },
+        normalizedTextAttribute
+      );
+
       getAttributeDenormalizer(normalizedTextAttribute);
     }).toThrowError(`The module you are exposing to denormalize an attribute of type "text" needs to
 export a "denormalize" property. Here is an example of a valid denormalize es6 module:
@@ -100,12 +103,15 @@ export const denormalize = (normalizedTextAttribute: NormalizedAttribute) => {
   });
 
   test('I get an error if the configuration does not have valid configurations', () => {
-    const getAttributeDenormalizer = getDenormalizer({
-      // @ts-expect-error invalid attribute configuration
-      text: {},
-    });
-
     expect(() => {
+      const getAttributeDenormalizer = getDenormalizer(
+        {
+          // @ts-expect-error invalid attribute configuration
+          text: {},
+        },
+        normalizedTextAttribute
+      );
+
       getAttributeDenormalizer(normalizedTextAttribute);
     }).toThrowError(`Cannot get the attribute denormalizer for type "text". The configuration should look like this:
 config:
@@ -270,6 +276,21 @@ Actual conf: ${JSON.stringify({text: {}})}`);
         icon: 'bundles/pimui/images/attribute/icon-mediafile.svg',
         identifier: 'media_file',
         label: 'pim_asset_manager.attribute.type.media_file',
+      },
+      {
+        icon: 'bundles/pimui/images/attribute/icon-select.svg',
+        identifier: 'option',
+        label: 'pim_asset_manager.attribute.type.option',
+      },
+      {
+        icon: 'bundles/pimui/images/attribute/icon-multiselect.svg',
+        identifier: 'option_collection',
+        label: 'pim_asset_manager.attribute.type.option_collection',
+      },
+      {
+        icon: 'bundles/pimui/images/attribute/icon-number.svg',
+        identifier: 'number',
+        label: 'pim_asset_manager.attribute.type.number',
       },
     ]);
   });

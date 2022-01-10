@@ -1,8 +1,8 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {fireEvent, act, screen} from '@testing-library/react';
+import {fireEvent, act, screen, render} from '@testing-library/react';
 import Basket from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/basket';
-import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
+import {FakeConfigProvider} from '../../../../utils/FakeConfigProvider';
 
 const assetCollectionMock = [
   {
@@ -38,11 +38,13 @@ const assetCollectionMock = [
     ],
   },
 ];
-const dataProvider = {
-  assetFetcher: {
-    fetchByCode: () => Promise.resolve(assetCollectionMock),
-  },
-};
+
+jest.mock('akeneoassetmanager/infrastructure/fetcher/useAssetFetcher', () => ({
+  useAssetFetcher: () => ({
+    fetchByCodes: () => Promise.resolve(assetCollectionMock),
+  }),
+}));
+
 const assetFamilyIdentifier = 'packshot';
 const context = {
   channel: 'ecommerce',
@@ -52,15 +54,16 @@ const selection = ['iphone7_pack', 'iphone8_pack'];
 
 test('It can display all the items in the basket', async () => {
   await act(async () => {
-    renderWithProviders(
-      <Basket
-        dataProvider={dataProvider}
-        selection={selection}
-        assetFamilyIdentifier={assetFamilyIdentifier}
-        context={context}
-        onRemove={jest.fn()}
-        onRemoveAll={jest.fn()}
-      />
+    render(
+      <FakeConfigProvider>
+        <Basket
+          selection={selection}
+          assetFamilyIdentifier={assetFamilyIdentifier}
+          context={context}
+          onRemove={jest.fn()}
+          onRemoveAll={jest.fn()}
+        />
+      </FakeConfigProvider>
     );
   });
 
@@ -70,15 +73,16 @@ test('It can display all the items in the basket', async () => {
 
 test('It can display an empty basket', async () => {
   await act(async () => {
-    renderWithProviders(
-      <Basket
-        dataProvider={dataProvider}
-        selection={[]}
-        assetFamilyIdentifier={assetFamilyIdentifier}
-        context={context}
-        onRemove={jest.fn()}
-        onRemoveAll={jest.fn()}
-      />
+    render(
+      <FakeConfigProvider>
+        <Basket
+          selection={[]}
+          assetFamilyIdentifier={assetFamilyIdentifier}
+          context={context}
+          onRemove={jest.fn()}
+          onRemoveAll={jest.fn()}
+        />
+      </FakeConfigProvider>
     );
   });
 
@@ -89,15 +93,16 @@ test('It can remove an item from the basket', async () => {
   const onRemove = jest.fn();
 
   await act(async () => {
-    renderWithProviders(
-      <Basket
-        dataProvider={dataProvider}
-        selection={selection}
-        assetFamilyIdentifier={assetFamilyIdentifier}
-        context={context}
-        onRemove={onRemove}
-        onRemoveAll={jest.fn()}
-      />
+    render(
+      <FakeConfigProvider>
+        <Basket
+          selection={selection}
+          assetFamilyIdentifier={assetFamilyIdentifier}
+          context={context}
+          onRemove={onRemove}
+          onRemoveAll={jest.fn()}
+        />
+      </FakeConfigProvider>
     );
   });
 
@@ -110,15 +115,16 @@ test('It can remove all the items from the basket', async () => {
   const onRemoveAll = jest.fn();
 
   await act(async () => {
-    renderWithProviders(
-      <Basket
-        dataProvider={dataProvider}
-        selection={selection}
-        assetFamilyIdentifier={assetFamilyIdentifier}
-        context={context}
-        onRemove={jest.fn()}
-        onRemoveAll={onRemoveAll}
-      />
+    render(
+      <FakeConfigProvider>
+        <Basket
+          selection={selection}
+          assetFamilyIdentifier={assetFamilyIdentifier}
+          context={context}
+          onRemove={jest.fn()}
+          onRemoveAll={onRemoveAll}
+        />
+      </FakeConfigProvider>
     );
   });
 

@@ -18,7 +18,7 @@ import ListAsset, {
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import {useAssetFamily, AssetFamilyDataProvider} from 'akeneoassetmanager/application/hooks/asset-family';
+import {useAssetFamily} from 'akeneoassetmanager/application/hooks/asset-family';
 import {MediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/media-preview';
 import {DownloadAction, CopyUrlAction} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
 
@@ -83,7 +83,6 @@ type AssetPreviewProps = {
   context: ContextState;
   assetFamilyIdentifier: AssetFamilyIdentifier;
   onClose: () => void;
-  dataProvider: AssetFamilyDataProvider;
 };
 
 const AssetPreview = ({
@@ -94,13 +93,12 @@ const AssetPreview = ({
   assetFamilyIdentifier,
   context,
   onClose,
-  dataProvider,
 }: AssetPreviewProps) => {
   const translate = useTranslate();
   const router = useRouter();
   const [currentAssetCode, setCurrentAssetCode] = useState<AssetCode>(initialAssetCode);
   const selectedAsset: ListAsset | undefined = getAssetByCode(assetCollection, currentAssetCode);
-  const {assetFamily} = useAssetFamily(dataProvider, assetFamilyIdentifier);
+  const {assetFamily} = useAssetFamily(assetFamilyIdentifier);
   const assetCodeCollection = getAssetCodes(assetCollection);
   const setPreviousAsset = () => setCurrentAssetCode(assetCode => getPreviousAssetCode(assetCodeCollection, assetCode));
   const setNextAsset = () => setCurrentAssetCode(assetCode => getNextAssetCode(assetCodeCollection, assetCode));

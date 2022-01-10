@@ -1,11 +1,11 @@
 const BaseField = require('pim/form/common/fields/field');
 import $ from 'jquery';
-import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import {AssetFamilyListItem} from 'akeneoassetmanager/domain/model/asset-family/list';
 import {getLabel} from '@akeneo-pim-community/shared';
 const __ = require('oro/translator');
 const _ = require('underscore');
 const UserContext = require('pim/user-context');
+const router = require('pim/router');
 const template = _.template(require('pim/template/form/common/fields/select'));
 
 /**
@@ -30,15 +30,14 @@ class AssetFamilyField extends (BaseField as {new (config: any): any}) {
   /**
    * {@inheritdoc}
    */
-  configure() {
-    const promise = $.Deferred();
+  async configure() {
+    const response = await fetch(router.generate('akeneo_asset_manager_asset_family_index_rest'));
+    if (response.ok) {
+      const backendResponse = await response.json();
+      this.assetFamilies = backendResponse.items;
+    }
 
-    assetFamilyFetcher.fetchAll().then((assetFamilies: AssetFamilyListItem[]) => {
-      this.assetFamilies = assetFamilies;
-      promise.resolve();
-    });
-
-    return $.when(BaseField.prototype.configure.apply(this, arguments), promise.promise());
+    return BaseField.prototype.configure.apply(this);
   }
 
   /**

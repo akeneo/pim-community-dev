@@ -1,5 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import styled from 'styled-components';
 import {Button, Dropdown, IconButton, MoreIcon, useBooleanState} from 'akeneo-design-system';
 import {
@@ -35,7 +35,8 @@ import {saveAndExecuteNamingConvention} from 'akeneoassetmanager/application/act
 import {ReloadPreviewProvider} from 'akeneoassetmanager/application/hooks/useReloadPreview';
 import {UserNavigation} from 'akeneoassetmanager/application/component/app/user-navigation';
 import {ContextSwitchers, ScrollablePageContent} from 'akeneoassetmanager/application/component/app/layout';
-import {useTabView} from '../../hooks/useTabView';
+import {useTabView} from 'akeneoassetmanager/application/hooks/useTabView';
+import {useAssetFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAssetFetcher';
 
 interface StateProps {
   form: {
@@ -58,12 +59,10 @@ interface StateProps {
 
 interface DispatchProps {
   events: {
-    onSaveEditForm: () => void;
     onLocaleChanged: (localeCode: LocaleCode) => void;
     onChannelChanged: (channelCode: ChannelCode) => void;
     onDelete: (asset: EditionAsset) => void;
     backToAssetFamilyList: () => void;
-    onSaveAndExecuteNamingConvention: (asset: EditionAsset) => void;
   };
 }
 
@@ -80,17 +79,19 @@ const MetaContainer = styled.div`
 `;
 
 const SecondaryActions = ({
+  asset,
   canDelete,
   canExecuteNamingConvention,
-  onSaveAndExecuteNamingConvention,
   onDelete,
 }: {
+  asset: EditionAsset;
   canDelete: boolean;
   canExecuteNamingConvention: boolean;
-  onSaveAndExecuteNamingConvention: () => void;
   onDelete: () => void;
 }) => {
   const translate = useTranslate();
+  const dispatch = useDispatch();
+  const assetFetcher = useAssetFetcher();
   const [isOpen, open, close] = useBooleanState();
 
   const handleDelete = () => {
@@ -114,7 +115,11 @@ const SecondaryActions = ({
           </Dropdown.Header>
           <Dropdown.ItemCollection>
             {canExecuteNamingConvention && (
-              <Dropdown.Item onClick={onSaveAndExecuteNamingConvention}>
+              <Dropdown.Item
+                onClick={() =>
+                  dispatch(saveAndExecuteNamingConvention(assetFetcher, asset.assetFamily.identifier, asset.code))
+                }
+              >
                 {translate('pim_asset_manager.asset.button.save_and_execute_naming_convention')}
               </Dropdown.Item>
             )}
@@ -131,6 +136,8 @@ const SecondaryActions = ({
 const AssetEditView = ({form, asset, context, structure, events, hasEditRightOnAssetFamily}: EditProps) => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
+  const dispatch = useDispatch();
+  const assetFetcher = useAssetFetcher();
   const [isDeleteModalOpen, openDeleteModal, closeDeleteModal] = useBooleanState();
 
   const onConfirmedDelete = () => {
@@ -170,13 +177,15 @@ const AssetEditView = ({form, asset, context, structure, events, hasEditRightOnA
           </PageHeader.UserActions>
           <PageHeader.Actions>
             <SecondaryActions
+              asset={asset}
               canExecuteNamingConvention={executeNamingConventions}
               canDelete={canDeleteAsset}
-              onSaveAndExecuteNamingConvention={() => events.onSaveAndExecuteNamingConvention(asset)}
               onDelete={openDeleteModal}
             />
             {canEditAsset && (
-              <Button onClick={events.onSaveEditForm}>{translate('pim_asset_manager.asset.button.save')}</Button>
+              <Button onClick={() => dispatch(saveAsset(assetFetcher))}>
+                {translate('pim_asset_manager.asset.button.save')}
+              </Button>
             )}
           </PageHeader.Actions>
           <PageHeader.State>{form.isDirty && <UnsavedChanges />}</PageHeader.State>
@@ -265,9 +274,6 @@ export default connect(
   (dispatch: any): DispatchProps => {
     return {
       events: {
-        onSaveEditForm: () => {
-          dispatch(saveAsset());
-        },
         onLocaleChanged: (localeCode: LocaleCode) => {
           dispatch(localeChanged(localeCode));
         },
@@ -276,9 +282,6 @@ export default connect(
         },
         onDelete: (asset: EditionAsset) => {
           dispatch(deleteAsset(asset.assetFamily.identifier, asset.code));
-        },
-        onSaveAndExecuteNamingConvention: (asset: EditionAsset) => {
-          dispatch(saveAndExecuteNamingConvention(asset.assetFamily.identifier, asset.code));
         },
         backToAssetFamilyList: () => {
           dispatch(redirectToAssetFamilyListItem());

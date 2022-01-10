@@ -6,23 +6,29 @@ import {
   notifyExecuteNamingConventionSuccess,
 } from 'akeneoassetmanager/application/action/asset/notify';
 import {saveAsset} from 'akeneoassetmanager/application/action/asset/edit';
-import assetFetcher, {AssetResult} from 'akeneoassetmanager/infrastructure/fetcher/asset';
+import {AssetFetcher, AssetResult} from 'akeneoassetmanager/domain/fetcher/asset';
 import {
   assetEditionErrorOccured,
   assetEditionReceived,
   assetEditionSubmission,
 } from 'akeneoassetmanager/domain/event/asset/edit';
 
-async function fetchUpdatedAsset(assetFamilyIdentifier: string, assetCode: string, dispatch: any) {
+async function fetchUpdatedAsset(
+  assetFetcher: AssetFetcher,
+  assetFamilyIdentifier: string,
+  assetCode: string,
+  dispatch: any
+) {
   const savedAsset: AssetResult = await assetFetcher.fetch(assetFamilyIdentifier, assetCode);
   dispatch(assetEditionReceived(savedAsset.asset));
 }
 
 export const saveAndExecuteNamingConvention = (
+  assetFetcher: AssetFetcher,
   assetFamilyIdentifier: AssetFamilyIdentifier,
   assetCode: AssetCode
 ) => async (dispatch: any): Promise<void> => {
-  const isSaved = await dispatch(saveAsset());
+  const isSaved = await dispatch(saveAsset(assetFetcher));
   if (!isSaved) {
     dispatch(notifyExecuteNamingConventionFailed());
 
@@ -32,7 +38,7 @@ export const saveAndExecuteNamingConvention = (
   if (!isExecuted) {
     return;
   }
-  await fetchUpdatedAsset(assetFamilyIdentifier, assetCode, dispatch);
+  await fetchUpdatedAsset(assetFetcher, assetFamilyIdentifier, assetCode, dispatch);
 };
 
 async function executeNamingConvention(
