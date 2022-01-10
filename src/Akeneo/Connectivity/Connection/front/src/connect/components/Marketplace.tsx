@@ -7,10 +7,11 @@ import {useTranslate} from '../../shared/translate';
 import styled from 'styled-components';
 import {useDisplayScrollTopButton} from '../../shared/scroll/hooks/useDisplayScrollTopButton';
 import findScrollParent from '../../shared/scroll/utils/findScrollParent';
-import {App, Apps} from '../../model/app';
+import {App, Apps, TestApps} from '../../model/app';
 import {Section} from './Section';
 import {ActivateAppButton} from './ActivateAppButton';
 import {useFeatureFlags} from '../../shared/feature-flags';
+import {TestAppList} from './TestApp/TestAppList';
 
 const ScrollToTop = styled(IconButton)`
     position: fixed;
@@ -31,9 +32,10 @@ const ScrollToTop = styled(IconButton)`
 type Props = {
     extensions: Extensions;
     apps: Apps;
+    testApps: TestApps;
 };
 
-export const Marketplace: FC<Props> = ({extensions, apps}) => {
+export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
     const translate = useTranslate();
     const featureFlag = useFeatureFlags();
     const ref = useRef(null);
@@ -56,7 +58,9 @@ export const Marketplace: FC<Props> = ({extensions, apps}) => {
     return (
         <>
             <div ref={ref} />
-            <MarketplaceHelper count={extensions.total + apps.total} />
+            <MarketplaceHelper count={extensions.total + apps.total + testApps.total} />
+
+            <TestAppList testApps={testApps} />
 
             {featureFlag.isEnabled('marketplace_activate') && (
                 <Section

@@ -146,11 +146,13 @@ class App
      */
     public function withPimUrlSource(array $queryParameters): self
     {
-        $values = $this->normalize();
-        $values['activate_url'] = static::appendQueryParametersToUrl($values['activate_url'], $queryParameters);
+        $app = clone $this;
+        $app->activateUrl = static::appendQueryParametersToUrl(
+            $app->activateUrl,
+            $queryParameters
+        );
 
-        /* @phpstan-ignore-next-line */
-        return self::fromWebMarketplaceValues($values);
+        return  $app;
     }
 
     /**
