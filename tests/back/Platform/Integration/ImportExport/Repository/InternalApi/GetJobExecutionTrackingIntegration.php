@@ -241,7 +241,7 @@ SQL;
     private function expectedJobExecutionTrackingInProgress(): JobExecutionTracking
     {
         $expectedJobExecutionTracking = new JobExecutionTracking();
-        $expectedJobExecutionTracking->status = 'STARTED';
+        $expectedJobExecutionTracking->status = 'IN_PROGRESS';
         $expectedJobExecutionTracking->currentStep = 2;
         $expectedJobExecutionTracking->totalSteps = 3;
 
@@ -251,7 +251,7 @@ SQL;
         $expectedStepExecutionTracking1->hasWarning = true;
 
         $expectedStepExecutionTracking2 = $this->getImportStepExecutionTracking();
-        $expectedStepExecutionTracking2->status = 'STARTED';
+        $expectedStepExecutionTracking2->status = 'IN_PROGRESS';
         $expectedStepExecutionTracking2->duration = 7;
         $expectedStepExecutionTracking2->processedItems = 10;
         $expectedStepExecutionTracking2->totalItems = 100;

@@ -154,21 +154,7 @@ pim_import_export:
   widget:
     last_operations:
       empty: 現在表示する操作はありません。
-      date: 日付
-      profile_name: プロファイル名
       details: 詳細
-      warning_count: 警告
-      username: ユーザー名
-      job_type:
-        import: インポート
-        export: エクスポート
-        mass_edit: 一括編集
-        mass_edit_rule: ルールの設定
-        quick_export: クイックエクスポート
-        compute_family_variant_structure_changes: ファミリーバリエーションの変更を計算
-        compute_completeness_of_products_family: 商品ファミリーの完全性を検算
-        mass_delete: 商品を一括削除
-        clean_removed_attribute_job: 削除された属性値を消去中
       header.view_all: 全て表示
   batch_status:
     1: 完了
