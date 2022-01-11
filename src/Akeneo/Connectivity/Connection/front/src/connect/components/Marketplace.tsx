@@ -11,6 +11,7 @@ import {App, Apps} from '../../model/app';
 import {Section} from './Section';
 import {ActivateAppButton} from './ActivateAppButton';
 import {useFeatureFlags} from '../../shared/feature-flags';
+import {useConnectionsLimitReached} from '../../shared/hooks/use-connections-limit-reached';
 
 const ScrollToTop = styled(IconButton)`
     position: fixed;
@@ -39,6 +40,7 @@ export const Marketplace: FC<Props> = ({extensions, apps}) => {
     const ref = useRef(null);
     const scrollContainer = findScrollParent(ref.current);
     const displayScrollButton = useDisplayScrollTopButton(ref);
+    const isLimitReached = useConnectionsLimitReached();
     const extensionsList = extensions.extensions.map((extension: Extension) => (
         <MarketplaceCard key={extension.id} item={extension} />
     ));
@@ -46,7 +48,9 @@ export const Marketplace: FC<Props> = ({extensions, apps}) => {
         <MarketplaceCard
             key={app.id}
             item={app}
-            additionalActions={[<ActivateAppButton key={1} id={app.id} isConnected={app.connected} />]}
+            additionalActions={[
+                <ActivateAppButton key={1} id={app.id} isConnected={app.connected} isLimitReached={!!isLimitReached} />,
+            ]}
         />
     ));
     const handleScrollTop = () => {
@@ -69,6 +73,13 @@ export const Marketplace: FC<Props> = ({extensions, apps}) => {
                         apps.total
                     )}
                     emptyMessage={translate('akeneo_connectivity.connection.connect.marketplace.apps.empty')}
+                    warningMessage={
+                        false === isLimitReached
+                            ? null
+                            : translate(
+                                  'akeneo_connectivity.connection.connection.constraint.connections_number_limit_reached'
+                              )
+                    }
                 >
                     {appsList}
                 </Section>

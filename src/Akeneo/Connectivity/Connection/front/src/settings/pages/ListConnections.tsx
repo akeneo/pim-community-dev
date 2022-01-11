@@ -6,7 +6,7 @@ import {FlowType} from '../../model/flow-type.enum';
 import {fetchResult} from '../../shared/fetch-result';
 import {isOk} from '../../shared/fetch-result/result';
 import {useRoute} from '../../shared/router';
-import {Translate} from '../../shared/translate';
+import {Translate, useTranslate} from '../../shared/translate';
 import {connectionsFetched} from '../actions/connections-actions';
 import {ConnectionGrid} from '../components/ConnectionGrid';
 import {NoConnection} from '../components/NoConnection';
@@ -26,6 +26,7 @@ type ResultConnections = Array<Connection>;
 
 export const ListConnections = () => {
     const history = useHistory();
+    const translate = useTranslate();
 
     const connections = useConnectionsState();
     const dispatchConnection = useConnectionsDispatch();
@@ -77,7 +78,16 @@ export const ListConnections = () => {
     );
 
     const createButton = (
-        <ApplyButton onClick={handleCreate} disabled={false !== isLimitReached} classNames={['AknButtonList-item']}>
+        <ApplyButton
+            onClick={handleCreate}
+            disabled={false !== isLimitReached}
+            title={
+                false !== isLimitReached
+                    ? translate('akeneo_connectivity.connection.connection.constraint.connections_number_limit_reached')
+                    : ''
+            }
+            classNames={['AknButtonList-item']}
+        >
             <Translate id='pim_common.create' />
         </ApplyButton>
     );
