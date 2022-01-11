@@ -9,7 +9,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolation
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionImage;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionLabel;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -21,13 +21,13 @@ class UpdateConnectionHandler
 {
     private ValidatorInterface $validator;
 
-    private ConnectionRepository $repository;
+    private ConnectionRepositoryInterface $repository;
 
     private UpdateUserPermissionsInterface $updateUserPermissions;
 
     public function __construct(
         ValidatorInterface $validator,
-        ConnectionRepository $repository,
+        ConnectionRepositoryInterface $repository,
         UpdateUserPermissionsInterface $updateUserPermissions
     ) {
         $this->validator = $validator;

@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCountPerConnection;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectErrorCountPerConnectionQuery;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectErrorCountPerConnectionQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\ErrorType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Doctrine\DBAL\Connection;
@@ -17,7 +17,7 @@ use Doctrine\DBAL\Types\Types;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class DbalSelectErrorCountPerConnectionQuery implements SelectErrorCountPerConnectionQuery
+class DbalSelectErrorCountPerConnectionQuery implements SelectErrorCountPerConnectionQueryInterface
 {
     private Connection $dbalConnection;
 

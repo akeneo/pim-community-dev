@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiRequestLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiRequestLoggerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SendApiEventRequestLogger;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClientInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestFailedEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceededEvent;
@@ -39,7 +39,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
 {
     public function let(
         SendApiEventRequestLogger $sendApiEventRequestLogger,
-        EventsApiRequestLogger $eventsApiRequestLogger,
+        EventsApiRequestLoggerInterface $eventsApiRequestLogger,
         EventDispatcherInterface $eventDispatcher
     ): void {
         $eventDispatcher->dispatch(Argument::any())->willReturn(Argument::type('object'));
@@ -56,12 +56,12 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
     public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(GuzzleWebhookClient::class);
-        $this->shouldImplement(WebhookClient::class);
+        $this->shouldImplement(WebhookClientInterface::class);
     }
 
     public function it_sends_webhook_requests_in_bulk(
         SendApiEventRequestLogger $sendApiEventRequestLogger,
-        EventsApiRequestLogger $eventsApiRequestLogger,
+        EventsApiRequestLoggerInterface $eventsApiRequestLogger,
         EventDispatcherInterface $eventDispatcher
     ): void {
         $eventDispatcher->dispatch(Argument::any())->willReturn(Argument::type('object'));
@@ -197,7 +197,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
 
     public function it_logs_a_failed_events_api_request(
         SendApiEventRequestLogger $sendApiEventRequestLogger,
-        EventsApiRequestLogger $eventsApiRequestLogger,
+        EventsApiRequestLoggerInterface $eventsApiRequestLogger,
         EventDispatcherInterface $eventDispatcher
     ): void {
         $mock = new MockHandler(
@@ -254,7 +254,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
 
     public function it_does_not_send_webhook_request_because_of_timeout(
         SendApiEventRequestLogger $sendApiEventRequestLogger,
-        EventsApiRequestLogger $debugLogger,
+        EventsApiRequestLoggerInterface $debugLogger,
         EventDispatcherInterface $eventDispatcher
     ): void {
         $container = [];

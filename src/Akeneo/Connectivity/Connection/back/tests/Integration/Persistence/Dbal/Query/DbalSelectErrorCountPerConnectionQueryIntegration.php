@@ -5,7 +5,7 @@ namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCountPerConnection;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectErrorCountPerConnectionQuery;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectErrorCountPerConnectionQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\ErrorType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
@@ -29,7 +29,7 @@ class DbalSelectErrorCountPerConnectionQueryIntegration extends TestCase
     /** @var AuditErrorLoader */
     private $auditErrorLoader;
 
-    /** @var SelectErrorCountPerConnectionQuery */
+    /** @var SelectErrorCountPerConnectionQueryInterface */
     private $selectErrorCountPerConnectionQuery;
 
     protected function setUp(): void

@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\ExtractConnectionsProductEventCountQuery;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\ExtractConnectionsProductEventCountQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
@@ -27,7 +27,7 @@ class DbalExtractConnectionsProductEventCountQueryIntegration extends TestCase
     /** @var ConnectionLoader */
     private $connectionLoader;
 
-    /** @var ExtractConnectionsProductEventCountQuery */
+    /** @var ExtractConnectionsProductEventCountQueryInterface */
     private $extractConnectionsProductEventCountQuery;
 
     /** @var DbalConnection */

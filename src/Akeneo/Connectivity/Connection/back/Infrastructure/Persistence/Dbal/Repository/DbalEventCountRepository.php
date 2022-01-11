@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCountRepository;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCountRepositoryInterface;
 use Doctrine\DBAL\Connection as DbalConnection;
 use Doctrine\DBAL\Types\Types;
 
@@ -14,7 +14,7 @@ use Doctrine\DBAL\Types\Types;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class DbalEventCountRepository implements EventCountRepository
+class DbalEventCountRepository implements EventCountRepositoryInterface
 {
     private DbalConnection $dbalConnection;
 

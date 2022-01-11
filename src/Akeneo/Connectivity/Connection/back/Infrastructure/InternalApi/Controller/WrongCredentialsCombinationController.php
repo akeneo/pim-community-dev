@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
 
-use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Repository\WrongCredentialsCombinationRepository;
+use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Repository\WrongCredentialsCombinationRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -14,9 +14,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class WrongCredentialsCombinationController
 {
-    private WrongCredentialsCombinationRepository $repository;
+    private WrongCredentialsCombinationRepositoryInterface $repository;
 
-    public function __construct(WrongCredentialsCombinationRepository $repository)
+    public function __construct(WrongCredentialsCombinationRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }

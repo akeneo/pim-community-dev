@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\ErrorManagement\Query;
 
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Read\BusinessError;
-use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Query\SelectLastConnectionBusinessErrorsQuery;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Query\SelectLastConnectionBusinessErrorsQueryInterface;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -14,9 +14,9 @@ use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Query\Sele
  */
 class GetConnectionBusinessErrorsHandler
 {
-    private SelectLastConnectionBusinessErrorsQuery $selectLastConnectionBusinessErrorsQuery;
+    private SelectLastConnectionBusinessErrorsQueryInterface $selectLastConnectionBusinessErrorsQuery;
 
-    public function __construct(SelectLastConnectionBusinessErrorsQuery $selectLastConnectionBusinessErrorsQuery)
+    public function __construct(SelectLastConnectionBusinessErrorsQueryInterface $selectLastConnectionBusinessErrorsQuery)
     {
         $this->selectLastConnectionBusinessErrorsQuery = $selectLastConnectionBusinessErrorsQuery;
     }

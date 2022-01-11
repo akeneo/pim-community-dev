@@ -16,7 +16,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCred
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\User;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -27,7 +27,7 @@ class CreateConnectionHandlerSpec extends ObjectBehavior
 {
     public function let(
         ValidatorInterface $validator,
-        ConnectionRepository $repository,
+        ConnectionRepositoryInterface $repository,
         CreateClientInterface $createClient,
         CreateUserInterface $createUser,
         FindAConnectionHandler $findAConnectionHandler

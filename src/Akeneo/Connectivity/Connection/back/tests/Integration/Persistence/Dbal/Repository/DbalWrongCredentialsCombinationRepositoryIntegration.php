@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal
 
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Read;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Write;
-use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Repository\WrongCredentialsCombinationRepository;
+use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Repository\WrongCredentialsCombinationRepositoryInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection as DbalConnection;
@@ -18,7 +18,7 @@ use PHPUnit\Framework\Assert;
  */
 class DbalWrongCredentialsCombinationRepositoryIntegration extends TestCase
 {
-    /** @var WrongCredentialsCombinationRepository */
+    /** @var WrongCredentialsCombinationRepositoryInterface */
     private $repository;
 
     /** @var DbalConnection */

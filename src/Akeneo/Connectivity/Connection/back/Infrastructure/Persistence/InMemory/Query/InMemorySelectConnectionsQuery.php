@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Connection;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionsQuery;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionsQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryConnectionRepository;
 
 /**
@@ -13,7 +13,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repositor
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class InMemorySelectConnectionsQuery implements SelectConnectionsQuery
+class InMemorySelectConnectionsQuery implements SelectConnectionsQueryInterface
 {
     private InMemoryConnectionRepository $connectionRepository;
 
