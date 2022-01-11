@@ -18,6 +18,7 @@ test('Connected App Settings renders monitoring settings and authorizations', ()
         categories: ['e-commerce', 'print'],
         certified: false,
         partner: null,
+        test: false,
     };
 
     const monitoringSettings = {

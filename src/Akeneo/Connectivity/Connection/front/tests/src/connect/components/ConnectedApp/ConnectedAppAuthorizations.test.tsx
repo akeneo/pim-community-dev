@@ -57,6 +57,7 @@ test('The connected app authorizations renders with scopes', async () => {
         categories: ['e-commerce', 'print'],
         certified: false,
         partner: null,
+        test: false,
     };
 
     renderWithProviders(<ConnectedAppAuthorizations connectedApp={connectedApp} />);
@@ -100,6 +101,7 @@ test('The connected app authorizations renders without scopes', async () => {
         categories: ['e-commerce', 'print'],
         certified: false,
         partner: null,
+        test: false,
     };
 
     renderWithProviders(<ConnectedAppAuthorizations connectedApp={connectedApp} />);

@@ -47,6 +47,7 @@ const connectedApp = {
     categories: ['e-commerce', 'print'],
     certified: false,
     partner: null,
+    test: false,
 };
 
 test('It renders the app errors', async done => {
