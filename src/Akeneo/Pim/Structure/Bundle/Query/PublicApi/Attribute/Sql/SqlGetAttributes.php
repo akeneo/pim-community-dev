@@ -87,4 +87,48 @@ SQL;
 
         return array_pop($forCodes);
     }
+
+    public function forType(string $attributeType): array
+    {
+        $query = <<<SQL
+            SELECT attribute.code,
+                   attribute.attribute_type,
+                   attribute.properties,
+                   attribute.is_scopable,
+                   attribute.is_localizable,
+                   attribute.metric_family,
+                   attribute.default_metric_unit,
+                   attribute.decimals_allowed,
+                   attribute.backend_type,
+                   COALESCE(locale_codes, JSON_ARRAY()) AS available_locale_codes
+            FROM pim_catalog_attribute attribute
+            WHERE attribute.attribute_type = (:attribute_type)
+        SQL;
+
+        $rawResults = $this->connection->executeQuery(
+            $query,
+            ['attribute_type' => $attributeType]
+        )->fetchAllAssociative();
+
+        $attributes = [];
+
+        foreach ($rawResults as $rawAttribute) {
+            $properties = unserialize($rawAttribute['properties']);
+
+            $attributes[$rawAttribute['code']] = new Attribute(
+                $rawAttribute['code'],
+                $rawAttribute['attribute_type'],
+                $properties,
+                boolval($rawAttribute['is_localizable']),
+                boolval($rawAttribute['is_scopable']),
+                $rawAttribute['metric_family'],
+                $rawAttribute['default_metric_unit'],
+                boolval($rawAttribute['decimals_allowed']),
+                $rawAttribute['backend_type'],
+                json_decode($rawAttribute['available_locale_codes'])
+            );
+        }
+
+        return $attributes;
+    }
 }
