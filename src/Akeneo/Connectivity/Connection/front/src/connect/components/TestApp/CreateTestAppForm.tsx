@@ -3,6 +3,7 @@ import {Button, Field, getColor, getFontSize, Helper, Modal, TextInput} from 'ak
 import {useTranslate} from '../../../shared/translate';
 import styled from '../../../common/styled-with-theme';
 import {TestAppCredentials} from '../../../model/Apps/test-app-credentials';
+import {useCreateTestApp} from '../../hooks/use-create-test-app';
 
 const Title = styled.h2`
     color: ${getColor('grey', 140)};
@@ -52,6 +53,7 @@ export const CreateTestAppForm: FC<Props> = ({onCancel, setCredentials}) => {
     const translate = useTranslate();
     const [testApp, setTestApp] = useState<TestApp>({name: '', activateUrl: '', callbackUrl: ''});
     const [errors, setErrors] = useState<FormErrors>({name: null, activateUrl: null, callbackUrl: null});
+    const createTestApp = useCreateTestApp();
 
     const onNameChange = (newName: string) => {
         setTestApp(testApp => ({
@@ -75,37 +77,23 @@ export const CreateTestAppForm: FC<Props> = ({onCancel, setCredentials}) => {
     };
 
     const handleCreate = () => {
-        const currentErrors: FormErrors = {
-            name:
-                '' === testApp.name
-                    ? translate(
-                          'akeneo_connectivity.connection.connect.marketplace.test_apps.modal.app_information.constraint.name.required'
-                      )
-                    : null,
-            activateUrl:
-                '' === testApp.activateUrl
-                    ? translate(
-                          'akeneo_connectivity.connection.connect.marketplace.test_apps.modal.app_information.constraint.activate_url.required'
-                      )
-                    : null,
-            callbackUrl:
-                '' === testApp.callbackUrl
-                    ? translate(
-                          'akeneo_connectivity.connection.connect.marketplace.test_apps.modal.app_information.constraint.callback_url.required'
-                      )
-                    : null,
-        };
-
-        setErrors(currentErrors);
-
-        if (null !== currentErrors.name || null !== currentErrors.activateUrl || null !== currentErrors.callbackUrl) {
-            return;
-        }
-
-        // TODO: call api endpoint to fetch credentials
-        setCredentials({
-            clientId: 'clientId',
-            clientSecret: 'clientSecret',
+        setErrors({name: null, activateUrl: null, callbackUrl: null});
+        createTestApp(testApp).then(async response => {
+            if (!response.ok) {
+                const {errors} = await response.json();
+                errors.forEach((error: {propertyPath: string; message: string}) => {
+                    setErrors(stateErrors => ({
+                        ...stateErrors,
+                        [error.propertyPath]: translate(error.message),
+                    }));
+                });
+            } else {
+                const {clientId, clientSecret} = await response.json();
+                setCredentials({
+                    clientId,
+                    clientSecret,
+                });
+            }
         });
     };
 

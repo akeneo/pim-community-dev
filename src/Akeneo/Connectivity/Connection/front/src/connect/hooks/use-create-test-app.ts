@@ -1,22 +1,27 @@
 import {useCallback} from 'react';
 import {useRoute} from '../../shared/router';
 
+type TestApp = {
+    name: string;
+    activateUrl: string;
+    callbackUrl: string;
+};
+
 export const useCreateTestApp = () => {
-    const url = useRoute('akeneo_connectivity_connection_test_apps_rest_create');
+    const url = useRoute('akeneo_connectivity_connection_marketplace_rest_test_apps_create');
 
     return useCallback(
-        async (data: {name: string; activate_url: string; callback_url: string}) => {
+        async (testApp: TestApp) => {
             const response = await fetch(url, {
                 method: 'POST',
-                headers: [['X-Requested-With', 'XMLHttpRequest']],
-                body: JSON.stringify(data),
+                headers: [
+                    ['Content-type', 'application/json'],
+                    ['X-Requested-With', 'XMLHttpRequest'],
+                ],
+                body: JSON.stringify(testApp),
             });
 
-            if (!response.ok) {
-                return Promise.reject(`${response.status} ${response.statusText}`);
-            }
-
-            return response.json();
+            return response;
         },
         [url]
     );

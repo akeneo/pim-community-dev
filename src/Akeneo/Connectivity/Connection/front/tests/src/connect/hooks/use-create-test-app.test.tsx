@@ -25,12 +25,12 @@ test('it creates the test app and returns credentials', async done => {
 
     const testAppMessage = await result.current({
         name: 'Test app bynder',
-        activate_url: 'http://any_url.test',
-        callback_url: 'http://activate.test',
+        activateUrl: 'http://any_url.test',
+        callbackUrl: 'http://activate.test',
     });
 
-    expect(fetchMock).toBeCalledWith('akeneo_connectivity_connection_test_apps_rest_create', {
-        body: '{"name":"Test app bynder","activate_url":"http://any_url.test","callback_url":"http://activate.test"}',
+    expect(fetchMock).toBeCalledWith('akeneo_connectivity_connection_marketplace_rest_test_apps_create', {
+        body: '{"name":"Test app bynder","activateUrl":"http://any_url.test","callbackUrl":"http://activate.test"}',
         headers: [['X-Requested-With', 'XMLHttpRequest']],
         method: 'POST',
     });
