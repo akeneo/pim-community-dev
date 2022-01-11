@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import {AttributeCode, ColumnCode, ColumnDefinition, TableAttribute, TableValue} from '../models';
 import {TableRowWithId, useFetchOptions} from '../product';
 import {AttributeRepository} from '../repositories';
+import {LocaleCodeContext} from '../contexts';
 
 const StretchHeaderCell = styled(TableInput.HeaderCell)`
   min-width: auto;
@@ -41,7 +42,18 @@ const displayChange = (before: string, after: string, accessor: 'before' | 'afte
   });
 };
 
-const ProposalDiffTable: React.FC<ProposalDiffTableProps> = ({accessor, change, ...rest}) => {
+const ProposalDiffTable: React.FC<ProposalDiffTableProps> = props => {
+  const userContext = useUserContext();
+  const catalogLocale = userContext.get('catalogLocale');
+
+  return (
+    <LocaleCodeContext.Provider value={{localeCode: catalogLocale}}>
+      <ProposalDiffTableInner {...props} />
+    </LocaleCodeContext.Provider>
+  );
+};
+
+const ProposalDiffTableInner: React.FC<ProposalDiffTableProps> = ({accessor, change, ...rest}) => {
   const translate = useTranslate();
   const userContext = useUserContext();
   const router = useRouter();

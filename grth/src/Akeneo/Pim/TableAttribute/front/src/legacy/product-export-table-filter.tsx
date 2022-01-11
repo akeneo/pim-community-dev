@@ -1,5 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const AbstractFilter = require('pim/filter/attribute/attribute');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const UserContext = require('pim/user-context');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {pimTheme} from 'akeneo-design-system';
@@ -11,6 +13,7 @@ import {
   PendingTableProductExportFilterValue,
   ProductExportBuilderFilter,
 } from '../datagrid/ProductExportBuilderFilter';
+import {LocaleCodeContext} from '../contexts';
 
 type TemplateContext = {
   attribute: Attribute;
@@ -40,11 +43,13 @@ class ProductExportTableFilter extends AbstractFilter {
     ReactDOM.render(
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
-          <ProductExportBuilderFilter
-            attribute={attribute as TableAttribute}
-            onChange={handleChange}
-            initialDataFilter={initialDataFilter}
-          />
+          <LocaleCodeContext.Provider value={{localeCode: UserContext.get('catalogLocale')}}>
+            <ProductExportBuilderFilter
+              attribute={attribute as TableAttribute}
+              onChange={handleChange}
+              initialDataFilter={initialDataFilter}
+            />
+          </LocaleCodeContext.Provider>
         </ThemeProvider>
       </DependenciesProvider>,
       this.element

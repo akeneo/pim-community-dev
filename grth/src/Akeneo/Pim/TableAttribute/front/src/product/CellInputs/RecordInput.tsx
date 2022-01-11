@@ -2,18 +2,18 @@ import React, {useCallback, useMemo, useState, useEffect} from 'react';
 import {CellInput} from './index';
 import {Dropdown, IconButton, Image, LinkIcon, TableInput, useDebounce} from 'akeneo-design-system';
 import {useRecords} from '../useRecords';
-import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {getLabel, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {CompletenessBadge} from './CompletenessBadge';
 import {RecordCode, ReferenceEntityColumnDefinition, ReferenceEntityRecord} from '../../models';
 import {ReferenceEntityRecordRepository} from '../../repositories';
+import {useLocaleCode} from '../../contexts';
 
 const DEFAULT_IMAGE_PATH = '/bundles/pimui/img/image_default.png';
 
 const RecordInput: CellInput = ({columnDefinition, highlighted, inError, row, onChange}) => {
   const translate = useTranslate();
   const router = useRouter();
-  const userContext = useUserContext();
-  const catalogLocale = userContext.get('catalogLocale');
+  const localeCode = useLocaleCode();
 
   const [option, setOption] = useState<ReferenceEntityRecord | null | undefined>();
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -38,9 +38,9 @@ const RecordInput: CellInput = ({columnDefinition, highlighted, inError, row, on
   }, [cell, referenceEntityCode, router]);
 
   const value = useMemo(() => {
-    if (cell) return getLabel(option?.labels || {}, catalogLocale, cell);
+    if (cell) return getLabel(option?.labels || {}, localeCode, cell);
     return undefined;
-  }, [catalogLocale, cell, option]);
+  }, [localeCode, cell, option]);
 
   const getImageUrl = useCallback(
     (path?: string) => {
@@ -85,7 +85,7 @@ const RecordInput: CellInput = ({columnDefinition, highlighted, inError, row, on
       onOpenChange={setIsVisible}
     >
       {items?.map(record => {
-        const label = getLabel(record.labels, catalogLocale, record.code);
+        const label = getLabel(record.labels, localeCode, record.code);
         const image = getImageUrl(record.image?.filePath);
         const url = getUrl(record.code);
         return (

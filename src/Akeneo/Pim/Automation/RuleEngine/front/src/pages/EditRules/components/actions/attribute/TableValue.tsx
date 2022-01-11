@@ -84,7 +84,11 @@ const TableValue: React.FC<InputValueProps> = ({
               toggleChange={handleToggleRow}
             />
           </AttributeLabel>
-          <TableInputValue valueData={tableValue} onChange={handleChange} />
+          <TableInputValue
+            valueData={tableValue}
+            onChange={handleChange}
+            visibility={'CAN_EDIT'}
+          />
         </TableValueContainer>
       </CellMappingContext.Provider>
       <HelperContainer>

@@ -1,8 +1,9 @@
 import React from 'react';
 import {ColumnCode, SelectColumnDefinition, SelectOption, TableAttribute} from '../models';
-import {getLabel, useRouter, useUserContext} from '@akeneo-pim-community/shared';
+import {getLabel, useRouter} from '@akeneo-pim-community/shared';
 import {SelectOptionRepository} from '../repositories';
 import {useIsMounted} from '../shared';
+import {useLocaleCode} from '../contexts';
 
 const useFetchOptions: (
   attribute: TableAttribute | undefined,
@@ -12,8 +13,8 @@ const useFetchOptions: (
   getOptionLabel: (columnCode: ColumnCode, value: string) => string | undefined | null;
 } = (attribute, setAttribute) => {
   const router = useRouter();
-  const userContext = useUserContext();
   const isMounted = useIsMounted();
+  const localeCode = useLocaleCode();
 
   React.useEffect(() => {
     if (attribute) {
@@ -54,7 +55,7 @@ const useFetchOptions: (
     const options = getOptionsFromColumnCode(columnCode);
     if (typeof options === 'undefined') return undefined;
     const option = options.find((option: SelectOption) => option.code === value);
-    return option ? getLabel(option.labels, userContext.get('catalogLocale'), option.code) : null;
+    return option ? getLabel(option.labels, localeCode, option.code) : null;
   };
 
   return {

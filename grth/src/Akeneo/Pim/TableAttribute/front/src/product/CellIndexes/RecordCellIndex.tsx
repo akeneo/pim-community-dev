@@ -1,7 +1,7 @@
 import React from 'react';
 import {RecordCode, ReferenceEntityColumnDefinition, ReferenceEntityRecord} from '../../models';
-import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {useAttributeContext} from '../../contexts';
+import {getLabel, useRouter, useTranslate} from '@akeneo-pim-community/shared';
+import {useAttributeContext, useLocaleCode} from '../../contexts';
 import {ReferenceEntityRecordRepository} from '../../repositories';
 import {LoadingPlaceholderContainer} from '../../shared';
 import styled from 'styled-components';
@@ -21,10 +21,9 @@ type RecordCellIndexProps = {
 };
 
 const RecordCellIndex: React.FC<RecordCellIndexProps> = ({searchText, value}) => {
-  const userContext = useUserContext();
   const router = useRouter();
   const translate = useTranslate();
-  const catalogLocale = userContext.get('catalogLocale');
+  const localeCode = useLocaleCode();
   const {attribute} = useAttributeContext();
   const firstColumn = attribute?.table_configuration?.[0];
   const [record, setRecord] = React.useState<ReferenceEntityRecord | undefined | null>();
@@ -58,7 +57,7 @@ const RecordCellIndex: React.FC<RecordCellIndexProps> = ({searchText, value}) =>
               <div>{translate('pim_common.loading')}</div>
             </FirstCellLoadingPlaceholderContainer>
           ) : (
-            getLabel(record?.labels || {}, catalogLocale, value)
+            getLabel(record?.labels || {}, localeCode, value)
           )}
         </TableInput.CellContent>
       )}

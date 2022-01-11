@@ -1,9 +1,10 @@
 import React from 'react';
 import {FilterSelectorList} from '../datagrid';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {AttributeContext} from '../contexts';
+import {AttributeContext, LocaleCodeContext} from '../contexts';
 import {PendingBackendTableFilterValue, PendingTableFilterValue, TableAttribute} from '../models';
 import {useFetchOptions} from '../product';
+import {useUserContext} from '@akeneo-pim-community/shared';
 
 type TableAttributeConditionLineProps = {
   attribute?: TableAttribute;
@@ -12,9 +13,14 @@ type TableAttributeConditionLineProps = {
 };
 
 const TableAttributeConditionLineInput: React.FC<TableAttributeConditionLineProps> = props => {
+  const userContext = useUserContext();
+  const catalogLocale = userContext.get('catalogLocale');
+
   return (
     <DependenciesProvider>
-      <InnerTableAttributeConditionLine {...props} />
+      <LocaleCodeContext.Provider value={{localeCode: catalogLocale}}>
+        <InnerTableAttributeConditionLine {...props} />
+      </LocaleCodeContext.Provider>
     </DependenciesProvider>
   );
 };

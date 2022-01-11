@@ -13,9 +13,9 @@ import {ColumnCode, ColumnDefinition, RecordCode, SelectOptionCode, TableCell} f
 import {TableFooter} from './TableFooter';
 import styled from 'styled-components';
 import {TableRowWithId, TableValueWithId, ViolatedCell} from './TableFieldApp';
-import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {getLabel, useTranslate} from '@akeneo-pim-community/shared';
 import {UNIQUE_ID_KEY} from './useUniqueIds';
-import {useAttributeContext} from '../contexts';
+import {useAttributeContext, useLocaleCode} from '../contexts';
 import {RecordCellIndex, SelectCellIndex} from './CellIndexes';
 import {usePrefetchTableValueRecords} from './usePrefetchTableValueRecords';
 import {useCellInputsMapping, useCellMatchersMapping} from '../contexts/CellMappingContext';
@@ -47,25 +47,32 @@ const HeaderActionsCell = styled(TableInput.HeaderCell)`
   width: 34px;
 `;
 
+/**
+ * CAN_EDIT: the user has permission to edit
+ * CANNOT_EDIT: the user has not permission to edit
+ * READ_ONLY: the input is in read only, no matter the permission
+ */
+type Visibility = 'CAN_EDIT' | 'CANNOT_EDIT' | 'READ_ONLY';
+
 type TableInputValueProps = {
   valueData: TableValueWithId;
+  visibility: Visibility;
   onChange?: (tableValue: TableValueWithId) => void;
   searchText?: string;
   violatedCells?: ViolatedCell[];
-  readOnly?: boolean;
   isCopying?: boolean;
 };
 
 const TableInputValue: React.FC<TableInputValueProps> = ({
   valueData,
   onChange,
-  readOnly = false,
+  visibility,
   searchText = '',
   violatedCells = [],
   isCopying = false,
 }) => {
+  const readOnly = ['CANNOT_EDIT', 'READ_ONLY'].includes(visibility);
   const translate = useTranslate();
-  const userContext = useUserContext();
   const {attribute, setAttribute} = useAttributeContext();
   const [itemsPerPage, setItemsPerPage] = React.useState<number>(TABLE_VALUE_ITEMS_PER_PAGE[0]);
   const [currentPage, setCurrentPage] = React.useState<number>(0);
@@ -76,6 +83,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   const areRecordsPrefetched = usePrefetchTableValueRecords(valueData);
   const cellMatchersMapping = useCellMatchersMapping();
   const cellInputsMapping = useCellInputsMapping();
+  const localeCode = useLocaleCode();
 
   const matchers: {[data_type: string]: (cell: TableCell, searchText: string, columnCode: ColumnCode) => boolean} = {};
   Object.keys(cellMatchersMapping).forEach(data_type => {
@@ -265,7 +273,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
             <TableInput.Header>
               {attribute.table_configuration.map(columnDefinition => (
                 <TableInput.HeaderCell key={columnDefinition.code}>
-                  {getLabel(columnDefinition.labels, userContext.get('catalogLocale'), columnDefinition.code)}
+                  {getLabel(columnDefinition.labels, localeCode, columnDefinition.code)}
                 </TableInput.HeaderCell>
               ))}
               <HeaderActionsCell />
@@ -328,12 +336,12 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
             <BorderedPlaceholder
               illustration={<AddingValueIllustration />}
               title={translate('pim_table_attribute.form.product.no_rows_title', {
-                attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
+                attributeLabel: getLabel(attribute.labels, localeCode, attribute.code),
               })}
             >
-              {readOnly
-                ? translate('pim_table_attribute.form.product.no_rows_subtitle_on_readonly')
-                : translate('pim_table_attribute.form.product.no_rows_subtitle')}
+              {visibility === 'CANNOT_EDIT' &&
+                translate('pim_table_attribute.form.product.no_rows_subtitle_no_permission')}
+              {visibility === 'CAN_EDIT' && translate('pim_table_attribute.form.product.no_rows_subtitle')}
             </BorderedPlaceholder>
           )}
           {valueData.length > TABLE_VALUE_ITEMS_PER_PAGE[0] && (

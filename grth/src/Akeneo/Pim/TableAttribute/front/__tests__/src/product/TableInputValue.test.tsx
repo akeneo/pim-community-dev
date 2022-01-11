@@ -23,7 +23,12 @@ describe('TableInputValue', () => {
         <CellMappingContext.Provider
           value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
         >
-          <TableInputValue valueData={getTableValueWithId()} searchText={''} onChange={jest.fn()} />
+          <TableInputValue
+            valueData={getTableValueWithId()}
+            searchText={''}
+            onChange={jest.fn()}
+            visibility={'CAN_EDIT'}
+          />
         </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
@@ -47,7 +52,12 @@ describe('TableInputValue', () => {
         <CellMappingContext.Provider
           value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
         >
-          <TableInputValue valueData={getTableValueWithId()} searchText={''} onChange={handleChange} />
+          <TableInputValue
+            valueData={getTableValueWithId()}
+            searchText={''}
+            onChange={handleChange}
+            visibility={'CAN_EDIT'}
+          />
         </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
@@ -79,7 +89,12 @@ describe('TableInputValue', () => {
         <CellMappingContext.Provider
           value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
         >
-          <TableInputValue valueData={getTableValueWithId()} searchText={'r'} onChange={handleChange} />
+          <TableInputValue
+            valueData={getTableValueWithId()}
+            searchText={'r'}
+            onChange={handleChange}
+            visibility={'CAN_EDIT'}
+          />
         </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
@@ -106,6 +121,7 @@ describe('TableInputValue', () => {
                 columnCode: 'quantity',
               },
             ]}
+            visibility={'CAN_EDIT'}
           />
         </CellMappingContext.Provider>
       </TestAttributeContextProvider>
@@ -128,7 +144,12 @@ describe('TableInputValue', () => {
         <CellMappingContext.Provider
           value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
         >
-          <TableInputValue valueData={getTableValueWithId()} searchText={''} onChange={handleChange} />
+          <TableInputValue
+            valueData={getTableValueWithId()}
+            searchText={''}
+            onChange={handleChange}
+            visibility={'CAN_EDIT'}
+          />
         </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
@@ -147,7 +168,12 @@ describe('TableInputValue', () => {
         <CellMappingContext.Provider
           value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
         >
-          <TableInputValue valueData={getTableValueWithId()} searchText={''} onChange={handleChange} />
+          <TableInputValue
+            valueData={getTableValueWithId()}
+            searchText={''}
+            onChange={handleChange}
+            visibility={'CAN_EDIT'}
+          />
         </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
@@ -170,7 +196,12 @@ describe('TableInputValue', () => {
         <CellMappingContext.Provider
           value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
         >
-          <TableInputValue valueData={getTableValueWithId()} searchText={''} onChange={handleChange} />
+          <TableInputValue
+            valueData={getTableValueWithId()}
+            searchText={''}
+            onChange={handleChange}
+            visibility={'CAN_EDIT'}
+          />
         </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
@@ -193,7 +224,12 @@ describe('TableInputValue', () => {
         <CellMappingContext.Provider
           value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
         >
-          <TableInputValue valueData={getTableValueWithId()} searchText={''} onChange={handleChange} />
+          <TableInputValue
+            valueData={getTableValueWithId()}
+            searchText={''}
+            onChange={handleChange}
+            visibility={'CAN_EDIT'}
+          />
         </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
@@ -216,7 +252,12 @@ describe('TableInputValue', () => {
         <CellMappingContext.Provider
           value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
         >
-          <TableInputValue valueData={getTableValueWithId()} searchText={''} onChange={handleChange} />
+          <TableInputValue
+            valueData={getTableValueWithId()}
+            searchText={''}
+            onChange={handleChange}
+            visibility={'CAN_EDIT'}
+          />
         </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
@@ -235,7 +276,12 @@ describe('TableInputValue', () => {
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
         <CellMappingContext.Provider value={{cellMatchersMapping: {}, cellInputsMapping: {}}}>
-          <TableInputValue valueData={getTableValueWithId()} searchText={''} onChange={jest.fn()} />
+          <TableInputValue
+            valueData={getTableValueWithId()}
+            searchText={''}
+            onChange={jest.fn()}
+            visibility={'CAN_EDIT'}
+          />
         </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
@@ -246,7 +292,12 @@ describe('TableInputValue', () => {
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
         <CellMappingContext.Provider value={{cellMatchersMapping: {}, cellInputsMapping: {}}}>
-          <TableInputValue valueData={getTableValueWithId('reference_entity')} searchText={''} onChange={jest.fn()} />
+          <TableInputValue
+            valueData={getTableValueWithId('reference_entity')}
+            searchText={''}
+            onChange={jest.fn()}
+            visibility={'CAN_EDIT'}
+          />
         </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
@@ -264,7 +315,7 @@ describe('TableInputValue', () => {
         <CellMappingContext.Provider
           value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
         >
-          <TableInputValue valueData={valueDataWithUnknownRecord} />
+          <TableInputValue valueData={valueDataWithUnknownRecord} visibility={'CAN_EDIT'} />
         </CellMappingContext.Provider>
       </TestAttributeContextProvider>
     );
