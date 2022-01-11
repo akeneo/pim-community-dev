@@ -154,21 +154,7 @@ pim_import_export:
   widget:
     last_operations:
       empty: Il n'y a aucune opération à afficher pour le moment.
-      date: Date
-      profile_name: Nom du profil
       details: Détails
-      warning_count: Avertissements
-      username: Nom d'utilisateur
-      job_type:
-        import: Import
-        export: Export
-        mass_edit: Edition de masse
-        mass_edit_rule: Paramètres des règles
-        quick_export: Export rapide
-        compute_family_variant_structure_changes: Calcul des changements de structure des familles variantes
-        compute_completeness_of_products_family: Calcul de la complétude des familles variantes
-        mass_delete: Suppression massive de produits
-        clean_removed_attribute_job: Traitement des valeurs de l'attribut supprimé
       header.view_all: Afficher tout
   batch_status:
     1: Terminé

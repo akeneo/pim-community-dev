@@ -161,6 +161,7 @@
 - PIM-10217: Fix cannot quick export product model when id is not present in grid context
 - PIM-10212: Prevent spaces in locale codes
 - PIM-10218: Remove previous scope filter before moving the new one
+- PIM-10215: Fixed last operation widget job type translation key
 
 ## New features
 
@@ -171,6 +172,7 @@
 
 - PIM-9716: Autoselect last element of pasted list in choice filter
 - PIM-9985: Improve channels sentence display in the settings menu
+- PIM-10229: Enforce strict samesite policy for session cookies
 
 # Technical Improvements
 
