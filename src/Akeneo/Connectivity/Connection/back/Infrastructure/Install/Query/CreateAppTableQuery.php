@@ -15,8 +15,8 @@ final class CreateAppTableQuery
     CREATE TABLE IF NOT EXISTS akeneo_connectivity_connected_app(
         id VARCHAR(36) NOT NULL PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
-        logo VARCHAR(255) NOT NULL,
-        author VARCHAR(255) NOT NULL,
+        logo VARCHAR(255),
+        author VARCHAR(255),
         partner VARCHAR(255) DEFAULT NULL NULL,
         categories JSON NOT NULL,
         certified TINYINT(1) DEFAULT 0 NOT NULL,
