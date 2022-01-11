@@ -5,7 +5,7 @@ import {pimTheme} from 'akeneo-design-system';
 import React from 'react';
 import {ThemeProvider} from 'styled-components';
 
-test('it displays both profile & email scopes', async () => {
+test('it displays both profile & email scopes', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <Authentication appName='MyApp' scopes={['profile', 'email']} />
@@ -20,7 +20,7 @@ test('it displays both profile & email scopes', async () => {
     ).toBeInTheDocument();
 });
 
-test('it displays only the profile scope', async () => {
+test('it displays only the profile scope', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <Authentication appName='MyApp' scopes={['profile']} />
@@ -35,7 +35,7 @@ test('it displays only the profile scope', async () => {
     ).not.toBeInTheDocument();
 });
 
-test('it displays only the email scope', async () => {
+test('it displays only the email scope', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <Authentication appName='MyApp' scopes={['email']} />
