@@ -1,5 +1,9 @@
 import BaseView = require('pimui/js/view/base');
-import {Dummy} from '@akeneo-pim-enterprise/tailored-import';
+import {
+  ImportStructureTab,
+  ImportStructureTabProps,
+  StructureConfiguration
+} from '@akeneo-pim-enterprise/tailored-import';
 import {filterErrors, ValidationError} from '@akeneo-pim-community/shared';
 const __ = require('oro/translator');
 
@@ -48,11 +52,27 @@ class ColumnView extends BaseView {
     return this.config.tabCode ? this.config.tabCode : this.code;
   }
 
+  setStructureConfigurationData(structureConfiguration: StructureConfiguration): void {
+    const formData = this.getFormData();
+    this.setData({...formData, configuration: {...formData.configuration, ...structureConfiguration}});
+  }
+
   /**
    * {@inheritdoc}
    */
   render(): BaseView {
-    this.renderReact(Dummy, {}, this.el);
+    const formData = this.getFormData();
+
+    const structureConfiguration: StructureConfiguration = {
+      columns: formData.configuration.columns ?? [],
+    };
+
+    const props: ImportStructureTabProps = {
+      structureConfiguration,
+      onStructureConfigurationChange: this.setStructureConfigurationData.bind(this),
+    };
+
+    this.renderReact(ImportStructureTab, props, this.el);
 
     return this;
   }

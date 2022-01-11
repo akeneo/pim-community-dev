@@ -1,8 +1,24 @@
 batch_jobs.xlsx_tailored_product_import.label: Tailored product import in XLSX
 
 akeneo.tailored_import:
+  column_initialization:
+    button: Initialize columns
+    modal:
+      title: Sample data
+      subtitle: Column initialization
+      columns:
+        label: Columns
+        placeholder: Copy and paste here your columns
   form:
     job_instance:
       tab:
         import-structure:
           title: Import structure
+  validation:
+    columns:
+      max_column_count_reached: You have reached the limit of {{ limit }} columns, you can no longer add columns to your export.
+      index:
+        should_be_unique: This column index already exists, please enter a new one.
+      label:
+        should_not_be_blank: Please define a column label.
+        max_length_reached: Column label is too long. It should contain {{ limit }} characters or less.

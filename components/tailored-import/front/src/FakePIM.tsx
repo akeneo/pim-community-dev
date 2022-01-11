@@ -10,8 +10,8 @@ import {
   ImportXlsxIllustration,
   TabBar,
 } from 'akeneo-design-system';
-import {Dummy} from './feature';
 import {NotificationLevel, useNotify, useRoute, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
+import {ImportStructureTab, StructureConfiguration} from './feature';
 
 const JOB_CODE = 'tailoredimport';
 
@@ -57,7 +57,9 @@ const SaveButton = styled(Button)`
 
 type JobConfiguration = {
   code: string;
-  configuration: {};
+  configuration: {
+    columns: Column[];
+  };
 };
 
 const FakePIM = () => {
@@ -76,7 +78,7 @@ const FakePIM = () => {
         'Content-Type': 'application/json',
         'X-Requested-With': 'XMLHttpRequest',
       },
-      body: JSON.stringify(jobConfiguration),
+      body: JSON.stringify({...jobConfiguration, connector: undefined}),
     });
 
     if (!response.ok) {
@@ -111,6 +113,16 @@ const FakePIM = () => {
 
   if (null === jobConfiguration) return null;
 
+  const handleStructureConfigurationChange = (newStructureConfiguration: StructureConfiguration): void => {
+    setJobConfiguration({
+      ...jobConfiguration,
+      configuration: {
+        ...jobConfiguration.configuration,
+        ...newStructureConfiguration,
+      },
+    });
+  };
+
   return (
     <Container>
       <Menu>
@@ -134,7 +146,10 @@ const FakePIM = () => {
           <TabBar.Tab isActive={true}>Import structure</TabBar.Tab>
           <TabBar.Tab isActive={false}>History</TabBar.Tab>
         </TabBar>
-        <Dummy />
+        <ImportStructureTab
+          structureConfiguration={{columns: jobConfiguration.configuration.columns}}
+          onStructureConfigurationChange={handleStructureConfigurationChange}
+        />
       </Page>
     </Container>
   );
