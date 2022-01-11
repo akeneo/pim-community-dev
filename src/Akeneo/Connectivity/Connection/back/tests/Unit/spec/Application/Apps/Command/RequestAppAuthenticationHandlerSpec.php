@@ -132,7 +132,7 @@ class RequestAppAuthenticationHandlerSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ConstraintViolationListInterface $constraintViolationList,
         GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
-        ClocClockInterfacek $clock
+        ClockInterface $clock
     ): void {
         $command = new RequestAppAuthenticationCommand('a_app_id', 1, ScopeList::fromScopeString('openid a_new_scope'));
 
