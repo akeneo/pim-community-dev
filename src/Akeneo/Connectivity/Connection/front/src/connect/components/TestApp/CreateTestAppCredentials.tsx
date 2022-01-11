@@ -1,7 +1,7 @@
-import React, {FC, useCallback, useState} from 'react';
+import React, {FC, useCallback} from 'react';
 import {useTranslate} from '../../../shared/translate';
 import styled from '../../../common/styled-with-theme';
-import {Button, getColor, Helper, Modal} from 'akeneo-design-system';
+import {Button, getColor, Helper, Modal, UserIcon, KeyIcon} from 'akeneo-design-system';
 import {CopiableCredential} from '../../../settings/components/credentials/CopiableCredential';
 import {CredentialList} from '../../../settings/components/credentials/Credential';
 import {TestAppCredentials} from '../../../model/Apps/test-app-credentials';
@@ -43,8 +43,9 @@ export const CreateTestAppCredentials: FC<Props> = ({onClose, credentials, setCr
                 {translate('akeneo_connectivity.connection.connect.marketplace.test_apps.modal.credentials.warning')}
             </Helper>
 
-            <TestAppCredentialList>
+            <TestAppCredentialList withIcon={true}>
                 <CopiableCredential
+                    icon={<UserIcon></UserIcon>}
                     label={translate(
                         'akeneo_connectivity.connection.connect.marketplace.test_apps.modal.credentials.client_id'
                     )}
@@ -52,6 +53,7 @@ export const CreateTestAppCredentials: FC<Props> = ({onClose, credentials, setCr
                     {credentials.clientId}
                 </CopiableCredential>
                 <CopiableCredential
+                    icon={<KeyIcon />}
                     label={translate(
                         'akeneo_connectivity.connection.connect.marketplace.test_apps.modal.credentials.client_secret'
                     )}
