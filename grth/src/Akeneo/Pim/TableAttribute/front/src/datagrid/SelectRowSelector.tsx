@@ -1,12 +1,12 @@
 import React from 'react';
 import {getLabel, useUserContext} from '@akeneo-pim-community/shared';
-import {RecordCode, SelectOption, SelectOptionCode} from '../models';
+import {SelectOption, SelectOptionCode} from '../models';
 import {useFetchOptions} from '../product';
 import {useAttributeContext} from '../contexts';
 import {RowSelectorSelectInput} from './RowSelectorSelectInput';
 
 type SelectRowSelectorProps = {
-  onChange: (value?: RecordCode | SelectOptionCode | null) => void;
+  onChange: (value?: SelectOptionCode | null) => void;
   /**
    * If value is:
    * - undefined: the placeholder should be displayed

@@ -45,7 +45,6 @@ const search: (
   }
 
   const records = await RecordFetcher.search(router, referenceEntityIdentifier, {...props, codes: codesToFetch});
-  // const records = await RecordFetcher.search(router, referenceEntityIdentifier, props);
 
   records.forEach(record => {
     if (!(getKey(referenceEntityIdentifier, record.code) in referenceEntityRecordsCache)) {
