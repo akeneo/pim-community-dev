@@ -1,5 +1,5 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
-import {Breadcrumb, TabBar, useTabBar} from 'akeneo-design-system';
+import {AppIllustration, Breadcrumb, TabBar, useTabBar} from 'akeneo-design-system';
 import {Translate, useTranslate} from '../../../shared/translate';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
 import {useRouter} from '../../../shared/router/use-router';
@@ -179,6 +179,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                 userButtons={<UserButtons />}
                 state={<FormState />}
                 imageSrc={connectedApp.logo ?? undefined}
+                imageIllustration={connectedApp.logo ? undefined : <AppIllustration />}
             >
                 {connectedApp.name}
             </PageHeader>

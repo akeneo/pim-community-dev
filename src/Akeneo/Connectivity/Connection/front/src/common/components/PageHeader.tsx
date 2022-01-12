@@ -1,4 +1,4 @@
-import React, {PropsWithChildren, ReactElement, ReactNode, Fragment} from 'react';
+import React, {PropsWithChildren, ReactElement, ReactNode, Fragment, cloneElement} from 'react';
 import styled from 'styled-components';
 
 type Props = PropsWithChildren<{
@@ -7,6 +7,7 @@ type Props = PropsWithChildren<{
     userButtons?: ReactNode;
     state?: ReactNode;
     imageSrc?: string;
+    imageIllustration?: ReactElement;
     tag?: ReactNode;
 }>;
 
@@ -20,13 +21,28 @@ const AknTitleContainerBreadcrumbs = styled.div.attrs(() => ({className: 'AknTit
     min-height: 32px;
 `;
 
-export const PageHeader = ({children: title, breadcrumb, buttons, userButtons, state, imageSrc, tag}: Props) => (
+export const PageHeader = ({
+    children: title,
+    breadcrumb,
+    buttons,
+    userButtons,
+    state,
+    imageSrc,
+    imageIllustration,
+    tag,
+}: Props) => (
     <Header>
         <div className='AknTitleContainer-line'>
             {imageSrc && (
                 <div className='AknImage AknImage--readOnly'>
                     <img className='AknImage-display' src={imageSrc} />
                 </div>
+            )}
+
+            {imageSrc === undefined && imageIllustration && (
+                <IllustrationContainer>
+                    {cloneElement(imageIllustration, {width: 142, height: 142})}
+                </IllustrationContainer>
             )}
 
             <div className='AknTitleContainer-mainContainer'>
@@ -64,5 +80,22 @@ const Header = styled.header`
 
     .AknImage-display {
         max-width: 100%;
+    }
+`;
+
+const IllustrationContainer = styled.div`
+    position: relative;
+    width: 142px;
+    height: 142px;
+    border: 1px solid #ccd1d8;
+    margin-right: 20px;
+    border-radius: 4px;
+    display: flex;
+    overflow: hidden;
+    flex-basis: 142px;
+    flex-shrink: 0;
+
+    & > * {
+        width: 100%;
     }
 `;
