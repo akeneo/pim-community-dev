@@ -35,7 +35,7 @@ export const ConnectedAppsListPage: FC = () => {
             <PageContent>
                 {null === connectedApps && <ConnectedAppsContainerIsLoading />}
                 {false !== connectedApps && null !== connectedApps && (
-                    <ConnectedAppsContainer connectedApps={connectedApps} />
+                    <ConnectedAppsContainer allConnectedApps={connectedApps} />
                 )}
             </PageContent>
         </>

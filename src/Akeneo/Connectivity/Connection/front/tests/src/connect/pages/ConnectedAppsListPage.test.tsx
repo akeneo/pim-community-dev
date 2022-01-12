@@ -66,7 +66,7 @@ test('The connected apps list page renders with 2 connected apps card', async ()
 
     renderWithProviders(<ConnectedAppsListPage />);
 
-    await waitFor(() => expect(ConnectedAppsContainer).toHaveBeenCalledWith({connectedApps}, {}));
+    await waitFor(() => expect(ConnectedAppsContainer).toHaveBeenCalledWith({allConnectedApps: connectedApps}, {}));
 });
 
 test('The connected apps list page renders with internal api errors', async () => {

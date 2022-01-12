@@ -94,7 +94,7 @@ const connectedApps = [
 ];
 
 test('The connected apps list renders with 2 connected apps card and 2 connected test app', async () => {
-    renderWithProviders(<ConnectedAppsContainer connectedApps={connectedApps} />);
+    renderWithProviders(<ConnectedAppsContainer allConnectedApps={connectedApps} />);
     await waitFor(() => screen.getByText('Helper mock'));
 
     expect(ConnectedAppsContainerHelper).toBeCalledWith({count: 4}, {});
@@ -118,7 +118,7 @@ test('The connected apps list renders with 2 connected apps card and 2 connected
 });
 
 test('The connected apps list renders without connected apps', async () => {
-    renderWithProviders(<ConnectedAppsContainer connectedApps={[]} />);
+    renderWithProviders(<ConnectedAppsContainer allConnectedApps={[]} />);
     await waitFor(() => screen.getByText('Helper mock'));
 
     expect(ConnectedAppsContainerHelper).toBeCalledWith({count: 0}, {});

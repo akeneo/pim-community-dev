@@ -29,18 +29,18 @@ const ScrollToTop = styled(IconButton)`
 `;
 
 type Props = {
-    connectedApps: ConnectedApp[];
+    allConnectedApps: ConnectedApp[];
 };
 
-export const ConnectedAppsContainer: FC<Props> = ({connectedApps}) => {
+export const ConnectedAppsContainer: FC<Props> = ({allConnectedApps}) => {
     const translate = useTranslate();
     const featureFlag = useFeatureFlags();
     const ref = useRef(null);
     const scrollContainer = findScrollParent(ref.current);
     const displayScrollButton = useDisplayScrollTopButton(ref);
 
-    const connectedTestApps = connectedApps.filter((connectedApp: ConnectedApp) => connectedApp.test);
-    connectedApps = connectedApps.filter((connectedApp: ConnectedApp) => !connectedApp.test);
+    const connectedTestApps = allConnectedApps.filter((connectedApp: ConnectedApp) => connectedApp.test);
+    const connectedApps = allConnectedApps.filter((connectedApp: ConnectedApp) => !connectedApp.test);
 
     const connectedAppCards = connectedApps.map((connectedApp: ConnectedApp) => (
         <ConnectedAppCard key={connectedApp.id} item={connectedApp} />
@@ -52,7 +52,7 @@ export const ConnectedAppsContainer: FC<Props> = ({connectedApps}) => {
     return (
         <>
             <div ref={ref} />
-            <ConnectedAppsContainerHelper count={connectedApps.length + connectedTestApps.length} />
+            <ConnectedAppsContainerHelper count={allConnectedApps.length} />
 
             <ConnectedTestAppList connectedTestApps={connectedTestApps} />
 
