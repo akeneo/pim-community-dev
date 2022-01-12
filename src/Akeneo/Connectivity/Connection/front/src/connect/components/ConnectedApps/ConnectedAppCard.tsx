@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
-import {getColor, getFontSize, Button} from 'akeneo-design-system';
+import {getColor, getFontSize, Button, AppIllustration} from 'akeneo-design-system';
 import {useTranslate} from '../../../shared/translate';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
 import {useRouter} from '../../../shared/router/use-router';
@@ -107,18 +107,19 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
     const connectedAppUrl = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps_edit', {
         connectionCode: item.connection_code,
     })}`;
+    const author =
+        item.author ?? translate('akeneo_connectivity.connection.connect.connected_apps.list.test_apps.removed_user');
+    const logo = item.logo ? <Logo src={item.logo} alt={item.name} /> : <AppIllustration width={100} height={100} />;
 
     return (
         <CardContainer>
-            <LogoContainer>
-                <Logo src={item.logo} alt={item.name} />
-            </LogoContainer>
+            <LogoContainer> {logo} </LogoContainer>
             <TextInformation>
                 <Name>{item.name}</Name>
                 <Author>
-                    {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by')}
-                    &nbsp;
-                    {item.author}
+                    {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by', {
+                        author,
+                    })}
                 </Author>
                 {item.categories.length > 0 && <Tag>{item.categories[0]}</Tag>}
             </TextInformation>

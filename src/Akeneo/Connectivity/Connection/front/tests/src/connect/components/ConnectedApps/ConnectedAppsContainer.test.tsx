@@ -2,8 +2,17 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {screen, waitFor} from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
-import {renderWithProviders, historyMock, MockFetchResponses, mockFetchResponses} from '../../../../test-utils';
+import {historyMock, renderWithProviders} from '../../../../test-utils';
 import {ConnectedAppsContainer} from '@src/connect/components/ConnectedApps/ConnectedAppsContainer';
+import ConnectedAppsContainerHelper from '@src/connect/components/ConnectedApps/ConnectedAppsContainerHelper';
+import {ConnectedTestAppList} from '@src/connect/components/ConnectedApps/ConnectedTestAppList';
+import {ConnectedAppCard} from '@src/connect/components/ConnectedApps/ConnectedAppCard';
+
+beforeEach(() => {
+    fetchMock.resetMocks();
+    historyMock.reset();
+    jest.clearAllMocks();
+});
 
 jest.mock('@src/shared/feature-flags/use-feature-flags', () => ({
     useFeatureFlags: () => {
@@ -13,98 +22,118 @@ jest.mock('@src/shared/feature-flags/use-feature-flags', () => ({
     },
 }));
 
-beforeEach(() => {
-    fetchMock.resetMocks();
-    historyMock.reset();
-});
+jest.mock('@src/connect/components/ConnectedApps/ConnectedAppsContainerHelper', () => ({
+    ...jest.requireActual('@src/connect/components/ConnectedApps/ConnectedAppsContainerHelper'),
+    __esModule: true,
+    default: jest.fn(() => <h1>Helper mock</h1>),
+}));
 
-test('The connected apps list renders with 2 connected apps card', async () => {
-    const connectedApps = [
+jest.mock('@src/connect/components/ConnectedApps/ConnectedAppCard', () => ({
+    ...jest.requireActual('@src/connect/components/ConnectedApps/ConnectedAppCard'),
+    ConnectedAppCard: jest.fn(() => null),
+}));
+
+jest.mock('@src/connect/components/ConnectedApps/ConnectedTestAppList', () => ({
+    ...jest.requireActual('@src/connect/components/ConnectedApps/ConnectedTestAppList'),
+    ConnectedTestAppList: jest.fn(() => null),
+}));
+
+const connectedApps = [
+    {
+        id: 'app_id_a',
+        name: 'App A',
+        scopes: [],
+        connection_code: 'connectionCodeA',
+        logo: 'http://www.example.test/path/to/logo/a',
+        author: 'author A',
+        user_group_name: 'user_group_a',
+        categories: [],
+        certified: true,
+        partner: null,
+        is_test_app: false,
+    },
+    {
+        id: 'app_id_b',
+        name: 'App B',
+        scopes: [],
+        connection_code: 'connectionCodeB',
+        logo: 'http://www.example.test/path/to/logo/b',
+        author: 'author B',
+        user_group_name: 'user_group_b',
+        categories: [],
+        certified: true,
+        partner: null,
+        is_test_app: true,
+    },
+    {
+        id: 'app_id_c',
+        name: 'App C',
+        scopes: [],
+        connection_code: 'connectionCodeC',
+        logo: 'http://www.example.test/path/to/logo/c',
+        author: 'author C',
+        user_group_name: 'user_group_c',
+        categories: [],
+        certified: true,
+        partner: null,
+        is_test_app: true,
+    },
+    {
+        id: 'app_id_d',
+        name: 'App D',
+        scopes: [],
+        connection_code: 'connectionCodeD',
+        logo: 'http://www.example.test/path/to/logo/d',
+        author: 'author D',
+        user_group_name: 'user_group_d',
+        categories: [],
+        certified: true,
+        partner: null,
+        is_test_app: false,
+    },
+];
+
+test('The connected apps list renders with 2 connected apps card and 2 connected test app', async () => {
+    renderWithProviders(<ConnectedAppsContainer allConnectedApps={connectedApps} />);
+    await waitFor(() => screen.getByText('Helper mock'));
+
+    expect(ConnectedAppsContainerHelper).toBeCalledWith({count: 4}, {});
+
+    expect(ConnectedTestAppList).toHaveBeenCalledWith(
         {
-            id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
-            name: 'App A',
-            scopes: ['scope A1'],
-            connection_code: 'connectionCodeA',
-            logo: 'http://www.example.test/path/to/logo/a',
-            author: 'author A',
-            user_group_name: 'app_123456abcde',
-            categories: ['category A1', 'category A2'],
-            certified: false,
-            partner: 'partner A',
+            connectedTestApps: [connectedApps[1], connectedApps[2]],
         },
-        {
-            id: '2677e764-f852-4956-bf9b-1a1ec1b0d145',
-            name: 'App B',
-            scopes: ['scope B1', 'scope B2'],
-            connection_code: 'connectionCodeB',
-            logo: 'http://www.example.test/path/to/logo/b',
-            author: 'author B',
-            user_group_name: 'app_7891011ghijklm',
-            categories: ['category B1'],
-            certified: true,
-            partner: null,
-        },
-    ];
+        {}
+    );
 
-    renderWithProviders(<ConnectedAppsContainer connectedApps={connectedApps} />);
-    await waitFor(() => screen.getByText('App A'));
-
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.title', {exact: false})
-    ).toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.description_1')
-    ).toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.description_2')
-    ).toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.link')
-    ).toBeInTheDocument();
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.title')
     ).toBeInTheDocument();
     expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.total', {exact: false})
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.total?total=2')
     ).toBeInTheDocument();
-    expect(
-        screen.queryAllByText('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')
-    ).toHaveLength(2);
-    expect(screen.queryByText('App A')).toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by' + ' author A')
-    ).toBeInTheDocument();
-    expect(screen.queryByText('category A1')).toBeInTheDocument();
-    expect(screen.queryByText('category A2')).toBeNull();
-    expect(screen.queryByText('App B')).toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by' + ' author B')
-    ).toBeInTheDocument();
-    expect(screen.queryByText('category B1')).toBeInTheDocument();
+
+    expect(ConnectedAppCard).toHaveBeenNthCalledWith(1, {item: connectedApps[0]}, {});
+    expect(ConnectedAppCard).toHaveBeenNthCalledWith(2, {item: connectedApps[3]}, {});
 });
 
 test('The connected apps list renders without connected apps', async () => {
-    renderWithProviders(<ConnectedAppsContainer connectedApps={[]} />);
-    await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty'));
+    renderWithProviders(<ConnectedAppsContainer allConnectedApps={[]} />);
+    await waitFor(() => screen.getByText('Helper mock'));
 
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.title', {exact: false})
-    ).toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.description_1')
-    ).toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.description_2')
-    ).toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.helper.link')
-    ).toBeInTheDocument();
+    expect(ConnectedAppsContainerHelper).toBeCalledWith({count: 0}, {});
+
+    expect(ConnectedTestAppList).toHaveBeenCalledWith({connectedTestApps: []}, {});
+
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.title')
     ).toBeInTheDocument();
     expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.total', {exact: false})
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.total?total=0')
     ).toBeInTheDocument();
+
+    expect(ConnectedAppCard).not.toHaveBeenCalled();
+
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.empty')
     ).toBeInTheDocument();

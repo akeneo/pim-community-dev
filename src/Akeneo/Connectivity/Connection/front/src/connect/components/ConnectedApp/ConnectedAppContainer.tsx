@@ -178,7 +178,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                 ]}
                 userButtons={<UserButtons />}
                 state={<FormState />}
-                imageSrc={connectedApp.logo}
+                imageSrc={connectedApp.logo ?? undefined}
             >
                 {connectedApp.name}
             </PageHeader>
