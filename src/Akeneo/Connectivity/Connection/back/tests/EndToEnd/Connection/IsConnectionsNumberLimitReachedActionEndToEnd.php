@@ -27,6 +27,8 @@ class IsConnectionsNumberLimitReachedActionEndToEnd extends WebTestCase
         $connectionLoader->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
         $connectionLoader->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION, false, 'app');
 
+        $this->authenticateAsAdmin();
+
         $this->client->request(
             'GET',
             '/rest/connections/max-limit-reached',
