@@ -47,4 +47,38 @@ SQL;
 
         return $attributeTranslations;
     }
+
+    public function byAttributeCodes(array $attributeCodes): array
+    {
+        if (empty($attributeCodes)) {
+            return [];
+        }
+
+        $query = <<<SQL
+            SELECT
+                code,
+                CONCAT('{', GROUP_CONCAT(CONCAT('"', at.locale, '":"',at.label,'"')), '}') labels
+            FROM pim_catalog_attribute a
+                LEFT JOIN pim_catalog_attribute_translation at ON a.id = at.foreign_key
+            WHERE code IN (:attributeCodes)
+            GROUP BY code;
+        SQL;
+
+        $rows = $this->connection->executeQuery(
+            $query,
+            [
+                'attributeCodes' => $attributeCodes
+            ],
+            [
+                'attributeCodes' => Connection::PARAM_STR_ARRAY,
+            ]
+        )->fetchAllAssociative();
+
+        $attributeTranslations = [];
+        foreach ($rows as $attribute) {
+            $attributeTranslations[$attribute['code']] = $attribute['label'];
+        }
+
+        return $attributeTranslations;
+    }
 }
