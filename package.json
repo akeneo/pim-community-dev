@@ -50,7 +50,7 @@
     "url": "https://github.com/akeneo/pim-community-dev/issues"
   },
   "devDependencies": {
-    "@babel/core": "^7.3.4",
+    "@babel/core": "^7.16.7",
     "@babel/preset-env": "^7.3.4",
     "@babel/preset-react": "^7.10.4",
     "@testing-library/cypress": "^7.0.4",
@@ -75,7 +75,6 @@
     "@types/victory": "^33.0.1",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
     "@typescript-eslint/parser": "^4.0.1",
-    "babel-eslint": "^10.0.1",
     "babel-loader": "^8.1.0",
     "babel-minify": "0.5.0",
     "bundle-loader": "0.5.6",
@@ -127,8 +126,8 @@
     "yamljs": "0.3.0"
   },
   "dependencies": {
+    "@babel/eslint-parser": "^7.16.5",
     "ajv": "^6.10.2",
-    "akeneo-design-system": "link:front-packages/akeneo-design-system",
     "babel-polyfill": "6.26.0",
     "backbone": "0.9.10",
     "css-loader": "^3.3.0",
@@ -158,6 +157,7 @@
   },
   "private": true,
   "workspaces": [
+    "front-packages/akeneo-design-system",
     "front-packages/shared",
     "front-packages/measurement",
     "src/Akeneo/Platform/Job/front/process-tracker",
@@ -172,5 +172,6 @@
     "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/system",
     "src/Akeneo/Pim/Enrichment/Bundle/Resources/workspaces/enrichment",
     "src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front"
-  ]
+  ],
+  "packageManager": "yarn@3.1.1"
 }

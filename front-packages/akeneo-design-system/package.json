@@ -21,16 +21,19 @@
   },
   "author": "akeneo",
   "license": "OSL-3.0",
-  "peerDependencies": {
-    "react": "^16.14.0",
-    "react-dom": "^16.9.12",
-    "styled-components": "^5.1.11"
-  },
   "dependencies": {
+    "@babel/core": "^7.16.7",
+    "@storybook/addons": "^6.4.12",
+    "@testing-library/dom": "^8.11.1",
+    "babel-loader": "^8.2.3",
     "draft-js": "^0.10.5",
     "draftjs-to-html": "^0.8.4",
     "html-to-draftjs": "^1.5.0",
-    "react-draft-wysiwyg": "^1.12.13"
+    "immutable": "^4.0.0",
+    "react": "^16.14.0",
+    "react-dom": "^16.9.12",
+    "react-draft-wysiwyg": "^1.12.13",
+    "styled-components": "^5.1.11"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "^6.3.12",

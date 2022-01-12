@@ -2,5 +2,17 @@
   "name": "@akeneo-pim-community/activity",
   "version": "1.0.0",
   "private": true,
-  "main": "src/index.ts"
+  "main": "src/index.ts",
+  "dependencies": {
+    "react": "^17.0.2"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testMatch": [
+      "**/tests/**/*.[jt]s?(x)"
+    ]
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.38"
+  }
 }
