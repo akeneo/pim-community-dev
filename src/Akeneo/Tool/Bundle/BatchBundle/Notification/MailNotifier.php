@@ -2,11 +2,11 @@
 
 namespace Akeneo\Tool\Bundle\BatchBundle\Notification;
 
-use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
+use Akeneo\Platform\Bundle\NotificationBundle\Email\MailNotifier as MailNotification;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
-use Akeneo\Tool\Component\Email\SenderAddress;
-use Swift_Image;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Throwable;
 use Twig\Environment;
 
 /**
@@ -21,63 +21,56 @@ class MailNotifier implements Notifier
     protected ?string $recipientEmail = null;
 
     public function __construct(
-        protected BatchLogHandler       $logger,
+        protected LoggerInterface       $logger,
         protected TokenStorageInterface $tokenStorage,
         protected Environment           $twig,
-        protected \Swift_Mailer         $mailer,
-        protected string                $mailerUrl,
+        protected MailNotification      $mailer,
         protected string                $imagePath
     ) {
     }
 
-    /**
-     * @param string $recipientEmail
-     */
-    public function setRecipientEmail($recipientEmail): self
+    public function setRecipientEmail(string $recipientEmail): self
     {
         $this->recipientEmail = $recipientEmail;
 
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function notify(JobExecution $jobExecution)
     {
         if (null === $email = $this->getEmail()) {
             return;
         }
 
-        $message = $this->mailer->createMessage();
-
+        // TODO:
+        //  - manage images
+        //  - need message instance
         // Add embedded images
-        $cidLogo = $message->embed(Swift_Image::fromPath($this->imagePath . '/email_logo.png')
-            ->setDisposition('inline'));
-        $cidSignature = $message->embed(Swift_Image::fromPath($this->imagePath . '/email_signature.png')
-            ->setDisposition('inline'));
+//        $cidLogo = $message->embed(Swift_Image::fromPath($this->imagePath . '/email_logo.png')
+//            ->setDisposition('inline'));
+//        $cidSignature = $message->embed(Swift_Image::fromPath($this->imagePath . '/email_signature.png')
+//            ->setDisposition('inline'));
 
         $parameters = [
             'jobExecution' => $jobExecution,
-            'log' => $this->logger->getFilename(),
-            'email' => $email,
-            'images' => [
-                'logo' => $cidLogo,
-                'signature' => $cidSignature
-            ]
+            'email' => $email
+//            'images' => [
+//                'logo' => $cidLogo,
+//                'signature' => $cidSignature
+//            ]
         ];
 
-        $txtBody = $this->twig->render('@AkeneoBatch/Mails/notification.txt.twig', $parameters);
-        $htmlBody = $this->twig->render('@AkeneoBatch/Mails/notification.html.twig', $parameters);
-
-        // Prepare message
-        $message->setSubject('Job has been executed');
-        $message->setFrom((string)SenderAddress::fromMailerUrl($this->mailerUrl));
-        $message->setTo($email);
-        $message->setBody($txtBody, 'text/plain');
-        $message->addPart($htmlBody, 'text/html');
-
-        $this->mailer->send($message);
+        try {
+            $txtBody = $this->twig->render('@PimNotification/Email/notification.txt.twig', $parameters);
+            $htmlBody = $this->twig->render('@PimNotification/Email/notification.html.twig', $parameters);
+            $this->mailer->notifyByEmails([$email], 'Job has been executed', $txtBody, $htmlBody);
+        } catch (Throwable $exception) {
+            $this->logger->error(
+                MailNotifier::class . ' Unable to send email due to : ' . $exception->getMessage(),
+                ['Exception' => $exception]
+            );
+            return;
+        }
     }
 
     /**
@@ -85,7 +78,7 @@ class MailNotifier implements Notifier
      *
      * @return null|string
      */
-    private function getEmail()
+    private function getEmail(): ?string
     {
         if ($this->recipientEmail) {
             return $this->recipientEmail;

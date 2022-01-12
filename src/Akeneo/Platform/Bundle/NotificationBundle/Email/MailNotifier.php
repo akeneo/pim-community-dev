@@ -3,6 +3,7 @@
 namespace Akeneo\Platform\Bundle\NotificationBundle\Email;
 
 use Akeneo\Tool\Component\Email\SenderAddress;
+use Swift_Mailer;
 
 /**
  * Notify by email
@@ -11,40 +12,39 @@ use Akeneo\Tool\Component\Email\SenderAddress;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class MailNotifier
+class MailNotifier implements MailNotifierInterface
 {
-    /** @var \Swift_Mailer */
-    protected $mailer;
+    protected object $message;
 
-    /** @var string */
-    protected $mailerUrl;
-
-    /**
-     * @param \Swift_Mailer $mailer
-     * @param string        $mailerUrl
-     */
-    public function __construct(\Swift_Mailer $mailer, string $mailerUrl)
-    {
-        $this->mailer = $mailer;
-        $this->mailerUrl = $mailerUrl;
+    public function __construct(
+        protected Swift_Mailer $mailer,
+        protected string $mailerUrl) {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function notify(array $users, $subject, $txtBody, $htmlBody = null, array $options = [])
     {
         foreach ($users as $user) {
-            $message = $this->mailer->createMessage();
-            $message->setSubject($subject)
-                ->setFrom((string) SenderAddress::fromMailerUrl($this->mailerUrl))
-                ->setTo($user->getEmail())
-                ->setCharset('UTF-8')
-                ->setContentType('text/html')
-                ->setBody($txtBody, 'text/plain')
-                ->addPart($htmlBody, 'text/html');
-
-            $this->mailer->send($message);
+            $this->send($user->getEmail(), $subject, $txtBody, $htmlBody);
         }
+    }
+
+    public function notifyByEmails(array $emails, string $subject, string $txtBody, $htmlBody = null, array $options = [])
+    {
+        foreach ($emails as $email) {
+            $this->send($email, $subject, $txtBody, $htmlBody);
+        }
+    }
+
+    private function send($email, $subject, $txtBody, $htmlBody) {
+        $message = $this->mailer->createMessage();
+        $message->setSubject($subject)
+            ->setFrom((string) SenderAddress::fromMailerUrl($this->mailerUrl))
+            ->setTo($email)
+            ->setCharset('UTF-8')
+            ->setContentType('text/html')
+            ->setBody($txtBody, 'text/plain')
+            ->addPart($htmlBody, 'text/html');
+
+        $this->mailer->send($message);
     }
 }

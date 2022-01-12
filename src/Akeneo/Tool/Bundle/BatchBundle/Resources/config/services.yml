@@ -44,11 +44,10 @@ services:
     akeneo_batch.mail_notifier:
         class: '%akeneo_batch.mail_notifier.class%'
         arguments:
-            - '@akeneo_batch.logger.batch_log_handler'
+            - '@logger'
             - '@security.token_storage'
             - '@twig'
-            - '@mailer'
-            - '%mailer_url%'
+            - '@pim_notification.email.email_notifier'
             - '%akeneo_batch.image_path%'
 
     akeneo_batch.logger.batch_log_handler:
