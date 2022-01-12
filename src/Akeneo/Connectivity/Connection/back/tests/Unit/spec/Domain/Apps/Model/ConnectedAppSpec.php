@@ -98,7 +98,7 @@ class ConnectedAppSpec extends ObjectBehavior
             'categories' => ['E-commerce', 'print'],
             'certified' => true,
             'partner' => 'Akeneo partner',
-            'test' => true,
+            'is_test_app' => true,
         ]);
     }
 
@@ -128,7 +128,7 @@ class ConnectedAppSpec extends ObjectBehavior
             'categories' => ['E-commerce', 'print'],
             'certified' => true,
             'partner' => 'Akeneo partner',
-            'test' => false,
+            'is_test_app' => false,
         ]);
     }
 }
