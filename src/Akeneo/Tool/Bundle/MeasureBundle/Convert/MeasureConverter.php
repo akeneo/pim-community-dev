@@ -110,17 +110,15 @@ class MeasureConverter
      */
     protected function applyOperation($value, $operator, $operand)
     {
-        $processedValue = (string) $value;
+        if (is_float($value)) {
+            $processedValue = \number_format($value, static::SCALE, '.', '');
+        } else {
+            $processedValue = (string) $value;
+        }
 
         if (!is_numeric($processedValue)) {
             return '0';
         }
-
-        $scientificPosition = strpos($value, 'E');
-        $num_decimals = $scientificPosition === false ?
-            strlen(substr(strrchr($value, "."), 1)):
-            substr($value, $scientificPosition + 2, strlen($value));
-        $processedValue = \number_format($value, $num_decimals, '.', '');
 
         switch ($operator) {
             case "div":
