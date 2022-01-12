@@ -20,7 +20,6 @@ use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Test\Integration\Configuration;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
-use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -29,7 +28,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ConfirmAuthenticationActionEndToEnd extends WebTestCase
+class ConfirmAuthenticationEndToEnd extends WebTestCase
 {
     private FakeFeatureFlag $featureFlagMarketplaceActivate;
     private PropertyAccessor $propertyAccessor;
@@ -84,7 +83,7 @@ class ConfirmAuthenticationActionEndToEnd extends WebTestCase
             'client_id' => $this->clientId,
             'redirect_uri' => 'http://shopware.example.com/callback',
             'authorization_scope' => 'read_catalog_structure write_products',
-            'authentication_scope' => $autenticationScope->toScopeString(),
+            'authentication_scope' => $authenticationScope->toScopeString(),
             'state' => 'foo',
         ]);
 
@@ -102,147 +101,6 @@ class ConfirmAuthenticationActionEndToEnd extends WebTestCase
 
         $response = $this->client->getResponse();
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
-    }
-
-    public function test_it_throws_not_found_exception_with_feature_flag_disabled(): void
-    {
-        $this->featureFlagMarketplaceActivate->disable();
-
-        $this->client->request(
-            'POST',
-            sprintf('/rest/apps/confirm-authentication/%s', $this->clientId),
-        );
-
-        $response = $this->client->getResponse();
-        Assert::assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-    }
-
-    public function test_it_throws_access_denied_exception_with_missing_acl(): void
-    {
-        $this->featureFlagMarketplaceActivate->enable();
-
-        $this->authenticateAsAdmin();
-        $this->removeAclFromRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');
-
-        $this->client->request(
-            'POST',
-            sprintf('/rest/apps/confirm-authentication/%s', $this->clientId),
-        );
-
-        $response = $this->client->getResponse();
-        Assert::assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-    }
-
-    public function test_it_redirects_if_not_xml_http_request(): void
-    {
-        $this->featureFlagMarketplaceActivate->enable();
-
-        $this->authenticateAsAdmin();
-        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');
-
-        $this->client->followRedirects(false);
-
-        $this->client->request(
-            'POST',
-            sprintf('/rest/apps/confirm-authentication/%s', $this->clientId),
-        );
-
-        $response = $this->client->getResponse();
-        $this->assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
-    }
-
-    public function test_it_throws_a_logic_exception_because_there_is_no_active_app_authorization_into_session(): void
-    {
-        $this->featureFlagMarketplaceActivate->enable();
-
-        $this->authenticateAsAdmin();
-        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');
-
-        $this->createOAuth2Client(['marketplacePublicAppId' => $this->clientId]);
-
-        $this->createConnectedApp($this->clientId);
-
-        $this->client->request(
-            'POST',
-            sprintf('/rest/apps/confirm-authentication/%s', $this->clientId),
-            [],
-            [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ]
-        );
-
-        $response = $this->client->getResponse();
-        $this->assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
-    }
-
-    public function test_it_throws_a_logic_exception_because_there_is_no_connected_app(): void
-    {
-        $autenticationScope = ScopeList::fromScopes([
-            AuthenticationScope::SCOPE_OPENID,
-            AuthenticationScope::SCOPE_PROFILE,
-        ]);
-
-        $this->featureFlagMarketplaceActivate->enable();
-
-        $this->authenticateAsAdmin();
-        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');
-
-        $this->createOAuth2Client(['marketplacePublicAppId' => $this->clientId]);
-
-        $appAuthorization = AppAuthorization::createFromNormalized([
-            'client_id' => $this->clientId,
-            'redirect_uri' => 'http://shopware.example.com/callback',
-            'authorization_scope' => 'read_catalog_structure write_products',
-            'authentication_scope' => $autenticationScope->toScopeString(),
-            'state' => 'foo',
-        ]);
-
-        $this->appAuthorizationSession->initialize($appAuthorization);
-
-        $this->client->request(
-            'POST',
-            sprintf('/rest/apps/confirm-authentication/%s', $this->clientId),
-            [],
-            [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ]
-        );
-
-        $response = $this->client->getResponse();
-        $this->assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
-    }
-
-    public function test_it_returns_an_error_because_app_validation_failed(): void
-    {
-        $expected = [
-            'errors' => [
-                [
-                    'message' => 'akeneo_connectivity.connection.connect.apps.constraint.client_id.must_be_valid',
-                    'property_path' => 'clientId',
-                ],
-            ],
-        ];
-
-        $this->featureFlagMarketplaceActivate->enable();
-
-        $this->authenticateAsAdmin();
-        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');
-
-        $this->client->request(
-            'POST',
-            sprintf('/rest/apps/confirm-authentication/%s', 'a_random_client_id'),
-            [],
-            [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ]
-        );
-
-        $response = $this->client->getResponse();
-        $this->assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-        $this->assertEquals($expected, json_decode($response->getContent(), true));
     }
 
     private function createConnectedApp(string $appPublicId): void
