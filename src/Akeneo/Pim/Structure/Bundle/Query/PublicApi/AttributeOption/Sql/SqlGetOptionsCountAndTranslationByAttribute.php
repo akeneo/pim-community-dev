@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeOption\Sql;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetOptionsCountAndTranslationsByAttribute;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\SearchAttributeOptionsParameters;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetOptionsCountAndTranslationByAttribute;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -13,30 +12,25 @@ use Doctrine\DBAL\Connection;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class SqlGetOptionsCountAndTranslationsByAttribute implements GetOptionsCountAndTranslationsByAttribute
+final class SqlGetOptionsCountAndTranslationByAttribute implements GetOptionsCountAndTranslationByAttribute
 {
-    private const MAX_PAGE_SIZE = 10;
+    private const MAX_PAGE_SIZE = 20;
 
-    /** @var Connection */
-    private $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private Connection $connection)
     {
-        $this->connection = $connection;
     }
 
-    //todo create really precise PHPDoc for return type
-
     /**
-     * @param SearchAttributeOptionsParameters $searchParameters
-     * @return array
+     * @return array example:
+     *      [
+     *          ['code' => 'attribute1', 'label' => 'The Label', 'options_count' => 5],
+     *          ...
+     *      ]
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
      */
-    public function search(string $locale, int $limit = self::MAX_PAGE_SIZE, int $page = 1, string $search = null): array
+    public function search(string $locale, int $page = 1, int $limit = self::MAX_PAGE_SIZE, string $search = null): array
     {
-        $offset = \abs($page - 1) * $limit;
-
         $querySearch = $search ? 'AND LOWER(COALESCE(t.label, a.code)) like :search' : '';
 
         $query = <<<SQL
@@ -52,13 +46,15 @@ final class SqlGetOptionsCountAndTranslationsByAttribute implements GetOptionsCo
         LIMIT :limit OFFSET :offset
         SQL;
 
+        $offset = \abs($page - 1) * $limit;
+
         $rawResults = $this->connection->executeQuery(
             $query,
             [
                 'limit' => $limit,
                 'offset' => $offset,
-                'search' => strtolower($search) . '%',
-                'locale' => '$.' . $locale,
+                'search' => strtolower($search ?? '') . '%',
+                'locale' => $locale,
             ],
             [
                 'limit' => \PDO::PARAM_INT,
@@ -68,6 +64,13 @@ final class SqlGetOptionsCountAndTranslationsByAttribute implements GetOptionsCo
             ],
         )->fetchAllAssociative();
 
-        return $rawResults;
+        return array_map(
+            fn (array $result): array => [
+                'code' => $result['code'],
+                'label' => $result['label'],
+                'options_count' => (int) $result['options_count'],
+            ],
+            $rawResults
+        );
     }
 }

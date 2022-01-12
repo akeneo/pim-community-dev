@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Structure\Integration\AttributeOption;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetOptionsCountAndTranslationsByAttribute;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\SearchAttributeOptionsParameters;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetOptionsCountAndTranslationByAttribute;
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;
 
-class SqlGetOptionsCountAndTranslationsByAttributeCodeIntegration extends TestCase
+class SqlGetOptionsCountAndTranslationByAttributeCodeIntegration extends TestCase
 {
     public function setUp(): void
     {
@@ -38,7 +38,7 @@ class SqlGetOptionsCountAndTranslationsByAttributeCodeIntegration extends TestCa
         $this->createAttributeOption('no_trad', 'option1', [], 1);
 
         // Multi Select attributes
-        $this->createMultiAttribute('toto', ['fr_FR' => 'TotoTaille', 'en_US' => 'totoUs']);
+        $this->createMultiAttribute('toto', ['fr_FR' => 'TailleToto', 'en_US' => 'totoUs']);
         $this->createAttributeOption('toto', 'optionToto', ['fr_FR' => 'totofr', 'en_US' => 'totous'], 1);
 
         $this->createMultiAttribute('size', ['en_US' => 'Size', 'fr_FR' => 'Taille']);
@@ -47,129 +47,117 @@ class SqlGetOptionsCountAndTranslationsByAttributeCodeIntegration extends TestCa
         $this->createAttributeOption('size', 'large', ['fr_FR' => 'grand', 'en_US' => 'Large'], 1);
     }
 
-    public function test_it_returns_options_count_and_translations_by_attribute_code()
+    public function test_it_returns_options_count_and_translation_by_attribute_code(): void
     {
-        /** @var GetOptionsCountAndTranslationsByAttribute $getOptionsCountAndTranslationsByAttributeCode */
-        $getOptionsCountAndTranslationsByAttributeCode =
-            $this->get('akeneo.pim.structure.query.get_options_count_and_translations_by_attribute');
+        /** @var GetOptionsCountAndTranslationByAttribute $getOptionsCountAndTranslationByAttributeCode */
+        $getOptionsCountAndTranslationByAttributeCode =
+            $this->get('akeneo.pim.structure.query.get_options_count_and_translation_by_attribute');
 
-        $result = $getOptionsCountAndTranslationsByAttributeCode->search('fr_FR');
+        $result = $getOptionsCountAndTranslationByAttributeCode->search('fr_FR');
 
-        $this->assertEquals(
+        $this->assertEqualsCanonicalizing(
             [
                 ['code' => 'color', 'label' => 'Couleur', 'options_count' => 5],
-                ['code' => 'no_trad', 'label' => null, 'options_count' => 1],
+                ['code' => 'no_trad', 'label' => 'no_trad', 'options_count' => 1],
                 ['code' => 'size', 'label' => 'Taille', 'options_count' => 3],
-                ['code' => 'toto', 'label' => 'TotoTaille', 'options_count' => 1],
+                ['code' => 'toto', 'label' => 'TailleToto', 'options_count' => 1],
             ],
             $result,
         );
     }
 
-    public function test_it_returns_options_count_and_translations_by_attribute_code_with_limit_and_offset()
+    public function test_it_returns_options_count_and_translation_by_attribute_code_with_limit_and_offset(): void
     {
-        /** @var GetOptionsCountAndTranslationsByAttribute $getOptionsCountAndTranslationsByAttributeCode */
-        $getOptionsCountAndTranslationsByAttributeCode =
-            $this->get('akeneo.pim.structure.query.get_options_count_and_translations_by_attribute');
+        /** @var GetOptionsCountAndTranslationByAttribute $getOptionsCountAndTranslationByAttributeCode */
+        $getOptionsCountAndTranslationByAttributeCode =
+            $this->get('akeneo.pim.structure.query.get_options_count_and_translation_by_attribute');
 
-        $searchParameters = new SearchAttributeOptionsParameters();
-        $searchParameters->setPage(4);
-        $searchParameters->setLimit(1);
+        $result = $getOptionsCountAndTranslationByAttributeCode->search(
+            'en_US',
+            4,
+            1
+            );
 
-        $result = $getOptionsCountAndTranslationsByAttributeCode->search($searchParameters);
-
-        $this->assertEquals(
+        $this->assertEqualsCanonicalizing(
             [
-                'toto' => [
+                [
+                    'code' => 'toto',
+                    'label' => 'totoUs',
                     'options_count' => 1,
-                    'labels' => [
-                        'fr_FR' => 'TotoTaille',
-                        'en_US' => 'totoUs',
-                    ]
                 ],
             ],
             $result,
         );
 
-        $searchParameters = new SearchAttributeOptionsParameters();
-        $searchParameters->setPage(2);
-        $searchParameters->setLimit(2);
+        $result = $getOptionsCountAndTranslationByAttributeCode->search(
+            'en_US',
+            2,
+            2
+        );
 
-        $result = $getOptionsCountAndTranslationsByAttributeCode->search($searchParameters);
-
-        $this->assertEquals(
+        $this->assertEqualsCanonicalizing(
             [
-                'size' => [
+                [
+                    'code' => 'size',
+                    'label' => 'Size',
                     'options_count' => 3,
-                    'labels' => [
-                        'fr_FR' => 'Taille',
-                        'en_US' => 'Size'
-                    ]
                 ],
-                'toto' => [
+                [
+                    'code' => 'toto',
+                    'label' => 'totoUs',
                     'options_count' => 1,
-                    'labels' => [
-                        'fr_FR' => 'TotoTaille',
-                        'en_US' => 'totoUs',
-                    ]
-                ]
+                ],
             ],
             $result,
         );
     }
 
-    public function test_it_returns_options_count_and_translations_by_attribute_code_with_label()
+    public function test_it_returns_options_count_and_translation_by_attribute_code_with_label(): void
     {
-        /** @var GetOptionsCountAndTranslationsByAttribute $getOptionsCountAndTranslationsByAttributeCode */
-        $getOptionsCountAndTranslationsByAttributeCode =
-            $this->get('akeneo.pim.structure.query.get_options_count_and_translations_by_attribute');
+        /** @var GetOptionsCountAndTranslationByAttribute $getOptionsCountAndTranslationByAttributeCode */
+        $getOptionsCountAndTranslationByAttributeCode =
+            $this->get('akeneo.pim.structure.query.get_options_count_and_translation_by_attribute');
 
-        $searchParameters = new SearchAttributeOptionsParameters();
-        $searchParameters->setSearch('TAi');
-        $searchParameters->setLocale('fr_FR');
+        $result = $getOptionsCountAndTranslationByAttributeCode->search(
+            'fr_FR',
+            search:'TAi'
+        );
 
-        $result = $getOptionsCountAndTranslationsByAttributeCode->search($searchParameters);
-
-        $this->assertEquals(
+        $this->assertEqualsCanonicalizing(
             [
-                'size' => [
+                [
+                    'code' => 'size',
+                    'label' => 'Taille',
                     'options_count' => 3,
-                    'labels' => [
-                        'fr_FR' => 'Taille',
-                        'en_US' => 'Size',
-                    ]
                 ],
-                'toto' => [
+                [
+                    'code' => 'toto',
+                    'label' => 'TailleToto',
                     'options_count' => 1,
-                    'labels' => [
-                        'fr_FR' => 'TotoTaille',
-                        'en_US' => 'totoUs',
-                    ]
                 ],
             ],
             $result,
         );
     }
 
-    public function test_it_returns_nothing_when_search_match_with_nothing()
+    public function test_it_returns_nothing_when_search_match_with_nothing(): void
     {
-        /** @var GetOptionsCountAndTranslationsByAttribute $getOptionsCountAndTranslationsByAttributeCode */
-        $getOptionsCountAndTranslationsByAttributeCode =
-            $this->get('akeneo.pim.structure.query.get_options_count_and_translations_by_attribute');
+        /** @var GetOptionsCountAndTranslationByAttribute $getOptionsCountAndTranslationByAttributeCode */
+        $getOptionsCountAndTranslationByAttributeCode =
+            $this->get('akeneo.pim.structure.query.get_options_count_and_translation_by_attribute');
 
-        $searchParameters = new SearchAttributeOptionsParameters();
-        $searchParameters->setSearch('unknown attribute');
-        $searchParameters->setLocale('fr_FR');
+        $result = $getOptionsCountAndTranslationByAttributeCode->search(
+            'fr_FR',
+            search:'unknown attribute'
+        );
 
-        $result = $getOptionsCountAndTranslationsByAttributeCode->search($searchParameters);
-
-        $this->assertEquals(
+        $this->assertEqualsCanonicalizing(
             [],
             $result,
         );
     }
 
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }

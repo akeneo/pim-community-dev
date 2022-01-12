@@ -177,8 +177,8 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo.pim.structure.query.get_options_count_and_translations_by_attribute:
-        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeOption\Sql\SqlGetOptionsCountAndTranslationsByAttribute
+    akeneo.pim.structure.query.get_options_count_and_translation_by_attribute:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeOption\Sql\SqlGetOptionsCountAndTranslationByAttribute
         arguments:
             - '@database_connection'
 

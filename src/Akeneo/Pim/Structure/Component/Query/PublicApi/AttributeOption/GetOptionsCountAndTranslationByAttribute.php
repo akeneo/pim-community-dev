@@ -9,7 +9,7 @@ namespace Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface GetOptionsCountAndTranslationsByAttribute
+interface GetOptionsCountAndTranslationByAttribute
 {
-    public function search(string $locale, int $limit = 10, int $page = 1, string $search = null): array;
+    public function search(string $locale, int $page = 1, int $limit = 20, string $search = null): array;
 }
