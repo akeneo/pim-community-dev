@@ -91,6 +91,12 @@ SQL;
     public function forType(string $attributeType): array
     {
         $query = <<<SQL
+            WITH locale_specific_codes AS (
+                SELECT attribute_locale.attribute_id, JSON_ARRAYAGG(locale.code) AS locale_codes
+                FROM pim_catalog_attribute_locale attribute_locale
+                INNER JOIN pim_catalog_locale locale ON attribute_locale.locale_id = locale.id
+                GROUP BY attribute_locale.attribute_id
+            )
             SELECT attribute.code,
                    attribute.attribute_type,
                    attribute.properties,
@@ -102,6 +108,7 @@ SQL;
                    attribute.backend_type,
                    COALESCE(locale_codes, JSON_ARRAY()) AS available_locale_codes
             FROM pim_catalog_attribute attribute
+            LEFT JOIN locale_specific_codes on attribute.id = attribute_id  
             WHERE attribute.attribute_type = (:attribute_type)
         SQL;
 
