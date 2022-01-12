@@ -25,7 +25,7 @@ final class ConnectedApp
         private array $categories = [],
         private bool $certified = false,
         private ?string $partner = null,
-        private bool $test = false,
+        private bool $isTestApp = false,
     ) {
     }
 
@@ -112,7 +112,7 @@ final class ConnectedApp
             'categories' => $this->categories,
             'certified' => $this->certified,
             'partner' => $this->partner,
-            'test' => $this->test,
+            'is_test_app' => $this->isTestApp,
         ];
     }
 }

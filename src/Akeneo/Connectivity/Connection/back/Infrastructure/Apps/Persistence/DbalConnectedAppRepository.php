@@ -27,7 +27,7 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
         $selectSQL = <<<SQL
         SELECT
                id,
-               akeneo_connectivity_connected_app.name,
+               connected_app.name,
                scopes,
                connection_code,
                logo,
@@ -36,9 +36,9 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
                categories,
                certified,
                partner,
-               IF(akeneo_connectivity_test_app.client_id IS NULL , FALSE, TRUE) AS test
-        FROM akeneo_connectivity_connected_app
-        LEFT JOIN akeneo_connectivity_test_app ON akeneo_connectivity_test_app.client_id = akeneo_connectivity_connected_app.id
+               IF(akeneo_connectivity_test_app.client_id IS NULL, FALSE, TRUE) AS is_test_app
+        FROM akeneo_connectivity_connected_app as connected_app
+        LEFT JOIN akeneo_connectivity_test_app ON akeneo_connectivity_test_app.client_id = connected_app.id
         ORDER BY name ASC
         SQL;
 
@@ -134,7 +134,7 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
             \json_decode($dataRow['categories'], true),
             (bool) $dataRow['certified'],
             $dataRow['partner'],
-            (bool) ($dataRow['test'] ?? false),
+            (bool) ($dataRow['is_test_app'] ?? false),
         );
     }
 }
