@@ -29,9 +29,9 @@ data "template_file" "helm_pim_config" {
     papoProjectCodeHashed                                    = md5(var.papo_project_code)
     pimVersion                                               = var.pim_version
     monitoring_authentication_token                          = local.monitoring_authentication_token
-    mysql_disk_name                                          = google_compute_disk.mysql-disk.name
+    mysql_disk_name                                          = "projects/${var.google_project_id}/zones/${var.google_project_zone}/disks/${google_compute_disk.mysql-disk.name}"
     mysql_disk_size                                          = google_compute_disk.mysql-disk.size
-    mysql_disk_storage_class                                 = google_compute_disk.mysql-disk.type == "pd-ssd" ? "ssd-retain" : "standard-retain"
+    mysql_disk_storage_class                                 = google_compute_disk.mysql-disk.type == "pd-ssd" ? "ssd-retain-csi" : "standard-retain-csi"
     subscription_webhook                                     = google_pubsub_subscription.webhook.name
     subscription_job_queue_ui                                = google_pubsub_subscription.job-queue-ui.name
     subscription_job_queue_import_export                     = google_pubsub_subscription.job-queue-import-export.name

@@ -366,7 +366,7 @@ mysql:
       repository: mysql
       tag: "8.0.26"
   common:
-    class: ssd-retain
+    class: ssd-retain-csi
   mysql:
     dataDiskPath: "/var/lib/mysql/"
     serviceName: pim-mysql
@@ -445,7 +445,7 @@ elasticsearch:
     replicas: 2
     persistence:
       size: 1Gi
-      storageClass: ssd-retain
+      storageClass: ssd-retain-csi
     heapSize: "384m"
     resources:
       limits:
@@ -459,7 +459,7 @@ elasticsearch:
     replicas: 2
     persistence:
       size: 10Gi
-      storageClass: ssd-retain
+      storageClass: ssd-retain-csi
     heapSize: "1G"
     resources:
       limits:

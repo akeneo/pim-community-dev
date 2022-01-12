@@ -84,7 +84,7 @@ mysql:
   common:
     persistentDisks:
     - srnt-fake-instancename
-    class: ssd-retain
+    class: ssd-retain-csi
 
 onboarder:
   enabled: true

@@ -70,7 +70,7 @@ spec:
   gcePersistentDisk:
     pdName: ${MYSQL_DISK_NAME}
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: ssd-retain
+  storageClassName: ssd-retain-csi
   claimRef:
     apiVersion: v1
     kind: PersistentVolumeClaim
@@ -99,4 +99,4 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  storageClassName: ssd-retain
+  storageClassName: ssd-retain-csi
