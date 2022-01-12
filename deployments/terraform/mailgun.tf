@@ -17,6 +17,6 @@ resource "mailgun_domain_credential" "mailgun_credential" {
   region      = var.mailgun_region
 
   lifecycle {
-        ignore_changes    = [ "password" ]
+        ignore_changes    = [ password ]
   }
 }
