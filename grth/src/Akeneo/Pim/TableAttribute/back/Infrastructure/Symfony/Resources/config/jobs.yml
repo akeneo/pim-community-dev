@@ -158,16 +158,6 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_table_attribute.step.clean_table_values_following_deleted_options'
-
-    pim_table_attribute.job.clean_table_values_following_deleted_records:
-        class: '%pim_connector.job.simple_job.class%'
-        arguments:
-            - 'clean_table_values_following_deleted_records'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            -
-                - '@pim_table_attribute.step.clean_table_values_following_deleted_records'
-
         public: false
         tags:
             -   name: akeneo_batch.job

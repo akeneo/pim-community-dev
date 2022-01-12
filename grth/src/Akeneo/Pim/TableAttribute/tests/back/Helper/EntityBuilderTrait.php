@@ -14,6 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\TableAttribute\Helper;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
+use Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordCommand;
+use Akeneo\ReferenceEntity\Application\Record\DeleteRecords\DeleteRecordsCommand;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
 use PHPUnit\Framework\Assert;
 
@@ -54,6 +58,13 @@ trait EntityBuilderTrait
         return $attribute;
     }
 
+    protected function createAttributeOption(array $data): void
+    {
+        $attributeOption = $this->get('pim_catalog.factory.attribute_option')->create();
+        $this->get('pim_catalog.updater.attribute_option')->update($attributeOption, $data);
+        $this->get('pim_catalog.saver.attribute_option')->save($attributeOption);
+    }
+
     protected function createFamily(array $data): void
     {
         $family = $this->get('pim_catalog.factory.family')->create();
@@ -62,6 +73,17 @@ trait EntityBuilderTrait
         $constraints = $this->get('validator')->validate($family);
         Assert::assertCount(0, $constraints, (string) $constraints);
         $this->get('pim_catalog.saver.family')->save($family);
+    }
+
+    protected function createFamilyVariant(array $data = []): FamilyVariantInterface
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, $data);
+        $constraints = $this->get('validator')->validate($familyVariant);
+        self::assertCount(0, $constraints, (string)$constraints);
+        $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
+
+        return $familyVariant;
     }
 
     protected function createProduct(string $identifier, array $data): void
@@ -97,4 +119,39 @@ trait EntityBuilderTrait
         $handler = $this->get('akeneo_referenceentity.application.reference_entity.create_reference_entity_handler');
         $handler($createCommand);
     }
+
+    protected function createRecord(string $referenceEntityIdentifier, string $code, array $labels): void
+    {
+        $createCommand = new CreateRecordCommand($referenceEntityIdentifier, $code, $labels);
+
+        $violations = $this->get('validator')->validate($createCommand);
+        self::assertCount(0, $violations, (string)$violations);
+
+        $handler = $this->get('akeneo_referenceentity.application.record.create_record_handler');
+        ($handler)($createCommand);
+    }
+
+    protected function deleteRecord(string $referenceEntityIdentifier, string $code): void
+    {
+        $deleteCommand = new DeleteRecordCommand($code, $referenceEntityIdentifier);
+
+        $violations = $this->get('validator')->validate($deleteCommand);
+        self::assertCount(0, $violations, (string)$violations);
+
+        $handler = $this->get('akeneo_referenceentity.application.record.delete_record_handler');
+        ($handler)($deleteCommand);
+    }
+
+    protected function deleteRecords(string $referenceEntityIdentifier, array $codes): void
+    {
+        $deleteCommand = new DeleteRecordsCommand($referenceEntityIdentifier, $codes);
+
+        $violations = $this->get('validator')->validate($deleteCommand);
+        self::assertCount(0, $violations, (string)$violations);
+
+        $handler = $this->get('akeneo_referenceentity.application.record.delete_records_handler');
+        ($handler)($deleteCommand);
+    }
+
+
 }

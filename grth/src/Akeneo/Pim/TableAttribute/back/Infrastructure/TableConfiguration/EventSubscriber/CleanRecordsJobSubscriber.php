@@ -38,30 +38,41 @@ class CleanRecordsJobSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
+
         return [
-            RecordDeletedEvent::class => 'whenRecordDeleted',
-            RecordsDeletedEvent::class => 'whenRecordsDeleted',
+            /* @phpstan-ignore-next-line */
+            RecordDeletedEvent::class => 'whenARecordIsDeleted',
+            /* @phpstan-ignore-next-line */
+            RecordsDeletedEvent::class => 'whenRecordsAreDeleted',
         ];
     }
 
-    public function whenRecordDeleted(RecordDeletedEvent $recordDeletedEvent): void
+    /* @phpstan-ignore-next-line */
+    public function whenARecordIsDeleted(RecordDeletedEvent $recordDeletedEvent): void
     {
+        /* @phpstan-ignore-next-line */
         if (!$recordDeletedEvent->isUnitary()) {
             return;
         }
 
         $this->launchJobs(
+            /* @phpstan-ignore-next-line */
             $recordDeletedEvent->getReferenceEntityIdentifier()->normalize(),
+            /* @phpstan-ignore-next-line */
             [$recordDeletedEvent->getRecordCode()->normalize()]
         );
     }
 
-    public function whenRecordsDeleted(RecordsDeletedEvent $recordsDeletedEvent): void
+    /* @phpstan-ignore-next-line */
+    public function whenRecordsAreDeleted(RecordsDeletedEvent $recordsDeletedEvent): void
     {
         $this->launchJobs(
+        /* @phpstan-ignore-next-line */
             $recordsDeletedEvent->getReferenceEntityIdentifier()->normalize(),
             array_map(
+            /* @phpstan-ignore-next-line */
                 static fn (RecordCode $recordCode): string => $recordCode->normalize(),
+                /* @phpstan-ignore-next-line */
                 $recordsDeletedEvent->getRecordCodes()
             )
         );
@@ -75,8 +86,7 @@ class CleanRecordsJobSubscriber implements EventSubscriberInterface
         foreach ($columns as $column) {
             $configuration = [
                 'attribute_code' => $column['attribute_code'],
-                'column_code' => $column['column_code'],
-                'record_codes' => $recordCodes,
+                'removed_options_per_column_code' => [$column['column_code'] => $recordCodes],
             ];
 
             $user = $this->tokenStorage->getToken()->getUser();

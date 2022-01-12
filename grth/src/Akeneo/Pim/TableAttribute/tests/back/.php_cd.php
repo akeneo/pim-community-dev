@@ -120,6 +120,9 @@ $rules = [
             // Reference Entity
             'Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier',
             'Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface',
+            'Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent',
+            'Akeneo\ReferenceEntity\Domain\Event\RecordsDeletedEvent',
+            'Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];

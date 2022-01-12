@@ -59,20 +59,13 @@ final class CleanTableValuesWithDeletedOptionsTasklet implements TaskletInterfac
         Assert::notNull($this->stepExecution);
         $jobParameters = $this->stepExecution->getJobParameters();
 
-        if (
-            !$jobParameters->has('clean_option_attribute_code')
-            || !$jobParameters->has('clean_option_removed_options_per_column_code')
-        ) {
-            return;
-        }
-
-        $attributeCode = $jobParameters->get('clean_option_attribute_code');
+        $attributeCode = $jobParameters->get('attribute_code');
 
         $attribute = $this->getAttributes->forCode($attributeCode);
         Assert::notNull($attribute);
         Assert::same($attribute->type(), AttributeTypes::TABLE);
 
-        $removedOptionsByColumnCode = $jobParameters->get('clean_option_removed_options_per_column_code');
+        $removedOptionsByColumnCode = $jobParameters->get('removed_options_per_column_code');
         $channelsAndLocales = $this->getAttributeChannelsAndLocales($attribute);
 
         foreach (['root_pm', 'sub_pm', 'product'] as $entityType) {

@@ -35,6 +35,6 @@ services:
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance'
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetColumnsLinkedToAReferenceEntity'
-            - 'clean_table_values_following_deleted_records'
+            - 'clean_table_values_following_deleted_options'
         tags:
             - { name: kernel.event_subscriber }
