@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Tests\Integration\Apps\Command;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler;
-use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use FOS\OAuthServerBundle\Model\ClientInterface;
@@ -58,7 +58,7 @@ class RequestAppAuthorizationHandlerIntegration extends TestCase
             '',
         );
 
-        $this->expectException(InvalidAppAuthorizationRequest::class);
+        $this->expectException(InvalidAppAuthorizationRequestException::class);
         $this->expectExceptionMessage('akeneo_connectivity.connection.connect.apps.constraint.client_id.must_be_valid');
         $this->handler->handle($command);
     }
@@ -76,7 +76,7 @@ class RequestAppAuthorizationHandlerIntegration extends TestCase
             '',
         );
 
-        $this->expectException(InvalidAppAuthorizationRequest::class);
+        $this->expectException(InvalidAppAuthorizationRequestException::class);
         $this->expectExceptionMessage('akeneo_connectivity.connection.connect.apps.constraint.response_type.must_be_code');
         $this->handler->handle($command);
     }

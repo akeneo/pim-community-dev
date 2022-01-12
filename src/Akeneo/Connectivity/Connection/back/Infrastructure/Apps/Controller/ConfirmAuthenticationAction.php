@@ -7,7 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller;
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler;
-use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
@@ -78,7 +78,7 @@ class ConfirmAuthenticationAction
 
         try {
             $this->consentAppAuthenticationHandler->handle(new ConsentAppAuthenticationCommand($clientId, $connectedPimUserId));
-        } catch (InvalidAppAuthorizationRequest $exception) {
+        } catch (InvalidAppAuthorizationRequestException $exception) {
             $this->logger->warning(
                 sprintf('App activation failed with validation error "%s"', $exception->getMessage())
             );

@@ -13,7 +13,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectionInte
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface;
 use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
-use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
@@ -78,7 +78,7 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
             );
 
         $this
-            ->shouldThrow(InvalidAppAuthorizationRequest::class)
+            ->shouldThrow(InvalidAppAuthorizationRequestException::class)
             ->during('handle', [$command]);
     }
 
