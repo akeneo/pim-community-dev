@@ -1309,7 +1309,7 @@ jobs:
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
-      resource_class: medium
+      resource_class: small
       steps:
           - attach_workspace:
                 at: ~/
@@ -1387,7 +1387,7 @@ jobs:
     environment:
         <<: *envVarsDeployDev
     <<: *dockerCloudDeployerCurrent
-    resource_class: medium
+    resource_class: small
     steps:
         - attach_workspace:
               at: ~/
@@ -1464,7 +1464,7 @@ jobs:
     environment:
         <<: *envVarsDeployDev
     <<: *dockerJenkinsCloudDeployer
-    resource_class: medium
+    resource_class: small
     steps:
         - attach_workspace:
             at: ~/
@@ -2037,7 +2037,7 @@ jobs:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
-      resource_class: medium
+      resource_class: small
       steps:
           - attach_workspace:
                 at: ~/
@@ -2064,7 +2064,7 @@ jobs:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
-      resource_class: medium
+      resource_class: small
       steps:
           - attach_workspace:
                 at: ~/
@@ -2083,7 +2083,6 @@ jobs:
                     UNCOMMIT_INSTANCE_STATUS_CODE=0
                     for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
                     exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
-
 
   delete_expired_uptime_check:
       environment:
