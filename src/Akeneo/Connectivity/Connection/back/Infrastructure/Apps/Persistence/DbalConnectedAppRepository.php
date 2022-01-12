@@ -37,7 +37,7 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
                certified,
                partner,
                IF(akeneo_connectivity_test_app.client_id IS NULL, FALSE, TRUE) AS is_test_app
-        FROM akeneo_connectivity_connected_app as connected_app
+        FROM akeneo_connectivity_connected_app AS connected_app
         LEFT JOIN akeneo_connectivity_test_app ON akeneo_connectivity_test_app.client_id = connected_app.id
         ORDER BY name ASC
         SQL;
