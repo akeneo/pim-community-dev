@@ -33,61 +33,31 @@ final class SqlGetOptionsCountAndTranslationsByAttribute implements GetOptionsCo
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
      */
-    public function search(SearchAttributeOptionsParameters $searchParameters): array
+    public function search(string $locale, int $limit = self::MAX_PAGE_SIZE, int $page = 1, string $search = null): array
     {
-        $search = $searchParameters->getSearch();
-        $size = $searchParameters->getLimit();
-        $offset = $searchParameters->getOffset();
-        $locale = $searchParameters->getLocale();
+        $offset = \abs($page - 1) * $limit;
 
-        $queryLimit = '';
-        $queryOffset = '';
-        $querySearch = '';
-
-        if (!is_null($size)) {
-            $queryLimit = 'LIMIT :limit';
-            if (!is_null($offset) && $offset > 0) {
-                $queryOffset = 'OFFSET :offset';
-            }
-        }
-
-        if (!empty($search)) {
-            $search = strtolower($search);
-            $querySearch = 'AND LOWER(labels->:locale) LIKE :search';
-        }
+        $querySearch = $search ? 'AND LOWER(COALESCE(t.label, a.code)) like :search' : '';
 
         $query = <<<SQL
-WITH attribute_labels AS (
-    SELECT DISTINCT translation.foreign_key,JSON_OBJECTAGG(translation.locale, translation.label) AS labels
-    FROM pim_catalog_attribute_translation AS translation
-    GROUP BY translation.foreign_key
-),
-options_count AS (
-    SELECT attribute_option.attribute_id, count(*) AS total
-    FROM pim_catalog_attribute_option AS attribute_option
-    GROUP BY attribute_option.attribute_id
-)
-SELECT
-    attribute.code,
-    attribute_labels.labels AS labels,
-    options_count.total AS count
-FROM pim_catalog_attribute AS attribute
-     LEFT JOIN attribute_labels ON attribute.id = attribute_labels.foreign_key
-     LEFT JOIN options_count ON attribute.id = options_count.attribute_id
-WHERE attribute_type IN ('pim_catalog_simpleselect', 'pim_catalog_multiselect')
-$querySearch
-GROUP BY attribute.code, attribute_labels.labels, options_count.total
-ORDER BY code
-$queryLimit $queryOffset
-;
-SQL;
+        SELECT a.code, COALESCE(t.label, a.code) AS label, count(o.id) as options_count
+        FROM pim_catalog_attribute a
+            LEFT JOIN pim_catalog_attribute_option o ON o.attribute_id = a.id
+            LEFT JOIN pim_catalog_attribute_translation t ON t.foreign_key = a.id
+                AND t.locale = :locale
+        WHERE attribute_type IN ('pim_catalog_simpleselect', 'pim_catalog_multiselect')
+        $querySearch
+        GROUP BY t.label, a.code
+        ORDER BY t.label, a.code
+        LIMIT :limit OFFSET :offset
+        SQL;
 
         $rawResults = $this->connection->executeQuery(
             $query,
             [
-                'limit' => $size,
+                'limit' => $limit,
                 'offset' => $offset,
-                'search' => '%' . $search . '%',
+                'search' => strtolower($search) . '%',
                 'locale' => '$.' . $locale,
             ],
             [
@@ -98,14 +68,6 @@ SQL;
             ],
         )->fetchAllAssociative();
 
-        $indexedResults = [];
-        foreach ($rawResults as $rawResult) {
-
-            $rawLabels = !empty($rawResult['labels']) ? json_decode($rawResult['labels'], true) : [];
-            $indexedResults[$rawResult['code']]['labels'] = $rawLabels;
-            $indexedResults[$rawResult['code']]['options_count'] = (int) $rawResult['count'];
-        }
-
-        return $indexedResults;
+        return $rawResults;
     }
 }

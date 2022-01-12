@@ -53,36 +53,14 @@ class SqlGetOptionsCountAndTranslationsByAttributeCodeIntegration extends TestCa
         $getOptionsCountAndTranslationsByAttributeCode =
             $this->get('akeneo.pim.structure.query.get_options_count_and_translations_by_attribute');
 
-        $searchParameters = new SearchAttributeOptionsParameters();
-        $result = $getOptionsCountAndTranslationsByAttributeCode->search($searchParameters);
+        $result = $getOptionsCountAndTranslationsByAttributeCode->search('fr_FR');
 
         $this->assertEquals(
             [
-                'color' => [
-                    'options_count' => 5,
-                    'labels' => [
-                        'fr_FR' => 'Couleur',
-                        'en_US' => 'Color'
-                    ]
-                ],
-                'no_trad' => [
-                    'options_count' => 1,
-                    'labels' => []
-                ],
-                'size' => [
-                    'options_count' => 3,
-                    'labels' => [
-                        'fr_FR' => 'Taille',
-                        'en_US' => 'Size'
-                    ]
-                ],
-                'toto' => [
-                    'options_count' => 1,
-                    'labels' => [
-                        'fr_FR' => 'TotoTaille',
-                        'en_US' => 'totoUs',
-                    ]
-                ],
+                ['code' => 'color', 'label' => 'Couleur', 'options_count' => 5],
+                ['code' => 'no_trad', 'label' => null, 'options_count' => 1],
+                ['code' => 'size', 'label' => 'Taille', 'options_count' => 3],
+                ['code' => 'toto', 'label' => 'TotoTaille', 'options_count' => 1],
             ],
             $result,
         );
