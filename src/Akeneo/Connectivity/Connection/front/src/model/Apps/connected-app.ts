@@ -10,5 +10,5 @@ export type ConnectedApp = {
     certified: boolean;
     partner: string | null;
     activate_url?: string;
-    test: boolean;
+    is_test_app: boolean;
 };

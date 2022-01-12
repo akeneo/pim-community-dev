@@ -50,7 +50,7 @@ const connectedApps = [
         categories: [],
         certified: true,
         partner: null,
-        test: false,
+        is_test_app: false,
     },
     {
         id: 'app_id_b',
@@ -63,7 +63,7 @@ const connectedApps = [
         categories: [],
         certified: true,
         partner: null,
-        test: true,
+        is_test_app: true,
     },
     {
         id: 'app_id_c',
@@ -76,7 +76,7 @@ const connectedApps = [
         categories: [],
         certified: true,
         partner: null,
-        test: true,
+        is_test_app: true,
     },
     {
         id: 'app_id_d',
@@ -89,7 +89,7 @@ const connectedApps = [
         categories: [],
         certified: true,
         partner: null,
-        test: false,
+        is_test_app: false,
     },
 ];
 

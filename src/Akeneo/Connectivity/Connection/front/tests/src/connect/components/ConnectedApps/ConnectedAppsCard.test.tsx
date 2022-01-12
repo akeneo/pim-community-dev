@@ -30,7 +30,7 @@ test('The connected app card renders', async () => {
         certified: false,
         partner: 'partner A',
         activate_url: 'http://www.example.com/activate',
-        test: false,
+        is_test_app: false,
     };
 
     renderWithProviders(<ConnectedAppCard item={item} />);
@@ -72,7 +72,7 @@ test('The Manage App button is disabled when the user doesnt have the permission
         certified: false,
         partner: 'partner A',
         activate_url: 'http://www.example.com/activate',
-        test: false,
+        is_test_app: false,
     };
 
     renderWithProviders(
@@ -110,7 +110,7 @@ test('The Open App button is disabled when the user doesnt have the permission t
         certified: false,
         partner: 'partner A',
         activate_url: 'http://www.example.com/activate',
-        test: false,
+        is_test_app: false,
     };
 
     renderWithProviders(
@@ -141,7 +141,7 @@ test('The connected app card displays removed user as author when author is null
         certified: false,
         partner: 'partner A',
         activate_url: 'http://www.example.com/activate',
-        test: false,
+        is_test_app: false,
     };
 
     renderWithProviders(<ConnectedAppCard item={item} />);
@@ -168,7 +168,7 @@ test('The connected app card displays app illustration when logo is null', async
         certified: false,
         partner: 'partner A',
         activate_url: 'http://www.example.com/activate',
-        test: false,
+        is_test_app: false,
     };
 
     renderWithProviders(<ConnectedAppCard item={item} />);

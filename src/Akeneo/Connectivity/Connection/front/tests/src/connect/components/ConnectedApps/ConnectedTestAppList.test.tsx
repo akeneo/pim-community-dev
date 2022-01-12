@@ -37,7 +37,7 @@ const connectedTestApps = [
         certified: false,
         partner: 'partner A',
         activate_url: 'http://www.example.com/activate',
-        test: true,
+        is_test_app: true,
     },
     {
         id: 'test_id_b',
@@ -51,7 +51,7 @@ const connectedTestApps = [
         certified: false,
         partner: 'partner B',
         activate_url: 'http://www.example.com/activate',
-        test: true,
+        is_test_app: true,
     },
 ];
 
