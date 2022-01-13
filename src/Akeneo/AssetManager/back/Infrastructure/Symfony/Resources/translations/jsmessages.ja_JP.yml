@@ -565,6 +565,8 @@ akeneo_job_process_tracker:
     asset_manager_execute_naming_convention: アセットファミリーの命名規則を実行する
     asset_manager_link_assets_to_products: アセットを商品にリンク
     asset_manager_compute_transformations: アセット変換を計算
+    asset_manager_mass_delete_assets: アセットを一括削除
+    asset_manager_mass_edit_assets: アセットを一括編集
 batch_jobs:
   default_steps:
     execute_naming_convention: アセットファミリーの命名規則を実行する

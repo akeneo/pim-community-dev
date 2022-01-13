@@ -1,0 +1,3 @@
+pimee_workflow:
+  check_removal:
+    product_model_error: 이 제품 모델에 게시된 변형 제품이 있습니다. 해당 제품의 게시를 취소하고 다시 시도하십시오.

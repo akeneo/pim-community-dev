@@ -1,3 +1,4 @@
+batch_jobs.akeneo_shared_catalog.label: Invia a cataloghi condivisi
 pim_common:
   recipients: Destinatari
   branding: Personalizzazione
@@ -9,13 +10,26 @@ shared_catalog:
     placeholder: betty@akeneo.com
     email: Indirizzo e-mail
     invalid_email: Questo valore non è un indirizzo e-mail valido.
+    duplicate_email: Alcuni destinatari sono già nell'elenco, saranno ignorati.
     helper: "Aggiungi destinatari per dare loro accesso al tuo nuovo catalogo condiviso. Puoi compilare un elenco di indirizzi con separatori: spazio, virgola, punto e virgola e interruzione di riga."
     no_result: Spiacenti, nessuna e-mail corrisponde alla tua ricerca
     no_data: Ancora nessun indirizzo e-mail dichiarato
     max_limit_reached: Hai raggiunto il limite di 500 destinatari.
   branding:
+    upload_placeholder: "Trascina e rilascia qui i file o fai clic qui"
+    uploading: Caricamento...
     validation:
       invalid_extension: "Estensione file non valida, le estensioni consentite sono: {{ allowed_extensions }}"
       filesize_too_large: Il file fornito è troppo grande, la dimensione massima è di 2 MB
+      invalid_file: Il file non è valido
+      invalid_color: Questo valore non è un colore CSS valido.
+    color:
+      label: Definisci il tuo colore di personalizzazione
+    logo:
+      label: Carica il tuo logo
+      file_information_helper: "Dimensione massima: 2 MB; formato file: PNG o JPG"
+    cover:
+      label: Carica la tua copertina
+      file_information_helper: Questa immagine sarà utilizzata nella pagina di login del catalogo e nella copertina delle esportazioni PDF. Tieni presente che, se vuoi che la pagina di copertina appaia correttamente dopo la stampa, le sue dimensioni dovrebbero essere superiori a 1600px x 2227px.
   button:
     save: Salva e condividi

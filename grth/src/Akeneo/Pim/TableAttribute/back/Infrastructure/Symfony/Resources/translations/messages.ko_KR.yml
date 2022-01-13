@@ -1,1 +1,6 @@
 pim_catalog_table: 테이블
+pim_table:
+  export_with_label:
+    product: 제품
+    product_model: 제품 모델
+    attribute: 특성
