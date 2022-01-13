@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
+namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\WrongCredentialsCombination;
 
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Repository\WrongCredentialsCombinationRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -12,16 +12,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class WrongCredentialsCombinationController
+final class ListWrongCredentialsCombinationsAction
 {
-    private WrongCredentialsCombinationRepositoryInterface $repository;
-
-    public function __construct(WrongCredentialsCombinationRepositoryInterface $repository)
-    {
-        $this->repository = $repository;
+    public function __construct(
+        private WrongCredentialsCombinationRepositoryInterface $repository,
+    ) {
     }
 
-    public function list(): JsonResponse
+    public function __invoke(): JsonResponse
     {
         $wrongCombinations = $this->repository->findAll(
             new \DateTimeImmutable('now - 7 day', new \DateTimeZone('UTC'))

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
+namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\ErrorManagement;
 
 use Akeneo\Connectivity\Connection\Application\ErrorManagement\Query\GetConnectionBusinessErrorsHandler;
 use Akeneo\Connectivity\Connection\Application\ErrorManagement\Query\GetConnectionBusinessErrorsQuery;
@@ -14,16 +14,14 @@ use Symfony\Component\HttpFoundation\Request;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ErrorManagementController
+final class ErrorManagementAction
 {
-    private GetConnectionBusinessErrorsHandler $getConnectionBusinessErrorsHandler;
-
-    public function __construct(GetConnectionBusinessErrorsHandler $getConnectionBusinessErrorsHandler)
-    {
-        $this->getConnectionBusinessErrorsHandler = $getConnectionBusinessErrorsHandler;
+    public function __construct(
+        private GetConnectionBusinessErrorsHandler $getConnectionBusinessErrorsHandler,
+    ) {
     }
 
-    public function getConnectionBusinessErrors(Request $request): JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
         $connectionCode = $request->attributes->get('connection_code', '');
         $endDate = $request->query->get('end_date');
