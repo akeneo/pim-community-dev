@@ -3,6 +3,7 @@ batch_jobs.xlsx_tailored_product_import.label: Tailored product import in XLSX
 akeneo.tailored_import:
   column_initialization:
     button: Initialize columns
+    max_column_count_reached: You have reached the limit columns, only {{ limit }} first columns will be imported.
     modal:
       title: Sample data
       subtitle: Column initialization

@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import {Button, Field, Modal, TextAreaInput, ImportIllustration} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {Column, generateColumns} from '../models';
+import {Column, extractColumnLabels, generateColumns, MAX_COLUMN_COUNT} from '../models';
+import {Helper} from 'akeneo-design-system';
 
 type InitializeColumnsModalProps = {
   onConfirm: (columns: Column[]) => void;
@@ -11,7 +12,9 @@ type InitializeColumnsModalProps = {
 const InitializeColumnsModal = ({onConfirm, onCancel}: InitializeColumnsModalProps) => {
   const translate = useTranslate();
   const [sheetContent, setSheetContent] = useState<string>('');
+  const columnsLabels = extractColumnLabels(sheetContent);
 
+  const maxColumnIsReached = columnsLabels.length > MAX_COLUMN_COUNT;
   const handleConfirm = (): void => {
     const generatedColumns = generateColumns(sheetContent);
     onConfirm(generatedColumns);
@@ -29,6 +32,13 @@ const InitializeColumnsModal = ({onConfirm, onCancel}: InitializeColumnsModalPro
           placeholder={translate('akeneo.tailored_import.column_initialization.modal.columns.placeholder')}
           value={sheetContent}
         />
+        {maxColumnIsReached && (
+          <Helper inline={true} level="warning">
+            {translate('akeneo.tailored_import.column_initialization.max_column_count_reached', {
+              limit: MAX_COLUMN_COUNT,
+            })}
+          </Helper>
+        )}
       </Field>
       <Modal.BottomButtons>
         <Button onClick={onCancel} level="tertiary">

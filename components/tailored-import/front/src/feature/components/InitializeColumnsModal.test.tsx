@@ -36,6 +36,31 @@ test('it can paste sheet data to create columns', async () => {
   ]);
 });
 
+test('it display a warning message when columns exceeded the limit', async () => {
+  const onConfirm = jest.fn();
+  renderWithProviders(<InitializeColumnsModal onConfirm={onConfirm} onCancel={jest.fn()} />);
+
+  const confirmButton = screen.getByText('pim_common.confirm');
+  const sheetDataTextarea = screen.getByRole('textbox');
+  const columns = new Array(501).fill('').map((value, index) => `column${index}`);
+  await act(async () => {
+    await userEvent.paste(sheetDataTextarea, columns.join('\t'));
+  });
+
+  expect(screen.getByText('akeneo.tailored_import.column_initialization.max_column_count_reached')).toBeInTheDocument();
+  await act(async () => {
+    await userEvent.click(confirmButton);
+  });
+
+  expect(onConfirm).toHaveBeenCalledWith(
+    Array(500).fill('').map((value, index) => ({
+      uuid: mockUuid,
+      index: index,
+      label: `column${index}`,
+    }))
+  );
+});
+
 test('it can close the modal', () => {
   const onCancel = jest.fn();
   renderWithProviders(<InitializeColumnsModal onConfirm={jest.fn()} onCancel={onCancel} />);
