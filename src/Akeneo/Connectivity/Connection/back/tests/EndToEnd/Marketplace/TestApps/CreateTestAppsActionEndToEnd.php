@@ -18,6 +18,7 @@ class CreateTestAppsActionEndToEnd extends WebTestCase
     {
         $this->featureFlagTestApp->enable();
         $this->authenticateAsAdmin();
+        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_test_apps');
 
         $data = [
             'name' => 'Test app bynder',

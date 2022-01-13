@@ -15,6 +15,7 @@ import {useFetchApps} from '../hooks/use-fetch-apps';
 import {useFeatureFlags} from '../../shared/feature-flags';
 import {DeveloperModeTag} from '../components/DeveloperModeTag';
 import {useFetchTestApps} from '../hooks/use-fetch-test-apps';
+import {useDeveloperMode} from '../hooks/use-developer-mode';
 
 export const MarketplacePage: FC = () => {
     const translate = useTranslate();
@@ -24,6 +25,7 @@ export const MarketplacePage: FC = () => {
     const generateUrl = useRouter();
     const fetchExtensions = useFetchExtensions();
     const fetchApps = useFetchApps();
+    const isDeveloperModeEnabled = useDeveloperMode();
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
     const [userProfile, setUserProfile] = useState<string | null>(null);
     const [extensions, setExtensions] = useState<Extensions | null | false>(null);
@@ -74,14 +76,14 @@ export const MarketplacePage: FC = () => {
         </Breadcrumb>
     );
 
-    const tag = featureFlag.isEnabled('app_developer_mode') ? <DeveloperModeTag /> : null;
+    const tag = isDeveloperModeEnabled ? <DeveloperModeTag /> : null;
 
     const CreateTestAppButton = () => {
-        return !featureFlag.isEnabled('app_developer_mode') ? null : (
+        return isDeveloperModeEnabled ? (
             <ApplyButton classNames={['AknButtonList-item']} onClick={handleCreateTestApp}>
                 <Translate id='akeneo_connectivity.connection.connect.marketplace.test_apps.create_a_test_app' />
             </ApplyButton>
-        );
+        ) : null;
     };
 
     return (

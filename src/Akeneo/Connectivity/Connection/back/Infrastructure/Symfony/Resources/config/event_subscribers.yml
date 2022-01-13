@@ -51,5 +51,6 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\AclPrivilegesEventSubscriber:
         arguments:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@akeneo_connectivity.connection.app_developer_mode.feature'
         tags:
             - { name: kernel.event_subscriber }

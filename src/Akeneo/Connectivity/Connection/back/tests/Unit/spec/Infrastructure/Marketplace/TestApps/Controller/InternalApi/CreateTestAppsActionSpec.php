@@ -10,12 +10,14 @@ use Akeneo\Connectivity\Connection\Domain\Marketplace\TestApps\Persistence\GetTe
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\InternalApi\CreateTestAppsAction;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -31,6 +33,7 @@ class CreateTestAppsActionSpec extends ObjectBehavior
         TokenStorageInterface $tokenStorage,
         CreateTestAppCommandHandler $createTestAppCommandHandler,
         GetTestAppSecretQueryInterface $getTestAppSecretQuery,
+        SecurityFacade $security,
     ): void {
         $this->beConstructedWith(
             $featureFlag,
@@ -38,6 +41,7 @@ class CreateTestAppsActionSpec extends ObjectBehavior
             $tokenStorage,
             $createTestAppCommandHandler,
             $getTestAppSecretQuery,
+            $security,
         );
     }
 
@@ -55,12 +59,14 @@ class CreateTestAppsActionSpec extends ObjectBehavior
         UserInterface $user,
         CreateTestAppCommandHandler $createTestAppCommandHandler,
         GetTestAppSecretQueryInterface $getTestAppSecretQuery,
+        SecurityFacade $security,
     ): void {
         $featureFlag->isEnabled()->willReturn(true);
         $request->isXmlHttpRequest()->willReturn(true);
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
         $user->getId()->willReturn(42);
+        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(true);
 
         $request->get('name', '')->willReturn('Test app name');
         $request->get('callbackUrl', '')->willReturn('http://callback-url.test');
@@ -97,14 +103,30 @@ class CreateTestAppsActionSpec extends ObjectBehavior
         $this->__invoke($request)->shouldBeLike(new RedirectResponse('/'));
     }
 
-    public function it_answer_that_a_bad_request_has_been_done_because_the_token_does_not_exist(
+    public function it_answers_an_access_denied_if_the_endpoint_is_not_granted_to_the_user(
+        FeatureFlag $featureFlag,
+        Request $request,
+        SecurityFacade $security,
+    ): void {
+        $featureFlag->isEnabled()->willReturn(true);
+        $request->isXmlHttpRequest()->willReturn(true);
+        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(false);
+
+        $this
+            ->shouldThrow(new AccessDeniedHttpException())
+            ->during('__invoke', [$request]);
+    }
+
+    public function it_answers_that_a_bad_request_has_been_done_because_the_token_does_not_exist(
         FeatureFlag $featureFlag,
         Request $request,
         TokenStorageInterface $tokenStorage,
+        SecurityFacade $security,
     ): void {
         $featureFlag->isEnabled()->willReturn(true);
         $request->isXmlHttpRequest()->willReturn(true);
         $tokenStorage->getToken()->willReturn(null);
+        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(true);
 
         $this->__invoke($request)->shouldBeLike(new JsonResponse(
             'Invalid user token.',
@@ -112,16 +134,18 @@ class CreateTestAppsActionSpec extends ObjectBehavior
         ));
     }
 
-    public function it_answer_that_a_bad_request_has_been_done_because_the_user_does_not_exist(
+    public function it_answers_that_a_bad_request_has_been_done_because_the_user_does_not_exist(
         FeatureFlag $featureFlag,
         Request $request,
         TokenStorageInterface $tokenStorage,
         TokenInterface $token,
+        SecurityFacade $security,
     ): void {
         $featureFlag->isEnabled()->willReturn(true);
         $request->isXmlHttpRequest()->willReturn(true);
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn(null);
+        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(true);
 
         $this->__invoke($request)->shouldBeLike(new JsonResponse(
             'Invalid user token.',
@@ -136,12 +160,14 @@ class CreateTestAppsActionSpec extends ObjectBehavior
         TokenStorageInterface $tokenStorage,
         TokenInterface $token,
         UserInterface $user,
+        SecurityFacade $security,
     ): void {
         $featureFlag->isEnabled()->willReturn(true);
         $request->isXmlHttpRequest()->willReturn(true);
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
         $user->getId()->willReturn(42);
+        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(true);
 
         $request->get('name', '')->willReturn('Too long');
         $request->get('callbackUrl', '')->willReturn('Not url');
