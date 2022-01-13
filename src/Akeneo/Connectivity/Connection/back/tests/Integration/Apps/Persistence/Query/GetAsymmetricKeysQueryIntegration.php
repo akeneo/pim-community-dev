@@ -36,7 +36,7 @@ class GetAsymmetricKeysQueryIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    public function test_it_throws_error_asymmetric_keys_from_the_database(): void
+    public function test_it_throws_an_exception_when_there_is_no_asymmetric_keys_into_the_database(): void
     {
         $this->resetPimConfiguration();
         $this->expectException(OpenIdKeysNotFoundException::class);
