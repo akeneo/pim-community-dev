@@ -83,29 +83,27 @@ akeneo_connectivity.connection:
                             name: Name
                             activate_url: Activate url
                             callback_url: Callback url
-                        constraint:
-                            name:
-                                required: A test app name is required.
-                            activate_url:
-                                required: An "Activate URL" is required.
-                            callback_url:
-                                required: A "Callback URL" is required.
                     credentials :
                         title: Credentials
+                        warning: Make sure to save these credentials somewhere as we show them only once here.
+                        client_id: Client id
+                        client_secret: Client secret
                 errors:
                     creation:
                         name:
                             max_length: The name of the test app is too long. It must have 255 characters or less.
-                            not_blank: The name of the test app must not be empty.
+                            not_blank: The name of the test app is required.
                         client_id:
                             max_length: The client id of the test app is too long. It must have 36 characters or less.
-                            not_blank: The client id of the test app must not be empty.
+                            not_blank: The client id is required.
                         activate_url:
                             max_length: The activate url of the test app is too long. It must have 255 characters or less.
                             must_be_url: The activate url must be a valid URL.
+                            not_blank: The activate url is required.
                         callback_url:
                             max_length: The callback url of the test app is too long. It must have 255 characters or less.
                             must_be_url: The callback url must be a valid URL.
+                            not_blank: The callback url is required.
                 delete:
                     subtitle: Apps
                     title: Confirm deletion

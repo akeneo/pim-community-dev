@@ -41,7 +41,7 @@ class CreateTestAppCommandValidationIntegration extends TestCase
         $this->assertHasViolation(
             $violations,
             'name',
-            'akeneo_connectivity.connection.connect.marketplace.test_app.errors.creation.name.not_blank',
+            'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.name.not_blank',
         );
     }
 
@@ -61,7 +61,7 @@ class CreateTestAppCommandValidationIntegration extends TestCase
         $this->assertHasViolation(
             $violations,
             'name',
-            'akeneo_connectivity.connection.connect.marketplace.test_app.errors.creation.name.max_length',
+            'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.name.max_length',
         );
     }
 
@@ -78,7 +78,24 @@ class CreateTestAppCommandValidationIntegration extends TestCase
         $this->assertHasViolation(
             $violations,
             'activateUrl',
-            'akeneo_connectivity.connection.connect.marketplace.test_app.errors.creation.activate_url.must_be_url',
+            'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.activate_url.must_be_url',
+        );
+    }
+
+    public function test_it_invalidates_a_test_app_if_the_activate_url_is_blank(): void
+    {
+        $violations = $this->validator->validate(new CreateTestAppCommand(
+            'ClientID1234',
+            'Test app name',
+            '',
+            'http://callback-url.test',
+            42,
+        ));
+
+        $this->assertHasViolation(
+            $violations,
+            'activateUrl',
+            'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.activate_url.not_blank',
         );
     }
 
@@ -97,7 +114,7 @@ class CreateTestAppCommandValidationIntegration extends TestCase
         $this->assertHasViolation(
             $violations,
             'activateUrl',
-            'akeneo_connectivity.connection.connect.marketplace.test_app.errors.creation.activate_url.max_length',
+            'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.activate_url.max_length',
         );
     }
 
@@ -106,7 +123,7 @@ class CreateTestAppCommandValidationIntegration extends TestCase
         $violations = $this->validator->validate(new CreateTestAppCommand(
             'ClientID1234',
             'Test app name',
-            'activate-url.test',
+            'http://activate-url.test',
             'http://callback-url-callback-url-callback-url-callback-url-callback-url-callback-url-callback' .
             '-url-callback-url-callback-url-callback-url-callback-url-callback-url-callback-url-callback-url' .
             '-callback-url-callback-url-callback-url-callback-url-callback-url-callback-url-callback-url-callbac.test',
@@ -116,7 +133,7 @@ class CreateTestAppCommandValidationIntegration extends TestCase
         $this->assertHasViolation(
             $violations,
             'callbackUrl',
-            'akeneo_connectivity.connection.connect.marketplace.test_app.errors.creation.callback_url.max_length',
+            'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.callback_url.max_length',
         );
     }
 
@@ -133,7 +150,24 @@ class CreateTestAppCommandValidationIntegration extends TestCase
         $this->assertHasViolation(
             $violations,
             'callbackUrl',
-            'akeneo_connectivity.connection.connect.marketplace.test_app.errors.creation.callback_url.must_be_url',
+            'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.callback_url.must_be_url',
+        );
+    }
+
+    public function test_it_invalidates_a_test_app_if_the_callback_url_is_blank(): void
+    {
+        $violations = $this->validator->validate(new CreateTestAppCommand(
+            'ClientID1234',
+            'Test app name',
+            'http://activate-url.test',
+            '',
+            42,
+        ));
+
+        $this->assertHasViolation(
+            $violations,
+            'callbackUrl',
+            'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.callback_url.not_blank',
         );
     }
 
@@ -150,7 +184,7 @@ class CreateTestAppCommandValidationIntegration extends TestCase
         $this->assertHasViolation(
             $violations,
             'clientId',
-            'akeneo_connectivity.connection.connect.marketplace.test_app.errors.creation.client_id.max_length',
+            'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.client_id.max_length',
         );
     }
 
@@ -167,7 +201,7 @@ class CreateTestAppCommandValidationIntegration extends TestCase
         $this->assertHasViolation(
             $violations,
             'clientId',
-            'akeneo_connectivity.connection.connect.marketplace.test_app.errors.creation.client_id.not_blank',
+            'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.client_id.not_blank',
         );
     }
 
