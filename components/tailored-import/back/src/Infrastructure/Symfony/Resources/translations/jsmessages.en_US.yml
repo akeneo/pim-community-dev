@@ -12,6 +12,9 @@ akeneo.tailored_import:
   data_mapping:
     source:
       add: Add a source
+  add_data_mapping:
+    target:
+      add: Add a data mapping
   form:
     job_instance:
       tab:
@@ -19,9 +22,11 @@ akeneo.tailored_import:
           title: Import structure
   validation:
     columns:
-      max_column_count_reached: You have reached the limit of {{ limit }} columns, you can no longer add columns to your export.
+      max_column_count_reached: You have reached the limit of {{ limit }} columns, you can no longer add columns to your import.
       index:
         should_be_unique: This column index already exists, please enter a new one.
       label:
         should_not_be_blank: Please define a column label.
         max_length_reached: Column label is too long. It should contain {{ limit }} characters or less.
+    data_mappings:
+      max_data_mapping_count_reached: You have reached the limit of {{ limit }} data mappings, you can no longer add data mapping to your import.

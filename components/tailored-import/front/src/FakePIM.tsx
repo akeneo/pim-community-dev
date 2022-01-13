@@ -57,9 +57,7 @@ const SaveButton = styled(Button)`
 
 type JobConfiguration = {
   code: string;
-  configuration: {
-    columns: Column[];
-  };
+  configuration: StructureConfiguration;
 };
 
 const FakePIM = () => {
@@ -147,7 +145,7 @@ const FakePIM = () => {
           <TabBar.Tab isActive={false}>History</TabBar.Tab>
         </TabBar>
         <ImportStructureTab
-          structureConfiguration={{columns: jobConfiguration.configuration.columns}}
+          structureConfiguration={jobConfiguration.configuration}
           onStructureConfigurationChange={handleStructureConfigurationChange}
         />
       </Page>

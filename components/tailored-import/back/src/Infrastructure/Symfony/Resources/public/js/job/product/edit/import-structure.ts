@@ -66,6 +66,7 @@ class ColumnView extends BaseView {
 
     const structureConfiguration: StructureConfiguration = {
       columns: formData.configuration.columns ?? [],
+      dataMappings: formData.configuration.dataMappings ?? [],
     };
 
     const props: ImportStructureTabProps = {

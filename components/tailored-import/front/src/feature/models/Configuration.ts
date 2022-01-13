@@ -1,13 +1,17 @@
 import {uuid} from 'akeneo-design-system';
+import {DataMapping} from './DataMapping';
+
+type ColumnIdentifier = string;
 
 type Column = {
-  uuid: string;
+  uuid: ColumnIdentifier;
   index: number;
   label: string;
 };
 
 type StructureConfiguration = {
   columns: Column[];
+  dataMappings: DataMapping[];
 };
 
 const generateColumns = (sheetContent: string): Column[] => {
@@ -44,5 +48,5 @@ const generateColumnName = ({index, label}: Column): string => {
   return `${label} (${columnLetter})`;
 };
 
-export type {StructureConfiguration, Column};
+export type {StructureConfiguration, Column, ColumnIdentifier};
 export {generateColumns, generateColumnName};

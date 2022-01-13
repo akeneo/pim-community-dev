@@ -1,4 +1,4 @@
-import {generateColumns, generateColumnName} from './configuration';
+import {generateColumns, generateColumnName} from './Configuration';
 
 const mockUuid = 'uuid';
 jest.mock('akeneo-design-system', () => ({

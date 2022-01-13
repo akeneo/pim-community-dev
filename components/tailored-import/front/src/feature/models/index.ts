@@ -1,1 +1,3 @@
-export * from './configuration';
+export * from './AvailableTarget';
+export * from './Configuration';
+export * from './DataMapping';
