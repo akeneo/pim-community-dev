@@ -24,6 +24,10 @@ use OAuth2\Model\IOAuth2AuthCode;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class CreateAccessTokenSpec extends ObjectBehavior
 {
     public function let(
@@ -216,7 +220,7 @@ class CreateAccessTokenSpec extends ObjectBehavior
             'access_token' => 'a_token',
             'token_type' => 'bearer',
             'scope' => 'an_authentication_scope an_authorization_scope openid',
-            'id_token' => 'an_id_token'
+            'id_token' => 'an_id_token',
         ];
 
         $this->create('a_client_id', 'an_auth_code')
@@ -245,6 +249,98 @@ class CreateAccessTokenSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException('Unknown authorization code.')
             )
+            ->during('create', ['client_id_1234', 'auth_code_1234']);
+    }
+
+    public function it_throw_an_exception_when_app_user_has_not_been_found(
+        IOAuth2GrantCode $storage,
+        Client $client,
+        IOAuth2AuthCode $authCode,
+        ClientProviderInterface $clientProvider,
+        RandomCodeGeneratorInterface $randomCodeGenerator,
+        GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
+        GetAppConfirmationQueryInterface $appConfirmationQuery,
+        UserRepositoryInterface $userRepository,
+        UserInterface $pimUser,
+        GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
+        GetAccessTokenQuery $getAccessTokenQuery
+    ): void {
+        $clientProvider->findClientByAppId('client_id_1234')
+            ->willReturn($client);
+        $storage->getAuthCode('auth_code_1234')
+            ->willReturn($authCode);
+        $randomCodeGenerator->generate()
+            ->willReturn('generated_token_123');
+        $getConnectedAppScopesQuery->execute('client_id_1234')
+            ->willReturn(['scope1', 'scope2']);
+        $appConfirmationQuery->execute('client_id_1234')
+            ->willReturn(AppConfirmation::create('client_id_1234', 1, 'some_user_group', 2));
+        $userRepository->find(1)
+            ->willReturn(null);
+        $pimUser->getId()
+            ->willReturn(2);
+        $getUserConsentedAuthenticationScopesQuery->execute(2, 'client_id_1234')
+            ->willReturn([]);
+
+        $authCode->getScope()
+            ->willReturn('delete_products');
+        $authCode->getData()
+            ->willReturn($pimUser);
+
+        $getAccessTokenQuery->execute('client_id_1234', ['scope1', 'scope2'])->willReturn(null);
+
+        $this->shouldThrow(\LogicException::class)
+            ->during('create', ['client_id_1234', 'auth_code_1234']);
+    }
+
+    public function it_throw_an_exception_when_pim_user_has_not_been_found(
+        IOAuth2GrantCode $storage,
+        Client $client,
+        IOAuth2AuthCode $authCode,
+        ClientProviderInterface $clientProvider,
+        RandomCodeGeneratorInterface $randomCodeGenerator,
+        GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
+        GetAppConfirmationQueryInterface $appConfirmationQuery,
+        UserRepositoryInterface $userRepository,
+        UserInterface $appUser,
+        UserInterface $pimUser,
+        GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
+        GetAccessTokenQuery $getAccessTokenQuery
+    ): void {
+        $clientProvider->findClientByAppId('client_id_1234')
+            ->willReturn($client);
+        $storage->getAuthCode('auth_code_1234')
+            ->willReturn($authCode);
+        $randomCodeGenerator->generate()
+            ->willReturn('generated_token_123');
+        $getConnectedAppScopesQuery->execute('client_id_1234')
+            ->willReturn(['scope1', 'scope2']);
+        $appConfirmationQuery->execute('client_id_1234')
+            ->willReturn(AppConfirmation::create('client_id_1234', 1, 'some_user_group', 2));
+        $userRepository->find(1)
+            ->willReturn($appUser);
+        $pimUser->getId()
+            ->willReturn(2);
+        $getUserConsentedAuthenticationScopesQuery->execute(2, 'client_id_1234')
+            ->willReturn([]);
+
+        $authCode->getScope()
+            ->willReturn('delete_products');
+        $authCode->getData()
+            ->willReturn(false);
+
+        $getAccessTokenQuery->execute('client_id_1234', ['scope1', 'scope2'])->willReturn(null);
+
+        $storage->createAccessToken(
+            'generated_token_123',
+            $client,
+            $appUser,
+            null,
+            'scope1 scope2'
+        )->shouldBeCalled();
+        $storage->markAuthCodeAsUsed('auth_code_1234')->shouldBeCalled();
+
+        $this->shouldThrow(\LogicException::class)
             ->during('create', ['client_id_1234', 'auth_code_1234']);
     }
 }
