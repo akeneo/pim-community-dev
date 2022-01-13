@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Tests\Integration\Apps\Persistence\Quer
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetUserConsentedAuthenticationUuidQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetUserConsentedAuthenticationScopesQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
@@ -18,15 +18,14 @@ use Ramsey\Uuid\Uuid;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetUserConsentedAuthenticationUuidQueryIntegration extends WebTestCase
+class GetUserConsentedAuthenticationScopesQueryIntegration extends WebTestCase
 {
-    private GetUserConsentedAuthenticationUuidQuery $getUserConsentedAuthenticationUuidQuery;
+    private GetUserConsentedAuthenticationScopesQuery $getUserConsentedAuthenticationScopeQuery;
     private UserConsentLoader $userConsentLoader;
     private FakeClock $clock;
     private ConnectionLoader $connectionLoader;
     private ConnectedAppLoader $connectedAppLoader;
     private UserGroupLoader $groupLoader;
-
 
     protected function getConfiguration()
     {
@@ -37,7 +36,7 @@ class GetUserConsentedAuthenticationUuidQueryIntegration extends WebTestCase
     {
         parent::setUp();
 
-        $this->getUserConsentedAuthenticationUuidQuery = $this->get(GetUserConsentedAuthenticationUuidQuery::class);
+        $this->getUserConsentedAuthenticationScopeQuery = $this->get(GetUserConsentedAuthenticationScopesQuery::class);
         $this->userConsentLoader = $this->get(UserConsentLoader::class);
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
         $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
@@ -47,8 +46,9 @@ class GetUserConsentedAuthenticationUuidQueryIntegration extends WebTestCase
         $this->clock->setNow(new \DateTimeImmutable('2021-03-02T04:30:11'));
     }
 
-    public function test_it_gets_user_uuid_from_the_database(): void
+    public function test_it_gets_user_consented_scopes_from_the_database(): void
     {
+        $scopes = ['a_scope', 'another_scope'];
         $uuid = Uuid::uuid4();
         $user = $this->authenticateAsAdmin();
         $this->connectionLoader->createConnection(
@@ -61,37 +61,33 @@ class GetUserConsentedAuthenticationUuidQueryIntegration extends WebTestCase
         $this->connectedAppLoader->createConnectedApp(
             'random_app_id',
             'Random App',
-            ['scope B1'],
+            ['scope'],
             'connectionCode',
             'http://www.example.com/path/to/logo/b',
             'autho',
             'app_group',
-            ['category B1'],
+            ['category'],
             true,
             null
         );
         $this->userConsentLoader->addUserConsent(
             $user->getId(),
-            "random_app_id",
-            ["a_scope"],
+            'random_app_id',
+            $scopes,
             $uuid,
             $this->clock->now()
         );
 
-        $result = $this->getUserConsentedAuthenticationUuidQuery->execute($user->getId(), 'random_app_id');
+        $result = $this->getUserConsentedAuthenticationScopeQuery->execute($user->getId(), 'random_app_id');
 
-        $this->assertEquals($uuid, $result);
+        $this->assertEquals($scopes, $result);
     }
 
-    public function test_it_throw_an_exception_if_there_is_no_uuid_into_the_database(): void
+    public function test_it_gets_nothing_if_there_is_no_scopes_into_the_database(): void
     {
         $user = $this->authenticateAsAdmin();
+        $result = $this->getUserConsentedAuthenticationScopeQuery->execute($user->getId(), 'random_app_id');
 
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage(
-            sprintf('Consent doesn\'t exist for user %s on app %s', $user->getId(), 'random_app_id')
-        );
-
-        $this->getUserConsentedAuthenticationUuidQuery->execute($user->getId(), 'random_app_id');
+        $this->assertEquals([], $result);
     }
 }
