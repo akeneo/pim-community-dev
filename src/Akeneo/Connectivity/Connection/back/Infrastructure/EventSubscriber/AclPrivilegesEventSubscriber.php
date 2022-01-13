@@ -15,11 +15,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class AclPrivilegesEventSubscriber implements EventSubscriberInterface
 {
-    private FeatureFlag $featureFlag;
-
-    public function __construct(FeatureFlag $featureFlag)
-    {
-        $this->featureFlag = $featureFlag;
+    public function __construct(
+        private FeatureFlag $marketplaceActivateFlag,
+        private FeatureFlag $developerModeFlag,
+    ) {
     }
 
     public static function getSubscribedEvents()
@@ -29,16 +28,23 @@ class AclPrivilegesEventSubscriber implements EventSubscriberInterface
 
     public function disableAclIfFeatureIsDisabled(PrivilegesPostLoadEvent $event)
     {
-        if (true === $this->featureFlag->isEnabled()) {
-            return;
+        if (false === $this->marketplaceActivateFlag->isEnabled()) {
+            $event->setPrivileges(
+                $event->getPrivileges()->filter(
+                    fn (AclPrivilege $privilege) =>
+                        'action:akeneo_connectivity_connection_manage_apps' !== $privilege->getIdentity()->getId()
+                        && 'action:akeneo_connectivity_connection_open_apps' !== $privilege->getIdentity()->getId()
+                )
+            );
         }
 
-        $event->setPrivileges(
-            $event->getPrivileges()->filter(
-                fn (AclPrivilege $privilege) =>
-                'action:akeneo_connectivity_connection_manage_apps' !== $privilege->getIdentity()->getId()
-                    && 'action:akeneo_connectivity_connection_open_apps' !== $privilege->getIdentity()->getId()
-            )
-        );
+        if (false === $this->developerModeFlag->isEnabled()) {
+            $event->setPrivileges(
+                $event->getPrivileges()->filter(
+                    fn (AclPrivilege $privilege) =>
+                        'action:akeneo_connectivity_connection_manage_test_apps' !== $privilege->getIdentity()->getId()
+                )
+            );
+        }
     }
 }

@@ -89,6 +89,7 @@ services:
             - '@security.token_storage'
             - '@Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command\CreateTestAppCommandHandler'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppSecretQuery'
+            - '@oro_security.security_facade'
 
     Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\CreateTestAppQuery:
         arguments:
