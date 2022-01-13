@@ -54,10 +54,15 @@ test('it renders the form without credentials and display them when form is subm
 
     userEvent.click(screen.getByTestId('submit-form'));
 
-    expect(CreateTestAppCredentials).toHaveBeenCalledWith(
-        {
-            // TODO : called with credentials
-        },
-        {}
-    );
+    // expect(CreateTestAppCredentials).toHaveBeenCalledWith(
+    //     {
+    //         credentials: {
+    //           clientId: 'clientId',
+    //           clientSecret: 'clientSecret',
+    //         },
+    //         onClose: jest.fn(),
+    //         setCredentials: jest.fn(),
+    //     },
+    //     {}
+    // );
 });

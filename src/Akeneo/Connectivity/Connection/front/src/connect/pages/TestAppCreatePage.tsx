@@ -36,7 +36,13 @@ export const TestAppCreatePage = () => {
                 {translate('akeneo_connectivity.connection.connect.marketplace.test_apps.modal.subtitle')}
             </Subtitle>
             {null === credentials && <CreateTestAppForm onCancel={handleCloseModal} setCredentials={setCredentials} />}
-            {null !== credentials && <CreateTestAppCredentials />}
+            {null !== credentials && (
+                <CreateTestAppCredentials
+                    onClose={handleCloseModal}
+                    credentials={credentials}
+                    setCredentials={setCredentials}
+                />
+            )}
         </Modal>
     );
 };

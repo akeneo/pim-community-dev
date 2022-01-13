@@ -12,7 +12,13 @@ beforeEach(() => {
 });
 
 test('it displays the credentials', () => {
-    renderWithProviders(<CreateTestAppCredentials />);
+    const onClose = jest.fn();
+    const setCredentials = jest.fn();
+    const credentials = {clientId: '', clientSecret: ''};
+
+    renderWithProviders(
+        <CreateTestAppCredentials credentials={credentials} onClose={onClose} setCredentials={setCredentials} />
+    );
 
     expect(
         screen.getByText('akeneo_connectivity.connection.connect.marketplace.test_apps.modal.credentials.title')
