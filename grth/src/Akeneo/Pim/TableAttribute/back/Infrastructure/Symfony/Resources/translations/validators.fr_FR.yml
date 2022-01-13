@@ -9,6 +9,7 @@ pim_table_configuration:
       column_code_must_be_filled: Le code de la colonne doit être rempli
       option_code_must_be_filled: Le code de l'option doit être rempli
       invalid_code: Le code de la colonne ne peut contenir que des lettres, des chiffres et des tirets bas
+      not_available_code: Ce code de colonne n'est pas disponible
       invalid_option_code: Le code de l'option ne peut contenir que des lettres, des chiffres et des tirets bas
       too_long_code: "Le code de la colonne est trop long : il doit avoir au maximum 100 caractères."
       too_long_label: "L'intitulé de la colonne est trop long : il doit avoir au maximum 250 caractères."

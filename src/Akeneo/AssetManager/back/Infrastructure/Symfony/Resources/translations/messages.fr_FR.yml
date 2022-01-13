@@ -72,5 +72,13 @@ pim_mass_edit.notification.asset_manager_mass_edit_assets:
   success: Ressources éditées avec succès
   error: L'édition des ressources a échoué
 pim_api:
+  acl:
+    asset_family:
+      create: Créer et mettre à jour des familles de ressources
+      list: Lister les familles de ressources
+    asset:
+      create: Créer et mettre à jour les ressources
+      list: Lister les ressources
+      remove: Supprimer les ressources
   acl_group:
     asset: Ressources

@@ -69,3 +69,19 @@ category.permissions:
   no_access_to_products: 트리의 제품에 액세스할 수 있는 권한이 없습니다. 관리자에게 문의하십시오.
   apply_on_children.label: 하위 항목에 변경 사항 적용
   apply_on_children.help: 하위 항목의 기존 권한이 유지됩니다.
+pim_permissions:
+  widget:
+    entity:
+      attribute_group:
+        label: 특성 그룹
+        help: 앱이 모든 제품 데이터를 수정할 수 있게 하려면 편집 수준에서 모든 옵션을 선택합니다. 아니면 앱이 해당 수준에 따라 보거나 수정할 수 있는 속성 그룹만 선택합니다.
+      category:
+        label: 카테고리 트리
+        help: 앱이 PIM 제안을 사용하지 않고 제품을 수정할 수 있도록 하려면 고유 수준을 선택합니다. 아니면 편집 수준을 선택합니다.
+      locale:
+        label: 로케일
+        help: 앱이 모든 언어로 제품을 편집할 수 있게 하려면 편집 수준에서 모든 옵션을 선택합니다. 아니면 앱이 해당 수준에 따라 보거나 수정할 수 있는 언어만 선택합니다.
+      not_granted_warning: 이 섹션은 {{ permission }}이 있는 사용자만 액세스할 수 있습니다. 관리자에게 문의하십시오. 올바른 권한이 있으면 앱 설정으로 돌아가서 편집할 수 있습니다.
+pimee_enrich.acl.category.edit_permissions: 카테고리 권한 관리
+pimee_enrich.acl.attribute_group.edit_permissions: 특성 그룹 권한 관리
+pimee_enrich.acl.locale.edit_permissions: 로케일 권한 관리

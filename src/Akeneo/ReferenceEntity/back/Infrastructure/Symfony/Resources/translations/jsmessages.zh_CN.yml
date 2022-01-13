@@ -356,6 +356,9 @@ job_execution:
 pim_notification:
   types:
     reference_entity_mass_delete_records: 批量删除记录
+akeneo_job_process_tracker:
+  type_filter:
+    reference_entity_mass_delete_records: 批量删除记录
 pim_analytics:
   info_type:
     nb_reference_entities: 参考实体数目

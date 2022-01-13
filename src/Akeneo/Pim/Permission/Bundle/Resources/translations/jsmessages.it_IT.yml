@@ -69,3 +69,19 @@ category.permissions:
   no_access_to_products: Non hai accesso ai prodotti in alcun albero. Contatta il tuo amministratore
   apply_on_children.label: Applica le modifiche sui figli
   apply_on_children.help: I permessi esistenti sui figli sono mantenuti
+pim_permissions:
+  widget:
+    entity:
+      attribute_group:
+        label: Gruppi di attributi
+        help: Se vuoi che la tua app possa modificare tutti i dati del prodotto, scegli l'opzione Tutto nel livello Modifica. Altrimenti, seleziona solo i gruppi di attributi che la tua app potrà vedere o modificare in base al livello.
+      category:
+        label: Alberi di categorie
+        help: Se vuoi che la tua app possa modificare i tuoi prodotti senza utilizzare le proposte PIM, scegli il livello Personale. Altrimenti scegli il livello Modifica.
+      locale:
+        label: Impostazioni locali
+        help: Se vuoi che la tua app possa modificare i tuoi prodotti in tutte le lingue, scegli l'opzione Tutto nel livello Modifica. Altrimenti, seleziona solo le lingue che la tua app potrà vedere o modificare in base al livello.
+      not_granted_warning: Questa sezione è accessibile solo agli utenti con {{ permission }}. Contatta l'amministratore. Con il giusto permesso, potrai tornare alle impostazioni dell'app e modificarle.
+pimee_enrich.acl.category.edit_permissions: Gestisci i permessi di categoria
+pimee_enrich.acl.attribute_group.edit_permissions: Gestisci i permessi del gruppo di attributi
+pimee_enrich.acl.locale.edit_permissions: Gestisci i permessi delle impostazioni locali

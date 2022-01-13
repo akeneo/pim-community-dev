@@ -49,5 +49,13 @@ pim_mass_edit:
 akeneo_reference_entity: Lien simple vers une entité référentielle
 akeneo_reference_entity_collection: Lien multiple vers une entité référentielle
 pim_api:
+  acl:
+    reference_entity:
+      create: Créer et mettre à jour les entités référentielles
+      list: Lister les entités référentielles
+    record:
+      create: Créer et mettre à jour les enregistrements de l'entité référentielle
+      list: Lister les enregistrements de l'entité référentielle
+      remove: Supprimer les enregistrements de l'entité référentielle
   acl_group:
     reference_entity: Entités référentielles

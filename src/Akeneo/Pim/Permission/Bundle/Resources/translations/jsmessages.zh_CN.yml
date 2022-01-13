@@ -69,3 +69,19 @@ category.permissions:
   no_access_to_products: 您无权访问任何树中的产品，请联系您的管理员
   apply_on_children.label: 将更改应用于子级
   apply_on_children.help: 保留对子级的现有权限
+pim_permissions:
+  widget:
+    entity:
+      attribute_group:
+        label: 属性组
+        help: 如果您希望应用能够修改所有的产品数据，请在编辑级别选择“所有”选项。否则，只选择您的应用能够根据级别看到或修改的属性组。
+      category:
+        label: 目录树
+        help: 如果您希望应用能够在不使用 PIM 提案的情况下修改您的产品，请选择“拥有”级别。否则请选择编辑级别。
+      locale:
+        label: 区域
+        help: 如果您希望应用能够以所有语言编辑您的产品，请在编辑级别选择“所有”选项。否则，只选择您的应用可以根据级别查看或修改的语言。
+      not_granted_warning: 此部分仅供拥有 {{ permission }} 权限的用户访问。请与您的管理员联系。如果拥有正确的权限，您将能够返回到应用设置并编辑它们。
+pimee_enrich.acl.category.edit_permissions: 管理类别权限
+pimee_enrich.acl.attribute_group.edit_permissions: 管理属性组权限
+pimee_enrich.acl.locale.edit_permissions: 管理区域设置权限

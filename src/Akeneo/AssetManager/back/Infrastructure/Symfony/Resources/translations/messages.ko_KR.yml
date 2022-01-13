@@ -72,5 +72,13 @@ pim_mass_edit.notification.asset_manager_mass_edit_assets:
   success: 애셋이 편집되었습니다.
   error: 애셋 편집에 실패했습니다.
 pim_api:
+  acl:
+    asset_family:
+      create: 애셋 패밀리 생성 및 업데이트
+      list: 애셋 패밀리 나열
+    asset:
+      create: 애셋 생성 및 업데이트
+      list: 애셋 나열
+      remove: 애셋 삭제
   acl_group:
     asset: 애셋

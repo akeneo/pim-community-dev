@@ -1,3 +1,4 @@
+batch_jobs.akeneo_shared_catalog.label: 공유 카탈로그로 보내기
 pim_common:
   recipients: 수신자
   branding: 브랜딩
@@ -9,13 +10,26 @@ shared_catalog:
     placeholder: betty@akeneo.com
     email: 이메일 주소
     invalid_email: 이 값은 유효한 이메일 주소가 아닙니다.
+    duplicate_email: 일부 수신자는 목록에 이미 있으므로 무시됩니다.
     helper: "새 공유 카탈로그에 액세스할 수 있는 수신자를 추가하십시오. 주소 목록 입력 시 공백, 쉼표, 세미콜론, 줄 바꿈 구분 기호를 사용할 수 있습니다."
     no_result: 죄송합니다. 검색과 일치하는 이메일이 없습니다.
     no_data: 선언된 이메일 주소가 없습니다.
     max_limit_reached: 500명의 수신자 제한에 도달했습니다.
   branding:
+    upload_placeholder: "파일을 끌어다 놓거나 여기를 클릭"
+    uploading: 업로드 중...
     validation:
       invalid_extension: "유효하지 않은 확장자입니다. 허용된 확장자는 {{ allowed_extensions }}입니다."
       filesize_too_large: 제공된 파일의 크기가 너무 큽니다. 최대 크기는 2MB입니다.
+      invalid_file: 파일이 유효하지 않습니다
+      invalid_color: 이 값은 유효한 CSS 색상이 아닙니다.
+    color:
+      label: 브랜딩 색상 정의
+    logo:
+      label: 로고 업로드
+      file_information_helper: "최대 크기: 2MB, 파일 형식: PNG 또는 JPG"
+    cover:
+      label: 표지 업로드
+      file_information_helper: 이 이미지는 카탈로그 로그인 페이지와 PDF 내보내기의 표지에 사용됩니다. 출력 시 표지 페이지가 올바르게 표시되려면 페이지 크기가 1600 x 2227px 이상이어야 합니다.
   button:
     save: 저장 및 공유
