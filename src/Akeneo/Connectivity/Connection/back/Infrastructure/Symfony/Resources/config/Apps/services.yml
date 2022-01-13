@@ -31,6 +31,8 @@ services:
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\AsymmetricKeysGenerator:
         public: true
+        arguments:
+            - '%openssl_config_path%'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup:
         arguments:

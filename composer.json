@@ -13,7 +13,7 @@
             "": "src/"
         },
         "psr-4": {
-            "Pim\\Upgrade\\": "upgrades/",
+            "Pim\\Upgrade\\Schema\\": "upgrades/schema/",
             "Akeneo\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
             "Akeneo\\Platform\\CommunicationChannel\\": "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back",
             "Akeneo\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/back",
@@ -98,7 +98,7 @@
         "monolog/monolog": "1.25.5",
         "ocramius/proxy-manager": "2.11.1",
         "oneup/flysystem-bundle": "^4.0.0",
-        "phpseclib/phpseclib": "2.0.31",
+        "phpseclib/phpseclib": "^3.0",
         "psr/event-dispatcher": "^1.0.0",
         "ramsey/uuid": "^3.7",
         "ramsey/uuid-doctrine": "^1.8",
