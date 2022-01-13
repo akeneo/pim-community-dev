@@ -52,6 +52,8 @@ pim_analytics:
     nb_media_images_in_products: 产品中媒体图像的数量
     is_demo_catalog: 已安装演示目录
     nb_active_event_subscription: 已激活的 web-hook 的数量
+    activated_app_ids: 已连接的应用
+    nb_activated_apps: 已连接的应用数目
     data_source.tracked: 已跟踪的 API 源连接的数量
     data_source.untracked: 已取消跟踪的 API 源连接的数量
     data_destination.tracked: 已跟踪的 API 目的地连接的数量
