@@ -47,8 +47,8 @@ class MailNotifier implements Notifier
         ];
 
         try {
-            $txtBody = $this->twig->render('@PimNotification/Email/notification.txt.twig', $parameters);
-            $htmlBody = $this->twig->render('@PimNotification/Email/notification.html.twig', $parameters);
+            $txtBody = $this->twig->render('@AkeneoBatch/Email/notification.txt.twig', $parameters);
+            $htmlBody = $this->twig->render('@AkeneoBatch/Email/notification.html.twig', $parameters);
             $this->mailer->notifyByEmails([$email], 'Job has been executed', $txtBody, $htmlBody);
         } catch (Throwable $exception) {
             $this->logger->error(

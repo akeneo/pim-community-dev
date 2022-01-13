@@ -1,113 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        {% block head %}
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-        <title>Akeneo batch {{ jobExecution.jobInstance.type }}</title>
+            <title>{% block title %} {% endblock %}</title>
 
-        <link href="https://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet" type="text/css"/>
-
-        <style>
-            @media only screen and (max-width: 500px) {
-                #footerContainer {
-                    padding: 15px 50px;
-                }
-                #result {
-                    width: 90%;
-                }
-            }
-
-            @media only screen and (min-width: 660px) {
-                #result {
-                    width: 70%;
-                }
-            }
-        </style>
+            {% block link %} {% endblock %}
+        {% endblock %}
     </head>
     <body style="margin: 30px 40px 0 40px; max-width: 600px; height: auto; font-family: 'Lato', sans-serif; color: #11324D;
     font-weight: 400; text-align: center;">
-        <table style="border: none; border-spacing: 0; border-collapse: collapse; vertical-align: top;">
-            <tbody style="border: none; border-spacing: 0; border-collapse: collapse; vertical-align: top;">
+        {% block content %}
+            <table style="border: none; border-spacing: 0; border-collapse: collapse; vertical-align: top;">
+                <tbody style="border: none; border-spacing: 0; border-collapse: collapse; vertical-align: top;">
 
-                <!-- header -->
-                <tr style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;">
-                    <td style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;padding-bottom: 20px;">
-                        <img style="width: 100%; height: auto; max-width: 242px; max-height: 59px;"
-                             alt="Akeneo logo"
-                             src="{{ absolute_url(asset('/bundles/pimnotification/images/email/logo.png')) }}">
-                    </td>
-                </tr>
+                    <!-- header -->
+                    <tr style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;">
+                        <td style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;padding-bottom: 20px;">
+                            {% block emailHeader %}
+                                <img style="width: 100%; height: auto; max-width: 242px; max-height: 59px;"
+                                     alt="Akeneo logo"
+                                     src="{{ absolute_url(asset('/bundles/pimnotification/images/email/logo.png')) }}">
+                            {% endblock %}
+                        </td>
+                    </tr>
 
-                <!-- message -->
-                <tr style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;">
-                    <td style="border: none; border-spacing: 0; border-collapse: collapse; vertical-align: top;
-                    padding-bottom: 30px; width: 100%; max-width: 444px;">
-                        <p style="margin: 0 0 30px 0; font-size: 20px; font-family: 'Lato', sans-serif">
-                            Dear <strong>{{ email }}</strong>,<br/>
-                            Akeneo successfully completed your batch {{ jobExecution.jobInstance.type }}.
-                        </p>
-                        <p style="margin: 0 0 20px 0; font-size: 12px;font-family: 'Lato', sans-serif">
-                            Started on {{ jobExecution.startTime|date("Y-m-d") }} at {{ jobExecution.startTime|date("H:i:s") }}.<br/>
-                            Ended on {{ jobExecution.endTime|date("Y-m-d") }} at {{ jobExecution.endTime|date("H:i:s") }}.
-                        </p>
-                        <div style="margin: auto; width: 80%; text-align: start; font-size: 12px;font-family: 'Lato', sans-serif"
-                             id="result">
-                            <p>Results:</p>
-                            <ul style="padding-left: 5px">
-                                {% for stepExecution in jobExecution.stepExecutions %}
-                                    <li style="list-style-type: '- ';margin: 0">
-                                        {{ stepExecution.stepName|trans }} [{{ stepExecution.status }}]
-                                        {{ 0 < stepExecution.warnings|length ? 'With ' ~ stepExecution.warnings|length ~ ' warning(s)' : '' }}
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
+                    <!-- message -->
+                    <tr style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;">
+                        <td style="border: none; border-spacing: 0; border-collapse: collapse; vertical-align: top;
+                        padding-bottom: 30px; width: 100%; max-width: 444px;">
+                            {% block emailMessage %} {% endblock %}
+                        </td>
+                    </tr>
 
-                <!-- action -->
-                <tr style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;">
-                    <td style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top; padding-bottom: 30px;font-family: 'Lato', sans-serif">
-                        {% if akeneo_pim_url is not empty %}
-                            <span>
-                                <a target="_blank"
-                                   role="button"
-                                   style="-webkit-appearance: button; -moz-appearance: button; appearance: auto;
-                                   padding: 10px 20px; border-radius: 25px; background-color: #9452ba; color: white;
-                                   text-decoration: none; text-transform: uppercase; font-size: 15px; font-weight: 900;"
-                                   href="{{ akeneo_pim_url }}/#{{ path('akeneo_job_process_tracker_details', {'id': jobExecution.id}) }}">View summary</a>
-                            </span>
-                        {% else %}
-                            <p style="margin: unset; font-size: 12px; font-style: italic;">
-                                You should set the AKENEO_PIM_URL environment variable to view summary.
-                            </p>
-                        {% endif %}
-                    </td>
-                </tr>
+                    <!-- action -->
+                    <tr style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;">
+                        <td style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top; padding-bottom: 30px;font-family: 'Lato', sans-serif">
+                            {% block emailUserAction %} {% endblock %}
+                        </td>
+                    </tr>
 
-                <!-- footer -->
-                <tr style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;">
-                    <td style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;
-                    width: 100%; max-width: 520px; max-height: 230px; padding: 15px 88px; background-color: #9452ba;
-                    border-radius: 10px 10px 0 0; color: #F5F9FC; font-weight: 500; font-family: 'Lato', sans-serif"
-                        id="footerContainer">
-                        <p style="font-size: 12px;">
-                            If you have any questions regarding Akeneo PIM,<br/>you can visit our helpcenter.
-                        </p>
-                        <div style="font-size: 9px;">
-                            <p>Copyright © {{ 'now' | date('Y') }} Akeneo, All rights reserved.</p>
-                            <p>
-                                You have been invited to use Akeneo Shared Catalogs.
-                                As it is not direct marketing emails, you cannot unsubscribe to this email.
-                            </p>
-                        </div>
-                        <img style="width: 100%; height: auto; max-height: 32px; max-width: 131px; margin-top: 15px;"
-                             alt="Akeneo signature"
-                             src="{{ absolute_url(asset('bundles/pimnotification/images/email/signature.png')) }}">
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    <!-- footer -->
+                    <tr style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;">
+                        <td style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;
+                        width: 100%; max-width: 520px; max-height: 230px; padding: 15px 88px; background-color: #9452ba;
+                        border-radius: 10px 10px 0 0; color: #F5F9FC; font-weight: 500; font-family: 'Lato', sans-serif"
+                            id="footerContainer">
+                            {% block emailFooter %}
+                                <p style="font-size: 12px;">
+                                    If you have any questions regarding Akeneo PIM,<br/>you can visit our helpcenter.
+                                </p>
+                                <div style="font-size: 9px;">
+                                    <p>Copyright © {{ 'now' | date('Y') }} Akeneo, All rights reserved.</p>
+                                    <p>
+                                        You have been invited to use Akeneo Shared Catalogs.
+                                        As it is not direct marketing emails, you cannot unsubscribe to this email.
+                                    </p>
+                                </div>
+                                <img style="width: 100%; height: auto; max-height: 32px; max-width: 131px; margin-top: 15px;"
+                                     alt="Akeneo signature"
+                                     src="{{ absolute_url(asset('bundles/pimnotification/images/email/signature.png')) }}">
+                            {% endblock %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        {% endblock %}
     </body>
 </html>
