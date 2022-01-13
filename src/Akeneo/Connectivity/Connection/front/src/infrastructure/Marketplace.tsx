@@ -5,6 +5,7 @@ import {withDependencies} from './dependencies-provider';
 import {SelectUserProfilePage} from '../connect/pages/SelectUserProfilePage';
 import {MarketplacePage} from '../connect/pages/MarketplacePage';
 import {TestAppCreatePage} from '../connect/pages/TestAppCreatePage';
+import {DeleteTestAppPromptPage} from '../connect/pages/DeleteTestAppPromptPage';
 
 export const Marketplace = withDependencies(() => (
     <StrictMode>
@@ -13,6 +14,9 @@ export const Marketplace = withDependencies(() => (
                 <Switch>
                     <Route path='/connect/marketplace/test-app/create'>
                         <TestAppCreatePage />
+                    </Route>
+                    <Route path='/connect/marketplace/test-app/:testAppId/delete'>
+                        <DeleteTestAppPromptPage />
                     </Route>
                     <Route path='/connect/marketplace/profile'>
                         <SelectUserProfilePage />

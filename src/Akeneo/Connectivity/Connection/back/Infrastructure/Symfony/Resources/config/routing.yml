@@ -63,6 +63,9 @@ akeneo_connectivity_connection_connect_marketplace_profile:
 akeneo_connectivity_connection_connect_marketplace_test_app_create:
     path: '/connect/marketplace/test-app/create'
 
+akeneo_connectivity_connection_connect_marketplace_test_app_delete:
+    path: '/connect/marketplace/test-app/{testAppId}/delete'
+
 ## Apps
 akeneo_connectivity_connection_connect_apps_activate:
     path: '/connect/apps/activate'
