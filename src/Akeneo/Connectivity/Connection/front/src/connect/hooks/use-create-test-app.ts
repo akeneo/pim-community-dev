@@ -1,7 +1,7 @@
 import {useCallback} from 'react';
 import {useRoute} from '../../shared/router';
 
-type TestApp = {
+export type TestApp = {
     name: string;
     activateUrl: string;
     callbackUrl: string;

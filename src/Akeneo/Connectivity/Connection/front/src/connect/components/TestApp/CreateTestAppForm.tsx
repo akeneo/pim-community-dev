@@ -3,7 +3,7 @@ import {Button, Field, getColor, getFontSize, Helper, Modal, TextInput} from 'ak
 import {useTranslate} from '../../../shared/translate';
 import styled from '../../../common/styled-with-theme';
 import {TestAppCredentials} from '../../../model/Apps/test-app-credentials';
-import {useCreateTestApp} from '../../hooks/use-create-test-app';
+import {useCreateTestApp, TestApp} from '../../hooks/use-create-test-app';
 
 const Title = styled.h2`
     color: ${getColor('grey', 140)};
@@ -35,12 +35,6 @@ const Form = styled.form`
 type Props = {
     onCancel: () => void;
     setCredentials: (credentials: TestAppCredentials) => void;
-};
-
-type TestApp = {
-    name: string;
-    activateUrl: string;
-    callbackUrl: string;
 };
 
 type FormErrors = {
