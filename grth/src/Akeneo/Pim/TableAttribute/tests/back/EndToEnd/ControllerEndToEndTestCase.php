@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Test\Pim\TableAttribute\Integration\TableConfiguration\Controller;
+namespace Akeneo\Test\Pim\TableAttribute\EndToEnd;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
@@ -28,7 +28,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  * @author    Evrard Caron <evrard.caron@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  */
-abstract class ControllerIntegrationTestCase extends WebTestCase
+abstract class ControllerEndToEndTestCase extends WebTestCase
 {
     protected KernelBrowser $client;
 

@@ -9,5 +9,4 @@ services:
     Akeneo\Pim\TableAttribute\Infrastructure\Controller\InternalApi\GetSelectAttributesWithOptionsCountController:
         public: true
         arguments:
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.attribute_option'
+            - '@akeneo.pim.structure.query.get_options_count_and_translation_by_attribute'

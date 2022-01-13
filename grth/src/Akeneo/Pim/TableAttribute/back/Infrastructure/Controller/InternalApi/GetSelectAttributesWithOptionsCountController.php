@@ -13,21 +13,19 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Controller\InternalApi;
 
-use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetOptionsCountAndTranslationsByAttribute;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class GetSelectAttributesWithOptionsCountController
 {
     private const PAGE_SIZE = 25;
 
     public function __construct(
-        private AttributeRepositoryInterface $attributeRepository,
-        private AttributeOptionRepositoryInterface $attributeOptionRepository
+        private GetOptionsCountAndTranslationsByAttribute $getOptionsCountAndTranslationsByAttribute
     ) {
     }
 
@@ -37,37 +35,22 @@ final class GetSelectAttributesWithOptionsCountController
             return new RedirectResponse('/');
         }
 
-        $limit = (int) $request->get('limit', self::PAGE_SIZE);
-        $page = (int) $request->get('page', 1);
-        $offset = \abs($page - 1) * $limit;
-
-        $selectAttributes = $this->attributeRepository->findBy(
-            [
-                'type' => [
-                    AttributeTypes::OPTION_SIMPLE_SELECT,
-                    AttributeTypes::OPTION_MULTI_SELECT,
-                ],
-            ],
-            ['code' => 'ASC'],
-            $limit,
-            $offset
-        );
-
-        $options = [];
-        foreach ($selectAttributes as $selectAttribute) {
-            $optionsCount = $this->attributeOptionRepository->count(['attribute' => $selectAttribute->getId()]);
-
-            $labels = [];
-            foreach ($selectAttribute->getTranslations() as $translation) {
-                $labels[$translation->getLocale()] = $translation->getLabel();
-            }
-
-            $options[$selectAttribute->getCode()] = [
-                'options_count' => $optionsCount,
-                'labels' => $labels,
-            ];
+        $locale = $request->get('locale');
+        if (!\is_string($locale)) {
+            throw new BadRequestHttpException('The "locale" parameter is missing');
         }
 
-        return new JsonResponse($options);
+        $limit = (int) $request->get('limit', self::PAGE_SIZE);
+        $page = (int) $request->get('page', 1);
+        $search = $request->get('search', null);
+
+        $selectAttributes = $this->getOptionsCountAndTranslationsByAttribute->search(
+            $locale,
+            $page,
+            $limit,
+            $search
+        );
+
+        return new JsonResponse($selectAttributes);
     }
 }

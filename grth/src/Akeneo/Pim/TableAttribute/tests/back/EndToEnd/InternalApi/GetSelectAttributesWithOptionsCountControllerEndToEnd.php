@@ -10,20 +10,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Test\Pim\TableAttribute\Integration\TableConfiguration\Controller\InternalApi;
+namespace Akeneo\Test\Pim\TableAttribute\EndToEnd\InternalApi;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper;
-use Akeneo\Test\Pim\TableAttribute\Integration\TableConfiguration\Controller\ControllerIntegrationTestCase;
-use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\SecurityBundle\Model\AclPermission;
-use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
-use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
+use Akeneo\Test\Pim\TableAttribute\EndToEnd\ControllerEndToEndTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
-final class GetSelectAttributesWithOptionsCountControllerIntegration extends ControllerIntegrationTestCase
+final class GetSelectAttributesWithOptionsCountControllerEndToEnd extends ControllerEndToEndTestCase
 {
     private WebClientHelper $webClientHelper;
 
@@ -32,7 +28,8 @@ final class GetSelectAttributesWithOptionsCountControllerIntegration extends Con
     {
         $this->webClientHelper->callApiRoute(
             $this->client,
-            'pim_table_attribute_get_select_attributes_with_options_count'
+            'pim_table_attribute_get_select_attributes_with_options_count',
+            parameters: ['locale' => 'en_US']
         );
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
@@ -44,20 +41,15 @@ final class GetSelectAttributesWithOptionsCountControllerIntegration extends Con
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
         $this->webClientHelper->callApiRoute(
             $this->client,
-            'pim_table_attribute_get_select_attributes_with_options_count'
+            'pim_table_attribute_get_select_attributes_with_options_count',
+            parameters: ['locale' => 'en_US']
         );
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
         Assert::assertEqualsCanonicalizing(
             [
-                'brand' => [
-                    'options_count' => 10,
-                    'labels' => ['en_US' => 'Brand label', 'fr_FR' => 'Marque label']
-                ],
-                'color' => [
-                    'options_count' => 5,
-                    'labels' => ['en_US' => 'Color label', 'fr_FR' => 'Couleur label']
-                ],
+                ['code' => 'brand', 'options_count' => 10, 'label' => 'Brand label'],
+                ['code' => 'color', 'options_count' => 5, 'label' => 'Color label'],
             ],
             json_decode($response->getContent(), true)
         );
@@ -70,21 +62,13 @@ final class GetSelectAttributesWithOptionsCountControllerIntegration extends Con
         $this->webClientHelper->callApiRoute(
             $this->client,
             'pim_table_attribute_get_select_attributes_with_options_count',
-            [],
-            'GET',
-            [
-                'limit' => 1,
-                'page' => 1,
-            ]
+            parameters: ['locale' => 'fr_FR', 'limit' => 1, 'page' => 1]
         );
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
         Assert::assertEqualsCanonicalizing(
             [
-                'brand' => [
-                    'options_count' => 10,
-                    'labels' => ['en_US' => 'Brand label', 'fr_FR' => 'Marque label']
-                ],
+                ['code' => 'color', 'options_count' => 5, 'label' => 'Couleur label'],
             ],
             json_decode($response->getContent(), true)
         );
@@ -92,22 +76,45 @@ final class GetSelectAttributesWithOptionsCountControllerIntegration extends Con
         $this->webClientHelper->callApiRoute(
             $this->client,
             'pim_table_attribute_get_select_attributes_with_options_count',
-            [],
-            'GET',
-            [
-                'limit' => 1,
-                'page' => 2,
-            ]
+            parameters: ['locale' => 'fr_FR', 'limit' => 1, 'page' => 2]
         );
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
         Assert::assertEqualsCanonicalizing(
             [
-                'color' => [
-                    'options_count' => 5,
-                    'labels' => ['en_US' => 'Color label', 'fr_FR' => 'Couleur label']
-                ],
+                ['code' => 'brand', 'options_count' => 10, 'label' => 'Marque label'],
             ],
+            json_decode($response->getContent(), true)
+        );
+    }
+
+    /** @test */
+    public function it_returns_the_options_of_a_select_column_with_search(): void
+    {
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
+        $this->webClientHelper->callApiRoute(
+            $this->client,
+            'pim_table_attribute_get_select_attributes_with_options_count',
+            parameters: ['locale' => 'fr_FR', 'search' => 'couleur']
+        );
+        $response = $this->client->getResponse();
+        Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
+        Assert::assertEqualsCanonicalizing(
+            [
+                ['code' => 'color', 'options_count' => 5, 'label' => 'Couleur label'],
+            ],
+            json_decode($response->getContent(), true)
+        );
+
+        $this->webClientHelper->callApiRoute(
+            $this->client,
+            'pim_table_attribute_get_select_attributes_with_options_count',
+            parameters: ['locale' => 'fr_FR', 'search' => 'unkown']
+        );
+        $response = $this->client->getResponse();
+        Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
+        Assert::assertEqualsCanonicalizing(
+            [],
             json_decode($response->getContent(), true)
         );
     }
@@ -178,26 +185,6 @@ final class GetSelectAttributesWithOptionsCountControllerIntegration extends Con
         $this->get('pim_catalog.saver.attribute')->save($attribute);
 
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
-    }
-
-    private function disableAcl(string $aclId) : void
-    {
-        $aclManager = $this->get('oro_security.acl.manager');
-        $roles = $this->get('pim_user.repository.role')->findAll();
-
-        foreach ($roles as $role) {
-            $privilege = new AclPrivilege();
-            $identity = new AclPrivilegeIdentity($aclId);
-            $privilege
-                ->setIdentity($identity)
-                ->addPermission(new AclPermission('EXECUTE', 0));
-
-            $aclManager->getPrivilegeRepository()
-                ->savePrivileges($aclManager->getSid($role), new ArrayCollection([$privilege]));
-        }
-
-        $aclManager->flush();
-        $aclManager->clearCache();
     }
 
     protected function getConfiguration(): Configuration
