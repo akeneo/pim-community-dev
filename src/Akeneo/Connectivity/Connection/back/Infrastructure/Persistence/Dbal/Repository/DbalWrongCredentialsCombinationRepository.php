@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Reposit
 
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Read\WrongCredentialsCombinations;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Write\WrongCredentialsCombination;
-use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Repository\WrongCredentialsCombinationRepository;
+use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Repository\WrongCredentialsCombinationRepositoryInterface;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -14,7 +14,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DbalWrongCredentialsCombinationRepository implements WrongCredentialsCombinationRepository
+class DbalWrongCredentialsCombinationRepository implements WrongCredentialsCombinationRepositoryInterface
 {
     /** @var Connection */
     private $dbalConnection;

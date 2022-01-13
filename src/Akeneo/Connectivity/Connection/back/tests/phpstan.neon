@@ -1,0 +1,2 @@
+rules:
+    - Akeneo\Connectivity\Connection\Tests\PhpStan\Rule\SuffixInterfaceRule

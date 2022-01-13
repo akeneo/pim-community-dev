@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SaveWebhookSecretQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SaveWebhookSecretQueryInterface;
 use Doctrine\DBAL\Connection as DbalConnection;
 
 /**
@@ -11,7 +11,7 @@ use Doctrine\DBAL\Connection as DbalConnection;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DbalSaveWebhookSecretQuery implements SaveWebhookSecretQuery
+class DbalSaveWebhookSecretQuery implements SaveWebhookSecretQueryInterface
 {
     private DbalConnection $dbalConnection;
 

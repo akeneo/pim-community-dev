@@ -7,7 +7,7 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestFailedEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceededEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\MessageProcessedEvent;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiRequestCountRepository;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiRequestCountRepositoryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiRequestsLimitIncrementSubscriber;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -19,7 +19,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class EventsApiRequestsLimitIncrementSubscriberSpec extends ObjectBehavior
 {
-    public function let(EventsApiRequestCountRepository $repository): void
+    public function let(EventsApiRequestCountRepositoryInterface $repository): void
     {
         $this->beConstructedWith($repository);
     }

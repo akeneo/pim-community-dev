@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\CountActiveEventSubscriptionsQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\CountActiveEventSubscriptionsQueryInterface;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\WebhookLoader;
 use Akeneo\Test\Integration\Configuration;
@@ -16,7 +16,7 @@ class DbalCountActiveEventSubscriptionsQueryIntegration extends TestCase
 {
     private ConnectionLoader $connectionLoader;
     private WebhookLoader $webhookLoader;
-    private CountActiveEventSubscriptionsQuery $countActiveEventSubscriptionQuery;
+    private CountActiveEventSubscriptionsQueryInterface $countActiveEventSubscriptionQuery;
 
     protected function setUp(): void
     {

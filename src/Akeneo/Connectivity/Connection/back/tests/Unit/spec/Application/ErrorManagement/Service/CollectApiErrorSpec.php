@@ -10,7 +10,7 @@ use Akeneo\Connectivity\Connection\Application\ErrorManagement\Command\UpdateCon
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\BusinessError;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\HourlyErrorCount;
-use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\BusinessErrorRepository;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\BusinessErrorRepositoryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
@@ -28,7 +28,7 @@ class CollectApiErrorSpec extends ObjectBehavior
 {
     public function let(
         ConnectionContextInterface $connectionContext,
-        BusinessErrorRepository $repository,
+        BusinessErrorRepositoryInterface $repository,
         UpdateConnectionErrorCountHandler $updateErrorCountHandler,
         Serializer $serializer
     ): void {

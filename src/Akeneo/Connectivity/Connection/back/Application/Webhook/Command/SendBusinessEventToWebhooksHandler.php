@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionSkippedOwnEventLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionSkippedOwnEventLoggerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClientInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQueryInterface;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
@@ -24,21 +24,21 @@ use Psr\Log\LoggerInterface;
  */
 class SendBusinessEventToWebhooksHandler
 {
-    private SelectActiveWebhooksQuery $selectActiveWebhooksQuery;
+    private SelectActiveWebhooksQueryInterface $selectActiveWebhooksQuery;
     private WebhookUserAuthenticator $webhookUserAuthenticator;
-    private WebhookClient $client;
+    private WebhookClientInterface $client;
     private WebhookEventBuilder $builder;
     private LoggerInterface $logger;
-    private EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger;
+    private EventSubscriptionSkippedOwnEventLoggerInterface $eventSubscriptionSkippedOwnEventLogger;
     private string $pimSource;
 
     public function __construct(
-        SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
+        SelectActiveWebhooksQueryInterface $selectActiveWebhooksQuery,
         WebhookUserAuthenticator $webhookUserAuthenticator,
-        WebhookClient $client,
+        WebhookClientInterface $client,
         WebhookEventBuilder $builder,
         LoggerInterface $logger,
-        EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger,
+        EventSubscriptionSkippedOwnEventLoggerInterface $eventSubscriptionSkippedOwnEventLogger,
         string $pimSource
     ) {
         $this->selectActiveWebhooksQuery = $selectActiveWebhooksQuery;

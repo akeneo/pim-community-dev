@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
-use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\AreCredentialsValidCombinationQuery;
+use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\AreCredentialsValidCombinationQueryInterface;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -11,7 +11,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DbalAreCredentialsValidCombinationQuery implements AreCredentialsValidCombinationQuery
+class DbalAreCredentialsValidCombinationQuery implements AreCredentialsValidCombinationQueryInterface
 {
     private Connection $dbalConnection;
 

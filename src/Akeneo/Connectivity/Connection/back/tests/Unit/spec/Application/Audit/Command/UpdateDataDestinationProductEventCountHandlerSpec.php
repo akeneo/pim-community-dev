@@ -8,7 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinati
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountHandler;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCountRepository;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCountRepositoryInterface;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use PhpSpec\ObjectBehavior;
 
@@ -19,7 +19,7 @@ use PhpSpec\ObjectBehavior;
  */
 class UpdateDataDestinationProductEventCountHandlerSpec extends ObjectBehavior
 {
-    public function let(EventCountRepository $eventCountRepository)
+    public function let(EventCountRepositoryInterface $eventCountRepository)
     {
         $this->beConstructedWith($eventCountRepository);
     }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Settings\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Connection;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionsQuery;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionsQueryInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -14,9 +14,9 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConne
  */
 class FetchConnectionsHandler
 {
-    private SelectConnectionsQuery $selectConnectionsQuery;
+    private SelectConnectionsQueryInterface $selectConnectionsQuery;
 
-    public function __construct(SelectConnectionsQuery $selectConnectionsQuery)
+    public function __construct(SelectConnectionsQueryInterface $selectConnectionsQuery)
     {
         $this->selectConnectionsQuery = $selectConnectionsQuery;
     }

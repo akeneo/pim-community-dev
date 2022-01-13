@@ -64,8 +64,15 @@ connectivity-connection-lint-back:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --diff --dry-run --config=src/Akeneo/Connectivity/Connection/back/tests/.php_cs.php
-	$(PHP_RUN) vendor/bin/phpstan analyse --level=8 src/Akeneo/Connectivity/Connection/back/Application src/Akeneo/Connectivity/Connection/back/Domain
-	$(PHP_RUN) vendor/bin/phpstan analyse --level=5 src/Akeneo/Connectivity/Connection/back/Infrastructure
+	$(PHP_RUN) vendor/bin/phpstan analyse \
+		--level=8 \
+		--configuration src/Akeneo/Connectivity/Connection/back/tests/phpstan.neon \
+		src/Akeneo/Connectivity/Connection/back/Application \
+		src/Akeneo/Connectivity/Connection/back/Domain
+	$(PHP_RUN) vendor/bin/phpstan analyse \
+		--level=5 \
+		--configuration src/Akeneo/Connectivity/Connection/back/tests/phpstan.neon \
+		src/Akeneo/Connectivity/Connection/back/Infrastructure
 
 connectivity-connection-lint-back_fix:
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=src/Akeneo/Connectivity/Connection/back/tests/.php_cs.php

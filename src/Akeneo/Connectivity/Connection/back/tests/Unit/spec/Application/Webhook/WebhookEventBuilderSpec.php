@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Application\Webhook;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\ApiEventBuildErrorLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\ApiEventBuildErrorLoggerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
@@ -28,7 +28,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
     public function let(
         EventDataBuilderInterface $notSupportedEventDataBuilder,
         EventDataBuilderInterface $supportedEventDataBuilder,
-        ApiEventBuildErrorLogger $apiEventBuildErrorLogger
+        ApiEventBuildErrorLoggerInterface $apiEventBuildErrorLogger
     ): void {
         $this->beConstructedWith(
             [$notSupportedEventDataBuilder, $supportedEventDataBuilder],
@@ -120,7 +120,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
         EventDataBuilderInterface $notSupportedEventDataBuilder,
         EventDataBuilderInterface $supportedEventDataBuilder,
         UserInterface $user,
-        ApiEventBuildErrorLogger $apiEventBuildErrorLogger
+        ApiEventBuildErrorLoggerInterface $apiEventBuildErrorLogger
     ): void {
         $user->getId()->willReturn(1);
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
@@ -155,7 +155,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
 
     public function it_throws_an_error_if_the_business_event_is_not_supported(
         UserInterface $user,
-        ApiEventBuildErrorLogger $apiEventBuildErrorLogger
+        ApiEventBuildErrorLoggerInterface $apiEventBuildErrorLogger
     ): void {
         $this->beConstructedWith(
             [],

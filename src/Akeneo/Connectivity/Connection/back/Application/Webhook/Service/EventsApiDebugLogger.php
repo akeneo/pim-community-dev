@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Service;
 
-use Akeneo\Connectivity\Connection\Domain\Clock;
+use Akeneo\Connectivity\Connection\Domain\ClockInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\EventNormalizer\EventNormalizer;
 use Akeneo\Connectivity\Connection\Domain\Webhook\EventNormalizer\EventNormalizerInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepositoryInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 
 /**
@@ -17,13 +17,13 @@ use Akeneo\Platform\Component\EventQueue\EventInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class EventsApiDebugLogger implements
-    EventSubscriptionSkippedOwnEventLogger,
-    LimitOfEventsApiRequestsReachedLogger,
-    EventsApiRequestLogger,
-    ApiEventBuildErrorLogger
+    EventSubscriptionSkippedOwnEventLoggerInterface,
+    LimitOfEventsApiRequestsReachedLoggerInterface,
+    EventsApiRequestLoggerInterface,
+    ApiEventBuildErrorLoggerInterface
 {
-    private Clock $clock;
-    private EventsApiDebugRepository $repository;
+    private ClockInterface $clock;
+    private EventsApiDebugRepositoryInterface $repository;
     private EventNormalizerInterface $defaultEventNormalizer;
 
     /** @var iterable<EventNormalizerInterface> */
@@ -33,8 +33,8 @@ class EventsApiDebugLogger implements
      * @param iterable<EventNormalizerInterface> $eventNormalizers
      */
     public function __construct(
-        EventsApiDebugRepository $repository,
-        Clock $clock,
+        EventsApiDebugRepositoryInterface $repository,
+        ClockInterface $clock,
         iterable $eventNormalizers
     ) {
         $this->repository = $repository;

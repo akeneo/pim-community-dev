@@ -11,7 +11,7 @@ use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterf
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class CreateConnectionHandler
 {
-    private ConnectionRepository $repository;
+    private ConnectionRepositoryInterface $repository;
 
     private CreateClientInterface $createClient;
 
@@ -33,7 +33,7 @@ final class CreateConnectionHandler
 
     public function __construct(
         ValidatorInterface $validator,
-        ConnectionRepository $repository,
+        ConnectionRepositoryInterface $repository,
         CreateClientInterface $createClient,
         CreateUserInterface $createUser,
         FindAConnectionHandler $findAConnectionHandler

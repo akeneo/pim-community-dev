@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Query;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Query\GetAConnectionWebhookQuery as Query;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\EventSubscriptionFormData;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\CountActiveEventSubscriptionsQuery;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetAConnectionWebhookQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\CountActiveEventSubscriptionsQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetAConnectionWebhookQueryInterface;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -15,21 +14,21 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetAConnecti
  */
 class GetAConnectionWebhookHandler
 {
-    private GetAConnectionWebhookQuery $getAConnectionWebhookQuery;
+    private GetAConnectionWebhookQueryInterface $getAConnectionWebhookQuery;
     private int $activeEventSubscriptionsLimit;
-    private CountActiveEventSubscriptionsQuery $countActiveEventSubscriptionsQuery;
+    private CountActiveEventSubscriptionsQueryInterface $countActiveEventSubscriptionsQuery;
 
     public function __construct(
-        GetAConnectionWebhookQuery $getAConnectionWebhookQuery,
+        GetAConnectionWebhookQueryInterface $getAConnectionWebhookQuery,
         int $activeEventSubscriptionsLimit,
-        CountActiveEventSubscriptionsQuery $countActiveEventSubscriptionsQuery
+        CountActiveEventSubscriptionsQueryInterface $countActiveEventSubscriptionsQuery
     ) {
         $this->getAConnectionWebhookQuery = $getAConnectionWebhookQuery;
         $this->activeEventSubscriptionsLimit = $activeEventSubscriptionsLimit;
         $this->countActiveEventSubscriptionsQuery = $countActiveEventSubscriptionsQuery;
     }
 
-    public function handle(Query $query): ?EventSubscriptionFormData
+    public function handle(GetAConnectionWebhookQuery $query): ?EventSubscriptionFormData
     {
         $webhook = $this->getAConnectionWebhookQuery->execute($query->code());
         if (null === $webhook) {

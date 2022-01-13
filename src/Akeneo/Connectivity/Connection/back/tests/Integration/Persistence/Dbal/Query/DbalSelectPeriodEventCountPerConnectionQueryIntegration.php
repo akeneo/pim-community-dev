@@ -9,7 +9,7 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectPeriodEventCountPerConnectionQuery;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectPeriodEventCountPerConnectionQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\DateTimePeriod;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
@@ -32,7 +32,7 @@ class DbalSelectPeriodEventCountPerConnectionQueryIntegration extends TestCase
     /** @var AuditLoader */
     private $auditLoader;
 
-    /** @var SelectPeriodEventCountPerConnectionQuery */
+    /** @var SelectPeriodEventCountPerConnectionQueryInterface */
     private $selectPeriodEventCountPerConnectionQuery;
 
     protected function setUp(): void

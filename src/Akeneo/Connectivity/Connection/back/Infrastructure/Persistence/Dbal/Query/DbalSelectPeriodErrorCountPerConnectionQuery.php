@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectPeriodErrorCountPerConnectionQuery;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectPeriodErrorCountPerConnectionQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\DateTimePeriod;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Traits\PeriodEventCountTrait;
@@ -18,7 +18,7 @@ use Doctrine\DBAL\Types\Types;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class DbalSelectPeriodErrorCountPerConnectionQuery implements SelectPeriodErrorCountPerConnectionQuery
+class DbalSelectPeriodErrorCountPerConnectionQuery implements SelectPeriodErrorCountPerConnectionQueryInterface
 {
     use PeriodEventCountTrait;
 
