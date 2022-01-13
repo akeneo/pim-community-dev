@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-10233: [Backport] Fix product and product model deletion events when entity does not have any category
 - AOB-1428: Fix Reference entity isEqual comparison method
 
 # 5.0.67 (2022-01-03)

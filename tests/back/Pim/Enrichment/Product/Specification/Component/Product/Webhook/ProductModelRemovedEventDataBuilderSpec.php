@@ -38,14 +38,15 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
         $this->shouldImplement(EventDataBuilderInterface::class);
     }
 
-    public function it_supports_the_same_business_events_as_decorated_service($baseProductModelRemovedEventDataBuilder
+    public function it_supports_the_same_business_events_as_decorated_service(
+        $baseProductModelRemovedEventDataBuilder
     ): void {
         $eventBlueJean = new ProductModelRemoved(Author::fromNameAndType('erp', 'ui'), $this->aBlueJeanProductModel());
         $eventBlueCam = new ProductModelRemoved(Author::fromNameAndType('erp', 'ui'), $this->aBlueCamProductModel());
         $bulkEvent = new BulkEvent([$eventBlueJean, $eventBlueCam]);
 
         $baseProductModelRemovedEventDataBuilder->supports($bulkEvent)->willReturn(true, false);
-        
+
         $this->supports($bulkEvent)->shouldReturn(true);
         $this->supports($bulkEvent)->shouldReturn(false);
     }
@@ -97,6 +98,28 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
         $actualCollection = $this->build($bulkEvent, $user);
 
         Assert::assertEquals($expectedCollection, $actualCollection->getWrappedObject());
+    }
+
+    public function it_does_not_set_data_error_when_product_model_has_no_category(
+        BaseProductModelRemovedEventDataBuilder $baseProductModelRemovedEventDataBuilder
+    ): void {
+        $user = new User();
+        $eventWithNonCategorizedProductModel = new ProductModelRemoved(
+            Author::fromNameAndType('erp', 'ui'),
+            [
+                'identifier' => 'blue_jean',
+                'code' => 'blue_jean',
+                'category_codes' => [],
+            ]
+        );
+
+        $bulkEvent = new BulkEvent([$eventWithNonCategorizedProductModel]);
+        $baseProductModelRemovedEventDataBuilder->supports($bulkEvent)->willReturn(true);
+
+        $actualCollection = $this->build($bulkEvent, $user);
+        $actualCollection->getEventData($eventWithNonCategorizedProductModel)->shouldBe([
+            'resource' => ['code' => $eventWithNonCategorizedProductModel->getCode()],
+        ]);
     }
 
     public function it_throws_an_error_if_an_event_is_not_supported($baseProductModelRemovedEventDataBuilder): void
