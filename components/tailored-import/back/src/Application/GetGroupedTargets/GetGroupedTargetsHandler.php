@@ -20,7 +20,7 @@ class GetGroupedTargetsHandler
     ) {
     }
 
-    public function handle(GetGroupedTargetsQuery $query)
+    public function handle(GetGroupedTargetsQuery $query): GroupedTargetsResult
     {
         return $this->getGroupedTargets->get($query);
     }

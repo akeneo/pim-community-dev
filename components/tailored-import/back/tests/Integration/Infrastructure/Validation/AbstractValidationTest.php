@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Test\Integration\Infrastructure\Validation;
 
-use Akeneo\Platform\CommunicationChannel\Test\Integration\WebTestCase;
+use Akeneo\Platform\TailoredImport\Test\Integration\IntegrationTestCase;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-abstract class AbstractValidationTest extends WebTestCase
+abstract class AbstractValidationTest extends IntegrationTestCase
 {
     protected function assertHasValidationError(
         string $errorMessageExpected,

@@ -18,9 +18,9 @@ class GetGroupedTargetsQuery
     public const DEFAULT_LIMIT = 25;
     public const DEFAULT_LOCALE = 'en_US';
 
-    public string $search;
+    public ?string $search;
     public int $systemOffset;
     public int $attributeOffset;
-    public int $limit;
-    public string $locale;
+    public int $limit = self::DEFAULT_LIMIT;
+    public string $locale = self::DEFAULT_LOCALE;
 }
