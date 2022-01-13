@@ -26,7 +26,26 @@ class MailNotifierSpec extends ObjectBehavior
 
     function it_notifies(JobExecution $jobExecution, $mailer)
     {
-        $mailer->notifyByEmails('destEmail', 'Job has been executed', Argument::any(), Argument::any())->shouldBeCalled();
+        $mailer->notifyByEmails(
+            ['destEmail'],
+            'Job has been executed',
+            Argument::any(),
+            Argument::any()
+        )->shouldBeCalled();
+
+        $this->notify($jobExecution);
+    }
+
+    function it_should_log_error_if_notification_failed(JobExecution $jobExecution, $mailer, $logger)
+    {
+        $mailer->notifyByEmails(
+            Argument::any(),
+            Argument::any(),
+            Argument::any(),
+            Argument::any()
+        )->willThrow(\Throwable::class);
+
+        $logger->error(Argument::any(), Argument::any())->shouldBeCalled();
 
         $this->notify($jobExecution);
     }
