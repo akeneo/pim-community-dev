@@ -1,0 +1,43 @@
+services:
+    akeneo.tailored_import.query.find_system_targets:
+        class: Akeneo\Platform\TailoredImport\Infrastructure\Query\InMemoryFindSystemTargets
+        arguments:
+            - []
+#                - 'categories'
+#                - 'enabled'
+#                - 'family'
+#                - 'parent'
+#                - 'groups'
+#                - 'family_variant'
+#                - 'quality_score'
+            - '@translator'
+
+    akeneo.tailored_import.query.find_viewable_attributes:
+        class: Akeneo\Platform\TailoredImport\Infrastructure\Query\FindViewableAttributes
+        arguments:
+            - '@akeneo.pim.structure.query.find_flatten_attributes'
+            - '@pimee_security.query.get_viewable_attribute_codes_for_user'
+            - '@security.token_storage'
+            -
+#                - 'akeneo_reference_entity_collection'
+#                - 'akeneo_reference_entity'
+#                - 'pim_catalog_asset_collection'
+#                - 'pim_catalog_boolean'
+#                - 'pim_catalog_date'
+#                - 'pim_catalog_file'
+#                - 'pim_catalog_image'
+#                - 'pim_catalog_metric'
+#                - 'pim_catalog_multiselect'
+#                - 'pim_catalog_number'
+#                - 'pim_catalog_price_collection'
+#                - 'pim_catalog_simpleselect'
+#                - 'pim_catalog_table'
+                - 'pim_catalog_text'
+#                - 'pim_catalog_textarea'
+
+    akeneo.tailored_import.query.get_grouped_targets:
+        class: Akeneo\Platform\TailoredImport\Infrastructure\Query\GetGroupedTargets
+        arguments:
+            - '@akeneo.tailored_import.query.find_viewable_attributes'
+            - '@akeneo.tailored_import.query.find_system_targets'
+            - '@translator'

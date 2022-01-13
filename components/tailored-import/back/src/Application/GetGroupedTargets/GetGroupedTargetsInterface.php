@@ -11,12 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Domain;
+namespace Akeneo\Platform\TailoredImport\Application\GetGroupedTargets;
 
-class Dummy
+interface GetGroupedTargetsInterface
 {
-    public function helloWorld(): string
-    {
-        return 'Hello world';
-    }
+    public function get(GetGroupedTargetsQuery $query): GroupedTargetsResult;
 }
