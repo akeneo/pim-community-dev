@@ -38,8 +38,7 @@ SELECT
     (
         SELECT COUNT(connected_app.id)
         FROM akeneo_connectivity_connected_app connected_app
-        JOIN akeneo_connectivity_connection connection on connection.code = connected_app.connection_code
-        JOIN pim_api_client client on client.marketplace_public_app_id = app.client_id
+        WHERE connected_app.id = app.client_id
     ) AS connected
 FROM akeneo_connectivity_test_app AS app
 LEFT JOIN oro_user user on user.id = app.user_id
