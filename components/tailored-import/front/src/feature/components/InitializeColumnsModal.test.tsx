@@ -53,11 +53,13 @@ test('it display a warning message when columns exceeded the limit', async () =>
   });
 
   expect(onConfirm).toHaveBeenCalledWith(
-    Array(500).fill('').map((value, index) => ({
-      uuid: mockUuid,
-      index: index,
-      label: `column${index}`,
-    }))
+    Array(500)
+      .fill('')
+      .map((value, index) => ({
+        uuid: mockUuid,
+        index: index,
+        label: `column${index}`,
+      }))
   );
 });
 
