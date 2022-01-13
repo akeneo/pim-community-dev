@@ -12,7 +12,7 @@ weekly_error:
 
 error_count_per_connection:
     path: '/error-count-per-connection'
-    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\UpdateConnectedAppMonitoringSettingsAction
+    controller: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Audit\GetErrorCountPerConnectionAction
     methods: [GET]
     requirements:
         error_type: '[a-zA-Z_]+'
