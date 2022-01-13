@@ -1,3 +1,4 @@
 rules:
-    - Akeneo\Connectivity\Connection\Tests\PhpStan\Rule\SuffixInterfaceRule
     - Akeneo\Connectivity\Connection\Tests\PhpStan\Rule\SuffixExceptionRule
+    - Akeneo\Connectivity\Connection\Tests\PhpStan\Rule\SuffixInterfaceRule
+    - Akeneo\Connectivity\Connection\Tests\PhpStan\Rule\SuffixTraitRule
