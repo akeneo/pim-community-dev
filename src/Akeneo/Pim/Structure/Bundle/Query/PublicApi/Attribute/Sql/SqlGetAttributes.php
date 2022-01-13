@@ -43,6 +43,7 @@ SELECT attribute.code,
        attribute.default_metric_unit,
        attribute.decimals_allowed,
        attribute.backend_type,
+       attribute.useable_as_grid_filter,
        COALESCE(locale_codes, JSON_ARRAY()) AS available_locale_codes
 FROM pim_catalog_attribute attribute
     LEFT JOIN locale_specific_codes on attribute.id = attribute_id    
@@ -70,7 +71,8 @@ SQL;
                 $rawAttribute['default_metric_unit'],
                 boolval($rawAttribute['decimals_allowed']),
                 $rawAttribute['backend_type'],
-                json_decode($rawAttribute['available_locale_codes'])
+                json_decode($rawAttribute['available_locale_codes']),
+                boolval($rawAttribute['useable_as_grid_filter'])
             );
         }
 
@@ -106,6 +108,7 @@ SQL;
                    attribute.default_metric_unit,
                    attribute.decimals_allowed,
                    attribute.backend_type,
+                   attribute.useable_as_grid_filter,
                    COALESCE(locale_codes, JSON_ARRAY()) AS available_locale_codes
             FROM pim_catalog_attribute attribute
             LEFT JOIN locale_specific_codes on attribute.id = attribute_id  
@@ -132,7 +135,8 @@ SQL;
                 $rawAttribute['default_metric_unit'],
                 boolval($rawAttribute['decimals_allowed']),
                 $rawAttribute['backend_type'],
-                json_decode($rawAttribute['available_locale_codes'])
+                json_decode($rawAttribute['available_locale_codes']),
+                boolval($rawAttribute['useable_as_grid_filter'])
             );
         }
 

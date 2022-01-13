@@ -76,7 +76,7 @@ SQL;
 
         $attributeTranslations = [];
         foreach ($rows as $attribute) {
-            $attributeTranslations[$attribute['code']] = $attribute['label'];
+            $attributeTranslations[$attribute['code']] = json_decode($attribute['labels'], true);
         }
 
         return $attributeTranslations;

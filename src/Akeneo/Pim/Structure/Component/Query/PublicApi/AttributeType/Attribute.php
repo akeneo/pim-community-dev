@@ -9,58 +9,19 @@ namespace Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType;
  */
 final class Attribute
 {
-    /** @var string */
-    private $attributeCode;
-
-    /** @var string */
-    private $attributeType;
-
-    /** @var array */
-    private $attributeProperties;
-
-    /** @var bool */
-    private $isLocalizable;
-
-    /** @var bool */
-    private $isScopable;
-
-    /** @var null|string */
-    private $metricFamily;
-
-    /** @var null|string */
-    private $defaultMetricUnit;
-
-    /** @var null|bool */
-    private $decimalsAllowed;
-
-    /** @var string */
-    private $backendType;
-
-    /** @var string[] */
-    private $availableLocaleCodes;
-
     public function __construct(
-        string $attributeCode,
-        string $attributeType,
-        array $attributeProperties,
-        bool $isLocalizable,
-        bool $isScopable,
-        ?string $metricFamily,
-        ?string $defaultMetricUnit,
-        ?bool $decimalsAllowed,
-        string $backendType,
-        array $availableLocaleCodes
+        private string $attributeCode,
+        private string $attributeType,
+        private array $attributeProperties,
+        private bool $isLocalizable,
+        private bool $isScopable,
+        private ?string $metricFamily,
+        private ?string $defaultMetricUnit,
+        private ?bool $decimalsAllowed,
+        private string $backendType,
+        private array $availableLocaleCodes,
+        private ?bool $useableAsGridFilter
     ) {
-        $this->attributeCode = $attributeCode;
-        $this->attributeType = $attributeType;
-        $this->attributeProperties = $attributeProperties;
-        $this->isLocalizable = $isLocalizable;
-        $this->isScopable = $isScopable;
-        $this->metricFamily = $metricFamily;
-        $this->defaultMetricUnit = $defaultMetricUnit;
-        $this->decimalsAllowed = $decimalsAllowed;
-        $this->backendType = $backendType;
-        $this->availableLocaleCodes = $availableLocaleCodes;
     }
 
     public function code(): string
@@ -121,5 +82,10 @@ final class Attribute
     public function availableLocaleCodes(): array
     {
         return $this->availableLocaleCodes;
+    }
+
+    public function useableAsGridFilter(): ?bool
+    {
+        return $this->useableAsGridFilter;
     }
 }
