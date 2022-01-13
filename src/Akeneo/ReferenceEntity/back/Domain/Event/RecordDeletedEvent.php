@@ -7,7 +7,6 @@ namespace Akeneo\ReferenceEntity\Domain\Event;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**

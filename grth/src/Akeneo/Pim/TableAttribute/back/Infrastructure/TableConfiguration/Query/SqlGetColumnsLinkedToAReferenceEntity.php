@@ -37,14 +37,12 @@ final class SqlGetColumnsLinkedToAReferenceEntity implements GetColumnsLinkedToA
             SELECT pca.code AS attribute_code, c.code AS column_code
             FROM pim_catalog_table_column AS c
                 JOIN pim_catalog_attribute pca ON c.attribute_id = pca.id
-                JOIN akeneo_reference_entity_reference_entity AS e
-                    ON e.identifier = :identifier
-                    AND c.properties->"$.reference_entity_identifier" = e.identifier
+            WHERE LOWER(c.properties->"$.reference_entity_identifier") = LOWER(JSON_QUOTE(:identifier));
         SQL;
 
         return $this->connection->executeQuery(
             $query,
-            ['identifier' => $referenceEntityIdentifier]
+            ['identifier' => strtolower($referenceEntityIdentifier)]
         )->fetchAllAssociative();
     }
 }

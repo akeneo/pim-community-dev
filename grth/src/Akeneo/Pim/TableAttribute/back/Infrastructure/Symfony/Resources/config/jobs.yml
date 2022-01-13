@@ -318,14 +318,6 @@ services:
             - '@akeneo_batch.job_repository'
             - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet\CleanTableValuesWithDeletedOptionsTasklet'
 
-    pim_table_attribute.step.clean_table_values_following_deleted_records:
-        class: '%pim_connector.step.tasklet.class%'
-        arguments:
-            - 'clean'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet\CleanTableValuesWithDeletedRecordsTasklet'
-
     # readers
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\Reader\Database\SelectOptionDetailsReader:
         arguments:

@@ -92,8 +92,9 @@ class CleanRecordsJobSubscriberSpec extends ObjectBehavior
             $user,
             [
                 'attribute_code' => 'attribute_code',
-                'column_code' => 'column_code',
-                'record_codes' => ['code'],
+                'removed_options_per_column_code' => [
+                    'column_code' => ['code'],
+                ],
             ]
         )->shouldBeCalledOnce();
         $jobLauncher->launch(
@@ -101,8 +102,46 @@ class CleanRecordsJobSubscriberSpec extends ObjectBehavior
             $user,
             [
                 'attribute_code' => 'attribute_code_2',
-                'column_code' => 'column_code_2',
-                'record_codes' => ['code'],
+                'removed_options_per_column_code' => [
+                    'column_code_2' => ['code'],
+                ],
+            ]
+        )->shouldBeCalledOnce();
+        $this->whenARecordIsDeleted($recordDeletedEvent);
+    }
+
+    function it_launches_a_job_by_attribute_when_the_event_is_unitary(
+        JobLauncherInterface $jobLauncher,
+        GetColumnsLinkedToAReferenceEntity $getColumnsLinkedToAReferenceEntity,
+        TokenStorageInterface $tokenStorage,
+        JobInstanceRepository $jobInstanceRepository,
+        JobInstance $jobInstance
+    ) {
+        $recordDeletedEvent = new RecordDeletedEvent(
+            RecordIdentifier::create('id', 'code', 'fingerprint'),
+            RecordCode::fromString('code'),
+            ReferenceEntityIdentifier::fromString('id'),
+            true
+        );
+
+        $getColumnsLinkedToAReferenceEntity->forIdentifier('id')->willReturn(
+            [
+                ['attribute_code' => 'attribute_code', 'column_code' => 'column_code'],
+                ['attribute_code' => 'attribute_code', 'column_code' => 'column_code_2'],
+            ]
+        );
+        $user = new User();
+        $tokenStorage->getToken()->willReturn(new SystemUserToken($user));
+        $jobInstanceRepository->findOneByIdentifier('jobName')->willReturn($jobInstance);
+        $jobLauncher->launch(
+            $jobInstance,
+            $user,
+            [
+                'attribute_code' => 'attribute_code',
+                'removed_options_per_column_code' => [
+                    'column_code' => ['code'],
+                    'column_code_2' => ['code'],
+                ],
             ]
         )->shouldBeCalledOnce();
         $this->whenARecordIsDeleted($recordDeletedEvent);
@@ -168,8 +207,9 @@ class CleanRecordsJobSubscriberSpec extends ObjectBehavior
             $user,
             [
                 'attribute_code' => 'attribute_code',
-                'column_code' => 'column_code',
-                'record_codes' => ['code'],
+                'removed_options_per_column_code' => [
+                    'column_code' => ['code'],
+                ],
             ]
         )->shouldBeCalledOnce();
         $jobLauncher->launch(
@@ -177,8 +217,9 @@ class CleanRecordsJobSubscriberSpec extends ObjectBehavior
             $user,
             [
                 'attribute_code' => 'attribute_code_2',
-                'column_code' => 'column_code_2',
-                'record_codes' => ['code'],
+                'removed_options_per_column_code' => [
+                    'column_code_2' => ['code'],
+                ],
             ]
         )->shouldBeCalledOnce();
         $this->whenRecordsAreDeleted($recordsDeletedEvent);
@@ -210,7 +251,7 @@ class CleanRecordsJobSubscriberSpec extends ObjectBehavior
         $createJobInstance->createJobInstance(
             [
                 'code' => 'jobName',
-                'label' => 'Remove the non existing record values from product and product models table attribute',
+                'label' => 'Remove the non existing values from product and product models table attribute',
                 'job_name' => 'jobName',
                 'type' => 'jobName',
             ]
@@ -220,8 +261,9 @@ class CleanRecordsJobSubscriberSpec extends ObjectBehavior
             $user,
             [
                 'attribute_code' => 'attribute_code',
-                'column_code' => 'column_code',
-                'record_codes' => ['code'],
+                'removed_options_per_column_code' => [
+                    'column_code' => ['code'],
+                ],
             ]
         )->shouldBeCalledOnce();
         $this->whenRecordsAreDeleted($recordsDeletedEvent);

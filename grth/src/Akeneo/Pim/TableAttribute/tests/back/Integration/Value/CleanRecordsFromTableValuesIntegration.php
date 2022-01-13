@@ -20,6 +20,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Test\Pim\TableAttribute\Helper\EntityBuilderTrait;
+use Akeneo\Test\Pim\TableAttribute\Helper\FeatureHelper;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
@@ -35,6 +36,7 @@ final class CleanRecordsFromTableValuesIntegration extends TestCase
      */
     protected function setUp(): void
     {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
         parent::setUp();
 
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
@@ -200,6 +202,7 @@ final class CleanRecordsFromTableValuesIntegration extends TestCase
         $this->createAttribute([
             'code' => 'size',
             'type' => AttributeTypes::OPTION_SIMPLE_SELECT,
+            'group' => 'other',
             'localizable' => false,
             'scopable' => false,
         ]);
@@ -296,17 +299,6 @@ final class CleanRecordsFromTableValuesIntegration extends TestCase
         Assert::assertCount(0, $violations, \sprintf('The product model is not valid: %s', $violations));
         $this->get('pim_catalog.saver.product_model')->save($productModel);
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-    }
-
-    private function createAttribute(array $data): void
-    {
-        $data['group'] = $data['group'] ?? 'other';
-
-        $attribute = $this->get('pim_catalog.factory.attribute')->create();
-        $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
-        $constraints = $this->get('validator')->validate($attribute);
-        self::assertCount(0, $constraints, (string)$constraints);
-        $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 
     private function createReferenceEntity(string $referenceEntityIdentifier): void

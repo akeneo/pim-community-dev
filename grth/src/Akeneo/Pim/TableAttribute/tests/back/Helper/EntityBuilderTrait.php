@@ -152,6 +152,4 @@ trait EntityBuilderTrait
         $handler = $this->get('akeneo_referenceentity.application.record.delete_records_handler');
         ($handler)($deleteCommand);
     }
-
-
 }

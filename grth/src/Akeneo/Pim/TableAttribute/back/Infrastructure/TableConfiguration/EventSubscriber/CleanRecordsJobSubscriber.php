@@ -38,7 +38,6 @@ class CleanRecordsJobSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-
         return [
             /* @phpstan-ignore-next-line */
             RecordDeletedEvent::class => 'whenARecordIsDeleted',
@@ -83,11 +82,22 @@ class CleanRecordsJobSubscriber implements EventSubscriberInterface
         $columns = $this->getColumnsLinkedToAReferenceEntity->forIdentifier($referenceEntityIdentifier);
 
         $jobInstance = null;
+
+        $columnsByAttribute = [];
+
         foreach ($columns as $column) {
+            $columnsByAttribute[$column['attribute_code']][] = $column['column_code'];
+        }
+
+        foreach ($columnsByAttribute as $attributeCode => $columnCodes) {
             $configuration = [
-                'attribute_code' => $column['attribute_code'],
-                'removed_options_per_column_code' => [$column['column_code'] => $recordCodes],
+                'attribute_code' => $attributeCode,
+                'removed_options_per_column_code' => [],
             ];
+
+            foreach ($columnCodes as $columnCode) {
+                $configuration['removed_options_per_column_code'][$columnCode] = $recordCodes;
+            }
 
             $user = $this->tokenStorage->getToken()->getUser();
 
@@ -104,7 +114,7 @@ class CleanRecordsJobSubscriber implements EventSubscriberInterface
         if (null === $jobInstance) {
             $this->createJobInstance->createJobInstance([
                 'code' => $this->jobName,
-                'label' => 'Remove the non existing record values from product and product models table attribute',
+                'label' => 'Remove the non existing values from product and product models table attribute',
                 'job_name' => $this->jobName,
                 'type' => $this->jobName,
             ]);
