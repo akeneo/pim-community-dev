@@ -9,6 +9,9 @@ akeneo.tailored_import:
       columns:
         label: Columns
         placeholder: Copy and paste here your columns
+  data_mapping:
+    source:
+      add: Add a source
   form:
     job_instance:
       tab:

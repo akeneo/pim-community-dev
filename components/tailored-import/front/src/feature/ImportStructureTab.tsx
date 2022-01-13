@@ -3,6 +3,7 @@ import {Button, useBooleanState} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {InitializeColumnsModal} from './components';
 import {Column, StructureConfiguration} from './models';
+import {SourceDropdown} from './components';
 
 type ImportStructureTabProps = {
   structureConfiguration: StructureConfiguration;
@@ -18,12 +19,16 @@ const ImportStructureTab = ({structureConfiguration, onStructureConfigurationCha
     closeInitModal();
   };
 
+  /* istanbul ignore next */
+  const handleColumnSelected = (column: Column): void => {};
+
   return (
     <>
       <Button level="primary" onClick={openInitModal}>
         {translate('akeneo.tailored_import.column_initialization.button')}
       </Button>
       {isInitModalOpen && <InitializeColumnsModal onConfirm={handleConfirm} onCancel={closeInitModal} />}
+      <SourceDropdown columns={structureConfiguration.columns} onColumnSelected={handleColumnSelected} />
     </>
   );
 };

@@ -55,6 +55,7 @@ class ColumnView extends BaseView {
   setStructureConfigurationData(structureConfiguration: StructureConfiguration): void {
     const formData = this.getFormData();
     this.setData({...formData, configuration: {...formData.configuration, ...structureConfiguration}});
+    this.render();
   }
 
   /**

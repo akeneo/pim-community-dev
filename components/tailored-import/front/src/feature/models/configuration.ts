@@ -27,5 +27,22 @@ const generateColumns = (sheetContent: string): Column[] => {
   }));
 };
 
+const generateExcelColumnLetter = (index: number): string => {
+  if (index <= 25) {
+    return `${String.fromCharCode(index + 65)}`;
+  }
+
+  const modulo = index % 26;
+  const nextIndex = (index - modulo) / 26;
+
+  return `${generateExcelColumnLetter(nextIndex - 1)}${String.fromCharCode(modulo + 65)}`;
+};
+
+const generateColumnName = ({index, label}: Column): string => {
+  const columnLetter = generateExcelColumnLetter(index);
+
+  return `${label} (${columnLetter})`;
+};
+
 export type {StructureConfiguration, Column};
-export {generateColumns};
+export {generateColumns, generateColumnName};
