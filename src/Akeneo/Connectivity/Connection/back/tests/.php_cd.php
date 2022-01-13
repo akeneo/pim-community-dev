@@ -269,6 +269,8 @@ $rules = [
             'Akeneo\Connectivity\Connection\Application\Marketplace',
 
             'Akeneo\Connectivity\Connection\Domain\Apps',
+            'Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppCommand',
+            'Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler',
 
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Platform\VersionProviderInterface',

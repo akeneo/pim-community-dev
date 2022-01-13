@@ -91,6 +91,15 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppSecretQuery'
             - '@oro_security.security_facade'
 
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\InternalApi\DeleteTestAppAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.app_developer_mode.feature'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command\DeleteTestAppHandler'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetTestAppQuery'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler'
+
     Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\CreateTestAppQuery:
         arguments:
             - '@database_connection'
@@ -99,7 +108,16 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\DeleteTestAppQuery:
+        arguments:
+            - '@database_connection'
+
     Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command\CreateTestAppCommandHandler:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Service\RandomCodeGenerator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\CreateTestAppQuery'
+
+    Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command\DeleteTestAppHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetTestAppQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\DeleteTestAppQuery'

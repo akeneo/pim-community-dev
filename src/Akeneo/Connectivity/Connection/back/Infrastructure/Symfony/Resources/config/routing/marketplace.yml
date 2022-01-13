@@ -22,3 +22,8 @@ akeneo_connectivity_connection_marketplace_rest_test_apps_create:
     path: '/test-apps'
     controller: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\InternalApi\CreateTestAppsAction
     methods: [POST]
+
+akeneo_connectivity_connection_marketplace_rest_test_apps_delete:
+    path: '/test-apps/{testAppId}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\InternalApi\DeleteTestAppAction
+    methods: [DELETE]

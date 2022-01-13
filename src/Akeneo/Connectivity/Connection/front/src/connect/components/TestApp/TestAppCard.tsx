@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import {TestApp} from '../../../model/app';
 import {AppIllustration, getColor, getFontSize, DeleteIcon} from 'akeneo-design-system';
 import {useTranslate} from '../../../shared/translate';
+import {useHistory} from 'react-router';
+import {useRouter} from '../../../shared/router/use-router';
 
 const CardContainer = styled.div`
     padding: 20px;
@@ -73,11 +75,18 @@ type Props = {
 
 export const TestAppCard: FC<Props> = ({testApp, additionalActions}) => {
     const translate = useTranslate();
+    const generateUrl = useRouter();
+    const history = useHistory();
+
     const author =
         testApp.author ?? translate('akeneo_connectivity.connection.connect.marketplace.test_apps.removed_user');
 
     const onDelete = () => {
-        //TODO delete behaviour
+        history.push(
+            generateUrl('akeneo_connectivity_connection_connect_marketplace_test_app_delete', {
+                testAppId: testApp.id,
+            })
+        );
     };
 
     return (

@@ -41,6 +41,7 @@ pim_title:
     akeneo_connectivity_connection_connect_connected_apps_edit: App settings
     akeneo_connectivity_connection_connect_connected_apps_delete: App delete
     akeneo_connectivity_connection_connect_marketplace_test_app_create: Create a test app
+    akeneo_connectivity_connection_connect_marketplace_test_app_delete: Delete test app
 akeneo_connectivity.connection:
     connect:
         marketplace:
@@ -103,6 +104,14 @@ akeneo_connectivity.connection:
                             max_length: The callback url of the test app is too long. It must have 255 characters or less.
                             must_be_url: The callback url must be a valid URL.
                             not_blank: The callback url is required.
+                delete:
+                    subtitle: Apps
+                    title: Confirm deletion
+                    description: You are about to delete your test app from this PIM.
+                    warning: By confirming the deletion, you will delete the test app on the marketplace page and the related connected app.
+                    flash:
+                        success: Test app successfully deleted.
+                        error: Sorry, an error occured while deleting the test app.
         connected_apps:
             list:
                 apps:
