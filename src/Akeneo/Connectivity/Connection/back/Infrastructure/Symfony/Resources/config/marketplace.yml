@@ -96,6 +96,8 @@ services:
             - '@akeneo_connectivity.connection.app_developer_mode.feature'
             - '@oro_security.security_facade'
             - '@Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command\DeleteTestAppHandler'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetTestAppQuery'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler'
 
     Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\CreateTestAppQuery:
         arguments:
@@ -118,4 +120,3 @@ services:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetTestAppQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\DeleteTestAppQuery'
-            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler'

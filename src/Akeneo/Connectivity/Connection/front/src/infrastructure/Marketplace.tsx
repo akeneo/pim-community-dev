@@ -12,10 +12,10 @@ export const Marketplace = withDependencies(() => (
         <AkeneoThemeProvider>
             <Router>
                 <Switch>
-                    <Route path='/connect/marketplace/test-app/create'>
+                    <Route path='/connect/marketplace/test-apps/create'>
                         <TestAppCreatePage />
                     </Route>
-                    <Route path='/connect/marketplace/test-app/:testAppId/delete'>
+                    <Route path='/connect/marketplace/test-apps/:testAppId/delete'>
                         <DeleteTestAppPromptPage />
                     </Route>
                     <Route path='/connect/marketplace/profile'>

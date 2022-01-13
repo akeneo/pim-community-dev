@@ -61,10 +61,12 @@ akeneo_connectivity_connection_connect_marketplace_profile:
     path: '/connect/marketplace/profile'
 
 akeneo_connectivity_connection_connect_marketplace_test_app_create:
-    path: '/connect/marketplace/test-app/create'
+    path: '/connect/marketplace/test-apps/create'
 
 akeneo_connectivity_connection_connect_marketplace_test_app_delete:
-    path: '/connect/marketplace/test-app/{testAppId}/delete'
+    path: '/connect/marketplace/test-apps/{testAppId}/delete'
+    requirements:
+        connectionCode: '[a-zA-Z0-9_-]+'
 
 ## Apps
 akeneo_connectivity_connection_connect_apps_activate:

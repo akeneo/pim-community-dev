@@ -18,7 +18,6 @@ class DeleteTestAppHandler
     public function __construct(
         private GetTestAppQueryInterface $getTestAppQuery,
         private DeleteTestAppQueryInterface $deleteTestAppQuery,
-        private DeleteAppHandler $deleteAppHandler,
     ) {
     }
 
@@ -32,9 +31,5 @@ class DeleteTestAppHandler
         }
 
         $this->deleteTestAppQuery->execute($testAppId);
-
-        if ($testAppData['connected'] ?? false) {
-            $this->deleteAppHandler->handle(new DeleteAppCommand($testAppId));
-        }
     }
 }

@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\InternalApi;
 
+use Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler;
 use Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command\DeleteTestAppCommand;
 use Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command\DeleteTestAppHandler;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\TestApps\Persistence\GetTestAppQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,6 +27,8 @@ final class DeleteTestAppAction
         private FeatureFlag $appDevModeFeatureFlag,
         private SecurityFacade $security,
         private DeleteTestAppHandler $deleteTestAppHandler,
+        private GetTestAppQueryInterface $getTestAppQuery,
+        private DeleteAppHandler $deleteAppHandler,
     ) {
     }
 
@@ -42,10 +47,15 @@ final class DeleteTestAppAction
             throw new AccessDeniedHttpException();
         }
 
-        try {
-            $this->deleteTestAppHandler->handle(new DeleteTestAppCommand($testAppId));
-        } catch (\InvalidArgumentException $exception) {
+        $testAppData = $this->getTestAppQuery->execute($testAppId);
+        if (null === $testAppData) {
             throw new NotFoundHttpException(\sprintf('Test app with id %s was not found.', $testAppId));
+        }
+
+        $this->deleteTestAppHandler->handle(new DeleteTestAppCommand($testAppId));
+
+        if ($testAppData['connected'] ?? false) {
+            $this->deleteAppHandler->handle(new DeleteAppCommand($testAppId));
         }
 
         return new Response(null, Response::HTTP_NO_CONTENT);
