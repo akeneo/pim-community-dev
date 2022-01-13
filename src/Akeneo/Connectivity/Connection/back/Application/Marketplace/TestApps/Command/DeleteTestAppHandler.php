@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command;
 
-use Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppCommand;
-use Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\TestApps\Persistence\DeleteTestAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\TestApps\Persistence\GetTestAppQueryInterface;
 
