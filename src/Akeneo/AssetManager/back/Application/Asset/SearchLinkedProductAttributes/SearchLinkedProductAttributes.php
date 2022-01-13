@@ -50,6 +50,6 @@ class SearchLinkedProductAttributes
                 $attribute->properties()['reference_data_name'],
                 $attribute->useableAsGridFilter()
             );
-        }, $filteredProductAttributes);
+        }, array_values($filteredProductAttributes));
     }
 }
