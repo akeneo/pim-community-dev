@@ -5,7 +5,8 @@
     "main": "src/index.ts",
     "scripts": {
         "eslint": "eslint --config .eslintrc.json src/**/*.{ts,tsx}",
-        "prettier": "prettier --config .prettierrc.json src/**/*.{ts,tsx}",
+        "prettier": "prettier --check --config .prettierrc.json src/**/*.{ts,tsx}",
+        "prettier:fix": "prettier --config .prettierrc.json src/**/*.{ts,tsx}",
         "jest": "jest --config jest.config.js"
     },
     "private": true
