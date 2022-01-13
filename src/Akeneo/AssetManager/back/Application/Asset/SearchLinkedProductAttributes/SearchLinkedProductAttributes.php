@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Application\Asset\SearchLinkedProductAttributes;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetAttributeTranslations;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 
 /**
@@ -24,19 +24,32 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 class SearchLinkedProductAttributes
 {
     public function __construct(
-        private GetAttributes $getAttributes
+        private GetAttributes $getAttributes,
+        private GetAttributeTranslations $getAttributeTranslations
     ){
     }
 
     /**
-     * @return Attribute[]
+     * @return LinkedProductAttribute[]
      */
     public function searchByAssetFamilyIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
         $productAttributes = $this->getAttributes->forType('pim_catalog_asset_collection');
 
-        return array_filter($productAttributes, function($attribute) use ($assetFamilyIdentifier) {
+        $filteredProductAttributes = array_filter($productAttributes, function($attribute) use ($assetFamilyIdentifier) {
             return $attribute->properties()['reference_data_name'] === (string) $assetFamilyIdentifier;
         });
+
+        $labels = $this->getAttributeTranslations->byAttributeCodes(array_keys($filteredProductAttributes));
+
+        return array_map(function ($attribute) use ($labels) {
+            return new LinkedProductAttribute(
+                $attribute->code(),
+                $attribute->type(),
+                $labels[$attribute->code()] ?? [],
+                $attribute->properties()['reference_data_name'],
+                $attribute->useableAsGridFilter()
+            );
+        }, $filteredProductAttributes);
     }
 }

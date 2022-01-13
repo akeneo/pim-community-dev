@@ -100,6 +100,7 @@ services:
         class: Akeneo\AssetManager\Application\Asset\SearchLinkedProductAttributes\SearchLinkedProductAttributes
         arguments:
             - '@akeneo.pim.structure.query.sql_get_attributes'
+            - '@akeneo.pim.structure.query.get_attribute_translations'
 
     akeneo_assetmanager.application.asset.search_connector_asset:
         class: Akeneo\AssetManager\Application\Asset\SearchAsset\SearchConnectorAsset
