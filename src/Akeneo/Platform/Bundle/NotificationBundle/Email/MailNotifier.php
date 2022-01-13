@@ -18,7 +18,8 @@ class MailNotifier implements MailNotifierInterface
 
     public function __construct(
         protected Swift_Mailer $mailer,
-        protected string $mailerUrl) {
+        protected string       $mailerUrl
+    ) {
     }
 
     public function notify(array $users, $subject, $txtBody, $htmlBody = null, array $options = [])
@@ -35,10 +36,11 @@ class MailNotifier implements MailNotifierInterface
         }
     }
 
-    private function send($email, $subject, $txtBody, $htmlBody) {
+    private function send($email, $subject, $txtBody, $htmlBody)
+    {
         $message = $this->mailer->createMessage();
         $message->setSubject($subject)
-            ->setFrom((string) SenderAddress::fromMailerUrl($this->mailerUrl))
+            ->setFrom((string)SenderAddress::fromMailerUrl($this->mailerUrl))
             ->setTo($email)
             ->setCharset('UTF-8')
             ->setContentType('text/html')

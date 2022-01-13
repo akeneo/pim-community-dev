@@ -24,8 +24,7 @@ class MailNotifier implements Notifier
         protected LoggerInterface       $logger,
         protected TokenStorageInterface $tokenStorage,
         protected Environment           $twig,
-        protected MailNotification      $mailer,
-        protected string                $imagePath
+        protected MailNotification      $mailer
     ) {
     }
 
@@ -42,22 +41,9 @@ class MailNotifier implements Notifier
             return;
         }
 
-        // TODO:
-        //  - manage images
-        //  - need message instance
-        // Add embedded images
-//        $cidLogo = $message->embed(Swift_Image::fromPath($this->imagePath . '/email_logo.png')
-//            ->setDisposition('inline'));
-//        $cidSignature = $message->embed(Swift_Image::fromPath($this->imagePath . '/email_signature.png')
-//            ->setDisposition('inline'));
-
         $parameters = [
             'jobExecution' => $jobExecution,
             'email' => $email
-//            'images' => [
-//                'logo' => $cidLogo,
-//                'signature' => $cidSignature
-//            ]
         ];
 
         try {
@@ -66,7 +52,7 @@ class MailNotifier implements Notifier
             $this->mailer->notifyByEmails([$email], 'Job has been executed', $txtBody, $htmlBody);
         } catch (Throwable $exception) {
             $this->logger->error(
-                MailNotifier::class . ' Unable to send email due to : ' . $exception->getMessage(),
+                MailNotifier::class . ' - Unable to send email : ' . $exception->getMessage(),
                 ['Exception' => $exception]
             );
             return;
