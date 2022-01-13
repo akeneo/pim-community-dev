@@ -279,6 +279,7 @@ $rules = [
             'Ramsey\Uuid\Uuid',
             'GuzzleHttp\ClientInterface',
             'Psr\Log\LoggerInterface',
+            'Oro\Bundle\SecurityBundle\SecurityFacade',
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Marketplace'),
 ];
