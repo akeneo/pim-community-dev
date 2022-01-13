@@ -21,6 +21,35 @@ const AknTitleContainerBreadcrumbs = styled.div.attrs(() => ({className: 'AknTit
     min-height: 32px;
 `;
 
+const Header = styled.header`
+    position: sticky;
+    top: 0;
+    padding: 40px 40px 20px;
+    background: white;
+    z-index: 10;
+
+    .AknImage-display {
+        max-width: 100%;
+    }
+`;
+
+const IllustrationContainer = styled.div`
+    position: relative;
+    width: 142px;
+    height: 142px;
+    border: 1px solid #ccd1d8;
+    margin-right: 20px;
+    border-radius: 4px;
+    display: flex;
+    overflow: hidden;
+    flex-basis: 142px;
+    flex-shrink: 0;
+
+    & > * {
+        width: 100%;
+    }
+`;
+
 export const PageHeader = ({
     children: title,
     breadcrumb,
@@ -70,32 +99,3 @@ export const PageHeader = ({
         </div>
     </Header>
 );
-
-const Header = styled.header`
-    position: sticky;
-    top: 0;
-    padding: 40px 40px 20px;
-    background: white;
-    z-index: 10;
-
-    .AknImage-display {
-        max-width: 100%;
-    }
-`;
-
-const IllustrationContainer = styled.div`
-    position: relative;
-    width: 142px;
-    height: 142px;
-    border: 1px solid #ccd1d8;
-    margin-right: 20px;
-    border-radius: 4px;
-    display: flex;
-    overflow: hidden;
-    flex-basis: 142px;
-    flex-shrink: 0;
-
-    & > * {
-        width: 100%;
-    }
-`;
