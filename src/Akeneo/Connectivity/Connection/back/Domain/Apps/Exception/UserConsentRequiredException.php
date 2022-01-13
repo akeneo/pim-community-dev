@@ -20,6 +20,8 @@ class UserConsentRequiredException extends \Exception
      */
     public function __construct(string $appId, int $pimUserId, array $newAuthenticationScopes)
     {
+        parent::__construct();
+
         $this->appId = $appId;
         $this->pimUserId = $pimUserId;
         $this->newAuthenticationScopes = $newAuthenticationScopes;
