@@ -211,6 +211,7 @@ pim_common:
     search: 검색...
     no_match: 일치 항목 없음
     load_more: 추가 결과 로드 중...
+  selected: "{0}0개 선택|{1}1개 선택|]1, Inf[{{ itemsCount }}개 선택"
   status: 상태
   to: 종료
   type: 유형

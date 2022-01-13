@@ -34,6 +34,8 @@ pim_import_export:
       error: <strong>%label%</strong> 가져오기 실패
       warning: <strong>%label%</strong> 가져오기 완료 및 경고 발생
       success: <strong>%label%</strong> 가져오기 완료
+      warnings:
+        xlsx_cell_date_conversion_error: 날짜 형식의 셀 '{cellName}'을(를) 유형 {attributeType}의 특성으로 변환할 수 없습니다
   list: 작업 선택
   job_profile:
     tab:

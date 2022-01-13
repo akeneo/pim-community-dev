@@ -52,6 +52,8 @@ pim_analytics:
     nb_media_images_in_products: Numero di immagini multimediali nei prodotti
     is_demo_catalog: Catalogo demo installato
     nb_active_event_subscription: Numero di webhook attivati
+    activated_app_ids: App connesse
+    nb_activated_apps: Numero di app connesse
     data_source.tracked: Numero di connessioni a origine API tracciate
     data_source.untracked: Numero di connessioni a origine API non tracciate
     data_destination.tracked: Numero di connessioni a destinazione API tracciate
