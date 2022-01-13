@@ -20,7 +20,7 @@ final class Attribute
         private ?bool $decimalsAllowed,
         private string $backendType,
         private array $availableLocaleCodes,
-        private ?bool $useableAsGridFilter
+        private ?bool $useableAsGridFilter = null
     ) {
     }
 
