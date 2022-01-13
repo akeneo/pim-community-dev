@@ -8,6 +8,7 @@ import {CreateTestAppForm} from '@src/connect/components/TestApp/CreateTestAppFo
 import {CreateTestAppCredentials} from '@src/connect/components/TestApp/CreateTestAppCredentials';
 import {TestAppCredentials} from '@src/model/Apps/test-app-credentials';
 import userEvent from '@testing-library/user-event';
+import {act} from '@testing-library/react-hooks';
 
 beforeEach(() => {
     fetchMock.resetMocks();
@@ -19,6 +20,7 @@ type CreateTestAppFormProps = {
     onCancel: () => void;
     setCredentials: (credentials: TestAppCredentials) => void;
 };
+
 jest.mock('@src/connect/components/TestApp/CreateTestAppForm', () => ({
     ...jest.requireActual('@src/connect/components/TestApp/CreateTestAppForm'),
     CreateTestAppForm: jest.fn(({onCancel, setCredentials}: CreateTestAppFormProps) => {
@@ -39,7 +41,7 @@ jest.mock('@src/connect/components/TestApp/CreateTestAppForm', () => ({
 
 jest.mock('@src/connect/components/TestApp/CreateTestAppCredentials', () => ({
     ...jest.requireActual('@src/connect/components/TestApp/CreateTestAppCredentials'),
-    CreateTestAppCredentials: jest.fn(() => null),
+    CreateTestAppCredentials: jest.fn(({onClose, credentials, setCredentials}) => null),
 }));
 
 test('it renders the form without credentials and display them when form is submitted', () => {
@@ -52,17 +54,9 @@ test('it renders the form without credentials and display them when form is subm
     expect(CreateTestAppForm).toHaveBeenCalled();
     expect(CreateTestAppCredentials).not.toHaveBeenCalled();
 
-    userEvent.click(screen.getByTestId('submit-form'));
+    act(() => {
+        userEvent.click(screen.getByTestId('submit-form'));
+    });
 
-    // expect(CreateTestAppCredentials).toHaveBeenCalledWith(
-    //     {
-    //         credentials: {
-    //           clientId: 'clientId',
-    //           clientSecret: 'clientSecret',
-    //         },
-    //         onClose: jest.fn(),
-    //         setCredentials: jest.fn(),
-    //     },
-    //     {}
-    // );
+    expect(CreateTestAppCredentials).toHaveBeenCalled();
 });

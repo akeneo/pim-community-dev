@@ -14,7 +14,10 @@ beforeEach(() => {
 test('it displays the credentials', () => {
     const onClose = jest.fn();
     const setCredentials = jest.fn();
-    const credentials = {clientId: '', clientSecret: ''};
+    const credentials = {
+        clientId: '890eb80b-9632-41c1-a4a5-4b600e35f4b5',
+        clientSecret: 'NzgzODFhYzM1MWQ0MzE4NjU1ZWZjNDMxYTkxOGIwZTM5NjY3NGRjYjM4ZmUwODJjODAwY2Y5ODVlNjMxZGMwMQ',
+    };
 
     renderWithProviders(
         <CreateTestAppCredentials credentials={credentials} onClose={onClose} setCredentials={setCredentials} />
@@ -23,4 +26,8 @@ test('it displays the credentials', () => {
     expect(
         screen.getByText('akeneo_connectivity.connection.connect.marketplace.test_apps.modal.credentials.title')
     ).toBeInTheDocument();
+
+    expect(screen.getByText(credentials.clientId)).toBeInTheDocument();
+
+    expect(screen.getByText(credentials.clientSecret)).toBeInTheDocument();
 });

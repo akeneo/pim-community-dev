@@ -1,6 +1,7 @@
 import {useCreateTestApp} from '@src/connect/hooks/use-create-test-app';
 import {renderHook} from '@testing-library/react-hooks';
 import fetchMock from 'jest-fetch-mock';
+import {fetchMockResponseOnce, mockFetchResponses, MockFetchResponses} from '../../../test-utils';
 
 beforeEach(() => {
     fetchMock.resetMocks();
@@ -22,6 +23,48 @@ test('it creates the test app and returns credentials', async done => {
             ['X-Requested-With', 'XMLHttpRequest'],
         ],
         method: 'POST',
+    });
+
+    done();
+});
+
+test('it returns errors when fields are not valid', async done => {
+    const expectedTestApp = {
+        errors: [
+            {propertyPath: 'name', message: 'not_blank'},
+            {propertyPath: 'activateUrl', message: 'valid_url'},
+            {propertyPath: 'callbackUrl', message: 'not_blank'},
+        ],
+    };
+
+    mockFetchResponses({
+        akeneo_connectivity_connection_marketplace_rest_test_apps_create: {
+            json: expectedTestApp,
+            status: 422,
+        },
+    });
+
+    const {result} = renderHook(() => useCreateTestApp());
+
+    const response = await result.current({
+        name: '',
+        activateUrl: 'foo',
+        callbackUrl: '',
+    });
+
+    expect(fetchMock).toBeCalledWith('akeneo_connectivity_connection_marketplace_rest_test_apps_create', {
+        body: '{"name":"","activateUrl":"foo","callbackUrl":""}',
+        headers: [
+            ['Content-type', 'application/json'],
+            ['X-Requested-With', 'XMLHttpRequest'],
+        ],
+        method: 'POST',
+    });
+
+    expect(response.status).toBe(422);
+
+    response.json().then(data => {
+        expect(data).toStrictEqual(expectedTestApp);
     });
 
     done();
