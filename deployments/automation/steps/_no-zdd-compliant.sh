@@ -13,8 +13,8 @@ if [ ${STEP} == "PRE_APPLY" ]; then
         kubectl scale -n ${PFID} deploy/pim-daemon-job-consumer-process --replicas=0 || true
         kubectl scale -n ${PFID} deploy/pim-daemon-default --replicas=0 || true
         kubectl scale -n ${PFID} deploy/pim-daemon-all-but-linking-assets-to-products --replicas=0 || true
+        kubectl scale -n ${PFID} deploy/pim-bigcommerce-connector-daemon --replicas=0 || true
     else
         echo "[INFO] = ZDD COMPLIANT RELEASE Rolling update will start  ${PFID}"
     fi
 fi
-

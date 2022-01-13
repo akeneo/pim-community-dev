@@ -9,6 +9,7 @@ pim_table_configuration:
       column_code_must_be_filled: 열 코드를 입력해야 합니다
       option_code_must_be_filled: 옵션 코드를 입력해야 합니다
       invalid_code: 열 코드는 문자, 숫자 및 밑줄만 포함할 수 있습니다
+      not_available_code: 이 열 코드는 사용할 수 없습니다
       invalid_option_code: 옵션 코드는 문자, 숫자 및 밑줄만 포함할 수 있습니다
       too_long_code: "열 코드가 너무 깁니다. 100자 이하여야 합니다"
       too_long_label: "열 레이블이 너무 깁니다. 250자 이하여야 합니다"

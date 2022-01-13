@@ -17,18 +17,13 @@ use Doctrine\DBAL\Connection;
  */
 class SqlFindValueKeysToIndexForAllChannelsAndLocales implements FindValueKeysToIndexForAllChannelsAndLocalesInterface
 {
-    private Connection $sqlConnection;
-
-    private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels;
-
+    /** @var array<string, array> */
     private array $cachedResult = [];
 
     public function __construct(
-        Connection $sqlConnection,
-        FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels
+        private Connection $sqlConnection,
+        private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels
     ) {
-        $this->sqlConnection = $sqlConnection;
-        $this->findActivatedLocalesPerChannels = $findActivatedLocalesPerChannels;
     }
 
     public function find(AssetFamilyIdentifier $assetFamilyIdentifier): array

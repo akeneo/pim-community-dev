@@ -25,10 +25,10 @@ import {deleteAttribute} from 'akeneoassetmanager/application/action/attribute/d
 import AttributeIdentifier, {attributeidentifiersAreEqual} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
 import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {getAttributeView} from 'akeneoassetmanager/application/configuration/attribute';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
+import {useAttributeView} from '../../hooks/attribute/useAttributeView';
 
 const DeleteButton = styled.span`
   flex: 1;
@@ -108,7 +108,7 @@ const AdditionalProperty = ({
     };
   };
 }): JSX.Element => {
-  const AttributeView = getAttributeView(attribute);
+  const AttributeView = useAttributeView(attribute);
 
   return (
     <AttributeView

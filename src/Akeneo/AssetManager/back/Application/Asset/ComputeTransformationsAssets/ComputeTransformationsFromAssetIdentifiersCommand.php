@@ -17,14 +17,10 @@ use Webmozart\Assert\Assert;
 
 class ComputeTransformationsFromAssetIdentifiersCommand
 {
-    /** @var string[] */
-    private array $assetIdentifiers;
-
-    public function __construct(array $assetIdentifiers)
+    /** @param $assetIdentifiers string[] */
+    public function __construct(private array $assetIdentifiers)
     {
         Assert::allStringNotEmpty($assetIdentifiers);
-
-        $this->assetIdentifiers = $assetIdentifiers;
     }
 
     public function getAssetIdentifiers(): array

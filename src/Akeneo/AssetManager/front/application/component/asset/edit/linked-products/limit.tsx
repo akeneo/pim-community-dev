@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {UsingIllustration, Button, getFontSize, getColor} from 'akeneo-design-system';
-import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
+import {ProductAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
 import {updateDatagridStateWithFilterOnAssetCode} from 'akeneoassetmanager/tools/datagridstate';
 import {useRoute, useTranslate} from '@akeneo-pim-community/shared';
 
@@ -26,7 +26,7 @@ type LimitProps = {
   assetCode: string;
   productCount: number;
   totalCount: number;
-  attribute: NormalizedAttribute | null;
+  attribute: ProductAttribute | null;
 };
 
 const Limit = ({assetCode, productCount, totalCount, attribute}: LimitProps) => {

@@ -89,8 +89,4 @@ job_execution:
     updated_entities: 更新的产品/产品模型
     executed_rules: 成功执行的规则
     errored_rules: 跳过的规则 (无效)
-pim_datagrid:
-  cells:
-    type:
-      mass_edit_rule: 规则设置 
-      execute_rules: 执行规则
+

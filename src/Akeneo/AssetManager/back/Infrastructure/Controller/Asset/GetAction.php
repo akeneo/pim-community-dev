@@ -31,20 +31,11 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class GetAction
 {
-    private FindAssetDetailsInterface $findAssetDetailsQuery;
-
-    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
-
-    private TokenStorageInterface $tokenStorage;
-
     public function __construct(
-        FindAssetDetailsInterface $findAssetDetailsQuery,
-        CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        TokenStorageInterface $tokenStorage
+        private FindAssetDetailsInterface $findAssetDetailsQuery,
+        private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
+        private TokenStorageInterface $tokenStorage,
     ) {
-        $this->findAssetDetailsQuery = $findAssetDetailsQuery;
-        $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
-        $this->tokenStorage = $tokenStorage;
     }
 
     public function __invoke(string $assetFamilyIdentifier, string $assetCode): JsonResponse
@@ -89,7 +80,7 @@ class GetAction
     ): AssetDetails {
         $result = $this->findAssetDetailsQuery->find($assetFamilyIdentifier, $assetCode);
 
-        if (null === $result) {
+        if (!$result instanceof AssetDetails) {
             throw new NotFoundHttpException();
         }
 

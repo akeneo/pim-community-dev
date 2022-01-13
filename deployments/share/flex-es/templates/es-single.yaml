@@ -70,11 +70,11 @@ spec:
         - name: PATH_DATA
           value: "{{ .Values.common.dataDir }}"
         - name: PATH_LOGS
-          value: "/data/var/log/elasticsearch/"
+          value: "{{ .Values.common.dataDir }}/../logs"
         - name: path.data
           value: "{{ .Values.common.dataDir }}"
         - name: path.logs
-          value: "/data/var/log/elasticsearch/"
+          value: "{{ .Values.common.dataDir }}/../logs"
         - name: node.name
           valueFrom:
             fieldRef:
@@ -110,7 +110,7 @@ spec:
           failureThreshold: 6
         volumeMounts:
         - name: data
-          mountPath: "/data"
+          mountPath: {{ .Values.common.dataDir }}
       volumes:
         - name: data
           persistentVolumeClaim:

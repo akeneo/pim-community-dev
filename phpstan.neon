@@ -5,7 +5,6 @@ parameters:
     reportUnmatchedIgnoredErrors: false
     excludePaths:
         - %currentWorkingDirectory%/src/Akeneo/Pim/Automation/DataQualityInsights/tests
-        - %currentWorkingDirectory%/src/Akeneo/Platform/Bundle/TailoredExportBundle
         - %currentWorkingDirectory%/vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/tests
     symfony:
         container_xml_path: %rootDir%/../../../var/cache/dev/KernelDevDebugContainer.xml

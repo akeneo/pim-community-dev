@@ -350,10 +350,6 @@ batch_jobs:
   xlsx_reference_entity_record_import:
     label: Referenz Datensatz-Import in XLSX
     import.label: Datensatzimport
-pim_datagrid:
-  cells:
-    type:
-      reference_entity_mass_delete_records: Massenlöschung von Datensätzen ausführen
 job_execution:
   summary:
     records: Datensätze

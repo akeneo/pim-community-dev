@@ -9,8 +9,8 @@ import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-
 import assetAttributeFetcher from 'akeneoassetmanager/infrastructure/fetcher/attribute';
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {getValueConfig} from 'akeneoassetmanager/application/configuration/value';
 import {ConfigProvider} from 'akeneoassetmanager/application/hooks/useConfig';
+import {getConfig} from 'pimui/js/config-registry';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
@@ -35,7 +35,13 @@ class AssetFamilyListController extends BaseController {
     ReactDOM.render(
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
-          <ConfigProvider config={{value: getValueConfig()}}>
+          <ConfigProvider
+            config={{
+              value: getConfig('akeneoassetmanager/application/configuration/value') ?? {},
+              sidebar: getConfig('akeneoassetmanager/application/configuration/sidebar') ?? {},
+              attribute: getConfig('akeneoassetmanager/application/configuration/attribute') ?? {},
+            }}
+          >
             <Library
               dataProvider={dataProvider}
               initialContext={{locale: userContext.get('catalogLocale'), channel: userContext.get('catalogScope')}}

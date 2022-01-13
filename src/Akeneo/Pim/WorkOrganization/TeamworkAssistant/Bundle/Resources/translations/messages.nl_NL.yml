@@ -41,8 +41,3 @@ job_execution:
 pim_analytics:
   info_type:
     nb_projects: Aantal projecten
-pim_datagrid:
-  cells:
-    type:
-      project_calculation: Projectberekening
-      refresh_project_completeness_calculation: Berekening van volledigheid project vernieuwen

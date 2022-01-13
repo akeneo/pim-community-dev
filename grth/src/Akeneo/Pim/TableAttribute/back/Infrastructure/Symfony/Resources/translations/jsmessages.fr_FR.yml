@@ -155,6 +155,10 @@ pim_table_attribute:
       please_try_again: Essayez de nouveau
       first_column_type_helper: La première colonne d'un tableau est toujours de type "Colonne à choix unique"
       discard_changes: Vous perdrez les modifications effectuées sur les options si vous quittez la page.
+      completeness: Complétude
+      required_for_completeness: Requis pour la complétude
+      completeness_helper_text: "Pour découvrir comment fonctionne la complétude d'un attribut tableau,"
+      completeness_helper_link: consultez notre centre d'aide.
     product:
       items_per_page: Éléments par page
       current_items: "{{ minItem }}-{{ maxItem }} sur {{ itemCount }}"
@@ -163,6 +167,8 @@ pim_table_attribute:
       no_rows_title: "Votre tableau {{ attributeLabel }} est vide."
       no_rows_subtitle: Ajouter des lignes pour définir de nouvelles propriétés
       no_rows_subtitle_on_readonly: Pour pouvoir modifier cet attribut, allez dans la page de configuration de l'attribut ou contactez votre administrateur PIM.
+      no_results: Il n'y a aucun résultat
+      no_options: Il n'y a pas d'option
       no_add_options_unallowed: Contactez votre administrateur PIM pour gérer les options de l'attribut "{{ attributeLabel }}"
       actions:
         delete_row: Supprimer cette ligne
@@ -170,6 +176,8 @@ pim_table_attribute:
         move_first: Déplacer en première position
         move_last: Déplacer en dernière position
       order: Ordre
+      save_options_error: Une erreur est survenue lors de la sauvegarde des options
+      save_options_success: Options mise à jour avec succès
   properties:
     data_type:
       text: Texte
@@ -178,6 +186,7 @@ pim_table_attribute:
       select: Colonne à choix unique
   validations:
     column_code_must_be_filled: Le code doit être rempli
+    not_available_code: Ce code de colonne n'est pas disponible
     column_data_type_must_be_filled: Le type de données doit être renseigné
     invalid_column_code: Le code de la colonne ne peut contenir que des lettres, des chiffres et des tirets bas
     invalid_code: Le code ne peut contenir que des lettres, des chiffres et des tirets bas
@@ -227,3 +236,11 @@ batch_jobs:
   xlsx_table_attribute_options_export.label: Export des options des attributs tableau en XLSX
   csv_table_attribute_options_import.label: Import des options des attributs tableau en CSV
   xlsx_table_attribute_options_import.label: Import des options des attributs tableau en XLSX
+  csv_product_table_values_export.label: Export des valeurs des tableaux de produits en CSV
+  xlsx_product_table_values_export.label: Export des valeurs des tableaux de produits en XLSX
+  csv_product_model_table_values_export.label: Export des valeurs des tableaux de modèles de produits en CSV
+  xlsx_product_model_table_values_export.label: Export des valeurs des tableaux de modèles de produits en XLSX
+  csv_product_table_values_import.label: Import des valeurs des tableaux de produits en CSV
+  xlsx_product_table_values_import.label: Import des valeurs des tableaux de produits en XLSX
+  csv_product_model_table_values_import.label: Import des valeurs des tableaux de modèles de produits en CSV
+  xlsx_product_model_table_values_import.label: Import des valeurs des tableaux de modèles de produits en XLSX

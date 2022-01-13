@@ -421,7 +421,6 @@ flash:
     executed: 규칙 실행이 시작되었습니다. 완료되면 알림이 전송됩니다.
     enabled: 규칙이 활성화되었습니다.
     disabled: 규칙이 비활성화되었습니다.
-pim_dashboard.widget.last_operations.job_type.mass_edit_rule: 규칙 설정
 batch_jobs:
   add_attribute_value:
     execute_rules.label: 규칙 실행
@@ -464,12 +463,7 @@ pim_title:
   pimee_catalog_rule_rule_index: 규칙
   pimee_catalog_rule_edit: 규칙 수정
   pimee_catalog_rule_new: 규칙
-pim_import_export:
-  widget:
-    last_operations:
-      job_type:
-        execute_rules: 규칙 실행
 akeneo_job_process_tracker:
-  type:
+  type_filter:
     mass_edit_rule: 규칙 대량 편집
     execute_rules: 규칙 실행

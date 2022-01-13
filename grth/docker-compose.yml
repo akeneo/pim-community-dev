@@ -104,7 +104,7 @@ services:
       - 'pim'
 
   elasticsearch:
-    image: 'docker.elastic.co/elasticsearch/elasticsearch:7.14.1'
+    image: 'docker.elastic.co/elasticsearch/elasticsearch:7.16.2'
     environment:
       ES_JAVA_OPTS: '${ES_JAVA_OPTS:--Xms512m -Xmx512m}'
       discovery.type: 'single-node'

@@ -559,12 +559,6 @@ pim_catalog_volume:
     average_max_attributes_per_asset_family: Attributes per asset family
 
 pim_import_export:
-  widget:
-    last_operations:
-      job_type:
-        asset_manager_compute_transformations: "Compute asset transformations"
-        asset_manager_link_assets_to_products: "Link assets to products"
-        asset_manager_execute_naming_convention: Execute Asset Family naming convention
   form:
     job_instance:
       tab:
@@ -574,19 +568,12 @@ pim_import_export:
             help: Export prefix and suffix of the media link asset attributes
 
 akeneo_job_process_tracker:
-  type:
+  type_filter:
     asset_manager_execute_naming_convention: Execute Asset Family naming convention
     asset_manager_link_assets_to_products: Link assets to products
     asset_manager_compute_transformations: Compute asset transformations
     asset_manager_mass_delete_assets: Mass delete assets
     asset_manager_mass_edit_assets: Mass edit assets
-
-pim_datagrid:
-    cells:
-        type:
-            asset_manager_execute_naming_convention: Execute Asset Family naming convention
-            asset_manager_mass_delete_assets: Execute Asset mass delete
-            asset_manager_mass_edit_assets: Execute Asset mass edit
 
 batch_jobs:
     default_steps:

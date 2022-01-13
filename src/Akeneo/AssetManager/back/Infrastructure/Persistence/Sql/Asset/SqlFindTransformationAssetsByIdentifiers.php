@@ -22,12 +22,8 @@ use Doctrine\DBAL\Connection;
 
 class SqlFindTransformationAssetsByIdentifiers implements FindTransformationAssetsByIdentifiersInterface
 {
-    private Connection $sqlConnection;
-
-    public function __construct(
-        Connection $connection
-    ) {
-        $this->sqlConnection = $connection;
+    public function __construct(private Connection $sqlConnection)
+    {
     }
 
     /**

@@ -69,3 +69,19 @@ category.permissions:
   no_access_to_products: どのツリーにおいても商品データへのアクセス権限がありません。管理者に問い合わせてください。
   apply_on_children.label: 下位への変更を適用
   apply_on_children.help: 下位の既存の権限は維持されます
+pim_permissions:
+  widget:
+    entity:
+      attribute_group:
+        label: 属性グループ
+        help: アプリがすべての商品データを変更できるようにする場合は、編集レベルですべてのオプションを選択します。それ以外の場合は、アプリがレベルに応じて表示または変更できる属性グループのみを選択します。
+      category:
+        label: カテゴリツリー
+        help: PIM提案を使用せずに商品を変更できるようにする場合は、所有レベルを選択します。それ以外の場合は、編集レベルを選択します。
+      locale:
+        label: ロケール
+        help: アプリがすべての言語で商品を編集できるようにする場合は、編集レベルですべてのオプションを選択します。それ以外の場合は、アプリがレベルに応じて表示または変更できる言語のみを選択します。
+      not_granted_warning: このセクションは {{ permission }} を持つユーザーのみアクセス可能です。管理者にお問い合わせください。適切な権限があれば、アプリの設定に戻って編集することができます。
+pimee_enrich.acl.category.edit_permissions: カテゴリ権限を管理
+pimee_enrich.acl.attribute_group.edit_permissions: 属性グループの権限を管理
+pimee_enrich.acl.locale.edit_permissions: ロケール権限を管理

@@ -24,11 +24,8 @@ use Symfony\Component\Validator\ConstraintViolationList;
  */
 class ConstraintViolationListNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    private NormalizerInterface $normalizer;
-
-    public function __construct(NormalizerInterface $normalizer)
+    public function __construct(private NormalizerInterface $normalizer)
     {
-        $this->normalizer = $normalizer;
     }
 
     public function hasCacheableSupportsMethod(): bool
@@ -58,7 +55,7 @@ class ConstraintViolationListNormalizer implements NormalizerInterface, Cacheabl
     {
         try {
             return $this->normalizer->normalize($value);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return null;
         }
     }

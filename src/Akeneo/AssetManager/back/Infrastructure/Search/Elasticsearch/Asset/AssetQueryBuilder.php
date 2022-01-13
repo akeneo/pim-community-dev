@@ -25,21 +25,12 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
 {
     private const ATTRIBUTE_FILTER_FIELD = 'values.';
 
-    private FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale;
-    private GetValueKeyForAttributeChannelAndLocaleInterface $getValueKeyForAttributeChannelAndLocale;
-    private AttributeRepositoryInterface $attributeRepository;
-    private FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes;
-
     public function __construct(
-        FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale,
-        GetValueKeyForAttributeChannelAndLocaleInterface $getValueKeyForAttributeChannelAndLocale,
-        AttributeRepositoryInterface $attributeRepository,
-        FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes
+        private FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocale,
+        private GetValueKeyForAttributeChannelAndLocaleInterface $getValueKeyForAttributeChannelAndLocale,
+        private AttributeRepositoryInterface $attributeRepository,
+        private FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes,
     ) {
-        $this->findRequiredValueKeyCollectionForChannelAndLocale = $findRequiredValueKeyCollectionForChannelAndLocale;
-        $this->getValueKeyForAttributeChannelAndLocale = $getValueKeyForAttributeChannelAndLocale;
-        $this->attributeRepository = $attributeRepository;
-        $this->findIdentifiersByAssetFamilyAndCodes = $findIdentifiersByAssetFamilyAndCodes;
     }
 
     public function buildFromQuery(AssetQuery $assetQuery, $source): array
@@ -235,8 +226,8 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
 
     private function getCompleteFilterQuery(AssetQuery $assetQuery, $assetFamilyCode, $completeFilter, $query)
     {
-        $channel = isset($completeFilter['context']['channel']) ? $completeFilter['context']['channel'] : $assetQuery->getChannel();
-        $locales = isset($completeFilter['context']['locales']) ? $completeFilter['context']['locales'] : [$assetQuery->getLocale()];
+        $channel = $completeFilter['context']['channel'] ?? $assetQuery->getChannel();
+        $locales = $completeFilter['context']['locales'] ?? [$assetQuery->getLocale()];
 
         $requiredValueKeys = $this->getRequiredValueKeys(
             $assetFamilyCode,

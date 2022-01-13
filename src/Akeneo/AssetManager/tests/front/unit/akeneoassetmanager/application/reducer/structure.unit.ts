@@ -1,7 +1,7 @@
 import reducer, {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 import {getLocalesFromChannel} from 'akeneoassetmanager/application/reducer/structure';
 import Channel from 'akeneoassetmanager/domain/model/channel';
-import {getLocaleFromChannel} from '../../../../../../front/application/reducer/structure';
+import {getLocaleFromChannel} from 'akeneoassetmanager/application/reducer/structure';
 
 describe('akeneo > asset family > application > reducer --- structure[', () => {
   test('I ignore other commands', () => {

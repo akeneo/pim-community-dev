@@ -16,6 +16,7 @@ coupling-back: #Doc: launch all coupling detector tests
 	PIM_CONTEXT=permission $(MAKE) permission-coupling-back
 	PIM_CONTEXT=communication-channel $(MAKE) communication-channel-coupling-back
 	PIM_CONTEXT=tailored-export $(MAKE) coupling-back
+	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=upgrades/.php_cd.php upgrades/schema
 
 ### Static tests
 static-back: check-pullup check-sf-services #Doc: launch PHP static analyzer & check Sf services
@@ -28,7 +29,7 @@ check-pullup: #Doc: check pullup
 
 .PHONY: check-sf-services
 check-sf-services: #Doc: check Sf services
-	${PHP_RUN} vendor/akeneo/pim-community-dev/bin/check-services-instantiability
+	${PHP_RUN} bin/console lint:container
 
 ### Lint tests
 .PHONY: lint-back

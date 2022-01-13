@@ -3,18 +3,15 @@
 const AssetFamilyBuilder = require('../../../../common/builder/asset-family.js');
 
 import fetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
-import * as fetch from 'akeneoassetmanager/tools/fetch';
-
-jest.mock('pim/router', () => {});
-jest.mock('pim/security-context', () => {}, {virtual: true});
-jest.mock('routing');
 
 describe('akeneoassetmanager/infrastructure/fetcher/asset-family', () => {
   it('It search for asset families', async () => {
-    // @ts-ignore
-    fetch.getJSON = jest.fn().mockImplementationOnce(() =>
+    global.fetch = jest.fn().mockImplementationOnce(() =>
       Promise.resolve({
-        items: [],
+        json: () =>
+          Promise.resolve({
+            items: [],
+          }),
       })
     );
 
@@ -42,7 +39,11 @@ describe('akeneoassetmanager/infrastructure/fetcher/asset-family', () => {
       .build();
 
     // @ts-ignore
-    fetch.getJSON = jest.fn().mockImplementationOnce(() => Promise.resolve(assetFamily));
+    global.fetch = jest.fn().mockImplementationOnce(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(assetFamily),
+      })
+    );
 
     const response = await fetcher.fetch('sofa');
 

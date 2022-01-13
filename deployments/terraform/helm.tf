@@ -233,9 +233,9 @@ resource "local_file" "helm_pim_config" {
       }
 
       mysql = {
-        disk_name          = google_compute_disk.mysql-disk.name
+        disk_name          = google_compute_disk.mysql-disk.id
         disk_size          = google_compute_disk.mysql-disk.size
-        disk_storage_class = google_compute_disk.mysql-disk.type == "pd-ssd" ? "ssd-retain" : "standard-retain"
+        disk_storage_class = google_compute_disk.mysql-disk.type == "pd-ssd" ? "ssd-retain-csi" : "standard-retain-csi"
         innodb_buffer_pool_size = format(
           "%d%s", ceil(
             trimsuffix(local.helm-default-values.mysql.mysql.innodbBufferPoolSize, local.mysql-memory-unit) +

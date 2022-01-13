@@ -350,10 +350,6 @@ batch_jobs:
   xlsx_reference_entity_record_import:
     label: Import rekordów obiektów referencyjnych w formacie XLSX
     import.label: Import rekordów
-pim_datagrid:
-  cells:
-    type:
-      reference_entity_mass_delete_records: Wykonaj masowe usuwanie rekordów
 job_execution:
   summary:
     records: Wyniki

@@ -39,30 +39,15 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class SqlAssetRepository implements AssetRepositoryInterface
 {
-    private Connection $sqlConnection;
-    private AssetHydratorInterface $assetHydrator;
-    private FindValueKeyCollectionInterface $findValueKeyCollection;
-    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
-    private EventDispatcherInterface $eventDispatcher;
-    private FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes;
-    private CountAssetsInterface $countAssets;
-
     public function __construct(
-        Connection $sqlConnection,
-        AssetHydratorInterface $assetHydrator,
-        FindValueKeyCollectionInterface $findValueKeyCollection,
-        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
-        EventDispatcherInterface $eventDispatcher,
-        FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes,
-        CountAssetsInterface $countAssets
+        private Connection $sqlConnection,
+        private AssetHydratorInterface $assetHydrator,
+        private FindValueKeyCollectionInterface $findValueKeyCollection,
+        private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
+        private EventDispatcherInterface $eventDispatcher,
+        private FindIdentifiersByAssetFamilyAndCodesInterface $findIdentifiersByAssetFamilyAndCodes,
+        private CountAssetsInterface $countAssets,
     ) {
-        $this->sqlConnection = $sqlConnection;
-        $this->assetHydrator = $assetHydrator;
-        $this->findValueKeyCollection = $findValueKeyCollection;
-        $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->findIdentifiersByAssetFamilyAndCodes = $findIdentifiersByAssetFamilyAndCodes;
-        $this->countAssets = $countAssets;
     }
 
     public function count(): int
