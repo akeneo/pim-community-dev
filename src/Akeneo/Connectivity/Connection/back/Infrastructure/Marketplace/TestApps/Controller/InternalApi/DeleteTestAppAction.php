@@ -45,7 +45,7 @@ final class DeleteTestAppAction
         try {
             $this->deleteTestAppHandler->handle(new DeleteTestAppCommand($testAppId));
         } catch (\InvalidArgumentException $exception) {
-            throw new NotFoundHttpException(sprintf('Test app with id %s was not found.', $testAppId));
+            throw new NotFoundHttpException(\sprintf('Test app with id %s was not found.', $testAppId));
         }
 
         return new Response(null, Response::HTTP_NO_CONTENT);

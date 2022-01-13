@@ -258,6 +258,9 @@ $rules = [
             'Akeneo\Connectivity\Connection\Application\Marketplace',
             'Akeneo\Connectivity\Connection\Application\RandomCodeGeneratorInterface',
 
+            'Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppCommand',
+            'Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler',
+
             'Akeneo\Platform\VersionProviderInterface',
             'Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl',
         ]
@@ -279,6 +282,7 @@ $rules = [
             'Ramsey\Uuid\Uuid',
             'GuzzleHttp\ClientInterface',
             'Psr\Log\LoggerInterface',
+            'Oro\Bundle\SecurityBundle\SecurityFacade',
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Marketplace'),
 ];

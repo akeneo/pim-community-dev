@@ -28,7 +28,7 @@ class DeleteTestAppHandler
 
         $testAppData = $this->getTestAppQuery->execute($testAppId);
         if (null === $testAppData) {
-            throw new \InvalidArgumentException(sprintf('Test app with %s client_id not found.', $testAppId));
+            throw new \InvalidArgumentException(\sprintf('Test app with %s client_id not found.', $testAppId));
         }
 
         $this->deleteTestAppQuery->execute($testAppId);
