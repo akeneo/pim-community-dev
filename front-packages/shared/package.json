@@ -7,7 +7,7 @@
     "lib:build": "tsc -p ./tsconfig.json",
     "test:unit:run": "jest --no-cache --config ./jest.config.js --maxWorkers=3",
     "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{ts,tsx}\"",
-    "lint": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\""
+    "lint:check": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\""
   },
   "dependencies": {
     "akeneo-design-system": "*",

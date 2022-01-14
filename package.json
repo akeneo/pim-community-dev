@@ -10,7 +10,7 @@
     "packages:build": "yarn workspaces foreach --verbose --parallel run build",
     "requirements": "node frontend/build/check-requirements.js",
     "update-extensions": "node frontend/build/update-extensions.js",
-    "lint": "yarn workspaces foreach --verbose run lint && eslint src/**/*.js --config .eslintrc --ignore-path .eslintignore --quiet && yarn prettier:check",
+    "lint:check": "yarn workspaces foreach --verbose run lint && eslint src/**/*.js --config .eslintrc --ignore-path .eslintignore --quiet && yarn prettier",
     "lint:fix": "yarn workspaces foreach --verbose run lint:fix && eslint 'src/**/*.js' --config .eslintrc --ignore-path .eslintignore --quiet --fix",
     "prettier": "yarn workspaces foreach --verbose run prettier && prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{js,ts,tsx}\"",
     "prettier:fix": "yarn workspaces foreach --verbose --parallel run prettier && prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{js,ts,tsx}\"",
