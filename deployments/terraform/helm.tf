@@ -54,6 +54,8 @@ data "template_file" "helm_pim_config" {
     bigcommerce_connector_subscription                       = local.type != "tria" ?google_pubsub_subscription.connector_bigcommerce[0].name : "fakeValue"
     bigcommerce_connector_akeneo_connect_bot_password        = local.type != "tria" ?data.google_secret_manager_secret_version.bigcommerce_connector_akeneo_connect_bot_password[0].secret_data : "fakeValue"
     bigcommerce_connector_akeneo_connect_bot_client_secret   = local.type != "tria" ?data.google_secret_manager_secret_version.bigcommerce_connector_akeneo_connect_bot_client_secret[0].secret_data : "fakeValue"
+    product_reference_code                                   = var.product_reference_code
+    product_reference_type                                   = var.product_reference_type
   }
 }
 
