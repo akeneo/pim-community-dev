@@ -11,14 +11,18 @@
   },
   "dependencies": {
     "akeneo-design-system": "*",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "react-is": "^17.0.2",
     "styled-components": "^5.1.1"
   },
   "devDependencies": {
+    "@testing-library/dom": "^8.11.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "@types/jest": "^26.0.22",
-    "@types/styled-components": "5.1.1",
+    "@types/styled-components": "^5.1.1",
     "jest": "^26.0.22"
   },
   "private": true
