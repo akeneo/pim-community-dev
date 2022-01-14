@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSendApiEventRequestLog;
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiRequestLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiRequestLoggerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SendApiEventRequestLogger;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClientInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestFailedEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceededEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
@@ -25,12 +25,12 @@ use Symfony\Component\Serializer\Encoder\EncoderInterface;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GuzzleWebhookClient implements WebhookClient
+class GuzzleWebhookClient implements WebhookClientInterface
 {
     private ClientInterface $client;
     private EncoderInterface $encoder;
     private SendApiEventRequestLogger $sendApiEventRequestLogger;
-    private EventsApiRequestLogger $debugLogger;
+    private EventsApiRequestLoggerInterface $debugLogger;
     private EventDispatcherInterface $eventDispatcher;
 
     /** @var array{concurrency: ?int, timeout: ?float} */
@@ -43,7 +43,7 @@ class GuzzleWebhookClient implements WebhookClient
         ClientInterface $client,
         EncoderInterface $encoder,
         SendApiEventRequestLogger $sendApiEventRequestLogger,
-        EventsApiRequestLogger $debugLogger,
+        EventsApiRequestLoggerInterface $debugLogger,
         EventDispatcherInterface $eventDispatcher,
         array $config
     ) {

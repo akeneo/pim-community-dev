@@ -64,7 +64,7 @@
         "doctrine/common": "^3.2.0",
         "doctrine/data-fixtures": "^1.4.2",
         "doctrine/dbal": "^2.13.4",
-        "doctrine/doctrine-bundle": "^2.4.3",
+        "doctrine/doctrine-bundle": "^2.5.5",
         "doctrine/doctrine-fixtures-bundle": "^3.4.1",
         "doctrine/doctrine-migrations-bundle": "^3.2.0",
         "doctrine/event-manager": "^1.1.1",

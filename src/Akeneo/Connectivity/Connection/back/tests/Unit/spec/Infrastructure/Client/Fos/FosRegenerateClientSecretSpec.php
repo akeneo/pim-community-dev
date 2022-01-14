@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Client\Fos;
 
-use Akeneo\Connectivity\Connection\Application\Settings\Service\RegenerateClientSecret;
+use Akeneo\Connectivity\Connection\Application\Settings\Service\RegenerateClientSecretInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ClientId;
 use Akeneo\Connectivity\Connection\Infrastructure\Client\Fos\FosRegenerateClientSecret;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
@@ -29,7 +29,7 @@ class FosRegenerateClientSecretSpec extends ObjectBehavior
     public function it_is_initializable()
     {
         $this->shouldBeAnInstanceOf(FosRegenerateClientSecret::class);
-        $this->shouldImplement(RegenerateClientSecret::class);
+        $this->shouldImplement(RegenerateClientSecretInterface::class);
     }
 
     public function it_regenerates_a_client_secret(

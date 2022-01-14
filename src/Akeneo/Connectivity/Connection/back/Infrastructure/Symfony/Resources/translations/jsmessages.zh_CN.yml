@@ -11,16 +11,19 @@ pim_menu:
     connection_audit: 连接仪表板
     connection_settings: 连接
     connection_settings_edit: 连接设置
+    connection_monitoring: 错误监测
     connection_webhook_edit: 事件订阅
     connection_webhook_event_logs: 事件日志
     data_flows: 数据流
     connect_connection_settings: 连接设置
     marketplace: 商城
+    connected_apps: 应用
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: 商城
   akeneo_connectivity_connection_connect_marketplace_profile: 商城
   akeneo_connectivity_connection_connect_apps_activate: 连接
   akeneo_connectivity_connection_connect_apps_authorize: 连接
+  akeneo_connectivity_connection_connect_apps_authenticate: 连接
   akeneo_connectivity_connection_settings_index: 连接设置
   akeneo_connectivity_connection_settings_edit: 连接设置
   akeneo_connectivity_connection_settings_any: 连接设置
@@ -32,6 +35,9 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: 事件订阅
   akeneo_connectivity_connection_webhook_event_logs: 事件日志
   akeneo_connectivity_connection_settings_redirect: 连接
+  akeneo_connectivity_connection_connect_connected_apps: 应用
+  akeneo_connectivity_connection_connect_connected_apps_edit: 应用设置
+  akeneo_connectivity_connection_connect_connected_apps_delete: 删除应用
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -48,6 +54,7 @@ akeneo_connectivity.connection:
         read_more: 阅读更多
         more_info: 更多信息
         connect: 连接
+        connected: 已连接
       extensions:
         title: 连接器
         total: '{0} 无连接器 |{1} 1 个连接器 | [2,Inf] {{ total }} 个连接器'
@@ -59,20 +66,70 @@ akeneo_connectivity.connection:
       unreachable: 无法访问商城，请稍后再试。
       scroll_to_top: 滚动到顶部
     connected_apps:
+      list:
+        apps:
+          title: 已连接的应用
+          total: '{0} 没有应用 |{1} 1 个应用 |[2,Inf] {{ total }} 个应用'
+          empty: 尚未连接任何应用。
+          check_marketplace: '检查 {{ marketplaceLink }} 以浏览所有可用的内容并安装您的第一个应用。'
+          marketplace_link_anchor: 商城
+        helper:
+          title: '[0,1] 您的 PIM 已与 {{ count }} 个应用连接。|[2,Inf] 您的 PIM 已与 {{ count }} 个应用连接。'
+          description_1: 我们定期开发新的应用，请随时关注并查看我们的商城页面以探索如何连接您的 PIM。
+          description_2: 想了解更多关于应用的信息？
+          link: 查看我们的“帮助中心”获取更多信息。
+        card:
+          developed_by: 开发者
+          manage_app: 管理应用
+          open_app: 打开应用
+        flash:
+          error: 抱歉，获取已连接应用的列表时出现错误。
       edit:
+        not_found: 未找到应用
         tabs:
           settings: 设置 
           permissions: 权限
+          error_monitoring: 错误监测
+        settings:
+          monitoring:
+            title: 常规设置
+          authorizations:
+            title: 授权
+            information: '要了解更多有关应用授权的信息，请查阅我们的 {{ link }}。'
+            information_link_anchor: 帮助中心文章
+            no_scope: 未请求特定的授权。
         error_monitoring:
+          error: 哎呀，出错了!
+          helper:
+            description: 在这里，您可以看到过去 7 天内此应用的每个错误的详细信息。错误数限制为 100 个。
+          not_data_source: 目前，监测页面仅对源应用可用。
           not_auditable:
+            title: 未受监测的应用
             description:
-              1: To track errors on this app,
+              1: 要跟踪此应用上的错误，
               2: 请在设置中
               3: 激活监测。
+        flash:
+          load_permissions_error.title: '无法加载 {{ entity }} 上保存的权限。'
+          load_permissions_error.description: 请稍后重试。
+          save_permissions_error.title: '无法更新 {{ entity }} 上的权限。'
+          save_permissions_error.description: 请检查应用权限设置。
+          success: 应用设置已成功更新。
+          monitoring_settings_error.description: 抱歉，编辑应用时出现错误。
       delete:
+        subtitle: 应用
         title: 确认删除 
+        description: 您确定要删除这个应用吗？知道会有什么影响吗？
         link: 此处可查看产生的影响。
+        flash:
+          success: 应用已成功删除。
+          error: 抱歉，删除应用时出现错误。
     apps:
+      loader:
+        message: 载入中...
+      flash:
+        permissions_error.title: '无法保存 {{ entity }} 上的权限。'
+        permissions_error.description: 请检查应用权限设置。
       wizard:
         title: 连接
         action:
@@ -81,11 +138,30 @@ akeneo_connectivity.connection:
           previous: 上一步
           next: 下一步
           allow_and_next: 允许并进入下一步
+          allow_and_finish: 允许并完成
         progress:
+          authentication: 验证
           authorizations: 授权
           permissions: 权限
+          summary: 做得好！
+        authentication:
+          title: '{{ app_name }} 需要'
+          helper: 要了解更多关于应用验证的信息，请查阅我们的文章
+          helper_link: 如何将我的 PIM 与 App 进行连接？
+          scope_profile: 查看您的名字和姓氏
+          scope_email: 查看您的电子邮件地址
         authorize:
+          title: '{{ app_name }} 需要'
+          no_scope_title: '{{ app_name }} 想要访问您的 PIM。'
           no_scope: 未请求特定的授权。
+          helper: 要了解更多关于应用授权的信息，
+          helper_link: 请查看我们的“帮助中心”文章。
+        flash:
+          success: 应用配置成功。
+          error: 抱歉，连接应用时出现错误。
+        permission:
+          helper: 如果您需要帮助，请查阅我们的文章
+          helper_link: 如何设置应用权限？
       title: 连接
       activate:
         flash:
@@ -103,12 +179,17 @@ akeneo_connectivity.connection:
           channel_settings: 渠道
           association_types: 关联类型
           products: 产品和产品模型
+          reference_entity: 参考实体
+          reference_entity_record: 参考实体记录
+          asset_families: 资产品类
+          assets: 资产
       error:
         sub_text: 请联系应用开发者或 Akeneo 支持
       constraint:
         client_id:
           not_blank: client_id 为必填项。
           must_be_valid: client_id 与任何已知的客户不匹配。
+          must_have_ongoing_authorization: client_id 目前没有任何正在进行的授权
         response_type:
           not_blank: response_type 为必填项。
           must_be_code: response_type 必须为“代码”。
@@ -118,11 +199,13 @@ akeneo_connectivity.connection:
   connections: 连接
   secondary_actions:
     title: 其他操作
+  developer_mode: 开发者模式
   connection:
     code: 代码
     label: 标签
     flow_type: 流类型
     image: 图像
+    auditable: 跟踪数据流仪表板
     client_id: 客户 ID
     secret: 密钥
     username: 用户名
@@ -251,6 +334,9 @@ akeneo_connectivity.connection:
       content: 您的反馈对我们非常宝贵。恳请您参与此简短调查，帮助我们选择下一个小部件！
       button: 开始吧！
     connection_selector:
+      title:
+        source: 数据连接
+        destination: 目的地
       all: 所有
     charts:
       inbound: 入站
@@ -264,10 +350,12 @@ akeneo_connectivity.connection:
     error_management:
       data_source_error_chart:
         section:
+          title: 数据源错误
           helper: 在这里可以查看错误总数，包括业务错误。
         chart:
           title: 每天的错误数
       widget:
+        title: 每个数据源的业务错误
         over_the_last_seven_days: 过去 7 天
         business_errors: 业务错误
     no_connection:
@@ -353,6 +441,7 @@ akeneo_connectivity.connection:
           message: 消息
   error_management:
     connection_monitoring:
+      title: 错误监测
       helper:
         title: '{0} 您有 {{ count }} 个错误 |[1,Inf] 您有 {{ count }} 个错误'
         description: 在这里，您可以看到过去 7 天内此连接的每个错误的详细信息。错误数限制为 100 个。
@@ -390,4 +479,9 @@ pim_permissions:
   widget:
     action:
       all: 所有
+      clear: 清除
+    level:
+      own: 拥有
+      edit: 编辑
+      view: 查看
     all: 所有

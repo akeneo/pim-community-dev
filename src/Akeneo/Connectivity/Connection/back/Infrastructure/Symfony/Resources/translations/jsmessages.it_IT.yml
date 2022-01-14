@@ -11,16 +11,19 @@ pim_menu:
     connection_audit: Dashboard connessioni
     connection_settings: Connessioni
     connection_settings_edit: Impostazioni di connessione
+    connection_monitoring: Monitoraggio errori
     connection_webhook_edit: Iscrizione evento
     connection_webhook_event_logs: Registri eventi
     data_flows: Flussi di dati
     connect_connection_settings: Impostazioni di connessione
     marketplace: Marketplace
+    connected_apps: App
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: Marketplace
   akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
   akeneo_connectivity_connection_connect_apps_activate: Connetti
   akeneo_connectivity_connection_connect_apps_authorize: Connetti
+  akeneo_connectivity_connection_connect_apps_authenticate: Connetti
   akeneo_connectivity_connection_settings_index: Impostazioni di connessione
   akeneo_connectivity_connection_settings_edit: Impostazioni di connessione
   akeneo_connectivity_connection_settings_any: Impostazioni di connessione
@@ -32,6 +35,9 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: Iscrizione evento
   akeneo_connectivity_connection_webhook_event_logs: Registri eventi
   akeneo_connectivity_connection_settings_redirect: Connessioni
+  akeneo_connectivity_connection_connect_connected_apps: App
+  akeneo_connectivity_connection_connect_connected_apps_edit: Impostazioni app
+  akeneo_connectivity_connection_connect_connected_apps_delete: Eliminazione app
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -48,6 +54,7 @@ akeneo_connectivity.connection:
         read_more: mostra di più
         more_info: Maggiori info
         connect: Connetti
+        connected: Connesso
       extensions:
         title: Connettori
         total: '{0} Nessun connettore<unk>{1} 1 connettore<unk> [2,Inf] {{ total }} connettori'
@@ -59,20 +66,70 @@ akeneo_connectivity.connection:
       unreachable: Non riusciamo a raggiungere il marketplace, torna più tardi.
       scroll_to_top: Scorri in alto
     connected_apps:
+      list:
+        apps:
+          title: App connesse
+          total: '{0} Nessuna app|{1} 1 app|[2,Inf] {{ total }} app'
+          empty: Nessuna app ancora connessa
+          check_marketplace: 'Controlla {{ marketplaceLink }} per sfogliare tutti i contenuti disponibili e installare la tua prima app.'
+          marketplace_link_anchor: Marketplace
+        helper:
+          title: '[0,1] Il tuo PIM è connesso con {{ count }} app.<unk> [2,Inf] Il tuo PIM è connesso con {{ count }} app.'
+          description_1: Nuove app sono sviluppate regolarmente, quindi rimani sintonizzato e controlla spesso la pagina del nostro Marketplace per scoprire come connettere il tuo PIM.
+          description_2: Desideri scoprire di più sulle app?
+          link: Consulta il nostro Help Center per ulteriori informazioni.
+        card:
+          developed_by: Sviluppata da
+          manage_app: Gestisci app
+          open_app: Apri app
+        flash:
+          error: Spiacenti, si è verificato un errore durante il recupero dell'elenco delle app connesse.
       edit:
+        not_found: App non trovata
         tabs:
           settings: Impostazioni
           permissions: Permessi
+          error_monitoring: Monitoraggio errori
+        settings:
+          monitoring:
+            title: Impostazioni generali
+          authorizations:
+            title: autorizzazioni
+            information: 'Per scoprire di più sulle autorizzazioni delle app, consulta il nostro {{ link }}.'
+            information_link_anchor: Articolo dell'Help Center
+            no_scope: Nessuna autorizzazione specifica richiesta.
         error_monitoring:
+          error: Ops, si è verificato un errore!
+          helper:
+            description: Qui puoi vedere il dettaglio di ogni errore per questa app negli ultimi 7 giorni. Il numero di errori è limitato a 100.
+          not_data_source: Per ora, la pagina di monitoraggio è disponibile solo per l'app sorgente.
           not_auditable:
+            title: App non monitorata
             description:
-              1: To track errors on this app,
+              1: Per monitorare gli errori di questa app,
               2: attivare il monitoraggio
               3: nelle impostazioni.
+        flash:
+          load_permissions_error.title: 'I permessi salvati su {{ entity }} non possono essere caricati.'
+          load_permissions_error.description: Riprova più tardi.
+          save_permissions_error.title: 'I permessi su {{ entity }} non possono essere aggiornati.'
+          save_permissions_error.description: Controlla le impostazioni dei permessi dell'app.
+          success: Impostazioni dell'app aggiornate con successo
+          monitoring_settings_error.description: Spiacenti, si è verificato un errore durante la modifica dell'app.
       delete:
+        subtitle: App
         title: Conferma eliminazione
+        description: Sei sicuro di voler eliminare l'app? Non sei sicuro dei possibili impatti?
         link: Ecco cosa succederà.
+        flash:
+          success: App eliminata con successo
+          error: Spiacenti, si è verificato un errore durante l'eliminazione dell'app.
     apps:
+      loader:
+        message: Caricamento...
+      flash:
+        permissions_error.title: 'I permessi su {{ entity }} non possono essere salvati.'
+        permissions_error.description: Controlla le impostazioni dei permessi dell'app.
       wizard:
         title: Connetti
         action:
@@ -81,11 +138,30 @@ akeneo_connectivity.connection:
           previous: Precedente
           next: Successivo
           allow_and_next: Consenti e avanza
+          allow_and_finish: Consenti e termina
         progress:
+          authentication: Autenticazione
           authorizations: Autorizzazioni
           permissions: Permessi
+          summary: Ottimo!
+        authentication:
+          title: '{{ app_name }} deve'
+          helper: Per scoprire di più sull'autenticazione dell'app, consulta il nostro articolo
+          helper_link: Come connetto il mio PIM con le app?
+          scope_profile: Visualizza il tuo nome e il tuo cognome
+          scope_email: Visualizza il tuo indirizzo e-mail
         authorize:
+          title: '{{ app_name }} deve'
+          no_scope_title: '{{ app_name }} vorrebbe accedere al tuo PIM.'
           no_scope: Nessuna autorizzazione specifica richiesta.
+          helper: Per scoprire di più sull'autorizzazione dell'app,
+          helper_link: consulta il nostro articolo dell'Help Center.
+        flash:
+          success: App configurata con successo.
+          error: Spiacenti, si è verificato un errore durante la connessione dell'app.
+        permission:
+          helper: Se hai bisogno di aiuto, consulta il nostro articolo
+          helper_link: Come configurare i permessi dell'app?
       title: Connetti
       activate:
         flash:
@@ -103,12 +179,17 @@ akeneo_connectivity.connection:
           channel_settings: canali
           association_types: tipi di associazione
           products: prodotti e modelli prodotto
+          reference_entity: entità di riferimento
+          reference_entity_record: registri dell'entità di riferimento
+          asset_families: famiglie di asset
+          assets: asset
       error:
         sub_text: Contatta lo sviluppatore dell'app o il supporto di Akeneo
       constraint:
         client_id:
           not_blank: Client_id obbligatorio.
           must_be_valid: Il client_id non corrisponde ad alcun client conosciuto.
+          must_have_ongoing_authorization: Il client_id non ha alcun processo di autorizzazione in corso al momento
         response_type:
           not_blank: Response_type obbligatorio.
           must_be_code: Il response_type deve essere "code".
@@ -118,11 +199,13 @@ akeneo_connectivity.connection:
   connections: Connessioni
   secondary_actions:
     title: Altre azioni
+  developer_mode: Modalità sviluppatore
   connection:
     code: Codice
     label: Etichetta
     flow_type: Tipo di flusso
     image: Immagine
+    auditable: Monitora nella dashboard dei flussi di dati
     client_id: ID Client
     secret: Chiave segreta
     username: Nome utente
@@ -254,6 +337,9 @@ akeneo_connectivity.connection:
       content: Il tuo feedback è prezioso per noi. Aiutaci a scegliere il prossimo widget rispondendo a questo sondaggio di una sola domanda!
       button: Vai!
     connection_selector:
+      title:
+        source: Connessioni dati
+        destination: Destinazioni
       all: Tutte
     charts:
       inbound: In entrata
@@ -267,10 +353,12 @@ akeneo_connectivity.connection:
     error_management:
       data_source_error_chart:
         section:
+          title: Errori nelle origini dati
           helper: Qui puoi vedere il numero di errori totali, inclusi quelli aziendali.
         chart:
           title: Conteggio errori per giorno
       widget:
+        title: Errori aziendali per origine dati
         over_the_last_seven_days: Sugli ultimi 7 giorni
         business_errors: errori aziendali
     no_connection:
@@ -356,6 +444,7 @@ akeneo_connectivity.connection:
           message: Messaggio
   error_management:
     connection_monitoring:
+      title: Monitoraggio errori
       helper:
         title: '{0} Hai {{ count }} errore |[1,Inf] Hai {{ count }} errori'
         description: Qui puoi vedere il dettaglio di ogni errore per questa connessione negli ultimi 7 giorni. Il numero di errori è limitato a 100 errori.
@@ -393,4 +482,9 @@ pim_permissions:
   widget:
     action:
       all: Tutte
+      clear: Cancella
+    level:
+      own: Personale
+      edit: Modifica
+      view: Visualizza
     all: Tutte

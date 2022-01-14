@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\LimitOfEventsApiRequestsReachedLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\LimitOfEventsApiRequestsReachedLoggerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\ReachRequestLimitLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\MessageProcessedEvent;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepositoryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\GetDelayUntilNextRequest;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\Sleep;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -23,16 +23,16 @@ final class EventsApiRequestsLimitEventSubscriber implements EventSubscriberInte
     private int $webhookRequestsLimit;
     private Sleep $sleep;
     private ReachRequestLimitLogger $reachRequestLimitLogger;
-    private LimitOfEventsApiRequestsReachedLogger $limitOfEventsApiRequestsReachedLogger;
-    private EventsApiDebugRepository $eventsApiDebugRepository;
+    private LimitOfEventsApiRequestsReachedLoggerInterface $limitOfEventsApiRequestsReachedLogger;
+    private EventsApiDebugRepositoryInterface $eventsApiDebugRepository;
 
     public function __construct(
         GetDelayUntilNextRequest $getDelayUntilNextRequest,
         int $webhookRequestsLimit,
         Sleep $sleep,
         ReachRequestLimitLogger $reachRequestLimitLogger,
-        LimitOfEventsApiRequestsReachedLogger $limitOfEventsApiRequestsReachedLogger,
-        EventsApiDebugRepository $eventsApiDebugRepository
+        LimitOfEventsApiRequestsReachedLoggerInterface $limitOfEventsApiRequestsReachedLogger,
+        EventsApiDebugRepositoryInterface $eventsApiDebugRepository
     ) {
         $this->getDelayUntilNextRequest = $getDelayUntilNextRequest;
         $this->webhookRequestsLimit = $webhookRequestsLimit;

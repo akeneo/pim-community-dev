@@ -78,6 +78,15 @@ YAML;
         )->shouldReturn('1.000000000000');
     }
 
+    public function it_converts_a_very_small_value_to_a_standard_unit()
+    {
+        $this->setFamily('Weight');
+        $this->convertBaseToStandard(
+            'KILOGRAM',
+            1.0E-7
+        )->shouldReturn('0.000100000000');
+    }
+
     public function it_converts_a_standard_value_to_a_final_unit()
     {
         $this->setFamily('Weight');

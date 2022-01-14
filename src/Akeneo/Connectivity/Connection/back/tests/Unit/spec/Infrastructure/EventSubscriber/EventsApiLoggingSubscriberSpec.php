@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\MessageProcessedEvent;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepositoryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiLoggingSubscriber;
 use PhpSpec\ObjectBehavior;
 
@@ -15,7 +15,7 @@ use PhpSpec\ObjectBehavior;
  */
 class EventsApiLoggingSubscriberSpec extends ObjectBehavior
 {
-    public function let(EventsApiDebugRepository $repository): void
+    public function let(EventsApiDebugRepositoryInterface $repository): void
     {
         $this->beConstructedWith($repository);
     }

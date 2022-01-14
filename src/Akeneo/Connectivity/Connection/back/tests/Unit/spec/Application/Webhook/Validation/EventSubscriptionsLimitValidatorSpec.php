@@ -8,7 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Validation\EventSubscript
 use Akeneo\Connectivity\Connection\Application\Webhook\Validation\EventSubscriptionsLimitValidator;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Write\ConnectionWebhook;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQueryInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
@@ -21,7 +21,7 @@ class EventSubscriptionsLimitValidatorSpec extends ObjectBehavior
 {
     const ACTIVE_EVENT_SUBSCRIPTIONS_LIMIT = 3;
 
-    public function let(SelectActiveWebhooksQuery $selectActiveWebhooksQuery, ExecutionContextInterface $context): void
+    public function let(SelectActiveWebhooksQueryInterface $selectActiveWebhooksQuery, ExecutionContextInterface $context): void
     {
         $this->beConstructedWith($selectActiveWebhooksQuery, self::ACTIVE_EVENT_SUBSCRIPTIONS_LIMIT);
         $this->initialize($context);

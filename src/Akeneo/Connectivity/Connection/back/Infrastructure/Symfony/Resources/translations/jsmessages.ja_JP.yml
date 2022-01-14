@@ -11,16 +11,19 @@ pim_menu:
     connection_audit: 接続ダッシュボード
     connection_settings: 接続
     connection_settings_edit: 接続設定
+    connection_monitoring: エラーモニタリング
     connection_webhook_edit: イベントサブスクリプション
     connection_webhook_event_logs: イベントログ
     data_flows: データフロー
     connect_connection_settings: 接続設定
     marketplace: マーケットプレイス
+    connected_apps: アプリ
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: マーケットプレイス
   akeneo_connectivity_connection_connect_marketplace_profile: マーケットプレイス
   akeneo_connectivity_connection_connect_apps_activate: 接続
   akeneo_connectivity_connection_connect_apps_authorize: 接続
+  akeneo_connectivity_connection_connect_apps_authenticate: 接続
   akeneo_connectivity_connection_settings_index: 接続設定
   akeneo_connectivity_connection_settings_edit: 接続設定
   akeneo_connectivity_connection_settings_any: 接続設定
@@ -32,6 +35,9 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: イベントサブスクリプション
   akeneo_connectivity_connection_webhook_event_logs: イベントログ
   akeneo_connectivity_connection_settings_redirect: 接続
+  akeneo_connectivity_connection_connect_connected_apps: アプリ
+  akeneo_connectivity_connection_connect_connected_apps_edit: アプリの設定
+  akeneo_connectivity_connection_connect_connected_apps_delete: アプリの削除
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -48,6 +54,7 @@ akeneo_connectivity.connection:
         read_more: 続きを読む
         more_info: さらに詳しい情報
         connect: 接続
+        connected: 接続済み
       extensions:
         title: コネクター
         total: '{0} コネクターがありません|{1} 1 個のコネクター|[2,Inf] {{ total }} 個のコネクター'
@@ -59,20 +66,70 @@ akeneo_connectivity.connection:
       unreachable: マーケットに接続できません。後でもう一度確認してください。
       scroll_to_top: 上までスクロール
     connected_apps:
+      list:
+        apps:
+          title: 接続済みのアプリ
+          total: '{0} アプリなし|{1} 1個のアプリ|[2,Inf] {{ total }} 個のアプリ'
+          empty: 接続されているアプリがまだありません。
+          check_marketplace: '使用可能なすべてのコンテンツを参照し、最初のアプリをインストールするには {{ marketplaceLink }} をチェックしてください。'
+          marketplace_link_anchor: マーケットプレイス
+        helper:
+          title: '[0,1] PIMは {{ count }} 個のアプリに接続されています。|[2,Inf] PIMは {{ count }} 個のアプリに接続されています。'
+          description_1: 新しいアプリが定期的に開発されているため、PIMの接続方法についてマーケットプレイスのページを頻繁にチェックし、最新情報をご確認ください。
+          description_2: アプリに関する詳しい情報をご要望ですか？
+          link: 詳細についてはヘルプセンターをご確認ください。
+        card:
+          developed_by: '開発者:'
+          manage_app: アプリの管理
+          open_app: アプリを開く
+        flash:
+          error: 申し訳ございません、接続されたアプリリストを取得中にエラーが発生しました。
       edit:
+        not_found: アプリが見つかりません
         tabs:
           settings: 設定
           permissions: 許可
+          error_monitoring: エラーモニタリング
+        settings:
+          monitoring:
+            title: 全般設定
+          authorizations:
+            title: 承認
+            information: 'アプリの承認についての詳細は、{{ link }} をご覧ください。'
+            information_link_anchor: ヘルプセンターの記事
+            no_scope: 特定の承認は要求されていません。
         error_monitoring:
+          error: エラーが発生しました！
+          helper:
+            description: ここでは、過去7日間のこのアプリの各エラーの詳細を見ることができます。エラー番号は100個までです。
+          not_data_source: 今のところ、モニタリングページはソースアプリのみとなっています。
           not_auditable:
+            title: 監視されていないアプリ
             description:
-              1: To track errors on this app,
+              1: このアプリのエラーを追跡するには
               2: モニタリングの有効化
               3: 設定
+        flash:
+          load_permissions_error.title: '{{ entity }} の保存済みの権限を読み込めませんでした。'
+          load_permissions_error.description: 後で再試行してください。
+          save_permissions_error.title: '{{ entity }} の権限を更新できませんでした。'
+          save_permissions_error.description: アプリの権限設定を確認してください。
+          success: アプリの設定は正常に更新されました。
+          monitoring_settings_error.description: 申し訳ございません、アプリを編集中にエラーが発生しました。
       delete:
+        subtitle: アプリ
         title: 削除を確認
+        description: アプリを削除しますか？影響についてご存じありませんか？
         link: 何が起こるかご確認ください。
+        flash:
+          success: アプリは正常に削除されました。
+          error: 申し訳ございません、アプリを削除中にエラーが発生しました。
     apps:
+      loader:
+        message: 読み込み中...
+      flash:
+        permissions_error.title: '{{ entity }} の権限を保存できませんでした。'
+        permissions_error.description: アプリの権限設定を確認してください。
       wizard:
         title: 接続
         action:
@@ -81,11 +138,30 @@ akeneo_connectivity.connection:
           previous: 前へ
           next: 次へ
           allow_and_next: 許可して次へ
+          allow_and_finish: 許可して終了
         progress:
+          authentication: 認証
           authorizations: 承認
           permissions: 許可
+          summary: よくできました！
+        authentication:
+          title: '{{ app_name }} には以下が必要です:'
+          helper: アプリ認証の詳細については、こちらの記事をご確認ください
+          helper_link: PIMにアプリで接続する方法
+          scope_profile: 名と姓を表示
+          scope_email: メールアドレスを表示
         authorize:
+          title: '{{ app_name }} には以下が必要です:'
+          no_scope_title: '{{ app_name }} がPIMにアクセスしようとしています。'
           no_scope: 特定の承認は要求されていません。
+          helper: アプリの承認について詳しくは、
+          helper_link: ヘルプセンターの記事をご覧ください。
+        flash:
+          success: アプリが正常に構成されました。
+          error: 申し訳ございません、アプリを接続中にエラーが発生しました。
+        permission:
+          helper: ヘルプが必要な場合は、記事をご確認ください
+          helper_link: アプリの権限を設定する方法
       title: 接続
       activate:
         flash:
@@ -103,12 +179,17 @@ akeneo_connectivity.connection:
           channel_settings: チャンネル
           association_types: 関連タイプ
           products: 商品と商品モデル
+          reference_entity: 参照エンティティ
+          reference_entity_record: 参照エンティティの記録
+          asset_families: アセットファミリー
+          assets: アセット
       error:
         sub_text: アプリ開発者またはAkeneoサポートに問い合わせてください
       constraint:
         client_id:
           not_blank: client_idは必須です。
           must_be_valid: client_idが既知のクライアントと一致しません。
+          must_have_ongoing_authorization: client_idには現在進行中の認証プロセスがありません
         response_type:
           not_blank: response_typeは必須です。
           must_be_code: response_typeは「コード」でなければなりません。
@@ -118,11 +199,13 @@ akeneo_connectivity.connection:
   connections: 接続
   secondary_actions:
     title: その他の操作
+  developer_mode: 開発者モード
   connection:
     code: コード
     label: ラベル
     flow_type: フロータイプ
     image: 画像
+    auditable: データフローダッシュボードで追跡
     client_id: クライアントID
     secret: 非公開
     username: ユーザー名
@@ -254,6 +337,9 @@ akeneo_connectivity.connection:
       content: フィードバックは私たちにとってとても貴重です。このアンケート調査に回答して、次のウィジェットを選択する参考にさせてください。
       button: はじめよう！
     connection_selector:
+      title:
+        source: データ接続
+        destination: 宛先
       all: すべて
     charts:
       inbound: 受信
@@ -267,10 +353,12 @@ akeneo_connectivity.connection:
     error_management:
       data_source_error_chart:
         section:
+          title: データソース上のエラー
           helper: ここでは、ビジネスエラーを含むエラーの合計数を確認できます。
         chart:
           title: 1日あたりのエラー数
       widget:
+        title: データソースごとのビジネスエラー
         over_the_last_seven_days: 過去１週間
         business_errors: ビジネスエラー
     no_connection:
@@ -356,6 +444,7 @@ akeneo_connectivity.connection:
           message: メッセージ
   error_management:
     connection_monitoring:
+      title: エラーモニタリング
       helper:
         title: '{0} あなたには {{ count }} エラーがあります |[1,Inf] あなたには {{ count }} エラーがあります'
         description: ここでは、過去7日間のこの接続の各エラーの詳細を見ることができます。エラー番号は100個までです。
@@ -393,4 +482,9 @@ pim_permissions:
   widget:
     action:
       all: すべて
+      clear: クリア
+    level:
+      own: 所有
+      edit: 編集
+      view: 表示
     all: すべて

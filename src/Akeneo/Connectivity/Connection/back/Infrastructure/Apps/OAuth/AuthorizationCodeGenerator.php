@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
 
 use Akeneo\Connectivity\Connection\Application\RandomCodeGeneratorInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
-use Akeneo\Connectivity\Connection\Domain\Clock;
+use Akeneo\Connectivity\Connection\Domain\ClockInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
@@ -25,14 +25,14 @@ class AuthorizationCodeGenerator implements AuthorizationCodeGeneratorInterface
     private UserRepositoryInterface $userRepository;
     private IOAuth2GrantCode $storage;
     private RandomCodeGeneratorInterface $randomCodeGenerator;
-    private Clock $clock;
+    private ClockInterface $clock;
 
     public function __construct(
         ClientManagerInterface $clientManager,
         UserRepositoryInterface $userRepository,
         IOAuth2GrantCode $storage,
         RandomCodeGeneratorInterface $randomCodeGenerator,
-        Clock $clock
+        ClockInterface $clock
     ) {
         $this->clientManager = $clientManager;
         $this->userRepository = $userRepository;

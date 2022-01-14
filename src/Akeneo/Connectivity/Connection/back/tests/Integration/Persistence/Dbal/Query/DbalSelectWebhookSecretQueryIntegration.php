@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectWebhookSecretQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectWebhookSecretQueryInterface;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\WebhookLoader;
 use Akeneo\Test\Integration\Configuration;
@@ -19,7 +19,7 @@ class DbalSelectWebhookSecretQueryIntegration extends TestCase
     /** @var WebhookLoader */
     private $webhookLoader;
 
-    /** @var SelectWebhookSecretQuery */
+    /** @var SelectWebhookSecretQueryInterface */
     private $selectWebhookSecret;
 
     public function test_to_select_a_webhook_secret(): void

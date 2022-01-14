@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
 use Akeneo\Connectivity\Connection\Application\ConnectionContextInterface;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Write\WrongCredentialsCombination;
-use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Repository\WrongCredentialsCombinationRepository;
+use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Repository\WrongCredentialsCombinationRepositoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\ApiAuthenticationEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -19,11 +19,11 @@ class ApiAuthenticationEventSubscriber implements EventSubscriberInterface
 {
     private ConnectionContextInterface $connectionContext;
 
-    private WrongCredentialsCombinationRepository $repository;
+    private WrongCredentialsCombinationRepositoryInterface $repository;
 
     public function __construct(
         ConnectionContextInterface $connectionContext,
-        WrongCredentialsCombinationRepository $repository
+        WrongCredentialsCombinationRepositoryInterface $repository
     ) {
         $this->connectionContext = $connectionContext;
         $this->repository = $repository;

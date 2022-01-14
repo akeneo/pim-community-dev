@@ -52,6 +52,8 @@ pim_analytics:
     nb_media_images_in_products: 商品のメディア画像の数
     is_demo_catalog: デモカタログをインストール済み
     nb_active_event_subscription: 有効な Webhook の数
+    activated_app_ids: 接続済みのアプリ
+    nb_activated_apps: 接続済みのアプリ数
     data_source.tracked: 追跡中の API 接続元の数
     data_source.untracked: 追跡なしの API 接続元の数
     data_destination.tracked: 追跡中の API 接続元の数

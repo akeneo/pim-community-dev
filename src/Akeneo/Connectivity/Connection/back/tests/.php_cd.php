@@ -70,7 +70,7 @@ $rules = [
             'Psr\Log\LoggerInterface',
 
             // Ok
-            'Akeneo\Connectivity\Connection\Domain\Clock',
+            'Akeneo\Connectivity\Connection\Domain\ClockInterface',
             'Akeneo\Connectivity\Connection\Domain\Webhook',
             'Akeneo\Platform\Component\EventQueue',
             'Akeneo\Platform\Component\Webhook',
@@ -85,7 +85,7 @@ $rules = [
 
             // ???
             'Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException',
-            'Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository',
+            'Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface',
         ]
     )->in('Akeneo\Connectivity\Connection\Application\Webhook'),
 

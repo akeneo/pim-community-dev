@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\MessageProcessedEvent;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -16,9 +16,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 final class EventsApiLoggingSubscriber implements EventSubscriberInterface
 {
-    private EventsApiDebugRepository $eventsApiDebugRepository;
+    private EventsApiDebugRepositoryInterface $eventsApiDebugRepository;
 
-    public function __construct(EventsApiDebugRepository $eventsApiDebugRepository)
+    public function __construct(EventsApiDebugRepositoryInterface $eventsApiDebugRepository)
     {
         $this->eventsApiDebugRepository = $eventsApiDebugRepository;
     }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
 
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Read\BusinessError;
-use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Query\SelectLastConnectionBusinessErrorsQuery;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Query\SelectLastConnectionBusinessErrorsQueryInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -16,7 +16,7 @@ class ElasticsearchSelectLastConnectionBusinessErrorsQueryIntegration extends Te
     /** @var Client */
     private $esClient;
 
-    /** @var SelectLastConnectionBusinessErrorsQuery */
+    /** @var SelectLastConnectionBusinessErrorsQueryInterface */
     private $selectLastConnectionBusinessErrorsQuery;
 
     public function test_it_returns_an_empty_array_when_nothing_is_indexed(): void

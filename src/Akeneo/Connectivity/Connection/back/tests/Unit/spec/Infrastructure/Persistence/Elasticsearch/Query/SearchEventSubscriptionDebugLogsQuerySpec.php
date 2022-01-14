@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query;
 
-use Akeneo\Connectivity\Connection\Domain\Clock;
+use Akeneo\Connectivity\Connection\Domain\ClockInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\SearchEventSubscriptionDebugLogsQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Encrypter;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -19,7 +19,7 @@ class SearchEventSubscriptionDebugLogsQuerySpec extends ObjectBehavior
 {
     public function let(
         Client $elasticsearchClient,
-        Clock $clock,
+        ClockInterface $clock,
         Encrypter $encrypter
     ): void {
         $this->beConstructedWith($elasticsearchClient, $clock, $encrypter);

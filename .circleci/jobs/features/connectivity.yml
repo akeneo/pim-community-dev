@@ -108,7 +108,7 @@ jobs:
                   command: sudo chown -R 1000:1000 ../project
             - run:
                   name: PHP Insights results
-                  command: make connectivity-connection-insight O='src/Akeneo/Connectivity/Connection/back/Domain src/Akeneo/Connectivity/Connection/back/Application src/Akeneo/Connectivity/Connection/back/Infrastructure'
+                  command: make connectivity-connection-insight
             - run:
                   name: PSALM results
                   command: make connectivity-connection-psalm || true

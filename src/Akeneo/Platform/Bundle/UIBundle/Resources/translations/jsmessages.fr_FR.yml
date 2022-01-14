@@ -211,6 +211,7 @@ pim_common:
     search: Rechercher...
     no_match: Aucune correspondance trouvée
     load_more: Chargement de plus de résultats...
+  selected: "{0}0 élément sélectionné|{1}1 élément sélectionné|]1, Inf[{{ itemsCount }} éléments sélectionnés"
   status: État
   to: jusqu'au
   type: Type
@@ -406,6 +407,7 @@ pim_system:
   sso:
     enabled: SSO activé
     disabled: SSO désactivé
+    title: Authentification unique SAML
 pim_datagrid:
   mass_action:
     default:
