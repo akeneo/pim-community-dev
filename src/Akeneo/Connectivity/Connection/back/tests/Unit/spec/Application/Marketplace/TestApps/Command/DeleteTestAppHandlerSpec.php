@@ -28,7 +28,7 @@ class DeleteTestAppHandlerSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_delete_test_app_handler(): void
+    public function it_is_a_delete_test_app_handler(): void
     {
         $this->shouldHaveType(DeleteTestAppHandler::class);
     }
