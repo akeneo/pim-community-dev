@@ -24,7 +24,6 @@ console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mo
 const webpackConfig = {
   stats: {
     hash: false,
-    maxModules: 5,
     modules: false,
     timings: true,
     version: true,
@@ -45,9 +44,7 @@ const webpackConfig = {
     },
     moduleIds: 'hashed',
     minimizer: [new TerserPlugin({
-      cache: true,
       parallel: true,
-      sourceMap: false,
       terserOptions: {
         ecma: 6,
         mangle: true,
