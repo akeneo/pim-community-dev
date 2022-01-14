@@ -69,3 +69,19 @@ category.permissions:
   no_access_to_products: Nie masz dostępu do produktów w żadnym drzewie. Skontaktuj się z administratorem
   apply_on_children.label: Zastosuj zmiany do elementów podrzędnych
   apply_on_children.help: Istniejące uprawnienia dotyczące elementów podrzędnych są zachowywane
+pim_permissions:
+  widget:
+    entity:
+      attribute_group:
+        label: Grupy atrybutów
+        help: Jeżeli chcesz, aby Twoja aplikacja mogła modyfikować wszystkie dane produktów, wybierz opcję Wszystkie na poziomie Edycja. W przeciwnym wypadku wybierz tylko te grupy atrybutów, które aplikacja będzie mogła widzieć lub modyfikować w zależności od poziomu.
+      category:
+        label: Drzewa kategorii
+        help: Jeżeli chcesz, aby Twoja aplikacja mogła modyfikować produkty, nie korzystając z propozycji PIM, wybierz poziom Własne. W przeciwnym przypadku wybierz poziom Edycja.
+      locale:
+        label: Wersje językowe
+        help: Jeżeli chcesz, aby Twoja aplikacja mogła edytować produkty we wszystkich językach, wybierz opcję Wszystkie na poziomie Edycja. W przeciwnym wypadku wybierz tylko te języki, które aplikacja będzie mogła widzieć lub modyfikować w zależności od poziomu.
+      not_granted_warning: Ta sekcja jest dostępna tylko dla użytkowników z uprawnieniem {{ permission }}. Skontaktuj się z administratorem. Gdy uzyskasz odpowiednie uprawnienie, będziesz mieć możliwość powrotu do ustawień aplikacji i ich edycji.
+pimee_enrich.acl.category.edit_permissions: Zarządzaj uprawnieniami w kategorii
+pimee_enrich.acl.attribute_group.edit_permissions: Zarządzaj uprawnieniami grup atrybutów
+pimee_enrich.acl.locale.edit_permissions: Zarządzaj uprawnieniami wersji językowych
