@@ -12,6 +12,8 @@ import {Section} from './Section';
 import {ActivateAppButton} from './ActivateAppButton';
 import {useFeatureFlags} from '../../shared/feature-flags';
 import {TestAppList} from './TestApp/TestAppList';
+import {useSecurity} from '../../shared/security';
+import {useDeveloperMode} from '../hooks/use-developer-mode';
 
 const ScrollToTop = styled(IconButton)`
     position: fixed;
@@ -41,6 +43,9 @@ export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
     const ref = useRef(null);
     const scrollContainer = findScrollParent(ref.current);
     const displayScrollButton = useDisplayScrollTopButton(ref);
+    const isDeveloperModeEnabled = useDeveloperMode();
+    const security = useSecurity();
+    const isManageAppsAuthorized = security.isGranted('akeneo_connectivity_connection_manage_apps');
     const extensionsList = extensions.extensions.map((extension: Extension) => (
         <MarketplaceCard key={extension.id} item={extension} />
     ));
@@ -48,7 +53,14 @@ export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
         <MarketplaceCard
             key={app.id}
             item={app}
-            additionalActions={[<ActivateAppButton key={1} id={app.id} isConnected={app.connected} />]}
+            additionalActions={[
+                <ActivateAppButton
+                    key={1}
+                    id={app.id}
+                    isConnected={app.connected}
+                    isDisabled={!isManageAppsAuthorized}
+                />,
+            ]}
         />
     ));
     const handleScrollTop = () => {
@@ -60,7 +72,7 @@ export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
             <div ref={ref} />
             <MarketplaceHelper count={extensions.total + apps.total + testApps.total} />
 
-            <TestAppList testApps={testApps} />
+            {isDeveloperModeEnabled && <TestAppList testApps={testApps} />}
 
             {featureFlag.isEnabled('marketplace_activate') && (
                 <Section

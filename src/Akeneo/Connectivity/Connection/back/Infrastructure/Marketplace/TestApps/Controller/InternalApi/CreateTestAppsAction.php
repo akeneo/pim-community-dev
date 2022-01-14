@@ -9,11 +9,13 @@ use Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command\Crea
 use Akeneo\Connectivity\Connection\Domain\Marketplace\TestApps\Persistence\GetTestAppSecretQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -31,6 +33,7 @@ final class CreateTestAppsAction
         private TokenStorageInterface $tokenStorage,
         private CreateTestAppCommandHandler $createTestAppCommandHandler,
         private GetTestAppSecretQueryInterface $getTestAppSecret,
+        private SecurityFacade $security,
     ) {
     }
 
@@ -42,6 +45,10 @@ final class CreateTestAppsAction
 
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
+        }
+
+        if (!$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')) {
+            throw new AccessDeniedHttpException();
         }
 
         $user = $this->tokenStorage->getToken()?->getUser();
