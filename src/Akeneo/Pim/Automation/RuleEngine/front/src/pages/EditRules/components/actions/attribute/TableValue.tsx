@@ -11,12 +11,22 @@ import {
   TableAttribute,
   TableValue,
 } from '@akeneo-pim-ge/table_attribute';
-import {getLabel, useUserContext} from '@akeneo-pim-community/shared';
+import {
+  getLabel,
+  useTranslate,
+  useUserContext,
+} from '@akeneo-pim-community/shared';
 import {ConfigContext} from '../../../../../context/ConfigContext';
 import {InputValueProps} from './AttributeValue';
+import {Helper} from 'akeneo-design-system';
 
 const TableValueContainer = styled.div`
   width: calc((100vw - 580px) / 2);
+`;
+
+const HelperContainer = styled.div`
+  width: calc((100vw - 580px) / 2);
+  margin-top: 20px;
 `;
 
 const AttributeLabel = styled.div`
@@ -30,6 +40,7 @@ const TableValue: React.FC<InputValueProps> = ({
   value,
   onChange,
 }) => {
+  const translate = useTranslate();
   const UserContext = useUserContext();
   const {cellMatchersMapping, cellInputsMapping} = useContext(ConfigContext);
   const {addUniqueIds, removeUniqueIds} = useUniqueIds();
@@ -77,6 +88,13 @@ const TableValue: React.FC<InputValueProps> = ({
           cellMatchersMapping={cellMatchersMapping}
         />
       </TableValueContainer>
+      <HelperContainer>
+        <Helper level='info' inline={true}>
+          {translate(
+            'pimee_catalog_rule.form.edit.actions.set_attribute.table_attribute_helper'
+          )}
+        </Helper>
+      </HelperContainer>
     </AttributeContext.Provider>
   );
 };
