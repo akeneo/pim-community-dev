@@ -59,46 +59,6 @@ class GetAppActivateUrlEndToEnd extends WebTestCase
         );
     }
 
-    /**
-     * @group ce
-     */
-    public function test_it_cannot_activate_an_app_without_the_acl(): void
-    {
-        $this->authenticateAsAdmin();
-        $this->client->request(
-            'GET',
-            '/rest/apps/activate/90741597-54c5-48a1-98da-a68e7ee0a715',
-            [],
-            [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ]
-        );
-
-        Assert::assertEquals(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode());
-    }
-
-    /**
-     * @group ce
-     */
-    public function test_it_cannot_activate_an_app_without_the_feature_flag(): void
-    {
-        $this->featureFlagMarketplaceActivate->disable();
-
-        $this->authenticateAsAdmin();
-        $this->client->request(
-            'GET',
-            '/rest/apps/activate/90741597-54c5-48a1-98da-a68e7ee0a715',
-            [],
-            [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ]
-        );
-
-        Assert::assertEquals(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
-    }
-
     private function loadAppsFixtures(): void
     {
         $apps = [
