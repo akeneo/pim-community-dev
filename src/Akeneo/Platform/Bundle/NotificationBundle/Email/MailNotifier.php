@@ -22,6 +22,9 @@ class MailNotifier implements MailNotifierInterface
     ) {
     }
 
+    /**
+     * { @inheritDoc }
+     */
     public function notify(array $users, $subject, $txtBody, $htmlBody = null, array $options = [])
     {
         foreach ($users as $user) {
@@ -29,14 +32,12 @@ class MailNotifier implements MailNotifierInterface
         }
     }
 
-    public function notifyByEmails(array $emails, string $subject, string $txtBody, $htmlBody = null, array $options = [])
+    public function notifyByEmail(string $email, string $subject, string $txtBody, $htmlBody = null, array $options = []) : void
     {
-        foreach ($emails as $email) {
-            $this->send($email, $subject, $txtBody, $htmlBody);
-        }
+        $this->send($email, $subject, $txtBody, $htmlBody);
     }
 
-    private function send($email, $subject, $txtBody, $htmlBody)
+    private function send($email, $subject, $txtBody, $htmlBody) : void
     {
         $message = $this->mailer->createMessage();
         $message->setSubject($subject)

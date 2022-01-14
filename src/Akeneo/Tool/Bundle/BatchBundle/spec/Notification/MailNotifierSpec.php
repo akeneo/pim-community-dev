@@ -3,6 +3,7 @@
 namespace spec\Akeneo\Tool\Bundle\BatchBundle\Notification;
 
 use Akeneo\Platform\Bundle\NotificationBundle\Email\MailNotifier;
+use Akeneo\Platform\Bundle\NotificationBundle\Email\MailNotifierInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -16,7 +17,7 @@ class MailNotifierSpec extends ObjectBehavior
         LoggerInterface       $logger,
         TokenStorageInterface $tokenStorage,
         Environment           $twig,
-        MailNotifier          $mailer
+        MailNotifierInterface $mailer
     )
     {
         $twig->render(Argument::type('string'), Argument::type('array'))->willReturn('');
