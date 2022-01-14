@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - AOB-1428: Fix Reference entity isEqual comparison method
+- PIM-10231: [Backport] Launch product link rules when creating asset by import
 
 # 5.0.67 (2022-01-03)
 

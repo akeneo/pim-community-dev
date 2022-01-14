@@ -8,6 +8,9 @@ use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand;
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetHandler;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
+use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetCommand;
+use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAssetsHandler;
+use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkMultipleAssetsCommand;
 use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface;
 use Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Writer\Database\AssetWriter;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
@@ -23,13 +26,15 @@ class AssetWriterSpec extends ObjectBehavior
         EditAssetHandler $editAssetHandler,
         EventAggregatorInterface $eventAggregator,
         ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        LinkAssetsHandler $linkAssetsHandler
     ) {
         $this->beConstructedWith(
             $createAssetHandler,
             $editAssetHandler,
             $eventAggregator,
-            $computeTransformationEventAggregator
+            $computeTransformationEventAggregator,
+            $linkAssetsHandler,
         );
         $this->setStepExecution($stepExecution);
     }
@@ -56,10 +61,12 @@ class AssetWriterSpec extends ObjectBehavior
 
     function it_does_nothing_if_the_commands_are_empty(
         CreateAssetHandler $createAssetHandler,
-        EditAssetHandler $editAssetHandler
+        EditAssetHandler $editAssetHandler,
+        LinkAssetsHandler $linkAssetsHandler
     ) {
         $createAssetHandler->__invoke(Argument::any())->shouldNotBeCalled();
         $editAssetHandler->__invoke(Argument::any())->shouldNotBeCalled();
+        $linkAssetsHandler->handle(Argument::any())->shouldNotBeCalled();
 
         $this->write([]);
     }
@@ -67,14 +74,21 @@ class AssetWriterSpec extends ObjectBehavior
     function it_creates_assets(
         CreateAssetHandler $createAssetHandler,
         EditAssetHandler $editAssetHandler,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        LinkAssetsHandler $linkAssetsHandler
     ) {
         $createAssetCommand = new CreateAssetCommand('packshot', 'test', []);
         $editAssetCommand = new EditAssetCommand('packshot', 'test', []);
+        $linkAssetCommand = new LinkAssetCommand();
+        $linkAssetCommand->assetCode = 'test';
+        $linkAssetCommand->assetFamilyIdentifier = 'packshot';
+        $linkMultipleAssetsCommand = new LinkMultipleAssetsCommand();
+        $linkMultipleAssetsCommand->linkAssetCommands = [$linkAssetCommand];
 
         $createAssetHandler->__invoke($createAssetCommand)->shouldBeCalled();
         $editAssetHandler->__invoke($editAssetCommand)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
+        $linkAssetsHandler->handle($linkMultipleAssetsCommand)->shouldBeCalled();
 
         $this->write([
             new CreateAndEditAssetCommand($createAssetCommand, $editAssetCommand),
@@ -84,17 +98,34 @@ class AssetWriterSpec extends ObjectBehavior
     function it_updates_assets(
         CreateAssetHandler $createAssetHandler,
         EditAssetHandler $editAssetHandler,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        LinkAssetsHandler $linkAssetsHandler
     ) {
         $editAssetCommand = new EditAssetCommand('packshot', 'test', []);
 
         $createAssetHandler->__invoke(Argument::any())->shouldNotBeCalled();
         $editAssetHandler->__invoke($editAssetCommand)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
+        $linkAssetsHandler->handle(Argument::any())->shouldNotBeCalled();
 
         $this->write([
             new CreateAndEditAssetCommand(null, $editAssetCommand),
         ]);
+    }
+
+    function it_links_assets_by_batch_of_100(
+        LinkAssetsHandler $linkAssetsHandler
+    ) {
+        $createAndEditAssetCommands = [];
+        for ($i = 0; $i < 150; $i++) {
+            $createAssetCommand = new CreateAssetCommand('packshot', sprintf('test%s', $i), []);
+            $editAssetCommand = new EditAssetCommand('packshot', sprintf('test%s', $i), []);
+            $createAndEditAssetCommands[] = new CreateAndEditAssetCommand($createAssetCommand, $editAssetCommand);
+        }
+
+        $linkAssetsHandler->handle(Argument::any())->shouldBeCalledTimes(2);
+
+        $this->write($createAndEditAssetCommands);
     }
 
     function it_flushes_asset_events(
