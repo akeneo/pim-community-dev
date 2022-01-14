@@ -253,8 +253,8 @@ akeneo_communication_channel_viewed_announcements | announcement_id | NO | varch
 akeneo_communication_channel_viewed_announcements | user_id | NO | int | PRI
 akeneo_connectivity_connected_app | id | NO | varchar(36) | PRI
 akeneo_connectivity_connected_app | name | NO | varchar(255) |
-akeneo_connectivity_connected_app | logo | NO | varchar(255) |
-akeneo_connectivity_connected_app | author | NO | varchar(255) |
+akeneo_connectivity_connected_app | logo | YES | varchar(255) |
+akeneo_connectivity_connected_app | author | YES | varchar(255) |
 akeneo_connectivity_connected_app | partner | YES | varchar(255) |
 akeneo_connectivity_connected_app | categories | NO | json |
 akeneo_connectivity_connected_app | certified | NO | tinyint(1) |
