@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthentica
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthenticationException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
@@ -100,7 +101,7 @@ class ConsentAppAuthenticationHandlerIntegration extends TestCase
         $anUnknowAppId = 'an_app_id';
         $anUnknownPimUserId = 15;
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidAppAuthenticationException::class);
         $this->expectExceptionMessage('akeneo_connectivity.connection.connect.apps.constraint.client_id.must_be_valid');
 
         $this->handler->handle(new ConsentAppAuthenticationCommand($anUnknowAppId, $anUnknownPimUserId));
