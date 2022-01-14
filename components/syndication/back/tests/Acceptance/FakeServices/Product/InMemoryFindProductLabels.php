@@ -1,0 +1,30 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Akeneo\Platform\Syndication\Test\Acceptance\FakeServices\Product;
+
+use Akeneo\Platform\Syndication\Domain\Query\FindProductLabelsInterface;
+
+final class InMemoryFindProductLabels implements FindProductLabelsInterface
+{
+    private array $productLabels = [];
+
+    public function addProductLabel(
+        string $productIdentifier,
+        string $channel,
+        string $locale,
+        string $productTranslation
+    ): void {
+        $this->productLabels[$productIdentifier][$channel][$locale] = $productTranslation;
+    }
+
+    public function byIdentifiers(array $productIdentifiers, string $channel, string $locale): array
+    {
+        return array_reduce($productIdentifiers, function ($carry, $productIdentifier) use ($locale, $channel) {
+            $carry[$productIdentifier] = $this->productLabels[$productIdentifier][$channel][$locale] ?? null;
+
+            return $carry;
+        }, []);
+    }
+}

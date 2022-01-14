@@ -1,0 +1,66 @@
+parameters:
+    akeneo.syndication.connector.name: 1P activation
+    akeneo.syndication.connector.product.code: 'syndication_product_export'
+    pim_analytics.data_collector.bundles.class: Akeneo\Platform\Syndication\Infrastructure\Analytics\BundlesDataCollector
+
+services:
+    _defaults:
+        public: true
+
+    Akeneo\Platform\Syndication\Infrastructure\Query\DummyFindMediaFileInfoCollection: ~
+
+    akeneo.syndication.provider.form.job_instance:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
+        arguments:
+            -
+                syndication_product_export: pim-job-instance-syndication-product-export
+        tags:
+            - { name: pim_enrich.provider.form }
+
+    Akeneo\Platform\Syndication\Application\MapValues\MapValuesQueryHandler:
+        arguments:
+            - '@Akeneo\Platform\Syndication\Application\MapValues\OperationApplier\OperationApplier'
+            - '@Akeneo\Platform\Syndication\Application\MapValues\SelectionApplier\SelectionApplier'
+            - '@Akeneo\Platform\Syndication\Application\MapValues\FormatApplier\FormatApplier'
+
+    Akeneo\Platform\Syndication\Application\ExtractMedia\ExtractMediaQueryHandler:
+        arguments:
+            - '@Akeneo\Platform\Syndication\Infrastructure\Query\DummyFindMediaFileInfoCollection'
+            - '@Akeneo\Platform\Syndication\Application\ExtractMedia\MediaPathGenerator'
+        public: false
+
+    Akeneo\Platform\Syndication\Application\Command\UpdatePlatformHandler:
+        arguments:
+            - '@Akeneo\Platform\Syndication\Infrastructure\Persistence\PlatformRepository'
+
+    Akeneo\Platform\Syndication\Application\Command\UpdatePlatformFamilyHandler:
+        arguments:
+            - '@Akeneo\Platform\Syndication\Infrastructure\Persistence\PlatformRepository'
+
+    Akeneo\Platform\Syndication\Application\ExtractMedia\MediaPathGenerator: ~
+
+    Akeneo\Platform\Syndication\Infrastructure\Symfony\EventSubscriber\FixturesInstaller:
+        arguments:
+            - '@doctrine.dbal.default_connection'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Platform\Syndication\Infrastructure\Persistence\PlatformRepository:
+        arguments:
+            - '@doctrine.dbal.default_connection'
+
+    Akeneo\Platform\Syndication\Infrastructure\UseCases\ListProductsQueryHandler:
+        class: Akeneo\Platform\Syndication\Infrastructure\UseCases\ListProductsQueryHandler
+        arguments:
+            - '@pim_catalog.repository.cached_channel'
+            - '@akeneo.pim.enrichment.use_cases.apply_product_search_query_parameters_to_pqb'
+            - '@pim_catalog.query.product_query_builder_from_size_factory_external_api'
+            - '@pim_catalog.query.product_query_builder_search_after_size_factory_external_api'
+            - '@Akeneo\Platform\Syndication\Infrastructure\Query\Enrichment\SqlGetConnectorProducts'
+            - '@event_dispatcher'
+            - '@akeneo.pim.enrichment.use_cases.get_products_with_completenesses'
+
+    akeneo.syndication.feature_flag:
+        class: Akeneo\Platform\Syndication\Infrastructure\FeatureFlag\SyndicationFeature
+        arguments:
+            - '@Akeneo\Platform\Syndication\Domain\Query\Platform\HasAtLeastOnePlatformInterface'

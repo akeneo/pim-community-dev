@@ -1,5 +1,6 @@
 akeneo_feature_flag:
     feature_flags:
+        - { feature: 'as8', service: 'akeneo.syndication.feature_flag' }
         - { feature: 'data_quality_insights', service: 'akeneo.pim.automation.data_quality_insights.feature' }
         - { feature: 'data_quality_insights_all_criteria', service: 'akeneo.pim.automation.data_quality_insights.all_criteria.feature' }
         - { feature: 'free_trial', service: 'akeneo.feature_flag.service.only_free_trial_feature' }

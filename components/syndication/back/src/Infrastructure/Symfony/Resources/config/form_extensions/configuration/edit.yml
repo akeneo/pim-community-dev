@@ -1,0 +1,12 @@
+extensions:
+    pim-job-instance-syndication-product-export-show:
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/drop-zone
+
+    pim-job-instance-syndication-product-export-edit-columns:
+        module: akeneosyndication/js/job/product/edit/columns
+        parent: pim-job-instance-syndication-product-export-show
+        aclResourceId: pim_importexport_export_profile_content_edit
+        targetZone: content
+        position: 135

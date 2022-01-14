@@ -1,0 +1,24 @@
+includes:
+    - phpstan-ee.neon
+
+parameters:
+  excludes_analyse:
+    - %rootDir%/../../../components/syndication/back/src/Application/Common/Selection/ReferenceEntity
+    - %rootDir%/../../../components/syndication/back/Application/Common/Selection/ReferenceEntityCollection
+    - %rootDir%/../../../components/syndication/back/src/Application/MapValues/SelectionApplier/ReferenceEntity
+    - %rootDir%/../../../components/syndication/back/src/Application/MapValues/SelectionApplier/ReferenceEntityCollection
+    - %rootDir%/../../../components/syndication/back/src/Infrastructure/Controller/GetRecordsAction.php
+    - %rootDir%/../../../components/syndication/back/src/Infrastructure/Query/AssetManager
+    - %rootDir%/../../../components/syndication/back/src/Infrastructure/Query/ReferenceEntity
+    - %rootDir%/../../../components/syndication/back/src/Infrastructure/Validation/IsValidAssetAttributeValidator
+    - %rootDir%/../../../components/syndication/back/src/Infrastructure/Validation/Source/AssetCollection/AssetCollectionSelectionValidator.php
+    - %rootDir%/../../../components/syndication/back/src/Infrastructure/Validation/Source/ReferenceEntity
+    - %rootDir%/../../../components/syndication/back/src/Infrastructure/Validation/Source/ReferenceEntityCollection
+    - %rootDir%/../../../components/syndication/back/tests/Acceptance/Hydrator/Value/Attribute/AssetCollectionValueHydratorTest.php
+    - %rootDir%/../../../components/syndication/back/tests/Acceptance/Hydrator/Value/Attribute/ReferenceEntityCollectionValueHydratorTest.php
+    - %rootDir%/../../../components/syndication/back/tests/Acceptance/Hydrator/Value/Attribute/ReferenceEntityValueHydratorTest.php
+    - %rootDir%/../../../components/syndication/back/tests/Integration/Infrastructure/Validation/Source/AssetCollection/AssetCollectionSelectionValidatorTest.php
+    - %rootDir%/../../../components/syndication/back/tests/Specification/Application/Common/Selection/ReferenceEntity
+    - %rootDir%/../../../components/syndication/back/tests/Specification/Application/Common/Selection/ReferenceEntityCollection
+    - %rootDir%/../../../components/syndication/back/tests/Specification/Application/MapValues/SelectionApplier/ReferenceEntity
+    - %rootDir%/../../../components/syndication/back/tests/Specification/Application/MapValues/SelectionApplier/ReferenceEntityCollection

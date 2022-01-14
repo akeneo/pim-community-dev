@@ -1,0 +1,72 @@
+pimee_syndication_get_product_grouped_sources_action:
+    path: /rest/syndication/product-sources
+    defaults: { _controller: akeneo.syndication.controller.get_product_grouped_sources_action }
+    methods: [GET]
+
+pimee_syndication_get_platform_family_action:
+    path: /rest/syndication/platform/{platformCode}/family/{familyCode}
+    defaults: { _controller: akeneo.syndication.controller.get_platform_family_action }
+    methods: [GET]
+
+pimee_syndication_get_platform_action:
+    path: /rest/syndication/platform/{platformCode}
+    defaults: { _controller: akeneo.syndication.controller.get_platform_action }
+    methods: [GET]
+
+pimee_syndication_get_attribute_options_action:
+    path: /rest/syndication/attribute-options/{attribute_code}
+    defaults: { _controller: akeneo.syndication.controller.get_attribute_options_action }
+    methods: [POST]
+
+pimee_syndication_validate_replacement_operation_action:
+    path: /rest/syndication/validate-replacement-operation
+    defaults: { _controller: akeneo.syndication.controller.validate_replacement_operation_action }
+    methods: [POST]
+
+
+pimee_syndication_api_catalog_list:
+    path: /api/rest/v1/syndication/platform_configuration/{platformConfigurationCode}/catalog
+    defaults: { _controller: pim_syndication.controller.platform_configuration.catalog:listAction, _format: json, _list_in_root_endpoint: false}
+    methods: [GET]
+
+pimee_syndication_api_catalog_product_identifiers:
+    path: /api/rest/v1/syndication/platform_configuration/{platformConfigurationCode}/catalog/{catalogCode}/product_identifiers
+    defaults: { _controller: pim_syndication.controller.platform_configuration.catalog.product_identifiers:listAction, _format: json, _list_in_root_endpoint: false}
+    methods: [GET]
+
+pimee_syndication_api_catalog_products:
+    path: /api/rest/v1/syndication/platform_configuration/{platformConfigurationCode}/catalog/{catalogCode}/products
+    defaults: { _controller: pim_syndication.controller.platform_configuration.catalog.products:listAction, _format: json, _list_in_root_endpoint: false}
+    methods: [GET]
+
+pimee_syndication_api_catalog_product_model_identifiers:
+    path: /api/rest/v1/syndication/platform_configuration/{platformConfigurationCode}/catalog/{catalogCode}/product_model_identifiers
+    defaults: { _controller: pim_syndication.controller.platform_configuration.catalog.product_model_identifiers:listAction, _format: json, _list_in_root_endpoint: false}
+    methods: [GET]
+
+pimee_syndication_api_catalog_product_models:
+    path: /api/rest/v1/syndication/platform_configuration/{platformConfigurationCode}/catalog/{catalogCode}/product_models
+    defaults: { _controller: pim_syndication.controller.platform_configuration.catalog.product_models:listAction, _format: json, _list_in_root_endpoint: false}
+    methods: [GET]
+
+pimee_syndication_api_media_download:
+    path: /api/rest/v1/syndication/media/{fileCode}
+    defaults: { _controller: pim_syndication.controller.media_download, _list_in_root_endpoint: false}
+    methods: [GET]
+    requirements:
+        fileCode: .+
+
+pimee_syndication_api_platform_configuration_list:
+    path: /api/rest/v1/syndication/platform_configuration
+    defaults: { _controller: pim_syndication.controller.platform_configuration_list, _format: json, _list_in_root_endpoint: false}
+    methods: [GET]
+
+pimee_syndication_api_platform_update:
+    path: /api/rest/v1/syndication/platform/{code}
+    defaults: { _controller: pim_syndication.controller.platform_update, _format: json, _list_in_root_endpoint: false}
+    methods: [POST]
+
+pimee_syndication_api_platform_family_update:
+    path: /api/rest/v1/syndication/platform/{platformCode}/family/{code}
+    defaults: { _controller: pim_syndication.controller.platform_family_update, _format: json, _list_in_root_endpoint: false}
+    methods: [post]

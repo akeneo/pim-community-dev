@@ -1,0 +1,40 @@
+services:
+  Akeneo\Platform\Syndication\Infrastructure\Hydrator\SelectionHydrator:
+    public: true
+
+  Akeneo\Platform\Syndication\Infrastructure\Hydrator\ElementCollectionHydrator:
+    public: true
+
+  Akeneo\Platform\Syndication\Infrastructure\Hydrator\OperationCollectionHydrator:
+    public: true
+
+  Akeneo\Platform\Syndication\Infrastructure\Hydrator\FormatHydrator:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\Syndication\Infrastructure\Hydrator\ElementCollectionHydrator'
+
+  Akeneo\Platform\Syndication\Infrastructure\Hydrator\ValueHydrator:
+    arguments:
+      - '@Akeneo\Platform\Syndication\Infrastructure\Hydrator\Value\AttributeValueHydrator'
+      - '@Akeneo\Platform\Syndication\Infrastructure\Hydrator\Value\PropertyValueHydrator'
+      - '@Akeneo\Platform\Syndication\Infrastructure\Hydrator\Value\StaticValueHydrator'
+      - '@Akeneo\Platform\Syndication\Infrastructure\Hydrator\Value\AssociationTypeValueHydrator'
+
+  Akeneo\Platform\Syndication\Infrastructure\Hydrator\Value\AssociationTypeValueHydrator:
+  Akeneo\Platform\Syndication\Infrastructure\Hydrator\Value\AttributeValueHydrator:
+    arguments:
+      - '@pim_standard_format_serializer'
+
+  Akeneo\Platform\Syndication\Infrastructure\Hydrator\Value\PropertyValueHydrator:
+
+  Akeneo\Platform\Syndication\Infrastructure\Hydrator\Value\StaticValueHydrator: ~
+
+  Akeneo\Platform\Syndication\Infrastructure\Hydrator\ColumnCollectionHydrator:
+    arguments:
+      - '@Akeneo\Platform\Syndication\Infrastructure\Hydrator\SelectionHydrator'
+      - '@Akeneo\Platform\Syndication\Infrastructure\Hydrator\FormatHydrator'
+      - '@Akeneo\Platform\Syndication\Infrastructure\Hydrator\OperationCollectionHydrator'
+
+  Akeneo\Platform\Syndication\Infrastructure\Hydrator\ValueCollectionHydrator:
+    arguments:
+      - '@Akeneo\Platform\Syndication\Infrastructure\Hydrator\ValueHydrator'

@@ -1,0 +1,8 @@
+services:
+  Akeneo\Platform\Syndication\Application\MapValues\FormatApplier\FormatApplier:
+    arguments:
+      - '@Akeneo\Platform\Syndication\Application\MapValues\FormatApplier\ConcatFormatApplier'
+      - '@Akeneo\Platform\Syndication\Application\MapValues\FormatApplier\NoneFormatApplier'
+
+  Akeneo\Platform\Syndication\Application\MapValues\FormatApplier\ConcatFormatApplier:
+  Akeneo\Platform\Syndication\Application\MapValues\FormatApplier\NoneFormatApplier:

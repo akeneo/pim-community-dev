@@ -1,0 +1,18 @@
+services:
+    akeneo.syndication.controller.get_records_actions:
+        class: 'Akeneo\Platform\Syndication\Infrastructure\Controller\GetRecordsAction'
+        public: true
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.platform.search_records'
+
+    akeneo.syndication.controller.get_platform_family_action:
+        class: 'Akeneo\Platform\Syndication\Infrastructure\Controller\GetPlatformFamilyAction'
+        public: true
+        arguments:
+            - '@Akeneo\Platform\Syndication\Domain\Query\Platform\FindPlatformFamilyInterface'
+
+    akeneo.syndication.controller.get_platform_action:
+        class: 'Akeneo\Platform\Syndication\Infrastructure\Controller\GetPlatformAction'
+        public: true
+        arguments:
+            - '@Akeneo\Platform\Syndication\Domain\Query\Platform\FindPlatformInterface'

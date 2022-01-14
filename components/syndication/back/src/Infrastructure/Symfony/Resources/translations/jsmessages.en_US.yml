@@ -1,0 +1,283 @@
+batch_jobs.syndication_product_export.label: 1P activation
+
+pim_common:
+  quality_score: Quality Score
+
+akeneo.syndication:
+  configuration:
+    data_mapping: Data mapping
+    filter: Filters
+    general: General
+    connection: Connection
+    families: Families
+    schedule: Schedule
+    tracking: Tracking
+    manual: Manual
+  platform:
+    family:
+      delete:
+        title: Delete family
+        confirm: are you sure you want to delete family "{{ family }}"?
+  filters:
+    completeness:
+      label: Completeness
+      operators:
+        title: Condition
+      locales:
+        label: Define the locales for the completeness
+        placeholder: Select some locales
+        remove: Remove the locale
+    categories:
+      label: Categories
+      selection: Selection
+    quality_score:
+      score:
+        remove: Remove quality score
+      locales:
+        placeholder: Select some locales
+        label: Define the locales for the quality score
+        remove: Remove the locale
+  form:
+    job_instance:
+      tab:
+        content:
+          title: Product selection
+        data_mapping:
+          title: Export structure
+        filters:
+          title: Define your product selection
+      edit:
+        title: To edit, check your permissions with your PIM administrator.
+      launch:
+        title: To export, check your permissions with your PIM administrator.
+  data_mapping_list:
+    title: Targets
+    header:
+      data_mapping_name: Target name
+      source_data: Sources
+    data_mapping_row:
+      target_placeholder: Define your data mapping name here
+      placeholder_helper: You can copy all the data mapping names from a spreadsheet to automatically create your data_mappings.
+      remove: Remove data_mapping
+      no_source: Define content source
+    no_data_mapping_selection:
+      title: Your export profile is empty.
+      subtitle: Click on 'Add first data_mapping' to start building your export table.
+      link: Check out our Help Center for more information.
+      add_data_mapping: Add first data_mapping
+  data_mapping_details:
+    sources:
+      title: Sources
+      add: Add source
+      static:
+        title: Static
+        boolean:
+          title: Boolean generator
+          generator:
+            title: Boolean value generator
+            label: Define value to generate
+            placeholder: Define the value
+        string:
+          title: Text generator
+          generator:
+            title: Text value generator
+            label: Define value to generate
+            placeholder: Define the value
+        measurement:
+          title: Measure generator
+          generator:
+            value:
+              title: Measure value generator
+              label: Define value to generate
+              placeholder: Define the value
+            unit:
+              title: Measure unit generator
+              label: Define unit to generate
+              placeholder: Define the unit
+      no_result: Sorry, there are no results.
+      locale_specific: This attribute is locale specific.
+      remove:
+        title: source
+        text: Are you sure you want to remove this source?
+        button: Remove this source
+      invalid_source:
+        attribute: This attribute has been deleted and recreated with another type, please remove this source and add it again.
+        association_type: This association type has been deleted and recreated with another type, please remove this source and add it again.
+        property: This property is invalid, please remove this source and add it again.
+        asset_collection_main_media: The main media of asset collection used by the attribute is not found, please check the asset family setting.
+      no_source_configuration:
+        title: There are no operations available for this source. Its value will be exported as is.
+      deleted_attribute:
+        title: This attribute has been deleted, you can no longer use it as a source.
+      deleted_association_type:
+        title: This association type has been deleted, you can no longer use it as a source.
+      no_source_selected:
+        title: Click on 'Add source' to start defining your data mapping content.
+        link: Check out our Help Center for more information.
+      no_data_mapping_selected:
+        title: Start by selecting a target on the list just on the left
+      selection:
+        title: Selection
+        collection_separator:
+          title: Separator
+          comma: Comma (,)
+          semicolon: Semicolon (;)
+          pipe: Pipe (|)
+        type:
+          amount: Amount
+          currency: Currency
+          main_media: Main media
+          key: Filekey
+          path: Path
+          name: Filename
+        asset_collection:
+          property: Property
+          with_prefix_and_suffix: Add prefix & suffix
+        format: Format
+        parent:
+          information:
+            locale: If the attribute used as label has a value per locale, you may select a specific locale.
+            channel: If the attribute used as label has a value per channel, you may select a specific channel.
+        measurement:
+          value: Value
+          unit_locale: Unit locale
+          unit_code: Unit code
+          unit_symbol: Unit symbol
+          unit_label: Unit label
+          value_and_unit_label: Value and unit label
+          value_and_unit_symbol: Value and unit symbol
+        price:
+          currency_code: Currency code
+          currency_label: Currency label
+          currency_locale: Currency locale
+          information: For this attribute, you can export either the currency code, the currency label or the amount.
+          currencies: Select currencies
+          all_currencies: All
+        file:
+          information: For this attribute, you can export either the path, the filekey or the filename.
+        decimal_separator:
+          title: Decimal separator
+          comma: Comma (,)
+          dot: Dot (.)
+          arabic_comma: Arabic decimal separator (٫)
+        quantified_association:
+          quantity: Quantity
+        association:
+          entity_type: Entity type
+          information:
+            locale: If the attribute used as label has a value per locale, you may select a specific locale.
+            channel: If the attribute used as label has a value per channel, you may select a specific channel.
+      operation:
+        header: Operations
+        measurement_conversion:
+          title: Conversion
+          placeholder: No conversion
+          target_unit_code.label: Convert to
+        measurement_rounding:
+          title: Rounding
+          rounding_type:
+            label: Rounding type
+            types:
+              no_rounding: No rounding
+              standard: Round
+              round_up: Round up
+              round_down: Round down
+          precision:
+            label: Precision
+            placeholder: Define the number of digits after the decimal separator
+            validation:
+              precision_should_not_be_blank: Precision should not be empty
+              precision_is_out_of_range: Precision should be between {{ min }} and {{ max }}
+        replacement:
+          title: Replace value
+          placeholder: Define the replacement value
+          enabled: Enabled replacement value
+          disabled: Disabled replacement value
+          yes: Yes replacement value
+          no: No replacement value
+          edit_mapping: Edit replacement values
+          modal:
+            records: Manage records
+            options: Manage options
+            subtitle: Replacement
+            no_result:
+              title: Sorry, there is no value in this attribute
+            empty_result:
+              title: Sorry, there is no result for your search
+              text: Try again with new search criteria
+            filters:
+              mapped:
+                label: Display
+                unmapped: All values without replacement
+                mapped: All values with replacement
+                all: All values
+            table:
+              header:
+                values: Values
+                replacement: Replacement values
+              field:
+                to_placeholder: Define the replacement value
+            validation_error: Some replacement values are invalid, please refer to the error messages below each field.
+        default_value:
+          title: Use default value when empty
+          label: Default value
+          placeholder: Define the value
+        clean_html_tags:
+          title: Clean HTML tags
+          label: Clean HTML tags automatically
+        extract:
+          title: Extract value
+          label: Regexp
+          placeholder: "[0-9]"
+        split:
+          title: Split text value
+          label: Separator
+          placeholder: "|"
+    concatenation:
+      title: Concatenation
+      preview: Preview
+      space_between: Add space between sources
+      add_text: Add text
+      text_placeholder: Define text
+  data_mapping:
+    delete_message: Are you sure you want to remove this data_mapping?
+  validation:
+    required: This value is required.
+    max_length_reached: This value is too long. It should contain {{ limit }} characters or less.
+    data_mappings:
+      max_data_mapping_count_reached: You have reached the limit of {{ limit }} data_mappings, you can no longer add data_mappings to your export.
+      target:
+        should_not_be_blank: Please define a data mapping name.
+        max_length_reached: Target name is too long. It should contain {{ limit }} characters or less.
+        should_be_unique: This data mapping name already exists, please enter a new one.
+    sources:
+      max_source_count_reached: You have reached the limit of {{ limit }} sources, you can no longer add sources to this data_mapping.
+      association_type_should_exist: The association type {{ association_type_code }} does not exist. Please either create it or choose a different source.
+    concatenation:
+      max_text_count_reached: You have reached the limit of {{ limit }} text elements, you can no longer add text.
+    locale:
+      should_be_active: The locale {{ locale_code }} has been deactivated. Either reactivate it or select another locale.
+      should_be_bound_to_channel: The locale {{ locale_code }} has been deactivated for the channel {{ channel_code }}. Either reactivate it or select another locale.
+    channel:
+      should_exist: The channel {{ channel_code }} has been deleted. Please select another channel.
+    attribute:
+      should_exist: The attribute {{ attribute_code }} does not exist. Please either create it or choose a different source.
+      locale_should_not_be_blank: The attribute {{ attribute_code }} now has a value per locale. Please either create it or choose a different source.
+      channel_should_not_be_blank: The attribute {{ attribute_code }} now has a value per channel. Please either create it or choose a different source.
+      locale_should_be_blank: The attribute {{ attribute_code }} does not have a value per locale anymore. Please either create it or choose a different source.
+      channel_should_be_blank: The attribute {{ attribute_code }} does not have a value per channel anymore. Please either create it or choose a different source.
+      invalid_specific_locale: The attribute {{ attribute_code }} is locale specific. Please select another locale.
+    asset_collection:
+      locale_should_not_be_blank: The main media attribute of asset family {{ asset_family_code }} now has a value per locale. Please either create it or choose a different source.
+      channel_should_not_be_blank: The main media attribute of asset family {{ asset_family_code }} now has a value per channel. Please either create it or choose a different source.
+      locale_should_be_blank: The main media attribute of asset family {{ asset_family_code }} does not have a value per locale anymore. Please either create it or choose a different source.
+      channel_should_be_blank: The main media attribute of asset family {{ asset_family_code }} does not have a value per channel anymore. Please either create it or choose a different source.
+      invalid_type: The main media attribute type of asset family {{ asset_family_code }} has changed. Please either create it or choose a different source.
+    measurement:
+      family:
+        does_not_exist: The measurement family {{ measurement_family_code }} does not exist.
+      unit:
+        does_not_exist: The unit {{ unit_code }} does not exist in measurement family {{ measurement_family_code }}.
+    currency:
+      should_be_active: '{0} The currencies "{{ currency_codes }}" are not linked to any channel.|{1} The currency "{{ currency_codes }}" is not linked to any channel.|]1,Inf] The currencies "{{ currency_codes }}" are not linked to any channel.'
+      should_be_active_on_channel: '{0} The currencies "{{ currency_codes }}" are not active for channel "{{ channel_code }}.|{1} The currency "{{ currency_codes }}" is not active for channel "{{ channel_code }}".|]1,Inf] The currencies "{{ currency_codes }}" are not active for channel "{{ channel_code }}".'

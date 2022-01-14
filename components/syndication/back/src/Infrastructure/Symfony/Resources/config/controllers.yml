@@ -1,0 +1,23 @@
+services:
+    akeneo.syndication.controller.get_product_grouped_sources_action:
+        class: 'Akeneo\Platform\Syndication\Infrastructure\Controller\GetGroupedSourcesAction'
+        public: true
+        arguments:
+            - '@translator'
+            - '@akeneo.syndication.query.find_product_static_sources'
+            - '@akeneo.syndication.query.find_product_system_sources'
+            - '@akeneo.pim.structure.query.find_association_types'
+            - '@akeneo.syndication.query.find_product_viewable_attributes'
+
+    akeneo.syndication.controller.get_attribute_options_action:
+        class: 'Akeneo\Platform\Syndication\Infrastructure\Controller\GetAttributeOptionsAction'
+        public: true
+        arguments:
+            - '@akeneo.pim.structure.query.search_attribute_options'
+
+    akeneo.syndication.controller.validate_replacement_operation_action:
+        class: 'Akeneo\Platform\Syndication\Infrastructure\Controller\ValidateReplacementOperationAction'
+        public: true
+        arguments:
+            - '@validator'
+            - '@serializer'

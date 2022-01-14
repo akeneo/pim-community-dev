@@ -1,0 +1,19 @@
+services:
+  Akeneo\Platform\Syndication\Domain\Query\FindAssetLabelsInterface:
+    class: Akeneo\Platform\Syndication\Infrastructure\Query\AssetManager\FindAssetLabels
+    arguments:
+      - '@akeneo_assetmanager.infrastructure.persistence.query.enrich.find_asset_label_translation_public_api'
+
+  Akeneo\Platform\Syndication\Infrastructure\Query\AssetManager\FindMediaFileInfoCollection:
+    arguments:
+      - '@akeneo_assetmanager.infrastructure.persistence.query.enrich.get_main_media_file_info_collection_public_api'
+
+  Akeneo\Platform\Syndication\Domain\Query\FindAssetMainMediaDataInterface:
+    class: Akeneo\Platform\Syndication\Infrastructure\Query\AssetManager\FindAssetMainMediaData
+    arguments:
+      - '@akeneo_assetmanager.infrastructure.persistence.query.platform.get_asset_main_media_data_public_api'
+
+  Akeneo\Platform\Syndication\Domain\Query\AssetCollection\FindAssetMainMediaAttributeInterface:
+    class: Akeneo\Platform\Syndication\Infrastructure\Query\AssetManager\FindAssetMainMediaAttribute
+    arguments:
+      - '@akeneo_assetmanager.infrastructure.persistence.query.platform.get_attribute_as_main_media_public_api'

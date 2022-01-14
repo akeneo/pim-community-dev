@@ -1,0 +1,30 @@
+services:
+  Akeneo\Platform\Syndication\Domain\Query\FindRecordLabelsInterface:
+    class: Akeneo\Platform\Syndication\Infrastructure\Query\ReferenceEntity\FindRecordLabels
+    arguments:
+      - '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_labels_public_api'
+
+  Akeneo\Platform\Syndication\Application\MapValues\SelectionApplier\ReferenceEntity\ReferenceEntityLabelSelectionApplier:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\Syndication\Domain\Query\FindRecordLabelsInterface'
+    tags:
+      - { name: akeneo.syndication.selection_applier }
+
+
+  Akeneo\Platform\Syndication\Application\MapValues\SelectionApplier\ReferenceEntity\ReferenceEntityCodeSelectionApplier:
+    public: true
+    tags:
+      - { name: akeneo.syndication.selection_applier }
+
+  Akeneo\Platform\Syndication\Application\MapValues\SelectionApplier\ReferenceEntityCollection\ReferenceEntityCollectionCodeSelectionApplier:
+    public: true
+    tags:
+      - { name: akeneo.syndication.selection_applier }
+
+  Akeneo\Platform\Syndication\Application\MapValues\SelectionApplier\ReferenceEntityCollection\ReferenceEntityCollectionLabelSelectionApplier:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\Syndication\Domain\Query\FindRecordLabelsInterface'
+    tags:
+      - { name: akeneo.syndication.selection_applier }
