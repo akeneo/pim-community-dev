@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@akeneo-pim-community/shared": "link:../../../../../../front-packages/shared",
+    "@akeneo-pim-community/shared": "*",
     "akeneo-design-system": "*",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
@@ -15,7 +15,11 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "testing-library/no-unnecessary-act": "off",
+      "testing-library/prefer-presence-queries": "off"
+    }
   },
   "browserslist": {
     "production": [
@@ -43,6 +47,7 @@
     "@types/react-dom": "^16.9.12",
     "@types/react-router-dom": "^5.1.7",
     "@types/styled-components": "^5.1.1",
+    "eslint-config-react-app": "^7.0.0",
     "prettier": "^2.1.1"
   },
   "proxy": "http://localhost:8080",
@@ -80,7 +85,7 @@
     "translation:build": "cp ../../../../../../public/js/translation/en_US.js ./src/translations.json",
     "route:build": "cp ../../../../../../public/js/fos_js_routes.json ./src/routes.json",
     "packages:build": "yarn --cwd=$npm_package_config_front_packages_path/akeneo-design-system run lib:build && yarn --cwd=$npm_package_config_front_packages_path/shared run lib:build",
-    "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{ts,tsx}\"",
-    "lint:check": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\" && yarn eslint --max-warnings 0 --ext .tsx,.ts ./src"
+    "lint": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\" && eslint --max-warnings 0 --ext .tsx,.ts ./src",
+    "lint:fix": "prettier --write --config .prettierrc.json --parser typescript --loglevel=warn \"./src/**/*.{ts,tsx}\" && eslint --max-warnings 0 --ext .tsx,.ts ./src --fix"
   }
 }

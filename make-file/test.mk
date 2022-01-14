@@ -37,7 +37,7 @@ lint-back:
 
 .PHONY: lint-front
 lint-front:
-	$(YARN_RUN) lint
+	$(YARN_RUN) workspaces foreach --parallel --verbose run prettier:check
 	$(MAKE) connectivity-connection-lint-front
 
 ### Unit tests

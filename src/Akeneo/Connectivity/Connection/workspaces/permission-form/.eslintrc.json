@@ -35,7 +35,8 @@
         "react-hooks/exhaustive-deps": "warn",
         "react-hooks/rules-of-hooks": "error",
         "react/display-name": "off",
-        "react/prop-types": "off"
+        "react/prop-types": "off",
+        "@typescript-eslint/no-unsafe-argument": "off"
     },
     "settings": {
         "react": {

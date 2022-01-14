@@ -4,10 +4,17 @@
     "license": "OSL-3.0",
     "main": "src/index.ts",
     "scripts": {
-        "eslint": "eslint --config .eslintrc.json src/**/*.{ts,tsx}",
-        "prettier": "prettier --check --config .prettierrc.json src/**/*.{ts,tsx}",
-        "prettier:fix": "prettier --config .prettierrc.json src/**/*.{ts,tsx}",
+        "lint": "prettier --check --config .prettierrc.json src/**/*.{ts,tsx} && eslint --config .eslintrc.json src/**/*.{ts,tsx}",
+        "lint:fix": "prettier --write --config .prettierrc.json --loglevel=warn src/**/*.{ts,tsx} && eslint --config .eslintrc.json src/**/*.{ts,tsx} --fix",
         "jest": "jest --config jest.config.js"
     },
-    "private": true
+    "private": true,
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^5.9.1",
+        "@typescript-eslint/parser": "^5.9.1",
+        "eslint": "^7.11.0",
+        "eslint-plugin-react": "^7.28.0",
+        "eslint-plugin-react-hooks": "^4.3.0",
+        "prettier": "^2.5.1"
+    }
 }

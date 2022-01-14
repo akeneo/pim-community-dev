@@ -23,7 +23,7 @@
     "prettier": "^2.2.1"
   },
   "dependencies": {
-    "@akeneo-pim-community/shared": "link:../shared",
+    "@akeneo-pim-community/shared": "*",
     "akeneo-design-system": "*",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
@@ -40,8 +40,8 @@
     "translation:build": "cp ../../public/js/translation/en_US.js ./src/translations.json",
     "route:build": "cp ../../public/js/fos_js_routes.json ./src/routes.json",
     "packages:build": "yarn --cwd=../akeneo-design-system run lib:build && yarn --cwd=../shared run lib:build",
-    "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{ts,tsx}\"",
-    "lint:check": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\""
+    "lint": "prettier --check --config .prettierrc.json --parser typescript \"./src/**/*.{ts,tsx}\"",
+    "lint:fix": "prettier --write --config .prettierrc.json --parser typescript --loglevel=warn \"./src/**/*.{ts,tsx}\""
   },
   "eslintConfig": {
     "extends": [
