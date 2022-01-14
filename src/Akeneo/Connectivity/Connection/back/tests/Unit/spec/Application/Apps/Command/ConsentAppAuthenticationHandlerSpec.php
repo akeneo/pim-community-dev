@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthentica
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthenticationException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\CreateUserConsentQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
@@ -140,7 +141,7 @@ class ConsentAppAuthenticationHandlerSpec extends ObjectBehavior
 
         $validator->validate($consentAppAuthenticationCommand)->willReturn($constraintViolationList);
 
-        $this->shouldThrow(new \InvalidArgumentException($constraintViolation->getMessage()))->during(
+        $this->shouldThrow(new InvalidAppAuthenticationException($constraintViolationList->getWrappedObject()))->during(
             'handle',
             [$consentAppAuthenticationCommand]
         );
