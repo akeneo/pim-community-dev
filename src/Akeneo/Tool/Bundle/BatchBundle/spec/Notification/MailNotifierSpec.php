@@ -27,8 +27,8 @@ class MailNotifierSpec extends ObjectBehavior
 
     function it_notifies(JobExecution $jobExecution, $mailer)
     {
-        $mailer->notifyByEmails(
-            ['destEmail'],
+        $mailer->notifyByEmail(
+            'destEmail',
             'Job has been executed',
             Argument::any(),
             Argument::any()
@@ -39,7 +39,7 @@ class MailNotifierSpec extends ObjectBehavior
 
     function it_should_log_error_if_notification_failed(JobExecution $jobExecution, $mailer, $logger)
     {
-        $mailer->notifyByEmails(
+        $mailer->notifyByEmail(
             Argument::any(),
             Argument::any(),
             Argument::any(),
