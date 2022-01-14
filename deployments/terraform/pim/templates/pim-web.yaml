@@ -26,9 +26,29 @@ spec:
         {{- include "pim.standardLabels" . | indent 8 }}
         {{- include "pim.extraLabels" . | indent 8 }}
       annotations:
-        ad.datadoghq.com/fpm.check_names: '["php_fpm"]'
-        ad.datadoghq.com/fpm.init_configs: '[{}]'
-        ad.datadoghq.com/fpm.instances: '[[{"status_url":"http://%%host%%:9000/status", "use_fastcgi": true}]]'
+        ad.datadoghq.com/fpm.check_names: '["php_fpm", "http_check"]'
+        ad.datadoghq.com/fpm.init_configs: '[{},{}]'
+        ad.datadoghq.com/fpm.instances: |
+          [
+            [{
+              "status_url":"http://%%host%%:9000/status",
+              "use_fastcgi": true
+            }],
+            [{
+              "name": "uptime_check",
+              "url": "https://{{ .Values.global.extraLabels.instance_dns_record }}.{{ .Values.global.extraLabels.instance_dns_zone }}:443/monitoring/services_status",
+              "timeout": 30,
+              "headers": {"X-Auth-Token": "{{ .Values.pim.monitoring.authenticationToken }}"},
+              "min_collection_interval": 60,
+              "tls_verify": "true",
+              "check_hostname": "true",
+              "ssl_server_name": "*.{{ .Values.global.extraLabels.instance_dns_zone }}",
+              "check_certificate_expiration": "true",
+              "include_content": "true",
+              "days_warning": 30,
+              "days_critical": 7
+            }]
+          ]
         ad.datadoghq.com/fpm.logs: '[{ "service": "pim-enterprise-dev", "source": "pim-enterprise-dev", "log_processing_rules": [{ "type": "exclude_at_match","name": "exclude_php_status_logs", "pattern" : "uri\":\"/status\""},{ "type":"exclude_at_match", "name": "exclude_php_status_logs", "pattern" : "path_info\":\"[^\"]*(/notification/count_unread)\""},{ "type":"exclude_at_match", "name": "exclude_php_status_logs", "pattern" : "path_info\":\"[^\"]*(/monitoring/services_status)\".*\"level\":\"[0-2][0-9]{2}\""}]}]'
         ad.datadoghq.com/httpd.logs: '[{ "service": "httpd", "source": "httpd", "log_processing_rules": [{ "type": "exclude_at_match", "name": "exclude_php_status_logs", "pattern" : "\"(/status|/notification/count_unread)\""},{ "type": "exclude_at_match", "name": "exclude_valid_monitor_status_logs", "pattern" : "\"(/monitoring/services_status)\".*\"response_code\":\"2..\""}]}]'
         checksum/env-config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
