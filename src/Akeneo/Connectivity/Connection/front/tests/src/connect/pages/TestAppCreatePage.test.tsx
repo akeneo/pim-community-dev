@@ -41,7 +41,7 @@ jest.mock('@src/connect/components/TestApp/CreateTestAppForm', () => ({
 
 jest.mock('@src/connect/components/TestApp/CreateTestAppCredentials', () => ({
     ...jest.requireActual('@src/connect/components/TestApp/CreateTestAppCredentials'),
-    CreateTestAppCredentials: jest.fn(({onClose, credentials, setCredentials}) => null),
+    CreateTestAppCredentials: jest.fn(({credentials}) => null),
 }));
 
 test('it renders the form without credentials and display them when form is submitted', () => {
@@ -58,5 +58,13 @@ test('it renders the form without credentials and display them when form is subm
         userEvent.click(screen.getByTestId('submit-form'));
     });
 
-    expect(CreateTestAppCredentials).toHaveBeenCalled();
+    expect(CreateTestAppCredentials).toHaveBeenCalledWith(
+        expect.objectContaining({
+            credentials: {
+                clientId: 'clientId',
+                clientSecret: 'clientSecret',
+            },
+        }),
+        {}
+    );
 });
