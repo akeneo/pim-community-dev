@@ -69,3 +69,19 @@ category.permissions:
   no_access_to_products: U hebt in geen enkele boom toegang tot producten. Neem contact op met uw beheerder
   apply_on_children.label: Wijzigingen toepassen op kinderen
   apply_on_children.help: Bestaande machtigingen voor onderliggende elementen worden behouden
+pim_permissions:
+  widget:
+    entity:
+      attribute_group:
+        label: Attribuutgroepen
+        help: Als u wilt dat uw app al uw productgegevens kan aanpassen, kiest u de optie Alle in het niveau Bewerken. Zo niet, selecteer dan alleen de attribuutgroepen die uw app kan zien of wijzigen afhankelijk van het niveau.
+      category:
+        label: Categoriebomen
+        help: Als u wilt dat uw app uw producten kan aanpassen zonder PIM-voorstellen te gebruiken, kies dan het niveau Eigen. Kies anders het niveau Bewerken.
+      locale:
+        label: Talen
+        help: Als u wilt dat uw app al uw productgegevens kan bewerken, kiest u de optie Alle in het niveau Bewerken. Zo niet, selecteer dan alleen de talen die uw app kan zien of wijzigen afhankelijk van het niveau.
+      not_granted_warning: Deze sectie is alleen toegankelijk voor gebruikers met de {{ permission }}. Neem contact op met uw beheerder. Met de juiste machtiging kunt u opnieuw naar de app-instellingen gaan om ze te bewerken.
+pimee_enrich.acl.category.edit_permissions: Machtigingen voor categorieën beheren
+pimee_enrich.acl.attribute_group.edit_permissions: Machtigingen voor attribuutgroep beheren
+pimee_enrich.acl.locale.edit_permissions: Lokale machtigingen beheren
