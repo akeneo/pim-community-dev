@@ -3,8 +3,8 @@ import {SectionTitle} from 'akeneo-design-system';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
 import {ConnectedAppCard} from './ConnectedAppCard';
 import {useTranslate} from '../../../shared/translate';
-import {useFeatureFlags} from '../../../shared/feature-flags';
 import {CardGrid} from '../Section';
+import {useDeveloperMode} from '../../hooks/use-developer-mode';
 
 type Props = {
     connectedTestApps: ConnectedApp[];
@@ -12,9 +12,9 @@ type Props = {
 
 export const ConnectedTestAppList: FC<Props> = ({connectedTestApps}) => {
     const translate = useTranslate();
-    const featureFlag = useFeatureFlags();
+    const isDeveloperModeEnabled = useDeveloperMode();
 
-    if (!featureFlag.isEnabled('app_developer_mode') || connectedTestApps.length === 0) {
+    if (!isDeveloperModeEnabled || connectedTestApps.length === 0) {
         return null;
     }
 

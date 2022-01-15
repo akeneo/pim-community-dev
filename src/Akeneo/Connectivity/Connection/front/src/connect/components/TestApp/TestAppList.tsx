@@ -2,7 +2,6 @@ import React, {FC} from 'react';
 import {TestApp, TestApps} from '../../../model/app';
 import {Section} from '../Section';
 import {useTranslate} from '../../../shared/translate';
-import {useFeatureFlags} from '../../../shared/feature-flags';
 import {TestAppCard} from './TestAppCard';
 import {ActivateAppButton} from '../ActivateAppButton';
 import {useDeveloperMode} from '../../hooks/use-developer-mode';
@@ -13,10 +12,9 @@ interface Props {
 
 export const TestAppList: FC<Props> = ({testApps}) => {
     const translate = useTranslate();
-    const featureFlag = useFeatureFlags();
     const isDeveloperModeEnabled = useDeveloperMode();
 
-    if (!featureFlag.isEnabled('app_developer_mode') || testApps.total <= 0) {
+    if (!isDeveloperModeEnabled || testApps.total <= 0) {
         return null;
     }
 

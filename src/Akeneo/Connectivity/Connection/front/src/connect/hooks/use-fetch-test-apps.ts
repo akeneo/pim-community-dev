@@ -1,10 +1,10 @@
 import {useRoute} from '../../shared/router';
 import {useCallback} from 'react';
 import {TestApps} from '../../model/app';
-import {useFeatureFlags} from '../../shared/feature-flags';
+import {useDeveloperMode} from './use-developer-mode';
 
 export const useFetchTestApps = (): (() => Promise<TestApps>) => {
-    const featureFlag = useFeatureFlags();
+    const isDeveloperModeEnabled = useDeveloperMode();
     const url = useRoute('akeneo_connectivity_connection_marketplace_rest_get_all_test_apps');
 
     const fetchTestApps = useCallback(async () => {
@@ -19,7 +19,7 @@ export const useFetchTestApps = (): (() => Promise<TestApps>) => {
         return response.json();
     }, [url]);
 
-    if (!featureFlag.isEnabled('app_developer_mode')) {
+    if (!isDeveloperModeEnabled) {
         return () =>
             Promise.resolve({
                 total: 0,
