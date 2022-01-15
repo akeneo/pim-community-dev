@@ -1,6 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks';
 import {mockFetchResponses} from '../../../test-utils';
-import {useFetchTestApps} from '@src/connect/hooks/use-fetch-test-apps';
+import {useTestApps} from '@src/connect/hooks/use-test-apps';
 import fetchMock from 'jest-fetch-mock';
 import {useFeatureFlags} from '@src/shared/feature-flags';
 
@@ -27,14 +27,7 @@ const testApps = {
     ],
 };
 
-jest.mock('@src/shared/feature-flags/use-feature-flags', () => ({
-    ...jest.requireActual('@src/shared/feature-flags/use-feature-flags'),
-    useFeatureFlags: jest.fn(() => {
-        return {
-            isEnabled: () => true,
-        };
-    }),
-}));
+jest.mock('@src/shared/feature-flags/use-feature-flags');
 
 beforeEach(() => {
     jest.clearAllMocks();
@@ -42,13 +35,22 @@ beforeEach(() => {
 });
 
 test('it returns loading status and testApps values', async () => {
+    (useFeatureFlags as jest.Mock).mockImplementation(() => ({
+        isEnabled: (feature: string) => {
+            switch (feature) {
+                case 'app_developer_mode':
+                    return true;
+            }
+        },
+    }));
+
     mockFetchResponses({
         akeneo_connectivity_connection_marketplace_rest_get_all_test_apps: {
             json: testApps,
         },
     });
 
-    const {result, waitForNextUpdate} = renderHook(() => useFetchTestApps());
+    const {result, waitForNextUpdate} = renderHook(() => useTestApps());
 
     expect(result.current).toStrictEqual({
         isLoading: true,
@@ -64,6 +66,15 @@ test('it returns loading status and testApps values', async () => {
 });
 
 test('it returns loading status and empty values on fetch error ', async () => {
+    (useFeatureFlags as jest.Mock).mockImplementation(() => ({
+        isEnabled: (feature: string) => {
+            switch (feature) {
+                case 'app_developer_mode':
+                    return true;
+            }
+        },
+    }));
+
     mockFetchResponses({
         akeneo_connectivity_connection_marketplace_rest_get_all_test_apps: {
             reject: true,
@@ -71,7 +82,7 @@ test('it returns loading status and empty values on fetch error ', async () => {
         },
     });
 
-    const {result, waitForNextUpdate} = renderHook(() => useFetchTestApps());
+    const {result, waitForNextUpdate} = renderHook(() => useTestApps());
 
     expect(result.current).toStrictEqual({
         isLoading: true,
@@ -86,10 +97,24 @@ test('it returns loading status and empty values on fetch error ', async () => {
     });
 });
 
-test('it returns loading status and empty values with feature flag disabled', () => {
-    (useFeatureFlags as jest.Mock).mockImplementation(() => ({isEnabled: () => false}));
+test('it returns loading status and empty values with feature flag disabled', async () => {
+    (useFeatureFlags as jest.Mock).mockImplementation(() => ({
+        isEnabled: (feature: string) => {
+            switch (feature) {
+                case 'app_developer_mode':
+                    return false;
+            }
+        },
+    }));
 
-    const {result} = renderHook(() => useFetchTestApps());
+    const {result, waitForNextUpdate} = renderHook(() => useTestApps());
+
+    expect(result.current).toStrictEqual({
+        isLoading: true,
+        testApps: emptyTestApps,
+    });
+
+    await waitForNextUpdate();
 
     expect(result.current).toStrictEqual({
         isLoading: false,
