@@ -15,6 +15,7 @@ import {useSaveConnectedAppMonitoringSettings} from '../../hooks/use-save-connec
 import {useFetchConnectedAppMonitoringSettings} from '../../hooks/use-fetch-connected-app-monitoring-settings';
 import {MonitoringSettings} from '../../../model/Apps/monitoring-settings';
 import {ConnectedAppErrorMonitoring} from './ErrorMonitoring/ConnectedAppErrorMonitoring';
+import {DeveloperModeTag} from '../DeveloperModeTag';
 
 type Props = {
     connectedApp: ConnectedApp;
@@ -160,6 +161,8 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
         [monitoringSettings, setMonitoringSettings, setHasUnsavedChanges]
     );
 
+    const tag = connectedApp.is_test_app ? <DeveloperModeTag /> : null;
+
     return (
         <>
             <PageHeader
@@ -180,6 +183,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                 state={<FormState />}
                 imageSrc={connectedApp.logo ?? undefined}
                 imageIllustration={connectedApp.logo ? undefined : <AppIllustration />}
+                tag={tag}
             >
                 {connectedApp.name}
             </PageHeader>
