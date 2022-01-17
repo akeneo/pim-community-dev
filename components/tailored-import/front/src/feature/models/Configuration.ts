@@ -1,16 +1,21 @@
 import {uuid} from 'akeneo-design-system';
+import {DataMapping} from './DataMapping';
+
+type ColumnIdentifier = string;
 
 type Column = {
-  uuid: string;
+  uuid: ColumnIdentifier;
   index: number;
   label: string;
 };
 
 type StructureConfiguration = {
   columns: Column[];
+  dataMappings: DataMapping[];
 };
 
-const generateColumns = (sheetContent: string): Column[] => {
+const MAX_COLUMN_COUNT = 500;
+const extractColumnLabels = (sheetContent: string): string[] => {
   const rows = sheetContent.split('\n');
 
   const firstRow = rows[0];
@@ -18,9 +23,12 @@ const generateColumns = (sheetContent: string): Column[] => {
     return [];
   }
 
-  const columnLabels = firstRow.split('\t');
+  return firstRow.split('\t');
+};
 
-  return columnLabels.map((label, index) => ({
+const generateColumns = (sheetContent: string): Column[] => {
+  const columnLabels = extractColumnLabels(sheetContent);
+  return columnLabels.slice(0, MAX_COLUMN_COUNT).map((label, index) => ({
     uuid: uuid(),
     index,
     label,
@@ -44,5 +52,5 @@ const generateColumnName = ({index, label}: Column): string => {
   return `${label} (${columnLetter})`;
 };
 
-export type {StructureConfiguration, Column};
-export {generateColumns, generateColumnName};
+export type {StructureConfiguration, Column, ColumnIdentifier};
+export {extractColumnLabels, generateColumns, generateColumnName, MAX_COLUMN_COUNT};

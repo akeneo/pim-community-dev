@@ -1,8 +1,8 @@
 import React from 'react';
 import {Button, useBooleanState} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {InitializeColumnsModal} from './components';
-import {Column, StructureConfiguration} from './models';
+import {InitializeColumnsModal, AddDataMappingDropdown} from './components';
+import {Column, DataMapping, MAX_DATA_MAPPING_COUNT, StructureConfiguration} from './models';
 import {SourceDropdown} from './components';
 
 type ImportStructureTabProps = {
@@ -22,6 +22,15 @@ const ImportStructureTab = ({structureConfiguration, onStructureConfigurationCha
   /* istanbul ignore next */
   const handleColumnSelected = (column: Column): void => {};
 
+  const handleDataMappingAdded = (dataMapping: DataMapping): void => {
+    onStructureConfigurationChange({
+      ...structureConfiguration,
+      dataMappings: [...structureConfiguration.dataMappings, dataMapping],
+    });
+  };
+
+  const canAddDataMapping = MAX_DATA_MAPPING_COUNT > structureConfiguration.dataMappings.length;
+
   return (
     <>
       <Button level="primary" onClick={openInitModal}>
@@ -29,6 +38,7 @@ const ImportStructureTab = ({structureConfiguration, onStructureConfigurationCha
       </Button>
       {isInitModalOpen && <InitializeColumnsModal onConfirm={handleConfirm} onCancel={closeInitModal} />}
       <SourceDropdown columns={structureConfiguration.columns} onColumnSelected={handleColumnSelected} />
+      <AddDataMappingDropdown canAddDataMapping={canAddDataMapping} onDataMappingAdded={handleDataMappingAdded} />
     </>
   );
 };

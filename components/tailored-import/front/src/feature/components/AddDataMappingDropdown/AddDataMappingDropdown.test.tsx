@@ -1,0 +1,123 @@
+import React from 'react';
+import {screen, act} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import {renderWithProviders} from '@akeneo-pim-community/shared';
+import {AddDataMappingDropdown} from './AddDataMappingDropdown';
+
+const mockUuid = 'd1249682-720e-11ec-90d6-0242ac120003';
+jest.mock('akeneo-design-system', () => ({
+  ...jest.requireActual('akeneo-design-system'),
+  uuid: () => mockUuid,
+}));
+
+jest.mock('../../hooks/useAvailableTargetsFetcher', () => ({
+  useAvailableTargetsFetcher: () => () => ({
+    results: [
+      {
+        code: 'system',
+        label: 'System',
+        children: [
+          {
+            code: 'category',
+            label: 'Categories',
+            type: 'property',
+          },
+          {
+            code: 'enabled',
+            label: 'Activé',
+            type: 'property',
+          },
+        ],
+      },
+      {
+        code: 'marketing',
+        label: 'Marketing',
+        children: [
+          {
+            code: 'name',
+            label: 'Nom',
+            type: 'attribute',
+          },
+          {
+            code: 'description',
+            label: 'Description',
+            type: 'attribute',
+          },
+        ],
+      },
+    ],
+  }),
+}));
+
+test('it add data mapping with attribute target', async () => {
+  const handleDataMappingAdded = jest.fn();
+
+  renderWithProviders(<AddDataMappingDropdown canAddDataMapping={true} onDataMappingAdded={handleDataMappingAdded} />);
+  await act(async () => {
+    userEvent.click(screen.getByText('akeneo.tailored_import.add_data_mapping.target.add'));
+  });
+
+  expect(screen.getByText('System')).toBeInTheDocument();
+  expect(screen.getByText('Categories')).toBeInTheDocument();
+  expect(screen.getByText('Activé')).toBeInTheDocument();
+  expect(screen.getByText('Marketing')).toBeInTheDocument();
+  expect(screen.getByText('Nom')).toBeInTheDocument();
+  expect(screen.getByText('Description')).toBeInTheDocument();
+
+  userEvent.click(screen.getByText('Nom'));
+  expect(handleDataMappingAdded).lastCalledWith({
+    uuid: mockUuid,
+    target: {
+      code: 'name',
+      type: 'attribute',
+      action: 'set',
+      ifEmpty: 'skip',
+      onError: 'skipLine',
+      channel: null,
+      locale: null,
+    },
+    sources: [],
+    operations: [],
+    sampleData: [],
+  });
+});
+
+test('it add data mapping with property target', async () => {
+  const handleDataMappingAdded = jest.fn();
+
+  renderWithProviders(<AddDataMappingDropdown canAddDataMapping={true} onDataMappingAdded={handleDataMappingAdded} />);
+  await act(async () => {
+    userEvent.click(screen.getByText('akeneo.tailored_import.add_data_mapping.target.add'));
+  });
+
+  userEvent.click(screen.getByText('Categories'));
+  expect(handleDataMappingAdded).lastCalledWith({
+    uuid: mockUuid,
+    target: {
+      code: 'category',
+      type: 'property',
+      action: 'set',
+      ifEmpty: 'skip',
+      onError: 'skipLine',
+    },
+    sources: [],
+    operations: [],
+    sampleData: [],
+  });
+});
+
+test('it cannot add a data mapping when the limit is reached', () => {
+  const handleDataMappingAdded = jest.fn();
+
+  renderWithProviders(<AddDataMappingDropdown canAddDataMapping={false} onDataMappingAdded={handleDataMappingAdded} />);
+
+  const addDataMappingButton = screen.getByText('akeneo.tailored_import.add_data_mapping.target.add');
+  expect(addDataMappingButton).toHaveAttribute('disabled');
+  expect(addDataMappingButton).toHaveAttribute(
+    'title',
+    'akeneo.tailored_import.validation.data_mappings.max_data_mapping_count_reached'
+  );
+
+  userEvent.click(addDataMappingButton);
+  expect(handleDataMappingAdded).not.toHaveBeenCalled();
+});
