@@ -1,28 +1,17 @@
 import {useRoute} from '../../shared/router';
-import {useState, useEffect, useCallback} from 'react';
+import {useCallback} from 'react';
 import {TestApps} from '../../model/app';
-import {useFeatureFlags} from '../../shared/feature-flags';
+import {useDeveloperMode} from './use-developer-mode';
 
-interface FetchTestApps {
-    isLoading: boolean;
-    testApps: TestApps;
-}
-
-const defaultTestAppsState = {total: 0, apps: []};
-
-export const useFetchTestApps = (): FetchTestApps => {
-    const featureFlag = useFeatureFlags();
+export const useFetchTestApps = (): (() => Promise<TestApps>) => {
+    const isDeveloperModeEnabled = useDeveloperMode();
     const url = useRoute('akeneo_connectivity_connection_marketplace_rest_get_all_test_apps');
 
-    const [testApps, setTestApps] = useState<TestApps>(defaultTestAppsState);
-    const [isLoading, setLoading] = useState<boolean>(true);
-
-    const fetchCallback = useCallback(async () => {
+    const fetchTestApps = useCallback(async () => {
         const response = await fetch(url, {
             method: 'GET',
             headers: [['X-Requested-With', 'XMLHttpRequest']],
         });
-
         if (!response.ok) {
             return Promise.reject(`${response.status} ${response.statusText}`);
         }
@@ -30,17 +19,13 @@ export const useFetchTestApps = (): FetchTestApps => {
         return response.json();
     }, [url]);
 
-    useEffect(() => {
-        if (!featureFlag.isEnabled('app_developer_mode')) {
-            setLoading(false);
-            return;
-        }
+    if (!isDeveloperModeEnabled) {
+        return () =>
+            Promise.resolve({
+                total: 0,
+                apps: [],
+            });
+    }
 
-        fetchCallback()
-            .then(setTestApps)
-            .catch(() => setTestApps(defaultTestAppsState))
-            .finally(() => setLoading(false));
-    }, []);
-
-    return {isLoading, testApps};
+    return fetchTestApps;
 };

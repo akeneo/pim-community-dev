@@ -1,7 +1,7 @@
 import React, {FC, ReactNode} from 'react';
 import styled from 'styled-components';
 import {TestApp} from '../../../model/app';
-import {AppIllustration, getColor, getFontSize, DeleteIcon} from 'akeneo-design-system';
+import {AppIllustration, getColor, getFontSize, DeleteIcon, IconButton} from 'akeneo-design-system';
 import {useTranslate} from '../../../shared/translate';
 import {useHistory} from 'react-router';
 import {useRouter} from '../../../shared/router/use-router';
@@ -53,10 +53,6 @@ const Author = styled.h3`
     text-overflow: ellipsis;
 `;
 
-const DeleteButton = styled(DeleteIcon)`
-    grid-area: delete;
-`;
-
 const Actions = styled.div`
     grid-area: actions;
     justify-self: end;
@@ -100,7 +96,13 @@ export const TestAppCard: FC<Props> = ({testApp, additionalActions}) => {
                     {translate('akeneo_connectivity.connection.connect.marketplace.card.developed_by', {author})}
                 </Author>
             </TextInformation>
-            <DeleteButton onClick={onDelete} />
+            <IconButton
+                ghost='borderless'
+                icon={<DeleteIcon />}
+                level='tertiary'
+                onClick={onDelete}
+                title={translate('pim_common.delete')}
+            />
             <Actions>{additionalActions}</Actions>
         </CardContainer>
     );

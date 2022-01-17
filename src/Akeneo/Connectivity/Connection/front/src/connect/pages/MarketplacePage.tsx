@@ -14,7 +14,7 @@ import {MarketplaceIsLoading} from '../components/MarketplaceIsLoading';
 import {useFetchApps} from '../hooks/use-fetch-apps';
 import {useFeatureFlags} from '../../shared/feature-flags';
 import {DeveloperModeTag} from '../components/DeveloperModeTag';
-import {useFetchTestApps} from '../hooks/use-fetch-test-apps';
+import {useTestApps} from '../hooks/use-test-apps';
 import {useDeveloperMode} from '../hooks/use-developer-mode';
 
 export const MarketplacePage: FC = () => {
@@ -30,7 +30,7 @@ export const MarketplacePage: FC = () => {
     const [userProfile, setUserProfile] = useState<string | null>(null);
     const [extensions, setExtensions] = useState<Extensions | null | false>(null);
     const [apps, setApps] = useState<Apps | null | false>(null);
-    const {isLoading: isTestAppsLoading, testApps} = useFetchTestApps();
+    const {isLoading: isTestAppsLoading, testApps} = useTestApps();
 
     useEffect(() => {
         const profile = user.get<string | null>('profile');

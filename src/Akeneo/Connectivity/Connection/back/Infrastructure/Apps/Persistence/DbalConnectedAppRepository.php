@@ -84,12 +84,24 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
     public function findOneById(string $appId): ?ConnectedApp
     {
         $selectQuery = <<<SQL
-        SELECT id, name, logo, author, partner,categories, scopes, certified, connection_code, user_group_name
-        FROM akeneo_connectivity_connected_app
+        SELECT
+            connected_app.id,
+            connected_app.name,
+            connected_app.logo,
+            connected_app.author,
+            connected_app.partner,
+            connected_app.categories,
+            connected_app.scopes,
+            connected_app.certified,
+            connected_app.connection_code,
+            connected_app.user_group_name,
+            IF(test_app.client_id IS NULL, FALSE, TRUE) AS is_test_app
+        FROM akeneo_connectivity_connected_app connected_app
+        LEFT JOIN akeneo_connectivity_test_app test_app ON test_app.client_id = connected_app.id
         WHERE id = :id
         SQL;
 
-        $dataRow = $this->dbalConnection->executeQuery($selectQuery, ['id' => $appId])->fetch();
+        $dataRow = $this->dbalConnection->executeQuery($selectQuery, ['id' => $appId])->fetchAssociative();
 
         return $dataRow ? $this->denormalizeRow($dataRow) : null;
     }
@@ -97,12 +109,24 @@ class DbalConnectedAppRepository implements ConnectedAppRepositoryInterface
     public function findOneByConnectionCode(string $connectionCode): ?ConnectedApp
     {
         $selectQuery = <<<SQL
-        SELECT id, name, logo, author, partner,categories, scopes, certified, connection_code, user_group_name
-        FROM akeneo_connectivity_connected_app
+        SELECT
+            connected_app.id,
+            connected_app.name,
+            connected_app.logo,
+            connected_app.author,
+            connected_app.partner,
+            connected_app.categories,
+            connected_app.scopes,
+            connected_app.certified,
+            connected_app.connection_code,
+            connected_app.user_group_name,
+            IF(test_app.client_id IS NULL, FALSE, TRUE) AS is_test_app
+        FROM akeneo_connectivity_connected_app connected_app
+        LEFT JOIN akeneo_connectivity_test_app test_app ON test_app.client_id = connected_app.id
         WHERE connection_code = :connectionCode
         SQL;
 
-        $dataRow = $this->dbalConnection->executeQuery($selectQuery, ['connectionCode' => $connectionCode])->fetch();
+        $dataRow = $this->dbalConnection->executeQuery($selectQuery, ['connectionCode' => $connectionCode])->fetchAssociative();
 
         return $dataRow ? $this->denormalizeRow($dataRow) : null;
     }

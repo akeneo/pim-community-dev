@@ -97,6 +97,60 @@ class DbalConnectedAppRepositoryIntegration extends TestCase
         Assert::assertEquals(serialize($createdApp), serialize($retrievedApp));
     }
 
+    public function test_it_can_retrieve_a_connected_app_by_id_related_to_a_test_app(): void
+    {
+        $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::OTHER, false);
+        $this->userGroupLoader->create(['name' => 'app_123456abcdef']);
+
+        $createdApp = new ConnectedApp(
+            '86d603e6-ec67-45fa-bd79-aa8b2f649e12',
+            'my app',
+            ['foo', 'bar'],
+            'bynder',
+            'app logo',
+            'app author',
+            'app_123456abcdef',
+            ['e-commerce'],
+            false,
+            'akeneo',
+            true
+        );
+        $this->repository->create($createdApp);
+
+        $this->createTestApp('86d603e6-ec67-45fa-bd79-aa8b2f649e12');
+
+        $retrievedApp = $this->repository->findOneById('86d603e6-ec67-45fa-bd79-aa8b2f649e12');
+
+        Assert::assertEquals(serialize($createdApp), serialize($retrievedApp));
+    }
+
+    public function test_it_can_retrieve_a_connected_app_by_connection_code_related_to_a_test_app(): void
+    {
+        $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::OTHER, false);
+        $this->userGroupLoader->create(['name' => 'app_123456abcdef']);
+
+        $createdApp = new ConnectedApp(
+            '86d603e6-ec67-45fa-bd79-aa8b2f649e12',
+            'my app',
+            ['foo', 'bar'],
+            'bynder',
+            'app logo',
+            'app author',
+            'app_123456abcdef',
+            ['e-commerce'],
+            false,
+            'akeneo',
+            true
+        );
+        $this->repository->create($createdApp);
+
+        $this->createTestApp('86d603e6-ec67-45fa-bd79-aa8b2f649e12');
+
+        $retrievedApp = $this->repository->findOneByConnectionCode('bynder');
+
+        Assert::assertEquals(serialize($createdApp), serialize($retrievedApp));
+    }
+
     public function test_it_can_retrieve_an_app_by_connection_code(): void
     {
         $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::OTHER, false);
@@ -185,6 +239,18 @@ SQL;
         ]);
 
         return $row ?: null;
+    }
+
+    private function createTestApp(string $id): void
+    {
+        $this->connection->insert('akeneo_connectivity_test_app', [
+            'client_id' => $id,
+            'client_secret' => 'secret',
+            'name' => 'App Name',
+            'activate_url' => 'http://shopware.example.com/activate',
+            'callback_url' => 'http://shopware.example.com/callback',
+            'user_id' => null,
+        ]);
     }
 
     protected function getConfiguration(): Configuration
