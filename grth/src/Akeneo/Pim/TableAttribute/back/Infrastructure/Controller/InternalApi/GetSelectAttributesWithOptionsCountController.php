@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Controller\InternalApi;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetOptionsCountAndTranslationsByAttribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetOptionsCountAndTranslationByAttribute;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +25,7 @@ final class GetSelectAttributesWithOptionsCountController
     private const PAGE_SIZE = 25;
 
     public function __construct(
-        private GetOptionsCountAndTranslationsByAttribute $getOptionsCountAndTranslationsByAttribute
+        private GetOptionsCountAndTranslationByAttribute $getOptionsCountAndTranslationByAttribute
     ) {
     }
 
@@ -44,7 +44,7 @@ final class GetSelectAttributesWithOptionsCountController
         $page = (int) $request->get('page', 1);
         $search = $request->get('search', null);
 
-        $selectAttributes = $this->getOptionsCountAndTranslationsByAttribute->search(
+        $selectAttributes = $this->getOptionsCountAndTranslationByAttribute->search(
             $locale,
             $page,
             $limit,
