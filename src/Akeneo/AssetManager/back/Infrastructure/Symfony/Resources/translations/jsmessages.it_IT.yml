@@ -565,6 +565,8 @@ akeneo_job_process_tracker:
     asset_manager_execute_naming_convention: Esegui convenzione di denominazione per famiglia di asset
     asset_manager_link_assets_to_products: Collega asset ai prodotti
     asset_manager_compute_transformations: Calcola trasformazioni asset
+    asset_manager_mass_delete_assets: Eliminazione di massa asset
+    asset_manager_mass_edit_assets: Modifica di massa asset
 batch_jobs:
   default_steps:
     execute_naming_convention: Esegui convenzione di denominazione per famiglia di asset

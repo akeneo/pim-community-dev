@@ -10,7 +10,7 @@ spec:
   gcePersistentDisk:
     pdName: "{{ .Values.single.persistentDisk.name }}"
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: ssd-retain
+  storageClassName: ssd-retain-csi
   claimRef:
     apiVersion: v1
     kind: PersistentVolumeClaim
@@ -27,4 +27,4 @@ spec:
   resources:
     requests:
       storage: "{{ .Values.single.persistentDisk.size }}"
-  storageClassName: ssd-retain
+  storageClassName: ssd-retain-csi

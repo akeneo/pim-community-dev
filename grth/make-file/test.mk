@@ -91,4 +91,4 @@ check-pullup: #Doc: check pullup
 
 .PHONY: check-sf-services
 check-sf-services: #Doc: check Sf services
-	${PHP_RUN} vendor/akeneo/pim-community-dev/bin/check-services-instantiability
+	${PHP_RUN} bin/console lint:container

@@ -49,5 +49,13 @@ pim_mass_edit:
 akeneo_reference_entity: 참조 엔터티 단일 링크
 akeneo_reference_entity_collection: 참조 엔터티 다중 링크
 pim_api:
+  acl:
+    reference_entity:
+      create: 참조 엔터티 생성 및 업데이트
+      list: 참조 엔터티 나열
+    record:
+      create: 참조 엔터티 레코드 생성 및 업데이트
+      list: 참조 엔터티 레코드 나열
+      remove: 참조 엔터티 레코드 삭제
   acl_group:
     reference_entity: 참조 엔터티

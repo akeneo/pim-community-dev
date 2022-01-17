@@ -565,6 +565,8 @@ akeneo_job_process_tracker:
     asset_manager_execute_naming_convention: 애셋 패밀리 명명 규칙 실행
     asset_manager_link_assets_to_products: 제품에 애셋 링크 연결
     asset_manager_compute_transformations: 애셋 변환 계산
+    asset_manager_mass_delete_assets: 애셋 대량 삭제
+    asset_manager_mass_edit_assets: 애셋 대량 편집
 batch_jobs:
   default_steps:
     execute_naming_convention: 애셋 패밀리 명명 규칙 실행

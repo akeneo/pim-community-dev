@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   slack: circleci/slack@3.4.2
+  cypress: cypress-io/cypress@1
 
 aliases:
   - &envVarsDeployDev
@@ -54,6 +55,11 @@ aliases:
             auth:
                 username: _json_key  # default username when using a JSON key file to authenticate
                 password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
+executors:
+  cypress-with-chrome:
+    docker:
+      - image: 'cypress/browsers:node14.16.0-chrome90-ff88'
+    resource_class: large
 
 jobs:
   checkout:
@@ -854,6 +860,9 @@ jobs:
                 command: |
                     APP_ENV=behat docker-compose run --rm -u www-data:www-data php bin/console pim:user:create adminakeneo Q7sKB5xP2ttc5KnqFPOF1BrOkTRSulmEj528BpJzbDcLbYSHU1 product-team@akeneo.com admin1 admin2 en_US --admin -n
           - run:
+                name: Hotfix rnd file - Should be removed
+                command: rm -f .rnd
+          - run:
                 name: Launch Cypress
                 command: PIM_CONTEXT=test CYPRESS_defaultCommandTimeout=8000 CYPRESS_requestTimeout=10000 make end-to-end-front
           - store_artifacts:
@@ -1321,7 +1330,7 @@ jobs:
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
-      resource_class: medium
+      resource_class: small
       steps:
           - attach_workspace:
                 at: ~/
@@ -1399,7 +1408,7 @@ jobs:
     environment:
         <<: *envVarsDeployDev
     <<: *dockerCloudDeployerCurrent
-    resource_class: medium
+    resource_class: small
     steps:
         - attach_workspace:
               at: ~/
@@ -1476,7 +1485,7 @@ jobs:
     environment:
         <<: *envVarsDeployDev
     <<: *dockerJenkinsCloudDeployer
-    resource_class: medium
+    resource_class: small
     steps:
         - attach_workspace:
             at: ~/
@@ -2049,7 +2058,7 @@ jobs:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
-      resource_class: medium
+      resource_class: small
       steps:
           - attach_workspace:
                 at: ~/
@@ -2076,7 +2085,7 @@ jobs:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
-      resource_class: medium
+      resource_class: small
       steps:
           - attach_workspace:
                 at: ~/
@@ -2095,7 +2104,6 @@ jobs:
                     UNCOMMIT_INSTANCE_STATUS_CODE=0
                     for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
                     exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
-
 
   delete_expired_uptime_check:
       environment:
@@ -2183,7 +2191,7 @@ jobs:
                 command:
                     TYPE=<<parameters.PRODUCT_TYPE>> ZCC_CONTEXT=diff_<<parameters.CONTEXT>> bash deployments/bin/zdd_compliancy_checker.sh
 
-  post_deployment_e2e_validation:
+  configure_deployment_e2e_validation:
       parameters:
         PRODUCT_TYPE:
           type: string
@@ -2193,23 +2201,23 @@ jobs:
           default: "srnt-c3po"
       machine:
           image: ubuntu-2004:202010-01
-      resource_class: large
+      resource_class: medium
       steps:
           - attach_workspace:
                 at: ~/
           - checkout
           - install_yq
           - run:
-                name: Run demo deployment with e2e test
+                name: Configure cypress deployment validation for <<parameters.PRODUCT_TYPE>>
                 command: |
                     CURRENT_TIME=$(date +%s)
                     LAST_HOUR_TIME=$(( CURRENT_TIME - 60*60 ))
                     VERSION=$(curl --location -s -g -H "Content-Type: application/json" -H "DD-API-KEY: ${DATADOG_API_KEY}" -H "DD-APPLICATION-KEY: ${DATADOG_APP_KEY}" --request GET "https://api.datadoghq.eu/api/v1/query?from=${LAST_HOUR_TIME}&to=${CURRENT_TIME}&query=sum:kubernetes.containers.running{project:akecld-saas-demo,short_image:pim-enterprise-dev,app:pim,component:pim-web,type:<<parameters.PRODUCT_TYPE>>,pfid:<<parameters.PFID>>}%20by%20{image_tag}" | yq r - 'series[*].tag_set[0]' | sort | tail -n1 | cut -c11-)
-                    TYPE=<<parameters.PRODUCT_TYPE>> LOGIN=${E2E_LOGIN_<<parameters.PRODUCT_TYPE>>} PASSWORD=${E2E_PASSWORD_<<parameters.PRODUCT_TYPE>>} VERSION=${VERSION} make -C deployments/ test_deployment_e2e
-          - store_artifacts:
-                path: deployments/test/e2e/cypress/screenshots/
-          - store_artifacts:
-                path: deployments/test/e2e/cypress/videos/
+                    TYPE=<<parameters.PRODUCT_TYPE>> LOGIN=${E2E_LOGIN_<<parameters.PRODUCT_TYPE>>} PASSWORD=${E2E_PASSWORD_<<parameters.PRODUCT_TYPE>>} VERSION=${VERSION} make -C deployments/ configure-cypress
+          - persist_to_workspace:
+              root: /home/circleci
+              paths:
+                - project
 
   list_production_version:
     parameters:
@@ -2494,25 +2502,59 @@ workflows:
             branches:
               only:
                 - master
-      - checkout:
+      - cypress/install:
+          name: "Cypress install"
+          install-command: npm install
+          working_directory: ./deployments/test/e2e/
+          cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}'
           requires:
             - "Start test ?"
-      - post_deployment_e2e_validation:
-          name: "[srnt] Post deployment e2e validation"
-          requires:
-            - "checkout"
+      - configure_deployment_e2e_validation:
+          name: "[srnt] Configure cypress"
           matrix:
             parameters:
               PRODUCT_TYPE: ["srnt"]
               PFID: ["srnt-c3po"]
-      - post_deployment_e2e_validation:
-          name: "[grth] Post deployment e2e validation"
           requires:
-            - "checkout"
+            - "Cypress install"
+      - configure_deployment_e2e_validation:
+          name: "[grth] Configure cypress"
           matrix:
             parameters:
               PRODUCT_TYPE: ["grth"]
               PFID: ["grth-r2d2"]
+          requires:
+            - "Cypress install"
+      - cypress/run:
+          name: "[srnt] Post deployment e2e validation"
+          executor: cypress-with-chrome
+          browser: chrome
+          store_artifacts: true
+          post-checkout:
+            - run: cp -R ~/deployments ~/project
+          attach-workspace: true
+          config-file: ./config/cypress.srnt.json
+          spec: tests/deployment/*
+          working_directory: deployments/test/e2e
+          cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}'
+          no-workspace: true
+          requires:
+            - "[srnt] Configure cypress"
+      - cypress/run:
+          name: "[grth] Post deployment e2e validation"
+          executor: cypress-with-chrome
+          browser: chrome
+          store_artifacts: true
+          post-checkout:
+            - run: cp -R ~/deployments ~/project
+          attach-workspace: true
+          config-file: ./config/cypress.grth.json
+          spec: tests/deployment/*
+          working_directory: deployments/test/e2e
+          cache-key: 'cache-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}'
+          no-workspace: true
+          requires:
+            - "[grth] Configure cypress"
 
   on_demand_release:
     when:
