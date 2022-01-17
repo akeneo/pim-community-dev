@@ -19,7 +19,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;
 
-class SqlGetOptionsCountAndTranslationByAttributeCodeIntegration extends TestCase
+class SqlGetOptionsCountAndTranslationByAttributeIntegration extends TestCase
 {
     public function setUp(): void
     {
