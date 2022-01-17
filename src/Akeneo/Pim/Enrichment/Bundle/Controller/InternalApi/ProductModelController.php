@@ -223,6 +223,7 @@ class ProductModelController
         }
 
         $this->productModelSaver->save($productModel);
+        $this->productAndProductModelClient->refreshIndex();
         $normalizedProductModel = $this->normalizeProductModel($productModel);
 
         return new JsonResponse($normalizedProductModel);
