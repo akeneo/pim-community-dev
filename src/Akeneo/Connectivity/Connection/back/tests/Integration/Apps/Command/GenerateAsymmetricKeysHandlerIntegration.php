@@ -11,6 +11,7 @@ use Akeneo\Connectivity\Connection\Domain\Apps\Exception\OpenIdKeysNotFoundExcep
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAsymmetricKeysQuery;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -21,6 +22,7 @@ class GenerateAsymmetricKeysHandlerIntegration extends TestCase
 {
     private GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler;
     private GetAsymmetricKeysQuery $getAsymmetricKeysQuery;
+    private Connection $connection;
 
     protected function getConfiguration(): Configuration
     {
@@ -33,10 +35,13 @@ class GenerateAsymmetricKeysHandlerIntegration extends TestCase
 
         $this->generateAsymmetricKeysHandler = $this->get(GenerateAsymmetricKeysHandler::class);
         $this->getAsymmetricKeysQuery = $this->get(GetAsymmetricKeysQuery::class);
+        $this->connection = $this->get('database_connection');
     }
 
     public function test_it_save_new_asymmetric_keys()
     {
+        $this->resetPimConfiguration();
+
         $this->expectException(OpenIdKeysNotFoundException::class);
         $this->expectExceptionMessage('No OpenId keys');
         $this->getAsymmetricKeysQuery->execute();
@@ -46,5 +51,10 @@ class GenerateAsymmetricKeysHandlerIntegration extends TestCase
         $result = $this->getAsymmetricKeysQuery->execute();
 
         Assert::assertInstanceOf(AsymmetricKeys::class, $result);
+    }
+
+    private function resetPimConfiguration(): void
+    {
+        $this->connection->executeQuery('TRUNCATE pim_configuration');
     }
 }
