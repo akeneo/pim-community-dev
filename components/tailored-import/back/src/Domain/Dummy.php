@@ -11,11 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation;
+namespace Akeneo\Platform\TailoredImport\Domain;
 
-use Symfony\Component\Validator\Constraint;
-
-class DataMappings extends Constraint
+class Dummy
 {
-    public const MAX_DATA_MAPPING_COUNT_REACHED = 'akeneo.tailored_import.validation.data_mappings.max_data_mapping_count_reached';
+    public function helloWorld(): string
+    {
+        return 'Hello world';
+    }
 }

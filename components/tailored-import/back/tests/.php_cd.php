@@ -34,10 +34,14 @@ $rules = [
 
     $builder->only(
         [
+            'Symfony\Contracts',
             'Symfony\Component',
             'Akeneo\Platform\TailoredImport\Application',
             'Akeneo\Platform\TailoredImport\Domain',
+
+            'Akeneo\Pim\Structure\Component\Query\PublicApi',
             'Akeneo\Tool',
+            'Akeneo\UserManagement\Component\Model\UserInterface',
         ],
     )->in('Akeneo\Platform\TailoredImport\Infrastructure'),
 ];
