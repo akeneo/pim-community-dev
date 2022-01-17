@@ -92,6 +92,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
     public function test_it_throws_an_exception_when_app_not_found_into_database(): void
     {
         $this->authenticateAsAdmin();
+        
         $this->client->request(
             'GET',
             '/rest/apps/load-wizard-data/not_an_existing_app',
