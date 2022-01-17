@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Install;
 
+use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\FixturesLoader;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\InstallSubscriber;
 use Doctrine\DBAL\Connection as DbalConnection;
@@ -16,9 +17,12 @@ use PhpSpec\ObjectBehavior;
  */
 class InstallSubscriberSpec extends ObjectBehavior
 {
-    public function let(DbalConnection $dbalConnection, FixturesLoader $fixturesLoader)
-    {
-        $this->beConstructedWith($dbalConnection, $fixturesLoader);
+    public function let(
+        DbalConnection $dbalConnection,
+        FixturesLoader $fixturesLoader,
+        GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler
+    ) {
+        $this->beConstructedWith($dbalConnection, $fixturesLoader, $generateAsymmetricKeysHandler);
     }
 
     public function it_is_initializable()
