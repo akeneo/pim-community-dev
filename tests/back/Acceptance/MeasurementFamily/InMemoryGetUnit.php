@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Acceptance\MeasurementFamily;
+namespace Akeneo\Test\Acceptance\MeasurementFamily;
 
-use Akeneo\Test\Acceptance\MeasurementFamily\InMemoryMeasurementFamilyRepository;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
 use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnit;

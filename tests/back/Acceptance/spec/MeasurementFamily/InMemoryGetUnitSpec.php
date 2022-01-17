@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Acceptance\spec\MeasurementFamily;
+namespace spec\Akeneo\Test\Acceptance\MeasurementFamily;
 
+use Akeneo\Test\Acceptance\MeasurementFamily\InMemoryGetUnit;
 use Akeneo\Test\Acceptance\MeasurementFamily\InMemoryMeasurementFamilyRepository;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
@@ -12,6 +13,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Operation;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Unit;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
+use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnit;
 use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\Unit as PublicUnit;
 use PhpSpec\ObjectBehavior;
 
@@ -38,6 +40,12 @@ class InMemoryGetUnitSpec extends ObjectBehavior
         $this->beConstructedWith($measurementFamilyRepository);
     }
 
+    function it_is_initializable()
+    {
+        $this->shouldHaveType(InMemoryGetUnit::class);
+        $this->shouldImplement(GetUnit::class);
+    }
+
     function it_throws_an_exception_when_measurement_family_is_unknown(InMemoryMeasurementFamilyRepository $measurementFamilyRepository)
     {
         $measurementFamilyRepository->getByCode(MeasurementFamilyCode::fromString('unknown'))
@@ -61,7 +69,6 @@ class InMemoryGetUnitSpec extends ObjectBehavior
         ];
         $expectedUnit->symbol = 's';
 
-        $this->byMeasurementFamilyCodeAndUnitCode('duration', 'second')
-            ->shouldReturn($expectedUnit);
+        $this->byMeasurementFamilyCodeAndUnitCode('duration', 'second')->shouldBeLike($expectedUnit);
     }
 }
