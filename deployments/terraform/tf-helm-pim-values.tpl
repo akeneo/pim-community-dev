@@ -20,8 +20,6 @@ global:
     papo_project_code: ${portal.project_code} # deprecated
     papo_project_code_truncated: ${portal.project_code_truncated} # deprecated
     papo_project_code_hashed: ${portal.project_code_hashed} # deprecated
-    product_reference_code: ${product_reference_code}
-    product_reference_type: ${product_reference_type}
 
 connectors:
   bigcommerce:
