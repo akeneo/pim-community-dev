@@ -63,11 +63,24 @@ elasticsearch:
 memcached:
   podAnnotations:
     app.kubernetes.io/component: memcached
-    tags.akeneo.com/pfid: ${pim.pfid} # deprecated
-    tags.akeneo.com/product_reference: serenity # deprecated
-    tags.akeneo.com/papo_project_code: ${portal.project_code} # deprecated
-    <<: *global_extraLabels
-  ${indent(2,replace(yamlencode({resources: "${memcached.resources}"}),"\"",""))}
+    tags.akeneo.com/product_reference: serenity
+    # helm.sh/chart: # already set by default by Memcached chart. Cf https://github.com/helm/charts/blob/09324a8a8fdc9b9261ce829486421c345109475b/stable/memcached/templates/_helpers.tpl#L31
+    tags.akeneo.com/instance_dns_zone: ${dnsZone}
+    tags.akeneo.com/instance_dns_record: ${instanceName}
+    tags.akeneo.com/papo_project_code: ${papoProjectCode}
+
+global:
+  extraLabels:
+    type: ${type}
+    instanceName: ${instanceName}
+    pfid: ${pfid}
+    instance_dns_record: ${instanceName}
+    instance_dns_zone: ${dnsZone}
+    papo_project_code: ${papoProjectCode}
+    papo_project_code_truncated: ${papoProjectCodeTruncated}
+    papo_project_code_hashed: ${papoProjectCodeHashed}
+    product_reference_code: ${product_reference_code}
+    product_reference_type: ${product_reference_type}
 
 common:
   gcpProjectID: ${google_cloud_project.id}
