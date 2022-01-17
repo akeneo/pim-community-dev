@@ -6,7 +6,7 @@ resource "google_pubsub_topic" "business-event" {
   name = "${local.pfid}-business-event"
 
   labels = {
-    pfid = local.pfid
+    pfid       = local.pfid
     topic_type = "pim_business_event"
   }
 }
@@ -15,7 +15,7 @@ resource "google_pubsub_topic" "job-queue-ui" {
   name = "${local.pfid}-job-queue-ui"
 
   labels = {
-    pfid = local.pfid
+    pfid       = local.pfid
     topic_type = "pim_job_ui"
   }
 }
@@ -24,7 +24,7 @@ resource "google_pubsub_topic" "job-queue-import-export" {
   name = "${local.pfid}-job-queue-import-export"
 
   labels = {
-    pfid = local.pfid
+    pfid       = local.pfid
     topic_type = "pim_job_import_export"
   }
 }
@@ -33,7 +33,7 @@ resource "google_pubsub_topic" "job-queue-data-maintenance" {
   name = "${local.pfid}-job-queue-data-maintenance"
 
   labels = {
-    pfid = local.pfid
+    pfid       = local.pfid
     topic_type = "pim_job_data_maintenance"
   }
 }
@@ -53,7 +53,7 @@ resource "google_pubsub_subscription" "webhook" {
   message_retention_duration = "7200s"
 
   labels = {
-    pfid = local.pfid
+    pfid              = local.pfid
     subscription_type = "pim_webhook"
   }
 }
@@ -70,7 +70,7 @@ resource "google_pubsub_subscription" "job-queue-ui" {
   message_retention_duration = "604800s"
 
   labels = {
-    pfid = local.pfid
+    pfid              = local.pfid
     subscription_type = "pim_job_ui"
   }
 
@@ -89,7 +89,7 @@ resource "google_pubsub_subscription" "job-queue-import-export" {
   message_retention_duration = "604800s"
 
   labels = {
-    pfid = local.pfid
+    pfid              = local.pfid
     subscription_type = "pim_job_import_export"
   }
 
@@ -108,7 +108,7 @@ resource "google_pubsub_subscription" "job-queue-data-maintenance" {
   message_retention_duration = "604800s"
 
   labels = {
-    pfid = local.pfid
+    pfid              = local.pfid
     subscription_type = "pim_job_data_maintenance"
   }
 

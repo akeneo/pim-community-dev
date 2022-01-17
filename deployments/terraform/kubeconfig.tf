@@ -7,9 +7,9 @@ data "google_container_cluster" "main" {
 # From https://github.com/terraform-providers/terraform-provider-kubernetes/blob/master/kubernetes/test-infra/gke/main.tf
 
 resource "local_file" "kubeconfig" {
-  filename = ".kubeconfig"
+  filename        = ".kubeconfig"
   file_permission = "0600"
-  content = <<EOF
+  content         = <<EOF
 apiVersion: v1
 kind: Config
 current-context: ${data.google_container_cluster.main.name}
