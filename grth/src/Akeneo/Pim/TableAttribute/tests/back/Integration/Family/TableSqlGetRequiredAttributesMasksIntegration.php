@@ -198,6 +198,41 @@ final class TableSqlGetRequiredAttributesMasksIntegration extends TestCase
         ], $ecommerceEnUsMask->mask());
     }
 
+    public function test_it_returns_the_required_attributes_masks_for_several_families(): void
+    {
+        $this->createFamily([
+            'code' => 'familyD',
+            'attribute_codes' => ['sku', 'nutrition'],
+            'attribute_requirements' => [
+                'ecommerce' => ['sku', 'nutrition'],
+            ],
+        ]);
+
+        $result = $this->tableSqlGetRequiredAttributesMasks->fromFamilyCodes(['familyA', 'familyD']);
+        $familyAMask = $result['familyA'];
+        Assert::assertCount(3, $familyAMask->masks());
+
+        $ecommerceEnUsMask = $familyAMask->requiredAttributesMaskForChannelAndLocale('ecommerce', 'en_US');
+        $tabletEnUS = $familyAMask->requiredAttributesMaskForChannelAndLocale('tablet', 'en_US');
+        $tabletFrFr = $familyAMask->requiredAttributesMaskForChannelAndLocale('tablet', 'fr_FR');
+
+        $this->assertEqualsCanonicalizing([
+            \sprintf('nutrition-%s-<all_channels>-<all_locales>', $this->getColumnId('nutrition', 'ingredient')),
+            \sprintf(
+                'localizable_scopable_nutrition-%s-ecommerce-en_US',
+                $this->getColumnId('localizable_scopable_nutrition', 'ingredient')
+            ),
+        ], $ecommerceEnUsMask->mask());
+
+        $this->assertEqualsCanonicalizing([
+            \sprintf('nutrition-%s-<all_channels>-<all_locales>', $this->getColumnId('nutrition', 'ingredient')),
+        ], $tabletEnUS->mask());
+
+        $this->assertEqualsCanonicalizing([
+            \sprintf('nutrition-%s-<all_channels>-<all_locales>', $this->getColumnId('nutrition', 'ingredient')),
+        ], $tabletFrFr->mask());
+    }
+
     private function createAttribute(array $values): void
     {
         $attribute = $this->get('pim_catalog.factory.attribute')->create();
