@@ -12,6 +12,9 @@ global:
     tags.akeneo.com/product_reference_code: ${pim.product_reference_code}
     tags.akeneo.com/product_reference_type: ${pim.product_reference_type}
     tags.akeneo.com/product_reference_size: ${pim.product_reference_size}
+    tags.akeneo.com/pfid: ${pim.pfid} # deprecated
+    tags.akeneo.com/product_reference: serenity # deprecated
+    tags.akeneo.com/papo_project_code: ${portal.project_code} # deprecated
     type: ${pim.type} # deprecated
     instanceName: ${pim.dns_record} # deprecated
     pfid: ${pim.pfid} # deprecated
@@ -38,37 +41,32 @@ elasticsearch:
       cluster.routing.allocation.disk.watermark.flood_stage: .99
   master:
     podAnnotations:
-      tags.akeneo.com/pfid: ${pim.pfid} # deprecated
-      tags.akeneo.com/product_reference: serenity # deprecated
-      tags.akeneo.com/papo_project_code: ${portal.project_code} # deprecated
+      app.kubernetes.io/name: elasticsearch
+      app.kubernetes.io/component: master
       <<: *global_extraLabels
     heapSize: ${elasticsearch.master.heap_size}
     ${indent(4,replace(yamlencode({resources: "${elasticsearch.master.resources}"}),"\"",""))}
   client:
     podAnnotations:
-      tags.akeneo.com/pfid: ${pim.pfid} # deprecated
-      tags.akeneo.com/product_reference: serenity # deprecated
-      tags.akeneo.com/papo_project_code: ${portal.project_code} # deprecated
+      app.kubernetes.io/name: elasticsearch
+      app.kubernetes.io/component: client
       <<: *global_extraLabels
     heapSize: ${elasticsearch.client.heap_size}
     ${indent(4,replace(yamlencode({resources: "${elasticsearch.client.resources}"}),"\"",""))}
   data:
     podAnnotations:
-      tags.akeneo.com/pfid: ${pim.pfid} # deprecated
-      tags.akeneo.com/product_reference: serenity # deprecated
-      tags.akeneo.com/papo_project_code: ${portal.project_code} # deprecated
+      app.kubernetes.io/name: elasticsearch
+      app.kubernetes.io/component: data
       <<: *global_extraLabels
     heapSize: ${elasticsearch.data.heap_size}
     ${indent(4,replace(yamlencode({resources: "${elasticsearch.data.resources}"}),"\"",""))}
 
 memcached:
   podAnnotations:
-    app.kubernetes.io/component: memcached
-    tags.akeneo.com/product_reference: serenity
-    # helm.sh/chart: # already set by default by Memcached chart. Cf https://github.com/helm/charts/blob/09324a8a8fdc9b9261ce829486421c345109475b/stable/memcached/templates/_helpers.tpl#L31
-    tags.akeneo.com/instance_dns_zone: ${dnsZone}
-    tags.akeneo.com/instance_dns_record: ${instanceName}
-    tags.akeneo.com/papo_project_code: ${papoProjectCode}
+    app.kubernetes.io/name: memcached
+    app.kubernetes.io/component: caching
+    <<: *global_extraLabels
+  ${indent(2,replace(yamlencode({resources: "${memcached.resources}"}),"\"",""))}
 
 common:
   gcpProjectID: ${google_cloud_project.id}
@@ -118,6 +116,9 @@ mysql:
     persistentDisks:
     - ${mysql.disk_name}
     class: ${mysql.disk_storage_class}
+  extraAnnotations:
+    app.kubernetes.io/name: mysql
+    app.kubernetes.io/component: database
 %{ if pim.type == "tria" }
 free_trial:
   enabled: true
