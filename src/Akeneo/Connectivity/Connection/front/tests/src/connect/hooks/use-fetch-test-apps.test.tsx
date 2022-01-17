@@ -53,7 +53,7 @@ test('it fetches the test apps', async () => {
     expect(response).toStrictEqual(expected);
 });
 
-test('it return an empty response if the developer mode is disabled', async () => {
+test('it returns an empty response if the developer mode is disabled', async () => {
     (useFeatureFlags as jest.Mock).mockImplementation(() => ({
         isEnabled: (feature: string) => {
             switch (feature) {
