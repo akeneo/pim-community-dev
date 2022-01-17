@@ -17,7 +17,7 @@ class DummyTest extends KernelTestCase
     /**
      * @test
      */
-    public function it_returns_hello_world()
+    public function it_returns_hello_world(): void
     {
         $dummy = new Dummy();
         $this->assertEquals('Hello world', $dummy->helloWorld());
