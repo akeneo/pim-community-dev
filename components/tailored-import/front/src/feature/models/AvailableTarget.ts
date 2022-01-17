@@ -1,7 +1,9 @@
+import {DataMappingType} from "./DataMapping";
+
 type AvailableTarget = {
   code: string;
   label: string;
-  type: string;
+  type: DataMappingType;
 };
 
 type AvailableTargetGroup = {

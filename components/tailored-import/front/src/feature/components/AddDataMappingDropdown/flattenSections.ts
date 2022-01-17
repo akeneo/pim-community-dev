@@ -1,11 +1,11 @@
 import {arrayUnique} from 'akeneo-design-system';
-import {AvailableTarget, AvailableTargetGroup} from '../../models';
+import {AvailableTarget, AvailableTargetGroup, DataMappingType} from '../../models';
 
 type DropdownItem = {
   type: 'section' | 'target';
   code: string;
   label: string;
-  targetType: string;
+  targetType: DataMappingType;
 };
 
 const flattenSections = (groups: AvailableTargetGroup[]) => {

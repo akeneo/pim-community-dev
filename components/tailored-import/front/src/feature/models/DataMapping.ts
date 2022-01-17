@@ -33,8 +33,8 @@ type DataMapping = {
 };
 
 const MAX_DATA_MAPPING_COUNT = 500;
-
-const createDataMapping = (code: string, type: string): DataMapping => {
+type DataMappingType = 'attribute' | 'property';
+const createDataMapping = (code: string, type: DataMappingType): DataMapping => {
   return {
     uuid: uuid(),
     target: 'attribute' === type ? createAttributeTarget(code, null, null) : createPropertyTarget(code),
@@ -66,5 +66,5 @@ const createPropertyTarget = (code: string): PropertyTarget => {
   };
 };
 
-export type {DataMapping};
+export type {DataMapping, DataMappingType};
 export {MAX_DATA_MAPPING_COUNT, createDataMapping};

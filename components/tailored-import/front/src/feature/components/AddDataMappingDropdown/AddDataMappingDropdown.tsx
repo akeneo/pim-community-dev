@@ -12,7 +12,7 @@ import {
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {flattenSections} from './flattenSections';
 import {useOffsetAvailableTargets} from '../../hooks';
-import {createDataMapping, DataMapping, MAX_DATA_MAPPING_COUNT} from '../../models';
+import {createDataMapping, DataMapping, DataMappingType, MAX_DATA_MAPPING_COUNT} from '../../models';
 
 type AddDataMappingDropdownProps = {
   canAddDataMapping: boolean;
@@ -28,7 +28,7 @@ const AddDataMappingDropdown = ({canAddDataMapping, onDataMappingAdded}: AddData
   const inputRef = useRef<HTMLInputElement>(null);
   const focus = useAutoFocus(inputRef);
 
-  const handleTargetSelected = (targetCode: string, targetType: string): void => {
+  const handleTargetSelected = (targetCode: string, targetType: DataMappingType): void => {
     const dataMapping = createDataMapping(targetCode, targetType);
     onDataMappingAdded(dataMapping);
     handleClose();
