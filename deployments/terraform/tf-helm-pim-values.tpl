@@ -20,6 +20,8 @@ global:
     papo_project_code: ${portal.project_code} # deprecated
     papo_project_code_truncated: ${portal.project_code_truncated} # deprecated
     papo_project_code_hashed: ${portal.project_code_hashed} # deprecated
+    product_reference_code: ${product_reference_code}
+    product_reference_type: ${product_reference_type}
 
 connectors:
   bigcommerce:
@@ -60,6 +62,7 @@ elasticsearch:
       <<: *global_extraLabels
     heapSize: ${elasticsearch.data.heap_size}
     ${indent(4,replace(yamlencode({resources: "${elasticsearch.data.resources}"}),"\"",""))}
+
 memcached:
   podAnnotations:
     app.kubernetes.io/component: memcached
@@ -68,19 +71,6 @@ memcached:
     tags.akeneo.com/instance_dns_zone: ${dnsZone}
     tags.akeneo.com/instance_dns_record: ${instanceName}
     tags.akeneo.com/papo_project_code: ${papoProjectCode}
-
-global:
-  extraLabels:
-    type: ${type}
-    instanceName: ${instanceName}
-    pfid: ${pfid}
-    instance_dns_record: ${instanceName}
-    instance_dns_zone: ${dnsZone}
-    papo_project_code: ${papoProjectCode}
-    papo_project_code_truncated: ${papoProjectCodeTruncated}
-    papo_project_code_hashed: ${papoProjectCodeHashed}
-    product_reference_code: ${product_reference_code}
-    product_reference_type: ${product_reference_type}
 
 common:
   gcpProjectID: ${google_cloud_project.id}
