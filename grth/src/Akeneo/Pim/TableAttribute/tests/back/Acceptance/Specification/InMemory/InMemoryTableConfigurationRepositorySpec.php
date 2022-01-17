@@ -6,6 +6,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
@@ -27,6 +28,7 @@ class InMemoryTableConfigurationRepositorySpec extends ObjectBehavior
             'boolean' => 'Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn',
             'select' => 'Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn',
             'reference_entity' => 'Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn',
+            'measurement' => 'Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn',
         ]);
         $this->beConstructedWith($attributeRepository, $tableConfigurationFactory);
     }
@@ -46,6 +48,12 @@ class InMemoryTableConfigurationRepositorySpec extends ObjectBehavior
             SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::description(), 'code' => 'description']),
             ReferenceEntityColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'record', 'reference_entity_identifier' => 'entity']),
+            MeasurementColumn::fromNormalized([
+                'id' => ColumnIdGenerator::duration(),
+                'code' => 'duration',
+                'measurement_family_code' => 'family',
+                'measurement_default_unit_code' => 'unit',
+            ]),
         ]);
 
         $attribute->setRawTableConfiguration([
@@ -73,6 +81,16 @@ class InMemoryTableConfigurationRepositorySpec extends ObjectBehavior
                 'validations' => (object) [],
                 'is_required_for_completeness' => false,
                 'reference_entity_identifier' => 'entity',
+            ],
+            [
+                'id' => ColumnIdGenerator::duration(),
+                'code' => 'duration',
+                'data_type' => 'measurement',
+                'labels' => (object) [],
+                'validations' => (object) [],
+                'is_required_for_completeness' => false,
+                'measurement_family_code' => 'family',
+                'measurement_default_unit_code' => 'unit',
             ],
         ])->shouldBeCalled();
 
@@ -110,6 +128,16 @@ class InMemoryTableConfigurationRepositorySpec extends ObjectBehavior
                 'is_required_for_completeness' => false,
                 'reference_entity_identifier' => 'entity',
             ],
+            [
+                'id' => ColumnIdGenerator::duration(),
+                'code' => 'duration',
+                'data_type' => 'measurement',
+                'labels' => (object) [],
+                'validations' => (object) [],
+                'is_required_for_completeness' => false,
+                'measurement_family_code' => 'family',
+                'measurement_default_unit_code' => 'unit',
+            ],
         ]);
         $attributeRepository->findOneByIdentifier('111')->shouldBeCalled()->willReturn($attribute);
 
@@ -117,6 +145,12 @@ class InMemoryTableConfigurationRepositorySpec extends ObjectBehavior
             SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::description(), 'code' => 'description']),
             ReferenceEntityColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'record', 'reference_entity_identifier' => 'entity']),
+            MeasurementColumn::fromNormalized([
+                'id' => ColumnIdGenerator::duration(),
+                'code' => 'duration',
+                'measurement_family_code' => 'family',
+                'measurement_default_unit_code' => 'unit',
+            ]),
         ]));
     }
 
