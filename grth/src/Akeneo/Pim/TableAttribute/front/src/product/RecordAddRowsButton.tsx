@@ -101,7 +101,7 @@ const RecordAddRowsButton: React.FC<RecordAddRowsButtonProps> = ({
           </Dropdown.Header>
           <Dropdown.ItemCollection onNextPage={handleNextPage} data-testid={'item_collection'}>
             {items?.map((item, index) => {
-              const label = getLabel(item.labels, catalogLocale, item.identifier);
+              const label = getLabel(item.labels, catalogLocale, item.code);
               return (
                 <Dropdown.Item
                   key={item.code}
