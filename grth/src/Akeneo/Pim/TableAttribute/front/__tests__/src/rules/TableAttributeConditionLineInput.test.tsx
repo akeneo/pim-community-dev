@@ -30,9 +30,9 @@ describe('TableAttributeConditionLineInput', () => {
     expect(await screen.findByText('pim_common.operators.IN')).toBeInTheDocument();
     expect(await screen.findByText('B')).toBeInTheDocument();
 
-    fireEvent.click(screen.getAllByTitle('pim_common.open')[3]);
+    fireEvent.click((await screen.findAllByTitle('pim_common.open'))[3]);
     expect(await screen.findByText('C')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('C'));
+    fireEvent.click(await screen.findByText('C'));
 
     expect(handleChange).toBeCalledWith({
       operator: 'IN',
@@ -62,9 +62,9 @@ describe('TableAttributeConditionLineInput', () => {
     expect(await screen.findByText('pim_common.operators.IN')).toBeInTheDocument();
     expect(await screen.findByText('Vannes')).toBeInTheDocument();
 
-    fireEvent.click(screen.getAllByTitle('pim_common.open')[3]);
+    fireEvent.click((await screen.findAllByTitle('pim_common.open'))[3]);
     expect(await screen.findByText('Lannion')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Lannion'));
+    fireEvent.click(await screen.findByText('Lannion'));
 
     expect(handleChange).toBeCalledWith({
       operator: 'IN',

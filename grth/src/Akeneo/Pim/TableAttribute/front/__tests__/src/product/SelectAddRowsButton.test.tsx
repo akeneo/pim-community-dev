@@ -23,13 +23,13 @@ describe('SelectAddRowsButton', () => {
   it('should render the component', async () => {
     renderWithProviders(
       <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
-        <SelectAddRowsButton checkedOptionCodes={['salt', 'sugar']} toggleChange={() => {}} />
+        <SelectAddRowsButton checkedOptionCodes={['salt', 'sugar']} toggleChange={jest.fn()} />
       </TestAttributeContextProvider>
     );
 
     await openSelect();
 
-    const [saltCheckbox, pepperCheckbox, eggsCheckbox, sugarCheckbox] = screen.getAllByRole('checkbox');
+    const [saltCheckbox, pepperCheckbox, eggsCheckbox, sugarCheckbox] = await screen.findAllByRole('checkbox');
     expect(saltCheckbox).toBeInTheDocument();
     expect(saltCheckbox).toBeChecked();
     expect(pepperCheckbox).toBeInTheDocument();
@@ -142,9 +142,14 @@ describe('SelectAddRowsButton', () => {
 
     await openSelect();
 
-    expect(await screen.findByText('pim_table_attribute.form.attribute.manage_options')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('pim_table_attribute.form.attribute.manage_options'));
-    fireEvent.click(screen.getByText('Fake confirm'));
+    const manageOptions = await screen.findByText('pim_table_attribute.form.attribute.manage_options');
+    expect(manageOptions).toBeInTheDocument();
+    act(() => {
+      fireEvent.click(manageOptions);
+    });
+    await act(async () => {
+      fireEvent.click(await screen.findByText('Fake confirm'));
+    });
     expect(hasCalledPostAttribute).toBeTruthy();
   });
 });

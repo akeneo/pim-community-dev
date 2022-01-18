@@ -22,7 +22,9 @@ describe('TableInputValue', () => {
         />
       </TestAttributeContextProvider>
     );
-    expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    await act(async () => {
+      expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    });
 
     expect(screen.getByText('Ingredients')).toBeInTheDocument();
     expect(screen.getByText('Quantity')).toBeInTheDocument();
@@ -47,7 +49,9 @@ describe('TableInputValue', () => {
         />
       </TestAttributeContextProvider>
     );
-    expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    await act(async () => {
+      expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    });
 
     expect(screen.getAllByText('pim_common.yes')).toHaveLength(1);
     expect(screen.getAllByText('pim_common.no')).toHaveLength(1);
@@ -80,7 +84,9 @@ describe('TableInputValue', () => {
         />
       </TestAttributeContextProvider>
     );
-    expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    await act(async () => {
+      expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    });
 
     ['quantity', 'part', 'is_allergenic'].forEach(columnCode => {
       expect(screen.queryByTestId(`input-uniquesalt-${columnCode}`)).not.toBeInTheDocument();
@@ -104,7 +110,9 @@ describe('TableInputValue', () => {
         />
       </TestAttributeContextProvider>
     );
-    expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    await act(async () => {
+      expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    });
 
     const sugarInput = screen.getByTestId('input-uniqueidsugar-quantity');
     const formerClassList = sugarInput.classList.toString();
@@ -127,11 +135,14 @@ describe('TableInputValue', () => {
         />
       </TestAttributeContextProvider>
     );
-    expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    await act(async () => {
+      expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    });
 
     fireEvent.click(screen.getAllByTitle('pim_common.actions')[1]);
-    expect(await screen.findByTitle('pim_table_attribute.form.product.actions.delete_row')).toBeInTheDocument();
-    fireEvent.click(screen.getByTitle('pim_table_attribute.form.product.actions.delete_row'));
+    const deleteRow = await screen.findByTitle('pim_table_attribute.form.product.actions.delete_row');
+    expect(deleteRow).toBeInTheDocument();
+    fireEvent.click(deleteRow);
     expect(handleChange).toBeCalledWith([{...getTableValueWithId()[0]}, {...getTableValueWithId()[2]}]);
   });
 
@@ -147,11 +158,14 @@ describe('TableInputValue', () => {
         />
       </TestAttributeContextProvider>
     );
-    expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    await act(async () => {
+      expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    });
 
     fireEvent.click(screen.getAllByTitle('pim_common.actions')[1]);
-    expect(await screen.findByTitle('pim_table_attribute.form.product.actions.clear_row')).toBeInTheDocument();
-    fireEvent.click(screen.getByTitle('pim_table_attribute.form.product.actions.clear_row'));
+    const clearRow = await screen.findByTitle('pim_table_attribute.form.product.actions.clear_row');
+    expect(clearRow).toBeInTheDocument();
+    fireEvent.click(clearRow);
     expect(handleChange).toBeCalledWith([
       {...getTableValueWithId()[0]},
       {...getTableValueWithId()[1], part: undefined, is_allergenic: undefined, nutrition_score: undefined},
@@ -171,11 +185,14 @@ describe('TableInputValue', () => {
         />
       </TestAttributeContextProvider>
     );
-    expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    await act(async () => {
+      expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    });
 
     fireEvent.click(screen.getAllByTitle('pim_common.actions')[1]);
-    expect(await screen.findByTitle('pim_table_attribute.form.product.actions.move_first')).toBeInTheDocument();
-    fireEvent.click(screen.getByTitle('pim_table_attribute.form.product.actions.move_first'));
+    const moveFirst = await screen.findByTitle('pim_table_attribute.form.product.actions.move_first');
+    expect(moveFirst).toBeInTheDocument();
+    fireEvent.click(moveFirst);
     expect(handleChange).toBeCalledWith([
       {...getTableValueWithId()[1]},
       {...getTableValueWithId()[0]},
@@ -195,11 +212,14 @@ describe('TableInputValue', () => {
         />
       </TestAttributeContextProvider>
     );
-    expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    await act(async () => {
+      expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    });
 
     fireEvent.click(screen.getAllByTitle('pim_common.actions')[1]);
-    expect(await screen.findByTitle('pim_table_attribute.form.product.actions.move_last')).toBeInTheDocument();
-    fireEvent.click(screen.getByTitle('pim_table_attribute.form.product.actions.move_last'));
+    const moveLast = await screen.findByTitle('pim_table_attribute.form.product.actions.move_last');
+    expect(moveLast).toBeInTheDocument();
+    fireEvent.click(moveLast);
     expect(handleChange).toBeCalledWith([
       {...getTableValueWithId()[0]},
       {...getTableValueWithId()[2]},
@@ -219,7 +239,9 @@ describe('TableInputValue', () => {
         />
       </TestAttributeContextProvider>
     );
-    expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    await act(async () => {
+      expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    });
 
     dragAndDrop(0, 3);
 
@@ -228,6 +250,22 @@ describe('TableInputValue', () => {
       {...getTableValueWithId()[2]},
       {...getTableValueWithId()[0]},
     ]);
+  });
+
+  it('should not render anything if select cell inputs are undefined', async () => {
+    renderWithProviders(
+      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+        <TableInputValue
+          valueData={getTableValueWithId()}
+          searchText={''}
+          onChange={jest.fn()}
+          visibility={'CAN_EDIT'}
+        />
+      </TestAttributeContextProvider>
+    );
+    expect(await screen.findByText('Ingredients')).toBeInTheDocument();
+
+    expect(screen.queryByText('100')).not.toBeInTheDocument(); // This is the Quantity cell of Sugar line
   });
 
   it('should not render anything if record cell inputs are undefined', () => {
