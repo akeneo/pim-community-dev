@@ -7,6 +7,14 @@ import {AppWizard} from '@src/connect/components/AppWizard/AppWizard';
 import userEvent from '@testing-library/user-event';
 import {NotificationLevel, NotifyContext} from '@src/shared/notify';
 
+jest.mock('@src/connect/components/AppWizard/steps/Authentication/Authentication', () => ({
+    Authentication: () => <div>authentication-component</div>,
+}));
+
+jest.mock('@src/connect/components/AppWizard/steps/Authorizations', () => ({
+    Authorizations: () => <div>authorizations-component</div>,
+}));
+
 /*eslint-disable */
 declare global {
     namespace NodeJS {
@@ -50,7 +58,9 @@ test('The wizard renders without error', async () => {
     renderWithProviders(<AppWizard clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
     await waitFor(() => screen.getByAltText('MyApp'));
     expect(screen.getByAltText('MyApp')).toBeInTheDocument();
-    expect(screen.getByText('akeneo_connectivity.connection.connect.apps.title')).toBeInTheDocument();
+
+    expect(screen.queryByText('authentication-component')).not.toBeInTheDocument();
+    expect(screen.queryByText('authorizations-component')).toBeInTheDocument();
 });
 
 test('The wizard redirect to the marketplace when closed', async () => {
@@ -124,4 +134,27 @@ test('The wizard display a notification and redirects on success', async done =>
     expect(global.window.location.assign).toHaveBeenCalledWith('http://foo.example.com/oauth2/callback');
 
     done();
+});
+
+test('The wizard display the authentication step', async () => {
+    const fetchAppWizardDataResponses: MockFetchResponses = {
+        'akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=8d8a7dc1-0827-4cc9-9ae5-577c6419230b': {
+            json: {
+                appName: 'MyApp',
+                appLogo: '',
+                scopeMessages: [],
+                authenticationScopes: ['profile'],
+            },
+        },
+    };
+
+    mockFetchResponses({
+        ...fetchAppWizardDataResponses,
+    });
+
+    renderWithProviders(<AppWizard clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
+    await waitFor(() => screen.getByAltText('MyApp'));
+
+    expect(screen.queryByText('authentication-component')).toBeInTheDocument();
+    expect(screen.queryByText('authorizations-component')).not.toBeInTheDocument();
 });
