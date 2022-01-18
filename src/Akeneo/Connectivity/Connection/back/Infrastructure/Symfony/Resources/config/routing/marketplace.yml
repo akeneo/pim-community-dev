@@ -1,16 +1,16 @@
 akeneo_connectivity_connection_marketplace_rest_get_web_marketplace_url:
     path: '/marketplace-url'
-    controller: akeneo_connectivity.connection.internal_api.controller.marketplace.get_web_marketplace_url
+    controller: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Marketplace\GetWebMarketplaceUrlAction
     methods: [GET]
 
 akeneo_connectivity_connection_marketplace_rest_get_all_extensions:
     path: '/extensions'
-    controller: akeneo_connectivity.connection.internal_api.controller.marketplace.get_all_extensions
+    controller: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Marketplace\GetAllExtensionsAction
     methods: [GET]
 
 akeneo_connectivity_connection_marketplace_rest_get_all_apps:
     path: '/apps'
-    controller: akeneo_connectivity.connection.internal_api.controller.marketplace.get_all_apps
+    controller: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Marketplace\GetAllAppsAction
     methods: [GET]
 
 akeneo_connectivity_connection_marketplace_rest_get_all_test_apps:

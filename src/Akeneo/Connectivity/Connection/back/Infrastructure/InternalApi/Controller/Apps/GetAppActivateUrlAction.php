@@ -20,26 +20,15 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetAppActivateUrlController
+final class GetAppActivateUrlAction
 {
-    private GetAppQueryInterface $getAppQuery;
-    private ClientProviderInterface $clientProvider;
-    private AppUrlGenerator $appUrlGenerator;
-    private SecurityFacade $security;
-    private FeatureFlag $featureFlag;
-
     public function __construct(
-        GetAppQueryInterface $getAppQuery,
-        ClientProviderInterface $clientProvider,
-        AppUrlGenerator $appUrlGenerator,
-        SecurityFacade $security,
-        FeatureFlag $featureFlag
+        private GetAppQueryInterface $getAppQuery,
+        private ClientProviderInterface $clientProvider,
+        private AppUrlGenerator $appUrlGenerator,
+        private SecurityFacade $security,
+        private FeatureFlag $featureFlag
     ) {
-        $this->getAppQuery = $getAppQuery;
-        $this->clientProvider = $clientProvider;
-        $this->appUrlGenerator = $appUrlGenerator;
-        $this->security = $security;
-        $this->featureFlag = $featureFlag;
     }
 
     public function __invoke(Request $request, string $id): Response

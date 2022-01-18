@@ -16,15 +16,11 @@ final class SuffixTraitRule implements Rule
 
     public function getNodeType(): string
     {
-        return Node::class;
+        return ClassLike::class;
     }
 
     public function processNode(Node $node, Scope $scope): array
     {
-        if (!\is_a($node, ClassLike::class, true)) {
-            return [];
-        }
-
         if (\str_ends_with((string) $node->name, 'Trait')) {
             if (!$node instanceof Trait_) {
                 return [self::ERROR_MESSAGE];
