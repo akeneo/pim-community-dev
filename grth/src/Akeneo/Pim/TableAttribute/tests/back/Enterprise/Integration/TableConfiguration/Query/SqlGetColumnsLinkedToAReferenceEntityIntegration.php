@@ -82,7 +82,7 @@ class SqlGetColumnsLinkedToAReferenceEntityIntegration extends TestCase
             $getColumnsLinkedToAReferenceEntity->forIdentifier('BRAnd')
         );
 
-        $this->assertEquals(
+        $this->assertEqualsCanonicalizing(
             [
                 ['attribute_code' => 'origin', 'column_code' => 'name'],
                 ['attribute_code' => 'packaging', 'column_code' => 'name'],

@@ -123,6 +123,7 @@ $rules = [
             'Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent',
             'Akeneo\ReferenceEntity\Domain\Event\RecordsDeletedEvent',
             'Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode',
+            'Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByCodesInterface'
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];
