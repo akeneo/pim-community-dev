@@ -1,5 +1,5 @@
 import React, {ReactElement} from 'react';
-import {Badge} from 'akeneo-design-system';
+import {Tag} from 'akeneo-design-system';
 import styled, {keyframes} from 'styled-components';
 import {useTranslate} from '../../shared/translate';
 
@@ -27,7 +27,7 @@ const DeveloperModeTag = (): ReactElement => {
     const translate = useTranslate();
     return (
         <BadgeContainer>
-            <Badge level='primary'>{translate('akeneo_connectivity.connection.developer_mode')}</Badge>
+            <Tag tint='purple'>{translate('akeneo_connectivity.connection.developer_mode')}</Tag>
         </BadgeContainer>
     );
 };

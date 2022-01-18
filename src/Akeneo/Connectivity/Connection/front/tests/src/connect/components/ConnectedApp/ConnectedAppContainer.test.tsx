@@ -107,6 +107,7 @@ const connectedApp = {
     categories: ['e-commerce', 'print'],
     certified: false,
     partner: null,
+    is_test_app: false,
 };
 
 test('The connected app container renders without permissions tab', async () => {

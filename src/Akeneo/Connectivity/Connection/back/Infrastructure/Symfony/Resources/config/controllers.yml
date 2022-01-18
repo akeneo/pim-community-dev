@@ -72,6 +72,13 @@ services:
             - '@logger'
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
 
+    Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Marketplace\GetAllTestAppsAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.app_developer_mode.feature'
+            - '@akeneo_connectivity.connection.marketplace.app_url_generator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllTestAppsQuery'
+
     akeneo_connectivity.connection.internal_api.controller.apps.get_app_activate_url:
         public: true
         class: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Apps\GetAppActivateUrlController

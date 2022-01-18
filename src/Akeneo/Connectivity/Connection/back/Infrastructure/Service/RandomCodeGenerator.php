@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Service;
+
+use Akeneo\Connectivity\Connection\Application\RandomCodeGeneratorInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
