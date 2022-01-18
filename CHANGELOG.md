@@ -137,6 +137,7 @@
 - PIM-10227: Fix filter not applied properly on the Asset manager grid
 - PIM-10215: Fixed missing translations label in process tracker for mass edit on assets and records jobs
 - PIM-10228: Fix Asset transformations job crashing when having cache resources exhausted
+- PIM-10236: Fix duplicated mask returned by query for table attribute
 
 ## Improvements
 
