@@ -34,6 +34,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AttributeOptionController
 {
+    private const LIMIT_ATTRIBUTE_OPTION = null;
+
     /** @var NormalizerInterface */
     protected $normalizer;
 
@@ -154,11 +156,16 @@ class AttributeOptionController
      *
      * @AclAncestor("pim_enrich_attribute_edit")
      */
-    public function indexAction($attributeId)
+    public function indexAction(Request $request, int $attributeId)
     {
         $attribute = $this->findAttributeOr404($attributeId);
 
-        $options = $this->normalizer->normalize($attribute->getOptions(), 'array', ['onlyActivatedLocales' => true]);
+        $options['identifier'] = $attribute->getCode();
+        $options['limit'] = self::LIMIT_ATTRIBUTE_OPTION;
+        $options['page'] = $request->query->get('page') ?: null;
+        $attributeOptions = $this->attributeOptionRepository->findBySearch(null, (array)$options);
+
+        $options = $this->normalizer->normalize($attributeOptions, 'array', ['onlyActivatedLocales' => true]);
 
         return new JsonResponse($options);
     }
