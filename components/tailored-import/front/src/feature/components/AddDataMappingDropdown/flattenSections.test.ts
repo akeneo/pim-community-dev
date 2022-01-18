@@ -61,7 +61,6 @@ test('it flattens sections in array', () => {
     {
       code: 'system',
       label: 'System',
-      targetType: '',
       type: 'section',
     },
     {
@@ -79,7 +78,6 @@ test('it flattens sections in array', () => {
     {
       code: 'marketing',
       label: 'Marketing',
-      targetType: '',
       type: 'section',
     },
     {
