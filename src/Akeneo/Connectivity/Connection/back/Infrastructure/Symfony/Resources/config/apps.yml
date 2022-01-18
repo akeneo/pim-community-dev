@@ -72,14 +72,12 @@ services:
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer: ~
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RandomCodeGenerator: ~
-
     Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\AuthorizationCodeGenerator:
         arguments:
             - '@fos_oauth_server.client_manager.default'
             - '@pim_user.repository.user'
             - '@fos_oauth_server.storage.default'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RandomCodeGenerator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\RandomCodeGenerator'
             - '@akeneo_connectivity.connection.clock'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGenerator:
@@ -90,7 +88,7 @@ services:
         arguments:
             - '@fos_oauth_server.storage.default'
             - '@akeneo_connectivity.connection.service.apps.client_provider'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RandomCodeGenerator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\RandomCodeGenerator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAppConfirmationQuery'
             - '@pim_user.repository.user'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateJsonWebToken'

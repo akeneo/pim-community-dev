@@ -1,4 +1,4 @@
-import {Button, Modal, ProgressIndicator} from 'akeneo-design-system';
+import {AppIllustration, Button, Modal, ProgressIndicator} from 'akeneo-design-system';
 import React from 'react';
 import styled from 'styled-components';
 import {useTranslate} from '../../../shared/translate';
@@ -34,7 +34,7 @@ type Step = {
 };
 
 type Props = {
-    appLogo: string;
+    appLogo: string | null;
     appName: string;
     children: (currentStep: Step) => React.ReactNode;
     onClose: () => void;
@@ -69,7 +69,7 @@ export const WizardModal = ({appLogo, appName, children, onClose, onConfirm, ste
 
             <Content>
                 <LogoContainer>
-                    <Logo src={appLogo} alt={appName} />
+                    {appLogo ? <Logo src={appLogo} alt={appName} /> : <AppIllustration size={220} />}
                 </LogoContainer>
                 {children(current)}
             </Content>

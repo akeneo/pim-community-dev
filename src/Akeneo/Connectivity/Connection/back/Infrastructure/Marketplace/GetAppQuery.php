@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
 
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -13,15 +14,23 @@ use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
  */
 final class GetAppQuery implements GetAppQueryInterface
 {
-    private WebMarketplaceApiInterface $webMarketplaceApi;
-
-    public function __construct(WebMarketplaceApiInterface $webMarketplaceApi)
-    {
-        $this->webMarketplaceApi = $webMarketplaceApi;
+    public function __construct(
+        private WebMarketplaceApiInterface $webMarketplaceApi,
+        private FeatureFlag $appDeveloperModeFeatureFlag,
+        private GetTestAppQuery $getTestAppQuery,
+    ) {
     }
 
     public function execute(string $id): ?App
     {
+        if ($this->appDeveloperModeFeatureFlag->isEnabled()) {
+            $data = $this->getTestAppQuery->execute($id);
+
+            if (null !== $data) {
+                return App::fromTestAppValues($data);
+            }
+        }
+
         $data = $this->webMarketplaceApi->getApp($id);
         if (null === $data) {
             return null;

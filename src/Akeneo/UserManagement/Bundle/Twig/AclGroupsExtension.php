@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Twig;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Symfony\Component\Yaml\Yaml;
 use Twig\TwigFunction;
 
@@ -14,15 +15,10 @@ use Twig\TwigFunction;
  */
 class AclGroupsExtension extends \Twig\Extension\AbstractExtension
 {
-    /** @var array */
-    protected $bundles;
-
-    /**
-     * @param array $bundles
-     */
-    public function __construct($bundles)
-    {
-        $this->bundles = $bundles;
+    public function __construct(
+        protected array $bundles,
+        private FeatureFlags $featureFlags,
+    ) {
     }
 
     /**
@@ -73,6 +69,8 @@ class AclGroupsExtension extends \Twig\Extension\AbstractExtension
                 $config = Yaml::parse(file_get_contents($path)) + $config;
             }
         }
+
+        $config = $this->filterGroupsDisabledByFeatureFlag($config);
 
         return $config;
     }
@@ -138,5 +136,16 @@ class AclGroupsExtension extends \Twig\Extension\AbstractExtension
         }
 
         return $groups;
+    }
+
+    protected function filterGroupsDisabledByFeatureFlag(array $config): array
+    {
+        return array_filter($config, function ($group) {
+            if (!array_key_exists('feature', $group)) {
+                return true;
+            }
+
+            return $this->featureFlags->isEnabled($group['feature']);
+        });
     }
 }

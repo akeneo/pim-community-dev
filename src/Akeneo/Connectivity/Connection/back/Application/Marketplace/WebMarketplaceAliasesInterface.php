@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
+namespace Akeneo\Connectivity\Connection\Application\Marketplace;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)

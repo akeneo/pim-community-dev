@@ -1,7 +1,7 @@
 import React, {FC, useContext, useEffect, useState} from 'react';
 import {Breadcrumb} from 'akeneo-design-system';
-import {useTranslate} from '../../shared/translate';
-import {PageContent, PageHeader} from '../../common';
+import {Translate, useTranslate} from '../../shared/translate';
+import {ApplyButton, PageContent, PageHeader} from '../../common';
 import {UserButtons, UserContext} from '../../shared/user';
 import {useRouter} from '../../shared/router/use-router';
 import {useHistory} from 'react-router';
@@ -14,6 +14,8 @@ import {MarketplaceIsLoading} from '../components/MarketplaceIsLoading';
 import {useFetchApps} from '../hooks/use-fetch-apps';
 import {useFeatureFlags} from '../../shared/feature-flags';
 import {DeveloperModeTag} from '../components/DeveloperModeTag';
+import {useTestApps} from '../hooks/use-test-apps';
+import {useDeveloperMode} from '../hooks/use-developer-mode';
 
 export const MarketplacePage: FC = () => {
     const translate = useTranslate();
@@ -23,10 +25,12 @@ export const MarketplacePage: FC = () => {
     const generateUrl = useRouter();
     const fetchExtensions = useFetchExtensions();
     const fetchApps = useFetchApps();
+    const isDeveloperModeEnabled = useDeveloperMode();
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
     const [userProfile, setUserProfile] = useState<string | null>(null);
     const [extensions, setExtensions] = useState<Extensions | null | false>(null);
     const [apps, setApps] = useState<Apps | null | false>(null);
+    const {isLoading: isTestAppsLoading, testApps} = useTestApps();
 
     useEffect(() => {
         const profile = user.get<string | null>('profile');
@@ -59,8 +63,11 @@ export const MarketplacePage: FC = () => {
         return null;
     }
 
-    const isLoading = null === extensions || null === apps;
+    const isLoading = null === extensions || null === apps || isTestAppsLoading;
     const isUnreachable = false === extensions || false === apps;
+    const handleCreateTestApp = () => {
+        history.push(generateUrl('akeneo_connectivity_connection_connect_marketplace_test_app_create'));
+    };
 
     const breadcrumb = (
         <Breadcrumb>
@@ -69,18 +76,31 @@ export const MarketplacePage: FC = () => {
         </Breadcrumb>
     );
 
-    const tag = featureFlag.isEnabled('app_developer_mode') ? <DeveloperModeTag /> : null;
+    const tag = isDeveloperModeEnabled ? <DeveloperModeTag /> : null;
+
+    const CreateTestAppButton = () => {
+        return isDeveloperModeEnabled ? (
+            <ApplyButton classNames={['AknButtonList-item']} onClick={handleCreateTestApp}>
+                <Translate id='akeneo_connectivity.connection.connect.marketplace.test_apps.create_a_test_app' />
+            </ApplyButton>
+        ) : null;
+    };
 
     return (
         <>
-            <PageHeader breadcrumb={breadcrumb} userButtons={<UserButtons />} tag={tag}>
+            <PageHeader
+                breadcrumb={breadcrumb}
+                buttons={[<CreateTestAppButton key={0} />]}
+                userButtons={<UserButtons />}
+                tag={tag}
+            >
                 {translate('pim_menu.item.marketplace')}
             </PageHeader>
 
             <PageContent>
                 {isLoading && <MarketplaceIsLoading />}
                 {isUnreachable && <UnreachableMarketplace />}
-                {!!extensions && !!apps && <Marketplace extensions={extensions} apps={apps} />}
+                {!!extensions && !!apps && <Marketplace extensions={extensions} apps={apps} testApps={testApps} />}
             </PageContent>
         </>
     );
