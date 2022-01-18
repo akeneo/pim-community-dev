@@ -1,12 +1,20 @@
 import {arrayUnique} from 'akeneo-design-system';
 import {AvailableTarget, AvailableTargetGroup, DataMappingType} from '../../models';
 
-type DropdownItem = {
-  type: 'section' | 'target';
+type SectionDropdownItem = {
+  type: 'section';
+  code: string;
+  label: string;
+}
+
+type TargetDropdownItem = {
+  type: 'target';
   code: string;
   label: string;
   targetType: DataMappingType;
 };
+
+type DropdownItem = SectionDropdownItem | TargetDropdownItem;
 
 const flattenSections = (groups: AvailableTargetGroup[]) => {
   const mergeGroups = groups.reduce<AvailableTargetGroup[]>((existingGroups, groupToAdd) => {
@@ -24,7 +32,7 @@ const flattenSections = (groups: AvailableTargetGroup[]) => {
   }, []);
 
   return mergeGroups.reduce<DropdownItem[]>((result, group) => {
-    const sectionToAdd = {code: group.code, label: group.label, targetType: '', type: 'section'} as DropdownItem;
+    const sectionToAdd = {code: group.code, label: group.label, type: 'section'} as DropdownItem;
     const targetsToAdd = group.children.map(target => ({
       ...target,
       targetType: target.type,
