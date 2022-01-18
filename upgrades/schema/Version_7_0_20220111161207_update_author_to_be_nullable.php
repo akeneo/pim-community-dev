@@ -12,7 +12,7 @@ use Doctrine\Migrations\AbstractMigration;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class Version_6_0_20220111161207_update_author_to_be_nullable extends AbstractMigration
+final class Version_7_0_20220111161207_update_author_to_be_nullable extends AbstractMigration
 {
     public function up(Schema $schema): void
     {

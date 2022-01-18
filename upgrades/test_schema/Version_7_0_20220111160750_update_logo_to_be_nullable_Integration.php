@@ -9,11 +9,11 @@ use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
-class Version_6_0_20220111160750_update_logo_to_be_nullable_Integration extends TestCase
+class Version_7_0_20220111160750_update_logo_to_be_nullable_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
-    private const MIGRATION_LABEL = '_6_0_20220111160750_update_logo_to_be_nullable';
+    private const MIGRATION_LABEL = '_7_0_20220111160750_update_logo_to_be_nullable';
 
     public function test_it_modify_columns_and_keep_the_data(): void
     {
