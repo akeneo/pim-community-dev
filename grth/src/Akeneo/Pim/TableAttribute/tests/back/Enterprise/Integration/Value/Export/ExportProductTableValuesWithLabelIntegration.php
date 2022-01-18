@@ -2,14 +2,12 @@
 
 namespace Akeneo\Pim\TableAttribute\tests\back\Enterprise\Integration\Value\Export;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
-use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
+use Akeneo\Test\Pim\TableAttribute\Helper\EntityBuilderTrait;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
 use Box\Spout\Common\Entity\Row;
 use Box\Spout\Common\Type;
@@ -18,6 +16,8 @@ use PHPUnit\Framework\Assert;
 
 final class ExportProductTableValuesWithLabelIntegration extends TestCase
 {
+    use EntityBuilderTrait;
+
     private const CSV_EXPORT_JOB_CODE = 'csv_product_table_values_export';
     private const XLSX_EXPORT_JOB_CODE = 'xlsx_product_table_values_export';
     private JobLauncher $jobLauncher;
@@ -83,10 +83,8 @@ CSV;
 
         $this->createChannel([
             'code' => 'mobile',
-            'category_tree' => 'master',
             'currencies' => ['USD'],
             'locales' => ['en_US', 'fr_FR'],
-            'labels' => [],
         ]);
 
         $this->get(SqlCreateJobInstance::class)->createJobInstance(
@@ -137,27 +135,30 @@ CSV;
         ]);
 
         $this->createProduct('111111', [
-            'nutrition' => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope' => 'mobile',
-                    'data' => [
-                        [
-                            'brand' => 'akeneo',
-                            'color' => 'red',
-                        ],
-                        [
-                            'brand' => 'apple',
-                            'color' => 'blue'
+            'categories' => ['master'],
+            'values' => [
+                'nutrition' => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope' => 'mobile',
+                        'data' => [
+                            [
+                                'brand' => 'akeneo',
+                                'color' => 'red',
+                            ],
+                            [
+                                'brand' => 'apple',
+                                'color' => 'blue'
+                            ],
                         ],
                     ],
-                ],
-                [
-                    'locale' => 'en_US',
-                    'scope' => 'ecommerce',
-                    'data' => [
-                        [
-                            'brand' => 'akeneo',
+                    [
+                        'locale' => 'en_US',
+                        'scope' => 'ecommerce',
+                        'data' => [
+                            [
+                                'brand' => 'akeneo',
+                            ],
                         ],
                     ],
                 ],
@@ -165,25 +166,9 @@ CSV;
         ]);
     }
 
-    private function createChannel(array $data = []): ChannelInterface
-    {
-        $channel = $this->get('pim_catalog.factory.channel')->create();
-        $this->get('pim_catalog.updater.channel')->update($channel, $data);
-
-        $errors = $this->get('validator')->validate($channel);
-        Assert::assertCount(0, $errors, $errors->__toString());
-
-        $this->get('pim_catalog.saver.channel')->save($channel);
-
-        return $channel;
-    }
-
     private function createTableAttribute(string $attributeCode, array $data): void
     {
-        $attribute = $this->get('pim_catalog.factory.attribute')->create();
-        $this->get('pim_catalog.updater.attribute')->update(
-            $attribute,
-            \array_merge(
+        $this->createAttribute(\array_merge(
                 [
                     'code' => $attributeCode,
                     'type' => AttributeTypes::TABLE,
@@ -192,39 +177,6 @@ CSV;
                     'scopable' => true,
                 ],
                 $data
-            )
-        );
-        $violations = $this->get('validator')->validate($attribute);
-        Assert::assertCount(0, $violations, (string)$violations);
-        $this->get('pim_catalog.saver.attribute')->save($attribute);
-    }
-
-    private function createProduct(string $identifier, array $productValues): void
-    {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update(
-            $product,
-            [
-                'categories' => ['master'],
-                'values' => $productValues,
-            ]
-        );
-
-        $violations = $this->get('pim_catalog.validator.product')->validate($product);
-        Assert::assertCount(0, $violations, \sprintf('The product is not valid: %s', $violations));
-        $this->get('pim_catalog.saver.product')->save($product);
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-    }
-
-    private function createReferenceEntity(string $referenceEntityIdentifier): void
-    {
-        $handler = $this->get('akeneo_referenceentity.application.reference_entity.create_reference_entity_handler');
-        $handler(new CreateReferenceEntityCommand($referenceEntityIdentifier, []));
-    }
-
-    private function createRecord(string $referenceEntityIdentifier, string $recordCode, array $labels): void
-    {
-        $handler = $this->get('akeneo_referenceentity.application.record.create_record_handler');
-        $handler(new CreateRecordCommand($referenceEntityIdentifier, $recordCode, $labels));
+        ));
     }
 }
