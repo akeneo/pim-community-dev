@@ -1,16 +1,11 @@
 import {Authentication} from '@src/connect/components/AppWizard/steps/Authentication/Authentication';
 import '@testing-library/jest-dom/extend-expect';
-import {render, screen} from '@testing-library/react';
-import {pimTheme} from 'akeneo-design-system';
+import {screen} from '@testing-library/react';
 import React from 'react';
-import {ThemeProvider} from 'styled-components';
+import {renderWithProviders} from '../../../../../../test-utils';
 
 test('it displays both profile & email scopes', () => {
-    render(
-        <ThemeProvider theme={pimTheme}>
-            <Authentication appName='MyApp' scopes={['profile', 'email']} />
-        </ThemeProvider>
-    );
+    renderWithProviders(<Authentication appName='MyApp' scopes={['profile', 'email']} />);
 
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authentication.scope_profile')
@@ -21,11 +16,7 @@ test('it displays both profile & email scopes', () => {
 });
 
 test('it displays only the profile scope', () => {
-    render(
-        <ThemeProvider theme={pimTheme}>
-            <Authentication appName='MyApp' scopes={['profile']} />
-        </ThemeProvider>
-    );
+    renderWithProviders(<Authentication appName='MyApp' scopes={['profile']} />);
 
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authentication.scope_profile')
@@ -36,11 +27,7 @@ test('it displays only the profile scope', () => {
 });
 
 test('it displays only the email scope', () => {
-    render(
-        <ThemeProvider theme={pimTheme}>
-            <Authentication appName='MyApp' scopes={['email']} />
-        </ThemeProvider>
-    );
+    renderWithProviders(<Authentication appName='MyApp' scopes={['email']} />);
 
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authentication.scope_profile')

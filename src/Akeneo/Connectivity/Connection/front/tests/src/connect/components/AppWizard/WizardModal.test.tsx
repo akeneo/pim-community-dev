@@ -1,33 +1,30 @@
 import {WizardModal} from '@src/connect/components/AppWizard/WizardModal';
 import '@testing-library/jest-dom/extend-expect';
-import {render, screen, fireEvent} from '@testing-library/react';
-import {pimTheme} from 'akeneo-design-system';
+import {fireEvent, screen} from '@testing-library/react';
 import React from 'react';
 import {act} from 'react-dom/test-utils';
-import {ThemeProvider} from 'styled-components';
+import {renderWithProviders} from '../../../../test-utils';
 
 test('it renders a single step wizard modal', () => {
     const handleClose = jest.fn();
     const handleConfirm = jest.fn();
     const renderChildren = jest.fn();
 
-    render(
-        <ThemeProvider theme={pimTheme}>
-            <WizardModal
-                appLogo='MyAppLogo'
-                appName='MyApp'
-                onClose={handleClose}
-                onConfirm={handleConfirm}
-                steps={[
-                    {
-                        name: 'authentication',
-                        action: 'confirm',
-                    },
-                ]}
-            >
-                {renderChildren}
-            </WizardModal>
-        </ThemeProvider>
+    renderWithProviders(
+        <WizardModal
+            appLogo='MyAppLogo'
+            appName='MyApp'
+            onClose={handleClose}
+            onConfirm={handleConfirm}
+            steps={[
+                {
+                    name: 'authentication',
+                    action: 'confirm',
+                },
+            ]}
+        >
+            {renderChildren}
+        </WizardModal>
     );
 
     expect(renderChildren).toBeCalledWith({
@@ -60,27 +57,25 @@ test('it renders a multi steps wizard modal', () => {
     const handleConfirm = jest.fn();
     const renderChildren = jest.fn();
 
-    render(
-        <ThemeProvider theme={pimTheme}>
-            <WizardModal
-                appLogo='MyAppLogo'
-                appName='MyApp'
-                onClose={handleClose}
-                onConfirm={handleConfirm}
-                steps={[
-                    {
-                        name: 'authentication',
-                        action: 'next',
-                    },
-                    {
-                        name: 'authorizations',
-                        action: 'confirm',
-                    },
-                ]}
-            >
-                {renderChildren}
-            </WizardModal>
-        </ThemeProvider>
+    renderWithProviders(
+        <WizardModal
+            appLogo='MyAppLogo'
+            appName='MyApp'
+            onClose={handleClose}
+            onConfirm={handleConfirm}
+            steps={[
+                {
+                    name: 'authentication',
+                    action: 'next',
+                },
+                {
+                    name: 'authorizations',
+                    action: 'confirm',
+                },
+            ]}
+        >
+            {renderChildren}
+        </WizardModal>
     );
 
     expect(renderChildren).toBeCalledWith({

@@ -1,9 +1,8 @@
 import {Authentication} from '@src/connect/components/AppWizard/steps/Authentication/Authentication';
 import '@testing-library/jest-dom/extend-expect';
-import {render, screen, waitFor} from '@testing-library/react';
-import {pimTheme} from 'akeneo-design-system';
+import {screen, waitFor} from '@testing-library/react';
 import React from 'react';
-import {ThemeProvider} from 'styled-components';
+import {renderWithProviders} from '../../../../../../test-utils';
 
 jest.mock('@src/connect/components/AppWizard/steps/Authentication/UserAvatar', () => ({
     UserAvatar: () => <div>UserAvatar</div>,
@@ -13,11 +12,7 @@ jest.mock('@src/connect/components/AppWizard/steps/Authentication/ConsentList', 
 }));
 
 test('it renders correctly', async () => {
-    render(
-        <ThemeProvider theme={pimTheme}>
-            <Authentication appName='MyApp' scopes={[]} />
-        </ThemeProvider>
-    );
+    renderWithProviders(<Authentication appName='MyApp' scopes={[]} />);
 
     await waitFor(() =>
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authentication.title?app_name=MyApp')

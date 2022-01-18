@@ -6,9 +6,7 @@ import userEvent from '@testing-library/user-event';
 import {pimTheme} from 'akeneo-design-system';
 import React from 'react';
 import {ThemeProvider} from 'styled-components';
-import {historyMock, mockFetchResponses} from '../../../../test-utils';
-import {createMemoryHistory} from 'history';
-import {Router} from 'react-router-dom';
+import {historyMock, mockFetchResponses, renderWithProviders} from '../../../../test-utils';
 
 jest.mock('@src/connect/components/AppWizard/steps/Authentication/Authentication', () => ({
     Authentication: () => <div>authentication-component</div>,
@@ -52,10 +50,8 @@ test('it renders correctly', async () => {
         },
     });
 
-    render(
-        <ThemeProvider theme={pimTheme}>
-            <AuthenticationModal clientId='0dfce574-2238-4b13-b8cc-8d257ce7645b' newAuthenticationScopes={[]} />
-        </ThemeProvider>
+    renderWithProviders(
+        <AuthenticationModal clientId='0dfce574-2238-4b13-b8cc-8d257ce7645b' newAuthenticationScopes={[]} />
     );
 
     await waitFor(() => screen.queryByText('authentication-component'));
@@ -114,7 +110,7 @@ test('it consents to the authentication scopes & redirect the user', async () =>
 });
 
 test('it cancels the authentication', async () => {
-    const history = createMemoryHistory({initialEntries: ['/']});
+    historyMock.history.push('/');
 
     mockFetchResponses({
         akeneo_connectivity_connection_marketplace_rest_get_all_apps: {
@@ -131,12 +127,8 @@ test('it cancels the authentication', async () => {
         },
     });
 
-    render(
-        <ThemeProvider theme={pimTheme}>
-            <Router history={history}>
-                <AuthenticationModal clientId='0dfce574-2238-4b13-b8cc-8d257ce7645b' newAuthenticationScopes={[]} />
-            </Router>
-        </ThemeProvider>
+    renderWithProviders(
+        <AuthenticationModal clientId='0dfce574-2238-4b13-b8cc-8d257ce7645b' newAuthenticationScopes={[]} />
     );
 
     await waitFor(() => screen.queryByText('authentication-component'));
@@ -145,5 +137,5 @@ test('it cancels the authentication', async () => {
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.cancel'));
     });
 
-    expect(history.location.pathname).toBe('/connect/connected-apps');
+    expect(historyMock.history.location.pathname).toBe('/connect/connected-apps');
 });
