@@ -99,6 +99,21 @@ yq w -i ${PED_DIR}/deployments/terraform/pim/Chart.yaml "dependencies.(name==fle
 yq w -i ${PED_DIR}/deployments/terraform/pim/Chart.yaml "dependencies.(name==flex-es).version" "0.0.0"
 
 yq d -i ${PED_DIR}/deployments/terraform/pim/values.yaml "elasticsearch"
+# Not used, but to be compatible with helm using the Tshirt size
+yq w -i ${PED_DIR}/deployments/terraform/pim/values.yaml "elasticsearch.client.heapSize" "512m"
+yq w -i ${PED_DIR}/deployments/terraform/pim/values.yaml "elasticsearch.client.resources.limits.memory" "1024Mi"
+yq w -i ${PED_DIR}/deployments/terraform/pim/values.yaml "elasticsearch.client.resources.requests.cpu" "20m"
+yq w -i ${PED_DIR}/deployments/terraform/pim/values.yaml "elasticsearch.client.resources.requests.memory" "1024Mi"
+yq w -i ${PED_DIR}/deployments/terraform/pim/values.yaml "elasticsearch.master.heapSize" "384m"
+yq w -i ${PED_DIR}/deployments/terraform/pim/values.yaml "elasticsearch.master.resources.limits.memory" "768Mi"
+yq w -i ${PED_DIR}/deployments/terraform/pim/values.yaml "elasticsearch.master.resources.requests.cpu" "15m"
+yq w -i ${PED_DIR}/deployments/terraform/pim/values.yaml "elasticsearch.master.resources.requests.memory" "768Mi"
+yq w -i ${PED_DIR}/deployments/terraform/pim/values.yaml "elasticsearch.data.heapSize" "1024m"
+yq w -i ${PED_DIR}/deployments/terraform/pim/values.yaml "elasticsearch.data.resources.limits.memory" "1740Mi"
+yq w -i ${PED_DIR}/deployments/terraform/pim/values.yaml "elasticsearch.data.resources.requests.cpu" "40m"
+yq w -i ${PED_DIR}/deployments/terraform/pim/values.yaml "elasticsearch.data.resources.requests.memory" "1536Mi"
+# Not used, but to be compatible with helm using the Tshirt size
+
 yq d -i ${DESTINATION_PATH}/values.yaml "elasticsearch"
 yq w -i ${DESTINATION_PATH}/values.yaml "elasticsearch.common.service.name" "elasticsearch-client"
 yq w -i ${DESTINATION_PATH}/values.yaml "elasticsearch.fullnameOverride" "elasticsearch"
