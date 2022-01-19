@@ -148,10 +148,9 @@ const AttributeOptionTable = ({
   const handleReorder = useCallback(newIndices => reorderAttributeOptions(newIndices), [reorderAttributeOptions]);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const firstOptionRef = useRef<HTMLDivElement>(null);
-  const lastOptionRef = useRef<HTMLDivElement>(null);
+  const lastAttributeOptionRef = useRef<HTMLDivElement>(null);
 
-  usePagination(containerRef, lastOptionRef, onNextPage, true);
+  usePagination(containerRef, lastAttributeOptionRef, onNextPage, true);
 
   return (
     <div className="AknSubsection AknAttributeOption-list">
@@ -203,18 +202,6 @@ const AttributeOptionTable = ({
                 </Table.Header>
                 <Table.Body>
                   {filteredAttributeOptions.map((attributeOption: AttributeOption, index) => {
-                    let ref = undefined;
-                    switch (index) {
-                      case 0:
-                        ref = firstOptionRef;
-                        break;
-                      case filteredAttributeOptions.length - 1:
-                        ref = lastOptionRef;
-                        break;
-                    }
-
-                    console.log(ref);
-
                     return (
                       <AttributeOptionRow
                         isDraggable={isDraggable}
@@ -223,7 +210,7 @@ const AttributeOptionTable = ({
                         isSelected={selectedOptionId === attributeOption.id}
                         onDelete={setAttributeOptionToDelete}
                         key={`${attributeContext.attributeId}-${attributeOption.code}`}
-                        ref={ref}
+                        ref={index === filteredAttributeOptions.length - 1 ? lastAttributeOptionRef : undefined}
                       />
                     );
                   })}
