@@ -19,7 +19,7 @@ check-pullup:
 
 .PHONY: check-sf-services
 check-sf-services:
-	$(PHP_RUN) bin/check-services-instantiability
+	$(PHP_RUN) bin/console lint:container
 
 ### Lint tests
 .PHONY: lint-back

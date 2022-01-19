@@ -148,7 +148,7 @@ pim_import_export:
   batch_status:
     1: Acabat
     2: Començant
-    3: Començat
+    3: In progress
     4: Aturant
     5: Aturat
     6: Fallit
@@ -157,7 +157,6 @@ pim_import_export:
   job_status:
     COMPLETED: Acabat
     STARTING: Començant
-    STARTED: Començat
     STOPPING: Aturant
     STOPPED: Aturat
     FAILED: Fallit

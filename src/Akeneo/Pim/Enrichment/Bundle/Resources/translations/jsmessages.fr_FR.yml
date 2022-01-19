@@ -331,6 +331,7 @@ pim_enrich.export.product:
     title: Paramètres généraux
 pim_enrich.mass_edit.product:
   title: Action de masse sur les produits
+  confirm: "{0}Vous êtes sur le point de mettre à jour certains produits avec les informations suivantes, les anciennes valeurs seront remplacées. Veuillez confirmer.|{1}Vous êtes sur le point de mettre à jour un produit avec les informations suivantes, les anciennes valeurs seront remplacées. Veuillez confirmer.|]1, Inf[Vous êtes sur le point de mettre à jour {{ itemsCount }} produits avec les informations suivantes, les anciennes valeurs seront remplacées. Veuillez confirmer."
   step:
     select:
       label: Choisir des produits
@@ -356,6 +357,7 @@ pim_enrich.mass_edit.product:
     edit_common:
       label: Modifier les valeurs d’attributs
       label_count: "{0}Modifier les valeurs d'attributs de certains <span class=\\\"AknFullPage-title--highlight\\\">produits</span>|{1}Modifier les valeurs d'attributs d' <span class=\\\"AknFullPage-title--highlight\\\">1 produit</span>|]1, Inf[Modifier les valeurs d'attributs de <span class=\\\"AknFullPage-title--highlight\\\">{{ itemsCount }} produits</span>"
+      description: Seuls les attributs appartenant aux familles des produits sélectionnés seront édités avec les données suivantes pour la locale {{ locale }} et le canal {{ scope }}. Les anciennes valeurs seront remplacées.
       no_update: Veuillez sélectionner au moins un champ à mettre à jour.
     add_attribute_value:
       label: Ajouter des valeurs d’attributs

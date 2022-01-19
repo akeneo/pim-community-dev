@@ -7,7 +7,7 @@ namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionsQuery;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionsQueryInterface;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -23,7 +23,7 @@ class DbalSelectConnectionsQueryIntegration extends TestCase
     /** @var ConnectionLoader */
     private $connectionLoader;
 
-    /** @var SelectConnectionsQuery */
+    /** @var SelectConnectionsQueryInterface */
     private $selectConnectionsQuery;
 
     protected function setUp(): void

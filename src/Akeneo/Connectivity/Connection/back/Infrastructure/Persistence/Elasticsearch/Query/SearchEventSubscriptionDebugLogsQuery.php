@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query;
 
-use Akeneo\Connectivity\Connection\Domain\Clock;
+use Akeneo\Connectivity\Connection\Domain\ClockInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SearchEventSubscriptionDebugLogsQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Encrypter;
@@ -49,12 +49,12 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
     const MAX_LIFETIME_OF_WARNING_AND_ERROR_LOGS = 72 * 60 * 60; // 72h
 
     private Client $elasticsearchClient;
-    private Clock $clock;
+    private ClockInterface $clock;
     private Encrypter $encrypter;
 
     public function __construct(
         Client $elasticsearchClient,
-        Clock $clock,
+        ClockInterface $clock,
         Encrypter $encrypter
     ) {
         $this->elasticsearchClient = $elasticsearchClient;

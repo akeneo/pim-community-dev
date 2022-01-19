@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query;
 
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Read\BusinessError;
-use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Query\SelectLastConnectionBusinessErrorsQuery;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Query\SelectLastConnectionBusinessErrorsQueryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
 /**
@@ -13,7 +13,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ElasticsearchSelectLastConnectionBusinessErrorsQuery implements SelectLastConnectionBusinessErrorsQuery
+class ElasticsearchSelectLastConnectionBusinessErrorsQuery implements SelectLastConnectionBusinessErrorsQueryInterface
 {
     /** @var Client */
     private $esClient;

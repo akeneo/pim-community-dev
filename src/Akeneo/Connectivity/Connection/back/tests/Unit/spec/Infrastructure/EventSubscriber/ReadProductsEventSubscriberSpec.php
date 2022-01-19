@@ -9,7 +9,7 @@ use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinati
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext;
 use Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\ReadProductsEventSubscriber;
@@ -28,7 +28,7 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
     public function let(
         ConnectionContext $connectionContext,
         UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler,
-        ConnectionRepository $connectionRepository
+        ConnectionRepositoryInterface $connectionRepository
     ): void {
         $this->beConstructedWith(
             $connectionContext,
@@ -74,7 +74,7 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
 
     public function it_saves_read_products_events_with_connection_code_from_the_events_api(
         UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler,
-        ConnectionRepository $connectionRepository,
+        ConnectionRepositoryInterface $connectionRepository,
         Connection $connection
     ): void {
         $readProductsEvent = new ReadProductsEvent(3, 'connection_code');

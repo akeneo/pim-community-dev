@@ -7,11 +7,14 @@ import {useTranslate} from '../../shared/translate';
 import styled from 'styled-components';
 import {useDisplayScrollTopButton} from '../../shared/scroll/hooks/useDisplayScrollTopButton';
 import findScrollParent from '../../shared/scroll/utils/findScrollParent';
-import {App, Apps} from '../../model/app';
+import {App, Apps, TestApps} from '../../model/app';
 import {Section} from './Section';
 import {ActivateAppButton} from './ActivateAppButton';
 import {useFeatureFlags} from '../../shared/feature-flags';
 import {useConnectionsLimitReached} from '../../shared/hooks/use-connections-limit-reached';
+import {TestAppList} from './TestApp/TestAppList';
+import {useSecurity} from '../../shared/security';
+import {useDeveloperMode} from '../hooks/use-developer-mode';
 
 const ScrollToTop = styled(IconButton)`
     position: fixed;
@@ -32,14 +35,18 @@ const ScrollToTop = styled(IconButton)`
 type Props = {
     extensions: Extensions;
     apps: Apps;
+    testApps: TestApps;
 };
 
-export const Marketplace: FC<Props> = ({extensions, apps}) => {
+export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
     const translate = useTranslate();
     const featureFlag = useFeatureFlags();
     const ref = useRef(null);
     const scrollContainer = findScrollParent(ref.current);
     const displayScrollButton = useDisplayScrollTopButton(ref);
+    const isDeveloperModeEnabled = useDeveloperMode();
+    const security = useSecurity();
+    const isManageAppsAuthorized = security.isGranted('akeneo_connectivity_connection_manage_apps');
     const isLimitReached = useConnectionsLimitReached();
     const extensionsList = extensions.extensions.map((extension: Extension) => (
         <MarketplaceCard key={extension.id} item={extension} />
@@ -49,7 +56,12 @@ export const Marketplace: FC<Props> = ({extensions, apps}) => {
             key={app.id}
             item={app}
             additionalActions={[
-                <ActivateAppButton key={1} id={app.id} isConnected={app.connected} isLimitReached={!!isLimitReached} />,
+                <ActivateAppButton
+                    key={1}
+                    id={app.id}
+                    isConnected={app.connected}
+                    isDisabled={!isManageAppsAuthorized || false !== isLimitReached}
+                />,
             ]}
         />
     ));
@@ -60,7 +72,9 @@ export const Marketplace: FC<Props> = ({extensions, apps}) => {
     return (
         <>
             <div ref={ref} />
-            <MarketplaceHelper count={extensions.total + apps.total} />
+            <MarketplaceHelper count={extensions.total + apps.total + testApps.total} />
+
+            {isDeveloperModeEnabled && <TestAppList testApps={testApps} />}
 
             {featureFlag.isEnabled('marketplace_activate') && (
                 <Section

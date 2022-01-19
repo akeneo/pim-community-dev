@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Service;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\ApiEventBuildErrorLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\ApiEventBuildErrorLoggerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger;
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionSkippedOwnEventLogger;
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\LimitOfEventsApiRequestsReachedLogger;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventSubscriptionSkippedOwnEventLoggerInterface;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\LimitOfEventsApiRequestsReachedLoggerInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepositoryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\Event;
@@ -24,7 +23,7 @@ use PhpSpec\ObjectBehavior;
 class EventsApiDebugLoggerSpec extends ObjectBehavior
 {
     public function let(
-        EventsApiDebugRepository $eventsApiDebugRepository
+        EventsApiDebugRepositoryInterface $eventsApiDebugRepository
     ): void {
         $this->beConstructedWith(
             $eventsApiDebugRepository,
@@ -39,7 +38,7 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
     }
 
     public function it_logs_when_the_event_subscription_has_been_sent(
-        EventsApiDebugRepository $eventsApiDebugRepository
+        EventsApiDebugRepositoryInterface $eventsApiDebugRepository
     ): void {
         $this->beConstructedWith(
             $eventsApiDebugRepository,
@@ -47,7 +46,7 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
             [],
             1
         );
-        $this->shouldImplement(EventSubscriptionSkippedOwnEventLogger::class);
+        $this->shouldImplement(EventSubscriptionSkippedOwnEventLoggerInterface::class);
 
         $eventsApiDebugRepository->persist(
             [
@@ -83,7 +82,7 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
     }
 
     public function it_logs_when_the_event_subscription_skipped_its_own_event(
-        EventsApiDebugRepository $eventsApiDebugRepository
+        EventsApiDebugRepositoryInterface $eventsApiDebugRepository
     ): void {
         $this->beConstructedWith(
             $eventsApiDebugRepository,
@@ -91,7 +90,7 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
             [],
             1
         );
-        $this->shouldImplement(EventSubscriptionSkippedOwnEventLogger::class);
+        $this->shouldImplement(EventSubscriptionSkippedOwnEventLoggerInterface::class);
 
         $eventsApiDebugRepository->persist(
             [
@@ -116,7 +115,7 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
     }
 
     public function it_logs_when_the_limit_of_event_api_requests_is_reached(
-        EventsApiDebugRepository $eventsApiDebugRepository
+        EventsApiDebugRepositoryInterface $eventsApiDebugRepository
     ): void {
         $this->beConstructedWith(
             $eventsApiDebugRepository,
@@ -124,7 +123,7 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
             [],
             1
         );
-        $this->shouldImplement(LimitOfEventsApiRequestsReachedLogger::class);
+        $this->shouldImplement(LimitOfEventsApiRequestsReachedLoggerInterface::class);
 
         $eventsApiDebugRepository->persist(
             [
@@ -141,7 +140,7 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
     }
 
     public function it_logs_when_the_resource_was_not_found_or_access_denied(
-        EventsApiDebugRepository $eventsApiDebugRepository
+        EventsApiDebugRepositoryInterface $eventsApiDebugRepository
     ): void {
         $this->beConstructedWith(
             $eventsApiDebugRepository,
@@ -149,7 +148,7 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
             [],
             1
         );
-        $this->shouldImplement(ApiEventBuildErrorLogger::class);
+        $this->shouldImplement(ApiEventBuildErrorLoggerInterface::class);
 
         $eventsApiDebugRepository->persist(
             [

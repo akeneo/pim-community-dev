@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ConnectionWebhook;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetAConnectionWebhookQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetAConnectionWebhookQueryInterface;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\WebhookLoader;
 use Akeneo\Test\Integration\Configuration;
@@ -18,7 +18,7 @@ class DbalGetAConnectionWebhookQueryIntegration extends TestCase
     /** @var ConnectionLoader */
     private $connectionLoader;
 
-    /** @var GetAConnectionWebhookQuery */
+    /** @var GetAConnectionWebhookQueryInterface */
     private $getAConnectionWebhookQuery;
 
     /** @var WebhookLoader */

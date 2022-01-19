@@ -78,7 +78,7 @@ test('The step wizard renders without error', async () => {
         'akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=8d8a7dc1-0827-4cc9-9ae5-577c6419230b': {
             json: {
                 appName: 'MyApp',
-                appLogo: '',
+                appLogo: 'http://example.com/logo.png',
                 scopeMessages: [],
                 authenticationScopes: [],
             },
@@ -89,9 +89,8 @@ test('The step wizard renders without error', async () => {
         ...fetchAppWizardDataResponses,
     });
     renderWithProviders(<AppWizardWithPermissions clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
+    await screen.findByText('akeneo_connectivity.connection.connect.apps.wizard.progress.authorizations');
 
-    await waitFor(() => screen.getByAltText('MyApp'));
-    expect(screen.queryByAltText('MyApp')).toBeInTheDocument();
     expect(screen.queryByText('authorizations-component')).toBeInTheDocument();
     expect(screen.queryByText('permissions-component')).not.toBeInTheDocument();
     expect(screen.queryByText('permissions-summary-component')).not.toBeInTheDocument();
@@ -102,7 +101,7 @@ test('The wizard redirect to the marketplace when closed', async () => {
         'akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=8d8a7dc1-0827-4cc9-9ae5-577c6419230b': {
             json: {
                 appName: 'MyApp',
-                appLogo: '',
+                appLogo: 'http://example.com/logo.png',
                 scopeMessages: [],
                 authenticationScopes: [],
             },
@@ -114,7 +113,7 @@ test('The wizard redirect to the marketplace when closed', async () => {
     });
 
     renderWithProviders(<AppWizardWithPermissions clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
-    await waitFor(() => screen.getByAltText('MyApp'));
+    await screen.findByText('akeneo_connectivity.connection.connect.apps.wizard.progress.authorizations');
 
     act(() => {
         userEvent.click(screen.getByTitle('akeneo_connectivity.connection.connect.apps.wizard.action.cancel'));
@@ -128,7 +127,7 @@ test('The wizard renders steps and is able to navigate between steps', async () 
         'akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=8d8a7dc1-0827-4cc9-9ae5-577c6419230b': {
             json: {
                 appName: 'MyApp',
-                appLogo: '',
+                appLogo: 'http://example.com/logo.png',
                 scopeMessages: [],
                 authenticationScopes: [],
             },
@@ -139,7 +138,7 @@ test('The wizard renders steps and is able to navigate between steps', async () 
         ...fetchAppWizardDataResponses,
     });
     renderWithProviders(<AppWizardWithPermissions clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
-    await waitFor(() => screen.getByAltText('MyApp'));
+    await screen.findByText('akeneo_connectivity.connection.connect.apps.wizard.progress.authorizations');
 
     assertAuthorizationsScreen();
 
@@ -176,7 +175,7 @@ test('The wizard notifies an unspecified error occurred on app confirm ', async 
         [`akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=${clientId}`]: {
             json: {
                 appName: 'MyApp',
-                appLogo: '',
+                appLogo: 'http://example.com/logo.png',
                 scopeMessages: [],
                 authenticationScopes: [],
             },
@@ -215,7 +214,7 @@ test('The wizard saves app and permissions on confirm', async () => {
         [`akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=${clientId}`]: {
             json: {
                 appName: 'MyApp',
-                appLogo: '',
+                appLogo: 'http://example.com/logo.png',
                 scopeMessages: [],
                 authenticationScopes: [],
             },
@@ -284,7 +283,7 @@ test('The wizard saves app but have some failing permissions on confirm', async 
         [`akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=${clientId}`]: {
             json: {
                 appName: 'MyApp',
-                appLogo: '',
+                appLogo: 'http://example.com/logo.png',
                 scopeMessages: [],
                 authenticationScopes: [],
             },
@@ -442,7 +441,7 @@ const assertPermissionsSummaryScreen = () => {
 };
 
 const navigateToSummaryAndClickConfirm = async () => {
-    await waitFor(() => screen.getByAltText('MyApp'));
+    await screen.findByText('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next');
 
     act(() => {
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next'));

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\User\Internal;
 
-use Akeneo\Connectivity\Connection\Application\Settings\Service\RegenerateUserPassword as RegenerateUserPasswordService;
+use Akeneo\Connectivity\Connection\Application\Settings\Service\RegenerateUserPasswordInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
 use Akeneo\Connectivity\Connection\Infrastructure\User\Internal\RegenerateUserPassword;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
@@ -29,7 +29,7 @@ class RegenerateUserPasswordSpec extends ObjectBehavior
     public function it_is_initializable()
     {
         $this->shouldBeAnInstanceOf(RegenerateUserPassword::class);
-        $this->shouldImplement(RegenerateUserPasswordService::class);
+        $this->shouldImplement(RegenerateUserPasswordInterface::class);
     }
 
     public function it_regenerates_a_user_password(

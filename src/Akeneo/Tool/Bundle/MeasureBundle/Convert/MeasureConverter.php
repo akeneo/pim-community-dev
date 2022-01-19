@@ -110,7 +110,11 @@ class MeasureConverter
      */
     protected function applyOperation($value, $operator, $operand)
     {
-        $processedValue = (string) $value;
+        if (is_float($value)) {
+            $processedValue = \number_format($value, static::SCALE, '.', '');
+        } else {
+            $processedValue = (string) $value;
+        }
 
         if (!is_numeric($processedValue)) {
             return '0';

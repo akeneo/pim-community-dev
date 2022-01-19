@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionWithCredentialsByCodeQuery;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionWithCredentialsByCodeQueryInterface;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -22,7 +22,7 @@ class DbalSelectConnectionWithCredentialsByCodeQueryIntegration extends TestCase
     /** @var ConnectionLoader */
     private $connectionLoader;
 
-    /** @var SelectConnectionWithCredentialsByCodeQuery */
+    /** @var SelectConnectionWithCredentialsByCodeQueryInterface */
     private $selectConnectionWithCredentialsByCodeQuery;
 
     protected function setUp(): void

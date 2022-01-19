@@ -9,7 +9,7 @@ use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinati
 use Akeneo\Connectivity\Connection\Application\ConnectionContextInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -29,12 +29,12 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
 {
     private ConnectionContextInterface $connectionContext;
     private UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler;
-    private ConnectionRepository $connectionRepository;
+    private ConnectionRepositoryInterface $connectionRepository;
 
     public function __construct(
         ConnectionContextInterface $connectionContext,
         UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler,
-        ConnectionRepository $connectionRepository
+        ConnectionRepositoryInterface $connectionRepository
     ) {
         $this->connectionContext = $connectionContext;
         $this->updateDataDestinationProductEventCountHandler = $updateDataDestinationProductEventCountHandler;

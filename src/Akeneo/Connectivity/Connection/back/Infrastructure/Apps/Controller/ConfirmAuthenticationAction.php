@@ -7,7 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller;
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler;
-use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
@@ -26,7 +26,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ConfirmAuthenticationAction
+final class ConfirmAuthenticationAction
 {
     private FeatureFlag $featureFlag;
     private GetAppConfirmationQueryInterface $getAppConfirmationQuery;
@@ -78,7 +78,7 @@ class ConfirmAuthenticationAction
 
         try {
             $this->consentAppAuthenticationHandler->handle(new ConsentAppAuthenticationCommand($clientId, $connectedPimUserId));
-        } catch (InvalidAppAuthorizationRequest $exception) {
+        } catch (InvalidAppAuthorizationRequestException $exception) {
             $this->logger->warning(
                 sprintf('App activation failed with validation error "%s"', $exception->getMessage())
             );

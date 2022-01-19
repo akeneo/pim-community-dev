@@ -120,3 +120,5 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Connections\GetConnectionsNumberLimit:
         arguments:
             - '%akeneo_connectivity.connection.max_limit%'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Service\RandomCodeGenerator: ~

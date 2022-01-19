@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\ApiEventBuildErrorLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\ApiEventBuildErrorLoggerInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
@@ -24,14 +24,14 @@ class WebhookEventBuilder
 {
     /** @var iterable<EventDataBuilderInterface> */
     private iterable $eventDataBuilders;
-    private ApiEventBuildErrorLogger $apiEventBuildErrorLogger;
+    private ApiEventBuildErrorLoggerInterface $apiEventBuildErrorLogger;
 
     /**
      * @param iterable<EventDataBuilderInterface> $eventDataBuilders
      */
     public function __construct(
         iterable $eventDataBuilders,
-        ApiEventBuildErrorLogger $apiEventBuildErrorLogger
+        ApiEventBuildErrorLoggerInterface $apiEventBuildErrorLogger
     ) {
         $this->eventDataBuilders = $eventDataBuilders;
         $this->apiEventBuildErrorLogger = $apiEventBuildErrorLogger;

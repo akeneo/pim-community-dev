@@ -126,11 +126,18 @@ akeneo_connectivity.connection:
           next: Suivant
           allow_and_next: Autoriser et suivant
         progress:
+          authentication: Authentification
           authorizations: Autorisations
           permissions: Permissions
           summary: Bien joué !
+        authentication:
+          title: 'L''app {{ app_name }} a besoin de '
+          helper_link: Comment connecter mon PIM à des Apps ?
+          scope_profile: Voir votre prénom et votre nom de famille
+          scope_email: Voir votre adresse e-mail
         authorize:
           title: '{{ app_name }} a besoin de'
+          no_scope_title: 'L''app {{ app_name }} voudrait accéder à votre PIM.'
           no_scope: Aucune autorisation spécifique n'a été demandée.
           helper: Pour en savoir plus sur les autorisations accordées aux apps,
           helper_link: consultez notre Help Center.

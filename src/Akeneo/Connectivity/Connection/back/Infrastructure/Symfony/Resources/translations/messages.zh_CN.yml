@@ -1,3 +1,4 @@
 akeneo_connectivity.connection:
   acl.manage_settings: 管理连接设置
   acl.manage_apps: 管理应用
+  acl.open_apps: 打开应用
