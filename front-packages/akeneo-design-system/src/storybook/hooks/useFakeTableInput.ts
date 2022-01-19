@@ -8,7 +8,7 @@ type Row = {
   origin: 'french' | 'english' | 'german' | null;
 };
 
-type RowCode = 'nutritionScore' | 'part' | 'quantity' | 'is_allergenic' | 'origin' | 'weight';
+type RowCode = 'nutritionScore' | 'part' | 'quantity' | 'is_allergenic' | 'origin' | 'length';
 type RowValue =
   | '1'
   | '2'
@@ -22,7 +22,7 @@ type RowValue =
   | 'german'
   | {unit: string; amount: string};
 
-const weightUnits = [
+const lengthUnits = [
   {label: 'Millimeter', value: 'MILLIMETER', symbol: 'mm'},
   {label: 'Centimeter', value: 'CENTIMETER', symbol: 'cm'},
   {label: 'Decimeter', value: 'DECIMETER', symbol: 'dm'},
@@ -40,7 +40,7 @@ const useFakeTableInput = (linesCount: number) => {
         quantity: lineIndex * 10,
         is_allergenic: [true, false, null][lineIndex % 3],
         origin: ['french', 'english', 'german', null][lineIndex % 4] as 'french' | 'english' | 'german' | null,
-        weight: {unit: weightUnits[lineIndex].value, amount: `${lineIndex * 1.5}`},
+        length: {unit: lengthUnits[lineIndex].value, amount: `${lineIndex * 1.5}`},
       };
     })
   );
@@ -60,7 +60,7 @@ const useFakeTableInput = (linesCount: number) => {
     return text.toLowerCase().includes(searchValue.toLowerCase());
   };
 
-  return {getValue, setValue, searchValue, setSearchValue, match, weightUnits};
+  return {getValue, setValue, searchValue, setSearchValue, match, lengthUnits};
 };
 
 export {useFakeTableInput};
