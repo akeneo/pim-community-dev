@@ -71,8 +71,8 @@ define(['jquery', 'pim/field', 'underscore', 'pim/template/product/field/textare
      */
     updateModel: function () {
       var data = this.$('.field-input:first textarea:first').code();
-      data = '<p><br></p>' === data ? this.attribute.empty_value : data;
-      data = '' === data ? this.attribute.empty_value : data;
+      data = '<p><br></p>' === data?.trim() ? this.attribute.empty_value : data;
+      data = '' === data || null === data ? this.attribute.empty_value : data;
 
       this.setCurrentValue(data);
     },
