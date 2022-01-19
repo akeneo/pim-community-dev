@@ -12,7 +12,6 @@ use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class InMemoryProductRepository implements
     IdentifiableObjectRepositoryInterface,
@@ -75,25 +74,13 @@ class InMemoryProductRepository implements
         return $this->products->toArray();
     }
 
+    /**
+     * We implement this method for onboarder v1 because we need it for an event subscriber
+     * and there is some integration tests that are using inmemory implem
+     */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        $products = [];
-        $propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
-            ->getPropertyAccessor();
-
-        foreach ($this->products as $product) {
-            $keepThisProduct= true;
-            foreach ($criteria as $key => $value) {
-                if ($propertyAccessor->getValue($product, $key) !== $value) {
-                    $keepThisProduct = false;
-                }
-            }
-            if ($keepThisProduct) {
-                $products[] = $product;
-            }
-        }
-
-        return $products;
+        return array_filter((array)$this->products, fn($product)=> $product->getIdentifier() !== $criteria['identifier']);
     }
 
     public function findOneBy(array $criteria)
