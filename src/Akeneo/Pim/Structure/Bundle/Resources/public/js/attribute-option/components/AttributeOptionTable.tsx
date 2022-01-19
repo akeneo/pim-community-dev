@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import NoResultOnSearch from './NoResultOnSearch';
 import {AttributeOptionRow} from './AttributeOptionRow';
+import {usePagination} from 'akeneo-design-system/lib/hooks/usePagination';
 
 interface ListProps {
   selectAttributeOption: (selectedOptionId: number | null) => void;
@@ -18,6 +19,7 @@ interface ListProps {
   selectedOptionId: number | null;
   deleteAttributeOption: (attributeOptionId: number) => void;
   manuallySortAttributeOptions: (attributeOptions: AttributeOption[]) => void;
+  onNextPage: () => void;
 }
 
 const AttributeOptionTable = ({
@@ -27,6 +29,7 @@ const AttributeOptionTable = ({
   showNewOptionForm,
   deleteAttributeOption,
   manuallySortAttributeOptions,
+  onNextPage,
 }: ListProps) => {
   const translate = useTranslate();
   const locale = useUserContext().get('catalogLocale');
@@ -144,6 +147,12 @@ const AttributeOptionTable = ({
 
   const handleReorder = useCallback(newIndices => reorderAttributeOptions(newIndices), [reorderAttributeOptions]);
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const firstOptionRef = useRef<HTMLDivElement>(null);
+  const lastOptionRef = useRef<HTMLDivElement>(null);
+
+  usePagination(containerRef, lastOptionRef, onNextPage, true);
+
   return (
     <div className="AknSubsection AknAttributeOption-list">
       <SectionTitleStyled>
@@ -183,7 +192,7 @@ const AttributeOptionTable = ({
           <>
             <AutoOptionSorting readOnly={autoSortingReadOnly} />
 
-            <TableContainer>
+            <TableContainer ref={containerRef}>
               <SpacedTable isDragAndDroppable={isDraggable} onReorder={handleReorder}>
                 <Table.Header sticky={0}>
                   {!isDraggable && <Table.HeaderCell>&nbsp;</Table.HeaderCell>}
@@ -193,7 +202,19 @@ const AttributeOptionTable = ({
                   <Table.HeaderCell>&nbsp;</Table.HeaderCell>
                 </Table.Header>
                 <Table.Body>
-                  {filteredAttributeOptions.map((attributeOption: AttributeOption) => {
+                  {filteredAttributeOptions.map((attributeOption: AttributeOption, index) => {
+                    let ref = undefined;
+                    switch (index) {
+                      case 0:
+                        ref = firstOptionRef;
+                        break;
+                      case filteredAttributeOptions.length - 1:
+                        ref = lastOptionRef;
+                        break;
+                    }
+
+                    console.log(ref);
+
                     return (
                       <AttributeOptionRow
                         isDraggable={isDraggable}
@@ -202,6 +223,7 @@ const AttributeOptionTable = ({
                         isSelected={selectedOptionId === attributeOption.id}
                         onDelete={setAttributeOptionToDelete}
                         key={`${attributeContext.attributeId}-${attributeOption.code}`}
+                        ref={ref}
                       />
                     );
                   })}

@@ -17,6 +17,7 @@ type AttributeOptionsState = {
   deleteAttributeOption: (attributeOptionId: number) => void;
   reorderAttributeOptions: (sortedAttributeOptions: AttributeOption[]) => void;
   isSaving: boolean;
+  onNextPage: () => void;
 };
 
 const AttributeOptionsContext = createContext<AttributeOptionsState>({
@@ -33,6 +34,7 @@ const AttributeOptionsContext = createContext<AttributeOptionsState>({
   deleteAttributeOption: () => {},
   reorderAttributeOptions: () => {},
   isSaving: false,
+  onNextPage: () => {},
 });
 
 type Props = {
@@ -69,6 +71,7 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
   const attributeOptionDelete = useDeleteAttributeOption();
   const attributeOptionManualSort = useManualSortAttributeOptions();
   const [isSaving, setIsSaving] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(0);
   const route = useRoute('pim_enrich_attributeoption_index', {attributeId: attribute.attributeId.toString()});
 
   const saveAttributeOption = useCallback(
@@ -147,6 +150,10 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
     }
   };
 
+  const onNextPage = useCallback(() => {
+    setPage(page + 1);
+  }, []);
+
   useEffect(() => {
     (async () => {
       if (attributeOptions === null) {
@@ -178,6 +185,7 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
         deleteAttributeOption,
         reorderAttributeOptions,
         isSaving,
+        onNextPage,
       }}
     >
       {children}

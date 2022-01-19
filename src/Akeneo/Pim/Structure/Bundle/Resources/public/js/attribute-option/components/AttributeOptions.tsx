@@ -15,6 +15,7 @@ const AttributeOptions = () => {
     deleteAttributeOption,
     reorderAttributeOptions,
     isSaving,
+    onNextPage,
   } = useContext(AttributeOptionsContext);
   const [selectedOption, setSelectedOption] = useState<AttributeOption | null>(null);
   const [showNewOptionForm, setShowNewOptionForm] = useState<boolean>(false);
@@ -116,6 +117,7 @@ const AttributeOptions = () => {
           showNewOptionForm={setShowNewOptionForm}
           deleteAttributeOption={deleteAttributeOptionCallback}
           manuallySortAttributeOptions={manuallySortAttributeOptions}
+          onNextPage={onNextPage}
         />
       )}
 
