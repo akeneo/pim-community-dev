@@ -105,7 +105,6 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
 
     function it_asserts_that_the_other_methods_are_not_implemented_yet()
     {
-        $this->shouldThrow(NotImplementedException::class)->during('findBy', [[]]);
         $this->shouldThrow(NotImplementedException::class)->during('findOneBy', [[]]);
         $this->shouldThrow(NotImplementedException::class)->during('getClassName', []);
         $this->shouldThrow(NotImplementedException::class)->during('getAvailableAttributeIdsToExport', [[]]);
@@ -147,5 +146,19 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
         $products->shouldHaveCount(2);
         $products[0]->getIdentifier()->shouldBe('A');
         $products[1]->getIdentifier()->shouldBe('B');
+    }
+
+    function it_finds_products_by_criteria()
+    {
+        foreach (['A', 'B', 'C'] as $identifier) {
+            $product = new Product();
+            $product->setIdentifier($identifier);
+            $this->save($product);
+        }
+
+        $products = $this->findBy(['identifier' => 'A']);
+        $products->shouldBeArray();
+        $products->shouldHaveCount(1);
+        $products[0]->getIdentifier()->shouldBe('A');
     }
 }

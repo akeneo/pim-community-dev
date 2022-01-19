@@ -12,6 +12,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class InMemoryProductRepository implements
     IdentifiableObjectRepositoryInterface,
@@ -76,7 +77,23 @@ class InMemoryProductRepository implements
 
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        throw new NotImplementedException(__METHOD__);
+        $products = [];
+        $propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
+            ->getPropertyAccessor();
+
+        foreach ($this->products as $product) {
+            $keepThisProduct= true;
+            foreach ($criteria as $key => $value) {
+                if ($propertyAccessor->getValue($product, $key) !== $value) {
+                    $keepThisProduct = false;
+                }
+            }
+            if ($keepThisProduct) {
+                $products[] = $product;
+            }
+        }
+
+        return $products;
     }
 
     public function findOneBy(array $criteria)
