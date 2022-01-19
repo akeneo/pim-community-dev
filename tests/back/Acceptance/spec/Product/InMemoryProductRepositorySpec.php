@@ -150,15 +150,17 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
 
     function it_finds_products_by_criteria()
     {
-        foreach (['A', 'B', 'C'] as $identifier) {
-            $product = new Product();
-            $product->setIdentifier($identifier);
-            $this->save($product);
-        }
+        $productA = new Product();
+        $productA->setIdentifier('A');
+        $this->save($productA);
+
+        $productB = new Product();
+        $productB->setIdentifier('B');
+        $this->save($productB);
 
         $products = $this->findBy(['identifier' => 'A']);
         $products->shouldBeArray();
         $products->shouldHaveCount(1);
-        $products[0]->getIdentifier()->shouldBe('A');
+        $products->shouldHaveKeyWithValue('A', $productA);
     }
 }

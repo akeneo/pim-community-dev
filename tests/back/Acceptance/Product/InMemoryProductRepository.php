@@ -80,20 +80,7 @@ class InMemoryProductRepository implements
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        $products = [];
-        foreach ($this->products as $product) {
-            $keepThisProduct= true;
-            foreach ($criteria as $value) {
-                if ($product->getIdentifier() !== $value) {
-                    $keepThisProduct = false;
-                    break;
-                }
-            }
-            if ($keepThisProduct) {
-                $products[] = $product;
-            }
-        }
-        return $products;
+        return $this->products->filter(fn (ProductInterface $product) => $product->getIdentifier() === $criteria['identifier'])->toArray();
     }
 
     public function findOneBy(array $criteria)
