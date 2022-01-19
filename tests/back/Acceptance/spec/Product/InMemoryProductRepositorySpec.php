@@ -148,7 +148,7 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
         $products[1]->getIdentifier()->shouldBe('B');
     }
 
-    function it_returns_products_from_by_identifiers()
+    function it_finds_products_by_criteria()
     {
         foreach (['A', 'B', 'C'] as $identifier) {
             $product = new Product();
