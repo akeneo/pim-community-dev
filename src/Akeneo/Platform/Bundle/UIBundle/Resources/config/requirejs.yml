@@ -401,7 +401,7 @@ config:
           module: pim/controller/template
           aclResourceId: pim_enrich_grouptype_remove
         oro_config_configuration_system:
-          module: pim/controller/system
+          module: pim/controller/config
         pim_enrich_catalog_volume_index:
           module: pim/controller/catalog-volume
         pim_user_security_logout:
@@ -507,6 +507,7 @@ config:
     pim/controller/entity-with-family-variant: pimui/js/controller/entity-with-family-variant
     pim/controller/entity-categories-with-family-variant: pimui/js/controller/entity-categories-with-family-variant
     pim/controller/family:                 pimui/js/controller/family
+    pim/controller/config:                 oroconfig/js/front/src/feature/config
     pim/controller/catalog-volume:         pimui/js/controller/catalog-volume
     pim/controller/channel/edit:           pimui/js/controller/channel/edit
     pim/controller/common/index:           pimui/js/controller/common/index
