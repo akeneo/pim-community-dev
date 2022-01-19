@@ -11,7 +11,7 @@ import React, {
 import styled from 'styled-components';
 import {Key, Override} from '../../../shared';
 import {InputProps, Overlay} from '../common';
-import {IconButton} from '../../../components';
+import {IconButton} from '../../../components/IconButton/IconButton';
 import {TextInput} from '../../../components/Input/TextInput/TextInput';
 import {useBooleanState, useShortcut, VerticalPosition} from '../../../hooks';
 import {AkeneoThemedProps, getColor} from '../../../theme';
