@@ -27,7 +27,7 @@ Table input allows the user to input content in a table.
 <Canvas>
   <Story name="Standard">
     {args => {
-      const {getValue, setValue, searchValue, setSearchValue, match, weightUnits} = useFakeTableInput(6);
+      const {getValue, setValue, searchValue, setSearchValue, match, lengthUnits} = useFakeTableInput(6);
       return <TableInput {...args}>
         <TableInput.Header>
           <TableInput.HeaderCell>Ingredient</TableInput.HeaderCell>
@@ -35,7 +35,7 @@ Table input allows the user to input content in a table.
           <TableInput.HeaderCell>For 1 part</TableInput.HeaderCell>
           <TableInput.HeaderCell>Quantity</TableInput.HeaderCell>
           <TableInput.HeaderCell>Is allergenic</TableInput.HeaderCell>
-          <TableInput.HeaderCell>Weight</TableInput.HeaderCell>
+          <TableInput.HeaderCell>Length</TableInput.HeaderCell>
           <TableInput.HeaderCell>Origin</TableInput.HeaderCell>
         </TableInput.Header>
         <TableInput.Body>
@@ -62,10 +62,10 @@ Table input allows the user to input content in a table.
             <TableInput.Cell><TableInput.Boolean yesLabel="Yes" noLabel="No" value={getValue(index, 'is_allergenic')} onChange={(value) => setValue(index, 'is_allergenic', value)}/></TableInput.Cell>
             <TableInput.Cell>
               <TableInput.Measurement
-                amount={getValue(index, 'weight').amount}
-                unit={getValue(index, 'weight').unit}
-                units={weightUnits}
-                onChange={(amount, unit) => setValue(index, 'weight', {unit, amount})}
+                amount={getValue(index, 'length').amount}
+                unit={getValue(index, 'length').unit}
+                units={lengthUnits}
+                onChange={(amount, unit) => setValue(index, 'length', {unit, amount})}
               />
             </TableInput.Cell>
             <TableInput.Cell>
