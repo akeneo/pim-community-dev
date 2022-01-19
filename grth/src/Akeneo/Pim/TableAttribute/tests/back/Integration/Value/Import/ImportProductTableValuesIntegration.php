@@ -41,13 +41,13 @@ final class ImportProductTableValuesIntegration extends TestCase
     public function it_imports_product_table_values_in_csv(): void
     {
         $csv = <<<CSV
-product;attribute;ingredient;quantity;allergen;additional_info;nutrition_score
-111111;nutrition-en_US-ecommerce;salt;20;1;text;A
-111111;nutrition-en_US-ecommerce;sugar;24;0;text2;B
-111111;nutrition-fr_FR-mobile;egg;12;;text3;C
-111111;nutrition-fr_FR-mobile;pepper;;1;text4;D
-111111;nutrition-en_US-mobile;pepper;;1;text5;D
-111112;nutrition-en_US-mobile;pepper;;;;
+product;attribute;ingredient;quantity;allergen;additional_info;nutrition_score;weight
+111111;nutrition-en_US-ecommerce;salt;20;1;text;A;"100 KILOGRAM"
+111111;nutrition-en_US-ecommerce;sugar;24;0;text2;B;
+111111;nutrition-fr_FR-mobile;egg;12;;text3;C;"200 GRAM"
+111111;nutrition-fr_FR-mobile;pepper;;1;text4;D;
+111111;nutrition-en_US-mobile;pepper;;1;text5;D;
+111112;nutrition-en_US-mobile;pepper;;;;;
 CSV;
         $this->jobLauncher->launchImport(self::CSV_IMPORT_JOB_CODE, $csv);
 
@@ -60,7 +60,17 @@ CSV;
         $normalizedTable = $this->tableNormalizer->normalize($value->getData());
         Assert::assertCount(3, $normalizedTable);
         Assert::assertEquals(
-            ['ingredient' => 'salt', 'quantity' => '20', 'allergen' => true, 'additional_info' => 'text', 'nutrition_score' => 'A'],
+            [
+                'ingredient' => 'salt',
+                'quantity' => '20',
+                'allergen' => true,
+                'additional_info' => 'text',
+                'nutrition_score' => 'A',
+                'weight' => [
+                    'amount' => '100',
+                    'unit' => 'KILOGRAM',
+                ]
+            ],
             $this->getLine($normalizedTable, 'salt')
         );
         Assert::assertEquals(
@@ -77,7 +87,16 @@ CSV;
         $normalizedTable = $this->tableNormalizer->normalize($value->getData());
         Assert::assertCount(3, $normalizedTable);
         Assert::assertEquals(
-            ['ingredient' => 'egg', 'quantity' => '12', 'additional_info' => 'text3', 'nutrition_score' => 'C'],
+            [
+                'ingredient' => 'egg',
+                'quantity' => '12',
+                'additional_info' => 'text3',
+                'nutrition_score' => 'C',
+                'weight' => [
+                    'amount' => '200',
+                    'unit' => 'GRAM',
+                ]
+            ],
             $this->getLine($normalizedTable, 'egg')
         );
         Assert::assertEquals(
@@ -317,6 +336,12 @@ CSV;
                         ['code' => 'D'],
                         ['code' => 'E'],
                     ]
+                ],
+                [
+                    'data_type' => 'measurement',
+                    'code' => 'weight',
+                    'measurement_family_code' => 'Weight',
+                    'measurement_default_unit_code' => 'KILOGRAM'
                 ],
             ]
         );

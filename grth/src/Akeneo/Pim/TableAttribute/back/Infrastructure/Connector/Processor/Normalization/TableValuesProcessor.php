@@ -44,20 +44,20 @@ class TableValuesProcessor implements ItemProcessorInterface
         return $data;
     }
 
+    /**
+     * @throws InvalidItemException
+     */
     protected function getStringValue(Cell $cell, TableRow $tableRow): string
     {
-        $normalizedCell = $cell->normalize();
-        if (\is_bool($normalizedCell)) {
-            return $normalizedCell ? '1' : '0';
-        }
-
-        if (!\is_scalar($normalizedCell)) {
+        try {
+            $stringValue = $cell->asString();
+        } catch (\LogicException $e) {
             throw new InvalidItemException(
-                'Unsupported table value during processing.',
+                'Unsupported table value during processing (' . $e->getMessage() . ')',
                 new DataInvalidItem($tableRow)
             );
         }
 
-        return (string) $normalizedCell;
+        return $stringValue;
     }
 }

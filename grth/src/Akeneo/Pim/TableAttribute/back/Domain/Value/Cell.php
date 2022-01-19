@@ -40,6 +40,13 @@ final class Cell
         Assert::notSame($data, '');
         Assert::notSame($data, []);
 
+        if (\is_array($data)) {
+            Assert::keyExists($data, 'amount');
+            Assert::notSame($data['amount'], '');
+            Assert::keyExists($data, 'unit');
+            Assert::notSame($data['unit'], '');
+        }
+
         return new self($data);
     }
 
@@ -49,5 +56,27 @@ final class Cell
     public function normalize()
     {
         return $this->data;
+    }
+
+    /**
+     * @throws \LogicException
+     */
+    public function asString(): string
+    {
+        if (\is_bool($this->data)) {
+            return $this->data ? '1' : '0';
+        }
+
+        if (\is_scalar($this->data)) {
+            return (string) $this->data;
+        }
+
+        if (\is_array($this->data)) {
+            if (\array_key_exists('unit', $this->data) && \array_key_exists('amount', $this->data)) {
+                return $this->data['amount'] . ' ' . $this->data['unit'];
+            }
+        }
+
+        throw new \LogicException("Invalid Cell value");
     }
 }
