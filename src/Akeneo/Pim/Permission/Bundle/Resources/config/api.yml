@@ -90,6 +90,7 @@ services:
             - '@logger'
             - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores'
             - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
 
     pim_api.controller.product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductModelController'
@@ -118,6 +119,7 @@ services:
             - '@pim_catalog.event_subscriber.product_model.on_save.api_aggregator_event_subscriber'
             - '@pimee_security.api.warmup_query_cache.get_viewable_attribute_codes_for_user'
             - '%pim_api.configuration%'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
 
     akeneo.pim.enrichment.use_cases.validator.validate_granted_search_locale:
         class: Akeneo\Pim\Permission\Component\Api\UseCase\Validator\ValidateGrantedSearchLocale
