@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
 use Akeneo\Tool\Bundle\ApiBundle\Cache\WarmupQueryCache;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
 use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
@@ -123,6 +124,8 @@ class ProductModelController
     /** @var WarmupQueryCache */
     private $warmupQueryCache;
 
+    private ?Client $productAndProductModelClient;
+
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ProductQueryBuilderFactoryInterface $pqbSearchAfterFactory,
@@ -146,7 +149,8 @@ class ProductModelController
         TokenStorageInterface $tokenStorage,
         ApiAggregatorForProductModelPostSaveEventSubscriber $apiAggregatorForProductModelPostSave,
         WarmupQueryCache $warmupQueryCache,
-        array $apiConfiguration
+        array $apiConfiguration,
+        ?Client $productAndProductModelClient = null
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->pqbSearchAfterFactory = $pqbSearchAfterFactory;
@@ -171,6 +175,7 @@ class ProductModelController
         $this->apiAggregatorForProductModelPostSave = $apiAggregatorForProductModelPostSave;
         $this->warmupQueryCache = $warmupQueryCache;
         $this->apiConfiguration = $apiConfiguration;
+        $this->productAndProductModelClient = $productAndProductModelClient;
     }
 
     /**
@@ -211,6 +216,9 @@ class ProductModelController
         $this->updateProductModel($productModel, $data, 'post_product_model');
         $this->validateProductModel($productModel);
         $this->saver->save($productModel);
+        if (null !== $this->productAndProductModelClient) {
+            $this->productAndProductModelClient->refreshIndex();
+        }
 
         $response = $this->getResponse($productModel, Response::HTTP_CREATED);
 
@@ -241,6 +249,9 @@ class ProductModelController
         $this->updateProductModel($productModel, $data, 'patch_product_models__code_');
         $this->validateProductModel($productModel);
         $this->saver->save($productModel);
+        if (null !== $this->productAndProductModelClient) {
+            $this->productAndProductModelClient->refreshIndex();
+        }
 
         $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
         $response = $this->getResponse($productModel, $status);

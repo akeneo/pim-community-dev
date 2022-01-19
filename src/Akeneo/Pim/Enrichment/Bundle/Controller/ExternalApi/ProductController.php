@@ -31,6 +31,7 @@ use Akeneo\Tool\Bundle\ApiBundle\Cache\WarmupQueryCache;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\DuplicateValueChecker;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
 use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
@@ -167,6 +168,8 @@ class ProductController
 
     private RemoveParentInterface $removeParent;
 
+    private ?Client $productAndProductModelClient;
+
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
@@ -200,7 +203,8 @@ class ProductController
         DuplicateValueChecker $duplicateValueChecker,
         LoggerInterface $logger,
         GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
-        RemoveParentInterface $removeParent
+        RemoveParentInterface $removeParent,
+        ?Client $productAndProductModelClient = null
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
@@ -235,6 +239,7 @@ class ProductController
         $this->logger = $logger;
         $this->getProductsWithQualityScores = $getProductsWithQualityScores;
         $this->removeParent = $removeParent;
+        $this->productAndProductModelClient = $productAndProductModelClient;
     }
 
     /**
@@ -389,6 +394,9 @@ class ProductController
         $this->updateProduct($product, $data, 'post_products');
         $this->validateProduct($product);
         $this->saver->save($product);
+        if (null !== $this->productAndProductModelClient) {
+            $this->productAndProductModelClient->refreshIndex();
+        }
 
         $response = $this->getResponse($product, Response::HTTP_CREATED);
 
@@ -452,6 +460,9 @@ class ProductController
         $this->updateProduct($product, $data, 'patch_products__code_');
         $this->validateProduct($product);
         $this->saver->save($product);
+        if (null !== $this->productAndProductModelClient) {
+            $this->productAndProductModelClient->refreshIndex();
+        }
 
         $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
         $response = $this->getResponse($product, $status);
