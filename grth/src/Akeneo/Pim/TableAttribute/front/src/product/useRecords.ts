@@ -37,7 +37,7 @@ const useRecords: (props: UseRecordProps) => {
 
   const loadNextPage = useCallback(
     (forcePage: number = page) => {
-      if (isLoading || hasNoMoreResult || !referenceEntityCode) return;
+      if (hasNoMoreResult || !referenceEntityCode) return;
 
       setIsLoading(true);
       ReferenceEntityRecordRepository.search(router, referenceEntityCode, {
