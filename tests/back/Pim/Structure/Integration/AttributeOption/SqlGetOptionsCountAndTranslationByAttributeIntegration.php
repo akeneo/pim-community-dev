@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2022 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace AkeneoTest\Pim\Structure\Integration\AttributeOption;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -58,7 +49,7 @@ class SqlGetOptionsCountAndTranslationByAttributeIntegration extends TestCase
         $this->assertEqualsCanonicalizing(
             [
                 ['code' => 'color', 'label' => 'Couleur', 'options_count' => 5],
-                ['code' => 'no_trad', 'label' => 'no_trad', 'options_count' => 1],
+                ['code' => 'no_trad', 'label' => null, 'options_count' => 1],
                 ['code' => 'size', 'label' => 'Taille', 'options_count' => 3],
                 ['code' => 'toto', 'label' => 'TailleToto', 'options_count' => 1],
             ],
@@ -74,8 +65,8 @@ class SqlGetOptionsCountAndTranslationByAttributeIntegration extends TestCase
 
         $result = $getOptionsCountAndTranslationByAttributeCode->search(
             'en_US',
-            4,
-            1
+            1,
+            3
             );
 
         $this->assertEqualsCanonicalizing(
