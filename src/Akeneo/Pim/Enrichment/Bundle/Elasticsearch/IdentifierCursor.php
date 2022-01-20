@@ -10,7 +10,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 
 /**
- * Cursor to iterate over all identifiers.
+ * Cursor to iterate over all identifiers. Internally it uses search_after to return all identifiers.
  *
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -21,11 +21,8 @@ final class IdentifierCursor implements CursorInterface, ResultAwareInterface
     protected int $count;
     private array $searchAfter = [];
 
-    public function __construct(
-        private Client $esClient,
-        private array $esQuery,
-        private int $pageSize
-    ) {
+    public function __construct(private Client $esClient, private array $esQuery, private int $pageSize)
+    {
     }
 
     /**
@@ -37,7 +34,7 @@ final class IdentifierCursor implements CursorInterface, ResultAwareInterface
             $this->rewind();
         }
 
-        return current($this->items);
+        return \current($this->items);
     }
 
     /**
@@ -49,7 +46,7 @@ final class IdentifierCursor implements CursorInterface, ResultAwareInterface
             $this->rewind();
         }
 
-        return key($this->items);
+        return \key($this->items);
     }
 
     /**
@@ -83,7 +80,7 @@ final class IdentifierCursor implements CursorInterface, ResultAwareInterface
     {
         if (false === next($this->items)) {
             $this->items = $this->getNextIdentifiers($this->esQuery)->all();
-            reset($this->items);
+            \reset($this->items);
         }
     }
 
@@ -94,7 +91,7 @@ final class IdentifierCursor implements CursorInterface, ResultAwareInterface
     {
         $this->searchAfter = [];
         $this->items = $this->getNextIdentifiers($this->esQuery)->all();
-        reset($this->items);
+        \reset($this->items);
     }
 
     /**
@@ -112,9 +109,8 @@ final class IdentifierCursor implements CursorInterface, ResultAwareInterface
         }
 
         $sort = ['_id' => 'asc'];
-
         if (isset($esQuery['sort'])) {
-            $sort = array_merge($esQuery['sort'], $sort);
+            $sort = \array_merge($esQuery['sort'], $sort);
         }
 
         $esQuery['sort'] = $sort;
@@ -132,8 +128,7 @@ final class IdentifierCursor implements CursorInterface, ResultAwareInterface
             $identifiers->add($hit['_source']['identifier'], $hit['_source']['document_type']);
         }
 
-        $lastResult = end($response['hits']['hits']);
-
+        $lastResult = \end($response['hits']['hits']);
         if (false !== $lastResult) {
             $this->searchAfter = $lastResult['sort'];
         }

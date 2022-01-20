@@ -14,11 +14,10 @@ services:
             - '%pim_job_product_batch_size%'
 
     pim_catalog.factory.product_identifier_cursor:
-        class: 'Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor\IdentifierCursorFactory'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierCursorFactory'
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
-            - 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierCursor'
-            - '%pim_job_product_batch_size%'
+            - '1000'
 
     pim_catalog.factory.product_search_after_size_cursor:
         class: '%akeneo_elasticsearch.cursor.search_after_size_cursor_factory.class%'
