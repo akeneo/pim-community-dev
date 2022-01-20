@@ -83,7 +83,9 @@ describe('RecordInput', () => {
     await openDropDown();
     await userEvent.type(screen.getByTitle('pim_common.search'), 'Vannes');
 
-    expect(await screen.findByTitle('vannes00bcf56a_2aa9_47c5_ac90_a973460b18a3')).toBeInTheDocument();
+    await waitFor(async () => {
+      expect(await screen.findByTitle('vannes00bcf56a_2aa9_47c5_ac90_a973460b18a3')).toBeInTheDocument();
+    });
     await waitFor(() => {
       expect(screen.queryByTitle('lannion00893335_2e73_41e3_ac34_763fb6a35107')).not.toBeInTheDocument();
     });
