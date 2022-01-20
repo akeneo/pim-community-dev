@@ -223,6 +223,7 @@ class ProductModelController
         }
 
         $this->productModelSaver->save($productModel);
+        $this->productAndProductModelClient->refreshIndex();
         $normalizedProductModel = $this->normalizeProductModel($productModel);
 
         return new JsonResponse($normalizedProductModel);
@@ -253,6 +254,7 @@ class ProductModelController
 
         if (0 === $violations->count()) {
             $this->productModelSaver->save($productModel);
+            $this->productAndProductModelClient->refreshIndex();
             $normalizedProductModel = $this->normalizeProductModel($productModel);
 
             return new JsonResponse($normalizedProductModel);

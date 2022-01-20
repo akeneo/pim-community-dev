@@ -222,6 +222,7 @@ class ProductController
 
         if (0 === $violations->count()) {
             $this->productSaver->save($product);
+            $this->productAndProductModelClient->refreshIndex();
 
             return new JsonResponse($this->normalizer->normalize(
                 $product,
@@ -267,6 +268,7 @@ class ProductController
 
         if (0 === $violations->count()) {
             $this->productSaver->save($product);
+            $this->productAndProductModelClient->refreshIndex();
 
             $normalizedProduct = $this->normalizer->normalize(
                 $product,
