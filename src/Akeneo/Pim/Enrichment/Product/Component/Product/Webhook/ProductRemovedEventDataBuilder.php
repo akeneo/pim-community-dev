@@ -46,18 +46,22 @@ class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
 
         /** @var ProductRemoved $productRemovedEvent */
         foreach ($event->getEvents() as $productRemovedEvent) {
-            $grantedCategoryCodes = $this->getViewableCategoryCodes->forCategoryCodes(
-                $user->getId(),
-                $productRemovedEvent->getCategoryCodes()
-            );
+            $productCategoryCodes = $productRemovedEvent->getCategoryCodes();
 
-            if (0 === count($grantedCategoryCodes)) {
-                $collection->setEventDataError(
-                    $productRemovedEvent,
-                    new NotGrantedProductException($user->getUsername(), $productRemovedEvent->getIdentifier())
+            if (0 < count($productCategoryCodes)) {
+                $grantedCategoryCodes = $this->getViewableCategoryCodes->forCategoryCodes(
+                    $user->getId(),
+                    $productCategoryCodes,
                 );
 
-                continue;
+                if (0 === count($grantedCategoryCodes)) {
+                    $collection->setEventDataError(
+                        $productRemovedEvent,
+                        new NotGrantedProductException($user->getUsername(), $productRemovedEvent->getIdentifier()),
+                    );
+
+                    continue;
+                }
             }
 
             $data = [
