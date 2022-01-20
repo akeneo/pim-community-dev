@@ -68,7 +68,7 @@ services:
         class: '%pim_catalog.tasklet.compute_completeness_of_products_family.class%'
         arguments:
             - '@pim_catalog.repository.family'
-            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.query.product_identifier_query_builder_factory'
             - '@pim_catalog.saver.product'
             - '@pim_connector.doctrine.cache_clearer'
         public: false
@@ -207,13 +207,14 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet'
         arguments:
             - '@pim_catalog.repository.family'
-            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.query.product_identifier_query_builder_factory'
             - '@pim_connector.reader.file.csv_family'
             - '@pim_catalog.saver.product'
             - '@pim_connector.doctrine.cache_clearer'
             - '@akeneo_batch.job_repository'
             - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
             - '@validator'
+            - '@pim_catalog.repository.product'
             - '%pim_job_product_batch_size%'
 
     pim_connector.tasklet.mass_edit_family.compute_completeness_of_family_products:
@@ -256,13 +257,14 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet'
         arguments:
             - '@pim_catalog.repository.family'
-            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.query.product_identifier_query_builder_factory'
             - '@pim_connector.reader.file.xlsx_family'
             - '@pim_catalog.saver.product'
             - '@pim_connector.doctrine.cache_clearer'
             - '@akeneo_batch.job_repository'
             - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
             - '@validator'
+            - '@pim_catalog.repository.product'
             - '%pim_job_product_batch_size%'
 
     pim_connector.tasklet.csv_attribute_group_import.ensure_attribute_group_order:

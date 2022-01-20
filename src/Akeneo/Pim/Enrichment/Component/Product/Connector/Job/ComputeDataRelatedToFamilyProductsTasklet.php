@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
@@ -17,9 +19,11 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * For each line of the file of families to import we will:
@@ -56,6 +60,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         JobRepositoryInterface $jobRepository,
         KeepOnlyValuesForVariation $keepOnlyValuesForVariation,
         ValidatorInterface $validator,
+        private CursorableRepositoryInterface $productRepository,
         int $batchSize
     ) {
         $this->familyRepository = $familyRepository;
@@ -93,10 +98,31 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
             return;
         }
 
-        $products = $this->getProductsForFamilies($familyCodes);
-        $this->stepExecution->setTotalItems($products->count());
+        $productIdentifiers = $this->getProductIdentifiersForFamilies($familyCodes);
+        $this->stepExecution->setTotalItems($productIdentifiers->count());
 
-        $skippedProducts = [];
+        $batchedProductIdentifiers = [];
+        /** @var IdentifierResult $productIdentifier */
+        foreach ($productIdentifiers as $productIdentifier) {
+            Assert::same($productIdentifier->getType(), ProductInterface::class);
+            $batchedProductIdentifiers[] = $productIdentifier->getIdentifier();
+            if (count($batchedProductIdentifiers) >= $this->batchSize) {
+                $products = $this->productRepository->getItemsFromIdentifiers($batchedProductIdentifiers);
+                $this->updateAndSaveProducts($products);
+                $batchedProductIdentifiers = [];
+                $this->cacheClearer->clear();
+            }
+        }
+
+        if (count($batchedProductIdentifiers) > 0) {
+            $products = $this->productRepository->getItemsFromIdentifiers($batchedProductIdentifiers);
+            $this->updateAndSaveProducts($products);
+            $this->cacheClearer->clear();
+        }
+    }
+
+    private function updateAndSaveProducts(array $products)
+    {
         $productsToSave = [];
         foreach ($products as $product) {
             if ($product->isVariant()) {
@@ -105,26 +131,15 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
                 if (!$this->isValid($product)) {
                     $this->stepExecution->incrementSummaryInfo('skip');
                     $this->stepExecution->incrementProcessedItems(1);
-
-                    $skippedProducts[] = $product;
                 } else {
                     $productsToSave[] = $product;
                 }
             } else {
                 $productsToSave[] = $product;
             }
-
-            if (0 === (count($productsToSave) + count($skippedProducts)) % $this->batchSize) {
-                $this->saveProducts($productsToSave);
-                $productsToSave = [];
-                $skippedProducts = [];
-                $this->cacheClearer->clear();
-            }
         }
 
         $this->saveProducts($productsToSave);
-
-        $this->cacheClearer->clear();
     }
 
     /**
@@ -156,7 +171,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
-    private function getProductsForFamilies(array $familyCodes): CursorInterface
+    private function getProductIdentifiersForFamilies(array $familyCodes): CursorInterface
     {
         $pqb = $this->productQueryBuilderFactory->create();
         $pqb->addFilter('family', Operators::IN_LIST, $familyCodes);
