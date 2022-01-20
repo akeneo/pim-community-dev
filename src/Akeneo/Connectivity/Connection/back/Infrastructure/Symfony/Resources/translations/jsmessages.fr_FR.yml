@@ -48,7 +48,6 @@ akeneo_connectivity.connection:
         description: Ce n'est qu'une vue d'ensemble. Pour plus de détails, jetez un coup d'œil à notre marché web.
         link: Aller sur la Marketplace web
       card:
-        developed_by: Développé par
         read_more: en savoir plus
         more_info: Plus d'info
         connect: Connecter
@@ -63,6 +62,12 @@ akeneo_connectivity.connection:
         empty: Aucune app compatible avec votre version
       unreachable: La marketplace est injoignable, veuillez revenir plus tard.
       scroll_to_top: Haut de la page
+      test_apps:
+        modal:
+          credentials:
+            title: Identifiants
+        delete:
+          title: Confirmer la suppression
     connected_apps:
       list:
         apps:
@@ -77,7 +82,6 @@ akeneo_connectivity.connection:
           description_2: Vous voulez en savoir plus sur les apps ?
           link: Consultez notre Help Center pour plus d'informations.
         card:
-          developed_by: Développée par
           manage_app: Paramètres
           open_app: Ouvrir l'app
         flash:

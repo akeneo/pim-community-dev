@@ -50,7 +50,6 @@ akeneo_connectivity.connection:
         description: 이는 간단한 개요입니다. 자세한 정보는 마켓플레이스에서 살펴보십시오.
         link: 웹 마켓플레이스로 이동
       card:
-        developed_by: '개발자:'
         read_more: 더보기
         more_info: 자세한 정보
         connect: 연결
@@ -65,6 +64,12 @@ akeneo_connectivity.connection:
         empty: 사용 중인 버전과 호환되는 앱이 없습니다
       unreachable: 마켓플레이스에 연결할 수 없습니다. 잠시 후 다시 시도하십시오.
       scroll_to_top: 맨 위로 스크롤
+      test_apps:
+        modal:
+          credentials:
+            title: 자격 증명
+        delete:
+          title: 삭제 확인
     connected_apps:
       list:
         apps:
@@ -79,7 +84,6 @@ akeneo_connectivity.connection:
           description_2: 앱에 대해 더 알아보고 싶으십니까?
           link: 자세한 내용은 도움말 센터를 확인하십시오.
         card:
-          developed_by: '개발자:'
           manage_app: 앱 관리
           open_app: 앱 열기
         flash:

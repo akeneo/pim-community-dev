@@ -50,7 +50,6 @@ akeneo_connectivity.connection:
         description: Questa è solo una panoramica. Per maggiori dettagli; ti invitiamo a dare un'occhiata al nostro web marketplace.
         link: Vai al web marketplace
       card:
-        developed_by: Sviluppato da
         read_more: mostra di più
         more_info: Maggiori info
         connect: Connetti
@@ -65,6 +64,12 @@ akeneo_connectivity.connection:
         empty: Non ci sono app compatibili con la tua versione
       unreachable: Non riusciamo a raggiungere il marketplace, torna più tardi.
       scroll_to_top: Scorri in alto
+      test_apps:
+        modal:
+          credentials:
+            title: Credenziali
+        delete:
+          title: Conferma eliminazione
     connected_apps:
       list:
         apps:
@@ -79,7 +84,6 @@ akeneo_connectivity.connection:
           description_2: Desideri scoprire di più sulle app?
           link: Consulta il nostro Help Center per ulteriori informazioni.
         card:
-          developed_by: Sviluppata da
           manage_app: Gestisci app
           open_app: Apri app
         flash:

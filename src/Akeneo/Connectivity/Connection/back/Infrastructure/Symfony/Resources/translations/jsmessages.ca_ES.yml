@@ -16,6 +16,13 @@ pim_title:
   akeneo_connectivity_connection_settings_redirect: Connexions
 akeneo_connectivity.connection:
   connect:
+    marketplace:
+      test_apps:
+        modal:
+          credentials:
+            title: Credencials
+        delete:
+          title: Confirmar l'eliminació
     connected_apps:
       edit:
         tabs:

@@ -44,7 +44,6 @@ akeneo_connectivity.connection:
         description: Tämä on vain yleiskatsaus. Katso lisätietoja kauppapaikaltamme.
         link: Siirry kauppapaikkaan
       card:
-        developed_by: Kehittänyt
         read_more: lue lisää
         more_info: Lisätietoa
         connect: Yhdistä
@@ -58,6 +57,12 @@ akeneo_connectivity.connection:
         empty: Ei versiosi kanssa yhteensopivia sovelluksia
       unreachable: Emme pääse nyt kauppapaikkaan. Ole hyvä ja yritä myöhemmin uudelleen.
       scroll_to_top: Siirry ylös
+      test_apps:
+        modal:
+          credentials:
+            title: Tunnistetiedot
+        delete:
+          title: Vahvista poisto
     connected_apps:
       edit:
         tabs:
