@@ -74,9 +74,13 @@ class InMemoryProductRepository implements
         return $this->products->toArray();
     }
 
+    /**
+     * We implement this method for onboarder v1 because we need it for an event subscriber
+     * and there is some integration tests that are using inmemory implem
+     */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->products->filter(fn (ProductInterface $product) => $product->getIdentifier() === $criteria['identifier'])->toArray();
     }
 
     public function findOneBy(array $criteria)
