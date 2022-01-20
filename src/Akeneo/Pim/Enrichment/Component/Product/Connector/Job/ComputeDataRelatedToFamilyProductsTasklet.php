@@ -121,7 +121,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         }
     }
 
-    private function updateAndSaveProducts(array $products)
+    private function updateAndSaveProducts(array $products): void
     {
         $productsToSave = [];
         foreach ($products as $product) {
