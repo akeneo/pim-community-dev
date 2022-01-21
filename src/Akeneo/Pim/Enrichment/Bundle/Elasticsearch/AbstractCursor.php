@@ -91,17 +91,25 @@ abstract class AbstractCursor implements CursorInterface
      */
     protected function getNextItems(array $esQuery): array
     {
-        $identifierResults = $this->getNextIdentifiers($esQuery);
+        return $this->getNextItemsFromIdentifiers($this->getNextIdentifiers($esQuery));
+    }
+
+    protected function getNextItemsFromIdentifiers(IdentifierResults $identifierResults): array
+    {
         if ($identifierResults->isEmpty()) {
             return [];
         }
 
-        $hydratedProducts = $this->productRepository->getItemsFromIdentifiers(
-            $identifierResults->getProductIdentifiers()
-        );
-        $hydratedProductModels = $this->productModelRepository->getItemsFromIdentifiers(
-            $identifierResults->getProductModelIdentifiers()
-        );
+        $hydratedProducts = \count($identifierResults->getProductIdentifiers()) === 0
+            ? []
+            : $this->productRepository->getItemsFromIdentifiers(
+                $identifierResults->getProductIdentifiers()
+            );
+        $hydratedProductModels = \count($identifierResults->getProductModelIdentifiers()) === 0
+            ? []
+            : $this->productModelRepository->getItemsFromIdentifiers(
+                $identifierResults->getProductModelIdentifiers()
+            );
         $hydratedItems = array_merge($hydratedProducts, $hydratedProductModels);
 
         $orderedItems = [];
