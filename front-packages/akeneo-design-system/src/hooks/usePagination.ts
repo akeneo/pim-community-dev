@@ -9,6 +9,8 @@ const usePagination = (
   useEffect(() => {
     const containerElement = containerRef.current;
     const lastElement = lastOptionRef.current;
+    console.log('containerElement', containerElement);
+    console.log('lastElement', lastElement);
     if (
       undefined === onNextPage ||
       null === containerElement ||

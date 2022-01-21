@@ -71,8 +71,11 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
   const attributeOptionDelete = useDeleteAttributeOption();
   const attributeOptionManualSort = useManualSortAttributeOptions();
   const [isSaving, setIsSaving] = useState<boolean>(false);
-  const [page, setPage] = useState<number>(0);
-  const route = useRoute('pim_enrich_attributeoption_index', {attributeId: attribute.attributeId.toString()});
+  const [numPage, setNumPage] = useState<number>(0);
+  const route = useRoute('pim_enrich_attributeoption_index', {
+    attributeId: attribute.attributeId.toString(),
+    page: numPage.toString(),
+  });
 
   const saveAttributeOption = useCallback(
     async (updatedAttributeOption: AttributeOption) => {
@@ -151,7 +154,8 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
   };
 
   const onNextPage = useCallback(() => {
-    setPage(page + 1);
+    setNumPage(numPage + 1);
+    console.log(numPage);
   }, []);
 
   useEffect(() => {

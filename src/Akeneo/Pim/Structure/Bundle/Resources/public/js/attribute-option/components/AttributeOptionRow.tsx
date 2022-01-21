@@ -14,7 +14,7 @@ type Props = {
 };
 
 const AttributeOptionRow = memo(
-  forwardRef<HTMLDivElement, Props>(
+  forwardRef<HTMLTableRowElement, Props>(
     ({isDraggable, attributeOption, onSelectItem, isSelected, onDelete, ...rest}: Props, ref) => {
       const locale = useUserContext().get('catalogLocale');
       const translate = useTranslate();

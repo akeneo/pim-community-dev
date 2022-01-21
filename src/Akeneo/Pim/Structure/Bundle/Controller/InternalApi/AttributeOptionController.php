@@ -160,10 +160,11 @@ class AttributeOptionController
     {
         $attribute = $this->findAttributeOr404($attributeId);
 
+        $search = $request->query->get('search') ?: null;
         $options['identifier'] = $attribute->getCode();
         $options['limit'] = self::LIMIT_ATTRIBUTE_OPTION;
         $options['page'] = $request->query->get('page') ?: null;
-        $attributeOptions = $this->attributeOptionRepository->findBySearch(null, (array)$options);
+        $attributeOptions = $this->attributeOptionRepository->findBySearch($search, (array)$options);
 
         $options = $this->normalizer->normalize($attributeOptions, 'array', ['onlyActivatedLocales' => true]);
 

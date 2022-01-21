@@ -147,8 +147,22 @@ const AttributeOptionTable = ({
 
   const handleReorder = useCallback(newIndices => reorderAttributeOptions(newIndices), [reorderAttributeOptions]);
 
-  const containerRef = useRef<HTMLDivElement>(null);
-  const lastAttributeOptionRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const lastAttributeOptionRef = useRef<HTMLTableRowElement | null>(null);
+
+  const setContainerRef = (element: HTMLDivElement) => {
+    containerRef.current = element;
+    console.log(containerRef.current);
+  };
+
+  console.log('containerRef', containerRef);
+
+  const setLastAttributeOptionRef = (element: HTMLTableRowElement) => {
+    lastAttributeOptionRef.current = element;
+    console.log('setLastAttributeOptionRef', setLastAttributeOptionRef);
+  };
+
+  console.log('lastAttributeOptionRef', lastAttributeOptionRef);
 
   usePagination(containerRef, lastAttributeOptionRef, onNextPage, true);
 
@@ -191,7 +205,7 @@ const AttributeOptionTable = ({
           <>
             <AutoOptionSorting readOnly={autoSortingReadOnly} />
 
-            <TableContainer ref={containerRef}>
+            <TableContainer ref={setContainerRef}>
               <SpacedTable isDragAndDroppable={isDraggable} onReorder={handleReorder}>
                 <Table.Header sticky={0}>
                   {!isDraggable && <Table.HeaderCell>&nbsp;</Table.HeaderCell>}
@@ -201,7 +215,7 @@ const AttributeOptionTable = ({
                   <Table.HeaderCell>&nbsp;</Table.HeaderCell>
                 </Table.Header>
                 <Table.Body>
-                  {filteredAttributeOptions.map((attributeOption: AttributeOption, index) => {
+                  {filteredAttributeOptions.map((attributeOption: AttributeOption) => {
                     return (
                       <AttributeOptionRow
                         isDraggable={isDraggable}
@@ -210,7 +224,7 @@ const AttributeOptionTable = ({
                         isSelected={selectedOptionId === attributeOption.id}
                         onDelete={setAttributeOptionToDelete}
                         key={`${attributeContext.attributeId}-${attributeOption.code}`}
-                        ref={index === filteredAttributeOptions.length - 1 ? lastAttributeOptionRef : undefined}
+                        ref={setLastAttributeOptionRef}
                       />
                     );
                   })}
