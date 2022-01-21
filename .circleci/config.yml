@@ -91,7 +91,7 @@ jobs:
   ##################
   # Build          #
   ##################
-  build_srnt_dev:
+  build_dev:
     machine:
       image: ubuntu-2004:202010-01
     resource_class: medium
@@ -786,36 +786,36 @@ workflows:
           - checkout:
                 requires:
                     - ready_to_build?
-          - build_srnt_dev:
+          - build_dev:
                 requires:
                     - checkout
           - test_back_integration_bounded_contexts:
                 requires:
-                    - build_srnt_dev
+                    - build_dev
           - test_back_integration_reference_entities:
                 requires:
-                    - build_srnt_dev
+                    - build_dev
           - test_back_static_and_acceptance:
                 requires:
-                    - build_srnt_dev
+                    - build_dev
           - test_back_phpunit:
                 requires:
-                    - build_srnt_dev
+                    - build_dev
           - test_back_performance:
                 requires:
-                    - build_srnt_dev
+                    - build_dev
           - test_back_data_migrations:
                 requires:
-                    - build_srnt_dev
+                    - build_dev
           - test_front_static_acceptance_and_integration:
                 requires:
-                    - build_srnt_dev
+                    - build_dev
           - test_front_end_to_end:
                 requires:
-                    - build_srnt_dev
+                    - build_dev
           - test_front_code_style:
                 requires:
-                    - build_srnt_dev
+                    - build_dev
           - test_back_behat_legacy:
                 requires:
                     - test_back_static_and_acceptance
@@ -826,10 +826,10 @@ workflows:
                     - test_back_integration_reference_entities
           - test_database:
                 requires:
-                    - build_srnt_dev
+                    - build_dev
           - test_onboarder_bundle:
                 requires:
-                    - build_srnt_dev
+                    - build_dev
           - pull_request_success:
                 requires:
                     - test_back_performance
@@ -845,46 +845,50 @@ workflows:
               - equal: [ "nightly_v6", << pipeline.schedule.name >> ]
       jobs:
           - checkout
+          - build_dev:
+                <<: *slack-fail-post-step
+                requires:
+                    - checkout
           - test_front_code_style:
                 <<: *slack-fail-post-step
                 requires:
-                    - build_srnt_dev
+                    - build_dev
           - test_back_static_and_acceptance:
                 <<: *slack-fail-post-step
                 requires:
-                    - build_srnt_dev
+                    - build_dev
           - test_front_static_acceptance_and_integration:
                 <<: *slack-fail-post-step
                 requires:
-                    - build_srnt_dev
+                    - build_dev
           - test_back_phpunit:
                 <<: *slack-fail-post-step
                 requires:
-                    - build_srnt_dev
+                    - build_dev
           - test_back_integration_bounded_contexts:
                 <<: *slack-fail-post-step
                 requires:
-                    - build_srnt_dev
+                    - build_dev
           - test_back_integration_reference_entities:
                 <<: *slack-fail-post-step
                 requires:
-                    - build_srnt_dev
+                    - build_dev
           - test_back_performance:
                 <<: *slack-fail-post-step
                 requires:
-                    - build_srnt_dev
+                    - build_dev
           - test_onboarder_bundle:
                 <<: *slack-fail-post-step
                 requires:
-                    - build_srnt_dev
+                    - build_dev
           - test_back_behat_legacy:
                 <<: *slack-fail-post-step
                 requires:
-                    - build_srnt_dev
+                    - build_dev
           - test_back_data_migrations:
                 <<: *slack-fail-post-step
                 requires:
-                    - build_srnt_dev
+                    - build_dev
 
 commands:
   install_yq:
