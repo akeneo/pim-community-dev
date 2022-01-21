@@ -342,7 +342,8 @@ pull-cloud-customer-dev: $(CLOUD_CUSTOMERS_DEV_DIR)
 
 .PHONY: commit-instance
 commit-instance: pull-cloud-customer-dev
-	cp -r $(INSTANCE_DIR) $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)
+	# INSTANCE_CLOUD_CUSTOMERS_DEV_DIR may not exist yet, need to use readlink
+	cp -r $(INSTANCE_DIR) $(shell readlink -m $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/..)
 	git config --global user.email "pim_ci@akeneo.com"
 	git config --global user.name "pim_ci_instance_creation"
 	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)
