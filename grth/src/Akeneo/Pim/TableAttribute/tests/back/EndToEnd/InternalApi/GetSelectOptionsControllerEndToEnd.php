@@ -19,7 +19,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\WriteSelectOptionCollection;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper;
-use Akeneo\Test\Pim\TableAttribute\Integration\TableConfiguration\Controller\ControllerIntegrationTestCase;
+use Akeneo\Test\Pim\TableAttribute\EndToEnd\ControllerEndToEndTestCase;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SecurityBundle\Model\AclPermission;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
@@ -27,7 +27,7 @@ use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
-final class GetSelectOptionsControllerIntegration extends ControllerIntegrationTestCase
+final class GetSelectOptionsControllerEndToEnd extends ControllerEndToEndTestCase
 {
     private WebClientHelper $webClientHelper;
 
