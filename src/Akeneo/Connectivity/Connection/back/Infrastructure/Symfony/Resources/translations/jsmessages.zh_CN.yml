@@ -242,7 +242,6 @@ akeneo_connectivity.connection:
     message_link: 点击此处。
   create_connection:
     title: 创建新连接
-    description: 您可以创建最多 50 个连接。
     flash:
       success: 已成功创建连接。
       error: 抱歉，创建连接时发生错误。

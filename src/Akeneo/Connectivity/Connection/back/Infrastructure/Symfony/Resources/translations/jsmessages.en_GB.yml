@@ -111,7 +111,6 @@ akeneo_connectivity.connection:
     message_link: click here.
   create_connection:
     title: Create a new connection
-    description: You can create up to 50 connections.
     flash:
       success: You can create up to 50 connections.
       error: Sorry, an error occurred while creating the connection.

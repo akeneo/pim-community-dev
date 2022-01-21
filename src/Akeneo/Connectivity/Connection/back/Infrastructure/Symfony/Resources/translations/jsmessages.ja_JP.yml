@@ -245,7 +245,6 @@ akeneo_connectivity.connection:
     message_link: ここをクリック
   create_connection:
     title: 新しい接続を作成
-    description: 接続は50件まで作成できます
     flash:
       success: 接続は正常に作成されました。
       error: 申し訳ございません、接続の作成中にエラーが発生しました。
