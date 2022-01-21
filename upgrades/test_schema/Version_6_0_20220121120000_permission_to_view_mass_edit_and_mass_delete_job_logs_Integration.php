@@ -49,7 +49,7 @@ final class Version_6_0_20220121120000_permission_to_view_mass_edit_and_mass_del
     {
         $sql = <<<SQL
 DELETE
-FROM
+FROM a
     pimee_security_job_profile_access a
         JOIN oro_access_group g ON g.id = a.user_group_id
         JOIN akeneo_batch_job_instance i ON i.id = a.job_profile_id
