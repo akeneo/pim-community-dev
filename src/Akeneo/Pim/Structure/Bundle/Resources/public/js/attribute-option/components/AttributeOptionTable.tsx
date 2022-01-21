@@ -215,7 +215,7 @@ const AttributeOptionTable = ({
                   <Table.HeaderCell>&nbsp;</Table.HeaderCell>
                 </Table.Header>
                 <Table.Body>
-                  {filteredAttributeOptions.map((attributeOption: AttributeOption) => {
+                  {filteredAttributeOptions.map((attributeOption: AttributeOption, index) => {
                     return (
                       <AttributeOptionRow
                         isDraggable={isDraggable}
@@ -224,7 +224,7 @@ const AttributeOptionTable = ({
                         isSelected={selectedOptionId === attributeOption.id}
                         onDelete={setAttributeOptionToDelete}
                         key={`${attributeContext.attributeId}-${attributeOption.code}`}
-                        ref={setLastAttributeOptionRef}
+                        ref={index === filteredAttributeOptions.length - 1 ? setLastAttributeOptionRef : null}
                       />
                     );
                   })}
