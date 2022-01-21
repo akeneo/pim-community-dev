@@ -11,8 +11,10 @@ akeneo.tailored_import:
         label: Columns
         placeholder: Copy and paste here your columns
   data_mapping:
+    title: Data mapping
     source:
       add: Add a source
+    sources: Sources
   add_data_mapping:
     target:
       add: Add a data mapping

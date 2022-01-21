@@ -1,8 +1,8 @@
 import React from 'react';
 import {Button, useBooleanState} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {InitializeColumnsModal, AddDataMappingDropdown} from './components';
-import {Column, DataMapping, MAX_DATA_MAPPING_COUNT, StructureConfiguration} from './models';
+import {InitializeColumnsModal} from './components';
+import {Column, createDefaultDataMapping, DataMapping, StructureConfiguration} from './models';
 import {SourceDropdown} from './components';
 import {DataMappingList} from './components/DataMappingList/DataMappingList';
 
@@ -16,7 +16,8 @@ const ImportStructureTab = ({structureConfiguration, onStructureConfigurationCha
   const translate = useTranslate();
 
   const handleConfirm = (generatedColumns: Column[]): void => {
-    onStructureConfigurationChange({...structureConfiguration, columns: generatedColumns});
+    const dataMapping = createDefaultDataMapping(generatedColumns);
+    onStructureConfigurationChange({...structureConfiguration, columns: generatedColumns, dataMappings: [dataMapping]});
     closeInitModal();
   };
 
@@ -30,7 +31,7 @@ const ImportStructureTab = ({structureConfiguration, onStructureConfigurationCha
     });
   };
 
-  const canAddDataMapping = MAX_DATA_MAPPING_COUNT > structureConfiguration.dataMappings.length;
+  console.log(structureConfiguration);
 
   return (
     <>
@@ -39,8 +40,12 @@ const ImportStructureTab = ({structureConfiguration, onStructureConfigurationCha
       </Button>
       {isInitModalOpen && <InitializeColumnsModal onConfirm={handleConfirm} onCancel={closeInitModal} />}
       <SourceDropdown columns={structureConfiguration.columns} onColumnSelected={handleColumnSelected} />
-      <AddDataMappingDropdown canAddDataMapping={canAddDataMapping} onDataMappingAdded={handleDataMappingAdded} />
-      <DataMappingList dataMappings={structureConfiguration.dataMappings} globalErrors={[]} />
+      <DataMappingList
+        dataMappings={structureConfiguration.dataMappings}
+        columns={structureConfiguration.columns}
+        globalErrors={[]}
+        onDataMappingCreated={handleDataMappingAdded}
+      />
     </>
   );
 };

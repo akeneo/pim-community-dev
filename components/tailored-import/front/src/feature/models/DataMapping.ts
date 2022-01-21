@@ -1,6 +1,7 @@
 import {ColumnIdentifier} from './Configuration';
 import {uuid} from 'akeneo-design-system';
 import {LocaleReference, ChannelReference} from '@akeneo-pim-community/shared';
+import {Column} from '.';
 
 type TargetAction = 'set' | 'add';
 type TargetEmptyAction = 'clear' | 'skip';
@@ -34,6 +35,13 @@ type DataMapping = {
 
 const MAX_DATA_MAPPING_COUNT = 500;
 type DataMappingType = 'attribute' | 'property';
+
+const createDefaultDataMapping = (columns: Column[]) => {
+  const emptyDataMapping = createDataMapping('sku', 'attribute');
+
+  return columns.length > 0 ? addSourceToDataMapping(emptyDataMapping, columns[0]) : emptyDataMapping;
+};
+
 const createDataMapping = (code: string, type: DataMappingType): DataMapping => {
   return {
     uuid: uuid(),
@@ -42,6 +50,10 @@ const createDataMapping = (code: string, type: DataMappingType): DataMapping => 
     operations: [],
     sampleData: [],
   };
+};
+
+const addSourceToDataMapping = (dataMapping: DataMapping, column: Column): DataMapping => {
+  return {...dataMapping, sources: [...dataMapping.sources, column.uuid]};
 };
 
 const createAttributeTarget = (code: string, channel: ChannelReference, locale: LocaleReference): AttributeTarget => {
@@ -67,4 +79,4 @@ const createPropertyTarget = (code: string): PropertyTarget => {
 };
 
 export type {DataMapping, DataMappingType};
-export {MAX_DATA_MAPPING_COUNT, createDataMapping};
+export {MAX_DATA_MAPPING_COUNT, createDataMapping, createDefaultDataMapping, addSourceToDataMapping};

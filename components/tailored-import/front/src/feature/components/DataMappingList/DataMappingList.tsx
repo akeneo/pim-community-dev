@@ -1,8 +1,10 @@
 import React from 'react';
 import {Helper, SectionTitle, Table} from 'akeneo-design-system';
 import styled from 'styled-components';
-import {DataMapping} from '../../models';
+import {Column, DataMapping, MAX_DATA_MAPPING_COUNT} from '../../models';
 import {useTranslate, ValidationError} from '@akeneo-pim-community/shared';
+import {AddDataMappingDropdown} from '../AddDataMappingDropdown';
+import {DataMappingRow} from './DataMappingRow';
 
 const Container = styled.div`
   flex: 1;
@@ -10,27 +12,23 @@ const Container = styled.div`
   overflow-y: auto;
 `;
 
-const ColumnNameHeaderCell = styled(Table.HeaderCell)`
-  width: 300px;
-`;
-
-const SourceDataHeaderCell = styled(Table.HeaderCell)`
-  padding-left: 20px;
-`;
-
 type DataMappingListProps = {
   dataMappings: DataMapping[];
+  columns: Column[];
   globalErrors: ValidationError[];
+  onDataMappingCreated: (dataMapping: DataMapping) => void;
 };
 
-const DataMappingList = ({dataMappings, globalErrors}: DataMappingListProps) => {
+const DataMappingList = ({dataMappings, columns, globalErrors, onDataMappingCreated}: DataMappingListProps) => {
   const translate = useTranslate();
+  const canAddDataMapping = MAX_DATA_MAPPING_COUNT > dataMappings.length;
 
   return (
     <Container>
       <SectionTitle sticky={0}>
-        <SectionTitle.Title>{translate('akeneo.tailored_import.column_list.title')}</SectionTitle.Title>
+        <SectionTitle.Title>{translate('akeneo.tailored_import.data_mapping.title')}</SectionTitle.Title>
         <SectionTitle.Spacer />
+        <AddDataMappingDropdown canAddDataMapping={canAddDataMapping} onDataMappingAdded={onDataMappingCreated} />
       </SectionTitle>
       {globalErrors.map((error, index) => (
         <Helper key={index} level="error">
@@ -39,18 +37,9 @@ const DataMappingList = ({dataMappings, globalErrors}: DataMappingListProps) => 
       ))}
 
       <Table>
-        <Table.Header sticky={42}>
-          <ColumnNameHeaderCell>
-            {translate('akeneo.tailored_export.column_list.header.column_name')}
-          </ColumnNameHeaderCell>
-          <SourceDataHeaderCell>
-            {translate('akeneo.tailored_export.column_list.header.source_data')}
-          </SourceDataHeaderCell>
-          <Table.HeaderCell />
-        </Table.Header>
         <Table.Body>
           {dataMappings.map(dataMapping => (
-            <>{dataMapping.target}</>
+            <DataMappingRow key={dataMapping.uuid} dataMapping={dataMapping} columns={columns} />
           ))}
         </Table.Body>
       </Table>
