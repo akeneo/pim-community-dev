@@ -36,7 +36,7 @@ const usePagination = (
     observer.observe(lastElement);
 
     return () => observer.unobserve(lastElement);
-  }, [onNextPage, isVisible, containerRef.current, lastOptionRef.current]);
+  }, [onNextPage, isVisible]);
 };
 
 export {usePagination};
