@@ -150,21 +150,12 @@ const AttributeOptionTable = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const lastAttributeOptionRef = useRef<HTMLTableRowElement | null>(null);
 
-  const setContainerRef = (element: HTMLDivElement) => {
-    containerRef.current = element;
-    console.log(containerRef.current);
-  };
-
-  console.log('containerRef', containerRef);
-
-  const setLastAttributeOptionRef = (element: HTMLTableRowElement) => {
-    lastAttributeOptionRef.current = element;
-    console.log('setLastAttributeOptionRef', setLastAttributeOptionRef);
-  };
-
-  console.log('lastAttributeOptionRef', lastAttributeOptionRef);
-
-  usePagination(containerRef, lastAttributeOptionRef, onNextPage, true);
+  usePagination(
+    containerRef,
+    lastAttributeOptionRef,
+    onNextPage,
+    filteredAttributeOptionsCount > 0 && filteredAttributeOptions !== null
+  );
 
   return (
     <div className="AknSubsection AknAttributeOption-list">
@@ -205,7 +196,7 @@ const AttributeOptionTable = ({
           <>
             <AutoOptionSorting readOnly={autoSortingReadOnly} />
 
-            <TableContainer ref={setContainerRef}>
+            <TableContainer ref={containerRef}>
               <SpacedTable isDragAndDroppable={isDraggable} onReorder={handleReorder}>
                 <Table.Header sticky={0}>
                   {!isDraggable && <Table.HeaderCell>&nbsp;</Table.HeaderCell>}
@@ -224,7 +215,7 @@ const AttributeOptionTable = ({
                         isSelected={selectedOptionId === attributeOption.id}
                         onDelete={setAttributeOptionToDelete}
                         key={`${attributeContext.attributeId}-${attributeOption.code}`}
-                        ref={index === filteredAttributeOptions.length - 1 ? setLastAttributeOptionRef : null}
+                        ref={index === filteredAttributeOptions.length - 1 ? lastAttributeOptionRef : null}
                       />
                     );
                   })}
