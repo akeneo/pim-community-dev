@@ -838,11 +838,11 @@ workflows:
                     - test_database
                     - test_back_data_migrations
 
-  nightly_srnt_release:
+  nightly:
       when:
           and:
               - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
-              - equal: [ "nightly_srnt_release", << pipeline.schedule.name >> ]
+              - equal: [ "nightly_v6", << pipeline.schedule.name >> ]
       jobs:
           - checkout
           - test_front_code_style:
