@@ -62,7 +62,7 @@ final class GetSelectAttributesWithOptionsCountControllerEndToEnd extends Contro
         $this->webClientHelper->callApiRoute(
             $this->client,
             'pim_table_attribute_get_select_attributes_with_options_count',
-            parameters: ['locale' => 'fr_FR', 'limit' => 1, 'page' => 1]
+            parameters: ['locale' => 'fr_FR', 'limit' => 1, 'offset' => 0]
         );
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
@@ -76,7 +76,7 @@ final class GetSelectAttributesWithOptionsCountControllerEndToEnd extends Contro
         $this->webClientHelper->callApiRoute(
             $this->client,
             'pim_table_attribute_get_select_attributes_with_options_count',
-            parameters: ['locale' => 'fr_FR', 'limit' => 1, 'page' => 2]
+            parameters: ['locale' => 'fr_FR', 'limit' => 1, 'offset' => 1]
         );
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
@@ -109,7 +109,7 @@ final class GetSelectAttributesWithOptionsCountControllerEndToEnd extends Contro
         $this->webClientHelper->callApiRoute(
             $this->client,
             'pim_table_attribute_get_select_attributes_with_options_count',
-            parameters: ['locale' => 'fr_FR', 'search' => 'unkown']
+            parameters: ['locale' => 'fr_FR', 'search' => 'unknown']
         );
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());

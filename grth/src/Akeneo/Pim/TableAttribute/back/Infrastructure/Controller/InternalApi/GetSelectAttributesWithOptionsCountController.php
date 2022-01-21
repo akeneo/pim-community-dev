@@ -41,13 +41,13 @@ final class GetSelectAttributesWithOptionsCountController
         }
 
         $limit = (int) $request->get('limit', self::PAGE_SIZE);
-        $page = (int) $request->get('page', 1);
+        $offset = (int) $request->get('offset', 0);
         $search = $request->get('search', null);
 
         $selectAttributes = $this->getOptionsCountAndTranslationByAttribute->search(
             $locale,
-            $page,
             $limit,
+            $offset,
             $search
         );
 
