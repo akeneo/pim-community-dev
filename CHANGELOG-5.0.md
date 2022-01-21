@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.69 (2022-01-21)
+
 ## Bug fixes
 
 - PIM-10233: [Backport] Refresh ES index after creating a product from the UI in order to well send product created event to event subscriptions
