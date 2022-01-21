@@ -245,7 +245,6 @@ akeneo_connectivity.connection:
     message_link: pulse aquí.
   create_connection:
     title: Crear una conexión nueva
-    description: Puede crear hasta 50 conexiones.
     flash:
       success: Conexión creada correctamente.
       error: Lo sentimos, se ha producido un error al crear la conexión.

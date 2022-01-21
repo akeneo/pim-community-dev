@@ -245,7 +245,6 @@ akeneo_connectivity.connection:
     message_link: klik hier.
   create_connection:
     title: Maak een nieuwe verbinding
-    description: U kunt maximaal 50 verbindingen maken.
     flash:
       success: Verbinding succesvol aangemaakt.
       error: Er is een fout opgetreden tijdens het maken van de verbinding.

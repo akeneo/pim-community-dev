@@ -245,7 +245,6 @@ akeneo_connectivity.connection:
     message_link: 여기를 클릭하십시오.
   create_connection:
     title: 새 연결 만들기
-    description: 최대 50개 연결을 만들 수 있습니다.
     flash:
       success: 연결이 생성되었습니다.
       error: 죄송합니다. 연결을 생성하는 동안 오류가 발생했습니다.

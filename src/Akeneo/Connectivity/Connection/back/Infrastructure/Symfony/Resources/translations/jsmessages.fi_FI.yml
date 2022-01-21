@@ -145,7 +145,6 @@ akeneo_connectivity.connection:
     message_link: Klikkaa tästä
   create_connection:
     title: Luo uusi yhteys
-    description: Voit luoda jopa 50 yhteyttä.
     flash:
       success: Yhteys onnistuneesti luotu.
       error: Pahoittelut, tapahtui virhe luotaessa yhteyttä.
