@@ -70,5 +70,6 @@ class InMemoryGetUnitSpec extends ObjectBehavior
         $expectedUnit->symbol = 's';
 
         $this->byMeasurementFamilyCodeAndUnitCode('duration', 'second')->shouldBeLike($expectedUnit);
+        $this->byMeasurementFamilyCodeAndUnitCode('duration', 'SeCoNd')->shouldBeLike($expectedUnit);
     }
 }
