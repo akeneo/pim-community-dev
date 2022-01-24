@@ -22,7 +22,7 @@
                             {% block emailHeader %}
                                 <img style="width: 100%; height: auto; max-width: 242px; max-height: 59px;"
                                      alt="Akeneo logo"
-                                     src="{{ akeneo_pim_url }}{{ asset('/bundles/pimnotification/images/email/logo.png') }}">
+                                     src="{{ akeneo_pim_url ~ asset('/bundles/pimnotification/images/email/logo.svg') }}">
                             {% endblock %}
                         </td>
                     </tr>
@@ -61,7 +61,7 @@
                                 </div>
                                 <img style="width: 100%; height: auto; max-height: 32px; max-width: 131px; margin-top: 15px;"
                                      alt="Akeneo signature"
-                                     src="{{ akeneo_pim_url }}{{ asset('bundles/pimnotification/images/email/signature.png') }}">
+                                     src="{{ akeneo_pim_url ~ asset('bundles/pimnotification/images/email/signature.png') }}">
                             {% endblock %}
                         </td>
                     </tr>

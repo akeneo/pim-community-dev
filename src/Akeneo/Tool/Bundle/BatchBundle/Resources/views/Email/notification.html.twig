@@ -59,7 +59,7 @@
                style="-webkit-appearance: button; -moz-appearance: button; appearance: auto;
                padding: 10px 20px; border-radius: 25px; background-color: #9452ba; color: white;
                text-decoration: none; text-transform: uppercase; font-size: 15px; font-weight: 900;"
-               href="{{ akeneo_pim_url }}/#{{ path('akeneo_job_process_tracker_details', {'id': jobExecution.id}) }}">View summary</a>
+               href="{{ akeneo_pim_url ~ '/#' ~ path('akeneo_job_process_tracker_details', {'id': jobExecution.id}) }}">View summary</a>
         </span>
     {% else %}
         <p style="margin: unset; font-size: 12px; font-style: italic;">
