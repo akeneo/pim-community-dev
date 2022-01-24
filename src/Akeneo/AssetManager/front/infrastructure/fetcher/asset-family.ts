@@ -3,7 +3,6 @@ import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-fa
 import hydrator from 'akeneoassetmanager/application/hydrator/asset-family';
 import hydrateAll from 'akeneoassetmanager/application/hydrator/hydrator';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import hydrateAttribute from 'akeneoassetmanager/application/hydrator/attribute';
 import {AssetFamilyPermission} from 'akeneoassetmanager/domain/model/permission/asset-family';
@@ -13,6 +12,7 @@ import {
   createAssetFamilyListItemFromNormalized,
 } from 'akeneoassetmanager/domain/model/asset-family/list';
 import {AssetFamilyFetcher} from 'akeneoassetmanager/domain/fetcher/asset-family';
+import {handleResponse} from 'akeneoassetmanager/infrastructure/tools/handleResponse';
 
 export type AssetFamilyResult = {
   assetFamily: AssetFamily;
@@ -41,16 +41,16 @@ export class AssetFamilyFetcherImplementation implements AssetFamilyFetcher {
   }
 
   async fetchAll(): Promise<AssetFamilyListItem[]> {
-    const response = await fetch(generateAssetFamilyListUrl()).catch(errorHandler);
+    const response = await fetch(generateAssetFamilyListUrl());
 
-    const backendAssetFamilies = await response.json();
+    const backendAssetFamilies = await handleResponse(response);
 
     return hydrateAll<AssetFamilyListItem>(createAssetFamilyListItemFromNormalized)(backendAssetFamilies.items);
   }
 
   async search(): Promise<SearchResult<AssetFamilyListItem>> {
-    const response = await fetch(generateAssetFamilyListUrl()).catch(errorHandler);
-    const backendAssetFamilies = await response.json();
+    const response = await fetch(generateAssetFamilyListUrl());
+    const backendAssetFamilies = await handleResponse(response);
 
     const items = hydrateAll<AssetFamilyListItem>(createAssetFamilyListItemFromNormalized)(backendAssetFamilies.items);
 

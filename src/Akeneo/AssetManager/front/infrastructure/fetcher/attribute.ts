@@ -2,9 +2,9 @@ import AttributeFetcher from 'akeneoassetmanager/domain/fetcher/attribute';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import hydrator from 'akeneoassetmanager/application/hydrator/attribute';
 import hydrateAll from 'akeneoassetmanager/application/hydrator/hydrator';
-import errorHandler from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {validateBackendAttribute} from 'akeneoassetmanager/infrastructure/validator/attribute';
+import {handleResponse} from 'akeneoassetmanager/infrastructure/tools/handleResponse';
 
 const generateAssetFamilyAttributeListUrl = (identifier: AssetFamilyIdentifier) =>
   `/rest/asset_manager/${identifier}/attribute`;
@@ -17,8 +17,8 @@ export class AttributeFetcherImplementation implements AttributeFetcher {
   }
 
   async fetchAllNormalized(assetFamilyIdentifier: AssetFamilyIdentifier): Promise<NormalizedAttribute[]> {
-    const response = await fetch(generateAssetFamilyAttributeListUrl(assetFamilyIdentifier)).catch(errorHandler);
-    const backendAttributes = await response.json();
+    const response = await fetch(generateAssetFamilyAttributeListUrl(assetFamilyIdentifier));
+    const backendAttributes = await handleResponse(response);
 
     return backendAttributes.map(validateBackendAttribute);
   }

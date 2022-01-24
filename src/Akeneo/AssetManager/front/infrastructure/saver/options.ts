@@ -1,13 +1,19 @@
-import {postJSON} from 'akeneoassetmanager/tools/fetch';
 import {ValidationError} from '@akeneo-pim-community/shared';
-import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {AttributeWithOptions, OptionAttribute} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import {Option} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
-import {attributeIdentifierStringValue} from 'akeneoassetmanager/domain/model/attribute/identifier';
-import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AttributeIdentifier, {
+  attributeIdentifierStringValue,
+} from 'akeneoassetmanager/domain/model/attribute/identifier';
+import AssetFamilyIdentifier, {
+  assetFamilyIdentifierStringValue,
+} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {handleResponse} from 'akeneoassetmanager/infrastructure/tools/handleResponse';
 
-const routing = require('routing');
+const generateAssetAttributeEditUrl = (
+  assetFamilyIdentifier: AssetFamilyIdentifier,
+  attributeIdentifier: AttributeIdentifier
+) => `/rest/asset_manager/${assetFamilyIdentifier}/attribute/${attributeIdentifier}`;
 
 export class AttributeOptionSaver {
   constructor() {
@@ -17,19 +23,27 @@ export class AttributeOptionSaver {
   async save(attribute: Attribute): Promise<ValidationError[] | null> {
     const normalizedOptionAttribute = (attribute as OptionAttribute).normalize() as any;
 
-    return await postJSON(
-      routing.generate('akeneo_asset_manager_attribute_edit_rest', {
-        assetFamilyIdentifier: assetFamilyIdentifierStringValue(
-          (attribute as OptionAttribute).getAssetFamilyIdentifier()
-        ),
-        attributeIdentifier: attributeIdentifierStringValue((attribute as OptionAttribute).getIdentifier()),
-      }),
+    const response = await fetch(
+      generateAssetAttributeEditUrl(
+        assetFamilyIdentifierStringValue((attribute as OptionAttribute).getAssetFamilyIdentifier()),
+        attributeIdentifierStringValue((attribute as OptionAttribute).getIdentifier())
+      ),
       {
-        identifier: normalizedOptionAttribute.identifier,
-        asset_family_identifier: normalizedOptionAttribute.asset_family_identifier,
-        options: ((attribute as any) as AttributeWithOptions).getOptions().map((option: Option) => option),
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+        body: JSON.stringify({
+          identifier: normalizedOptionAttribute.identifier,
+          asset_family_identifier: normalizedOptionAttribute.asset_family_identifier,
+          options: ((attribute as any) as AttributeWithOptions).getOptions().map((option: Option) => option),
+        }),
       }
-    ).catch(handleError);
+    );
+
+    return await handleResponse(response);
   }
 }
 

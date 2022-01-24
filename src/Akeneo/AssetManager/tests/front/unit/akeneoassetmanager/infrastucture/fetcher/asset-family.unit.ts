@@ -12,6 +12,7 @@ describe('akeneoassetmanager/infrastructure/fetcher/asset-family', () => {
           Promise.resolve({
             items: [],
           }),
+        status: 200,
       })
     );
 
@@ -38,10 +39,10 @@ describe('akeneoassetmanager/infrastructure/fetcher/asset-family', () => {
       .withAttributeAsLabel('')
       .build();
 
-    // @ts-ignore
     global.fetch = jest.fn().mockImplementationOnce(() =>
       Promise.resolve({
         json: () => Promise.resolve(assetFamily),
+        status: 200,
       })
     );
 

@@ -1,16 +1,18 @@
-import {postJSON} from 'akeneoassetmanager/tools/fetch';
 import {ValidationError} from '@akeneo-pim-community/shared';
-import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {assetCodeStringValue} from 'akeneoassetmanager/domain/model/asset/code';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-
-const routing = require('routing');
+import {handleResponse} from './tools/handleResponse';
 
 export interface NamingConventionExecutor {
   execute: (assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) => Promise<ValidationError[] | null>;
 }
+
+const generateExecuteNamingConventionUrl = (assetFamilyIdentifier: string, assetCode: string) =>
+  `/rest/asset_manager/${assetFamilyIdentifier}/asset/${assetCode}/execute_naming_convention`;
+const generateExecuteAllNamingConventionUrl = (assetFamilyIdentifier: string) =>
+  `/rest/asset_manager/${assetFamilyIdentifier}/execute_naming_convention`;
 
 export class NamingConventionExecutorImplementation implements NamingConventionExecutor {
   constructor() {
@@ -18,22 +20,34 @@ export class NamingConventionExecutorImplementation implements NamingConventionE
   }
 
   async execute(assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode): Promise<ValidationError[] | null> {
-    return await postJSON(
-      routing.generate('akeneo_asset_manager_asset_execute_naming_convention', {
-        assetFamilyIdentifier: assetFamilyIdentifierStringValue(assetFamilyIdentifier),
-        assetCode: assetCodeStringValue(assetCode),
-      }),
-      {}
-    ).catch(handleError);
+    const response = await fetch(
+      generateExecuteNamingConventionUrl(
+        assetFamilyIdentifierStringValue(assetFamilyIdentifier),
+        assetCodeStringValue(assetCode)
+      ),
+      {
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+      }
+    );
+
+    return await handleResponse(response);
   }
 
   async executeAll(assetFamilyIdentifier: AssetFamilyIdentifier): Promise<ValidationError[] | null> {
-    return await postJSON(
-      routing.generate('akeneo_asset_manager_asset_family_execute_naming_convention', {
-        assetFamilyIdentifier: assetFamilyIdentifierStringValue(assetFamilyIdentifier),
-      }),
-      {}
-    ).catch(handleError);
+    const response = await fetch(
+      generateExecuteAllNamingConventionUrl(assetFamilyIdentifierStringValue(assetFamilyIdentifier)),
+      {
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+      }
+    );
+
+    return await handleResponse(response);
   }
 }
 

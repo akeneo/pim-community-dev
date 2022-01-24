@@ -27,7 +27,6 @@ use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\Can
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
 use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface;
-use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\IndexAssetEventAggregator;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -65,7 +64,7 @@ class CreateAction
     ) {
     }
 
-    public function __invoke(Request $request, string $assetFamilyIdentifier): Response
+    public function __invoke(Request $request): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');

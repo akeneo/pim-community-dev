@@ -14,11 +14,13 @@ describe('akeneoassetmanager/infrastructure/fetcher/asset', () => {
       .mockImplementationOnce(() =>
         Promise.resolve({
           json: () => Promise.resolve(getRequestContract('Asset/AssetDetails/ok.json').response.body),
+          status: 200,
         })
       )
       .mockImplementationOnce(() =>
         Promise.resolve({
           json: () => Promise.resolve(getRequestContract('AssetFamily/AssetFamilyDetails/ok.json').response.body),
+          status: 200,
         })
       );
 
@@ -59,6 +61,7 @@ describe('akeneoassetmanager/infrastructure/fetcher/asset', () => {
     global.fetch = jest.fn().mockImplementationOnce(() =>
       Promise.resolve({
         json: () => Promise.resolve(getRequestContract('Asset/Search/ok.json').response.body),
+        status: 200,
       })
     );
 
@@ -157,6 +160,7 @@ describe('akeneoassetmanager/infrastructure/fetcher/asset', () => {
     global.fetch = jest.fn().mockImplementationOnce(() =>
       Promise.resolve({
         json: () => Promise.resolve(getRequestContract('Asset/Search/no_result.json').response.body),
+        status: 200,
       })
     );
 

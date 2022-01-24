@@ -47,6 +47,7 @@ describe('akeneoassetmanager/infrastructure/fetcher/attribute', () => {
               media_type: 'image',
             },
           ]),
+        status: 200,
       })
     );
 

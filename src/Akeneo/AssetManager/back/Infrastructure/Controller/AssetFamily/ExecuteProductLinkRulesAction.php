@@ -21,8 +21,10 @@ use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\Can
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -39,8 +41,12 @@ class ExecuteProductLinkRulesAction
     ) {
     }
 
-    public function __invoke(string $identifier): JsonResponse
+    public function __invoke(Request $request, string $identifier): JsonResponse
     {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
         if (!$this->isUserAllowedToEdit($identifier)) {
             throw new AccessDeniedHttpException();
         }
