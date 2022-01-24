@@ -32,4 +32,9 @@ final class MeasurementFamilyCode
     {
         return $this->code;
     }
+
+    public function equals(MeasurementFamilyCode $otherMeasurementFamilyCode): bool
+    {
+        return \strtolower($this->code) === \strtolower($otherMeasurementFamilyCode->asString());
+    }
 }

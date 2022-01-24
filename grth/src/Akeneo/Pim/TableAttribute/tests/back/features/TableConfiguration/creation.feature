@@ -71,12 +71,12 @@ Feature: Create a table attribute
   @only-ge
   Scenario: Cannot create a table configuration having unknown type
     When I create a table attribute with a configuration '{"data_type": "unknown", "code": "quantity"}'
-    Then There is a violation with message: The column data type is unknown. Please choose one of the following: text, number, boolean, select
+    Then There is a violation with message: The column data type is unknown. Please choose one of the following: text, number, boolean, select, measurement
 
   @only-ee
   Scenario: Cannot create a table configuration having unknown type
     When I create a table attribute with a configuration '{"data_type": "unknown", "code": "quantity"}'
-    Then There is a violation with message: The column data type is unknown. Please choose one of the following: text, number, boolean, select, reference_entity
+    Then There is a violation with message: The column data type is unknown. Please choose one of the following: text, number, boolean, select, measurement, reference_entity
 
   Scenario: Cannot create a table configuration having invalid type
     When I create a table attribute with a configuration '{"data_type": 1, "code": "quantity"}'
@@ -208,7 +208,7 @@ Feature: Create a table attribute
   @only-ge
   Scenario: Cannot create a table configuration with a reference entity column
     When I create a table attribute with a configuration '{"data_type": "reference_entity", "code": "record", "is_required_for_completeness": true, "reference_entity_identifier": "brands"}'
-    Then There is a violation with message: The column data type is unknown. Please choose one of the following: text, number, boolean, select
+    Then There is a violation with message: The column data type is unknown. Please choose one of the following: text, number, boolean, select, measurement
 
   @only-ee
   Scenario: Can create a table configuration with a record column
@@ -245,10 +245,48 @@ Feature: Create a table attribute
   @only-ge
   Scenario: Cannot create a table attribute with reference entity as the first column type
     When I create a table attribute with reference entity first column
-    Then There is a violation with message: The column data type is unknown. Please choose one of the following: text, number, boolean, select
+    Then There is a violation with message: The column data type is unknown. Please choose one of the following: text, number, boolean, select, measurement
 
   @only-ee
   Scenario: Can create a table attribute with reference entity as the first column type
     Given the brands reference entity
     When I create a table attribute with reference entity first column
     Then There is no violation
+
+  @mine
+  Scenario: Can create a table configuration with a measurement column
+    Given the duration measurement family with the second,minute units
+    When I create a table attribute with a configuration '{"data_type": "measurement", "code": "manufacturing_time", "is_required_for_completeness": false, "measurement_family_code": "duration", "measurement_default_unit_code": "second"}'
+    Then There is no violation
+
+  Scenario: Cannot add use measurement family and measurement default unit on a text column
+    Given the duration measurement family with the second,minute units
+    When I create a table attribute with a configuration '{"data_type": "text", "code": "manufacturing_time", "is_required_for_completeness": false, "measurement_family_code": "duration", "measurement_default_unit_code": "second"}'
+    Then There is a violation with message: Measurement family code cannot be set for a "text" column type
+    And There is a violation with message: Measurement default unit code cannot be set for a "text" column type
+
+  Scenario: Cannot add a measurement column without measurement family and measurement default unit
+    Given the duration measurement family with the second,minute units
+    When I create a table attribute with a configuration '{"data_type": "measurement", "code": "manufacturing_time", "is_required_for_completeness": false}'
+    Then There is a violation with message: The measurement family code must be filled
+    And There is a violation with message: The measurement default unit code must be filled
+
+  Scenario: Cannot add a measurement column with non valid measurement family
+    Given the duration measurement family with the second,minute units
+    When I create a table attribute with a configuration '{"data_type": "measurement", "code": "manufacturing_time", "is_required_for_completeness": false, "measurement_family_code": true, "measurement_default_unit_code": "second"}'
+    Then There is a violation with message: The required value is a string
+
+  Scenario: Cannot add a measurement column with an unknown measurement family
+    Given the duration measurement family with the second,minute units
+    When I create a table attribute with a configuration '{"data_type": "measurement", "code": "manufacturing_time", "is_required_for_completeness": false, "measurement_family_code": "unknown", "measurement_default_unit_code": "second"}'
+    Then There is a violation with message: Make sure the "unknown" measurement family exists before you add it to the table
+
+  Scenario: Cannot add a measurement column with non valid measurement default unit
+    Given the duration measurement family with the second,minute units
+    When I create a table attribute with a configuration '{"data_type": "measurement", "code": "manufacturing_time", "is_required_for_completeness": false, "measurement_family_code": "duration", "measurement_default_unit_code": true}'
+    Then There is a violation with message: The required value is a string
+
+  Scenario: Cannot add a measurement column with an unknown measurement family
+    Given the duration measurement family with the second,minute units
+    When I create a table attribute with a configuration '{"data_type": "measurement", "code": "manufacturing_time", "is_required_for_completeness": false, "measurement_family_code": "duration", "measurement_default_unit_code": "unknown"}'
+    Then There is a violation with message: Make sure the "unknown" unit exists in the "duration" measurement family before you add it to the table

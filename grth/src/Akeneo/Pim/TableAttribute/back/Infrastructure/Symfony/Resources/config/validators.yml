@@ -1,5 +1,5 @@
 parameters:
-    pim_catalog_table_allowed_column_datatypes: [ "text", "number", "boolean", "select" ]
+    pim_catalog_table_allowed_column_datatypes: [ "text", "number", "boolean", "select", "measurement" ]
     pim_catalog_table_allowed_first_column_datatypes: [ "select" ]
 
 services:
@@ -104,6 +104,28 @@ services:
         arguments:
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\ReferenceEntityExists'
             - '@Akeneo\Pim\TableAttribute\Infrastructure\AntiCorruptionLayer\Feature'
+        tags:
+            - { name: 'validator.constraint_validator' }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\Measurement\MeasurementFamilyShouldExistValidator:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\MeasurementFamilyExists'
+        tags:
+            - { name: 'validator.constraint_validator' }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\Measurement\MeasurementUnitShouldExistValidator:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\MeasurementUnitExists'
+        tags:
+            - { name: 'validator.constraint_validator' }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\Measurement\MeasurementFamilyCannotBeUpdatedValidator:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
+        tags:
+            - { name: 'validator.constraint_validator' }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\Measurement\MeasurementInfoShouldOnlyBeSetOnMeasurementColumnsValidator:
         tags:
             - { name: 'validator.constraint_validator' }
 

@@ -23,6 +23,12 @@ services:
     Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ConstraintViolationsContext:
         public: true
 
+    Akeneo\Test\Pim\TableAttribute\Acceptance\Context\MeasurementContext:
+        public: true
+        arguments:
+            - '@validator'
+            - '@akeneo_measure.application.create_measurement_family_handler'
+
     Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetNonExistingSelectOptionCodes:
         class: Akeneo\Test\Pim\TableAttribute\Acceptance\InMemory\InMemoryGetNonExistingSelectOptionCodes
         arguments:

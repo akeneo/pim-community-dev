@@ -123,7 +123,13 @@ $rules = [
             'Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent',
             'Akeneo\ReferenceEntity\Domain\Event\RecordsDeletedEvent',
             'Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode',
-            'Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByCodesInterface'
+            'Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByCodesInterface',
+
+            // Measurements
+            'Akeneo\Tool\Bundle\MeasureBundle\PublicApi',
+            'Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException',
+            'Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode',
+            'Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];

@@ -7,6 +7,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event\SelectOptionWasDeleted;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
@@ -42,6 +43,7 @@ class TableConfigurationSaverSpec extends ObjectBehavior
             BooleanColumn::DATATYPE => BooleanColumn::class,
             NumberColumn::DATATYPE => NumberColumn::class,
             ReferenceEntityColumn::DATATYPE => ReferenceEntityColumn::class,
+            MeasurementColumn::DATATYPE => MeasurementColumn::class,
         ]);
 
         $this->beConstructedWith(
@@ -99,11 +101,14 @@ class TableConfigurationSaverSpec extends ObjectBehavior
             ->willReturn(ColumnId::fromString(ColumnIdGenerator::ingredient()));
         $tableConfigurationRepository->getNextIdentifier(ColumnCode::fromString('quantity'))
             ->willReturn(ColumnId::fromString(ColumnIdGenerator::quantity()));
+        $tableConfigurationRepository->getNextIdentifier(ColumnCode::fromString('time'))
+            ->willReturn(ColumnId::fromString(ColumnIdGenerator::duration()));
 
         $attribute->getType()->willReturn(AttributeTypes::TABLE);
         $attribute->getRawTableConfiguration()->willReturn([
             ['data_type' => 'select', 'code' => 'ingredients', 'labels' => []],
             ['data_type' => 'text', 'code' => 'quantity', 'labels' => []],
+            ['data_type' => 'measurement', 'code' => 'time', 'labels' => [], 'measurement_family_code' => 'duration', 'measurement_default_unit_code' => 'second'],
         ]);
         $attribute->getCode()->willReturn('nutrition');
 
@@ -123,10 +128,17 @@ class TableConfigurationSaverSpec extends ObjectBehavior
         $updatedTableConfiguration = TableConfiguration::fromColumnDefinitions([
             SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'description']),
+            MeasurementColumn::fromNormalized([
+                'id' => ColumnIdGenerator::duration(),
+                'code' => 'time',
+                'measurement_family_code' => 'duration',
+                'measurement_default_unit_code' => 'second',
+            ]),
         ]);
         $rawTableConfiguration = [
             ['data_type' => 'select', 'code' => 'ingredients', 'labels' => []],
             ['data_type' => 'text', 'code' => 'quantity', 'labels' => []],
+            ['data_type' => 'measurement', 'code' => 'time', 'labels' => [], 'measurement_family_code' => 'duration', 'measurement_default_unit_code' => 'second'],
         ];
 
         $attribute->getType()->willReturn(AttributeTypes::TABLE);

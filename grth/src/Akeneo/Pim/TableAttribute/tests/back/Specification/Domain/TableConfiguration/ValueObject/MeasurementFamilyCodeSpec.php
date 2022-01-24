@@ -26,4 +26,12 @@ class MeasurementFamilyCodeSpec extends ObjectBehavior
         $this->beConstructedThrough('fromString', ['duration']);
         $this->asString()->shouldBe('duration');
     }
+
+    function it_equals_to_another_measurement_family_code()
+    {
+        $this->beConstructedThrough('fromString', ['duration']);
+        $this->equals(MeasurementFamilyCode::fromString('duration'))->shouldReturn(true);
+        $this->equals(MeasurementFamilyCode::fromString('DURation'))->shouldReturn(true);
+        $this->equals(MeasurementFamilyCode::fromString('size'))->shouldReturn(false);
+    }
 }

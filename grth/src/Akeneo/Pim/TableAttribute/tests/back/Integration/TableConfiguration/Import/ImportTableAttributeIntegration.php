@@ -40,7 +40,7 @@ class ImportTableAttributeIntegration extends TestCase
     {
         $csv = <<<CSV
 code;type;localizable;scopable;group;unique;sort_order;table_configuration
-nutrition;pim_catalog_table;0;0;other;0;2;[{"code":"ingredients","data_type":"select","labels":{"en_US":"Ingredients"},"options":[{"code":"salt","labels":{"en_US":"Salt"}}]},{"code":"quantity","data_type":"text","labels":{"en_US":"Quantity"},"validations":{"max_length":50},"is_required_for_completeness":true}]
+nutrition;pim_catalog_table;0;0;other;0;2;[{"code":"ingredients","data_type":"select","labels":{"en_US":"Ingredients"},"options":[{"code":"salt","labels":{"en_US":"Salt"}}]},{"code":"quantity","data_type":"text","labels":{"en_US":"Quantity"},"validations":{"max_length":50},"is_required_for_completeness":true},{"code": "manufacturing_time","data_type": "measurement","measurement_family_code": "duration","measurement_default_unit_code": "second"}]
 storage;pim_catalog_table;0;0;other;0;3;[{"code":"dimension","data_type":"select","labels":{"en_US":"Dimension"}},{"code":"value","data_type":"text","labels":{"en_US":"Value"}}]
 CSV;
         $this->jobLauncher->launchImport(self::CSV_IMPORT_JOB_CODE, $csv);
@@ -51,6 +51,7 @@ CSV;
             [
                 ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients'], 'validations' => (object) [], 'is_required_for_completeness' => true],
                 ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity'], 'validations' => ['max_length' => 50], 'is_required_for_completeness' => true],
+                ['code' => 'manufacturing_time', 'data_type' => 'measurement', 'labels' => (object) [], 'validations' => (object) [], 'is_required_for_completeness' => false, 'measurement_family_code' => 'duration', 'measurement_default_unit_code' => 'second']
             ],
             $this->getRawTableConfigurationWithoutIds($nutritionAttribute)
         );

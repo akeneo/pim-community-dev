@@ -8,6 +8,7 @@ default:
                 - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\UpdateAttributeContext
                 - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ConstraintViolationsContext
                 - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ProductValidation
+                - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\MeasurementContext
                 - test.channel.context
                 - test.locale.context
                 - test.user.context
@@ -23,6 +24,7 @@ default:
                 - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\UpdateAttributeContext
                 - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ConstraintViolationsContext
                 - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ProductValidation
+                - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\MeasurementContext
                 - Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ReferenceEntityContext
                 - test.channel.context
                 - test.locale.context
