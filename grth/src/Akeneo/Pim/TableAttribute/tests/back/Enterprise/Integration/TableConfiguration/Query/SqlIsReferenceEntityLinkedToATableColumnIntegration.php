@@ -14,21 +14,21 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\TableAttribute\Enterprise\Integration\TableConfiguration\Query;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsLinkedToATableColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsReferenceEntityLinkedToATableColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
-class SqlIsLinkedToATableColumnIntegration extends TestCase
+class SqlIsReferenceEntityLinkedToATableColumnIntegration extends TestCase
 {
     /**
      * @test
      */
     public function itSaysIfAReferenceEntityIsLinkedToATableColumn(): void
     {
-        $service = $this->get(IsLinkedToATableColumn::class);
+        $service = $this->get(IsReferenceEntityLinkedToATableColumn::class);
 
         self::assertFalse($service->forIdentifier('toto'));
         self::assertTrue($service->forIdentifier('brand'));

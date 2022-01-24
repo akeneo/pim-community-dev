@@ -16,10 +16,10 @@ namespace Akeneo\Test\Pim\TableAttribute\Acceptance\InMemory;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsLinkedToATableColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsReferenceEntityLinkedToATableColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 
-final class InMemoryIsLinkedToATableColumn implements IsLinkedToATableColumn
+final class InMemoryIsReferenceEntityLinkedToATableColumn implements IsReferenceEntityLinkedToATableColumn
 {
     public function __construct(private AttributeRepositoryInterface $attributeRepository)
     {

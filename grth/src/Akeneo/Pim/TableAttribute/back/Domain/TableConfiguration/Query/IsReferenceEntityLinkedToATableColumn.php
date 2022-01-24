@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query;
 
-interface IsLinkedToATableColumn
+interface IsReferenceEntityLinkedToATableColumn
 {
     public function forIdentifier(string $identifier): bool;
 }

@@ -85,7 +85,7 @@ services:
 
     Akeneo\Pim\TableAttribute\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldNotBeLinkedToATableColumnValidator:
         arguments:
-            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsLinkedToATableColumn'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsReferenceEntityLinkedToATableColumn'
         tags:
             - { name: 'validator.constraint_validator' }
 
