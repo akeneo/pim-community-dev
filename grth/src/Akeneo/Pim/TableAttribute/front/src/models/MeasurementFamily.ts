@@ -21,3 +21,8 @@ export type MeasurementFamily = {
   standard_unit_code: string;
   units: MeasurementUnit[];
 };
+
+export type MeasurementValue = {
+  amount: string;
+  unit: MeasurementUnitCode
+}
