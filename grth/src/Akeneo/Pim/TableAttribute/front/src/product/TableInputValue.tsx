@@ -18,7 +18,8 @@ import {UNIQUE_ID_KEY} from './useUniqueIds';
 import {useAttributeContext, useLocaleCode} from '../contexts';
 import {RecordCellIndex, SelectCellIndex} from './CellIndexes';
 import {usePrefetchTableValueRecords} from './usePrefetchTableValueRecords';
-import {useCellInputsMapping, useCellMatchersMapping} from '../contexts/CellMappingContext';
+import {cellMatchers} from './CellMatchers';
+import {cellInputs} from './CellInputs';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
@@ -81,13 +82,11 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   const isSearching = searchText !== '';
   const isDragAndDroppable = !readOnly && !isSearching;
   const areRecordsPrefetched = usePrefetchTableValueRecords(valueData);
-  const cellMatchersMapping = useCellMatchersMapping();
-  const cellInputsMapping = useCellInputsMapping();
   const localeCode = useLocaleCode();
 
   const matchers: {[data_type: string]: (cell: TableCell, searchText: string, columnCode: ColumnCode) => boolean} = {};
-  Object.keys(cellMatchersMapping).forEach(data_type => {
-    matchers[data_type] = cellMatchersMapping[data_type].default();
+  Object.keys(cellMatchers).forEach(data_type => {
+    matchers[data_type] = cellMatchers[data_type]();
   });
 
   React.useEffect(() => {
@@ -224,7 +223,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   };
 
   const tableInputCell = (row: TableRowWithId, columnDefinition: ColumnDefinition) => {
-    const CellInput = cellInputsMapping[columnDefinition.data_type]?.default;
+    const CellInput = cellInputs[columnDefinition.data_type];
     if (attribute && CellInput) {
       const matchSearch = matchers[columnDefinition.data_type];
       const columnCode = columnDefinition.code;

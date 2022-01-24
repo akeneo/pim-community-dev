@@ -14,18 +14,10 @@ import {FieldsList} from '../shared';
 import {DataTypeSelector} from './DataTypeSelector';
 import {ReferenceEntitySelector} from './ReferenceEntitySelector';
 
-export type DataTypesMapping = {
-  [dataType: string]: {
-    useable_as_first_column?: boolean;
-    flag?: string;
-  };
-};
-
 type AddColumnModalProps = {
   close: () => void;
   onCreate: (columnDefinition: ColumnDefinition) => void;
   existingColumnCodes: ColumnCode[];
-  dataTypesMapping: DataTypesMapping;
 };
 
 type UndefinedColumnDefinition = {
@@ -40,7 +32,7 @@ type ErrorValidations = {
   data_type: string[];
 };
 
-const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existingColumnCodes, dataTypesMapping}) => {
+const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existingColumnCodes}) => {
   const userContext = useUserContext();
   const translate = useTranslate();
   const featureFlags = useFeatureFlags();
@@ -203,7 +195,6 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
             dataType={columnDefinition.data_type}
             onChange={handleDataTypeChange}
             isFirstColumn={existingColumnCodes.length === 0}
-            dataTypesMapping={dataTypesMapping}
           />
           {!existingColumnCodes.length && (
             <Helper>

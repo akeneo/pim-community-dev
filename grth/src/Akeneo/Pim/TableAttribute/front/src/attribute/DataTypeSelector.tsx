@@ -2,18 +2,24 @@ import React from 'react';
 import {DataType} from '../models';
 import {useTranslate, useFeatureFlags} from '@akeneo-pim-community/shared';
 import {SelectInput} from 'akeneo-design-system';
-import {DataTypesMapping} from './AddColumnModal';
 
 type DataTypeSelectorProps = {
   dataType: DataType | null;
   onChange: (dataType: DataType | null) => void;
   isFirstColumn: boolean;
-  dataTypesMapping: DataTypesMapping;
 };
 
-const DataTypeSelector: React.FC<DataTypeSelectorProps> = ({dataType, onChange, isFirstColumn, dataTypesMapping}) => {
+const DataTypeSelector: React.FC<DataTypeSelectorProps> = ({dataType, onChange, isFirstColumn}) => {
   const translate = useTranslate();
   const featureFlags = useFeatureFlags();
+
+  const dataTypesMapping = {
+    select: {useable_as_first_column: true},
+    text: {useable_as_first_column: false},
+    number: {useable_as_first_column: false},
+    boolean: {useable_as_first_column: false},
+    reference_entity: {useable_as_first_column: true, flag: 'reference_entity'},
+  };
 
   const dataTypes: DataType[] = Object.keys(dataTypesMapping).filter((dataType: string) => {
     const dataTypeMapping = dataTypesMapping[dataType];
