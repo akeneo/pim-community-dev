@@ -58,8 +58,7 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
      */
     public function next()
     {
-        $next = next($this->items);
-        if (false === $next) {
+        if (false === next($this->items)) {
             $this->fetchedItemsCount += count($this->items);
             $this->items = $this->getNextItems($this->esQuery);
             reset($this->items);

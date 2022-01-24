@@ -100,16 +100,12 @@ abstract class AbstractCursor implements CursorInterface
             return [];
         }
 
-        $hydratedProducts = \count($identifierResults->getProductIdentifiers()) === 0
-            ? []
-            : $this->productRepository->getItemsFromIdentifiers(
-                $identifierResults->getProductIdentifiers()
-            );
-        $hydratedProductModels = \count($identifierResults->getProductModelIdentifiers()) === 0
-            ? []
-            : $this->productModelRepository->getItemsFromIdentifiers(
-                $identifierResults->getProductModelIdentifiers()
-            );
+        $hydratedProducts = $this->productRepository->getItemsFromIdentifiers(
+            $identifierResults->getProductIdentifiers()
+        );
+        $hydratedProductModels = $this->productModelRepository->getItemsFromIdentifiers(
+            $identifierResults->getProductModelIdentifiers()
+        );
         $hydratedItems = array_merge($hydratedProducts, $hydratedProductModels);
 
         $orderedItems = [];

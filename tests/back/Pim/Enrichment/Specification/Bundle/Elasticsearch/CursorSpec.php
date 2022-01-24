@@ -232,9 +232,11 @@ class CursorSpec extends ObjectBehavior
         $product->getIdentifier()->willReturn('a-product2');
         $productRepository->getItemsFromIdentifiers(['a-product'])->willReturn([]);
         $productRepository->getItemsFromIdentifiers(['a-product2'])->willReturn([$product]);
+        $productRepository->getItemsFromIdentifiers([])->willReturn([]);
 
         $rootProductModel->getCode()->willReturn('a-root-product-model');
         $productModelRepository->getItemsFromIdentifiers(['a-root-product-model'])->willReturn([$rootProductModel]);
+        $productModelRepository->getItemsFromIdentifiers([])->willReturn([]);
 
         // Second round
         $esClient->search(
