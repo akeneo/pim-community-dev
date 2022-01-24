@@ -15,6 +15,7 @@ namespace Akeneo\Test\Pim\TableAttribute\Integration\Value\Filter;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
@@ -285,6 +286,43 @@ abstract class AbstractFilterIntegration extends TestCase
         );
 
         $violations = $validator->validate($attribute);
+        Assert::assertCount(0, $violations, \sprintf('The attribute is not valid: %s', $violations));
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
+    }
+
+    protected function createNutritionAttributeWithMeasurementColumn(): void
+    {
+        $attribute = $this->get('pim_catalog.factory.attribute')->create();
+        $this->get('pim_catalog.updater.attribute')->update(
+            $attribute,
+            [
+                'code' => 'nutrition_with_measurement',
+                'type' => AttributeTypes::TABLE,
+                'group' => 'other',
+                'table_configuration' => [
+                    [
+                        'code' => 'ingredient',
+                        'data_type' => 'select',
+                        'options' => [
+                            ['code' => 'sugar'],
+                            ['code' => 'salt'],
+                            ['code' => 'egg'],
+                            ['code' => 'flour'],
+                            ['code' => 'chocolate'],
+                            ['code' => 'cheese'],
+                        ],
+                    ],
+                    [
+                        'code' => 'energy_per_100g',
+                        'data_type' => MeasurementColumn::DATATYPE,
+                        'measurement_family_code' => 'Energy',
+                        'measurement_default_unit_code' => 'KILOCALORIE',
+                    ],
+                ],
+            ]
+        );
+
+        $violations = $this->get('validator')->validate($attribute);
         Assert::assertCount(0, $violations, \sprintf('The attribute is not valid: %s', $violations));
         $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
