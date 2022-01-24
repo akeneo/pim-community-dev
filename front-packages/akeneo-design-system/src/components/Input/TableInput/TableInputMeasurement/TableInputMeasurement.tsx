@@ -65,6 +65,8 @@ type TableInputMeasurementProps = {
   openLabel: string;
   onChange: (amount: string | undefined, unit: string) => void;
   units: {value: string; label: string; symbol?: string}[];
+  highlighted?: boolean;
+  inError?: boolean;
 };
 
 const TableInputMeasurement: React.FC<TableInputMeasurementProps> = ({
