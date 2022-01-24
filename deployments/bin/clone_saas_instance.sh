@@ -96,14 +96,18 @@ cd ${PED_DIR}; TF_INPUT_FALSE="-input=false" TF_AUTO_APPROVE="-auto-approve" INS
 echo "- Create disk ES disk (delete before if existing)"
 ES_PVC_MASTER_0=data-elasticsearch-master-0
 ES_PVC_MASTER_1=data-elasticsearch-master-1
-ES_PD_NAME_MASTER_0=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_MASTER_0 "$ES_PVC_MASTER_0" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_MASTER_0) | .spec.gcePersistentDisk.pdName] | .[]')
-ES_PD_NAME_MASTER_1=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_MASTER_1 "$ES_PVC_MASTER_1" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_MASTER_1) | .spec.gcePersistentDisk.pdName] | .[]')
+ES_PD_NAME_MASTER_0_PATH=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_MASTER_0 "$ES_PVC_MASTER_0" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_MASTER_0) | .spec.csi.volumeHandle] | .[]')
+ES_PD_NAME_MASTER_1_PATH=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_MASTER_1 "$ES_PVC_MASTER_1" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_MASTER_1) | .spec.csi.volumeHandle] | .[]')
+ES_PD_NAME_MASTER_0="${ES_PD_NAME_MASTER_0_PATH##*/}"
+ES_PD_NAME_MASTER_1="${ES_PD_NAME_MASTER_1_PATH##*/}"
 ES_PV_NAME_MASTER_0=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_MASTER_0 "$ES_PVC_MASTER_0" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_MASTER_0) | .metadata.name] | .[]')
 ES_PV_NAME_MASTER_1=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_MASTER_1 "$ES_PVC_MASTER_1" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_MASTER_1) | .metadata.name] | .[]')
 ES_PVC_DATA_0=data-elasticsearch-data-0
 ES_PVC_DATA_1=data-elasticsearch-data-1
-ES_PD_NAME_DATA_0=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_DATA_0 "$ES_PVC_DATA_0" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_DATA_0) | .spec.gcePersistentDisk.pdName] | .[]')
-ES_PD_NAME_DATA_1=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_DATA_1 "$ES_PVC_DATA_1" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_DATA_1) | .spec.gcePersistentDisk.pdName] | .[]')
+ES_PD_NAME_DATA_0_PATH=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_DATA_0 "$ES_PVC_DATA_0" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_DATA_0) | .spec.csi.volumeHandle] | .[]')
+ES_PD_NAME_DATA_1_PATH=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_DATA_1 "$ES_PVC_DATA_1" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_DATA_1) | .spec.csi.volumeHandle] | .[]')
+ES_PD_NAME_DATA_0="${ES_PD_NAME_DATA_0_PATH##*/}"
+ES_PD_NAME_DATA_1="${ES_PD_NAME_DATA_1_PATH##*/}"
 ES_PV_NAME_DATA_0=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_DATA_0 "$ES_PVC_DATA_0" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_DATA_0) | .metadata.name] | .[]')
 ES_PV_NAME_DATA_1=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" --arg ES_PVC_DATA_1 "$ES_PVC_DATA_1" ' [.items[] | select(.spec.claimRef.namespace == $PFID) | select(.spec.claimRef.name == $ES_PVC_DATA_1) | .metadata.name] | .[]')
 
