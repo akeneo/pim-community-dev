@@ -17,9 +17,9 @@ use Twig\Environment;
 class MailResetNotifier
 {
     public function __construct(
-        protected LoggerInterface $logger,
-        protected Environment $twig,
-        protected MailNotification $mailer
+        private LoggerInterface $logger,
+        private Environment $twig,
+        private MailNotification $mailer
     ) {
     }
 
@@ -39,5 +39,4 @@ class MailResetNotifier
             return;
         }
     }
-
 }
