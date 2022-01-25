@@ -15,7 +15,6 @@ test.each(storyIds)('Test modal %s is displayed correctly', async storyId => {
   if (null === root) throw new Error('Cannot find root element');
   console.log('4');
 
-
   await page.waitForSelector('button');
   console.log('5');
   await page.click('button');
