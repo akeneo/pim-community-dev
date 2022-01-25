@@ -25,5 +25,5 @@ class EnterpriseVersion
     const VERSION_CODENAME = 'Buttercup';
 
     /** @staticvar string */
-    const EDITION = 'Serenity';
+    const EDITION = 'EE';
 }

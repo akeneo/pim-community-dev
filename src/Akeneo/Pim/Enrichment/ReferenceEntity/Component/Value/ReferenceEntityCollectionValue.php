@@ -42,11 +42,29 @@ class ReferenceEntityCollectionValue extends AbstractValue implements ReferenceE
     /**
      * {@inheritdoc}
      */
-    public function isEqual(ValueInterface $value): bool
+    public function isEqual(ValueInterface $other): bool
     {
-        return $this->getData() === $value->getData() &&
-            $this->scopeCode === $value->getScopeCode() &&
-            $this->localeCode === $value->getLocaleCode();
+        if ($this->scopeCode !== $other->getScopeCode()
+            || $this->localeCode !== $other->getLocaleCode()
+        ) {
+            return false;
+        }
+
+        if (count($this->getData()) !== count($other->getData())) {
+            return false;
+        }
+
+        $iterator = new \MultipleIterator();
+        $iterator->attachIterator(new \ArrayIterator($this->getData()));
+        $iterator->attachIterator(new \ArrayIterator($other->getData()));
+
+        foreach ($iterator as $iteratorValue) {
+            if (!$iteratorValue[0]->equals($iteratorValue[1])) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
