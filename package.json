@@ -128,7 +128,7 @@
   },
   "dependencies": {
     "ajv": "^6.10.2",
-    "akeneo-design-system": "link:front-packages/akeneo-design-system",
+    "akeneo-design-system": "0.0.0",
     "babel-polyfill": "6.26.0",
     "backbone": "0.9.10",
     "css-loader": "^3.3.0",
@@ -172,5 +172,8 @@
     "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/system",
     "src/Akeneo/Pim/Enrichment/Bundle/Resources/workspaces/enrichment",
     "src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front"
-  ]
+  ],
+  "resolutions": {
+    "akeneo-design-system": "link:front-packages/akeneo-design-system"
+  }
 }

@@ -17,7 +17,7 @@
     "jest": "^26.0.22"
   },
   "peerDependencies": {
-    "akeneo-design-system": "link:../akeneo-design-system"
+    "akeneo-design-system": "0.0.0"
   },
   "private": true
 }
