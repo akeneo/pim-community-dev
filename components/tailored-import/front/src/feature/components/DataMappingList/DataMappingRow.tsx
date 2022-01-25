@@ -20,7 +20,7 @@ const DataMappingRow = ({dataMapping, columns}: DataMappingRowProps) => {
     <Table.Row>
       <Table.Cell>{dataMapping.target.code}</Table.Cell>
       <Table.Cell>
-        {translate('akeneo.tailored_export.data_mapping.sources')}: {sources.join(' ')}
+        {translate('akeneo.tailored_import.data_mapping.sources')}: {sources.join(' ')}
       </Table.Cell>
     </Table.Row>
   );
