@@ -44,10 +44,6 @@ final class GetAppActivateUrlAction
             throw new NotFoundHttpException();
         }
 
-        if (!$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
-            throw new AccessDeniedHttpException();
-        }
-
         if ($this->isConnectionsNumberLimitReachedQuery->execute()) {
             throw new BadRequestHttpException('App and connections limit reached');
         }
@@ -55,6 +51,14 @@ final class GetAppActivateUrlAction
         $app = $this->getAppQuery->execute($id);
         if (null === $app) {
             throw new NotFoundHttpException("Invalid app identifier");
+        }
+
+        if (!$app->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
+            throw new AccessDeniedHttpException();
+        }
+
+        if ($app->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')) {
+            throw new AccessDeniedHttpException();
         }
 
         $app = $app->withPimUrlSource($this->appUrlGenerator->getAppQueryParameters());
