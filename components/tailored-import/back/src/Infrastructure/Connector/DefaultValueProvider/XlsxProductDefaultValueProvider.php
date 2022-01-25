@@ -31,6 +31,8 @@ class XlsxProductDefaultValueProvider implements DefaultValuesProviderInterface
     public function getDefaultValues(): array
     {
         $defaultValues = $this->simpleProvider->getDefaultValues();
+        $defaultValues['columns'] = [];
+        $defaultValues['dataMappings'] = [];
 
         return $defaultValues;
     }

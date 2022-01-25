@@ -26,7 +26,14 @@ class AkeneoTailoredImportExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('controllers.yml');
+        $loader->load('handlers.yml');
         $loader->load('jobs.yml');
+        $loader->load('queries.yml');
         $loader->load('services.yml');
+
+        if ('test' === $container->getParameter('kernel.environment')) {
+            $loader->load('test/services.yml');
+        }
     }
 }
