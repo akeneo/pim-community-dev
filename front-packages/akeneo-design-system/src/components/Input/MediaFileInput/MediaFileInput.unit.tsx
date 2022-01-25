@@ -77,7 +77,7 @@ test('it can open the file upload explorer using the keyboard', async () => {
 
   await act(async () => {
     fireEvent.focus(fileInput);
-    fireEvent.keyDown(fileInput, {key: 'Enter', code: 'Enter', charCode: 13});
+    userEvent.type(fileInput, '{enter}');
     userEvent.upload(fileInput, imageFile);
     await flushPromises();
   });

@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react';
 import styled from 'styled-components';
-import {Image, Modal, Title} from '../../components';
+import {Image, Modal} from '../../components';
 import {getColor} from '../../theme';
 
 const Border = styled.div`
@@ -12,7 +12,7 @@ const Border = styled.div`
   gap: 20px;
 `;
 
-const BrandedTitle = styled(Title)`
+const BrandedTitle = styled(Modal.Title)`
   color: ${getColor('brand', 100)};
 `;
 
