@@ -22,7 +22,7 @@ include make-file/*.mk
 ##
 .PHONY: node_modules
 node_modules:
-	$(YARN_RUN) install --frozen-lockfile
+	$(YARN_RUN) install --immutable
 
 .PHONY: javascript-extensions
 javascript-extensions:
