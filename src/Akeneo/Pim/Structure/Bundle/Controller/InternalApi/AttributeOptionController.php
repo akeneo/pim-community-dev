@@ -34,7 +34,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AttributeOptionController
 {
-    private const LIMIT_ATTRIBUTE_OPTION = null;
+    private const LIMIT_ATTRIBUTE_OPTION = 20;
 
     /** @var NormalizerInterface */
     protected $normalizer;

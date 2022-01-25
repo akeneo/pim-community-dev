@@ -154,9 +154,10 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
   };
 
   const onNextPage = useCallback(() => {
+    console.log(numPage + 1);
     setNumPage(numPage + 1);
     console.log(numPage);
-  }, []);
+  }, [numPage]);
 
   useEffect(() => {
     (async () => {
@@ -170,7 +171,7 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
         setAttributeOptions(attributeOptions);
       }
     })();
-  }, []);
+  }, [numPage]);
 
   useEffect(() => {
     window.addEventListener('refreshEvaluation', handleRefreshEvaluation);

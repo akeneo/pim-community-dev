@@ -10,7 +10,6 @@ import styled from 'styled-components';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import NoResultOnSearch from './NoResultOnSearch';
 import {AttributeOptionRow} from './AttributeOptionRow';
-import {usePagination} from 'akeneo-design-system/lib/hooks/usePagination';
 
 interface ListProps {
   selectAttributeOption: (selectedOptionId: number | null) => void;
@@ -147,15 +146,31 @@ const AttributeOptionTable = ({
 
   const handleReorder = useCallback(newIndices => reorderAttributeOptions(newIndices), [reorderAttributeOptions]);
 
-  const containerRef = useRef<HTMLDivElement | null>(null);
   const lastAttributeOptionRef = useRef<HTMLTableRowElement | null>(null);
 
-  usePagination(
-    containerRef,
-    lastAttributeOptionRef,
-    onNextPage,
-    filteredAttributeOptionsCount > 0 && filteredAttributeOptions !== null
+  const observer = useRef(
+    new IntersectionObserver(entries => {
+      const first = entries[0];
+      if (first.isIntersecting) {
+        onNextPage();
+      }
+    })
   );
+
+  useEffect(() => {
+    const currentElement = lastAttributeOptionRef.current;
+    const currentObserver = observer.current;
+
+    if (currentElement) {
+      currentObserver.observe(currentElement);
+    }
+
+    return () => {
+      if (currentElement) {
+        currentObserver.unobserve(currentElement);
+      }
+    };
+  }, [lastAttributeOptionRef, filteredAttributeOptionsCount > 0 && filteredAttributeOptions !== null]);
 
   return (
     <div className="AknSubsection AknAttributeOption-list">
@@ -196,7 +211,7 @@ const AttributeOptionTable = ({
           <>
             <AutoOptionSorting readOnly={autoSortingReadOnly} />
 
-            <TableContainer ref={containerRef}>
+            <TableContainer>
               <SpacedTable isDragAndDroppable={isDraggable} onReorder={handleReorder}>
                 <Table.Header sticky={0}>
                   {!isDraggable && <Table.HeaderCell>&nbsp;</Table.HeaderCell>}
