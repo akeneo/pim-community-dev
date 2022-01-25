@@ -4,7 +4,7 @@
   "license": "OSL-3.0",
   "main": "lib/index.js",
   "scripts": {
-    "lib:build": "tsc -p ./tsconfig.json",
+    "lib:build": "echo 'Building Akeneo PIM community shared lib...' && tsc -p ./tsconfig.json && echo 'Done!'",
     "test:unit:run": "jest --no-cache --config ./jest.config.js --maxWorkers=3",
     "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{ts,tsx}\"",
     "lint:check": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\""
@@ -14,10 +14,11 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "@types/jest": "^26.0.22",
+    "@types/styled-components": "^5.1.1",
     "jest": "^26.0.22"
   },
   "peerDependencies": {
-    "akeneo-design-system": "0.0.0"
+    "akeneo-design-system": "*"
   },
   "private": true
 }

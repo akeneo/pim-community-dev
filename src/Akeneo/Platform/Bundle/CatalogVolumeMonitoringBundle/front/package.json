@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@akeneo-pim-community/shared": "link:../../../../../../front-packages/shared",
-    "akeneo-design-system": "link:../../../../../../front-packages/akeneo-design-system",
+    "akeneo-design-system": "*",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
