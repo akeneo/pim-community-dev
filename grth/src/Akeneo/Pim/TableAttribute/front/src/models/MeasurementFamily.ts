@@ -24,5 +24,5 @@ export type MeasurementFamily = {
 
 export type MeasurementValue = {
   amount: string;
-  unit: MeasurementUnitCode
-}
+  unit: MeasurementUnitCode;
+};

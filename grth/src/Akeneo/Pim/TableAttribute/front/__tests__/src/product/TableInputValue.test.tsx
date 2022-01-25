@@ -9,6 +9,7 @@ import {TestAttributeContextProvider} from '../../shared/TestAttributeContextPro
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 jest.mock('../../../src/fetchers/RecordFetcher');
+jest.mock('../../../src/fetchers/MeasurementFamilyFetcher');
 
 describe('TableInputValue', () => {
   it('should render the component', async () => {

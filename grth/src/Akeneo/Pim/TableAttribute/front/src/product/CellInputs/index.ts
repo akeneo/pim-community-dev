@@ -11,7 +11,7 @@ import MeasurementInput from "./MeasurementInput";
 export type CellInput = React.FC<{
   row: TableRowWithId;
   columnDefinition: ColumnDefinition;
-  onChange: (value: TableCell) => void;
+  onChange: (value?: TableCell) => void;
   inError: boolean;
   highlighted: boolean;
   attribute: TableAttribute;

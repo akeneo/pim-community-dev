@@ -1,6 +1,6 @@
 import {LabelCollection} from '@akeneo-pim-community/shared';
 import {ReferenceEntityIdentifierOrCode} from './ReferenceEntity';
-import {MeasurementFamilyCode, MeasurementUnitCode} from "./MeasurementFamily";
+import {MeasurementFamilyCode, MeasurementUnitCode} from './MeasurementFamily';
 
 export type DataType = 'text' | 'number' | 'boolean' | 'select' | 'reference_entity';
 export type ColumnCode = string;
@@ -47,27 +47,30 @@ type ColumnDefinitionCommon<T, DT> = {
   labels: LabelCollection;
   data_type: DT;
   validations: T;
-  is_required_for_completeness?: boolean
-}
+  is_required_for_completeness?: boolean;
+};
 
-export type TextColumnDefinition = ColumnDefinitionCommon<NumberColumnValidation, 'text'>
+export type TextColumnDefinition = ColumnDefinitionCommon<TextColumnValidation, 'text'>;
 
-export type NumberColumnDefinition = ColumnDefinitionCommon<NumberColumnValidation, 'number'>
+export type NumberColumnDefinition = ColumnDefinitionCommon<NumberColumnValidation, 'number'>;
 
-export type BooleanColumnDefinition = ColumnDefinitionCommon<BooleanColumnValidation, 'boolean'>
+export type BooleanColumnDefinition = ColumnDefinitionCommon<BooleanColumnValidation, 'boolean'>;
 
 export type SelectColumnDefinition = ColumnDefinitionCommon<SelectColumnValidation, 'select'> & {
   options?: SelectOption[];
-}
+};
 
-export type ReferenceEntityColumnDefinition = ColumnDefinitionCommon<ReferenceEntityColumnValidation, 'reference_entity'> & {
+export type ReferenceEntityColumnDefinition = ColumnDefinitionCommon<
+  ReferenceEntityColumnValidation,
+  'reference_entity'
+> & {
   reference_entity_identifier: ReferenceEntityIdentifierOrCode;
-}
+};
 
 export type MeasurementColumnDefinition = ColumnDefinitionCommon<MeasurementColumnValidation, 'measurement'> & {
   measurementFamilyCode: MeasurementFamilyCode;
   measurementDefaultUnitCode: MeasurementUnitCode;
-}
+};
 
 export type ColumnDefinition =
   | TextColumnDefinition
