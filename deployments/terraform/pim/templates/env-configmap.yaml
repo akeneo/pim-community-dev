@@ -100,6 +100,7 @@ data:
 
   {{- if eq (.Values.common.gcpProjectID | toString) "akecld-saas-demo" }}
   {{- if eq ((index .Values.global.extraLabels "tags.akeneo.com/product_reference_code") | toString) "serenity_sandbox" }}
+  FLAG_MARKETPLACE_ACTIVATE_ENABLED: "1"
   FLAG_APP_DEVELOPER_MODE_ENABLED: "1"
   {{- end }}
   {{- end }}
