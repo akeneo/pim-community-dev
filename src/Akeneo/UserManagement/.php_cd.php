@@ -58,6 +58,7 @@ $rules = [
         'Swift_Mailer',
         'Twig\TwigFunction',
         'Oro\Bundle\DataGridBundle\Extension\Action\Actions\NavigateAction',
+        'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
 
         // TIP-1007: Clean VisibilityChecker system
         'Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker',

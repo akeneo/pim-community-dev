@@ -50,7 +50,6 @@ akeneo_connectivity.connection:
         description: Esto es solo un resumen. Para más detalles, eche un vistazo a nuestro sitio web.
         link: Ir al mercado web
       card:
-        developed_by: Desarrollado por
         read_more: leer más
         more_info: Más información
         connect: Conectar
@@ -65,6 +64,12 @@ akeneo_connectivity.connection:
         empty: No hay aplicaciones compatibles con su versión
       unreachable: No podemos llegar al mercado, vuelva más tarde.
       scroll_to_top: Desplazar hasta la parte superior
+      test_apps:
+        modal:
+          credentials:
+            title: Credenciales
+        delete:
+          title: Confirmar la eliminación
     connected_apps:
       list:
         apps:
@@ -79,7 +84,6 @@ akeneo_connectivity.connection:
           description_2: '¿Quiere saber más sobre las aplicaciones?'
           link: Eche un vistazo a nuestro Centro de ayuda para más información.
         card:
-          developed_by: Desarrollado por
           manage_app: Administrar aplicación
           open_app: Abrir aplicación
         flash:
@@ -241,7 +245,6 @@ akeneo_connectivity.connection:
     message_link: pulse aquí.
   create_connection:
     title: Crear una conexión nueva
-    description: Puede crear hasta 50 conexiones.
     flash:
       success: Conexión creada correctamente.
       error: Lo sentimos, se ha producido un error al crear la conexión.

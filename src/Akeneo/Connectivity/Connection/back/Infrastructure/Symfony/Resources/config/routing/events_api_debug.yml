@@ -1,13 +1,13 @@
 search_event_subscription_logs:
     path: '/search-event-subscription-logs'
-    defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.events_api_debug:searchEventSubscriptionLogs }
+    controller: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\EventsApiDebug\SearchEventSubscriptionLogsAction
     methods: [ GET ]
     requirements:
         connection_code: '[a-zA-Z0-9_]+'
 
 download_event_subscription_logs:
     path: '/download-event-subscription-logs'
-    defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.events_api_debug:downloadEventSubscriptionLogs }
+    controller: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\EventsApiDebug\DownloadEventSubscriptionLogsAction
     methods: [ GET ]
     requirements:
         connection_code: '[a-zA-Z0-9_]+'

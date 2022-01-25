@@ -1,5 +1,6 @@
 parameters:
     env(ALLOWED_NETWORK_WHITELIST): ''
+    akeneo_connectivity.connection.max_limit: 50
 
 services:
     akeneo_connectivity.connection.validators.connection.code_must_be_unique:
@@ -15,6 +16,12 @@ services:
             - '@akeneo_connectivity.connection.service.file_info.does_image_exist'
         tags:
             - { name: validator.constraint_validator, alias: connection_image_must_exist }
+
+    Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\IsConnectionsNumberLimitReachedValidator:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\IsConnectionsNumberLimitReachedQuery'
+        tags:
+            - { name: validator.constraint_validator }
 
     akeneo_connectivity.connection.validators.webhook.connection_must_exist:
         class: Akeneo\Connectivity\Connection\Application\Webhook\Validation\ConnectionMustExistValidator

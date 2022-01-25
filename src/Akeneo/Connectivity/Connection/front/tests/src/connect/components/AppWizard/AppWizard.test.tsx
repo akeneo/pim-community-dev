@@ -36,7 +36,7 @@ test('The wizard renders without error', async () => {
         'akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=8d8a7dc1-0827-4cc9-9ae5-577c6419230b': {
             json: {
                 appName: 'MyApp',
-                appLogo: '',
+                appLogo: 'http://example.com/logo.png',
                 scopeMessages: [],
                 authenticationScopes: [],
             },
@@ -48,8 +48,28 @@ test('The wizard renders without error', async () => {
     });
 
     renderWithProviders(<AppWizard clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
-    await waitFor(() => screen.getByAltText('MyApp'));
-    expect(screen.getByAltText('MyApp')).toBeInTheDocument();
+    expect(await screen.findByText('MyApp', {exact: false})).toBeInTheDocument();
+    expect(screen.getByText('akeneo_connectivity.connection.connect.apps.title')).toBeInTheDocument();
+});
+
+test('The wizard renders without error when no logo', async () => {
+    const fetchAppWizardDataResponses: MockFetchResponses = {
+        'akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=8d8a7dc1-0827-4cc9-9ae5-577c6419230b': {
+            json: {
+                appName: 'MyApp',
+                appLogo: null,
+                scopeMessages: [],
+                authenticationScopes: [],
+            },
+        },
+    };
+
+    mockFetchResponses({
+        ...fetchAppWizardDataResponses,
+    });
+
+    renderWithProviders(<AppWizard clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
+    expect(await screen.findByText('MyApp', {exact: false})).toBeInTheDocument();
     expect(screen.getByText('akeneo_connectivity.connection.connect.apps.title')).toBeInTheDocument();
 });
 
@@ -58,7 +78,7 @@ test('The wizard redirect to the marketplace when closed', async () => {
         'akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=8d8a7dc1-0827-4cc9-9ae5-577c6419230b': {
             json: {
                 appName: 'MyApp',
-                appLogo: '',
+                appLogo: 'http://example.com/logo.png',
                 scopeMessages: [],
                 authenticationScopes: [],
             },
@@ -70,7 +90,7 @@ test('The wizard redirect to the marketplace when closed', async () => {
     });
 
     renderWithProviders(<AppWizard clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
-    await waitFor(() => screen.getByAltText('MyApp'));
+    expect(await screen.findByText('MyApp', {exact: false})).toBeInTheDocument();
 
     act(() => {
         userEvent.click(screen.getByTitle('akeneo_connectivity.connection.connect.apps.wizard.action.cancel'));
@@ -84,7 +104,7 @@ test('The wizard display a notification and redirects on success', async done =>
         'akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=8d8a7dc1-0827-4cc9-9ae5-577c6419230b': {
             json: {
                 appName: 'MyApp',
-                appLogo: '',
+                appLogo: 'http://example.com/logo.png',
                 scopeMessages: [],
                 authenticationScopes: [],
             },
@@ -107,7 +127,7 @@ test('The wizard display a notification and redirects on success', async done =>
             <AppWizard clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />
         </NotifyContext.Provider>
     );
-    await waitFor(() => screen.getByAltText('MyApp'));
+    expect(await screen.findByText('MyApp', {exact: false})).toBeInTheDocument();
 
     act(() => {
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm'));

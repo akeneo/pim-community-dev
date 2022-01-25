@@ -17,9 +17,10 @@ use Prophecy\Argument;
 class AclPrivilegesEventSubscriberSpec extends ObjectBehavior
 {
     public function let(
-        FeatureFlag $featureFlag
+        FeatureFlag $marketplaceFlag,
+        FeatureFlag $developerModeFlag,
     ): void {
-        $this->beConstructedWith($featureFlag);
+        $this->beConstructedWith($marketplaceFlag, $developerModeFlag);
     }
 
     public function it_provides_subscribed_events(): void
@@ -27,27 +28,69 @@ class AclPrivilegesEventSubscriberSpec extends ObjectBehavior
         $this->getSubscribedEvents()->shouldReturn([PrivilegesPostLoadEvent::class => 'disableAclIfFeatureIsDisabled']);
     }
 
-    public function it_does_nothing_if_the_feature_flag_is_enabled(
-        FeatureFlag $featureFlag,
-        PrivilegesPostLoadEvent $event
+    public function it_does_nothing_if_the_feature_flags_are_enabled(
+        FeatureFlag $marketplaceFlag,
+        PrivilegesPostLoadEvent $event,
+        FeatureFlag $developerModeFlag,
     ) {
-        $featureFlag->isEnabled()->willReturn(true);
+        $marketplaceFlag->isEnabled()->willReturn(true);
+        $developerModeFlag->isEnabled()->willReturn(true);
         $event->setPrivileges(Argument::any())->shouldNotBeCalled();
 
         $this->disableAclIfFeatureIsDisabled($event);
     }
 
-    public function it_filter_acls_if_the_feature_flag_is_disabled(
-        FeatureFlag $featureFlag,
+    public function it_filters_acls_if_the_marketplace_flag_is_disabled(
+        FeatureFlag $marketplaceFlag,
+        FeatureFlag $developerModeFlag,
         PrivilegesPostLoadEvent $event,
         ArrayCollection $privileges,
         ArrayCollection $filteredPrivileges
     ) {
-        $featureFlag->isEnabled()->willReturn(false);
+        $marketplaceFlag->isEnabled()->willReturn(false);
+        $developerModeFlag->isEnabled()->willReturn(true);
         $event->getPrivileges()->willReturn($privileges);
         $privileges->filter(Argument::any())->willReturn($filteredPrivileges);
 
-        $event->setPrivileges($filteredPrivileges)->shouldBeCalled();
+        $event->setPrivileges($filteredPrivileges)->shouldBeCalledOnce();
+
+        $this->disableAclIfFeatureIsDisabled($event);
+    }
+
+    public function it_filters_acls_if_the_developer_mode_flag_is_disabled(
+        FeatureFlag $marketplaceFlag,
+        FeatureFlag $developerModeFlag,
+        PrivilegesPostLoadEvent $event,
+        ArrayCollection $privileges,
+        ArrayCollection $filteredPrivileges
+    ) {
+        $marketplaceFlag->isEnabled()->willReturn(true);
+        $developerModeFlag->isEnabled()->willReturn(false);
+        $event->getPrivileges()->willReturn($privileges);
+        $privileges->filter(Argument::any())->willReturn($filteredPrivileges);
+
+        $event->setPrivileges($filteredPrivileges)->shouldBeCalledOnce();
+
+        $this->disableAclIfFeatureIsDisabled($event);
+    }
+
+    public function it_filters_acls_if_both_flags_are_disabled(
+        FeatureFlag $marketplaceFlag,
+        FeatureFlag $developerModeFlag,
+        PrivilegesPostLoadEvent $event,
+        ArrayCollection $marketplacePrivileges,
+        ArrayCollection $developerModePrivileges,
+        ArrayCollection $marketplaceFilteredPrivileges,
+        ArrayCollection $devFilteredPrivileges,
+    ) {
+        $marketplaceFlag->isEnabled()->willReturn(false);
+        $developerModeFlag->isEnabled()->willReturn(false);
+        $event->getPrivileges()->willReturn($marketplacePrivileges, $developerModePrivileges);
+        $marketplacePrivileges->filter(Argument::any())->willReturn($marketplaceFilteredPrivileges);
+        $developerModePrivileges->filter(Argument::any())->willReturn($devFilteredPrivileges);
+
+        $event->setPrivileges($marketplaceFilteredPrivileges)->shouldBeCalledOnce();
+        $event->setPrivileges($devFilteredPrivileges)->shouldBeCalledOnce();
 
         $this->disableAclIfFeatureIsDisabled($event);
     }

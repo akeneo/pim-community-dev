@@ -237,6 +237,8 @@ $rules = [
             'Akeneo\Connectivity\Connection\Infrastructure\Service\Encrypter',
 
             'Symfony\Component\OptionsResolver\OptionsResolver',
+
+            'Akeneo\Connectivity\Connection\Infrastructure\Connections\GetConnectionsNumberLimit',
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Persistence'),
 
@@ -251,6 +253,39 @@ $rules = [
             'Akeneo\Connectivity\Connection\Domain\Marketplace',
         ]
     )->in('Akeneo\Connectivity\Connection\Domain\Marketplace'),
+
+    $builder->only(
+        [
+            'Akeneo\Connectivity\Connection\Domain\Marketplace',
+            'Akeneo\Connectivity\Connection\Application\Marketplace',
+            'Akeneo\Connectivity\Connection\Application\RandomCodeGeneratorInterface',
+
+            'Akeneo\Platform\VersionProviderInterface',
+            'Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Application\Marketplace'),
+
+    $builder->only(
+        [
+            'Akeneo\Connectivity\Connection\Domain\Marketplace',
+            'Akeneo\Connectivity\Connection\Application\Marketplace',
+
+            'Akeneo\Connectivity\Connection\Domain\Apps',
+            'Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppCommand',
+            'Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler',
+
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
+            'Akeneo\Platform\VersionProviderInterface',
+            'Akeneo\UserManagement\Component\Model\UserInterface',
+
+            'Symfony\Component',
+            'Doctrine\DBAL\Connection',
+            'Ramsey\Uuid\Uuid',
+            'GuzzleHttp\ClientInterface',
+            'Psr\Log\LoggerInterface',
+            'Oro\Bundle\SecurityBundle\SecurityFacade',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Infrastructure\Marketplace'),
 ];
 
 $config = new Configuration($rules, $finder);

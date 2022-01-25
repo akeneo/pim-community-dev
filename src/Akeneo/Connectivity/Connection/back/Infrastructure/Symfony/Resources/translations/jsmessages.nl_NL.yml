@@ -50,7 +50,6 @@ akeneo_connectivity.connection:
         description: Dit is slechts een overzicht. Neem voor meer details een kijkje op onze marktplaats op internet.
         link: Ga naar marktplaats op internet
       card:
-        developed_by: Ontwikkeld door
         read_more: meer lezen
         more_info: Meer informatie
         connect: Verbinden
@@ -65,6 +64,12 @@ akeneo_connectivity.connection:
         empty: Er zijn geen apps die compatibel zijn met uw versie
       unreachable: We kunnen de marktplaats niet bereiken. Kom later terug.
       scroll_to_top: Naar boven scrollen
+      test_apps:
+        modal:
+          credentials:
+            title: Toegangsgegevens
+        delete:
+          title: Bevestig verwijderen
     connected_apps:
       list:
         apps:
@@ -79,7 +84,6 @@ akeneo_connectivity.connection:
           description_2: Wilt u graag meer weten over apps?
           link: Ga naar Hulp voor meer informatie.
         card:
-          developed_by: Ontwikkeld door
           manage_app: App beheren
           open_app: App openen
         flash:
@@ -241,7 +245,6 @@ akeneo_connectivity.connection:
     message_link: klik hier.
   create_connection:
     title: Maak een nieuwe verbinding
-    description: U kunt maximaal 50 verbindingen maken.
     flash:
       success: Verbinding succesvol aangemaakt.
       error: Er is een fout opgetreden tijdens het maken van de verbinding.

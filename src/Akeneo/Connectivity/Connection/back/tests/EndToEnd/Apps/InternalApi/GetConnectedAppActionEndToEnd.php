@@ -81,6 +81,7 @@ class GetConnectedAppActionEndToEnd extends WebTestCase
             'categories' => ['category A1', 'category A2'],
             'certified' => false,
             'partner' => 'partner A',
+            'is_test_app' => false,
         ];
 
         $this->client->request(

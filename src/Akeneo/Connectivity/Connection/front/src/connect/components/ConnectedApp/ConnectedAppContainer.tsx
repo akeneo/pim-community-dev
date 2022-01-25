@@ -1,5 +1,5 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
-import {Breadcrumb, TabBar, useTabBar} from 'akeneo-design-system';
+import {AppIllustration, Breadcrumb, TabBar, useTabBar} from 'akeneo-design-system';
 import {Translate, useTranslate} from '../../../shared/translate';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
 import {useRouter} from '../../../shared/router/use-router';
@@ -15,6 +15,7 @@ import {useSaveConnectedAppMonitoringSettings} from '../../hooks/use-save-connec
 import {useFetchConnectedAppMonitoringSettings} from '../../hooks/use-fetch-connected-app-monitoring-settings';
 import {MonitoringSettings} from '../../../model/Apps/monitoring-settings';
 import {ConnectedAppErrorMonitoring} from './ErrorMonitoring/ConnectedAppErrorMonitoring';
+import {DeveloperModeTag} from '../DeveloperModeTag';
 
 type Props = {
     connectedApp: ConnectedApp;
@@ -160,6 +161,8 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
         [monitoringSettings, setMonitoringSettings, setHasUnsavedChanges]
     );
 
+    const tag = connectedApp.is_test_app ? <DeveloperModeTag /> : null;
+
     return (
         <>
             <PageHeader
@@ -178,7 +181,9 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                 ]}
                 userButtons={<UserButtons />}
                 state={<FormState />}
-                imageSrc={connectedApp.logo}
+                imageSrc={connectedApp.logo ?? undefined}
+                imageIllustration={connectedApp.logo ? undefined : <AppIllustration />}
+                tag={tag}
             >
                 {connectedApp.name}
             </PageHeader>

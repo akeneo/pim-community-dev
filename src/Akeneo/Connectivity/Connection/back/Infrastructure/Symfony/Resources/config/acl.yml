@@ -17,3 +17,9 @@ akeneo_connectivity_connection_open_apps:
     group_name: oro_config_system
     enabled_at_creation: false
     order: -10
+
+akeneo_connectivity_connection_manage_test_apps:
+    type: action
+    label: akeneo_connectivity.connection.acl.manage_test_apps
+    group_name: pim_system.acl_group.developer_mode
+    enabled_at_creation: false
