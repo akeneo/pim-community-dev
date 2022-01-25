@@ -34,42 +34,48 @@ final class Version_6_0_20220121120000_permission_to_view_mass_edit_and_mass_del
     {
         $this->removePermissions();
 
-        foreach (self::JOB_CODES as $jobCode) {
-            self::assertFalse($this->permissionExists($jobCode));
-        }
+        self::assertFalse($this->permissionExists());
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
-        foreach (self::JOB_CODES as $jobCode) {
-            self::assertTrue($this->permissionExists($jobCode));
-        }
+        self::assertTrue($this->permissionExists());
     }
 
     private function removePermissions(): void
     {
         $sql = <<<SQL
-DELETE a
-FROM
-    pimee_security_job_profile_access a
-        JOIN oro_access_group g ON g.id = a.user_group_id
-        JOIN akeneo_batch_job_instance i ON i.id = a.job_profile_id
-WHERE g.name = 'All' AND i.code IN (:jobCodes)
+DELETE job_profile_access
+FROM pimee_security_job_profile_access job_profile_access
+JOIN oro_access_group access_group ON access_group.id = job_profile_access.user_group_id
+JOIN akeneo_batch_job_instance job_instance ON job_instance.id = job_profile_access.job_profile_id
+WHERE access_group.name = 'All' AND job_instance.code IN (:job_codes)
 SQL;
-        $this->get('database_connection')->executeQuery($sql, ['jobCodes' => self::JOB_CODES], ['jobCodes' => Connection::PARAM_STR_ARRAY]);
+        $this->get('database_connection')
+            ->executeQuery(
+                $sql,
+                ['job_codes' => self::JOB_CODES],
+                ['job_codes' => Connection::PARAM_STR_ARRAY]
+            );
     }
 
-    private function permissionExists(string $jobCode): bool
+    private function permissionExists(): bool
     {
         $sql = <<<SQL
 SELECT EXISTS (
-    SELECT a.id
-    FROM pimee_security_job_profile_access a
-        JOIN oro_access_group g ON g.id = a.user_group_id
-        JOIN akeneo_batch_job_instance i ON i.id = a.job_profile_id
-    WHERE g.name = 'All' AND i.code = :jobCode AND a.execute_job_profile = 1
+    SELECT job_profile_access.id
+    FROM pimee_security_job_profile_access job_profile_access
+    JOIN oro_access_group access_group ON access_group.id = job_profile_access.user_group_id
+    JOIN akeneo_batch_job_instance job_instance ON job_instance.id = job_profile_access.job_profile_id
+    WHERE access_group.name = 'All' AND job_instance.code IN (:job_codes) AND job_profile_access.execute_job_profile = 1
 ) AS is_existing
 SQL;
-        $result = $this->get('database_connection')->executeQuery($sql, ['jobCode' => $jobCode], ['jobCodes' => Connection::PARAM_STR_ARRAY])->fetchAssociative();
+        $result = $this->get('database_connection')
+            ->executeQuery(
+                $sql,
+                ['job_codes' => self::JOB_CODES],
+                ['job_codes' => Connection::PARAM_STR_ARRAY]
+            )
+            ->fetchAssociative();
 
         return 1 === (int) $result['is_existing'];
     }
