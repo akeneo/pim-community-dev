@@ -17,6 +17,8 @@ test.each(storyIds)('Test modal %s is displayed correctly', async storyId => {
 
   await page.waitForSelector('button');
   console.log('5');
+  await root.screenshot({path: 'buddy-screenshot.png'});
+
   await page.click('button');
   console.log('6');
 
