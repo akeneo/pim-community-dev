@@ -17,8 +17,8 @@ use Twig\Environment;
 class MailResetNotifier
 {
     public function __construct(
-        private LoggerInterface $logger,
-        private Environment $twig,
+        private LoggerInterface  $logger,
+        private Environment      $twig,
         private MailNotification $mailer
     ) {
     }

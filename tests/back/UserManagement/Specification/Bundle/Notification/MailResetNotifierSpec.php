@@ -14,7 +14,6 @@ use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Twig\Environment;
 
 class MailResetNotifierSpec extends ObjectBehavior
@@ -64,7 +63,8 @@ class MailResetNotifierSpec extends ObjectBehavior
         $logger->error(Argument::any(), Argument::any())->shouldBeCalled();
     }
 
-    private function given(User $user, Environment $twig) {
+    private function given(User $user, Environment $twig)
+    {
         $user->getEmail()->willReturn('email');
         $twig->render('@PimUser/Mail/reset.txt.twig', ['user' => $user])->willReturn('textBody');
         $twig->render('@PimUser/Mail/reset.html.twig', ['user' => $user])->willReturn('htmlBody');
