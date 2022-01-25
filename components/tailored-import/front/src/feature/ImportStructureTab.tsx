@@ -3,8 +3,7 @@ import {Button, useBooleanState} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {InitializeColumnsModal} from './components';
 import {Column, createDefaultDataMapping, DataMapping, StructureConfiguration} from './models';
-import {SourceDropdown} from './components';
-import {DataMappingList} from './components/DataMappingList/DataMappingList';
+import {SourceDropdown, DataMappingList} from './components';
 
 type ImportStructureTabProps = {
   structureConfiguration: StructureConfiguration;
@@ -31,8 +30,6 @@ const ImportStructureTab = ({structureConfiguration, onStructureConfigurationCha
     });
   };
 
-  console.log(structureConfiguration);
-
   return (
     <>
       <Button level="primary" onClick={openInitModal}>
@@ -43,8 +40,8 @@ const ImportStructureTab = ({structureConfiguration, onStructureConfigurationCha
       <DataMappingList
         dataMappings={structureConfiguration.dataMappings}
         columns={structureConfiguration.columns}
-        globalErrors={[]}
-        onDataMappingCreated={handleDataMappingAdded}
+        validationErrors={[]}
+        onDataMappingAdded={handleDataMappingAdded}
       />
     </>
   );

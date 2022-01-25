@@ -15,11 +15,11 @@ const Container = styled.div`
 type DataMappingListProps = {
   dataMappings: DataMapping[];
   columns: Column[];
-  globalErrors: ValidationError[];
-  onDataMappingCreated: (dataMapping: DataMapping) => void;
+  validationErrors: ValidationError[];
+  onDataMappingAdded: (dataMapping: DataMapping) => void;
 };
 
-const DataMappingList = ({dataMappings, columns, globalErrors, onDataMappingCreated}: DataMappingListProps) => {
+const DataMappingList = ({dataMappings, columns, validationErrors, onDataMappingAdded}: DataMappingListProps) => {
   const translate = useTranslate();
   const canAddDataMapping = MAX_DATA_MAPPING_COUNT > dataMappings.length;
 
@@ -28,9 +28,9 @@ const DataMappingList = ({dataMappings, columns, globalErrors, onDataMappingCrea
       <SectionTitle sticky={0}>
         <SectionTitle.Title>{translate('akeneo.tailored_import.data_mapping.title')}</SectionTitle.Title>
         <SectionTitle.Spacer />
-        <AddDataMappingDropdown canAddDataMapping={canAddDataMapping} onDataMappingAdded={onDataMappingCreated} />
+        <AddDataMappingDropdown canAddDataMapping={canAddDataMapping} onDataMappingAdded={onDataMappingAdded} />
       </SectionTitle>
-      {globalErrors.map((error, index) => (
+      {validationErrors.map((error, index) => (
         <Helper key={index} level="error">
           {translate(error.messageTemplate, error.parameters)}
         </Helper>
@@ -46,5 +46,7 @@ const DataMappingList = ({dataMappings, columns, globalErrors, onDataMappingCrea
     </Container>
   );
 };
+
+export type {DataMappingListProps};
 
 export {DataMappingList};

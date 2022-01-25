@@ -38,7 +38,7 @@ jest.mock('../AddDataMappingDropdown', () => ({
 test('it can add a new data mapping', async () => {
   const dataMappings: DataMapping[] = [];
   const columns: Column[] = [];
-  const globalErrors: ValidationError[] = [];
+  const validationErrors: ValidationError[] = [];
 
   const handleDataMappingCreated = jest.fn();
 
@@ -46,8 +46,8 @@ test('it can add a new data mapping', async () => {
     <DataMappingList
       dataMappings={dataMappings}
       columns={columns}
-      globalErrors={globalErrors}
-      onDataMappingCreated={handleDataMappingCreated}
+      validationErrors={validationErrors}
+      onDataMappingAdded={handleDataMappingCreated}
     />
   );
 
@@ -68,7 +68,7 @@ test('it can add a new data mapping', async () => {
   });
 });
 
-test('it display the data mapping', async () => {
+test('it displays the data mapping', async () => {
   const dataMappings: DataMapping[] = [
     {
       uuid: 'value',
@@ -114,14 +114,14 @@ test('it display the data mapping', async () => {
       label: 'Source 3',
     },
   ];
-  const globalErrors: ValidationError[] = [];
+  const validationErrors: ValidationError[] = [];
 
   await renderWithProviders(
     <DataMappingList
       dataMappings={dataMappings}
       columns={columns}
-      globalErrors={globalErrors}
-      onDataMappingCreated={jest.fn()}
+      validationErrors={validationErrors}
+      onDataMappingAdded={jest.fn()}
     />
   );
 
@@ -129,4 +129,30 @@ test('it display the data mapping', async () => {
   expect(
     screen.getByText('akeneo.tailored_export.data_mapping.sources: Source 1 (A) Source 3 (C)')
   ).toBeInTheDocument();
+});
+
+test('it displays validation errors', async () => {
+  const dataMappings: DataMapping[] = [];
+  const columns: Column[] = [];
+
+  const validationErrors: ValidationError[] = [
+    {
+      messageTemplate: 'error.key.name',
+      invalidValue: '',
+      message: 'this is a data mapping validation error',
+      parameters: {},
+      propertyPath: '[data_mapping][name]',
+    },
+  ];
+
+  await renderWithProviders(
+    <DataMappingList
+      dataMappings={dataMappings}
+      columns={columns}
+      validationErrors={validationErrors}
+      onDataMappingAdded={jest.fn()}
+    />
+  );
+
+  expect(screen.getByText('error.key.name')).toBeInTheDocument();
 });

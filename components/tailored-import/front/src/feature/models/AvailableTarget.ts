@@ -1,4 +1,4 @@
-import {DataMappingType} from "./DataMapping";
+import {DataMappingType} from './DataMapping';
 
 type AvailableTarget = {
   code: string;

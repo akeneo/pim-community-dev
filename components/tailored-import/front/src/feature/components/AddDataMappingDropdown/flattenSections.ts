@@ -5,7 +5,7 @@ type SectionDropdownItem = {
   type: 'section';
   code: string;
   label: string;
-}
+};
 
 type TargetDropdownItem = {
   type: 'target';

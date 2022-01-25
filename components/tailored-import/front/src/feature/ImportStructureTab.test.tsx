@@ -3,7 +3,7 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {ImportStructureTab} from './ImportStructureTab';
 import {screen, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {AddDataMappingDropdownProps, InitializeColumnsModalProps} from './components';
+import {InitializeColumnsModalProps, DataMappingListProps} from './components';
 import {DataMapping, StructureConfiguration} from './models';
 
 const mockGeneratedColumns = [
@@ -22,7 +22,7 @@ jest.mock('./components/InitializeColumnsModal', () => ({
   ),
 }));
 
-const mockAddedDataMapping: DataMapping = {
+const mockCreatedDataMapping: DataMapping = {
   uuid: 'd1249682-720e-11ec-90d6-0242ac120003',
   target: {
     code: 'name',
@@ -37,11 +37,9 @@ const mockAddedDataMapping: DataMapping = {
   operations: [],
   sampleData: [],
 };
-jest.mock('./components/AddDataMappingDropdown/AddDataMappingDropdown', () => ({
-  AddDataMappingDropdown: ({canAddDataMapping, onDataMappingAdded}: AddDataMappingDropdownProps) => (
-    <button onClick={() => onDataMappingAdded(mockAddedDataMapping)} disabled={!canAddDataMapping}>
-      Add data mapping
-    </button>
+jest.mock('./components/DataMappingList/DataMappingList', () => ({
+  DataMappingList: ({onDataMappingAdded}: DataMappingListProps) => (
+    <button onClick={() => onDataMappingAdded(mockCreatedDataMapping)}>Data mapping list</button>
   ),
 }));
 
@@ -49,6 +47,28 @@ const defaultStructureConfiguration: StructureConfiguration = {
   columns: [],
   dataMappings: [],
 };
+
+let mockUuid = 0;
+jest.mock('akeneo-design-system', () => ({
+  ...jest.requireActual('akeneo-design-system'),
+  uuid: () => `uuid_${++mockUuid}`,
+}));
+
+const getDefaultIdentifierDataMapping = (): DataMapping => ({
+  uuid: `uuid_${mockUuid}`,
+  target: {
+    code: 'sku',
+    type: 'attribute',
+    channel: null,
+    locale: null,
+    action: 'set',
+    ifEmpty: 'skip',
+    onError: 'skipLine',
+  },
+  sources: ['d1249682-720e-11ec-90d6-0242ac120003'],
+  operations: [],
+  sampleData: [],
+});
 
 test('it can open the modal to generate columns', async () => {
   const onStructureConfigurationChange = jest.fn();
@@ -67,6 +87,7 @@ test('it can open the modal to generate columns', async () => {
   expect(onStructureConfigurationChange).toHaveBeenCalledWith({
     ...defaultStructureConfiguration,
     columns: mockGeneratedColumns,
+    dataMappings: [getDefaultIdentifierDataMapping()],
   });
 });
 
@@ -86,34 +107,24 @@ test('it can open and close the modal', async () => {
   expect(screen.queryByText('Cancel')).not.toBeInTheDocument();
 });
 
-test('it can add a data mapping', () => {
+test('it can add data mapping from the list', () => {
   const onStructureConfigurationChange = jest.fn();
+  const defaultIdentifierDataMapping = getDefaultIdentifierDataMapping();
+
   renderWithProviders(
     <ImportStructureTab
-      structureConfiguration={defaultStructureConfiguration}
+      structureConfiguration={{
+        ...defaultStructureConfiguration,
+        dataMappings: [defaultIdentifierDataMapping],
+      }}
       onStructureConfigurationChange={onStructureConfigurationChange}
     />
   );
 
-  userEvent.click(screen.getByText('Add data mapping'));
+  userEvent.click(screen.getByText('Data mapping list'));
 
   expect(onStructureConfigurationChange).toHaveBeenCalledWith({
     ...defaultStructureConfiguration,
-    dataMappings: [mockAddedDataMapping],
+    dataMappings: [defaultIdentifierDataMapping, mockCreatedDataMapping],
   });
-});
-
-test('it cannot add a data mapping when the limit is reached', () => {
-  const onStructureConfigurationChange = jest.fn();
-  const someDataMappings = Array(500).fill(mockAddedDataMapping);
-
-  renderWithProviders(
-    <ImportStructureTab
-      structureConfiguration={{...defaultStructureConfiguration, dataMappings: someDataMappings}}
-      onStructureConfigurationChange={onStructureConfigurationChange}
-    />
-  );
-
-  const addDataMappingButton = screen.getByText('Add data mapping');
-  expect(addDataMappingButton).toBeDisabled();
 });

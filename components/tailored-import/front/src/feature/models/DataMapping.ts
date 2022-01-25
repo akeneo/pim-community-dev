@@ -37,9 +37,9 @@ const MAX_DATA_MAPPING_COUNT = 500;
 type DataMappingType = 'attribute' | 'property';
 
 const createDefaultDataMapping = (columns: Column[]) => {
-  const emptyDataMapping = createDataMapping('sku', 'attribute');
+  const defaultDataMapping = createDataMapping('sku', 'attribute');
 
-  return columns.length > 0 ? addSourceToDataMapping(emptyDataMapping, columns[0]) : emptyDataMapping;
+  return columns.length > 0 ? addSourceToDataMapping(defaultDataMapping, columns[0]) : defaultDataMapping;
 };
 
 const createDataMapping = (code: string, type: DataMappingType): DataMapping => {
