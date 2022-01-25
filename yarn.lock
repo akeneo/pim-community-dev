@@ -15,7 +15,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@akeneo-pim-community/catalog-volume-monitoring@workspace:src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front"
   dependencies:
-    "@akeneo-pim-community/shared": "link:../../../../../../front-packages/shared"
+    "@akeneo-pim-community/shared": "*"
     "@testing-library/jest-dom": ^5.11.4
     "@testing-library/react": ^11.1.0
     "@testing-library/user-event": ^12.1.10
@@ -75,7 +75,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@akeneo-pim-community/measurement@workspace:front-packages/measurement"
   dependencies:
-    "@akeneo-pim-community/shared": "link:../shared"
+    "@akeneo-pim-community/shared": "*"
     "@testing-library/jest-dom": ^5.11.4
     "@testing-library/react": ^11.1.0
     "@testing-library/user-event": ^12.1.10
@@ -111,7 +111,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@akeneo-pim-community/process-tracker@workspace:src/Akeneo/Platform/Job/front/process-tracker"
   dependencies:
-    "@akeneo-pim-community/shared": "link:../../../../../../front-packages/shared"
+    "@akeneo-pim-community/shared": "*"
     "@testing-library/jest-dom": ^5.11.4
     "@testing-library/react": ^11.1.0
     "@testing-library/user-event": ^12.1.10
@@ -143,25 +143,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@akeneo-pim-community/shared@link:../../../../../../front-packages/shared::locator=%40akeneo-pim-community%2Fcatalog-volume-monitoring%40workspace%3Asrc%2FAkeneo%2FPlatform%2FBundle%2FCatalogVolumeMonitoringBundle%2Ffront":
-  version: 0.0.0-use.local
-  resolution: "@akeneo-pim-community/shared@link:../../../../../../front-packages/shared::locator=%40akeneo-pim-community%2Fcatalog-volume-monitoring%40workspace%3Asrc%2FAkeneo%2FPlatform%2FBundle%2FCatalogVolumeMonitoringBundle%2Ffront"
-  languageName: node
-  linkType: soft
-
-"@akeneo-pim-community/shared@link:../../../../../../front-packages/shared::locator=%40akeneo-pim-community%2Fprocess-tracker%40workspace%3Asrc%2FAkeneo%2FPlatform%2FJob%2Ffront%2Fprocess-tracker":
-  version: 0.0.0-use.local
-  resolution: "@akeneo-pim-community/shared@link:../../../../../../front-packages/shared::locator=%40akeneo-pim-community%2Fprocess-tracker%40workspace%3Asrc%2FAkeneo%2FPlatform%2FJob%2Ffront%2Fprocess-tracker"
-  languageName: node
-  linkType: soft
-
-"@akeneo-pim-community/shared@link:../shared::locator=%40akeneo-pim-community%2Fmeasurement%40workspace%3Afront-packages%2Fmeasurement":
-  version: 0.0.0-use.local
-  resolution: "@akeneo-pim-community/shared@link:../shared::locator=%40akeneo-pim-community%2Fmeasurement%40workspace%3Afront-packages%2Fmeasurement"
-  languageName: node
-  linkType: soft
-
-"@akeneo-pim-community/shared@workspace:front-packages/shared":
+"@akeneo-pim-community/shared@*, @akeneo-pim-community/shared@workspace:front-packages/shared":
   version: 0.0.0-use.local
   resolution: "@akeneo-pim-community/shared@workspace:front-packages/shared"
   dependencies:

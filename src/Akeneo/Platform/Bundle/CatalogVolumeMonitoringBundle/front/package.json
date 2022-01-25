@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@akeneo-pim-community/shared": "link:../../../../../../front-packages/shared",
+    "@akeneo-pim-community/shared": "*",
     "akeneo-design-system": "*",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",

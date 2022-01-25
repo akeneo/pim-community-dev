@@ -22,7 +22,7 @@
     "prettier": "^2.2.1"
   },
   "dependencies": {
-    "@akeneo-pim-community/shared": "link:../shared",
+    "@akeneo-pim-community/shared": "*",
     "akeneo-design-system": "*",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
