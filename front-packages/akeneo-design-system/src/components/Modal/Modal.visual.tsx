@@ -22,7 +22,7 @@ test.each(storyIds)('Test modal %s is displayed correctly', async storyId => {
   console.log(page.viewport());
   console.log(openButton);
 
-  await openButton.click();
+  await browser.waitAndClick(openButton);
   console.log('7');
 
   await new Promise(resolve => setTimeout(resolve, 500));
