@@ -15,15 +15,11 @@ test.each(storyIds)('Test modal %s is displayed correctly', async storyId => {
   if (null === root) throw new Error('Cannot find root element');
   console.log('4');
 
-  const openButton = await page.$('button');
-  console.log('5');
-  if (null === openButton) throw new Error('Cannot find button');
-  console.log('6');
-  console.log(page.viewport());
-  console.log(openButton);
 
-  await browser.waitAndClick(openButton);
-  console.log('7');
+  await page.waitForSelector('button');
+  console.log('5');
+  await page.click('button');
+  console.log('6');
 
   await new Promise(resolve => setTimeout(resolve, 500));
   console.log('8');
