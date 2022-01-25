@@ -21,9 +21,11 @@ use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepo
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\User;
+use Akeneo\UserManagement\Component\Storage\Saver\RoleWithPermissionsSaver;
 use Doctrine\Common\Collections\Collection;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
+use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -135,6 +137,28 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
         ));
     }
 
+    private function changeAclInRole(string $roleCode, string $acl, bool $enabled): void
+    {
+        /** @var AclManager $aclManager */
+        $aclManager = $this->get('oro_security.acl.manager');
+        /** @var RoleWithPermissionsRepository $roleWithPermissionsRepository */
+        $roleWithPermissionsRepository = $this->get('pim_user.repository.role_with_permissions');
+        /** @var RoleWithPermissionsSaver $roleWithPermissionsSaver */
+        $roleWithPermissionsSaver = $this->get('pim_user.saver.role_with_permissions');
+
+        $roleWithPermissions = $roleWithPermissionsRepository->findOneByIdentifier($roleCode);
+        assert(null !== $roleWithPermissions);
+
+        $permissions = $roleWithPermissions->permissions();
+        $permissions[sprintf('action:%s', $acl)] = $enabled;
+        $roleWithPermissions->setPermissions($permissions);
+
+        $roleWithPermissionsSaver->saveAll([$roleWithPermissions]);
+
+        $aclManager->flush();
+        $aclManager->clearCache();
+    }
+
     public function throwExceptionDataProvider(): array
     {
         return [
@@ -170,6 +194,8 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
         $appId = '90741597-54c5-48a1-98da-a68e7ee0a715';
         $appName = 'Akeneo Shopware 6 Connector by EIKONA Media';
 
+        $this->changeAclInRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps', true);
+        $this->changeAclInRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps', true);
         $this->addAppAuthorization($appId);
 
         $this->handler->handle(new CreateAppWithAuthorizationCommand($appId));
