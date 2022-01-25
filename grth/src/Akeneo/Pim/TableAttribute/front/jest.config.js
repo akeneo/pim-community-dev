@@ -8,7 +8,7 @@ module.exports = {
   moduleNameMapper: {
     '\\.(svg|css)$': '<rootDir>/__mocks__/fileMock.ts',
   },
-  maxWorkers: '2',
+  maxWorkers: '3',
   collectCoverage: true,
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',

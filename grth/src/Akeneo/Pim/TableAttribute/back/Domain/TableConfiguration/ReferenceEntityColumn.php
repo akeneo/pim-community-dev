@@ -20,9 +20,9 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\IsRequiredFo
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ReferenceEntityIdentifier;
 use Webmozart\Assert\Assert;
 
-final class RecordColumn extends AbstractColumnDefinition
+final class ReferenceEntityColumn extends AbstractColumnDefinition
 {
-    public const DATATYPE = 'record';
+    public const DATATYPE = 'reference_entity';
 
     private ReferenceEntityIdentifier $referenceEntityIdentifier;
 

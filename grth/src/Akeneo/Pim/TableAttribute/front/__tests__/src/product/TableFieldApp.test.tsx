@@ -1,7 +1,7 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen} from '@testing-library/react';
-import {TableFieldApp} from '../../../src';
+import {TableFieldApp, CellMappingContext} from '../../../src';
 import {TemplateContext} from '../../../src/legacy/table-field';
 import {
   defaultCellInputsMapping,
@@ -38,22 +38,24 @@ const getTemplateContext: () => TemplateContext = () => {
 describe('TableFieldApp', () => {
   it('should render the component', async () => {
     renderWithProviders(
-      <TableFieldApp
-        {...getTemplateContext()}
-        onChange={jest.fn()}
-        elements={{}}
-        violations={[
-          {
-            locale: 'en_US',
-            scope: 'ecommerce',
-            attribute: 'nutrition',
-            path: 'values[nutrition-ecommerce-en_US][0].ingredient',
-          },
-        ]}
-        onCopyCheckboxChange={jest.fn()}
-        cellInputsMapping={defaultCellInputsMapping}
-        cellMatchersMapping={defaultCellMatchersMapping}
-      />
+      <CellMappingContext.Provider
+        value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
+      >
+        <TableFieldApp
+          {...getTemplateContext()}
+          onChange={jest.fn()}
+          elements={{}}
+          violations={[
+            {
+              locale: 'en_US',
+              scope: 'ecommerce',
+              attribute: 'nutrition',
+              path: 'values[nutrition-ecommerce-en_US][0].ingredient',
+            },
+          ]}
+          onCopyCheckboxChange={jest.fn()}
+        />
+      </CellMappingContext.Provider>
     );
 
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -83,18 +85,20 @@ describe('TableFieldApp', () => {
     };
 
     renderWithProviders(
-      <TableFieldApp
-        {...getTemplateContext()}
-        onChange={handleChange}
-        elements={{
-          badge: {completeness: elementAsString},
-          label: {guidelines: elementAsBackbone},
-          footer: {from_smart: elementAsHtml},
-        }}
-        onCopyCheckboxChange={jest.fn()}
-        cellInputsMapping={defaultCellInputsMapping}
-        cellMatchersMapping={defaultCellMatchersMapping}
-      />
+      <CellMappingContext.Provider
+        value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
+      >
+        <TableFieldApp
+          {...getTemplateContext()}
+          onChange={handleChange}
+          elements={{
+            badge: {completeness: elementAsString},
+            label: {guidelines: elementAsBackbone},
+            footer: {from_smart: elementAsHtml},
+          }}
+          onCopyCheckboxChange={jest.fn()}
+        />
+      </CellMappingContext.Provider>
     );
 
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -110,14 +114,16 @@ describe('TableFieldApp', () => {
   it('should add and remove a row', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableFieldApp
-        {...getTemplateContext()}
-        onChange={handleChange}
-        elements={{}}
-        onCopyCheckboxChange={jest.fn()}
-        cellInputsMapping={defaultCellInputsMapping}
-        cellMatchersMapping={defaultCellMatchersMapping}
-      />
+      <CellMappingContext.Provider
+        value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
+      >
+        <TableFieldApp
+          {...getTemplateContext()}
+          onChange={handleChange}
+          elements={{}}
+          onCopyCheckboxChange={jest.fn()}
+        />
+      </CellMappingContext.Provider>
     );
 
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
@@ -150,16 +156,18 @@ describe('TableFieldApp', () => {
     const elementAsHtml = [element];
 
     const {container} = renderWithProviders(
-      <TableFieldApp
-        {...getTemplateContext()}
-        onChange={jest.fn()}
-        elements={{
-          comparison: {nutrition: elementAsHtml},
-        }}
-        onCopyCheckboxChange={jest.fn()}
-        cellInputsMapping={defaultCellInputsMapping}
-        cellMatchersMapping={defaultCellMatchersMapping}
-      />
+      <CellMappingContext.Provider
+        value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
+      >
+        <TableFieldApp
+          {...getTemplateContext()}
+          onChange={jest.fn()}
+          elements={{
+            comparison: {nutrition: elementAsHtml},
+          }}
+          onCopyCheckboxChange={jest.fn()}
+        />
+      </CellMappingContext.Provider>
     );
 
     expect(screen.queryByText('Salt')).not.toBeInTheDocument();
@@ -170,15 +178,17 @@ describe('TableFieldApp', () => {
     const handleCopyCheckboxChange = jest.fn();
     const copyContext = {scope: 'mobile', locale: 'fr_FR', data: []};
     renderWithProviders(
-      <TableFieldApp
-        {...getTemplateContext()}
-        onChange={jest.fn()}
-        copyContext={copyContext}
-        onCopyCheckboxChange={handleCopyCheckboxChange}
-        elements={{}}
-        cellInputsMapping={defaultCellInputsMapping}
-        cellMatchersMapping={defaultCellMatchersMapping}
-      />
+      <CellMappingContext.Provider
+        value={{cellMatchersMapping: defaultCellMatchersMapping, cellInputsMapping: defaultCellInputsMapping}}
+      >
+        <TableFieldApp
+          {...getTemplateContext()}
+          onChange={jest.fn()}
+          copyContext={copyContext}
+          onCopyCheckboxChange={handleCopyCheckboxChange}
+          elements={{}}
+        />
+      </CellMappingContext.Provider>
     );
 
     expect(await screen.findByText('Sugar')).toBeInTheDocument();

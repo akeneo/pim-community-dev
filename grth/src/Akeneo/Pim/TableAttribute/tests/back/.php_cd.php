@@ -115,6 +115,15 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface',
             'Akeneo\Tool\Component\Localization\LabelTranslatorInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue\FlatAttributeValueTranslatorInterface',
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
+
+            // Reference Entity
+            'Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier',
+            'Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface',
+            'Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent',
+            'Akeneo\ReferenceEntity\Domain\Event\RecordsDeletedEvent',
+            'Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode',
+            'Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByCodesInterface'
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];

@@ -157,6 +157,80 @@ final class UpdateAttributeContext implements Context
     }
 
     /**
+     * @When I update the reference entity identifier of the :columnCode column
+     */
+    public function iUpdateTheReferenceEntityIdentifierForColumn(string $columnCode): void
+    {
+        $attribute = $this->attributeRepository->findOneByIdentifier(self::ATTRIBUTE_IDENTIFIER);
+        $rawTableConfiguration = $attribute->getRawTableConfiguration();
+
+        // we update and validate the clone in order not to modify the attribute stored in the in memory repo
+        $updatedAttribute = clone $attribute;
+        foreach ($rawTableConfiguration as $index => $columnDefinition) {
+            if ($columnDefinition['code'] === $columnCode) {
+                $rawTableConfiguration[$index]['reference_entity_identifier'] = 'designers';
+            }
+        }
+        $updatedAttribute->setRawTableConfiguration($rawTableConfiguration);
+
+        $violations = $this->validator->validate($updatedAttribute);
+        if (0 < $violations->count()) {
+            $this->constraintViolationsContext->add($violations);
+
+            return;
+        }
+
+        $this->attributeRepository->save($updatedAttribute);
+    }
+
+    /**
+     * @When I update the :localeCode label of the :columnCode column as :newLabel
+     */
+    public function iUpdateTheLabelsOfTheColumn(string $localeCode, string $columnCode, string $newLabel): void
+    {
+        $attribute = $this->attributeRepository->findOneByIdentifier(self::ATTRIBUTE_IDENTIFIER);
+        $rawTableConfiguration = $attribute->getRawTableConfiguration();
+
+        // we update and validate the clone in order not to modify the attribute stored in the in memory repo
+        $updatedAttribute = clone $attribute;
+        foreach ($rawTableConfiguration as $index => $columnDefinition) {
+            if ($columnDefinition['code'] === $columnCode) {
+                $rawTableConfiguration[$index]['labels'][$localeCode] = $newLabel;
+            }
+        }
+        $updatedAttribute->setRawTableConfiguration($rawTableConfiguration);
+
+        $violations = $this->validator->validate($updatedAttribute);
+        if (0 < $violations->count()) {
+            $this->constraintViolationsContext->add($violations);
+
+            return;
+        }
+
+        $this->attributeRepository->save($updatedAttribute);
+    }
+
+    /**
+     * @Then the :localeCode label of the :columnCode column should be :label
+     */
+    public function thelabelOfTheColumnShouldBe(string $localeCode, string $columnCode, string $label)
+    {
+        $attribute = $this->attributeRepository->findOneByIdentifier(self::ATTRIBUTE_IDENTIFIER);
+        Assert::notNull($attribute);
+
+        $tableConfiguration = $attribute->getRawTableConfiguration();
+        foreach ($tableConfiguration as $columnDefinition) {
+            if ($columnDefinition['code'] === $columnCode) {
+                Assert::same($columnDefinition['labels'][$localeCode] ?? null, $label);
+
+                return;
+            }
+        }
+
+        throw new \LogicException(\sprintf('The %s column does not exist', $columnCode));
+    }
+
+    /**
      * @Then the attribute contains the ":columnCode" column
      */
     public function theAttributeContainsTheColumn(string $columnCode): void

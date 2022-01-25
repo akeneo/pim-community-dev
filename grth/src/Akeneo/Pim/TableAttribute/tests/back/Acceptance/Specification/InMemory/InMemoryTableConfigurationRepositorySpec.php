@@ -6,7 +6,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\RecordColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
@@ -26,7 +26,7 @@ class InMemoryTableConfigurationRepositorySpec extends ObjectBehavior
             'number' => 'Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn',
             'boolean' => 'Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn',
             'select' => 'Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn',
-            'record' => 'Akeneo\Pim\TableAttribute\Domain\TableConfiguration\RecordColumn',
+            'reference_entity' => 'Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn',
         ]);
         $this->beConstructedWith($attributeRepository, $tableConfigurationFactory);
     }
@@ -45,7 +45,7 @@ class InMemoryTableConfigurationRepositorySpec extends ObjectBehavior
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
             SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::description(), 'code' => 'description']),
-            RecordColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'record', 'reference_entity_identifier' => 'entity']),
+            ReferenceEntityColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'record', 'reference_entity_identifier' => 'entity']),
         ]);
 
         $attribute->setRawTableConfiguration([
@@ -68,7 +68,7 @@ class InMemoryTableConfigurationRepositorySpec extends ObjectBehavior
             [
                 'id' => ColumnIdGenerator::record(),
                 'code' => 'record',
-                'data_type' => 'record',
+                'data_type' => 'reference_entity',
                 'labels' => (object) [],
                 'validations' => (object) [],
                 'is_required_for_completeness' => false,
@@ -104,7 +104,7 @@ class InMemoryTableConfigurationRepositorySpec extends ObjectBehavior
             [
                 'id' => ColumnIdGenerator::record(),
                 'code' => 'record',
-                'data_type' => 'record',
+                'data_type' => 'reference_entity',
                 'labels' => (object) [],
                 'validations' => (object) [],
                 'is_required_for_completeness' => false,
@@ -116,7 +116,7 @@ class InMemoryTableConfigurationRepositorySpec extends ObjectBehavior
         $this->getByAttributeCode('111')->shouldBeLike(TableConfiguration::fromColumnDefinitions([
             SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::description(), 'code' => 'description']),
-            RecordColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'record', 'reference_entity_identifier' => 'entity']),
+            ReferenceEntityColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'record', 'reference_entity_identifier' => 'entity']),
         ]));
     }
 

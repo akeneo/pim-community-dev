@@ -3,8 +3,10 @@ import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/fro
 import {AddColumnModal} from '../../../src';
 import {act, fireEvent, screen} from '@testing-library/react';
 import {defaultDataTypesMapping} from '../../factories';
+import {renderWithFeatureFlag} from '../../shared/renderWithFeatureFlag';
 
 jest.mock('../../../src/attribute/LocaleLabel');
+jest.mock('../../../src/fetchers/ReferenceEntityFetcher');
 
 describe('AddColumnModal', () => {
   it('should render the component', () => {
@@ -110,12 +112,10 @@ describe('AddColumnModal', () => {
   });
 
   it('should restrict the data types for the first column', async () => {
-    const handleClose = jest.fn();
-    const handleCreate = jest.fn();
     renderWithProviders(
       <AddColumnModal
-        close={handleClose}
-        onCreate={handleCreate}
+        close={jest.fn()}
+        onCreate={jest.fn()}
         existingColumnCodes={[]}
         dataTypesMapping={defaultDataTypesMapping}
       />
@@ -128,6 +128,40 @@ describe('AddColumnModal', () => {
     expect(screen.queryByText('pim_table_attribute.properties.data_type.text')).toBeNull();
     expect(screen.queryByText('pim_table_attribute.properties.data_type.number')).toBeNull();
     expect(screen.queryByText('pim_table_attribute.properties.data_type.boolean')).toBeNull();
+  });
+
+  it('should select reference entity', async () => {
+    const handleCreate = jest.fn();
+    renderWithFeatureFlag(
+      <AddColumnModal
+        close={jest.fn()}
+        onCreate={handleCreate}
+        existingColumnCodes={[]}
+        dataTypesMapping={defaultDataTypesMapping}
+      />,
+      {reference_entity: true}
+    );
+
+    fireEvent.change(screen.getByLabelText(/pim_common.label/), {target: {value: 'Reference entity column'}});
+    expect(
+      screen.getByText('pim_table_attribute.form.attribute.first_column_type_helper_with_reference_entity')
+    ).toBeInTheDocument();
+    fireEvent.click(screen.getByTitle('pim_common.open'));
+    fireEvent.click(await screen.findByText('pim_table_attribute.properties.data_type.reference_entity'));
+    expect(screen.getByText('pim_common.create') as HTMLButtonElement).toBeDisabled();
+    expect(screen.getByText('pim_table_attribute.form.attribute.reference_entity')).toBeInTheDocument();
+    fireEvent.click(screen.getAllByTitle('pim_common.open')[1]);
+    expect(await screen.findByText('City')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('City'));
+    expect(screen.getByText('pim_common.create') as HTMLButtonElement).toBeEnabled();
+    fireEvent.click(screen.getByText('pim_common.create'));
+    expect(handleCreate).toBeCalledWith({
+      code: 'Reference_entity_column',
+      labels: {en_US: 'Reference entity column'},
+      data_type: 'reference_entity',
+      reference_entity_identifier: 'city',
+      validations: {},
+    });
   });
 
   it('should display validation errors', async () => {

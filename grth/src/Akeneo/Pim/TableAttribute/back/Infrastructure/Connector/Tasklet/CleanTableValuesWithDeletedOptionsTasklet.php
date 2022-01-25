@@ -57,6 +57,7 @@ final class CleanTableValuesWithDeletedOptionsTasklet implements TaskletInterfac
     {
         Assert::notNull($this->stepExecution);
         $jobParameters = $this->stepExecution->getJobParameters();
+
         $attributeCode = $jobParameters->get('attribute_code');
 
         $attribute = $this->getAttributes->forCode($attributeCode);

@@ -639,6 +639,9 @@ jobs:
           - run:
                 name: Tailored Export
                 command: PIM_CONTEXT=tailored-export make integration-back
+          - run:
+                name: Table Attribute
+                command: PIM_CONTEXT=table-attribute make table-attribute-integration-back
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:
@@ -725,6 +728,9 @@ jobs:
           - run:
                 name: PhpUnit End to end
                 command: PIM_CONTEXT=test make end-to-end-back
+          - run:
+                name: PhpUnit End to end Table Attribute
+                command: PIM_CONTEXT=table-attribute make table-attribute-end-to-end-back
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:

@@ -8,8 +8,10 @@ import {
   useToggleRow,
   useUniqueIds,
   AttributeContext,
+  CellMappingContext,
   TableAttribute,
   TableValue,
+  LocaleCodeContext,
 } from '@akeneo-pim-ge/table_attribute';
 import {
   getLabel,
@@ -47,6 +49,7 @@ const TableValue: React.FC<InputValueProps> = ({
   const [attributeState, setAttributeState] = React.useState<TableAttribute>(
     attribute as TableAttribute
   );
+  const catalogLocale = UserContext.get('catalogLocale');
 
   const [tableValue, setTableValue] = React.useState<TableValueWithId>(
     addUniqueIds(value || [])
@@ -67,27 +70,31 @@ const TableValue: React.FC<InputValueProps> = ({
   return (
     <AttributeContext.Provider
       value={{attribute: attributeState, setAttribute: setAttributeState}}>
-      <TableValueContainer>
-        <AttributeLabel>
-          {getLabel(
-            attributeState.labels,
-            UserContext.get('catalogLocale'),
-            attributeState.code
-          )}
-          <AddRowsButton
-            checkedOptionCodes={tableValue.map(
-              row => (row[firstColumnCode] ?? '') as string
-            )}
-            toggleChange={handleToggleRow}
-          />
-        </AttributeLabel>
-        <TableInputValue
-          valueData={tableValue}
-          onChange={handleChange}
-          cellInputsMapping={cellInputsMapping}
-          cellMatchersMapping={cellMatchersMapping}
-        />
-      </TableValueContainer>
+      <LocaleCodeContext.Provider value={{localeCode: catalogLocale}}>
+        <CellMappingContext.Provider
+          value={{cellMatchersMapping, cellInputsMapping}}>
+          <TableValueContainer>
+            <AttributeLabel>
+              {getLabel(
+                attributeState.labels,
+                catalogLocale,
+                attributeState.code
+              )}
+              <AddRowsButton
+                checkedOptionCodes={tableValue.map(
+                  row => (row[firstColumnCode] ?? '') as string
+                )}
+                toggleChange={handleToggleRow}
+              />
+            </AttributeLabel>
+            <TableInputValue
+              valueData={tableValue}
+              onChange={handleChange}
+              visibility={'CAN_EDIT'}
+            />
+          </TableValueContainer>
+        </CellMappingContext.Provider>
+      </LocaleCodeContext.Provider>
       <HelperContainer>
         <Helper level='info' inline={true}>
           {translate(

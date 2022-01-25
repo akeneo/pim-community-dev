@@ -13,26 +13,33 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute;
 
-use Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnShouldHaveSelectDataType;
-use Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnShouldHaveSelectDataTypeValidator;
+use Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnShouldHaveValidDataType;
+use Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnShouldHaveValidDataTypeValidator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContext;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilder;
 
-final class FirstColumnShouldHaveSelectDataTypeValidatorSpec extends ObjectBehavior
+final class FirstColumnShouldHaveValidDataTypeValidatorSpec extends ObjectBehavior
 {
-    function let(ExecutionContext $context)
+    public function let(ExecutionContextInterface $context)
     {
+        $this->beConstructedWith($this->getAllowedFirstColumnDatatypes());
         $this->initialize($context);
+    }
+
+    private function getAllowedFirstColumnDatatypes(): array
+    {
+        return [ "select" ];
     }
 
     function it_is_a_constraint_validator()
     {
         $this->shouldImplement(ConstraintValidatorInterface::class);
-        $this->shouldHaveType(FirstColumnShouldHaveSelectDataTypeValidator::class);
+        $this->shouldHaveType(FirstColumnShouldHaveValidDataTypeValidator::class);
     }
 
     function it_throws_an_exception_when_provided_with_an_invalid_constraint()
@@ -43,7 +50,7 @@ final class FirstColumnShouldHaveSelectDataTypeValidatorSpec extends ObjectBehav
     function it_does_nothing_when_value_is_not_an_array(ExecutionContext $context)
     {
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
-        $this->validate('table', new FirstColumnShouldHaveSelectDataType());
+        $this->validate('table', new FirstColumnShouldHaveValidDataType());
     }
 
     function it_does_nothing_when_data_type_is_not_provided_for_first_column(ExecutionContext $context)
@@ -54,7 +61,7 @@ final class FirstColumnShouldHaveSelectDataTypeValidatorSpec extends ObjectBehav
         ];
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
-        $this->validate('table', new FirstColumnShouldHaveSelectDataType());
+        $this->validate('table', new FirstColumnShouldHaveValidDataType());
     }
 
     function it_does_nothing_when_data_type_is_not_a_string(ExecutionContext $context)
@@ -65,7 +72,7 @@ final class FirstColumnShouldHaveSelectDataTypeValidatorSpec extends ObjectBehav
         ];
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
-        $this->validate('table', new FirstColumnShouldHaveSelectDataType());
+        $this->validate('table', new FirstColumnShouldHaveValidDataType());
     }
 
     function it_does_not_add_any_violation_when_first_column_data_type_is_select(ExecutionContext $context)
@@ -76,21 +83,29 @@ final class FirstColumnShouldHaveSelectDataTypeValidatorSpec extends ObjectBehav
         ];
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
-        $this->validate($config, new FirstColumnShouldHaveSelectDataType());
+        $this->validate($config, new FirstColumnShouldHaveValidDataType());
     }
 
     function it_adds_a_violation_when_first_column_data_type_is_not_select(
         ExecutionContext $context,
         ConstraintViolationBuilder $violationBuilder
     ) {
-        $constraint = new FirstColumnShouldHaveSelectDataType();
+        $constraint = new FirstColumnShouldHaveValidDataType();
         $config = [
             ['data_type' => 'number'],
             ['data_type' => 'text'],
         ];
 
-        $context->buildViolation($constraint->message, ['{{ data_type }}' => 'number'])
-            ->shouldBeCalled()
+        $context->buildViolation(
+            $constraint->message,
+            [
+                '{{ data_type }}' => 'number',
+                '{{ allowed_data_types }}' => 'select',
+                '{{ allowed_data_types_except_last }}' => '',
+                '{{ last_allowed_data_types }}' => 'select',
+                '%count%' => count($this->getAllowedFirstColumnDatatypes()),
+            ]
+            )->shouldBeCalled()
             ->willReturn($violationBuilder);
         $violationBuilder->atPath('[0].data_type')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalledOnce();

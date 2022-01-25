@@ -41,4 +41,5 @@ export const defaultDataTypesMapping: DataTypesMapping = {
   boolean: {useable_as_first_column: false},
   number: {useable_as_first_column: false},
   text: {useable_as_first_column: false},
+  reference_entity: {useable_as_first_column: true, flag: 'reference_entity'},
 };

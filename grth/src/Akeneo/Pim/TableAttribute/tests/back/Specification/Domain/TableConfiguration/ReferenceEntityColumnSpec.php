@@ -4,7 +4,7 @@ namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\LabelCollection;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\RecordColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
@@ -13,7 +13,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ReferenceEnt
 use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use PhpSpec\ObjectBehavior;
 
-class RecordColumnSpec extends  ObjectBehavior
+class ReferenceEntityColumnSpec extends  ObjectBehavior
 {
     function let()
     {
@@ -30,14 +30,14 @@ class RecordColumnSpec extends  ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(RecordColumn::class);
+        $this->shouldHaveType(ReferenceEntityColumn::class);
         $this->shouldImplement(ColumnDefinition::class);
     }
 
     function it_is_a_record_column()
     {
         $this->dataType()->shouldHaveType(ColumnDataType::class);
-        $this->dataType()->asString()->shouldBe('record');
+        $this->dataType()->asString()->shouldBe('reference_entity');
     }
 
     function it_has_a_code()
@@ -93,7 +93,7 @@ class RecordColumnSpec extends  ObjectBehavior
     {
         $this->normalize()->shouldBeLike(
             [
-                'data_type' => 'record',
+                'data_type' => 'reference_entity',
                 'code' => 'record',
                 'labels' => ['en_US' => 'Record 1'],
                 'id' => ColumnIdGenerator::record(),

@@ -15,6 +15,9 @@ namespace Akeneo\Test\Pim\TableAttribute\Integration\Value\Filter;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
+use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
@@ -231,6 +234,59 @@ abstract class AbstractFilterIntegration extends TestCase
         $this->get('pim_catalog.saver.channel')->save($channel);
 
         return $channel;
+    }
+
+    protected function createNutritionAttributeWithReferenceEntityColumn(): void
+    {
+        $validator = $this->get('validator');
+        $createBrandCommand = new CreateReferenceEntityCommand('brand', []);
+        $violations = $validator->validate($createBrandCommand);
+        Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
+        ($this->get('akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'))($createBrandCommand);
+
+        $createAkeneoRecord = new CreateRecordCommand('brand', 'Akeneo', []);
+        $violations = $validator->validate($createAkeneoRecord);
+        Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
+        ($this->get('akeneo_referenceentity.application.record.create_record_handler'))($createAkeneoRecord);
+
+
+        $createOtherRecord = new CreateRecordCommand('brand', 'Other', []);
+        $violations = $validator->validate($createOtherRecord);
+        Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
+        ($this->get('akeneo_referenceentity.application.record.create_record_handler'))($createOtherRecord);
+
+        $attribute = $this->get('pim_catalog.factory.attribute')->create();
+        $this->get('pim_catalog.updater.attribute')->update(
+            $attribute,
+            [
+                'code' => 'nutrition_with_ref_entity',
+                'type' => AttributeTypes::TABLE,
+                'group' => 'other',
+                'table_configuration' => [
+                    [
+                        'code' => 'ingredient',
+                        'data_type' => 'select',
+                        'options' => [
+                            ['code' => 'sugar'],
+                            ['code' => 'salt'],
+                            ['code' => 'egg'],
+                            ['code' => 'flour'],
+                            ['code' => 'chocolate'],
+                            ['code' => 'cheese'],
+                        ],
+                    ],
+                    [
+                        'code' => 'brand_column',
+                        'data_type' => ReferenceEntityColumn::DATATYPE,
+                        'reference_entity_identifier' => 'brand',
+                    ],
+                ],
+            ]
+        );
+
+        $violations = $validator->validate($attribute);
+        Assert::assertCount(0, $violations, \sprintf('The attribute is not valid: %s', $violations));
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 
     protected function getConfiguration(): Configuration

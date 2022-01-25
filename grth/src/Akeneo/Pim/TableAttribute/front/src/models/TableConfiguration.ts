@@ -1,7 +1,7 @@
 import {LabelCollection} from '@akeneo-pim-community/shared';
 import {ReferenceEntityIdentifierOrCode} from './ReferenceEntity';
 
-export type DataType = 'text' | 'number' | 'boolean' | 'select' | 'record';
+export type DataType = 'text' | 'number' | 'boolean' | 'select' | 'reference_entity';
 export type ColumnCode = string;
 
 export type TextColumnValidation = {
@@ -18,13 +18,13 @@ type BooleanColumnValidation = {};
 
 type SelectColumnValidation = {};
 
-type RecordColumnValidation = {};
+type ReferenceEntityColumnValidation = {};
 
 export type ColumnValidation =
   | TextColumnValidation
   | NumberColumnValidation
   | BooleanColumnValidation
-  | RecordColumnValidation;
+  | ReferenceEntityColumnValidation;
 
 export type SelectOptionCode = string;
 
@@ -72,13 +72,13 @@ export type SelectColumnDefinition = {
   options?: SelectOption[];
 };
 
-export type RecordColumnDefinition = {
+export type ReferenceEntityColumnDefinition = {
   code: ColumnCode;
   labels: LabelCollection;
-  data_type: 'record';
-  validations: RecordColumnValidation;
+  data_type: 'reference_entity';
+  validations: ReferenceEntityColumnValidation;
   is_required_for_completeness?: boolean;
-  reference_entity_code: ReferenceEntityIdentifierOrCode;
+  reference_entity_identifier: ReferenceEntityIdentifierOrCode;
 };
 
 export type ColumnDefinition =
@@ -86,9 +86,28 @@ export type ColumnDefinition =
   | NumberColumnDefinition
   | BooleanColumnDefinition
   | SelectColumnDefinition
-  | RecordColumnDefinition;
+  | ReferenceEntityColumnDefinition;
 
 export type TableConfiguration = ColumnDefinition[];
 
 export const isColumnCodeNotAvailable: (columnCode: ColumnCode) => boolean = columnCode =>
   ['product', 'product_model', 'attribute'].includes(columnCode.toLowerCase());
+
+const castSelectColumnDefinition: (columnDefinition: ColumnDefinition) => SelectColumnDefinition = columnDefinition => {
+  if (columnDefinition.data_type !== 'select') {
+    throw new Error(`Column definition should have 'select' data_type, '${columnDefinition.data_type}' given)`);
+  }
+  return columnDefinition;
+};
+
+const castReferenceEntityColumnDefinition: (columnDefinition: ColumnDefinition) => ReferenceEntityColumnDefinition =
+  columnDefinition => {
+    if (columnDefinition.data_type !== 'reference_entity') {
+      throw new Error(
+        `Column definition should have 'reference_entity' data_type, '${columnDefinition.data_type}' given)`
+      );
+    }
+    return columnDefinition;
+  };
+
+export {castSelectColumnDefinition, castReferenceEntityColumnDefinition};

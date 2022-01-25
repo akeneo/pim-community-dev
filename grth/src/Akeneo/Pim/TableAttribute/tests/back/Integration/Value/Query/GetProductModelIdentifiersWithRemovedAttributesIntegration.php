@@ -7,7 +7,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Test\Pim\TableAttribute\Integration\Value\EntityBuilderTrait;
+use Akeneo\Test\Pim\TableAttribute\Helper\EntityBuilderTrait;
 use PHPUnit\Framework\Assert;
 
 final class GetProductModelIdentifiersWithRemovedAttributesIntegration extends TestCase

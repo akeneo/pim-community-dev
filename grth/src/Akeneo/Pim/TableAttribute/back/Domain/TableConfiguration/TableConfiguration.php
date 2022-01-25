@@ -46,7 +46,7 @@ final class TableConfiguration
         $columnDefinitions = array_values($columnDefinitions);
         Assert::allIsInstanceOf($columnDefinitions, ColumnDefinition::class);
         Assert::minCount($columnDefinitions, 2);
-        Assert::isInstanceOfAny($columnDefinitions[0], [SelectColumn::class, RecordColumn::class], 'The first column has an invalid type');
+        Assert::isInstanceOfAny($columnDefinitions[0], [SelectColumn::class, ReferenceEntityColumn::class], 'The first column has an invalid type');
         Assert::true($columnDefinitions[0]->isRequiredForCompleteness()->asBoolean());
 
         $codes = \array_map(
@@ -122,6 +122,17 @@ final class TableConfiguration
         return \array_values(\array_filter(
             $this->columnDefinitions,
             fn (ColumnDefinition $columnDefinition): bool => $columnDefinition instanceof SelectColumn
+        ));
+    }
+
+    /**
+     * @return ReferenceEntityColumn[]
+     */
+    public function getReferenceEntityColumns(): array
+    {
+        return \array_values(\array_filter(
+            $this->columnDefinitions,
+            fn (ColumnDefinition $columnDefinition): bool => $columnDefinition instanceof ReferenceEntityColumn
         ));
     }
 

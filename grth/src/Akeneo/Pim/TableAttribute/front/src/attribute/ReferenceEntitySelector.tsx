@@ -5,24 +5,34 @@ import {ReferenceEntityRepository} from '../repositories';
 import {getLabel, useRouter, useUserContext} from '@akeneo-pim-community/shared';
 import {ReferenceEntity, ReferenceEntityIdentifierOrCode} from '../models';
 
-type ReferenceEntitySelectorProps = {
-  placeholder?: string;
-  emptyResultLabel: string;
-  disabled?: boolean;
-  value?: ReferenceEntityIdentifierOrCode;
-  onChange: (value?: ReferenceEntityIdentifierOrCode) => void;
-  openLabel: string;
-  clearLabel: string;
-};
+type ReferenceEntitySelectorProps =
+  | {
+      placeholder?: string;
+      emptyResultLabel: string;
+      value?: ReferenceEntityIdentifierOrCode;
+      onChange: (value: ReferenceEntityIdentifierOrCode | undefined) => void;
+      openLabel: string;
+      clearLabel: string;
+      readOnly?: boolean;
+    }
+  | {
+      placeholder?: string;
+      emptyResultLabel?: string;
+      value?: ReferenceEntityIdentifierOrCode;
+      onChange?: (value: ReferenceEntityIdentifierOrCode | undefined) => void;
+      openLabel?: string;
+      clearLabel?: string;
+      readOnly: true;
+    };
 
 const ReferenceEntitySelector = ({
-  emptyResultLabel,
+  emptyResultLabel = '',
   placeholder,
   value,
-  disabled = false,
   onChange,
-  openLabel,
+  openLabel = '',
   clearLabel,
+  readOnly = false,
 }: ReferenceEntitySelectorProps) => {
   const userContext = useUserContext();
   const router = useRouter();
@@ -35,11 +45,11 @@ const ReferenceEntitySelector = ({
     });
   }, []);
 
-  const handleChange = (newValue: string | null) => onChange(newValue ?? undefined);
+  const handleChange = (newValue: string | null) => onChange?.(newValue ?? undefined);
 
   return (
     <SelectInput
-      disabled={disabled}
+      readOnly={readOnly}
       emptyResultLabel={emptyResultLabel}
       onChange={handleChange}
       placeholder={placeholder}

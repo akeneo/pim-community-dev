@@ -6,6 +6,7 @@ import {pimTheme} from 'akeneo-design-system';
 import {AttributeCode, TableAttribute, TableValue} from '../models';
 import {CellInputsMapping, CellMatchersMapping, TableFieldApp} from '../product';
 import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
+import {CellMappingContext} from '../contexts';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Field = require('pim/field');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -125,21 +126,21 @@ class TableField extends (Field as {new (config: any): any}) {
     ReactDOM.render(
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
-          <TableFieldApp
-            {...templateContext}
-            onChange={handleChange}
-            elements={isCopying ? [] : this.elements}
-            copyContext={copyContext}
-            violations={this.violations}
-            onCopyCheckboxChange={handleCopyCheckboxChange}
-            copyCheckboxChecked={this.selected}
-            cellInputsMapping={cellInputsMapping}
-            cellMatchersMapping={cellMatchersMapping}
-            isDisplayedForCurrentLocale={
-              // If there is the input_placeholder element, it means the field is locale specific and should not be displayed
-              !this.elements['field-input'] || !this.elements['field-input']['input_placeholder']
-            }
-          />
+          <CellMappingContext.Provider value={{cellMatchersMapping, cellInputsMapping}}>
+            <TableFieldApp
+              {...templateContext}
+              onChange={handleChange}
+              elements={isCopying ? [] : this.elements}
+              copyContext={copyContext}
+              violations={this.violations}
+              onCopyCheckboxChange={handleCopyCheckboxChange}
+              copyCheckboxChecked={this.selected}
+              isDisplayedForCurrentLocale={
+                // If there is the input_placeholder element, it means the field is locale specific and should not be displayed
+                !this.elements['field-input'] || !this.elements['field-input']['input_placeholder']
+              }
+            />
+          </CellMappingContext.Provider>
         </ThemeProvider>
       </DependenciesProvider>,
       this.el

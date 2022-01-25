@@ -3,16 +3,13 @@ import {Button, Dropdown, useBooleanState} from 'akeneo-design-system';
 import {
   AttributeCode,
   BackendTableFilterValue,
-  ColumnDefinition,
   isFilterValid,
   PendingBackendTableFilterValue,
-  PendingTableFilterValue,
   TableAttribute,
 } from '../models';
 import {AttributeFetcher} from '../fetchers';
 import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {FilterSelectorList} from './FilterSelectorList';
-import {useFetchOptions} from '../product';
 import {useIsMounted} from '../shared';
 import {AttributeContext} from '../contexts';
 import {DatagridTableCriteria} from './DatagridTableCriteria';
@@ -44,55 +41,41 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
 }) => {
   const router = useRouter();
   const translate = useTranslate();
-  const catalogLocale = useUserContext().get('catalogLocale');
+  const userContext = useUserContext();
+  const catalogLocale = userContext.get('catalogLocale');
   const [isOpen, open, close] = useBooleanState();
   const [attribute, setAttribute] = useState<TableAttribute | undefined>();
-  const [filterValue, setFilterValue] = useState<PendingTableFilterValue | undefined>();
-  const {getOptionsFromColumnCode} = useFetchOptions(attribute, setAttribute);
+  const [filterValue, setFilterValue] = useState<PendingBackendTableFilterValue>({
+    value: initialDataFilter.value,
+    operator: initialDataFilter.operator,
+    column: initialDataFilter.column,
+    row:
+      typeof initialDataFilter.row === 'undefined' && typeof initialDataFilter.operator !== 'undefined'
+        ? null
+        : initialDataFilter.row,
+  });
   const isMounted = useIsMounted();
 
   useEffect(() => {
     AttributeFetcher.fetch(router, attributeCode).then(attribute => {
-      if (isMounted()) {
-        const tableAttribute = attribute as TableAttribute;
-        setAttribute(tableAttribute);
-      }
+      if (isMounted()) setAttribute(attribute as TableAttribute);
     });
-  }, []);
-
-  const optionsForFirstColumn = attribute ? getOptionsFromColumnCode(attribute.table_configuration[0].code) : undefined;
-
-  React.useEffect(() => {
-    if (!attribute || !isMounted() || typeof optionsForFirstColumn === 'undefined' || optionsForFirstColumn === null)
-      return;
-
-    const column = attribute.table_configuration.find(column => column.code === initialDataFilter.column);
-    const row =
-      optionsForFirstColumn.find(option => option.code === initialDataFilter.row) ||
-      (initialDataFilter.operator ? null : undefined);
-    const pendingFilter = {
-      row,
-      column,
-      value: initialDataFilter.value,
-      operator: initialDataFilter.operator,
-    };
-    setFilterValue(pendingFilter);
-  }, [optionsForFirstColumn, attribute]);
+  }, [attributeCode, isMounted, router]);
 
   const handleValidate = () => {
     if (filterValue && isFilterValid(filterValue)) {
       close();
       onChange({
-        row: filterValue.row?.code,
-        column: (filterValue.column as ColumnDefinition).code,
-        operator: filterValue.operator,
         value: filterValue.value,
+        column: filterValue.column,
+        operator: filterValue.operator,
+        row: filterValue.row || undefined,
       });
     }
   };
 
   const handleClose = () => {
-    if (!filterValue || !isFilterValid(filterValue)) {
+    if (!isFilterValid(filterValue)) {
       close();
       onChange({});
       setFilterValue({});
@@ -104,7 +87,7 @@ const DatagridTableFilter: React.FC<DatagridTableFilterProps> = ({
   return (
     <AttributeContext.Provider value={{attribute, setAttribute}}>
       <Dropdown {...rest}>
-        {isOpen && attribute && filterValue && (
+        {isOpen && attribute && (
           <Dropdown.Overlay onClose={handleClose}>
             <FilterContainer>
               <FilterSectionTitle title={getLabel(attribute.labels, catalogLocale, attribute.code)}>

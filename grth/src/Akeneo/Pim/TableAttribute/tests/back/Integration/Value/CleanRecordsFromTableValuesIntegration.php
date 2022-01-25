@@ -11,54 +11,42 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\TableAttribute\tests\back\Integration\Value;
+namespace Akeneo\Test\Pim\TableAttribute\Integration\Value;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOptionCode;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
+use Akeneo\Test\Pim\TableAttribute\Helper\EntityBuilderTrait;
+use Akeneo\Test\Pim\TableAttribute\Helper\FeatureHelper;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
-final class CleanTableValuesIntegration extends TestCase
+final class CleanRecordsFromTableValuesIntegration extends TestCase
 {
+    use EntityBuilderTrait;
+
     private JobLauncher $jobLauncher;
     private Connection $connection;
-
-    /** @test */
-    public function cleanTableValuesOnProductAndProductModelAfterRemovingAnOption(): void
-    {
-        $this->givenOptionsAreRemovedFromTableConfiguration();
-        $this->jobLauncher->launchConsumerUntilQueueIsEmpty();
-
-        $this->assertJobSuccessful();
-
-        $this->assertProductRawValues('test1', 'nutrition', [['ingredient' => 'salt', 'is_allergenic' => false]]);
-        $this->assertProductRawValues('test2', 'nutrition', null);
-        $this->assertProductModelRawValues('pm', 'nutrition', null);
-    }
 
     /**
      * {@inheritdoc}
      */
     protected function setUp(): void
     {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
         parent::setUp();
 
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
         $this->connection = $this->get('database_connection');
 
-        $options = \array_map(
-            fn (int $num): array => ['code' => \sprintf('option_%d', $num)],
-            \range(1, 19997)
-        );
+        $this->createReferenceEntity('brand');
+        $this->createRecord('brand', 'brand1', []);
+        $this->createRecord('brand', 'brand2', []);
 
-        $attribute = $this->get('pim_catalog.factory.attribute')->create();
-        $this->get('pim_catalog.updater.attribute')->update(
-            $attribute,
+        $this->createAttribute(
             [
                 'code' => 'nutrition',
                 'type' => AttributeTypes::TABLE,
@@ -72,14 +60,11 @@ final class CleanTableValuesIntegration extends TestCase
                         'labels' => [
                             'en_US' => 'Ingredients',
                         ],
-                        'options' => \array_merge(
-                            [
-                                ['code' => 'salt'],
-                                ['code' => 'egg'],
-                                ['code' => 'butter'],
-                            ],
-                            $options
-                        ),
+                        'options' => [
+                            ['code' => 'salt'],
+                            ['code' => 'egg'],
+                            ['code' => 'butter'],
+                        ],
                     ],
                     [
                         'code' => 'quantity',
@@ -89,30 +74,135 @@ final class CleanTableValuesIntegration extends TestCase
                         ],
                     ],
                     [
-                        'code' => 'is_allergenic',
-                        'data_type' => 'boolean',
+                        'code' => 'brandCode',
+                        'data_type' => 'reference_entity',
                         'labels' => [
-                            'en_US' => 'Is allergenic',
+                            'en_US' => 'Brand',
+                        ],
+                        'reference_entity_identifier' => 'brand',
+                    ],
+                ],
+            ]
+        );
+
+        $this->createProduct('test1', 'nutrition', [
+            ['ingredient' => 'salt', 'brandCode' => 'brand1'],
+            ['ingredient' => 'egg', 'quantity' => 2, 'brandCode' => 'brand2'],
+        ]);
+        $this->createProduct('test2', 'nutrition', [
+            ['ingredient' => 'egg', 'quantity' => 3, 'brandCode' => 'brand1'],
+        ]);
+    }
+
+    /** @test */
+    public function cleanTableValuesOnProductAfterRemovingARecord(): void
+    {
+        $this->deleteRecord('brand', 'brand1');
+        $this->jobLauncher->launchConsumerUntilQueueIsEmpty();
+
+        $this->assertJobSuccessful();
+
+        $this->assertProductRawValues(
+            'test1',
+            'nutrition',
+            [
+                ['ingredient' => 'salt'],
+                ['ingredient' => 'egg', 'quantity' => 2, 'brandCode' => 'brand2'],
+            ]
+        );
+        $this->assertProductRawValues(
+            'test2',
+            'nutrition',
+            [['ingredient' => 'egg', 'quantity' => 3]]
+        );
+    }
+
+    /** @test */
+    public function cleanTableValuesOnProductAfterRemovingSeveralRecords(): void
+    {
+        $this->deleteRecords('brand', ['brand1', 'brand2']);
+        $this->jobLauncher->launchConsumerUntilQueueIsEmpty();
+
+        $this->assertJobSuccessful();
+
+        $this->assertProductRawValues(
+            'test1',
+            'nutrition',
+            [
+                ['ingredient' => 'salt'],
+                ['ingredient' => 'egg', 'quantity' => 2],
+            ]
+        );
+        $this->assertProductRawValues(
+            'test2',
+            'nutrition',
+            [['ingredient' => 'egg', 'quantity' => 3]]
+        );
+    }
+
+    /** @test */
+    public function cleanTableValuesOnProductWhenFirstColumnIsReferenceEntity(): void
+    {
+        $this->createAttribute(
+            [
+                'code' => 'nutrition2',
+                'type' => AttributeTypes::TABLE,
+                'group' => 'other',
+                'localizable' => false,
+                'scopable' => false,
+                'table_configuration' => [
+                    [
+                        'code' => 'brandCode',
+                        'data_type' => 'reference_entity',
+                        'labels' => [
+                            'en_US' => 'Brand',
+                        ],
+                        'reference_entity_identifier' => 'brand',
+                        'is_required_for_completeness' => true,
+                    ],
+                    [
+                        'code' => 'quantity',
+                        'data_type' => 'number',
+                        'labels' => [
+                            'en_US' => 'Quantity',
                         ],
                     ],
                 ],
             ]
         );
-        $violations = $this->get('validator')->validate($attribute);
-        Assert::assertCount(0, $violations, \sprintf('The attribute is not valid: %s', $violations));
-        $this->get('pim_catalog.saver.attribute')->save($attribute);
 
-        $this->createProduct('test1', [
-            ['ingredient' => 'salt', 'is_allergenic' => false],
-            ['ingredient' => 'egg', 'quantity' => 2],
-        ]);
-        $this->createProduct('test2', [
-            ['ingredient' => 'option_19000', 'quantity' => 3],
+        $this->createProduct('test3', 'nutrition2', [
+            ['brandCode' => 'brand1', ],
+            ['brandCode' => 'brand2', 'quantity' => 2],
         ]);
 
+        $this->createProduct('test4', 'nutrition2', [
+            ['brandCode' => 'brand1', 'quantity' => 9 ],
+        ]);
+
+        $this->deleteRecord('brand', 'brand1');
+        $this->jobLauncher->launchConsumerUntilQueueIsEmpty();
+
+        $this->assertJobSuccessful();
+
+        $this->assertProductRawValues(
+            'test3',
+            'nutrition2',
+            [
+                ['quantity' => 2, 'brandCode' => 'brand2'],
+            ]
+        );
+
+        $this->assertProductRawValues('test4', 'nutrition2', null);
+    }
+
+    /** @test */
+    public function cleanTableValuesOnProductModel(): void
+    {
         $this->createAttribute([
             'code' => 'size',
             'type' => AttributeTypes::OPTION_SIMPLE_SELECT,
+            'group' => 'other',
             'localizable' => false,
             'scopable' => false,
         ]);
@@ -137,8 +227,21 @@ final class CleanTableValuesIntegration extends TestCase
         ]);
 
         $this->createProductModel('pm', [
-            ['ingredient' => 'egg', 'quantity' => 30],
+            ['ingredient' => 'egg', 'quantity' => 30, 'brandCode' => 'brand1'],
         ]);
+
+        $this->deleteRecord('brand', 'brand1');
+        $this->jobLauncher->launchConsumerUntilQueueIsEmpty();
+
+        $this->assertJobSuccessful();
+
+        $this->assertProductModelRawValues(
+            'pm',
+            'nutrition',
+            [
+                ['ingredient' => 'egg', 'quantity' => 30],
+            ]
+        );
     }
 
     protected function getConfiguration(): Configuration
@@ -146,54 +249,7 @@ final class CleanTableValuesIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function givenOptionsAreRemovedFromTableConfiguration(): void
-    {
-        $newOptions = [
-            ['code' => 'salt'],
-            ['code' => 'butter'],
-        ];
-
-        $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('nutrition');
-        $this->get('pim_catalog.updater.attribute')->update(
-            $attribute,
-            [
-                'code' => 'nutrition',
-                'type' => AttributeTypes::TABLE,
-                'group' => 'other',
-                'localizable' => false,
-                'scopable' => false,
-                'table_configuration' => [
-                    [
-                        'code' => 'ingredient',
-                        'data_type' => 'select',
-                        'labels' => [
-                            'en_US' => 'Ingredients',
-                        ],
-                        'options' => $newOptions,
-                    ],
-                    [
-                        'code' => 'quantity',
-                        'data_type' => 'number',
-                        'labels' => [
-                            'en_US' => 'Quantity',
-                        ],
-                    ],
-                    [
-                        'code' => 'is_allergenic',
-                        'data_type' => 'boolean',
-                        'labels' => [
-                            'en_US' => 'Is allergenic',
-                        ],
-                    ],
-                ],
-            ]
-        );
-        $violations = $this->get('validator')->validate($attribute);
-        Assert::assertCount(0, $violations, \sprintf('The attribute is not valid: %s', $violations));
-        $this->get('pim_catalog.saver.attribute')->save($attribute);
-    }
-
-    private function createProduct(string $identifier, array $nutritionValue): void
+    private function createProduct(string $identifier, string $tableAttributeCode, array $nutritionValue): void
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
         $this->get('pim_catalog.updater.product')->update(
@@ -201,7 +257,7 @@ final class CleanTableValuesIntegration extends TestCase
             [
                 'categories' => ['master'],
                 'values' => [
-                    'nutrition' => [
+                    $tableAttributeCode => [
                         [
                             'locale' => null,
                             'scope' => null,
@@ -245,42 +301,15 @@ final class CleanTableValuesIntegration extends TestCase
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
-    private function createAttribute(array $data): void
+    private function createReferenceEntity(string $referenceEntityIdentifier): void
     {
-        $data['group'] = $data['group'] ?? 'other';
+        $createCommand = new CreateReferenceEntityCommand($referenceEntityIdentifier, []);
 
-        $attribute = $this->get('pim_catalog.factory.attribute')->create();
-        $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
-        $constraints = $this->get('validator')->validate($attribute);
-        self::assertCount(0, $constraints, (string)$constraints);
-        $this->get('pim_catalog.saver.attribute')->save($attribute);
-    }
+        $violations = $this->get('validator')->validate($createCommand);
+        self::assertCount(0, $violations, (string)$violations);
 
-    private function createAttributeOption(array $data): void
-    {
-        $attributeOption = $this->get('pim_catalog.factory.attribute_option')->create();
-        $this->get('pim_catalog.updater.attribute_option')->update($attributeOption, $data);
-        $this->get('pim_catalog.saver.attribute_option')->save($attributeOption);
-    }
-
-    private function createFamily(array $data): void
-    {
-        $family = $this->get('pim_catalog.factory.family')->create();
-        $this->get('pim_catalog.updater.family')->update($family, $data);
-        $constraints = $this->get('validator')->validate($family);
-        self::assertCount(0, $constraints, (string)$constraints);
-        $this->get('pim_catalog.saver.family')->save($family);
-    }
-
-    private function createFamilyVariant(array $data = []): FamilyVariantInterface
-    {
-        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
-        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, $data);
-        $constraints = $this->get('validator')->validate($familyVariant);
-        self::assertCount(0, $constraints, (string)$constraints);
-        $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
-
-        return $familyVariant;
+        $handler = $this->get('akeneo_referenceentity.application.reference_entity.create_reference_entity_handler');
+        ($handler)($createCommand);
     }
 
     private function assertJobSuccessful()

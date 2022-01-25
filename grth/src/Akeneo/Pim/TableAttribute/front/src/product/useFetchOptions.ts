@@ -1,8 +1,9 @@
 import React from 'react';
-import {ColumnCode, SelectColumnDefinition, SelectOption, TableAttribute} from '../models';
-import {getLabel, useRouter, useUserContext} from '@akeneo-pim-community/shared';
+import {castSelectColumnDefinition, ColumnCode, SelectOption, TableAttribute} from '../models';
+import {getLabel, useRouter} from '@akeneo-pim-community/shared';
 import {SelectOptionRepository} from '../repositories';
 import {useIsMounted} from '../shared';
+import {useLocaleCode} from '../contexts';
 
 const useFetchOptions: (
   attribute: TableAttribute | undefined,
@@ -12,8 +13,8 @@ const useFetchOptions: (
   getOptionLabel: (columnCode: ColumnCode, value: string) => string | undefined | null;
 } = (attribute, setAttribute) => {
   const router = useRouter();
-  const userContext = useUserContext();
   const isMounted = useIsMounted();
+  const localeCode = useLocaleCode();
 
   React.useEffect(() => {
     if (attribute) {
@@ -23,11 +24,11 @@ const useFetchOptions: (
           columnDefinition => columnDefinition.data_type === 'select'
         )) {
           const i = attribute.table_configuration.findIndex(columnDefinition => columnDefinition.code === column.code);
-          const currentOptions = (attribute.table_configuration[i] as SelectColumnDefinition).options;
+          const currentOptions = castSelectColumnDefinition(attribute.table_configuration[i]).options;
           const newOptions = (await SelectOptionRepository.findFromColumn(router, attribute.code, column.code)) || [];
           if (JSON.stringify(currentOptions) !== JSON.stringify(newOptions)) {
             dirty = true;
-            (attribute.table_configuration[i] as SelectColumnDefinition).options = newOptions;
+            castSelectColumnDefinition(attribute.table_configuration[i]).options = newOptions;
           }
         }
         if (isMounted() && dirty) setAttribute({...attribute});
@@ -38,8 +39,9 @@ const useFetchOptions: (
 
   const getOptionsFromColumnCode: (columnCode: ColumnCode) => SelectOption[] | undefined = columnCode => {
     if (!attribute) return undefined;
-    const i = attribute?.table_configuration.findIndex(columnDefinition => columnDefinition.code === columnCode);
-    return (attribute?.table_configuration[i] as SelectColumnDefinition | undefined)?.options;
+    const column = attribute.table_configuration.find(({code}) => code === columnCode);
+    if (!column) return undefined;
+    return castSelectColumnDefinition(column).options;
   };
 
   /**
@@ -54,7 +56,7 @@ const useFetchOptions: (
     const options = getOptionsFromColumnCode(columnCode);
     if (typeof options === 'undefined') return undefined;
     const option = options.find((option: SelectOption) => option.code === value);
-    return option ? getLabel(option.labels, userContext.get('catalogLocale'), option.code) : null;
+    return option ? getLabel(option.labels, localeCode, option.code) : null;
   };
 
   return {

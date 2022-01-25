@@ -7,6 +7,10 @@ import {
 } from './MultiSelectFilterValue';
 import {default as EmptyFilterValue, useValueRenderer as EmptyUseValueRenderer} from './EmptyFilterValue';
 import {ColumnCode, FilterValue} from '../../models';
+import {
+  default as MultiSelectReferenceEntityFilterValue,
+  useValueRenderer as RecordUseValueRenderer,
+} from './MultiSelectRecordsFilterValue';
 
 type DatagridTableFilterValueProps = {
   value?: FilterValue;
@@ -15,7 +19,7 @@ type DatagridTableFilterValueProps = {
 };
 
 export type TableFilterValueRenderer = React.FC<DatagridTableFilterValueProps>;
-export type FilteredValueRenderer = () => (value: FilterValue, columnCode: ColumnCode) => string;
+export type FilteredValueRenderer = (value?: FilterValue, columnCode?: ColumnCode) => string | null;
 
 export type FilterValuesMapping = {
   [data_type: string]: {
@@ -58,6 +62,12 @@ const ValuesFilterMapping: FilterValuesMapping = {
     'NOT EMPTY': {default: EmptyFilterValue, useValueRenderer: EmptyUseValueRenderer},
     IN: {default: MultiSelectFilterValue, useValueRenderer: MultiSelectUseValueRenderer},
     'NOT IN': {default: MultiSelectFilterValue, useValueRenderer: MultiSelectUseValueRenderer},
+  },
+  reference_entity: {
+    EMPTY: {default: EmptyFilterValue, useValueRenderer: EmptyUseValueRenderer},
+    'NOT EMPTY': {default: EmptyFilterValue, useValueRenderer: EmptyUseValueRenderer},
+    IN: {default: MultiSelectReferenceEntityFilterValue, useValueRenderer: RecordUseValueRenderer},
+    'NOT IN': {default: MultiSelectReferenceEntityFilterValue, useValueRenderer: RecordUseValueRenderer},
   },
 };
 
