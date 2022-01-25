@@ -4,7 +4,6 @@ import React, {PropsWithChildren} from 'react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {TestAttributeContextProvider} from '../../../shared/TestAttributeContextProvider';
 import {getComplexTableAttribute} from '../../../factories';
-import {waitFor} from '@testing-library/react';
 
 jest.mock('../../../../src/fetchers/MeasurementFamilyFetcher');
 
@@ -16,11 +15,11 @@ describe('MeasurementMatcher', () => {
       </DependenciesProvider>
     );
 
-    const {result} = renderHook(() => useSearch(), {wrapper});
+    const {result, waitForNextUpdate} = renderHook(() => useSearch(), {wrapper});
 
-    await waitFor(() => {
-      expect(result.current({amount: '20', unit: 'MILLIAMPEREHOUR'}, '20', 'ElectricCharge')).toBeTruthy();
-    });
+    await waitForNextUpdate();
+
+    expect(result.current({amount: '20', unit: 'MILLIAMPEREHOUR'}, '20', 'ElectricCharge')).toBeTruthy();
   });
 
   it('should match if search text match amount and unit', async () => {
@@ -30,28 +29,31 @@ describe('MeasurementMatcher', () => {
       </DependenciesProvider>
     );
 
-    const {result} = renderHook(() => useSearch(), {wrapper});
+    const {result, waitForNextUpdate} = renderHook(() => useSearch(), {wrapper});
+    await waitForNextUpdate();
 
-    await waitFor(() => {
-      expect(result.current({amount: '20', unit: 'MILLIAMPEREHOUR'}, '20 mAh', 'ElectricCharge')).toBeTruthy();
-    });
+    expect(result.current({amount: '20', unit: 'MILLIAMPEREHOUR'}, '20 mAh', 'ElectricCharge')).toBeTruthy();
   });
 
-  it('should not match if no attribute was given', () => {
+  it('should not match if no attribute was given', async () => {
     const wrapper = ({children}: PropsWithChildren<{}>) => <DependenciesProvider>{children}</DependenciesProvider>;
 
-    const {result} = renderHook(() => useSearch(), {wrapper});
+    const {result, waitForNextUpdate} = renderHook(() => useSearch(), {wrapper});
+    await waitForNextUpdate();
+
     expect(result.current({amount: '20', unit: 'MILLIAMPEREHOUR'}, '20 mAh', 'ElectricCharge')).toBeFalsy();
   });
 
-  it('should not match if cell has no amount or unit', () => {
+  it('should not match if cell has no amount or unit', async () => {
     const wrapper = ({children}: PropsWithChildren<{}>) => (
       <DependenciesProvider>
         <TestAttributeContextProvider attribute={getComplexTableAttribute()}>{children}</TestAttributeContextProvider>
       </DependenciesProvider>
     );
 
-    const {result} = renderHook(() => useSearch(), {wrapper});
+    const {result, waitForNextUpdate} = renderHook(() => useSearch(), {wrapper});
+    await waitForNextUpdate();
+
     expect(result.current('wrong format value', '20 mAh', 'ElectricCharge')).toBeFalsy();
   });
 });

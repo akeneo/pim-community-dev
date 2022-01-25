@@ -13,7 +13,7 @@ const MeasurementInput: CellInput = ({columnDefinition, highlighted, inError, ro
 
   const column = columnDefinition as MeasurementColumnDefinition;
   const cell = row[column.code] as MeasurementValue | undefined;
-  const units = useMeasurementUnits(column.measurementFamilyCode);
+  const units = useMeasurementUnits(column.measurement_family_code);
 
   const unitsTranslated = React.useMemo(
     () =>
@@ -35,7 +35,7 @@ const MeasurementInput: CellInput = ({columnDefinition, highlighted, inError, ro
   return (
     <TableInput.Measurement
       amount={cell?.amount || ''}
-      unit={cell?.unit || column.measurementDefaultUnitCode}
+      unit={cell?.unit || column.measurement_default_unit_code}
       onChange={handleChange}
       units={unitsTranslated}
       emptyResultLabel={translate('pim_common.no_result')}

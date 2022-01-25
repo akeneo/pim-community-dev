@@ -145,7 +145,7 @@ describe('RecordInput', () => {
     } as ReferenceEntityColumnDefinition);
     renderWithProviders(
       <RecordInput
-        columnDefinition={attribute.table_configuration[6]}
+        columnDefinition={attribute.table_configuration[attribute.table_configuration.length - 1]}
         highlighted={false}
         inError={false}
         row={getTableValueWithId('reference_entity')[0]}

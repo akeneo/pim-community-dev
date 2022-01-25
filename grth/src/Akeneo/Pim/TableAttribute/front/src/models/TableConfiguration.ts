@@ -68,8 +68,8 @@ export type ReferenceEntityColumnDefinition = ColumnDefinitionCommon<
 };
 
 export type MeasurementColumnDefinition = ColumnDefinitionCommon<MeasurementColumnValidation, 'measurement'> & {
-  measurementFamilyCode: MeasurementFamilyCode;
-  measurementDefaultUnitCode: MeasurementUnitCode;
+  measurement_family_code: MeasurementFamilyCode;
+  measurement_default_unit_code: MeasurementUnitCode;
 };
 
 export type ColumnDefinition =

@@ -17,9 +17,7 @@ const useSearch: CellMatcher = () => {
     if (!measurementValue?.amount || !measurementValue?.unit) return false;
 
     const column = attribute.table_configuration.find(({code}) => code === columnCode) as MeasurementColumnDefinition;
-    const measurementFamilyCode = column.measurementFamilyCode;
-
-    const units = measurementFamilies?.find(({code}) => code === measurementFamilyCode)?.units;
+    const units = measurementFamilies?.find(({code}) => code === column.measurement_family_code)?.units;
     const unit = units?.find(({code}) => code === measurementValue.unit);
     const valueWithSymbol = `${measurementValue.amount} ${unit?.symbol}`;
 

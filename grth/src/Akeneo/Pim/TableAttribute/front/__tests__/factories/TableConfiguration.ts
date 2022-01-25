@@ -32,8 +32,8 @@ export const getComplexTableConfiguration: (firstColumnType?: DataType) => Table
         en_US: 'Eletric Charge',
       },
       validations: {},
-      measurementFamilyCode: 'ElectricCharge',
-      measurementDefaultUnitCode: 'MILLIAMPEREHOUR',
+      measurement_family_code: 'ElectricCharge',
+      measurement_default_unit_code: 'MILLIAMPEREHOUR',
     },
   ] as TableConfiguration;
 };
