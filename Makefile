@@ -22,6 +22,7 @@ include make-file/*.mk
 ##
 .PHONY: node_modules
 node_modules:
+    $(YARN_RUN) config -v
 	$(YARN_RUN) install --immutable
 
 .PHONY: javascript-extensions
