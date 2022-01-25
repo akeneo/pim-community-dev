@@ -12,7 +12,7 @@
 
     {% if akeneo_pim_url is not empty %}
         You can view full summary at :
-        {{ akeneo_pim_url }}/#{{ path('akeneo_job_process_tracker_details', {'id': jobExecution.id}) }}
+        {{ akeneo_pim_url ~ '/#' ~ path('akeneo_job_process_tracker_details', {'id': jobExecution.id}) }}
     {% else %}
         You should set the AKENEO_PIM_URL environment variable to view summary.
     {% endif %}
