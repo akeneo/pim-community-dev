@@ -47,6 +47,7 @@ pim_table_configuration:
             measurement_family_code_cannot_be_set: Measurement family code cannot be set for a "{{ data_type }}" column type
             measurement_default_unit_code_cannot_be_set: Measurement default unit code cannot be set for a "{{ data_type }}" column type
             measurement_family_cannot_be_updated: The measurement_family_code cannot be updated
+            measurement_family_should_not_be_linked: 'This measurement family is used in a product attribute, therefore it cannot be removed.'
         product_value:
             non_existing_columns: '[0,1]The "{{ non_existing_columns }}" column does not exist|]1,Inf[The "{{ non_existing_columns }}" columns do not exist'
             unexpected_data_type: 'The "{{ columnCode }}" column expects a {{ expected }}, {{ given }} given'
