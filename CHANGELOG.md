@@ -139,6 +139,7 @@
 - PIM-10237: Order connector Assets with PHP to avoid memory issues
 - PIM-10228: Fix Asset transformations job crashing when having cache resources exhausted
 - PIM-10236: Fix duplicated mask returned by query for table attribute
+- PIM-10238: Add permissions to view mass delete assets, mass edit assets and mass delete records job logs
 
 ## Improvements
 

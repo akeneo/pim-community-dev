@@ -31,3 +31,6 @@ asset_manager_compute_transformations;All
 convert_to_simple_products;All
 clean_removed_attribute_job;All
 clean_table_values_following_deleted_options;All
+asset_manager_mass_delete_assets;All
+asset_manager_mass_edit_assets;All
+reference_entity_mass_delete_records;All
