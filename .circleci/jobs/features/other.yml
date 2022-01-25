@@ -170,6 +170,10 @@ jobs:
                   name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
                   command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
             - run:
+                name: Build node 16 image
+                command: |
+                  docker build docker/node/ -t akeneo/node:16
+            - run:
                   name: Front type checking
                   command: make javascript-dev-strict
             - run:
