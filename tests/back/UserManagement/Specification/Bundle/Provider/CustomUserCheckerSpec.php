@@ -22,11 +22,11 @@ class CustomUserCheckerSpec extends ObjectBehavior
         $this->shouldThrow(DisabledException::class)->duringCheckPreAuth($user);
     }
 
-    function it_throws_exception_if_user_account_is_locked()
+    function it_passed_through_if_user_is_enabled()
     {
         $user = new User();
-        $user->setEnabled(false);
-        $this->shouldThrow(DisabledException::class)->duringCheckPreAuth($user);
+        $user->setEnabled(true);
+        $this->shouldNotThrow(DisabledException::class)->duringCheckPreAuth($user);
     }
 
 }
