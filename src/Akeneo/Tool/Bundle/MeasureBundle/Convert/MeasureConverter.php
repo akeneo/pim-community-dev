@@ -56,7 +56,7 @@ class MeasureConverter
      *
      * @param string $baseUnit  Base unit for value
      * @param string $finalUnit Result unit for value
-     * @param double $value     Value to convert
+     * @param int|float|string $value  Value to convert
      *
      * @return string
      */
@@ -71,7 +71,7 @@ class MeasureConverter
      * Convert a value in a base unit to the standard unit
      *
      * @param string $baseUnit Base unit for value
-     * @param double $value    Value to convert
+     * @param int|float|string $value Value to convert
      *
      * @return string
      *
@@ -96,12 +96,12 @@ class MeasureConverter
     /**
      * Apply operation between value and operand by using operator
      *
-     * @param double $value    Value to convert
+     * @param int|float|string $value Value to convert
      * @param string $operator Operator to apply
      * @param string $operand  Operand to use
      *
-     * @throws UnknownOperatorException
      * @return string
+     *@throws UnknownOperatorException
      */
     protected function applyOperation($value, $operator, $operand)
     {
@@ -141,7 +141,7 @@ class MeasureConverter
      * Convert a value in a standard unit to a final unit
      *
      * @param string $finalUnit Final unit for value
-     * @param double $value     Value to convert
+     * @param int|float|string $value  Value to convert
      *
      * @throws UnknownOperatorException
      * @throws UnitNotFoundException
@@ -167,12 +167,12 @@ class MeasureConverter
     /**
      * Apply reversed operation between value and operand by using operator
      *
-     * @param double $value    Value to convert
+     * @param int|float|string $value Value to convert
      * @param string $operator Operator to apply
      * @param string $operand  Operand to use
      *
-     * @throws UnknownOperatorException
      * @return string
+     * @throws UnknownOperatorException
      */
     protected function applyReversedOperation($value, $operator, $operand)
     {
