@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Security;
 
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\ScopeMapperInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use PhpSpec\ObjectBehavior;
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Component\Security;
 
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\ScopeMapperInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)

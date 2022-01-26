@@ -261,7 +261,7 @@ $rules = [
 
         'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
 
-        'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
+        'Akeneo\Connectivity\Connection\Domain\Apps\ScopeMapperInterface',
     ])->in('Akeneo\Pim\Enrichment\Component'),
 ];
 

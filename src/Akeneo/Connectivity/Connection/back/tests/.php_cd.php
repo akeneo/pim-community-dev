@@ -38,9 +38,8 @@ $rules = [
             'Akeneo\UserManagement\Component\Model\RoleInterface',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
 
-            // Must be moved
-            'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry',
-            'Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface',
+            // Should be in a component
+            'Akeneo\Tool\Bundle\ApiBundle\Entity\Client',
         ]
     )->in('Akeneo\Connectivity\Connection\Application\Apps'),
 

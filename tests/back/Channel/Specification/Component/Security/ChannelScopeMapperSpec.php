@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Channel\Component\Security;
 
 use Akeneo\Channel\Component\Security\ChannelScopeMapper;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\ScopeMapperInterface;
 use PhpSpec\ObjectBehavior;
 
 class ChannelScopeMapperSpec extends ObjectBehavior

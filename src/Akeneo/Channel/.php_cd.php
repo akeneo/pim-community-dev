@@ -48,7 +48,7 @@ $rules = [
         // TIP-1012: Create a Measure component
         'Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager',
 
-        'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
+        'Akeneo\Connectivity\Connection\Domain\Apps\ScopeMapperInterface',
     ])->in('Akeneo\Channel\Component'),
 ];
 

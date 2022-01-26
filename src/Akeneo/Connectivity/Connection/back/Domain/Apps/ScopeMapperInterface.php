@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Security;
+namespace Akeneo\Connectivity\Connection\Domain\Apps;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -12,14 +12,14 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Security;
 interface ScopeMapperInterface
 {
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function getScopes(): array;
 
     /**
      * @throw \InvalidArgumentException if the given scope does not exist.
      *
-     * @return string[]
+     * @return array<string>
      */
     public function getAcls(string $scopeName): array;
 
@@ -37,7 +37,7 @@ interface ScopeMapperInterface
     /**
      * @throw \InvalidArgumentException if the given scope does not exist.
      *
-     * @return string[]
+     * @return array<string>
      */
     public function getLowerHierarchyScopes(string $scopeName): array;
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
+namespace Akeneo\Connectivity\Connection\Application\Apps;
 
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;

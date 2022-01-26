@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Structure\Component\Security;
 
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\ScopeMapperInterface;
 use Akeneo\Pim\Structure\Component\Security\CatalogStructureScopeMapper;
 use PhpSpec\ObjectBehavior;
 

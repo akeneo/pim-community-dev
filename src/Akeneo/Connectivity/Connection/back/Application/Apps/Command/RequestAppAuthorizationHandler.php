@@ -9,9 +9,9 @@ use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\AccessDeniedException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
+use Akeneo\Connectivity\Connection\Domain\Apps\ScopeMapperRegistryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -23,14 +23,14 @@ final class RequestAppAuthorizationHandler
 {
     private ValidatorInterface $validator;
     private AppAuthorizationSessionInterface $session;
-    private ScopeMapperRegistry $scopeMapper;
+    private ScopeMapperRegistryInterface $scopeMapper;
     private GetAppQueryInterface $getAppQuery;
     private SecurityFacade $security;
 
     public function __construct(
         ValidatorInterface $validator,
         AppAuthorizationSessionInterface $session,
-        ScopeMapperRegistry $scopeMapper,
+        ScopeMapperRegistryInterface $scopeMapper,
         GetAppQueryInterface $getAppQuery,
         SecurityFacade $security,
     ) {

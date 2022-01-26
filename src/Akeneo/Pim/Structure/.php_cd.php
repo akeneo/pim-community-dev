@@ -111,7 +111,7 @@ $rules = [
         // TIP-914 FamilyNormalizer should not use PIM/Enrichment
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer',
 
-        'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
+        'Akeneo\Connectivity\Connection\Domain\Apps\ScopeMapperInterface',
     ])->in('Akeneo\Pim\Structure\Component'),
 ];
 
