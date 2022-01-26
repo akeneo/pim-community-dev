@@ -138,6 +138,8 @@ class AuthorizeEndToEnd extends WebTestCase
     public function test_it_throws_access_denied_exception_with_missing_acl(): void
     {
         $this->featureFlagMarketplaceActivate->enable();
+        $app = App::fromWebMarketplaceValues($this->webMarketplaceApi->getApp('90741597-54c5-48a1-98da-a68e7ee0a715'));
+        $this->clientProvider->findOrCreateClient($app);
         $this->authenticateAsAdmin();
         $this->removeAclFromRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');
         $this->removeAclFromRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
