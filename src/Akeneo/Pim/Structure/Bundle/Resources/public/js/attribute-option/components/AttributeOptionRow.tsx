@@ -14,60 +14,58 @@ type Props = {
 };
 
 const AttributeOptionRow = memo(
-  forwardRef<HTMLTableRowElement, Props>(
-    ({isDraggable, attributeOption, onSelectItem, isSelected, onDelete, ...rest}: Props, ref) => {
-      const locale = useUserContext().get('catalogLocale');
-      const translate = useTranslate();
+  forwardRef(({isDraggable, attributeOption, onSelectItem, isSelected, onDelete, ...rest}: Props, ref) => {
+    const locale = useUserContext().get('catalogLocale');
+    const translate = useTranslate();
 
-      const handleDelete = useCallback(() => {
-        onDelete(attributeOption);
-      }, [onDelete, attributeOption]);
+    const handleDelete = useCallback(() => {
+      onDelete(attributeOption);
+    }, [onDelete, attributeOption]);
 
-      const handleSelectRow = useCallback(() => onSelectItem(attributeOption.id), [onSelectItem, attributeOption]);
+    const handleSelectRow = useCallback(() => onSelectItem(attributeOption.id), [onSelectItem, attributeOption]);
 
-      return (
-        <TableRow
-          data-testid="attribute-option-item"
-          data-attribute-option-role="item"
-          isDraggable={isDraggable}
-          isSelected={isSelected}
-          onClick={handleSelectRow}
-          data-is-selected={isSelected}
-          ref={ref}
-          {...rest}
-        >
-          {!isDraggable && (
-            <TableCellNoDraggable>
-              <HandleContainer>
-                <RowIcon size={16} />
-              </HandleContainer>
-            </TableCellNoDraggable>
-          )}
-          <TableCellLabel data-testid="attribute-option-item-label" rowTitle={true}>
-            {attributeOption.optionValues[locale] && attributeOption.optionValues[locale].value
-              ? attributeOption.optionValues[locale].value
-              : `[${attributeOption.code}]`}
-          </TableCellLabel>
-          <Table.Cell data-testid="attribute-option-item-code" data-attribute-option-role="item-code">
-            {attributeOption.code}
-          </Table.Cell>
-          <Table.Cell>
-            <AttributeOptionQualityBadge toImprove={attributeOption.toImprove} />
-          </Table.Cell>
-          <TableActionCell>
-            <IconButton
-              icon={<CloseIcon />}
-              onClick={handleDelete}
-              title={translate('pim_common.delete')}
-              ghost="borderless"
-              level="tertiary"
-              data-testid="attribute-option-delete-button"
-            />
-          </TableActionCell>
-        </TableRow>
-      );
-    }
-  )
+    return (
+      <TableRow
+        data-testid="attribute-option-item"
+        data-attribute-option-role="item"
+        isDraggable={isDraggable}
+        isSelected={isSelected}
+        onClick={handleSelectRow}
+        data-is-selected={isSelected}
+        ref={ref}
+        {...rest}
+      >
+        {!isDraggable && (
+          <TableCellNoDraggable>
+            <HandleContainer>
+              <RowIcon size={16} />
+            </HandleContainer>
+          </TableCellNoDraggable>
+        )}
+        <TableCellLabel data-testid="attribute-option-item-label" rowTitle={true}>
+          {attributeOption.optionValues[locale] && attributeOption.optionValues[locale].value
+            ? attributeOption.optionValues[locale].value
+            : `[${attributeOption.code}]`}
+        </TableCellLabel>
+        <Table.Cell data-testid="attribute-option-item-code" data-attribute-option-role="item-code">
+          {attributeOption.code}
+        </Table.Cell>
+        <Table.Cell>
+          <AttributeOptionQualityBadge toImprove={attributeOption.toImprove} />
+        </Table.Cell>
+        <TableActionCell>
+          <IconButton
+            icon={<CloseIcon />}
+            onClick={handleDelete}
+            title={translate('pim_common.delete')}
+            ghost="borderless"
+            level="tertiary"
+            data-testid="attribute-option-delete-button"
+          />
+        </TableActionCell>
+      </TableRow>
+    );
+  })
 );
 
 const TableCellLabel = styled(Table.Cell)`

@@ -71,7 +71,7 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
   const attributeOptionDelete = useDeleteAttributeOption();
   const attributeOptionManualSort = useManualSortAttributeOptions();
   const [isSaving, setIsSaving] = useState<boolean>(false);
-  const [numPage, setNumPage] = useState<number>(0);
+  const [numPage, setNumPage] = useState<number>(1);
   const route = useRoute('pim_enrich_attributeoption_index', {
     attributeId: attribute.attributeId.toString(),
     page: numPage.toString(),
@@ -153,22 +153,24 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
     }
   };
 
-  const onNextPage = useCallback(() => {
-    console.log(numPage + 1);
-    setNumPage(numPage + 1);
-    console.log(numPage);
-  }, [numPage]);
+  const onNextPage = () => {
+    setNumPage(numPage => numPage + 1);
+  };
 
   useEffect(() => {
     (async () => {
-      if (attributeOptions === null) {
-        let attributeOptions = await baseFetcher(route);
+      console.log(route);
+      let newAttributeOptions = await baseFetcher(route);
 
-        if (attributeOptionsQualityFetcher) {
-          const attributeOptionsEvaluation: SpellcheckEvaluation | null = await attributeOptionsQualityFetcher();
-          attributeOptions = mergeAttributeOptionsEvaluation(attributeOptions, attributeOptionsEvaluation);
-        }
-        setAttributeOptions(attributeOptions);
+      if (attributeOptionsQualityFetcher) {
+        const attributeOptionsEvaluation: SpellcheckEvaluation | null = await attributeOptionsQualityFetcher();
+        newAttributeOptions = mergeAttributeOptionsEvaluation(newAttributeOptions, attributeOptionsEvaluation);
+      }
+
+      if (attributeOptions === null) {
+        setAttributeOptions(newAttributeOptions);
+      } else {
+        setAttributeOptions([...attributeOptions, ...newAttributeOptions]);
       }
     })();
   }, [numPage]);

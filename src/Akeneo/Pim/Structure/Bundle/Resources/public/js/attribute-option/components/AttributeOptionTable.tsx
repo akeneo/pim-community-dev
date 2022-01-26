@@ -146,7 +146,7 @@ const AttributeOptionTable = ({
 
   const handleReorder = useCallback(newIndices => reorderAttributeOptions(newIndices), [reorderAttributeOptions]);
 
-  const lastAttributeOptionRef = useRef<HTMLTableRowElement | null>(null);
+  const [lastElement, setLastElement] = useState(null);
 
   const observer = useRef(
     new IntersectionObserver(entries => {
@@ -158,7 +158,7 @@ const AttributeOptionTable = ({
   );
 
   useEffect(() => {
-    const currentElement = lastAttributeOptionRef.current;
+    const currentElement = lastElement;
     const currentObserver = observer.current;
 
     if (currentElement) {
@@ -170,7 +170,7 @@ const AttributeOptionTable = ({
         currentObserver.unobserve(currentElement);
       }
     };
-  }, [lastAttributeOptionRef, filteredAttributeOptionsCount > 0 && filteredAttributeOptions !== null]);
+  }, [lastElement, filteredAttributeOptionsCount > 0 && filteredAttributeOptions !== null]);
 
   return (
     <div className="AknSubsection AknAttributeOption-list">
@@ -230,7 +230,7 @@ const AttributeOptionTable = ({
                         isSelected={selectedOptionId === attributeOption.id}
                         onDelete={setAttributeOptionToDelete}
                         key={`${attributeContext.attributeId}-${attributeOption.code}`}
-                        ref={index === filteredAttributeOptions.length - 1 ? lastAttributeOptionRef : null}
+                        ref={index === filteredAttributeOptions.length - 1 ? setLastElement : null}
                       />
                     );
                   })}
