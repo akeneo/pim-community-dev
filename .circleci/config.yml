@@ -45,7 +45,7 @@ jobs:
       - when:
             condition:
                 not:
-                    equal: [master, << pipeline.git.branch >>]
+                    equal: ['6.0', << pipeline.git.branch >>]
             steps:
                 - run:
                       name: Update composer.json if same branch exists in CE for EE
@@ -53,18 +53,6 @@ jobs:
                           curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} && \
                               sed -i "s#akeneo/pim-community-dev\": \"6.0.x-dev#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" composer.json || \
                               echo "No CE branch $CIRCLE_BRANCH found. I don't touch the EE dependencies."
-                - run:
-                      name: Update composer.json if same branch exists in CE for GRTH
-                      command: |
-                          curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} && \
-                              sed -i "s#akeneo/pim-community-dev\": \"6.0.x-dev#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" grth/composer.json || \
-                              echo "No CE branch $CIRCLE_BRANCH found. I don't touch the Growth Edition file."
-                - run:
-                      name: Update composer.json if same branch exists in CE for TRIA
-                      command: |
-                          curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} && \
-                              sed -i "s#akeneo/pim-community-dev\": \"6.0.x-dev#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" tria/composer.json || \
-                              echo "No CE branch $CIRCLE_BRANCH found. I don't touch the Tria file."
       - persist_to_workspace:
           root: ~/
           paths:
@@ -747,7 +735,7 @@ jobs:
           - when:
                 condition:
                     not:
-                        equal: [master, << pipeline.git.branch >>]
+                        equal: ['6.0', << pipeline.git.branch >>]
                 steps:
                     - run:
                           name: Update composer.json if same branch exists in CE
@@ -782,7 +770,7 @@ workflows:
                 filters:
                     branches:
                         ignore:
-                            - "master"
+                            - "6.0"
           - checkout:
                 requires:
                     - ready_to_build?
@@ -914,7 +902,7 @@ commands:
           - when:
               condition:
                   not:
-                      equal: [master, << pipeline.git.branch >>]
+                      equal: ['6.0', << pipeline.git.branch >>]
               steps:
                   - run:
                       name: BIG COMMERCE CONNECTOR - Get connector branch if the same branch exists than the PIM one
@@ -925,16 +913,6 @@ commands:
                             CONNECTOR_BC_BRANCH=master
                           fi
                           echo ${CONNECTOR_BC_BRANCH}
-                          echo export CONNECTOR_BC_BRANCH=${CONNECTOR_BC_BRANCH} >> $BASH_ENV
-          - when:
-              condition:
-                  equal: [master, << pipeline.git.branch >>]
-              steps:
-                  - run:
-                      name: BIG COMMERCE CONNECTOR - Get last tagged connector version ready for production
-                      command: |
-                          CONNECTOR_BC_BRANCH=$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags git@github.com:akeneo/bigcommerce-connector.git 'v*' | tail -n1 | cut -d'/' -f3)
-
                           echo export CONNECTOR_BC_BRANCH=${CONNECTOR_BC_BRANCH} >> $BASH_ENV
           - run:
               name: BIG COMMERCE CONNECTOR - Checkout BigCommerce Connector
@@ -953,7 +931,7 @@ commands:
           - when:
                 condition:
                     not:
-                        equal: [master, << pipeline.git.branch >>]
+                        equal: ['6.0', << pipeline.git.branch >>]
                 steps:
                     - run:
                           name: Update composer.json if same branch exists in PIM Onboarder for EE
