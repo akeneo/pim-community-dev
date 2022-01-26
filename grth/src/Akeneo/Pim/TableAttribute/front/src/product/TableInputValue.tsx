@@ -224,12 +224,12 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
 
   const tableInputCell = (row: TableRowWithId, columnDefinition: ColumnDefinition) => {
     const CellInput = cellInputs[columnDefinition.data_type];
-    if (attribute && CellInput) {
-      const matchSearch = matchers[columnDefinition.data_type];
-      const columnCode = columnDefinition.code;
-      const cell = row[columnCode];
+    const matchSearch = matchers[columnDefinition.data_type];
+    const columnCode = columnDefinition.code;
+    const cell = row[columnCode];
 
-      return (
+    return (
+      attribute && (
         <CellInput
           row={row}
           columnDefinition={columnDefinition}
@@ -240,10 +240,8 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
           attribute={attribute}
           setAttribute={setAttribute}
         />
-      );
-    }
-
-    return null;
+      )
+    );
   };
 
   const tableIndexCell = (row: TableRowWithId) => {
