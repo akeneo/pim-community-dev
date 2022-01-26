@@ -62,7 +62,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "dev-master",
+        "akeneo/pim-community-dev": "6.0.x-dev",
         "akeneo/pim-onboarder": "^5.0.6",
         "grpc/grpc": "^1.30.0",
         "hslavich/oneloginsaml-bundle": "2.0.*",
