@@ -26,8 +26,10 @@ const generateAssetFamilyListUrl = () => `/rest/asset_manager`;
 
 export class AssetFamilyFetcherImplementation implements AssetFamilyFetcher {
   async fetch(identifier: AssetFamilyIdentifier): Promise<AssetFamilyResult> {
-    const data = await fetch(generateAssetFamilyGetUrl(identifier));
-    const backendAssetFamily = validateBackendAssetFamily(await data.json());
+    const response = await fetch(generateAssetFamilyGetUrl(identifier));
+    const responseJson = await handleResponse(response);
+
+    const backendAssetFamily = validateBackendAssetFamily(responseJson);
 
     return {
       assetFamily: hydrator(backendAssetFamily),

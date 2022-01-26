@@ -1,3 +1,10 @@
+// We need to throw an error object with a legacy request (jquery) to be handled correctly by the backbone layer
+class BackendError extends Error {
+  constructor(public request: any) {
+    super(request.statusText);
+  }
+}
+
 const handleResponse = async (response: Response) => {
   switch (response.status) {
     case 204:
@@ -8,9 +15,9 @@ const handleResponse = async (response: Response) => {
     case 401:
       window.location.replace('/user/login');
 
-      throw new Error(response.statusText);
+      throw new BackendError(response);
     default:
-      throw new Error(`Unexpected status code: ${response.status}`);
+      throw new BackendError(response);
   }
 };
 

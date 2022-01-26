@@ -17,6 +17,7 @@ import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-fa
 import {validateBackendListAsset} from 'akeneoassetmanager/infrastructure/validator/list-asset';
 import {validateBackendEditionAsset} from 'akeneoassetmanager/infrastructure/validator/edition-asset';
 import {denormalizeAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
+import {handleResponse} from 'akeneoassetmanager/infrastructure/tools/handleResponse';
 
 class InvalidArgument extends Error {}
 
@@ -57,6 +58,11 @@ const generateAssetGetUrl = (assetFamilyIdentifier: AssetFamilyIdentifier, asset
     assetCode
   )}`;
 
+const fetchAsset = async (assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode): Promise<any> => {
+  const response = await fetch(generateAssetGetUrl(assetFamilyIdentifier, assetCode));
+  return await handleResponse(response);
+};
+
 const generateAssetSearchUrl = (assetFamilyIdentifier: AssetFamilyIdentifier) =>
   `/rest/asset_manager/${assetFamilyIdentifier}/asset`;
 
@@ -67,7 +73,7 @@ export class AssetFetcherImplementation implements AssetFetcher {
 
   async fetch(assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode): Promise<AssetResult> {
     const [assetData, assetFamilyResult] = await Promise.all([
-      (await fetch(generateAssetGetUrl(assetFamilyIdentifier, assetCode))).json(),
+      fetchAsset(assetFamilyIdentifier, assetCode),
       assetFamilyFetcher.fetch(denormalizeAssetFamilyIdentifier(assetFamilyIdentifier)),
     ]);
 

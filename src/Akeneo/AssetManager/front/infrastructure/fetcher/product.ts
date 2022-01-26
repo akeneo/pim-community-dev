@@ -12,6 +12,7 @@ import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/do
 import {SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import {attributeCodeStringValue} from 'akeneoassetmanager/domain/model/attribute/code';
 import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
+import {handleResponse} from 'akeneoassetmanager/infrastructure/tools/handleResponse';
 
 const generateProductListUrl = (
   assetFamilyIdentifier: AssetFamilyIdentifier,
@@ -40,7 +41,7 @@ export class ProductFetcherImplementation implements ProductFetcher {
       )
     );
 
-    const backendProducts = await response.json();
+    const backendProducts = await handleResponse(response);
 
     return {
       items: hydrateAll<Product>(hydrator)(backendProducts.items, {locale, channel}),
