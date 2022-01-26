@@ -272,8 +272,8 @@ class ProductController
         } catch (TwoWayAssociationWithTheSameProductException $e) {
             return new JsonResponse(
                 [
-                'message' => $e->getMessage(),
-                'global' => true],
+                    'message' => $e->getMessage(),
+                    'global' => true],
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
         }
