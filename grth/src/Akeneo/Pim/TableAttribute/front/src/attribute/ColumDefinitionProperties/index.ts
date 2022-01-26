@@ -13,7 +13,7 @@ type ColumnDefinitionProps = {
 
 export type ColumnProperties = (props: ColumnDefinitionProps) => ReactElement;
 
-const ColumnDefinitions = {
+const ColumnDefinitions: {[dataType: string]: ColumnProperties} = {
   select: SelectProperties,
   number: NumberProperties,
   text: TextProperties,

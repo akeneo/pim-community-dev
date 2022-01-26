@@ -100,15 +100,14 @@ const castSelectColumnDefinition: (columnDefinition: ColumnDefinition) => Select
   return columnDefinition;
 };
 
-const castReferenceEntityColumnDefinition: (
-  columnDefinition: ColumnDefinition
-) => ReferenceEntityColumnDefinition = columnDefinition => {
-  if (columnDefinition.data_type !== 'reference_entity') {
-    throw new Error(
-      `Column definition should have 'reference_entity' data_type, '${columnDefinition.data_type}' given)`
-    );
-  }
-  return columnDefinition;
-};
+const castReferenceEntityColumnDefinition: (columnDefinition: ColumnDefinition) => ReferenceEntityColumnDefinition =
+  columnDefinition => {
+    if (columnDefinition.data_type !== 'reference_entity') {
+      throw new Error(
+        `Column definition should have 'reference_entity' data_type, '${columnDefinition.data_type}' given)`
+      );
+    }
+    return columnDefinition;
+  };
 
 export {castSelectColumnDefinition, castReferenceEntityColumnDefinition};

@@ -137,7 +137,6 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
             initialTableConfiguration={tableConfiguration}
             onChange={this.handleChange.bind(this)}
             savedColumnCodes={this.savedColumnCodes || []}
-            dataTypesMapping={dataTypes}
           />
         </DependenciesProvider>,
         this.el

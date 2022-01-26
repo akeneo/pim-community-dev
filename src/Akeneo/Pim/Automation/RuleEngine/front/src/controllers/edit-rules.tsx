@@ -1,6 +1,8 @@
 import React from 'react';
 import {ApplicationDependenciesProvider} from '../dependenciesTools';
-import ReactController, {RouteParams,} from '../dependenciesTools/reactController/ReactController';
+import ReactController, {
+  RouteParams,
+} from '../dependenciesTools/reactController/ReactController';
 import {EditRules as EditRulesPage} from '../pages/EditRules';
 import {dependencies} from '../dependenciesTools/provider/dependencies';
 import {AttributeValueConfig, ConfigContext} from '../context/ConfigContext';

@@ -13,7 +13,7 @@ const DataTypeSelector: React.FC<DataTypeSelectorProps> = ({dataType, onChange, 
   const translate = useTranslate();
   const featureFlags = useFeatureFlags();
 
-  const dataTypesMapping = {
+  const dataTypesMapping: {[dataType: string]: {useable_as_first_column: boolean; flag?: string}} = {
     select: {useable_as_first_column: true},
     text: {useable_as_first_column: false},
     number: {useable_as_first_column: false},
@@ -23,7 +23,10 @@ const DataTypeSelector: React.FC<DataTypeSelectorProps> = ({dataType, onChange, 
 
   const dataTypes: DataType[] = Object.keys(dataTypesMapping).filter((dataType: string) => {
     const dataTypeMapping = dataTypesMapping[dataType];
-    if (typeof dataTypeMapping.flag !== 'undefined' && !featureFlags.isEnabled(dataTypeMapping.flag)) {
+    if (
+      !dataTypeMapping ||
+      (typeof dataTypeMapping.flag !== 'undefined' && !featureFlags.isEnabled(dataTypeMapping.flag))
+    ) {
       return false;
     }
     return !isFirstColumn || dataTypeMapping.useable_as_first_column;
