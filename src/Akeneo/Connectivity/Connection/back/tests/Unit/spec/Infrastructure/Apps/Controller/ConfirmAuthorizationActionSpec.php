@@ -12,7 +12,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthori
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthenticationException;
-use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
@@ -107,7 +107,7 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
 
         $createAppWithAuthorizationHandler->handle(
             new CreateAppWithAuthorizationCommand($clientId)
-        )->willThrow(new InvalidAppAuthorizationRequest($constraintViolationList));
+        )->willThrow(new InvalidAppAuthorizationRequestException($constraintViolationList));
 
         $appAuthorizationSession->getAppAuthorization($clientId)->willReturn($appAuthorization);
         $getAppConfirmationQuery->execute($clientId)->willReturn($appConfirmation);

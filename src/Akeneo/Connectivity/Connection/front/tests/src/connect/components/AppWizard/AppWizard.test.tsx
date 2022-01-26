@@ -15,6 +15,11 @@ jest.mock('@src/connect/components/AppWizard/steps/Authorizations', () => ({
     Authorizations: () => <div>authorizations-component</div>,
 }));
 
+jest.mock('akeneo-design-system', () => ({
+    ...jest.requireActual('akeneo-design-system'),
+    AppIllustration: () => <div>no-logo-illustration</div>,
+}));
+
 /*eslint-disable */
 declare global {
     namespace NodeJS {
@@ -56,8 +61,11 @@ test('The wizard renders without error', async () => {
     });
 
     renderWithProviders(<AppWizard clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
-    expect(await screen.findByText('MyApp', {exact: false})).toBeInTheDocument();
-    expect(screen.getByText('akeneo_connectivity.connection.connect.apps.title')).toBeInTheDocument();
+    await waitFor(() => screen.getByAltText('MyApp'));
+    expect(screen.getByAltText('MyApp')).toBeInTheDocument();
+
+    expect(screen.queryByText('authentication-component')).not.toBeInTheDocument();
+    expect(screen.queryByText('authorizations-component')).toBeInTheDocument();
 });
 
 test('The wizard renders without error when no logo', async () => {
@@ -77,8 +85,7 @@ test('The wizard renders without error when no logo', async () => {
     });
 
     renderWithProviders(<AppWizard clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
-    await waitFor(() => screen.getByAltText('MyApp'));
-    expect(screen.getByAltText('MyApp')).toBeInTheDocument();
+    expect(await screen.findByText('no-logo-illustration')).toBeInTheDocument();
 
     expect(screen.queryByText('authentication-component')).not.toBeInTheDocument();
     expect(screen.queryByText('authorizations-component')).toBeInTheDocument();
@@ -101,7 +108,8 @@ test('The wizard redirect to the marketplace when closed', async () => {
     });
 
     renderWithProviders(<AppWizard clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
-    expect(await screen.findByText('MyApp', {exact: false})).toBeInTheDocument();
+    await waitFor(() => screen.getByAltText('MyApp'));
+    expect(screen.getByAltText('MyApp')).toBeInTheDocument();
 
     act(() => {
         userEvent.click(screen.getByTitle('akeneo_connectivity.connection.connect.apps.wizard.action.cancel'));
@@ -138,7 +146,8 @@ test('The wizard display a notification and redirects on success', async done =>
             <AppWizard clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />
         </NotifyContext.Provider>
     );
-    expect(await screen.findByText('MyApp', {exact: false})).toBeInTheDocument();
+    await waitFor(() => screen.getByAltText('MyApp'));
+    expect(screen.getByAltText('MyApp')).toBeInTheDocument();
 
     act(() => {
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm'));
@@ -162,7 +171,7 @@ test('The wizard display the authentication step', async () => {
         'akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=8d8a7dc1-0827-4cc9-9ae5-577c6419230b': {
             json: {
                 appName: 'MyApp',
-                appLogo: '',
+                appLogo: 'http://example.com/logo.png',
                 scopeMessages: [],
                 authenticationScopes: ['profile'],
             },
@@ -175,6 +184,7 @@ test('The wizard display the authentication step', async () => {
 
     renderWithProviders(<AppWizard clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
     await waitFor(() => screen.getByAltText('MyApp'));
+    expect(screen.getByAltText('MyApp')).toBeInTheDocument();
 
     expect(screen.queryByText('authentication-component')).toBeInTheDocument();
     expect(screen.queryByText('authorizations-component')).not.toBeInTheDocument();
