@@ -17,7 +17,7 @@ const useDateFormatter = () => {
          * These 2 options are incompatible.
          */
         if (options.dateStyle && options.timeZoneName) {
-          delete(options.timeZoneName);
+          delete options.timeZoneName;
         }
 
         return new Intl.DateTimeFormat(locale, options).format(new Date(date));
