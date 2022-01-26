@@ -23,6 +23,8 @@ class GetWizardDataActionEndToEnd extends WebTestCase
     public function test_to_get_wizard_data(): void
     {
         $this->authenticateAsAdmin();
+        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');
+        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
         $app = App::fromWebMarketplaceValues($this->webMarketplaceApi->getApp('90741597-54c5-48a1-98da-a68e7ee0a715'));
         $this->clientProvider->findOrCreateClient($app);
 
