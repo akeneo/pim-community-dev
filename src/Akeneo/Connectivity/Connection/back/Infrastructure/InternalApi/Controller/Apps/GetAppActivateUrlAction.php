@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\A
 
 use Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\IsConnectionsNumberLimitReachedQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -27,7 +29,8 @@ final class GetAppActivateUrlAction
         private ClientProviderInterface $clientProvider,
         private AppUrlGenerator $appUrlGenerator,
         private SecurityFacade $security,
-        private FeatureFlag $featureFlag
+        private FeatureFlag $featureFlag,
+        private IsConnectionsNumberLimitReachedQueryInterface $isConnectionsNumberLimitReachedQuery,
     ) {
     }
 
@@ -43,6 +46,10 @@ final class GetAppActivateUrlAction
 
         if (!$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
             throw new AccessDeniedHttpException();
+        }
+
+        if ($this->isConnectionsNumberLimitReachedQuery->execute()) {
+            throw new BadRequestHttpException('App and connections limit reached');
         }
 
         $app = $this->getAppQuery->execute($id);

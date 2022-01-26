@@ -136,6 +136,7 @@ services:
             - '@akeneo_connectivity.connection.marketplace.app_url_generator'
             - '@oro_security.security_facade'
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\IsConnectionsNumberLimitReachedQuery'
 
     akeneo_connectivity.connection.public.controller.apps.authorize:
         public: true
@@ -247,3 +248,8 @@ services:
             - '@oro_security.security_facade'
             - '@akeneo_connectivity.connection.application.handler.find_a_connection'
             - '@akeneo_connectivity.connection.application.handler.update_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\IsConnectionsNumberLimitReachedAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\IsConnectionsNumberLimitReachedQuery'

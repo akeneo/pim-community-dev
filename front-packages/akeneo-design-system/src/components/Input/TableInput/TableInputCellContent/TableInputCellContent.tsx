@@ -1,11 +1,15 @@
 import styled, {css} from 'styled-components';
-import React, {DetailedHTMLFactory, HTMLAttributes, ReactNode} from 'react';
+import React, {ReactNode} from 'react';
 import {AkeneoThemedProps, getColor} from '../../../../theme';
 import {Override} from '../../../../shared';
 
 const TableInputCellContainer = styled.div<
   {rowTitle: boolean; highlighted: boolean; inError: boolean} & AkeneoThemedProps
 >`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
   ${({rowTitle}) =>
     rowTitle &&
     css`
@@ -33,7 +37,7 @@ const TableInputCellContainer = styled.div<
 `;
 
 type TableInputCellContentProps = Override<
-  DetailedHTMLFactory<HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
+  React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
   {
     rowTitle?: boolean;
     highlighted?: boolean;

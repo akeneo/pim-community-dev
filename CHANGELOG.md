@@ -162,6 +162,7 @@
 - PIM-10212: Prevent spaces in locale codes
 - PIM-10218: Remove previous scope filter before moving the new one
 - PIM-10215: Fixed last operation widget job type translation key
+- PIM-10233: Fix the saved value by an empty wysiwyg
 
 ## New features
 

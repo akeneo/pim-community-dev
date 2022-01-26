@@ -2,7 +2,7 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {screen} from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
-import {renderWithProviders, historyMock} from '../../../test-utils';
+import {historyMock, renderWithProviders} from '../../../test-utils';
 import {ActivateAppButton} from '@src/connect/components/ActivateAppButton';
 
 beforeEach(() => {
@@ -26,4 +26,5 @@ test('button renders for non connected app', () => {
 
     expect(button).toBeInTheDocument();
     expect(button).toHaveAttribute('href', '#akeneo_connectivity_connection_connect_apps_activate?id=appId');
+    expect(button).not.toHaveAttribute('disabled');
 });

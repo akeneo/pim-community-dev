@@ -117,4 +117,8 @@ services:
         tags:
             - { name: akeneo.pim.security.content_security_policy_provider }
 
+    Akeneo\Connectivity\Connection\Infrastructure\Connections\GetConnectionsNumberLimit:
+        arguments:
+            - '%akeneo_connectivity.connection.max_limit%'
+
     Akeneo\Connectivity\Connection\Infrastructure\Service\RandomCodeGenerator: ~
