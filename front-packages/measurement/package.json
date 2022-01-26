@@ -10,6 +10,7 @@
     "styled-components": "^5.1.1"
   },
   "devDependencies": {
+    "@testing-library/dom": "^8.11.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -22,11 +23,11 @@
     "prettier": "^2.2.1"
   },
   "dependencies": {
-    "@akeneo-pim-community/shared": "link:../shared",
-    "akeneo-design-system": "link:../akeneo-design-system",
+    "@akeneo-pim-community/shared": "*",
+    "akeneo-design-system": "*",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.1",
+    "react-scripts": "^4.0.1",
     "typescript": "^4.0.3",
     "web-vitals": "^0.2.4"
   },
@@ -39,8 +40,8 @@
     "translation:build": "cp ../../public/js/translation/en_US.js ./src/translations.json",
     "route:build": "cp ../../public/js/fos_js_routes.json ./src/routes.json",
     "packages:build": "yarn --cwd=../akeneo-design-system run lib:build && yarn --cwd=../shared run lib:build",
-    "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{ts,tsx}\"",
-    "lint:check": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\""
+    "lint": "prettier --check --config .prettierrc.json --parser typescript \"./src/**/*.{ts,tsx}\"",
+    "lint:fix": "prettier --write --config .prettierrc.json --parser typescript --loglevel=warn \"./src/**/*.{ts,tsx}\""
   },
   "eslintConfig": {
     "extends": [

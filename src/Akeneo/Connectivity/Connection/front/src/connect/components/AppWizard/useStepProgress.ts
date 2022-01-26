@@ -1,6 +1,6 @@
 import {useState} from 'react';
 
-export const useStepProgress = <T extends unknown>(steps: T[]) => {
+export const useStepProgress = <T>(steps: T[]) => {
     const [index, setIndex] = useState(0);
 
     const previous = () => setIndex(index => (index === 0 ? index : index - 1));
