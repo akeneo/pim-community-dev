@@ -127,7 +127,7 @@ test('it displays the data mapping', async () => {
 
   expect(screen.getByText('a_code')).toBeInTheDocument();
   expect(
-    screen.getByText('akeneo.tailored_export.data_mapping.sources: Source 1 (A) Source 3 (C)')
+    screen.getByText('akeneo.tailored_import.data_mapping.sources: Source 1 (A) Source 3 (C)')
   ).toBeInTheDocument();
 });
 
