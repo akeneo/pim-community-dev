@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2022 Akeneo SAS (https://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\ExternalApi;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -19,15 +10,24 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
+use Webmozart\Assert\Assert;
 
+/**
+ * Validates the payload of a API call to create/update/patch a product.
+ *
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 final class PayloadFormatValidator extends ConstraintValidator
 {
-    /** @var array<string, string> */
-    private array $attributeTypeByCodes = [];
     private const WRONG_LOCALE_FORMAT = 'Property "%s" expects an array with the key "locale" as string. Check the expected format on the API documentation.';
     private const WRONG_SCOPE_FORMAT = 'Property "%s" expects an array with the key "scope" as string. Check the expected format on the API documentation.';
+
+    /** @var array<string, string> */
+    private array $attributeTypeByCodes = [];
 
     public function __construct(private AttributeRepositoryInterface $attributeRepository)
     {
@@ -35,6 +35,7 @@ final class PayloadFormatValidator extends ConstraintValidator
 
     public function validate($data, Constraint $constraint): void
     {
+        Assert::isInstanceOf($constraint, PayloadFormat::class);
         $values = \is_array($data['values'] ?? null) ? $data['values'] : [];
         $this->cacheAttributeTypeByCodes(\array_keys($values));
 
@@ -45,14 +46,13 @@ final class PayloadFormatValidator extends ConstraintValidator
             new NotNull(),
             new Collection([
                 'allowExtraFields' => true,
-                'allowMissingFields' => true,
                 'fields' => [
-                    'values' => [
+                    'values' => new Optional([
                         new Collection([
                             'allowExtraFields' => true,
                             'fields' => $this->getValuesConstraints($values),
                         ]),
-                    ],
+                    ]),
                 ],
             ]),
         ]);
@@ -89,6 +89,7 @@ final class PayloadFormatValidator extends ConstraintValidator
                     new NotNull(['message' => $wrongDataFormatMessage]),
                     new All([
                         new Collection([
+                            'missingFieldsMessage' => $wrongDataFormatMessage,
                             'fields' => [
                                 'amount' => [
                                     new Type(['type' => ['string', 'int', 'float', 'null'], 'message' => $wrongDataFormatMessage]),
@@ -104,7 +105,9 @@ final class PayloadFormatValidator extends ConstraintValidator
             }
 
             $constraintsByAttribute[$attributeCode] = [
+                new Type(['type' => 'array', 'message' => \sprintf('Property "%s" expect to be an array', $attributeCode)]),
                 new All([
+                    new Type(['type' => 'array', 'message' => \sprintf('Property "%s" expect to be an array of array', $attributeCode)]),
                     new Collection([
                         'extraFieldsMessage' => \sprintf('Property "%s" does not expect the {{ field }} field', $attributeCode),
                         'missingFieldsMessage' => \sprintf(
