@@ -8,5 +8,9 @@
         "prettier": "prettier --config .prettierrc.json src/**/*.{ts,tsx}",
         "jest": "jest --config jest.config.js"
     },
-    "private": true
+    "private": true,
+    "devDependencies": {
+        "eslint": "^6.5.1",
+        "prettier": "^2.1.1"
+    }
 }
