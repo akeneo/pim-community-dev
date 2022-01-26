@@ -19,7 +19,7 @@ Feature: Delete measurement family
     And The "duration" measurement family was not deleted
 
   Scenario: Cannot delete a measurement family linked to a table attribute column with case insensitive
-    Given I create a table attribute with measurement column from "DurATION" family code and "second" default unit code
-    When I delete the "duration" measurement family
+    Given I create a table attribute with measurement column from "duration" family code and "second" default unit code
+    When I delete the "DurATION" measurement family
     Then There is a violation with message: This measurement family is used in a product attribute, therefore it cannot be removed.
     And The "duration" measurement family was not deleted
