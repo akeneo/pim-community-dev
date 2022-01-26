@@ -8,18 +8,47 @@ import {
   useRoute,
   useTranslate
 } from '@akeneo-pim-community/shared';
-import { BooleanInput, Breadcrumb, Field,FieldProps, Helper, Locale as LocaleItem, SectionTitle, SelectInput, TextAreaInput } from 'akeneo-design-system';
-import {Locale} from 'models/types';
+import {
+  BooleanInput,
+  Breadcrumb,
+  Button,
+  Field,
+  FieldProps,
+  Helper,
+  Locale as LocaleItem,
+  SectionTitle,
+  SelectInput,
+  TextAreaInput
+} from 'akeneo-design-system';
+import {ConfigServicePayload, Locale} from 'models/types';
 
 
 const ConfigForm = () => {
   const localeUrl = useRoute('pim_localization_locale_index');
+  const configUrl = useRoute('oro_config_configuration_system_get');
   const [locales, doFetchLocales, fetchStatus, fetchLocaleError] = useFetch<Locale[]>(localeUrl);
+  const [config, doFetchConfig, configStatus, fetchConfigError ] = useFetch<ConfigServicePayload[]>(configUrl);
   const __ = useTranslate();
   const systemHref = useRoute('pim_system_index');
 
   // TODO fetch only ones by session
-  useEffect(() => {doFetchLocales()}, []);
+  useEffect(() => {doFetchLocales(); doFetchConfig()}, []);
+
+  switch (configStatus) {
+    case 'fetching':
+      return null;
+    case 'idle':
+      return null;
+    case 'fetched':
+      break;
+    case 'error':
+      return <Helper
+          inline
+          level="error"
+      >
+        {__('Unexpected error occurred. Please contact system administrator.')}: {fetchConfigError}
+      </Helper>
+  }
 
   let localesElement: FieldProps['children'] = <Helper
       inline
@@ -81,6 +110,9 @@ const ConfigForm = () => {
             className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
           />
         </PageHeader.UserActions>
+        <PageHeader.Actions>
+          <Button>Save</Button>
+        </PageHeader.Actions>
         <PageHeader.Title>{__('pim_menu.item.configuration')}</PageHeader.Title>
       </PageHeader>
       <PageContent>
