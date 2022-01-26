@@ -52,6 +52,7 @@ __metadata:
   resolution: "@akeneo-pim-community/connectivity-connection@workspace:src/Akeneo/Connectivity/Connection/front"
   dependencies:
     eslint: ^6.5.1
+    jest: ^26.4.2
     prettier: ^2.1.1
   languageName: unknown
   linkType: soft
@@ -109,6 +110,7 @@ __metadata:
   resolution: "@akeneo-pim-community/permission-form@workspace:src/Akeneo/Connectivity/Connection/workspaces/permission-form"
   dependencies:
     eslint: ^6.5.1
+    jest: ^26.4.2
     prettier: ^2.1.1
   languageName: unknown
   linkType: soft

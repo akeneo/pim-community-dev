@@ -11,6 +11,15 @@ const useDateFormatter = () => {
       options = {timeZone, ...options};
 
       try {
+        /**
+         * The dateStyle option comes from ES2020 DateTimeFormatOptions
+         * The timeZoneName option comes from ES5 DateTimeFormatOptions
+         * These 2 options are incompatible.
+         */
+        if (options.dateStyle && options.timeZoneName) {
+          delete(options.timeZoneName);
+        }
+
         return new Intl.DateTimeFormat(locale, options).format(new Date(date));
       } catch (error) {
         if (error instanceof RangeError) {
