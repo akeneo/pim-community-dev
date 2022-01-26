@@ -74,7 +74,7 @@ jobs:
         run: cd front-packages/akeneo-design-system && yarn storybook:build && echo ::set-output name=status::success
 
       - name: Launch visual tests
-        run: cd front-packages/akeneo-design-system && yarn test:visual:run && echo ::set-output name=status::success
+        run: cd front-packages/akeneo-design-system && DEBUG=* yarn test:visual:run src/components/Modal/Modal.visual.tsx && echo ::set-output name=status::success
         id: visual_test_execution
 
       - name: Cache example node modules
