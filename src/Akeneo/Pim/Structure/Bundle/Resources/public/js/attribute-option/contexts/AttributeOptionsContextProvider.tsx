@@ -159,7 +159,6 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
 
   useEffect(() => {
     (async () => {
-      console.log(route);
       let newAttributeOptions = await baseFetcher(route);
 
       if (attributeOptionsQualityFetcher) {
