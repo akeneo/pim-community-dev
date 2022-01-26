@@ -132,7 +132,7 @@ akeneo_connectivity.connection:
       loader:
         message: Bezig met laden...
       flash:
-        permissions_error.title: 'De autorisaties op {{ entity }} kunnen niet worden opgeslagen.'
+        permissions_error.title: 'De machtigingen in {{ entity }} kunnen niet worden opgeslagen.'
         permissions_error.description: Controleer de instellingen voor app-machtigingen.
       wizard:
         title: Verbinden
