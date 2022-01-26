@@ -21,6 +21,6 @@ class MeasurementFamilyShouldNotBeLinkedToATableColumn extends Constraint
 
     public function getTargets(): array
     {
-        return [self::PROPERTY_CONSTRAINT];
+        return [self::CLASS_CONSTRAINT];
     }
 }

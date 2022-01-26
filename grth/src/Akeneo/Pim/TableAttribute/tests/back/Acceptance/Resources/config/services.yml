@@ -28,6 +28,9 @@ services:
         arguments:
             - '@validator'
             - '@akeneo_measure.application.create_measurement_family_handler'
+            - '@akeneo_measure.application.delete_measurement_family_handler'
+            - '@Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ConstraintViolationsContext'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\MeasurementFamilyExists'
 
     Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetNonExistingSelectOptionCodes:
         class: Akeneo\Test\Pim\TableAttribute\Acceptance\InMemory\InMemoryGetNonExistingSelectOptionCodes
@@ -43,7 +46,12 @@ services:
     Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository:
         class: Akeneo\Test\Pim\TableAttribute\Acceptance\InMemory\InMemorySelectOptionCollectionRepository
 
-    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\InMemoryIsReferenceEntityLinkedToATableColumn:
+    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsReferenceEntityLinkedToATableColumn:
         class: Akeneo\Test\Pim\TableAttribute\Acceptance\InMemory\InMemoryIsReferenceEntityLinkedToATableColumn
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
+    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsMeasurementFamilyLinkedToATableColumn:
+        class: Akeneo\Test\Pim\TableAttribute\Acceptance\InMemory\InMemoryIsMeasurementFamilyLinkedToATableColumn
         arguments:
             - '@pim_catalog.repository.attribute'

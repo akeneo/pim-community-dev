@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\Measurement;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\MeasurementFamilyExists;
-use Akeneo\Pim\TableAttribute\Infrastructure\AntiCorruptionLayer\Feature;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\Measurement\MeasurementFamilyShouldExist;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\Measurement\MeasurementFamilyShouldExistValidator;
 use PhpSpec\ObjectBehavior;

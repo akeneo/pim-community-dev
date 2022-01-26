@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\Measurement;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsMeasurementFamilyLinkedToATableColumn;
+use Akeneo\Tool\Bundle\MeasureBundle\Application\DeleteMeasurementFamily\DeleteMeasurementFamilyCommand;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
@@ -27,15 +28,13 @@ class MeasurementFamilyShouldNotBeLinkedToATableColumnValidator extends Constrai
     public function validate($deleteMeasurementFamilyCommand, Constraint $constraint): void
     {
         Assert::isInstanceOf($constraint, MeasurementFamilyShouldNotBeLinkedToATableColumn::class);
-        /** @phpstan-ignore-next-line */
-        Assert::isInstanceOf($deleteMeasurementFamilyCommand, 'Akeneo\Tool\Bundle\MeasureBundle\Application\DeleteMeasurementFamily\DeleteMeasurementFamilyCommand');
+        Assert::isInstanceOf($deleteMeasurementFamilyCommand, DeleteMeasurementFamilyCommand::class);
 
-        /** @phpstan-ignore-next-line */
         $code = $deleteMeasurementFamilyCommand->code;
 
         if ($this->isMeasurementFamilyLinkedToATableColumn->forCode($code)) {
             $this->context
-                ->buildViolation($constraint->message, ['{{ measurement_family_code }}' => $code])
+                ->buildViolation($constraint->message)
                 ->addViolation();
         }
     }
