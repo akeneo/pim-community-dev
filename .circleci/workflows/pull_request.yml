@@ -20,33 +20,6 @@ workflows:
                   path_to_front_packages: vendor/akeneo/pim-community-dev/front-packages
                   requires:
                       - checkout_ee
-            - build_prod:
-                  requires:
-                      - checkout_ee
-            - test_deploy:
-                  requires:
-                      - build_prod
-            - deploy_pr_environment?:
-                  type: approval
-                  filters:
-                      branches:
-                          ignore:
-                              - master
-            - deploy_pr_environment:
-                  requires:
-                      - deploy_pr_environment?
-                      - build_prod
-            - delete_pr_environment?:
-                  type: approval
-                  filters:
-                      branches:
-                          ignore:
-                              - master
-                  requires:
-                      - deploy_pr_environment
-            - delete_pr_environment:
-                  requires:
-                      - delete_pr_environment?
             - test_database:
                   requires:
                       - build_dev
