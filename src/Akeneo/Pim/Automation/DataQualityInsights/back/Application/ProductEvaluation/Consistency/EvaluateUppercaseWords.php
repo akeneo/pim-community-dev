@@ -67,7 +67,7 @@ final class EvaluateUppercaseWords implements EvaluateCriterionInterface
         foreach ($productValues->getTextareaValues() as $productValueByChannelAndLocale) {
             $attributeCode = $productValueByChannelAndLocale->getAttribute()->getCode();
             $productValue = $productValueByChannelAndLocale->getValueByChannelAndLocale($channelCode, $localeCode);
-            $rate = $this->computeProductValueRate($productValue);
+            $rate = is_string($productValue) ? $this->computeProductValueRate($productValue) : null;
 
             if ($rate !== null) {
                 $attributesRates[strval($attributeCode)] = $rate;
