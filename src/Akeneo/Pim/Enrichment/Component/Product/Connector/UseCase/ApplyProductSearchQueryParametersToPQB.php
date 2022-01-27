@@ -74,7 +74,7 @@ final class ApplyProductSearchQueryParametersToPQB
                 $value = $filter['value'] ?? null;
 
                 if (in_array($propertyCode, ['created', 'updated'])) {
-                    if (Operators::BETWEEN === $filter['operator'] && is_array($value)) {
+                    if ((Operators::BETWEEN === $filter['operator'] || Operators::NOT_BETWEEN === $filter['operator']) && is_array($value)) {
                         $values = [];
                         foreach ($value as $date) {
                             $values[] = \DateTime::createFromFormat('Y-m-d H:i:s', $date);
