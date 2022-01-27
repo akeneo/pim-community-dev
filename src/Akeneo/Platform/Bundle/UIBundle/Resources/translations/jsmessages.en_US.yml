@@ -108,6 +108,8 @@ oro_config:
             tab:
                 system:
                     title: System
+            save_ok: Successfully saved configuration
+            save_error: Sorry, could not save the configuration ({{reason}})
             group:
                 localization:
                     title: Login page setting
