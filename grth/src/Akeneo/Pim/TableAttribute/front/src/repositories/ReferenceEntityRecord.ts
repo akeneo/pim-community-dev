@@ -41,7 +41,7 @@ const getCachedCall = (
       search === item.params.search &&
       page === item.params.page &&
       itemsPerPage === item.params.itemsPerPage &&
-      JSON.stringify(codes) === JSON.stringify(params.codes)
+      JSON.stringify(codes) === JSON.stringify(item.params.codes)
     );
   });
   return found?.result;
