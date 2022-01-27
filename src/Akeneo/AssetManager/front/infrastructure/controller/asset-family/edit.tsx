@@ -21,7 +21,6 @@ import {
 } from 'akeneoassetmanager/domain/event/user';
 import {updateActivatedLocales} from 'akeneoassetmanager/application/action/locale';
 import {updateChannels} from 'akeneoassetmanager/application/action/channel';
-import {PermissionCollection} from 'akeneoassetmanager/domain/model/asset-family/permission';
 import {permissionEditionReceived} from 'akeneoassetmanager/domain/event/asset-family/permission';
 import {LocalePermission} from 'akeneoassetmanager/domain/model/permission/locale';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
@@ -35,9 +34,9 @@ import {ConfigProvider} from 'akeneoassetmanager/application/hooks/useConfig';
 import {AssetFamilyEdit} from 'akeneoassetmanager/application/component/asset-family/edit';
 import {getConfig} from 'pimui/js/config-registry';
 import {AttributeConfig, getReducer} from 'akeneoassetmanager/application/configuration/attribute';
-import {AssetFamilyResult} from 'akeneoassetmanager/domain/fetcher/asset-family';
 import {useAssetFamilyFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAssetFamilyFetcher';
 import {ReactNode, useEffect, useState} from 'react';
+import {FullScreenError} from '@akeneo-pim-community/shared';
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
@@ -59,24 +58,47 @@ type AssetFamilyLoaderProps = {
   children: ReactNode;
 };
 
+type LoadingError = {
+  statusCode: number,
+  statusText: string;
+};
+
 const AssetFamilyLoader = ({assetFamilyIdentifier, children}: AssetFamilyLoaderProps) => {
   const assetFamilyFetcher = useAssetFamilyFetcher();
   const dispatch = useDispatch();
   const [assetFamilyIsFetched, setAssetFamilyIsFetched] = useState(false);
+  const [error, setError] = useState<LoadingError | null>(null);
 
   useEffect(() => {
-    assetFamilyFetcher.fetch(assetFamilyIdentifier).then((assetFamilyResult: AssetFamilyResult) => {
-      dispatch(assetFamilyEditionReceived(assetFamilyResult.assetFamily));
-      dispatch(assetFamilyAssetCountUpdated(assetFamilyResult.assetCount));
-      dispatch(attributeListUpdated(assetFamilyResult.attributes));
-      dispatch(assetFamilyPermissionChanged(assetFamilyResult.permission));
-      permissionFetcher.fetch(assetFamilyResult.assetFamily.identifier).then((permissions: PermissionCollection) => {
+    (async () => {
+      try {
+        const assetFamilyResult = await assetFamilyFetcher.fetch(assetFamilyIdentifier);
+        const permissions = await permissionFetcher.fetch(assetFamilyResult.assetFamily.identifier);
+        dispatch(assetFamilyEditionReceived(assetFamilyResult.assetFamily));
+        dispatch(assetFamilyAssetCountUpdated(assetFamilyResult.assetCount));
+        dispatch(attributeListUpdated(assetFamilyResult.attributes));
+        dispatch(assetFamilyPermissionChanged(assetFamilyResult.permission));
         dispatch(permissionEditionReceived(permissions));
-      });
 
-      setAssetFamilyIsFetched(true);
-    });
+        setAssetFamilyIsFetched(true);
+      } catch (error) {
+        setError({
+          statusCode: error.response.status,
+          statusText: error.response.statusText,
+        });
+      }
+    })();
   }, [assetFamilyFetcher]);
+
+  if (error !== null) {
+    return (
+      <FullScreenError
+        title={translate('error.exception', {status_code: error.statusCode.toString()})}
+        code={error.statusCode}
+        message={error.statusText}
+      />
+    );
+  }
 
   return <>{assetFamilyIsFetched && children}</>;
 };

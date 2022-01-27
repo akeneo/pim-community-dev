@@ -1,7 +1,6 @@
-// We need to throw an error object with a legacy request (jquery) to be handled correctly by the backbone layer
 class BackendError extends Error {
-  constructor(public request: any) {
-    super(request.statusText);
+  constructor(public response: any) {
+    super(response.statusText);
   }
 }
 

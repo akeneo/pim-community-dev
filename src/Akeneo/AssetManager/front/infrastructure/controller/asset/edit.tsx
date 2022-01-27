@@ -7,7 +7,6 @@ import translate from 'akeneoassetmanager/tools/translator';
 import AssetView from 'akeneoassetmanager/application/component/asset/edit';
 import createStore from 'akeneoassetmanager/infrastructure/store';
 import assetReducer from 'akeneoassetmanager/application/reducer/asset/edit';
-import {AssetResult} from 'akeneoassetmanager/domain/fetcher/asset';
 import {assetEditionReceived} from 'akeneoassetmanager/domain/event/asset/edit';
 import {
   defaultCatalogLocaleChanged,
@@ -26,7 +25,8 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ConfigProvider} from 'akeneoassetmanager/application/hooks/useConfig';
 import {getConfig} from 'pimui/js/config-registry';
 import {useAssetFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAssetFetcher';
-import {ReactNode, useEffect} from 'react';
+import {ReactNode, useEffect, useState} from 'react';
+import {FullScreenError} from "@akeneo-pim-community/shared";
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
@@ -48,18 +48,42 @@ type AssetLoaderProps = {
   children: ReactNode;
 };
 
+type LoadingError = {
+  statusCode: number,
+  statusText: string;
+};
+
 const AssetLoader = ({assetFamilyIdentifier, assetCode, children}: AssetLoaderProps) => {
   const assetFetcher = useAssetFetcher();
   const dispatch = useDispatch();
   const [assetFetched, assetIsFetched] = useBooleanState(false);
+  const [error, setError] = useState<LoadingError | null>(null);
 
   useEffect(() => {
-    assetFetcher.fetch(assetFamilyIdentifier, assetCode).then((assetResult: AssetResult) => {
-      dispatch(assetEditionReceived(assetResult.asset));
-      dispatch(assetFamilyPermissionChanged(assetResult.permission));
-      assetIsFetched();
-    });
+    (async () => {
+      try {
+        const assetResult = await assetFetcher.fetch(assetFamilyIdentifier, assetCode);
+        dispatch(assetEditionReceived(assetResult.asset));
+        dispatch(assetFamilyPermissionChanged(assetResult.permission));
+        assetIsFetched();
+      } catch (error) {
+        setError({
+          statusCode: error.response.status,
+          statusText: error.response.statusText,
+        });
+      }
+    })();
   }, [assetFetcher]);
+
+  if (error !== null) {
+    return (
+      <FullScreenError
+        title={translate('error.exception', {status_code: error.statusCode.toString()})}
+        code={error.statusCode}
+        message={error.statusText}
+      />
+    );
+  }
 
   return <>{assetFetched && children}</>;
 };
