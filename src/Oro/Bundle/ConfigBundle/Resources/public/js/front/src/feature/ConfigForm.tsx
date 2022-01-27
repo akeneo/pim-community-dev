@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Locale,
   PageContent,
@@ -25,6 +25,8 @@ import {
 import { configBackToFront, ConfigServicePayloadBackend, ConfigServicePayloadFrontend } from '../models/ConfigServicePayload';
 
 const ConfigForm = () => {
+  const __ = useTranslate();
+
   const systemHref = useRoute('pim_system_index');
   const localeUrl = useRoute('pim_localization_locale_index');
   const configUrl = useRoute('oro_config_configuration_system_get');
@@ -32,26 +34,62 @@ const ConfigForm = () => {
   const [localesFetchResult, doFetchLocales] = useFetchSimpler<Locale[]>(localeUrl);
   const [configFetchResult, doFetchConfig] = useFetchSimpler<ConfigServicePayloadBackend, ConfigServicePayloadFrontend>(configUrl, configBackToFront);
 
-  const __ = useTranslate();
+  // configuration object under edition
+  const [config, setConfig] = useState<ConfigServicePayloadFrontend | null>(null)
 
-  // TODO fetch only ones by session
-  useEffect(() => { doFetchLocales(); doFetchConfig() }, []);
+  const [saveStatus, setSaveStatus] = useState<string | null>(null)
 
-  switch (configFetchResult.type) {
-    case 'idle':  // intentional no break
-    case 'fetching':
-      return null;
-    case 'error':
-      return <Helper
-        inline
-        level="error"
-      >
-        {__('Unexpected error occurred. Please contact system administrator.')}: {configFetchResult.message}
-      </Helper>
-    case 'fetched': // intentional no break
-    default:
-    // continue to rendering
+  // TODO fetch locales only once by session
+  useEffect(() => {
+    doFetchLocales();
+    doFetchConfig()
+  }, []);
+
+
+  const handleBoolChange = useCallback((fieldName: 'pim_ui___loading_message_enabled' | 'pim_analytics___version_update') => {
+    return (value: boolean) => {
+      if (!config) return;
+      setConfig(
+        {
+          ...config,
+          [fieldName]: {
+            ...config[fieldName],
+            value
+          }
+        })
+    }
+  }, [config])
+
+  const handleSave = async () => {
+    const response = await fetch(configUrl, {
+      method: 'POST',
+      headers: [
+        ['Content-type', 'application/json'],
+        ['X-Requested-With', 'XMLHttpRequest'],
+      ],
+      body: JSON.stringify(config)
+    })
+    if (response.ok) {
+      setSaveStatus('ok')
+    } else {
+      setSaveStatus(response.statusText)
+    }
   }
+
+
+  if (configFetchResult.type === 'error') {
+    return <Helper level="error">
+      {__('Unexpected error occurred. Please contact system administrator.')}: {configFetchResult.message}
+    </Helper>
+  }
+
+  useEffect(() => {
+    if (configFetchResult.type === 'fetched') {
+      setConfig({ ...configFetchResult.payload })
+    }
+  }, [configFetchResult])
+
+  if (!config) return null;
 
   let localesElement: FieldProps['children'] = <Helper
     inline
@@ -97,8 +135,6 @@ const ConfigForm = () => {
 
   }
 
-
-
   return (
     <>
       <PageHeader>
@@ -115,20 +151,31 @@ const ConfigForm = () => {
           />
         </PageHeader.UserActions>
         <PageHeader.Actions>
-          <Button>Save</Button>
+          <Button onClick={handleSave}>Save</Button>
         </PageHeader.Actions>
         <PageHeader.Title>{__('pim_menu.item.configuration')}</PageHeader.Title>
       </PageHeader>
       <PageContent>
+        {saveStatus &&
+          <Helper level={saveStatus === 'ok' ? 'info' : 'error'}>
+            {saveStatus === 'ok' ? __('oro_config.form.config.save_ok') : __('oro_config.form.config.save_error', { reason: saveStatus })}
+          </Helper>
+        }
         <Section>
           <SectionTitle>
             <SectionTitle.Title>{__('oro_config.form.config.group.loading_message.title')}</SectionTitle.Title>
           </SectionTitle>
-          <Helper level="info">
+          <Helper inline level="info">
             {__('oro_config.form.config.group.loading_message.helper')}
           </Helper>
           <Field label={__('oro_config.form.config.group.loading_message.fields.enabler.label')}>
-            <BooleanInput value={configFetchResult.payload.pim_ui___loading_message_enabled.value} yesLabel={__('pim_common.yes')} noLabel={__('pim_common.no')} readOnly={false} />
+            <BooleanInput
+              readOnly={false}
+              value={config.pim_ui___loading_message_enabled.value}
+              yesLabel={__('pim_common.yes')}
+              noLabel={__('pim_common.no')}
+              onChange={handleBoolChange('pim_ui___loading_message_enabled')}
+            />
           </Field>
           <Field label={__('oro_config.form.config.group.loading_message.fields.messages.label')}>
             <TextAreaInput readOnly={false} value="foo" onChange={() => { }} />
@@ -150,7 +197,13 @@ const ConfigForm = () => {
             {__('oro_config.form.config.group.notification.helper')}
           </Helper>
           <Field label={__('oro_config.form.config.group.notification.fields.enabler.label')}>
-            <BooleanInput value={true} yesLabel={__('pim_common.yes')} noLabel={__('pim_common.no')} readOnly={false} />
+            <BooleanInput
+              readOnly={false}
+              value={config.pim_analytics___version_update.value}
+              yesLabel={__('pim_common.yes')}
+              noLabel={__('pim_common.no')}
+              onChange={handleBoolChange('pim_analytics___version_update')}
+            />
           </Field>
         </Section>
       </PageContent>
