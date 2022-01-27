@@ -17,7 +17,7 @@ import {
   uuid,
 } from 'akeneo-design-system';
 import {getLabel, Locale, LocaleCode, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {SelectColumnDefinition, SelectOption, TableAttribute} from '../models';
+import {AttributeCode, SelectColumnDefinition, SelectOption, TableAttribute} from '../models';
 import {TwoColumnsLayout} from './TwoColumnsLayout';
 import {FieldsList} from '../shared';
 import styled from 'styled-components';
@@ -25,6 +25,7 @@ import {ManageOptionsRow} from './ManageOptionsRow';
 import {LocaleSwitcher} from './LocaleSwitcher';
 import {DeleteOptionModal} from './DeleteOptionModal';
 import {LocaleRepository, SelectOptionRepository} from '../repositories';
+import {ImportOptionsButton} from './ImportOptionsButton';
 
 const TableContainer = styled.div`
   height: calc(100vh - 270px);
@@ -337,6 +338,10 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
     </>
   );
 
+  const handleImportOptions = (attributeCode: AttributeCode) => {
+    console.log(attributeCode);
+  };
+
   return (
     <>
       <Modal closeTitle={translate('pim_common.close')} onClose={handleCloseManageOptions}>
@@ -440,6 +445,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
             )}
           </div>
           <Modal.TopRightButtons>
+            <ImportOptionsButton onClick={handleImportOptions} />
             <Button level='primary' onClick={handleConfirm} disabled={!canSave}>
               {confirmLabel ? confirmLabel : translate('pim_common.confirm')}
             </Button>
