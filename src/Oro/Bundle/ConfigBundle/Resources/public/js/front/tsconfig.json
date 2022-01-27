@@ -1,15 +1,15 @@
 {
     "compilerOptions": {
-    "allowJs": false,
+        "allowJs": false,
         "allowSyntheticDefaultImports": true,
         "declaration": true,
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "jsx": "react",
         "lib": [
-        "es6",
-        "dom"
-    ],
+            "es6",
+            "dom"
+        ],
         "module": "esnext",
         "moduleResolution": "node",
         "noImplicitAny": true,
@@ -30,18 +30,18 @@
         "target": "es5",
         "baseUrl": "./src",
         "types": [
-        "node",
-        "jest",
-        "@testing-library/jest-dom"
-    ],
+            "node",
+            "jest",
+            "@testing-library/jest-dom"
+        ],
         "incremental": true,
         "strict": true,
         "noFallthroughCasesInSwitch": true,
         "resolveJsonModule": true,
         "noEmit": true,
         "isolatedModules": true
-},
+    },
     "include": [
-    "src/"
-]
+        "src/"
+    ]
 }

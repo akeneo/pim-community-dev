@@ -1,10 +1,11 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import {
+  Locale,
   PageContent,
   PageHeader,
   PimView,
   Section,
-  useFetch,
+  useFetchSimpler,
   useRoute,
   useTranslate
 } from '@akeneo-pim-community/shared';
@@ -15,82 +16,85 @@ import {
   Field,
   FieldProps,
   Helper,
-  Locale as LocaleItem,
+  Locale as LocaleComponent,
   SectionTitle,
   SelectInput,
   TextAreaInput
 } from 'akeneo-design-system';
-import {ConfigServicePayload, Locale} from 'models/types';
 
+import { configBackToFront, ConfigServicePayloadBackend, ConfigServicePayloadFrontend } from '../models/ConfigServicePayload';
 
 const ConfigForm = () => {
+  const systemHref = useRoute('pim_system_index');
   const localeUrl = useRoute('pim_localization_locale_index');
   const configUrl = useRoute('oro_config_configuration_system_get');
-  const [locales, doFetchLocales, fetchStatus, fetchLocaleError] = useFetch<Locale[]>(localeUrl);
-  const [config, doFetchConfig, configStatus, fetchConfigError ] = useFetch<ConfigServicePayload[]>(configUrl);
+
+  const [localesFetchResult, doFetchLocales] = useFetchSimpler<Locale[]>(localeUrl);
+  const [configFetchResult, doFetchConfig] = useFetchSimpler<ConfigServicePayloadBackend, ConfigServicePayloadFrontend>(configUrl, configBackToFront);
+
   const __ = useTranslate();
-  const systemHref = useRoute('pim_system_index');
 
   // TODO fetch only ones by session
-  useEffect(() => {doFetchLocales(); doFetchConfig()}, []);
+  useEffect(() => { doFetchLocales(); doFetchConfig() }, []);
 
-  switch (configStatus) {
+  switch (configFetchResult.type) {
+    case 'idle':  // intentional no break
     case 'fetching':
       return null;
-    case 'idle':
-      return null;
-    case 'fetched':
-      break;
     case 'error':
       return <Helper
-          inline
-          level="error"
+        inline
+        level="error"
       >
-        {__('Unexpected error occurred. Please contact system administrator.')}: {fetchConfigError}
+        {__('Unexpected error occurred. Please contact system administrator.')}: {configFetchResult.message}
       </Helper>
+    case 'fetched': // intentional no break
+    default:
+    // continue to rendering
   }
 
   let localesElement: FieldProps['children'] = <Helper
-      inline
-      level="warning"
+    inline
+    level="info"
   >
-    There is a warning.{'Fetching'}
+    Loading languages …
   </Helper>;
-  switch(fetchStatus) {
-    case 'idle':
-      // no break;
-    case 'fetching':
+
+  switch (localesFetchResult.type) {
+    case 'idle': // intentional no break;
+    case 'fetching': break;
+    case "error":
+      localesElement = <Helper
+        inline
+        level="error"
+      >
+        {__('Unexpected error occurred. Please contact system administrator.')}: {localesFetchResult.message}
+      </Helper>
       break;
     case 'fetched':
       localesElement = <SelectInput
-          openLabel=''
-          emptyResultLabel="No result found"
-          onChange={function noRefCheck() { }}
-          placeholder="Please enter a value in the Select input"
-          value={null}
+        openLabel=''
+        emptyResultLabel="No result found"
+        onChange={function noRefCheck() { }}
+        placeholder="Please enter a value in the Select input"
+        value={null}
       >
-        {locales!.map((locale) => {
-          return (<SelectInput.Option
-              key={locale.id}
+        {
+          localesFetchResult.payload.map((locale) => {
+            return (<SelectInput.Option
+              key={locale.code}
               title={locale.label}
               value={locale.code}
-          >
-            <LocaleItem
+            >
+              <LocaleComponent
                 code={locale.code}
                 languageLabel={`${locale.language} (${locale.region})`}
-            />
-          </SelectInput.Option>)
-        })}
+              />
+            </SelectInput.Option>)
+          })}
       </SelectInput>
-          break;
-    case "error":
-      localesElement =  <Helper
-          inline
-          level="error"
-      >
-        {__('Unexpected error occurred. Please contact system administrator.')}: {fetchLocaleError}
-      </Helper>
       break;
+
   }
 
 
@@ -124,7 +128,7 @@ const ConfigForm = () => {
             {__('oro_config.form.config.group.loading_message.helper')}
           </Helper>
           <Field label={__('oro_config.form.config.group.loading_message.fields.enabler.label')}>
-            <BooleanInput value={true} yesLabel={__('pim_common.yes')} noLabel={__('pim_common.no')} readOnly={false} />
+            <BooleanInput value={configFetchResult.payload.pim_ui___loading_message_enabled.value} yesLabel={__('pim_common.yes')} noLabel={__('pim_common.no')} readOnly={false} />
           </Field>
           <Field label={__('oro_config.form.config.group.loading_message.fields.messages.label')}>
             <TextAreaInput readOnly={false} value="foo" onChange={() => { }} />
