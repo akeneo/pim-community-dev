@@ -5,13 +5,13 @@ __metadata:
   version: 5
   cacheKey: 8
 
-"@akeneo-pim-community/activity@workspace:src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity":
+"@akeneo-pim-community/activity@*, @akeneo-pim-community/activity@workspace:src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity":
   version: 0.0.0-use.local
   resolution: "@akeneo-pim-community/activity@workspace:src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity"
   languageName: unknown
   linkType: soft
 
-"@akeneo-pim-community/catalog-volume-monitoring@workspace:src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front":
+"@akeneo-pim-community/catalog-volume-monitoring@*, @akeneo-pim-community/catalog-volume-monitoring@workspace:src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front":
   version: 0.0.0-use.local
   resolution: "@akeneo-pim-community/catalog-volume-monitoring@workspace:src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front"
   dependencies:
@@ -41,13 +41,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@akeneo-pim-community/communication-channel@workspace:src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front":
+"@akeneo-pim-community/communication-channel@*, @akeneo-pim-community/communication-channel@workspace:src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front":
   version: 0.0.0-use.local
   resolution: "@akeneo-pim-community/communication-channel@workspace:src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front"
   languageName: unknown
   linkType: soft
 
-"@akeneo-pim-community/connectivity-connection@workspace:src/Akeneo/Connectivity/Connection/front":
+"@akeneo-pim-community/connectivity-connection@*, @akeneo-pim-community/connectivity-connection@workspace:src/Akeneo/Connectivity/Connection/front":
   version: 0.0.0-use.local
   resolution: "@akeneo-pim-community/connectivity-connection@workspace:src/Akeneo/Connectivity/Connection/front"
   dependencies:
@@ -57,25 +57,25 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@akeneo-pim-community/data-quality-insights@workspace:src/Akeneo/Pim/Automation/DataQualityInsights/front":
+"@akeneo-pim-community/data-quality-insights@*, @akeneo-pim-community/data-quality-insights@workspace:src/Akeneo/Pim/Automation/DataQualityInsights/front":
   version: 0.0.0-use.local
   resolution: "@akeneo-pim-community/data-quality-insights@workspace:src/Akeneo/Pim/Automation/DataQualityInsights/front"
   languageName: unknown
   linkType: soft
 
-"@akeneo-pim-community/enrichment@workspace:src/Akeneo/Pim/Enrichment/Bundle/Resources/workspaces/enrichment":
+"@akeneo-pim-community/enrichment@*, @akeneo-pim-community/enrichment@workspace:src/Akeneo/Pim/Enrichment/Bundle/Resources/workspaces/enrichment":
   version: 0.0.0-use.local
   resolution: "@akeneo-pim-community/enrichment@workspace:src/Akeneo/Pim/Enrichment/Bundle/Resources/workspaces/enrichment"
   languageName: unknown
   linkType: soft
 
-"@akeneo-pim-community/legacy-bridge@workspace:src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge":
+"@akeneo-pim-community/legacy-bridge@*, @akeneo-pim-community/legacy-bridge@workspace:src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge":
   version: 0.0.0-use.local
   resolution: "@akeneo-pim-community/legacy-bridge@workspace:src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge"
   languageName: unknown
   linkType: soft
 
-"@akeneo-pim-community/measurement@workspace:front-packages/measurement":
+"@akeneo-pim-community/measurement@*, @akeneo-pim-community/measurement@workspace:front-packages/measurement":
   version: 0.0.0-use.local
   resolution: "@akeneo-pim-community/measurement@workspace:front-packages/measurement"
   dependencies:
@@ -105,7 +105,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@akeneo-pim-community/permission-form@workspace:src/Akeneo/Connectivity/Connection/workspaces/permission-form":
+"@akeneo-pim-community/permission-form@*, @akeneo-pim-community/permission-form@workspace:src/Akeneo/Connectivity/Connection/workspaces/permission-form":
   version: 0.0.0-use.local
   resolution: "@akeneo-pim-community/permission-form@workspace:src/Akeneo/Connectivity/Connection/workspaces/permission-form"
   dependencies:
@@ -115,7 +115,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@akeneo-pim-community/process-tracker@workspace:src/Akeneo/Platform/Job/front/process-tracker":
+"@akeneo-pim-community/process-tracker@*, @akeneo-pim-community/process-tracker@workspace:src/Akeneo/Platform/Job/front/process-tracker":
   version: 0.0.0-use.local
   resolution: "@akeneo-pim-community/process-tracker@workspace:src/Akeneo/Platform/Job/front/process-tracker"
   dependencies:
@@ -145,7 +145,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@akeneo-pim-community/settings-ui@workspace:src/Akeneo/Pim/Structure/Bundle/Resources/workspaces/settings-ui":
+"@akeneo-pim-community/settings-ui@*, @akeneo-pim-community/settings-ui@workspace:src/Akeneo/Pim/Structure/Bundle/Resources/workspaces/settings-ui":
   version: 0.0.0-use.local
   resolution: "@akeneo-pim-community/settings-ui@workspace:src/Akeneo/Pim/Structure/Bundle/Resources/workspaces/settings-ui"
   languageName: unknown
@@ -166,13 +166,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@akeneo-pim-community/system@workspace:src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/system":
+"@akeneo-pim-community/system@*, @akeneo-pim-community/system@workspace:src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/system":
   version: 0.0.0-use.local
   resolution: "@akeneo-pim-community/system@workspace:src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/system"
   languageName: unknown
   linkType: soft
 
-"@akeneo-pim-community/user-ui@workspace:src/Akeneo/UserManagement/Bundle/Resources/workspaces/user-ui":
+"@akeneo-pim-community/user-ui@*, @akeneo-pim-community/user-ui@workspace:src/Akeneo/UserManagement/Bundle/Resources/workspaces/user-ui":
   version: 0.0.0-use.local
   resolution: "@akeneo-pim-community/user-ui@workspace:src/Akeneo/UserManagement/Bundle/Resources/workspaces/user-ui"
   languageName: unknown
@@ -3730,11 +3730,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"akeneo-design-system@npm:*":
-  version: 0.1.167
-  resolution: "akeneo-design-system@npm:0.1.167"
+"akeneo-design-system@portal:front-packages/akeneo-design-system::locator=pim-community-dev%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "akeneo-design-system@portal:front-packages/akeneo-design-system::locator=pim-community-dev%40workspace%3A."
   dependencies:
-    draft-js: ^0.10.5
+    draft-js: ^0.11.0
     draftjs-to-html: ^0.8.4
     html-to-draftjs: ^1.5.0
     react-draft-wysiwyg: ^1.12.13
@@ -3742,9 +3742,8 @@ __metadata:
     react: ^16.14.0
     react-dom: ^16.9.12
     styled-components: ^5.1.11
-  checksum: 371bc1ab65c9c089241edefd75a5b1876162bc2830d395e6f9c4286d04b53a04778c875d6535647faaa73a2061f271e660254bcc6c5853456bf00c905326cf96
   languageName: node
-  linkType: hard
+  linkType: soft
 
 "alphanum-sort@npm:^1.0.0":
   version: 1.0.2
@@ -6220,17 +6219,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^1.0.0":
-  version: 1.2.7
-  resolution: "core-js@npm:1.2.7"
-  checksum: 0b76371bfa98708351cde580f9287e2360d2209920e738ae950ae74ad08639a2e063541020bf666c28778956fc356ed9fe56d962129c88a87a6a4a0612526c75
-  languageName: node
-  linkType: hard
-
 "core-js@npm:^2.4.0, core-js@npm:^2.5.0":
   version: 2.6.12
   resolution: "core-js@npm:2.6.12"
   checksum: 44fa9934a85f8c78d61e0c8b7b22436330471ffe59ec5076fe7f324d6e8cf7f824b14b1c81ca73608b13bdb0fef035bd820989bf059767ad6fa13123bb8bd016
+  languageName: node
+  linkType: hard
+
+"core-js@npm:^3.6.4":
+  version: 3.20.3
+  resolution: "core-js@npm:3.20.3"
+  checksum: 2106cdfb1330abf9e27d577666fc0421feafe8c39bb5af90a63af16e9706c767a7e3a82edc21ce3ed6b9d806f3200d1cf6cc3d0597a8c0af12dbec287c781d65
   languageName: node
   linkType: hard
 
@@ -7506,17 +7505,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"draft-js@npm:^0.10.5":
-  version: 0.10.5
-  resolution: "draft-js@npm:0.10.5"
+"draft-js@npm:^0.11.0":
+  version: 0.11.7
+  resolution: "draft-js@npm:0.11.7"
   dependencies:
-    fbjs: ^0.8.15
+    fbjs: ^2.0.0
     immutable: ~3.7.4
-    object-assign: ^4.1.0
+    object-assign: ^4.1.1
   peerDependencies:
-    react: ^0.14.0 || ^15.0.0-rc || ^16.0.0-rc || ^16.0.0
-    react-dom: ^0.14.0 || ^15.0.0-rc || ^16.0.0-rc || ^16.0.0
-  checksum: 5cf661c64035ea1e54f4d873cfe9e9e344974aa8e22024bebec59347ba2faeb1aaac955d666d78b0e6ce0910556b7af36c2ce7925df0f71bd055ed6754507986
+    react: ">=0.14.0"
+    react-dom: ">=0.14.0"
+  checksum: b6d127a5e22838d3d43e736762c689c8d67dc632e9eb53b025c2d9504f892bcd0e05c8137f63051ae7b6ecb8b722c8f3923a13453583023e85b999cc0f6f93f7
   languageName: node
   linkType: hard
 
@@ -7668,7 +7667,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"encoding@npm:^0.1.11, encoding@npm:^0.1.12":
+"encoding@npm:^0.1.12":
   version: 0.1.13
   resolution: "encoding@npm:0.1.13"
   dependencies:
@@ -8740,18 +8739,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fbjs@npm:^0.8.15":
-  version: 0.8.18
-  resolution: "fbjs@npm:0.8.18"
+"fbjs-css-vars@npm:^1.0.0":
+  version: 1.0.2
+  resolution: "fbjs-css-vars@npm:1.0.2"
+  checksum: 72baf6d22c45b75109118b4daecb6c8016d4c83c8c0f23f683f22e9d7c21f32fff6201d288df46eb561e3c7d4bb4489b8ad140b7f56444c453ba407e8bd28511
+  languageName: node
+  linkType: hard
+
+"fbjs@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "fbjs@npm:2.0.0"
   dependencies:
-    core-js: ^1.0.0
-    isomorphic-fetch: ^2.1.1
+    core-js: ^3.6.4
+    cross-fetch: ^3.0.4
+    fbjs-css-vars: ^1.0.0
     loose-envify: ^1.0.0
     object-assign: ^4.1.0
     promise: ^7.1.1
     setimmediate: ^1.0.5
-    ua-parser-js: ^0.7.30
-  checksum: 668731b946a765908c9cbe51d5160f973abb78004b3d122587c3e930e3e1ddcc0ce2b17f2a8637dc9d733e149aa580f8d3035a35cc2d3bc78b78f1b19aab90e2
+    ua-parser-js: ^0.7.18
+  checksum: 449799568370c0350775e67a6b6d3f399a1b07df466f4ceb10a5d8ef238c26709fe7c1dac57578028c58496ffb797c119b0bea691e36a4e620f2130e7e90e3a3
   languageName: node
   linkType: hard
 
@@ -10965,7 +10972,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-stream@npm:^1.0.1, is-stream@npm:^1.1.0":
+"is-stream@npm:^1.1.0":
   version: 1.1.0
   resolution: "is-stream@npm:1.1.0"
   checksum: 063c6bec9d5647aa6d42108d4c59723d2bd4ae42135a2d4db6eadbd49b7ea05b750fd69d279e5c7c45cf9da753ad2c00d8978be354d65aa9f6bb434969c6a2ae
@@ -11105,16 +11112,6 @@ __metadata:
   version: 3.0.1
   resolution: "isobject@npm:3.0.1"
   checksum: db85c4c970ce30693676487cca0e61da2ca34e8d4967c2e1309143ff910c207133a969f9e4ddb2dc6aba670aabce4e0e307146c310350b298e74a31f7d464703
-  languageName: node
-  linkType: hard
-
-"isomorphic-fetch@npm:^2.1.1":
-  version: 2.2.1
-  resolution: "isomorphic-fetch@npm:2.2.1"
-  dependencies:
-    node-fetch: ^1.0.1
-    whatwg-fetch: ">=0.10.0"
-  checksum: bb5daa7c3785d6742f4379a81e55b549a469503f7c9bf9411b48592e86632cf5e8fe8ea878dba185c0f33eb7c510c23abdeb55aebfdf5d3c70f031ced68c5424
   languageName: node
   linkType: hard
 
@@ -13370,16 +13367,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^1.0.1":
-  version: 1.7.3
-  resolution: "node-fetch@npm:1.7.3"
-  dependencies:
-    encoding: ^0.1.11
-    is-stream: ^1.0.1
-  checksum: 3bb0528c05d541316ebe52770d71ee25a6dce334df4231fd55df41a644143e07f068637488c18a5b0c43f05041dbd3346752f9e19b50df50569a802484544d5b
-  languageName: node
-  linkType: hard
-
 "node-forge@npm:^0.10.0":
   version: 0.10.0
   resolution: "node-forge@npm:0.10.0"
@@ -14357,6 +14344,20 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "pim-community-dev@workspace:."
   dependencies:
+    "@akeneo-pim-community/activity": "*"
+    "@akeneo-pim-community/catalog-volume-monitoring": "*"
+    "@akeneo-pim-community/communication-channel": "*"
+    "@akeneo-pim-community/connectivity-connection": "*"
+    "@akeneo-pim-community/data-quality-insights": "*"
+    "@akeneo-pim-community/enrichment": "*"
+    "@akeneo-pim-community/legacy-bridge": "*"
+    "@akeneo-pim-community/measurement": "*"
+    "@akeneo-pim-community/permission-form": "*"
+    "@akeneo-pim-community/process-tracker": "*"
+    "@akeneo-pim-community/settings-ui": "*"
+    "@akeneo-pim-community/shared": "*"
+    "@akeneo-pim-community/system": "*"
+    "@akeneo-pim-community/user-ui": "*"
     "@babel/core": ^7.3.4
     "@babel/preset-env": ^7.3.4
     "@babel/preset-react": ^7.10.4
@@ -18890,7 +18891,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ua-parser-js@npm:^0.7.30":
+"ua-parser-js@npm:^0.7.18":
   version: 0.7.31
   resolution: "ua-parser-js@npm:0.7.31"
   checksum: e2f8324a83d1715601576af85b2b6c03890699aaa7272950fc77ea925c70c5e4f75060ae147dc92124e49f7f0e3d6dd2b0a91e7f40d267e92df8894be967ba8b
@@ -20052,7 +20053,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"whatwg-fetch@npm:>=0.10.0, whatwg-fetch@npm:^3.4.1":
+"whatwg-fetch@npm:^3.4.1":
   version: 3.6.2
   resolution: "whatwg-fetch@npm:3.6.2"
   checksum: ee976b7249e7791edb0d0a62cd806b29006ad7ec3a3d89145921ad8c00a3a67e4be8f3fb3ec6bc7b58498724fd568d11aeeeea1f7827e7e1e5eae6c8a275afed

@@ -130,6 +130,20 @@
     "yamljs": "0.3.0"
   },
   "dependencies": {
+    "@akeneo-pim-community/activity": "*",
+    "@akeneo-pim-community/catalog-volume-monitoring": "*",
+    "@akeneo-pim-community/communication-channel": "*",
+    "@akeneo-pim-community/connectivity-connection": "*",
+    "@akeneo-pim-community/data-quality-insights": "*",
+    "@akeneo-pim-community/enrichment": "*",
+    "@akeneo-pim-community/legacy-bridge": "*",
+    "@akeneo-pim-community/measurement": "*",
+    "@akeneo-pim-community/permission-form": "*",
+    "@akeneo-pim-community/process-tracker": "*",
+    "@akeneo-pim-community/settings-ui": "*",
+    "@akeneo-pim-community/shared": "*",
+    "@akeneo-pim-community/system": "*",
+    "@akeneo-pim-community/user-ui": "*",
     "ajv": "^6.10.2",
     "akeneo-design-system": "*",
     "babel-polyfill": "6.26.0",
@@ -177,6 +191,6 @@
     "src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front"
   ],
   "resolutions": {
-    "akeneo-design-system": "*"
+    "akeneo-design-system": "portal:front-packages/akeneo-design-system"
   }
 }
