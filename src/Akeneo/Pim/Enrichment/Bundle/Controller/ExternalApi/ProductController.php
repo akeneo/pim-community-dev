@@ -392,7 +392,7 @@ class ProductController
         if (0 < $violations->count()) {
             $firstViolation = $violations->get(0);
             throw new DocumentedHttpException(
-                Documentation::URL . 'patch_products__code_',
+                Documentation::URL . 'post_products',
                 sprintf('%s Check the expected format on the API documentation.', $firstViolation->getMessage()),
                 new \LogicException($firstViolation->getMessage())
             );
@@ -404,7 +404,7 @@ class ProductController
             $this->eventDispatcher->dispatch(new TechnicalErrorEvent($e));
 
             throw new DocumentedHttpException(
-                Documentation::URL . 'patch_products__code_',
+                Documentation::URL . 'post_products',
                 sprintf('%s Check the expected format on the API documentation.', $e->getMessage()),
                 $e
             );
