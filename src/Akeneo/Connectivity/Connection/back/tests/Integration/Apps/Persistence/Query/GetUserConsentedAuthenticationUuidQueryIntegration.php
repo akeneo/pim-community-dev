@@ -78,8 +78,20 @@ class GetUserConsentedAuthenticationUuidQueryIntegration extends WebTestCase
             $this->clock->now()
         );
 
-        $result = $this->getUserConsentedAuthenticationUuidQuery->execute($user->getId(), "random_app_id");
+        $result = $this->getUserConsentedAuthenticationUuidQuery->execute($user->getId(), 'random_app_id');
 
         $this->assertEquals($uuid, $result);
+    }
+
+    public function test_it_throw_an_exception_if_there_is_no_uuid_into_the_database(): void
+    {
+        $user = $this->authenticateAsAdmin();
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage(
+            sprintf('Consent doesn\'t exist for user %s on app %s', $user->getId(), 'random_app_id')
+        );
+
+        $this->getUserConsentedAuthenticationUuidQuery->execute($user->getId(), 'random_app_id');
     }
 }
