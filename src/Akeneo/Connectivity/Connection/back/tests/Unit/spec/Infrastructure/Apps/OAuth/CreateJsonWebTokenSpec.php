@@ -7,7 +7,7 @@ use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AsymmetricKeys;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAsymmetricKeysQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
-use Akeneo\Connectivity\Connection\Domain\Clock;
+use Akeneo\Connectivity\Connection\Domain\ClockInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateJsonWebToken;
 use Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl;
 use Lcobucci\Clock\FrozenClock;
@@ -40,7 +40,7 @@ class CreateJsonWebTokenSpec extends ObjectBehavior
     private string $lastname;
     private string $email;
 
-    public function let(GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery, Clock $clock, PimUrl $pimUrl): void
+    public function let(GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery, ClockInterface $clock, PimUrl $pimUrl): void
     {
         $this->setCommonData();
         $getAsymmetricKeysQuery->execute()->willReturn(AsymmetricKeys::create($this->publicKey, $this->privateKey));
