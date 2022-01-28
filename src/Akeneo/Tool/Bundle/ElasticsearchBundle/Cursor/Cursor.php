@@ -74,13 +74,42 @@ class Cursor extends AbstractCursor implements CursorInterface
     }
 
     /**
+     * Get the next items (hydrated from doctrine repository).
+     *
+     * PIM-102132: The quick-and-dirty fix here is to always return "pageSize" items (except of course when no more result is found).
+     * Before the fix we could return less than the "pageSize" count, when ES and MySQL are de-synchronized (= there
+     * is more result in ES than in MySQL).
+     * Returning fewer results can cause some UoW issues (c.f. ticket)
+     */
+    protected function getNextItems(array $esQuery): array
+    {
+        $pageSize = $this->pageSize;
+
+        $totalItems = [];
+        $try = 0;
+        do {
+            $try++;
+
+            $numberOfIdentifiersToFind = $pageSize - \count($totalItems);
+            $identifiers = $this->getNextIdentifiers($esQuery, $numberOfIdentifiersToFind);
+            $totalItems = \array_merge($totalItems, $this->getNextItemsFromIdentifiers($identifiers));
+            if (\count($identifiers) < $numberOfIdentifiersToFind) {
+                // There is no more result, we can stop the loop.
+                break;
+            }
+        } while (\count($totalItems) < $pageSize && $try <= 5);
+
+        return $totalItems;
+    }
+
+    /**
      * {@inheritdoc}
      *
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-search-after.html
      */
-    protected function getNextIdentifiers(array $esQuery)
+    protected function getNextIdentifiers(array $esQuery, int $size = null)
     {
-        $esQuery['size'] = $this->pageSize;
+        $esQuery['size'] = $size ?? $this->pageSize;
 
         if (0 === $esQuery['size']) {
             return [];
