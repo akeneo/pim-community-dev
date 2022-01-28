@@ -125,6 +125,7 @@ oro_config:
                 loading_message:
                     title: Customized loading messages
                     helper: Entertain your users with customized messages for loading screens.
+                    placeholder: Please write your own message to be displayed on your loading screen
                     fields:
                         enabler:
                             label: Enable loading messages
