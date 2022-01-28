@@ -21,7 +21,7 @@ class SequentialEditProduct extends Cursor implements CursorInterface
      *
      * @return array
      */
-    protected function getNextItems(array $esQuery)
+    protected function getNextItems(array $esQuery): array
     {
         $identifiers = $this->getNextIdentifiers($esQuery);
         if (empty($identifiers)) {
@@ -36,9 +36,9 @@ class SequentialEditProduct extends Cursor implements CursorInterface
      *
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-search-after.html
      */
-    protected function getNextIdentifiers(array $esQuery)
+    protected function getNextIdentifiers(array $esQuery, int $size = null)
     {
-        $esQuery['size'] = $this->pageSize;
+        $esQuery['size'] = $size ?? $this->pageSize;
 
         if (0 === $esQuery['size']) {
             return [];

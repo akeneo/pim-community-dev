@@ -16,10 +16,17 @@ export const historyMock = {
 };
 
 const UserProvider: FC = ({children}) => {
-    const data: {[key: string]: string} = {uiLocale: 'en_US', timezone: 'UTC'};
+    const data: {[key: string]: unknown} = {
+        uiLocale: 'en_US',
+        timezone: 'UTC',
+        avatar: {filePath: 'avatar.png'},
+        first_name: 'John',
+        last_name: 'Doe',
+    };
     const user = {
-        // eslint-disable-next-line
-        get: <T,>(key: string) => data[key] as unknown as T,
+        get: function <T>(key: string) {
+            return data[key] as T;
+        },
         set: () => undefined,
         refresh: () => Promise.resolve(),
     };

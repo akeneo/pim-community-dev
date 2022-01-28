@@ -35,7 +35,6 @@ class FixturesLoader
     private SimpleFactoryInterface $userGroupFactory;
     private ObjectUpdaterInterface $userGroupUpdater;
     private SaverInterface $userGroupSaver;
-    private GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler;
 
     public function __construct(
         DbalConnection $dbalConnection,
@@ -49,8 +48,7 @@ class FixturesLoader
         SaverInterface $userRoleSaver,
         SimpleFactoryInterface $userGroupFactory,
         ObjectUpdaterInterface $userGroupUpdater,
-        SaverInterface $userGroupSaver,
-        GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler
+        SaverInterface $userGroupSaver
     ) {
         $this->dbalConnection = $dbalConnection;
         $this->fileStorer = $fileStorer;
@@ -64,7 +62,6 @@ class FixturesLoader
         $this->userGroupFactory = $userGroupFactory;
         $this->userGroupUpdater = $userGroupUpdater;
         $this->userGroupSaver = $userGroupSaver;
-        $this->generateAsymmetricKeysHandler = $generateAsymmetricKeysHandler;
     }
 
     public function loadFixtures(): void
@@ -196,9 +193,6 @@ class FixturesLoader
             'auditable' => false,
             'type' => 'default',
         ]);
-
-        // Load OpenId public and private keys
-        $this->addOpenIdKeys();
     }
 
     private function createUserRole(array $data): RoleInterface
@@ -296,10 +290,5 @@ class FixturesLoader
                 )
             );
         }
-    }
-
-    private function addOpenIdKeys(): void
-    {
-        $this->generateAsymmetricKeysHandler->handle(new GenerateAsymmetricKeysCommand());
     }
 }

@@ -32,6 +32,8 @@ class SaveAsymmetricKeysQueryIntegration extends TestCase
 
     public function test_it_saves_asymmetric_keys_into_the_database(): void
     {
+        $this->resetPimConfiguration();
+        
         $selectQuery = 'SELECT * FROM pim_configuration WHERE code=:code';
 
         $result = $this->connection->executeQuery(
@@ -98,5 +100,10 @@ class SaveAsymmetricKeysQueryIntegration extends TestCase
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    private function resetPimConfiguration(): void
+    {
+        $this->connection->executeQuery('TRUNCATE pim_configuration');
     }
 }
