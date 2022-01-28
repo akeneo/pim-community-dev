@@ -62,7 +62,6 @@ mappings:
         mapping:
           type: 'keyword'
           normalizer: 'attribute_option_normalizer'
-# TODO CPM-464: add migration
     -
       table_values_measurement:
         path_match: 'table_values.*.value-measurement'
