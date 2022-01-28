@@ -5,6 +5,8 @@ import {Column, DataMapping, MAX_DATA_MAPPING_COUNT} from '../../models';
 import {useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {AddDataMappingDropdown} from '../AddDataMappingDropdown';
 import {DataMappingRow} from './DataMappingRow';
+import {filterErrors} from '@akeneo-pim-community/shared/lib/models/validation-error';
+import {getErrorsForPath} from '@akeneo-pim-community/shared/src/models/validation-error';
 
 const Container = styled.div`
   flex: 1;
@@ -29,6 +31,7 @@ const DataMappingList = ({
 }: DataMappingListProps) => {
   const translate = useTranslate();
   const canAddDataMapping = MAX_DATA_MAPPING_COUNT > dataMappings.length;
+  const globalErrors = getErrorsForPath(validationErrors, '');
 
   return (
     <Container>
@@ -37,7 +40,7 @@ const DataMappingList = ({
         <SectionTitle.Spacer />
         <AddDataMappingDropdown canAddDataMapping={canAddDataMapping} onDataMappingAdded={onDataMappingAdded} />
       </SectionTitle>
-      {validationErrors.map((error, index) => (
+      {globalErrors.map((error, index) => (
         <Helper key={index} level="error">
           {translate(error.messageTemplate, error.parameters)}
         </Helper>
@@ -51,6 +54,7 @@ const DataMappingList = ({
               dataMapping={dataMapping}
               columns={columns}
               onClick={onDataMappingSelected}
+              hasError={filterErrors(validationErrors, `[${dataMapping.uuid}]`).length > 0}
             />
           ))}
         </Table.Body>

@@ -35,6 +35,30 @@ jest.mock('../AddDataMappingDropdown', () => ({
   ),
 }));
 
+const dataMappings: DataMapping[] = [
+  {
+    uuid: '288d85cb-3ffb-432d-a422-d2c6810113ab',
+    target: {
+      code: 'a_code',
+      type: 'property',
+      action: 'set',
+      ifEmpty: 'skip',
+      onError: 'skipLine',
+    },
+    sources: ['source1', 'source3'],
+    operations: [],
+    sampleData: [],
+  },
+];
+
+const columns: Column[] = [
+  {
+    uuid: 'source1',
+    index: 0,
+    label: 'Source 1',
+  },
+];
+
 test('it can add a new data mapping', async () => {
   const handleDataMappingCreated = jest.fn();
 
@@ -128,29 +152,6 @@ test('it displays the data mapping', async () => {
 
 test('it call handler when row is clicked', async () => {
   const handleDataMappingSelected = jest.fn();
-  const dataMappings: DataMapping[] = [
-    {
-      uuid: '288d85cb-3ffb-432d-a422-d2c6810113ab',
-      target: {
-        code: 'a_code',
-        type: 'property',
-        action: 'set',
-        ifEmpty: 'skip',
-        onError: 'skipLine',
-      },
-      sources: ['source1', 'source3'],
-      operations: [],
-      sampleData: [],
-    },
-  ];
-
-  const columns: Column[] = [
-    {
-      uuid: 'source1',
-      index: 0,
-      label: 'Source 1',
-    },
-  ];
 
   await renderWithProviders(
     <DataMappingList
@@ -174,19 +175,28 @@ test('it displays validation errors', async () => {
       invalidValue: '',
       message: 'this is a data mapping validation error',
       parameters: {},
-      propertyPath: '[data_mapping][name]',
+      propertyPath: '[288d85cb-3ffb-432d-a422-d2c6810113ab]',
+    },
+    {
+      messageTemplate: 'global_error.key.name',
+      invalidValue: '',
+      message: 'this is a global data mapping validation error',
+      parameters: {},
+      propertyPath: '',
     },
   ];
 
   await renderWithProviders(
     <DataMappingList
       onDataMappingSelected={jest.fn()}
-      dataMappings={[]}
-      columns={[]}
+      dataMappings={dataMappings}
+      columns={columns}
       validationErrors={validationErrors}
       onDataMappingAdded={jest.fn()}
     />
   );
 
-  expect(screen.getByText('error.key.name')).toBeInTheDocument();
+  expect(screen.getByText('global_error.key.name')).toBeInTheDocument();
+  expect(screen.queryByText('error.key.name')).not.toBeInTheDocument();
+  expect(screen.getByRole('alert')).toBeInTheDocument();
 });

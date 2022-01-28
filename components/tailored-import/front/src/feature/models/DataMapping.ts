@@ -1,7 +1,6 @@
-import {ColumnIdentifier} from './Configuration';
+import {Column, ColumnIdentifier} from './Configuration';
 import {uuid} from 'akeneo-design-system';
 import {LocaleReference, ChannelReference} from '@akeneo-pim-community/shared';
-import {Column} from '.';
 
 type TargetAction = 'set' | 'add';
 type TargetEmptyAction = 'clear' | 'skip';
