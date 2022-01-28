@@ -29,11 +29,12 @@ const useFetchProductQualityScore = (channel: string | undefined, locale: string
   const [retries, setRetries] = useState<number>(0);
   const [qualityScore, setQualityScore] = useState<ProductQualityScore | null>(null);
   const [needsUpdate, setNeedsUpdate] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const {productId, productUpdated} = useSelector((state: ProductEditFormState) => {
+  const {productId, productUpdatedDate} = useSelector((state: ProductEditFormState) => {
     return {
       productId: state.product.meta.id,
-      productUpdated: state.product.updated,
+      productUpdatedDate: state.product.updated,
     };
   });
 
@@ -46,13 +47,17 @@ const useFetchProductQualityScore = (channel: string | undefined, locale: string
   }, []);
 
   useEffect(() => {
+    setIsLoading(true);
     setNeedsUpdate(true);
     setRetries(0);
-  }, [productUpdated]);
+  }, [productUpdatedDate]);
 
   useEffect(() => {
     if (productId && needsUpdate) {
       loadProductQualityScore(productId, retries);
+    }
+    if (false === needsUpdate) {
+      setIsLoading(false);
     }
   }, [productId, retries, needsUpdate]);
 
@@ -83,7 +88,12 @@ const useFetchProductQualityScore = (channel: string | undefined, locale: string
     }, getRetryDelay(retries));
   };
 
-  return qualityScore !== null && channel && locale ? qualityScore[channel][locale] : null;
+  const score = qualityScore !== null && channel && locale ? qualityScore[channel][locale] : null;
+
+  return {
+    score,
+    isLoading
+  }
 };
 
 export {useFetchProductQualityScore};

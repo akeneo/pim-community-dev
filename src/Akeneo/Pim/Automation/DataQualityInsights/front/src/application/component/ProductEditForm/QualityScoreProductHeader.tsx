@@ -4,9 +4,11 @@ import {useCatalogContext, useFetchProductQualityScore} from '../../../infrastru
 
 const QualityScoreProductHeader = () => {
   const {channel, locale} = useCatalogContext();
-  const score = useFetchProductQualityScore(channel, locale);
+  const {score, isLoading} = useFetchProductQualityScore(channel, locale);
 
-  return <QualityScoreBar currentScore={score ? score : null} />;
+  return isLoading
+    ? <div>Loading...</div>
+    : <QualityScoreBar currentScore={score ? score : null}/>;
 };
 
 export {QualityScoreProductHeader};
