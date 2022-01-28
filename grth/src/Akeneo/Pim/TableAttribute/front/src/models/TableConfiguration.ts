@@ -2,7 +2,7 @@ import {LabelCollection} from '@akeneo-pim-community/shared';
 import {ReferenceEntityIdentifierOrCode} from './ReferenceEntity';
 import {MeasurementFamilyCode, MeasurementUnitCode} from './MeasurementFamily';
 
-export type DataType = 'text' | 'number' | 'boolean' | 'select' | 'reference_entity';
+export type DataType = 'text' | 'number' | 'boolean' | 'select' | 'reference_entity' | 'measurement';
 export type ColumnCode = string;
 
 export type TextColumnValidation = {
@@ -102,4 +102,12 @@ const castReferenceEntityColumnDefinition: (columnDefinition: ColumnDefinition) 
     return columnDefinition;
   };
 
-export {castSelectColumnDefinition, castReferenceEntityColumnDefinition};
+const castMeasurementColumnDefinition: (columnDefinition: ColumnDefinition) => MeasurementColumnDefinition =
+  columnDefinition => {
+    if (columnDefinition.data_type !== 'measurement') {
+      throw new Error(`Column definition should have 'measurement' data_type, '${columnDefinition.data_type}' given)`);
+    }
+    return columnDefinition;
+  };
+
+export {castSelectColumnDefinition, castReferenceEntityColumnDefinition, castMeasurementColumnDefinition};

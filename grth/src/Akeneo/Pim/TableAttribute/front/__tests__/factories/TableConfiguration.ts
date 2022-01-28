@@ -29,7 +29,7 @@ export const getComplexTableConfiguration: (firstColumnType?: DataType) => Table
       data_type: 'measurement',
       code: 'ElectricCharge',
       labels: {
-        en_US: 'Eletric Charge',
+        en_US: 'Electric Charge',
       },
       validations: {},
       measurement_family_code: 'ElectricCharge',

@@ -29,16 +29,6 @@ describe('MeasurementUnitSelector', () => {
     expect(handleChange).toBeCalledWith('JOULE');
   });
 
-  it('should clear measurement unit', async () => {
-    const handleChange = jest.fn();
-    renderWithProviders(
-      <MeasurementUnitSelector measurementFamilyCode={'Energy'} value={'JOULE'} onChange={handleChange} />
-    );
-
-    fireEvent.click(await screen.findByTitle('pim_common.clear_value'));
-    expect(handleChange).toBeCalledWith(undefined);
-  });
-
   it('should be readonly if there is no measurement family code', async () => {
     renderWithProviders(
       <MeasurementUnitSelector
@@ -50,6 +40,6 @@ describe('MeasurementUnitSelector', () => {
     );
 
     expect(await screen.findByText('JOULE')).toBeInTheDocument();
-    expect(screen.queryByTitle('pim_common.clear_value')).not.toBeInTheDocument();
+    expect(screen.getByRole('textbox')).toBeDisabled();
   });
 });

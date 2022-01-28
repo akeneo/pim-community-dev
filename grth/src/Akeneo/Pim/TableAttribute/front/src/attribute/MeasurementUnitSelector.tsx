@@ -7,7 +7,7 @@ import {useMeasurementUnits} from './useMeasurementUnits';
 type MeasurementUnitSelectorProps = {
   value?: MeasurementUnitCode;
   measurementFamilyCode?: MeasurementFamilyCode;
-  onChange: (value?: MeasurementUnitCode) => void;
+  onChange: (value: MeasurementUnitCode) => void;
 };
 
 const MeasurementUnitSelector: React.FC<MeasurementUnitSelectorProps> = ({value, measurementFamilyCode, onChange}) => {
@@ -21,9 +21,9 @@ const MeasurementUnitSelector: React.FC<MeasurementUnitSelectorProps> = ({value,
       value={value || null}
       emptyResultLabel={translate('pim_common.no_result')}
       openLabel={translate('pim_common.open')}
-      onChange={(value: MeasurementUnitCode | null) => onChange(value || undefined)}
+      onChange={(value: MeasurementUnitCode) => onChange(value)}
       readOnly={typeof measurementFamilyCode === 'undefined'}
-      clearLabel={translate('pim_common.clear_value')}
+      clearable={false}
     >
       {(measurementUnits || []).map(({code, labels}) => (
         <SelectInput.Option title={getLabel(labels, catalogLocale, code)} value={code} key={code}>

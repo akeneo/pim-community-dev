@@ -6,7 +6,7 @@ import {useMeasurementFamilies} from './useMeasurementFamilies';
 
 type MeasurementFamilySelectorProps = {
   value?: MeasurementFamilyCode;
-  onChange: (value?: MeasurementFamilyCode) => void;
+  onChange?: (value?: MeasurementFamilyCode) => void;
   readOnly?: boolean;
 };
 
@@ -19,7 +19,7 @@ const MeasurementFamilySelector: React.FC<MeasurementFamilySelectorProps> = ({va
   return (
     <SelectInput
       value={value || null}
-      onChange={(value: MeasurementFamilyCode | null) => onChange(value || undefined)}
+      onChange={(value: MeasurementFamilyCode | null) => onChange?.(value || undefined)}
       emptyResultLabel={translate('pim_common.no_result')}
       openLabel={translate('pim_common.open')}
       readOnly={readOnly}
