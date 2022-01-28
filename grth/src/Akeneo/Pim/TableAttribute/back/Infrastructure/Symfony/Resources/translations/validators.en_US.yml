@@ -50,6 +50,7 @@ pim_table_configuration:
         product_value:
             non_existing_columns: '[0,1]The "{{ non_existing_columns }}" column does not exist|]1,Inf[The "{{ non_existing_columns }}" columns do not exist'
             unexpected_data_type: 'The "{{ columnCode }}" column expects a {{ expected }}, {{ given }} given'
+            unexpected_data_type_for_measurement: 'The "{{ columnCode }}" column expects an string unit code and a numeric amount, {{ given }} given'
             first_column_required: 'The "{{ columnCode }}" column is mandatory'
             unknown_option: 'Make sure you only use existing option codes, current value: "{{ optionCode }}"'
             integer_required: 'This value should be an integer: {{ invalid_value }}'
