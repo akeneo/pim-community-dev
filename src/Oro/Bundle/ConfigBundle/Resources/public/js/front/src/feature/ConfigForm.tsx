@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
-  Locale,
+  LocaleCode,
   NotificationLevel,
   PageContent,
   PageHeader,
@@ -16,25 +16,21 @@ import {
   Breadcrumb,
   Button,
   Field,
-  FieldProps,
   Helper,
-  Locale as LocaleComponent,
   SectionTitle,
   SelectInput,
   TextAreaInput
 } from 'akeneo-design-system';
-
+import { LocaleSelector } from './../components/LocaleSelector';
 import { configBackToFront, ConfigServicePayloadBackend, ConfigServicePayloadFrontend } from '../models/ConfigServicePayload';
 
 const ConfigForm = () => {
   const __ = useTranslate();
-  const notify =  useNotify();
+  const notify = useNotify();
 
   const systemHref = useRoute('pim_system_index');
-  const localeUrl = useRoute('pim_localization_locale_index');
   const configUrl = useRoute('oro_config_configuration_system_get');
 
-  const [localesFetchResult, doFetchLocales] = useFetchSimpler<Locale[]>(localeUrl);
   const [configFetchResult, doFetchConfig] = useFetchSimpler<ConfigServicePayloadBackend, ConfigServicePayloadFrontend>(configUrl, configBackToFront);
 
   // configuration object under edition
@@ -42,7 +38,6 @@ const ConfigForm = () => {
 
   // TODO fetch locales only once by session
   useEffect(() => {
-    doFetchLocales();
     doFetchConfig();
   }, []);
 
@@ -57,7 +52,21 @@ const ConfigForm = () => {
             ...config[fieldName],
             value
           }
-        })
+        });
+    }
+  }, [config]);
+
+  const handleStringChange = useCallback((fieldName: 'pim_ui___loading_messages' | 'pim_ui___language') => {
+    return (value: string) => {
+      if (!config) return;
+      setConfig(
+        {
+          ...config,
+          [fieldName]: {
+            ...config[fieldName],
+            value
+          }
+        });
     }
   }, [config]);
 
@@ -74,7 +83,7 @@ const ConfigForm = () => {
       setConfig(configBackToFront(await response.json()));
       notify(NotificationLevel.SUCCESS, __('oro_config.form.config.save_ok'));
     } else {
-      notify(NotificationLevel.ERROR,  __('oro_config.form.config.save_error', { reason: response.statusText }));
+      notify(NotificationLevel.ERROR, __('oro_config.form.config.save_error', { reason: response.statusText }));
     }
   }
 
@@ -93,49 +102,6 @@ const ConfigForm = () => {
 
   if (!config) return null;
 
-  let localesElement: FieldProps['children'] = <Helper
-    inline
-    level="info"
-  >
-    Loading languages …
-  </Helper>;
-
-  switch (localesFetchResult.type) {
-    case 'idle': // intentional no break;
-    case 'fetching': break;
-    case "error":
-      localesElement = <Helper
-        inline
-        level="error"
-      >
-        {__('Unexpected error occurred. Please contact system administrator.')}: {localesFetchResult.message}
-      </Helper>
-      break;
-    case 'fetched':
-      localesElement = <SelectInput
-        openLabel=''
-        emptyResultLabel="No result found"
-        onChange={function noRefCheck() { }}
-        placeholder="Please enter a value in the Select input"
-        value={null}
-      >
-        {
-          localesFetchResult.payload.map((locale) => {
-            return (<SelectInput.Option
-              key={locale.code}
-              title={locale.label}
-              value={locale.code}
-            >
-              <LocaleComponent
-                code={locale.code}
-                languageLabel={`${locale.language} (${locale.region})`}
-              />
-            </SelectInput.Option>)
-          })}
-      </SelectInput>
-      break;
-
-  }
 
   return (
     <>
@@ -162,7 +128,7 @@ const ConfigForm = () => {
           <SectionTitle>
             <SectionTitle.Title>{__('oro_config.form.config.group.loading_message.title')}</SectionTitle.Title>
           </SectionTitle>
-          <Helper inline level="info">
+          <Helper level="info">
             {__('oro_config.form.config.group.loading_message.helper')}
           </Helper>
           <Field label={__('oro_config.form.config.group.loading_message.fields.enabler.label')}>
@@ -183,7 +149,7 @@ const ConfigForm = () => {
             <SectionTitle.Title>{__('oro_config.form.config.group.localization.title')}</SectionTitle.Title>
           </SectionTitle>
           <Field label={__('oro_config.form.config.group.localization.fields.system_locale.label')}>
-            {localesElement}
+            <LocaleSelector value={config.pim_ui___language.value} onChange={handleStringChange('pim_ui___language')} />
           </Field>
         </Section>
         <Section>
