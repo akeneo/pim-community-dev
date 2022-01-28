@@ -42,8 +42,7 @@
     "packages:build": "yarn dsm:build && yarn shared:build && yarn measurement:build && yarn catalog-volume-monitoring:build && yarn process-tracker:build",
     "test:e2e:open": "cypress open",
     "test:e2e:run": "cypress run",
-
-    "lint": "yarn workspaces foreach -v run lint",
+    "lint": "yarn workspaces foreach -vp run lint",
     "lint:fix": "yarn workspaces foreach -v run lint:fix",
     "test:unit:run": "yarn workspaces foreach -v run test:unit:run",
     "lib:build": "yarn workspaces foreach -v run lib:build"
@@ -59,6 +58,16 @@
   "private": true,
   "workspaces": [
     "front-packages/akeneo-design-system",
-    "src/Akeneo/Connectivity/Connection/front"
-  ]
+    "front-packages/measurement",
+    "front-packages/shared",
+    "src/Akeneo/Connectivity/Connection/front",
+    "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity"
+  ],
+  "dependencies": {
+    "@types/react-router": "<6.0.0",
+    "@types/react-router-dom": "<6.0.0",
+    "akeneo-design-system": "workspace:*",
+    "react-router": "<6.0.0",
+    "react-router-dom": "<6.0.0"
+  }
 }

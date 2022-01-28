@@ -2,14 +2,9 @@
   "name": "@akeneo-pim-community/measurement",
   "version": "0.1.0",
   "private": true,
-  "peerDependencies": {
-    "babel-loader": "8.1.0",
-    "eslint": "^7.11.0",
-    "react": "^16.14.0",
-    "react-dom": "^16.9.12",
-    "styled-components": "^5.1.1"
-  },
+  "packageManager": "yarn@3.1.1",
   "devDependencies": {
+    "@testing-library/dom": "^8.11.3",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -17,16 +12,21 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.14.0",
     "@types/react-dom": "^16.9.12",
-    "@types/react-router-dom": "^5.1.7",
-    "@types/styled-components": "^5.1.1",
-    "prettier": "^2.2.1"
+    "@types/react-router-dom": "<6.0.0",
+    "@types/styled-components": "<6.0.0",
+    "eslint": "^7.11.0",
+    "jest": "^26.0.0",
+    "jest-watch-typeahead": "<1.0.0",
+    "prettier": "^2.5.1"
   },
   "dependencies": {
     "@akeneo-pim-community/shared": "*",
     "akeneo-design-system": "*",
-    "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router": "<6.0.0",
+    "react-router-dom": "<6.0.0",
+    "react-scripts": "^4.0.1",
     "typescript": "^4.0.3",
     "web-vitals": "^0.2.4"
   },
@@ -38,9 +38,9 @@
     "lib:build": "echo 'Building Measurement lib...' && tsc -p ./tsconfig.build.json && echo 'Done!'",
     "translation:build": "cp ../../public/js/translation/en_US.js ./src/translations.json",
     "route:build": "cp ../../public/js/fos_js_routes.json ./src/routes.json",
-    "packages:build": "yarn --cwd=../akeneo-design-system run lib:build && yarn --cwd=../shared run lib:build",
+    "packages:build": "yarn workspace akeneo-design-system run lib:build && yarn workspace @akeneo-pim-community/shared run lib:build",
     "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{ts,tsx}\"",
-    "lint:check": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\""
+    "lint": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\""
   },
   "eslintConfig": {
     "extends": [
