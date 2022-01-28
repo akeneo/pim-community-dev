@@ -46,18 +46,13 @@ final class PayloadFormatValidatorIntegration extends TestCase
         $payload = [
             'values' => [
                 'a_text' => [
-                    ['locale' => null, 'scope' => null, 'foo' => 'bar'],
+                    ['locale' => null, 'scope' => null],
                 ],
             ],
         ];
         $violations = $this->validator->validate($payload, new PayloadFormat());
         self::assertStringContainsString(
             'Property "a_text" expects an array with the key "data". Check the expected format on the API documentation.',
-            (string) $violations,
-            \sprintf('Violation message is not found, have: %s', $violations)
-        );
-        self::assertStringContainsString(
-            'Property "a_text" does not expect the "foo" field',
             (string) $violations,
             \sprintf('Violation message is not found, have: %s', $violations)
         );

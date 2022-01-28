@@ -109,11 +109,10 @@ final class PayloadFormatValidator extends ConstraintValidator
                 new All([
                     new Type(['type' => 'array', 'message' => \sprintf('Property "%s" expect to be an array of array', $attributeCode)]),
                     new Collection([
-                        'extraFieldsMessage' => \sprintf('Property "%s" does not expect the {{ field }} field', $attributeCode),
+                        'allowExtraFields' => true, // To avoid BC break
                         'missingFieldsMessage' => \sprintf(
                             'Property "%s" expects an array with the key {{ field }}. Check the expected format on the API documentation.',
                             $attributeCode,
-
                         ),
                         'fields' => [
                             'locale' => [new Type(['type' => 'string', 'message' => \sprintf(self::WRONG_LOCALE_FORMAT, $attributeCode)])],
