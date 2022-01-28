@@ -26,6 +26,12 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
+    Akeneo\UserManagement\Bundle\Notification\MailResetNotifier:
+        arguments:
+            - '@logger'
+            - '@twig'
+            - '@pim_notification.email.email_notifier'
+
     security.authentication.provider.dao:
         class: Akeneo\UserManagement\Bundle\Provider\CustomDaoAuthenticationProvider
         abstract: true
