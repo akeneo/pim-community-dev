@@ -54,7 +54,13 @@ jest.mock('./components/DataMappingList/DataMappingList', () => ({
 }));
 
 jest.mock('./components/DataMappingDetails/DataMappingDetails', () => ({
-  DataMappingDetails: ({dataMapping, onDataMappingChange}: {dataMapping: DataMapping, onDataMappingChange: (dataMapping: DataMapping) => void}) => (
+  DataMappingDetails: ({
+    dataMapping,
+    onDataMappingChange,
+  }: {
+    dataMapping: DataMapping;
+    onDataMappingChange: (dataMapping: DataMapping) => void;
+  }) => (
     <>
       Data mapping details of {dataMapping.uuid}
       <button onClick={() => onDataMappingChange({...dataMapping, target: {...dataMapping.target, ifEmpty: 'clear'}})}>
@@ -182,20 +188,22 @@ test('it can display and update the data mapping detail when clicking on the dat
 
   expect(handleStructureConfigurationChange).toHaveBeenCalledWith({
     ...structureConfiguration,
-    dataMappings: [{
-      uuid: `uuid_${mockUuid}`,
-      target: {
-        code: 'sku',
-        type: 'attribute',
-        channel: null,
-        locale: null,
-        action: 'set',
-        ifEmpty: 'clear',
-        onError: 'skipLine',
+    dataMappings: [
+      {
+        uuid: `uuid_${mockUuid}`,
+        target: {
+          code: 'sku',
+          type: 'attribute',
+          channel: null,
+          locale: null,
+          action: 'set',
+          ifEmpty: 'clear',
+          onError: 'skipLine',
+        },
+        operations: [],
+        sampleData: [],
+        sources: ['d1249682-720e-11ec-90d6-0242ac120003'],
       },
-      operations: [],
-      sampleData: [],
-      sources: ["d1249682-720e-11ec-90d6-0242ac120003"],
-    }],
+    ],
   });
 });

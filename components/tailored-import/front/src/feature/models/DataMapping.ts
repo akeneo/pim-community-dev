@@ -84,4 +84,11 @@ const createPropertyTarget = (code: string): PropertyTarget => {
 };
 
 export type {DataMapping, DataMappingType};
-export {MAX_DATA_MAPPING_COUNT, MAX_SOURCE_COUNT_BY_DATA_MAPPING, createDataMapping, updateDataMapping, createDefaultDataMapping, addSourceToDataMapping};
+export {
+  MAX_DATA_MAPPING_COUNT,
+  MAX_SOURCE_COUNT_BY_DATA_MAPPING,
+  createDataMapping,
+  updateDataMapping,
+  createDefaultDataMapping,
+  addSourceToDataMapping,
+};

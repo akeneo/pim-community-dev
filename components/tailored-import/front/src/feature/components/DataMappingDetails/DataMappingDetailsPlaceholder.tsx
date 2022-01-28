@@ -1,11 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {
-  getColor,
-  getFontSize,
-  RulesIllustration,
-  SectionTitle,
-} from 'akeneo-design-system';
+import {getColor, getFontSize, RulesIllustration, SectionTitle} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
 const Container = styled.div`

@@ -92,7 +92,6 @@ test('it add a source to data mapping', () => {
   });
 });
 
-
 test('it update a data mapping', () => {
   const dataMappings: DataMapping[] = [
     {

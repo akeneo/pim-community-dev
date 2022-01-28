@@ -2,19 +2,19 @@ import React from 'react';
 import {screen} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {DataMappingDetails} from './DataMappingDetails';
-import {Column, DataMapping} from "../../models";
-import userEvent from "@testing-library/user-event";
+import {Column, DataMapping} from '../../models';
+import userEvent from '@testing-library/user-event';
 
 const columns: Column[] = [
   {
     uuid: '288d85cb-3ffb-432d-a422-d2c6810113ab',
     index: 0,
-    label: 'Product identifier'
+    label: 'Product identifier',
   },
   {
     uuid: 'dba0d9f8-2283-4a07-82b7-67e0435b7dcc',
     index: 1,
-    label: 'Name'
+    label: 'Name',
   },
 ];
 
@@ -51,8 +51,21 @@ const propertyDataMapping: DataMapping = {
 };
 
 jest.mock('../SourceDropdown', () => ({
-  SourceDropdown: ({onColumnSelected, disabled}: {onColumnSelected: (selectedColumn: Column) => void, disabled: boolean}) => (
-    <button onClick={disabled ? undefined : () => onColumnSelected({uuid: 'dba0d9f8-2283-4a07-82b7-67e0435b7dcc', index: 0, label: 'Product identifier'})}>
+  SourceDropdown: ({
+    onColumnSelected,
+    disabled,
+  }: {
+    onColumnSelected: (selectedColumn: Column) => void;
+    disabled: boolean;
+  }) => (
+    <button
+      onClick={
+        disabled
+          ? undefined
+          : () =>
+              onColumnSelected({uuid: 'dba0d9f8-2283-4a07-82b7-67e0435b7dcc', index: 0, label: 'Product identifier'})
+      }
+    >
       Add source
     </button>
   ),
@@ -60,7 +73,7 @@ jest.mock('../SourceDropdown', () => ({
 
 test('it display a property data mapping', () => {
   renderWithProviders(
-    <DataMappingDetails dataMapping={propertyDataMapping} columns={columns} onDataMappingChange={jest.fn()}/>
+    <DataMappingDetails dataMapping={propertyDataMapping} columns={columns} onDataMappingChange={jest.fn()} />
   );
 
   expect(screen.getByText('akeneo.tailored_import.data_mapping.title')).toBeInTheDocument();
@@ -70,7 +83,7 @@ test('it display a property data mapping', () => {
 
 test('it display an attribute data mapping', () => {
   renderWithProviders(
-    <DataMappingDetails dataMapping={attributeDataMapping} columns={columns} onDataMappingChange={jest.fn()}/>
+    <DataMappingDetails dataMapping={attributeDataMapping} columns={columns} onDataMappingChange={jest.fn()} />
   );
 
   expect(screen.getByText('akeneo.tailored_import.data_mapping.title')).toBeInTheDocument();
@@ -81,7 +94,11 @@ test('it display an attribute data mapping', () => {
 test('it can add a source to a data mapping', async () => {
   const handleDataMappingChange = jest.fn();
   renderWithProviders(
-    <DataMappingDetails dataMapping={propertyDataMapping} columns={columns} onDataMappingChange={handleDataMappingChange}/>
+    <DataMappingDetails
+      dataMapping={propertyDataMapping}
+      columns={columns}
+      onDataMappingChange={handleDataMappingChange}
+    />
   );
 
   userEvent.click(screen.getByText('Add source'));
@@ -99,13 +116,13 @@ test('it cannot add a source to a data mapping when limit is reached', async () 
       '288d85cb-3ffb-432d-a422-d2c6810113ab',
       'dba0d9f8-2283-4a07-82b7-67e0435b7dcc',
       '288d85cb-3ffb-432d-a422-d2c6810113ab',
-      'dba0d9f8-2283-4a07-82b7-67e0435b7dcc'
+      'dba0d9f8-2283-4a07-82b7-67e0435b7dcc',
     ],
   };
 
   const handleDataMappingChange = jest.fn();
   renderWithProviders(
-    <DataMappingDetails dataMapping={dataMapping} columns={columns} onDataMappingChange={handleDataMappingChange}/>
+    <DataMappingDetails dataMapping={dataMapping} columns={columns} onDataMappingChange={handleDataMappingChange} />
   );
 
   userEvent.click(screen.getByText('Add source'));

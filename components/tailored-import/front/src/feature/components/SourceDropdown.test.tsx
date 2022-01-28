@@ -19,7 +19,7 @@ test('it can add a source', () => {
     },
   ];
 
-  renderWithProviders(<SourceDropdown columns={columns} onColumnSelected={onColumnSelected} disabled={false}/>);
+  renderWithProviders(<SourceDropdown columns={columns} onColumnSelected={onColumnSelected} disabled={false} />);
 
   userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.source.add'));
   userEvent.click(screen.getByText('Product (B)'));
@@ -84,7 +84,7 @@ test('it cannot add a source when disabled', () => {
     },
   ];
 
-  renderWithProviders(<SourceDropdown columns={columns} onColumnSelected={handleColumnSelected} disabled={true}/>);
+  renderWithProviders(<SourceDropdown columns={columns} onColumnSelected={handleColumnSelected} disabled={true} />);
 
   const addSourceButton = screen.getByText('akeneo.tailored_import.data_mapping.source.add');
   expect(addSourceButton).toHaveAttribute('disabled');

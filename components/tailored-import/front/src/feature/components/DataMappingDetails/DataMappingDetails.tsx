@@ -2,13 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import {SectionTitle} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {
-  Column,
-  DataMapping,
-  generateColumnName,
-  MAX_SOURCE_COUNT_BY_DATA_MAPPING
-} from '../../models';
-import {SourceDropdown} from "../SourceDropdown";
+import {Column, DataMapping, generateColumnName, MAX_SOURCE_COUNT_BY_DATA_MAPPING} from '../../models';
+import {SourceDropdown} from '../SourceDropdown';
 
 const Container = styled.div`
   height: 100%;
@@ -44,9 +39,7 @@ const DataMappingDetails = ({columns, dataMapping, onDataMappingChange}: ColumnD
       <ul>
         {dataMapping.sources.map((uuid, index) => {
           const column = columns.find(column => uuid === column.uuid);
-          return (
-            <li key={`${uuid}${index}`}>{column ? generateColumnName(column) : ''}</li>
-          )
+          return <li key={`${uuid}${index}`}>{column ? generateColumnName(column) : ''}</li>;
         })}
       </ul>
       <SourceDropdown columns={columns} onColumnSelected={handleAddSource} disabled={!canAddSource} />

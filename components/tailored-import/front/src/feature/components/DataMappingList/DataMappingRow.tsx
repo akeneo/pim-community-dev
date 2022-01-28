@@ -21,10 +21,9 @@ const DataMappingRow = ({dataMapping, columns, onClick}: DataMappingRowProps) =>
     <Table.Row onClick={() => onClick(dataMapping.uuid)}>
       <Table.Cell>{dataMapping.target.code}</Table.Cell>
       <Table.Cell>
-        {sources.length === 0 ?
-          translate('akeneo.tailored_import.data_mapping_list.no_sources') :
-          `${translate('akeneo.tailored_import.sources')}: ${sources.join(' ')}`
-        }
+        {sources.length === 0
+          ? translate('akeneo.tailored_import.data_mapping_list.no_sources')
+          : `${translate('akeneo.tailored_import.sources')}: ${sources.join(' ')}`}
       </Table.Cell>
     </Table.Row>
   );

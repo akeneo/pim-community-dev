@@ -25,7 +25,7 @@ const DataMappingList = ({
   columns,
   validationErrors,
   onDataMappingAdded,
-  onDataMappingSelected
+  onDataMappingSelected,
 }: DataMappingListProps) => {
   const translate = useTranslate();
   const canAddDataMapping = MAX_DATA_MAPPING_COUNT > dataMappings.length;
