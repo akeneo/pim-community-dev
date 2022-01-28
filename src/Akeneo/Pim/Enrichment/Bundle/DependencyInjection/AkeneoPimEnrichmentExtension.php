@@ -56,6 +56,7 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('product_value_factories.yml');
         $loader->load('family_variant.yml');
         $loader->load('filters.yml');
+        $loader->load('handlers.yml');
         $loader->load('job_constraints.yml');
         $loader->load('job_defaults.yml');
         $loader->load('jobs.yml');

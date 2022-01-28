@@ -1,0 +1,8 @@
+services:
+    Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler:
+        arguments:
+            - '@validator'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.updater.product'
