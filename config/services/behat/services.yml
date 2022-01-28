@@ -66,6 +66,7 @@ services:
             - '%env(APP_DATABASE_PASSWORD)%'
             - '%kernel.cache_dir%/sql-dump/'
             - '%index_hosts%'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler'
 
     akeneo_integration_tests.launcher.job_launcher:
         class: Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher
