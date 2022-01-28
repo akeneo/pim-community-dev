@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   Locale,
+  NotificationLevel,
   PageContent,
   PageHeader,
   PimView,
   Section,
   useFetchSimpler,
+  useNotify,
   useRoute,
   useTranslate
 } from '@akeneo-pim-community/shared';
@@ -26,6 +28,7 @@ import { configBackToFront, ConfigServicePayloadBackend, ConfigServicePayloadFro
 
 const ConfigForm = () => {
   const __ = useTranslate();
+  const notify =  useNotify();
 
   const systemHref = useRoute('pim_system_index');
   const localeUrl = useRoute('pim_localization_locale_index');
@@ -35,14 +38,12 @@ const ConfigForm = () => {
   const [configFetchResult, doFetchConfig] = useFetchSimpler<ConfigServicePayloadBackend, ConfigServicePayloadFrontend>(configUrl, configBackToFront);
 
   // configuration object under edition
-  const [config, setConfig] = useState<ConfigServicePayloadFrontend | null>(null)
-
-  const [saveStatus, setSaveStatus] = useState<string | null>(null)
+  const [config, setConfig] = useState<ConfigServicePayloadFrontend | null>(null);
 
   // TODO fetch locales only once by session
   useEffect(() => {
     doFetchLocales();
-    doFetchConfig()
+    doFetchConfig();
   }, []);
 
 
@@ -58,7 +59,7 @@ const ConfigForm = () => {
           }
         })
     }
-  }, [config])
+  }, [config]);
 
   const handleSave = async () => {
     const response = await fetch(configUrl, {
@@ -68,11 +69,12 @@ const ConfigForm = () => {
         ['X-Requested-With', 'XMLHttpRequest'],
       ],
       body: JSON.stringify(config)
-    })
+    });
     if (response.ok) {
-      setSaveStatus('ok')
+      setConfig(configBackToFront(await response.json()));
+      notify(NotificationLevel.SUCCESS, __('oro_config.form.config.save_ok'));
     } else {
-      setSaveStatus(response.statusText)
+      notify(NotificationLevel.ERROR,  __('oro_config.form.config.save_error', { reason: response.statusText }));
     }
   }
 
@@ -156,11 +158,6 @@ const ConfigForm = () => {
         <PageHeader.Title>{__('pim_menu.item.configuration')}</PageHeader.Title>
       </PageHeader>
       <PageContent>
-        {saveStatus &&
-          <Helper level={saveStatus === 'ok' ? 'info' : 'error'}>
-            {saveStatus === 'ok' ? __('oro_config.form.config.save_ok') : __('oro_config.form.config.save_error', { reason: saveStatus })}
-          </Helper>
-        }
         <Section>
           <SectionTitle>
             <SectionTitle.Title>{__('oro_config.form.config.group.loading_message.title')}</SectionTitle.Title>
