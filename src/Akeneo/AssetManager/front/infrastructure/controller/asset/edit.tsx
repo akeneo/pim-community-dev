@@ -26,7 +26,7 @@ import {ConfigProvider} from 'akeneoassetmanager/application/hooks/useConfig';
 import {getConfig} from 'pimui/js/config-registry';
 import {useAssetFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAssetFetcher';
 import {ReactNode, useEffect, useState} from 'react';
-import {FullScreenError} from "@akeneo-pim-community/shared";
+import {FullScreenError} from '@akeneo-pim-community/shared';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
@@ -49,7 +49,7 @@ type AssetLoaderProps = {
 };
 
 type LoadingError = {
-  statusCode: number,
+  statusCode: number;
   statusText: string;
 };
 

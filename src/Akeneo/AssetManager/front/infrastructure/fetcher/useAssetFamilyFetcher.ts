@@ -12,7 +12,7 @@ import {
 } from 'akeneoassetmanager/domain/model/asset-family/list';
 import {AssetFamilyResult} from 'akeneoassetmanager/domain/fetcher/asset-family';
 import {useAttributeDenormalizer} from '../../application/hooks/attribute/useAttributeDenormalizer';
-import {handleResponse} from "../tools/handleResponse";
+import {handleResponse} from '../tools/handleResponse';
 
 const useAssetFamilyFetcher = () => {
   const router = useRouter();

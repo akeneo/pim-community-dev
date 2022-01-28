@@ -59,7 +59,7 @@ type AssetFamilyLoaderProps = {
 };
 
 type LoadingError = {
-  statusCode: number,
+  statusCode: number;
   statusText: string;
 };
 

@@ -19,7 +19,7 @@ import {isMediaFileData} from 'akeneoassetmanager/domain/model/asset/data/media-
 import {getMediaLinkUrl} from 'akeneoassetmanager/domain/model/asset/data/media-link';
 import {useRouter} from '@akeneo-pim-community/shared';
 import {useAssetFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAssetFetcher';
-import {ConfigProvider} from "akeneoassetmanager/application/hooks/useConfig";
+import {ConfigProvider} from 'akeneoassetmanager/application/hooks/useConfig';
 import {getConfig} from 'pimui/js/config-registry';
 
 type AssetFamilyIdentifier = string;
@@ -44,8 +44,8 @@ const ProposalDiffAssetCollectionWrapper = ({...props}: ProposalDiffAssetCollect
     >
       <ProposalDiffAssetCollection {...props} />
     </ConfigProvider>
-  )
-}
+  );
+};
 
 const ProposalDiffAssetCollection: React.FC<ProposalDiffAssetCollectionProps> = ({accessor, change, ...rest}) => {
   const assetFetcher = useAssetFetcher();

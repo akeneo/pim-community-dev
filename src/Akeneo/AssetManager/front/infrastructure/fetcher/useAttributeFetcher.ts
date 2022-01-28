@@ -6,7 +6,7 @@ import {Attribute, NormalizedAttribute} from 'akeneoassetmanager/domain/model/at
 import {validateBackendAttribute} from 'akeneoassetmanager/infrastructure/validator/attribute';
 import {useAttributeDenormalizer} from 'akeneoassetmanager/application/hooks/attribute/useAttributeDenormalizer';
 import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {handleResponse} from "../tools/handleResponse";
+import {handleResponse} from '../tools/handleResponse';
 
 const useAttributeFetcher = () => {
   const router = useRouter();
