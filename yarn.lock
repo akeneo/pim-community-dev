@@ -61,6 +61,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@akeneo/connectivity-connection@workspace:src/Akeneo/Connectivity/Connection/front":
+  version: 0.0.0-use.local
+  resolution: "@akeneo/connectivity-connection@workspace:src/Akeneo/Connectivity/Connection/front"
+  dependencies:
+    eslint: ^8.7.0
+    jest: ^26.0.0
+    prettier: ^2.5.1
+  peerDependencies:
+    eslint: ^8.7.0
+    jest: ^26.0.0
+    prettier: ^2.5.1
+  languageName: unknown
+  linkType: soft
+
 "@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.10.4, @babel/code-frame@npm:^7.12.13, @babel/code-frame@npm:^7.16.7, @babel/code-frame@npm:^7.5.5, @babel/code-frame@npm:^7.8.3":
   version: 7.16.7
   resolution: "@babel/code-frame@npm:7.16.7"

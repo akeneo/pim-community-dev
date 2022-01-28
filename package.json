@@ -18,8 +18,8 @@
     "before-commit": "yarn prettier && yarn lint && yarn test",
     "test": "yarn unit && yarn webpack-test --env=prod && yarn integration && yarn acceptance tests/features",
     "webpack-test": "yarn generate-models && webpack --config webpack-test.config.js",
-    "lint": "eslint src/**/*.js --config .eslintrc --ignore-path .eslintignore --quiet && yarn prettier:check",
-    "lint-fix": "eslint src/**/*.js --config .eslintrc --ignore-path .eslintignore --quiet --fix && yarn prettier:run",
+    "thispackage:lint": "eslint src/**/*.js --config .eslintrc --ignore-path .eslintignore --quiet && yarn prettier:check",
+    "thispackage:lint-fix": "eslint src/**/*.js --config .eslintrc --ignore-path .eslintignore --quiet --fix && yarn prettier:run",
     "unit": "yarn packages:unit && jest --no-cache --config tests/front/unit/jest/unit.jest.js --runInBand",
     "integration": "jest --no-cache --config ./tests/front/integration/jest/integration.jest.js",
     "acceptance": "cucumber-js --tags @acceptance-front -r ./frontend/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber",
@@ -27,7 +27,6 @@
     "less": "node frontend/build/compile-less.js",
     "update-extensions": "node ./frontend/build/update-extensions.js",
     "generate-models": "yarn workspace @akeneo-pim-community/communication-channel generate-models",
-    "dsm:build": "yarn workspace akeneo-design-system lib:build",
     "shared:lint:check": "yarn workspace @akeneo-pim-community/shared lint:check",
     "shared:lint-fix": "yarn workspace @akeneo-pim-community/shared lint:fix",
     "shared:build": "yarn workspace @akeneo-pim-community/shared lib:build",
@@ -42,7 +41,12 @@
     "packages:lint-fix": "yarn shared:lint-fix && echo 'TODO Missing lint fix of other packages'",
     "packages:build": "yarn dsm:build && yarn shared:build && yarn measurement:build && yarn catalog-volume-monitoring:build && yarn process-tracker:build",
     "test:e2e:open": "cypress open",
-    "test:e2e:run": "cypress run"
+    "test:e2e:run": "cypress run",
+
+    "lint": "yarn workspaces foreach -v run lint",
+    "lint:fix": "yarn workspaces foreach -v run lint:fix",
+    "test:unit:run": "yarn workspaces foreach -v run test:unit:run",
+    "lib:build": "yarn workspaces foreach -v run lib:build"
   },
   "repository": {
     "type": "git",
@@ -54,6 +58,7 @@
   },
   "private": true,
   "workspaces": [
-    "front-packages/akeneo-design-system"
+    "front-packages/akeneo-design-system",
+    "src/Akeneo/Connectivity/Connection/front"
   ]
 }
