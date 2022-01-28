@@ -59,6 +59,7 @@ describe('Test asset family hooks', () => {
     global.fetch = jest.fn().mockImplementationOnce(() =>
       Promise.resolve({
         json: () => Promise.resolve({...assetFamily, permission: {edit: true}}),
+        status: 200,
       })
     );
 
@@ -72,6 +73,7 @@ describe('Test asset family hooks', () => {
     global.fetch = jest.fn().mockImplementationOnce(() =>
       Promise.resolve({
         json: () => Promise.resolve({...assetFamily, permission: {edit: true}}),
+        status: 200,
       })
     );
 
@@ -121,6 +123,7 @@ describe('Test asset family hooks', () => {
     global.fetch = jest.fn().mockImplementationOnce(() =>
       Promise.resolve({
         json: () => Promise.resolve({...assetFamily, permission: {edit: false}}),
+        status: 200,
       })
     );
 

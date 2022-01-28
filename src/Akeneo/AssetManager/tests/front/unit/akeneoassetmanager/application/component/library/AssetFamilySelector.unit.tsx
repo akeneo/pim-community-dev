@@ -11,6 +11,7 @@ describe('Test file-drop-zone component', () => {
           Promise.resolve({
             items: [],
           }),
+        status: 200,
       })
     );
 
@@ -39,6 +40,7 @@ describe('Test file-drop-zone component', () => {
               },
             ],
           }),
+        status: 200,
       })
     );
 
