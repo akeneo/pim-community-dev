@@ -10,22 +10,21 @@ import {
 import {useTranslate, getLabel, LocaleCode} from '@akeneo-pim-community/shared';
 import {AssetFamilyListItem} from 'akeneoassetmanager/domain/model/asset-family/list';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {AssetFamilyDataProvider} from 'akeneoassetmanager/application/hooks/asset-family';
+import {useAssetFamilyFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAssetFamilyFetcher';
 
 type AssetFamilySelectorProps = {
   assetFamilyIdentifier: AssetFamilyIdentifier | null;
   locale: LocaleCode;
-  dataProvider: AssetFamilyDataProvider;
   onChange: (assetFamilyIdentifier: AssetFamilyIdentifier | null) => void;
 };
 
 const useAssetFamilyList = (
   currentAssetFamilyIdentifier: AssetFamilyIdentifier | null,
-  dataProvider: AssetFamilyDataProvider,
   onChange: (assetFamily: AssetFamilyIdentifier | null) => void
 ): [AssetFamilyListItem[], boolean] => {
   const [assetFamilyList, setAssetFamilyList] = useState<AssetFamilyListItem[]>([]);
   const [isFetching, setIsFetching] = useState(true);
+  const assetFamilyFetcher = useAssetFamilyFetcher();
 
   useEffect(() => {
     if (isFetching) return;
@@ -44,7 +43,7 @@ const useAssetFamilyList = (
   }, [assetFamilyList, isFetching]);
 
   useEffect(() => {
-    dataProvider.assetFamilyFetcher.fetchAll().then((assetFamilyList: AssetFamilyListItem[]) => {
+    assetFamilyFetcher.fetchAll().then((assetFamilyList: AssetFamilyListItem[]) => {
       setAssetFamilyList(assetFamilyList);
       setIsFetching(false);
     });
@@ -54,13 +53,13 @@ const useAssetFamilyList = (
 };
 
 /* istanbul ignore next */
-const AssetFamilySelector = ({assetFamilyIdentifier, locale, dataProvider, onChange}: AssetFamilySelectorProps) => {
+const AssetFamilySelector = ({assetFamilyIdentifier, locale, onChange}: AssetFamilySelectorProps) => {
   const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState();
   const [searchValue, setSearchValue] = useState<string>('');
   const inputRef = useRef<HTMLInputElement>(null);
   const focus = useAutoFocus(inputRef);
-  const [assetFamilyList, isFetching] = useAssetFamilyList(assetFamilyIdentifier, dataProvider, onChange);
+  const [assetFamilyList, isFetching] = useAssetFamilyList(assetFamilyIdentifier, onChange);
 
   const handleClose = () => {
     close();

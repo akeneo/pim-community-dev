@@ -1,5 +1,5 @@
 import React, {RefObject, createRef} from 'react';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import styled from 'styled-components';
 import {Button, Key, CloseIcon, Modal, SectionTitle, getColor} from 'akeneo-design-system';
 import {
@@ -24,13 +24,15 @@ import {
   optionEditionSubmission,
 } from 'akeneoassetmanager/domain/event/attribute/option';
 import {Option, createEmptyOption} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
-import hydrateAttribute from 'akeneoassetmanager/application/hydrator/attribute';
+import {hydrator} from 'akeneoassetmanager/application/hydrator/attribute';
 import {AttributeWithOptions} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import {catalogLocaleChanged} from 'akeneoassetmanager/domain/event/user';
 import {saveOptions} from 'akeneoassetmanager/application/action/attribute/edit';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import AssetFamilyCode from 'akeneoassetmanager/domain/model/asset-family/code';
+import {useAttributeDenormalizer} from 'akeneoassetmanager/application/hooks/attribute/useAttributeDenormalizer';
+import {useAttributeFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAttributeFetcher';
 
 const Content = styled.div`
   display: flex;
@@ -61,29 +63,28 @@ const LabelTranslations = styled.div`
   overflow: auto;
 `;
 
-const OptionView = ({onOptionEditionStart}: {onOptionEditionStart: () => void}) => {
+const OptionView = () => {
   const translate = useTranslate();
+  const dispatch = useDispatch();
+  const attributeDenormalizer = useAttributeDenormalizer();
+
+  const handleOptionEditionStart = () => {
+    dispatch((dispatch: any, getState: () => EditState) => {
+      const attribute = hydrator(attributeDenormalizer)(getState().attribute.data);
+      dispatch(optionEditionStart(((attribute as any) as AttributeWithOptions).getOptions()));
+    });
+  };
 
   return (
     <div>
-      <Button onClick={onOptionEditionStart} level="tertiary" ghost={true}>
+      <Button onClick={handleOptionEditionStart} level="tertiary" ghost={true}>
         {translate('pim_asset_manager.attribute.edit.input.manage_options.quick_edit.label')}
       </Button>
     </div>
   );
 };
 
-export const view = connect(
-  () => ({}),
-  (dispatch: any) => ({
-    onOptionEditionStart: () => {
-      dispatch((dispatch: any, getState: () => EditState) => {
-        const attribute = hydrateAttribute(getState().attribute.data);
-        dispatch(optionEditionStart(((attribute as any) as AttributeWithOptions).getOptions()));
-      });
-    },
-  })
-)(OptionView);
+export const view = OptionView;
 
 type DispatchProps = {
   events: {
@@ -91,7 +92,6 @@ type DispatchProps = {
     onOptionEditionCodeUpdated: (code: string, id: any) => void;
     onOptionEditionSelected: (id: any) => void;
     onOptionEditionLabelUpdated: (label: string, locale: string, id: any) => void;
-    onOptionEditionSubmission: (id: any) => void;
     onOptionEditionDelete: (id: any) => void;
     onLocaleChanged: (localeCode: LocaleCode) => void;
   };
@@ -295,6 +295,9 @@ const ManageOptionsView = ({
 }: ManageOptionsProps) => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
+  const dispatch = useDispatch();
+  const attributeDenormalizer = useAttributeDenormalizer();
+  const attributeFetcher = useAttributeFetcher();
 
   const canEditAttribute = rights.assetFamily.edit && isGranted('akeneo_assetmanager_option_edit');
   const labelInputReferences: RefObject<HTMLInputElement>[] = [
@@ -352,7 +355,11 @@ const ManageOptionsView = ({
       </Modal.SectionTitle>
       <Modal.Title>{translate('pim_asset_manager.attribute.edit.input.manage_options.quick_edit.label')}</Modal.Title>
       <Modal.TopRightButtons>
-        {canEditAttribute && <Button onClick={events.onOptionEditionSubmission}>{translate('pim_common.save')}</Button>}
+        {canEditAttribute && (
+          <Button onClick={() => dispatch(saveOptions(attributeFetcher, attributeDenormalizer))}>
+            {translate('pim_common.save')}
+          </Button>
+        )}
       </Modal.TopRightButtons>
       <Content>
         <OptionContainer>
@@ -465,9 +472,6 @@ export default connect(
         },
         onLocaleChanged: (localeCode: LocaleCode) => {
           dispatch(catalogLocaleChanged(localeCode));
-        },
-        onOptionEditionSubmission: () => {
-          dispatch(saveOptions());
         },
         onOptionEditionDelete: (id: any) => {
           dispatch(optionEditionDelete(id));

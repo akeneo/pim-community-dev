@@ -17,7 +17,7 @@ import {LocaleDropdown} from 'akeneoassetmanager/application/component/app/Local
 import {ChannelDropdown} from 'akeneoassetmanager/application/component/app/ChannelDropdown';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
-import {useInputViewGenerator} from '../../../../hooks/useInputViewGenerator';
+import {useInputViewGenerator} from 'akeneoassetmanager/application/hooks/useInputViewGenerator';
 
 /** @TODO RAC-331 use body style bold */
 const AttributeName = styled.label`
