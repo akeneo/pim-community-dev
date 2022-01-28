@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-10248: Fix NOT BETWEEN filter does not work on products and product models (created and updated property)
+- PIM-10223: Add missing "s" on "remove-orphans" option in Makefile
 
 # 5.0.69 (2022-01-21)
 
