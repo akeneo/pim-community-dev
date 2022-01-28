@@ -128,4 +128,96 @@ class CursorSpec extends ObjectBehavior
         $this->current()->shouldReturn(null);
         $this->key()->shouldReturn(null);
     }
+
+    /**
+     * PIM-10232
+     */
+    function it_is_iterable_and_returns_page_size_results(
+        Client $esClient,
+        CursorableRepositoryInterface $repository,
+        ProductInterface $productFoo,
+        ProductInterface $productBar,
+        ProductInterface $productFum
+    ) {
+        $esClient->search(['track_total_hits' => true, 'size' => 3, 'sort' => ['updated' => 'desc', '_id' => 'asc']])
+            ->willReturn([
+                'hits' => [
+                    'total' => ['value' => 4, 'relation' => 'eq'],
+                    'hits' => [
+                        [
+                            '_source' => ['identifier' => 'foo'],
+                            'sort' => [1490810553000, '#foo'],
+                        ],
+                        [
+                            '_source' => ['identifier' => 'bar'],
+                            'sort' => [1490810554000, '#bar'],
+                        ],
+                        [
+                            '_source' => ['identifier' => 'baz'],
+                            'sort' => [1490810555000, '#baz'],
+                        ],
+                    ],
+                ],
+            ]);
+
+        $esClient->search(
+            [
+                'track_total_hits' => true,
+                'size' => 1,
+                'sort' => ['updated' => 'desc', '_id' => 'asc'],
+                'search_after' => [1490810555000, '#baz']
+            ])
+            ->willReturn([
+                'hits' => [
+                    'total' => ['value' => 4],
+                    'hits' => [
+                        [
+                            '_source' => ['identifier' => 'fum'],
+                            'sort' => [1490810565000, '#fum']
+                        ]
+                    ]
+                ]
+            ]);
+        $esClient->search(
+            [
+                'track_total_hits' => true,
+                'size' => 3,
+                'sort' => ['updated' => 'desc', '_id' => 'asc'],
+                'search_after' => [1490810565000, '#fum']
+            ])->willReturn([
+            'hits' => [
+                'total' => ['value' => 4],
+                'hits' => []
+            ]
+        ]);
+
+        $productFoo->getIdentifier()->willReturn('foo');
+        $productBar->getIdentifier()->willReturn('bar');
+        $productFum->getIdentifier()->willReturn('fum');
+        $repository->getItemsFromIdentifiers(['foo', 'bar', 'baz'])->willReturn([$productFoo, $productBar]);
+        $repository->getItemsFromIdentifiers(['fum'])->willReturn([$productFum]);
+
+        $data = [$productFoo, $productBar, $productFum];
+
+        $this->shouldImplement(\Iterator::class);
+
+        $this->rewind()->shouldReturn(null);
+        for ($i = 0; $i < 3; $i++) {
+            if ($i > 0) {
+                $this->next()->shouldReturn(null);
+            }
+            $this->valid()->shouldReturn(true);
+            $this->current()->shouldReturn($data[$i]);
+
+            $n = 0 === $i%3 ? 0 : $i;
+            $this->key()->shouldReturn($n);
+        }
+
+        $this->next()->shouldReturn(null);
+        $this->valid()->shouldReturn(false);
+
+        // check behaviour after the end of data
+        $this->current()->shouldReturn(null);
+        $this->key()->shouldReturn(null);
+    }
 }
