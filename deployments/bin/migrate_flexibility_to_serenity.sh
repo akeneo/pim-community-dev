@@ -96,7 +96,20 @@ yq d -i ${PED_DIR}/deployments/terraform/pim/Chart.yaml "dependencies.(name==ela
 yq w -i ${PED_DIR}/deployments/terraform/pim/Chart.yaml "dependencies[+].name" "flex-es"
 yq w -i ${PED_DIR}/deployments/terraform/pim/Chart.yaml "dependencies.(name==flex-es).alias" "elasticsearch"
 yq w -i ${PED_DIR}/deployments/terraform/pim/Chart.yaml "dependencies.(name==flex-es).repository" "file://${PED_DIR}/deployments/share/flex-es/"
-yq w -i ${PED_DIR}/deployments/terraform/pim/Chart.yaml "dependencies.(name==flex-es).version" "0.0.0"
+yq w -i ${PED_DIR}/deployments/terraform/pim/Chart.yaml "dependencies.(name==flex-es).version" "0.0.1"
+
+yq w -i ${DESTINATION_PATH}/values.yaml pim.hook.addAdmin.enabled false
+yq w -i ${DESTINATION_PATH}/values.yaml pim.hook.installPim.enabled false
+yq w -i ${DESTINATION_PATH}/values.yaml pim.hook.upgradeES.enabled false
+yq w -i ${DESTINATION_PATH}/values.yaml mysql.mysql.resetPassword true
+yq w -i ${DESTINATION_PATH}/values.yaml mysql.mysql.rootPassword "${MYSQL_ROOT_PASSWORD}"
+yq w -i ${DESTINATION_PATH}/values.yaml mysql.mysql.userPassword "${MYSQL_USER_PASSWORD}"
+yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.email "${PIM_USER}"
+yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.login "${PIM_USER}"
+yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.password "${PIM_PASSWORD}"
+# Copy the values.yaml file to be use when applying SRNT chart
+cp ${DESTINATION_PATH}/values.yaml /tmp/values.yaml
+yq d -i ${DESTINATION_PATH}/values.yaml "elasticsearch"
 
 yq d -i ${PED_DIR}/deployments/terraform/pim/values.yaml "elasticsearch"
 # Not used, but to be compatible with helm using the Tshirt size
@@ -114,35 +127,30 @@ yq w -i ${PED_DIR}/deployments/terraform/pim/values.yaml "elasticsearch.data.res
 yq w -i ${PED_DIR}/deployments/terraform/pim/values.yaml "elasticsearch.data.resources.requests.memory" "1536Mi"
 # Not used, but to be compatible with helm using the Tshirt size
 
-yq d -i ${DESTINATION_PATH}/values.yaml "elasticsearch"
+yq w -i ${DESTINATION_PATH}/values.yaml "elasticsearch.appVersion" "7.14.1"
 yq w -i ${DESTINATION_PATH}/values.yaml "elasticsearch.common.service.name" "elasticsearch-client"
-yq w -i ${DESTINATION_PATH}/values.yaml "elasticsearch.fullnameOverride" "elasticsearch"
+yq w -i ${DESTINATION_PATH}/values.yaml "elasticsearch.cluster.plugins[+]" "repository-gcs"
 yq w -i ${DESTINATION_PATH}/values.yaml "elasticsearch.fullName" "elasticsearch"
+yq w -i ${DESTINATION_PATH}/values.yaml "elasticsearch.fullnameOverride" "elasticsearch"
 yq w -i ${DESTINATION_PATH}/values.yaml "elasticsearch.image.es.tag" "7.14.1"
 yq w -i ${DESTINATION_PATH}/values.yaml "elasticsearch.single.persistentDisk.name" "${ES_DISK_NAME}"
 yq w -i ${DESTINATION_PATH}/values.yaml "elasticsearch.single.persistentDisk.size" "${FLEX_SIZE}"
 
-yq w -i ${DESTINATION_PATH}/values.yaml pim.hook.addAdmin.enabled false
-yq w -i ${DESTINATION_PATH}/values.yaml pim.hook.installPim.enabled false
-yq w -i ${DESTINATION_PATH}/values.yaml pim.hook.upgradeES.enabled false
-yq w -i ${DESTINATION_PATH}/values.yaml mysql.mysql.resetPassword true
-yq w -i ${DESTINATION_PATH}/values.yaml mysql.mysql.rootPassword "${MYSQL_ROOT_PASSWORD}"
-yq w -i ${DESTINATION_PATH}/values.yaml mysql.mysql.userPassword "${MYSQL_USER_PASSWORD}"
-yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.email "${PIM_USER}"
-yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.login "${PIM_USER}"
-yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.password "${PIM_PASSWORD}"
+
 
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.mysql_disk_size' "${MYSQL_DISK_SIZE}"
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.mysql_disk_name' "${MYSQL_DISK_NAME}"
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.source' "../../terraform"
+yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim-monitoring.source' "../../terraform/monitoring"
 
-# Remove hook_activate_es_snapshots (not usable in the flex es chart)
-rm -rf ${PED_DIR}/deployments/terraform/pim/templates/hook_activate_es_snapshots.yaml
+# Copy the main.tf.json file to be use when applying monitoring module
+cp ${DESTINATION_PATH}/main.tf.json /tmp/main.tf.json
+# Delete the module.pim-monitoring for now to be able to import MySQL disk
+yq d -P -j -i ${DESTINATION_PATH}/main.tf.json "module.pim-monitoring"
 
 
 echo "#########################################################################"
 echo "- Generate kubeconfig -"
-
 cd ${DESTINATION_PATH}
 terraform init
 terraform apply -input=false -auto-approve -target=module.pim.local_file.kubeconfig
@@ -154,15 +162,15 @@ export KUBECONFIG=.kubeconfig
 
 kubectl describe namespace ${PFID} || kubectl create namespace ${PFID}
 FLEX_DISK_NAME=${FLEX_DISK_NAME} ES_DISK_NAME=${ES_DISK_NAME} SOURCE_PFID=${SOURCE_PFID}  NAMESPACE=${PFID} envsubst < ${BINDIR}/../share/es-data-move.yaml.tpl | kubectl -n ${PFID} apply -f -
-kubectl -n ${PFID} wait --for=condition=complete --timeout=3m job/es-data-move
+kubectl -n ${PFID} wait --for=condition=complete --timeout=5m job/es-data-move
 FLEX_DISK_NAME=${FLEX_DISK_NAME} ES_DISK_NAME=${ES_DISK_NAME} SOURCE_PFID=${SOURCE_PFID}  NAMESPACE=${PFID} envsubst < ${BINDIR}/../share/es-data-move.yaml.tpl | kubectl -n ${PFID} delete -f -
 
 # Mysql modification to be able to use the SRNT MySQL chart
 FLEX_DISK_NAME=${FLEX_DISK_NAME} MYSQL_DISK_NAME=${MYSQL_DISK_NAME} SOURCE_PFID=${SOURCE_PFID} NAMESPACE=${PFID}  envsubst < ${BINDIR}/../share/mysql-data-move.yaml.tpl | kubectl -n ${PFID} apply -f -
-kubectl -n ${PFID} wait --for=condition=complete --timeout=3m job/mysql-data-move
+kubectl -n ${PFID} wait --for=condition=complete --timeout=5m job/mysql-data-move
 FLEX_DISK_NAME=${FLEX_DISK_NAME} MYSQL_DISK_NAME=${MYSQL_DISK_NAME} SOURCE_PFID=${SOURCE_PFID} NAMESPACE=${PFID}  envsubst < ${BINDIR}/../share/mysql-data-move.yaml.tpl | kubectl -n ${PFID} delete -f -
 MYSQL_DISK_NAME=${MYSQL_DISK_NAME} MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} MYSQL_USER_PASSWORD=${MYSQL_USER_PASSWORD} SOURCE_PFID=${SOURCE_PFID} NAMESPACE=${PFID}  envsubst < ${BINDIR}/../share/mysql-fix-init.yaml.tpl | kubectl -n ${PFID} apply -f -
-kubectl -n ${PFID} wait --for=condition=complete --timeout=3m job/mysql-fix-init
+kubectl -n ${PFID} wait --for=condition=complete --timeout=2m job/mysql-fix-init
 MYSQL_DISK_NAME=${MYSQL_DISK_NAME} MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} MYSQL_USER_PASSWORD=${MYSQL_USER_PASSWORD} SOURCE_PFID=${SOURCE_PFID} NAMESPACE=${PFID}  envsubst < ${BINDIR}/../share/mysql-fix-init.yaml.tpl | kubectl -n ${PFID} delete -f -
 
 # Import MySQL disk
@@ -171,7 +179,17 @@ terraform import module.pim.google_compute_disk.mysql-disk projects/${DESTINATIO
 
 echo "#########################################################################"
 echo "- Create Flex/Serenity instance"
+# Revert the main.tf.json file for use monitoring
+cp /tmp/main.tf.json ${DESTINATION_PATH}/main.tf.json
+terraform init
 terraform apply -input=false -auto-approve
+
+
+echo "#########################################################################"
+echo "- Copy the asset and catalog storages"
+FLEX_DISK_NAME=${FLEX_DISK_NAME} PFID=${PFID} NAMESPACE=${PFID} envsubst < ${BINDIR}/../share/asset-move.yaml.tpl | kubectl -n ${PFID} apply -f -
+kubectl -n ${PFID} wait --for=condition=complete --timeout=9m job/asset-move
+FLEX_DISK_NAME=${FLEX_DISK_NAME} PFID=${PFID} NAMESPACE=${PFID} envsubst < ${BINDIR}/../share/asset-move.yaml.tpl | kubectl -n ${PFID} delete -f -
 
 
 echo "#########################################################################"
@@ -180,7 +198,6 @@ POD_MYSQL=$(kubectl get pods --namespace=${PFID} -l component=mysql | awk '/mysq
 POD_DAEMON=$(kubectl get pods --no-headers --namespace=${PFID} -l component=pim-daemon-webhook-consumer-process | awk 'NR==1{print $1}')
 # echo "Fix Onboarder tables creation"
 # kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c 'bin/console akeneo:onboarder:setup-database --no-interaction'
-#
 kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c "curl 'elasticsearch-client:9200/_cat/indices?format=json&pretty'"
 kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c 'bin/console doctrine:migrations:sync-metadata-storage --no-interaction --quiet'
 kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c 'bin/console doctrine:migration:migrate -vvv --allow-no-migration --no-interaction'
@@ -205,7 +222,92 @@ echo "- Check ES indexation"
 
 
 echo "#########################################################################"
+echo "- Take an ES snapshot"
+ES_SNAPSHOT_NAME_JOB="elasticsearch-snapshotter"
+ES_SNAPSHOT_REPOSITORY="pim_gcs_repository"
+kubectl create job ${ES_SNAPSHOT_NAME_JOB}-manually --from=cronjob/${ES_SNAPSHOT_NAME_JOB} --namespace=${PFID}
+# Get the ES snapshot name
+echo "curl 'elasticsearch-client:9200/_snapshot/${ES_SNAPSHOT_REPOSITORY}/_all?format=json&pretty'"
+SNAPSHOT_LIST=$(kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c "curl 'elasticsearch-client:9200/_snapshot/${ES_SNAPSHOT_REPOSITORY}/_all?format=json&pretty'")
+
+CONTINUE=true
+RETRY_LEFT=10
+while ${CONTINUE}; do
+  SNAPSHOT_LIST=$(kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c "curl 'elasticsearch-client:9200/_snapshot/${ES_SNAPSHOT_REPOSITORY}/_all?format=json&pretty'")
+  STATE=$(echo ${SNAPSHOT_LIST} | jq --raw-output '.snapshots[-1].state')
+  if [[ "${STATE}" == "SUCCESS" ]]; then
+    CONTINUE=false
+    break
+  else
+    sleep 30s
+  fi
+  if [[ "${RETRY_LEFT}" -eq 0 ]]; then
+    CONTINUE=false
+    break
+  fi
+  RETRY_LEFT=$((RETRY_LEFT-1))
+done
+# Get the last ES snapshot (snapshot are sort by startDate)
+ES_SNAPSHOT=$(echo ${SNAPSHOT_LIST} | jq --raw-output '.snapshots[-1].snapshot')
+
+
+echo "#########################################################################"
+echo "- Get back SRNT chart"
+rm -rf ${PED_DIR}/deployments/terraform
+BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/serenity-edition-dev/${PED_TAG}/deployments/terraform ${PED_DIR}/deployments/
+# Remove hook_upgrade_pim.yaml file, cannot be use right now as ES is still mono node
+rm -rf ${PED_DIR}/deployments/terraform/pim/templates/hook_upgrade_pim.yaml
+# Copy back the initial generated values.yaml file
+cp /tmp/values.yaml ${DESTINATION_PATH}/values.yaml
+
+
+echo "#########################################################################"
+echo "- Terraform init and apply"
+cd ${DESTINATION_PATH}
+terraform init
+terraform apply -input=false -auto-approve
+
+
+echo "#########################################################################"
+echo "- Check indices before restore"
+kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c "curl 'elasticsearch-client:9200/_cat/indices?format=json&pretty'"
+
+
+echo "#########################################################################"
+echo "- Restore the ES snapshot"
+echo "curl -X POST 'elasticsearch-client:9200/_snapshot/${ES_SNAPSHOT_REPOSITORY}/${ES_SNAPSHOT}/_restore' -H 'Content-Type: application/json' -d' {\"indices\": \"*,-.*\"}'"
+kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c "curl -X POST 'elasticsearch-client:9200/_snapshot/${ES_SNAPSHOT_REPOSITORY}/${ES_SNAPSHOT}/_restore' -H 'Content-Type: application/json' -d' {\"indices\": \"*,-.*\"}'"
+kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c "curl 'elasticsearch-client:9200/_cat/indices?format=json&pretty'"
+# Wait untill the restore is finished
+CONTINUE=true
+RETRY_LEFT=10
+while ${CONTINUE}; do
+  kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c "curl 'elasticsearch-client:9200/_cat/recovery?format=json&pretty'" > /tmp/snapshot_recovery.json
+  STATE=$(cat /tmp/snapshot_recovery.json | jq --raw-output '(.[] | select(.type=="snapshot") | .stage)' | grep -v done) || true
+  if [[ "${STATE}" == "" ]]; then
+    rm /tmp/snapshot_recovery.json
+    CONTINUE=false
+    break
+  else
+    sleep 30s
+  fi
+  if [[ "${RETRY_LEFT}" -eq 0 ]]; then
+    CONTINUE=false
+    break
+  fi
+  RETRY_LEFT=$((RETRY_LEFT-1))
+done
+kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c "curl 'elasticsearch-client:9200/_cat/indices?format=json&pretty'"
+
+
+echo "#########################################################################"
+echo "- Check ES indexation"
+(kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c 'bin/es_sync_checker --only-count') || true
+
+
+echo "#########################################################################"
 echo "- Upgrade config files"
 yq d -i ${DESTINATION_PATH}/values.yaml pim.hook
 # To be able to remove the ressources
 yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/${PED_TAG}//deployments/terraform"
+yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/serenity-edition-dev/${PED_TAG}//deployments/terraform/monitoring"
