@@ -6,9 +6,10 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 type DataMappingRowProps = {
   dataMapping: DataMapping;
   columns: Column[];
+  onClick: (dataMappingUuid: string) => void;
 };
 
-const DataMappingRow = ({dataMapping, columns}: DataMappingRowProps) => {
+const DataMappingRow = ({dataMapping, columns, onClick}: DataMappingRowProps) => {
   const translate = useTranslate();
   const sources = dataMapping.sources.map(uuid => {
     const column = columns.find(column => uuid === column.uuid);
@@ -17,10 +18,13 @@ const DataMappingRow = ({dataMapping, columns}: DataMappingRowProps) => {
   });
 
   return (
-    <Table.Row>
+    <Table.Row onClick={() => onClick(dataMapping.uuid)}>
       <Table.Cell>{dataMapping.target.code}</Table.Cell>
       <Table.Cell>
-        {translate('akeneo.tailored_import.data_mapping.sources')}: {sources.join(' ')}
+        {sources.length === 0 ?
+          translate('akeneo.tailored_import.data_mapping_list.no_sources') :
+          `${translate('akeneo.tailored_import.sources')}: ${sources.join(' ')}`
+        }
       </Table.Cell>
     </Table.Row>
   );

@@ -37,9 +37,30 @@ const mockCreatedDataMapping: DataMapping = {
   operations: [],
   sampleData: [],
 };
+
+let mockUuid = 0;
+jest.mock('akeneo-design-system', () => ({
+  ...jest.requireActual('akeneo-design-system'),
+  uuid: () => `uuid_${++mockUuid}`,
+}));
+
 jest.mock('./components/DataMappingList/DataMappingList', () => ({
-  DataMappingList: ({onDataMappingAdded}: DataMappingListProps) => (
-    <button onClick={() => onDataMappingAdded(mockCreatedDataMapping)}>Data mapping list</button>
+  DataMappingList: ({onDataMappingAdded, onDataMappingSelected}: DataMappingListProps) => (
+    <>
+      <button onClick={() => onDataMappingAdded(mockCreatedDataMapping)}>Add data mapping</button>
+      <button onClick={() => onDataMappingSelected(`uuid_${mockUuid}`)}>Display data mapping</button>
+    </>
+  ),
+}));
+
+jest.mock('./components/DataMappingDetails/DataMappingDetails', () => ({
+  DataMappingDetails: ({dataMapping, onDataMappingChange}: {dataMapping: DataMapping, onDataMappingChange: (dataMapping: DataMapping) => void}) => (
+    <>
+      Data mapping details of {dataMapping.uuid}
+      <button onClick={() => onDataMappingChange({...dataMapping, target: {...dataMapping.target, ifEmpty: 'clear'}})}>
+        Update data mapping
+      </button>
+    </>
   ),
 }));
 
@@ -47,12 +68,6 @@ const defaultStructureConfiguration: StructureConfiguration = {
   columns: [],
   dataMappings: [],
 };
-
-let mockUuid = 0;
-jest.mock('akeneo-design-system', () => ({
-  ...jest.requireActual('akeneo-design-system'),
-  uuid: () => `uuid_${++mockUuid}`,
-}));
 
 const getDefaultIdentifierDataMapping = (): DataMapping => ({
   uuid: `uuid_${mockUuid}`,
@@ -107,24 +122,80 @@ test('it can open and close the modal', async () => {
   expect(screen.queryByText('Cancel')).not.toBeInTheDocument();
 });
 
-test('it can add data mapping from the list', () => {
+test('it can add data mapping from the column list', () => {
   const onStructureConfigurationChange = jest.fn();
   const defaultIdentifierDataMapping = getDefaultIdentifierDataMapping();
+  const structureConfiguration = {
+    ...defaultStructureConfiguration,
+    columns: [
+      {
+        uuid: 'd1249682-720e-11ec-90d6-0242ac120003',
+        index: 0,
+        label: 'Sku',
+      },
+    ],
+    dataMappings: [defaultIdentifierDataMapping],
+  };
 
   renderWithProviders(
     <ImportStructureTab
-      structureConfiguration={{
-        ...defaultStructureConfiguration,
-        dataMappings: [defaultIdentifierDataMapping],
-      }}
+      structureConfiguration={structureConfiguration}
       onStructureConfigurationChange={onStructureConfigurationChange}
     />
   );
 
-  userEvent.click(screen.getByText('Data mapping list'));
+  userEvent.click(screen.getByText('Add data mapping'));
 
   expect(onStructureConfigurationChange).toHaveBeenCalledWith({
-    ...defaultStructureConfiguration,
+    ...structureConfiguration,
     dataMappings: [defaultIdentifierDataMapping, mockCreatedDataMapping],
+  });
+});
+
+test('it can display and update the data mapping detail when clicking on the data mapping', () => {
+  const handleStructureConfigurationChange = jest.fn();
+  const defaultIdentifierDataMapping = getDefaultIdentifierDataMapping();
+  const structureConfiguration = {
+    columns: [
+      {
+        uuid: 'd1249682-720e-11ec-90d6-0242ac120003',
+        index: 0,
+        label: 'Sku',
+      },
+    ],
+    dataMappings: [defaultIdentifierDataMapping],
+  };
+
+  renderWithProviders(
+    <ImportStructureTab
+      structureConfiguration={structureConfiguration}
+      onStructureConfigurationChange={handleStructureConfigurationChange}
+    />
+  );
+
+  expect(screen.queryByText('Data mapping details of uuid_1')).not.toBeInTheDocument();
+
+  userEvent.click(screen.getByText('Display data mapping'));
+
+  expect(screen.getByText('Data mapping details of uuid_1')).toBeInTheDocument();
+  userEvent.click(screen.getByText('Update data mapping'));
+
+  expect(handleStructureConfigurationChange).toHaveBeenCalledWith({
+    ...structureConfiguration,
+    dataMappings: [{
+      uuid: `uuid_${mockUuid}`,
+      target: {
+        code: 'sku',
+        type: 'attribute',
+        channel: null,
+        locale: null,
+        action: 'set',
+        ifEmpty: 'clear',
+        onError: 'skipLine',
+      },
+      operations: [],
+      sampleData: [],
+      sources: ["d1249682-720e-11ec-90d6-0242ac120003"],
+    }],
   });
 });

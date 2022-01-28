@@ -1,18 +1,29 @@
-import React from 'react';
+import React, {useState} from 'react';
+import styled from "styled-components";
 import {Button, useBooleanState} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {InitializeColumnsModal} from './components';
-import {Column, createDefaultDataMapping, DataMapping, StructureConfiguration} from './models';
-import {SourceDropdown, DataMappingList} from './components';
+import {DataMappingDetails, DataMappingDetailsPlaceholder, DataMappingList, InitializeColumnsModal} from './components';
+import {Column, createDefaultDataMapping, DataMapping, StructureConfiguration, updateDataMapping} from './models';
 
 type ImportStructureTabProps = {
   structureConfiguration: StructureConfiguration;
   onStructureConfigurationChange: (structureConfiguration: StructureConfiguration) => void;
 };
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  height: 100%;
+`;
+
 const ImportStructureTab = ({structureConfiguration, onStructureConfigurationChange}: ImportStructureTabProps) => {
   const [isInitModalOpen, openInitModal, closeInitModal] = useBooleanState();
   const translate = useTranslate();
+  const [selectedDataMappingUuid, setSelectedDataMappingUuid] = useState<string | null>(null);
+  const selectedDataMapping = structureConfiguration.dataMappings.find(
+    (dataMapping) => dataMapping.uuid === selectedDataMappingUuid
+  ) ?? null;
 
   const handleConfirm = (generatedColumns: Column[]): void => {
     const dataMapping = createDefaultDataMapping(generatedColumns);
@@ -20,8 +31,12 @@ const ImportStructureTab = ({structureConfiguration, onStructureConfigurationCha
     closeInitModal();
   };
 
-  /* istanbul ignore next */
-  const handleColumnSelected = (column: Column): void => {};
+  const handleDataMappingChange = (dataMapping: DataMapping) => {
+    onStructureConfigurationChange({
+      ...structureConfiguration,
+      dataMappings: updateDataMapping(structureConfiguration.dataMappings, dataMapping)
+    });
+  }
 
   const handleDataMappingAdded = (dataMapping: DataMapping): void => {
     onStructureConfigurationChange({
@@ -30,19 +45,37 @@ const ImportStructureTab = ({structureConfiguration, onStructureConfigurationCha
     });
   };
 
+  const handleDataMappingSelected = (dataMappingSelectedUuid: string) => {
+    setSelectedDataMappingUuid(dataMappingSelectedUuid);
+  }
+
   return (
     <>
-      <Button level="primary" onClick={openInitModal}>
-        {translate('akeneo.tailored_import.column_initialization.button')}
-      </Button>
+      {structureConfiguration.columns.length === 0 ? (
+        <Button level="primary" onClick={openInitModal}>
+          {translate('akeneo.tailored_import.column_initialization.button')}
+        </Button>
+      ) : (
+        <Container>
+          <DataMappingList
+            dataMappings={structureConfiguration.dataMappings}
+            columns={structureConfiguration.columns}
+            validationErrors={[]}
+            onDataMappingAdded={handleDataMappingAdded}
+            onDataMappingSelected={handleDataMappingSelected}
+          />
+          {null === selectedDataMapping ? (
+            <DataMappingDetailsPlaceholder />
+          ) : (
+            <DataMappingDetails
+              columns={structureConfiguration.columns}
+              dataMapping={selectedDataMapping}
+              onDataMappingChange={handleDataMappingChange}
+            />
+          )}
+        </Container>
+      )}
       {isInitModalOpen && <InitializeColumnsModal onConfirm={handleConfirm} onCancel={closeInitModal} />}
-      <SourceDropdown columns={structureConfiguration.columns} onColumnSelected={handleColumnSelected} />
-      <DataMappingList
-        dataMappings={structureConfiguration.dataMappings}
-        columns={structureConfiguration.columns}
-        validationErrors={[]}
-        onDataMappingAdded={handleDataMappingAdded}
-      />
     </>
   );
 };

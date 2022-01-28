@@ -17,16 +17,23 @@ type DataMappingListProps = {
   columns: Column[];
   validationErrors: ValidationError[];
   onDataMappingAdded: (dataMapping: DataMapping) => void;
+  onDataMappingSelected: (dataMappingUuid: string) => void;
 };
 
-const DataMappingList = ({dataMappings, columns, validationErrors, onDataMappingAdded}: DataMappingListProps) => {
+const DataMappingList = ({
+  dataMappings,
+  columns,
+  validationErrors,
+  onDataMappingAdded,
+  onDataMappingSelected
+}: DataMappingListProps) => {
   const translate = useTranslate();
   const canAddDataMapping = MAX_DATA_MAPPING_COUNT > dataMappings.length;
 
   return (
     <Container>
       <SectionTitle sticky={0}>
-        <SectionTitle.Title>{translate('akeneo.tailored_import.data_mapping.title')}</SectionTitle.Title>
+        <SectionTitle.Title>{translate('akeneo.tailored_import.data_mapping_list.title')}</SectionTitle.Title>
         <SectionTitle.Spacer />
         <AddDataMappingDropdown canAddDataMapping={canAddDataMapping} onDataMappingAdded={onDataMappingAdded} />
       </SectionTitle>
@@ -39,7 +46,12 @@ const DataMappingList = ({dataMappings, columns, validationErrors, onDataMapping
       <Table>
         <Table.Body>
           {dataMappings.map(dataMapping => (
-            <DataMappingRow key={dataMapping.uuid} dataMapping={dataMapping} columns={columns} />
+            <DataMappingRow
+              key={dataMapping.uuid}
+              dataMapping={dataMapping}
+              columns={columns}
+              onClick={onDataMappingSelected}
+            />
           ))}
         </Table.Body>
       </Table>
