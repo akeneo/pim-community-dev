@@ -33,10 +33,9 @@ export function LocaleSelector(props: Props) {
       </Helper>
   }
   return <SelectInput
-    openLabel=''
-    emptyResultLabel="No result found"
+    openLabel={__('pim_common.open')}
+    emptyResultLabel={__('pim_common.no_result')}
     onChange={props.onChange}
-    placeholder="Please enter a value in the Select input"
     clearable={false}
     value={props.value}
   >
