@@ -15,7 +15,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\ReferenceEntity;
 
 use Symfony\Component\Validator\Constraint;
 
-class ReferenceEntityShouldNotBeLinkedToATableColumn extends Constraint
+final class ReferenceEntityShouldNotBeLinkedToATableColumn extends Constraint
 {
     public string $message = 'pim_table_configuration.validation.reference_entity.should_not_be_linked';
 

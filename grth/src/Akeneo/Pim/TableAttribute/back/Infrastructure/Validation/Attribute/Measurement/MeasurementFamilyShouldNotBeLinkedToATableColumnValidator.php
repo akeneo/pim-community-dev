@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
-class MeasurementFamilyShouldNotBeLinkedToATableColumnValidator extends ConstraintValidator
+final class MeasurementFamilyShouldNotBeLinkedToATableColumnValidator extends ConstraintValidator
 {
     public function __construct(private IsMeasurementFamilyLinkedToATableColumn $isMeasurementFamilyLinkedToATableColumn)
     {

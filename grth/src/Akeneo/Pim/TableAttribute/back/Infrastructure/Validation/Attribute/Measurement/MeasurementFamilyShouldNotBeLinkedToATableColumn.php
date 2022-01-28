@@ -15,7 +15,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\Measurem
 
 use Symfony\Component\Validator\Constraint;
 
-class MeasurementFamilyShouldNotBeLinkedToATableColumn extends Constraint
+final class MeasurementFamilyShouldNotBeLinkedToATableColumn extends Constraint
 {
     public string $message = 'pim_table_configuration.validation.table_configuration.measurement_family_should_not_be_linked';
 
