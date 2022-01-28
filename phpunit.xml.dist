@@ -76,5 +76,9 @@
         <testsuite name="OroSecurityBundle">
             <file>src/Oro/Bundle/SecurityBundle/Tests/Unit/Acl/Dbal/MutableAclProviderTest.php</file>
         </testsuite>
+
+        <testsuite name="Enrichment_Product">
+            <directory suffix="Integration.php">src/Akeneo/Pim/Enrichment/Product/tests/back/Integration</directory>
+        </testsuite>
     </testsuites>
 </phpunit>

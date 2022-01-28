@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\LegacyViolationsExceptio
 use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\ValueUserIntent;
 use Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -42,8 +43,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ProductRepositoryInterface $productRepository,
         ProductBuilderInterface $productBuilder,
-        SaverInterface $productSaver,
-        ObjectUpdaterInterface $productUpdater
+        SaverInterface $productSaver
     ) {
         $command = new UpsertProductCommand(1, 'identifier1');
         $product = new Product();
@@ -147,5 +147,45 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $productSaver->save($product)->shouldBeCalledOnce();
 
         $this->__invoke($command);
+    }
+
+    function it_throws_an_error_when_user_intent_cannot_be_handled(
+        ValidatorInterface $validator,
+        ProductRepositoryInterface $productRepository,
+        SaverInterface $productSaver,
+        ObjectUpdaterInterface $productUpdater
+    ) {
+        $unknownUserIntent = new class implements ValueUserIntent {
+            public function attributeCode(): string
+            {
+                return 'a_text';
+            }
+            public function value(): mixed
+            {
+                return 'new value';
+            }
+            public function localeCode(): ?string
+            {
+                return null;
+            }
+            public function channelCode(): ?string
+            {
+                return null;
+            }
+        };
+        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier', valuesUserIntent: [
+            $unknownUserIntent
+        ]);
+
+        $product = new Product();
+
+        $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
+        $productRepository->findOneByIdentifier('identifier')->shouldBeCalledOnce()->willReturn($product);
+
+        $productUpdater->update($product, Argument::cetera())->shouldNotbeCalled();
+        $validator->validate($product)->shouldNotBeCalled();
+        $productSaver->save($product)->shouldNotBeCalled();
+
+        $this->shouldThrow(\InvalidArgumentException::class)->during('__invoke', [$command]);
     }
 }
