@@ -74,6 +74,7 @@ services:
             - '@akeneo.pim.enrichment.use_cases.get_products_with_completenesses'
             - '@monolog.logger.pim_api_acl'
             - '@oro_security.security_facade'
+            - '@validator'
 
     pim_api.controller.product_model:
         public: true

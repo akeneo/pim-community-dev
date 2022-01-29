@@ -301,7 +301,7 @@ pim_enrich.export.product:
         "GREATER OR EQUALS THAN ON ALL LOCALES": Vollständig für alle ausgewählten Gebietsschemata
         "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Vollständig für mindestens ein ausgewähltes Gebietsschemata
         LOWER THAN ON ALL LOCALES: Unvollständig für alle ausgewählten Gebietsschemas
-        AT LEAST COMPLETE: Mindestens ein Variantenprodukt ist in einem ausgewählten Gebietsschema vollständig
+        AT LEAST COMPLETE: Mindestens ein Variantenprodukt ist in einem ausgewählten Gebietsschema vollständig 
         ALL COMPLETE: Alle Variantenprodukte sind auf allen ausgewählten Gebietsschemata vollständig
       empty_selection: Produktfamilie wählen
     category:
