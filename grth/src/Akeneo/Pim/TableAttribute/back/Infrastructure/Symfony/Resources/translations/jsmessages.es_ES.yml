@@ -144,7 +144,6 @@ pim_table_attribute:
       column_code: Código de columna
       properties_helper: Debe definir la estructura de la tabla y al menos 2 columnas antes de poder guardar su atributo de tabla
       table_structure_helper_text: Un atributo de tabla debe contener al menos 2 columnas. La primera es siempre un tipo de columna «seleccionar». Una vez que haya creado la primera columna, debe añadir opciones. ¡Para ello, haga clic en «administrar opciones» y añada hasta {{ limit }} opciones! Luego, podrá usar cada una de estas opciones como filas en las tablas de sus productos.
-      table_structure_helper_link: Este artículo puede ayudarle a aprender más sobre los atributos de la tabla.
       limit_option_reached: Ha alcanzado el límite de {{ limit }} opciones.
       template_label: Seleccione el estándar de su tabla «{{ templateLabel }}»
       delete_column_helper: Al eliminar esta columna, todos sus valores se eliminan de todos los productos usando el atributo de tabla «{{ attributeLabel }}».
@@ -166,7 +165,6 @@ pim_table_attribute:
       no_search_result: "¡Lo sentimos, no hay líneas para su búsqueda!"
       no_rows_title: "Su tabla {{ attributeLabel }} está vacía."
       no_rows_subtitle: Añada filas para definir nuevas propiedades
-      no_rows_subtitle_on_readonly: Para poder editar este atributo, vaya a la página de configuración de atributos o póngase en contacto con el administrador de PIM.
       no_results: No hay resultados
       no_options: No hay opciones
       no_add_options_unallowed: Póngase en contacto con el administrador de PIM para administrar las opciones de «{{ attributeLabel }}»

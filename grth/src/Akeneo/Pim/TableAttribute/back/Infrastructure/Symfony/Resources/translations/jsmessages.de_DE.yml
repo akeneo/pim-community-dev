@@ -142,7 +142,6 @@ pim_table_attribute:
       column_code: Spaltencode
       properties_helper: Sie müssen die Tabellenstruktur und mindestens 2 Spalten definieren, bevor Sie Ihr Tabellenattribut speichern können
       table_structure_helper_text: Ein Tabellenattribut muss mindestens 2 Spalten enthalten. Sobald Sie die erste Spalte erstellt haben, müssen Sie Optionen hinzufügen. Dazu klicken Sie auf „Optionen verwalten“ und fügen Sie {{ limit }} Optionen hinzu! Dann können Sie jede dieser Optionen als Zeilen in Ihren Produkttabellen verwenden.
-      table_structure_helper_link: Dieser Artikel kann Ihnen helfen, mehr über Tabellenattribute zu erfahren.
       limit_option_reached: Sie haben das Limit von {{ limit }} Optionen erreicht.
       template_label: Wählen Sie den Standard Ihrer "{{ templateLabel }}" Tabelle
       delete_column_helper: Wenn Sie diese Spalte löschen, werden alle ihre Werte mit dem Attribut "{{ attributeLabel }}" aus allen Produkten entfernt.
@@ -164,7 +163,6 @@ pim_table_attribute:
       no_search_result: "Leider gibt es keine Zeilen für Ihre Suche!"
       no_rows_title: "Ihre {{ attributeLabel }} -Tabelle ist leer."
       no_rows_subtitle: Füge Zeilen hinzu, um neue Eigenschaften zu definieren
-      no_rows_subtitle_on_readonly: Um dieses Attribut bearbeiten zu können, gehen Sie auf die Attribut-Einstellungsseite oder wenden Sie sich an Ihren PIM-Administrator.
       no_results: Es gibt keine Ergebnisse
       no_options: Es gibt keine Optionen
       no_add_options_unallowed: Kontaktieren Sie Ihren PIM-Administrator, um die "{{ attributeLabel }}" Optionen zu verwalten

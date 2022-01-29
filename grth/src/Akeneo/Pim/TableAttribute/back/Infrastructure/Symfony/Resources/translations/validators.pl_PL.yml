@@ -17,14 +17,12 @@ pim_table_configuration:
       too_long_option_label: "Etykieta opcji jest za długa: może składać się z maksymalnie 255 znaków."
       duplicated_column_code: '[0,1]Każda kolumna musi mieć niepowtarzalny kod. Kod %duplicateCodes% jest już używany.]1,Inf[Każda kolumna musi mieć niepowtarzalny kod. Kody "%duplicateCodes%" są już używane.'
       column_type_must_be_a_string: Typ danych kolumny musi być ciągiem znaków.
-      unknown_data_type: "Typ danych kolumny jest nieznany. Wybierz jeden z następujących typów: liczba, tekst, wybór, wartość logiczna."
       column_label_must_be_a_string: Etykieta kolumny musi być ciągiem znaków.
       option_label_must_be_a_string: Etykieta opcji musi być ciągiem znaków.
       label_locale_does_not_exist_or_is_not_activated: Wersja językowa „{{ locale_code }}” nie istnieje lub nie jest aktywna.
       invalid_labels_format: Etykiety kolumny muszą być obiektem typu klucz/wartość.
       invalid_option_labels_format: Etykiety opcji muszą być obiektem typu klucz/wartość.
       must_not_be_filled: Typ %type% nie zezwala na konfigurację tabeli.
-      first_column_should_be_select: 'Pierwsza kolumna tabeli powinna zawsze być kolumną typu „wybór”, bieżący typ: „{{ data_type }}”.'
       first_column_code_cannot_be_changed: Nie możesz zmienić kodu pierwszej kolumny.
       unknown_field: 'Upewnij się, że korzystasz tylko z oczekiwanych pól, bieżące pole: {{ field }}.'
       attribute_does_not_exist: Atrybut „{{ attribute }}” nie istnieje.

@@ -144,7 +144,6 @@ pim_table_attribute:
       column_code: Codice colonna
       properties_helper: Devi definire la struttura della tabella e almeno 2 colonne, prima di poter salvare l'attributo tabella
       table_structure_helper_text: Un attributo tabella deve contenere almeno 2 colonne. Il primo è sempre una colonna di tipo "seleziona". Una volta creata la  prima colonna, devi aggiungere delle opzioni. Per farlo, fai clic su "Gestisci le opzioni" e inserisci un massimo di {{ limit }} opzioni! In seguito potrai usare queste opzioni come righe nelle tabelle di prodotti.
-      table_structure_helper_link: Questo articolo può esserti utile per saperne di più sugli attributi tabella.
       limit_option_reached: Hai raggiunto il limite di {{ limit }} opzioni.
       template_label: Seleziona lo standard della tabella "{{ templateLabel }}"
       delete_column_helper: Se elimini questa colonna, tutti i suoi valori verranno rimossi da tutti i prodotti che utilizzano l'attributo tabella "{{ attributeLabel }}".
@@ -166,7 +165,6 @@ pim_table_attribute:
       no_search_result: "Spiacenti, non ci sono righe corrispondenti alla tua ricerca!"
       no_rows_title: "La tabella {{ attributeLabel }} è vuota."
       no_rows_subtitle: Aggiungi righe per definire nuove proprietà
-      no_rows_subtitle_on_readonly: Per modificare questo attributo, vai alla pagina di impostazione degli attributi oppure contatta il tuo amministratore PIM.
       no_results: Non ci sono risultati
       no_options: Non ci sono opzioni
       no_add_options_unallowed: Contatta l'amministratore PIM per gestire le opzioni "{{ attributeLabel }}"
