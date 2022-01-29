@@ -168,11 +168,11 @@ jobs:
             - restore_cache:
                   name: Restore cache - yarn and Cypress dependency cache
                   keys:
-                      - frontend-dependency-cache-{{ checksum "~/front-dependency.hash" }}
+                      - frontend-dependency-cache-{{ checksum "~/front-dependency.hash" }}-{{ .Environment.CACHE_VERSION }}
             - restore_cache:
                   name: Restore cache - composer dependency cache
                   keys:
-                      - backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}
+                      - backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}-{{ .Environment.CACHE_VERSION }}
             - run:
                   name: Install back and front dependencies
                   command: make dependencies
