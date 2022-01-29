@@ -1,34 +1,35 @@
 version: 2.1
 
-setup: true
-
-orbs:
-    continuation: circleci/continuation@0.2.0
-
 jobs:
-    merge_config:
-        executor: continuation/default
+    checkid:
+        parameters:
+            os:
+                type: string
+        machine:
+            image: << parameters.os >>
         steps:
-            - checkout
             - run:
-                  name: Install yq
-                  command: |
-                      wget https://github.com/mikefarah/yq/releases/download/v4.13.2/yq_linux_386
-                      sudo mv yq_linux_386 /usr/local/bin/yq
-                      echo "3a011f37fd67ac2fe3b334b46a6e848698d5621d  /usr/local/bin/yq" > /tmp/checksum
-                      sha1sum -c /tmp/checksum
-                      sudo chmod +x /usr/local/bin/yq
-            - run:
-                  name: Merge all files
-                  command: |
-                      yq eval-all '. as $item ireduce ({}; . *+ $item )' .circleci/*/*.yml  .circleci/*/*/*.yml > .circleci/merged_config.yml
-                      cat .circleci/merged_config.yml
-            - continuation/continue:
-                  configuration_path: .circleci/merged_config.yml
+                  name: ID check
+                  command: (($UID == 1000))
 
 workflows:
     version: 2
 
-    merge_config_workflow:
+    pull_request:
         jobs:
-            - merge_config
+            - checkid:
+                matrix:
+                    parameters:
+                        os:
+                            - ubuntu-2004:202111-02
+                            - ubuntu-2004:202111-01
+                            - ubuntu-2004:202107-02
+                            - ubuntu-2004:202104-01
+                            - ubuntu-2004:202101-01
+                            - ubuntu-2004:202010-01
+                            - ubuntu-1604:202104-01
+                            - ubuntu-1604:202101-01
+                            - ubuntu-1604:202010-01
+                            - ubuntu-1604:202007-01
+                            - ubuntu-1604:202004-01
+                            - ubuntu-1604:201903-01
