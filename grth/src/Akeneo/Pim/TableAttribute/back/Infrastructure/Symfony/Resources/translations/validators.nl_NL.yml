@@ -17,14 +17,12 @@ pim_table_configuration:
       too_long_option_label: "Het optielabel is te lang: het moet 255 tekens of minder zijn"
       duplicated_column_code: '[0,1]Elke kolom vereist een unieke code. "%duplicateCodes%" is al gebruikt ]1,Inf[Elke kolom vereist een unieke code. "%duplicateCodes%" worden al gebruikt'
       column_type_must_be_a_string: Het kolomgegevenstype moet een tekenreeks zijn
-      unknown_data_type: "Het type kolomgegevens is onbekend. Kies een van de volgende: nummer, tekst, select, boolean"
       column_label_must_be_a_string: Het kolomlabel moet een tekenreeks zijn
       option_label_must_be_a_string: Het optielabel moet een tekenreeks zijn
       label_locale_does_not_exist_or_is_not_activated: De "{{ locale_code }}" taal bestaat niet of is niet geactiveerd
       invalid_labels_format: De kolomlabels moeten een sleutel-/waarde-object zijn
       invalid_option_labels_format: De optie labels moeten een sleutel/waarde object zijn
       must_not_be_filled: Het type %type% staat geen tabel_configuration toe
-      first_column_should_be_select: 'Het eerste type kolom moet altijd "select", het huidige type "{{ data_type }} " zijn'
       first_column_code_cannot_be_changed: De code van uw eerste kolom kan niet worden gewijzigd.
       unknown_field: 'Zorg ervoor dat u alleen de verwachte velden gebruikt, het huidige veld: {{ field }}'
       attribute_does_not_exist: Het "{{ attribute }}" attribuut bestaat niet

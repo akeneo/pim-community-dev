@@ -17,14 +17,12 @@ pim_table_configuration:
       too_long_option_label: "Die Optionsbezeichnung ist zu lang: Er darf 255 oder weniger Zeichen haben"
       duplicated_column_code: '[0,1]Jede Spalte benötigt einen eindeutigen Code. "%duplicateCodes%" wird bereits verwendet|]1,Inf[Jede Spalte benötigt einen eindeutigen Code. "%duplicateCodes%" werden bereits verwendet'
       column_type_must_be_a_string: Der Spaltendatentyp muss ein String sein
-      unknown_data_type: "Der Spaltendatentyp ist unbekannt. Bitte wählen Sie eine der folgenden: Nummer, Text, Auswählen, Boolean"
       column_label_must_be_a_string: Die Spaltenbezeichnung muss ein String sein
       option_label_must_be_a_string: Die Optionsbezeichnung muss ein String sein
       label_locale_does_not_exist_or_is_not_activated: Das "{{ locale_code }}" Gebietsschema existiert nicht oder ist nicht aktiviert
       invalid_labels_format: Die Spaltenbezeichnungen müssen ein Schlüssel/Werteobjekt sein
       invalid_option_labels_format: Die Optionsbezeichnungen müssen ein Schlüssel/Werteobjekt sein
       must_not_be_filled: Der Typ %type% erlaubt keine table_configuration
-      first_column_should_be_select: 'Der erste Spaltentyp sollte immer "select", aktueller Typ: "{{ data_type }} " sein'
       first_column_code_cannot_be_changed: Der Code Ihrer ersten Spalte kann nicht geändert werden.
       unknown_field: 'Stellen Sie sicher, dass Sie nur erwartete Felder, aktuelles Feld: {{ field }}'
       attribute_does_not_exist: Das Attribut "{{ attribute }}" existiert nicht

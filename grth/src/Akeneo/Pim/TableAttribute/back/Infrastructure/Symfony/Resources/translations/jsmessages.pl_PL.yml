@@ -144,7 +144,6 @@ pim_table_attribute:
       column_code: Kod kolumny
       properties_helper: Zanim zapiszesz atrybut swojej tabeli, musisz zdefiniować strukturę tabeli i co najmniej 2 kolumny.
       table_structure_helper_text: Atrybut tabeli musi zawierać co najmniej 2 kolumny. Pierwsza z nich to zawsze kolumna typu „wybór”. Gdy utworzysz pierwszą kolumnę, musisz dodać opcje. W tym celu kliknij pozycję „Zarządzaj opcjami” i dodaj maks. {{ limit }} opcji! Wtedy zyskasz możliwość wykorzystania tych opcji jako wierszy w tabelach produktów.
-      table_structure_helper_link: Z tego artykułu dowiesz się więcej o atrybutach tabeli.
       limit_option_reached: Osiągnięto limit {{ limit }} opcji.
       template_label: Wybierz standard swojej tabeli „{{ templateLabel }}”.
       delete_column_helper: Gdy usuniesz tę kolumnę, wszystkie jej wartości zostaną usunięte ze wszystkich produktów przy użyciu atrybutu tabeli „{{ attributeLabel }}”.
@@ -166,7 +165,6 @@ pim_table_attribute:
       no_search_result: "Przepraszamy, brak wyników twojego wyszukiwania wierszy!"
       no_rows_title: "Twoja tabela {{ attributeLabel }} jest pusta."
       no_rows_subtitle: Dodaj wiersze, aby zdefiniować nowe właściwości.
-      no_rows_subtitle_on_readonly: Aby móc edytować ten atrybut, przejdź do strony z ustawieniami atrybutu lub skontaktuj się z administratorem PIM.
       no_results: Niczego nie znaleziono
       no_options: Brak opcji
       no_add_options_unallowed: Skontaktuj się z administratorem PIM, aby zarządzać opcjami „{{ attributeLabel }}”.
