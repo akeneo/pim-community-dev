@@ -10,7 +10,9 @@ jobs:
         steps:
             - run:
                   name: ID check
-                  command: (($UID == 1000))
+                  command: |
+                      id
+                      (($UID == 1000))
 
 workflows:
     version: 2
