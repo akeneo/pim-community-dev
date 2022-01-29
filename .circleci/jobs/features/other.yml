@@ -1,7 +1,7 @@
 jobs:
     test_back_static_and_acceptance:
         machine:
-            image: ubuntu-2004:202010-01
+            image: ubuntu-2004:202111-02
         steps:
             - attach_workspace:
                   at: ~/
@@ -35,7 +35,7 @@ jobs:
 
     test_back_phpunit:
         machine:
-            image: ubuntu-2004:202010-01
+            image: ubuntu-2004:202111-02
         parallelism: 20
         steps:
             - attach_workspace:
@@ -64,7 +64,7 @@ jobs:
 
     cypress_sanity_checks:
         machine:
-            image: ubuntu-2004:202010-01
+            image: ubuntu-2004:202111-02
         resource_class: large
         steps:
             - attach_workspace:
@@ -91,7 +91,7 @@ jobs:
 
     test_back_behat_legacy:
         machine:
-            image: ubuntu-2004:202010-01
+            image: ubuntu-2004:202111-02
         parallelism: 40
         steps:
             - attach_workspace:
@@ -144,7 +144,7 @@ jobs:
 
     test_front_static_acceptance_and_integration:
         machine:
-            image: ubuntu-2004:202010-01
+            image: ubuntu-2004:202111-02
         steps:
             - attach_workspace:
                   at: ~/
@@ -163,7 +163,7 @@ jobs:
 
     test_back_performance:
         machine:
-            image: ubuntu-2004:202010-01
+            image: ubuntu-2004:202111-02
         steps:
             - attach_workspace:
                   at: ~/
@@ -186,7 +186,7 @@ jobs:
 
     test_back_missing_structure_migrations:
         machine:
-            image: ubuntu-2004:202010-01
+            image: ubuntu-2004:202111-02
         steps:
             -   attach_workspace:
                     at: ~/
@@ -210,7 +210,7 @@ jobs:
 
     test_back_data_migrations:
         machine:
-            image: ubuntu-2004:202010-01
+            image: ubuntu-2004:202111-02
         steps:
             - attach_workspace:
                   at: ~/
@@ -235,7 +235,7 @@ jobs:
 
     test_onboarder_bundle:
         machine:
-            image: ubuntu-2004:202010-01
+            image: ubuntu-2004:202111-02
         environment:
             FLAG_ONBOARDER_ENABLED: 1
         steps:
@@ -312,7 +312,7 @@ jobs:
 
     test_database:
         machine:
-            image: ubuntu-2004:202010-01
+            image: ubuntu-2004:202111-02
         parallelism: 1
         steps:
             - attach_workspace:
