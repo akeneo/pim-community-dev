@@ -10,9 +10,9 @@ import {createIdentifier as createAttributeIdentifier} from 'akeneoreferenceenti
 import Image from 'akeneoreferenceentity/domain/model/file';
 import * as fetch from 'akeneoreferenceentity/tools/fetch';
 
-jest.mock('pim/router', () => {});
-jest.mock('pim/security-context', () => {}, {virtual: true});
-jest.mock('routing');
+jest.mock('routing', () => ({
+  generate: (url: string) => url,
+}));
 
 describe('Akeneoreferenceentity > infrastructure > saver > reference-entity', () => {
   it('It saves a reference entity', async () => {
