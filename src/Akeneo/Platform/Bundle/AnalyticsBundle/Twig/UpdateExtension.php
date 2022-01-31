@@ -3,7 +3,7 @@
 namespace Akeneo\Platform\Bundle\AnalyticsBundle\Twig;
 
 use Akeneo\Platform\VersionProviderInterface;
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Akeneo\Platform\Bundle\ConfigBundle\Config\ConfigManager;
 use Twig\TwigFunction;
 
 /**

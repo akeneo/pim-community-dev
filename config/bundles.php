@@ -13,7 +13,7 @@ return [
     FOS\JsRoutingBundle\FOSJsRoutingBundle::class => ['all' => true],
     FOS\RestBundle\FOSRestBundle::class => ['all' => true],
     Liip\ImagineBundle\LiipImagineBundle::class => ['all' => true],
-    Oro\Bundle\ConfigBundle\OroConfigBundle::class => ['all' => true],
+    Akeneo\Platform\Bundle\ConfigBundle\ConfigBundle::class => ['all' => true],
     Oro\Bundle\DataGridBundle\OroDataGridBundle::class => ['all' => true],
     Oro\Bundle\FilterBundle\OroFilterBundle::class => ['all' => true],
     Oro\Bundle\SecurityBundle\OroSecurityBundle::class => ['all' => true],

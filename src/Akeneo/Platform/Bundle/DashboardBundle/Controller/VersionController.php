@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\DashboardBundle\Controller;
 
 use Akeneo\Platform\VersionProviderInterface;
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Akeneo\Platform\Bundle\ConfigBundle\Config\ConfigManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class VersionController

@@ -64,7 +64,7 @@ oro_default:
         _controller: 'Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction'
 
 oro_config:
-    resource: "@OroConfigBundle/Resources/config/oro/routing.yml"
+    resource: "@ConfigBundle/Resources/config/routing.yml"
 
 oro_datagrid:
     resource: "@OroDataGridBundle/Resources/config/oro/routing.yml"

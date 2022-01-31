@@ -2,7 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\AnalyticsBundle\DependencyInjection;
 
-use Oro\Bundle\ConfigBundle\DependencyInjection\SettingsBuilder;
+use Akeneo\Platform\Bundle\ConfigBundle\DependencyInjection\SettingsBuilder;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 

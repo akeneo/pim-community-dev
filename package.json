@@ -173,6 +173,6 @@
     "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/system",
     "src/Akeneo/Pim/Enrichment/Bundle/Resources/workspaces/enrichment",
     "src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front",
-    "src/Oro/Bundle/ConfigBundle/Resources/public/js/front"
+    "src/Akeneo/Platform/Bundle/ConfigBundle/front"
   ]
 }
