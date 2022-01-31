@@ -17,4 +17,11 @@ use Symfony\Component\Validator\Constraint;
 
 class Target extends Constraint
 {
+    public const ATTRIBUTE_SHOULD_EXISTS = 'akeneo.tailored_import.validation.target.attribute_should_exists';
+    public const PROPERTY_SHOULD_EXISTS = 'akeneo.tailored_import.validation.target.property_should_exists';
+
+    public function validatedBy(): string
+    {
+        return 'akeneo.tailored_import.validation.target';
+    }
 }

@@ -31,3 +31,11 @@ services:
     tags:
       - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.data_mappings' }
     public: true
+
+  akeneo.tailored_import.validation.target:
+    class: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\TargetValidator'
+    arguments:
+      - '@akeneo.pim.structure.query.get_attributes'
+    tags:
+      - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.target' }
+    public: true

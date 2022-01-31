@@ -56,7 +56,6 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'action' => 'set',
                             'ifEmpty' => 'skip',
                             'onError' => 'skipLine',
-
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
@@ -72,7 +71,6 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'action' => 'add',
                             'ifEmpty' => 'skip',
                             'onError' => 'skipLine',
-
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc63',
@@ -102,7 +100,6 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                         'action' => 'set',
                         'ifEmpty' => 'skip',
                         'onError' => 'skipLine',
-
                     ],
                     'sources' => [
                         '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
@@ -125,7 +122,6 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'action' => 'set',
                             'ifEmpty' => 'skip',
                             'onError' => 'skipLine',
-
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
@@ -141,7 +137,6 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'action' => 'add',
                             'ifEmpty' => 'skip',
                             'onError' => 'skipLine',
-
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc63',
@@ -261,7 +256,6 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'action' => 'set',
                             'ifEmpty' => 'skip',
                             'onError' => 'skipLine',
-
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
@@ -279,7 +273,6 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'action' => 'set',
                             'ifEmpty' => 'skip',
                             'onError' => 'skipLine',
-
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc63',
@@ -302,7 +295,6 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'action' => 'set',
                             'ifEmpty' => 'skip',
                             'onError' => 'skipLine',
-
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
@@ -326,7 +318,6 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'action' => 'set',
                             'ifEmpty' => 'skip',
                             'onError' => 'skipLine',
-
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
@@ -364,7 +355,6 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'action' => 'set',
                             'ifEmpty' => 'skip',
                             'onError' => 'skipLine',
-
                         ],
                         'operations' => [],
                         'sampleData' => [],
@@ -385,7 +375,6 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'action' => 'set',
                             'ifEmpty' => 'skip',
                             'onError' => 'skipLine',
-
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
@@ -408,7 +397,6 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'action' => 'set',
                             'ifEmpty' => 'skip',
                             'onError' => 'skipLine',
-
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'

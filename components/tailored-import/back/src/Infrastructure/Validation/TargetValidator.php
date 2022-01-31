@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation;
 
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -23,10 +25,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TargetValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint): void
+    public function __construct(
+        private GetAttributes $getAttributes,
+    ) {
+    }
+
+    public function validate($target, Constraint $constraint): void
     {
         $validator = $this->context->getValidator();
-        $validator->inContext($this->context)->validate($value, new Collection([
+        $validator->inContext($this->context)->validate($target, new Collection([
             'fields' => [
                 'code' => [
                     new Type('string'),
@@ -36,7 +43,7 @@ class TargetValidator extends ConstraintValidator
                     new Choice([
                         'choices' => [
                             'attribute',
-                            'property'
+                            'property',
                         ]
                     ]),
                 ],
@@ -44,7 +51,7 @@ class TargetValidator extends ConstraintValidator
                     new Choice([
                         'choices' => [
                             'set',
-                            'add'
+                            'add',
                         ]
                     ]),
                 ],
@@ -52,7 +59,7 @@ class TargetValidator extends ConstraintValidator
                     new Choice([
                         'choices' => [
                             'clear',
-                            'skip'
+                            'skip',
                         ]
                     ]),
                 ],
@@ -60,7 +67,7 @@ class TargetValidator extends ConstraintValidator
                     new Choice([
                         'choices' => [
                             'skipLine',
-                            'skipValue'
+                            'skipValue',
                         ]
                     ]),
                 ],
@@ -72,13 +79,29 @@ class TargetValidator extends ConstraintValidator
             return;
         }
 
-        if ('attribute' === $value['type']) {
-            $this->validateAttributeTarget($validator, $value);
+        if ('attribute' === $target['type']) {
+            $this->validateAttributeTarget($validator, $target);
+        } else {
+            $this->validatePropertyTarget($validator, $target);
         }
     }
 
     private function validateAttributeTarget(ValidatorInterface $validator, array $attributeTarget): void
     {
+        $attribute = $this->getAttributes->forCode($attributeTarget['code']);
+        if (!$attribute instanceof Attribute) {
+            $this->context->buildViolation(
+                Target::ATTRIBUTE_SHOULD_EXISTS,
+                [
+                    '{{ attribute_code }}' => $attributeTarget['code'],
+                ]
+            )
+                ->atPath('[code]')
+                ->addViolation();
+
+            return;
+        }
+
         $validator->inContext($this->context)->validate($attributeTarget, new Collection([
             'fields' => [
                 'channel' => [
@@ -92,5 +115,16 @@ class TargetValidator extends ConstraintValidator
             ],
             'allowExtraFields' => true,
         ]));
+
+        if (0 < $this->context->getViolations()->count()) {
+            return;
+        }
+
+        $validator->inContext($this->context)->validate($attributeTarget, new IsValidAttribute());
+    }
+
+    private function validatePropertyTarget(ValidatorInterface $validator, array $propertyTarget): void
+    {
+        //TODO: How to check if the property exists?
     }
 }
