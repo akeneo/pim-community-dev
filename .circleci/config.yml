@@ -1796,7 +1796,15 @@ jobs:
                   REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
             - run:
                 name: Jenkins Upgrade
-                command: IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
+                command: |
+                  VERSION_INSTALLED=$(helm3 get values ${TYPE}-${INSTANCE_NAME} -n ${TYPE}-${INSTANCE_NAME} | yq r - 'image.pim.tag')
+                  if [[ "${VERSION_INSTALLED}" == "${RELEASE_TO_DEPLOY}" ]]; then
+                    echo "PIM already at the latest release"
+                    echo "No need to upgrade"
+                  else
+                    echo "Need to upgrade the PIM to the latest release"
+                    IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
+                  fi
             - run:
                 name: Communicate
                 command: |
@@ -1844,8 +1852,16 @@ jobs:
                   REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
                   REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
             - run:
-                  name: Jenkins Upgrade
-                  command: IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
+                name: Jenkins Upgrade
+                command: |
+                  VERSION_INSTALLED=$(helm3 get values ${TYPE}-${INSTANCE_NAME} -n ${TYPE}-${INSTANCE_NAME} | yq r - 'image.pim.tag')
+                  if [[ "${VERSION_INSTALLED}" == "${RELEASE_TO_DEPLOY}" ]]; then
+                    echo "PIM already at the latest release"
+                    echo "No need to upgrade"
+                  else
+                    echo "Need to upgrade the PIM to the latest release"
+                    IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
+                  fi
             - run:
                 name: Communicate
                 command: |
@@ -1894,7 +1910,15 @@ jobs:
                 REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
           - run:
               name: Jenkins Upgrade
-              command: IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
+              command: |
+                VERSION_INSTALLED=$(helm3 get values ${TYPE}-${INSTANCE_NAME} -n ${TYPE}-${INSTANCE_NAME} | yq r - 'image.pim.tag')
+                if [[ "${VERSION_INSTALLED}" == "${RELEASE_TO_DEPLOY}" ]]; then
+                  echo "PIM already at the latest release"
+                  echo "No need to upgrade"
+                else
+                  echo "Need to upgrade the PIM to the latest release"
+                  IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
+                fi
 
   deploy_bh_environment:
       parameters:
@@ -1951,7 +1975,15 @@ jobs:
                 REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
           - run:
               name: Jenkins Upgrade
-              command: IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
+              command: |
+                VERSION_INSTALLED=$(helm3 get values ${TYPE}-${INSTANCE_NAME} -n ${TYPE}-${INSTANCE_NAME} | yq r - 'image.pim.tag')
+                if [[ "${VERSION_INSTALLED}" == "${RELEASE_TO_DEPLOY}" ]]; then
+                  echo "PIM already at the latest release"
+                  echo "No need to upgrade"
+                else
+                  echo "Need to upgrade the PIM to the latest release"
+                  IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
+                fi
 
   deploy_pr_environment:
     parameters:
