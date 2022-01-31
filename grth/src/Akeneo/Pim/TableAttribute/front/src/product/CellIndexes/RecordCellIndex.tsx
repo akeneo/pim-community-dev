@@ -1,11 +1,12 @@
 import React from 'react';
 import {castReferenceEntityColumnDefinition, RecordCode, ReferenceEntityRecord} from '../../models';
 import {getLabel, useRouter, useTranslate} from '@akeneo-pim-community/shared';
-import {useAttributeContext, useCellMatchersMapping, useLocaleCode} from '../../contexts';
+import {useAttributeContext, useLocaleCode} from '../../contexts';
 import {ReferenceEntityRecordRepository} from '../../repositories';
 import {LoadingPlaceholderContainer} from '../../shared';
 import styled from 'styled-components';
 import {TableInput} from 'akeneo-design-system';
+import {cellMatchers} from '../CellMatchers';
 
 const FirstCellLoadingPlaceholderContainer = styled(LoadingPlaceholderContainer)`
   padding-top: 10px;
@@ -26,10 +27,7 @@ const RecordCellIndex: React.FC<RecordCellIndexProps> = ({searchText, value}) =>
   const {attribute} = useAttributeContext();
   const firstColumn = attribute?.table_configuration?.[0];
   const [record, setRecord] = React.useState<ReferenceEntityRecord | undefined | null>();
-  const cellMatchersMapping = useCellMatchersMapping();
-  const isMatching = cellMatchersMapping['reference_entity']
-    ? cellMatchersMapping['reference_entity'].default()
-    : () => false;
+  const isMatching = cellMatchers.reference_entity();
 
   React.useEffect(() => {
     if (attribute && firstColumn) {

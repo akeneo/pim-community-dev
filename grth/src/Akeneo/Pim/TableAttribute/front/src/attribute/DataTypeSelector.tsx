@@ -2,22 +2,31 @@ import React from 'react';
 import {DataType} from '../models';
 import {useTranslate, useFeatureFlags} from '@akeneo-pim-community/shared';
 import {SelectInput} from 'akeneo-design-system';
-import {DataTypesMapping} from './AddColumnModal';
 
 type DataTypeSelectorProps = {
   dataType: DataType | null;
   onChange: (dataType: DataType | null) => void;
   isFirstColumn: boolean;
-  dataTypesMapping: DataTypesMapping;
 };
 
-const DataTypeSelector: React.FC<DataTypeSelectorProps> = ({dataType, onChange, isFirstColumn, dataTypesMapping}) => {
+const DataTypeSelector: React.FC<DataTypeSelectorProps> = ({dataType, onChange, isFirstColumn}) => {
   const translate = useTranslate();
   const featureFlags = useFeatureFlags();
 
+  const dataTypesMapping: {[dataType: string]: {useable_as_first_column: boolean; flag?: string}} = {
+    select: {useable_as_first_column: true},
+    text: {useable_as_first_column: false},
+    number: {useable_as_first_column: false},
+    boolean: {useable_as_first_column: false},
+    reference_entity: {useable_as_first_column: true, flag: 'reference_entity'},
+  };
+
   const dataTypes: DataType[] = Object.keys(dataTypesMapping).filter((dataType: string) => {
     const dataTypeMapping = dataTypesMapping[dataType];
-    if (typeof dataTypeMapping.flag !== 'undefined' && !featureFlags.isEnabled(dataTypeMapping.flag)) {
+    if (
+      !dataTypeMapping ||
+      (typeof dataTypeMapping.flag !== 'undefined' && !featureFlags.isEnabled(dataTypeMapping.flag))
+    ) {
       return false;
     }
     return !isFirstColumn || dataTypeMapping.useable_as_first_column;

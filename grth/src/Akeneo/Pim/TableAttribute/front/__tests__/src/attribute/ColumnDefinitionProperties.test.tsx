@@ -3,7 +3,6 @@ import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/fro
 import {ColumnDefinitionProperties} from '../../../src';
 import {fireEvent, screen} from '@testing-library/react';
 import {
-  columnDefinitionPropertiesMapping,
   getComplexTableAttribute,
   getEnUsLocale,
   getNumberColumnDefinitionWithId,
@@ -23,7 +22,6 @@ describe('ColumnDefinitionProperties', () => {
         isDuplicateColumnCode={() => false}
         savedColumnIds={[]}
         attribute={getComplexTableAttribute()}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
 
@@ -49,7 +47,6 @@ describe('ColumnDefinitionProperties', () => {
         isDuplicateColumnCode={() => false}
         savedColumnIds={[]}
         attribute={getComplexTableAttribute()}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
 
@@ -88,7 +85,6 @@ describe('ColumnDefinitionProperties', () => {
         isDuplicateColumnCode={() => false}
         savedColumnIds={[]}
         attribute={getComplexTableAttribute()}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
 
@@ -105,7 +101,6 @@ describe('ColumnDefinitionProperties', () => {
         isDuplicateColumnCode={() => false}
         savedColumnIds={[]}
         attribute={getComplexTableAttribute()}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
 
@@ -122,7 +117,6 @@ describe('ColumnDefinitionProperties', () => {
         isDuplicateColumnCode={() => true}
         savedColumnIds={[]}
         attribute={getComplexTableAttribute()}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
 
@@ -139,7 +133,6 @@ describe('ColumnDefinitionProperties', () => {
         isDuplicateColumnCode={() => true}
         savedColumnIds={[]}
         attribute={getComplexTableAttribute()}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
 

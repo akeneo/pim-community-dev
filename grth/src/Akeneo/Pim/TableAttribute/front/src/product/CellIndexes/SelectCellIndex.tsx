@@ -6,7 +6,7 @@ import {useAttributeContext} from '../../contexts';
 import {LoadingPlaceholderContainer} from '../../shared';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
-import {useCellMatchersMapping} from '../../contexts/CellMappingContext';
+import {cellMatchers} from '../CellMatchers';
 
 const FirstCellLoadingPlaceholderContainer = styled(LoadingPlaceholderContainer)`
   padding-top: 10px;
@@ -26,9 +26,7 @@ const SelectCellIndex: React.FC<SelectCellIndexProps> = ({searchText, isInErrorF
   const {attribute, setAttribute} = useAttributeContext();
   const firstColumn = attribute?.table_configuration?.[0];
   const {getOptionLabel} = useFetchOptions(attribute, setAttribute);
-  const cellMatchersMapping = useCellMatchersMapping();
-
-  const isMatching = cellMatchersMapping['select'] ? cellMatchersMapping['select'].default() : () => false;
+  const isMatching = cellMatchers.select();
 
   return (
     <>
