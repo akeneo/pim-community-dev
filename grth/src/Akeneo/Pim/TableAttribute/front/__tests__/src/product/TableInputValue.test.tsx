@@ -5,11 +5,13 @@ import {TableInputValue, UNIQUE_ID_KEY} from '../../../src';
 import {getComplexTableAttribute, getTableValueWithId} from '../../factories';
 import {dragAndDrop} from '../../shared/dragAndDrop';
 import {TestAttributeContextProvider} from '../../shared/TestAttributeContextProvider';
+import {mockScroll} from '../../shared/mockScroll';
 
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 jest.mock('../../../src/fetchers/RecordFetcher');
 jest.mock('../../../src/fetchers/MeasurementFamilyFetcher');
+mockScroll();
 
 describe('TableInputValue', () => {
   it('should render the component', async () => {
@@ -56,18 +58,28 @@ describe('TableInputValue', () => {
 
     expect(screen.getAllByText('pim_common.yes')).toHaveLength(1);
     expect(screen.getAllByText('pim_common.no')).toHaveLength(1);
-    expect(screen.getAllByTitle('pim_common.open')).toHaveLength(6);
+    // 3 lines, 1 open for boolean, 1 for select and 1 for measurement
+    expect(screen.getAllByTitle('pim_common.open')).toHaveLength(9);
 
+    fireEvent.click(screen.getAllByTitle('pim_common.clear')[1]); // Clear sugar nutrition score
+    fireEvent.change(screen.getByTestId('input-uniqueidsugar-quantity'), {target: {value: '200'}});
+    fireEvent.change(screen.getByTestId('input-uniqueidsalt-part'), {target: {value: '42kg'}});
     act(() => {
-      fireEvent.click(screen.getAllByTitle('pim_common.clear')[1]); // Clear sugar nutrition score
-      fireEvent.change(screen.getByTestId('input-uniqueidsugar-quantity'), {target: {value: '200'}});
-      fireEvent.change(screen.getByTestId('input-uniqueidsalt-part'), {target: {value: '42kg'}});
-      fireEvent.click(screen.getAllByTitle('pim_common.open')[4]); // Opens the caramel boolean
+      fireEvent.click(screen.getAllByTitle('pim_common.open')[2]); // Opens the measurement unit
+    });
+    fireEvent.click(screen.getByText('Ah'));
+    act(() => {
+      fireEvent.click(screen.getAllByTitle('pim_common.open')[6]); // Opens the caramel boolean
     });
     fireEvent.click(screen.getAllByText('pim_common.yes')[1]);
 
     expect(handleChange).toBeCalledWith([
-      {...getTableValueWithId()[0], quantity: '200', nutrition_score: undefined},
+      {
+        ...getTableValueWithId()[0],
+        quantity: '200',
+        nutrition_score: undefined,
+        ElectricCharge: {amount: 10, unit: 'AMPEREHOUR'},
+      },
       {...getTableValueWithId()[1], part: '42kg'},
       {...getTableValueWithId()[2], is_allergenic: true},
     ]);

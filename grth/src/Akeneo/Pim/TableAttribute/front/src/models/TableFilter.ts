@@ -1,6 +1,6 @@
 import {ColumnCode, SelectOptionCode} from './TableConfiguration';
 import {RecordCode} from './ReferenceEntityRecord';
-import {MeasurementValue} from "./MeasurementFamily";
+import {MeasurementValue} from './MeasurementFamily';
 
 export type FilterOperator =
   | 'STARTS WITH'
@@ -39,16 +39,18 @@ export type NotEmptyTableFilterValue = {
 };
 
 const isFilterValid: (filter: PendingBackendTableFilterValue) => boolean = filter => {
-  if (typeof filter.value === 'object' && Object.prototype.hasOwnProperty.call(filter.value, 'amount') && Object.prototype.hasOwnProperty.call(filter.value, 'unit')) {
-    return (filter.value as MeasurementValue).amount !== '';
-  }
   return (
     typeof filter.row !== 'undefined' &&
     typeof filter.column !== 'undefined' &&
     typeof filter.operator !== 'undefined' &&
     (['EMPTY', 'NOT EMPTY'].includes(filter.operator) ||
       (Array.isArray(filter.value) && filter.value.length > 0) ||
-      (!Array.isArray(filter.value) && filter.value !== '' && typeof filter.value !== 'undefined'))
+      (!Array.isArray(filter.value) && filter.value !== '' && typeof filter.value !== 'undefined') ||
+      (typeof filter.value === 'object' &&
+        !Array.isArray(filter.value) &&
+        Object.prototype.hasOwnProperty.call(filter.value, 'amount') &&
+        Object.prototype.hasOwnProperty.call(filter.value, 'unit') &&
+        (filter.value as MeasurementValue).amount !== ''))
   );
 };
 

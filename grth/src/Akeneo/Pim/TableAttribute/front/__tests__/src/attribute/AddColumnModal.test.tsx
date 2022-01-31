@@ -171,12 +171,7 @@ describe('AddColumnModal', () => {
   it('should select measurement family and measurement unit', async () => {
     const handleCreate = jest.fn();
     renderWithProviders(
-      <AddColumnModal
-        close={jest.fn()}
-        onCreate={handleCreate}
-        existingColumnCodes={['firstColumnCode']}
-        dataTypesMapping={defaultDataTypesMapping}
-      />
+      <AddColumnModal close={jest.fn()} onCreate={handleCreate} existingColumnCodes={['firstColumnCode']} />
     );
 
     fireEvent.change(screen.getByLabelText(/pim_common.label/), {target: {value: 'Measurement column'}});

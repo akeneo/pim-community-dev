@@ -7,7 +7,7 @@ import {useLocaleCode} from '../../contexts';
 import {MeasurementValue} from '../../models/MeasurementFamily';
 import {useMeasurementUnits} from '../../attribute/useMeasurementUnits';
 
-const MeasurementInput: CellInput = ({columnDefinition, highlighted, inError, row, onChange}) => {
+const MeasurementInput: CellInput = ({columnDefinition, highlighted, inError, row, onChange, ...rest}) => {
   const translate = useTranslate();
   const localeCode = useLocaleCode();
 
@@ -42,6 +42,7 @@ const MeasurementInput: CellInput = ({columnDefinition, highlighted, inError, ro
       openLabel={translate('pim_common.open')}
       highlighted={highlighted}
       inError={inError}
+      {...rest}
     />
   );
 };
