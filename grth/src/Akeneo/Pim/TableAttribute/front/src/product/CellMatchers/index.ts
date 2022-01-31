@@ -4,6 +4,7 @@ import NumberMatcher from './NumberMatcher';
 import TextMatcher from './TextMatcher';
 import BooleanMatcher from './BooleanMatcher';
 import RecordMatcher from './RecordMatcher';
+import MeasurementMatcher from "./MeasurementMatcher";
 
 export type CellMatcher = () => (cell: TableCell, searchText: string, columnCode: ColumnCode) => boolean;
 
@@ -17,6 +18,7 @@ const cellMatchers: CellMatchersMapping = {
   text: TextMatcher,
   boolean: BooleanMatcher,
   reference_entity: RecordMatcher,
+  measurement: MeasurementMatcher,
 };
 
 export {cellMatchers};
