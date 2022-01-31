@@ -3,9 +3,9 @@
 import remover from 'akeneoassetmanager/infrastructure/remover/asset-family';
 import * as fetch from 'akeneoassetmanager/tools/fetch';
 
-jest.mock('pim/router', () => {});
-jest.mock('pim/security-context', () => {}, {virtual: true});
-jest.mock('routing');
+jest.mock('routing', () => ({
+  generate: (url: string) => url,
+}));
 
 describe('akeneoassetmanager/infrastructure/remover/asset-family', () => {
   it('It deletes an asset family', async () => {

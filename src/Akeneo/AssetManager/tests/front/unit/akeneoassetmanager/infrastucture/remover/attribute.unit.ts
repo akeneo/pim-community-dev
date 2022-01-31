@@ -3,9 +3,9 @@
 import remover from 'akeneoassetmanager/infrastructure/remover/attribute';
 import * as fetch from 'akeneoassetmanager/tools/fetch';
 
-jest.mock('pim/router', () => {});
-jest.mock('pim/security-context', () => {}, {virtual: true});
-jest.mock('routing');
+jest.mock('routing', () => ({
+  generate: (url: string) => url,
+}));
 
 describe('akeneoassetmanager/infrastructure/remover/attribute', () => {
   it('It deletes an attribute', async () => {
