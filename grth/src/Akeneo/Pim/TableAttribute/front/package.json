@@ -15,12 +15,9 @@
     "styled-components": "^5.1.1"
   },
   "devDependencies": {
+    "@types/styled-components": "^5.1.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^7.1.2",
-    "@types/styled-components": "^5.1.1"
-  },
-  "dependencies": {
-    "prettier": "^2.5.1"
+    "@testing-library/user-event": "^7.1.2"
   }
 }
