@@ -35,18 +35,40 @@ jest.mock('../AddDataMappingDropdown', () => ({
   ),
 }));
 
-test('it can add a new data mapping', async () => {
-  const dataMappings: DataMapping[] = [];
-  const columns: Column[] = [];
-  const validationErrors: ValidationError[] = [];
+const dataMappings: DataMapping[] = [
+  {
+    uuid: '288d85cb-3ffb-432d-a422-d2c6810113ab',
+    target: {
+      code: 'a_code',
+      type: 'property',
+      action: 'set',
+      ifEmpty: 'skip',
+      onError: 'skipLine',
+    },
+    sources: ['source1', 'source3'],
+    operations: [],
+    sampleData: [],
+  },
+];
 
+const columns: Column[] = [
+  {
+    uuid: 'source1',
+    index: 0,
+    label: 'Source 1',
+  },
+];
+
+test('it can add a new data mapping', async () => {
   const handleDataMappingCreated = jest.fn();
 
   await renderWithProviders(
     <DataMappingList
-      dataMappings={dataMappings}
-      columns={columns}
-      validationErrors={validationErrors}
+      selectedDataMappingUuid={null}
+      onDataMappingSelected={jest.fn()}
+      dataMappings={[]}
+      columns={[]}
+      validationErrors={[]}
       onDataMappingAdded={handleDataMappingCreated}
     />
   );
@@ -114,39 +136,63 @@ test('it displays the data mapping', async () => {
       label: 'Source 3',
     },
   ];
-  const validationErrors: ValidationError[] = [];
 
   await renderWithProviders(
     <DataMappingList
+      selectedDataMappingUuid={null}
+      onDataMappingSelected={jest.fn()}
       dataMappings={dataMappings}
       columns={columns}
-      validationErrors={validationErrors}
+      validationErrors={[]}
       onDataMappingAdded={jest.fn()}
     />
   );
 
   expect(screen.getByText('a_code')).toBeInTheDocument();
-  expect(
-    screen.getByText('akeneo.tailored_import.data_mapping.sources: Source 1 (A) Source 3 (C)')
-  ).toBeInTheDocument();
+  expect(screen.getByText('akeneo.tailored_import.sources: Source 1 (A) Source 3 (C)')).toBeInTheDocument();
+});
+
+test('it call handler when row is clicked', async () => {
+  const handleDataMappingSelected = jest.fn();
+
+  await renderWithProviders(
+    <DataMappingList
+      selectedDataMappingUuid={null}
+      onDataMappingSelected={handleDataMappingSelected}
+      dataMappings={dataMappings}
+      columns={columns}
+      validationErrors={[]}
+      onDataMappingAdded={jest.fn()}
+    />
+  );
+
+  userEvent.click(screen.getByText('a_code'));
+
+  expect(handleDataMappingSelected).toBeCalledWith('288d85cb-3ffb-432d-a422-d2c6810113ab');
 });
 
 test('it displays validation errors', async () => {
-  const dataMappings: DataMapping[] = [];
-  const columns: Column[] = [];
-
   const validationErrors: ValidationError[] = [
     {
       messageTemplate: 'error.key.name',
       invalidValue: '',
       message: 'this is a data mapping validation error',
       parameters: {},
-      propertyPath: '[data_mapping][name]',
+      propertyPath: '[288d85cb-3ffb-432d-a422-d2c6810113ab]',
+    },
+    {
+      messageTemplate: 'global_error.key.name',
+      invalidValue: '',
+      message: 'this is a global data mapping validation error',
+      parameters: {},
+      propertyPath: '',
     },
   ];
 
   await renderWithProviders(
     <DataMappingList
+      selectedDataMappingUuid={null}
+      onDataMappingSelected={jest.fn()}
       dataMappings={dataMappings}
       columns={columns}
       validationErrors={validationErrors}
@@ -154,5 +200,7 @@ test('it displays validation errors', async () => {
     />
   );
 
-  expect(screen.getByText('error.key.name')).toBeInTheDocument();
+  expect(screen.getByText('global_error.key.name')).toBeInTheDocument();
+  expect(screen.queryByText('error.key.name')).not.toBeInTheDocument();
+  expect(screen.getByRole('alert')).toBeInTheDocument();
 });

@@ -13,11 +13,12 @@ import {
 import {useTranslate} from '@akeneo-pim-community/shared';
 
 type SourceDropdownProps = {
+  disabled: boolean;
   columns: Column[];
   onColumnSelected: (selectedColumn: Column) => void;
 };
 
-const SourceDropdown = ({columns, onColumnSelected}: SourceDropdownProps) => {
+const SourceDropdown = ({columns, onColumnSelected, disabled}: SourceDropdownProps) => {
   const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState(false);
   const [searchValue, setSearchValue] = useState('');
@@ -40,7 +41,11 @@ const SourceDropdown = ({columns, onColumnSelected}: SourceDropdownProps) => {
 
   return (
     <Dropdown>
-      <Button onClick={open}>
+      <Button
+        onClick={open}
+        disabled={disabled}
+        title={disabled ? translate('akeneo.tailored_import.data_mapping.source.disabled') : undefined}
+      >
         {translate('akeneo.tailored_import.data_mapping.source.add')} <ArrowDownIcon />
       </Button>
       {isOpen && (

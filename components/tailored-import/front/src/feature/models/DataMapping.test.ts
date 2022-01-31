@@ -1,5 +1,10 @@
-import {DataMapping} from '.';
-import {createDataMapping, createDefaultDataMapping, addSourceToDataMapping} from './DataMapping';
+import {
+  DataMapping,
+  updateDataMapping,
+  createDataMapping,
+  createDefaultDataMapping,
+  addSourceToDataMapping,
+} from './DataMapping';
 
 const mockUuid = 'uuid';
 jest.mock('akeneo-design-system', () => ({
@@ -90,4 +95,61 @@ test('it add a source to data mapping', () => {
       type: 'attribute',
     },
   });
+});
+
+test('it update a data mapping', () => {
+  const dataMappings: DataMapping[] = [
+    {
+      uuid: '8175126a-5deb-426c-a829-c9b7949dc1f7',
+      operations: [],
+      sampleData: [],
+      sources: [],
+      target: {
+        action: 'set',
+        channel: null,
+        code: 'sku',
+        ifEmpty: 'skip',
+        locale: null,
+        onError: 'skipLine',
+        type: 'attribute',
+      },
+    },
+    {
+      uuid: 'd1249682-720e-11ec-90d6-0242ac120003',
+      operations: [],
+      sampleData: [],
+      sources: [],
+      target: {
+        action: 'set',
+        channel: null,
+        code: 'description',
+        ifEmpty: 'clear',
+        locale: null,
+        onError: 'skipValue',
+        type: 'attribute',
+      },
+    },
+  ];
+
+  const updatedDataMapping: DataMapping = {
+    uuid: 'd1249682-720e-11ec-90d6-0242ac120003',
+    operations: [],
+    sampleData: [],
+    sources: [],
+    target: {
+      action: 'set',
+      channel: null,
+      code: 'description',
+      ifEmpty: 'skip',
+      locale: null,
+      onError: 'skipLine',
+      type: 'attribute',
+    },
+  };
+
+  const nonExistentDataMapping = {...updatedDataMapping, uuid: '68abfdcb-c91e-40e4-a928-fdfa7a31e8ab'};
+
+  expect(updateDataMapping([], updatedDataMapping)).toEqual([]);
+  expect(updateDataMapping(dataMappings, updatedDataMapping)).toEqual([dataMappings[0], updatedDataMapping]);
+  expect(updateDataMapping(dataMappings, nonExistentDataMapping)).toEqual(dataMappings);
 });
