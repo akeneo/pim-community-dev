@@ -1,5 +1,5 @@
 services:
-  Akeneo\Platform\TailoredImport\Infrastructure\Validation\IsValidAttributeValidator:
+  akeneo.tailored_import.validation.is_valid_attribute:
     arguments:
       - '@akeneo.pim.structure.query.get_attributes'
       - '@pim_channel.query.cache.channel_exists_with_locale'

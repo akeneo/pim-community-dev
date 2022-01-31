@@ -22,20 +22,11 @@ use Webmozart\Assert\Assert;
 
 final class IsValidAttributeValidator extends ConstraintValidator
 {
-    private GetAttributes $getAttributes;
-    private ChannelExistsWithLocaleInterface $channelExistsWithLocale;
-
     public function __construct(
-        GetAttributes $getAttributes,
-        ChannelExistsWithLocaleInterface $channelExistsWithLocale
-    ) {
-        $this->getAttributes = $getAttributes;
-        $this->channelExistsWithLocale = $channelExistsWithLocale;
-    }
+        private GetAttributes $getAttributes,
+        private ChannelExistsWithLocaleInterface $channelExistsWithLocale,
+    ) {}
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate($value, Constraint $constraint): void
     {
         if (null === $value) {

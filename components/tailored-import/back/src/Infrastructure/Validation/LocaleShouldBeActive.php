@@ -19,9 +19,6 @@ final class LocaleShouldBeActive extends Constraint
 {
     public const NOT_ACTIVE_MESSAGE = 'akeneo.tailored_import.validation.locale.should_be_active';
 
-    /**
-     * {@inheritdoc}
-     */
     public function validatedBy(): string
     {
         return 'akeneo.tailored_import.validation.locale_should_be_active';

@@ -20,16 +20,11 @@ use Webmozart\Assert\Assert;
 
 class ChannelShouldExistValidator extends ConstraintValidator
 {
-    private ChannelExistsWithLocaleInterface $channelExistsWithLocale;
+    public function __construct(
+        private ChannelExistsWithLocaleInterface $channelExistsWithLocale,
+    )
+    {}
 
-    public function __construct(ChannelExistsWithLocaleInterface $channelExistsWithLocale)
-    {
-        $this->channelExistsWithLocale = $channelExistsWithLocale;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function validate($channel, Constraint $constraint): void
     {
         Assert::isInstanceOf($constraint, ChannelShouldExist::class);

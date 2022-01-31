@@ -25,7 +25,7 @@ class DataMappings extends Constraint
     public const MAX_SOURCES_COUNT_REACHED = 'akeneo.tailored_import.validation.data_mappings.sources.max_count_reached';
     public const SOURCES_SHOULD_BE_UNIQUE = 'akeneo.tailored_import.validation.data_mappings.sources.should_be_unique';
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo.tailored_import.validation.data_mappings';
     }
