@@ -130,9 +130,12 @@ $rules = [
             'Akeneo\Tool\Bundle\MeasureBundle\PublicApi',
             'Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException',
             'Akeneo\Tool\Bundle\MeasureBundle\Exception\UnitNotFoundException',
+            'Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily',
             'Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode',
             'Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface',
             'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',
+            'Akeneo\Tool\Bundle\MeasureBundle\Application\DeleteMeasurementFamily\DeleteMeasurementFamilyCommand',
+            'Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];
