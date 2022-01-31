@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10248: Fix NOT BETWEEN filter does not work on products and product models (created and updated property)
+
 # 5.0.69 (2022-01-21)
 
 ## Bug fixes
