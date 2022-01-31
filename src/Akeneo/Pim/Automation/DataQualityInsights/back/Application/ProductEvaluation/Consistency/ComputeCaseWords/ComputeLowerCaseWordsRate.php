@@ -11,34 +11,26 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Criterion;
+namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\ComputeCaseWords;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 
-final class LowerCaseWords
+final class ComputeLowerCaseWordsRate implements ComputeCaseWordsRate
 {
-    public const CRITERION_CODE = 'consistency_textarea_lowercase_words';
-
-    public const CRITERION_COEFFICIENT = 1;
-
     private const POINTS_TO_SUBTRACT_PER_ERROR = 24;
 
-    /** @var CriterionCode */
-    private $code;
-
-    public function __construct()
+    public function __invoke(?string $productValue): ?Rate
     {
-        $this->code = new CriterionCode(self::CRITERION_CODE);
-    }
+        if ($productValue === null) {
+            return null;
+        }
 
-    public function getCode(): CriterionCode
-    {
-        return $this->code;
-    }
+        $productValue = strip_tags($productValue);
 
-    public function evaluate(string $productValue): Rate
-    {
+        if (trim($productValue) === '') {
+            return null;
+        }
+
         $matches = [];
         preg_match_all('~(?:(?:^\s*)|(?:[\.|\?|\!\:]\s+))[a-z]~', $productValue, $matches);
 
