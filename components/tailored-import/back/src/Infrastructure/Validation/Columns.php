@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraint;
 
 class Columns extends Constraint
 {
+    public const UUID_SHOULD_BE_UNIQUE = 'akeneo.tailored_import.validation.columns.uuid.should_be_unique';
     public const INDEX_SHOULD_BE_UNIQUE = 'akeneo.tailored_import.validation.columns.index.should_be_unique';
     public const LABEL_SHOULD_NOT_BE_BLANK = 'akeneo.tailored_import.validation.columns.label.should_not_be_blank';
     public const LABEL_MAX_LENGTH_REACHED = 'akeneo.tailored_import.validation.columns.label.max_length_reached';

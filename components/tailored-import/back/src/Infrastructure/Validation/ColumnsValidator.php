@@ -56,10 +56,38 @@ class ColumnsValidator extends ConstraintValidator
             return;
         }
 
-        $columnIndexes = [];
+        $this->validateColumnUuidsAreUnique($columns);
+        if(0 < $this->context->getViolations()->count()) return;
+
+        $this->validateColumnIndexesAreUnique($columns);
+        if(0 < $this->context->getViolations()->count()) return;
+
         foreach ($columns as $column) {
             $this->validateColumn($validator, $column);
+        }
+    }
 
+    private function validateColumnUuidsAreUnique(array $columns): void
+    {
+        $columnUuids = [];
+        foreach ($columns as $column) {
+            if (isset($column['uuid'])) {
+                if (in_array($column['uuid'], $columnUuids)) {
+                    $this->context->buildViolation(Columns::UUID_SHOULD_BE_UNIQUE)
+                        ->atPath(sprintf('[%s][uuid]', $column['uuid']))
+                        ->setInvalidValue($column['uuid'])
+                        ->addViolation();
+                } else {
+                    $columnUuids[] = $column['uuid'];
+                }
+            }
+        }
+    }
+
+    private function validateColumnIndexesAreUnique(array $columns): void
+    {
+        $columnIndexes = [];
+        foreach ($columns as $column) {
             if (isset($column['index'])) {
                 if (in_array($column['index'], $columnIndexes)) {
                     $this->context->buildViolation(Columns::INDEX_SHOULD_BE_UNIQUE)

@@ -44,12 +44,17 @@ final class ColumnsValidatorTest extends AbstractValidationTest
     public function validColumns(): array
     {
         return [
-            'a valid column' => [
+            'valid columns' => [
                 [
                     [
                         'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
                         'index' => 0,
                         'label' => 'Sku'
+                    ],
+                    [
+                        'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd1',
+                        'index' => 1,
+                        'label' => 'Name'
                     ]
                 ],
             ],
@@ -70,7 +75,7 @@ final class ColumnsValidatorTest extends AbstractValidationTest
                     ]
                 ]
             ],
-            'too long column name' => [
+            'too long column label' => [
                 'akeneo.tailored_import.validation.columns.label.max_length_reached',
                 '[018e1a5e-4d77-4a15-add8-f142111d4cd0][label]',
                 [
@@ -80,6 +85,22 @@ final class ColumnsValidatorTest extends AbstractValidationTest
                         'label' => str_repeat('a', 256),
                     ]
                 ]
+            ],
+            'duplicate column uuid' => [
+                'akeneo.tailored_import.validation.columns.uuid.should_be_unique',
+                '[72bdf3c7-5647-427b-be62-e3e560c0eb45][uuid]',
+                [
+                    [
+                        'uuid' => '72bdf3c7-5647-427b-be62-e3e560c0eb45',
+                        'index' => 0,
+                        'label' => 'Sku'
+                    ],
+                    [
+                        'uuid' => '72bdf3c7-5647-427b-be62-e3e560c0eb45',
+                        'index' => 1,
+                        'label' => 'Name'
+                    ],
+                ],
             ],
             'duplicate column index' => [
                 'akeneo.tailored_import.validation.columns.index.should_be_unique',
