@@ -1,32 +1,34 @@
 import { useCallback, useState } from 'react';
 
 
-interface FetchResultIdle {
+export interface FetchResultIdle {
   type: 'idle'
 }
 
-interface FetchResultFetching {
+export interface FetchResultFetching {
   type: 'fetching'
 }
 
-interface FetchResultError {
+export interface FetchResultError {
   type: 'error'
   message: string;
 }
 
-interface FetchResultFetched<Payload> {
+export interface FetchResultFetched<Payload> {
   type: 'fetched'
   payload: Payload;
 }
 
 
-type FetchResult<Payload> = FetchResultIdle | FetchResultFetching | FetchResultError | FetchResultFetched<Payload>
+export type FetchResult<Payload> = FetchResultIdle | FetchResultFetching | FetchResultError | FetchResultFetched<Payload>
+
+export type FetchHookResult<FrontendPayload> = [result: FetchResult<FrontendPayload>, fetch: () => Promise<void>]
 
 const useFetchSimpler = <BackendPayload, FrontendPayload = BackendPayload>(
   url: string,
   payloadConverter: (payload: BackendPayload) => FrontendPayload = (payload) => payload as unknown as FrontendPayload,
   init?: RequestInit
-): [result: FetchResult<FrontendPayload>, fetch: () => Promise<void>] => {
+): FetchHookResult<FrontendPayload> => {
 
   const [result, setResult] = useState<FetchResult<FrontendPayload>>({ type: 'idle' });
 
@@ -38,8 +40,8 @@ const useFetchSimpler = <BackendPayload, FrontendPayload = BackendPayload>(
       const payload = await response.json() as BackendPayload;
 
       setResult({ type: 'fetched', payload: payloadConverter(payload) })
-    } catch ({ message }) {
-      setResult({ type: 'error', message })
+    } catch (e) {
+      setResult({ type: 'error', message: e.message })
     }
   }, [url]);
 

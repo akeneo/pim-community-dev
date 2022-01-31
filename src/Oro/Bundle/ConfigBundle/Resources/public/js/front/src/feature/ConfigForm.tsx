@@ -35,7 +35,6 @@ const ConfigForm = () => {
   const [config, setConfig] = useState<ConfigServicePayloadFrontend | null>(null);
   const [isModified, setIsModified] = useState(false);
 
-  // TODO fetch locales only once by session
   useEffect(() => {
     doFetchConfig();
   }, []);
@@ -143,7 +142,7 @@ const ConfigForm = () => {
           <Helper level="info">
             {__('oro_config.form.config.group.loading_message.helper')}
           </Helper>
-          <Field label={__('oro_config.form.config.group.loading_message.fields.enabler.label')}>
+          <Field data-testid="loading_message__enabler" label={__('oro_config.form.config.group.loading_message.fields.enabler.label')}>
             <BooleanInput
               readOnly={false}
               value={config.pim_ui___loading_message_enabled.value}
