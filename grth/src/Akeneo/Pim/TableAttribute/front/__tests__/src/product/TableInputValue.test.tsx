@@ -1,7 +1,7 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen} from '@testing-library/react';
-import {CellMappingContext, TableInputValue, UNIQUE_ID_KEY} from '../../../src';
+import {TableInputValue, UNIQUE_ID_KEY} from '../../../src';
 import {getComplexTableAttribute, getTableValueWithId} from '../../factories';
 import {dragAndDrop} from '../../shared/dragAndDrop';
 import {TestAttributeContextProvider} from '../../shared/TestAttributeContextProvider';

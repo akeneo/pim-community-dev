@@ -31,6 +31,8 @@ services:
             - '@akeneo_measure.application.delete_measurement_family_handler'
             - '@Akeneo\Test\Pim\TableAttribute\Acceptance\Context\ConstraintViolationsContext'
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\MeasurementFamilyExists'
+            - '@akeneo_measure.persistence.measurement_family_repository'
+            - '@akeneo_measure.application.save_measurement_family_handler'
 
     Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetNonExistingSelectOptionCodes:
         class: Akeneo\Test\Pim\TableAttribute\Acceptance\InMemory\InMemoryGetNonExistingSelectOptionCodes

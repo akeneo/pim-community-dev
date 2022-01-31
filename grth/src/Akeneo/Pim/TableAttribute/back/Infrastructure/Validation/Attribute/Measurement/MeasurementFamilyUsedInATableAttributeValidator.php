@@ -49,7 +49,6 @@ final class MeasurementFamilyUsedInATableAttributeValidator extends ConstraintVa
             return;
         }
 
-
         if (
             $this->isTryingToRemoveAUnit($measurementFamily, $saveMeasurementFamily)
             || $this->isTryingToUpdateTheConversionOperations($measurementFamily, $saveMeasurementFamily)

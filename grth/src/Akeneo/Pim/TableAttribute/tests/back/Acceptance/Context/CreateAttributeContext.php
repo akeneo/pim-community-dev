@@ -287,9 +287,9 @@ final class CreateAttributeContext implements Context
     }
 
     /**
-     * @When I create a table attribute with measurement column from :familyCode family code and :defaultUnitCode default unit code
+     * @Given a table attribute with measurement column from :familyCode family code and :defaultUnitCode default unit code
      */
-    public function iCreateATableAttributeWithMeasurementColumnFromFamilyCodeAndDefaultUnitCode(string $familyCode, string $defaultUnitCode): void
+    public function aTableAttributeWithMeasurementColumnFromFamilyCodeAndDefaultUnitCode(string $familyCode, string $defaultUnitCode): void
     {
         $attribute = $this->attributeBuilder
             ->withCode('table')
@@ -310,7 +310,7 @@ final class CreateAttributeContext implements Context
                 'measurement_default_unit_code' => $defaultUnitCode,
             ],
         ]);
-        $this->saveAttribute($attribute);
+        $this->saveAttribute($attribute, true);
     }
 
     private function saveAttribute(AttributeInterface $attribute, bool $throwOnvalidationError = false): void

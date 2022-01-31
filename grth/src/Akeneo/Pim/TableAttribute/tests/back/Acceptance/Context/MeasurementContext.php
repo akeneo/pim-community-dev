@@ -18,6 +18,10 @@ use Akeneo\Tool\Bundle\MeasureBundle\Application\CreateMeasurementFamily\CreateM
 use Akeneo\Tool\Bundle\MeasureBundle\Application\CreateMeasurementFamily\CreateMeasurementFamilyHandler;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\DeleteMeasurementFamily\DeleteMeasurementFamilyCommand;
 use Akeneo\Tool\Bundle\MeasureBundle\Application\DeleteMeasurementFamily\DeleteMeasurementFamilyHandler;
+use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand;
+use Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyHandler;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
+use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
@@ -30,6 +34,8 @@ final class MeasurementContext implements Context
         private DeleteMeasurementFamilyHandler $deleteMeasurementFamilyHandler,
         private ConstraintViolationsContext $constraintViolationsContext,
         private MeasurementFamilyExists $measurementFamilyExists,
+        private MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
+        private SaveMeasurementFamilyHandler $measurementFamilyHandler,
     ) {
     }
 
@@ -99,26 +105,163 @@ final class MeasurementContext implements Context
     }
 
     /**
-     * @When I create a table attribute with :code measurement family link column
+     * @When I remove the :removedUnitCode unit from the :measurementFamilyCode family
      */
-    public function iCreateATableAttributeWithMeasurementFamilyLinkColumn(string $code): void
+    public function iRemoveTheUnitFromTheMeasurementFamily(string $removedUnitCode, string $measurementFamilyCode): void
     {
-        $attribute = $this->attributeBuilder
-            ->withCode('table')
-            ->withGroupCode('marketing')
-            ->withType(AttributeTypes::TABLE)
-            ->build();
-        $attribute->setRawTableConfiguration([
-            [
-                'data_type' => ReferenceEntityColumn::DATATYPE,
-                'code' => 'brand',
-                'reference_entity_identifier' => $referenceEntityIdentifier,
-            ],
-            [
-                'data_type' => 'number',
-                'code' => 'quantity',
-            ],
-        ]);
-        $this->saveAttribute($attribute);
+        $measurementFamily = $this->measurementFamilyRepository
+            ->getByCode(MeasurementFamilyCode::fromString($measurementFamilyCode));
+
+        $normalized = $measurementFamily->normalize();
+
+        $command = new SaveMeasurementFamilyCommand();
+        $command->code = $measurementFamilyCode;
+        $command->standardUnitCode = $normalized['standard_unit_code'];
+        $command->labels = $normalized['labels'];
+        $command->units = \array_filter(
+            $normalized['units'],
+            fn (array $normalizedUnit): bool => $normalizedUnit['code'] !== $removedUnitCode
+        );
+
+        $violations = $this->validator->validate($command);
+        if ($violations->count() > 0) {
+            $this->constraintViolationsContext->add($violations);
+
+            return;
+        }
+
+        $this->measurementFamilyHandler->handle($command);
+    }
+
+    /**
+     * @Then The :measurementFamilyCode measurement family contains the :unitCode unit
+     */
+    public function thefamilyContainsTheUnit(string $measurementFamilyCode, string $unitCode): void
+    {
+        $measurementFamily = $this->measurementFamilyRepository
+            ->getByCode(MeasurementFamilyCode::fromString($measurementFamilyCode));
+
+        Assert::keyExists(
+            $measurementFamily->normalizeWithIndexedUnits()['units'],
+            $unitCode,
+            \sprintf('The %s unit was deleted', $unitCode)
+        );
+    }
+
+    /**
+     * @When I add a step for the :unitCode conversion operation in the :measurementFamilyCode family
+     */
+    public function iAddAStepForTheConversionOperationIntheFamily(string $unitCode, string $measurementFamilyCode): void
+    {
+        $measurementFamily = $this->measurementFamilyRepository
+            ->getByCode(MeasurementFamilyCode::fromString($measurementFamilyCode));
+
+        $normalized = $measurementFamily->normalizeWithIndexedUnits();
+        $normalized['units'][$unitCode]['convert_from_standard'][] = ['operator' => 'add', 'value' => '5.8'];
+
+        $command = new SaveMeasurementFamilyCommand();
+        $command->code = $measurementFamilyCode;
+        $command->standardUnitCode = $normalized['standard_unit_code'];
+        $command->labels = $normalized['labels'];
+        $command->units = $normalized['units'];
+
+        $violations = $this->validator->validate($command);
+        if ($violations->count() > 0) {
+            $this->constraintViolationsContext->add($violations);
+
+            return;
+        }
+
+        $this->measurementFamilyHandler->handle($command);
+    }
+
+    // @todo dupplicate with next
+//    /**
+//     * @When I add the :unitCode unit and update the labels of the :measurementFamilyCode family
+//     */
+//    public function addUnitAndUpdateLabelsOfFamily(string $unitCode, string $measurementFamilyCode)
+//    {
+//        $measurementFamily = $this->measurementFamilyRepository
+//            ->getByCode(MeasurementFamilyCode::fromString($measurementFamilyCode));
+//
+//        $normalized = $measurementFamily->normalizeWithIndexedUnits();
+//
+//        $normalized['units'][$unitCode] = [
+//            'code' => $unitCode,
+//            'labels' => [],
+//            'convert_from_standard' => [['operator' => 'mul', 'value' => '1']],
+//            'symbol' => $unitCode,
+//        ];
+//
+//        $normalized['labels'] = ['en_US' => 'Duration'];
+//
+//        $command = new SaveMeasurementFamilyCommand();
+//        $command->code = $measurementFamilyCode;
+//        $command->standardUnitCode = $normalized['standard_unit_code'];
+//        $command->labels = $normalized['labels'];
+//        $command->units = $normalized['units'];
+//
+//        $violations = $this->validator->validate($command);
+//        if ($violations->count() > 0) {
+//            $this->constraintViolationsContext->add($violations);
+//
+//            return;
+//        }
+//
+//        $this->measurementFamilyHandler->handle($command);
+//    }
+
+    // @todo dupplicate with previous
+    /**
+     * @When I add the :unitCode unit and update the labels of the :measurementFamilyCode family to :jsonLabels
+     */
+    public function addUnitAndUpdateLabelsOfFamily(
+        string $unitCode,
+        string $measurementFamilyCode,
+        string $jsonLabels
+    ) {
+        $measurementFamily = $this->measurementFamilyRepository
+            ->getByCode(MeasurementFamilyCode::fromString($measurementFamilyCode));
+
+        $normalized = $measurementFamily->normalizeWithIndexedUnits();
+
+        $normalized['units'][$unitCode] = [
+            'code' => $unitCode,
+            'labels' => [],
+            'convert_from_standard' => [['operator' => 'mul', 'value' => '1']],
+            'symbol' => $unitCode,
+        ];
+
+        $normalized['labels'] = json_decode($jsonLabels, true);
+
+        $command = new SaveMeasurementFamilyCommand();
+        $command->code = $measurementFamilyCode;
+        $command->standardUnitCode = $normalized['standard_unit_code'];
+        $command->labels = $normalized['labels'];
+        $command->units = $normalized['units'];
+
+        $violations = $this->validator->validate($command);
+        if ($violations->count() > 0) {
+            $this->constraintViolationsContext->add($violations);
+
+            return;
+        }
+
+        $this->measurementFamilyHandler->handle($command);
+    }
+
+    /**
+     * @Then The labels of the :measurementFamilyCode family were updated to :jsonLabels
+     */
+    public function labelsOfFamilyWereUpdated(
+        string $measurementFamilyCode,
+        string $jsonLabels
+    ) {
+        $measurementFamily = $this->measurementFamilyRepository
+            ->getByCode(MeasurementFamilyCode::fromString($measurementFamilyCode));
+
+        $normalizedLabels = $measurementFamily->normalize()['labels'];
+
+        Assert::same($normalizedLabels, json_decode($jsonLabels, true));
     }
 }
