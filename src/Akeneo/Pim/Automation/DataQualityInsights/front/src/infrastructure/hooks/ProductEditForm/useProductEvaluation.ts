@@ -14,7 +14,7 @@ const useProductEvaluation = () => {
     return {
       evaluation: evaluation,
       productId: productId,
-      productUpdated: productUpdatedDate,
+      productUpdated: productUpdated,
     };
   });
 
@@ -27,7 +27,7 @@ const useProductEvaluation = () => {
   return {
     evaluation,
     productId,
-    productUpdated: productUpdatedDate,
+    productUpdated: productUpdated,
   };
 };
 

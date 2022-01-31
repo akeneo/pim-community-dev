@@ -18,6 +18,8 @@ import pageContextReducer, {
   endProductAttributesTabIsLoadedAction,
   showDataQualityInsightsAttributeToImproveAction,
   startProductAttributesTabIsLoadingAction,
+  startProductSavingAction,
+  endProductSavingAction,
 } from './ProductEditForm/pageContextReducer';
 
 export {
@@ -45,4 +47,6 @@ export {
   startProductAttributesTabIsLoadingAction,
   endProductAttributesTabIsLoadedAction,
   showDataQualityInsightsAttributeToImproveAction,
+  startProductSavingAction,
+  endProductSavingAction,
 };
