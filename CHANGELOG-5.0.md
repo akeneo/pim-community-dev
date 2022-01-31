@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10223: Add missing "s" on "remove-orphans" option in Makefile
+
 # 5.0.69 (2022-01-21)
 
 # 5.0.68 (2022-01-17)
