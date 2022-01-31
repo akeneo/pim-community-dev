@@ -18,9 +18,7 @@ const asset = {
 };
 jest.mock('akeneoassetmanager/tools/image-loader');
 
-routing.generate = jest
-  .fn()
-  .mockImplementation((url: string) => url);
+routing.generate = jest.fn().mockImplementation((url: string) => url);
 
 loadImage.mockImplementation(
   () =>
