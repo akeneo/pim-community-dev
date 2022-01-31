@@ -5,9 +5,9 @@ import {createIdentifier} from 'akeneoreferenceentity/domain/model/attribute/ide
 import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import * as fetch from 'akeneoreferenceentity/tools/fetch';
 
-jest.mock('pim/router', () => {});
-jest.mock('pim/security-context', () => {}, {virtual: true});
-jest.mock('routing');
+jest.mock('routing', () => ({
+  generate: (url: string) => url,
+}));
 
 describe('Akeneoreferenceentity > infrastructure > remover > attribute', () => {
   it('It deletes an attribute', async () => {
