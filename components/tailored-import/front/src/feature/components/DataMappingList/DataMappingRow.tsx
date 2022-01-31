@@ -9,6 +9,7 @@ type DataMappingRowProps = {
   dataMapping: DataMapping;
   columns: Column[];
   onClick: (dataMappingUuid: string) => void;
+  isSelected: boolean;
   hasError: boolean;
 };
 
@@ -16,7 +17,7 @@ const Spacer = styled.div`
   flex: 1;
 `;
 
-const DataMappingRow = ({dataMapping, columns, onClick, hasError}: DataMappingRowProps) => {
+const DataMappingRow = ({dataMapping, columns, onClick, isSelected, hasError}: DataMappingRowProps) => {
   const translate = useTranslate();
   const sources = dataMapping.sources.map(uuid => {
     const column = columns.find(column => uuid === column.uuid);
@@ -25,7 +26,7 @@ const DataMappingRow = ({dataMapping, columns, onClick, hasError}: DataMappingRo
   });
 
   return (
-    <Table.Row onClick={() => onClick(dataMapping.uuid)}>
+    <Table.Row onClick={() => onClick(dataMapping.uuid)} isSelected={isSelected}>
       <Table.Cell>{dataMapping.target.code}</Table.Cell>
       <Table.Cell>
         {sources.length === 0

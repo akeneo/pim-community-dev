@@ -59,6 +59,7 @@ const ImportStructureTab = ({structureConfiguration, onStructureConfigurationCha
           <DataMappingList
             dataMappings={structureConfiguration.dataMappings}
             columns={structureConfiguration.columns}
+            selectedDataMappingUuid={selectedDataMappingUuid}
             validationErrors={[]}
             onDataMappingAdded={handleDataMappingAdded}
             onDataMappingSelected={handleDataMappingSelected}

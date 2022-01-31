@@ -2,11 +2,9 @@ import React from 'react';
 import {Helper, SectionTitle, Table} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {Column, DataMapping, MAX_DATA_MAPPING_COUNT} from '../../models';
-import {useTranslate, ValidationError} from '@akeneo-pim-community/shared';
+import {getErrorsForPath, filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {AddDataMappingDropdown} from '../AddDataMappingDropdown';
 import {DataMappingRow} from './DataMappingRow';
-import {filterErrors} from '@akeneo-pim-community/shared/lib/models/validation-error';
-import {getErrorsForPath} from '@akeneo-pim-community/shared/src/models/validation-error';
 
 const Container = styled.div`
   flex: 1;
@@ -17,6 +15,7 @@ const Container = styled.div`
 type DataMappingListProps = {
   dataMappings: DataMapping[];
   columns: Column[];
+  selectedDataMappingUuid: string | null;
   validationErrors: ValidationError[];
   onDataMappingAdded: (dataMapping: DataMapping) => void;
   onDataMappingSelected: (dataMappingUuid: string) => void;
@@ -25,6 +24,7 @@ type DataMappingListProps = {
 const DataMappingList = ({
   dataMappings,
   columns,
+  selectedDataMappingUuid,
   validationErrors,
   onDataMappingAdded,
   onDataMappingSelected,
@@ -54,6 +54,7 @@ const DataMappingList = ({
               dataMapping={dataMapping}
               columns={columns}
               onClick={onDataMappingSelected}
+              isSelected={selectedDataMappingUuid === dataMapping.uuid}
               hasError={filterErrors(validationErrors, `[${dataMapping.uuid}]`).length > 0}
             />
           ))}

@@ -42,7 +42,13 @@ test('it call handler when user click on row', () => {
   renderWithProviders(
     <table>
       <tbody>
-        <DataMappingRow dataMapping={dataMapping} onClick={handleClick} hasError={false} columns={columns} />
+        <DataMappingRow
+          columns={columns}
+          dataMapping={dataMapping}
+          onClick={handleClick}
+          hasError={false}
+          isSelected={false}
+        />
       </tbody>
     </table>
   );
@@ -55,7 +61,13 @@ test('it displays a data mapping row', () => {
   renderWithProviders(
     <table>
       <tbody>
-        <DataMappingRow dataMapping={dataMapping} onClick={jest.fn()} hasError={false} columns={columns} />
+        <DataMappingRow
+          dataMapping={dataMapping}
+          onClick={jest.fn()}
+          hasError={false}
+          columns={columns}
+          isSelected={false}
+        />
       </tbody>
     </table>
   );
@@ -69,7 +81,13 @@ test('it displays a pill when there is an validation error', () => {
   renderWithProviders(
     <table>
       <tbody>
-        <DataMappingRow dataMapping={dataMapping} onClick={jest.fn()} hasError={true} columns={columns} />
+        <DataMappingRow
+          dataMapping={dataMapping}
+          onClick={jest.fn()}
+          hasError={true}
+          columns={columns}
+          isSelected={false}
+        />
       </tbody>
     </table>
   );

@@ -64,6 +64,7 @@ test('it can add a new data mapping', async () => {
 
   await renderWithProviders(
     <DataMappingList
+      selectedDataMappingUuid={null}
       onDataMappingSelected={jest.fn()}
       dataMappings={[]}
       columns={[]}
@@ -138,6 +139,7 @@ test('it displays the data mapping', async () => {
 
   await renderWithProviders(
     <DataMappingList
+      selectedDataMappingUuid={null}
       onDataMappingSelected={jest.fn()}
       dataMappings={dataMappings}
       columns={columns}
@@ -155,6 +157,7 @@ test('it call handler when row is clicked', async () => {
 
   await renderWithProviders(
     <DataMappingList
+      selectedDataMappingUuid={null}
       onDataMappingSelected={handleDataMappingSelected}
       dataMappings={dataMappings}
       columns={columns}
@@ -188,6 +191,7 @@ test('it displays validation errors', async () => {
 
   await renderWithProviders(
     <DataMappingList
+      selectedDataMappingUuid={null}
       onDataMappingSelected={jest.fn()}
       dataMappings={dataMappings}
       columns={columns}
