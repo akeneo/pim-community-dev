@@ -1,0 +1,69 @@
+tsc command needs
+- typescript@*
+
+src code needs
+- react@* + @types/react
+- styled-components@* + @types/styled-components@*
+- react-dom@* + @types/react-dom@*
+- react-draft-wysiwyg + @types/react-draft-wysiwyg@*
+- draftjs-to-html + @types/draftjs-to-html@*
+- html-to-draftjs + @types/html-to-draftjs@*
+- draft-js
+- @testing-library/react
+
+tests needs
+- prettier
+- eslint
+
+eslint needs
+- @typescript-eslint/eslint-plugin
+- @typescript-eslint/parser
+- eslint-plugin-react
+- eslint-plugin-react-hooks
+
+jest needs
+- jest + @types/jest@*
+- @testing-library/jest-dom@*
+- ts-jest
+- @storybook/addon-docs
+- @testing-library/user-event
+- @testing-library/react-hooks
+- react-test-renderer
+- ts-jest v27 gives a lot of bugs (document not found, etc)
+  - https://github.com/testing-library/react-testing-library/issues/422
+  - ReferenceError: setImmediate is not defined
+  - needs to use --env=jsdom in the jest command line
+  - ts-jest needs to have the same version than jest
+
+sb cli needs:
+- @storybook/cli@*
+- puppeteer
+
+storybook:start needs:
+- @storybook/react@*
+- tsconfig-paths-webpack-plugin
+- @storybook/addon-links@*
+- @storybook/addon-essentials@*
+- themeprovider-storybook@*
+
+test:visual:run needs
+- jest-puppeteer
+
+"@storybook/addon-actions": "*",
+"@storybook/addons": "*",
+
+latest version of eslint needs to disable this
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/no-unsafe-call": "off",
+    "@typescript-eslint/no-unsafe-argument": "off",
+    "@typescript-eslint/no-unnecessary-type-assertion": "off",
+    "@typescript-eslint/no-unsafe-return": "off",
+    "@typescript-eslint/await-thenable": "off",
+    "@typescript-eslint/restrict-template-expressions": "off"
+    "@typescript-eslint/restrict-plus-operands": "off"
+
+tsconfig needs to have lib > es6 to have "includes" method
+
+info installing puppeteer...
+Error: Browser is not downloaded. Run "npm install" or "yarn install"
