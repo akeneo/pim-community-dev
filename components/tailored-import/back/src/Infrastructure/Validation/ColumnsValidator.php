@@ -36,31 +36,29 @@ class ColumnsValidator extends ConstraintValidator
         }
 
         $validator = $this->context->getValidator();
-        $violations = $validator->validate($columns, [
+        $validator->inContext($this->context)->validate($columns, [
             new Type('array'),
             new Count([
                 'max' => self::MAX_COLUMN_COUNT,
-                'maxMessage' => Columns::MAX_COLUMN_COUNT_REACHED,
+                'maxMessage' => Columns::MAX_COUNT_REACHED,
             ])
         ]);
 
-        if (0 < $violations->count()) {
-            foreach ($violations as $violation) {
-                $this->context->buildViolation(
-                    $violation->getMessage(),
-                    $violation->getParameters()
-                )
-                    ->addViolation();
-            }
-
+        if (0 < $this->context->getViolations()->count()) {
             return;
         }
 
         $this->validateColumnUuidsAreUnique($columns);
-        if(0 < $this->context->getViolations()->count()) return;
+
+        if (0 < $this->context->getViolations()->count()) {
+            return;
+        }
 
         $this->validateColumnIndexesAreUnique($columns);
-        if(0 < $this->context->getViolations()->count()) return;
+
+        if (0 < $this->context->getViolations()->count()) {
+            return;
+        }
 
         foreach ($columns as $column) {
             $this->validateColumn($validator, $column);

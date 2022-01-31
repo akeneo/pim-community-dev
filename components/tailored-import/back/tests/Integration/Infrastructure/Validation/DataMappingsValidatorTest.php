@@ -44,7 +44,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
     public function validDataMappings(): array
     {
         return [
-            'a valid data mapping' => [
+            'valid data mappings' => [
                 [
                     [
                         'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
@@ -63,6 +63,23 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                         ],
                         'operations' => [],
                         'sampleData' => [],
+                    ],
+                    [
+                        'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd1',
+                        'target' => [
+                            'code' => 'category',
+                            'type' => 'property',
+                            'action' => 'add',
+                            'ifEmpty' => 'skip',
+                            'onError' => 'skipLine',
+
+                        ],
+                        'sources' => [
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc63',
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc03',
+                        ],
+                        'operations' => [],
+                        'sampleData' => [],
                     ]
                 ],
             ],
@@ -72,8 +89,49 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
     public function invalidDataMappings(): array
     {
         return [
+            'duplicate data mapping uuid' => [
+                'akeneo.tailored_import.validation.data_mappings.uuid.should_be_unique',
+                '[018e1a5e-4d77-4a15-add8-f142111d4cd0][uuid]',
+                [
+                    [
+                        'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
+                        'target' => [
+                            'code' => 'sku',
+                            'type' => 'attribute',
+                            'channel' => 'ecommerce',
+                            'locale' => 'en_US',
+                            'action' => 'set',
+                            'ifEmpty' => 'skip',
+                            'onError' => 'skipLine',
+
+                        ],
+                        'sources' => [
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
+                        ],
+                        'operations' => [],
+                        'sampleData' => [],
+                    ],
+                    [
+                        'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
+                        'target' => [
+                            'code' => 'category',
+                            'type' => 'property',
+                            'action' => 'add',
+                            'ifEmpty' => 'skip',
+                            'onError' => 'skipLine',
+
+                        ],
+                        'sources' => [
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc63',
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc03',
+                        ],
+                        'operations' => [],
+                        'sampleData' => [],
+                    ]
+                ],
+            ],
             'data mapping with empty sources' => [
-                'akeneo.tailored_import.validation.data_mappings.data_mapping_min_sources_count_reached',
+                'akeneo.tailored_import.validation.data_mappings.sources.min_count_reached',
                 '[018e1a5e-4d77-4a15-add8-f142111d4cd0][sources]',
                 [
                     [
@@ -94,7 +152,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                 ]
             ],
             'data mapping with too many sources' => [
-                'akeneo.tailored_import.validation.data_mappings.data_mapping_max_sources_count_reached',
+                'akeneo.tailored_import.validation.data_mappings.sources.max_count_reached',
                 '[018e1a5e-4d77-4a15-add8-f142111d4cd0][sources]',
                 [
                     [
@@ -119,6 +177,95 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                         'sampleData' => [],
                     ]
                 ]
+            ],
+            'data mapping with duplicate sources' => [
+                'akeneo.tailored_import.validation.data_mappings.sources.should_be_unique',
+                '[018e1a5e-4d77-4a15-add8-f142111d4cd0][sources]',
+                [
+                    [
+                        'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
+                        'target' => [
+                            'code' => 'sku',
+                            'type' => 'attribute',
+                            'channel' => 'ecommerce',
+                            'locale' => 'en_US',
+                            'action' => 'set',
+                            'ifEmpty' => 'skip',
+                            'onError' => 'skipLine',
+                        ],
+                        'sources' => [
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69',
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc68',
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69',
+                        ],
+                        'operations' => [],
+                        'sampleData' => [],
+                    ]
+                ]
+            ],
+            'data mapping without identifier target' => [
+                'akeneo.tailored_import.validation.data_mappings.no_identifier_target_found',
+                '',
+                [
+                    [
+                        'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
+                        'target' => [
+                            'code' => 'category',
+                            'type' => 'property',
+                            'action' => 'add',
+                            'ifEmpty' => 'skip',
+                            'onError' => 'skipLine',
+                        ],
+                        'sources' => [
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69',
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc68',
+                        ],
+                        'operations' => [],
+                        'sampleData' => [],
+                    ]
+                ]
+            ],
+            'data mappings with too many identifier target' => [
+                'akeneo.tailored_import.validation.data_mappings.too_many_identifier_target_found',
+                '',
+                [
+                    [
+                        'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
+                        'target' => [
+                            'code' => 'sku',
+                            'type' => 'attribute',
+                            'channel' => 'ecommerce',
+                            'locale' => 'en_US',
+                            'action' => 'set',
+                            'ifEmpty' => 'skip',
+                            'onError' => 'skipLine',
+
+                        ],
+                        'sources' => [
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
+                        ],
+                        'operations' => [],
+                        'sampleData' => [],
+                    ],
+                    [
+                        'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd9',
+                        'target' => [
+                            'code' => 'sku',
+                            'type' => 'attribute',
+                            'channel' => 'ecommerce',
+                            'locale' => 'en_US',
+                            'action' => 'set',
+                            'ifEmpty' => 'skip',
+                            'onError' => 'skipLine',
+
+                        ],
+                        'sources' => [
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc63',
+                        ],
+                        'operations' => [],
+                        'sampleData' => [],
+                    ]
+                ],
             ],
         ];
     }

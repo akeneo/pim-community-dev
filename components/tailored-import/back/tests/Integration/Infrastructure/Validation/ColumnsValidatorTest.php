@@ -118,8 +118,8 @@ final class ColumnsValidatorTest extends AbstractValidationTest
                     ],
                 ],
             ],
-            'too much columns' => [
-                'akeneo.tailored_import.validation.columns.max_column_count_reached',
+            'too many columns' => [
+                'akeneo.tailored_import.validation.columns.max_count_reached',
                 '',
                 array_fill(0, 501, [
                     'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',

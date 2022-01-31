@@ -22,3 +22,11 @@ services:
     tags:
       - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.channel_should_exist' }
     public: true
+
+  akeneo.tailored_import.validation.data_mappings:
+    class: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMappingsValidator'
+    arguments:
+      - '@akeneo.pim.structure.query.get_attributes'
+    tags:
+      - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.data_mappings' }
+    public: true
