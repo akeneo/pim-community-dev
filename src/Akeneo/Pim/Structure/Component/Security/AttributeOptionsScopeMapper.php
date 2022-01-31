@@ -17,10 +17,10 @@ class AttributeOptionsScopeMapper implements ScopeMapperInterface
 
     private const SCOPE_ACL_MAP = [
         self::SCOPE_READ_ATTRIBUTE_OPTIONS => [
-            'pim_api_attribute_options_list',
+            'pim_api_attribute_option_list',
         ],
         self::SCOPE_WRITE_ATTRIBUTE_OPTIONS => [
-            'pim_api_attribute_options_edit',
+            'pim_api_attribute_option_edit',
         ],
     ];
 
