@@ -31,6 +31,11 @@ final class UpsertProductIntegration extends TestCase
         $this->productRepository = $this->get('pim_catalog.repository.product');
     }
 
+    private function clearDoctrineUoW(): void
+    {
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+    }
+
     /** @test */
     public function it_creates_an_empty_product(): void
     {
@@ -40,6 +45,7 @@ final class UpsertProductIntegration extends TestCase
         $command = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier');
         ($this->upsertProductHandler)($command);
 
+        $this->clearDoctrineUoW();
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
         Assert::assertSame('identifier', $product->getIdentifier());
@@ -53,6 +59,7 @@ final class UpsertProductIntegration extends TestCase
         ]);
         ($this->upsertProductHandler)($command);
 
+        $this->clearDoctrineUoW();
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
         $value = $product->getValue('a_text', null, null);
@@ -76,6 +83,7 @@ final class UpsertProductIntegration extends TestCase
         ]);
         ($this->upsertProductHandler)($command);
 
+        $this->clearDoctrineUoW();
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
         $value = $product->getValue('a_text', null, null);

@@ -35,7 +35,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $this->shouldHaveType(UpsertProductCommand::class);
     }
 
-    function it_can_be_construct_with_a_set_text_value_intent()
+    function it_can_be_constructed_with_a_set_text_value_intent()
     {
         $valuesUserIntents = [new SetTextValue('name', null, null, 'foo')];
         $this->beConstructedWith(
@@ -55,7 +55,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $this->valuesUserIntent()->shouldReturn($valuesUserIntents);
     }
 
-    function it_cannot_be_construct_with_an_empty_product_identifier()
+    function it_cannot_be_constructed_with_an_empty_product_identifier()
     {
         $this->beConstructedWith(
             1,
