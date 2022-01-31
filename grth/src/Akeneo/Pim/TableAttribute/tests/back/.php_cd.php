@@ -51,6 +51,7 @@ $rules = [
             'Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface',
             'Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface',
             'Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface',
+            'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException',
             'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException',
             'Akeneo\Tool\Component\StorageUtils\StorageEvents',
             'Akeneo\Tool\Component\Connector\Exception',
@@ -128,6 +129,7 @@ $rules = [
             // Measurements
             'Akeneo\Tool\Bundle\MeasureBundle\PublicApi',
             'Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException',
+            'Akeneo\Tool\Bundle\MeasureBundle\Exception\UnitNotFoundException',
             'Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode',
             'Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface',
             'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',

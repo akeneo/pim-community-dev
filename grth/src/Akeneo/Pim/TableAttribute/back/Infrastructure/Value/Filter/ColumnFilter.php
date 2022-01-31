@@ -435,7 +435,7 @@ class ColumnFilter implements ColumnTypeFilter
         if (!\is_numeric($value['amount'])) {
             throw InvalidPropertyTypeException::validArrayStructureExpected(
                 $attributeCode,
-                sprintf('key "amount" has to be a numeric, "%s" given', gettype($value['amount'])),
+                sprintf('key "amount" has to be a numeric, "%s" given', \json_encode($value['amount'])),
                 static::class,
                 $value
             );
