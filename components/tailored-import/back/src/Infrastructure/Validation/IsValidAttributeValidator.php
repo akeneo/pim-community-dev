@@ -25,7 +25,8 @@ final class IsValidAttributeValidator extends ConstraintValidator
     public function __construct(
         private GetAttributes $getAttributes,
         private ChannelExistsWithLocaleInterface $channelExistsWithLocale,
-    ) {}
+    ) {
+    }
 
     public function validate($value, Constraint $constraint): void
     {

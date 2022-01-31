@@ -125,7 +125,7 @@ final class ColumnsValidatorTest extends AbstractValidationTest
                     'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
                     'index' => 0,
                     'label' => 'Sku'
-                ], ),
+                ]),
             ],
         ];
     }

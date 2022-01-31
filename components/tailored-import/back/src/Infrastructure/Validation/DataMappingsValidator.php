@@ -28,8 +28,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class DataMappingsValidator extends ConstraintValidator
 {
     private const MAX_DATA_MAPPING_COUNT = 500;
-    private const DATA_MAPPING_MIN_SOURCES_COUNT = 1;
-    private const DATA_MAPPING_MAX_SOURCES_COUNT = 4;
+    private const MIN_SOURCES_COUNT = 1;
+    private const MAX_SOURCES_COUNT = 4;
     private const IDENTIFIER_ATTRIBUTE_TYPE = 'pim_catalog_identifier';
 
     public function __construct(
@@ -55,19 +55,21 @@ class DataMappingsValidator extends ConstraintValidator
             return;
         }
 
+        foreach ($dataMappings as $dataMapping) {
+            $this->validateDataMapping($validator, $dataMapping);
+        }
+
+        if (0 < $this->context->getViolations()->count()) {
+            return;
+        }
+
         $this->validateDataMappingUuidsAreUnique($dataMappings);
+
         if (0 < $this->context->getViolations()->count()) {
             return;
         }
 
         $this->validateThereIsOneDataMappingTargetingAnIdentifier($dataMappings);
-        if (0 < $this->context->getViolations()->count()) {
-            return;
-        }
-
-        foreach ($dataMappings as $dataMapping) {
-            $this->validateDataMapping($validator, $dataMapping);
-        }
     }
 
     private function validateDataMappingUuidsAreUnique(array $dataMappings): void
@@ -140,9 +142,9 @@ class DataMappingsValidator extends ConstraintValidator
                 'sources' => [
                     new Type('array'),
                     new Count([
-                        'min' => self::DATA_MAPPING_MIN_SOURCES_COUNT,
+                        'min' => self::MIN_SOURCES_COUNT,
                         'minMessage' => DataMappings::MIN_SOURCES_COUNT_REACHED,
-                        'max' => self::DATA_MAPPING_MAX_SOURCES_COUNT,
+                        'max' => self::MAX_SOURCES_COUNT,
                         'maxMessage' => DataMappings::MAX_SOURCES_COUNT_REACHED,
                     ]),
                     new Unique([
@@ -163,7 +165,7 @@ class DataMappingsValidator extends ConstraintValidator
                 $violation->getMessage(),
                 $violation->getParameters()
             )
-                ->atPath(sprintf('[%s]%s', $dataMapping['uuid'], $violation->getPropertyPath()))
+                ->atPath(sprintf('[%s]%s', $dataMapping['uuid'] ?? 'null', $violation->getPropertyPath()))
                 ->setInvalidValue($violation->getInvalidValue());
             if ($violation->getPlural()) {
                 $builder->setPlural((int)$violation->getPlural());

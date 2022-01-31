@@ -89,6 +89,28 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
     public function invalidDataMappings(): array
     {
         return [
+            'too many data mappings' => [
+                'akeneo.tailored_import.validation.data_mappings.max_count_reached',
+                '',
+                array_fill(0, 501, [
+                    'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
+                    'target' => [
+                        'code' => 'sku',
+                        'type' => 'attribute',
+                        'channel' => 'ecommerce',
+                        'locale' => 'en_US',
+                        'action' => 'set',
+                        'ifEmpty' => 'skip',
+                        'onError' => 'skipLine',
+
+                    ],
+                    'sources' => [
+                        '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
+                    ],
+                    'operations' => [],
+                    'sampleData' => [],
+                ]),
+            ],
             'duplicate data mapping uuid' => [
                 'akeneo.tailored_import.validation.data_mappings.uuid.should_be_unique',
                 '[018e1a5e-4d77-4a15-add8-f142111d4cd0][uuid]',
@@ -178,7 +200,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                     ]
                 ]
             ],
-            'data mapping with duplicate sources' => [
+            'data mapping with duplicated sources' => [
                 'akeneo.tailored_import.validation.data_mappings.sources.should_be_unique',
                 '[018e1a5e-4d77-4a15-add8-f142111d4cd0][sources]',
                 [
@@ -265,6 +287,134 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                         'operations' => [],
                         'sampleData' => [],
                     ]
+                ],
+            ],
+            'data mapping with missing uuid' => [
+                'This field is missing.',
+                '[null][uuid]',
+                [
+                    [
+                        'target' => [
+                            'code' => 'sku',
+                            'type' => 'attribute',
+                            'channel' => 'ecommerce',
+                            'locale' => 'en_US',
+                            'action' => 'set',
+                            'ifEmpty' => 'skip',
+                            'onError' => 'skipLine',
+
+                        ],
+                        'sources' => [
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
+                        ],
+                        'operations' => [],
+                        'sampleData' => [],
+                    ],
+                ],
+            ],
+            'data mapping with invalid uuid' => [
+                'This is not a valid UUID.',
+                '[invalid][uuid]',
+                [
+                    [
+                        'uuid' => 'invalid',
+                        'target' => [
+                            'code' => 'sku',
+                            'type' => 'attribute',
+                            'channel' => 'ecommerce',
+                            'locale' => 'en_US',
+                            'action' => 'set',
+                            'ifEmpty' => 'skip',
+                            'onError' => 'skipLine',
+
+                        ],
+                        'sources' => [
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
+                        ],
+                        'operations' => [],
+                        'sampleData' => [],
+                    ],
+                ],
+            ],
+            'data mapping with missing target' => [
+                'This field is missing.',
+                '[018e1a5e-4d77-4a15-add8-f142111d4cd0][target]',
+                [
+                    [
+                        'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
+                        'sources' => [
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
+                        ],
+                        'operations' => [],
+                        'sampleData' => [],
+                    ],
+                ],
+            ],
+            'data mapping with missing sources' => [
+                'This field is missing.',
+                '[018e1a5e-4d77-4a15-add8-f142111d4cd0][sources]',
+                [
+                    [
+                        'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
+                        'target' => [
+                            'code' => 'sku',
+                            'type' => 'attribute',
+                            'channel' => 'ecommerce',
+                            'locale' => 'en_US',
+                            'action' => 'set',
+                            'ifEmpty' => 'skip',
+                            'onError' => 'skipLine',
+
+                        ],
+                        'operations' => [],
+                        'sampleData' => [],
+                    ],
+                ],
+            ],
+            'data mapping with missing operations' => [
+                'This field is missing.',
+                '[018e1a5e-4d77-4a15-add8-f142111d4cd0][operations]',
+                [
+                    [
+                        'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
+                        'target' => [
+                            'code' => 'sku',
+                            'type' => 'attribute',
+                            'channel' => 'ecommerce',
+                            'locale' => 'en_US',
+                            'action' => 'set',
+                            'ifEmpty' => 'skip',
+                            'onError' => 'skipLine',
+
+                        ],
+                        'sources' => [
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
+                        ],
+                        'sampleData' => [],
+                    ],
+                ],
+            ],
+            'data mapping with missing sampleData' => [
+                'This field is missing.',
+                '[018e1a5e-4d77-4a15-add8-f142111d4cd0][sampleData]',
+                [
+                    [
+                        'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
+                        'target' => [
+                            'code' => 'sku',
+                            'type' => 'attribute',
+                            'channel' => 'ecommerce',
+                            'locale' => 'en_US',
+                            'action' => 'set',
+                            'ifEmpty' => 'skip',
+                            'onError' => 'skipLine',
+
+                        ],
+                        'sources' => [
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
+                        ],
+                        'operations' => [],
+                    ],
                 ],
             ],
         ];

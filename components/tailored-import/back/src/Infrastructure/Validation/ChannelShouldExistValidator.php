@@ -22,8 +22,8 @@ class ChannelShouldExistValidator extends ConstraintValidator
 {
     public function __construct(
         private ChannelExistsWithLocaleInterface $channelExistsWithLocale,
-    )
-    {}
+    ) {
+    }
 
     public function validate($channel, Constraint $constraint): void
     {

@@ -22,7 +22,8 @@ final class LocaleShouldBeActiveValidator extends ConstraintValidator
 {
     public function __construct(
         private ChannelExistsWithLocaleInterface $channelExistsWithLocale,
-    ) {}
+    ) {
+    }
 
     public function validate($localeCode, Constraint $constraint): void
     {
