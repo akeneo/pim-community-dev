@@ -69,47 +69,27 @@ final class EvaluateLowerCaseWordsSpec extends ObjectBehavior
     ) {
         $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection(
             [
-                'ecommerce' => ['en_US', 'fr_FR'],
-                'mobile' => ['en_US'],
+                'ecommerce' => ['fr_FR'],
             ]
         ));
 
-        $textarea1 = $this->givenAnAttributeOfTypeTextarea('textarea_1');
-        $text = $this->givenAnAttributeOfTypeText('a_text');
+        $textarea = $this->givenAnAttributeOfTypeTextarea('textarea');
 
-        $textarea1Values = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+        // Test on array value but all non-string values are not evaluated
+        $textareaValues = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
             'ecommerce' => [
-                'en_US' => true,
                 'fr_FR' => ['This is an array.']
-            ],
-            'mobile' => [
-                'en_US' => 1
-            ],
-        ], function ($value) { return $value; });
-
-        $textValues = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
-            'ecommerce' => [
-                'en_US' => false,
-                'fr_FR' => ['This is another array.']
-            ],
-            'mobile' => [
-                'en_US' => 2
             ],
         ], function ($value) { return $value; });
 
         $productValues = (new ProductValuesCollection())
-            ->add(new ProductValues($textarea1, $textarea1Values))
-            ->add(new ProductValues($text, $textValues));
+            ->add(new ProductValues($textarea, $textareaValues));
 
         $channelEcommerce = new ChannelCode('ecommerce');
-        $channelMobile = new ChannelCode('mobile');
-        $localeEn = new LocaleCode('en_US');
         $localeFr = new LocaleCode('fr_FR');
 
         $expectedResult = (new Write\CriterionEvaluationResult())
-            ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::notApplicable())
-            ->addStatus($channelEcommerce, $localeFr, CriterionEvaluationResultStatus::notApplicable())
-            ->addStatus($channelMobile, $localeEn, CriterionEvaluationResultStatus::notApplicable());
+            ->addStatus($channelEcommerce, $localeFr, CriterionEvaluationResultStatus::notApplicable());
 
         $this->evaluate(
             new Write\CriterionEvaluation(
