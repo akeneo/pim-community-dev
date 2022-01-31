@@ -1,5 +1,6 @@
 import {ColumnCode, SelectOptionCode} from './TableConfiguration';
 import {RecordCode} from './ReferenceEntityRecord';
+import {MeasurementValue} from "./MeasurementFamily";
 
 export type FilterOperator =
   | 'STARTS WITH'
@@ -17,7 +18,7 @@ export type FilterOperator =
   | 'IN'
   | 'NOT IN';
 
-export type FilterValue = string | number | boolean | RecordCode[] | SelectOptionCode[];
+export type FilterValue = string | number | boolean | RecordCode[] | SelectOptionCode[] | MeasurementValue;
 
 export type BackendTableFilterValue = {
   row?: SelectOptionCode | RecordCode | null;
@@ -38,6 +39,9 @@ export type NotEmptyTableFilterValue = {
 };
 
 const isFilterValid: (filter: PendingBackendTableFilterValue) => boolean = filter => {
+  if (typeof filter.value === 'object' && Object.prototype.hasOwnProperty.call(filter.value, 'amount') && Object.prototype.hasOwnProperty.call(filter.value, 'unit')) {
+    return (filter.value as MeasurementValue).amount !== '';
+  }
   return (
     typeof filter.row !== 'undefined' &&
     typeof filter.column !== 'undefined' &&

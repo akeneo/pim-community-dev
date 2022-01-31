@@ -1,6 +1,7 @@
 import {default as BooleanFilterValue, useValueRenderer as BooleanUseValueRenderer} from './BooleanFilterValue';
 import {default as StringFilterValue, useValueRenderer as StringUseValueRenderer} from './StringFilterValue';
 import {default as NumberFilterValue, useValueRenderer as NumberUseValueRenderer} from './NumberFilterValue';
+import {default as MeasurementFilterValue, useValueRenderer as MeasurementUseValueRenderer} from './MeasurementFilterValue';
 import {
   default as MultiSelectFilterValue,
   useValueRenderer as MultiSelectUseValueRenderer,
@@ -69,6 +70,16 @@ const ValuesFilterMapping: FilterValuesMapping = {
     IN: {default: MultiSelectReferenceEntityFilterValue, useValueRenderer: RecordUseValueRenderer},
     'NOT IN': {default: MultiSelectReferenceEntityFilterValue, useValueRenderer: RecordUseValueRenderer},
   },
+  measurement: {
+    '>': {default: MeasurementFilterValue, useValueRenderer: MeasurementUseValueRenderer},
+    '>=': {default: MeasurementFilterValue, useValueRenderer: MeasurementUseValueRenderer},
+    '<': {default: MeasurementFilterValue, useValueRenderer: MeasurementUseValueRenderer},
+    '<=': {default: MeasurementFilterValue, useValueRenderer: MeasurementUseValueRenderer},
+    '=': {default: MeasurementFilterValue, useValueRenderer: MeasurementUseValueRenderer},
+    '!=': {default: MeasurementFilterValue, useValueRenderer: MeasurementUseValueRenderer},
+    EMPTY: {default: EmptyFilterValue, useValueRenderer: EmptyUseValueRenderer},
+    'NOT EMPTY': {default: EmptyFilterValue, useValueRenderer: EmptyUseValueRenderer},
+  }
 };
 
 export {ValuesFilterMapping};
