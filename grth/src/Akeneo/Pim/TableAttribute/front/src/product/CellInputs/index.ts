@@ -6,7 +6,7 @@ import NumberInput from './NumberInput';
 import TextInput from './TextInput';
 import BooleanInput from './BooleanInput';
 import RecordInput from './RecordInput';
-import MeasurementInput from "./MeasurementInput";
+import MeasurementInput from './MeasurementInput';
 
 export type CellInput = React.FC<{
   row: TableRowWithId;
