@@ -1,4 +1,10 @@
-import {DataMapping, updateDataMapping, createDataMapping, createDefaultDataMapping, addSourceToDataMapping} from './DataMapping';
+import {
+  DataMapping,
+  updateDataMapping,
+  createDataMapping,
+  createDefaultDataMapping,
+  addSourceToDataMapping,
+} from './DataMapping';
 
 const mockUuid = 'uuid';
 jest.mock('akeneo-design-system', () => ({
