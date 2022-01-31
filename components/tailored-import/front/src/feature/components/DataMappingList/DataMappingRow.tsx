@@ -8,7 +8,7 @@ import {Pill} from 'akeneo-design-system/lib/components/Pill/Pill';
 type DataMappingRowProps = {
   dataMapping: DataMapping;
   columns: Column[];
-  onClick: (dataMappingUuid: string) => void;
+  onSelect: (dataMappingUuid: string) => void;
   isSelected: boolean;
   hasError: boolean;
 };
@@ -17,7 +17,7 @@ const Spacer = styled.div`
   flex: 1;
 `;
 
-const DataMappingRow = ({dataMapping, columns, onClick, isSelected, hasError}: DataMappingRowProps) => {
+const DataMappingRow = ({dataMapping, columns, onSelect, isSelected, hasError}: DataMappingRowProps) => {
   const translate = useTranslate();
   const sources = dataMapping.sources.map(uuid => {
     const column = columns.find(column => uuid === column.uuid);
@@ -26,7 +26,7 @@ const DataMappingRow = ({dataMapping, columns, onClick, isSelected, hasError}: D
   });
 
   return (
-    <Table.Row onClick={() => onClick(dataMapping.uuid)} isSelected={isSelected}>
+    <Table.Row onClick={() => onSelect(dataMapping.uuid)} isSelected={isSelected}>
       <Table.Cell>{dataMapping.target.code}</Table.Cell>
       <Table.Cell>
         {sources.length === 0

@@ -38,14 +38,14 @@ const columns = [
 ];
 
 test('it call handler when user click on row', () => {
-  const handleClick = jest.fn();
+  const handleSelect = jest.fn();
   renderWithProviders(
     <table>
       <tbody>
         <DataMappingRow
           columns={columns}
           dataMapping={dataMapping}
-          onClick={handleClick}
+          onSelect={handleSelect}
           hasError={false}
           isSelected={false}
         />
@@ -54,7 +54,7 @@ test('it call handler when user click on row', () => {
   );
 
   userEvent.click(screen.getByText('sku'));
-  expect(handleClick).toHaveBeenCalledWith('04839ab3-3ef3-4e80-8117-a2522552a20f');
+  expect(handleSelect).toHaveBeenCalledWith('04839ab3-3ef3-4e80-8117-a2522552a20f');
 });
 
 test('it displays a data mapping row', () => {
@@ -63,7 +63,7 @@ test('it displays a data mapping row', () => {
       <tbody>
         <DataMappingRow
           dataMapping={dataMapping}
-          onClick={jest.fn()}
+          onSelect={jest.fn()}
           hasError={false}
           columns={columns}
           isSelected={false}
@@ -83,7 +83,7 @@ test('it displays a pill when there is an validation error', () => {
       <tbody>
         <DataMappingRow
           dataMapping={dataMapping}
-          onClick={jest.fn()}
+          onSelect={jest.fn()}
           hasError={true}
           columns={columns}
           isSelected={false}

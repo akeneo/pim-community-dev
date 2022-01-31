@@ -53,7 +53,7 @@ const DataMappingList = ({
               key={dataMapping.uuid}
               dataMapping={dataMapping}
               columns={columns}
-              onClick={onDataMappingSelected}
+              onSelect={onDataMappingSelected}
               isSelected={selectedDataMappingUuid === dataMapping.uuid}
               hasError={filterErrors(validationErrors, `[${dataMapping.uuid}]`).length > 0}
             />
