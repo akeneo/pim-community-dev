@@ -1,17 +1,16 @@
 {
-    "name": "@akeneo-pim-community/connectivity-connection",
+    "name": "@akeneo/connectivity-connection",
     "version": "1.0.0",
     "license": "OSL-3.0",
     "main": "src/index.ts",
     "scripts": {
-        "eslint": "eslint --config .eslintrc.json --quiet {src,tests}/**/*.{ts,tsx}",
-        "prettier": "prettier --config .prettierrc.json {src,tests}/**/*.{ts,tsx}",
-        "jest": "jest --config jest.config.js"
+        "lint": "eslint --config .eslintrc.json --quiet {src,tests}/**/*.{ts,tsx} && prettier --config .prettierrc.json {src,tests}/**/*.{ts,tsx}",
+        "test:unit:run": "jest --config jest.config.js"
     },
     "private": true,
     "devDependencies": {
-        "eslint": "^6.5.1",
-        "jest": "^26.4.2",
-        "prettier": "^2.1.1"
+        "eslint": "^8.7.0",
+        "jest": "^26.0.0",
+        "prettier": "^2.5.1"
     }
 }

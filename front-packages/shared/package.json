@@ -7,18 +7,16 @@
     "lib:build": "echo 'Building Akeneo PIM community shared lib...' && tsc -p ./tsconfig.json && echo 'Done!'",
     "test:unit:run": "jest --no-cache --config ./jest.config.js --maxWorkers=3",
     "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{ts,tsx}\"",
-    "lint:check": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\""
+    "lint": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\""
+  },
+  "dependencies": {
+    "akeneo-design-system": "*"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "@types/jest": "^26.0.22",
-    "@types/styled-components": "^5.1.1",
-    "jest": "^26.0.22"
-  },
-  "peerDependencies": {
-    "akeneo-design-system": "*"
+    "eslint": "^8.7.0",
+    "jest": "^26.0.0",
+    "prettier": "^2.5.1",
+    "typescript": "^4.5.5"
   },
   "private": true
 }

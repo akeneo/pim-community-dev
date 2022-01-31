@@ -29,8 +29,8 @@
     "baseUrl": "./src",
     "types": [
       "puppeteer",
-      "jest-environment-puppeteer",
-      "expect-puppeteer",
+//      "jest-environment-puppeteer",
+//      "expect-puppeteer",
       "node",
       "jest",
       "@testing-library/jest-dom"
