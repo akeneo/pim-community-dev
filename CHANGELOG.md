@@ -154,6 +154,7 @@
 bin/console messenger:consume ui_job import_export_job data_maintenance_job
 ```
 - PIM-10229: Enforce lax same-site policy for session cookies
+- PIM-10235: Add HTTP Headers
 
 ## New features
 
