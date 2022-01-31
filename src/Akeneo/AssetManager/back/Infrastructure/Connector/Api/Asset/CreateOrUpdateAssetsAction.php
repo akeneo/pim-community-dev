@@ -29,9 +29,9 @@ use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetListV
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetValidator;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
 use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Normalizer\Exception\ViolationNormalizer;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -64,7 +64,7 @@ class CreateOrUpdateAssetsAction
         private EventAggregatorInterface $indexAssetEventAggregator,
         private int $maximumAssetsPerRequest,
         private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator,
-        private SecurityFacade $securityFacade
+        private SecurityFacadeInterface $securityFacade,
     ) {
     }
 

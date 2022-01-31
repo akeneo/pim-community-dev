@@ -18,8 +18,6 @@ use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
-use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
-use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 
 /**
@@ -44,12 +42,6 @@ class EditAssetHandler
         $this->storer = $storer;
     }
 
-    /**
-     * @param EditAssetCommand $editAssetCommand
-     *
-     * @throws FileRemovalException
-     * @throws FileTransferException
-     */
     public function __invoke(EditAssetCommand $editAssetCommand): void
     {
         $asset = $this->getAsset($editAssetCommand);

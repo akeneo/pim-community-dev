@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\AssetManager\Infrastructure\Filesystem;
+namespace Akeneo\AssetManager\Domain\Filesystem;
 
 /**
  * @author    Julien Sanchez <julien@akeneo.com>

@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Transformation;
 
-use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
+use Akeneo\AssetManager\Domain\Filesystem\Storage;
 use Akeneo\AssetManager\Infrastructure\Transformation\FileDownloader;
 use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
@@ -43,7 +43,7 @@ class FileDownloaderSpec extends ObjectBehavior
         $filesystem->copy('/destination/dir/123456abcdef', '/destination/dir/jambon.png', true)->shouldBeCalled();
 
         $this->get('key_for_the_wanted_file', '/destination/dir', 'jambon.png')
-             ->shouldBeLike(new File('/destination/dir/jambon.png', false));
+            ->shouldBeLike(new File('/destination/dir/jambon.png', false));
     }
 
     function it_does_not_download_a_file_if_it_is_cached(
@@ -60,11 +60,11 @@ class FileDownloaderSpec extends ObjectBehavior
         $filesystem->copy('/destination/dir/123456abcdef', '/destination/dir/jambon.png', true)->shouldBeCalled();
 
         $this->get('key_for_the_wanted_file', '/destination/dir', 'jambon.png')
-             ->shouldBeLike(new File('/destination/dir/jambon.png', false));
+            ->shouldBeLike(new File('/destination/dir/jambon.png', false));
 
         $filesystem->copy('/destination/dir/123456abcdef', '/other/dir/anothername.png', true)->shouldBeCalled();
         $this->get('key_for_the_wanted_file', '/other/dir', 'anothername.png')
-             ->shouldBeLike(new File('/other/dir/anothername.png', false));
+            ->shouldBeLike(new File('/other/dir/anothername.png', false));
     }
 
     function it_deletes_old_files_when_there_are_more_than_limit(
@@ -73,7 +73,7 @@ class FileDownloaderSpec extends ObjectBehavior
         Filesystem $filesystem
     ) {
         $fileFetcher->fetch($storageFilesystem, Argument::cetera())->shouldBeCalledTimes(11)->will(
-            fn($arguments) => new \SplFileInfo($arguments[2]['filePath'] . '/' . $arguments[1])
+            fn ($arguments) => new \SplFileInfo($arguments[2]['filePath'] . '/' . $arguments[1])
         );
         $filesystem->copy(Argument::cetera())->shouldBeCalledTimes(11);
 

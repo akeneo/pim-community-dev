@@ -29,7 +29,6 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
-use Doctrine\Common\Util\ClassUtils;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -54,7 +53,7 @@ class MediaFileAttributeFactory implements AttributeFactoryInterface
                 sprintf(
                     'Expected command of type "%s", "%s" given',
                     CreateMediaFileAttributeCommand::class,
-                    ClassUtils::getClass($command)
+                    get_class($command),
                 )
             );
         }

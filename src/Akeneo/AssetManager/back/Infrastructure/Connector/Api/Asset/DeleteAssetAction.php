@@ -18,7 +18,7 @@ use Akeneo\AssetManager\Application\Asset\DeleteAsset\DeleteAssetHandler;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -32,7 +32,7 @@ class DeleteAssetAction
 {
     public function __construct(
         private DeleteAssetHandler $deleteAssetHandler,
-        private SecurityFacade $securityFacade
+        private SecurityFacadeInterface $securityFacade,
     ) {
     }
 

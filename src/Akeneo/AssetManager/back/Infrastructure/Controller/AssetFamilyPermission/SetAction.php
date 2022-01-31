@@ -18,7 +18,7 @@ use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\Can
 use Akeneo\AssetManager\Application\AssetFamilyPermission\SetPermissions\SetAssetFamilyPermissionsCommand;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\SetPermissions\SetAssetFamilyPermissionsHandler;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\SetPermissions\SetUserGroupPermissionCommand;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,7 +38,7 @@ class SetAction
         private SetAssetFamilyPermissionsHandler $setAssetFamilyPermissionsHandler,
         private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         private TokenStorageInterface $tokenStorage,
-        private SecurityFacade $securityFacade,
+        private SecurityFacadeInterface $securityFacade,
         private ValidatorInterface $validator,
         private Serializer $serializer,
     ) {

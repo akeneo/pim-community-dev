@@ -15,7 +15,6 @@ namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
 use Akeneo\AssetManager\Domain\Query\Asset\FindAssetLabelsByIdentifiersInterface;
 use Doctrine\DBAL\Connection;
-use PDO;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>

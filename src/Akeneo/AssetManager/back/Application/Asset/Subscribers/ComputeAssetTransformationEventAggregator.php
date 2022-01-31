@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -18,6 +19,7 @@ use Akeneo\AssetManager\Application\AssetFamily\Transformation\Exception\NonAppl
 use Akeneo\AssetManager\Application\AssetFamily\Transformation\GetOutdatedVariationSourceInterface;
 use Akeneo\AssetManager\Domain\Event\AssetCreatedEvent;
 use Akeneo\AssetManager\Domain\Event\AssetUpdatedEvent;
+use Akeneo\AssetManager\Domain\Event\DomainEvent;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
@@ -27,10 +29,11 @@ use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Contracts\EventDispatcher\Event;
 use Webmozart\Assert\Assert;
 
 /**
+ * TODO: Move this class in ComputeTransformationsAssets\Subscribers
+ *
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  */
@@ -72,7 +75,7 @@ final class ComputeAssetTransformationEventAggregator implements EventAggregator
         ];
     }
 
-    public function whenAssetCreatedOrUpdated(Event $assetEvent): void
+    public function whenAssetCreatedOrUpdated(DomainEvent $assetEvent): void
     {
         Assert::isInstanceOfAny($assetEvent, [AssetCreatedEvent::class, AssetUpdatedEvent::class]);
 

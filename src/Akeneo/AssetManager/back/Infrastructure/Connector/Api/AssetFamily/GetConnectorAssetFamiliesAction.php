@@ -19,8 +19,8 @@ use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\FindConnectorAssetFamilyItemsInterface;
 use Akeneo\AssetManager\Domain\Query\Limit;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\Hal\AddHalDownloadLinkToAssetFamilyImage;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -40,7 +40,7 @@ class GetConnectorAssetFamiliesAction
         private PaginatorInterface $halPaginator,
         private AddHalDownloadLinkToAssetFamilyImage $addHalDownloadLinkToImage,
         int $limit,
-        private SecurityFacade $securityFacade
+        private SecurityFacadeInterface $securityFacade,
     ) {
         $this->limit = new Limit($limit);
     }
