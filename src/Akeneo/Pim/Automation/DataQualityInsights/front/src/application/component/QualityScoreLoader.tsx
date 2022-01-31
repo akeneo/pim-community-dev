@@ -1,16 +1,18 @@
 import styled from 'styled-components';
-import React from "react";
-import {
-  LoadingSpinner
-} from "@akeneo-pim-community/connectivity-connection/src/common/components/Loading/LoadingSpinner";
+import React from 'react';
+import {getColor, LoaderIcon} from 'akeneo-design-system';
 
 const QualityScoreLoader = () => {
   return (
     <Container>
-      <LoadingSpinner/>
+      <QualityScoreLoaderIcon />
     </Container>
   );
 };
+
+const QualityScoreLoaderIcon = styled(LoaderIcon)`
+  color: ${getColor('grey100')};
+`;
 
 const Container = styled.div`
   display: flex;
@@ -21,19 +23,6 @@ const Container = styled.div`
   margin-right: 20px;
   padding-top: 2px;
   height: 25px;
-  cursor: pointer;
-
-  > :first-child {
-    border-radius: 4px 0 0 4px;
-  }
-
-  > :last-child {
-    border-radius: 0 4px 4px 0;
-  }
-
-  > :not(:first-child):not(:last-child) {
-    border-radius: 0;
-  }
 `;
 
 export {QualityScoreLoader};
