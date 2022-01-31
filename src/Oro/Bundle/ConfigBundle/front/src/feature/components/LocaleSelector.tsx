@@ -11,7 +11,7 @@ export function LocaleSelector(props: Props) {
 
   useEffect(() => {
     doFetchLocales();
-  }, []);
+  }, [doFetchLocales]);
 
   const helperLoading = <Helper
     inline

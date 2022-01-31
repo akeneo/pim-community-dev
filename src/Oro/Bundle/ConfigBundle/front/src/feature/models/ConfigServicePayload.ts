@@ -1,4 +1,4 @@
-interface ScopedValue<ValueType> {
+export interface ScopedValue<ValueType> {
     value: ValueType;
     scope: "app";
     use_parent_scope_value: boolean;

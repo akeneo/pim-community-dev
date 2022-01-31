@@ -507,7 +507,7 @@ config:
     pim/controller/entity-with-family-variant: pimui/js/controller/entity-with-family-variant
     pim/controller/entity-categories-with-family-variant: pimui/js/controller/entity-categories-with-family-variant
     pim/controller/family:                 pimui/js/controller/family
-    pim/controller/config:                 oroconfig/js/front/src/feature/configController
+    pim/controller/config:                 pimui/js/controller/config
     pim/controller/catalog-volume:         pimui/js/controller/catalog-volume
     pim/controller/channel/edit:           pimui/js/controller/channel/edit
     pim/controller/common/index:           pimui/js/controller/common/index

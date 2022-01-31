@@ -19,8 +19,8 @@ import {
   SectionTitle,
   TextAreaInput
 } from 'akeneo-design-system';
-import { LocaleSelector } from './../components/LocaleSelector';
-import { configBackToFront, ConfigServicePayloadBackend, ConfigServicePayloadFrontend } from '../models/ConfigServicePayload';
+import { LocaleSelector } from './components/LocaleSelector';
+import { configBackToFront, ConfigServicePayloadBackend, ConfigServicePayloadFrontend } from './models/ConfigServicePayload';
 
 const ConfigForm = () => {
   const __ = useTranslate();
@@ -35,10 +35,7 @@ const ConfigForm = () => {
   const [config, setConfig] = useState<ConfigServicePayloadFrontend | null>(null);
   const [isModified, setIsModified] = useState(false);
 
-  // TODO fetch locales only once by session
-  useEffect(() => {
-    doFetchConfig();
-  }, []);
+
 
   const modifyConfig = (config: ConfigServicePayloadFrontend) => {
     setConfig(config);
@@ -92,17 +89,21 @@ const ConfigForm = () => {
   }
 
 
-  if (configFetchResult.type === 'error') {
-    return <Helper level="error">
-      {__('Unexpected error occurred. Please contact system administrator.')}: {configFetchResult.message}
-    </Helper>
-  }
+  useEffect(() => {
+    doFetchConfig();
+  }, [doFetchConfig]);
 
   useEffect(() => {
     if (configFetchResult.type === 'fetched') {
       setConfig({ ...configFetchResult.payload });
     }
   }, [configFetchResult])
+
+  if (configFetchResult.type === 'error') {
+    return <Helper level="error">
+      {__('Unexpected error occurred. Please contact system administrator.')}: {configFetchResult.message}
+    </Helper>
+  }
 
   if (!config) return null;
 
@@ -143,7 +144,7 @@ const ConfigForm = () => {
           <Helper level="info">
             {__('oro_config.form.config.group.loading_message.helper')}
           </Helper>
-          <Field label={__('oro_config.form.config.group.loading_message.fields.enabler.label')}>
+          <Field data-testid="loading_message__enabler" label={__('oro_config.form.config.group.loading_message.fields.enabler.label')}>
             <BooleanInput
               readOnly={false}
               value={config.pim_ui___loading_message_enabled.value}
