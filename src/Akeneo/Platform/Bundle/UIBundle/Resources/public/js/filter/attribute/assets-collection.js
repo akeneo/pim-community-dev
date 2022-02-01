@@ -9,9 +9,9 @@ define([
   'pim/fetcher-registry',
   'pim/user-context',
   'pim/i18n',
-  'akeneoassetmanager/infrastructure/fetcher/asset',
+  'pim/router',
   'jquery.select2',
-], function($, _, __, Routing, SelectFilter, FetcherRegistry, UserContext, i18n, assetFetcher) {
+], function($, _, __, Routing, SelectFilter, FetcherRegistry, UserContext, i18n, router) {
   return SelectFilter.extend({
     resultsPerPage: 20,
 
@@ -86,7 +86,19 @@ define([
             ],
           };
 
-          const result = await assetFetcher.default.search(initQuery);
+          const route = router.generate('akeneo_asset_manager_asset_index_rest', {
+            assetFamilyIdentifier: attribute.reference_data_name,
+          });
+
+          const response = await fetch(route, {
+            method: 'PUT',
+            body: JSON.stringify(initQuery),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          const result = await response.json();
 
           callback(result.items.map(this.formatItem.bind(this)));
         },
@@ -139,7 +151,18 @@ define([
         ],
       };
 
-      const result = await assetFetcher.default.search(query);
+      const route = router.generate('akeneo_asset_manager_asset_index_rest', {
+        assetFamilyIdentifier: attribute.reference_data_name,
+      });
+      const response = await fetch(route, {
+        method: 'PUT',
+        body: JSON.stringify(query),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const result = await response.json();
 
       return result.items.map(normalizedAsset => normalizedAsset.code);
     },

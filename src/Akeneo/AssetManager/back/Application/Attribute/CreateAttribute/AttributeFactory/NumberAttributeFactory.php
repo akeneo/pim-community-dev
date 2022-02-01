@@ -28,7 +28,6 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
-use Doctrine\Common\Util\ClassUtils;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -51,7 +50,7 @@ class NumberAttributeFactory implements AttributeFactoryInterface
                 sprintf(
                     'Expected command of type "%s", "%s" given',
                     CreateNumberAttributeCommand::class,
-                    ClassUtils::getClass($command)
+                    get_class($command),
                 )
             );
         }
@@ -75,7 +74,7 @@ class NumberAttributeFactory implements AttributeFactoryInterface
     private function minValue(CreateNumberAttributeCommand $command): AttributeLimit
     {
         return null !== $command->minValue
-           ? AttributeLimit::fromString($command->minValue) : AttributeLimit::limitless();
+            ? AttributeLimit::fromString($command->minValue) : AttributeLimit::limitless();
     }
 
     private function maxValue(CreateNumberAttributeCommand $command): AttributeLimit

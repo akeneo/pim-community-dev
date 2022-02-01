@@ -12,8 +12,12 @@ import permissionFetcher from 'akeneoassetmanager/infrastructure/fetcher/permiss
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {denormalizePermissionCollection} from 'akeneoassetmanager/domain/model/asset-family/permission';
 import {refreshAssetFamily} from 'akeneoassetmanager/application/action/asset-family/edit';
+import {AssetFamilyFetcher} from 'akeneoassetmanager/domain/fetcher/asset-family';
 
-export const savePermission = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
+export const savePermission = (assetFamilyFetcher: AssetFamilyFetcher) => async (
+  dispatch: any,
+  getState: () => EditState
+): Promise<void> => {
   const assetFamilyIdentifier = getState().form.data.identifier;
   const permission = denormalizePermissionCollection(getState().permission.data);
 
@@ -36,5 +40,5 @@ export const savePermission = () => async (dispatch: any, getState: () => EditSt
 
   const updatedPermission = await permissionFetcher.fetch(assetFamilyIdentifier);
   dispatch(permissionEditionReceived(updatedPermission));
-  dispatch(refreshAssetFamily(assetFamilyIdentifier, false));
+  dispatch(refreshAssetFamily(assetFamilyFetcher, assetFamilyIdentifier, false));
 };

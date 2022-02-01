@@ -144,7 +144,6 @@ pim_table_attribute:
       column_code: Kolomcode
       properties_helper: U moet de tabelstructuur en ten minste 2 kolommen definiëren voordat u het tabelattribuut kunt opslaan
       table_structure_helper_text: Een tabelattribuut moet ten minste 2 kolommen bevatten. De eerste is altijd een kolomtype. Zodra u de eerste kolom hebt gemaakt, moet u opties toevoegen. Om dit te doen, klik op "opties beheren" en voeg {{ limit }} opties toe! Vervolgens kunt u elk van deze opties gebruiken als rijen in uw producttabellen.
-      table_structure_helper_link: Dit artikel kan u helpen om meer te weten te komen over tabelattributen.
       limit_option_reached: U hebt de limiet van {{ %limit% }} transformaties bereikt
       template_label: Selecteer de standaard van uw "{{ templateLabel }}" tabel
       delete_column_helper: Wanneer u deze kolom verwijdert, worden alle waarden ervan verwijderd uit alle producten die gebruik maken van het "{{ attributeLabel }}" tabelattribuut.
@@ -166,7 +165,6 @@ pim_table_attribute:
       no_search_result: "Sorry, er zijn gen regels voor uw zoekopdracht!"
       no_rows_title: "Uw {{ attributeLabel }} tabel is leeg."
       no_rows_subtitle: Voeg rijen toe om nieuwe eigenschappen te definiëren.
-      no_rows_subtitle_on_readonly: Om dit attribuut te kunnen bewerken, ga naar de attribuut-instelling pagina of neem contact op met uw PIM-beheerder.
       no_results: Er zijn geen resultaten
       no_options: Er zijn geen opties
       no_add_options_unallowed: Neem contact op met uw PIM beheerder om de "{{ attributeLabel }}" opties te beheren

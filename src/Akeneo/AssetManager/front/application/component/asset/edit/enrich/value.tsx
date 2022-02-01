@@ -15,7 +15,7 @@ import {getValuesForChannelAndLocale, isValueEmpty} from 'akeneoassetmanager/dom
 import {hasFieldAsTarget} from 'akeneoassetmanager/domain/model/asset-family/transformation';
 import {attributeIdentifierStringValue} from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {isTextAreaAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
-import {useInputViewGenerator} from '../../../../hooks/useInputViewGenerator';
+import {useInputViewGenerator} from 'akeneoassetmanager/application/hooks/useInputViewGenerator';
 
 const ValueCollectionContainer = styled.div`
   display: flex;

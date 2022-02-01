@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2019 Akeneo SAS (https://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -32,8 +32,8 @@ class FileTransformer
             $applier = $this->operationApplierRegistry->getApplier($operation);
             try {
                 $sourceFile = $applier->apply($sourceFile, $operation);
-            } catch (ExceptionInterface | RuntimeException $e) {
-                throw new TransformationException($e->getMessage(), $e->getCode(), $e);
+            } catch (ExceptionInterface | RuntimeException | \ImagickException $exception) {
+                throw new TransformationException($exception->getMessage(), $exception->getCode(), $exception);
             }
         }
         // clear PHP's internal cache for the file's metadata (filesize, etc...).

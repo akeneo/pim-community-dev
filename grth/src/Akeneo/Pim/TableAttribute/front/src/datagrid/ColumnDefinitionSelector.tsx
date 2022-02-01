@@ -1,12 +1,12 @@
 import React from 'react';
 import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {SelectInput} from 'akeneo-design-system';
-import {ColumnCode, ColumnDefinition} from '../models';
+import {ColumnCode} from '../models';
 import {useAttributeContext} from '../contexts';
 
 type ColumnDefinitionSelectorProps = {
-  onChange: (columnDefinition: ColumnDefinition | undefined) => void;
-  value?: ColumnDefinition;
+  onChange: (columnDefinition: ColumnCode | undefined) => void;
+  value?: ColumnCode;
 };
 
 const ColumnDefinitionSelector: React.FC<ColumnDefinitionSelectorProps> = ({onChange, value}) => {
@@ -15,19 +15,14 @@ const ColumnDefinitionSelector: React.FC<ColumnDefinitionSelectorProps> = ({onCh
   const catalogLocale = userContext.get('catalogLocale');
   const {attribute} = useAttributeContext();
 
-  const handleChange = (columnDefinitionCode: ColumnCode | null) => {
-    attribute &&
-      onChange(attribute.table_configuration.find(columnDefinition => columnDefinition.code === columnDefinitionCode));
-  };
-
   return (
     <SelectInput
       clearLabel={translate('pim_common.clear_value')}
       clearable
       emptyResultLabel={translate('pim_common.no_result')}
-      onChange={handleChange}
+      onChange={(code: string | null) => onChange(code || undefined)}
       placeholder={translate('pim_table_attribute.datagrid.select_your_column')}
-      value={value?.code || null}
+      value={value || null}
       openLabel={translate('pim_common.open')}
     >
       {(attribute?.table_configuration || []).map(columnDefinition => {

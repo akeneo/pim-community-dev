@@ -2,12 +2,12 @@
 
 namespace Akeneo\Test\Pim\TableAttribute\Integration\Value\Export;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
+use Akeneo\Test\Pim\TableAttribute\Helper\EntityBuilderTrait;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
 use Box\Spout\Common\Entity\Row;
 use Box\Spout\Common\Type;
@@ -16,6 +16,8 @@ use PHPUnit\Framework\Assert;
 
 final class ExportProductTableValuesWithLabelIntegration extends TestCase
 {
+    use EntityBuilderTrait;
+
     private const CSV_EXPORT_JOB_CODE = 'csv_product_table_values_export';
     private const XLSX_EXPORT_JOB_CODE = 'xlsx_product_table_values_export';
     private JobLauncher $jobLauncher;
@@ -83,10 +85,8 @@ CSV;
 
         $this->createChannel([
             'code' => 'mobile',
-            'category_tree' => 'master',
             'currencies' => ['USD'],
             'locales' => ['en_US', 'fr_FR'],
-            'labels' => [],
         ]);
 
         $this->get(SqlCreateJobInstance::class)->createJobInstance(
@@ -152,42 +152,45 @@ CSV;
         ]);
 
         $this->createProduct('111111', [
-            'nutrition' => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope' => 'mobile',
-                    'data' => [
-                        [
-                            'ingredient' => 'sugar',
-                            'quantity' => 50,
-                            'allergen' => false,
-                            'additional_info' => 'this is a text',
-                            'nutrition_score' => 'B',
-                        ],
-                        [
-                            'ingredient' => 'egg',
-                            'quantity' => 23,
-                            'allergen' => true,
-                            'nutrition_score' => 'C',
+            'categories' => ['master'],
+            'values' => [
+                'nutrition' => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope' => 'mobile',
+                        'data' => [
+                            [
+                                'ingredient' => 'sugar',
+                                'quantity' => 50,
+                                'allergen' => false,
+                                'additional_info' => 'this is a text',
+                                'nutrition_score' => 'B',
+                            ],
+                            [
+                                'ingredient' => 'egg',
+                                'quantity' => 23,
+                                'allergen' => true,
+                                'nutrition_score' => 'C',
+                            ],
                         ],
                     ],
-                ],
-                [
-                    'locale' => 'en_US',
-                    'scope' => 'ecommerce',
-                    'data' => [
-                        [
-                            'ingredient' => 'sugar',
-                            'quantity' => 66,
-                            'allergen' => true,
-                            'additional_info' => 'this is a second text',
-                            'nutrition_score' => 'B',
-                        ],
-                        [
-                            'ingredient' => 'egg',
-                            'quantity' => 20,
-                            'allergen' => true,
-                            'nutrition_score' => 'C',
+                    [
+                        'locale' => 'en_US',
+                        'scope' => 'ecommerce',
+                        'data' => [
+                            [
+                                'ingredient' => 'sugar',
+                                'quantity' => 66,
+                                'allergen' => true,
+                                'additional_info' => 'this is a second text',
+                                'nutrition_score' => 'B',
+                            ],
+                            [
+                                'ingredient' => 'egg',
+                                'quantity' => 20,
+                                'allergen' => true,
+                                'nutrition_score' => 'C',
+                            ],
                         ],
                     ],
                 ],
@@ -195,54 +198,17 @@ CSV;
         ]);
     }
 
-    private function createChannel(array $data = []): ChannelInterface
-    {
-        $channel = $this->get('pim_catalog.factory.channel')->create();
-        $this->get('pim_catalog.updater.channel')->update($channel, $data);
-
-        $errors = $this->get('validator')->validate($channel);
-        Assert::assertCount(0, $errors, $errors->__toString());
-
-        $this->get('pim_catalog.saver.channel')->save($channel);
-
-        return $channel;
-    }
-
     private function createTableAttribute(string $attributeCode, array $data): void
     {
-        $attribute = $this->get('pim_catalog.factory.attribute')->create();
-        $this->get('pim_catalog.updater.attribute')->update(
-            $attribute,
-            \array_merge(
-                [
-                    'code' => $attributeCode,
-                    'type' => AttributeTypes::TABLE,
-                    'group' => 'other',
-                    'localizable' => true,
-                    'scopable' => true,
-                ],
-                $data
-            )
-        );
-        $violations = $this->get('validator')->validate($attribute);
-        Assert::assertCount(0, $violations, (string)$violations);
-        $this->get('pim_catalog.saver.attribute')->save($attribute);
-    }
-
-    private function createProduct(string $identifier, array $productValues): void
-    {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update(
-            $product,
+        $this->createAttribute(\array_merge(
             [
-                'categories' => ['master'],
-                'values' => $productValues,
-            ]
-        );
-
-        $violations = $this->get('pim_catalog.validator.product')->validate($product);
-        Assert::assertCount(0, $violations, \sprintf('The product is not valid: %s', $violations));
-        $this->get('pim_catalog.saver.product')->save($product);
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+                'code' => $attributeCode,
+                'type' => AttributeTypes::TABLE,
+                'group' => 'other',
+                'localizable' => true,
+                'scopable' => true,
+            ],
+            $data
+        ));
     }
 }

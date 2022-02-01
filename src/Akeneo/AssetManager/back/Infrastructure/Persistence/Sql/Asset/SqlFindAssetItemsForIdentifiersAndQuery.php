@@ -37,14 +37,16 @@ class SqlFindAssetItemsForIdentifiersAndQuery implements FindAssetItemsForIdenti
     public function find(array $identifiers, AssetQuery $query): array
     {
         $normalizedAssetItems = $this->fetchAll($identifiers);
+        $orderedAssetItems = $this->orderAssetItems($normalizedAssetItems, $identifiers);
 
-        return $this->bulkAssetItemHydrator->hydrateAll($normalizedAssetItems, $query);
+        return $this->bulkAssetItemHydrator->hydrateAll($orderedAssetItems, $query);
     }
 
     private function fetchAll(array $identifiers): array
     {
         $sqlQuery = <<<SQL
         SELECT
+            /*+ SET_VAR( range_optimizer_max_mem_size = 50000000) */
             asset.identifier,
             asset.asset_family_identifier,
             asset.code,
@@ -54,8 +56,7 @@ class SqlFindAssetItemsForIdentifiersAndQuery implements FindAssetItemsForIdenti
         FROM akeneo_asset_manager_asset AS asset
         INNER JOIN akeneo_asset_manager_asset_family AS reference
             ON reference.identifier = asset.asset_family_identifier
-        WHERE asset.identifier IN (:identifiers)
-        ORDER BY FIELD(asset.identifier, :identifiers);
+        WHERE asset.identifier IN (:identifiers);
 SQL;
 
         $statement = $this->sqlConnection->executeQuery($sqlQuery, [
@@ -63,5 +64,24 @@ SQL;
         ], ['identifiers' => Connection::PARAM_STR_ARRAY]);
 
         return $statement->fetchAllAssociative();
+    }
+
+    private function orderAssetItems(array $normalizedAssetItems, array $orderedIdentifiers): array
+    {
+        $resultIndexedByIdentifier = array_column($normalizedAssetItems, null, 'identifier');
+        $resultIndexedByIdentifier = array_change_key_case($resultIndexedByIdentifier, CASE_LOWER);
+
+        $existingIdentifiers = [];
+        foreach ($orderedIdentifiers as $orderedIdentifier) {
+            $sanitizedIdentifier = trim(strtolower($orderedIdentifier));
+
+            if (isset($resultIndexedByIdentifier[$sanitizedIdentifier])) {
+                $existingIdentifiers[$sanitizedIdentifier] = $sanitizedIdentifier;
+            }
+        }
+
+        $result = array_replace($existingIdentifiers, $resultIndexedByIdentifier);
+
+        return array_values($result);
     }
 }

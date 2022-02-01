@@ -1,16 +1,15 @@
 'use strict';
 
 import saver from 'akeneoassetmanager/infrastructure/saver/asset';
-import * as fetch from 'akeneoassetmanager/tools/fetch';
-
-jest.mock('pim/router', () => {});
-jest.mock('pim/security-context', () => {}, {virtual: true});
-jest.mock('routing');
 
 describe('akeneoassetmanager/infrastructure/saver/asset', () => {
   it('It creates a asset', async () => {
-    // @ts-ignore
-    fetch.postJSON = jest.fn().mockImplementationOnce(() => Promise.resolve());
+    global.fetch = jest.fn().mockImplementationOnce(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(),
+        status: 200,
+      })
+    );
 
     const assetCreated = {
       code: 'starck',
@@ -53,8 +52,12 @@ describe('akeneoassetmanager/infrastructure/saver/asset', () => {
       },
     ];
 
-    // @ts-ignore
-    fetch.postJSON = jest.fn().mockImplementationOnce(() => Promise.resolve(errors));
+    global.fetch = jest.fn().mockImplementationOnce(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(errors),
+        status: 200,
+      })
+    );
 
     const assetCreated = {
       code: 'invalid/identifier',

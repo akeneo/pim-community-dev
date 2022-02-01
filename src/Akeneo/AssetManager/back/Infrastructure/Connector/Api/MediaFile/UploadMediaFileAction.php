@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\MediaFile;
 
-use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
+use Akeneo\AssetManager\Domain\Filesystem\Storage;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\FileStorage\Exception\InvalidFile;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -33,7 +33,7 @@ class UploadMediaFileAction
     public function __construct(
         private FileStorerInterface $fileStorer,
         private RouterInterface $router,
-        private SecurityFacade $securityFacade,
+        private SecurityFacadeInterface $securityFacade,
     ) {
     }
 

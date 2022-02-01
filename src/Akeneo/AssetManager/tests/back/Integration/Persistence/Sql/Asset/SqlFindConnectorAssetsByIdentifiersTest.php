@@ -230,6 +230,55 @@ class SqlFindConnectorAssetsByIdentifiersTest extends SqlIntegrationTestCase
     }
 
     /**
+     * @test
+     */
+    public function it_returns_asset_items_without_case_sensitive()
+    {
+        $this->loadAssets(['starck', 'dyson']);
+        $identifiers = ['designer_STARCK_fingerprint', 'designer_dyson_fingerprint'];
+
+        $assetQuery = AssetQuery::createPaginatedQueryUsingSearchAfter(
+            AssetFamilyIdentifier::fromString('designer'),
+            ChannelReference::noReference(),
+            LocaleIdentifierCollection::empty(),
+            100,
+            null,
+            []
+        );
+
+        $assetItems = $this->findConnectorAssetsQuery->find($identifiers, $assetQuery);
+
+        foreach (['starck', 'dyson'] as $code) {
+            $expectedConnectorAssets[] = new ConnectorAsset(
+                AssetCode::fromString($code),
+                [
+                    'name' => [
+                        [
+                            'locale'  => 'en_US',
+                            'channel' => 'ecommerce',
+                            'data'    => sprintf('Name: %s', $code),
+                        ],
+                        [
+                            'locale'  => 'en_US',
+                            'channel' => 'print',
+                            'data'    => sprintf('Name: %s for print channel', $code),
+                        ],
+                        [
+                            'locale'  => 'fr_FR',
+                            'channel' => 'ecommerce',
+                            'data'    => sprintf('Nom: %s', $code),
+                        ],
+                    ],
+                ],
+                (new \DateTimeImmutable('@0'))->setTimezone(new \DateTimeZone(date_default_timezone_get())),
+                (new \DateTimeImmutable('@3600'))->setTimezone(new \DateTimeZone(date_default_timezone_get())),
+            );
+        }
+
+        $this->assertSameConnectorAssets($expectedConnectorAssets, $assetItems);
+    }
+
+    /**
      * @param ConnectorAsset[] $expectedConnectorAssets
      * @param ConnectorAsset[] $connectorAssetsFound
      */

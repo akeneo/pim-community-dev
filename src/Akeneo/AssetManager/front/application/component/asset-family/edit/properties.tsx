@@ -1,5 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import {Button, Dropdown, IconButton, MoreIcon, SectionTitle, useBooleanState} from 'akeneo-design-system';
 import {
   useTranslate,
@@ -30,6 +30,7 @@ import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/att
 import {catalogLocaleChanged} from 'akeneoassetmanager/domain/event/user';
 import {UserNavigation} from 'akeneoassetmanager/application/component/app/user-navigation';
 import {ContextSwitchers} from 'akeneoassetmanager/application/component/app/layout';
+import {useAssetFamilyFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAssetFamilyFetcher';
 
 interface StateProps {
   form: EditionFormState;
@@ -54,11 +55,9 @@ interface DispatchProps {
   events: {
     form: {
       onLabelUpdated: (value: string, locale: string) => void;
-      onSubmit: () => void;
       onAttributeAsMainMediaUpdated: (attributeAsMainMedia: AttributeIdentifier) => void;
     };
     onDelete: (assetFamily: AssetFamily) => void;
-    onSaveEditForm: () => void;
     onLocaleChanged: (localeCode: LocaleCode) => void;
   };
 }
@@ -109,6 +108,9 @@ const SecondaryActions = ({canDeleteAssetFamily, onDeleteAssetFamily}: Secondary
 const Properties = ({events, attributes, context, form, rights, structure}: StateProps & DispatchProps) => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
+  const dispatch = useDispatch();
+  const assetFamilyFetcher = useAssetFamilyFetcher();
+
   const [isDeleteModalOpen, openDeleteModal, closeDeleteModal] = useBooleanState();
   const assetFamily = form.data;
   const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
@@ -132,7 +134,9 @@ const Properties = ({events, attributes, context, form, rights, structure}: Stat
         <PageHeader.Actions>
           <SecondaryActions canDeleteAssetFamily={canDeleteAssetFamily} onDeleteAssetFamily={openDeleteModal} />
           {canEditAssetFamily && (
-            <Button onClick={events.onSaveEditForm}>{translate('pim_asset_manager.asset_family.button.save')}</Button>
+            <Button onClick={() => dispatch(saveAssetFamily(assetFamilyFetcher))}>
+              {translate('pim_asset_manager.asset_family.button.save')}
+            </Button>
           )}
         </PageHeader.Actions>
         <PageHeader.State>{form.state.isDirty && <UnsavedChanges />}</PageHeader.State>
@@ -154,7 +158,7 @@ const Properties = ({events, attributes, context, form, rights, structure}: Stat
             attributes={attributes}
             onLabelUpdated={events.form.onLabelUpdated}
             onAttributeAsMainMediaUpdated={events.form.onAttributeAsMainMediaUpdated}
-            onSubmit={events.form.onSubmit}
+            onSubmit={() => dispatch(saveAssetFamily(assetFamilyFetcher))}
             locale={context.locale}
             data={form.data}
             errors={form.errors}
@@ -205,18 +209,12 @@ export default connect(
           onLabelUpdated: (value: string, locale: string) => {
             dispatch(assetFamilyLabelUpdated(value, locale));
           },
-          onSubmit: () => {
-            dispatch(saveAssetFamily());
-          },
           onAttributeAsMainMediaUpdated: (attributeAsMainMedia: AttributeIdentifier) => {
             dispatch(attributeAsMainMediaUpdated(attributeAsMainMedia));
           },
         },
         onDelete: (assetFamily: AssetFamily) => {
           dispatch(deleteAssetFamily(assetFamily));
-        },
-        onSaveEditForm: () => {
-          dispatch(saveAssetFamily());
         },
         onLocaleChanged: (localeCode: LocaleCode) => {
           dispatch(catalogLocaleChanged(localeCode));

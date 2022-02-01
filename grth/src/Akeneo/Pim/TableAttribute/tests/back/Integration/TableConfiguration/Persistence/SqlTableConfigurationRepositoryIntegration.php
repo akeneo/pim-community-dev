@@ -15,7 +15,7 @@ namespace Akeneo\Test\Pim\TableAttribute\Integration\TableConfiguration\Persiste
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\RecordColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
@@ -56,7 +56,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
             ]),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'is_allergenic']),
-            RecordColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'record', 'reference_entity_identifier' => 'entity']),
+            ReferenceEntityColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'record', 'reference_entity_identifier' => 'entity']),
         ]);
         $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
 
@@ -94,7 +94,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
             SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
             BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'is_allergenic']),
-            RecordColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'record', 'reference_entity_identifier' => 'entity']),
+            ReferenceEntityColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'record', 'reference_entity_identifier' => 'entity']),
         ]);
         $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
 
@@ -262,7 +262,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
                 'id' => ColumnIdGenerator::record(),
                 'attribute_id' => $this->tableAttributeId,
                 'code' => 'record',
-                'data_type' => 'record',
+                'data_type' => 'reference_entity',
                 'column_order' => 2,
                 'labels' => '{}',
                 'validations' => '{}',
@@ -311,7 +311,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
                 [
                     'id' => ColumnIdGenerator::record(),
                     'code' => 'record',
-                    'data_type' => 'record',
+                    'data_type' => 'reference_entity',
                     'labels' => (object)[],
                     'validations' => (object) [],
                     'is_required_for_completeness' => false,

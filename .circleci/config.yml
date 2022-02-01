@@ -181,14 +181,14 @@ jobs:
       - restore_cache:
             name: Restore cache - yarn and Cypress dependency cache
             keys:
-                - frontend-dependency-cache-{{ checksum "~/front-dependency.hash" }}
+                - frontend-dependency-cache-{{ checksum "~/front-dependency.hash" }}-{{ .Environment.CACHE_VERSION }}
       - restore_cache:
             name: Restore cache - composer dependency cache
             keys:
-                - backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}
+                - backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}-{{ .Environment.CACHE_VERSION }}-
       - change_pim_onboarder_branch_steps
       - run:
-            name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+            name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
             command: |
                 sudo chown -R 1000:1000 ../project
                 sudo chown -R 1000:1000 ~/.composer
@@ -217,28 +217,28 @@ jobs:
               date +%F | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/tailored-export.hash ~/tailored-import.hash ~/catalog-volume-monitoring.hash ~/process-tracker.hash
       - run:
           name: Set front package directories owner to circleci
-          command: sudo chown -R 1001:1001 vendor/akeneo/pim-community-dev/ front-packages/
+          command: sudo chown -R circleci:circleci vendor/akeneo/pim-community-dev/ front-packages/
       - restore_cache:
             name: Restore front package DSM cache
-            key: front-packages-dsm-{{ checksum "~/akeneo-design-system.hash" }}
+            key: front-packages-dsm-{{ checksum "~/akeneo-design-system.hash" }}-{{ .Environment.CACHE_VERSION }}
       - restore_cache:
             name: Restore front package measurement cache
-            key: front-packages-measurement-{{ checksum "~/measurement.hash" }}
+            key: front-packages-measurement-{{ checksum "~/measurement.hash" }}-{{ .Environment.CACHE_VERSION }}
       - restore_cache:
             name: Restore front package Shared cache
-            key: front-packages-shared-{{ checksum "~/shared.hash" }}
+            key: front-packages-shared-{{ checksum "~/shared.hash" }}-{{ .Environment.CACHE_VERSION }}
       - restore_cache:
             name: Restore front package Tailored Export cache
-            key: front-packages-tailored-export-{{ checksum "~/tailored-export.hash" }}
+            key: front-packages-tailored-export-{{ checksum "~/tailored-export.hash" }}-{{ .Environment.CACHE_VERSION }}
       - restore_cache:
             name: Restore front package Tailored Import cache
-            key: front-packages-tailored-import-{{ checksum "~/tailored-import.hash" }}
+            key: front-packages-tailored-import-{{ checksum "~/tailored-import.hash" }}-{{ .Environment.CACHE_VERSION }}
       - restore_cache:
             name: Restore micro frontend Process Tracker cache
-            key: micro-frontend-process-tracker-{{ checksum "~/process-tracker.hash" }}
+            key: micro-frontend-process-tracker-{{ checksum "~/process-tracker.hash" }}-{{ .Environment.CACHE_VERSION }}
       - restore_cache:
             name: Restore micro-frontend Catalog Volume Monitoring cache
-            key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}
+            key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}-{{ .Environment.CACHE_VERSION }}
       - run:
           name: Set front packages directories owner to docker
           command: sudo chown -R 1000:1000 vendor/akeneo/pim-community-dev/ front-packages/
@@ -255,45 +255,45 @@ jobs:
             name: Save fontend dependency cache
             paths:
                 - ~/.cache
-            key: frontend-dependency-cache-{{ checksum "~/front-dependency.hash" }}
+            key: frontend-dependency-cache-{{ checksum "~/front-dependency.hash" }}-{{ .Environment.CACHE_VERSION }}
       - save_cache:
             name: Save backend dependency cache
             paths:
                 - ~/.composer
-            key: backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}
+            key: backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}-{{ .Environment.CACHE_VERSION }}
       - save_cache:
             name: Save front package DSM cache
-            key: front-packages-dsm-{{ checksum "~/akeneo-design-system.hash" }}
+            key: front-packages-dsm-{{ checksum "~/akeneo-design-system.hash" }}-{{ .Environment.CACHE_VERSION }}
             paths:
                 - vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system/
       - save_cache:
             name: Save front package measurement cache
-            key: front-packages-measurement-{{ checksum "~/measurement.hash" }}
+            key: front-packages-measurement-{{ checksum "~/measurement.hash" }}-{{ .Environment.CACHE_VERSION }}
             paths:
                 - vendor/akeneo/pim-community-dev/front-packages/measurement/
       - save_cache:
             name: Save front package Shared cache
-            key: front-packages-shared-{{ checksum "~/shared.hash" }}
+            key: front-packages-shared-{{ checksum "~/shared.hash" }}-{{ .Environment.CACHE_VERSION }}
             paths:
                 - vendor/akeneo/pim-community-dev/front-packages/shared/
       - save_cache:
             name: Save front package Tailored Export cache
-            key: front-packages-tailored-export-{{ checksum "~/tailored-export.hash" }}
+            key: front-packages-tailored-export-{{ checksum "~/tailored-export.hash" }}-{{ .Environment.CACHE_VERSION }}
             paths:
                 - front-packages/tailored-export/
       - save_cache:
             name: Save front package Tailored Import cache
-            key: front-packages-tailored-import-{{ checksum "~/tailored-import.hash" }}
+            key: front-packages-tailored-import-{{ checksum "~/tailored-import.hash" }}-{{ .Environment.CACHE_VERSION }}
             paths:
                 - front-packages/tailored-import/
       - save_cache:
             name: Save micro frontend Process Tracker cache
-            key: micro-frontend-process-tracker-{{ checksum "~/process-tracker.hash" }}
+            key: micro-frontend-process-tracker-{{ checksum "~/process-tracker.hash" }}-{{ .Environment.CACHE_VERSION }}
             paths:
                 - vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/front/process-tracker/
       - save_cache:
             name: Save micro-frontend Catalog Volume Monitoring cache
-            key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}
+            key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}-{{ .Environment.CACHE_VERSION }}
             paths:
                 - vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front/
       - persist_to_workspace:
@@ -587,7 +587,7 @@ jobs:
           - attach_workspace:
                 at: ~/
           - run:
-                name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                 command: sudo chown -R 1000:1000 ../project
           - run:
                 name: No legacy translation format
@@ -651,6 +651,9 @@ jobs:
           - run:
               name: Tailored Import
               command: PIM_CONTEXT=tailored-import make integration-back
+          - run:
+                name: Table Attribute
+                command: PIM_CONTEXT=table-attribute make table-attribute-integration-back
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:
@@ -737,6 +740,9 @@ jobs:
           - run:
                 name: PhpUnit End to end
                 command: PIM_CONTEXT=test make end-to-end-back
+          - run:
+                name: PhpUnit End to end Table Attribute
+                command: PIM_CONTEXT=table-attribute make table-attribute-end-to-end-back
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:
@@ -804,7 +810,7 @@ jobs:
               name: Create yarn cache folder
               command: mkdir -p  ~/.cache/yarn
         - run:
-              name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+              name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
               command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
         - run:
             name: Front type checking
@@ -824,7 +830,7 @@ jobs:
               name: Create yarn cache folder
               command: mkdir -p  ~/.cache/yarn
         - run:
-              name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+              name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
               command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
         - run:
             name: Front unit tests
@@ -844,7 +850,7 @@ jobs:
                 name: Create yarn cache folder
                 command: mkdir -p  ~/.cache/yarn
           - run:
-                name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                 command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
           - run:
                 name: Start containers
@@ -880,7 +886,7 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
-          name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+          name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
           command: sudo chown -R 1000:1000 ../project
       - run:
           name: Start containers
@@ -1056,7 +1062,7 @@ jobs:
               name: Setup tests results folder and log folder
               command: mkdir -p ${TYPE}/var/tests/phpspec ${TYPE}/var/tests/csfixer ${TYPE}/var/logs ${TYPE}/var/tests/screenshots ~/.cache/yarn ~/.composer ~/.cache/Cypress
           - run:
-              name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+              name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
               command: sudo chown -R 1000:1000 ~/project ~/.cache ~/.composer
           - run:
               name: Load php image
@@ -1119,7 +1125,7 @@ jobs:
               name: Tailored Export Front Tests
               command: PIM_CONTEXT=tailored-export make ci-front
           - run:
-              name: Tailored Export Front Tests
+              name: Tailored Import Front Tests
               command: PIM_CONTEXT=tailored-import make ci-front
           - store_test_results:
                 path: ${TYPE}/var/tests
@@ -1144,7 +1150,7 @@ jobs:
               name: Setup tests results folder and log folder
               command: mkdir -p ${TYPE}/var/tests/phpspec ${TYPE}/var/tests/csfixer ${TYPE}/var/logs ${TYPE}/var/tests/screenshots ~/.cache/yarn ~/.composer
           - run:
-              name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+              name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
               command: sudo chown -R 1000:1000 ~/project ~/.cache/yarn ~/.composer
           - run:
               name: Load php image
@@ -1215,7 +1221,7 @@ jobs:
                 command: |
                     sed -i "s/Q7sKB5xP2ttc5KnqFPOF1BrOkTRSulmEj528BpJzbDcLbYSHU1/${PIM_ADMIN_PASSWORD}/g" tests/front/e2e/product/edit.js
           - run:
-                name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                 command: |
                     sudo chown -R 1000:1000 ../project
                     sudo chown -R 1000:1000 ~/.composer
@@ -1632,7 +1638,7 @@ jobs:
               paths:
                 - project/persisted_env_vars
 
-  test_clone_from_flex_customer_db:
+  test_migrate_from_flex_customer_db:
       parameters:
         PRODUCT_TYPE:
           type: string
@@ -1655,34 +1661,42 @@ jobs:
           - run:
               name: Define value for next steps
               command: |
+                RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
                 SOURCE_PFID_SOURCE_PROJECT_ID=<< parameters.SOURCE_PFID_SOURCE_PROJECT_ID >>
                 SOURCE_PFID="${SOURCE_PFID_SOURCE_PROJECT_ID%%##*}"
                 SOURCE_PROJECT_ID="${SOURCE_PFID_SOURCE_PROJECT_ID##*##}"
                 INSTANCE_NAME_PREFIX=pimci-duplic
                 INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-$(echo "${SOURCE_PFID}" | cut -c1-20)-${CIRCLE_BUILD_NUM}
-                ACTIVATE_MONITORING=false
 
+                echo export RELEASE_TO_DEPLOY=${RELEASE_TO_DEPLOY} >> $BASH_ENV
                 echo export SOURCE_PFID=${SOURCE_PFID} >> $BASH_ENV
                 echo export SOURCE_PROJECT_ID=${SOURCE_PROJECT_ID} >> $BASH_ENV
                 echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                 echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
-                echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
 
                 echo "Source PFID: ${SOURCE_PFID}"
                 echo "Source project ID: ${SOURCE_PROJECT_ID}"
                 echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                 echo "Instance name: ${INSTANCE_NAME}"
-                echo "Image tag: ${IMAGE_TAG}"
+                echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
           - run:
               name: DATADOG deployment Livetail logs page
               command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
-              name: Duplicate PROD environment
+              name: Migrate Flex to SRNT environment
               command: |
                 ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
                 export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-                make -C deployments/ clone_flexibility
+                IMAGE_TAG=${RELEASE_TO_DEPLOY} make -C deployments/ migrate_flexibility_to_serenity
                 make -C deployments/ commit-instance
+          - run:
+              name: Persist env vars for next jobs
+              command: |
+                PIM_ADMIN_PASSWORD=$(yq r /root/project/deployments/instances/${TYPE}-${INSTANCE_NAME}/values.yaml pim.defaultAdminUser.password)
+                echo export PIM_ADMIN_PASSWORD=${PIM_ADMIN_PASSWORD} >> persisted_env_vars
+                echo export SOURCE_PFID=${SOURCE_PFID} >> persisted_env_vars
+                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> persisted_env_vars
+                echo export INSTANCE_NAME=${INSTANCE_NAME} >> persisted_env_vars
           - run:
               name: Prepare infrastructure artifacts
               command: make -C deployments/ prepare-infrastructure-artifacts
@@ -1694,8 +1708,14 @@ jobs:
               command: |
                   ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
                   export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-                  make -C deployments/ uncommit-instance
-              when: always
+                  UNCOMMIT_INSTANCE_STATUS_CODE=0
+                  for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
+                  exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
+              when: on_fail
+          - persist_to_workspace:
+              root: ~/
+              paths:
+                - project/persisted_env_vars
 
   test_upgrade_from_customer_db:
       parameters:
@@ -1865,7 +1885,15 @@ jobs:
                   REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
             - run:
                 name: Jenkins Upgrade
-                command: IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
+                command: |
+                  VERSION_INSTALLED=$(helm3 get values ${TYPE}-${INSTANCE_NAME} -n ${TYPE}-${INSTANCE_NAME} | yq r - 'image.pim.tag')
+                  if [[ "${VERSION_INSTALLED}" == "${RELEASE_TO_DEPLOY}" ]]; then
+                    echo "PIM already at the latest release"
+                    echo "No need to upgrade"
+                  else
+                    echo "Need to upgrade the PIM to the latest release"
+                    IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
+                  fi
             - run:
                 name: Communicate
                 command: |
@@ -1913,8 +1941,16 @@ jobs:
                   REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
                   REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
             - run:
-                  name: Jenkins Upgrade
-                  command: IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
+                name: Jenkins Upgrade
+                command: |
+                  VERSION_INSTALLED=$(helm3 get values ${TYPE}-${INSTANCE_NAME} -n ${TYPE}-${INSTANCE_NAME} | yq r - 'image.pim.tag')
+                  if [[ "${VERSION_INSTALLED}" == "${RELEASE_TO_DEPLOY}" ]]; then
+                    echo "PIM already at the latest release"
+                    echo "No need to upgrade"
+                  else
+                    echo "Need to upgrade the PIM to the latest release"
+                    IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
+                  fi
             - run:
                 name: Communicate
                 command: |
@@ -1963,7 +1999,80 @@ jobs:
                 REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
           - run:
               name: Jenkins Upgrade
-              command: IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
+              command: |
+                VERSION_INSTALLED=$(helm3 get values ${TYPE}-${INSTANCE_NAME} -n ${TYPE}-${INSTANCE_NAME} | yq r - 'image.pim.tag')
+                if [[ "${VERSION_INSTALLED}" == "${RELEASE_TO_DEPLOY}" ]]; then
+                  echo "PIM already at the latest release"
+                  echo "No need to upgrade"
+                else
+                  echo "Need to upgrade the PIM to the latest release"
+                  IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
+                fi
+
+  deploy_bh_environment:
+      parameters:
+        PRODUCT_TYPE:
+          type: string
+          default: "srnt"
+        CLUSTER_NEXT:
+          type: boolean
+          default: true
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerJenkinsCloudDeployer
+      resource_class: small
+      steps:
+          - attach_workspace:
+                at: ~/
+          - when:
+              condition:
+                equal: [true, << parameters.CLUSTER_NEXT >> ]
+              steps:
+                - modify_cluster
+          - set_gcloud_config_dev
+          - add_ssh_keys
+          - run:
+              name: Define value for next steps
+              command: |
+                TYPE="srnt"
+                RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
+                INSTANCE_NAME="bh-ref-instance"
+                PRODUCT_REFERENCE_TYPE="serenity_instance"
+                PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
+                ACTIVATE_MONITORING=true
+
+                echo export TYPE=${TYPE} >> $BASH_ENV
+                echo export RELEASE_TO_DEPLOY=${RELEASE_TO_DEPLOY} >> $BASH_ENV
+                echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
+                echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
+                echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
+
+                echo "Instance name: ${INSTANCE_NAME}"
+                echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
+          - run:
+              name: DATADOG deployment Livetail logs page
+              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+          - run:
+              name: Setup key for Jenkins
+              command: |
+                ssh-keyscan github.com >> ~/.ssh/known_hosts
+                echo '' > /root/.ssh/config #clean github exclusions automatically added by circleci
+                REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 bash deployments/bin/add-deploy-key.sh
+                REPO_TO_ADD=cloud-customers-dev KEY_TO_ADD=/root/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 bash deployments/bin/add-deploy-key.sh
+                REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
+                REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
+          - run:
+              name: Jenkins Upgrade
+              command: |
+                VERSION_INSTALLED=$(helm3 get values ${TYPE}-${INSTANCE_NAME} -n ${TYPE}-${INSTANCE_NAME} | yq r - 'image.pim.tag')
+                if [[ "${VERSION_INSTALLED}" == "${RELEASE_TO_DEPLOY}" ]]; then
+                  echo "PIM already at the latest release"
+                  echo "No need to upgrade"
+                else
+                  echo "Need to upgrade the PIM to the latest release"
+                  IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
+                fi
 
   deploy_pr_environment:
     parameters:
@@ -2883,6 +2992,9 @@ workflows:
           - deploy_pm_environment:
                 requires:
                     - checkout
+          - deploy_bh_environment:
+                requires:
+                    - checkout
 
   nightly_beta:
       when:
@@ -2902,14 +3014,29 @@ workflows:
           - build_srnt_prod:
                 requires:
                     - checkout
-          - test_clone_from_flex_customer_db:
-                name: "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID_SOURCE_PROJECT_ID >>"
+          - test_migrate_from_flex_customer_db:
+                name: "[<< matrix.PRODUCT_TYPE >>] test_migrate_from-<< matrix.SOURCE_PFID_SOURCE_PROJECT_ID >>"
                 matrix:
                     parameters:
                         PRODUCT_TYPE: ["flex"]
                         SOURCE_PFID_SOURCE_PROJECT_ID: ["assa-abloy-dev##akecld-assa-abloy", "curacao-production##akecld-curacao-pim"]
                 requires:
                     - build_srnt_prod
+          - test_upgrade_from_customer_db:
+                name: "[flex] test_upgrade_from-<< matrix.SOURCE_PFID >>"
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["srnt"]
+                        SOURCE_PFID: ["assa-abloy-dev##akecld-assa-abloy", "curacao-production##akecld-curacao-pim"]
+                requires:
+                    - "[flex] test_migrate_from-<< matrix.SOURCE_PFID >>"
+          - ui_sanity_checks:
+                name: sanity_checks-<< matrix.SOURCE_PFID >>
+                matrix:
+                    parameters:
+                        SOURCE_PFID: ["assa-abloy-dev##akecld-assa-abloy", "curacao-production##akecld-curacao-pim"]
+                requires:
+                    - "[flex] test_upgrade_from-<< matrix.SOURCE_PFID >>"
           - test_clone_from_customer_db:
                 name: "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
                 matrix:

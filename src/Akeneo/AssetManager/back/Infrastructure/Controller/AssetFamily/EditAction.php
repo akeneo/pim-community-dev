@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -20,7 +21,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,7 +49,7 @@ class EditAction
         private ValidatorInterface $validator,
         private AttributeRepositoryInterface $attributeRepository,
         private AssetFamilyRepositoryInterface $assetFamilyRepository,
-        private SecurityFacade $securityFacade,
+        private SecurityFacadeInterface $securityFacade,
     ) {
     }
 
@@ -79,16 +80,13 @@ class EditAction
 
         $transformations = $this->isUserAllowedToManageTransformation()
             ? $parameters['transformations']
-            : null
-            ;
+            : null;
         $namingConvention = $this->isUserAllowedToManageProductLinkRule()
             ? json_decode($parameters['namingConvention'], true)
-            : null
-            ;
+            : null;
         $productLinkRules = $this->isUserAllowedToManageProductLinkRule()
             ? json_decode($parameters['productLinkRules'], true)
-            : null
-            ;
+            : null;
 
         $command = new EditAssetFamilyCommand(
             $parameters['identifier'],

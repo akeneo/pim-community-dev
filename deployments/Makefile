@@ -342,7 +342,8 @@ pull-cloud-customer-dev: $(CLOUD_CUSTOMERS_DEV_DIR)
 
 .PHONY: commit-instance
 commit-instance: pull-cloud-customer-dev
-	cp -r $(INSTANCE_DIR) $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)
+	# INSTANCE_CLOUD_CUSTOMERS_DEV_DIR may not exist yet, need to use readlink
+	cp -r $(INSTANCE_DIR) $(shell readlink -m $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/..)
 	git config --global user.email "pim_ci@akeneo.com"
 	git config --global user.name "pim_ci_instance_creation"
 	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)
@@ -521,10 +522,10 @@ clone_saas_instance:
 	TYPE=$(TYPE) INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files
 	SOURCE_PFID=$(SOURCE_PFID) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) DESTINATION_PATH=$(INSTANCE_DIR) BUCKET=$(BUCKET) bash $(DEPLOYMENT_DIR)/bin/clone_saas_instance.sh
 
-.PHONY: clone_flexibility
-clone_flexibility:
+.PHONY: migrate_flexibility_to_serenity
+migrate_flexibility_to_serenity:
 	TYPE=$(TYPE) INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files
-	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) SOURCE_PROJECT_ID=$(SOURCE_PROJECT_ID) PED_TAG=$(IMAGE_TAG) INSTANCE_NAME=$(INSTANCE_NAME) BUCKET=$(BUCKET) bash $(DEPLOYMENT_DIR)/bin/clone_flexibility.sh
+	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) SOURCE_PROJECT_ID=$(SOURCE_PROJECT_ID) PED_TAG=$(IMAGE_TAG) INSTANCE_NAME=$(INSTANCE_NAME) BUCKET=$(BUCKET) bash $(DEPLOYMENT_DIR)/bin/migrate_flexibility_to_serenity.sh
 
 .PHONY: php-image-prod
 php-image-prod: #Doc: build docker image for pim-enterprise-dev with the prod tag

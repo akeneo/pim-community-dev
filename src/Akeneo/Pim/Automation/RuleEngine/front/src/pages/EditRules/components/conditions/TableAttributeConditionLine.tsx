@@ -58,13 +58,13 @@ const TableAttributeConditionLine: React.FC<TableAttributeConditionLineProps> = 
   const value = condition.value.value;
   const column = condition.value.column;
   const row = condition.value.row;
+
   const [attribute, setAttribute] = React.useState<Attribute | null>();
   React.useEffect(() => {
     getAttributeByIdentifier(condition.field, router).then(attribute =>
       setAttribute(attribute)
     );
   }, []);
-
   const title =
     attribute && attribute.labels[currentCatalogLocale]
       ? attribute.labels[currentCatalogLocale]
@@ -132,6 +132,7 @@ const TableAttributeConditionLine: React.FC<TableAttributeConditionLineProps> = 
           as={<input type='hidden' />}
           name={formName('value.value')}
           defaultValue={value}
+          rules={{required: false}}
         />
         <Controller
           as={<input type='hidden' />}

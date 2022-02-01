@@ -35,4 +35,9 @@ final class ReferenceEntityIdentifier
     {
         return $this->identifier;
     }
+
+    public function equals(ReferenceEntityIdentifier $otherIdentifier): bool
+    {
+        return \strtolower($this->identifier) === \strtolower($otherIdentifier->asString());
+    }
 }

@@ -136,6 +136,10 @@
 - PIM-10221: Fix media link input caret jumping when manually typing a link
 - PIM-10227: Fix filter not applied properly on the Asset manager grid
 - PIM-10215: Fixed missing translations label in process tracker for mass edit on assets and records jobs
+- PIM-10237: Order connector Assets with PHP to avoid memory issues
+- PIM-10228: Fix Asset transformations job crashing when having cache resources exhausted
+- PIM-10236: Fix duplicated mask returned by query for table attribute
+- PIM-10238: Add permissions to view mass delete assets, mass edit assets and mass delete records job logs
 
 ## Improvements
 
@@ -146,10 +150,11 @@
 - CPM-152: Use Symfony Messenger to handle job queue messages. Therefore the `akeneo_batch_job_execution_queue` table is removed.
   Depending on your environment, please check the associated `messenger.yml` to figure out how the messages are sent/received.
   The former command to launch job consumption is removed and replaced by:
-
 ```bash
 bin/console messenger:consume ui_job import_export_job data_maintenance_job
 ```
+- PIM-10229: Enforce lax same-site policy for session cookies
+- PIM-10235: Add HTTP Headers
 
 ## New features
 

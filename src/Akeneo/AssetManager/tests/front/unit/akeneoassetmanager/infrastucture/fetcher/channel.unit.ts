@@ -6,10 +6,6 @@ import $ from 'jquery';
 
 import {fetchChannels} from 'akeneoassetmanager/infrastructure/fetcher/channel';
 
-jest.mock('pim/router', () => {});
-jest.mock('pim/security-context', () => {}, {virtual: true});
-jest.mock('routing');
-
 describe('akeneoassetmanager/infrastructure/fetcher/channel', () => {
   it('It fetches the channels', async () => {
     const channelFetcher = {

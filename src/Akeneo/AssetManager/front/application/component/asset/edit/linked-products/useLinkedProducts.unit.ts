@@ -39,6 +39,7 @@ test('It fetches linked products', async () => {
   };
   global.fetch = jest.fn().mockImplementation(async () => ({
     ok: true,
+    status: 200,
     json: async () => response,
   }));
 

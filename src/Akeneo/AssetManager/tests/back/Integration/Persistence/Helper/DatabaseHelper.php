@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Persistence\Helper;
 
-use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
+use Akeneo\AssetManager\Domain\Filesystem\Storage;
 use Doctrine\DBAL\Connection;
 
 /**

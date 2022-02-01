@@ -240,15 +240,20 @@ const assetFamily = {
   transformations: '[]',
 };
 
-const dataProvider = (attributeAsMainMedia: string = 'media_link_image_attribute_identifier') => ({
-  assetFamilyFetcher: {
+let attributeAsMainMedia = 'media_link_image_attribute_identifier';
+beforeEach(() => {
+  attributeAsMainMedia = 'media_link_image_attribute_identifier';
+});
+
+jest.mock('akeneoassetmanager/infrastructure/fetcher/useAssetFamilyFetcher', () => ({
+  useAssetFamilyFetcher: () => ({
     fetch: () =>
       Promise.resolve({
         assetFamily: {...assetFamily, attributeAsMainMedia},
         permission: {assetFamilyIdentifier: assetFamily.identifier, edit: true},
       }),
-  },
-});
+  }),
+}));
 
 test('It can display the previous asset in the collection', async () => {
   const initialAssetCode = 'iphone8_pack';
@@ -260,7 +265,6 @@ test('It can display the previous asset in the collection', async () => {
         assetCollection={simpleAssetCollection}
         initialAssetCode={initialAssetCode}
         productAttribute={mediaLinkImageAttribute}
-        dataProvider={dataProvider()}
         onClose={jest.fn()}
       />
     );
@@ -281,7 +285,6 @@ test('It can display the next asset in the collection', async () => {
         assetCollection={simpleAssetCollection}
         initialAssetCode={initialAssetCode}
         productAttribute={mediaLinkImageAttribute}
-        dataProvider={dataProvider()}
         onClose={jest.fn()}
       />
     );
@@ -302,7 +305,6 @@ test('It can select an asset from the carousel', async () => {
         assetCollection={simpleAssetCollection}
         initialAssetCode={initialAssetCode}
         productAttribute={mediaLinkImageAttribute}
-        dataProvider={dataProvider()}
         onClose={jest.fn()}
       />
     );
@@ -317,6 +319,7 @@ test('It can select an asset from the carousel', async () => {
 
 test('It should not display the modal when the provided asset code is null', async () => {
   const initialAssetCode = null;
+  attributeAsMainMedia = 'media_link_youtube_attribute_identifier';
 
   await act(async () => {
     renderWithAssetManagerProviders(
@@ -325,7 +328,6 @@ test('It should not display the modal when the provided asset code is null', asy
         assetCollection={assetCollection}
         initialAssetCode={initialAssetCode}
         productAttribute={mediaLinkImageAttribute}
-        dataProvider={dataProvider('media_link_youtube_attribute_identifier')}
         onClose={jest.fn()}
       />
     );
@@ -336,6 +338,7 @@ test('It should not display the modal when the provided asset code is null', asy
 
 test('It should not display the modal when the provided asset code does not exist', async () => {
   const initialAssetCode = '404_not_found';
+  attributeAsMainMedia = 'media_link_youtube_attribute_identifier';
 
   await act(async () => {
     renderWithAssetManagerProviders(
@@ -344,7 +347,6 @@ test('It should not display the modal when the provided asset code does not exis
         assetCollection={assetCollection}
         initialAssetCode={initialAssetCode}
         productAttribute={mediaLinkImageAttribute}
-        dataProvider={dataProvider('media_link_youtube_attribute_identifier')}
         onClose={jest.fn()}
       />
     );
@@ -355,6 +357,7 @@ test('It should not display the modal when the provided asset code does not exis
 
 test('It should display the YouTube player when the product attribute is a YouTube media link', async () => {
   const initialAssetCode = 'iphone14_pack';
+  attributeAsMainMedia = 'media_link_youtube_attribute_identifier';
 
   await act(async () => {
     renderWithAssetManagerProviders(
@@ -363,7 +366,6 @@ test('It should display the YouTube player when the product attribute is a YouTu
         assetCollection={assetCollection}
         initialAssetCode={initialAssetCode}
         productAttribute={mediaLinkYouTubeAttribute}
-        dataProvider={dataProvider('media_link_youtube_attribute_identifier')}
         onClose={jest.fn()}
       />
     );
@@ -387,6 +389,7 @@ test('I should get the YouTube link when I click on the Copy URL button on the p
   Object.defineProperty(navigator, 'clipboard', {value: mockClipboard, writable: true});
 
   const initialAssetCode = 'iphone14_pack';
+  attributeAsMainMedia = 'media_link_youtube_attribute_identifier';
 
   await act(async () => {
     renderWithAssetManagerProviders(
@@ -395,7 +398,6 @@ test('I should get the YouTube link when I click on the Copy URL button on the p
         assetCollection={assetCollection}
         initialAssetCode={initialAssetCode}
         productAttribute={mediaLinkYouTubeAttribute}
-        dataProvider={dataProvider('media_link_youtube_attribute_identifier')}
         onClose={jest.fn()}
       />
     );

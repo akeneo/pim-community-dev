@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Persistence\Sql\File;
 
+use Akeneo\AssetManager\Domain\Filesystem\Storage;
 use Akeneo\AssetManager\Domain\Query\File\FileExistsInterface;
-use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;

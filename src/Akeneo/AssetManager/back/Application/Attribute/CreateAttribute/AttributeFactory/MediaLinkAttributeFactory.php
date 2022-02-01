@@ -29,7 +29,6 @@ use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Prefix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLink\Suffix;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
-use Doctrine\Common\Util\ClassUtils;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -52,7 +51,7 @@ class MediaLinkAttributeFactory implements AttributeFactoryInterface
                 sprintf(
                     'Expected command of type "%s", "%s" given',
                     CreateMediaLinkAttributeCommand::class,
-                    ClassUtils::getClass($command)
+                    get_class($command),
                 )
             );
         }

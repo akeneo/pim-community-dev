@@ -24,8 +24,8 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\JsonSchema\AssetFamilyValidator;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,7 +47,7 @@ class CreateOrUpdateAssetFamilyAction
         private AssetFamilyValidator $jsonSchemaValidator,
         private FindFileDataByFileKeyInterface $findFileData,
         private AssetFamilyRepositoryInterface $assetFamilyRepository,
-        private SecurityFacade $securityFacade,
+        private SecurityFacadeInterface $securityFacade,
     ) {
     }
 

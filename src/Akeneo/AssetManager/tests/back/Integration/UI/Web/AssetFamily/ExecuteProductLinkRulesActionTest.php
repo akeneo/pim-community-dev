@@ -64,7 +64,10 @@ class ExecuteProductLinkRulesActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::EXECUTE_PRODUCT_LINK_RULES_ROUTE,
             ['identifier' => 'singer'],
-            'POST'
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest'
+            ]
         );
         Assert::assertEquals(Response::HTTP_NO_CONTENT, $this->client->getResponse()->getStatusCode());
         $this->productLinkRuleLauncherSpy->assertHasRunForAssetsInSameLaunch('singer', ['celine_dion', 'mariah_carey']);
@@ -78,7 +81,10 @@ class ExecuteProductLinkRulesActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::EXECUTE_PRODUCT_LINK_RULES_ROUTE,
             ['identifier' => 'unknown'],
-            'POST'
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest'
+            ]
         );
         Assert::assertEquals(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
         $this->productLinkRuleLauncherSpy->assertHasNoRun();
@@ -93,7 +99,10 @@ class ExecuteProductLinkRulesActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::EXECUTE_PRODUCT_LINK_RULES_ROUTE,
             ['identifier' => 'singer'],
-            'POST'
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest'
+            ]
         );
         Assert::assertEquals(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode());
         $this->productLinkRuleLauncherSpy->assertHasNoRun();
@@ -104,7 +113,10 @@ class ExecuteProductLinkRulesActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::EXECUTE_PRODUCT_LINK_RULES_ROUTE,
             ['identifier' => 'singer'],
-            'POST'
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest'
+            ]
         );
         Assert::assertEquals(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode());
         $this->productLinkRuleLauncherSpy->assertHasNoRun();

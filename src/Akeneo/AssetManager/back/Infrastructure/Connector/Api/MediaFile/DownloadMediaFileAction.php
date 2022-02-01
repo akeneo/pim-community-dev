@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Connector\Api\MediaFile;
 
+use Akeneo\AssetManager\Domain\Filesystem\Storage;
 use Akeneo\AssetManager\Domain\Repository\MediaFileNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\MediaFileRepositoryInterface;
-use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -33,7 +33,7 @@ class DownloadMediaFileAction
     public function __construct(
         private MediaFileRepositoryInterface $mediaFileRepository,
         private FilesystemProvider $filesystemProvider,
-        private SecurityFacade $securityFacade,
+        private SecurityFacadeInterface $securityFacade,
     ) {
     }
 

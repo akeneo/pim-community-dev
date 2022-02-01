@@ -9,17 +9,17 @@ import {
   Placeholder,
   TableInput,
 } from 'akeneo-design-system';
-import {ColumnCode, ColumnDefinition, TableCell} from '../models';
+import {ColumnCode, ColumnDefinition, RecordCode, SelectOptionCode, TableCell} from '../models';
 import {TableFooter} from './TableFooter';
 import styled from 'styled-components';
 import {TableRowWithId, TableValueWithId, ViolatedCell} from './TableFieldApp';
-import {LoadingPlaceholderContainer} from '../shared';
-import {useFetchOptions} from './useFetchOptions';
-import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {CellInputsMapping} from './CellInputs';
-import {CellMatchersMapping} from './CellMatchers';
+import {getLabel, useTranslate} from '@akeneo-pim-community/shared';
 import {UNIQUE_ID_KEY} from './useUniqueIds';
-import {useAttributeContext} from '../contexts';
+import {useAttributeContext, useLocaleCode} from '../contexts';
+import {RecordCellIndex, SelectCellIndex} from './CellIndexes';
+import {usePrefetchTableValueRecords} from './usePrefetchTableValueRecords';
+import {cellMatchers} from './CellMatchers';
+import {cellInputs} from './CellInputs';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
@@ -48,36 +48,32 @@ const HeaderActionsCell = styled(TableInput.HeaderCell)`
   width: 34px;
 `;
 
-const FirstCellLoadingPlaceholderContainer = styled(LoadingPlaceholderContainer)`
-  padding-top: 10px;
-  & > * {
-    height: 20px;
-  }
-`;
+/**
+ * CAN_EDIT: the user has permission to edit
+ * CANNOT_EDIT: the user has not permission to edit
+ * READ_ONLY: the input is in read only, no matter the permission
+ */
+type Visibility = 'CAN_EDIT' | 'CANNOT_EDIT' | 'READ_ONLY';
 
 type TableInputValueProps = {
   valueData: TableValueWithId;
+  visibility: Visibility;
   onChange?: (tableValue: TableValueWithId) => void;
   searchText?: string;
   violatedCells?: ViolatedCell[];
-  readOnly?: boolean;
   isCopying?: boolean;
-  cellInputsMapping: CellInputsMapping;
-  cellMatchersMapping: CellMatchersMapping;
 };
 
 const TableInputValue: React.FC<TableInputValueProps> = ({
   valueData,
   onChange,
-  readOnly = false,
+  visibility,
   searchText = '',
   violatedCells = [],
   isCopying = false,
-  cellInputsMapping,
-  cellMatchersMapping,
 }) => {
+  const readOnly = ['CANNOT_EDIT', 'READ_ONLY'].includes(visibility);
   const translate = useTranslate();
-  const userContext = useUserContext();
   const {attribute, setAttribute} = useAttributeContext();
   const [itemsPerPage, setItemsPerPage] = React.useState<number>(TABLE_VALUE_ITEMS_PER_PAGE[0]);
   const [currentPage, setCurrentPage] = React.useState<number>(0);
@@ -85,11 +81,12 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   const [isActionsOpened, setActionsOpened] = React.useState<string | undefined>();
   const isSearching = searchText !== '';
   const isDragAndDroppable = !readOnly && !isSearching;
-  const {getOptionLabel} = useFetchOptions(attribute, setAttribute);
+  const areRecordsPrefetched = usePrefetchTableValueRecords(valueData);
+  const localeCode = useLocaleCode();
 
   const matchers: {[data_type: string]: (cell: TableCell, searchText: string, columnCode: ColumnCode) => boolean} = {};
-  Object.keys(cellInputsMapping).forEach(data_type => {
-    matchers[data_type] = cellMatchersMapping[data_type].default();
+  Object.keys(cellMatchers).forEach(data_type => {
+    matchers[data_type] = cellMatchers[data_type]();
   });
 
   React.useEffect(() => {
@@ -226,13 +223,13 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   };
 
   const tableInputCell = (row: TableRowWithId, columnDefinition: ColumnDefinition) => {
-    const CellInput = cellInputsMapping[columnDefinition.data_type]?.default;
-    if (attribute && CellInput) {
-      const matchSearch = matchers[columnDefinition.data_type];
-      const columnCode = columnDefinition.code;
-      const cell = row[columnCode];
+    const CellInput = cellInputs[columnDefinition.data_type];
+    const matchSearch = matchers[columnDefinition.data_type];
+    const columnCode = columnDefinition.code;
+    const cell = row[columnCode];
 
-      return (
+    return (
+      attribute && (
         <CellInput
           row={row}
           columnDefinition={columnDefinition}
@@ -243,17 +240,27 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
           attribute={attribute}
           setAttribute={setAttribute}
         />
-      );
-    }
+      )
+    );
+  };
 
-    return null;
+  const tableIndexCell = (row: TableRowWithId) => {
+    return firstColumn.data_type === 'select' ? (
+      <SelectCellIndex
+        isInErrorFromBackend={isInErrorFromBackend(row[UNIQUE_ID_KEY], firstColumn.code)}
+        searchText={searchText}
+        value={row[firstColumn.code] as SelectOptionCode}
+      />
+    ) : (
+      <RecordCellIndex searchText={searchText} value={row[firstColumn.code] as RecordCode} />
+    );
   };
 
   const [firstColumn, ...otherColumns] = attribute?.table_configuration || [];
 
   return (
     <>
-      {attribute && (
+      {attribute && areRecordsPrefetched && (
         <TableInputContainer isCopying={isCopying}>
           <TableInput
             readOnly={readOnly}
@@ -263,7 +270,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
             <TableInput.Header>
               {attribute.table_configuration.map(columnDefinition => (
                 <TableInput.HeaderCell key={columnDefinition.code}>
-                  {getLabel(columnDefinition.labels, userContext.get('catalogLocale'), columnDefinition.code)}
+                  {getLabel(columnDefinition.labels, localeCode, columnDefinition.code)}
                 </TableInput.HeaderCell>
               ))}
               <HeaderActionsCell />
@@ -272,25 +279,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
               {valueDataPage.map(row => {
                 return (
                   <TableInput.Row key={row[UNIQUE_ID_KEY]} highlighted={isOpenActions(row[UNIQUE_ID_KEY])}>
-                    <TableInput.Cell>
-                      <TableInput.CellContent
-                        rowTitle={true}
-                        highlighted={cellMatchSearch(row[firstColumn.code], firstColumn)}
-                        inError={
-                          isInErrorFromBackend(row[UNIQUE_ID_KEY], firstColumn.code) ||
-                          getOptionLabel(firstColumn.code, row[firstColumn.code] as string) === null
-                        }
-                      >
-                        {typeof getOptionLabel(firstColumn.code, row[firstColumn.code] as string) === 'undefined' ? (
-                          <FirstCellLoadingPlaceholderContainer>
-                            <div>{translate('pim_common.loading')}</div>
-                          </FirstCellLoadingPlaceholderContainer>
-                        ) : (
-                          getOptionLabel(firstColumn.code, row[firstColumn.code] as string) ||
-                          `[${row[firstColumn.code]}]`
-                        )}
-                      </TableInput.CellContent>
-                    </TableInput.Cell>
+                    <TableInput.Cell>{tableIndexCell(row)}</TableInput.Cell>
                     {otherColumns.map(columnDefinition => {
                       return (
                         <TableInput.Cell key={`${row[UNIQUE_ID_KEY]}-${columnDefinition.code}`}>
@@ -344,12 +333,12 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
             <BorderedPlaceholder
               illustration={<AddingValueIllustration />}
               title={translate('pim_table_attribute.form.product.no_rows_title', {
-                attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
+                attributeLabel: getLabel(attribute.labels, localeCode, attribute.code),
               })}
             >
-              {readOnly
-                ? translate('pim_table_attribute.form.product.no_rows_subtitle_on_readonly')
-                : translate('pim_table_attribute.form.product.no_rows_subtitle')}
+              {visibility === 'CANNOT_EDIT' &&
+                translate('pim_table_attribute.form.product.no_rows_subtitle_no_permission')}
+              {visibility === 'CAN_EDIT' && translate('pim_table_attribute.form.product.no_rows_subtitle')}
             </BorderedPlaceholder>
           )}
           {valueData.length > TABLE_VALUE_ITEMS_PER_PAGE[0] && (

@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 /**
+ * TODO: Duplicate with Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface
+ *
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  */

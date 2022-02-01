@@ -3,9 +3,20 @@ import {Badge, LoaderIcon, TableInput} from 'akeneo-design-system';
 import {getLabel, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {diffChars} from 'diff';
 import styled from 'styled-components';
-import {AttributeCode, ColumnCode, ColumnDefinition, TableAttribute, TableValue} from '../models';
+import {
+  AttributeCode,
+  castReferenceEntityColumnDefinition,
+  ColumnCode,
+  ColumnDefinition,
+  RecordCode,
+  ReferenceEntityColumnDefinition,
+  ReferenceEntityIdentifierOrCode,
+  TableAttribute,
+  TableValue,
+} from '../models';
 import {TableRowWithId, useFetchOptions} from '../product';
-import {AttributeRepository} from '../repositories';
+import {AttributeRepository, ReferenceEntityRecordRepository} from '../repositories';
+import {LocaleCodeContext} from '../contexts';
 
 const StretchHeaderCell = styled(TableInput.HeaderCell)`
   min-width: auto;
@@ -41,18 +52,77 @@ const displayChange = (before: string, after: string, accessor: 'before' | 'afte
   });
 };
 
-const ProposalDiffTable: React.FC<ProposalDiffTableProps> = ({accessor, change, ...rest}) => {
+const ProposalDiffTable: React.FC<ProposalDiffTableProps> = props => {
+  const userContext = useUserContext();
+  const catalogLocale = userContext.get('catalogLocale');
+
+  return (
+    <LocaleCodeContext.Provider value={{localeCode: catalogLocale}}>
+      <ProposalDiffTableInner {...props} />
+    </LocaleCodeContext.Provider>
+  );
+};
+
+const ProposalDiffTableInner: React.FC<ProposalDiffTableProps> = ({accessor, change, ...rest}) => {
   const translate = useTranslate();
   const userContext = useUserContext();
   const router = useRouter();
   const valueData = change[accessor] || [];
   const catalogLocale = userContext.get('catalogLocale');
+  const catalogChannel = userContext.get('catalogScope');
   const [attribute, setAttribute] = React.useState<TableAttribute | undefined>();
   const {getOptionLabel} = useFetchOptions(attribute, setAttribute);
+  const [isLoaded, setIsLoaded] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     AttributeRepository.find(router, change.attributeCode).then(attribute => setAttribute(attribute as TableAttribute));
   }, []);
+
+  React.useEffect(() => {
+    if (!attribute) return;
+    const recordCodesPerReferenceEntityCode: {[referenceEntityCode: string]: RecordCode[]} = {};
+    const referenceEntityColumns = attribute.table_configuration.filter(
+      ({data_type}) => data_type === 'reference_entity'
+    ) as ReferenceEntityColumnDefinition[];
+    const referenceEntityColumnCodes = referenceEntityColumns.map(({code}) => code);
+
+    [change.before, change.after].forEach(change =>
+      change?.forEach(row => {
+        referenceEntityColumnCodes.forEach(columnCode => {
+          if (row[columnCode]) {
+            const recordCode = row[columnCode] as RecordCode;
+            const referenceEntityCode = referenceEntityColumns.find(({code}) => code === columnCode)
+              ?.reference_entity_identifier as ReferenceEntityIdentifierOrCode;
+            if (!recordCodesPerReferenceEntityCode[referenceEntityCode])
+              recordCodesPerReferenceEntityCode[referenceEntityCode] = [];
+            recordCodesPerReferenceEntityCode[referenceEntityCode].push(recordCode);
+          }
+        });
+      })
+    );
+    const promises: Promise<any>[] = [];
+    Object.entries(recordCodesPerReferenceEntityCode).forEach(([referenceEntityCode, codes]) => {
+      promises.push(
+        ReferenceEntityRecordRepository.search(router, referenceEntityCode, {
+          channel: catalogChannel,
+          locale: catalogLocale,
+          codes: Array.from(new Set(codes)),
+        })
+      );
+    });
+
+    Promise.all(promises).then(() => setIsLoaded(true));
+  }, [attribute]);
+
+  const getRecordLabel = (columnCode: string, recordCode?: RecordCode) => {
+    if (!isLoaded || !recordCode) return '';
+    const column = attribute?.table_configuration.find(({code}) => code === columnCode);
+    const referenceEntityIdentifier = column
+      ? castReferenceEntityColumnDefinition(column).reference_entity_identifier
+      : '';
+    const record = ReferenceEntityRecordRepository.getCachedByCode(referenceEntityIdentifier, recordCode);
+    return getLabel(record?.labels || {}, catalogLocale, recordCode);
+  };
 
   if (typeof attribute === 'undefined') {
     return <LoaderIcon />;
@@ -104,6 +174,10 @@ const ProposalDiffTable: React.FC<ProposalDiffTableProps> = ({accessor, change, 
     if (dataType === 'select') {
       beforeCell = getOptionLabel(columnCode, beforeCell as string) || '';
       afterCell = getOptionLabel(columnCode, afterCell as string) || '';
+    }
+    if (dataType === 'reference_entity') {
+      beforeCell = getRecordLabel(columnCode, beforeCell as RecordCode) || '';
+      afterCell = getRecordLabel(columnCode, afterCell as RecordCode) || '';
     }
     if (dataType === 'boolean') {
       const value = accessor === 'before' ? beforeCell : afterCell;

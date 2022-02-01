@@ -28,8 +28,8 @@ use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\AssetValidator;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
 use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -60,7 +60,7 @@ class CreateOrUpdateAssetAction
         private NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory,
         private EventAggregatorInterface $indexAssetEventAggregator,
         private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator,
-        private SecurityFacade $securityFacade,
+        private SecurityFacadeInterface $securityFacade,
     ) {
     }
 

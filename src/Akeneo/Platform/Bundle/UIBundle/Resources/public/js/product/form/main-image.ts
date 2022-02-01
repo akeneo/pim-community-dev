@@ -1,7 +1,7 @@
-import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {getEditionAssetMainMediaThumbnail} from 'akeneoassetmanager/domain/model/asset/edition-asset';
-import {AssetResult} from 'akeneoassetmanager/infrastructure/fetcher/asset';
+import {AssetResult} from 'akeneoassetmanager/domain/fetcher/asset';
+import {useAssetFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAssetFetcher';
 const BasePefMainImage = require('pim/product-edit-form/main-image');
 const FetcherRegistry = require('pim/fetcher-registry');
 const Routing = require('routing');
@@ -11,6 +11,7 @@ class MainImage extends BasePefMainImage {
   private assetsCache: {[assetCode: string]: AssetResult} = {};
 
   private fetchAssetWithCache = async (assetFamilyIdentifier: string, assetCode: string) => {
+    const assetFetcher = useAssetFetcher();
     if (!this.assetsCache[assetCode]) {
       const asset = await assetFetcher.fetch(assetFamilyIdentifier, assetCode);
       this.assetsCache[assetCode] = asset;

@@ -18,7 +18,7 @@ describe('SelectOption', () => {
     };
     fetchMock.mockAbortOnce();
 
-    expect(await SelectOptionRepository.save(router, getComplexTableAttribute(), 'nutrition', [])).toBeFalsy();
+    expect(await SelectOptionRepository.save(router, getComplexTableAttribute(), 'ingredient', [])).toBeFalsy();
     expect(console.error).toBeCalled();
   });
 });

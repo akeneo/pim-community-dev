@@ -3,5 +3,6 @@ services:
         arguments:
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\GetExistingRecordCodes'
         tags:
             - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }

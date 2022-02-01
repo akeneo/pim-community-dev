@@ -18,16 +18,7 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
 const __ = require('oro/translator');
 const fetcherRegistry = require('pim/fetcher-registry');
-
-let assetFamilyFetcher = {
-  fetch: (_identifier: string) => {
-    return Promise.resolve({assetFamily: {attributes: [], attributeAsMainMedia: '', identifier: ''}});
-  }
-};
-
-try {
-  assetFamilyFetcher = require('akeneoassetmanager/infrastructure/fetcher/asset-family');
-} catch (err) {}
+const router = require('pim/router');
 
 class ColumnView extends BaseView {
   public config: any;
@@ -147,12 +138,13 @@ class ColumnView extends BaseView {
                 },
                 assetFamily: {
                   fetchByIdentifier: async (identifier: string): Promise<AssetFamily | undefined> => {
-                    const {assetFamily} = await assetFamilyFetcher.fetch(identifier);
-                    return {
-                      identifier: assetFamily.identifier,
-                      attribute_as_main_media: assetFamily.attributeAsMainMedia,
-                      attributes: assetFamily.attributes,
-                    };
+                    const route = router.generate('akeneo_asset_manager_asset_family_get_rest', {identifier});
+                    const response = await fetch(route);
+                    if (!response.ok) {
+                      return undefined;
+                    }
+
+                    return await response.json();
                   },
                 },
               },

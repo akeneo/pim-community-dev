@@ -22,5 +22,20 @@ test('it returns the related attribute types', () => {
       identifier: 'media_file',
       label: 'pim_asset_manager.attribute.type.media_file',
     },
+    {
+      icon: 'bundles/pimui/images/attribute/icon-select.svg',
+      identifier: 'option',
+      label: 'pim_asset_manager.attribute.type.option',
+    },
+    {
+      icon: 'bundles/pimui/images/attribute/icon-multiselect.svg',
+      identifier: 'option_collection',
+      label: 'pim_asset_manager.attribute.type.option_collection',
+    },
+    {
+      icon: 'bundles/pimui/images/attribute/icon-number.svg',
+      identifier: 'number',
+      label: 'pim_asset_manager.attribute.type.number',
+    },
   ]);
 });

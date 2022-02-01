@@ -144,7 +144,6 @@ pim_table_attribute:
       column_code: 列コー​​ド
       properties_helper: テーブル属性を保存するには、テーブル構造と少なくとも 2 つの列を定義する必要があります
       table_structure_helper_text: テーブル属性には少なくとも 2 つの列が必要です。最初の列は常に "選択" 列タイプです。最初の列を作成した後、オプションを追加する必要があります。オプションを追加するには、"オプションを管理" をクリックします。最大{{ limit }}個のオプションまで追加できます！その後、これらのオプションを製品テーブル行としてそれぞれ使用できるようになります。
-      table_structure_helper_link: この記事ではテーブル属性の詳細について学ぶことができます。
       limit_option_reached: オプションの上限 {{ %limit% }} に達しました。
       template_label: '"{{ templateLabel }}" テーブルのスタンダードを選択'
       delete_column_helper: この列を削除すると、この列のすべての値が "{{ attributeLabel }}" テーブル属性を使用するすべての製品から削除されます。
@@ -166,7 +165,6 @@ pim_table_attribute:
       no_search_result: "検索条件に合う行がありません！"
       no_rows_title: "{{ attributeLabel }} テーブルが空です。"
       no_rows_subtitle: 新しいプロパティを定義する行を追加
-      no_rows_subtitle_on_readonly: この属性を編集できるようにするには、属性設定ページに移動するか、PIM管理者に連絡してください。
       no_results: 結果がありません
       no_options: オプションがありません
       no_add_options_unallowed: '"{{ attributeLabel }}" オプションを管理するには、PIM管理者に連絡してください'

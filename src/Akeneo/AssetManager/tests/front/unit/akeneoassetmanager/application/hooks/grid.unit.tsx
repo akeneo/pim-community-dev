@@ -7,6 +7,17 @@ import {renderHook, act} from '@testing-library/react-hooks';
 
 const flushPromises = () => new Promise(setImmediate);
 
+const mockedSearch = jest.fn();
+beforeEach(() => {
+  mockedSearch.mockClear();
+});
+
+jest.mock('akeneoassetmanager/infrastructure/fetcher/useAssetFetcher', () => ({
+  useAssetFetcher: () => ({
+    search: mockedSearch,
+  }),
+}));
+
 describe('Test grid fetching hook', () => {
   test('I can receive up to 500 results in two queries', async () => {
     const partialResults = {
@@ -19,16 +30,16 @@ describe('Test grid fetching hook', () => {
       totalCount: 100,
       items: [{foo: 'FOO'}, {bar: 'BAR'}],
     };
-    const search = jest
-      .fn()
-      .mockImplementationOnce(query => Promise.resolve(partialResults))
-      .mockImplementationOnce(query => Promise.resolve(fullResults));
+
+    mockedSearch
+      .mockImplementationOnce(() => Promise.resolve(partialResults))
+      .mockImplementationOnce(() => Promise.resolve(fullResults));
+
     const handleReceivedSearchResults = jest.fn();
 
     renderHook(() =>
       useFetchResult(createQuery)(
         true,
-        {assetFetcher: {search: search}},
         'ASSET_FAMILY_IDENTIFIER',
         [],
         'MY_SEARCH',
@@ -54,13 +65,12 @@ describe('Test grid fetching hook', () => {
       items: [],
     };
 
-    const search = jest.fn().mockImplementationOnce(query => Promise.resolve(results));
+    mockedSearch.mockImplementation(() => Promise.resolve(results));
     const handleReceivedSearchResults = jest.fn();
 
     renderHook(() =>
       useFetchResult(createQuery)(
         true,
-        {assetFetcher: {search: search}},
         'ASSET_FAMILY_IDENTIFIER',
         [],
         'MY_SEARCH',
@@ -85,13 +95,13 @@ describe('Test grid fetching hook', () => {
       items: [],
     };
 
-    const search = jest.fn().mockImplementation(() => Promise.resolve(results));
+    mockedSearch.mockImplementation(() => Promise.resolve(results));
+
     const handleReceivedSearchResults = jest.fn();
 
     const {rerender} = renderHook(() =>
       useFetchResult(createQuery)(
         true,
-        {assetFetcher: {search: search}},
         'ASSET_FAMILY_IDENTIFIER',
         [],
         'MY_SEARCH',
@@ -111,13 +121,10 @@ describe('Test grid fetching hook', () => {
   });
 
   test('It returns an empty result if the asset family identifier is null', async () => {
-    const search = jest.fn();
     const handleReceivedSearchResults = jest.fn();
-
     renderHook(() =>
       useFetchResult(createQuery)(
         true,
-        {assetFetcher: {search: search}},
         null,
         [],
         'MY_SEARCH',
@@ -131,7 +138,7 @@ describe('Test grid fetching hook', () => {
     );
 
     await flushPromises();
-    expect(search).not.toHaveBeenCalled();
+    expect(mockedSearch).not.toHaveBeenCalled();
     expect(handleReceivedSearchResults).toHaveBeenCalledWith(emptySearchResult());
   });
 
@@ -142,13 +149,13 @@ describe('Test grid fetching hook', () => {
       items: [],
     };
 
-    const search = jest.fn().mockImplementation(query => Promise.resolve(results));
+    mockedSearch.mockImplementation(() => Promise.resolve(results));
+
     const handleReceivedSearchResults = jest.fn();
 
     const {result} = renderHook(() =>
       useFetchResult(createQuery)(
         true,
-        {assetFetcher: {search: search}},
         'ASSET_FAMILY_IDENTIFIER',
         [],
         'MY_SEARCH',

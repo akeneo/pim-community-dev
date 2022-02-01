@@ -9,7 +9,6 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeTypeInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Doctrine\DBAL\Connection;
-use PDO;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

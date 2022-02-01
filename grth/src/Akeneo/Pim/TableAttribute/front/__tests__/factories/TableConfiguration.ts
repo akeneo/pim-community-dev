@@ -7,11 +7,11 @@ export const getComplexTableConfiguration: (firstColumnType?: DataType) => Table
     firstColumnType === 'select'
       ? {data_type: 'select', code: 'ingredient', labels: {en_US: 'Ingredients'}, validations: {}}
       : {
-          data_type: 'record',
+          data_type: 'reference_entity',
           code: 'city',
           labels: {en_US: 'City'},
           validations: {},
-          reference_entity_code: 'city',
+          reference_entity_identifier: 'city',
         };
   return [
     firstColumn,

@@ -8,7 +8,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event\SelectOptionWasDeleted;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\RecordColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
@@ -41,7 +41,7 @@ class TableConfigurationSaverSpec extends ObjectBehavior
             SelectColumn::DATATYPE => SelectColumn::class,
             BooleanColumn::DATATYPE => BooleanColumn::class,
             NumberColumn::DATATYPE => NumberColumn::class,
-            RecordColumn::DATATYPE => RecordColumn::class,
+            ReferenceEntityColumn::DATATYPE => ReferenceEntityColumn::class,
         ]);
 
         $this->beConstructedWith(

@@ -15,6 +15,7 @@ namespace Akeneo\Test\Pim\TableAttribute\Acceptance\Context;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\WriteSelectOptionCollection;
@@ -128,6 +129,28 @@ final class CreateAttributeContext implements Context
     }
 
     /**
+     * @Given /^a table attribute with the following configuration '([^']*)'$/
+     */
+    public function aTableAttributeWithAConfiguration(string $jsonAsString): void
+    {
+        $json = \json_decode($jsonAsString, true, 512, JSON_THROW_ON_ERROR);
+
+        $attribute = $this->attributeBuilder
+            ->withCode('table')
+            ->withGroupCode('marketing')
+            ->withType(AttributeTypes::TABLE)
+            ->build();
+        $attribute->setRawTableConfiguration([
+            [
+                'data_type' => 'select',
+                'code' => 'ingredients',
+            ],
+            $json,
+        ]);
+        $this->saveAttribute($attribute, true);
+    }
+
+    /**
      * @When /^I create a table attribute with a configuration '([^']*)'$/
      */
     public function iCreateATableAttributeWithAConfiguration(string $jsonAsString): void
@@ -214,11 +237,63 @@ final class CreateAttributeContext implements Context
         $this->saveAttribute($attribute);
     }
 
-    private function saveAttribute(AttributeInterface $attribute): void
+    /**
+     * @When I create a table attribute with :referenceEntityIdentifier reference entity link column
+     */
+    public function iCreateATableAttributeWithReferenceEntityLinkColumn(string $referenceEntityIdentifier): void
+    {
+        $attribute = $this->attributeBuilder
+            ->withCode('table')
+            ->withGroupCode('marketing')
+            ->withType(AttributeTypes::TABLE)
+            ->build();
+        $attribute->setRawTableConfiguration([
+            [
+                'data_type' => ReferenceEntityColumn::DATATYPE,
+                'code' => 'brand',
+                'reference_entity_identifier' => $referenceEntityIdentifier,
+            ],
+            [
+                'data_type' => 'number',
+                'code' => 'quantity',
+            ],
+        ]);
+        $this->saveAttribute($attribute);
+    }
+
+    /**
+     * @When I create a table attribute with reference entity first column
+     */
+    public function iCreateATableAttributeWithReferenceEntityFirstColumn(): void
+    {
+        $attribute = $this->attributeBuilder
+            ->withCode('table')
+            ->withGroupCode('marketing')
+            ->withType(AttributeTypes::TABLE)
+            ->build();
+        $attribute->setRawTableConfiguration([
+            [
+                'data_type' => ReferenceEntityColumn::DATATYPE,
+                'code' => 'brand',
+                'reference_entity_identifier' => 'brands',
+            ],
+            [
+                'data_type' => 'number',
+                'code' => 'quantity',
+            ],
+        ]);
+        $this->saveAttribute($attribute);
+    }
+
+    private function saveAttribute(AttributeInterface $attribute, bool $throwOnvalidationError = false): void
     {
         $violations = $this->validator->validate($attribute);
         if (0 < $violations->count()) {
             $this->constraintViolationsContext->add($violations);
+            if ($throwOnvalidationError) {
+                throw new \LogicException(\sprintf('The attribute is not valid: %s', $violations));
+            }
+
             return;
         }
 

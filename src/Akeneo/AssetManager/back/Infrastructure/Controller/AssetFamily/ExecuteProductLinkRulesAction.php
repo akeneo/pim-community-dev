@@ -13,16 +13,17 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Controller\AssetFamily;
 
-use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
 use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAllAssetFamilyAssetsCommand;
 use Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAllAssetFamilyAssetsHandler;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -35,12 +36,16 @@ class ExecuteProductLinkRulesAction
         private LinkAllAssetFamilyAssetsHandler $linkAllAssetFamilyAssetsHandler,
         private TokenStorageInterface $tokenStorage,
         private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        private SecurityFacade $securityFacade,
+        private SecurityFacadeInterface $securityFacade,
     ) {
     }
 
-    public function __invoke(string $identifier): JsonResponse
+    public function __invoke(Request $request, string $identifier): JsonResponse
     {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
         if (!$this->isUserAllowedToEdit($identifier)) {
             throw new AccessDeniedHttpException();
         }

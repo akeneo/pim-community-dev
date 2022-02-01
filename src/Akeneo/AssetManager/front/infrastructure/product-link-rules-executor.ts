@@ -1,10 +1,10 @@
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import {postJSON} from 'akeneoassetmanager/tools/fetch';
 import {ValidationError} from '@akeneo-pim-community/shared';
-import handleError from 'akeneoassetmanager/infrastructure/tools/error-handler';
 import {assetFamilyIdentifierStringValue} from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import {handleResponse} from 'akeneoassetmanager/infrastructure/tools/handleResponse';
 
-const routing = require('routing');
+const generateExecuteProductLinkRulesUrl = (assetFamilyIdentifier: string) =>
+  `/rest/asset_manager/${assetFamilyIdentifier}/execute_product_link_rules`;
 
 export interface ProductLinkRulesExecutor {
   execute: (entity: AssetFamily) => Promise<ValidationError[] | null>;
@@ -16,12 +16,17 @@ export class ProductLinkRulesExecutorImplementation implements ProductLinkRulesE
   }
 
   async execute(assetFamily: AssetFamily): Promise<ValidationError[] | null> {
-    return await postJSON(
-      routing.generate('akeneo_asset_manager_asset_family_execute_product_link_rules', {
-        identifier: assetFamilyIdentifierStringValue(assetFamily.identifier),
-      }),
-      {}
-    ).catch(handleError);
+    const response = await fetch(
+      generateExecuteProductLinkRulesUrl(assetFamilyIdentifierStringValue(assetFamily.identifier)),
+      {
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+      }
+    );
+
+    return await handleResponse(response);
   }
 }
 

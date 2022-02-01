@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration;
 
-use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
+use Akeneo\AssetManager\Domain\Filesystem\Storage;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader;
 use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;

@@ -1,18 +1,14 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen} from '@testing-library/react';
-import {TableInputValue} from '../../../src';
-import {
-  defaultCellInputsMapping,
-  defaultCellMatchersMapping,
-  getComplexTableAttribute,
-  getTableValueWithId,
-} from '../../factories';
+import {TableInputValue, UNIQUE_ID_KEY} from '../../../src';
+import {getComplexTableAttribute, getTableValueWithId} from '../../factories';
 import {dragAndDrop} from '../../shared/dragAndDrop';
 import {TestAttributeContextProvider} from '../../shared/TestAttributeContextProvider';
 
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
+jest.mock('../../../src/fetchers/RecordFetcher');
 
 describe('TableInputValue', () => {
   it('should render the component', async () => {
@@ -22,8 +18,7 @@ describe('TableInputValue', () => {
           valueData={getTableValueWithId()}
           searchText={''}
           onChange={jest.fn()}
-          cellInputsMapping={defaultCellInputsMapping}
-          cellMatchersMapping={defaultCellMatchersMapping}
+          visibility={'CAN_EDIT'}
         />
       </TestAttributeContextProvider>
     );
@@ -48,8 +43,7 @@ describe('TableInputValue', () => {
           valueData={getTableValueWithId()}
           searchText={''}
           onChange={handleChange}
-          cellInputsMapping={defaultCellInputsMapping}
-          cellMatchersMapping={defaultCellMatchersMapping}
+          visibility={'CAN_EDIT'}
         />
       </TestAttributeContextProvider>
     );
@@ -82,8 +76,7 @@ describe('TableInputValue', () => {
           valueData={getTableValueWithId()}
           searchText={'r'}
           onChange={handleChange}
-          cellInputsMapping={defaultCellInputsMapping}
-          cellMatchersMapping={defaultCellMatchersMapping}
+          visibility={'CAN_EDIT'}
         />
       </TestAttributeContextProvider>
     );
@@ -107,8 +100,7 @@ describe('TableInputValue', () => {
               columnCode: 'quantity',
             },
           ]}
-          cellInputsMapping={defaultCellInputsMapping}
-          cellMatchersMapping={defaultCellMatchersMapping}
+          visibility={'CAN_EDIT'}
         />
       </TestAttributeContextProvider>
     );
@@ -131,8 +123,7 @@ describe('TableInputValue', () => {
           valueData={getTableValueWithId()}
           searchText={''}
           onChange={handleChange}
-          cellInputsMapping={defaultCellInputsMapping}
-          cellMatchersMapping={defaultCellMatchersMapping}
+          visibility={'CAN_EDIT'}
         />
       </TestAttributeContextProvider>
     );
@@ -152,8 +143,7 @@ describe('TableInputValue', () => {
           valueData={getTableValueWithId()}
           searchText={''}
           onChange={handleChange}
-          cellInputsMapping={defaultCellInputsMapping}
-          cellMatchersMapping={defaultCellMatchersMapping}
+          visibility={'CAN_EDIT'}
         />
       </TestAttributeContextProvider>
     );
@@ -177,8 +167,7 @@ describe('TableInputValue', () => {
           valueData={getTableValueWithId()}
           searchText={''}
           onChange={handleChange}
-          cellInputsMapping={defaultCellInputsMapping}
-          cellMatchersMapping={defaultCellMatchersMapping}
+          visibility={'CAN_EDIT'}
         />
       </TestAttributeContextProvider>
     );
@@ -202,8 +191,7 @@ describe('TableInputValue', () => {
           valueData={getTableValueWithId()}
           searchText={''}
           onChange={handleChange}
-          cellInputsMapping={defaultCellInputsMapping}
-          cellMatchersMapping={defaultCellMatchersMapping}
+          visibility={'CAN_EDIT'}
         />
       </TestAttributeContextProvider>
     );
@@ -227,8 +215,7 @@ describe('TableInputValue', () => {
           valueData={getTableValueWithId()}
           searchText={''}
           onChange={handleChange}
-          cellInputsMapping={defaultCellInputsMapping}
-          cellMatchersMapping={defaultCellMatchersMapping}
+          visibility={'CAN_EDIT'}
         />
       </TestAttributeContextProvider>
     );
@@ -243,18 +230,35 @@ describe('TableInputValue', () => {
     ]);
   });
 
-  it('should not render anything if cell inputs are undefined', () => {
+  it('should not render anything if record cell inputs are undefined', () => {
     renderWithProviders(
-      <TestAttributeContextProvider attribute={getComplexTableAttribute()}>
+      <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
         <TableInputValue
-          valueData={getTableValueWithId()}
+          valueData={getTableValueWithId('reference_entity')}
           searchText={''}
           onChange={jest.fn()}
-          cellInputsMapping={{}}
-          cellMatchersMapping={{}}
+          visibility={'CAN_EDIT'}
         />
       </TestAttributeContextProvider>
     );
-    expect(screen.queryByText('Sugar')).not.toBeInTheDocument();
+    expect(screen.queryByText('Vannes')).not.toBeInTheDocument();
+  });
+
+  it('should render records as fist column', async () => {
+    const valueDataWithUnknownRecord = getTableValueWithId('reference_entity');
+    valueDataWithUnknownRecord.push({
+      [UNIQUE_ID_KEY]: 'unknown_record_uniqueid',
+      city: 'unknown_record',
+    });
+    renderWithProviders(
+      <TestAttributeContextProvider attribute={getComplexTableAttribute('reference_entity')}>
+        <TableInputValue valueData={valueDataWithUnknownRecord} visibility={'CAN_EDIT'} />
+      </TestAttributeContextProvider>
+    );
+
+    expect(await screen.findByText('Vannes')).toBeInTheDocument();
+    expect(await screen.findByText('Nantes')).toBeInTheDocument();
+    expect(await screen.findByText('Brest')).toBeInTheDocument();
+    expect(await screen.findByText('[unknown_record]')).toBeInTheDocument();
   });
 });

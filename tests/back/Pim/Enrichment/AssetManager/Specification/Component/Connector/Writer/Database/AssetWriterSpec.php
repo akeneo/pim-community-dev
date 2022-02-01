@@ -114,9 +114,6 @@ class AssetWriterSpec extends ObjectBehavior
     }
 
     function it_links_assets_by_batch_of_100(
-        CreateAssetHandler $createAssetHandler,
-        EditAssetHandler $editAssetHandler,
-        StepExecution $stepExecution,
         LinkAssetsHandler $linkAssetsHandler
     ) {
         $createAndEditAssetCommands = [];

@@ -1,19 +1,23 @@
 'use strict';
 
 import remover from 'akeneoassetmanager/infrastructure/remover/asset-family';
-import * as fetch from 'akeneoassetmanager/tools/fetch';
-
-jest.mock('pim/router', () => {});
-jest.mock('pim/security-context', () => {}, {virtual: true});
-jest.mock('routing');
 
 describe('akeneoassetmanager/infrastructure/remover/asset-family', () => {
   it('It deletes an asset family', async () => {
-    // @ts-ignore
-    fetch.deleteJSON = jest.fn().mockImplementationOnce(() => Promise.resolve());
+    global.fetch = jest.fn().mockImplementationOnce(() =>
+      Promise.resolve({
+        json: () => Promise.resolve({}),
+        status: 200,
+      })
+    );
 
     await remover.remove('designer');
 
-    expect(fetch.deleteJSON).toHaveBeenCalledWith('akeneo_asset_manager_asset_family_delete_rest');
+    expect(global.fetch).toHaveBeenCalledWith('/rest/asset_manager/designer', {
+      method: 'DELETE',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+    });
   });
 });

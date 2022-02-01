@@ -144,7 +144,6 @@ pim_table_attribute:
       column_code: 列代码
       properties_helper: 您必须先定义表结构和至少 2 列才能保存您的表属性
       table_structure_helper_text: 表属性必须包含至少 2 列。第一列始终为“选择”列类型。创建第一列后，必须添加选项。为此，请点击“管理选项”并添加最多 {{ limit }} 个选项！这样，您就可以将每个选项用作产品表中的行。
-      table_structure_helper_link: 这篇文章可能有助于您了解更多关于表属性的信息。
       limit_option_reached: 您已达到选项的上限数目 {{ %limit% }}。
       template_label: 选择您的 "{{ templateLabel }}" 表的标准
       delete_column_helper: 删除此列时，它的所有值会从使用 "{{ attributeLabel }}" 表属性的所有产品中移除。
@@ -166,7 +165,6 @@ pim_table_attribute:
       no_search_result: "抱歉，找不到与搜索相符的行！"
       no_rows_title: "您的 {{ attributeLabel }} 表为空。"
       no_rows_subtitle: 添加行以定义新属性
-      no_rows_subtitle_on_readonly: 要编辑此属性，请前往属性设置页面或联系您的 PIM 管理员。
       no_options: 没有选项
       no_add_options_unallowed: 联系您的 PIM 管理员来管理"{{ attributeLabel }}"选项
       actions:

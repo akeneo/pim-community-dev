@@ -103,7 +103,7 @@ acceptance-back: var/tests/behat growth-acceptance-back #Doc: launch Behat accep
 
 .PHONY: growth-acceptance-back
 growth-acceptance-back: var/tests/behat #Doc: launch Behat acceptance tests for growth
-	${PHP_RUN} vendor/bin/behat --config grth/src/Akeneo/Pim/TableAttribute/tests/back/behat.yml --no-interaction --format=progress --strict
+	${PHP_RUN} vendor/bin/behat --config grth/src/Akeneo/Pim/TableAttribute/tests/back/behat.yml --suite=acceptance_ee --no-interaction --format=progress --strict
 
 .PHONY: acceptance-front
 acceptance-front: MAX_RANDOM_LATENCY_MS=100 $(YARN_RUN) acceptance run acceptance ./tests/features #Doc: launch YARN acceptance

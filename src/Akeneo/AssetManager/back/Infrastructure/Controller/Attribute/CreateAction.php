@@ -19,7 +19,7 @@ use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttr
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateAttributeCommandFactoryRegistryInterface;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAttributeHandler;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributeNextOrderInterface;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,7 +43,7 @@ class CreateAction
         private TokenStorageInterface $tokenStorage,
         private NormalizerInterface $normalizer,
         private ValidatorInterface $validator,
-        private SecurityFacade $securityFacade,
+        private SecurityFacadeInterface $securityFacade,
     ) {
     }
 

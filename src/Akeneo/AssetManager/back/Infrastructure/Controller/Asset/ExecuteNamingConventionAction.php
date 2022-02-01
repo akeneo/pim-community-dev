@@ -22,7 +22,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -44,7 +44,7 @@ class ExecuteNamingConventionAction
         private ValidatorInterface $validator,
         private NormalizerInterface $violationNormalizer,
         private TokenStorageInterface $tokenStorage,
-        private SecurityFacade $securityFacade,
+        private SecurityFacadeInterface $securityFacade,
     ) {
     }
 
@@ -78,7 +78,7 @@ class ExecuteNamingConventionAction
 
         try {
             ($this->editAssetHandler)($editAssetCommand);
-        } catch (AssetFamilyNotFoundException|AssetNotFoundException) {
+        } catch (AssetFamilyNotFoundException | AssetNotFoundException) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 

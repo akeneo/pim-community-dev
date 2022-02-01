@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {Sidebar} from 'akeneoassetmanager/application/component/app/Sidebar';
 import {ScrollablePageContent} from 'akeneoassetmanager/application/component/app/layout';
-import {useSidebarTabs} from '../../hooks/useSidebarTabs';
-import {useTabView} from '../../hooks/useTabView';
+import {useSidebarTabs} from 'akeneoassetmanager/application/hooks/useSidebarTabs';
+import {useTabView} from 'akeneoassetmanager/application/hooks/useTabView';
 
 type AssetFamilyEditProps = {
   initialTab: string;

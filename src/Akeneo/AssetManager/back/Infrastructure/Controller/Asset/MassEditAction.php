@@ -19,7 +19,7 @@ use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\Can
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,7 +41,7 @@ class MassEditAction
     public function __construct(
         private MassEditAssetsCommandFactory $massEditAssetsCommandFactory,
         private MassEditAssetsHandler $massEditAssetsHandler,
-        private SecurityFacade $securityFacade,
+        private SecurityFacadeInterface $securityFacade,
         private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         private TokenStorageInterface $tokenStorage,
         private ValidatorInterface $validator,

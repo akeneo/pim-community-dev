@@ -19,7 +19,7 @@ use Akeneo\AssetManager\Domain\Query\Asset\Connector\ConnectorAsset;
 use Akeneo\AssetManager\Domain\Query\Asset\Connector\FindConnectorAssetByAssetFamilyAndCodeInterface;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\Hal\AddHalDownloadLinkToAssetImages;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -35,7 +35,7 @@ class GetConnectorAssetAction
         private FindConnectorAssetByAssetFamilyAndCodeInterface $findConnectorAsset,
         private AssetFamilyExistsInterface $assetFamilyExists,
         private AddHalDownloadLinkToAssetImages $addHalLinksToImageValues,
-        private SecurityFacade $securityFacade,
+        private SecurityFacadeInterface $securityFacade,
     ) {
     }
 

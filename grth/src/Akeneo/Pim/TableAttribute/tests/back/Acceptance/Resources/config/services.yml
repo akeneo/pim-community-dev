@@ -36,3 +36,8 @@ services:
 
     Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository:
         class: Akeneo\Test\Pim\TableAttribute\Acceptance\InMemory\InMemorySelectOptionCollectionRepository
+
+    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsLinkedToATableColumn:
+        class: Akeneo\Test\Pim\TableAttribute\Acceptance\InMemory\InMemoryIsLinkedToATableColumn
+        arguments:
+            - '@pim_catalog.repository.attribute'
