@@ -1,5 +1,14 @@
 # 5.0.x
 
+# 5.0.71 (2022-02-01)
+
+# 5.0.70 (2022-02-01)
+
+## Bug fixes
+
+- PIM-10223: Add missing "s" on "remove-orphans" option in Makefile
+- PIM-10247: Fix rules engine doesn't allow copying value from reference entity multiple links to the multi select attribute
+
 # 5.0.69 (2022-01-21)
 
 # 5.0.68 (2022-01-17)

@@ -3,6 +3,10 @@
 import remover from 'akeneoassetmanager/infrastructure/remover/asset';
 import {createQuery} from 'akeneoassetmanager/application/hooks/grid';
 
+jest.mock('routing', () => ({
+  generate: (url: string) => url,
+}));
+
 describe('akeneoassetmanager/infrastructure/remover/asset', () => {
   it('It deletes an asset', async () => {
     global.fetch = jest.fn().mockImplementationOnce(() =>
