@@ -96,7 +96,7 @@ class DataMappingsValidator extends ConstraintValidator
             return $targetCodes;
         }, []);
 
-        //TODO: use a dedicated query to get the identifier attribute code
+        // TODO: use a dedicated query to get the identifier attribute code ?
         // It could be nice to dispose of a public api to get identifier attribute code and check the count of this code in our $targetCodes array
         // Without that, we need to fetch attribute one by one (if we fetch all, it merges duplicate codes, so we cannot validate the count)
 
@@ -173,6 +173,6 @@ class DataMappingsValidator extends ConstraintValidator
             $builder->addViolation();
         }
 
-        //TODO RAB-547 validate that sources are coherent with columns entries
+        // TODO RAB-547: validate that sources are coherent with columns entries
     }
 }

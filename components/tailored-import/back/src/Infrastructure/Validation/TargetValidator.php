@@ -27,6 +27,7 @@ class TargetValidator extends ConstraintValidator
 {
     public function __construct(
         private GetAttributes $getAttributes,
+        private array $supportedProperties,
     ) {
     }
 
@@ -82,7 +83,7 @@ class TargetValidator extends ConstraintValidator
         if ('attribute' === $target['type']) {
             $this->validateAttributeTarget($validator, $target);
         } else {
-            $this->validatePropertyTarget($validator, $target);
+            $this->validatePropertyTarget($target);
         }
     }
 
@@ -114,6 +115,7 @@ class TargetValidator extends ConstraintValidator
                 ],
             ],
             'allowExtraFields' => true,
+            'allowMissingFields' => false,
         ]));
 
         if (0 < $this->context->getViolations()->count()) {
@@ -123,8 +125,17 @@ class TargetValidator extends ConstraintValidator
         $validator->inContext($this->context)->validate($attributeTarget, new IsValidAttribute());
     }
 
-    private function validatePropertyTarget(ValidatorInterface $validator, array $propertyTarget): void
+    private function validatePropertyTarget(array $propertyTarget): void
     {
-        //TODO: How to check if the property exists?
+        if (!in_array($propertyTarget['code'], $this->supportedProperties)) {
+            $this->context->buildViolation(
+                Target::PROPERTY_SHOULD_EXISTS,
+                [
+                    '{{ property_code }}' => $propertyTarget['code'],
+                ]
+            )
+                ->atPath('[code]')
+                ->addViolation();
+        }
     }
 }

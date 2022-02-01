@@ -36,6 +36,7 @@ services:
     class: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\TargetValidator'
     arguments:
       - '@akeneo.pim.structure.query.get_attributes'
+      - '%akeneo.tailored_import.supported_system_properties%'
     tags:
       - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.target' }
     public: true

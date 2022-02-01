@@ -57,7 +57,7 @@ final class TargetValidatorTest extends AbstractValidationTest
             ],
             'a valid attribute target' => [
                 [
-                    'code' => 'description',
+                    'code' => 'a_localized_and_scopable_text_area',
                     'type' => 'attribute',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
@@ -68,7 +68,7 @@ final class TargetValidatorTest extends AbstractValidationTest
             ],
             'a valid property target' => [
                 [
-                    'code' => 'category',
+                    'code' => 'categories',
                     'type' => 'property',
                     'action' => 'add',
                     'ifEmpty' => 'skip',
@@ -146,7 +146,7 @@ final class TargetValidatorTest extends AbstractValidationTest
                 'This field is missing.',
                 '[channel]',
                 [
-                    'code' => 'description',
+                    'code' => 'a_scopable_image',
                     'type' => 'attribute',
                     'locale' => 'en_US',
                     'action' => 'set',
@@ -158,7 +158,7 @@ final class TargetValidatorTest extends AbstractValidationTest
                 'This field is missing.',
                 '[locale]',
                 [
-                    'code' => 'description',
+                    'code' => 'a_localizable_image',
                     'type' => 'attribute',
                     'channel' => 'ecommerce',
                     'action' => 'set',
@@ -170,7 +170,7 @@ final class TargetValidatorTest extends AbstractValidationTest
                 'akeneo.tailored_import.validation.channel.should_exist',
                 '[channel]',
                 [
-                    'code' => 'description',
+                    'code' => 'a_localized_and_scopable_text_area',
                     'type' => 'attribute',
                     'channel' => 'perlinpinpin',
                     'locale' => 'en_US',
@@ -183,19 +183,20 @@ final class TargetValidatorTest extends AbstractValidationTest
                 'akeneo.tailored_import.validation.locale.should_be_active',
                 '[locale]',
                 [
-                    'code' => 'description',
+                    'code' => 'a_localized_and_scopable_text_area',
                     'type' => 'attribute',
                     'channel' => 'ecommerce',
                     'locale' => 'ru_RU',
                     'action' => 'set',
                     'ifEmpty' => 'skip',
+                    'onError' => 'skipLine',
                 ],
             ],
             'a target with missing action' => [
                 'This field is missing.',
                 '[action]',
                 [
-                    'code' => 'description',
+                    'code' => 'a_localized_and_scopable_text_area',
                     'type' => 'attribute',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
@@ -207,7 +208,7 @@ final class TargetValidatorTest extends AbstractValidationTest
                 'The value you selected is not a valid choice.',
                 '[action]',
                 [
-                    'code' => 'description',
+                    'code' => 'a_localized_and_scopable_text_area',
                     'type' => 'attribute',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
@@ -220,7 +221,7 @@ final class TargetValidatorTest extends AbstractValidationTest
                 'This field is missing.',
                 '[ifEmpty]',
                 [
-                    'code' => 'description',
+                    'code' => 'a_localized_and_scopable_text_area',
                     'type' => 'attribute',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
@@ -232,7 +233,7 @@ final class TargetValidatorTest extends AbstractValidationTest
                 'The value you selected is not a valid choice.',
                 '[ifEmpty]',
                 [
-                    'code' => 'description',
+                    'code' => 'a_localized_and_scopable_text_area',
                     'type' => 'attribute',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
@@ -245,7 +246,7 @@ final class TargetValidatorTest extends AbstractValidationTest
                 'This field is missing.',
                 '[onError]',
                 [
-                    'code' => 'description',
+                    'code' => 'a_localized_and_scopable_text_area',
                     'type' => 'attribute',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
@@ -257,7 +258,7 @@ final class TargetValidatorTest extends AbstractValidationTest
                 'The value you selected is not a valid choice.',
                 '[onError]',
                 [
-                    'code' => 'description',
+                    'code' => 'a_localized_and_scopable_text_area',
                     'type' => 'attribute',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
