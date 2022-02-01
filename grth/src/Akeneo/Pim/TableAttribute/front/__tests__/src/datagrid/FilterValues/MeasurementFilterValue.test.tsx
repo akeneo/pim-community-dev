@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {PropsWithChildren} from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {fireEvent, screen} from '@testing-library/react';
-import MeasurementFilterValue from '../../../../src/datagrid/FilterValues/MeasurementFilterValue';
+import MeasurementFilterValue, {useValueRenderer} from '../../../../src/datagrid/FilterValues/MeasurementFilterValue';
 import {TestAttributeContextProvider} from '../../../shared/TestAttributeContextProvider';
 import {getComplexTableAttribute} from '../../../factories';
+import {renderHook} from '@testing-library/react-hooks';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
 jest.mock('../../../../src/fetchers/MeasurementFamilyFetcher');
 
@@ -57,5 +59,20 @@ describe('MeasurementFilterValue', () => {
     expect(await screen.findByText('mAh')).toBeInTheDocument();
     fireEvent.change(screen.getByRole('spinbutton'), {target: {value: '42'}});
     expect(handleChange).toBeCalledWith({amount: '42', unit: 'MILLIAMPEREHOUR'});
+  });
+
+  it('should render measurement value', async () => {
+    const wrapper = ({children}: PropsWithChildren<{}>) => (
+      <DependenciesProvider>
+        <TestAttributeContextProvider attribute={getComplexTableAttribute()}>{children}</TestAttributeContextProvider>
+      </DependenciesProvider>
+    );
+
+    const {result, waitForNextUpdate} = renderHook(
+      () => useValueRenderer({amount: '42', unit: 'MILLICOULOMB'}, 'ElectricCharge'),
+      {wrapper}
+    );
+    await waitForNextUpdate();
+    expect(result.current).toEqual('42 mC');
   });
 });
