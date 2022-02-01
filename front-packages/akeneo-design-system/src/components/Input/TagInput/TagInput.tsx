@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontFamily} from '../../../theme';
 import {CloseIcon, LockIcon} from '../../../icons';
 import {arrayUnique, Key, Override} from '../../../shared';
-import {InputProps} from '../common/InputProps';
+import {InputProps} from '../InputProps';
 
 type TagInputProps = Override<
   Override<React.InputHTMLAttributes<HTMLInputElement>, InputProps<string[]>>,

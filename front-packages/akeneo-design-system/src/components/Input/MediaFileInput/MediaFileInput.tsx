@@ -1,7 +1,7 @@
 import React, {cloneElement, isValidElement, Ref, useEffect, useRef, useState} from 'react';
 import styled, {css} from 'styled-components';
 import {Key, Override} from '../../../shared';
-import {InputProps} from '../common/InputProps';
+import {InputProps} from '../InputProps';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
 import {ImportIllustration} from '../../../illustrations';
 import {IconButton, IconButtonProps, Image} from '../../../components';
@@ -33,9 +33,6 @@ const MediaFileInputContainer = styled.div<{isCompact: boolean; readOnly: boolea
     css`
       &:focus {
         box-shadow: 0 0 0 2px ${getColor('blue', 40)};
-      }
-      &:hover {
-        ${ImportIllustration.animatedMixin}
       }
     `}
 `;

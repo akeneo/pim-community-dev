@@ -6,7 +6,7 @@ jobs:
             - attach_workspace:
                   at: ~/
             - run:
-                  name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                  name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                   command: sudo chown -R 1000:1000 ../project
             - run:
                   name: No legacy translation format
@@ -77,12 +77,12 @@ jobs:
                   at: ~/
             - run:
                   name: Change owner on project dir in order to archive the project into the workspace
-                  command: sudo chown -R 1000:1000 ../project
+                  command: sudo chown -R circleci:circleci ../project
             - run:
                   name: Create yarn cache folder
                   command: mkdir -p  ~/.cache/yarn
             - run:
-                  name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                  name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                   command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
             - run:
                   name: Start containers
@@ -167,7 +167,7 @@ jobs:
                   name: Create yarn cache folder
                   command: mkdir -p  ~/.cache/yarn
             - run:
-                  name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                  name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                   command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
             - run:
                   name: Front type checking
@@ -186,7 +186,7 @@ jobs:
             - attach_workspace:
                   at: ~/
             - run:
-                  name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                  name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                   command: sudo chown -R 1000:1000 ../project
             - run:
                   name: Start containers
