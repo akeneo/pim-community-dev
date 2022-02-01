@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@akeneo-pim-community/shared": "link:../../../../../../../../front-packages/shared",
-    "akeneo-design-system": "link:../../../../../../../../front-packages/akeneo-design-system",
+    "@akeneo-pim-community/shared": "link:../../../../../../front-packages/shared",
+    "akeneo-design-system": "link:../../../../../../front-packages/akeneo-design-system",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.1",
+    "react-scripts": "^5.0.0",
     "typescript": "^4.0.3"
   },
   "scripts": {
@@ -40,8 +40,8 @@
     ]
   },
   "config": {
-    "front_packages_path": "../../../../../../../front-packages",
-    "application_path": "../../../../../../../.."
+    "front_packages_path": "../../../../../front-packages",
+    "application_path": "../../../../../.."
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.4",
@@ -76,7 +76,7 @@
     }
   },
   "peerDependencies": {
-    "babel-loader": "^8.1.0",
+    "babel-loader": "^8.2.2",
     "eslint": "^6.5.1",
     "react": "^16.14.0",
     "react-dom": "^16.9.12",

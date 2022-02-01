@@ -19,8 +19,8 @@ import {
   SectionTitle,
   TextAreaInput
 } from 'akeneo-design-system';
-import { LocaleSelector } from './../components/LocaleSelector';
-import { configBackToFront, ConfigServicePayloadBackend, ConfigServicePayloadFrontend } from '../models/ConfigServicePayload';
+import { LocaleSelector } from './components/LocaleSelector';
+import { configBackToFront, ConfigServicePayloadBackend, ConfigServicePayloadFrontend } from './models/ConfigServicePayload';
 
 const ConfigForm = () => {
   const __ = useTranslate();
