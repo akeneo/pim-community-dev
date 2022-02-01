@@ -36,10 +36,11 @@ beforeEach(() => {
 
 test('it returns loading status and testApps values', async () => {
     (useFeatureFlags as jest.Mock).mockImplementation(() => ({
-        isEnabled: (feature: string) => ({
-            'app_developer_mode': true,
-            'marketplace_activate': true,
-        }[feature] ?? false)
+        isEnabled: (feature: string) =>
+            ({
+                app_developer_mode: true,
+                marketplace_activate: true,
+            }[feature] ?? false),
     }));
 
     mockFetchResponses({
@@ -65,10 +66,11 @@ test('it returns loading status and testApps values', async () => {
 
 test('it returns loading status and empty values on fetch error ', async () => {
     (useFeatureFlags as jest.Mock).mockImplementation(() => ({
-        isEnabled: (feature: string) => ({
-            'app_developer_mode': true,
-            'marketplace_activate': true,
-        }[feature] ?? false)
+        isEnabled: (feature: string) =>
+            ({
+                app_developer_mode: true,
+                marketplace_activate: true,
+            }[feature] ?? false),
     }));
 
     mockFetchResponses({
@@ -95,10 +97,11 @@ test('it returns loading status and empty values on fetch error ', async () => {
 
 test('it returns loading status and empty values with feature flag disabled', async () => {
     (useFeatureFlags as jest.Mock).mockImplementation(() => ({
-        isEnabled: (feature: string) => ({
-            'app_developer_mode': false,
-            'marketplace_activate': true,
-        }[feature] ?? false)
+        isEnabled: (feature: string) =>
+            ({
+                app_developer_mode: false,
+                marketplace_activate: true,
+            }[feature] ?? false),
     }));
 
     const {result, waitForNextUpdate} = renderHook(() => useTestApps());

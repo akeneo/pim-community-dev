@@ -13,54 +13,52 @@ beforeEach(() => {
 const tests = [
     {
         features: {
-            'app_developer_mode': true,
-            'marketplace_activate': true,
+            app_developer_mode: true,
+            marketplace_activate: true,
         },
         acls: {
-            'akeneo_connectivity_connection_manage_test_apps': true,
+            akeneo_connectivity_connection_manage_test_apps: true,
         },
         result: true,
     },
     {
         features: {
-            'app_developer_mode': false,
-            'marketplace_activate': true,
+            app_developer_mode: false,
+            marketplace_activate: true,
         },
         acls: {
-            'akeneo_connectivity_connection_manage_test_apps': true,
+            akeneo_connectivity_connection_manage_test_apps: true,
         },
         result: false,
     },
     {
         features: {
-            'app_developer_mode': true,
-            'marketplace_activate': false,
+            app_developer_mode: true,
+            marketplace_activate: false,
         },
         acls: {
-            'akeneo_connectivity_connection_manage_test_apps': true,
+            akeneo_connectivity_connection_manage_test_apps: true,
         },
         result: false,
     },
     {
         features: {
-            'app_developer_mode': true,
-            'marketplace_activate': true,
+            app_developer_mode: true,
+            marketplace_activate: true,
         },
         acls: {
-            'akeneo_connectivity_connection_manage_test_apps': false,
+            akeneo_connectivity_connection_manage_test_apps: false,
         },
         result: false,
     },
 ];
 
-test.each(tests)(`It check if all conditions are met for the App Developer mode`, (data) => {
+test.each(tests)('It check if all conditions are met for the App Developer mode', data => {
     (useFeatureFlags as jest.Mock).mockImplementation(() => ({
-        // @ts-ignore
-        isEnabled: (feature: string) => (data.features[feature] ?? false)
+        isEnabled: (feature: string) => data.features[feature] ?? false,
     }));
     (useSecurity as jest.Mock).mockImplementation(() => ({
-        // @ts-ignore
-        isGranted: (acl: string) => (data.acls[acl] ?? false)
+        isGranted: (acl: string) => data.acls[acl] ?? false,
     }));
 
     const {result} = renderHook(() => useAppDeveloperMode());
