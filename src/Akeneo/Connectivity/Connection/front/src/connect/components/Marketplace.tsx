@@ -11,6 +11,7 @@ import {App, Apps, TestApps} from '../../model/app';
 import {Section} from './Section';
 import {ActivateAppButton} from './ActivateAppButton';
 import {useFeatureFlags} from '../../shared/feature-flags';
+import {useConnectionsLimitReached} from '../../shared/hooks/use-connections-limit-reached';
 import {TestAppList} from './TestApp/TestAppList';
 import {useSecurity} from '../../shared/security';
 import {useDeveloperMode} from '../hooks/use-developer-mode';
@@ -46,6 +47,7 @@ export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
     const isDeveloperModeEnabled = useDeveloperMode();
     const security = useSecurity();
     const isManageAppsAuthorized = security.isGranted('akeneo_connectivity_connection_manage_apps');
+    const isLimitReached = useConnectionsLimitReached();
     const extensionsList = extensions.extensions.map((extension: Extension) => (
         <MarketplaceCard key={extension.id} item={extension} />
     ));
@@ -58,7 +60,7 @@ export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
                     key={1}
                     id={app.id}
                     isConnected={app.connected}
-                    isDisabled={!isManageAppsAuthorized}
+                    isDisabled={!isManageAppsAuthorized || false !== isLimitReached}
                 />,
             ]}
         />
@@ -85,6 +87,13 @@ export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
                         apps.total
                     )}
                     emptyMessage={translate('akeneo_connectivity.connection.connect.marketplace.apps.empty')}
+                    warningMessage={
+                        false === isLimitReached
+                            ? null
+                            : translate(
+                                  'akeneo_connectivity.connection.connection.constraint.connections_number_limit_reached'
+                              )
+                    }
                 >
                     {appsList}
                 </Section>

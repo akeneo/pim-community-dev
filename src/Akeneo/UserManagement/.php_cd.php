@@ -80,6 +80,12 @@ $rules = [
         // TIP-1539: clean installer events
         'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
         'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
+
+        // PLG-692: use email notification from Notification bundle
+        'Akeneo\Platform\Bundle\NotificationBundle\Email\MailNotifierInterface',
+        'Twig\Environment',
+        'Throwable',
+        'Psr\Log\LoggerInterface',
     ])->in('Akeneo\UserManagement\Bundle'),
 ];
 

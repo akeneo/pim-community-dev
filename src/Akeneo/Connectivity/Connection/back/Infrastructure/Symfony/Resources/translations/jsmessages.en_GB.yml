@@ -39,6 +39,12 @@ akeneo_connectivity.connection:
         total: '{0} No connectors|{1} 1 connector|[2,Inf] {{ total }} connectors'
       apps:
         total: '{0} No apps|{1} 1 app|[2,Inf] {{ total }} apps'
+      test_apps:
+        modal:
+          credentials:
+            title: Credentials
+        delete:
+          title: Confirm deletion
     connected_apps:
       edit:
         tabs:
@@ -105,7 +111,6 @@ akeneo_connectivity.connection:
     message_link: click here.
   create_connection:
     title: Create a new connection
-    description: You can create up to 50 connections.
     flash:
       success: You can create up to 50 connections.
       error: Sorry, an error occurred while creating the connection.

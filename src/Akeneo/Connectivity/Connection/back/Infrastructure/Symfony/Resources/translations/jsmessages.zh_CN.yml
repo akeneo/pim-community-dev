@@ -50,7 +50,6 @@ akeneo_connectivity.connection:
         description: 这只是概览，还有更多内容，请探索我们的网上商城。
         link: 前往网上商城
       card:
-        developed_by: 开发者
         read_more: 阅读更多
         more_info: 更多信息
         connect: 连接
@@ -65,6 +64,12 @@ akeneo_connectivity.connection:
         empty: 没有与您的版本兼容的应用
       unreachable: 无法访问商城，请稍后再试。
       scroll_to_top: 滚动到顶部
+      test_apps:
+        modal:
+          credentials:
+            title: 凭据
+        delete:
+          title: 确认删除 
     connected_apps:
       list:
         apps:
@@ -79,7 +84,6 @@ akeneo_connectivity.connection:
           description_2: 想了解更多关于应用的信息？
           link: 查看我们的“帮助中心”获取更多信息。
         card:
-          developed_by: 开发者
           manage_app: 管理应用
           open_app: 打开应用
         flash:
@@ -238,7 +242,6 @@ akeneo_connectivity.connection:
     message_link: 点击此处。
   create_connection:
     title: 创建新连接
-    description: 您可以创建最多 50 个连接。
     flash:
       success: 已成功创建连接。
       error: 抱歉，创建连接时发生错误。

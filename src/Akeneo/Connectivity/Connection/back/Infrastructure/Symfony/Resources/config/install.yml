@@ -4,6 +4,7 @@ services:
     arguments:
       - '@database_connection'
       - '@Akeneo\Connectivity\Connection\Infrastructure\Install\FixturesLoader'
+      - '@Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler'
     tags:
       - {name: kernel.event_subscriber}
 
@@ -21,4 +22,3 @@ services:
       - '@pim_user.factory.group'
       - '@pim_user.updater.group'
       - '@pim_user.saver.group'
-      - '@Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler'

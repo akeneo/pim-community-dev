@@ -26,15 +26,6 @@ class RequestAccessTokenActionEndToEnd extends WebTestCase
     private string $clientId;
     private GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler;
 
-    public function test_the_endpoint_is_not_found_if_the_feature_flag_is_disabled(): void
-    {
-        $this->featureFlagMarketplaceActivate->disable();
-        $this->client->request('GET', '/connect/apps/v1/token');
-        $response = $this->client->getResponse();
-
-        Assert::assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-    }
-
     public function test_to_redeem_a_code_for_token(): void
     {
         $this->createApp();

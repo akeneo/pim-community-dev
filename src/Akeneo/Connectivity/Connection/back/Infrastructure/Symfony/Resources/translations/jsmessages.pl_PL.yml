@@ -50,7 +50,6 @@ akeneo_connectivity.connection:
         description: To tylko podgląd. Aby uzyskać więcej szczegółów, zobacz nasz rynek internetowy.
         link: Przejdź do rynku internetowego
       card:
-        developed_by: 'Opracowane przez:'
         read_more: czytaj więcej
         more_info: Więcej informacji
         connect: Połącz
@@ -65,6 +64,12 @@ akeneo_connectivity.connection:
         empty: Brak aplikacji kompatybilnych z twoją wersją
       unreachable: Nie możemy nawiązać połączenia z rynkiem. Spróbuj ponownie później.
       scroll_to_top: Przewiń do początku
+      test_apps:
+        modal:
+          credentials:
+            title: Dane uwierzytelniające
+        delete:
+          title: Potwierdź usunięcie
     connected_apps:
       list:
         apps:
@@ -79,7 +84,6 @@ akeneo_connectivity.connection:
           description_2: Chcesz dowiedzieć się więcej o aplikacjach?
           link: Aby uzyskać więcej informacji, sprawdź nasze Centrum Pomocy.
         card:
-          developed_by: 'Opracowana przez:'
           manage_app: Zarządzaj aplikacją
           open_app: Otwórz aplikację
         flash:
@@ -241,7 +245,6 @@ akeneo_connectivity.connection:
     message_link: kliknij tutaj.
   create_connection:
     title: Utwórz nowe połączenie
-    description: Możesz utworzyć do 50 połączeń.
     flash:
       success: Połączenie zostało pomyślnie utworzone.
       error: Przepraszamy, wystąpił błąd podczas tworzenia połączenia.

@@ -1,29 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oro\Bundle\SecurityBundle;
 
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class SecurityFacade
+class SecurityFacade implements SecurityFacadeInterface
 {
-    private AuthorizationCheckerInterface $authorizationChecker;
-    protected AclAnnotationProvider $annotationProvider;
-    protected ObjectIdentityFactory $objectIdentityFactory;
-    private LoggerInterface $logger;
-
     public function __construct(
-        AuthorizationCheckerInterface $authorizationChecker,
-        AclAnnotationProvider $annotationProvider,
-        ObjectIdentityFactory $objectIdentityFactory,
-        LoggerInterface $logger
+        private AuthorizationCheckerInterface $authorizationChecker,
+        protected AclAnnotationProvider $annotationProvider,
+        protected ObjectIdentityFactory $objectIdentityFactory,
+        private LoggerInterface $logger
     ) {
-        $this->authorizationChecker = $authorizationChecker;
-        $this->annotationProvider = $annotationProvider;
-        $this->objectIdentityFactory = $objectIdentityFactory;
-        $this->logger = $logger;
     }
 
     /**
@@ -58,17 +52,12 @@ class SecurityFacade
     }
 
     /**
-     * Checks if an access to a resource is granted to the caller
-     *
-     * @param string|string[] $attributes Can be a role name(s), permission name(s), an ACL annotation id
-     *                                    or something else, it depends on registered security voters
-     * @param mixed           $object     A domain object, object identity or object identity descriptor (id:type)
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    public function isGranted($attributes, $object = null)
+    public function isGranted($attributes, $object = null): bool
     {
-        if ($object === null
+        if (
+            $object === null
             && is_string($attributes)
             && $annotation = $this->annotationProvider->findAnnotationById($attributes)
         ) {

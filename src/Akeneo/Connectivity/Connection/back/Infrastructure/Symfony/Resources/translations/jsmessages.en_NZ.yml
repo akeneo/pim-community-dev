@@ -16,6 +16,13 @@ pim_title:
   akeneo_connectivity_connection_settings_redirect: Connections
 akeneo_connectivity.connection:
   connect:
+    marketplace:
+      test_apps:
+        modal:
+          credentials:
+            title: Credentials
+        delete:
+          title: Confirm deletion
     connected_apps:
       edit:
         tabs:
@@ -68,7 +75,6 @@ akeneo_connectivity.connection:
     message_link: click here.
   create_connection:
     title: Create a new connection
-    description: You can create up to 50 connections.
     flash:
       success: Connection successfully created.
       error: Sorry, an error occurred while creating the connection.

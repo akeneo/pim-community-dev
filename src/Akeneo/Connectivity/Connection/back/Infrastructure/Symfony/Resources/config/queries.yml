@@ -112,3 +112,8 @@ services:
             - '@akeneo_connectivity.client.events_api_debug'
             - '@akeneo_connectivity.connection.clock'
             - '@akeneo_connectivity.connection.encrypter'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\IsConnectionsNumberLimitReachedQuery:
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Connections\GetConnectionsNumberLimit'

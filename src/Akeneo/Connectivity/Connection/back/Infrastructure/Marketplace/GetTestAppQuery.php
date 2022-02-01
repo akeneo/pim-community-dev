@@ -20,6 +20,7 @@ class GetTestAppQuery implements GetTestAppQueryInterface
     /**
      * @return array{
      *     id: string,
+     *     secret: string,
      *     name: string,
      *     author: string|null,
      *     activate_url: string,
@@ -32,6 +33,7 @@ class GetTestAppQuery implements GetTestAppQueryInterface
         $query = <<<SQL
 SELECT 
     app.client_id AS id,
+    app.client_secret AS secret,
     app.name,
     IF(app.user_id IS NOT NULL, CONCAT_WS(' ', user.name_prefix, user.first_name, user.middle_name, user.last_name, user.name_suffix), NULL) AS author,
     app.activate_url,

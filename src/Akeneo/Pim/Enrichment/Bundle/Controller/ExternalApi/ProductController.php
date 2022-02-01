@@ -29,6 +29,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProd
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\ExternalApi\PayloadFormat;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Cache\WarmupQueryCache;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\DuplicateValueChecker;
@@ -208,7 +209,8 @@ class ProductController
         RemoveParentInterface $removeParent,
         GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
         LoggerInterface $apiProductAclLogger,
-        SecurityFacade $security
+        SecurityFacade $security,
+        private ValidatorInterface $validator
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
@@ -386,6 +388,15 @@ class ProductController
         $this->denyAccessUnlessAclIsGranted('pim_api_product_edit');
 
         $data = $this->getDecodedContent($request->getContent());
+        $violations = $this->validator->validate($data, new PayloadFormat());
+        if (0 < $violations->count()) {
+            $firstViolation = $violations->get(0);
+            throw new DocumentedHttpException(
+                Documentation::URL . 'post_products',
+                sprintf('%s Check the expected format on the API documentation.', $firstViolation->getMessage()),
+                new \LogicException($firstViolation->getMessage())
+            );
+        }
 
         try {
             $this->duplicateValueChecker->check($data);
@@ -393,7 +404,7 @@ class ProductController
             $this->eventDispatcher->dispatch(new TechnicalErrorEvent($e));
 
             throw new DocumentedHttpException(
-                Documentation::URL . 'patch_products__code_',
+                Documentation::URL . 'post_products',
                 sprintf('%s Check the expected format on the API documentation.', $e->getMessage()),
                 $e
             );
@@ -438,6 +449,15 @@ class ProductController
         }
 
         $data = $this->getDecodedContent($request->getContent());
+        $violations = $this->validator->validate($data, new PayloadFormat());
+        if (0 < $violations->count()) {
+            $firstViolation = $violations->get(0);
+            throw new DocumentedHttpException(
+                Documentation::URL . 'patch_products__code_',
+                sprintf('%s Check the expected format on the API documentation.', $firstViolation->getMessage()),
+                new \LogicException($firstViolation->getMessage())
+            );
+        }
 
         try {
             $this->duplicateValueChecker->check($data);

@@ -36,7 +36,7 @@ class ChildCategorySpec extends ObjectBehavior
                         'data-code' => 'child_2',
                     ],
                     'data' => 'Child 2 (1)',
-                    'state' => 'leaf toselect jstree-checked',
+                    'state' => 'leaf toselect',
                     'children' => [],
                 ]],
             ],

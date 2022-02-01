@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetOpenIdPublicKeyAction
+final class GetOpenIdPublicKeyAction
 {
     private GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery;
 

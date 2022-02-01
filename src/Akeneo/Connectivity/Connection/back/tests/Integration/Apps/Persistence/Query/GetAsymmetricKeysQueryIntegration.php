@@ -10,6 +10,8 @@ use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\SaveAsy
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\PimConfigurationLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -19,12 +21,14 @@ class GetAsymmetricKeysQueryIntegration extends TestCase
 {
     private GetAsymmetricKeysQuery $query;
     private PimConfigurationLoader $pimConfigurationLoader;
+    private Connection $connection;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->query = $this->get(GetAsymmetricKeysQuery::class);
         $this->pimConfigurationLoader = $this->get(PimConfigurationLoader::class);
+        $this->connection = $this->get('database_connection');
     }
 
     protected function getConfiguration(): Configuration
@@ -32,8 +36,9 @@ class GetAsymmetricKeysQueryIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    public function test_it_throws_error_asymmetric_keys_from_the_database(): void
+    public function test_it_throws_an_exception_when_there_is_no_asymmetric_keys_into_the_database(): void
     {
+        $this->resetPimConfiguration();
         $this->expectException(OpenIdKeysNotFoundException::class);
         $this->expectExceptionMessage(OpenIdKeysNotFoundException::MESSAGE);
 
@@ -54,5 +59,10 @@ class GetAsymmetricKeysQueryIntegration extends TestCase
             [AsymmetricKeys::PRIVATE_KEY => 'the_private_key', AsymmetricKeys::PUBLIC_KEY => 'the_public_key'],
             $result->normalize()
         );
+    }
+
+    private function resetPimConfiguration(): void
+    {
+        $this->connection->executeQuery('TRUNCATE pim_configuration');
     }
 }

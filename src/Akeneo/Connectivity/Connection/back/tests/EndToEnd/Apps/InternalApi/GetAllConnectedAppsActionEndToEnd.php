@@ -12,7 +12,6 @@ use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserGroupLoad
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -33,37 +32,6 @@ class GetAllConnectedAppsActionEndToEnd extends WebTestCase
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
-    }
-
-    public function test_it_throws_not_found_exception_with_feature_flag_disabled(): void
-    {
-        $this->featureFlagMarketplaceActivate->disable();
-        $this->authenticateAsAdmin();
-
-        $this->client->request(
-            'GET',
-            '/rest/apps/connected-apps'
-        );
-        $response = $this->client->getResponse();
-
-        Assert::assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-    }
-
-    public function test_it_redirects_on_missing_xmlhttprequest_header(): void
-    {
-        $this->featureFlagMarketplaceActivate->enable();
-        $this->authenticateAsAdmin();
-
-        $this->client->request(
-            'GET',
-            '/rest/apps/connected-apps'
-        );
-
-        $response = $this->client->getResponse();
-
-        Assert::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
-        assert($response instanceof RedirectResponse);
-        Assert::assertEquals('/', $response->getTargetUrl());
     }
 
     public function test_it_gets_connected_apps(): void

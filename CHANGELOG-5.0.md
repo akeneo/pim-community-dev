@@ -1,5 +1,19 @@
 # 5.0.x
 
+# 5.0.69 (2022-01-21)
+
+## Bug fixes
+
+- PIM-10233: [Backport] Refresh ES index after creating a product from the UI in order to well send product created event to event subscriptions
+
+# 5.0.68 (2022-01-17)
+
+# 5.0.67 (2022-01-03)
+
+## Bug fixes
+
+- PIM-10222: Fixed selected category glitch on product grid category filter
+
 # 5.0.66 (2021-12-22)
 
 # 5.0.65 (2021-12-22)

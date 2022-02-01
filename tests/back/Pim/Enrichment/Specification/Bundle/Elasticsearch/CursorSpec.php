@@ -216,4 +216,105 @@ class CursorSpec extends ObjectBehavior
         $this->current()->shouldReturn(false);
         $this->key()->shouldReturn(null);
     }
+
+    /**
+     * PIM-10232
+     */
+    function it_is_iterable_and_returns_page_size_results(
+        Client $esClient,
+        CursorableRepositoryInterface $productRepository,
+        CursorableRepositoryInterface $productModelRepository,
+        ProductInterface $variantProduct,
+        ProductModelInterface $subProductModel,
+        ProductInterface $product,
+        ProductModelInterface $rootProductModel
+    ) {
+        $product->getIdentifier()->willReturn('a-product2');
+        $productRepository->getItemsFromIdentifiers(['a-product'])->willReturn([]);
+        $productRepository->getItemsFromIdentifiers(['a-product2'])->willReturn([$product]);
+        $productRepository->getItemsFromIdentifiers([])->willReturn([]);
+
+        $rootProductModel->getCode()->willReturn('a-root-product-model');
+        $productModelRepository->getItemsFromIdentifiers(['a-root-product-model'])->willReturn([$rootProductModel]);
+        $productModelRepository->getItemsFromIdentifiers([])->willReturn([]);
+
+        // Second round
+        $esClient->search(
+            [
+                'size' => 2,
+                'sort' => ['_id' => 'asc'],
+                'search_after' => ['#a-sub-product-model'],
+                'track_total_hits' => true,
+            ])
+            ->willReturn([
+                'hits' => [
+                    'total' => ['value' => 4],
+                    'hits' => [
+                        [
+                            '_source' => ['identifier' => 'a-root-product-model', 'document_type' => ProductModelInterface::class],
+                            'sort' => ['#a-root-product-model']
+                        ],
+                        [
+                            '_source' => ['identifier' => 'a-product', 'document_type' => ProductInterface::class],
+                            'sort' => ['#a-product']
+                        ],
+                    ]
+                ]
+            ]);
+        // Second round try #2 because "a-product" is not found in DB. So we ask to fetch 1 more item
+        $esClient->search(
+            [
+                'size' => 1,
+                'sort' => ['_id' => 'asc'],
+                'search_after' => ['#a-product'],
+                'track_total_hits' => true,
+            ])->willReturn([
+            'hits' => [
+                'total' => ['value' => 4],
+                'hits' => [
+                    [
+                        '_source' => ['identifier' => 'a-product2', 'document_type' => ProductInterface::class],
+                        'sort' => ['#a-product2'],
+                    ],
+                ],
+            ],
+        ]);
+        // Third round
+        $esClient->search(
+            [
+                'size' => 2,
+                'sort' => ['_id' => 'asc'],
+                'search_after' => ['#a-product2'],
+                'track_total_hits' => true,
+            ])->willReturn([
+            'hits' => [
+                'total' => ['value' => 4],
+                'hits' => [],
+            ],
+        ]);
+
+        $page1 = [$variantProduct, $subProductModel];
+        $page2 = [$rootProductModel, $product];
+        $data = array_merge($page1, $page2);
+
+        $this->shouldImplement(\Iterator::class);
+
+        $this->rewind()->shouldReturn(null);
+        for ($i = 0; $i < 4; $i++) {
+            if ($i > 0) {
+                $this->next()->shouldReturn(null);
+            }
+            $this->valid()->shouldReturn(true);
+            $this->current()->shouldReturn($data[$i]);
+
+            $this->key()->shouldReturn($i%2);
+        }
+
+        $this->next()->shouldReturn(null);
+        $this->valid()->shouldReturn(false);
+
+        // check behaviour after the end of data
+        $this->current()->shouldReturn(false);
+        $this->key()->shouldReturn(null);
+    }
 }
