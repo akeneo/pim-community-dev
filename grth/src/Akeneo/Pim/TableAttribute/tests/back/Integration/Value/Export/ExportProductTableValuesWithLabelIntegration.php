@@ -29,11 +29,11 @@ final class ExportProductTableValuesWithLabelIntegration extends TestCase
         $csv = $this->jobLauncher->launchExport(static::CSV_EXPORT_JOB_CODE, null, $config);
 
         $expected = <<<CSV
-Product;Attribute;Ingredient;[quantity];"Is allergenic";[additional_info];"Nutrition score"
-111111;"Nutrition (French France, [mobile])";Sugar;50;No;"this is a text";B
-111111;"Nutrition (French France, [mobile])";[egg];23;Yes;;[C]
-111111;"Nutrition (English United States, Ecommerce)";Sugar;66;Yes;"this is a second text";B
-111111;"Nutrition (English United States, Ecommerce)";[egg];20;Yes;;[C]
+Product;Attribute;Ingredient;[quantity];"Is allergenic";[additional_info];"Nutrition score";Weight
+111111;"Nutrition (French France, [mobile])";Sugar;50;No;"this is a text";B;"42 Kilogram"
+111111;"Nutrition (French France, [mobile])";[egg];23;Yes;;[C];"69 Milligram"
+111111;"Nutrition (English United States, Ecommerce)";Sugar;66;Yes;"this is a second text";B;"55 Kilogram"
+111111;"Nutrition (English United States, Ecommerce)";[egg];20;Yes;;[C];
 
 CSV;
         Assert::assertSame($expected, $csv);
@@ -79,11 +79,11 @@ CSV;
         }
 
         $expected = [
-            ['Product', 'Attribute', 'Ingredient', '[quantity]', 'Is allergenic', '[additional_info]', 'Nutrition score'],
-            ['111111', 'Nutrition (French France, [mobile])', 'Sugar', '50', 'No', 'this is a text', 'B'],
-            ['111111', 'Nutrition (French France, [mobile])', '[egg]', '23', 'Yes', '', '[C]'],
-            ['111111', 'Nutrition (English United States, Ecommerce)', 'Sugar', '66', 'Yes', 'this is a second text', 'B'],
-            ['111111', 'Nutrition (English United States, Ecommerce)', '[egg]', '20', 'Yes', '', '[C]'],
+            ['Product', 'Attribute', 'Ingredient', '[quantity]', 'Is allergenic', '[additional_info]', 'Nutrition score', 'Weight'],
+            ['111111', 'Nutrition (French France, [mobile])', 'Sugar', '50', 'No', 'this is a text', 'B', '42 Kilogram'],
+            ['111111', 'Nutrition (French France, [mobile])', '[egg]', '23', 'Yes', '', '[C]', '69 Milligram'],
+            ['111111', 'Nutrition (English United States, Ecommerce)', 'Sugar', '66', 'Yes', 'this is a second text', 'B', '55 Kilogram'],
+            ['111111', 'Nutrition (English United States, Ecommerce)', '[egg]', '20', 'Yes', '', '[C]', ''],
         ];
 
         Assert::assertSame($expected, \array_values($actualRows));
@@ -165,6 +165,13 @@ CSV;
                     ],
                     'labels' => ['en_US' => 'Nutrition score']
                 ],
+                [
+                    'data_type' => 'measurement',
+                    'code' => 'weight',
+                    'measurement_family_code' => 'Weight',
+                    'measurement_default_unit_code' => 'KILOGRAM',
+                    'labels' => ['en_US' => 'Weight', 'fr_FR' => 'Poids'],
+                ],
             ],
         ]);
 
@@ -182,12 +189,20 @@ CSV;
                                 'allergen' => false,
                                 'additional_info' => 'this is a text',
                                 'nutrition_score' => 'B',
+                                'weight' => [
+                                    'amount' => '42',
+                                    'unit' => 'KILOGRAM'
+                                ],
                             ],
                             [
                                 'ingredient' => 'egg',
                                 'quantity' => 23,
                                 'allergen' => true,
                                 'nutrition_score' => 'C',
+                                'weight' => [
+                                    'amount' => '69',
+                                    'unit' => 'MILLIGRAM'
+                                ],
                             ],
                         ],
                     ],
@@ -201,6 +216,10 @@ CSV;
                                 'allergen' => true,
                                 'additional_info' => 'this is a second text',
                                 'nutrition_score' => 'B',
+                                'weight' => [
+                                    'amount' => '55',
+                                    'unit' => 'KILOGRAM'
+                                ],
                             ],
                             [
                                 'ingredient' => 'egg',
