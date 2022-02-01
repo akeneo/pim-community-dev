@@ -156,7 +156,7 @@ pim-prod:
 
 .PHONY: up
 up:
-	$(DOCKER_COMPOSE) up -d --remove-orphan ${C}
+	$(DOCKER_COMPOSE) up -d --remove-orphans ${C}
 
 .PHONY: down
 down:

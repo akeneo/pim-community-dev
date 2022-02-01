@@ -76,7 +76,7 @@ jobs:
           name: Setup tests results folder and log folder
           command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer
       - run:
-          name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+          name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
           command: |
               sudo chown -R 1000:1000 ../project
               sudo chown -R 1000:1000 ~/.composer
@@ -108,7 +108,7 @@ jobs:
             date +%F >> ~/akeneo-design-system.hash
       - run:
           name: Set DSM directory owner to circleci
-          command: sudo chown -R 1001:1001 << parameters.path_to_dsm >>
+          command: sudo chown -R circleci:circleci << parameters.path_to_dsm >>
       - restore_cache:
           name: Restore DSM cache
           key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}
@@ -141,7 +141,7 @@ jobs:
           - attach_workspace:
                 at: ~/
           - run:
-                name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                 command: sudo chown -R 1000:1000 ../project
           - run:
                 name: No legacy translation format
@@ -269,7 +269,7 @@ jobs:
               name: Create yarn cache folder
               command: mkdir -p  ~/.cache/yarn
         - run:
-              name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+              name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
               command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
         - run:
             name: Front type checking
@@ -288,7 +288,7 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
-          name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+          name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
           command: sudo chown -R 1000:1000 ../project
       - run:
           name: Start containers
