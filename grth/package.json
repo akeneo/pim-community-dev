@@ -83,6 +83,7 @@
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/system",
     "src/Akeneo/Pim/TableAttribute/front",
-    "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front"
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front",
+    "vendor/akeneo/pim-community-dev/src/Oro/Bundle/ConfigBundle/front"
   ]
 }
