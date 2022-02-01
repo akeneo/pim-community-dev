@@ -128,14 +128,14 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
                     ghost
                     level='tertiary'
                     href={connectedAppUrl}
-                    disabled={!security.isGranted('akeneo_connectivity_connection_manage_apps')}
+                    disabled={!security.isGranted('akeneo_connectivity_connection_manage_apps') && !item.is_test_app}
                 >
                     {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')}
                 </Button>
                 <Button
                     level='secondary'
                     href={item.activate_url}
-                    disabled={!item.activate_url || !security.isGranted('akeneo_connectivity_connection_open_apps')}
+                    disabled={!item.activate_url || (!security.isGranted('akeneo_connectivity_connection_open_apps') && !item.is_test_app)}
                     target='_blank'
                 >
                     {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.open_app')}
