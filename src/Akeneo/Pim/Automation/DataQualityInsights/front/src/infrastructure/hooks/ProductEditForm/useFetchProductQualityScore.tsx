@@ -31,11 +31,11 @@ const useFetchProductQualityScore = (channel: string | undefined, locale: string
   const [needsUpdate, setNeedsUpdate] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const {productId, productUpdatedDate, isProductSaving} = useSelector((state: ProductEditFormState) => {
+  const {productId, productUpdatedDate, isProductEvaluating} = useSelector((state: ProductEditFormState) => {
     return {
       productId: state.product.meta.id,
       productUpdatedDate: state.product.updated,
-      isProductSaving: state.pageContext.isProductSaving,
+      isProductEvaluating: state.pageContext.isProductEvaluating,
     };
   });
 
@@ -48,10 +48,14 @@ const useFetchProductQualityScore = (channel: string | undefined, locale: string
   }, []);
 
   useEffect(() => {
-    if (true === isProductSaving) {
-      setIsLoading(isProductSaving);
+    if (false === isProductEvaluating) {
+      setIsLoading(false);
     }
-  }, [isProductSaving]);
+
+    if (true === isProductEvaluating && null !== productUpdatedDate) {
+      setIsLoading(true);
+    }
+  }, [isProductEvaluating]);
 
   useEffect(() => {
     setNeedsUpdate(true);
@@ -64,7 +68,6 @@ const useFetchProductQualityScore = (channel: string | undefined, locale: string
     }
     if (false === needsUpdate) {
       setIsLoading(false);
-      // dispatchAction(endProductSavingAction());
     }
   }, [productId, retries, needsUpdate]);
 

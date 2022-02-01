@@ -5,5 +5,5 @@ export interface PageContextState {
 export interface ProductEditFormPageContextState extends PageContextState {
   attributesTabIsLoading: boolean;
   attributeToImprove: string | null;
-  isProductSaving: boolean;
+  isProductEvaluating: boolean;
 }

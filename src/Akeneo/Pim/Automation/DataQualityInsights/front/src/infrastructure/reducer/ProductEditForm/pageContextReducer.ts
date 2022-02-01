@@ -20,7 +20,11 @@ interface UpdateAttributeToImproveContextAction extends Action {
   };
 }
 
-interface ProductSavingContextAction extends Action {}
+interface ProductEvaluationContextAction extends Action {
+  payload: {
+    isProductEvaluating: boolean;
+  };
+}
 
 export const CHANGE_PRODUCT_TAB = 'CHANGE_PRODUCT_TAB';
 export const changeProductTabAction = (tabName: string): UpdateTabContextAction => {
@@ -58,17 +62,23 @@ export const showDataQualityInsightsAttributeToImproveAction = (
   };
 };
 
-export const START_PRODUCT_SAVING = 'START_PRODUCT_SAVING';
-export const startProductSavingAction = (): ProductSavingContextAction => {
+export const START_PRODUCT_EVALUATION = 'START_PRODUCT_EVALUATION';
+export const startProductEvaluationAction = (): ProductEvaluationContextAction => {
   return {
-    type: START_PRODUCT_SAVING,
+    type: START_PRODUCT_EVALUATION,
+    payload: {
+      isProductEvaluating: false,
+    },
   };
 };
 
-export const END_PRODUCT_SAVING = 'END_PRODUCT_SAVING';
-export const endProductSavingAction = (): ProductSavingContextAction => {
+export const END_PRODUCT_EVALUATION = 'END_PRODUCT_EVALUATION';
+export const endProductEvaluationAction = (): ProductEvaluationContextAction => {
   return {
-    type: END_PRODUCT_SAVING,
+    type: END_PRODUCT_EVALUATION,
+    payload: {
+      isProductEvaluating: false,
+    },
   };
 };
 
@@ -76,7 +86,7 @@ const initialState: ProductEditFormPageContextState = {
   currentTab: PRODUCT_ATTRIBUTES_TAB_NAME,
   attributesTabIsLoading: false,
   attributeToImprove: null,
-  isProductSaving: false,
+  isProductEvaluating: false,
 };
 
 const pageContextReducer: Reducer<ProductEditFormPageContextState, UpdatePageContextAction> = (
@@ -104,15 +114,15 @@ const pageContextReducer: Reducer<ProductEditFormPageContextState, UpdatePageCon
         ...previousState,
         attributeToImprove: payload.attributeToImprove,
       };
-    case START_PRODUCT_SAVING:
+    case START_PRODUCT_EVALUATION:
       return {
         ...previousState,
-        isProductSaving: true,
+        isProductEvaluating: true,
       };
-    case END_PRODUCT_SAVING:
+    case END_PRODUCT_EVALUATION:
       return {
         ...previousState,
-        isProductSaving: false,
+        isProductEvaluating: false,
       };
     default:
       return previousState;

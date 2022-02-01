@@ -2,10 +2,10 @@ import React, {FunctionComponent, useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {Product} from '../../../domain';
 import {
-  endProductSavingAction,
+  endProductEvaluationAction,
   getProductFamilyInformationAction,
   initializeProductAction,
-  startProductSavingAction,
+  startProductEvaluationAction,
 } from '../../../infrastructure/reducer';
 import {fetchFamilyInformation} from '../../../infrastructure/fetcher';
 import ProductFetcher from '../../../infrastructure/fetcher/ProductEditForm/ProductFetcher';
@@ -26,13 +26,12 @@ export const DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB = 'data-quality:redirect:
 
 const ProductContextListener: FunctionComponent<ProductContextListenerProps> = ({product, productFetcher}) => {
   const [productHasBeenSaved, setProductHasBeenSaved] = useState(false);
-  const [isProductSaving, setIsProductSaving] = useState(false);
   const dispatchAction = useDispatch();
   const evaluateProduct = useEvaluateProduct(product);
 
   useEffect(() => {
     const handleProductSaving = () => {
-      setIsProductSaving(true);
+      // do nothing
     };
     const handleProductSaved = () => {
       setProductHasBeenSaved(true);
@@ -52,12 +51,6 @@ const ProductContextListener: FunctionComponent<ProductContextListenerProps> = (
   }, [product]);
 
   useEffect(() => {
-    if (true === isProductSaving) {
-      dispatchAction(startProductSavingAction());
-    }
-  }, [isProductSaving]);
-
-  useEffect(() => {
     if (!product.family) {
       return;
     }
@@ -69,11 +62,11 @@ const ProductContextListener: FunctionComponent<ProductContextListenerProps> = (
   }, [product.family]);
 
   useEffect(() => {
-    dispatchAction(endProductSavingAction());
-    setIsProductSaving(false);
     if (productHasBeenSaved) {
       (async () => {
+        dispatchAction(startProductEvaluationAction());
         await evaluateProduct();
+        dispatchAction(endProductEvaluationAction());
       })();
 
       (async () => {
