@@ -43,15 +43,11 @@
     "packages:build": "yarn dsm:build && yarn shared:build && yarn measurement:build && yarn catalog-volume-monitoring:build && yarn process-tracker:build",
     "test:e2e:open": "cypress open",
     "test:e2e:run": "cypress run",
-
     "lint": "yarn workspaces foreach -v run lint",
     "lint-fix": "yarn workspaces foreach -v run lint:fix",
     "lib:build": "yarn workspaces foreach -v run lib:build",
     "test:unit:run": "yarn workspaces foreach -v run test:unit:run",
-
     "runall": "yarn lint && yarn lint-fix && yarn lib:build && yarn test:unit:run"
-
-
   },
   "repository": {
     "type": "git",
@@ -63,9 +59,12 @@
   },
   "private": true,
   "resolutions": {
-    "akeneo-design-system": "portal:front-packages/akeneo-design-system"
+    "ts-jest": "^26.5.6",
+    "jest": "^26.6.3",
+    "@types/jest": "26.0.24"
   },
   "workspaces": [
+    "front-packages/shared",
     "front-packages/akeneo-design-system"
   ]
 }

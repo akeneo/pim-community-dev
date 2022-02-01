@@ -1,3 +1,7 @@
+========================================================================================================================
+akeneo-design-system
+========================================================================================================================
+
 tsc command needs
 - typescript@*
 
@@ -37,7 +41,7 @@ jest needs
 
 sb cli needs:
 - @storybook/cli@*
-- puppeteer
+- puppeteer@*
 
 storybook:start needs:
 - @storybook/react@*
@@ -48,9 +52,7 @@ storybook:start needs:
 
 test:visual:run needs
 - jest-puppeteer
-
-"@storybook/addon-actions": "*",
-"@storybook/addons": "*",
+- TODO Impossible to run locally.
 
 latest version of eslint needs to disable this
     "@typescript-eslint/no-unsafe-assignment": "off",
@@ -65,5 +67,14 @@ latest version of eslint needs to disable this
 
 tsconfig needs to have lib > es6 to have "includes" method
 
-info installing puppeteer...
-Error: Browser is not downloaded. Run "npm install" or "yarn install"
+========================================================================================================================
+@akeneo-pim-community/shared
+========================================================================================================================
+
+tsc command needs
+- typescript@*
+
+tests needs
+- eslint@*
+- prettier@*
+- jest@*
