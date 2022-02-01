@@ -70,7 +70,7 @@ jobs:
             date +%F >> ~/akeneo-design-system.hash
       - run:
           name: Set DSM directory owner to circleci
-          command: sudo chown -R 1001:1001 vendor/akeneo/pim-community-dev/akeneo-design-system
+          command: sudo chown -R circleci:circleci vendor/akeneo/pim-community-dev/akeneo-design-system
       - restore_cache:
           name: Restore DSM cache
           key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}

@@ -6,7 +6,10 @@ import loadImage from 'akeneoassetmanager/tools/image-loader';
 
 const flushPromises = () => new Promise(setImmediate);
 const routing = require('routing');
-jest.mock('routing');
+
+jest.mock('routing', () => ({
+  generate: (url: string) => url,
+}));
 
 const asset = {
   code: 'iphone',
