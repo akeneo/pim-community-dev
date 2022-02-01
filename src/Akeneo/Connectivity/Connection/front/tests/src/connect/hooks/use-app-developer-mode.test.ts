@@ -10,6 +10,9 @@ beforeEach(() => {
     jest.clearAllMocks();
 });
 
+type Feature = 'app_developer_mode' | 'marketplace_activate';
+type Acl = 'akeneo_connectivity_connection_manage_test_apps';
+
 const tests = [
     {
         features: {
@@ -55,10 +58,10 @@ const tests = [
 
 test.each(tests)('It check if all conditions are met for the App Developer mode', data => {
     (useFeatureFlags as jest.Mock).mockImplementation(() => ({
-        isEnabled: (feature: string) => data.features[feature] ?? false,
+        isEnabled: (feature: Feature) => data.features[feature] ?? false,
     }));
     (useSecurity as jest.Mock).mockImplementation(() => ({
-        isGranted: (acl: string) => data.acls[acl] ?? false,
+        isGranted: (acl: Acl) => data.acls[acl] ?? false,
     }));
 
     const {result} = renderHook(() => useAppDeveloperMode());
