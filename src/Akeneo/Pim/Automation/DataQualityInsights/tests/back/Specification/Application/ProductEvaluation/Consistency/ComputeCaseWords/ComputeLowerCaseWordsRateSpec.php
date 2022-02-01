@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2022 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,6 +18,12 @@ use PhpSpec\ObjectBehavior;
 
 final class ComputeLowerCaseWordsRateSpec extends ObjectBehavior
 {
+    public function it_sets_no_rate()
+    {
+        ($this('<div></div>'))->shouldBeLike(null);
+        ($this('      '))->shouldBeLike(null);
+    }
+
     public function it_sets_a_rate_from_a_string_value()
     {
         ($this('<div>Text HTML without error.</div>'))->shouldBeLike(new Rate(100));
