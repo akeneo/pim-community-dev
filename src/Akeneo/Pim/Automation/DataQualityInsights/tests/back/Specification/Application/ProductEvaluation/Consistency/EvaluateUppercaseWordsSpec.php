@@ -13,36 +13,24 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\ComputeCaseWords\ComputeLowerCaseWordsRate;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\ComputeCaseWords\ComputeUppercaseWordsRate;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\ComputeCaseWords\ComputeCaseWordsRate;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateCaseWords;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Attribute;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleDataCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValues;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
 
 final class EvaluateUppercaseWordsSpec extends ObjectBehavior
 {
-    public function let(EvaluateCaseWords $evaluateCaseWords, ComputeUppercaseWordsRate $computeUppercaseWordsRate)
+    public function let(EvaluateCaseWords $evaluateCaseWords, ComputeCaseWordsRate $computeCaseWordsRate)
     {
-        $this->beConstructedWith($evaluateCaseWords, $computeUppercaseWordsRate);
+        $this->beConstructedWith($evaluateCaseWords, $computeCaseWordsRate);
     }
 
     public function it_calls_evaluate_method_with_upper_case_compute_for_criterion_and_product_values(
-        EvaluateCaseWords $evaluateCaseWords, ComputeUppercaseWordsRate $computeUppercaseWordsRate
+        EvaluateCaseWords $evaluateCaseWords, ComputeCaseWordsRate $computeCaseWordsRate
     ) {
         $criterionEvaluation1 = new Write\CriterionEvaluation(
             new CriterionCode('criterion1'),
@@ -50,32 +38,11 @@ final class EvaluateUppercaseWordsSpec extends ObjectBehavior
             CriterionEvaluationStatus::pending()
         );
 
-        $textarea = $this->givenAnAttributeOfTypeTextarea('textarea_1');
+        $productValues1 = (new ProductValuesCollection());
+        $expectedResult = (new Write\CriterionEvaluationResult());
 
-        $textareaValues = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
-            'ecommerce' => [
-                'en_US' => 'TEXTAREA1 TEXT',
-            ],
-        ], function ($value) { return $value; });
-
-        $productValues1 = (new ProductValuesCollection())
-            ->add(new ProductValues($textarea, $textareaValues));
-
-        $channelEcommerce = new ChannelCode('ecommerce');
-        $localeEn = new LocaleCode('en_US');
-
-        $expectedResult = (new Write\CriterionEvaluationResult())
-            ->addRate($channelEcommerce, $localeEn, new Rate(100))
-            ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
-            ->addRateByAttributes($channelEcommerce, $localeEn, ['textarea_1' => 100]);
-
-        $evaluateCaseWords->__invoke($criterionEvaluation1, $productValues1, $computeUppercaseWordsRate)->willReturn($expectedResult);
+        $evaluateCaseWords->__invoke($criterionEvaluation1, $productValues1, $computeCaseWordsRate)->willReturn($expectedResult);
 
         $this->evaluate($criterionEvaluation1, $productValues1)->shouldBeLike($expectedResult);
-    }
-
-    private function givenAnAttributeOfTypeTextarea(string $code): Attribute
-    {
-        return new Attribute(new AttributeCode($code), AttributeType::textarea(), true);
     }
 }
