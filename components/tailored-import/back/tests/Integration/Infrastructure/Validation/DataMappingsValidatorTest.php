@@ -51,8 +51,8 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                         'target' => [
                             'code' => 'sku',
                             'type' => 'attribute',
-                            'channel' => 'ecommerce',
-                            'locale' => 'en_US',
+                            'channel' => null,
+                            'locale' => null,
                             'action' => 'set',
                             'ifEmpty' => 'skip',
                             'onError' => 'skipLine',
@@ -66,7 +66,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                     [
                         'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd1',
                         'target' => [
-                            'code' => 'category',
+                            'code' => 'categories',
                             'type' => 'property',
                             'action' => 'add',
                             'ifEmpty' => 'skip',
@@ -95,8 +95,8 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                     'target' => [
                         'code' => 'sku',
                         'type' => 'attribute',
-                        'channel' => 'ecommerce',
-                        'locale' => 'en_US',
+                        'channel' => null,
+                        'locale' => null,
                         'action' => 'set',
                         'ifEmpty' => 'skip',
                         'onError' => 'skipLine',
@@ -117,8 +117,8 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                         'target' => [
                             'code' => 'sku',
                             'type' => 'attribute',
-                            'channel' => 'ecommerce',
-                            'locale' => 'en_US',
+                            'channel' => null,
+                            'locale' => null,
                             'action' => 'set',
                             'ifEmpty' => 'skip',
                             'onError' => 'skipLine',
@@ -132,7 +132,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                     [
                         'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
                         'target' => [
-                            'code' => 'category',
+                            'code' => 'categories',
                             'type' => 'property',
                             'action' => 'add',
                             'ifEmpty' => 'skip',
@@ -154,7 +154,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                     [
                         'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
                         'target' => [
-                            'code' => 'sku',
+                            'code' => 'a_localized_and_scopable_text_area',
                             'type' => 'attribute',
                             'channel' => 'ecommerce',
                             'locale' => 'en_US',
@@ -175,7 +175,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                     [
                         'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
                         'target' => [
-                            'code' => 'sku',
+                            'code' => 'a_localized_and_scopable_text_area',
                             'type' => 'attribute',
                             'channel' => 'ecommerce',
                             'locale' => 'en_US',
@@ -202,7 +202,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                     [
                         'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
                         'target' => [
-                            'code' => 'sku',
+                            'code' => 'a_localized_and_scopable_text_area',
                             'type' => 'attribute',
                             'channel' => 'ecommerce',
                             'locale' => 'en_US',
@@ -227,7 +227,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                     [
                         'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
                         'target' => [
-                            'code' => 'category',
+                            'code' => 'categories',
                             'type' => 'property',
                             'action' => 'add',
                             'ifEmpty' => 'skip',
@@ -251,8 +251,8 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                         'target' => [
                             'code' => 'sku',
                             'type' => 'attribute',
-                            'channel' => 'ecommerce',
-                            'locale' => 'en_US',
+                            'channel' => null,
+                            'locale' => null,
                             'action' => 'set',
                             'ifEmpty' => 'skip',
                             'onError' => 'skipLine',
@@ -268,8 +268,8 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                         'target' => [
                             'code' => 'sku',
                             'type' => 'attribute',
-                            'channel' => 'ecommerce',
-                            'locale' => 'en_US',
+                            'channel' => null,
+                            'locale' => null,
                             'action' => 'set',
                             'ifEmpty' => 'skip',
                             'onError' => 'skipLine',
@@ -288,7 +288,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                 [
                     [
                         'target' => [
-                            'code' => 'sku',
+                            'code' => 'a_localized_and_scopable_text_area',
                             'type' => 'attribute',
                             'channel' => 'ecommerce',
                             'locale' => 'en_US',
@@ -311,7 +311,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                     [
                         'uuid' => 'invalid',
                         'target' => [
-                            'code' => 'sku',
+                            'code' => 'a_localized_and_scopable_text_area',
                             'type' => 'attribute',
                             'channel' => 'ecommerce',
                             'locale' => 'en_US',
@@ -348,7 +348,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                     [
                         'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
                         'target' => [
-                            'code' => 'sku',
+                            'code' => 'a_localized_and_scopable_text_area',
                             'type' => 'attribute',
                             'channel' => 'ecommerce',
                             'locale' => 'en_US',
@@ -368,7 +368,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                     [
                         'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
                         'target' => [
-                            'code' => 'sku',
+                            'code' => 'a_localized_and_scopable_text_area',
                             'type' => 'attribute',
                             'channel' => 'ecommerce',
                             'locale' => 'en_US',
@@ -390,7 +390,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                     [
                         'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
                         'target' => [
-                            'code' => 'sku',
+                            'code' => 'a_localized_and_scopable_text_area',
                             'type' => 'attribute',
                             'channel' => 'ecommerce',
                             'locale' => 'en_US',

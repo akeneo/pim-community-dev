@@ -34,12 +34,14 @@ $rules = [
 
     $builder->only(
         [
+            'Webmozart\Assert\Assert',
             'Symfony\Contracts',
             'Symfony\Component',
             'Akeneo\Platform\TailoredImport\Application',
             'Akeneo\Platform\TailoredImport\Domain',
 
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
+            'Akeneo\Channel\Component\Query\PublicApi',
             'Akeneo\Tool',
             'Akeneo\UserManagement\Component\Model\UserInterface',
         ],
