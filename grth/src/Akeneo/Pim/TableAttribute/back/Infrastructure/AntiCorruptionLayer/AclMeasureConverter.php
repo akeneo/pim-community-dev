@@ -14,12 +14,15 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\Infrastructure\AntiCorruptionLayer;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\MeasurementFamilyCode;
-use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
+use Akeneo\Pim\TableAttribute\Domain\Value\Measurement\MeasureConverter;
+use Akeneo\Pim\TableAttribute\Domain\Value\Measurement\MeasurementUnitNotFoundException;
+use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter as ForeignMeasureConverter;
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnitNotFoundException;
 use Webmozart\Assert\Assert;
 
-class AclMeasureConverter
+class AclMeasureConverter implements MeasureConverter
 {
-    public function __construct(private ?MeasureConverter $measureConverter)
+    public function __construct(private ?ForeignMeasureConverter $measureConverter)
     {
     }
 
@@ -30,8 +33,12 @@ class AclMeasureConverter
     ): string {
         Assert::notNull($this->measureConverter);
         Assert::numeric($amount);
-        $this->measureConverter->setFamily($measurementFamilyCode->asString());
 
-        return (string) $this->measureConverter->convertBaseToStandard($unit, $amount);
+        $this->measureConverter->setFamily($measurementFamilyCode->asString());
+        try {
+            return (string)$this->measureConverter->convertBaseToStandard($unit, $amount);
+        } catch (UnitNotFoundException) {
+            throw MeasurementUnitNotFoundException::forUnit($unit, $measurementFamilyCode->asString());
+        }
     }
 }
