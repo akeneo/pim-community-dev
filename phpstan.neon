@@ -13,4 +13,4 @@ parameters:
         - %currentWorkingDirectory%/src/Akeneo/Pim/Automation/DataQualityInsights/tests
         - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Bundle/Resources/fonts
         - %currentWorkingDirectory%/src/Akeneo/Pim/Platform/Job
-        - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Product/tests/back/Specification
+        - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Product/back/Test/Specification
