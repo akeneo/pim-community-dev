@@ -23,12 +23,12 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvalua
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 
-
 class EvaluateCaseWords
 {
     public function __construct(
         private GetLocalesByChannelQueryInterface $localesByChannelQuery
-    ){}
+    ) {
+    }
 
     public function __invoke(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues, ComputeCaseWordsRate $computeCaseWordsRate): Write\CriterionEvaluationResult
     {

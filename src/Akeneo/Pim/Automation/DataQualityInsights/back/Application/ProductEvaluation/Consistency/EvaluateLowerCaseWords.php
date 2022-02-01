@@ -28,7 +28,8 @@ final class EvaluateLowerCaseWords implements EvaluateCriterionInterface
     public function __construct(
         private EvaluateCaseWords $evaluateCaseWords,
         private ComputeCaseWordsRate $computeCaseWordsRate
-    ){}
+    ) {
+    }
 
     public function getCode(): CriterionCode
     {
