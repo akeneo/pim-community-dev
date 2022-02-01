@@ -52,7 +52,7 @@ const MeasurementFilterInput: React.FC<MeasurementFilterInputProps> = ({value, o
   const {amount, unit} = value;
 
   const handleAmountChange = (amount: string) => {
-    onChange({amount, unit: unit});
+    onChange({amount, unit});
   };
 
   const handleUnitChange = (unit: string | null) => {
