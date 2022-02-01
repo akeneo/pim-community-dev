@@ -375,3 +375,11 @@ services:
             - '@pim_catalog.repository.attribute'
         tags:
             - { name: validator.constraint_validator }
+
+    # TODO: move elsewhere?
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelConsistencyValidator:
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@pim_channel.query.cache.channel_exists_with_locale'
+        tags:
+            - { name: validator.constraint_validator }

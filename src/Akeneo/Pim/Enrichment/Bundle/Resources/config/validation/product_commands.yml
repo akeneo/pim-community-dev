@@ -1,0 +1,9 @@
+Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand:
+  properties:
+    valuesUserIntent:
+      - Valid: ~
+
+
+Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\ValueUserIntent:
+  constraints:
+    - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelConsistency: ~
