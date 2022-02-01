@@ -13,6 +13,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectionInte
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface;
 use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\AccessDeniedException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
@@ -24,6 +25,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInter
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -45,7 +47,8 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
         CreateConnectionInterface $createConnection,
         AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory,
         ClientProviderInterface $clientProvider,
-        CreateConnectedAppInterface $createApp
+        CreateConnectedAppInterface $createApp,
+        SecurityFacade $security,
     ): void {
         $this->beConstructedWith(
             $validator,
@@ -56,7 +59,8 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
             $createConnection,
             $appRoleWithScopesFactory,
             $clientProvider,
-            $createApp
+            $createApp,
+            $security,
         );
     }
 
@@ -99,10 +103,10 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
             ->during('handle', [$command]);
     }
 
-    public function it_throws_when_the_app_authorization_was_not_found_despite_validation(
+    public function it_throws_when_the_app_is_found_but_manage_apps_permission_is_missing(
         ValidatorInterface $validator,
         GetAppQueryInterface $getAppQuery,
-        AppAuthorizationSessionInterface $appAuthorizationSession,
+        SecurityFacade $security,
         App $app
     ): void {
         $command = new CreateAppWithAuthorizationCommand('an_app_id');
@@ -111,8 +115,53 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
             ->validate($command)
             ->willReturn(new ConstraintViolationList([]));
 
+        $app->isTestApp()->willReturn(false);
+        $getAppQuery->execute('an_app_id')->willReturn($app);
+        $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(false);
+
+        $this
+            ->shouldThrow(AccessDeniedException::class)
+            ->during('handle', [$command]);
+    }
+
+    public function it_throws_when_the_test_app_is_found_but_manage_test_apps_permission_is_missing(
+        ValidatorInterface $validator,
+        GetAppQueryInterface $getAppQuery,
+        SecurityFacade $security,
+        App $app
+    ): void {
+        $command = new CreateAppWithAuthorizationCommand('an_app_id');
+
+        $validator
+            ->validate($command)
+            ->willReturn(new ConstraintViolationList([]));
+
+        $app->isTestApp()->willReturn(true);
+        $getAppQuery->execute('an_app_id')->willReturn($app);
+        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(false);
+
+        $this
+            ->shouldThrow(AccessDeniedException::class)
+            ->during('handle', [$command]);
+    }
+
+    public function it_throws_when_the_app_authorization_was_not_found_despite_validation(
+        ValidatorInterface $validator,
+        GetAppQueryInterface $getAppQuery,
+        AppAuthorizationSessionInterface $appAuthorizationSession,
+        SecurityFacade $security,
+        App $app
+    ): void {
+        $command = new CreateAppWithAuthorizationCommand('an_app_id');
+
+        $validator
+            ->validate($command)
+            ->willReturn(new ConstraintViolationList([]));
+
+        $app->isTestApp()->willReturn(false);
         $getAppQuery->execute('an_app_id')->willReturn($app);
         $appAuthorizationSession->getAppAuthorization('an_app_id')->willReturn(null);
+        $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(true);
 
         $this
             ->shouldThrow(\LogicException::class)
@@ -124,6 +173,7 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
         GetAppQueryInterface $getAppQuery,
         AppAuthorizationSessionInterface $appAuthorizationSession,
         ClientProviderInterface $clientProvider,
+        SecurityFacade $security,
         App $app,
         AppAuthorization $appAuthorization
     ): void {
@@ -133,9 +183,11 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
             ->validate($command)
             ->willReturn(new ConstraintViolationList([]));
 
+        $app->isTestApp()->willReturn(false);
         $getAppQuery->execute('an_app_id')->willReturn($app);
         $appAuthorizationSession->getAppAuthorization('an_app_id')->willReturn($appAuthorization);
         $clientProvider->findClientByAppId('an_app_id')->willReturn(null);
+        $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(true);
 
         $this
             ->shouldThrow(\LogicException::class)
@@ -148,6 +200,7 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
         AppAuthorizationSessionInterface $appAuthorizationSession,
         ClientProviderInterface $clientProvider,
         CreateUserGroupInterface $createUserGroup,
+        SecurityFacade $security,
         App $app,
         AppAuthorization $appAuthorization,
         Client $client,
@@ -159,11 +212,13 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
             ->validate($command)
             ->willReturn(new ConstraintViolationList([]));
 
+        $app->isTestApp()->willReturn(false);
         $getAppQuery->execute('an_app_id')->willReturn($app);
         $appAuthorizationSession->getAppAuthorization('an_app_id')->willReturn($appAuthorization);
         $clientProvider->findClientByAppId('an_app_id')->willReturn($client);
         $createUserGroup->execute(Argument::any())->willReturn($userGroup);
         $userGroup->getName()->willReturn(null);
+        $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(true);
 
         $this
             ->shouldThrow(\LogicException::class)
@@ -177,6 +232,7 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
         ClientProviderInterface $clientProvider,
         CreateUserGroupInterface $createUserGroup,
         AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory,
+        SecurityFacade $security,
         App $app,
         AppAuthorization $appAuthorization,
         Client $client,
@@ -189,6 +245,7 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
             ->validate($command)
             ->willReturn(new ConstraintViolationList([]));
 
+        $app->isTestApp()->willReturn(false);
         $getAppQuery->execute('an_app_id')->willReturn($app);
         $appAuthorizationSession->getAppAuthorization('an_app_id')->willReturn($appAuthorization);
         $appAuthorization->getAuthorizationScopes()->willReturn(ScopeList::fromScopes([]));
@@ -197,6 +254,7 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
         $userGroup->getName()->willReturn('foo');
         $appRoleWithScopesFactory->createRole('an_app_id', [])->willReturn($role);
         $role->getRole()->willReturn(null);
+        $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(true);
 
         $this
             ->shouldThrow(\LogicException::class)
@@ -213,6 +271,7 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
         CreateUserInterface $createUser,
         CreateConnectedAppInterface $createApp,
         CreateConnectionInterface $createConnection,
+        SecurityFacade $security,
         App $app,
         AppAuthorization $appAuthorization,
         Client $client,
@@ -236,9 +295,11 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
         $appRoleWithScopesFactory->createRole('an_app_id', ['a_scope'])->willReturn($role);
         $role->getRole()->willReturn('ROLE_APP');
         $createUser->execute(Argument::any(), Argument::any(), Argument::any(), ['a_group'], ['ROLE_APP'])->willReturn($user);
+        $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(true);
 
         $client->getId()->willReturn(42);
         $app->getName()->willReturn('My App');
+        $app->isTestApp()->willReturn(false);
         $user->id()->willReturn(43);
         $createConnection->execute(Argument::any(), 'My App', 'other', 42, 43)->willReturn($connection);
         $connection->code()->willReturn('random_connection_code');

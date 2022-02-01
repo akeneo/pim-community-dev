@@ -57,20 +57,6 @@ class GetAppActivateUrlActionSpec extends ObjectBehavior
             ->during('__invoke', [$request, 'foo']);
     }
 
-    public function it_throws_access_denied_exception_with_missing_acl(
-        FeatureFlag $featureFlag,
-        SecurityFacade $security,
-        Request $request,
-    ): void {
-        $request->isXmlHttpRequest()->willReturn(true);
-        $featureFlag->isEnabled()->willReturn(true);
-        $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(false);
-
-        $this
-            ->shouldThrow(new AccessDeniedHttpException())
-            ->during('__invoke', [$request, 'foo']);
-    }
-
     public function it_throws_bad_request_exception_when_too_much_apps(
         FeatureFlag $featureFlag,
         SecurityFacade $security,

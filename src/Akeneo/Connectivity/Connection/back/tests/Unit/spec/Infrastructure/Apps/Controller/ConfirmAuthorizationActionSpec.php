@@ -42,7 +42,6 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
         FeatureFlag $featureFlag,
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         ViolationListNormalizer $violationListNormalizer,
-        SecurityFacade $security,
         LoggerInterface $logger,
         RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
         AppAuthorizationSessionInterface $appAuthorizationSession,
@@ -54,7 +53,6 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
             $featureFlag,
             $getAppConfirmationQuery,
             $violationListNormalizer,
-            $security,
             $logger,
             $redirectUriWithAuthorizationCodeGenerator,
             $appAuthorizationSession,
@@ -73,7 +71,6 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
         FeatureFlag $featureFlag,
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         ViolationListNormalizer $violationListNormalizer,
-        SecurityFacade $security,
         LoggerInterface $logger,
         AppAuthorizationSessionInterface $appAuthorizationSession,
         ConnectedPimUserProvider $connectedPimUserProvider,
@@ -101,7 +98,6 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
         ]);
 
         $featureFlag->isEnabled()->willReturn(true);
-        $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(true);
         $request->isXmlHttpRequest()->willReturn(true);
         $connectedPimUserProvider->getCurrentUserId()->willReturn($connectedPimUserId);
 
@@ -130,7 +126,6 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
         FeatureFlag $featureFlag,
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         ViolationListNormalizer $violationListNormalizer,
-        SecurityFacade $security,
         LoggerInterface $logger,
         AppAuthorizationSessionInterface $appAuthorizationSession,
         ConnectedPimUserProvider $connectedPimUserProvider,
@@ -159,7 +154,6 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
         ]);
 
         $featureFlag->isEnabled()->willReturn(true);
-        $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(true);
         $request->isXmlHttpRequest()->willReturn(true);
         $connectedPimUserProvider->getCurrentUserId()->willReturn($connectedPimUserId);
 
@@ -190,7 +184,6 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
         CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler,
         FeatureFlag $featureFlag,
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
-        SecurityFacade $security,
         AppAuthorizationSessionInterface $appAuthorizationSession,
         ConnectedPimUserProvider $connectedPimUserProvider,
         Request $request,
@@ -205,7 +198,6 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
         ]);
 
         $featureFlag->isEnabled()->willReturn(true);
-        $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(true);
         $request->isXmlHttpRequest()->willReturn(true);
         $connectedPimUserProvider->getCurrentUserId()->willReturn($connectedPimUserId);
         $createAppWithAuthorizationHandler->handle(

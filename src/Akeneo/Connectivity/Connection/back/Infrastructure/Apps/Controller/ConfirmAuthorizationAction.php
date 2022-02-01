@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthentica
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\AccessDeniedException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthenticationException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
@@ -36,7 +37,6 @@ final class ConfirmAuthorizationAction
     private FeatureFlag $featureFlag;
     private GetAppConfirmationQueryInterface $getAppConfirmationQuery;
     private ViolationListNormalizer $violationListNormalizer;
-    private SecurityFacade $security;
     private LoggerInterface $logger;
     private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator;
     private AppAuthorizationSessionInterface $appAuthorizationSession;
@@ -48,7 +48,6 @@ final class ConfirmAuthorizationAction
         FeatureFlag $featureFlag,
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         ViolationListNormalizer $violationListNormalizer,
-        SecurityFacade $security,
         LoggerInterface $logger,
         RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
         AppAuthorizationSessionInterface $appAuthorizationSession,
@@ -59,7 +58,6 @@ final class ConfirmAuthorizationAction
         $this->featureFlag = $featureFlag;
         $this->getAppConfirmationQuery = $getAppConfirmationQuery;
         $this->violationListNormalizer = $violationListNormalizer;
-        $this->security = $security;
         $this->logger = $logger;
         $this->redirectUriWithAuthorizationCodeGenerator = $redirectUriWithAuthorizationCodeGenerator;
         $this->appAuthorizationSession = $appAuthorizationSession;
@@ -71,10 +69,6 @@ final class ConfirmAuthorizationAction
     {
         if (!$this->featureFlag->isEnabled()) {
             throw new NotFoundHttpException();
-        }
-
-        if (!$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
-            throw new AccessDeniedHttpException();
         }
 
         if (!$request->isXmlHttpRequest()) {
@@ -102,6 +96,8 @@ final class ConfirmAuthorizationAction
             return new JsonResponse([
                 'errors' => $this->violationListNormalizer->normalize($exception->getConstraintViolationList()),
             ], Response::HTTP_BAD_REQUEST);
+        } catch (AccessDeniedException $exception) {
+            throw new AccessDeniedHttpException('Missing permissions', $exception);
         }
 
         $appConfirmation = $this->getAppConfirmationQuery->execute($clientId);

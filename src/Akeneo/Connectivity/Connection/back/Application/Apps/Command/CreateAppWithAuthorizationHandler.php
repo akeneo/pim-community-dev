@@ -10,10 +10,13 @@ use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedAppIn
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectionInterface;
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface;
 use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\AccessDeniedException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -31,6 +34,7 @@ class CreateAppWithAuthorizationHandler
     private AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory;
     private ClientProviderInterface $clientProvider;
     private CreateConnectedAppInterface $createApp;
+    private SecurityFacade $security;
 
     public function __construct(
         ValidatorInterface $validator,
@@ -42,6 +46,7 @@ class CreateAppWithAuthorizationHandler
         AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory,
         ClientProviderInterface $clientProvider,
         CreateConnectedAppInterface $createApp,
+        SecurityFacade $security,
     ) {
         $this->validator = $validator;
         $this->session = $session;
@@ -52,6 +57,7 @@ class CreateAppWithAuthorizationHandler
         $this->appRoleWithScopesFactory = $appRoleWithScopesFactory;
         $this->clientProvider = $clientProvider;
         $this->createApp = $createApp;
+        $this->security = $security;
     }
 
     public function handle(CreateAppWithAuthorizationCommand $command): void
@@ -65,10 +71,12 @@ class CreateAppWithAuthorizationHandler
         // limit the random code to 30chars long because it's the limit imposed by UserGroup name constraints.
         $randomCode = $this->generateRandomCode(30, 'app_');
 
-        $marketplaceApp = $this->getAppQuery->execute($appId);
-        if (null === $marketplaceApp) {
+        $app = $this->getAppQuery->execute($appId);
+        if (null === $app) {
             throw new \LogicException('App should exists when validating the authorization wizard');
         }
+
+        $this->denyAccessUnlessGrantedToManage($app);
 
         $appAuthorization = $this->session->getAppAuthorization($appId);
         if (null === $appAuthorization) {
@@ -92,7 +100,7 @@ class CreateAppWithAuthorizationHandler
 
         $user = $this->createUser->execute(
             $randomCode,
-            $marketplaceApp->getName(),
+            $app->getName(),
             ' ',
             [$group->getName()],
             [$role->getRole()]
@@ -100,14 +108,14 @@ class CreateAppWithAuthorizationHandler
 
         $connection = $this->createConnection->execute(
             $randomCode,
-            $marketplaceApp->getName(),
+            $app->getName(),
             FlowType::OTHER,
             $client->getId(),
             $user->id(),
         );
 
         $this->createApp->execute(
-            $marketplaceApp,
+            $app,
             $appAuthorization->getAuthorizationScopes()->getScopes(),
             $connection->code(),
             $group->getName()
@@ -117,5 +125,22 @@ class CreateAppWithAuthorizationHandler
     private function generateRandomCode(int $maxLength = 30, string $prefix = ''): string
     {
         return substr(sprintf('%s%s', $prefix, base_convert(bin2hex(random_bytes(16)), 16, 36)), 0, $maxLength);
+    }
+
+    private function denyAccessUnlessGrantedToManage(App $app): void
+    {
+        if (
+            !$app->isTestApp() &&
+            !$this->security->isGranted('akeneo_connectivity_connection_manage_apps')
+        ) {
+            throw new AccessDeniedException();
+        }
+
+        if (
+            $app->isTestApp() &&
+            !$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')
+        ) {
+            throw new AccessDeniedException();
+        }
     }
 }

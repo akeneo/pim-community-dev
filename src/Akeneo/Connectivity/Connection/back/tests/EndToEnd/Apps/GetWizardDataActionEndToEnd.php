@@ -111,6 +111,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
     public function test_authentication_scopes_are_empty(): void
     {
         $this->authenticateAsAdmin();
+        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
         $app = App::fromWebMarketplaceValues($this->webMarketplaceApi->getApp('90741597-54c5-48a1-98da-a68e7ee0a715'));
         $this->clientProvider->findOrCreateClient($app);
 
@@ -161,6 +162,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
     public function test_authorization_scopes_are_empty(): void
     {
         $this->authenticateAsAdmin();
+        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
         $app = App::fromWebMarketplaceValues($this->webMarketplaceApi->getApp('90741597-54c5-48a1-98da-a68e7ee0a715'));
         $this->clientProvider->findOrCreateClient($app);
 
