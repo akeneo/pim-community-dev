@@ -174,6 +174,10 @@ jobs:
                   keys:
                       - backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}
             - run:
+                  name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                  command: |
+                      sudo chown -R 1000:1000 ../project ~/.composer ~/.cache/
+            - run:
                   name: Install back and front dependencies
                   command: make dependencies
                   environment:
@@ -194,6 +198,9 @@ jobs:
                       find << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Job/front/process-tracker -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/process-tracker.hash
                       find << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/catalog-volume-monitoring.hash
                       echo "$(date +%F) << parameters.path_to_front_packages >>" | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/catalog-volume-monitoring.hash ~/process-tracker.hash
+            - run:
+                  name: Set directories owner to circleci
+                  command: sudo chown -R circleci:circleci .
             - restore_cache:
                   name: Restore front package DSM cache
                   key: front-packages-dsm-{{ checksum "~/akeneo-design-system.hash" }}
@@ -209,6 +216,9 @@ jobs:
             - restore_cache:
                   name: Restore micro-frontend Catalog Volume Monitoring cache
                   key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}
+            - run:
+                  name: Set directories owner to docker
+                  command: sudo chown -R 1000:1000 ../project
             - run:
                   name: Build front-packages
                   command: make front-packages

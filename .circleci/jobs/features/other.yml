@@ -6,6 +6,9 @@ jobs:
             - attach_workspace:
                   at: ~/
             - run:
+                  name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                  command: sudo chown -R 1000:1000 ../project
+            - run:
                   name: No legacy translation format
                   command: PIM_CONTEXT=test make find-legacy-translations
             - run:
@@ -41,6 +44,9 @@ jobs:
             - attach_workspace:
                   at: ~/
             - run:
+                  name: Change owner on project dir in order to archive the project into the workspace
+                  command: sudo chown -R 1000:1000 ../project
+            - run:
                   name: Start containers
                   command: |
                       docker load -i php-pim-image.tar
@@ -70,8 +76,14 @@ jobs:
             - attach_workspace:
                   at: ~/
             - run:
+                  name: Change owner on project dir in order to archive the project into the workspace
+                  command: sudo chown -R 1000:1000 ../project
+            - run:
                   name: Create yarn cache folder
                   command: mkdir -p  ~/.cache/yarn
+            - run:
+                  name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                  command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
             - run:
                   name: Start containers
                   command: |
@@ -105,6 +117,9 @@ jobs:
                       fi
                       echo "Behat Suite to run: "$TESTSUITE
                       echo "export TESTSUITE=$TESTSUITE" >> $BASH_ENV
+            - run:
+                  name: Change owner on project dir in order to archive the project into the workspace
+                  command: sudo chown -R 1000:1000 ../project
             - run:
                   name: Start containers
                   command: |
@@ -152,6 +167,9 @@ jobs:
                   name: Create yarn cache folder
                   command: mkdir -p  ~/.cache/yarn
             - run:
+                  name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                  command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
+            - run:
                   name: Front type checking
                   command: make javascript-dev-strict
             - run:
@@ -167,6 +185,9 @@ jobs:
         steps:
             - attach_workspace:
                   at: ~/
+            - run:
+                  name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                  command: sudo chown -R 1000:1000 ../project
             - run:
                   name: Start containers
                   command: |
@@ -205,6 +226,9 @@ jobs:
                         cd vendor/akeneo/pim-community-dev
                         git checkout -- .
             -   run:
+                    name: Change owner on project dir after restoring cache
+                    command: sudo chown -R 1000:1000 ../project
+            -   run:
                     name: Test missing database and index structure migrations
                     command: vendor/akeneo/pim-community-dev/.circleci/detect_structure_changes.sh $CIRCLE_BRANCH
 
@@ -214,6 +238,9 @@ jobs:
         steps:
             - attach_workspace:
                   at: ~/
+            - run:
+                  name: Change owner on project dir in order to archive the project into the workspace
+                  command: sudo chown -R 1000:1000 ../project
             - run:
                   name: Start containers
                   command: |
@@ -242,8 +269,12 @@ jobs:
             - attach_workspace:
                   at: ~/
             - run:
-                  name: Create missing directories
-                  command: mkdir -p ~/.cache/yarn ~/.composer
+                  name: Change owner on project dir in order to archive the project into the workspace
+                  command: |
+                      mkdir -p ~/.cache/yarn ~/.composer
+                      sudo chown -R 1000:1000 ../project
+                      sudo chown -R 1000:1000 ~/.composer
+                      sudo chown -R 1000:1000 ~/.cache/yarn
             - run:
                   name: Create an empty service account
                   command: |
@@ -268,6 +299,9 @@ jobs:
                       PIM_VERSION=master SETUP_FOR_CI=1 PIM_CONTEXT=onboarder make setup-onboarder-parameters
                       PIM_VERSION=master PIM_CONTEXT=onboarder make setup-onboarder-tests
                       docker-compose run --rm php php /usr/local/bin/composer dumpautoload --no-interaction
+            - run:
+                  name: Change owner of PIM as some files have been created with wrong owner
+                  command: sudo chown -R 1000:1000 ~/project
             - run:
                   name: Execute static analysis
                   command: PIM_CONTEXT=onboarder make test-static-analysis
@@ -317,6 +351,9 @@ jobs:
         steps:
             - attach_workspace:
                   at: ~/
+            - run:
+                  name: Change owner on project dir in order to archive the project into the workspace
+                  command: sudo chown -R 1000:1000 ../project
             - run:
                   name: Start containers
                   command: |
