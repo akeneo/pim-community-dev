@@ -2,10 +2,6 @@
 
 import remover from 'akeneoassetmanager/infrastructure/remover/attribute';
 
-jest.mock('routing', () => ({
-  generate: (url: string) => url,
-}));
-
 describe('akeneoassetmanager/infrastructure/remover/attribute', () => {
   it('It deletes an attribute', async () => {
     global.fetch = jest.fn().mockImplementationOnce(() =>
