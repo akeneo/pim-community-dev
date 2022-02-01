@@ -12,14 +12,14 @@ use Symfony\Component\Validator\Constraint;
  */
 final class LocaleAndChannelConsistency extends Constraint
 {
-    public const NO_CHANNEL_CODE_PROVIDED_FOR_SCOPABLE_ATTRIBUTE = 'test1';
-    public const CHANNEL_CODE_PROVIDED_FOR_NON_SCOPABLE_ATTRIBUTE = 'test2';
-    public const NO_LOCALE_CODE_PROVIDED_FOR_LOCALIZABLE_ATTRIBUTE = 'test3';
-    public const LOCALE_CODE_PROVIDED_FOR_NON_LOCALIZABLE_ATTRIBUTE = 'test4';
-    public const INVALID_LOCALE_CODE_FOR_LOCALE_SPECIFIC_ATTRIBUTE = 'test5';
-    public const CHANNEL_DOES_NOT_EXIST = 'test7';
-    public const LOCALE_IS_NOT_ACTIVE = 'test8';
-    public const LOCALE_NOT_BOUND_TO_CHANNEL = 'test9';
+    public const NO_CHANNEL_CODE_PROVIDED_FOR_SCOPABLE_ATTRIBUTE = 'akeneo_pim_product.upsert.set_value.no_channel_code_provided_for_scopable_attribute';
+    public const CHANNEL_CODE_PROVIDED_FOR_NON_SCOPABLE_ATTRIBUTE = 'akeneo_pim_product.upsert.set_value.channel_code_provided_for_non_scopable_attribute';
+    public const NO_LOCALE_CODE_PROVIDED_FOR_LOCALIZABLE_ATTRIBUTE = 'akeneo_pim_product.upsert.set_value.no_locale_code_provided_for_localizable_attribute';
+    public const LOCALE_CODE_PROVIDED_FOR_NON_LOCALIZABLE_ATTRIBUTE = 'akeneo_pim_product.upsert.set_value.locale_code_provided_for_non_localizable_attribute';
+    public const INVALID_LOCALE_CODE_FOR_LOCALE_SPECIFIC_ATTRIBUTE = 'akeneo_pim_product.upsert.set_value.invalid_locale_code_for_locale_specific_attribute';
+    public const CHANNEL_DOES_NOT_EXIST = 'akeneo_pim_product.upsert.set_value.channel_does_not_exist';
+    public const LOCALE_IS_NOT_ACTIVE = 'akeneo_pim_product.upsert.set_value.locale_is_not_active';
+    public const LOCALE_NOT_BOUND_TO_CHANNEL = 'akeneo_pim_product.upsert.set_value.locale_not_bound_to_channel';
 
     public function getTargets(): array
     {

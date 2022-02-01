@@ -44,7 +44,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [
             new SetTextValue('name', 'en_US', 'ecommerce', 'My beautiful product'),
-            new NotBlank()
+            new NotBlank(),
         ]);
     }
 
@@ -52,7 +52,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [
             new \stdClass(),
-            new LocaleAndChannelConsistency()
+            new LocaleAndChannelConsistency(),
         ]);
     }
 
@@ -77,8 +77,12 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
         $getAttributes->forCode('name')->shouldBeCalled()->willReturn($this->getTextAttribute('name', true, false));
 
         $context
-            ->buildViolation(LocaleAndChannelConsistency::NO_CHANNEL_CODE_PROVIDED_FOR_SCOPABLE_ATTRIBUTE, [])
-            ->shouldBeCalled()->willReturn($violationBuilder);
+            ->buildViolation(
+                LocaleAndChannelConsistency::NO_CHANNEL_CODE_PROVIDED_FOR_SCOPABLE_ATTRIBUTE,
+                [
+                    '{{ attributeCode }}' => 'name',
+                ]
+            )->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
@@ -95,8 +99,13 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
         $getAttributes->forCode('name')->shouldBeCalled()->willReturn($this->getTextAttribute('name', false, false));
 
         $context
-            ->buildViolation(LocaleAndChannelConsistency::CHANNEL_CODE_PROVIDED_FOR_NON_SCOPABLE_ATTRIBUTE, [])
-            ->shouldBeCalled()->willReturn($violationBuilder);
+            ->buildViolation(
+                LocaleAndChannelConsistency::CHANNEL_CODE_PROVIDED_FOR_NON_SCOPABLE_ATTRIBUTE,
+                [
+                    '{{ attributeCode }}' => 'name',
+                    '{{ channelCode }}' => 'ecommerce',
+                ]
+            )->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
@@ -113,8 +122,12 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
         $getAttributes->forCode('name')->shouldBeCalled()->willReturn($this->getTextAttribute('name', true, false));
 
         $context
-            ->buildViolation(LocaleAndChannelConsistency::CHANNEL_DOES_NOT_EXIST, [])
-            ->shouldBeCalled()->willReturn($violationBuilder);
+            ->buildViolation(
+                LocaleAndChannelConsistency::CHANNEL_DOES_NOT_EXIST,
+                [
+                    '{{ channelCode }}' => 'mobile',
+                ]
+            )->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
@@ -131,8 +144,12 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
         $getAttributes->forCode('name')->shouldBeCalled()->willReturn($this->getTextAttribute('name', false, true));
 
         $context
-            ->buildViolation(LocaleAndChannelConsistency::NO_LOCALE_CODE_PROVIDED_FOR_LOCALIZABLE_ATTRIBUTE, [])
-            ->shouldBeCalled()->willReturn($violationBuilder);
+            ->buildViolation(
+                LocaleAndChannelConsistency::NO_LOCALE_CODE_PROVIDED_FOR_LOCALIZABLE_ATTRIBUTE,
+                [
+                    '{{ attributeCode }}' => 'name',
+                ]
+            )->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
@@ -149,8 +166,13 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
         $getAttributes->forCode('name')->shouldBeCalled()->willReturn($this->getTextAttribute('name', false, false));
 
         $context
-            ->buildViolation(LocaleAndChannelConsistency::LOCALE_CODE_PROVIDED_FOR_NON_LOCALIZABLE_ATTRIBUTE, [])
-            ->shouldBeCalled()->willReturn($violationBuilder);
+            ->buildViolation(
+                LocaleAndChannelConsistency::LOCALE_CODE_PROVIDED_FOR_NON_LOCALIZABLE_ATTRIBUTE,
+                [
+                    '{{ attributeCode }}' => 'name',
+                    '{{ localeCode }}' => 'en_US',
+                ]
+            )->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
@@ -167,8 +189,12 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
         $getAttributes->forCode('name')->shouldBeCalled()->willReturn($this->getTextAttribute('name', false, true));
 
         $context
-            ->buildViolation(LocaleAndChannelConsistency::LOCALE_IS_NOT_ACTIVE, [])
-            ->shouldBeCalled()->willReturn($violationBuilder);
+            ->buildViolation(
+                LocaleAndChannelConsistency::LOCALE_IS_NOT_ACTIVE,
+                [
+                    '{{ localeCode }}' => 'es_ES',
+                ]
+            )->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
@@ -185,8 +211,13 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
         $getAttributes->forCode('name')->shouldBeCalled()->willReturn($this->getTextAttribute('name', true, true));
 
         $context
-            ->buildViolation(LocaleAndChannelConsistency::LOCALE_NOT_BOUND_TO_CHANNEL, [])
-            ->shouldBeCalled()->willReturn($violationBuilder);
+            ->buildViolation(
+                LocaleAndChannelConsistency::LOCALE_NOT_BOUND_TO_CHANNEL,
+                [
+                    '{{ localeCode }}' => 'fr_FR',
+                    '{{ channelCode }}' => 'ecommerce',
+                ]
+            )->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
@@ -205,8 +236,14 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
         );
 
         $context
-            ->buildViolation(LocaleAndChannelConsistency::INVALID_LOCALE_CODE_FOR_LOCALE_SPECIFIC_ATTRIBUTE, [])
-            ->shouldBeCalled()->willReturn($violationBuilder);
+            ->buildViolation(
+                LocaleAndChannelConsistency::INVALID_LOCALE_CODE_FOR_LOCALE_SPECIFIC_ATTRIBUTE,
+                [
+                    '{{ attributeCode }}' => 'name',
+                    '{{ localeCode }}' => 'fr_FR',
+                    '{{ availableLocales }}' => 'en_US',
+                ]
+            )->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
