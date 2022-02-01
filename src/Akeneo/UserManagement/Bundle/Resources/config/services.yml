@@ -1,3 +1,7 @@
+parameters:
+    pim_user.account_lock.duration: 5
+    pim_user.account_lock.max_consecutive_failures: 5
+
 services:
     pim_user.manager:
         class: 'Akeneo\UserManagement\Bundle\Manager\UserManager'
@@ -21,3 +25,16 @@ services:
             - '%kernel.root_dir%'
         tags:
             - { name: doctrine.event_subscriber }
+
+    security.authentication.provider.dao:
+        class: Akeneo\UserManagement\Bundle\Provider\CustomDaoAuthenticationProvider
+        abstract: true
+        arguments:
+            - ''
+            - ''
+            - ''
+            - '@security.encoder_factory'
+            - '@pim_user.manager'
+            - '%pim_user.account_lock.duration%'
+            - '%pim_user.account_lock.max_consecutive_failures%'
+            - '%security.authentication.hide_user_not_found%'
