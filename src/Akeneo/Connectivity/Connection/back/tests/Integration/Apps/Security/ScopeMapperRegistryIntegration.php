@@ -125,11 +125,11 @@ class ScopeMapperRegistryIntegration extends TestCase
                 'pim_api_family_variant_list',
             ],
             'read_attribute_options' => [
-                'pim_api_attribute_options_list',
+                'pim_api_attribute_option_list',
             ],
             'write_attribute_options' => [
-                'pim_api_attribute_options_edit',
-                'pim_api_attribute_options_list',
+                'pim_api_attribute_option_edit',
+                'pim_api_attribute_option_list',
             ],
             'read_association_types' => [
                 'pim_api_association_type_list',
