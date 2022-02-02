@@ -1,11 +1,20 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {ThemeProvider} from 'styled-components';
 import BaseView = require('pimui/js/view/base');
 import {
+  Attribute,
+  FetcherContext,
   ImportStructureTab,
   ImportStructureTabProps,
-  StructureConfiguration
+  StructureConfiguration,
 } from '@akeneo-pim-enterprise/tailored-import';
-import {filterErrors, ValidationError} from '@akeneo-pim-community/shared';
+import {pimTheme} from 'akeneo-design-system';
+import {Channel, filterErrors, ValidationError} from '@akeneo-pim-community/shared';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+
 const __ = require('oro/translator');
+const fetcherRegistry = require('pim/fetcher-registry');
 
 class ColumnView extends BaseView {
   public config: any;
@@ -74,7 +83,37 @@ class ColumnView extends BaseView {
       onStructureConfigurationChange: this.setStructureConfigurationData.bind(this),
     };
 
-    this.renderReact(ImportStructureTab, props, this.el);
+    ReactDOM.render(
+      React.createElement(
+        ThemeProvider,
+        {theme: pimTheme},
+        React.createElement(
+          DependenciesProvider,
+          null,
+          React.createElement(
+            FetcherContext.Provider,
+            {
+              value: {
+                attribute: {
+                  fetchByIdentifiers: (identifiers: string[]): Promise<Attribute[]> => {
+                    return new Promise(resolve =>
+                      fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(identifiers).then(resolve)
+                    );
+                  },
+                },
+                channel: {
+                  fetchAll: (): Promise<Channel[]> => {
+                    return new Promise(resolve => fetcherRegistry.getFetcher('channel').fetchAll().then(resolve));
+                  },
+                },
+              },
+            },
+            React.createElement(ImportStructureTab, props)
+          )
+        )
+      ),
+      this.el
+    );
 
     return this;
   }

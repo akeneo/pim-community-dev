@@ -21,6 +21,9 @@ akeneo.tailored_import:
       add: Add a source
       disabled: You have reached the limit of {{ limit }} sources, you can no longer add sources to this data mapping.
     sources: Sources
+    target:
+      target_parameters: Target parameters
+      locale_specific: This attribute is locale specific
   add_data_mapping:
     target:
       add: Add a data mapping

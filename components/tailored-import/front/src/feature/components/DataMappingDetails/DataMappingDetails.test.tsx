@@ -1,9 +1,9 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
-import {renderWithProviders} from '@akeneo-pim-community/shared';
-import {DataMappingDetails} from './DataMappingDetails';
-import {Column, DataMapping} from '../../models';
 import userEvent from '@testing-library/user-event';
+import {renderWithProviders} from 'feature/tests';
+import {DataMappingDetails} from './DataMappingDetails';
+import {AttributeTarget, Column, DataMapping} from '../../models';
 
 const columns: Column[] = [
   {
@@ -71,8 +71,8 @@ jest.mock('../SourceDropdown', () => ({
   ),
 }));
 
-test('it display a property data mapping', () => {
-  renderWithProviders(
+test('it displays a property data mapping', async () => {
+  await renderWithProviders(
     <DataMappingDetails dataMapping={propertyDataMapping} columns={columns} onDataMappingChange={jest.fn()} />
   );
 
@@ -81,8 +81,8 @@ test('it display a property data mapping', () => {
   expect(screen.getByText('Product identifier (A)')).toBeInTheDocument();
 });
 
-test('it display an attribute data mapping', () => {
-  renderWithProviders(
+test('it displays an attribute data mapping', async () => {
+  await renderWithProviders(
     <DataMappingDetails dataMapping={attributeDataMapping} columns={columns} onDataMappingChange={jest.fn()} />
   );
 
@@ -91,9 +91,43 @@ test('it display an attribute data mapping', () => {
   expect(screen.getByText('Name (B)')).toBeInTheDocument();
 });
 
+test('it can change target parameters', async () => {
+  const handleDataMappingChange = jest.fn();
+
+  const attributeTarget: AttributeTarget = {
+    code: 'name',
+    type: 'attribute',
+    action: 'set',
+    ifEmpty: 'skip',
+    onError: 'skipLine',
+    channel: 'print',
+    locale: 'en_US',
+  };
+
+  await renderWithProviders(
+    <DataMappingDetails
+      dataMapping={{...attributeDataMapping, target: attributeTarget}}
+      columns={columns}
+      onDataMappingChange={handleDataMappingChange}
+    />
+  );
+
+  userEvent.click(screen.getByLabelText('pim_common.channel'));
+  userEvent.click(screen.getByText('[ecommerce]'));
+
+  expect(handleDataMappingChange).toHaveBeenCalledWith({
+    ...attributeDataMapping,
+    target: {
+      ...attributeTarget,
+      channel: 'ecommerce',
+    },
+  });
+});
+
 test('it can add a source to a data mapping', async () => {
   const handleDataMappingChange = jest.fn();
-  renderWithProviders(
+
+  await renderWithProviders(
     <DataMappingDetails
       dataMapping={propertyDataMapping}
       columns={columns}
@@ -121,7 +155,8 @@ test('it cannot add a source to a data mapping when limit is reached', async () 
   };
 
   const handleDataMappingChange = jest.fn();
-  renderWithProviders(
+
+  await renderWithProviders(
     <DataMappingDetails dataMapping={dataMapping} columns={columns} onDataMappingChange={handleDataMappingChange} />
   );
 

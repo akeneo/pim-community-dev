@@ -1,17 +1,31 @@
+import {channels} from 'feature/tests';
+import {Attribute} from './Attribute';
 import {
   DataMapping,
   updateDataMapping,
-  createDataMapping,
+  createPropertyDataMapping,
   createDefaultDataMapping,
   addSourceToDataMapping,
+  createAttributeDataMapping,
 } from './DataMapping';
 
 const mockUuid = 'uuid';
 jest.mock('akeneo-design-system', () => ({
+  ...jest.requireActual('akeneo-design-system'),
   uuid: () => mockUuid,
 }));
 
-test('it create a default data mapping', () => {
+const attribute: Attribute = {
+  code: 'description',
+  localizable: false,
+  scopable: false,
+  is_locale_specific: false,
+  available_locales: [],
+  type: 'pim_catalog_text',
+  labels: {},
+};
+
+test('it creates a default data mapping', () => {
   expect(createDefaultDataMapping([{uuid: 'columnUuid', index: 0, label: 'identifier'}])).toEqual({
     uuid: mockUuid,
     operations: [],
@@ -29,8 +43,8 @@ test('it create a default data mapping', () => {
   });
 });
 
-test('it create an attribute data mapping', () => {
-  expect(createDataMapping('description', 'attribute')).toEqual({
+test('it creates an attribute data mapping', () => {
+  expect(createAttributeDataMapping('description', attribute, [])).toEqual({
     uuid: mockUuid,
     operations: [],
     sampleData: [],
@@ -47,8 +61,37 @@ test('it create an attribute data mapping', () => {
   });
 });
 
-test('it create a property data mapping', () => {
-  expect(createDataMapping('family', 'property')).toEqual({
+test('it creates a localizable & locale-specific attribute data mapping', () => {
+  expect(
+    createAttributeDataMapping(
+      'description',
+      {
+        ...attribute,
+        localizable: true,
+        is_locale_specific: true,
+        available_locales: ['fr_FR'],
+      },
+      channels
+    )
+  ).toEqual({
+    uuid: mockUuid,
+    operations: [],
+    sampleData: [],
+    sources: [],
+    target: {
+      action: 'set',
+      channel: null,
+      code: 'description',
+      ifEmpty: 'skip',
+      locale: 'fr_FR',
+      onError: 'skipLine',
+      type: 'attribute',
+    },
+  });
+});
+
+test('it creates a property data mapping', () => {
+  expect(createPropertyDataMapping('family')).toEqual({
     uuid: mockUuid,
     operations: [],
     sampleData: [],
@@ -63,7 +106,7 @@ test('it create a property data mapping', () => {
   });
 });
 
-test('it add a source to data mapping', () => {
+test('it adds a source to data mapping', () => {
   const dataMapping: DataMapping = {
     uuid: mockUuid,
     operations: [],
@@ -97,7 +140,7 @@ test('it add a source to data mapping', () => {
   });
 });
 
-test('it update a data mapping', () => {
+test('it updates a data mapping', () => {
   const dataMappings: DataMapping[] = [
     {
       uuid: '8175126a-5deb-426c-a829-c9b7949dc1f7',

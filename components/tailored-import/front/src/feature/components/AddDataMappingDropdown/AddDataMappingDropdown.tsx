@@ -11,8 +11,15 @@ import {
 } from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {flattenSections} from './flattenSections';
-import {useOffsetAvailableTargets} from '../../hooks';
-import {createDataMapping, DataMapping, DataMappingType, MAX_DATA_MAPPING_COUNT} from '../../models';
+import {useChannels, useOffsetAvailableTargets} from '../../hooks';
+import {
+  createAttributeDataMapping,
+  createPropertyDataMapping,
+  DataMapping,
+  DataMappingType,
+  MAX_DATA_MAPPING_COUNT,
+} from '../../models';
+import {useFetchers} from '../../contexts';
 
 type AddDataMappingDropdownProps = {
   canAddDataMapping: boolean;
@@ -21,6 +28,8 @@ type AddDataMappingDropdownProps = {
 
 const AddDataMappingDropdown = ({canAddDataMapping, onDataMappingAdded}: AddDataMappingDropdownProps) => {
   const translate = useTranslate();
+  const channels = useChannels();
+  const attributeFetcher = useFetchers().attribute;
   const [isOpen, open, close] = useBooleanState();
   const [searchValue, setSearchValue] = useState<string>('');
   const debouncedSearchValue = useDebounce(searchValue);
@@ -28,10 +37,15 @@ const AddDataMappingDropdown = ({canAddDataMapping, onDataMappingAdded}: AddData
   const inputRef = useRef<HTMLInputElement>(null);
   const focus = useAutoFocus(inputRef);
 
-  const handleTargetSelected = (targetCode: string, targetType: DataMappingType): void => {
-    const dataMapping = createDataMapping(targetCode, targetType);
-    onDataMappingAdded(dataMapping);
-    handleClose();
+  const handleTargetSelected = async (targetCode: string, targetType: DataMappingType) => {
+    if ('property' === targetType) {
+      onDataMappingAdded(createPropertyDataMapping(targetCode));
+      handleClose();
+    } else {
+      const [attribute] = await attributeFetcher.fetchByIdentifiers([targetCode]);
+      onDataMappingAdded(createAttributeDataMapping(targetCode, attribute, channels));
+      handleClose();
+    }
   };
 
   const handleClose = () => {
