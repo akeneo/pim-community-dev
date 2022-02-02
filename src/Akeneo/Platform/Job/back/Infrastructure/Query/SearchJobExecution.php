@@ -129,7 +129,7 @@ SQL;
 
         if (!empty($search)) {
             $searchParts = explode(' ', $search);
-            foreach ($searchParts as $index => $searchPart) {
+            foreach (array_keys($searchParts) as $index) {
                 $sqlWhereParts[] = sprintf('job_instance.label LIKE :%s_%s', self::SEARCH_PART_PARAM_SUFFIX, $index);
             }
         }
