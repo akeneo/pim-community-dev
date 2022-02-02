@@ -7,6 +7,7 @@ use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Bundle\Model\LockedAccountException;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -29,12 +30,17 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
 
     private int $accountMaxConsecutiveFailure;
 
-    public function __construct(UserProviderInterface $userProvider, UserCheckerInterface $userChecker, string $providerKey, EncoderFactoryInterface $encoderFactory, UserManager $userManager, int $accountLockDuration, int $accountMaxConsecutiveFailure, bool $hideUserNotFoundExceptions = true)
+    /** TODO Pull up to 6.0 remove Connection from dependencies */
+    private Connection $connection;
+
+    /** TODO Pull up to 6.0 remove Connection from dependencies */
+    public function __construct(UserProviderInterface $userProvider, UserCheckerInterface $userChecker, string $providerKey, EncoderFactoryInterface $encoderFactory, UserManager $userManager, Connection $connection,int $accountLockDuration, int $accountMaxConsecutiveFailure, bool $hideUserNotFoundExceptions = true)
     {
         parent::__construct($userProvider, $userChecker, $providerKey, $encoderFactory, $hideUserNotFoundExceptions);
         $this->userManager = $userManager;
         $this->accountLockDuration = $accountLockDuration;
         $this->accountMaxConsecutiveFailure = $accountMaxConsecutiveFailure;
+        $this->connection = $connection;
     }
 
     /**
@@ -63,7 +69,8 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
         $user->setConsecutiveAuthenticationFailureCounter(
             1 + $user->getConsecutiveAuthenticationFailureCounter()
         );
-        $this->userManager->updateUser($user);
+        /** TODO Pull up to 6.0 use UserManager updateUser function instead */
+        $this->updateUser($user);
     }
 
     private function validateAccountUnlocked(UserInterface $user): void
@@ -85,7 +92,8 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
 
         $user->setAuthenticationFailureResetDate(null);
         $user->setConsecutiveAuthenticationFailureCounter(0);
-        $this->userManager->updateUser($user);
+        /** TODO Pull up to 6.0 use UserManager updateUser function instead */
+        $this->updateUser($user);
     }
 
     private function isWithinLockTimePeriod(UserInterface $user): bool
@@ -102,5 +110,19 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
     {
         return !$this->isCounterReset($user)
             && !$this->isWithinLockTimePeriod($user);
+    }
+
+    /** TODO Pull up to 6.0 remove this function */
+    private function updateUser(User $user): void
+    {
+        $this->connection->executeQuery('
+            UPDATE oro_user 
+            SET consecutive_authentication_failure_counter = :consecutiveAuthenticationFailureCounter, authentication_failure_reset_date = :authenticationFailureResetDate
+            WHERE id = :id
+        ', [
+            "consecutiveAuthenticationFailureCounter" => $user->getConsecutiveAuthenticationFailureCounter(),
+            "authenticationFailureResetDate" => $user->getAuthenticationFailureResetDate(),
+            "id" => $user->getId()
+        ], ["authenticationFailureResetDate" => "datetime"]);
     }
 }

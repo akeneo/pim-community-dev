@@ -5,6 +5,8 @@ namespace Akeneo\UserManagement\Bundle\EventListener;
 use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 
@@ -14,7 +16,7 @@ use Doctrine\ORM\Events;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
+/** TODO Pull up to 6.0 Remove this subscriber */
 class LoadLoginAttemptInformationSubscriber implements EventSubscriber
 {
     private $connection;
@@ -29,8 +31,7 @@ class LoadLoginAttemptInformationSubscriber implements EventSubscriber
     public function getSubscribedEvents(): array
     {
         return [
-            Events::postLoad,
-            Events::prePersist
+            Events::postLoad
         ];
     }
 
@@ -62,6 +63,6 @@ class LoadLoginAttemptInformationSubscriber implements EventSubscriber
         ', ["id" => $user->getId()]);
         $values = $statement->fetch();
         $user->setConsecutiveAuthenticationFailureCounter($values["consecutive_authentication_failure_counter"]);
-        $user->setAuthenticationFailureResetDate($values["authentication_failure_reset_date"]);
+        $user->setAuthenticationFailureResetDate(Type::getType(Types::DATETIME_MUTABLE)->convertToPHPValue($values["authentication_failure_reset_date"], $this->connection->getDatabasePlatform()));
     }
 }

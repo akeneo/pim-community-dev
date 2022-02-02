@@ -26,6 +26,7 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
+    ### TODO Pull up to 6.0 remove Connection from dependencies
     security.authentication.provider.dao:
         class: Akeneo\UserManagement\Bundle\Provider\CustomDaoAuthenticationProvider
         abstract: true
@@ -35,6 +36,7 @@ services:
             - ''
             - '@security.encoder_factory'
             - '@pim_user.manager'
+            - '@database_connection'
             - '%pim_user.account_lock.duration%'
             - '%pim_user.account_lock.max_consecutive_failures%'
             - '%security.authentication.hide_user_not_found%'

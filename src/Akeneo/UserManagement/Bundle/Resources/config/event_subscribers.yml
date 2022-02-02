@@ -50,6 +50,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: console.command, method: createUserSystem }
 
+    ### TODO Pull up to 6.0 remove this declaration
     pim_user.event_subscriber.load_login_attempt_information:
         class: Akeneo\UserManagement\Bundle\EventListener\LoadLoginAttemptInformationSubscriber
         arguments:
