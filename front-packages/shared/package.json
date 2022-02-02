@@ -11,8 +11,9 @@
   },
   "dependencies": {
     "eslint": "*",
-    "jest": "*",
+    "jest": "<27.0.0",
     "prettier": "*",
+    "ts-jest": "<27.0.0",
     "typescript": "*"
   },
   "private": true

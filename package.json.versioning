@@ -78,3 +78,5 @@ tests needs
 - eslint@*
 - prettier@*
 - jest@*
+- ts-jest and jest needs to have same version (with ts-jest 26.x.x and jest 27.x.x, there is a "... specified in the "transform" object of Jest configuration" error"
+
