@@ -15,7 +15,7 @@ const dataMapping: DataMapping = {
   },
   sources: ['288d85cb-3ffb-432d-a422-d2c6810113ab', '68abfdcb-c91e-40e4-a928-fdfa7a31e8ab'],
   operations: [],
-  sampleData: [],
+  sample_data: [],
 };
 
 const columns = [

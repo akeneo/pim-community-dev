@@ -9,7 +9,7 @@ type DataMapping = {
   target: AttributeTarget | PropertyTarget;
   sources: ColumnIdentifier[];
   operations: [];
-  sampleData: [];
+  sample_data: [];
 };
 
 const MAX_DATA_MAPPING_COUNT = 500;
@@ -23,7 +23,7 @@ const createDefaultDataMapping = (columns: Column[]) => {
     target: createAttributeTarget('sku', null, null),
     sources: [],
     operations: [],
-    sampleData: [],
+    sample_data: [],
   };
 
   return columns.length > 0 ? addSourceToDataMapping(defaultDataMapping, columns[0]) : defaultDataMapping;
@@ -35,7 +35,7 @@ const createPropertyDataMapping = (code: string): DataMapping => {
     target: createPropertyTarget(code),
     sources: [],
     operations: [],
-    sampleData: [],
+    sample_data: [],
   };
 };
 
@@ -52,7 +52,7 @@ const createAttributeDataMapping = (code: string, attribute: Attribute, channels
     target: createAttributeTarget(code, channel, locale),
     sources: [],
     operations: [],
-    sampleData: [],
+    sample_data: [],
   };
 };
 

@@ -83,7 +83,7 @@ test('it adds data mapping with attribute target', async () => {
     },
     sources: [],
     operations: [],
-    sampleData: [],
+    sample_data: [],
   });
 });
 
@@ -109,7 +109,7 @@ test('it adds data mapping with property target', async () => {
     },
     sources: [],
     operations: [],
-    sampleData: [],
+    sample_data: [],
   });
 });
 

@@ -57,7 +57,9 @@ const SaveButton = styled(Button)`
 
 type JobConfiguration = {
   code: string;
-  configuration: StructureConfiguration;
+  configuration: {
+    import_structure: StructureConfiguration;
+  };
 };
 
 const FakePIM = () => {
@@ -116,7 +118,10 @@ const FakePIM = () => {
       ...jobConfiguration,
       configuration: {
         ...jobConfiguration.configuration,
-        ...newStructureConfiguration,
+        import_structure: {
+          ...jobConfiguration.configuration.import_structure,
+          ...newStructureConfiguration,
+        },
       },
     });
   };
@@ -145,7 +150,7 @@ const FakePIM = () => {
           <TabBar.Tab isActive={false}>History</TabBar.Tab>
         </TabBar>
         <ImportStructureTab
-          structureConfiguration={jobConfiguration.configuration}
+          structureConfiguration={jobConfiguration.configuration.import_structure}
           onStructureConfigurationChange={handleStructureConfigurationChange}
         />
       </Page>

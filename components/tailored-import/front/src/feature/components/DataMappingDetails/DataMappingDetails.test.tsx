@@ -30,7 +30,7 @@ const attributeDataMapping: DataMapping = {
   },
   sources: ['dba0d9f8-2283-4a07-82b7-67e0435b7dcc'],
   operations: [],
-  sampleData: [],
+  sample_data: [],
 };
 
 const propertyDataMapping: DataMapping = {
@@ -45,7 +45,7 @@ const propertyDataMapping: DataMapping = {
   },
   sources: ['288d85cb-3ffb-432d-a422-d2c6810113ab'],
   operations: [],
-  sampleData: [],
+  sample_data: [],
 };
 
 jest.mock('../SourceDropdown', () => ({

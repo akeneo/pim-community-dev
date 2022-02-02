@@ -29,7 +29,7 @@ test('it creates a default data mapping', () => {
   expect(createDefaultDataMapping([{uuid: 'columnUuid', index: 0, label: 'identifier'}])).toEqual({
     uuid: mockUuid,
     operations: [],
-    sampleData: [],
+    sample_data: [],
     sources: ['columnUuid'],
     target: {
       action: 'set',
@@ -46,7 +46,7 @@ test('it creates an attribute data mapping', () => {
   expect(createAttributeDataMapping('description', attribute, [])).toEqual({
     uuid: mockUuid,
     operations: [],
-    sampleData: [],
+    sample_data: [],
     sources: [],
     target: {
       action: 'set',
@@ -74,7 +74,7 @@ test('it creates a localizable & locale-specific attribute data mapping', () => 
   ).toEqual({
     uuid: mockUuid,
     operations: [],
-    sampleData: [],
+    sample_data: [],
     sources: [],
     target: {
       action: 'set',
@@ -91,7 +91,7 @@ test('it creates a property data mapping', () => {
   expect(createPropertyDataMapping('family')).toEqual({
     uuid: mockUuid,
     operations: [],
-    sampleData: [],
+    sample_data: [],
     sources: [],
     target: {
       action: 'set',
@@ -106,7 +106,7 @@ test('it adds a source to data mapping', () => {
   const dataMapping: DataMapping = {
     uuid: mockUuid,
     operations: [],
-    sampleData: [],
+    sample_data: [],
     sources: [],
     target: {
       action: 'set',
@@ -121,7 +121,7 @@ test('it adds a source to data mapping', () => {
   expect(addSourceToDataMapping(dataMapping, {uuid: 'columnUuid', index: 0, label: 'identifier'})).toEqual({
     uuid: mockUuid,
     operations: [],
-    sampleData: [],
+    sample_data: [],
     sources: ['columnUuid'],
     target: {
       action: 'set',
@@ -139,7 +139,7 @@ test('it updates a data mapping', () => {
     {
       uuid: '8175126a-5deb-426c-a829-c9b7949dc1f7',
       operations: [],
-      sampleData: [],
+      sample_data: [],
       sources: [],
       target: {
         action: 'set',
@@ -153,7 +153,7 @@ test('it updates a data mapping', () => {
     {
       uuid: 'd1249682-720e-11ec-90d6-0242ac120003',
       operations: [],
-      sampleData: [],
+      sample_data: [],
       sources: [],
       target: {
         action: 'set',
@@ -169,7 +169,7 @@ test('it updates a data mapping', () => {
   const updatedDataMapping: DataMapping = {
     uuid: 'd1249682-720e-11ec-90d6-0242ac120003',
     operations: [],
-    sampleData: [],
+    sample_data: [],
     sources: [],
     target: {
       action: 'set',
