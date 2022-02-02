@@ -11,21 +11,16 @@ type TableAttributeConditionLineProps = {
   onChange: (value: PendingBackendTableFilterValue) => void;
 };
 
-const TableAttributeConditionLineInput: React.FC<TableAttributeConditionLineProps> = props => {
-  const userContext = useUserContext();
-  const catalogLocale = userContext.get('catalogLocale');
-
-  return (
-    <DependenciesProvider>
-      <LocaleCodeContext.Provider value={{localeCode: catalogLocale}}>
-        <InnerTableAttributeConditionLine {...props} />
-      </LocaleCodeContext.Provider>
-    </DependenciesProvider>
-  );
-};
+const TableAttributeConditionLineInput: React.FC<TableAttributeConditionLineProps> = props => (
+  <DependenciesProvider>
+    <InnerTableAttributeConditionLine {...props} />
+  </DependenciesProvider>
+);
 
 const InnerTableAttributeConditionLine: React.FC<TableAttributeConditionLineProps> = ({attribute, value, onChange}) => {
   const [attributeState, setAttributeState] = React.useState<TableAttribute | undefined>(attribute);
+  const userContext = useUserContext();
+  const catalogLocale = userContext.get('catalogLocale');
 
   const handleChange = (value: PendingBackendTableFilterValue) => {
     onChange({
@@ -36,9 +31,11 @@ const InnerTableAttributeConditionLine: React.FC<TableAttributeConditionLineProp
   };
 
   return (
-    <AttributeContext.Provider value={{attribute: attributeState, setAttribute: setAttributeState}}>
-      <FilterSelectorList initialFilter={value} inline onChange={handleChange} />
-    </AttributeContext.Provider>
+    <LocaleCodeContext.Provider value={{localeCode: catalogLocale}}>
+      <AttributeContext.Provider value={{attribute: attributeState, setAttribute: setAttributeState}}>
+        <FilterSelectorList initialFilter={value} inline onChange={handleChange} />
+      </AttributeContext.Provider>
+    </LocaleCodeContext.Provider>
   );
 };
 
