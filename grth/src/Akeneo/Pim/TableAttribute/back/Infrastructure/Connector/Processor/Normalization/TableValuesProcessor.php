@@ -50,14 +50,12 @@ class TableValuesProcessor implements ItemProcessorInterface
     protected function getStringValue(Cell $cell, TableRow $tableRow): string
     {
         try {
-            $stringValue = $cell->asString();
+            return $cell->asString();
         } catch (\LogicException $e) {
             throw new InvalidItemException(
                 'Unsupported table value during processing (' . $e->getMessage() . ')',
                 new DataInvalidItem($tableRow)
             );
         }
-
-        return $stringValue;
     }
 }

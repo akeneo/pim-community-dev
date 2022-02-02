@@ -41,6 +41,6 @@ class TableMeasurementTranslator implements TableValueTranslator
 
         $translatedUnits = $this->getUnitTranslations->byMeasurementFamilyCodeAndLocale($column->measurementFamilyCode()->asString(), $localeCode);
 
-        return \sprintf('%s %s', $amount, $translatedUnits[$unit] ?? $unit);
+        return \sprintf('%s %s', $amount, $translatedUnits[$unit] ?? \sprintf('[%s]', $unit));
     }
 }
