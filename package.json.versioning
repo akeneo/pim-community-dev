@@ -54,7 +54,7 @@ test:visual:run needs
 - jest-puppeteer
 - TODO Impossible to run locally.
 
-latest version of eslint needs to disable this
+latest version of eslint needs to disable this in eslintrc
     "@typescript-eslint/no-unsafe-assignment": "off",
     "@typescript-eslint/no-unsafe-member-access": "off",
     "@typescript-eslint/no-unsafe-call": "off",
@@ -83,7 +83,7 @@ tests needs
     "... specified in the "transform" object of Jest configuration" error"
 
 ========================================================================================================================
-@akeneo-pim-community/shared
+@akeneo-pim-community/measurement
 ========================================================================================================================
 
 tsc command needs
@@ -113,4 +113,17 @@ app-start needs:
          @ ../shared/lib/index.js 38:13-31
          @ ./src/index.tsx 8:0-81 31:36-69
 
+========================================================================================================================
+@akeneo-pim-community/connectivity-connection
+========================================================================================================================
 
+tests needs:
+- prettier@*
+- eslint@*
+- jest@*
+
+Latest version needs in eslintrc
+        "@typescript-eslint/no-unnecessary-type-assertion": "off",
+        "@typescript-eslint/restrict-plus-operands": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/no-unnecessary-type-constraint": "off",

@@ -57,6 +57,7 @@
   "workspaces": [
     "front-packages/measurement",
     "front-packages/shared",
-    "front-packages/akeneo-design-system"
+    "front-packages/akeneo-design-system",
+    "src/Akeneo/Connectivity/Connection/front"
   ]
 }
