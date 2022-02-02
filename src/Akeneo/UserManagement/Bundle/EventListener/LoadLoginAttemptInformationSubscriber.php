@@ -23,8 +23,7 @@ class LoadLoginAttemptInformationSubscriber implements EventSubscriber
 
     public function __construct(
         Connection $connection
-    )
-    {
+    ) {
         $this->connection = $connection;
     }
 
