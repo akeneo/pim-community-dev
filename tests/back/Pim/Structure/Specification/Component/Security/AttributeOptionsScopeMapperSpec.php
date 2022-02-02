@@ -27,14 +27,14 @@ class AttributeOptionsScopeMapperSpec extends ObjectBehavior
     public function it_provides_acls_that_correspond_to_the_read_attribute_options_scope(): void
     {
         $this->getAcls('read_attribute_options')->shouldReturn([
-            'pim_api_attribute_options_list',
+            'pim_api_attribute_option_list',
         ]);
     }
 
     public function it_provides_acls_that_correspond_to_the_write_attribute_options_scope(): void
     {
         $this->getAcls('write_attribute_options')->shouldReturn([
-            'pim_api_attribute_options_edit',
+            'pim_api_attribute_option_edit',
         ]);
     }
 
