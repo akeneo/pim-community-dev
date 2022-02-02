@@ -48,12 +48,10 @@ const useFetchProductQualityScore = (channel: string | undefined, locale: string
   }, []);
 
   useEffect(() => {
-    if (false === isProductEvaluating) {
-      setIsLoading(false);
-    }
-
-    if (true === isProductEvaluating && null !== productUpdatedDate) {
+    if (isProductEvaluating && null !== productUpdatedDate) {
       setIsLoading(true);
+    } else {
+      setIsLoading(false);
     }
   }, [isProductEvaluating]);
 

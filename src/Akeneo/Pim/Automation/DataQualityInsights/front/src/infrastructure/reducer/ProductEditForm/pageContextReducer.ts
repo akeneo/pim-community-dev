@@ -20,11 +20,7 @@ interface UpdateAttributeToImproveContextAction extends Action {
   };
 }
 
-interface ProductEvaluationContextAction extends Action {
-  payload: {
-    isProductEvaluating: boolean;
-  };
-}
+interface ProductEvaluationContextAction extends Action {}
 
 export const CHANGE_PRODUCT_TAB = 'CHANGE_PRODUCT_TAB';
 export const changeProductTabAction = (tabName: string): UpdateTabContextAction => {
@@ -66,9 +62,6 @@ export const START_PRODUCT_EVALUATION = 'START_PRODUCT_EVALUATION';
 export const startProductEvaluationAction = (): ProductEvaluationContextAction => {
   return {
     type: START_PRODUCT_EVALUATION,
-    payload: {
-      isProductEvaluating: false,
-    },
   };
 };
 
@@ -76,9 +69,6 @@ export const END_PRODUCT_EVALUATION = 'END_PRODUCT_EVALUATION';
 export const endProductEvaluationAction = (): ProductEvaluationContextAction => {
   return {
     type: END_PRODUCT_EVALUATION,
-    payload: {
-      isProductEvaluating: false,
-    },
   };
 };
 

@@ -65,8 +65,12 @@ const ProductContextListener: FunctionComponent<ProductContextListenerProps> = (
     if (productHasBeenSaved) {
       (async () => {
         dispatchAction(startProductEvaluationAction());
-        await evaluateProduct();
-        dispatchAction(endProductEvaluationAction());
+        try {
+          await evaluateProduct();
+        } catch (e) {
+        } finally {
+          dispatchAction(endProductEvaluationAction());
+        }
       })();
 
       (async () => {

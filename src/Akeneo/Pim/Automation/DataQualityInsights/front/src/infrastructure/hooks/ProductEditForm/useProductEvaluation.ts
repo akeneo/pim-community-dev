@@ -12,9 +12,9 @@ const useProductEvaluation = () => {
     const evaluation = productId ? state.productEvaluation[productId] : undefined;
 
     return {
-      evaluation: evaluation,
-      productId: productId,
-      productUpdated: productUpdated,
+      evaluation,
+      productId,
+      productUpdated,
     };
   });
 
@@ -27,7 +27,7 @@ const useProductEvaluation = () => {
   return {
     evaluation,
     productId,
-    productUpdated: productUpdated,
+    productUpdated,
   };
 };
 
