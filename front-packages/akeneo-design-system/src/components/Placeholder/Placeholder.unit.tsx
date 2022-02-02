@@ -1,5 +1,5 @@
 import React from 'react';
-import {render, screen} from 'storybook/test-util';
+import {render, screen} from '../../storybook/test-util';
 import {Placeholder} from './Placeholder';
 import {UsersIllustration} from '../../illustrations';
 

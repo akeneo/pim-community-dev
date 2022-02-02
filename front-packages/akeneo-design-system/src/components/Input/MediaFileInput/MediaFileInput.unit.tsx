@@ -8,7 +8,10 @@ import {IconButton} from '../../IconButton/IconButton';
 
 jest.mock('../../../../static/illustrations/DefaultPicture.svg', () => 'FALLBACK_IMAGE');
 
-const flushPromises = () => new Promise(setImmediate);
+const flushPromises = () => {
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  setTimeout(() => {}, 0);
+};
 
 const defaultProps = {
   placeholder: 'Upload your file here',

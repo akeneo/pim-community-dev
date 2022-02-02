@@ -4,10 +4,6 @@
   "description": "Akeneo PIM Application",
   "homepage": "https://www.akeneo.com/",
   "packageManager": "yarn@3.1.1",
-  "config": {
-    "source": ".",
-    "styles": "frontend/build/compile-less.js"
-  },
   "scripts": {
     "requirements": "node ./frontend/build/check-requirements.js",
     "webpack": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --config ./webpack.config.js --env=prod",
@@ -44,10 +40,10 @@
     "test:e2e:open": "cypress open",
     "test:e2e:run": "cypress run",
     "lint": "yarn workspaces foreach -v run lint",
-    "lint-fix": "yarn workspaces foreach -v run lint:fix",
+    "lint:fix": "yarn workspaces foreach -v run lint:fix",
     "lib:build": "yarn workspaces foreach -v run lib:build",
     "test:unit:run": "yarn workspaces foreach -v run test:unit:run",
-    "runall": "yarn lint && yarn lint-fix && yarn lib:build && yarn test:unit:run"
+    "runall": "yarn lint && yarn lint:fix && yarn lib:build && yarn test:unit:run"
   },
   "repository": {
     "type": "git",
@@ -58,11 +54,6 @@
     "url": "https://github.com/akeneo/pim-community-dev/issues"
   },
   "private": true,
-  "resolutions": {
-    "ts-jest": "^26.5.6",
-    "jest": "^26.6.3",
-    "@types/jest": "26.0.24"
-  },
   "workspaces": [
     "front-packages/shared",
     "front-packages/akeneo-design-system"

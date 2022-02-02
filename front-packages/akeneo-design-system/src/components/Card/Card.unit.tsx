@@ -1,5 +1,5 @@
 import React from 'react';
-import {render, screen} from 'storybook/test-util';
+import {render, screen} from '../../storybook/test-util';
 import userEvent from '@testing-library/user-event';
 import {Card, CardGrid} from './Card';
 import {Badge, Link} from '../../components';
