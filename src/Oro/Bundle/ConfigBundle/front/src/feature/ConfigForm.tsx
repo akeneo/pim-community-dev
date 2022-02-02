@@ -172,7 +172,7 @@ const ConfigForm = () => {
           <Helper level="info">
             {__('oro_config.form.config.group.notification.helper')}
           </Helper>
-          <Field label={__('oro_config.form.config.group.notification.fields.enabler.label')}>
+          <Field data-testid="notification_message__enabler" label={__('oro_config.form.config.group.notification.fields.enabler.label')}>
             <BooleanInput
               readOnly={false}
               value={config.pim_analytics___version_update.value}

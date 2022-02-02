@@ -1,13 +1,10 @@
-import React, { useCallback, useState } from 'react';
-import { FetchHookResult, FetchResult, FetchResultFetched, renderHookWithProviders, renderWithProviders } from '@akeneo-pim-community/shared';
-import { screen } from '@testing-library/react';
-
-
+import React from 'react';
+import { renderWithProviders } from '@akeneo-pim-community/shared';
+import { screen, within } from '@testing-library/react';
 import { ConfigForm } from './ConfigForm'
-import { ConfigServicePayloadBackend, ConfigServicePayloadFrontend, ScopedValue } from '../models/ConfigServicePayload';
-
+import { ScopedValue } from './models/ConfigServicePayload';
 import { GlobalWithFetchMock } from 'jest-fetch-mock';
-import { findRenderedDOMComponentWithTag } from 'react-dom/test-utils';
+
 
 const customGlobal: GlobalWithFetchMock = global as unknown as GlobalWithFetchMock;
 customGlobal.fetch = require('jest-fetch-mock');
@@ -22,12 +19,12 @@ function scopedValue<V>(value: V): ScopedValue<V> {
     };
 }
 
-describe('FOO', () => {
-    test('BAz', async () => {
+describe('configForm', () => {
+    test('should display all elements of the page configuration', async () => {
 
         fetchMock.mockOnceIf(request => request.url === 'oro_config_configuration_system_get',
             JSON.stringify({
-                pim_ui___language: scopedValue('fr-FR'),
+                pim_ui___language: scopedValue('fr_FR'),
                 pim_analytics___version_update: scopedValue(true),
                 pim_ui___loading_message_enabled: scopedValue(false),
                 pim_ui___loading_messages: scopedValue("FOO")
@@ -52,120 +49,34 @@ describe('FOO', () => {
 
             ]))
 
-        // jest.mock('@akeneo-pim-community/shared', () => ({
-        //     useFetchSimpler: () => {
-        //         console.log('='.repeat(80))
-        //         throw 'FOO'
-        //         let result: FetchResult<ConfigServicePayloadFrontend> = { type: 'idle' };
-        //         const doFetch = async () => {
-        //             result = { type: 'fetching' };
-
-        //             await new Promise((resolve) => {
-        //                 setTimeout(resolve, 0)
-        //             });
-        //             result = {
-        //                 type: 'fetched',
-        //                 payload: {
-        //                     pim_ui___language: mockScopedValue('fr-FR'),
-        //                     pim_analytics___version_update: mockScopedValue(true),
-        //                     pim_ui___loading_message_enabled: mockScopedValue(false),
-        //                     pim_ui___loading_messages: mockScopedValue("FOO")
-        //                 }
-        //             };
-
-        //         }
-        //         return [result, doFetch];
-        //     }
-        // }))
 
         renderWithProviders(<ConfigForm />);
 
-        // const loadingMEssageEnablerLabelElt = await screen.findByText('oro_config.form.config.group.loading_message.fields.enabler.label')
 
-        const loadingMessageEnablerLabelElt = await screen.findByTestId('loading_message__enabler')
+        const breadcrumbElt = await screen.findByLabelText('Breadcrumb');
+        expect(within(breadcrumbElt).getByRole('link', { name: 'pim_menu.tab.system', })).toHaveAttribute('href', '#pim_system_index');
+        expect(within(breadcrumbElt).getByText('pim_menu.item.configuration')).toHaveAttribute('aria-current', 'page');
 
-        // const { result, waitForNextUpdate } = renderHookWithProviders<{}, FetchHookResult<ConfigServicePayloadFrontend>>(() => {
-        //     const [result, setResult] = useState<FetchResult<ConfigServicePayloadFrontend>>({ type: 'idle' });
-        //     const doFetch = async () => {
-        //         setResult({ type: 'fetching' });
+        expect(screen.queryByRole('button', { 'name': 'Save' })).not.toBeNull();
+        //expect(screen.queryByText('pim_menu.item.configuration')).not.toBeNull();
+        expect(screen.queryByText('oro_config.form.config.group.loading_message.title')).not.toBeNull();
+        expect(screen.queryByText('oro_config.form.config.group.loading_message.helper')).not.toBeNull();
 
-        //         await new Promise((resolve) => {
-        //             setTimeout(resolve, 100)
-        //         });
-        //         setResult({
-        //             type: 'fetched', payload: {
-        //                 pim_ui___language: scopedValue('fr-FR'),
-        //                 pim_analytics___version_update: scopedValue(true),
-        //                 pim_ui___loading_message_enabled: scopedValue(true),
-        //                 pim_ui___loading_messages: scopedValue("FOO")
-        //             }
-        //         });
+        const loadingMessageEnablerLabelElt = screen.getByTestId('loading_message__enabler');
+        expect(within(loadingMessageEnablerLabelElt).queryByText('oro_config.form.config.group.loading_message.fields.enabler.label')).not.toBeNull();
+        expect(within(loadingMessageEnablerLabelElt).queryByRole('switch', { checked: false })).not.toBeNull();
 
-        //     }
-        //     return [result, doFetch];
-        // })
+        const textareaElt = screen.queryByLabelText('oro_config.form.config.group.loading_message.fields.messages.label');
+        expect(textareaElt).toHaveValue('FOO');
 
-        // expect(result.current[0].type).toEqual('idle');
+        expect(screen.queryByText('oro_config.form.config.group.localization.title')).not.toBeNull();
+        expect(screen.queryByText('oro_config.form.config.group.localization.fields.system_locale.label')).not.toBeNull();
+        expect(screen.queryByLabelText('FR')).not.toBeNull();
 
-        // await result.current[1]()
-        // await waitForNextUpdate()
-
-        // expect(result.current[0].type).toEqual('fetching');
-
-        // await waitForNextUpdate()
-
-        // expect(result.current[0].type).toEqual('fetched');
-        // expect((result.current[0] as FetchResultFetched<ConfigServicePayloadFrontend>).payload).toEqual({});
-
-        //        expect(screen.getByText(112)).toBeInTheDocument();
-    })
-})
-
-// test('it renders key figure of type count', () => {
-
-// });
-
-// test('it does not render key figure of type count when value is an object', () => {
-//   const countAttributes: CatalogVolume = {
-//     name: 'count_attributes',
-//     type: 'count',
-//     value: {
-//       average: 4,
-//       max: 43,
-//     },
-//   };
-
-//   renderWithProviders(<CatalogVolumeKeyFigure catalogVolume={countAttributes} />);
-
-//   expect(screen.queryByText('count_attributes.axis.count_attributes')).not.toBeInTheDocument();
-// });
-
-// test('it renders key figure of type average', () => {
-//   const catalogVolumeAverageMaxAttributesPerFamily: CatalogVolume = {
-//     name: 'average_max_attributes_per_family',
-//     type: 'average_max',
-//     value: {
-//       average: 4,
-//       max: 43,
-//     },
-//   };
-
-//   renderWithProviders(<CatalogVolumeKeyFigure catalogVolume={catalogVolumeAverageMaxAttributesPerFamily} />);
-
-//   expect(typeof catalogVolumeAverageMaxAttributesPerFamily.value).toBe('object');
-//   expect(typeof (catalogVolumeAverageMaxAttributesPerFamily.value as AverageMaxValue).average).not.toBeUndefined();
-//   expect(screen.getByText('pim_catalog_volume.axis.average_max_attributes_per_family')).toBeInTheDocument();
-//   expect(screen.getByText(43)).toBeInTheDocument();
-// });
-
-// test('it does not render key figure of type average when the value is not an object', () => {
-//   const catalogVolumeAverageMaxAttributesPerFamilyWrongFormat: CatalogVolume = {
-//     name: 'average_max_attributes_per_family',
-//     type: 'average_max',
-//     value: 4,
-//   };
-
-//   renderWithProviders(<CatalogVolumeKeyFigure catalogVolume={catalogVolumeAverageMaxAttributesPerFamilyWrongFormat} />);
-
-//   expect(screen.queryByText('pim_catalog_volume.axis.average_max_attributes_per_family')).not.toBeInTheDocument();
-// });
+        expect(screen.queryByText('oro_config.form.config.group.notification.title')).not.toBeNull();
+        expect(screen.queryByText('oro_config.form.config.group.notification.helper')).not.toBeNull();
+        const loadingMessageEnablerNotificationElt = screen.getByTestId('notification_message__enabler');
+        expect(within(loadingMessageEnablerNotificationElt).queryByText('oro_config.form.config.group.notification.fields.enabler.label')).not.toBeNull();
+        expect(within(loadingMessageEnablerNotificationElt).queryByRole('switch', { checked: true })).not.toBeNull();
+    });
+});
