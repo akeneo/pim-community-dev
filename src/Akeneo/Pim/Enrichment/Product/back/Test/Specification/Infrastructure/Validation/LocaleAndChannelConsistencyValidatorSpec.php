@@ -83,6 +83,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
                     '{{ attributeCode }}' => 'name',
                 ]
             )->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('channelCode')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
@@ -106,6 +107,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
                     '{{ channelCode }}' => 'ecommerce',
                 ]
             )->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('channelCode')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
@@ -128,6 +130,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
                     '{{ channelCode }}' => 'mobile',
                 ]
             )->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('channelCode')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
@@ -150,6 +153,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
                     '{{ attributeCode }}' => 'name',
                 ]
             )->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('localeCode')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
@@ -173,6 +177,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
                     '{{ localeCode }}' => 'en_US',
                 ]
             )->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('localeCode')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
@@ -195,6 +200,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
                     '{{ localeCode }}' => 'es_ES',
                 ]
             )->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('localeCode')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
@@ -218,6 +224,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
                     '{{ channelCode }}' => 'ecommerce',
                 ]
             )->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('localeCode')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
@@ -244,6 +251,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
                     '{{ availableLocales }}' => 'en_US',
                 ]
             )->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('localeCode')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(

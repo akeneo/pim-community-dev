@@ -47,7 +47,8 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
                     [
                         '{{ attributeCode }}' => $attribute->code(),
                         '{{ channelCode }}' => $channelCode,
-                    ]
+                    ],
+                    'channelCode'
                 );
             }
 
@@ -59,7 +60,8 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
                 LocaleAndChannelConsistency::NO_CHANNEL_CODE_PROVIDED_FOR_SCOPABLE_ATTRIBUTE,
                 [
                     '{{ attributeCode }}' => $attribute->code(),
-                ]
+                ],
+                'channelCode'
             );
 
             return;
@@ -69,7 +71,8 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
                 LocaleAndChannelConsistency::CHANNEL_DOES_NOT_EXIST,
                 [
                     '{{ channelCode }}' => $channelCode,
-                ]
+                ],
+                'channelCode'
             );
         }
     }
@@ -83,7 +86,8 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
                     [
                         '{{ attributeCode }}' => $attribute->code(),
                         '{{ localeCode }}' => $localeCode,
-                    ]
+                    ],
+                    'localeCode'
                 );
             }
 
@@ -95,7 +99,8 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
                 LocaleAndChannelConsistency::NO_LOCALE_CODE_PROVIDED_FOR_LOCALIZABLE_ATTRIBUTE,
                 [
                     '{{ attributeCode }}' => $attribute->code(),
-                ]
+                ],
+                'localeCode'
             );
 
             return;
@@ -106,7 +111,8 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
                 LocaleAndChannelConsistency::LOCALE_IS_NOT_ACTIVE,
                 [
                     '{{ localeCode }}' => $localeCode,
-                ]
+                ],
+                'localeCode'
             );
 
             return;
@@ -121,7 +127,8 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
                 [
                     '{{ localeCode }}' => $localeCode,
                     '{{ channelCode }}' => $channelCode,
-                ]
+                ],
+                'localeCode'
             );
 
             return;
@@ -134,7 +141,8 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
                     '{{ attributeCode }}' => $attribute->code(),
                     '{{ localeCode }}' => $localeCode,
                     '{{ availableLocales }}' => \implode(', ', $attribute->availableLocaleCodes()),
-                ]
+                ],
+                'localeCode'
             );
         }
     }
