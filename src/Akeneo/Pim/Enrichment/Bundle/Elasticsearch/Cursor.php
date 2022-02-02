@@ -76,9 +76,9 @@ class Cursor extends AbstractCursor implements CursorInterface, ResultAwareInter
      *
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-search-after.html
      */
-    protected function getNextIdentifiers(array $esQuery): IdentifierResults
+    protected function getNextIdentifiers(array $esQuery, int $size = null): IdentifierResults
     {
-        $esQuery['size'] = $this->pageSize;
+        $esQuery['size'] = $size ?? $this->pageSize;
         $identifiers = new IdentifierResults();
 
         if (0 === $esQuery['size']) {
@@ -125,5 +125,35 @@ class Cursor extends AbstractCursor implements CursorInterface, ResultAwareInter
         }
 
         return $this->result;
+    }
+
+    /**
+     * Get the next items (hydrated from doctrine repository).
+     *
+     * PIM-102132: The quick-and-dirty fix here is to always return "pageSize" items (except of course when no more result is found).
+     * Before the fix we could return less than the "pageSize" count, when ES and MySQL are de-synchronized (= there
+     * is more result in ES than in MySQL).
+     * Returning fewer results can cause some UoW issues (c.f. ticket)
+     */
+    protected function getNextItems(array $esQuery): array
+    {
+        $pageSize = $this->pageSize;
+
+        $totalItems = [];
+        $try = 0;
+        do {
+            $try++;
+
+            $numberOfIdentifiersToFind = $pageSize - \count($totalItems);
+            $identifierResults = $this->getNextIdentifiers($esQuery, $numberOfIdentifiersToFind);
+            $newItems = $this->getNextItemsFromIdentifiers($identifierResults);
+            $totalItems = \array_merge($totalItems, $newItems);
+            if (\count($identifierResults->all()) < $numberOfIdentifiersToFind) {
+                // There is no more result, we can stop the loop.
+                break;
+            }
+        } while (\count($totalItems) < $pageSize && $try <= 5);
+
+        return $totalItems;
     }
 }

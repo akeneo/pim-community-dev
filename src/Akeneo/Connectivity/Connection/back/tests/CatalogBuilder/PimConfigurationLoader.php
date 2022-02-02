@@ -24,6 +24,7 @@ class PimConfigurationLoader
         $query = <<<SQL
             INSERT INTO pim_configuration (`code`,`values`)
             VALUES (:configurationCode, :configurationValues)
+            ON DUPLICATE KEY UPDATE `values`=:configurationValues
             SQL;
 
         $this->connection->executeQuery($query, [

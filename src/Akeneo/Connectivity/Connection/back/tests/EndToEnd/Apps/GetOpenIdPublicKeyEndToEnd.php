@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\Domain\Apps\Exception\OpenIdKeysNotFoundExcep
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\SaveAsymmetricKeysQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\PimConfigurationLoader;
 use Akeneo\Test\Integration\Configuration;
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,11 +20,13 @@ use Symfony\Component\HttpFoundation\Response;
 class GetOpenIdPublicKeyEndToEnd extends WebTestCase
 {
     private PimConfigurationLoader $pimConfigurationLoader;
+    private Connection $connection;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->pimConfigurationLoader = $this->get(PimConfigurationLoader::class);
+        $this->connection = $this->get('database_connection');
     }
 
     protected function getConfiguration(): Configuration
@@ -50,6 +53,8 @@ class GetOpenIdPublicKeyEndToEnd extends WebTestCase
 
     public function test_it_gets_an_error_if_there_is_no_openid_public_key_into_database(): void
     {
+        $this->resetPimConfiguration();
+        
         $this->client->request(
             'GET',
             '/connect/apps/v1/openid/public-key',
@@ -58,5 +63,10 @@ class GetOpenIdPublicKeyEndToEnd extends WebTestCase
 
         Assert::assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $this->client->getResponse()->getStatusCode());
         Assert::assertEquals(OpenIdKeysNotFoundException::MESSAGE, json_decode($result, true));
+    }
+
+    private function resetPimConfiguration(): void
+    {
+        $this->connection->executeQuery('TRUNCATE pim_configuration');
     }
 }

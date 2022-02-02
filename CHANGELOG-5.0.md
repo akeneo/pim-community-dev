@@ -1,5 +1,28 @@
 # 5.0.x
 
+# 5.0.71 (2022-02-01)
+
+# 5.0.70 (2022-02-01)
+
+## Bug fixes
+
+- PIM-10248: Fix NOT BETWEEN filter does not work on products and product models (created and updated property)
+- PIM-10223: Add missing "s" on "remove-orphans" option in Makefile
+
+# 5.0.69 (2022-01-21)
+
+## Bug fixes
+
+- PIM-10233: [Backport] Refresh ES index after creating a product from the UI in order to well send product created event to event subscriptions
+
+# 5.0.68 (2022-01-17)
+
+# 5.0.67 (2022-01-03)
+
+## Bug fixes
+
+- PIM-10222: Fixed selected category glitch on product grid category filter
+
 # 5.0.66 (2021-12-22)
 
 # 5.0.65 (2021-12-22)

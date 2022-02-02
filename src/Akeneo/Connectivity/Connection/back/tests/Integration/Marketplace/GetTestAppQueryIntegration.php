@@ -48,6 +48,7 @@ class GetTestAppQueryIntegration extends TestCase
         $result = $this->query->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9');
         $this->assertEquals([
             'id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
+            'secret' => 'foobar',
             'name' => 'My test app',
             'author' => 'John Doe',
             'activate_url' => 'http://shopware.example.com/activate',
@@ -70,6 +71,7 @@ class GetTestAppQueryIntegration extends TestCase
         $result = $this->query->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9');
         $this->assertEquals([
             'id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
+            'secret' => 'foobar',
             'name' => 'My test app',
             'author' => null,
             'activate_url' => 'http://shopware.example.com/activate',
@@ -93,6 +95,7 @@ class GetTestAppQueryIntegration extends TestCase
         $result = $this->query->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9');
         $this->assertEquals([
             'id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
+            'secret' => 'foobar',
             'name' => 'My test app',
             'author' => null,
             'activate_url' => 'http://shopware.example.com/activate',

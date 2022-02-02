@@ -24,6 +24,13 @@ suites:
         spec_path: tests/back/Pim/Enrichment
         spec_prefix: Specification
 
+    EnrichmentProduct:
+        namespace: Akeneo\Pim\Enrichment\Product
+        psr4_prefix: Akeneo\Pim\Enrichment\Product
+        src_path: src/Akeneo/Pim/Enrichment/Product/back
+        spec_path: src/Akeneo/Pim/Enrichment/Product/tests/back
+        spec_prefix: Specification
+
     ## Platform context
     Platform:
         namespace: Akeneo\Platform

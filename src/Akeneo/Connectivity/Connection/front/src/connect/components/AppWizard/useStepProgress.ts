@@ -1,6 +1,10 @@
 import {useState} from 'react';
 
 export const useStepProgress = <T extends unknown>(steps: T[]) => {
+    if (steps.length === 0) {
+        throw new Error('At least one step is required');
+    }
+
     const [index, setIndex] = useState(0);
 
     const previous = () => setIndex(index => (index === 0 ? index : index - 1));

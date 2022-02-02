@@ -369,3 +369,9 @@ services:
             - '@akeneo.pim.enrichment.product.query.find_non_existing_product_model_codes_query'
         tags:
             - { name: validator.constraint_validator, alias: pim_connector.validator.constraints.quantified_associations_validator }
+
+    Akeneo\Pim\Enrichment\Component\Product\Validator\ExternalApi\PayloadFormatValidator:
+        arguments:
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: validator.constraint_validator }

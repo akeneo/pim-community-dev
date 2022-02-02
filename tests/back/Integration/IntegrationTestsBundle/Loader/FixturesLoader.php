@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\IntegrationTestsBundle\Loader;
 
+use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
@@ -60,6 +62,7 @@ class FixturesLoader implements FixturesLoaderInterface
     private TransportInterface $transport;
     private EventDispatcherInterface $eventDispatcher;
     private JobLauncher $jobLauncher;
+    private GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler;
 
     public function __construct(
         KernelInterface $kernel,
@@ -83,7 +86,8 @@ class FixturesLoader implements FixturesLoaderInterface
         string $databaseUser,
         string $databasePassword,
         string $sqlDumpDirectory,
-        string $elasticsearchHost
+        string $elasticsearchHost,
+        GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler
     ) {
         $this->databaseSchemaHandler = $databaseSchemaHandler;
         $this->systemUserAuthenticator = $systemUserAuthenticator;
@@ -112,6 +116,7 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->transport = $transport;
         $this->eventDispatcher = $eventDispatcher;
         $this->jobLauncher = $jobLauncher;
+        $this->generateAsymmetricKeysHandler = $generateAsymmetricKeysHandler;
     }
 
     public function __destruct()
@@ -163,6 +168,7 @@ class FixturesLoader implements FixturesLoaderInterface
         $files = $this->getFilesToLoad($configuration->getCatalogDirectories());
         $filesByType = $this->getFilesToLoadByType($files);
 
+        $this->generateAsymmetricKeysHandler->handle(new GenerateAsymmetricKeysCommand());
         $this->measurementInstaller->createMeasurementTableAndStandardMeasurementFamilies();
         $this->loadSqlFiles($filesByType['sql']);
         $this->loadImportFiles($filesByType['import']);

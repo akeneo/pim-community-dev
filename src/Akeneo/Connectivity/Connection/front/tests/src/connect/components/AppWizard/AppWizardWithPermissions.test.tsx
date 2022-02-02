@@ -33,6 +33,10 @@ beforeEach(() => {
     };
 });
 
+jest.mock('@src/connect/components/AppWizard/steps/Authentication/Authentication', () => ({
+    Authentication: () => <div>authentication-component</div>,
+}));
+
 jest.mock('@src/connect/components/AppWizard/steps/Authorizations', () => ({
     ...jest.requireActual('@src/connect/components/AppWizard/steps/Authorizations'),
     Authorizations: () => <div>authorizations-component</div>,
@@ -89,8 +93,10 @@ test('The step wizard renders without error', async () => {
         ...fetchAppWizardDataResponses,
     });
     renderWithProviders(<AppWizardWithPermissions clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
-    await screen.findByText('akeneo_connectivity.connection.connect.apps.wizard.progress.authorizations');
 
+    await waitFor(() => screen.getByAltText('MyApp'));
+    expect(screen.queryByAltText('MyApp')).toBeInTheDocument();
+    expect(screen.queryByText('authentication-component')).not.toBeInTheDocument();
     expect(screen.queryByText('authorizations-component')).toBeInTheDocument();
     expect(screen.queryByText('permissions-component')).not.toBeInTheDocument();
     expect(screen.queryByText('permissions-summary-component')).not.toBeInTheDocument();
@@ -385,6 +391,31 @@ test('The wizard saves app but have some failing permissions on confirm', async 
     expect(providerSave).toHaveBeenNthCalledWith(2, appUserGroup, {view: 'formProviderData2'});
     expect(providerSave).toHaveBeenNthCalledWith(3, appUserGroup, {view: 'formProviderData3'});
     expect(providerSave).toHaveBeenNthCalledWith(4, appUserGroup, {view: 'formProviderData4'});
+});
+
+test('The wizard display the authentication step', async () => {
+    const fetchAppWizardDataResponses: MockFetchResponses = {
+        'akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=8d8a7dc1-0827-4cc9-9ae5-577c6419230b': {
+            json: {
+                appName: 'MyApp',
+                appLogo: 'http://example.com/logo.png',
+                scopeMessages: [],
+                authenticationScopes: ['profile'],
+            },
+        },
+    };
+
+    mockFetchResponses({
+        ...fetchAppWizardDataResponses,
+    });
+    renderWithProviders(<AppWizardWithPermissions clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
+
+    await waitFor(() => screen.getByAltText('MyApp'));
+    expect(screen.queryByAltText('MyApp')).toBeInTheDocument();
+    expect(screen.queryByText('authentication-component')).toBeInTheDocument();
+    expect(screen.queryByText('authorizations-component')).not.toBeInTheDocument();
+    expect(screen.queryByText('permissions-component')).not.toBeInTheDocument();
+    expect(screen.queryByText('permissions-summary-component')).not.toBeInTheDocument();
 });
 
 const assertAuthorizationsScreen = () => {
