@@ -4,7 +4,7 @@
 #
 CMD_ON_PROJECT = docker-compose run -u www-data --rm php
 PHP_RUN = $(CMD_ON_PROJECT) php
-YARN_RUN = docker-compose run -u node --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD node yarn
+YARN_RUN = docker-compose run -u node --rm -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD node yarn
 
 ifdef NO_DOCKER
   CMD_ON_PROJECT =

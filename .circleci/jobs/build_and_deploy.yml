@@ -178,10 +178,12 @@ jobs:
                   command: |
                       sudo chown -R 1000:1000 ../project ~/.composer ~/.cache/
             - run:
+                  name: Build node 16 image
+                  command: |
+                      docker build docker/node/ -t akeneo/node:16
+            - run:
                   name: Install back and front dependencies
                   command: make dependencies
-                  environment:
-                      YARN_REGISTRY: "http://registry.yarnpkg.com"
             - run:
                   name: Install assets
                   command: make assets

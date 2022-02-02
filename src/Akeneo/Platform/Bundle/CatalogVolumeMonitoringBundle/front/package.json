@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@akeneo-pim-community/shared": "link:../../../../../../front-packages/shared",
-    "akeneo-design-system": "link:../../../../../../front-packages/akeneo-design-system",
+    "@akeneo-pim-community/shared": "*",
+    "akeneo-design-system": "*",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
@@ -54,6 +54,7 @@
     "@types/react-dom": "^16.9.12",
     "@types/react-router-dom": "^5.1.7",
     "@types/styled-components": "^5.1.1",
+    "eslint": "^7.11.0",
     "prettier": "^2.1.1"
   },
   "proxy": "http://localhost:8080",
@@ -78,7 +79,6 @@
   },
   "peerDependencies": {
     "babel-loader": "8.1.0",
-    "eslint": "^7.11.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "styled-components": "^5.1.1"

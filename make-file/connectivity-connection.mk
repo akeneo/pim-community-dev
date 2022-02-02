@@ -52,8 +52,8 @@
 # Make sure the tests run by the targets defined here does not run by the main targets too
 #
 
-_CONNECTIVITY_CONNECTION_YARN_RUN = $(YARN_RUN) run --cwd=src/Akeneo/Connectivity/Connection/front/
-_PERMISSION_FORM_YARN_RUN = $(YARN_RUN) run --cwd=src/Akeneo/Connectivity/Connection/workspaces/permission-form/
+_CONNECTIVITY_CONNECTION_YARN_RUN = $(YARN_RUN) workspace @akeneo-pim-community/connectivity-connection run
+_PERMISSION_FORM_YARN_RUN = $(YARN_RUN) workspace @akeneo-pim-community/permission-form run
 
 # Tests Back
 
