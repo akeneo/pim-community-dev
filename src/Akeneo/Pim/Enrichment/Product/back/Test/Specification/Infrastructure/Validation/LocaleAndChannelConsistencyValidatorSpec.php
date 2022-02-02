@@ -43,15 +43,23 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
     function it_throws_an_exception_for_a_wrong_constraint(): void
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [
-            new SetTextValue('name', 'en_US', 'ecommerce', 'My beautiful product'),
+            [new SetTextValue('name', 'en_US', 'ecommerce', 'My beautiful product')],
             new NotBlank(),
         ]);
     }
 
-    function it_throws_an_exception_if_the_value_is_not_a_value_user_intent(): void
+    function it_throws_an_exception_if_the_value_is_not_an_array(): void
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [
-            new \stdClass(),
+            new SetTextValue('name', null, null, 'foo bar'),
+            new LocaleAndChannelConsistency(),
+        ]);
+    }
+
+    function it_throws_an_exception_if_one_of_the_values_is_not_a_value_user_intent(): void
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [
+            [new SetTextValue('name', null, null, 'foo bar'), new \stdClass()],
             new LocaleAndChannelConsistency(),
         ]);
     }
@@ -60,11 +68,11 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
         GetAttributes $getAttributes,
         ExecutionContextInterface $context
     ): void {
-        $getAttributes->forCode('name')->shouldBeCalled()->willReturn(null);
+        $getAttributes->forCodes(['name'])->shouldBeCalled()->willReturn(['name' => null]);
         $context->addViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate(
-            new SetTextValue('name', 'en_US', 'ecommerce', 'My beautiful product'),
+            [new SetTextValue('name', 'en_US', 'ecommerce', 'My beautiful product')],
             new LocaleAndChannelConsistency()
         );
     }
@@ -74,7 +82,9 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
-        $getAttributes->forCode('name')->shouldBeCalled()->willReturn($this->getTextAttribute('name', true, false));
+        $getAttributes->forCodes(['name'])->shouldBeCalled()->willReturn([
+            'name' => $this->getTextAttribute('name', true, false)
+        ]);
 
         $context
             ->buildViolation(
@@ -83,11 +93,11 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
                     '{{ attributeCode }}' => 'name',
                 ]
             )->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->atPath('channelCode')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('[0].channelCode')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
-            new SetTextValue('name', null, null, 'My beautiful product'),
+            [new SetTextValue('name', null, null, 'My beautiful product')],
             new LocaleAndChannelConsistency()
         );
     }
@@ -97,7 +107,9 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
-        $getAttributes->forCode('name')->shouldBeCalled()->willReturn($this->getTextAttribute('name', false, false));
+        $getAttributes->forCodes(['name'])->shouldBeCalled()->willReturn([
+            'name' => $this->getTextAttribute('name', false, false),
+        ]);
 
         $context
             ->buildViolation(
@@ -107,11 +119,11 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
                     '{{ channelCode }}' => 'ecommerce',
                 ]
             )->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->atPath('channelCode')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('[0].channelCode')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
-            new SetTextValue('name', null, 'ecommerce', 'My beautiful product'),
+            [new SetTextValue('name', null, 'ecommerce', 'My beautiful product')],
             new LocaleAndChannelConsistency()
         );
     }
@@ -121,7 +133,9 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
-        $getAttributes->forCode('name')->shouldBeCalled()->willReturn($this->getTextAttribute('name', true, false));
+        $getAttributes->forCodes(['name'])->shouldBeCalled()->willReturn([
+            'name' => $this->getTextAttribute('name', true, false),
+        ]);
 
         $context
             ->buildViolation(
@@ -130,11 +144,11 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
                     '{{ channelCode }}' => 'mobile',
                 ]
             )->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->atPath('channelCode')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('[0].channelCode')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
-            new SetTextValue('name', null, 'mobile', 'My beautiful product'),
+            [new SetTextValue('name', null, 'mobile', 'My beautiful product')],
             new LocaleAndChannelConsistency()
         );
     }
@@ -144,7 +158,9 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
-        $getAttributes->forCode('name')->shouldBeCalled()->willReturn($this->getTextAttribute('name', false, true));
+        $getAttributes->forCodes(['name'])->shouldBeCalled()->willReturn([
+            'name' => $this->getTextAttribute('name', false, true),
+        ]);
 
         $context
             ->buildViolation(
@@ -153,11 +169,11 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
                     '{{ attributeCode }}' => 'name',
                 ]
             )->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->atPath('localeCode')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('[0].localeCode')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
-            new SetTextValue('name', null, null, 'My beautiful product'),
+            [new SetTextValue('name', null, null, 'My beautiful product')],
             new LocaleAndChannelConsistency()
         );
     }
@@ -167,7 +183,9 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
-        $getAttributes->forCode('name')->shouldBeCalled()->willReturn($this->getTextAttribute('name', false, false));
+        $getAttributes->forCodes(['name'])->shouldBeCalled()->willReturn([
+            'name' => $this->getTextAttribute('name', false, false),
+        ]);
 
         $context
             ->buildViolation(
@@ -177,11 +195,11 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
                     '{{ localeCode }}' => 'en_US',
                 ]
             )->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->atPath('localeCode')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('[0].localeCode')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
-            new SetTextValue('name', 'en_US', null, 'My beautiful product'),
+            [new SetTextValue('name', 'en_US', null, 'My beautiful product')],
             new LocaleAndChannelConsistency()
         );
     }
@@ -191,7 +209,9 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
-        $getAttributes->forCode('name')->shouldBeCalled()->willReturn($this->getTextAttribute('name', false, true));
+        $getAttributes->forCodes(['name'])->shouldBeCalled()->willReturn([
+            'name' => $this->getTextAttribute('name', false, true),
+        ]);
 
         $context
             ->buildViolation(
@@ -200,11 +220,11 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
                     '{{ localeCode }}' => 'es_ES',
                 ]
             )->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->atPath('localeCode')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('[0].localeCode')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
-            new SetTextValue('name', 'es_ES', null, 'My beautiful product'),
+            [new SetTextValue('name', 'es_ES', null, 'My beautiful product')],
             new LocaleAndChannelConsistency()
         );
     }
@@ -214,7 +234,9 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
-        $getAttributes->forCode('name')->shouldBeCalled()->willReturn($this->getTextAttribute('name', true, true));
+        $getAttributes->forCodes(['name'])->shouldBeCalled()->willReturn([
+            'name' => $this->getTextAttribute('name', true, true),
+        ]);
 
         $context
             ->buildViolation(
@@ -224,11 +246,11 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
                     '{{ channelCode }}' => 'ecommerce',
                 ]
             )->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->atPath('localeCode')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('[0].localeCode')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
-            new SetTextValue('name', 'fr_FR', 'ecommerce', 'My beautiful product'),
+            [new SetTextValue('name', 'fr_FR', 'ecommerce', 'My beautiful product')],
             new LocaleAndChannelConsistency()
         );
     }
@@ -238,9 +260,9 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
     ): void {
-        $getAttributes->forCode('name')->shouldBeCalled()->willReturn(
-            $this->getTextAttribute('name', false, true, ['en_US'])
-        );
+        $getAttributes->forCodes(['name'])->shouldBeCalled()->willReturn([
+            'name' => $this->getTextAttribute('name', false, true, ['en_US']),
+        ]);
 
         $context
             ->buildViolation(
@@ -251,11 +273,11 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
                     '{{ availableLocales }}' => 'en_US',
                 ]
             )->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->atPath('localeCode')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('[0].localeCode')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
-            new SetTextValue('name', 'fr_FR', null, 'My beautiful product'),
+            [new SetTextValue('name', 'fr_FR', null, 'My beautiful product')],
             new LocaleAndChannelConsistency()
         );
     }
@@ -265,42 +287,30 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
         ChannelExistsWithLocaleInterface $channelExistsWithLocale,
         ExecutionContextInterface $context
     ): void {
-        $getAttributes->forCode('scopable_localizable')->willReturn(
-            $this->getTextAttribute('scopable_localizable', true, true)
-        );
-        $getAttributes->forCode('scopable')->willReturn(
-            $this->getTextAttribute('scopable', true, false)
-        );
-        $getAttributes->forCode('localizable')->willReturn(
-            $this->getTextAttribute('localizable', false, true)
-        );
-        $getAttributes->forCode('locale_specific')->willReturn(
-            $this->getTextAttribute('locale_specific', false, true, ['en_US'])
-        );
-        $getAttributes->forCode('simple')->willReturn(
-            $this->getTextAttribute('simple', false, false)
-        );
+        $getAttributes->forCodes([
+            'scopable_localizable',
+            'scopable',
+            'localizable',
+            'locale_specific',
+            'simple',
+        ])->shouldBeCalled()->willReturn([
+            'localizable_scopable' => $this->getTextAttribute('scopable_localizable', true, true),
+            'scopable' => $this->getTextAttribute('scopable', true, false),
+            'localizable' => $this->getTextAttribute('localizable', false, true),
+            'locale_specific' => $this->getTextAttribute('locale_specific', false, true, ['en_US']),
+            'simple' => $this->getTextAttribute('simple', false, false),
+        ]);
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate(
-            new SetTextValue('scopable_localizable', 'en_US', 'ecommerce', 'My beautiful product'),
-            new LocaleAndChannelConsistency()
-        );
-        $this->validate(
-            new SetTextValue('scopable', null, 'ecommerce', 'My beautiful product'),
-            new LocaleAndChannelConsistency()
-        );
-        $this->validate(
-            new SetTextValue('localizable', 'fr_FR', null, 'My beautiful product'),
-            new LocaleAndChannelConsistency()
-        );
-        $this->validate(
-            new SetTextValue('locale_specific', 'en_US', null, 'My beautiful product'),
-            new LocaleAndChannelConsistency()
-        );
-        $this->validate(
-            new SetTextValue('simple', null, null, 'My beautiful product'),
+            [
+                new SetTextValue('scopable_localizable', 'en_US', 'ecommerce', 'My beautiful product'),
+                new SetTextValue('scopable', null, 'ecommerce', 'My beautiful product'),
+                new SetTextValue('localizable', 'fr_FR', null, 'My beautiful product'),
+                new SetTextValue('locale_specific', 'en_US', null, 'My beautiful product'),
+                new SetTextValue('simple', null, null, 'My beautiful product'),
+            ],
             new LocaleAndChannelConsistency()
         );
     }

@@ -20,9 +20,4 @@ final class LocaleAndChannelConsistency extends Constraint
     public const CHANNEL_DOES_NOT_EXIST = 'pim_enrich.product.validation.upsert.set_value.channel_does_not_exist';
     public const LOCALE_IS_NOT_ACTIVE = 'pim_enrich.product.validation.upsert.set_value.locale_is_not_active';
     public const LOCALE_NOT_ACTIVATED_FOR_CHANNEL = 'pim_enrich.product.validation.upsert.set_value.locale_not_activated_for_channel';
-
-    public function getTargets(): array
-    {
-        return [Constraint::CLASS_CONSTRAINT];
-    }
 }

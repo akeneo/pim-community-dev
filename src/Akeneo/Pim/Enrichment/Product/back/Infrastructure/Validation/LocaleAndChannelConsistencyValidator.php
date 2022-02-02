@@ -24,21 +24,29 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
     ) {
     }
 
-    public function validate($valueUserIntent, Constraint $constraint)
+    public function validate($valueUserIntents, Constraint $constraint)
     {
         Assert::isInstanceOf($constraint, LocaleAndChannelConsistency::class);
-        Assert::isInstanceOf($valueUserIntent, ValueUserIntent::class);
+        Assert::isArray($valueUserIntents);
+        Assert::allImplementsInterface($valueUserIntents, ValueUserIntent::class);
 
-        $attribute = $this->getAttributes->forCode($valueUserIntent->attributeCode());
-        if (null === $attribute) {
-            return;
+        $attributes = $this->getAttributes->forCodes(\array_map(
+            static fn (ValueUserIntent $valueUserIntent): string => $valueUserIntent->attributeCode(),
+            $valueUserIntents
+        ));
+
+        foreach ($valueUserIntents as $index => $valueUserIntent) {
+            $attribute = $attributes[$valueUserIntent->attributeCode()] ?? null;
+            if (null === $attribute) {
+                return;
+            }
+
+            $this->validateChannelCode($attribute, $valueUserIntent->channelCode(), $index);
+            $this->validateLocaleCode($attribute, $valueUserIntent->localeCode(), $valueUserIntent->channelCode(), $index);
         }
-
-        $this->validateChannelCode($attribute, $valueUserIntent->channelCode());
-        $this->validateLocaleCode($attribute, $valueUserIntent->localeCode(), $valueUserIntent->channelCode());
     }
 
-    private function validateChannelCode(Attribute $attribute, ?string $channelCode): void
+    private function validateChannelCode(Attribute $attribute, ?string $channelCode, int $index): void
     {
         if (!$attribute->isScopable()) {
             if (null !== $channelCode) {
@@ -48,7 +56,7 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
                         '{{ attributeCode }}' => $attribute->code(),
                         '{{ channelCode }}' => $channelCode,
                     ],
-                    'channelCode'
+                    \sprintf('[%d].channelCode', $index)
                 );
             }
 
@@ -61,7 +69,7 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
                 [
                     '{{ attributeCode }}' => $attribute->code(),
                 ],
-                'channelCode'
+                \sprintf('[%d].channelCode', $index)
             );
 
             return;
@@ -72,12 +80,12 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
                 [
                     '{{ channelCode }}' => $channelCode,
                 ],
-                'channelCode'
+                \sprintf('[%d].channelCode', $index)
             );
         }
     }
 
-    private function validateLocaleCode(Attribute $attribute, ?string $localeCode, ?string $channelCode): void
+    private function validateLocaleCode(Attribute $attribute, ?string $localeCode, ?string $channelCode, int $index): void
     {
         if (!$attribute->isLocalizable()) {
             if (null !== $localeCode) {
@@ -87,7 +95,7 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
                         '{{ attributeCode }}' => $attribute->code(),
                         '{{ localeCode }}' => $localeCode,
                     ],
-                    'localeCode'
+                    \sprintf('[%d].localeCode', $index)
                 );
             }
 
@@ -100,7 +108,7 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
                 [
                     '{{ attributeCode }}' => $attribute->code(),
                 ],
-                'localeCode'
+                \sprintf('[%d].localeCode', $index)
             );
 
             return;
@@ -112,7 +120,7 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
                 [
                     '{{ localeCode }}' => $localeCode,
                 ],
-                'localeCode'
+                \sprintf('[%d].localeCode', $index)
             );
 
             return;
@@ -128,7 +136,7 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
                     '{{ localeCode }}' => $localeCode,
                     '{{ channelCode }}' => $channelCode,
                 ],
-                'localeCode'
+                \sprintf('[%d].localeCode', $index)
             );
 
             return;
@@ -142,7 +150,7 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
                     '{{ localeCode }}' => $localeCode,
                     '{{ availableLocales }}' => \implode(', ', $attribute->availableLocaleCodes()),
                 ],
-                'localeCode'
+                \sprintf('[%d].localeCode', $index)
             );
         }
     }
