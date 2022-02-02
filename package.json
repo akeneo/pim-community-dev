@@ -55,6 +55,7 @@
   },
   "private": true,
   "workspaces": [
+    "front-packages/measurement",
     "front-packages/shared",
     "front-packages/akeneo-design-system"
   ]

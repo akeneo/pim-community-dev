@@ -78,5 +78,39 @@ tests needs
 - eslint@*
 - prettier@*
 - jest@*
-- ts-jest and jest needs to have same version (with ts-jest 26.x.x and jest 27.x.x, there is a "... specified in the "transform" object of Jest configuration" error"
+- ts-jest and jest needs to have same version
+    (with ts-jest 26.x.x and jest 27.x.x, there is a
+    "... specified in the "transform" object of Jest configuration" error"
+
+========================================================================================================================
+@akeneo-pim-community/shared
+========================================================================================================================
+
+tsc command needs
+- typescript@*
+- react-router-dom@<6.0.0 + react-router@<6.0.0 + @types/react-router-dom@<6.0.0 + @types/react-router@<6.0.0
+  (https://github.com/remix-run/react-router/issues/8439) -> will need a code migration
+
+tests needs:
+- prettier@*
+
+app-start needs:
+- react-scripts@*
+- TODO This still fail
+        WARNING in ../../node_modules/@testing-library/react-hooks/lib/pure.js 39:4-17
+        Critical dependency: the request of a dependency is an expression
+         @ ../../node_modules/@testing-library/react-hooks/lib/index.js 11:12-29
+         @ ../shared/lib/tests/utils.js 24:20-59
+         @ ../shared/lib/tests/index.js 28:13-31
+         @ ../shared/lib/index.js 38:13-31
+         @ ./src/index.tsx 8:0-81 31:36-69
+
+        WARNING in ../../node_modules/@testing-library/react-hooks/lib/pure.js 57:11-42
+        Critical dependency: the request of a dependency is an expression
+         @ ../../node_modules/@testing-library/react-hooks/lib/index.js 11:12-29
+         @ ../shared/lib/tests/utils.js 24:20-59
+         @ ../shared/lib/tests/index.js 28:13-31
+         @ ../shared/lib/index.js 38:13-31
+         @ ./src/index.tsx 8:0-81 31:36-69
+
 
