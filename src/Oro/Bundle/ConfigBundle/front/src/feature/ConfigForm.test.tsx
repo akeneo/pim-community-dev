@@ -1,6 +1,6 @@
 import React from 'react';
 import { renderWithProviders } from '@akeneo-pim-community/shared';
-import { screen, within } from '@testing-library/react';
+import { screen, within, fireEvent, waitFor } from '@testing-library/react';
 import { ConfigForm } from './ConfigForm'
 import { ScopedValue } from './models/ConfigServicePayload';
 import { GlobalWithFetchMock } from 'jest-fetch-mock';
@@ -78,5 +78,47 @@ describe('configForm', () => {
         const loadingMessageEnablerNotificationElt = screen.getByTestId('notification_message__enabler');
         expect(within(loadingMessageEnablerNotificationElt).queryByText('oro_config.form.config.group.notification.fields.enabler.label')).not.toBeNull();
         expect(within(loadingMessageEnablerNotificationElt).queryByRole('switch', { checked: true })).not.toBeNull();
+    });
+
+    test('should save the enable loading message value', async () => {
+        fetchMock.mockOnceIf(request => request.url === 'oro_config_configuration_system_get' && request.method === 'GET',
+            JSON.stringify({
+                pim_ui___language: scopedValue('fr_FR'),
+                pim_analytics___version_update: scopedValue(false),
+                pim_ui___loading_message_enabled: scopedValue(false),
+                pim_ui___loading_messages: scopedValue("FOO")
+            }));
+
+        fetchMock.mockOnceIf(request => request.url === 'pim_localization_locale_index',
+            JSON.stringify([
+                {
+                    "id": 58,
+                    "code": "en_US",
+                    "label": "English (United States)",
+                    "region": "United States",
+                    "language": "English"
+                },
+                {
+                    "id": 90,
+                    "code": "fr_FR",
+                    "label": "French (France)",
+                    "region": "France",
+                    "language": "French"
+                },
+            ]));
+
+
+        const postRespond = jest.fn((request) => request.text());
+
+        fetchMock.mockOnceIf(request => {
+            return request.url === 'oro_config_configuration_system_get' && request.method === 'POST'
+        }, postRespond);
+
+        renderWithProviders(<ConfigForm />);
+
+        fireEvent.click(within(await screen.findByTestId('loading_message__enabler')).getByTitle('pim_common.yes'));
+        fireEvent.click(screen.getByRole('button', { 'name': 'Save' }));
+        await waitFor(() => expect(postRespond).toHaveBeenCalled());
+        expect(within(screen.getByTestId('loading_message__enabler')).queryByRole('switch', { checked: true })).not.toBeNull();
     });
 });
