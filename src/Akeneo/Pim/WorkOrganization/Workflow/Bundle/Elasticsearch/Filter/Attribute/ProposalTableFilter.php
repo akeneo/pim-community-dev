@@ -86,4 +86,3 @@ class ProposalTableFilter implements AttributeFilterInterface
         $this->searchQueryBuilder = $searchQueryBuilder;
     }
 }
-

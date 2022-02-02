@@ -41,25 +41,6 @@ class TableFilterSpec extends ObjectBehavior
         $this->supportsOperator(Operators::CONTAINS)->shouldBe(false);
     }
 
-    function it_adds_a_filter_with_not_empty_operator(
-        ElasticsearchFilterValidator $filterValidator,
-        SearchQueryBuilder $searchQueryBuilder,
-        AttributeInterface $nutrition
-    ) {
-        $nutrition->getType()->willReturn(AttributeTypes::TABLE);
-        $nutrition->getCode()->willReturn('nutrition');
-
-        $filterValidator->validateChannelForAttribute('nutrition', 'ecommerce')->shouldBeCalled();
-        $filterValidator->validateLocaleForAttribute('nutrition', 'en_US')->shouldBeCalled();
-        $searchQueryBuilder->addFilter([
-            'exists' => [
-                'field' => 'values.nutrition-table.ecommerce.en_US',
-            ],
-        ])->shouldBeCalled()->willReturn($searchQueryBuilder);
-
-        $this->addAttributeFilter($nutrition, Operators::IS_NOT_EMPTY, null, 'en_US', 'ecommerce')->shouldReturn($this);
-    }
-
     function it_adds_a_filter_with_not_empty_operator_and_scopable_and_localizable_attribute(
         ElasticsearchFilterValidator $filterValidator,
         SearchQueryBuilder $searchQueryBuilder,
@@ -116,7 +97,6 @@ class TableFilterSpec extends ObjectBehavior
         $nutrition->getBackendType()->willReturn('table');
         $nutrition->isScopable()->willReturn(false);
         $nutrition->isLocalizable()->willReturn(true);
-
 
         $filterValidator->validateChannelForAttribute('nutrition', null)->shouldBeCalled();
         $filterValidator->validateLocaleForAttribute('nutrition', 'en_US')->shouldBeCalled();
