@@ -12,11 +12,14 @@ import {
   notifyAssetSaveValidationError,
 } from 'akeneoassetmanager/application/action/asset/notify';
 import assetSaver from 'akeneoassetmanager/infrastructure/saver/asset';
-import assetFetcher, {AssetResult} from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
+import {AssetFetcher, AssetResult} from 'akeneoassetmanager/domain/fetcher/asset';
 
-export const saveAsset = () => async (dispatch: any, getState: () => EditState): Promise<boolean> => {
+export const saveAsset = (assetFetcher: AssetFetcher) => async (
+  dispatch: any,
+  getState: () => EditState
+): Promise<boolean> => {
   const asset = getState().form.data;
 
   dispatch(assetEditionSubmission());

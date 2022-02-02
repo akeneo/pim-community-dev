@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -17,7 +18,7 @@ use Akeneo\AssetManager\Application\Asset\DeleteAsset\DeleteAssetHandler;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +36,7 @@ class DeleteAction
 {
     public function __construct(
         private DeleteAssetHandler $deleteAssetHandler,
-        private SecurityFacade $securityFacade,
+        private SecurityFacadeInterface $securityFacade,
         private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         private TokenStorageInterface $tokenStorage,
     ) {

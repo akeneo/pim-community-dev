@@ -18,7 +18,7 @@ use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\Can
 use Akeneo\AssetManager\Application\Attribute\DeleteAttribute\DeleteAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\DeleteAttribute\DeleteAttributeHandler;
 use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +34,7 @@ class DeleteAction
 {
     public function __construct(
         private DeleteAttributeHandler $deleteAttributeHandler,
-        private SecurityFacade $securityFacade,
+        private SecurityFacadeInterface $securityFacade,
         private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         private TokenStorageInterface $tokenStorage,
     ) {

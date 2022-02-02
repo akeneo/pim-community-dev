@@ -1,5 +1,4 @@
-import AssetFetcher from 'akeneoassetmanager/domain/fetcher/asset';
-import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
+import {useRouter} from '@akeneo-pim-community/shared';
 import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import EditionAsset from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import AssetFamilyIdentifier, {
@@ -8,7 +7,6 @@ import AssetFamilyIdentifier, {
 } from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AssetCode, {assetCodeStringValue} from 'akeneoassetmanager/domain/model/asset/code';
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
-import {AssetFamilyPermission} from 'akeneoassetmanager/domain/model/permission/asset-family';
 import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {denormalizeLabelCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import {BackendEditionAsset} from 'akeneoassetmanager/infrastructure/model/edition-asset';
@@ -18,13 +16,10 @@ import {validateBackendListAsset} from 'akeneoassetmanager/infrastructure/valida
 import {validateBackendEditionAsset} from 'akeneoassetmanager/infrastructure/validator/edition-asset';
 import {denormalizeAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {handleResponse} from 'akeneoassetmanager/infrastructure/tools/handleResponse';
+import {useAssetFamilyFetcher} from './useAssetFamilyFetcher';
+import {AssetFetcher, AssetResult} from 'akeneoassetmanager/domain/fetcher/asset';
 
 class InvalidArgument extends Error {}
-
-export type AssetResult = {
-  asset: EditionAsset;
-  permission: AssetFamilyPermission;
-};
 
 const denormalizeEditionAsset = (assetFamily: AssetFamily) => (backendAsset: BackendEditionAsset): EditionAsset => {
   return {
@@ -53,27 +48,29 @@ const denormalizeListAsset = (backendAsset: BackendListAsset): ListAsset => {
   };
 };
 
-const generateAssetGetUrl = (assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) =>
-  `/rest/asset_manager/${assetFamilyIdentifierStringValue(assetFamilyIdentifier)}/asset/${assetCodeStringValue(
-    assetCode
-  )}`;
+let assetsByCodesCache: {[key: string]: Promise<SearchResult<ListAsset>>} = {};
 
-const fetchAsset = async (assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode): Promise<any> => {
-  const response = await fetch(generateAssetGetUrl(assetFamilyIdentifier, assetCode));
+const fetchAssetData = async (route: string): Promise<any> => {
+  const response = await fetch(route);
+
   return await handleResponse(response);
 };
 
-const generateAssetSearchUrl = (assetFamilyIdentifier: AssetFamilyIdentifier) =>
-  `/rest/asset_manager/${assetFamilyIdentifier}/asset`;
+const useAssetFetcher = (): AssetFetcher => {
+  const router = useRouter();
+  const assetFamilyFetcher = useAssetFamilyFetcher();
 
-export class AssetFetcherImplementation implements AssetFetcher {
-  private assetsByCodesCache: {
-    [key: string]: Promise<SearchResult<ListAsset>>;
-  } = {};
+  const fetchAsset = async (
+    assetFamilyIdentifier: AssetFamilyIdentifier,
+    assetCode: AssetCode
+  ): Promise<AssetResult> => {
+    const route = router.generate('akeneo_asset_manager_asset_get_rest', {
+      assetFamilyIdentifier: assetFamilyIdentifierStringValue(assetFamilyIdentifier),
+      assetCode: assetCodeStringValue(assetCode),
+    });
 
-  async fetch(assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode): Promise<AssetResult> {
     const [assetData, assetFamilyResult] = await Promise.all([
-      fetchAsset(assetFamilyIdentifier, assetCode),
+      fetchAssetData(route),
       assetFamilyFetcher.fetch(denormalizeAssetFamilyIdentifier(assetFamilyIdentifier)),
     ]);
 
@@ -87,15 +84,18 @@ export class AssetFetcherImplementation implements AssetFetcher {
         edit: assetData.permission.edit,
       },
     };
-  }
+  };
 
-  async search(query: Query): Promise<SearchResult<ListAsset>> {
+  const search = async (query: Query): Promise<SearchResult<ListAsset>> => {
     const assetFamilyCodeFilter = query.filters.find((filter: Filter) => 'asset_family' === filter.field);
     if (undefined === assetFamilyCodeFilter) {
       throw new InvalidArgument('The search repository expects a asset_family filter');
     }
 
-    const response = await fetch(generateAssetSearchUrl(assetFamilyCodeFilter.value), {
+    const route = router.generate('akeneo_asset_manager_asset_index_rest', {
+      assetFamilyIdentifier: assetFamilyCodeFilter.value,
+    });
+    const response = await fetch(route, {
       method: 'PUT',
       body: JSON.stringify(query),
       headers: {
@@ -115,9 +115,9 @@ export class AssetFetcherImplementation implements AssetFetcher {
       matchesCount: backendAssets.matches_count,
       totalCount: backendAssets.total_count,
     };
-  }
+  };
 
-  async fetchByCodes(
+  const fetchByCodes = async (
     assetFamilyIdentifier: AssetFamilyIdentifier,
     assetCodes: AssetCode[],
     context: {
@@ -125,7 +125,7 @@ export class AssetFetcherImplementation implements AssetFetcher {
       locale: string;
     },
     cached: boolean = false
-  ): Promise<ListAsset[]> {
+  ): Promise<ListAsset[]> => {
     const query = {
       channel: context.channel,
       locale: context.locale,
@@ -146,12 +146,14 @@ export class AssetFetcherImplementation implements AssetFetcher {
     };
 
     const queryHash = JSON.stringify(query);
-    if (!cached || undefined === this.assetsByCodesCache[queryHash]) {
-      this.assetsByCodesCache[queryHash] = this.search(query);
+    if (!cached || undefined === assetsByCodesCache[queryHash]) {
+      assetsByCodesCache[queryHash] = search(query);
     }
 
-    return (await this.assetsByCodesCache[queryHash]).items;
-  }
-}
+    return (await assetsByCodesCache[queryHash]).items;
+  };
 
-export default new AssetFetcherImplementation();
+  return {fetch: fetchAsset, search, fetchByCodes};
+};
+
+export {useAssetFetcher};

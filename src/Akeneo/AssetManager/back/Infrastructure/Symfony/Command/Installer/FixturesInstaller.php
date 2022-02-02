@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer;
 
+use Akeneo\AssetManager\Domain\Filesystem\Storage;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
@@ -36,7 +37,6 @@ use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ValueHydratorInterface;
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\IndexAssetsCommand;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -412,21 +412,21 @@ SQL;
     private function loadAtmospheres(): void
     {
         // Asset family
-//        $ruleTemplate = [
-//            'product_selections' => [
-//                [
-//                    'field' => 'sku',
-//                    'operator'  => '=',
-//                    'value'     => '{{product_sku}}'
-//                ]
-//            ],
-//            'assign_assets_to'    => [
-//                [
-//                    'mode'  => 'set',
-//                    'attribute' => '{{linked_attribute}}'
-//                ]
-//            ]
-//        ];
+        //        $ruleTemplate = [
+        //            'product_selections' => [
+        //                [
+        //                    'field' => 'sku',
+        //                    'operator'  => '=',
+        //                    'value'     => '{{product_sku}}'
+        //                ]
+        //            ],
+        //            'assign_assets_to'    => [
+        //                [
+        //                    'mode'  => 'set',
+        //                    'attribute' => '{{linked_attribute}}'
+        //                ]
+        //            ]
+        //        ];
         $atmosphereAssetFamilyIdentifier = AssetFamilyIdentifier::fromString(self::ATMOSPHERE_ASSET_FAMILY_IDENTIFIER);
         $atmosphere = AssetFamily::create(
             $atmosphereAssetFamilyIdentifier,
@@ -635,36 +635,36 @@ SQL;
 
     private function loadVideoPresentation(): void
     {
-//        $ruleTemplateToAdd = [
-//            'product_selections' => [
-//                [
-//                    'field'    => 'sku',
-//                    'operator' => '=',
-//                    'value'    => '{{product_sku}}'
-//                ]
-//            ],
-//            'assign_assets_to' => [
-//                [
-//                    'mode'      => 'add',
-//                    'attribute' => '{{linked_attribute}}'
-//                ]
-//            ]
-//        ];
-//        $ruleTemplateToSet = [
-//            'product_selections' => [
-//                [
-//                    'field'    => 'sku',
-//                    'operator' => '=',
-//                    'value'    => '{{product_sku}}'
-//                ]
-//            ],
-//            'assign_assets_to' => [
-//                [
-//                    'mode'      => 'set',
-//                    'attribute' => '{{linked_attribute}}'
-//                ]
-//            ]
-//        ];
+        //        $ruleTemplateToAdd = [
+        //            'product_selections' => [
+        //                [
+        //                    'field'    => 'sku',
+        //                    'operator' => '=',
+        //                    'value'    => '{{product_sku}}'
+        //                ]
+        //            ],
+        //            'assign_assets_to' => [
+        //                [
+        //                    'mode'      => 'add',
+        //                    'attribute' => '{{linked_attribute}}'
+        //                ]
+        //            ]
+        //        ];
+        //        $ruleTemplateToSet = [
+        //            'product_selections' => [
+        //                [
+        //                    'field'    => 'sku',
+        //                    'operator' => '=',
+        //                    'value'    => '{{product_sku}}'
+        //                ]
+        //            ],
+        //            'assign_assets_to' => [
+        //                [
+        //                    'mode'      => 'set',
+        //                    'attribute' => '{{linked_attribute}}'
+        //                ]
+        //            ]
+        //        ];
         $video = AssetFamily::create(
             AssetFamilyIdentifier::fromString(self::VIDEO_ASSET_FAMILY_IDENTIFIER),
             ['en_US' => 'Video'],

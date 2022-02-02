@@ -144,7 +144,6 @@ pim_table_attribute:
       column_code: 열 코드
       properties_helper: 테이블 특성을 저장하려면 테이블 구조와 2개 이상의 열을 먼저 정의해야 합니다
       table_structure_helper_text: 테이블 특성에는 열이 2개 이상 있어야 합니다. 첫 번째 열은 항상 '선택' 열 유형이어야 합니다. 첫 번째 열을 생성한 후에는 옵션을 추가해야 합니다. 추가하려면 '옵션 관리'를 클릭하고 최대 {{ limit }}개의 옵션을 추가하십시오. 그런 다음, 이 각각의 옵션을 제품 테이블의 열로 사용할 수 있습니다.
-      table_structure_helper_link: 이 문서에서는 테이블 특성을 자세히 배울 수 있습니다.
       limit_option_reached: '{{ limit }}개 옵션 제한에 도달했습니다.'
       template_label: 기본 '{{ templateLabel }}' 테이블 선택
       delete_column_helper: 이 열을 삭제하면 '{{ attributeLabel }}' 테이블 특성을 사용하는 모든 제품에서 해당 열의 모든 값이 제거됩니다.
@@ -166,7 +165,6 @@ pim_table_attribute:
       no_search_result: "죄송합니다. 검색할 라인이 없습니다."
       no_rows_title: "{{ attributeLabel }} 테이블이 비어 있습니다."
       no_rows_subtitle: 행을 추가하여 새 속성 정의
-      no_rows_subtitle_on_readonly: 이 특성을 편집하려면 특성 설정 페이지로 이동하거나 PIM 관리자에게 문의하십시오.
       no_results: 결과가 없습니다
       no_options: 옵션이 없습니다
       no_add_options_unallowed: '''{{ attributeLabel }}'' 옵션을 관리하려면 PIM 관리자에게 문의하십시오'

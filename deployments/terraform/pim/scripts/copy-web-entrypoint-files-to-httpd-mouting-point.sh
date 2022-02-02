@@ -1,5 +1,4 @@
 #!/usr/bin/bash
-set -x
 set -e
 
 #Copy PIM entrypoint files into web-src volume

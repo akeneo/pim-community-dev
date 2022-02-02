@@ -18,7 +18,7 @@ use Akeneo\AssetManager\Application\AssetFamily\DeleteAssetFamily\DeleteAssetFam
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +37,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class DeleteAction
 {
     public function __construct(
-        private SecurityFacade $securityFacade,
+        private SecurityFacadeInterface $securityFacade,
         private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         private TokenStorageInterface $tokenStorage,
         private NormalizerInterface $normalizer,

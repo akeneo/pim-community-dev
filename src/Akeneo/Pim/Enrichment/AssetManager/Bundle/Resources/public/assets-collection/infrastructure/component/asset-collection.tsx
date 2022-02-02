@@ -20,10 +20,8 @@ import ListAsset, {
   isComplete,
   ASSET_COLLECTION_LIMIT,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
-import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
-import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import {AssetFamilyDataProvider} from 'akeneoassetmanager/application/hooks/asset-family';
+import {useAssetFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAssetFetcher';
 
 const AssetCard = styled.div`
   display: flex;
@@ -74,6 +72,7 @@ const useLoadAssets = (
   context: ContextState
 ) => {
   const [assets, setAssets] = useState<ListAsset[]>([]);
+  const assetFetcher = useAssetFetcher();
   const hasChangeInCollection = (assetCodes: AssetCode[], assets: ListAsset[]) => {
     const collectionSizesAreTheSame = assets.length === assetCodes.length;
     const fetchedAssetCollectionIsEmpty = assets.length === 0;
@@ -97,10 +96,6 @@ const useLoadAssets = (
   }, [assetCodes, assetFamilyIdentifier, context]);
 
   return {assets, setAssets};
-};
-
-const assetPreviewDataProvider: AssetFamilyDataProvider = {
-  assetFamilyFetcher,
 };
 
 const AssetCollection = ({
@@ -171,7 +166,6 @@ const AssetCollection = ({
                 context={context}
                 onClose={closePreviewModal}
                 assetFamilyIdentifier={assetFamilyIdentifier}
-                dataProvider={assetPreviewDataProvider}
               />
             )}
           </>

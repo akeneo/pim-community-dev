@@ -25,9 +25,9 @@ use Akeneo\AssetManager\Domain\Query\Limit;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\Hal\AddHalDownloadLinkToAssetImages;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Asset\JsonSchema\SearchFiltersValidator;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,7 +53,7 @@ class GetConnectorAssetsAction
         int $limit,
         private ValidatorInterface $validator,
         private SearchFiltersValidator $searchFiltersValidator,
-        private SecurityFacade $securityFacade
+        private SecurityFacadeInterface $securityFacade,
     ) {
         $this->limit = new Limit($limit);
     }

@@ -2,7 +2,6 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {AddColumnModal} from '../../../src';
 import {act, fireEvent, screen} from '@testing-library/react';
-import {defaultDataTypesMapping} from '../../factories';
 import {renderWithFeatureFlag} from '../../shared/renderWithFeatureFlag';
 
 jest.mock('../../../src/attribute/LocaleLabel');
@@ -12,14 +11,7 @@ describe('AddColumnModal', () => {
   it('should render the component', () => {
     const handleClose = jest.fn();
     const handleCreate = jest.fn();
-    renderWithProviders(
-      <AddColumnModal
-        close={handleClose}
-        onCreate={handleCreate}
-        existingColumnCodes={[]}
-        dataTypesMapping={defaultDataTypesMapping}
-      />
-    );
+    renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={[]} />);
 
     expect(screen.getByText('pim_table_attribute.form.attribute.add_column')).toBeInTheDocument();
     expect(screen.getByText('pim_common.create')).toBeInTheDocument();
@@ -28,14 +20,7 @@ describe('AddColumnModal', () => {
   it('should create default code', () => {
     const handleClose = jest.fn();
     const handleCreate = jest.fn();
-    renderWithProviders(
-      <AddColumnModal
-        close={handleClose}
-        onCreate={handleCreate}
-        existingColumnCodes={[]}
-        dataTypesMapping={defaultDataTypesMapping}
-      />
-    );
+    renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={[]} />);
 
     const codeInput = screen.getByLabelText(/pim_common.code/) as HTMLInputElement;
     const labelInput = screen.getByLabelText('pim_common.label') as HTMLInputElement;
@@ -50,14 +35,7 @@ describe('AddColumnModal', () => {
   it('should not update code once dirty', () => {
     const handleClose = jest.fn();
     const handleCreate = jest.fn();
-    renderWithProviders(
-      <AddColumnModal
-        close={handleClose}
-        onCreate={handleCreate}
-        existingColumnCodes={[]}
-        dataTypesMapping={defaultDataTypesMapping}
-      />
-    );
+    renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={[]} />);
 
     const codeInput = screen.getByLabelText(/pim_common.code/) as HTMLInputElement;
     const labelInput = screen.getByLabelText('pim_common.label') as HTMLInputElement;
@@ -76,12 +54,7 @@ describe('AddColumnModal', () => {
     const handleClose = jest.fn();
     const handleCreate = jest.fn();
     renderWithProviders(
-      <AddColumnModal
-        close={handleClose}
-        onCreate={handleCreate}
-        existingColumnCodes={['quantity']}
-        dataTypesMapping={defaultDataTypesMapping}
-      />
+      <AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={['quantity']} />
     );
 
     const codeInput = screen.getByLabelText(/pim_common.code/) as HTMLInputElement;
@@ -112,14 +85,7 @@ describe('AddColumnModal', () => {
   });
 
   it('should restrict the data types for the first column', async () => {
-    renderWithProviders(
-      <AddColumnModal
-        close={jest.fn()}
-        onCreate={jest.fn()}
-        existingColumnCodes={[]}
-        dataTypesMapping={defaultDataTypesMapping}
-      />
-    );
+    renderWithProviders(<AddColumnModal close={jest.fn()} onCreate={jest.fn()} existingColumnCodes={[]} />);
 
     expect(screen.getByText('pim_table_attribute.form.attribute.first_column_type_helper')).toBeInTheDocument();
     fireEvent.click(screen.getByTitle('pim_common.open'));
@@ -132,15 +98,9 @@ describe('AddColumnModal', () => {
 
   it('should select reference entity', async () => {
     const handleCreate = jest.fn();
-    renderWithFeatureFlag(
-      <AddColumnModal
-        close={jest.fn()}
-        onCreate={handleCreate}
-        existingColumnCodes={[]}
-        dataTypesMapping={defaultDataTypesMapping}
-      />,
-      {reference_entity: true}
-    );
+    renderWithFeatureFlag(<AddColumnModal close={jest.fn()} onCreate={handleCreate} existingColumnCodes={[]} />, {
+      reference_entity: true,
+    });
 
     fireEvent.change(screen.getByLabelText(/pim_common.label/), {target: {value: 'Reference entity column'}});
     expect(
@@ -168,12 +128,7 @@ describe('AddColumnModal', () => {
     const handleClose = jest.fn();
     const handleCreate = jest.fn();
     renderWithProviders(
-      <AddColumnModal
-        close={handleClose}
-        onCreate={handleCreate}
-        existingColumnCodes={['quantity']}
-        dataTypesMapping={defaultDataTypesMapping}
-      />
+      <AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={['quantity']} />
     );
 
     expect(screen.queryByText('pim_table_attribute.form.attribute.first_column_type_helper')).toBeNull();

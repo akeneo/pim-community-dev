@@ -69,7 +69,11 @@ const getSupportedTypes = (fromType: AttributeType) => {
     ],
     [
       AttributeType.REFERENCE_ENTITY_COLLECTION,
-      [AttributeType.TEXT, AttributeType.TEXTAREA],
+      [
+        AttributeType.TEXT,
+        AttributeType.TEXTAREA,
+        AttributeType.OPTION_MULTI_SELECT,
+      ],
     ],
   ]);
 

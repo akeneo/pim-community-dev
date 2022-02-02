@@ -1,5 +1,26 @@
 # 5.0.x
 
+# 5.0.71 (2022-02-01)
+
+# 5.0.70 (2022-02-01)
+
+## Bug fixes
+
+- PIM-10223: Add missing "s" on "remove-orphans" option in Makefile
+- PIM-10247: Fix rules engine doesn't allow copying value from reference entity multiple links to the multi select attribute
+
+# 5.0.69 (2022-01-21)
+
+# 5.0.68 (2022-01-17)
+
+## Bug fixes
+
+- PIM-10233: [Backport] Fix product and product model deletion events when entity does not have any category
+- AOB-1428: Fix Reference entity isEqual comparison method
+- PIM-10231: [Backport] Launch product link rules when creating asset by import
+
+# 5.0.67 (2022-01-03)
+
 # 5.0.66 (2021-12-22)
 
 # 5.0.65 (2021-12-22)

@@ -42,7 +42,6 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\ValueHydratorInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 class FixturesLoader
 {
@@ -283,7 +282,7 @@ class FixturesLoader
                         'product_selections' => [
                             [
                                 'field'    => '{{category_field}}',
-                                'operator' => Operators::EQUALS,
+                                'operator' => '=',
                                 'value'    => '{{category}}',
                             ],
                         ],

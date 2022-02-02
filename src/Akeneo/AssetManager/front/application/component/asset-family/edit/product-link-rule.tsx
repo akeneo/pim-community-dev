@@ -1,5 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import {JsonEditor as Editor} from 'jsoneditor-react';
 import 'jsoneditor-react/es/editor.min.css';
 import {
@@ -43,6 +43,7 @@ import {ConfirmModal} from 'akeneoassetmanager/application/component/app/modal';
 import namingConventionSchema from 'akeneoassetmanager/infrastructure/model/asset-family/naming-convention.schema.json';
 import productLinkRulesSchema from 'akeneoassetmanager/infrastructure/model/asset-family/product-link-rules.schema.json';
 import {UserNavigation} from 'akeneoassetmanager/application/component/app/user-navigation';
+import {useAssetFamilyFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAssetFamilyFetcher';
 
 const ajv = new Ajv({allErrors: true, verbose: true});
 
@@ -197,7 +198,6 @@ interface DispatchProps {
   events: {
     onAssetFamilyNamingConventionUpdated: (namingConvention: NamingConvention) => void;
     onAssetFamilyProductLinkRulesUpdated: (productLinkRules: ProductLinkRuleCollection) => void;
-    onSaveEditForm: () => void;
     onExecuteProductLinkRules: () => void;
     onExecuteNamingConvention: () => void;
   };
@@ -206,6 +206,8 @@ interface DispatchProps {
 const ProductLinkRule = ({assetFamily, context, form, errors, events, rights}: StateProps & DispatchProps) => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
+  const dispatch = useDispatch();
+  const assetFamilyFetcher = useAssetFamilyFetcher();
   const [isExecuteRulesModalOpen, openExecuteRulesModal, closeExecuteRulesModal] = useBooleanState();
   const [
     isExecuteNamingConventionModalOpen,
@@ -248,7 +250,9 @@ const ProductLinkRule = ({assetFamily, context, form, errors, events, rights}: S
             onExecuteNamingConvention={openExecuteNamingConventionModal}
           />
           {canEditNamingConvention && (
-            <Button onClick={events.onSaveEditForm}>{translate('pim_asset_manager.asset_family.button.save')}</Button>
+            <Button onClick={() => dispatch(saveAssetFamily(assetFamilyFetcher))}>
+              {translate('pim_asset_manager.asset_family.button.save')}
+            </Button>
           )}
         </PageHeader.Actions>
         <PageHeader.State>{form.state.isDirty && <UnsavedChanges />}</PageHeader.State>
@@ -361,9 +365,6 @@ export default connect(
         },
         onAssetFamilyProductLinkRulesUpdated: (productLinkRules: ProductLinkRuleCollection) => {
           dispatch(assetFamilyProductLinkRulesUpdated(productLinkRules));
-        },
-        onSaveEditForm: () => {
-          dispatch(saveAssetFamily());
         },
         onExecuteProductLinkRules: () => {
           dispatch(executeProductLinkRules());

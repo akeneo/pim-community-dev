@@ -1,5 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import styled from 'styled-components';
 import {getColor, SectionTitle} from 'akeneo-design-system';
 import {Section, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
@@ -13,6 +13,7 @@ import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/
 import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 import {LinkedProducts} from 'akeneoassetmanager/application/component/asset/edit/linked-products';
 import {MainMediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/main-media-preview';
+import {useAssetFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAssetFetcher';
 
 const Container = styled.div`
   display: flex;
@@ -52,7 +53,6 @@ type DispatchProps = {
   events: {
     form: {
       onValueChange: (value: EditionValue) => void;
-      onSubmit: () => void;
     };
   };
 };
@@ -60,6 +60,8 @@ type DispatchProps = {
 const Enrich = ({form, context, events, canEditCurrentLocale, canEditCurrentFamily}: StateProps & DispatchProps) => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
+  const dispatch = useDispatch();
+  const assetFetcher = useAssetFetcher();
   const asset = form.data;
 
   return (
@@ -75,7 +77,7 @@ const Enrich = ({form, context, events, canEditCurrentLocale, canEditCurrentFami
             locale={denormalizeLocaleReference(context.locale)}
             errors={form.errors}
             onValueChange={events.form.onValueChange}
-            onFieldSubmit={events.form.onSubmit}
+            onFieldSubmit={() => dispatch(saveAsset(assetFetcher))}
             canEditLocale={canEditCurrentLocale}
             canEditAsset={canEditCurrentFamily && isGranted('akeneo_assetmanager_asset_edit')}
           />
@@ -110,9 +112,6 @@ export default connect(
         form: {
           onValueChange: (value: EditionValue) => {
             dispatch(assetValueUpdated(value));
-          },
-          onSubmit: () => {
-            dispatch(saveAsset());
           },
         },
       },

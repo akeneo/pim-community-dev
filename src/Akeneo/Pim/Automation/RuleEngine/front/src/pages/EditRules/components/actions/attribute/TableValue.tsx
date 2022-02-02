@@ -1,24 +1,22 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import styled from 'styled-components';
 import {
   AddRowsButton,
+  AttributeContext,
+  LocaleCodeContext,
+  TableAttribute,
   TableInputValue,
+  TableValue,
   TableValueWithId,
   useToggleRow,
   useUniqueIds,
-  AttributeContext,
-  CellMappingContext,
-  TableAttribute,
-  TableValue,
-  LocaleCodeContext,
 } from '@akeneo-pim-ge/table_attribute';
 import {
   getLabel,
   useTranslate,
   useUserContext,
 } from '@akeneo-pim-community/shared';
-import {ConfigContext} from '../../../../../context/ConfigContext';
 import {InputValueProps} from './AttributeValue';
 import {Helper} from 'akeneo-design-system';
 
@@ -44,7 +42,6 @@ const TableValue: React.FC<InputValueProps> = ({
 }) => {
   const translate = useTranslate();
   const UserContext = useUserContext();
-  const {cellMatchersMapping, cellInputsMapping} = useContext(ConfigContext);
   const {addUniqueIds, removeUniqueIds} = useUniqueIds();
   const [attributeState, setAttributeState] = React.useState<TableAttribute>(
     attribute as TableAttribute
@@ -71,29 +68,26 @@ const TableValue: React.FC<InputValueProps> = ({
     <AttributeContext.Provider
       value={{attribute: attributeState, setAttribute: setAttributeState}}>
       <LocaleCodeContext.Provider value={{localeCode: catalogLocale}}>
-        <CellMappingContext.Provider
-          value={{cellMatchersMapping, cellInputsMapping}}>
-          <TableValueContainer>
-            <AttributeLabel>
-              {getLabel(
-                attributeState.labels,
-                catalogLocale,
-                attributeState.code
+        <TableValueContainer>
+          <AttributeLabel>
+            {getLabel(
+              attributeState.labels,
+              catalogLocale,
+              attributeState.code
+            )}
+            <AddRowsButton
+              checkedOptionCodes={tableValue.map(
+                row => (row[firstColumnCode] ?? '') as string
               )}
-              <AddRowsButton
-                checkedOptionCodes={tableValue.map(
-                  row => (row[firstColumnCode] ?? '') as string
-                )}
-                toggleChange={handleToggleRow}
-              />
-            </AttributeLabel>
-            <TableInputValue
-              valueData={tableValue}
-              onChange={handleChange}
-              visibility={'CAN_EDIT'}
+              toggleChange={handleToggleRow}
             />
-          </TableValueContainer>
-        </CellMappingContext.Provider>
+          </AttributeLabel>
+          <TableInputValue
+            valueData={tableValue}
+            onChange={handleChange}
+            visibility={'CAN_EDIT'}
+          />
+        </TableValueContainer>
       </LocaleCodeContext.Provider>
       <HelperContainer>
         <Helper level='info' inline={true}>

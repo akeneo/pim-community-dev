@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Transformation;
 
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileTargetValueCommand;
+use Akeneo\AssetManager\Domain\Filesystem\Storage;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\AssetManager\Infrastructure\Transformation\Exception\TransformationException;
 use Akeneo\AssetManager\Infrastructure\Transformation\Exception\TransformationFailedException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;

@@ -17,14 +17,12 @@ pim_table_configuration:
       too_long_option_label: "L'intitulé de l'option est trop long : il doit avoir au maximum 255 caractères."
       duplicated_column_code: '[0,1]Chaque colonne nécessite un code unique. "%duplicateCodes%" est déjà utilisé|]1, Inf[Chaque colonne nécessite un code unique. "%duplicateCodes%" sont déjà utilisés'
       column_type_must_be_a_string: Le type de colonne doit être une chaîne de caractères
-      unknown_data_type: "Le type de colonne est inconnu. Veuillez choisir un des éléments suivants: number, text, select, boolean"
       column_label_must_be_a_string: Le libellé de la colonne doit être une chaîne de caractères
       option_label_must_be_a_string: Le libellé de l'option doit être une chaîne de caractères
       label_locale_does_not_exist_or_is_not_activated: La locale "{{ locale_code }}" n'existe pas ou n'est pas activée
       invalid_labels_format: Les libellés de colonne doivent être sous forme d'un objet clé/valeur
       invalid_option_labels_format: Les libellés d'option doivent être sous forme d'un objet clé/valeur
       must_not_be_filled: Le type %type% n'autorise pas table_configuration
-      first_column_should_be_select: 'Le type de la première colonne doit toujours être "select", type courant : "{{ data_type }}"'
       first_column_code_cannot_be_changed: Le code de la première colonne ne peut pas être modifié.
       unknown_field: 'Assurez-vous d''utiliser uniquement les champs attendus ; le champ actuel : {{ field }}'
       attribute_does_not_exist: L'attribut "{{ attribute }}" n'existe pas

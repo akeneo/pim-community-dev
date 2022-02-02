@@ -8,8 +8,9 @@ import {attributeDeleted} from 'akeneoassetmanager/domain/event/attribute/list';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {attributeEditionCancel} from 'akeneoassetmanager/domain/event/attribute/edit';
 import {updateAttributeList} from 'akeneoassetmanager/application/action/attribute/list';
+import {AttributeFetcher} from 'akeneoassetmanager/domain/fetcher/attribute';
 
-export const deleteAttribute = (attributeIdentifier: AttributeIdentifier) => async (
+export const deleteAttribute = (attributeFetcher: AttributeFetcher, attributeIdentifier: AttributeIdentifier) => async (
   dispatch: any,
   getState: () => EditState
 ): Promise<void> => {
@@ -30,6 +31,6 @@ export const deleteAttribute = (attributeIdentifier: AttributeIdentifier) => asy
 
     throw error;
   } finally {
-    dispatch(updateAttributeList());
+    dispatch(updateAttributeList(attributeFetcher));
   }
 };

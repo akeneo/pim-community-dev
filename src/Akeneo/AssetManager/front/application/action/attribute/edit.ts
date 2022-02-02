@@ -16,7 +16,6 @@ import {
 } from 'akeneoassetmanager/application/action/attribute/notify';
 import {updateAttributeList} from 'akeneoassetmanager/application/action/attribute/list';
 import AttributeCode from 'akeneoassetmanager/domain/model/code';
-import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
 import {NormalizedAttribute, Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {
   optionEditionSubmission,
@@ -26,11 +25,13 @@ import {
 import {AttributeWithOptions} from 'akeneoassetmanager/domain/model/attribute/type/option';
 import attributeOptionSaver from 'akeneoassetmanager/infrastructure/saver/options';
 import {attributecodesAreEqual} from 'akeneoassetmanager/domain/model/attribute/code';
+import {AttributeFetcher} from 'akeneoassetmanager/domain/fetcher/attribute';
 
-export const saveAttribute = (dismiss: boolean = true) => async (
-  dispatch: any,
-  getState: () => EditState
-): Promise<void> => {
+export const saveAttribute = (
+  attributeFetcher: AttributeFetcher,
+  denormalizeAttribute: (normalizedAttribute: NormalizedAttribute) => Attribute,
+  dismiss: boolean = true
+) => async (dispatch: any, getState: () => EditState): Promise<void> => {
   if (getState().attribute.isSaving) {
     return;
   }
@@ -63,12 +64,15 @@ export const saveAttribute = (dismiss: boolean = true) => async (
   if (dismiss) {
     dispatch(attributeEditionCancel());
   }
-  await dispatch(updateAttributeList());
+  await dispatch(updateAttributeList(attributeFetcher));
 
   return;
 };
 
-export const saveOptions = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
+export const saveOptions = (
+  attributeFetcher: AttributeFetcher,
+  denormalizeAttribute: (normalizedAttribute: NormalizedAttribute) => Attribute
+) => async (dispatch: any, getState: () => EditState): Promise<void> => {
   if (getState().options.isSaving) {
     return;
   }
@@ -100,15 +104,16 @@ export const saveOptions = () => async (dispatch: any, getState: () => EditState
   }
 
   dispatch(optionEditionSucceeded());
-  await dispatch(updateAttributeList());
+  await dispatch(updateAttributeList(attributeFetcher));
 
   return;
 };
 
-export const attributeEditionStartByCode = (attributeCode: AttributeCode) => async (
-  dispatch: any,
-  getState: () => EditState
-): Promise<void> => {
+export const attributeEditionStartByCode = (
+  attributeFetcher: AttributeFetcher,
+  denormalizeAttribute: (normalizedAttribute: NormalizedAttribute) => Attribute,
+  attributeCode: AttributeCode
+) => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const state = getState();
   if (null === state.attributes.attributes) {
     return;
@@ -118,13 +123,14 @@ export const attributeEditionStartByCode = (attributeCode: AttributeCode) => asy
     attributecodesAreEqual(attribute.code, attributeCode)
   );
 
-  dispatch(attributeEditionStart(attributeToEdit));
+  dispatch(attributeEditionStart(attributeFetcher, denormalizeAttribute, attributeToEdit));
 };
 
-export const attributeEditionStartByIdentifier = (attributeIdentifier: AttributeIdentifier) => async (
-  dispatch: any,
-  getState: () => EditState
-): Promise<void> => {
+export const attributeEditionStartByIdentifier = (
+  attributeFetcher: AttributeFetcher,
+  denormalizeAttribute: (normalizedAttribute: NormalizedAttribute) => Attribute,
+  attributeIdentifier: AttributeIdentifier
+) => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const state = getState();
   if (null === state.attributes.attributes) {
     return;
@@ -134,13 +140,14 @@ export const attributeEditionStartByIdentifier = (attributeIdentifier: Attribute
     attributeidentifiersAreEqual(attribute.identifier, attributeIdentifier)
   );
 
-  dispatch(attributeEditionStart(attributeToEdit));
+  dispatch(attributeEditionStart(attributeFetcher, denormalizeAttribute, attributeToEdit));
 };
 
-export const attributeEditionStart = (attribute: NormalizedAttribute | undefined) => async (
-  dispatch: any,
-  getState: () => EditState
-): Promise<void> => {
+const attributeEditionStart = (
+  attributeFetcher: AttributeFetcher,
+  denormalizeAttribute: (normalizedAttribute: NormalizedAttribute) => Attribute,
+  attribute: NormalizedAttribute | undefined
+) => async (dispatch: any, getState: () => EditState): Promise<void> => {
   if (undefined === attribute) {
     return;
   }
@@ -148,7 +155,7 @@ export const attributeEditionStart = (attribute: NormalizedAttribute | undefined
   const attributeState = getState().attribute;
 
   if (attributeState.isDirty) {
-    await dispatch(saveAttribute(false));
+    await dispatch(saveAttribute(attributeFetcher, denormalizeAttribute, false));
   }
 
   if (!getState().attribute.isDirty) {

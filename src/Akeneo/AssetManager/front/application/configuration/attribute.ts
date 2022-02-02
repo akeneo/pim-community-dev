@@ -57,7 +57,7 @@ const getIcon = (config: AttributeConfig, attributeType: string): string => {
   return config[attributeType].icon;
 };
 
-const getDenormalizer = (config: AttributeConfig) => (normalizedAttribute: NormalizedAttribute): Denormalizer => {
+const getDenormalizer = (config: AttributeConfig, normalizedAttribute: NormalizedAttribute): Denormalizer => {
   const typeConfiguration = config[normalizedAttribute.type];
 
   if (undefined === typeConfiguration || undefined === typeConfiguration.denormalize) {
@@ -229,7 +229,8 @@ ${moduleExample}`
   return typeConfiguration.view.view;
 };
 
-export const getAttributeDenormalizer = getDenormalizer(__moduleConfig as AttributeConfig);
-export const getAttributeReducer = getReducer(__moduleConfig as AttributeConfig);
+/* istanbul ignore next */
+export const getAttributeDenormalizer = (normalizedAttribute: NormalizedAttribute) =>
+  getDenormalizer(__moduleConfig as AttributeConfig, normalizedAttribute);
 
 export {getDenormalizer, getIcon, getReducer, getTypes, getView, View, Reducer, Denormalizer, AttributeConfig};

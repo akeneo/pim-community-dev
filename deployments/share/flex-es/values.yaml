@@ -18,6 +18,11 @@ global:
       # key: "value"
 cluster:
   name: "pim-es"
+  # keystoreSecret: eskeystore
+  config: {}
+  plugins: []
+    # - ingest-attachment
+    # - mapper-size
 common:
   command: null
   service:
@@ -76,3 +81,13 @@ single:
   persistentDisk:
     size: "10G"
     name: null
+
+keystore:
+  - secretName: pim-secrets
+    items:
+    - key: srntPimStorageKey
+      path: gcs.client.default.credentials_file
+snapshots:
+  retention: 15
+  repository: pim_gcs_repository
+  folder: elasticsearch-snapshots

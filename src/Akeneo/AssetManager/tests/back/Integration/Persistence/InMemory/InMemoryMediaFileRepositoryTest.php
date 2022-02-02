@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Integration\Persistence\InMemory;
 
 use Akeneo\AssetManager\Common\Fake\InMemoryMediaFileRepository;
+use Akeneo\AssetManager\Domain\Filesystem\Storage;
 use Akeneo\AssetManager\Domain\Repository\MediaFileNotFoundException;
-use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use PHPUnit\Framework\TestCase;
 

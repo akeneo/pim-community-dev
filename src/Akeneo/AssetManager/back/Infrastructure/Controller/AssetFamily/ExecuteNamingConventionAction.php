@@ -18,7 +18,7 @@ use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\ExecuteAssetFa
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,7 +35,7 @@ class ExecuteNamingConventionAction
         private ExecuteAssetFamilyNamingConventionHandler $executeAssetFamilyNamingConventionHandler,
         private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         private TokenStorageInterface $tokenStorage,
-        private SecurityFacade $securityFacade,
+        private SecurityFacadeInterface $securityFacade,
     ) {
     }
 

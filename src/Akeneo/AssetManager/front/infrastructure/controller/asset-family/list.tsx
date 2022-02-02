@@ -3,10 +3,7 @@ import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import Library, {LibraryDataProvider} from 'akeneoassetmanager/application/component/library/library';
 import {ThemeProvider} from 'styled-components';
-import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import {fetchChannels} from 'akeneoassetmanager/infrastructure/fetcher/channel';
-import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
-import assetAttributeFetcher from 'akeneoassetmanager/infrastructure/fetcher/attribute';
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ConfigProvider} from 'akeneoassetmanager/application/hooks/useConfig';
@@ -18,13 +15,8 @@ const userContext = require('pim/user-context');
 const fetcherRegistry = require('pim/fetcher-registry');
 
 const dataProvider: LibraryDataProvider = {
-  assetFetcher,
   channelFetcher: {
     fetchAll: fetchChannels(fetcherRegistry.getFetcher('channel')),
-  },
-  assetFamilyFetcher,
-  assetAttributeFetcher: {
-    fetchAll: assetAttributeFetcher.fetchAllNormalized,
   },
 };
 

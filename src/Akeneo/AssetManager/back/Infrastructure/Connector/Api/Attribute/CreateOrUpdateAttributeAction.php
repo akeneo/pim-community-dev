@@ -17,8 +17,8 @@ use Akeneo\AssetManager\Domain\Query\Attribute\GetAttributeIdentifierInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Create\AttributeCreationValidator;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\Attribute\JsonSchema\Edit\AttributeEditionValidator;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,7 +46,7 @@ class CreateOrUpdateAttributeAction
         private AttributeCreationValidator $jsonSchemaCreateValidator,
         private AttributeEditionValidator $jsonSchemaEditValidator,
         private ValidateAttributePropertiesImmutability $validateAttributePropertiesImmutability,
-        private SecurityFacade $securityFacade
+        private SecurityFacadeInterface $securityFacade,
     ) {
     }
 

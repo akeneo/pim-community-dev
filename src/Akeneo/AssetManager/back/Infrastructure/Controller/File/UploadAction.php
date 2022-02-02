@@ -2,7 +2,7 @@
 
 namespace Akeneo\AssetManager\Infrastructure\Controller\File;
 
-use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
+use Akeneo\AssetManager\Domain\Filesystem\Storage;
 use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\PathGeneratorInterface;

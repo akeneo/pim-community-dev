@@ -27,7 +27,7 @@ use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\Can
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
 use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
 use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,7 +55,7 @@ class CreateAction
         private TokenStorageInterface $tokenStorage,
         private NormalizerInterface $normalizer,
         private ValidatorInterface $validator,
-        private SecurityFacade $securityFacade,
+        private SecurityFacadeInterface $securityFacade,
         private EditAssetCommandFactory $editAssetCommandFactory,
         private NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory,
         private LinkAssetHandler $linkAssetHandler,

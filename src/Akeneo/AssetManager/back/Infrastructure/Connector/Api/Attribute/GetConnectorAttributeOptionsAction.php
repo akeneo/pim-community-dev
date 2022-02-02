@@ -17,7 +17,7 @@ use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeExistsInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeSupportsOptions;
 use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionsInterface;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -30,7 +30,7 @@ class GetConnectorAttributeOptionsAction
         private AssetFamilyExistsInterface $assetFamilyExists,
         private AttributeExistsInterface $attributeExists,
         private AttributeSupportsOptions $attributeSupportsOptions,
-        private SecurityFacade $securityFacade,
+        private SecurityFacadeInterface $securityFacade,
     ) {
     }
 

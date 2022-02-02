@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Enrichment\AssetManager\Integration\Export;
 
+use Akeneo\AssetManager\Domain\Filesystem\Storage;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
@@ -42,15 +43,9 @@ use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
-use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
-use Akeneo\Platform\EnterpriseVersion;
-use Akeneo\Platform\VersionProvider;
-use Akeneo\Platform\VersionProviderInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Command\BatchCommand;
-use Akeneo\Tool\Component\Connector\Reader\File\Xlsx\Reader;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractItemMediaWriter;
 use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
@@ -58,7 +53,6 @@ use PHPUnit\Framework\Constraint\Callback;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Webmozart\Assert\Assert;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -460,7 +454,7 @@ abstract class AbstractExportWithAssetTestCase extends AbstractExportTestCase
                         if ($filepath === $writtenFile->outputFilepath()) {
                             return true;
                         }
-                }
+                    }
 
                     return false;
                 }

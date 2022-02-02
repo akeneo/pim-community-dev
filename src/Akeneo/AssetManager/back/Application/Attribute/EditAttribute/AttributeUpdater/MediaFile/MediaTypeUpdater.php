@@ -10,7 +10,6 @@ use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\Media
 use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
-use Doctrine\Common\Util\ClassUtils;
 
 /**
  * @author    Valentin Dijkstra <valentin.dijkstra@akeneo.com>
@@ -30,7 +29,7 @@ class MediaTypeUpdater implements AttributeUpdaterInterface
                 sprintf(
                     'Expected command of type "%s", "%s" given',
                     EditMediaTypeCommand::class,
-                    ClassUtils::getClass($command)
+                    get_class($command),
                 )
             );
         }
