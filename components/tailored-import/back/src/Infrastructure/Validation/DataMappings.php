@@ -24,6 +24,18 @@ class DataMappings extends Constraint
     public const MIN_SOURCES_COUNT_REACHED = 'akeneo.tailored_import.validation.data_mappings.sources.min_count_reached';
     public const MAX_SOURCES_COUNT_REACHED = 'akeneo.tailored_import.validation.data_mappings.sources.max_count_reached';
     public const SOURCES_SHOULD_BE_UNIQUE = 'akeneo.tailored_import.validation.data_mappings.sources.should_be_unique';
+    public const SOURCES_SHOULD_EXIST = 'akeneo.tailored_import.validation.data_mappings.sources.should_exist';
+
+    public function __construct(
+        private array $columns,
+    ) {
+        parent::__construct();
+    }
+
+    public function getColumns(): array
+    {
+        return $this->columns;
+    }
 
     public function validatedBy(): string
     {

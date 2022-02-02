@@ -52,6 +52,7 @@ akeneo.tailored_import:
         min_count_reached: You need to add at least {{ limit }} sources to your data mapping.
         max_count_reached: You have reached the limit of {{ limit }} sources, you can no longer add sources to your data mapping.
         should_be_unique: This source already exists, please enter a new one.
+        should_exist: The source {{ source }} does not exist, please enter a valid one.
     target:
       attribute_should_exist: The attribute {{ attribute_code }} does not exist. Please either create it or choose a different target.
       property_should_exist: The property {{ property_code }} does not exist. Please either create it or choose a different target.

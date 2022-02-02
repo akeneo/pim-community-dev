@@ -30,8 +30,7 @@ const mockCreatedDataMapping: DataMapping = {
     channel: null,
     locale: null,
     action: 'set',
-    ifEmpty: 'skip',
-    onError: 'skipLine',
+    if_empty: 'skip',
   },
   sources: [],
   operations: [],
@@ -63,7 +62,7 @@ jest.mock('./components/DataMappingDetails/DataMappingDetails', () => ({
   }) => (
     <>
       Data mapping details of {dataMapping.uuid}
-      <button onClick={() => onDataMappingChange({...dataMapping, target: {...dataMapping.target, ifEmpty: 'clear'}})}>
+      <button onClick={() => onDataMappingChange({...dataMapping, target: {...dataMapping.target, if_empty: 'clear'}})}>
         Update data mapping
       </button>
     </>
@@ -83,8 +82,7 @@ const getDefaultIdentifierDataMapping = (): DataMapping => ({
     channel: null,
     locale: null,
     action: 'set',
-    ifEmpty: 'skip',
-    onError: 'skipLine',
+    if_empty: 'skip',
   },
   sources: ['d1249682-720e-11ec-90d6-0242ac120003'],
   operations: [],
@@ -197,8 +195,7 @@ test('it can display and update the data mapping detail when clicking on the dat
           channel: null,
           locale: null,
           action: 'set',
-          ifEmpty: 'clear',
-          onError: 'skipLine',
+          if_empty: 'clear',
         },
         operations: [],
         sampleData: [],

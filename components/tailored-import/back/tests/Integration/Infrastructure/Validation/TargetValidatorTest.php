@@ -51,8 +51,7 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'channel' => null,
                     'locale' => null,
                     'action' => 'set',
-                    'ifEmpty' => 'skip',
-                    'onError' => 'skipLine',
+                    'if_empty' => 'skip',
                 ]
             ],
             'a valid attribute target' => [
@@ -62,8 +61,7 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                     'action' => 'set',
-                    'ifEmpty' => 'skip',
-                    'onError' => 'skipLine',
+                    'if_empty' => 'skip',
                 ]
             ],
             'a valid property target' => [
@@ -71,8 +69,7 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'code' => 'categories',
                     'type' => 'property',
                     'action' => 'add',
-                    'ifEmpty' => 'skip',
-                    'onError' => 'skipLine',
+                    'if_empty' => 'skip',
                 ]
             ],
         ];
@@ -89,8 +86,7 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                     'action' => 'set',
-                    'ifEmpty' => 'skip',
-                    'onError' => 'skipLine',
+                    'if_empty' => 'skip',
                 ],
             ],
             'a target with missing type' => [
@@ -101,8 +97,7 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                     'action' => 'set',
-                    'ifEmpty' => 'skip',
-                    'onError' => 'skipLine',
+                    'if_empty' => 'skip',
                 ],
             ],
             'a target with invalid type' => [
@@ -114,8 +109,7 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                     'action' => 'set',
-                    'ifEmpty' => 'skip',
-                    'onError' => 'skipLine',
+                    'if_empty' => 'skip',
                 ],
             ],
             'an attribute target with invalid code' => [
@@ -127,8 +121,7 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                     'action' => 'set',
-                    'ifEmpty' => 'skip',
-                    'onError' => 'skipLine',
+                    'if_empty' => 'skip',
                 ],
             ],
             'a property target with invalid code' => [
@@ -138,8 +131,7 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'code' => 'invalid_property',
                     'type' => 'property',
                     'action' => 'set',
-                    'ifEmpty' => 'skip',
-                    'onError' => 'skipLine',
+                    'if_empty' => 'skip',
                 ],
             ],
             'an attribute target without channel when attribute is scopable' => [
@@ -150,8 +142,7 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'type' => 'attribute',
                     'locale' => 'en_US',
                     'action' => 'set',
-                    'ifEmpty' => 'skip',
-                    'onError' => 'skipLine',
+                    'if_empty' => 'skip',
                 ],
             ],
             'an attribute target without locale when attribute is localizable' => [
@@ -162,8 +153,7 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'type' => 'attribute',
                     'channel' => 'ecommerce',
                     'action' => 'set',
-                    'ifEmpty' => 'skip',
-                    'onError' => 'skipLine',
+                    'if_empty' => 'skip',
                 ],
             ],
             'an attribute target with invalid channel' => [
@@ -175,8 +165,7 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'channel' => 'perlinpinpin',
                     'locale' => 'en_US',
                     'action' => 'set',
-                    'ifEmpty' => 'skip',
-                    'onError' => 'skipLine',
+                    'if_empty' => 'skip',
                 ],
             ],
             'an attribute target with invalid locale' => [
@@ -188,8 +177,7 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'channel' => 'ecommerce',
                     'locale' => 'ru_RU',
                     'action' => 'set',
-                    'ifEmpty' => 'skip',
-                    'onError' => 'skipLine',
+                    'if_empty' => 'skip',
                 ],
             ],
             'a target with missing action' => [
@@ -200,8 +188,7 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'type' => 'attribute',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
-                    'ifEmpty' => 'skip',
-                    'onError' => 'skipLine',
+                    'if_empty' => 'skip',
                 ]
             ],
             'a target with invalid action' => [
@@ -213,58 +200,30 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                     'action' => 'invalid',
-                    'ifEmpty' => 'skip',
-                    'onError' => 'skipLine',
+                    'if_empty' => 'skip',
                 ]
             ],
-            'a target with missing ifEmpty' => [
+            'a target with missing if_empty' => [
                 'This field is missing.',
-                '[ifEmpty]',
+                '[if_empty]',
                 [
                     'code' => 'a_localized_and_scopable_text_area',
                     'type' => 'attribute',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                     'action' => 'set',
-                    'onError' => 'skipLine',
                 ]
             ],
-            'a target with invalid ifEmpty' => [
+            'a target with invalid if_empty' => [
                 'The value you selected is not a valid choice.',
-                '[ifEmpty]',
+                '[if_empty]',
                 [
                     'code' => 'a_localized_and_scopable_text_area',
                     'type' => 'attribute',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                     'action' => 'set',
-                    'ifEmpty' => 'invalid',
-                    'onError' => 'skipLine',
-                ]
-            ],
-            'a target with missing onError' => [
-                'This field is missing.',
-                '[onError]',
-                [
-                    'code' => 'a_localized_and_scopable_text_area',
-                    'type' => 'attribute',
-                    'channel' => 'ecommerce',
-                    'locale' => 'en_US',
-                    'action' => 'set',
-                    'ifEmpty' => 'skip',
-                ]
-            ],
-            'a target with invalid onError' => [
-                'The value you selected is not a valid choice.',
-                '[onError]',
-                [
-                    'code' => 'a_localized_and_scopable_text_area',
-                    'type' => 'attribute',
-                    'channel' => 'ecommerce',
-                    'locale' => 'en_US',
-                    'action' => 'set',
-                    'ifEmpty' => 'skip',
-                    'onError' => 'invalid',
+                    'if_empty' => 'invalid',
                 ]
             ],
         ];

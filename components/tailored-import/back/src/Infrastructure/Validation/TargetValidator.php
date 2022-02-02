@@ -61,19 +61,11 @@ class TargetValidator extends ConstraintValidator
                         ]
                     ]),
                 ],
-                'ifEmpty' => [
+                'if_empty' => [
                     new Choice([
                         'choices' => [
                             'clear',
                             'skip',
-                        ]
-                    ]),
-                ],
-                'onError' => [
-                    new Choice([
-                        'choices' => [
-                            'skipLine',
-                            'skipValue',
                         ]
                     ]),
                 ],

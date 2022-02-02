@@ -23,7 +23,8 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
      */
     public function test_it_does_not_build_violations_when_data_mappings_are_valid(array $value): void
     {
-        $violations = $this->getValidator()->validate($value, new DataMappings());
+        $columns = $this->getColumns();
+        $violations = $this->getValidator()->validate($value, new DataMappings($columns));
 
         $this->assertNoViolation($violations);
     }
@@ -36,7 +37,8 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
         string $expectedErrorPath,
         array $value
     ): void {
-        $violations = $this->getValidator()->validate($value, new DataMappings());
+        $columns = $this->getColumns();
+        $violations = $this->getValidator()->validate($value, new DataMappings($columns));
 
         $this->assertHasValidationError($expectedErrorMessage, $expectedErrorPath, $violations);
     }
@@ -54,14 +56,13 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'channel' => null,
                             'locale' => null,
                             'action' => 'set',
-                            'ifEmpty' => 'skip',
-                            'onError' => 'skipLine',
+                            'if_empty' => 'skip',
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
                         ],
                         'operations' => [],
-                        'sampleData' => [],
+                        'sample_data' => [],
                     ],
                     [
                         'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd1',
@@ -69,15 +70,14 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'code' => 'categories',
                             'type' => 'property',
                             'action' => 'add',
-                            'ifEmpty' => 'skip',
-                            'onError' => 'skipLine',
+                            'if_empty' => 'skip',
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc63',
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc03',
                         ],
                         'operations' => [],
-                        'sampleData' => [],
+                        'sample_data' => [],
                     ]
                 ],
             ],
@@ -98,14 +98,13 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                         'channel' => null,
                         'locale' => null,
                         'action' => 'set',
-                        'ifEmpty' => 'skip',
-                        'onError' => 'skipLine',
+                        'if_empty' => 'skip',
                     ],
                     'sources' => [
                         '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
                     ],
                     'operations' => [],
-                    'sampleData' => [],
+                    'sample_data' => [],
                 ]),
             ],
             'duplicate data mapping uuid' => [
@@ -120,14 +119,13 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'channel' => null,
                             'locale' => null,
                             'action' => 'set',
-                            'ifEmpty' => 'skip',
-                            'onError' => 'skipLine',
+                            'if_empty' => 'skip',
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
                         ],
                         'operations' => [],
-                        'sampleData' => [],
+                        'sample_data' => [],
                     ],
                     [
                         'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
@@ -135,15 +133,14 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'code' => 'categories',
                             'type' => 'property',
                             'action' => 'add',
-                            'ifEmpty' => 'skip',
-                            'onError' => 'skipLine',
+                            'if_empty' => 'skip',
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc63',
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc03',
                         ],
                         'operations' => [],
-                        'sampleData' => [],
+                        'sample_data' => [],
                     ]
                 ],
             ],
@@ -159,12 +156,11 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'channel' => 'ecommerce',
                             'locale' => 'en_US',
                             'action' => 'set',
-                            'ifEmpty' => 'skip',
-                            'onError' => 'skipLine',
+                            'if_empty' => 'skip',
                         ],
                         'sources' => [],
                         'operations' => [],
-                        'sampleData' => [],
+                        'sample_data' => [],
                     ]
                 ]
             ],
@@ -180,8 +176,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'channel' => 'ecommerce',
                             'locale' => 'en_US',
                             'action' => 'set',
-                            'ifEmpty' => 'skip',
-                            'onError' => 'skipLine',
+                            'if_empty' => 'skip',
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69',
@@ -191,7 +186,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc65',
                         ],
                         'operations' => [],
-                        'sampleData' => [],
+                        'sample_data' => [],
                     ]
                 ]
             ],
@@ -207,8 +202,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'channel' => 'ecommerce',
                             'locale' => 'en_US',
                             'action' => 'set',
-                            'ifEmpty' => 'skip',
-                            'onError' => 'skipLine',
+                            'if_empty' => 'skip',
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69',
@@ -216,7 +210,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69',
                         ],
                         'operations' => [],
-                        'sampleData' => [],
+                        'sample_data' => [],
                     ]
                 ]
             ],
@@ -230,15 +224,14 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'code' => 'categories',
                             'type' => 'property',
                             'action' => 'add',
-                            'ifEmpty' => 'skip',
-                            'onError' => 'skipLine',
+                            'if_empty' => 'skip',
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69',
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc68',
                         ],
                         'operations' => [],
-                        'sampleData' => [],
+                        'sample_data' => [],
                     ]
                 ]
             ],
@@ -254,14 +247,13 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'channel' => null,
                             'locale' => null,
                             'action' => 'set',
-                            'ifEmpty' => 'skip',
-                            'onError' => 'skipLine',
+                            'if_empty' => 'skip',
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
                         ],
                         'operations' => [],
-                        'sampleData' => [],
+                        'sample_data' => [],
                     ],
                     [
                         'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd9',
@@ -271,14 +263,13 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'channel' => null,
                             'locale' => null,
                             'action' => 'set',
-                            'ifEmpty' => 'skip',
-                            'onError' => 'skipLine',
+                            'if_empty' => 'skip',
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc63',
                         ],
                         'operations' => [],
-                        'sampleData' => [],
+                        'sample_data' => [],
                     ]
                 ],
             ],
@@ -293,14 +284,13 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'channel' => 'ecommerce',
                             'locale' => 'en_US',
                             'action' => 'set',
-                            'ifEmpty' => 'skip',
-                            'onError' => 'skipLine',
+                            'if_empty' => 'skip',
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
                         ],
                         'operations' => [],
-                        'sampleData' => [],
+                        'sample_data' => [],
                     ],
                 ],
             ],
@@ -316,14 +306,13 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'channel' => 'ecommerce',
                             'locale' => 'en_US',
                             'action' => 'set',
-                            'ifEmpty' => 'skip',
-                            'onError' => 'skipLine',
+                            'if_empty' => 'skip',
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
                         ],
                         'operations' => [],
-                        'sampleData' => [],
+                        'sample_data' => [],
                     ],
                 ],
             ],
@@ -337,7 +326,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
                         ],
                         'operations' => [],
-                        'sampleData' => [],
+                        'sample_data' => [],
                     ],
                 ],
             ],
@@ -353,11 +342,10 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'channel' => 'ecommerce',
                             'locale' => 'en_US',
                             'action' => 'set',
-                            'ifEmpty' => 'skip',
-                            'onError' => 'skipLine',
+                            'if_empty' => 'skip',
                         ],
                         'operations' => [],
-                        'sampleData' => [],
+                        'sample_data' => [],
                     ],
                 ],
             ],
@@ -373,19 +361,18 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'channel' => 'ecommerce',
                             'locale' => 'en_US',
                             'action' => 'set',
-                            'ifEmpty' => 'skip',
-                            'onError' => 'skipLine',
+                            'if_empty' => 'skip',
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
                         ],
-                        'sampleData' => [],
+                        'sample_data' => [],
                     ],
                 ],
             ],
-            'data mapping with missing sampleData' => [
+            'data mapping with missing sample_data' => [
                 'This field is missing.',
-                '[018e1a5e-4d77-4a15-add8-f142111d4cd0][sampleData]',
+                '[018e1a5e-4d77-4a15-add8-f142111d4cd0][sample_data]',
                 [
                     [
                         'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
@@ -395,8 +382,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'channel' => 'ecommerce',
                             'locale' => 'en_US',
                             'action' => 'set',
-                            'ifEmpty' => 'skip',
-                            'onError' => 'skipLine',
+                            'if_empty' => 'skip',
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
@@ -405,11 +391,84 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                     ],
                 ],
             ],
+            'data mapping with invalid sources' => [
+                'akeneo.tailored_import.validation.data_mappings.sources.should_exist',
+                '[018e1a5e-4d77-4a15-add8-f142111d4cd1][sources]',
+                [
+                    [
+                        'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
+                        'target' => [
+                            'code' => 'sku',
+                            'type' => 'attribute',
+                            'channel' => null,
+                            'locale' => null,
+                            'action' => 'set',
+                            'if_empty' => 'skip',
+                        ],
+                        'sources' => [
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
+                        ],
+                        'operations' => [],
+                        'sample_data' => [],
+                    ],
+                    [
+                        'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd1',
+                        'target' => [
+                            'code' => 'categories',
+                            'type' => 'property',
+                            'action' => 'add',
+                            'if_empty' => 'skip',
+                        ],
+                        'sources' => [
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc63',
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fg04',
+                        ],
+                        'operations' => [],
+                        'sample_data' => [],
+                    ]
+                ],
+            ],
         ];
     }
 
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
+    }
+
+    private function getColumns(): array
+    {
+        return [
+            [
+                'uuid' => '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69',
+                'index' => 0,
+                'label' => 'Label 1',
+            ],
+            [
+                'uuid' => '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc63',
+                'index' => 1,
+                'label' => 'Label 2',
+            ],
+            [
+                'uuid' => '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc68',
+                'index' => 2,
+                'label' => 'Label 3',
+            ],
+            [
+                'uuid' =>  '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc03',
+                'index' => 3,
+                'label' => 'Label 4',
+            ],
+            [
+                'uuid' => '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc66',
+                'index' => 4,
+                'label' => 'Label 5',
+            ],
+            [
+                'uuid' => '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc65',
+                'index' => 5,
+                'label' => 'Label 5',
+            ],
+        ];
     }
 }

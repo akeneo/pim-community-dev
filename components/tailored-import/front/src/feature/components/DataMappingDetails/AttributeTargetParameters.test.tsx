@@ -9,8 +9,7 @@ const attributeTarget: AttributeTarget = {
   code: 'description',
   type: 'attribute',
   action: 'set',
-  onError: 'skipLine',
-  ifEmpty: 'skip',
+  if_empty: 'skip',
   channel: 'ecommerce',
   locale: 'fr_FR',
 };
