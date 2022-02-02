@@ -23,6 +23,7 @@ use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\Unique;
 use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DataMappingsValidator extends ConstraintValidator
@@ -39,8 +40,8 @@ class DataMappingsValidator extends ConstraintValidator
 
     public function validate($dataMappings, Constraint $constraint): void
     {
-        if (empty($dataMappings)) {
-            return;
+        if (!$constraint instanceof DataMappings) {
+            throw new UnexpectedTypeException($constraint, DataMappings::class);
         }
 
         $validator = $this->context->getValidator();
@@ -51,7 +52,8 @@ class DataMappingsValidator extends ConstraintValidator
                 'maxMessage' => DataMappings::MAX_COUNT_REACHED,
             ]),
         ]);
-        if (0 < $this->context->getViolations()->count()) {
+
+        if (0 < $this->context->getViolations()->count() || empty($dataMappings)) {
             return;
         }
 

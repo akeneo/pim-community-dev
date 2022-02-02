@@ -16,7 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation;
 use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Webmozart\Assert\Assert;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class LocaleShouldBeActiveValidator extends ConstraintValidator
 {
@@ -27,7 +27,10 @@ final class LocaleShouldBeActiveValidator extends ConstraintValidator
 
     public function validate($localeCode, Constraint $constraint): void
     {
-        Assert::isInstanceOf($constraint, LocaleShouldBeActive::class);
+        if (!$constraint instanceof LocaleShouldBeActive) {
+            throw new UnexpectedTypeException($constraint, LocaleShouldBeActive::class);
+        }
+
         if (!is_string($localeCode)) {
             return;
         }

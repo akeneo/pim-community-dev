@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ColumnsValidator extends ConstraintValidator
@@ -31,8 +32,8 @@ class ColumnsValidator extends ConstraintValidator
 
     public function validate($columns, Constraint $constraint): void
     {
-        if (empty($columns)) {
-            return;
+        if (!$constraint instanceof Columns) {
+            throw new UnexpectedTypeException($constraint, Columns::class);
         }
 
         $validator = $this->context->getValidator();
@@ -44,7 +45,7 @@ class ColumnsValidator extends ConstraintValidator
             ])
         ]);
 
-        if (0 < $this->context->getViolations()->count()) {
+        if (0 < $this->context->getViolations()->count() || empty($columns)) {
             return;
         }
 

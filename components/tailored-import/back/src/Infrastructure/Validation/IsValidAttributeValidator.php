@@ -18,7 +18,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Webmozart\Assert\Assert;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class IsValidAttributeValidator extends ConstraintValidator
 {
@@ -30,11 +30,14 @@ final class IsValidAttributeValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint): void
     {
+        if (!$constraint instanceof IsValidAttribute) {
+            throw new UnexpectedTypeException($constraint, IsValidAttribute::class);
+        }
+
         if (null === $value) {
             return;
         }
 
-        Assert::isInstanceOf($constraint, IsValidAttribute::class);
         $attributeCode = $value['code'] ?? null;
         if (null === $attributeCode || !is_string($attributeCode)) {
             return;

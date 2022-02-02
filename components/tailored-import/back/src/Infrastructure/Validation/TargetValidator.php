@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TargetValidator extends ConstraintValidator
@@ -33,6 +34,10 @@ class TargetValidator extends ConstraintValidator
 
     public function validate($target, Constraint $constraint): void
     {
+        if (!$constraint instanceof Target) {
+            throw new UnexpectedTypeException($constraint, Target::class);
+        }
+
         $validator = $this->context->getValidator();
         $validator->inContext($this->context)->validate($target, new Collection([
             'fields' => [
@@ -115,7 +120,6 @@ class TargetValidator extends ConstraintValidator
                 ],
             ],
             'allowExtraFields' => true,
-            'allowMissingFields' => false,
         ]));
 
         if (0 < $this->context->getViolations()->count()) {

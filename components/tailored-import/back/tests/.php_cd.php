@@ -34,7 +34,6 @@ $rules = [
 
     $builder->only(
         [
-            'Webmozart\Assert\Assert',
             'Symfony\Contracts',
             'Symfony\Component',
             'Akeneo\Platform\TailoredImport\Application',
