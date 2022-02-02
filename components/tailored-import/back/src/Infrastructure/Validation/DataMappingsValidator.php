@@ -93,37 +93,28 @@ class DataMappingsValidator extends ConstraintValidator
 
     private function validateThereIsOneDataMappingTargetingAnIdentifier(array $dataMappings): void
     {
-        $targetCodes = array_reduce($dataMappings, function ($targetCodes, $dataMapping) {
-            $targetCodes[] = $dataMapping['target']['code'];
+        $attributeTargetCodes = array_reduce($dataMappings, function ($targetCodes, $dataMapping) {
+            if ('attribute' === $dataMapping['target']['type']) {
+                $targetCodes[] = $dataMapping['target']['code'];
+            }
             return $targetCodes;
         }, []);
 
-        // TODO: use a dedicated query to get the identifier attribute code ?
-        // It could be nice to dispose of a public api to get identifier attribute code and check the count of this code in our $targetCodes array
-        // Without that, we need to fetch attribute one by one (if we fetch all, it merges duplicate codes, so we cannot validate the count)
+        $countByTargetCode = array_count_values($attributeTargetCodes);
 
-        $targetedAttributes = [];
-        foreach ($targetCodes as $targetCode) {
-            $targetedAttribute = $this->getAttributes->forCode($targetCode);
-            if (null !== $targetedAttribute) {
-                $targetedAttributes[] = $targetedAttribute;
-            }
-        }
+        $targetedAttributes = $this->getAttributes->forCodes($attributeTargetCodes);
+        $targetedIdentifierAttribute = current(array_filter($targetedAttributes, function (?Attribute $attribute) {
+            return null !== $attribute && self::IDENTIFIER_ATTRIBUTE_TYPE === $attribute->type();
+        }));
 
-        $targetedIdentifierAttributes = array_filter($targetedAttributes, function (Attribute $attribute) {
-            return self::IDENTIFIER_ATTRIBUTE_TYPE === $attribute->type();
-        });
+        $dataMappingTargetingAnIdentifierCount = $targetedIdentifierAttribute ? $countByTargetCode[$targetedIdentifierAttribute->code()] : 0;
 
-        $dataMappingTargetingAnIdentifierCount = count($targetedIdentifierAttributes);
-
-        switch ($dataMappingTargetingAnIdentifierCount) {
-            case 0:
+        switch (true) {
+            case 0 === $dataMappingTargetingAnIdentifierCount:
                 $this->context->buildViolation(DataMappings::NO_IDENTIFIER_TARGET_FOUND)
                     ->addViolation();
                 break;
-            case 1:
-                break;
-            default:
+            case 1 < $dataMappingTargetingAnIdentifierCount:
                 $this->context->buildViolation(DataMappings::TOO_MANY_IDENTIFIER_TARGET_FOUND)
                     ->addViolation();
                 break;

@@ -39,7 +39,7 @@ final class IsValidAttributeValidator extends ConstraintValidator
         }
 
         $attributeCode = $value['code'] ?? null;
-        if (null === $attributeCode || !is_string($attributeCode)) {
+        if (!is_string($attributeCode)) {
             return;
         }
 

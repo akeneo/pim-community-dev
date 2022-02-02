@@ -97,7 +97,7 @@ class TargetValidator extends ConstraintValidator
         $attribute = $this->getAttributes->forCode($attributeTarget['code']);
         if (!$attribute instanceof Attribute) {
             $this->context->buildViolation(
-                Target::ATTRIBUTE_SHOULD_EXISTS,
+                Target::ATTRIBUTE_SHOULD_EXIST,
                 [
                     '{{ attribute_code }}' => $attributeTarget['code'],
                 ]
@@ -133,7 +133,7 @@ class TargetValidator extends ConstraintValidator
     {
         if (!in_array($propertyTarget['code'], $this->supportedProperties)) {
             $this->context->buildViolation(
-                Target::PROPERTY_SHOULD_EXISTS,
+                Target::PROPERTY_SHOULD_EXIST,
                 [
                     '{{ property_code }}' => $propertyTarget['code'],
                 ]

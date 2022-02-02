@@ -119,7 +119,7 @@ final class TargetValidatorTest extends AbstractValidationTest
                 ],
             ],
             'an attribute target with invalid code' => [
-                'akeneo.tailored_import.validation.target.attribute_should_exists',
+                'akeneo.tailored_import.validation.target.attribute_should_exist',
                 '[code]',
                 [
                     'code' => 'invalid_attribute',
@@ -132,7 +132,7 @@ final class TargetValidatorTest extends AbstractValidationTest
                 ],
             ],
             'a property target with invalid code' => [
-                'akeneo.tailored_import.validation.target.property_should_exists',
+                'akeneo.tailored_import.validation.target.property_should_exist',
                 '[code]',
                 [
                     'code' => 'invalid_property',

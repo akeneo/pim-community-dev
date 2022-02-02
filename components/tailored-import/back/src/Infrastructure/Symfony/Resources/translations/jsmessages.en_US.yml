@@ -53,8 +53,8 @@ akeneo.tailored_import:
         max_count_reached: You have reached the limit of {{ limit }} sources, you can no longer add sources to your data mapping.
         should_be_unique: This source already exists, please enter a new one.
     target:
-      attribute_should_exists: The attribute {{ attribute_code }} does not exist. Please either create it or choose a different target.
-      property_should_exists: The property {{ property_code }} does not exist. Please either create it or choose a different target.
+      attribute_should_exist: The attribute {{ attribute_code }} does not exist. Please either create it or choose a different target.
+      property_should_exist: The property {{ property_code }} does not exist. Please either create it or choose a different target.
     locale:
       should_be_active: The locale {{ locale_code }} has been deactivated. Either reactivate it or select another locale.
       should_be_bound_to_channel: The locale {{ locale_code }} has been deactivated for the channel {{ channel_code }}. Either reactivate it or select another locale.
@@ -63,6 +63,6 @@ akeneo.tailored_import:
     attribute:
       locale_should_not_be_blank: The attribute {{ attribute_code }} now has a value per locale. Please either create it or choose a different target.
       channel_should_not_be_blank: The attribute {{ attribute_code }} now has a value per channel. Please either create it or choose a different target.
-      locale_should_be_blank: The attribute {{ attribute_code }} does not have a value per locale anymore. Please either create it or choose a different target.
-      channel_should_be_blank: The attribute {{ attribute_code }} does not have a value per channel anymore. Please either create it or choose a different target.
+      locale_should_be_blank: The attribute {{ attribute_code }} does not have a value per locale anymore. Please either delete then recreate it or choose a different target.
+      channel_should_be_blank: The attribute {{ attribute_code }} does not have a value per channel anymore. Please either delete then recreate it or choose a different target.
       invalid_specific_locale: The attribute {{ attribute_code }} is locale specific. Please select another locale.
