@@ -218,7 +218,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
 
         $context
             ->buildViolation(
-                LocaleAndChannelConsistency::LOCALE_NOT_BOUND_TO_CHANNEL,
+                LocaleAndChannelConsistency::LOCALE_NOT_ACTIVATED_FOR_CHANNEL,
                 [
                     '{{ localeCode }}' => 'fr_FR',
                     '{{ channelCode }}' => 'ecommerce',

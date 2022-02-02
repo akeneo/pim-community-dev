@@ -19,7 +19,7 @@ final class LocaleAndChannelConsistency extends Constraint
     public const INVALID_LOCALE_CODE_FOR_LOCALE_SPECIFIC_ATTRIBUTE = 'pim_enrich.product.validation.upsert.set_value.invalid_locale_code_for_locale_specific_attribute';
     public const CHANNEL_DOES_NOT_EXIST = 'pim_enrich.product.validation.upsert.set_value.channel_does_not_exist';
     public const LOCALE_IS_NOT_ACTIVE = 'pim_enrich.product.validation.upsert.set_value.locale_is_not_active';
-    public const LOCALE_NOT_BOUND_TO_CHANNEL = 'pim_enrich.product.validation.upsert.set_value.locale_not_bound_to_channel';
+    public const LOCALE_NOT_ACTIVATED_FOR_CHANNEL = 'pim_enrich.product.validation.upsert.set_value.locale_not_activated_for_channel';
 
     public function getTargets(): array
     {

@@ -123,7 +123,7 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
             !$this->channelExistsWithLocale->isLocaleBoundToChannel($localeCode, $channelCode)
         ) {
             $this->addViolation(
-                LocaleAndChannelConsistency::LOCALE_NOT_BOUND_TO_CHANNEL,
+                LocaleAndChannelConsistency::LOCALE_NOT_ACTIVATED_FOR_CHANNEL,
                 [
                     '{{ localeCode }}' => $localeCode,
                     '{{ channelCode }}' => $channelCode,
