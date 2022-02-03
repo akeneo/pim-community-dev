@@ -57,3 +57,11 @@ services:
             - '@database_connection'
         tags:
             - { name: doctrine.event_subscriber }
+
+    ### TODO Pull up to 6.0 remove this declaration
+    pim_user.event_subscriber.database_installer:
+        class: Akeneo\UserManagement\Bundle\EventListener\DatabaseInstallerSubscriber
+        arguments:
+            - '@doctrine.dbal.default_connection'
+        tags:
+            - { name: kernel.event_subscriber }
