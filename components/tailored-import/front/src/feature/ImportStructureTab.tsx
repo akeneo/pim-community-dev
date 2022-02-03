@@ -22,25 +22,29 @@ const ImportStructureTab = ({structureConfiguration, onStructureConfigurationCha
   const translate = useTranslate();
   const [selectedDataMappingUuid, setSelectedDataMappingUuid] = useState<string | null>(null);
   const selectedDataMapping =
-    structureConfiguration.dataMappings.find(dataMapping => dataMapping.uuid === selectedDataMappingUuid) ?? null;
+    structureConfiguration.data_mappings.find(dataMapping => dataMapping.uuid === selectedDataMappingUuid) ?? null;
 
   const handleConfirm = (generatedColumns: Column[]): void => {
     const dataMapping = createDefaultDataMapping(generatedColumns);
-    onStructureConfigurationChange({...structureConfiguration, columns: generatedColumns, dataMappings: [dataMapping]});
+    onStructureConfigurationChange({
+      ...structureConfiguration,
+      columns: generatedColumns,
+      data_mappings: [dataMapping],
+    });
     closeInitModal();
   };
 
   const handleDataMappingChange = (dataMapping: DataMapping) => {
     onStructureConfigurationChange({
       ...structureConfiguration,
-      dataMappings: updateDataMapping(structureConfiguration.dataMappings, dataMapping),
+      data_mappings: updateDataMapping(structureConfiguration.data_mappings, dataMapping),
     });
   };
 
   const handleDataMappingAdded = (dataMapping: DataMapping): void => {
     onStructureConfigurationChange({
       ...structureConfiguration,
-      dataMappings: [...structureConfiguration.dataMappings, dataMapping],
+      data_mappings: [...structureConfiguration.data_mappings, dataMapping],
     });
   };
 
@@ -57,7 +61,7 @@ const ImportStructureTab = ({structureConfiguration, onStructureConfigurationCha
       ) : (
         <Container>
           <DataMappingList
-            dataMappings={structureConfiguration.dataMappings}
+            dataMappings={structureConfiguration.data_mappings}
             columns={structureConfiguration.columns}
             selectedDataMappingUuid={selectedDataMappingUuid}
             validationErrors={[]}

@@ -11,7 +11,7 @@ type Column = {
 
 type StructureConfiguration = {
   columns: Column[];
-  dataMappings: DataMapping[];
+  data_mappings: DataMapping[];
 };
 
 const MAX_COLUMN_COUNT = 500;

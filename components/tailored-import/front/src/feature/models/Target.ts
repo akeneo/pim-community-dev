@@ -2,7 +2,6 @@ import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 
 type TargetAction = 'set' | 'add';
 type TargetEmptyAction = 'clear' | 'skip';
-type TargetErrorAction = 'skipLine' | 'skipValue';
 
 type AttributeTarget = {
   code: string;
@@ -10,16 +9,14 @@ type AttributeTarget = {
   locale: LocaleReference;
   type: 'attribute';
   action: TargetAction;
-  ifEmpty: TargetEmptyAction;
-  onError: TargetErrorAction;
+  if_empty: TargetEmptyAction;
 };
 
 type PropertyTarget = {
   code: string;
   type: 'property';
   action: TargetAction;
-  ifEmpty: TargetEmptyAction;
-  onError: TargetErrorAction;
+  if_empty: TargetEmptyAction;
 };
 
 type Target = AttributeTarget | PropertyTarget;
@@ -30,16 +27,14 @@ const createAttributeTarget = (code: string, channel: ChannelReference, locale: 
   locale,
   channel,
   action: 'set',
-  ifEmpty: 'skip',
-  onError: 'skipLine',
+  if_empty: 'skip',
 });
 
 const createPropertyTarget = (code: string): PropertyTarget => ({
   code,
   type: 'property',
   action: 'set',
-  ifEmpty: 'skip',
-  onError: 'skipLine',
+  if_empty: 'skip',
 });
 
 const isAttributeTarget = (target: Target): target is AttributeTarget =>

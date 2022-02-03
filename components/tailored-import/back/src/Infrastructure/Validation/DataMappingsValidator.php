@@ -38,10 +38,10 @@ class DataMappingsValidator extends ConstraintValidator
     ) {
     }
 
-    public function validate($dataMappings, Constraint $constraint): void
+    public function validate($dataMappings, Constraint $dataMappingsConstraint): void
     {
-        if (!$constraint instanceof DataMappings) {
-            throw new UnexpectedTypeException($constraint, DataMappings::class);
+        if (!$dataMappingsConstraint instanceof DataMappings) {
+            throw new UnexpectedTypeException($dataMappingsConstraint, DataMappings::class);
         }
 
         $validator = $this->context->getValidator();
@@ -58,7 +58,7 @@ class DataMappingsValidator extends ConstraintValidator
         }
 
         foreach ($dataMappings as $dataMapping) {
-            $this->validateDataMapping($validator, $dataMapping);
+            $this->validateDataMapping($validator, $dataMapping, $dataMappingsConstraint);
         }
 
         if (0 < $this->context->getViolations()->count()) {
@@ -121,7 +121,7 @@ class DataMappingsValidator extends ConstraintValidator
         }
     }
 
-    private function validateDataMapping(ValidatorInterface $validator, array $dataMapping): void
+    private function validateDataMapping(ValidatorInterface $validator, array $dataMapping, DataMappings $dataMappingsConstraint): void
     {
         $violations = $validator->validate($dataMapping, new Collection([
             'fields' => [
@@ -147,25 +147,47 @@ class DataMappingsValidator extends ConstraintValidator
                 'operations' => [
                     new Type('array'),
                 ],
-                'sampleData' => [
+                'sample_data' => [
                     new Type('array'),
                 ],
             ],
         ]));
 
-        foreach ($violations as $violation) {
-            $builder = $this->context->buildViolation(
-                $violation->getMessage(),
-                $violation->getParameters()
-            )
-                ->atPath(sprintf('[%s]%s', $dataMapping['uuid'] ?? 'null', $violation->getPropertyPath()))
-                ->setInvalidValue($violation->getInvalidValue());
-            if ($violation->getPlural()) {
-                $builder->setPlural((int)$violation->getPlural());
+        if (0 < $violations->count()) {
+            foreach ($violations as $violation) {
+                $builder = $this->context->buildViolation(
+                    $violation->getMessage(),
+                    $violation->getParameters()
+                )
+                    ->atPath(sprintf('[%s]%s', $dataMapping['uuid'] ?? 'null', $violation->getPropertyPath()))
+                    ->setInvalidValue($violation->getInvalidValue());
+                if ($violation->getPlural()) {
+                    $builder->setPlural((int)$violation->getPlural());
+                }
+                $builder->addViolation();
             }
-            $builder->addViolation();
+
+            return;
         }
 
-        // TODO RAB-547: validate that sources are coherent with columns entries
+        $this->validateSourcesExist($dataMapping, $dataMappingsConstraint);
+    }
+
+    private function validateSourcesExist(array $dataMapping, DataMappings $dataMappingsConstraint): void
+    {
+        $columns = $dataMappingsConstraint->getColumns();
+        $columnsUuid = array_map(static fn (array $column) => $column['uuid'], $columns);
+
+        foreach ($dataMapping['sources'] as $source) {
+            if (!in_array($source, $columnsUuid)) {
+                $this->context->buildViolation(
+                    DataMappings::SOURCES_SHOULD_EXIST,
+                )
+                    ->atPath(sprintf('[%s][sources]', $dataMapping['uuid']))
+                    ->addViolation();
+
+                return;
+            }
+        }
     }
 }

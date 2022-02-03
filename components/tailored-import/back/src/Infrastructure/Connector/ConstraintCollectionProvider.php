@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector;
 
-use Akeneo\Platform\TailoredImport\Infrastructure\Validation\Columns;
-use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMappings;
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\ImportStructure;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -36,8 +35,7 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
         $baseConstraint = $this->simpleProvider->getConstraintCollection();
         $constraintFields = $baseConstraint->fields;
 
-        $constraintFields['columns'] = new Columns();
-        $constraintFields['dataMappings'] = new DataMappings();
+        $constraintFields['import_structure'] = new ImportStructure();
 
         return new Collection(['fields' => $constraintFields]);
     }

@@ -63,7 +63,10 @@ class ColumnView extends BaseView {
 
   setStructureConfigurationData(structureConfiguration: StructureConfiguration): void {
     const formData = this.getFormData();
-    this.setData({...formData, configuration: {...formData.configuration, ...structureConfiguration}});
+    this.setData({
+      ...formData,
+      configuration: {...formData.configuration, import_structure: structureConfiguration},
+    });
     this.render();
   }
 
@@ -74,8 +77,8 @@ class ColumnView extends BaseView {
     const formData = this.getFormData();
 
     const structureConfiguration: StructureConfiguration = {
-      columns: formData.configuration.columns ?? [],
-      dataMappings: formData.configuration.dataMappings ?? [],
+      columns: formData.configuration.import_structure.columns ?? [],
+      data_mappings: formData.configuration.import_structure.data_mappings ?? [],
     };
 
     const props: ImportStructureTabProps = {

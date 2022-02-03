@@ -77,14 +77,13 @@ test('it adds data mapping with attribute target', async () => {
       code: 'name',
       type: 'attribute',
       action: 'set',
-      ifEmpty: 'skip',
-      onError: 'skipLine',
+      if_empty: 'skip',
       channel: null,
       locale: null,
     },
     sources: [],
     operations: [],
-    sampleData: [],
+    sample_data: [],
   });
 });
 
@@ -106,12 +105,11 @@ test('it adds data mapping with property target', async () => {
       code: 'category',
       type: 'property',
       action: 'set',
-      ifEmpty: 'skip',
-      onError: 'skipLine',
+      if_empty: 'skip',
     },
     sources: [],
     operations: [],
-    sampleData: [],
+    sample_data: [],
   });
 });
 

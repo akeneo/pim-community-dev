@@ -29,15 +29,14 @@ test('it creates a default data mapping', () => {
   expect(createDefaultDataMapping([{uuid: 'columnUuid', index: 0, label: 'identifier'}])).toEqual({
     uuid: mockUuid,
     operations: [],
-    sampleData: [],
+    sample_data: [],
     sources: ['columnUuid'],
     target: {
       action: 'set',
       channel: null,
       code: 'sku',
-      ifEmpty: 'skip',
+      if_empty: 'skip',
       locale: null,
-      onError: 'skipLine',
       type: 'attribute',
     },
   });
@@ -47,15 +46,14 @@ test('it creates an attribute data mapping', () => {
   expect(createAttributeDataMapping('description', attribute, [])).toEqual({
     uuid: mockUuid,
     operations: [],
-    sampleData: [],
+    sample_data: [],
     sources: [],
     target: {
       action: 'set',
       channel: null,
       code: 'description',
-      ifEmpty: 'skip',
+      if_empty: 'skip',
       locale: null,
-      onError: 'skipLine',
       type: 'attribute',
     },
   });
@@ -76,15 +74,14 @@ test('it creates a localizable & locale-specific attribute data mapping', () => 
   ).toEqual({
     uuid: mockUuid,
     operations: [],
-    sampleData: [],
+    sample_data: [],
     sources: [],
     target: {
       action: 'set',
       channel: null,
       code: 'description',
-      ifEmpty: 'skip',
+      if_empty: 'skip',
       locale: 'fr_FR',
-      onError: 'skipLine',
       type: 'attribute',
     },
   });
@@ -94,13 +91,12 @@ test('it creates a property data mapping', () => {
   expect(createPropertyDataMapping('family')).toEqual({
     uuid: mockUuid,
     operations: [],
-    sampleData: [],
+    sample_data: [],
     sources: [],
     target: {
       action: 'set',
       code: 'family',
-      ifEmpty: 'skip',
-      onError: 'skipLine',
+      if_empty: 'skip',
       type: 'property',
     },
   });
@@ -110,15 +106,14 @@ test('it adds a source to data mapping', () => {
   const dataMapping: DataMapping = {
     uuid: mockUuid,
     operations: [],
-    sampleData: [],
+    sample_data: [],
     sources: [],
     target: {
       action: 'set',
       channel: null,
       code: 'description',
-      ifEmpty: 'skip',
+      if_empty: 'skip',
       locale: null,
-      onError: 'skipLine',
       type: 'attribute',
     },
   };
@@ -126,15 +121,14 @@ test('it adds a source to data mapping', () => {
   expect(addSourceToDataMapping(dataMapping, {uuid: 'columnUuid', index: 0, label: 'identifier'})).toEqual({
     uuid: mockUuid,
     operations: [],
-    sampleData: [],
+    sample_data: [],
     sources: ['columnUuid'],
     target: {
       action: 'set',
       channel: null,
       code: 'description',
-      ifEmpty: 'skip',
+      if_empty: 'skip',
       locale: null,
-      onError: 'skipLine',
       type: 'attribute',
     },
   });
@@ -145,30 +139,28 @@ test('it updates a data mapping', () => {
     {
       uuid: '8175126a-5deb-426c-a829-c9b7949dc1f7',
       operations: [],
-      sampleData: [],
+      sample_data: [],
       sources: [],
       target: {
         action: 'set',
         channel: null,
         code: 'sku',
-        ifEmpty: 'skip',
+        if_empty: 'skip',
         locale: null,
-        onError: 'skipLine',
         type: 'attribute',
       },
     },
     {
       uuid: 'd1249682-720e-11ec-90d6-0242ac120003',
       operations: [],
-      sampleData: [],
+      sample_data: [],
       sources: [],
       target: {
         action: 'set',
         channel: null,
         code: 'description',
-        ifEmpty: 'clear',
+        if_empty: 'clear',
         locale: null,
-        onError: 'skipValue',
         type: 'attribute',
       },
     },
@@ -177,15 +169,14 @@ test('it updates a data mapping', () => {
   const updatedDataMapping: DataMapping = {
     uuid: 'd1249682-720e-11ec-90d6-0242ac120003',
     operations: [],
-    sampleData: [],
+    sample_data: [],
     sources: [],
     target: {
       action: 'set',
       channel: null,
       code: 'description',
-      ifEmpty: 'skip',
+      if_empty: 'skip',
       locale: null,
-      onError: 'skipLine',
       type: 'attribute',
     },
   };

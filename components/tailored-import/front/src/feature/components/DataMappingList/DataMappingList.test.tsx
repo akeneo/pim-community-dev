@@ -1,9 +1,10 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {renderWithProviders, ValidationError} from '@akeneo-pim-community/shared';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import {Column, DataMapping} from 'feature';
 import {DataMappingList} from './DataMappingList';
+import {renderWithProviders} from 'feature/tests';
 
 const mockUuid = 'd1249682-720e-11ec-90d6-0242ac120003';
 jest.mock('akeneo-design-system', () => ({
@@ -21,12 +22,11 @@ jest.mock('../AddDataMappingDropdown', () => ({
             code: 'a_code',
             type: 'property',
             action: 'set',
-            ifEmpty: 'skip',
-            onError: 'skipLine',
+            if_empty: 'skip',
           },
           sources: ['source1'],
           operations: [],
-          sampleData: [],
+          sample_data: [],
         })
       }
     >
@@ -42,12 +42,11 @@ const dataMappings: DataMapping[] = [
       code: 'a_code',
       type: 'property',
       action: 'set',
-      ifEmpty: 'skip',
-      onError: 'skipLine',
+      if_empty: 'skip',
     },
     sources: ['source1', 'source3'],
     operations: [],
-    sampleData: [],
+    sample_data: [],
   },
 ];
 
@@ -81,12 +80,11 @@ test('it can add a new data mapping', async () => {
       code: 'a_code',
       type: 'property',
       action: 'set',
-      ifEmpty: 'skip',
-      onError: 'skipLine',
+      if_empty: 'skip',
     },
     sources: ['source1'],
     operations: [],
-    sampleData: [],
+    sample_data: [],
   });
 });
 
@@ -98,12 +96,11 @@ test('it displays the data mapping', async () => {
         code: 'a_code',
         type: 'property',
         action: 'set',
-        ifEmpty: 'skip',
-        onError: 'skipLine',
+        if_empty: 'skip',
       },
       sources: ['source1', 'source3'],
       operations: [],
-      sampleData: [],
+      sample_data: [],
     },
     {
       uuid: 'anoter_value',
@@ -111,12 +108,11 @@ test('it displays the data mapping', async () => {
         code: 'another_code',
         type: 'property',
         action: 'set',
-        ifEmpty: 'skip',
-        onError: 'skipLine',
+        if_empty: 'skip',
       },
       sources: ['source2'],
       operations: [],
-      sampleData: [],
+      sample_data: [],
     },
   ];
   const columns: Column[] = [

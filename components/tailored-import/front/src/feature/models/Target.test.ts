@@ -4,8 +4,7 @@ test('it can create an attribute target', () => {
   expect(createAttributeTarget('name', null, null)).toEqual({
     action: 'set',
     code: 'name',
-    ifEmpty: 'skip',
-    onError: 'skipLine',
+    if_empty: 'skip',
     type: 'attribute',
     channel: null,
     locale: null,
@@ -14,8 +13,7 @@ test('it can create an attribute target', () => {
   expect(createAttributeTarget('name', 'ecommerce', null)).toEqual({
     action: 'set',
     code: 'name',
-    ifEmpty: 'skip',
-    onError: 'skipLine',
+    if_empty: 'skip',
     type: 'attribute',
     channel: 'ecommerce',
     locale: null,
@@ -24,8 +22,7 @@ test('it can create an attribute target', () => {
   expect(createAttributeTarget('name', null, 'fr_FR')).toEqual({
     action: 'set',
     code: 'name',
-    ifEmpty: 'skip',
-    onError: 'skipLine',
+    if_empty: 'skip',
     type: 'attribute',
     channel: null,
     locale: 'fr_FR',
@@ -34,8 +31,7 @@ test('it can create an attribute target', () => {
   expect(createAttributeTarget('name', 'mobile', 'fr_FR')).toEqual({
     action: 'set',
     code: 'name',
-    ifEmpty: 'skip',
-    onError: 'skipLine',
+    if_empty: 'skip',
     type: 'attribute',
     channel: 'mobile',
     locale: 'fr_FR',
@@ -46,8 +42,7 @@ test('it can create a property target', () => {
   expect(createPropertyTarget('family')).toEqual({
     action: 'set',
     code: 'family',
-    ifEmpty: 'skip',
-    onError: 'skipLine',
+    if_empty: 'skip',
     type: 'property',
   });
 });
@@ -57,8 +52,7 @@ test('it can tell if a Target is an attribute target', () => {
     isAttributeTarget({
       action: 'set',
       code: 'name',
-      ifEmpty: 'skip',
-      onError: 'skipLine',
+      if_empty: 'skip',
       type: 'attribute',
       channel: null,
       locale: null,
@@ -69,8 +63,7 @@ test('it can tell if a Target is an attribute target', () => {
     isAttributeTarget({
       action: 'set',
       code: 'name',
-      ifEmpty: 'skip',
-      onError: 'skipLine',
+      if_empty: 'skip',
       type: 'property',
     })
   ).toEqual(false);
@@ -79,8 +72,7 @@ test('it can tell if a Target is an attribute target', () => {
     isAttributeTarget({
       action: 'set',
       code: 'name',
-      ifEmpty: 'skip',
-      onError: 'skipLine',
+      if_empty: 'skip',
       // @ts-expect-error invalid type
       type: 'another one',
       channel: null,
@@ -94,8 +86,7 @@ test('it can tell if a Target is a property target', () => {
     isPropertyTarget({
       action: 'set',
       code: 'name',
-      ifEmpty: 'skip',
-      onError: 'skipLine',
+      if_empty: 'skip',
       type: 'property',
     })
   ).toEqual(true);
@@ -104,8 +95,7 @@ test('it can tell if a Target is a property target', () => {
     isPropertyTarget({
       action: 'set',
       code: 'name',
-      ifEmpty: 'skip',
-      onError: 'skipLine',
+      if_empty: 'skip',
       type: 'attribute',
       channel: null,
       locale: null,

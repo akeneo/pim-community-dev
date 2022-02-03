@@ -30,12 +30,11 @@ const mockCreatedDataMapping: DataMapping = {
     channel: null,
     locale: null,
     action: 'set',
-    ifEmpty: 'skip',
-    onError: 'skipLine',
+    if_empty: 'skip',
   },
   sources: [],
   operations: [],
-  sampleData: [],
+  sample_data: [],
 };
 
 let mockUuid = 0;
@@ -63,7 +62,7 @@ jest.mock('./components/DataMappingDetails/DataMappingDetails', () => ({
   }) => (
     <>
       Data mapping details of {dataMapping.uuid}
-      <button onClick={() => onDataMappingChange({...dataMapping, target: {...dataMapping.target, ifEmpty: 'clear'}})}>
+      <button onClick={() => onDataMappingChange({...dataMapping, target: {...dataMapping.target, if_empty: 'clear'}})}>
         Update data mapping
       </button>
     </>
@@ -72,7 +71,7 @@ jest.mock('./components/DataMappingDetails/DataMappingDetails', () => ({
 
 const defaultStructureConfiguration: StructureConfiguration = {
   columns: [],
-  dataMappings: [],
+  data_mappings: [],
 };
 
 const getDefaultIdentifierDataMapping = (): DataMapping => ({
@@ -83,12 +82,11 @@ const getDefaultIdentifierDataMapping = (): DataMapping => ({
     channel: null,
     locale: null,
     action: 'set',
-    ifEmpty: 'skip',
-    onError: 'skipLine',
+    if_empty: 'skip',
   },
   sources: ['d1249682-720e-11ec-90d6-0242ac120003'],
   operations: [],
-  sampleData: [],
+  sample_data: [],
 });
 
 test('it can open the modal to generate columns', async () => {
@@ -108,7 +106,7 @@ test('it can open the modal to generate columns', async () => {
   expect(onStructureConfigurationChange).toHaveBeenCalledWith({
     ...defaultStructureConfiguration,
     columns: mockGeneratedColumns,
-    dataMappings: [getDefaultIdentifierDataMapping()],
+    data_mappings: [getDefaultIdentifierDataMapping()],
   });
 });
 
@@ -140,7 +138,7 @@ test('it can add data mapping from the column list', () => {
         label: 'Sku',
       },
     ],
-    dataMappings: [defaultIdentifierDataMapping],
+    data_mappings: [defaultIdentifierDataMapping],
   };
 
   renderWithProviders(
@@ -154,7 +152,7 @@ test('it can add data mapping from the column list', () => {
 
   expect(onStructureConfigurationChange).toHaveBeenCalledWith({
     ...structureConfiguration,
-    dataMappings: [defaultIdentifierDataMapping, mockCreatedDataMapping],
+    data_mappings: [defaultIdentifierDataMapping, mockCreatedDataMapping],
   });
 });
 
@@ -169,7 +167,7 @@ test('it can display and update the data mapping detail when clicking on the dat
         label: 'Sku',
       },
     ],
-    dataMappings: [defaultIdentifierDataMapping],
+    data_mappings: [defaultIdentifierDataMapping],
   };
 
   renderWithProviders(
@@ -188,7 +186,7 @@ test('it can display and update the data mapping detail when clicking on the dat
 
   expect(handleStructureConfigurationChange).toHaveBeenCalledWith({
     ...structureConfiguration,
-    dataMappings: [
+    data_mappings: [
       {
         uuid: `uuid_${mockUuid}`,
         target: {
@@ -197,11 +195,10 @@ test('it can display and update the data mapping detail when clicking on the dat
           channel: null,
           locale: null,
           action: 'set',
-          ifEmpty: 'clear',
-          onError: 'skipLine',
+          if_empty: 'clear',
         },
         operations: [],
-        sampleData: [],
+        sample_data: [],
         sources: ['d1249682-720e-11ec-90d6-0242ac120003'],
       },
     ],
