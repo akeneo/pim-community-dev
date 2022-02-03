@@ -15,30 +15,15 @@ use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 
 final class FixturesUserHelper
 {
-    private UserFactory $userFactory;
-    private SaverInterface $userSaver;
-    private RoleRepositoryInterface $roleRepository;
-    private RoleWithPermissionsFactory $roleWithPermissionFactory;
-    private RoleWithPermissionsSaver $roleWithPermissionsSaver;
-    private AclManager $aclManager;
-    private LocaleRepositoryInterface $localeRepository;
-
     public function __construct(
-        UserFactory $userFactory,
-        SaverInterface $userSaver,
-        RoleRepositoryInterface $roleRepository,
-        RoleWithPermissionsFactory $roleWithPermissionFactory,
-        RoleWithPermissionsSaver $roleWithPermissionsSaver,
-        AclManager $aclManager,
-        LocaleRepositoryInterface $localeRepository
+        private UserFactory $userFactory,
+        private SaverInterface $userSaver,
+        private RoleRepositoryInterface $roleRepository,
+        private RoleWithPermissionsFactory $roleWithPermissionFactory,
+        private RoleWithPermissionsSaver $roleWithPermissionsSaver,
+        private AclManager $aclManager,
+        private LocaleRepositoryInterface $localeRepository
     ) {
-        $this->userFactory = $userFactory;
-        $this->userSaver = $userSaver;
-        $this->roleRepository = $roleRepository;
-        $this->roleWithPermissionFactory = $roleWithPermissionFactory;
-        $this->roleWithPermissionsSaver = $roleWithPermissionsSaver;
-        $this->aclManager = $aclManager;
-        $this->localeRepository = $localeRepository;
     }
 
     public function createUser(string $username, array $roleNames)
