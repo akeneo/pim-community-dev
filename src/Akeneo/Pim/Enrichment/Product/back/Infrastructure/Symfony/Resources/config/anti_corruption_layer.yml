@@ -6,4 +6,4 @@ services:
     Akeneo\Pim\Enrichment\Product\Domain\Query\IsUserCategoryGranted:
         class: Akeneo\Pim\Enrichment\Product\Infrastructure\AntiCorruptionLayer\AclIsUserCategoryGranted
         arguments:
-            - '?@pimee_security.query.product_category_access_with_ids'
+            - '@?pimee_security.query.product_category_access_with_ids'
