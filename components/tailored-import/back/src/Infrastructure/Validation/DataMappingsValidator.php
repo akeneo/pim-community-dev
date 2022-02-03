@@ -182,9 +182,6 @@ class DataMappingsValidator extends ConstraintValidator
             if (!in_array($source, $columnsUuid)) {
                 $this->context->buildViolation(
                     DataMappings::SOURCES_SHOULD_EXIST,
-                    [
-                        '{{ source }}' => $source,
-                    ]
                 )
                     ->atPath(sprintf('[%s][sources]', $dataMapping['uuid']))
                     ->addViolation();
