@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraint;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class LocaleAndChannelConsistency extends Constraint
+final class LocaleAndChannelShouldBeConsistent extends Constraint
 {
     public const NO_CHANNEL_CODE_PROVIDED_FOR_SCOPABLE_ATTRIBUTE = 'pim_enrich.product.validation.upsert.set_value.no_channel_code_provided_for_scopable_attribute';
     public const CHANNEL_CODE_PROVIDED_FOR_NON_SCOPABLE_ATTRIBUTE = 'pim_enrich.product.validation.upsert.set_value.channel_code_provided_for_non_scopable_attribute';

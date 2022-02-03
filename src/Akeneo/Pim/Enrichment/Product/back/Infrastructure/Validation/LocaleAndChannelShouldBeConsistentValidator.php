@@ -16,7 +16,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
+final class LocaleAndChannelShouldBeConsistentValidator extends ConstraintValidator
 {
     public function __construct(
         private GetAttributes $getAttributes,
@@ -26,7 +26,7 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
 
     public function validate($valueUserIntents, Constraint $constraint)
     {
-        Assert::isInstanceOf($constraint, LocaleAndChannelConsistency::class);
+        Assert::isInstanceOf($constraint, LocaleAndChannelShouldBeConsistent::class);
         Assert::isArray($valueUserIntents);
         Assert::allImplementsInterface($valueUserIntents, ValueUserIntent::class);
 
@@ -51,7 +51,7 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
         if (!$attribute->isScopable()) {
             if (null !== $channelCode) {
                 $this->addViolation(
-                    LocaleAndChannelConsistency::CHANNEL_CODE_PROVIDED_FOR_NON_SCOPABLE_ATTRIBUTE,
+                    LocaleAndChannelShouldBeConsistent::CHANNEL_CODE_PROVIDED_FOR_NON_SCOPABLE_ATTRIBUTE,
                     [
                         '{{ attributeCode }}' => $attribute->code(),
                         '{{ channelCode }}' => $channelCode,
@@ -65,7 +65,7 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
 
         if (null === $channelCode) {
             $this->addViolation(
-                LocaleAndChannelConsistency::NO_CHANNEL_CODE_PROVIDED_FOR_SCOPABLE_ATTRIBUTE,
+                LocaleAndChannelShouldBeConsistent::NO_CHANNEL_CODE_PROVIDED_FOR_SCOPABLE_ATTRIBUTE,
                 [
                     '{{ attributeCode }}' => $attribute->code(),
                 ],
@@ -76,7 +76,7 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
         }
         if (!$this->channelExistsWithLocale->doesChannelExist($channelCode)) {
             $this->addViolation(
-                LocaleAndChannelConsistency::CHANNEL_DOES_NOT_EXIST,
+                LocaleAndChannelShouldBeConsistent::CHANNEL_DOES_NOT_EXIST,
                 [
                     '{{ channelCode }}' => $channelCode,
                 ],
@@ -90,7 +90,7 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
         if (!$attribute->isLocalizable()) {
             if (null !== $localeCode) {
                 $this->addViolation(
-                    LocaleAndChannelConsistency::LOCALE_CODE_PROVIDED_FOR_NON_LOCALIZABLE_ATTRIBUTE,
+                    LocaleAndChannelShouldBeConsistent::LOCALE_CODE_PROVIDED_FOR_NON_LOCALIZABLE_ATTRIBUTE,
                     [
                         '{{ attributeCode }}' => $attribute->code(),
                         '{{ localeCode }}' => $localeCode,
@@ -104,7 +104,7 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
 
         if (null === $localeCode) {
             $this->addViolation(
-                LocaleAndChannelConsistency::NO_LOCALE_CODE_PROVIDED_FOR_LOCALIZABLE_ATTRIBUTE,
+                LocaleAndChannelShouldBeConsistent::NO_LOCALE_CODE_PROVIDED_FOR_LOCALIZABLE_ATTRIBUTE,
                 [
                     '{{ attributeCode }}' => $attribute->code(),
                 ],
@@ -116,7 +116,7 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
 
         if (!$attribute->isScopable() && !$this->channelExistsWithLocale->isLocaleActive($localeCode)) {
             $this->addViolation(
-                LocaleAndChannelConsistency::LOCALE_IS_NOT_ACTIVE,
+                LocaleAndChannelShouldBeConsistent::LOCALE_IS_NOT_ACTIVE,
                 [
                     '{{ localeCode }}' => $localeCode,
                 ],
@@ -131,7 +131,7 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
             !$this->channelExistsWithLocale->isLocaleBoundToChannel($localeCode, $channelCode)
         ) {
             $this->addViolation(
-                LocaleAndChannelConsistency::LOCALE_NOT_ACTIVATED_FOR_CHANNEL,
+                LocaleAndChannelShouldBeConsistent::LOCALE_NOT_ACTIVATED_FOR_CHANNEL,
                 [
                     '{{ localeCode }}' => $localeCode,
                     '{{ channelCode }}' => $channelCode,
@@ -144,7 +144,7 @@ final class LocaleAndChannelConsistencyValidator extends ConstraintValidator
 
         if ($attribute->isLocaleSpecific() && !\in_array($localeCode, $attribute->availableLocaleCodes())) {
             $this->addViolation(
-                LocaleAndChannelConsistency::INVALID_LOCALE_CODE_FOR_LOCALE_SPECIFIC_ATTRIBUTE,
+                LocaleAndChannelShouldBeConsistent::INVALID_LOCALE_CODE_FOR_LOCALE_SPECIFIC_ATTRIBUTE,
                 [
                     '{{ attributeCode }}' => $attribute->code(),
                     '{{ localeCode }}' => $localeCode,

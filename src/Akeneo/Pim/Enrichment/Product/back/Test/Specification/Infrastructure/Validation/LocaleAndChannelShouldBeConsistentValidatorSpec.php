@@ -4,8 +4,8 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
 use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
-use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelConsistency;
-use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelConsistencyValidator;
+use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelShouldBeConsistent;
+use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelShouldBeConsistentValidator;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use PhpSpec\ObjectBehavior;
@@ -15,7 +15,7 @@ use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
-class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
+class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
 {
     function let(
         GetAttributes $getAttributes,
@@ -37,7 +37,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
     function it_is_a_constraint_validator(): void
     {
         $this->shouldImplement(ConstraintValidatorInterface::class);
-        $this->shouldHaveType(LocaleAndChannelConsistencyValidator::class);
+        $this->shouldHaveType(LocaleAndChannelShouldBeConsistentValidator::class);
     }
 
     function it_throws_an_exception_for_a_wrong_constraint(): void
@@ -52,7 +52,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [
             new SetTextValue('name', null, null, 'foo bar'),
-            new LocaleAndChannelConsistency(),
+            new LocaleAndChannelShouldBeConsistent(),
         ]);
     }
 
@@ -60,7 +60,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [
             [new SetTextValue('name', null, null, 'foo bar'), new \stdClass()],
-            new LocaleAndChannelConsistency(),
+            new LocaleAndChannelShouldBeConsistent(),
         ]);
     }
 
@@ -73,7 +73,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
 
         $this->validate(
             [new SetTextValue('name', 'en_US', 'ecommerce', 'My beautiful product')],
-            new LocaleAndChannelConsistency()
+            new LocaleAndChannelShouldBeConsistent()
         );
     }
 
@@ -88,7 +88,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
 
         $context
             ->buildViolation(
-                LocaleAndChannelConsistency::NO_CHANNEL_CODE_PROVIDED_FOR_SCOPABLE_ATTRIBUTE,
+                LocaleAndChannelShouldBeConsistent::NO_CHANNEL_CODE_PROVIDED_FOR_SCOPABLE_ATTRIBUTE,
                 [
                     '{{ attributeCode }}' => 'name',
                 ]
@@ -98,7 +98,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
 
         $this->validate(
             [new SetTextValue('name', null, null, 'My beautiful product')],
-            new LocaleAndChannelConsistency()
+            new LocaleAndChannelShouldBeConsistent()
         );
     }
 
@@ -113,7 +113,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
 
         $context
             ->buildViolation(
-                LocaleAndChannelConsistency::CHANNEL_CODE_PROVIDED_FOR_NON_SCOPABLE_ATTRIBUTE,
+                LocaleAndChannelShouldBeConsistent::CHANNEL_CODE_PROVIDED_FOR_NON_SCOPABLE_ATTRIBUTE,
                 [
                     '{{ attributeCode }}' => 'name',
                     '{{ channelCode }}' => 'ecommerce',
@@ -124,7 +124,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
 
         $this->validate(
             [new SetTextValue('name', null, 'ecommerce', 'My beautiful product')],
-            new LocaleAndChannelConsistency()
+            new LocaleAndChannelShouldBeConsistent()
         );
     }
 
@@ -139,7 +139,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
 
         $context
             ->buildViolation(
-                LocaleAndChannelConsistency::CHANNEL_DOES_NOT_EXIST,
+                LocaleAndChannelShouldBeConsistent::CHANNEL_DOES_NOT_EXIST,
                 [
                     '{{ channelCode }}' => 'mobile',
                 ]
@@ -149,7 +149,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
 
         $this->validate(
             [new SetTextValue('name', null, 'mobile', 'My beautiful product')],
-            new LocaleAndChannelConsistency()
+            new LocaleAndChannelShouldBeConsistent()
         );
     }
 
@@ -164,7 +164,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
 
         $context
             ->buildViolation(
-                LocaleAndChannelConsistency::NO_LOCALE_CODE_PROVIDED_FOR_LOCALIZABLE_ATTRIBUTE,
+                LocaleAndChannelShouldBeConsistent::NO_LOCALE_CODE_PROVIDED_FOR_LOCALIZABLE_ATTRIBUTE,
                 [
                     '{{ attributeCode }}' => 'name',
                 ]
@@ -174,7 +174,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
 
         $this->validate(
             [new SetTextValue('name', null, null, 'My beautiful product')],
-            new LocaleAndChannelConsistency()
+            new LocaleAndChannelShouldBeConsistent()
         );
     }
 
@@ -189,7 +189,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
 
         $context
             ->buildViolation(
-                LocaleAndChannelConsistency::LOCALE_CODE_PROVIDED_FOR_NON_LOCALIZABLE_ATTRIBUTE,
+                LocaleAndChannelShouldBeConsistent::LOCALE_CODE_PROVIDED_FOR_NON_LOCALIZABLE_ATTRIBUTE,
                 [
                     '{{ attributeCode }}' => 'name',
                     '{{ localeCode }}' => 'en_US',
@@ -200,7 +200,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
 
         $this->validate(
             [new SetTextValue('name', 'en_US', null, 'My beautiful product')],
-            new LocaleAndChannelConsistency()
+            new LocaleAndChannelShouldBeConsistent()
         );
     }
 
@@ -215,7 +215,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
 
         $context
             ->buildViolation(
-                LocaleAndChannelConsistency::LOCALE_IS_NOT_ACTIVE,
+                LocaleAndChannelShouldBeConsistent::LOCALE_IS_NOT_ACTIVE,
                 [
                     '{{ localeCode }}' => 'es_ES',
                 ]
@@ -225,7 +225,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
 
         $this->validate(
             [new SetTextValue('name', 'es_ES', null, 'My beautiful product')],
-            new LocaleAndChannelConsistency()
+            new LocaleAndChannelShouldBeConsistent()
         );
     }
 
@@ -240,7 +240,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
 
         $context
             ->buildViolation(
-                LocaleAndChannelConsistency::LOCALE_NOT_ACTIVATED_FOR_CHANNEL,
+                LocaleAndChannelShouldBeConsistent::LOCALE_NOT_ACTIVATED_FOR_CHANNEL,
                 [
                     '{{ localeCode }}' => 'fr_FR',
                     '{{ channelCode }}' => 'ecommerce',
@@ -251,7 +251,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
 
         $this->validate(
             [new SetTextValue('name', 'fr_FR', 'ecommerce', 'My beautiful product')],
-            new LocaleAndChannelConsistency()
+            new LocaleAndChannelShouldBeConsistent()
         );
     }
 
@@ -266,7 +266,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
 
         $context
             ->buildViolation(
-                LocaleAndChannelConsistency::INVALID_LOCALE_CODE_FOR_LOCALE_SPECIFIC_ATTRIBUTE,
+                LocaleAndChannelShouldBeConsistent::INVALID_LOCALE_CODE_FOR_LOCALE_SPECIFIC_ATTRIBUTE,
                 [
                     '{{ attributeCode }}' => 'name',
                     '{{ localeCode }}' => 'fr_FR',
@@ -278,7 +278,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
 
         $this->validate(
             [new SetTextValue('name', 'fr_FR', null, 'My beautiful product')],
-            new LocaleAndChannelConsistency()
+            new LocaleAndChannelShouldBeConsistent()
         );
     }
 
@@ -311,7 +311,7 @@ class LocaleAndChannelConsistencyValidatorSpec extends ObjectBehavior
                 new SetTextValue('locale_specific', 'en_US', null, 'My beautiful product'),
                 new SetTextValue('simple', null, null, 'My beautiful product'),
             ],
-            new LocaleAndChannelConsistency()
+            new LocaleAndChannelShouldBeConsistent()
         );
     }
 
