@@ -1,4 +1,4 @@
-# master
+# 6.0.x
 
 ## Bug fixes
 
