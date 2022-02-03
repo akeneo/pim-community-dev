@@ -40,7 +40,9 @@ type TitleProps = Override<
   }
 >;
 
-const Title = ({level = 'primary', ...rest}: TitleProps) => <TitleContainer level={level} {...rest} />;
+const Title = ({level = 'primary', ...rest}: TitleProps) => (
+  <TitleContainer as={'secondary' === level ? 'h3' : 'h2'} level={level} {...rest} />
+);
 
 const Spacer = styled.div`
   flex-grow: 1;
