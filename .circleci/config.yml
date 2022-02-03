@@ -55,6 +55,7 @@ aliases:
             auth:
                 username: _json_key  # default username when using a JSON key file to authenticate
                 password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
+
 executors:
   cypress-with-chrome:
     docker:
@@ -300,6 +301,54 @@ jobs:
           root: ~/
           paths:
             - project
+
+  build_env_vars:
+      parameters:
+        PRODUCT_TYPE:
+          type: string
+          default: "srnt"
+      environment:
+        <<: *envVarsDeployDev
+      docker:
+        - image: alpine:3
+      resource_class: small
+      working_directory: ~/project
+      steps:
+        - attach_workspace:
+            at: ~/
+        - run:
+            name: Define and persist value for next jobs
+            command: |
+              TYPE=<< parameters.PRODUCT_TYPE >>
+              TYPE_LONG=serenity
+              PRODUCT_REFERENCE_TYPE="${TYPE_LONG}_instance"
+              PRODUCT_REFERENCE_CODE="${TYPE_LONG}_${ENV_NAME}"
+              IMAGE_TAG=${CIRCLE_SHA1}
+              IMAGE_TAG_SHORTED=$(echo ${IMAGE_TAG} | cut -c -7)
+              IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
+              RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
+              if [[ "${TYPE}" == "grth" ]]; then
+                  TYPE_LONG=growth
+                  PRODUCT_REFERENCE_TYPE="growth_edition_instance"
+                  PRODUCT_REFERENCE_CODE="growth_edition_${ENV_NAME}"
+                  RELEASE_NAME="${TYPE_LONG}-${RELEASE_NAME}"
+              fi
+
+              echo export TYPE=${TYPE} > persisted_env_vars
+              echo export TYPE_LONG=${TYPE_LONG} >> persisted_env_vars
+              echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
+              echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
+              echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
+              echo export RELEASE_NAME=${RELEASE_NAME} >> persisted_env_vars
+              echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
+              echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
+
+              echo "Image tag: ${IMAGE_TAG}"
+              echo "Release name: ${RELEASE_NAME}"
+        - persist_to_workspace:
+            root: ~/
+            paths:
+              - project/persisted_env_vars
 
   build_srnt_prod:
       environment:
@@ -1735,6 +1784,18 @@ jobs:
           - add_ssh_keys
           - set_gcloud_config_dev
           - restore_persisted_env_vars
+
+          - run:
+              name: Define value for next steps
+              command: |
+                RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
+                if [[ "${TYPE}" == "grth" ]]; then
+                    RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="tags~^growth-v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
+                fi
+
+                echo export IMAGE_TAG=${RELEASE_TO_DEPLOY} >> $BASH_ENV
+
+                echo "Release to deploy: ${IMAGE_TAG}"
           - run:
               name: Prepare the environment
               command: |
@@ -2996,6 +3057,60 @@ workflows:
                 requires:
                     - checkout
 
+  clone_and_upgrade_customers:
+      when:
+          and:
+              - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+              - equal: [ "clone_and_upgrade_customers", << pipeline.schedule.name >> ]
+      jobs:
+          - checkout
+          - build_env_vars:
+              name: "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
+              matrix:
+                parameters:
+                  PRODUCT_TYPE: ["grth", "srnt"]
+              requires:
+                - checkout
+          - test_clone_from_customer_db:
+              name: "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
+              matrix:
+                parameters:
+                  PRODUCT_TYPE: ["grth"]
+                  SOURCE_PFID: ["grth-sirius-staging"]
+              requires:
+                - "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
+          - test_upgrade_from_customer_db:
+              name: "[<< matrix.PRODUCT_TYPE >>] test_upgrade_from-<< matrix.SOURCE_PFID >>"
+              matrix:
+                parameters:
+                  PRODUCT_TYPE: ["grth"]
+                  SOURCE_PFID: ["grth-sirius-staging"]
+              requires:
+                - "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
+          - test_clone_from_customer_db:
+              name: "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
+              matrix:
+                parameters:
+                  PRODUCT_TYPE: ["srnt"]
+                  SOURCE_PFID: ["srnt-madeira-production", "srnt-petra", "srnt-rdoequipment-prod", "srnt-electrodepot", "srnt-distributionnow-prod"]
+              requires:
+                - "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
+          - test_upgrade_from_customer_db:
+              name: "[<< matrix.PRODUCT_TYPE >>] test_upgrade_from-<< matrix.SOURCE_PFID >>"
+              matrix:
+                parameters:
+                  PRODUCT_TYPE: ["srnt"]
+                  SOURCE_PFID: ["srnt-madeira-production", "srnt-petra", "srnt-rdoequipment-prod", "srnt-electrodepot", "srnt-distributionnow-prod"]
+              requires:
+                - "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
+          - ui_sanity_checks:
+              name: sanity_checks-<< matrix.SOURCE_PFID >>
+              matrix:
+                parameters:
+                  SOURCE_PFID: ["srnt-madeira-production", "srnt-petra", "srnt-rdoequipment-prod", "srnt-electrodepot", "srnt-distributionnow-prod"]
+              requires:
+                - "[srnt] test_upgrade_from-<< matrix.SOURCE_PFID >>"
+
   nightly_beta:
       when:
           and:
@@ -3037,48 +3152,6 @@ workflows:
                         SOURCE_PFID: ["assa-abloy-dev##akecld-assa-abloy", "curacao-production##akecld-curacao-pim"]
                 requires:
                     - "[flex] test_upgrade_from-<< matrix.SOURCE_PFID >>"
-          - test_clone_from_customer_db:
-                name: "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
-                matrix:
-                    parameters:
-                        PRODUCT_TYPE: ["srnt"]
-                        SOURCE_PFID: ["srnt-madeira-production", "srnt-petra", "srnt-rdoequipment-prod", "srnt-electrodepot", "srnt-distributionnow-prod"]
-                requires:
-                    - build_srnt_prod
-          - test_upgrade_from_customer_db:
-                name: "[<< matrix.PRODUCT_TYPE >>] test_upgrade_from-<< matrix.SOURCE_PFID >>"
-                matrix:
-                    parameters:
-                        PRODUCT_TYPE: ["srnt"]
-                        SOURCE_PFID: ["srnt-madeira-production", "srnt-petra", "srnt-rdoequipment-prod", "srnt-electrodepot", "srnt-distributionnow-prod"]
-                requires:
-                    - "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
-          - ui_sanity_checks:
-                name: sanity_checks-<< matrix.SOURCE_PFID >>
-                matrix:
-                    parameters:
-                        SOURCE_PFID: ["srnt-madeira-production", "srnt-petra", "srnt-rdoequipment-prod", "srnt-electrodepot", "srnt-distributionnow-prod"]
-                requires:
-                    - "[srnt] test_upgrade_from-<< matrix.SOURCE_PFID >>"
-          - build_grth:
-                requires:
-                    - checkout
-          - test_clone_from_customer_db:
-                name: "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
-                matrix:
-                    parameters:
-                        PRODUCT_TYPE: ["grth"]
-                        SOURCE_PFID: ["grth-sirius-staging"]
-                requires:
-                    - build_grth
-          - test_upgrade_from_customer_db:
-                name: "[<< matrix.PRODUCT_TYPE >>] test_upgrade_from-<< matrix.SOURCE_PFID >>"
-                matrix:
-                    parameters:
-                        PRODUCT_TYPE: ["grth"]
-                        SOURCE_PFID: ["grth-sirius-staging"]
-                requires:
-                    - "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
 
   nightly_next_cluster:
     when:
