@@ -42,7 +42,7 @@ final class UpsertProductIntegration extends TestCase
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNull($product);
 
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier');
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier');
         ($this->upsertProductHandler)($command);
 
         $this->clearDoctrineUoW();
@@ -54,7 +54,7 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_creates_a_product_with_a_text_value(): void
     {
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
             new SetTextValue('a_text', null, null, 'foo'),
         ]);
         ($this->upsertProductHandler)($command);
@@ -71,14 +71,14 @@ final class UpsertProductIntegration extends TestCase
     public function it_updates_a_product_with_a_text_value(): void
     {
         // Creates empty product
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier');
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier');
         ($this->upsertProductHandler)($command);
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
         // Update product with text value
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
             new SetTextValue('a_text', null, null, 'foo'),
         ]);
         ($this->upsertProductHandler)($command);
@@ -97,9 +97,29 @@ final class UpsertProductIntegration extends TestCase
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('The a_text attribute does not require a locale, "en_US" was detected');
 
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
             new SetTextValue('a_text', 'en_US', null, 'foo'),
         ]);
         ($this->upsertProductHandler)($command);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_giving_an_unknown_user(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('The "0" user does not exist');
+
+        $command = new UpsertProductCommand(userId: 0, productIdentifier: 'identifier', valuesUserIntent: [
+            new SetTextValue('a_text', null, null, 'foo'),
+        ]);
+        ($this->upsertProductHandler)($command);
+    }
+
+    private function getUserId(string $username): int
+    {
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
+        Assert::assertNotNull($user);
+
+        return $user->getId();
     }
 }

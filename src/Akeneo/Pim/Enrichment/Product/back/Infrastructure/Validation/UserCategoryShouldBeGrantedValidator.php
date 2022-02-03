@@ -66,7 +66,7 @@ final class UserCategoryShouldBeGrantedValidator extends ConstraintValidator
             ProductIdentifier::fromString($command->productIdentifier()),
             AccessLevel::OWN_PRODUCTS
         )) {
-            $this->context->buildViolation('')->addViolation();
+            $this->context->buildViolation($constraint->message)->addViolation();
         }
     }
 }

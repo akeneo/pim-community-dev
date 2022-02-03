@@ -11,4 +11,5 @@ namespace Akeneo\Pim\Enrichment\Product\Domain\Model\Permission;
 class AccessLevel
 {
     public const OWN_PRODUCTS = 'OWN_PRODUCTS';
+    public const EDIT_ITEMS = 'EDIT_ITEMS';
 }

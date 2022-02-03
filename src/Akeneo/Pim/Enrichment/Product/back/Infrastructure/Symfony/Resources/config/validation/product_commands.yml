@@ -1,0 +1,12 @@
+Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand:
+    group_sequence:
+        - User
+        - UpsertProductCommand
+    properties:
+        userId:
+            - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserShouldExist:
+                  groups: [User]
+        valuesUserIntent:
+            - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelShouldBeConsistent: ~
+    constraints:
+        - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserCategoryShouldBeGranted: ~

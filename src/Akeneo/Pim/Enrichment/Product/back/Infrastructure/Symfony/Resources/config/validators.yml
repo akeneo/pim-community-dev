@@ -1,9 +1,22 @@
 services:
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelShouldBeConsistentValidator:
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@pim_channel.query.cache.channel_exists_with_locale'
+        tags:
+            - { name: validator.constraint_validator }
+
     Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserCategoryShouldBeGrantedValidator:
         arguments:
             - '@Akeneo\Pim\Enrichment\Product\Domain\Query\IsUserCategoryGranted'
             - '@pim_user.repository.user'
             - '@pim_catalog.repository.product'
-            - '@pim_catalog.version_provider'
+            - '@Akeneo\Pim\Enrichment\Product\Infrastructure\AntiCorruptionLayer\Feature'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserShouldExistValidator:
+        arguments:
+            - '@pim_user.repository.user'
         tags:
             - { name: validator.constraint_validator }
