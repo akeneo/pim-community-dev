@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {useHistory} from 'react-router';
 import {App} from '../../../model/app';
 import {NotificationLevel, useNotify} from '../../../shared/notify';
@@ -24,10 +24,11 @@ type Props = {
     newAuthenticationScopes: Array<'email' | 'profile'>;
 };
 
-export const AuthenticationModal = ({clientId, newAuthenticationScopes}: Props) => {
+export const AuthenticationModal: FC<Props> = ({clientId, newAuthenticationScopes}) => {
     const translate = useTranslate();
     const notify = useNotify();
     const history = useHistory();
+    const [scopesConsentGiven, setScopesConsent] = useState<boolean>(false);
 
     const confirmAuthentication = useConfirmAuthentication(clientId);
     const handleConfirm = async () => {
@@ -53,12 +54,15 @@ export const AuthenticationModal = ({clientId, newAuthenticationScopes}: Props) 
         return null;
     }
 
+    console.log(scopesConsentGiven, '----------------------', !scopesConsentGiven ? 'authentication' : null);
+
     return (
         <WizardModal
             appLogo={app.logo}
             appName={app.name}
             onConfirm={handleConfirm}
             onClose={handleClose}
+            maxAllowedStep={!scopesConsentGiven ? 'authentication' : null}
             steps={[
                 {
                     name: 'authentication',
@@ -66,7 +70,15 @@ export const AuthenticationModal = ({clientId, newAuthenticationScopes}: Props) 
                 },
             ]}
         >
-            {() => <Authentication appName={app.name} scopes={newAuthenticationScopes} />}
+            {() => (
+                <Authentication
+                    appName={app.name}
+                    scopes={newAuthenticationScopes}
+                    appUrl={app.url}
+                    scopesConsentGiven={scopesConsentGiven}
+                    setScopesConsent={setScopesConsent}
+                />
+            )}
         </WizardModal>
     );
 };

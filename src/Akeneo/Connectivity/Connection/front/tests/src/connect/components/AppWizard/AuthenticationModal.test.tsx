@@ -8,8 +8,13 @@ import React from 'react';
 import {ThemeProvider} from 'styled-components';
 import {historyMock, mockFetchResponses, renderWithProviders} from '../../../../test-utils';
 
+const notify = jest.fn();
+const checkboxConsent = jest.fn(setScopesConsent => setScopesConsent(true));
+
 jest.mock('@src/connect/components/AppWizard/steps/Authentication/Authentication', () => ({
-    Authentication: () => <div>authentication-component</div>,
+    Authentication: ({setScopesConsent}: {setScopesConsent: (newValue: boolean) => void}) => (
+        <div onClick={() => checkboxConsent(setScopesConsent)}>authentication-component</div>
+    ),
 }));
 
 /*eslint-disable */
@@ -60,8 +65,6 @@ test('it renders correctly', async () => {
 });
 
 test('it consents to the authentication scopes & redirect the user', async () => {
-    const notify = jest.fn();
-
     mockFetchResponses({
         akeneo_connectivity_connection_marketplace_rest_get_all_apps: {
             json: {
@@ -92,6 +95,10 @@ test('it consents to the authentication scopes & redirect the user', async () =>
     );
 
     await waitFor(() => screen.queryByText('authentication-component'));
+
+    act(() => {
+        userEvent.click(screen.getByText('authentication-component'));
+    });
 
     act(() => {
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm'));
@@ -138,4 +145,58 @@ test('it cancels the authentication', async () => {
     });
 
     expect(historyMock.history.location.pathname).toBe('/connect/connected-apps');
+});
+
+test('it prevents redirection without user consent', async () => {
+    mockFetchResponses({
+        akeneo_connectivity_connection_marketplace_rest_get_all_apps: {
+            json: {
+                total: 1,
+                apps: [
+                    {
+                        id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
+                        name: 'Extension 1',
+                        logo: 'https://extension-1.test/logo.png',
+                    },
+                ],
+            },
+        },
+        'akeneo_connectivity_connection_apps_rest_confirm_authentication?clientId=0dfce574-2238-4b13-b8cc-8d257ce7645b':
+            {
+                json: {
+                    redirectUrl: 'https://extension-1.test/callback',
+                },
+            },
+    });
+
+    renderWithProviders(
+        <NotifyContext.Provider value={notify}>
+            <AuthenticationModal clientId='0dfce574-2238-4b13-b8cc-8d257ce7645b' newAuthenticationScopes={[]} />
+        </NotifyContext.Provider>
+    );
+
+    await waitFor(() => screen.queryByText('authentication-component'));
+
+    expect(screen.queryByText('authentication-component')).toBeInTheDocument();
+
+    act(() => {
+        userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm'));
+    });
+
+    expect(notify).not.toBeCalled();
+
+    act(() => {
+        userEvent.click(screen.getByText('authentication-component'));
+    });
+
+    act(() => {
+        userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm'));
+    });
+
+    await waitFor(() => expect(notify).toHaveBeenCalledTimes(1));
+
+    expect(notify).toBeCalledWith(
+        NotificationLevel.SUCCESS,
+        'akeneo_connectivity.connection.connect.apps.wizard.flash.success'
+    );
 });

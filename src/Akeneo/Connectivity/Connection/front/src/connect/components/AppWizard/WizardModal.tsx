@@ -1,5 +1,5 @@
 import {AppIllustration, Button, Modal, ProgressIndicator} from 'akeneo-design-system';
-import React from 'react';
+import React, {FC} from 'react';
 import styled from 'styled-components';
 import {useTranslate} from '../../../shared/translate';
 import {useStepProgress} from './useStepProgress';
@@ -40,9 +40,18 @@ type Props = {
     onClose: () => void;
     onConfirm: () => void;
     steps: Array<Step>;
+    maxAllowedStep?: Step['name'] | null;
 };
 
-export const WizardModal = ({appLogo, appName, children, onClose, onConfirm, steps}: Props) => {
+export const WizardModal: FC<Props> = ({
+    appLogo,
+    appName,
+    children,
+    onClose,
+    onConfirm,
+    steps,
+    maxAllowedStep = null,
+}) => {
     const translate = useTranslate();
 
     const {current, isFirst, isLast: isLast, next, previous} = useStepProgress(steps);
@@ -61,7 +70,7 @@ export const WizardModal = ({appLogo, appName, children, onClose, onConfirm, ste
                             {translate('akeneo_connectivity.connection.connect.apps.wizard.action.previous')}
                         </Button>
                     )}
-                    <Button onClick={isLast ? onConfirm : next}>
+                    <Button onClick={isLast ? onConfirm : next} disabled={current.name === maxAllowedStep}>
                         {translate(`akeneo_connectivity.connection.connect.apps.wizard.action.${current.action}`)}
                     </Button>
                 </Modal.TopRightButtons>
@@ -89,7 +98,7 @@ export const WizardModal = ({appLogo, appName, children, onClose, onConfirm, ste
                     <Button level={'tertiary'} onClick={onClose}>
                         {translate('akeneo_connectivity.connection.connect.apps.wizard.action.cancel')}
                     </Button>
-                    <Button onClick={onConfirm}>
+                    <Button onClick={onConfirm} disabled={current.name === maxAllowedStep}>
                         {translate('akeneo_connectivity.connection.connect.apps.wizard.action.confirm')}
                     </Button>
                 </Modal.BottomButtons>

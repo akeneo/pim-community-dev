@@ -1,9 +1,10 @@
 import {getColor, getFontSize, Link} from 'akeneo-design-system';
-import React from 'react';
+import React, {FC} from 'react';
 import styled from 'styled-components';
 import {useTranslate} from '../../../../../shared/translate';
 import {UserAvatar} from './UserAvatar';
 import {ConsentList} from './ConsentList';
+import {ConsentCheckbox} from './ConsentCheckbox';
 
 const InfoContainer = styled.div`
     grid-area: INFO;
@@ -38,10 +39,13 @@ const Helper = styled.div`
 
 type Props = {
     appName: string;
+    appUrl: string | null;
     scopes: Array<'email' | 'profile'>;
+    scopesConsentGiven: boolean;
+    setScopesConsent: (newValue: boolean) => void;
 };
 
-export const Authentication = ({appName, scopes}: Props) => {
+export const Authentication: FC<Props> = ({appName, appUrl, scopes, scopesConsentGiven, setScopesConsent}) => {
     const translate = useTranslate();
 
     return (
@@ -62,6 +66,7 @@ export const Authentication = ({appName, scopes}: Props) => {
             </Helper>
             <UserAvatar />
             <ConsentList scopes={scopes} />
+            <ConsentCheckbox isChecked={scopesConsentGiven} onChange={setScopesConsent} appUrl={appUrl} />
         </InfoContainer>
     );
 };
