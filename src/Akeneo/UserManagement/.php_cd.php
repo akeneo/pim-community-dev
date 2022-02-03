@@ -62,6 +62,10 @@ $rules = [
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\EntityIdentifierType',
 
         'Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException',
+
+        // TODO pull up 6.0 remove those two lines
+        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
+        'Webmozart\Assert\Assert',
     ])->in('Akeneo\UserManagement\Bundle'),
 ];
 
