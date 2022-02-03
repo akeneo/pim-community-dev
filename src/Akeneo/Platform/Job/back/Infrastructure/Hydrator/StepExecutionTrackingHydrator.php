@@ -47,7 +47,7 @@ class StepExecutionTrackingHydrator
     private function computeDuration(Status $status, ?\DateTimeImmutable $startTime, ?\DateTimeImmutable $endTime): int
     {
         $now = $this->clock->now();
-        if ($status->getStatus() === Status::STARTING || null === $startTime) {
+        if (Status::STARTING === $status->getStatus() || null === $startTime) {
             return 0;
         }
 
