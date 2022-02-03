@@ -1,7 +1,12 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {Product} from '../../../domain';
-import {getProductFamilyInformationAction, initializeProductAction} from '../../../infrastructure/reducer';
+import {
+  endProductEvaluationAction,
+  getProductFamilyInformationAction,
+  initializeProductAction,
+  startProductEvaluationAction,
+} from '../../../infrastructure/reducer';
 import {fetchFamilyInformation} from '../../../infrastructure/fetcher';
 import ProductFetcher from '../../../infrastructure/fetcher/ProductEditForm/ProductFetcher';
 import {useEvaluateProduct} from '../../../infrastructure/hooks';
@@ -59,7 +64,13 @@ const ProductContextListener: FunctionComponent<ProductContextListenerProps> = (
   useEffect(() => {
     if (productHasBeenSaved) {
       (async () => {
-        await evaluateProduct();
+        dispatchAction(startProductEvaluationAction());
+        try {
+          await evaluateProduct();
+        } catch (e) {
+        } finally {
+          dispatchAction(endProductEvaluationAction());
+        }
       })();
 
       (async () => {
