@@ -1,0 +1,9 @@
+services:
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserCategoryShouldBeGrantedValidator:
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\IsUserCategoryGranted'
+            - '@pim_user.repository.user'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.version_provider'
+        tags:
+            - { name: validator.constraint_validator }
