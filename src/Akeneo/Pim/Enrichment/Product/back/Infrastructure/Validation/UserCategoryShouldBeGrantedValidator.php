@@ -19,7 +19,6 @@ use Akeneo\Pim\Enrichment\Product\Domain\Model\Permission\AccessLevel;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\IsUserCategoryGranted;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\AntiCorruptionLayer\Feature;
-use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
@@ -34,7 +33,6 @@ final class UserCategoryShouldBeGrantedValidator extends ConstraintValidator
 {
     public function __construct(
         private IsUserCategoryGranted $isUserCategoryGranted,
-        private UserRepositoryInterface $userRepository,
         private ProductRepositoryInterface $productRepository,
         private Feature $feature
     ) {
@@ -51,13 +49,8 @@ final class UserCategoryShouldBeGrantedValidator extends ConstraintValidator
 
         $product = $this->productRepository->findOneByIdentifier($command->productIdentifier());
         if (null === $product) {
+            // A new product without category is always granted (from a category permission point of view).
             // TODO: if we create with a category, we have to check the category is granted
-            return;
-        }
-
-        // TODO: validate the user exists (using sequence to not continue validation)
-        $user = $this->userRepository->findOneBy(['id' => $command->userId()]);
-        if (null === $user) {
             return;
         }
 
