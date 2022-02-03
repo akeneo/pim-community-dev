@@ -106,7 +106,7 @@ final class TableValues implements ArrayConverterInterface
                     $rowValues[$columnCode] = false;
                 }
             } elseif ($column instanceof MeasurementColumn) {
-                \preg_match('/^(?P<amount>([^ ]+)) (?P<unit>.*)$/', $value, $matches);
+                \preg_match('/^(?P<amount>([^ ]+))[ ]+(?P<unit>[^ ]*)$/', \trim($value), $matches);
                 $amount = $matches['amount'] ?? null;
                 $unit = $matches['unit'] ?? null;
 

@@ -40,13 +40,6 @@ final class Cell
         Assert::notSame($data, '');
         Assert::notSame($data, []);
 
-        if (\is_array($data)) {
-            Assert::keyExists($data, 'amount');
-            Assert::notSame($data['amount'], '');
-            Assert::keyExists($data, 'unit');
-            Assert::notSame($data['unit'], '');
-        }
-
         return new self($data);
     }
 
