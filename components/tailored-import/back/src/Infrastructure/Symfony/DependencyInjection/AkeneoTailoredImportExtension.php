@@ -29,9 +29,12 @@ class AkeneoTailoredImportExtension extends Extension
         $loader->load('controllers.yml');
         $loader->load('handlers.yml');
         $loader->load('jobs.yml');
+        $loader->load('processors.yml');
         $loader->load('queries.yml');
+        $loader->load('readers.yml');
         $loader->load('services.yml');
         $loader->load('validations.yml');
+        $loader->load('writers.yml');
 
         if ('test' === $container->getParameter('kernel.environment')) {
             $loader->load('test/services.yml');

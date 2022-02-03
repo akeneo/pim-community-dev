@@ -1,0 +1,3 @@
+services:
+  akeneo.tailored_import.reader.file.xlsx:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File\Xlsx\Reader
