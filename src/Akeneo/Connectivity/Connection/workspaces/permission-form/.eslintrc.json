@@ -27,6 +27,8 @@
         "@typescript-eslint/ban-types": "off",
         "@typescript-eslint/unbound-method": "off",
         "@typescript-eslint/restrict-template-expressions": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
         "arrow-parens": ["warn", "as-needed"],
         "indent": "off",
         "max-len": ["error", {"code": 120, "ignoreStrings": true}],

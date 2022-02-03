@@ -1,17 +1,16 @@
 {
-    "name": "@akeneo-pim-community/permission-form",
-    "version": "1.0.0",
-    "license": "OSL-3.0",
-    "main": "src/index.ts",
-    "scripts": {
-        "eslint": "eslint --config .eslintrc.json src/**/*.{ts,tsx}",
-        "prettier": "prettier --config .prettierrc.json src/**/*.{ts,tsx}",
-        "jest": "jest --config jest.config.js"
-    },
-    "private": true,
-    "devDependencies": {
-        "eslint": "^6.5.1",
-        "jest": "^26.4.2",
-        "prettier": "^2.1.1"
-    }
+  "name": "@akeneo-pim-community/permission-form",
+  "version": "1.0.0",
+  "license": "OSL-3.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "lint": "eslint --config .eslintrc.json src/**/*.{ts,tsx} && prettier --config .prettierrc.json src/**/*.{ts,tsx}",
+    "jest": "jest --config jest.config.js"
+  },
+  "private": true,
+  "dependencies": {
+    "eslint": "*",
+    "jest": "*",
+    "prettier": "*"
+  }
 }

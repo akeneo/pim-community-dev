@@ -58,6 +58,7 @@
     "front-packages/measurement",
     "front-packages/shared",
     "front-packages/akeneo-design-system",
-    "src/Akeneo/Connectivity/Connection/front"
+    "src/Akeneo/Connectivity/Connection/front",
+    "src/Akeneo/Connectivity/Connection/workspaces/permission-form"
   ]
 }

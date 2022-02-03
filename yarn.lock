@@ -29,6 +29,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@akeneo-pim-community/permission-form@workspace:src/Akeneo/Connectivity/Connection/workspaces/permission-form":
+  version: 0.0.0-use.local
+  resolution: "@akeneo-pim-community/permission-form@workspace:src/Akeneo/Connectivity/Connection/workspaces/permission-form"
+  dependencies:
+    eslint: "*"
+    jest: "*"
+    prettier: "*"
+  languageName: unknown
+  linkType: soft
+
 "@akeneo-pim-community/shared@workspace:front-packages/shared":
   version: 0.0.0-use.local
   resolution: "@akeneo-pim-community/shared@workspace:front-packages/shared"

@@ -127,3 +127,12 @@ Latest version needs in eslintrc
         "@typescript-eslint/restrict-plus-operands": "off",
         "@typescript-eslint/no-unsafe-argument": "off",
         "@typescript-eslint/no-unnecessary-type-constraint": "off",
+
+========================================================================================================================
+@akeneo-pim-community/permission-form
+========================================================================================================================
+
+tests needs:
+- "@typescript-eslint/no-explicit-any": "off",
+- "@typescript-eslint/no-unsafe-argument": "off",
+- This module works with jest 27, so it installs it in its node_modules
