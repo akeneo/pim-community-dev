@@ -6,7 +6,7 @@
   "scripts": {
     "eslint:notworking": "eslint --config .eslintrc.json --quiet {src,tests}/**/*.{ts,tsx} ",
     "prettier:notworking": "prettier --config .prettierrc.json {src,tests}/**/*.{ts,tsx}",
-    "test:unit:run:notworking": "jest --config tests/jest.config.js"
+    "test:unit:run:notworking": "jest --config tests/front/unit/unit.jest.js"
   },
   "private": true
 }

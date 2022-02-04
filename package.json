@@ -59,6 +59,8 @@
     "front-packages/shared",
     "front-packages/akeneo-design-system",
     "src/Akeneo/Connectivity/Connection/front",
-    "src/Akeneo/Connectivity/Connection/workspaces/permission-form"
+    "src/Akeneo/Connectivity/Connection/workspaces/permission-form",
+    "src/Akeneo/Pim/Automation/DataQualityInsights/front",
+    "src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front"
   ]
 }

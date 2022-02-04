@@ -177,8 +177,18 @@ Needs to add
 ========================================================================================================================
 
 eslint, prettier and jest
-  - TODO is not working because there is no configuration file
+  - TODO is not working because there is no configuration file ??
 
-jest needs
+========================================================================================================================
+@akeneo-pim-community/catalog-volume-monitoring
+========================================================================================================================
 
+TODO app:start does not work
+        WARNING in ../../../../../../node_modules/@testing-library/react-hooks/lib/pure.js 39:4-17
+        Critical dependency: the request of a dependency is an expression
+         @ ../../../../../../node_modules/@testing-library/react-hooks/lib/index.js 11:12-29
+         @ ../../../../../../front-packages/shared/lib/tests/utils.js 24:20-59
+         @ ../../../../../../front-packages/shared/lib/tests/index.js 28:13-31
+         @ ../../../../../../front-packages/shared/lib/index.js 38:13-31
+         @ ./src/index.tsx 8:0-81 29:36-69
 

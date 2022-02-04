@@ -5,6 +5,17 @@ __metadata:
   version: 5
   cacheKey: 8
 
+"@akeneo-pim-community/catalog-volume-monitoring@workspace:src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front":
+  version: 0.0.0-use.local
+  resolution: "@akeneo-pim-community/catalog-volume-monitoring@workspace:src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front"
+  dependencies:
+    eslint: "*"
+    prettier: "*"
+    react-scripts: "*"
+    typescript: "*"
+  languageName: unknown
+  linkType: soft
+
 "@akeneo-pim-community/connectivity-connection@workspace:src/Akeneo/Connectivity/Connection/front":
   version: 0.0.0-use.local
   resolution: "@akeneo-pim-community/connectivity-connection@workspace:src/Akeneo/Connectivity/Connection/front"
@@ -29,6 +40,14 @@ __metadata:
     react-hook-form: <6.0.0
     ts-jest: ^27.1.3
     victory: "*"
+  languageName: unknown
+  linkType: soft
+
+"@akeneo-pim-community/data-quality-insights@workspace:src/Akeneo/Pim/Automation/DataQualityInsights/front":
+  version: 0.0.0-use.local
+  resolution: "@akeneo-pim-community/data-quality-insights@workspace:src/Akeneo/Pim/Automation/DataQualityInsights/front"
+  dependencies:
+    jest: "*"
   languageName: unknown
   linkType: soft
 
@@ -13730,20 +13749,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest@npm:<27.0.0":
-  version: 26.6.3
-  resolution: "jest@npm:26.6.3"
-  dependencies:
-    "@jest/core": ^26.6.3
-    import-local: ^3.0.2
-    jest-cli: ^26.6.3
-  bin:
-    jest: bin/jest.js
-  checksum: 3a9b4c70e9bd5391e7367a0036045c1d3545c2a39e1439a71fb4b59b1748bc34e2ccb324faa1046b99bffc8dc2ed7b3c59016c462255b2646f5fa9300351f914
-  languageName: node
-  linkType: hard
-
-"jest@npm:^27.4.3, jest@npm:^27.4.7":
+"jest@npm:*, jest@npm:^27.4.3, jest@npm:^27.4.7":
   version: 27.4.7
   resolution: "jest@npm:27.4.7"
   dependencies:
@@ -13758,6 +13764,19 @@ __metadata:
   bin:
     jest: bin/jest.js
   checksum: 28ce948b30c074907393f37553acac4422d0f60190776e62b3403e4c742d33dd6012e3a20748254a43e38b5b4ce52d813b13a3a5be1d43d6d12429bd08ce1a23
+  languageName: node
+  linkType: hard
+
+"jest@npm:<27.0.0":
+  version: 26.6.3
+  resolution: "jest@npm:26.6.3"
+  dependencies:
+    "@jest/core": ^26.6.3
+    import-local: ^3.0.2
+    jest-cli: ^26.6.3
+  bin:
+    jest: bin/jest.js
+  checksum: 3a9b4c70e9bd5391e7367a0036045c1d3545c2a39e1439a71fb4b59b1748bc34e2ccb324faa1046b99bffc8dc2ed7b3c59016c462255b2646f5fa9300351f914
   languageName: node
   linkType: hard
 
