@@ -84,7 +84,7 @@ config:
         pimee/product-edit-form/convert-to-simple-product:            pimenterpriseui/js/product/form/convert-to-simple-product.ts
         pimee/product-edit-form/duplicate:                            pimenterpriseui/js/product/form/duplicate.ts
         pimee/product-edit-form/duplicate/modal:                      pimenterpriseui/js/product/form/duplicate/modal.ts
-        pimee/product-edit-form/main-image:                           pimenterpriseui/js/product/form/main-image.ts
+        pimee/product-edit-form/main-image:                           pimenterpriseui/js/product/form/main-image.tsx
 
         pim/attribute-edit-form/tab/choices: pimenterpriseui/js/attribute/form/choices.tsx
 
