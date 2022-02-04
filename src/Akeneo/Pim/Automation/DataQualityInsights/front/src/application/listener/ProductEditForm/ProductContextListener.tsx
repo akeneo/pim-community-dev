@@ -79,7 +79,7 @@ const ProductContextListener: FunctionComponent<ProductContextListenerProps> = (
         setProductHasBeenSaved(false);
       })();
     }
-  }, [productHasBeenSaved]);
+  }, [productHasBeenSaved, evaluateProduct]);
 
   return <></>;
 };
