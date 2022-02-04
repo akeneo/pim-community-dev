@@ -14,3 +14,4 @@ services:
             - '@oro_datagrid.datagrid.request_params'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.rule-grid, method: configure }
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.attribute-rule-grid, method: configure }

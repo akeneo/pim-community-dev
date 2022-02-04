@@ -1,0 +1,116 @@
+datagrid:
+    attribute-rule-grid:
+        options:
+            manageFilters: false
+            entityHint: rule
+            requireJSModules:
+                - oro/datagrid/pagination-input
+            locale_parameter: localeCode
+        source:
+            acl_resource: pimee_catalog_rule_rule_view_permissions
+            repository_method: createDatagridQueryBuilder
+            type: pim_datasource_rule
+            entity: '%akeneo_rule_engine.model.rule_definition.class%'
+        columns:
+            label:
+                label: pimee_catalog_rule.datagrid.rule-grid.column.label
+                frontend_type: label
+            tags:
+                label: pimee_catalog_rule.datagrid.rule-grid.column.tags.label
+                frontend_type: tags
+                data_name: content
+            priority:
+                label: pimee_catalog_rule.datagrid.rule-grid.column.priority
+                frontend_type: integer
+                data_name: priority
+            impactedSubjectCount:
+                label: pimee_catalog_rule.datagrid.rule-grid.column.impacted_product_count.label
+                type: twig
+                template: AkeneoPimRuleEngineBundle:Rule:_impacted_product_count.html.twig
+                frontend_type: html
+            status:
+                label: pimee_catalog_rule.datagrid.rule-grid.column.status
+                data_name: enabled
+                type: twig
+                frontend_type: html
+                template: AkeneoPimRuleEngineBundle:Rule:_enabled.html.twig
+        properties:
+            id: ~
+            enabled: ~
+            edit_link:
+                type: url
+                route: pimee_catalog_rule_edit
+                params:
+                    - code
+            execute_link:
+                type: url
+                route: pimee_catalog_rule_rule_execute
+                params:
+                    - code
+            delete_link:
+                type: url
+                route: pimee_catalog_rule_rule_delete
+                params:
+                    - id
+            toggle_rule_status:
+                type: url
+                route: pimee_enrich_rule_definition_status_change
+                params:
+                    - code
+        actions:
+            edit:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
+                type:      navigate
+                label:     pim_common.edit
+                link:      edit_link
+                rowAction: true
+                acl_resource: pimee_catalog_rule_rule_edit_permissions
+            toggle_status:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--switch
+                type:  toggle-rule-status
+                label: pim_datagrid.actions.toggle_status
+                link:  toggle_rule_status
+                acl_resource: pimee_catalog_rule_rule_edit_permissions
+            execute:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--play
+                type: execute-rule
+                label: pimee_catalog_rule.datagrid.rule-grid.actions.execute
+                link: execute_link
+                acl_resource: pimee_catalog_rule_rule_execute_permissions
+                confirmation: true
+                messages:
+                    confirm_title: pimee_catalog_rule.datagrid.rule-grid.actions.execute.confirm_title
+                    confirm_content: pimee_catalog_rule.datagrid.rule-grid.actions.execute.confirm_content
+                    confirm_ok: pim_common.ok
+            delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
+                type: delete
+                label: pim_common.delete
+                link: delete_link
+                acl_resource:  pimee_catalog_rule_rule_delete_permissions
+        filters:
+            columns:
+                code:
+                    type: string
+                    label: pim_common.code
+                    data_name: r.code
+                label:
+                    type: search
+                    data_name: label
+                    label: pimee_catalog_rule.datagrid.rule-grid.column.label
+        sorters:
+            columns:
+                label:
+                    data_name: label
+                impactedSubjectCount:
+                    data_name: r.impactedSubjectCount
+                priority:
+                    data_name: r.priority
+                status:
+                    data_name: r.enabled
+            default:
+                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
