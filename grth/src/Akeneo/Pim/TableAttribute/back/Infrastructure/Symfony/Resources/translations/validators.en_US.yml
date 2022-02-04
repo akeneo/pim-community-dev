@@ -62,6 +62,7 @@ pim_table_configuration:
             max_length_validation: This value should contain {{ limit }} characters or less.
             too_many_rows: You have reached the maximum number of rows in your table ({{ limit }}).
             record_should_exist: 'The "{{ recordCode }}" record in the "{{ referenceEntityIdentifier }}" reference entity does not exist'
+            measurement_unit_should_exist: 'The "{{ measurement_unit_code }}" unit in the "{{ measurement_family_code }}" measurement family does not exist'
         product_value_collection:
             too_many_cells: You have reached the maximum number of table cells in your product ({{ count }} cells, only {{ limit }} allowed).
         reference_entity:

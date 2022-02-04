@@ -60,15 +60,6 @@ class TableValueFactory implements ValueFactory
                         $data
                     );
                 }
-
-                if (\is_array($cell) && (!\array_key_exists('amount', $cell) || !\array_key_exists('unit', $cell))) {
-                    throw InvalidPropertyTypeException::validArrayStructureExpected(
-                        $attribute->code(),
-                        'The cell value must contain the "amount" and "unit" keys.',
-                        static::class,
-                        $data
-                    );
-                }
             }
         }
 

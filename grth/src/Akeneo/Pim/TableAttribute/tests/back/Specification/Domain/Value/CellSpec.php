@@ -35,12 +35,6 @@ class CellSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_cannot_be_instantiated_with_an_invalid_array()
-    {
-        $this->beConstructedThrough('fromNormalized', [['unknown' => 'value']]);
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
-    }
-
     function it_can_be_normalized_as_string()
     {
         $this->normalize()->shouldReturn('foo bar');

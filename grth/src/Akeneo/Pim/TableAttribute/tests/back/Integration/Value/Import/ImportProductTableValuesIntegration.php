@@ -135,13 +135,17 @@ CSV;
     public function it_skips_invalid_rows(): void
     {
         $csv = <<<CSV
-product;attribute;ingredient;quantity;allergen;additional_info;nutrition_score
-111111;nutrition-en_US-ecommerce;salt;20;1;text;A
-111111;nutrition-en_US-ecommerce;sugar;24;0;text2;B
-111111;nutrition-fr_FR-mobile;egg;12;;text3;UNKNOWN
-111111;nutrition-fr_FR-mobile;pepper;;1;text4;D
-111111;nutrition-en_US-mobile;pepper;;1;text5;D
-111112;nutrition-en_US-mobile;pepper;;;;
+product;attribute;ingredient;quantity;allergen;additional_info;nutrition_score;weight
+111111;nutrition-en_US-ecommerce;salt;20;1;text;A;" 100 GRAM"
+111111;nutrition-en_US-ecommerce;sugar;24;0;text2;B;
+111111;nutrition-fr_FR-mobile;egg;12;;text3;UNKNOWN;
+111111;nutrition-fr_FR-mobile;pepper;;1;text4;D;
+111111;nutrition-en_US-mobile;pepper;;1;text5;D;
+111112;nutrition-en_US-mobile;pepper;;;;;
+111111;nutrition-en_US-ecommerce;egg;30;0;text;A;"toto"
+111111;nutrition-en_US-ecommerce;egg;40;0;text;A;"50 KILO GRAM"
+111111;nutrition-en_US-ecommerce;egg;50;0;text;A;"200 UNKNOWN"
+111111;nutrition-en_US-ecommerce;egg;60;0;text;A;"coucou UNKNOWN"
 CSV;
         $this->jobLauncher->launchImport(self::CSV_IMPORT_JOB_CODE, $csv);
 
@@ -154,13 +158,25 @@ CSV;
         $normalizedTable = $this->tableNormalizer->normalize($value->getData());
         Assert::assertCount(3, $normalizedTable);
         Assert::assertEquals(
-            ['ingredient' => 'salt', 'quantity' => '20', 'allergen' => true, 'additional_info' => 'text', 'nutrition_score' => 'A'],
+            [
+                'ingredient' => 'salt',
+                'quantity' => '20',
+                'allergen' => true,
+                'additional_info' => 'text',
+                'nutrition_score' => 'A',
+                'weight' => [
+                    'amount' => '100',
+                    'unit' => 'GRAM',
+                ],
+            ],
             $this->getLine($normalizedTable, 'salt')
         );
         Assert::assertEquals(
             ['ingredient' => 'sugar', 'quantity' => '24', 'allergen' => false, 'additional_info' => 'text2', 'nutrition_score' => 'B'],
             $this->getLine($normalizedTable, 'sugar')
         );
+
+        // Egg is not modified because the weights are invalid and ignored
         Assert::assertEquals(
             ['ingredient' => 'egg', 'quantity' => 20, 'allergen' => true, 'nutrition_score' => 'C'],
             $this->getLine($normalizedTable, 'egg')

@@ -106,7 +106,12 @@ final class TableValues implements ArrayConverterInterface
                     $rowValues[$columnCode] = false;
                 }
             } elseif ($column instanceof MeasurementColumn) {
-                \preg_match('/^(?P<amount>([^ ]+))[ ]+(?P<unit>[^ ]*)$/', \trim($value), $matches);
+                $valueDoesMatch = \preg_match('/^(?P<amount>([^ ]+))[ ]+(?P<unit>[^ ]*)$/', \trim($value), $matches);
+
+                if (1 !== $valueDoesMatch) {
+                    throw new DataArrayConversionException(\sprintf('Invalid value format for the measurement column: "%s"', $value));
+                }
+
                 $amount = $matches['amount'] ?? null;
                 $unit = $matches['unit'] ?? null;
 

@@ -160,6 +160,73 @@ class CreateTableValueEndToEnd extends ApiTestCase
         );
     }
 
+    public function testItInvalidatesOnInvalidMeasurementValue(): void
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data = [
+            'identifier' => 'id1',
+            'values' => [
+                'nutrition' => [
+                    ['locale' => null, 'scope' => null, 'data' => [
+                        ['ingredients' => 'bar', 'manufacturing_time' => ['amount' => "michel", 'unit' => 'minute']],
+                    ]],
+                ],
+            ],
+        ];
+
+        $client->request('POST', 'api/rest/v1/products', [], [], [], json_encode($data));
+        $response = $client->getResponse();
+        Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $decodedContent = \json_decode($response->getContent(), true);
+        Assert::assertStringContainsString('Validation failed.', $decodedContent['message']);
+        Assert::assertIsArray($decodedContent['errors']);
+        Assert::assertCount(1, $decodedContent['errors']);
+        Assert::assertSame('The "manufacturing_time" column expects an string unit code and a numeric amount, {"amount":"michel","unit":"minute"} given', $decodedContent['errors'][0]['message']);
+
+        $client = $this->createAuthenticatedClient();
+        $data = [
+            'identifier' => 'id1',
+            'values' => [
+                'nutrition' => [
+                    ['locale' => null, 'scope' => null, 'data' => [
+                        ['ingredients' => 'bar', 'manufacturing_time' => '12'],
+                    ]],
+                ],
+            ],
+        ];
+
+        $client->request('POST', 'api/rest/v1/products', [], [], [], json_encode($data));
+        $response = $client->getResponse();
+        Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $decodedContent = \json_decode($response->getContent(), true);
+        Assert::assertStringContainsString('Validation failed.', $decodedContent['message']);
+        Assert::assertIsArray($decodedContent['errors']);
+        Assert::assertCount(1, $decodedContent['errors']);
+        Assert::assertSame('The "manufacturing_time" column expects an string unit code and a numeric amount, "12" given', $decodedContent['errors'][0]['message']);
+
+        $client = $this->createAuthenticatedClient();
+        $data = [
+            'identifier' => 'id1',
+            'values' => [
+                'nutrition' => [
+                    ['locale' => null, 'scope' => null, 'data' => [
+                        ['ingredients' => 'bar', 'manufacturing_time' => ['amount' => 12, 'unit' => 'UNKNOWN']],
+                    ]],
+                ],
+            ],
+        ];
+
+        $client->request('POST', 'api/rest/v1/products', [], [], [], json_encode($data));
+        $response = $client->getResponse();
+        Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $decodedContent = \json_decode($response->getContent(), true);
+        Assert::assertStringContainsString('Validation failed.', $decodedContent['message']);
+        Assert::assertIsArray($decodedContent['errors']);
+        Assert::assertCount(1, $decodedContent['errors']);
+        Assert::assertSame('The "UNKNOWN" unit in the "duration" measurement family does not exist', $decodedContent['errors'][0]['message']);
+    }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
