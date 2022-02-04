@@ -2,10 +2,11 @@
 
 namespace Akeneo\Test\IntegrationTestsBundle\Security;
 
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Component\Factory\UserFactory;
 use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
 use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
@@ -16,28 +17,14 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
  */
 final class SystemUserAuthenticator
 {
-    /** @var UserFactory */
-    private $userFactory;
-
-    /** @var GroupRepositoryInterface */
-    private $groupRepository;
-
-    /** @var RoleRepositoryInterface */
-    private $roleRepository;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
     public function __construct(
-        UserFactory $userFactory,
-        GroupRepositoryInterface $groupRepository,
-        RoleRepositoryInterface $roleRepository,
-        TokenStorageInterface $tokenStorage
+        private UserFactory $userFactory,
+        private GroupRepositoryInterface $groupRepository,
+        private RoleRepositoryInterface $roleRepository,
+        private TokenStorageInterface $tokenStorage,
+        private UserRepositoryInterface $userRepository,
+        private SaverInterface $userSaver
     ) {
-        $this->userFactory = $userFactory;
-        $this->groupRepository = $groupRepository;
-        $this->roleRepository = $roleRepository;
-        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -45,10 +32,15 @@ final class SystemUserAuthenticator
      */
     public function createSystemUser()
     {
-        $user = $this->userFactory->create();
-        $user->setUsername('system');
-        $groups = $this->groupRepository->findAll();
+        $user = $this->userRepository->findOneByIdentifier('system');
+        if (null === $user) {
+            $user = $this->userFactory->create();
+            $user->setUsername('system');
+            $user->setEmail('system@example.com');
+            $user->setPassword('password');
+        }
 
+        $groups = $this->groupRepository->findAll();
         foreach ($groups as $group) {
             $user->addGroup($group);
         }
@@ -57,6 +49,8 @@ final class SystemUserAuthenticator
         foreach ($roles as $role) {
             $user->addRole($role);
         }
+
+        $this->userSaver->save($user);
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->tokenStorage->setToken($token);
