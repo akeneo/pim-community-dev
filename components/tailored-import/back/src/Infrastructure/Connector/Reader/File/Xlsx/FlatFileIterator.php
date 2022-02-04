@@ -11,8 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File;
+namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File\Xlsx;
 
+use Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File\FlatFileIteratorInterface;
 use Box\Spout\Common\Entity\Cell;
 use Box\Spout\Reader\Common\Creator\ReaderFactory;
 use Box\Spout\Reader\IteratorInterface;
@@ -20,7 +21,7 @@ use Box\Spout\Reader\ReaderInterface;
 use Box\Spout\Reader\SheetInterface;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
-class FlatFileIterator implements FileIteratorInterface
+class FlatFileIterator implements FlatFileIteratorInterface
 {
     private ReaderInterface $fileReader;
     private SheetInterface $sheet;
@@ -45,7 +46,7 @@ class FlatFileIterator implements FileIteratorInterface
 
     public function rewind(): void
     {
-        $this->rewindRowIteratorAtFirstProductLine();
+        $this->rewindRowIteratorBeforeFirstProductLine();
     }
 
     public function current(): ?array
@@ -103,8 +104,8 @@ class FlatFileIterator implements FileIteratorInterface
 
         $sheetIterator->rewind();
 
-        $sheetIndex = $this->fileStructure['sheet'];
-        while ($sheetIndex !== $sheetIterator->key()) {
+        $sheetIndex = $this->fileStructure['sheet_index'];
+        while (1 + $sheetIndex !== $sheetIterator->key()) { // Iterator keys starts from 1
             $sheetIterator->next();
         }
 
@@ -117,27 +118,27 @@ class FlatFileIterator implements FileIteratorInterface
 
         $rowIterator->rewind();
 
-        $headersRowIndex = $this->fileStructure['headers_line'];
-        while ($headersRowIndex !== $rowIterator->key()) {
+        $headersRowIndex = $this->fileStructure['header_line'];
+        while (1 + $headersRowIndex !== $rowIterator->key()) { // Iterator keys starts from 1
             $rowIterator->next();
         }
 
         $headersRow = $rowIterator->current();
-        $firstHeaderColumn = $this->fileStructure['headers_column'];
+        $firstHeaderColumn = $this->fileStructure['header_column'];
         $headerCells = array_slice($headersRow->getCells(), $firstHeaderColumn);
 
         return array_map(static fn (Cell $headerCell, int $relativeIndex) => [
-            'index' => $firstHeaderColumn + $relativeIndex,
+            'index' => $firstHeaderColumn + $relativeIndex, // Absolute or relative index ?
             'label' => $headerCell->getValue(),
-        ], $headerCells);
+        ], array_values($headerCells), array_keys($headerCells));
     }
 
-    private function rewindRowIteratorAtFirstProductLine(): void
+    private function rewindRowIteratorBeforeFirstProductLine(): void
     {
         $this->rows->rewind();
 
         $firstProductLine = $this->fileStructure['product_line'];
-        while ($firstProductLine !== $this->rows->key()) {
+        while ($firstProductLine !== $this->rows->key()) {  // Iterator keys starts from 1
             $this->rows->next();
         }
     }

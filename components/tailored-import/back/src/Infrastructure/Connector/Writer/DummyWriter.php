@@ -14,10 +14,17 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Writer;
 
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Psr\Log\LoggerInterface;
 
 class DummyWriter implements ItemWriterInterface
 {
+    public function __construct(
+        private LoggerInterface $logger,
+    ) {
+    }
+
     public function write(array $items)
     {
+        $this->logger->debug('[TI] Writings items', ['items' => $items]);
     }
 }

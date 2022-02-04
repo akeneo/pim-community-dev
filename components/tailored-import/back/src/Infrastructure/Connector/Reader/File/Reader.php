@@ -11,21 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File\Xlsx;
+namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File;
 
-use Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File\FileIteratorInterface;
-use Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File\FlatFileIterator;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
-use Akeneo\Tool\Component\Batch\Job\UndefinedJobParameterException;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 
+// TODO implement TrackableItemReaderInterface
 class Reader implements ItemReaderInterface, StepExecutionAwareInterface, InitializableInterface, FlushableInterface
 {
     private StepExecution $stepExecution;
-    private ?FileIteratorInterface $fileIterator;
+    private ?FlatFileIteratorInterface $fileIterator = null;
+
+    public function __construct(
+        private FlatFileIteratorFactory $flatFileIteratorFactory
+    ) {
+    }
 
     public function read()
     {
@@ -43,9 +46,9 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Initia
 
         // Should we check if the numbers of cells in product line is equals to the number of columns/headers ?
 
-        // TODO instantiate the DTO
+        // TODO RAB-482 instantiate the DTO
 
-        return [];
+        return $currentProductLine;
     }
 
     public function setStepExecution(StepExecution $stepExecution): void
@@ -57,28 +60,12 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Initia
     {
         if (null === $this->fileIterator) {
             $jobParameters = $this->stepExecution->getJobParameters();
-            $filePath = $jobParameters->get('filePath');
-
-            // TODO remove this try catch when the file structure will be available in the job parameters
-            try {
-                $fileStructure = $jobParameters->get('file_structure');
-            } catch (UndefinedJobParameterException $exception) {
-                $fileStructure = [
-                    'header_line' => 0,
-                    'header_column' => 0,
-                    'product_line' => 1,
-                    'product_column' => 0,
-                    'sheet_index' => 0,
-                ];
-            }
-
-            // Should we need to use a Factory like the "legacy" Reader ?
-            $this->fileIterator = new FlatFileIterator('xlsx', $filePath, $fileStructure);
+            $this->fileIterator = $this->flatFileIteratorFactory->create($jobParameters);
             $this->fileIterator->rewind();
 
             $fileHeaders = $this->fileIterator->getHeaders();
 
-            //TODO validate that fileHeaders match to columns from jobConfiguration
+            //TODO RAB-481 validate that fileHeaders match to columns from jobConfiguration
         }
     }
 

@@ -1,3 +1,5 @@
 services:
   akeneo.tailored_import.processor.dummy:
     class: Akeneo\Platform\TailoredImport\Infrastructure\Connector\Processor\DummyProcessor
+    arguments:
+      - '@logger'

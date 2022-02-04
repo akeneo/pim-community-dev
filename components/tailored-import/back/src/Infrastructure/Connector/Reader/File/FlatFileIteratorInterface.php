@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File;
 
-interface FileIteratorInterface extends \Iterator
+interface FlatFileIteratorInterface extends \Iterator
 {
     /**
      * @return array[]

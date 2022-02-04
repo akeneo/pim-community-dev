@@ -1,3 +1,10 @@
 services:
+  akeneo.tailored_import.reader.file.factory.xlsx:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File\FlatFileIteratorFactory
+    arguments:
+      - 'xlsx'
+
   akeneo.tailored_import.reader.file.xlsx:
-    class: Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File\Xlsx\Reader
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File\Reader
+    arguments:
+      - '@akeneo.tailored_import.reader.file.factory.xlsx'

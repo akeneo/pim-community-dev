@@ -14,11 +14,19 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Processor;
 
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
+use Psr\Log\LoggerInterface;
 
 class DummyProcessor implements ItemProcessorInterface
 {
+    public function __construct(
+        private LoggerInterface $logger,
+    ) {
+    }
+
     public function process($item)
     {
+        $this->logger->debug('[TI] Processing item', ['item' => $item]);
+
         return $item;
     }
 }
