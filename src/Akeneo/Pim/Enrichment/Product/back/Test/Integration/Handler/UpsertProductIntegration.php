@@ -115,6 +115,18 @@ final class UpsertProductIntegration extends TestCase
         ($this->upsertProductHandler)($command);
     }
 
+    /** @test */
+    public function it_throws_an_exception_when_giving_an_empty_product_identifier(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('The product identifier requires a non empty string');
+
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: '', valuesUserIntent: [
+            new SetTextValue('a_text', null, null, 'foo'),
+        ]);
+        ($this->upsertProductHandler)($command);
+    }
+
     private function getUserId(string $username): int
     {
         $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
