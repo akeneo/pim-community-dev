@@ -54,8 +54,6 @@ export const AuthenticationModal: FC<Props> = ({clientId, newAuthenticationScope
         return null;
     }
 
-    console.log(scopesConsentGiven, '----------------------', !scopesConsentGiven ? 'authentication' : null);
-
     return (
         <WizardModal
             appLogo={app.logo}
