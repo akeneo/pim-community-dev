@@ -450,3 +450,28 @@ Feature: Import rules
     """
     Then an exception with message "conditions[0].value[1]: This value should not be null." has been thrown
     And the rule list does not contain the "rule_with_null_category" rule
+
+  @integration-back
+  Scenario: Skip rules with integer values for IN
+    Given the designers reference entity
+    And the following attributes:
+      | code        | type                               | reference_data_name | group     |
+      | designer    | akeneo_reference_entity            | designers           | marketing |
+    When the following yaml file is imported:
+    """
+    rules:
+        rule_with_invalid_int_ref_entity_code:
+            conditions:
+                - field:    designer
+                  operator: IN
+                  value:
+                      - 1234
+                      - test2
+            actions:
+                - type:  set
+                  field: name
+                  value: Test
+                  locale: en_US
+    """
+    Then an exception with message "conditions[0]: Property \"designer\" expects an array of strings as data." has been thrown
+    And the rule list does not contain the "rule_with_invalid_int_ref_entity_code" rule
