@@ -1,12 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
-  NotificationLevel,
   PageContent,
   PageHeader,
   PimView,
   Section,
-  useFetchSimpler,
-  useNotify,
   useRoute,
   useTranslate
 } from '@akeneo-pim-community/shared';
@@ -20,30 +17,27 @@ import {
   TextAreaInput
 } from 'akeneo-design-system';
 import { LocaleSelector } from './components/LocaleSelector';
-import { configBackToFront, ConfigServicePayloadBackend, ConfigServicePayloadFrontend } from './models/ConfigServicePayload';
+import { ConfigServicePayloadFrontend } from './models/ConfigServicePayload';
+import { useFetchConfig, useSaveConfig } from './hooks';
 
 const ConfigForm = () => {
   const __ = useTranslate();
-  const notify = useNotify();
 
   const systemHref = useRoute('pim_system_index');
-  const configUrl = useRoute('oro_config_configuration_system_get');
 
-  const [configFetchResult, doFetchConfig] = useFetchSimpler<ConfigServicePayloadBackend, ConfigServicePayloadFrontend>(configUrl, configBackToFront);
+  const configFetchResult = useFetchConfig();
 
   // configuration object under edition
   const [config, setConfig] = useState<ConfigServicePayloadFrontend | null>(null);
   const [isModified, setIsModified] = useState(false);
-
-
 
   const modifyConfig = (config: ConfigServicePayloadFrontend) => {
     setConfig(config);
     setIsModified(true);
   }
 
-  const handleBoolChange = useCallback((fieldName: 'pim_ui___loading_message_enabled' | 'pim_analytics___version_update') => {
-    return (value: boolean) => {
+  const handleChange = useCallback((fieldName: keyof ConfigServicePayloadFrontend) => {
+    return (value: boolean | string) => {
       if (!config) return;
       modifyConfig(
         {
@@ -56,45 +50,18 @@ const ConfigForm = () => {
     }
   }, [config]);
 
-  const handleStringChange = useCallback((fieldName: 'pim_ui___loading_messages' | 'pim_ui___language') => {
-    return (value: string) => {
-      if (!config) return;
-      modifyConfig(
-        {
-          ...config,
-          [fieldName]: {
-            ...config[fieldName],
-            value
-          }
-        });
-    }
-  }, [config]);
+  const doSaveConfig = useSaveConfig()
 
   const handleSave = async () => {
-    const response = await fetch(configUrl, {
-      method: 'POST',
-      headers: [
-        ['Content-type', 'application/json'],
-        ['X-Requested-With', 'XMLHttpRequest'],
-      ],
-      body: JSON.stringify(config)
-    });
-    if (response.ok) {
-      setConfig(configBackToFront(await response.json()));
-      setIsModified(false);
-      notify(NotificationLevel.SUCCESS, __('oro_config.form.config.save_ok'));
-    } else {
-      notify(NotificationLevel.ERROR, __('oro_config.form.config.save_error', { reason: response.statusText }));
-    }
+    if (config === null) return;
+    const feedbackConfig = await doSaveConfig(config);
+    setConfig(feedbackConfig);
+    setIsModified(false);
   }
-
-
-  useEffect(() => {
-    doFetchConfig();
-  }, [doFetchConfig]);
 
   useEffect(() => {
     if (configFetchResult.type === 'fetched') {
+      //console.log('configFetchResult', { configFetchResult })
       setConfig({ ...configFetchResult.payload });
     }
   }, [configFetchResult])
@@ -150,11 +117,11 @@ const ConfigForm = () => {
               value={config.pim_ui___loading_message_enabled.value}
               yesLabel={__('pim_common.yes')}
               noLabel={__('pim_common.no')}
-              onChange={handleBoolChange('pim_ui___loading_message_enabled')}
+              onChange={handleChange('pim_ui___loading_message_enabled')}
             />
           </Field>
           <Field label={__('oro_config.form.config.group.loading_message.fields.messages.label')}>
-            <TextAreaInput readOnly={false} value={config.pim_ui___loading_messages.value} onChange={handleStringChange('pim_ui___loading_messages')} placeholder={__('oro_config.form.config.group.loading_message.placeholder')} />
+            <TextAreaInput readOnly={false} value={config.pim_ui___loading_messages.value} onChange={handleChange('pim_ui___loading_messages')} placeholder={__('oro_config.form.config.group.loading_message.placeholder')} />
           </Field>
         </Section>
         <Section>
@@ -162,7 +129,7 @@ const ConfigForm = () => {
             <SectionTitle.Title>{__('oro_config.form.config.group.localization.title')}</SectionTitle.Title>
           </SectionTitle>
           <Field label={__('oro_config.form.config.group.localization.fields.system_locale.label')}>
-            <LocaleSelector value={config.pim_ui___language.value} onChange={handleStringChange('pim_ui___language')} />
+            <LocaleSelector value={config.pim_ui___language.value} onChange={handleChange('pim_ui___language')} />
           </Field>
         </Section>
         <Section>
@@ -178,7 +145,7 @@ const ConfigForm = () => {
               value={config.pim_analytics___version_update.value}
               yesLabel={__('pim_common.yes')}
               noLabel={__('pim_common.no')}
-              onChange={handleBoolChange('pim_analytics___version_update')}
+              onChange={handleChange('pim_analytics___version_update')}
             />
           </Field>
         </Section>
