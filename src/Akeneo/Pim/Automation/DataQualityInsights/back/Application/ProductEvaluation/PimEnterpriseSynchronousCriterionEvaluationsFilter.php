@@ -15,19 +15,19 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluatio
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeOptionSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeSpelling;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateLowerCaseWords;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateUppercaseWords;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateImageEnrichment;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Criterion\LowerCaseWords;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
 
 final class PimEnterpriseSynchronousCriterionEvaluationsFilter implements SynchronousCriterionEvaluationsFilterInterface
 {
     private const SYNCHRONOUS_CRITERION_CODES = [
         EvaluateUppercaseWords::CRITERION_CODE,
-        LowerCaseWords::CRITERION_CODE,
+        EvaluateLowerCaseWords::CRITERION_CODE,
         EvaluateSpelling::CRITERION_CODE,
         EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE,
         EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE,
