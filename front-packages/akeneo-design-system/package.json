@@ -29,6 +29,7 @@
     "@storybook/addon-links": "*",
     "@storybook/cli": "*",
     "@storybook/react": "*",
+    "@testing-library/dom": "*",
     "@testing-library/jest-dom": "*",
     "@testing-library/react": "*",
     "@testing-library/react-hooks": "*",

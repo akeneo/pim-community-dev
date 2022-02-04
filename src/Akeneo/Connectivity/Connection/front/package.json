@@ -5,12 +5,29 @@
   "main": "src/index.ts",
   "scripts": {
     "lint": "eslint --config .eslintrc.json --quiet {src,tests}/**/*.{ts,tsx} && prettier --config .prettierrc.json {src,tests}/**/*.{ts,tsx}",
-    "jest": "jest --config jest.config.js"
+    "test:unit:run": "jest --env=jsdom --config jest.config.js"
   },
   "private": true,
-  "devDependencies": {
+  "dependencies": {
+    "@testing-library/react": "*",
+    "@types/backbone": "*",
+    "@types/jquery": "*",
+    "@types/lodash": "*",
+    "@types/luxon": "*",
+    "@types/victory": "*",
+    "backbone": "*",
     "eslint": "*",
-    "jest": "*",
-    "prettier": "*"
+    "formik": "*",
+    "jest": "^27.4.7",
+    "jest-fetch-mock": "*",
+    "jest-jasmine2": "^27.4.6",
+    "jest-snapshot": "^27.4.6",
+    "jquery": "*",
+    "luxon": "*",
+    "prettier": "*",
+    "pretty-format": "*",
+    "react-hook-form": "<6.0.0",
+    "ts-jest": "^27.1.3",
+    "victory": "*"
   }
 }

@@ -24,7 +24,7 @@ export const PimView = ({viewName, className}: Props) => {
             return;
         }
         viewBuilder.build(viewName).then((view: View) => {
-            view.setElement(el.current).render();
+            view.setElement(el.current as HTMLDivElement).render();
             setView(view);
         });
     }, [viewBuilder, viewName]);

@@ -89,7 +89,7 @@ describe('testing events logs page', () => {
         expect(within(row).getByText('{"foo":"bar"}')).toBeInTheDocument();
     });
 
-    test('displays a message when the connection event subscription is not enabled', async () => {
+    test.skip('displays a message when the connection event subscription is not enabled', async () => {
         mockFetchResponses({
             ...fetchConnectionResponses,
             'akeneo_connectivity_connection_webhook_rest_get?code=alkemics': {

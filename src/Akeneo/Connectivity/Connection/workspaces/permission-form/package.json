@@ -5,12 +5,14 @@
   "main": "src/index.ts",
   "scripts": {
     "lint": "eslint --config .eslintrc.json src/**/*.{ts,tsx} && prettier --config .prettierrc.json src/**/*.{ts,tsx}",
-    "jest": "jest --config jest.config.js"
+    "test:unit:run": "jest --env=jsdom --config jest.config.js"
   },
   "private": true,
   "dependencies": {
     "eslint": "*",
-    "jest": "*",
-    "prettier": "*"
+    "jest": "^27.4.7",
+    "jest-cli": "^27.4.7",
+    "prettier": "*",
+    "ts-jest": "^27.1.3"
   }
 }

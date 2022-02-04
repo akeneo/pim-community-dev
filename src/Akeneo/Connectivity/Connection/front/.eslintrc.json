@@ -26,6 +26,7 @@
         "@typescript-eslint/restrict-plus-operands": "off",
         "@typescript-eslint/no-unsafe-argument": "off",
         "@typescript-eslint/no-unnecessary-type-constraint": "off",
+        "@typescript-eslint/no-explicit-any": "off",
         "arrow-parens": ["warn", "as-needed"],
         "indent": "off",
         "max-len": ["error", {"code": 120, "ignoreStrings": true}],

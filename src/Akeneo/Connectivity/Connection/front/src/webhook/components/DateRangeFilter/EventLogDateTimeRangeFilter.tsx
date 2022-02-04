@@ -28,13 +28,13 @@ export const EventLogDateTimeRangeFilter: FC<Props> = ({value, onChange}) => {
         if (undefined !== value.start) {
             str.push(
                 translate('akeneo_connectivity.connection.webhook.event_logs.list.date_range_filter.from'),
-                DateTime.fromSeconds(value.start, {zone}).toLocaleString({...DateTime.DATETIME_SHORT, locale})
+                DateTime.fromSeconds(value.start, {zone}).toLocaleString(DateTime.DATETIME_SHORT, {locale})
             );
         }
         if (undefined !== value.end) {
             str.push(
                 translate('akeneo_connectivity.connection.webhook.event_logs.list.date_range_filter.to'),
-                DateTime.fromSeconds(value.end, {zone}).toLocaleString({...DateTime.DATETIME_SHORT, locale})
+                DateTime.fromSeconds(value.end, {zone}).toLocaleString(DateTime.DATETIME_SHORT, {locale})
             );
         }
         if (str.length > 0) {

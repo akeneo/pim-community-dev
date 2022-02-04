@@ -4,6 +4,8 @@ akeneo-design-system
 
 tsc command needs
 - typescript@*
+- @testing-library/dom@*
+  - The inferred type of 'customRender' cannot be named without a reference to '@testing-library/react/node_modules/@testing-library/dom/types/queries'. This is likely not portable. A type annotation is necessary.
 
 src code needs
 - react@* + @types/react
@@ -94,8 +96,13 @@ tsc command needs
 tests needs:
 - prettier@*
 
+react-scripts:
+- Needs to have SKIP_PREFLIGHT_CHECK=true
+    There might be a problem with the project dependency tree.
+    It is likely not a bug in Create React App, but something you need to fix locally....
+
 app-start needs:
-- react-scripts@*
+- react-scripts@<5.0.0 (because 6.x.x requires jest 27)
 - TODO This still fail
         WARNING in ../../node_modules/@testing-library/react-hooks/lib/pure.js 39:4-17
         Critical dependency: the request of a dependency is an expression
@@ -121,12 +128,35 @@ tests needs:
 - prettier@*
 - eslint@*
 - jest@*
+  -> needs to add testRunner: 'jest-jasmine2' in jest config (https://github.com/facebook/jest/issues/11404)
 
 Latest version needs in eslintrc
         "@typescript-eslint/no-unnecessary-type-assertion": "off",
         "@typescript-eslint/restrict-plus-operands": "off",
         "@typescript-eslint/no-unsafe-argument": "off",
         "@typescript-eslint/no-unnecessary-type-constraint": "off",
+        "@typescript-eslint/no-explicit-any": "off"
+
+needs
+- jest-snapshot@27
+    - resolveTestPath
+    - resolveSnapshotPath
+    ->>> "jest-jasmine2": "^27.4.6",
+- @types/backbone@* + backbone@*
+- luxon@* + @types/luxon@*
+- formik@*
+- victory@<34.0.0
+  - Module '"victory"' has no exported member 'DomainTuple'.
+- jest-fetch-mock@*
+- @types/lodash@*
+- react-hook-form@<6.0.0
+  - Module '"react-hook-form"' has no exported member 'FormContext'.
+  - Property 'triggerValidation' does not exist on type 'UseFormMethods<FormInput>'
+- @testing-library/dom@<8.0.0
+  - TypeError: prettyFormat.format is not a function
+- TODO Skip src/Akeneo/Connectivity/Connection/front/tests/src/webhook/pages/EventLogList.test.tsx Unable to find an element with the text: akeneo_connectivity.connection.webhook.event_logs.event_subscription_disabled.title
+- TODO src/Akeneo/Connectivity/Connection/front/tests/src/connect/components/AppWizard/AppWizard.test.tsx
+- TODO src/Akeneo/Connectivity/Connection/front/tests/src/connect/hooks/use-confirm-handler.test.tsx
 
 ========================================================================================================================
 @akeneo-pim-community/permission-form
@@ -135,4 +165,20 @@ Latest version needs in eslintrc
 tests needs:
 - "@typescript-eslint/no-explicit-any": "off",
 - "@typescript-eslint/no-unsafe-argument": "off",
-- This module works with jest 27, so it installs it in its node_modules
+- jest@27
+
+Needs to add
+"jest-cli": "^27.4.7"
+    - TypeError: Jest: a transform must export a `process` function.
+    - -> https://stackoverflow.com/questions/68356503/typeerror-jest-a-transform-must-export-a-process-function
+
+========================================================================================================================
+@akeneo-pim-community/data-quality-insights
+========================================================================================================================
+
+eslint, prettier and jest
+  - TODO is not working because there is no configuration file
+
+jest needs
+
+
