@@ -1,4 +1,4 @@
-import React, {HTMLAttributes, ReactNode} from 'react';
+import React, {Children, cloneElement, HTMLAttributes, isValidElement, ReactNode} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Button, ButtonProps, IconButton, IconButtonProps} from '../../components';
@@ -23,15 +23,26 @@ const SectionTitleContainer = styled.div<{sticky?: number} & AkeneoThemedProps>`
     `}
 `;
 
-const Title = styled.h2`
+const TitleContainer = styled.h2<TitleProps & AkeneoThemedProps>`
   color: ${getColor('grey', 140)};
   font-size: ${getFontSize('big')};
   font-weight: 400;
-  text-transform: uppercase;
+  text-transform: ${({level}) => ('primary' === level ? 'uppercase' : 'unset')};
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 `;
+
+type TitleProps = Override<
+  HTMLAttributes<HTMLHeadingElement>,
+  {
+    level?: 'primary' | 'secondary';
+  }
+>;
+
+const Title = ({level = 'primary', ...rest}: TitleProps) => (
+  <TitleContainer as={'secondary' === level ? 'h3' : 'h2'} level={level} {...rest} />
+);
 
 const Spacer = styled.div`
   flex-grow: 1;
@@ -66,20 +77,20 @@ type SectionTitleProps = Override<
 >;
 
 /**
- * It identify the function of the group
+ * The section title allows users to correctly identify the content of the section.
  */
 const SectionTitle = ({children, ...rest}: SectionTitleProps) => {
-  const decoratedChildren = React.Children.map(children, child => {
-    if (React.isValidElement<IconButtonProps>(child) && child.type === IconButton) {
-      return React.cloneElement(child, {
+  const decoratedChildren = Children.map(children, child => {
+    if (isValidElement<IconButtonProps>(child) && child.type === IconButton) {
+      return cloneElement(child, {
         level: 'tertiary',
         size: 'small',
         ghost: 'borderless',
       });
     }
 
-    if (React.isValidElement<ButtonProps>(child) && child.type === Button) {
-      return React.cloneElement(child, {
+    if (isValidElement<ButtonProps>(child) && child.type === Button) {
+      return cloneElement(child, {
         level: 'tertiary',
         size: 'small',
         ghost: true,

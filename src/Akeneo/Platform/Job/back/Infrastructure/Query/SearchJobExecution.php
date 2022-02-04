@@ -129,12 +129,12 @@ SQL;
 
         if (!empty($search)) {
             $searchParts = explode(' ', $search);
-            foreach ($searchParts as $index => $searchPart) {
+            foreach (array_keys($searchParts) as $index) {
                 $sqlWhereParts[] = sprintf('job_instance.label LIKE :%s_%s', self::SEARCH_PART_PARAM_SUFFIX, $index);
             }
         }
 
-        return empty($sqlWhereParts) ? '' : 'AND ' . implode(' AND ', $sqlWhereParts);
+        return empty($sqlWhereParts) ? '' : 'AND '.implode(' AND ', $sqlWhereParts);
     }
 
     private function buildSqlOrderByPart(SearchJobExecutionQuery $query): string
@@ -142,11 +142,11 @@ SQL;
         $sortDirection = $query->sortDirection;
 
         $orderByColumn = match ($query->sortColumn) {
-            'job_name' => sprintf("job_instance.label %s", $sortDirection),
-            'type' => sprintf("job_instance.type %s", $sortDirection),
-            'started_at' => sprintf("job_execution.start_time %s", $sortDirection),
-            'username' => sprintf("job_execution.user %s", $sortDirection),
-            'status' => sprintf("job_execution.status %s", $sortDirection),
+            'job_name' => sprintf('job_instance.label %s', $sortDirection),
+            'type' => sprintf('job_instance.type %s', $sortDirection),
+            'started_at' => sprintf('job_execution.start_time %s', $sortDirection),
+            'username' => sprintf('job_execution.user %s', $sortDirection),
+            'status' => sprintf('job_execution.status %s', $sortDirection),
             default => throw new \InvalidArgumentException(sprintf('Unknown sort column "%s"', $query->sortColumn)),
         };
 
