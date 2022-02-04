@@ -50,7 +50,7 @@ final class UserCategoryShouldBeGrantedValidator extends ConstraintValidator
         $product = $this->productRepository->findOneByIdentifier($command->productIdentifier());
         if (null === $product) {
             // A new product without category is always granted (from a category permission point of view).
-            // TODO: if we create with a category, we have to check the category is granted
+            // TODO later: if we create with a category, we have to check the category is granted
             return;
         }
 

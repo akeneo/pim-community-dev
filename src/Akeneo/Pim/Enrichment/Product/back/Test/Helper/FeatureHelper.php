@@ -15,10 +15,10 @@ final class FeatureHelper
     /**
      * @throws SkippingException
      */
-    public static function skipSpecTestWhenPermissionFeatrureIsNotActivated(): void
+    public static function skipSpecTestWhenPermissionFeatureIsNotActivated(): void
     {
         if (!\class_exists('Akeneo\Pim\Permission\Bundle\AkeneoPimPermissionBundle')) {
-            throw new SkippingException('ReferenceEntity are not available in this scope');
+            throw new SkippingException('Permission feature is not available in this scope');
         }
     }
 }
