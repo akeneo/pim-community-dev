@@ -49,3 +49,19 @@ services:
             - '@pim_user.factory.user'
         tags:
             - { name: kernel.event_listener, event: console.command, method: createUserSystem }
+
+    ### TODO Pull up to 6.0 remove this declaration
+    pim_user.event_subscriber.load_login_attempt_information:
+        class: Akeneo\UserManagement\Bundle\EventListener\LoadLoginAttemptInformationSubscriber
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    ### TODO Pull up to 6.0 remove this declaration
+    pim_user.event_subscriber.database_installer:
+        class: Akeneo\UserManagement\Bundle\EventListener\DatabaseInstallerSubscriber
+        arguments:
+            - '@doctrine.dbal.default_connection'
+        tags:
+            - { name: kernel.event_subscriber }
