@@ -45,6 +45,7 @@ export const ConsentCheckbox: FC<Props> = ({isChecked, onChange, appUrl}) => {
     });
 
     const subtext = translate('akeneo_connectivity.connection.connect.apps.wizard.authentication.consent.subtext', {
+        // eslint-disable-next-line max-len
         contact_us: `<a href='https://www.akeneo.com/contact-us/' target='_blank' class="AknConnectivityConnection-link">${translate(
             'akeneo_connectivity.connection.connect.apps.wizard.authentication.consent.contact_us'
         )}</a>`,
