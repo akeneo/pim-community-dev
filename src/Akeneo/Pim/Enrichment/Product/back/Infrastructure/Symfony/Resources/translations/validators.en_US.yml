@@ -3,6 +3,7 @@ pim_enrich.product:
         upsert:
             unknown_user: 'The "{{ user_id }}" user does not exist'
             category_no_access_to_products: You don't have access to products in any tree, please contact your administrator
+            product_identifier_empty: The product identifier requires a non empty string
             set_value:
                 no_channel_code_provided_for_scopable_attribute: 'The {{ attributeCode }} attribute requires a channel'
                 channel_code_provided_for_non_scopable_attribute: 'The {{ attributeCode }} attribute does not require a channel, "{{ channelCode }}" was detected'

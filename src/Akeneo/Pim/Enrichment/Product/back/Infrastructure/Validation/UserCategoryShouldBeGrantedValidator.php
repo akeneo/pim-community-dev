@@ -54,9 +54,15 @@ final class UserCategoryShouldBeGrantedValidator extends ConstraintValidator
             return;
         }
 
+        try {
+            $productIdentifier = ProductIdentifier::fromString($command->productIdentifier());
+        } catch (\InvalidArgumentException) {
+            return;
+        }
+
         if (!$this->isUserCategoryGranted->forProductAndAccessLevel(
             $command->userId(),
-            ProductIdentifier::fromString($command->productIdentifier()),
+            $productIdentifier,
             AccessLevel::OWN_PRODUCTS
         )) {
             $this->context->buildViolation($constraint->message)->addViolation();

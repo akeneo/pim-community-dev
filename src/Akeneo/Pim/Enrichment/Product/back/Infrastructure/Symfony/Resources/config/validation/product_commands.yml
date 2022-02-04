@@ -6,6 +6,9 @@ Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand:
         userId:
             - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserShouldExist:
                   groups: [User]
+        productIdentifier:
+            - NotBlank:
+                  message: pim_enrich.product.validation.upsert.product_identifier_empty
         valuesUserIntent:
             - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelShouldBeConsistent: ~
     constraints:
