@@ -1,5 +1,5 @@
 import {useCreateMeasurementFamilySaver} from './use-create-measurement-family-saver';
-import {renderHookWithProviders} from '@akeneo-pim-community/shared';
+import {renderHookWithProviders} from '@akeneo-pim-community/shared/lib/tests';
 
 declare global {
   namespace NodeJS {

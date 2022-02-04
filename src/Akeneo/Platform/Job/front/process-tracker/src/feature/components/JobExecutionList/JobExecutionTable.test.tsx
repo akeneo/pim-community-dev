@@ -1,5 +1,5 @@
 import React from 'react';
-import {renderWithProviders} from '@akeneo-pim-community/shared';
+import {renderWithProviders} from '@akeneo-pim-community/shared/lib/tests';
 import {act, screen, within} from '@testing-library/react';
 import {JobExecutionTable} from './JobExecutionTable';
 import {JobExecutionFilterSort, JobExecutionRow} from '../../models';

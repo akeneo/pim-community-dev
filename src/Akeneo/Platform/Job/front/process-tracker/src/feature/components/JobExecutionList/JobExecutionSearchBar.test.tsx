@@ -3,7 +3,7 @@ import {screen, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {JobExecutionSearchBar} from './JobExecutionSearchBar';
 import {getDefaultJobExecutionFilter} from '../../models';
-import {renderWithProviders} from '@akeneo-pim-community/shared';
+import {renderWithProviders} from '@akeneo-pim-community/shared/lib/tests';
 
 test('It displays a search input with an initialized value', () => {
   renderWithProviders(

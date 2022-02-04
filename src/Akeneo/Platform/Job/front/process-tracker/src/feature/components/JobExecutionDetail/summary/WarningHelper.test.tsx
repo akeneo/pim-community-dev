@@ -1,5 +1,5 @@
 import React from 'react';
-import {renderWithProviders} from '@akeneo-pim-community/shared';
+import {renderWithProviders} from '@akeneo-pim-community/shared/lib/tests';
 import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {WarningHelper} from './WarningHelper';

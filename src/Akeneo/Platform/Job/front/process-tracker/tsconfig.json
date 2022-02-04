@@ -44,5 +44,6 @@
   "include": [
     "src/feature",
     "src/tests"
-  ]
+  ],
+  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx", "tests"]
 }

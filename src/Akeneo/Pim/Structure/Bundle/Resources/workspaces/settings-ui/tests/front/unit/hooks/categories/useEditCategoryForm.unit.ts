@@ -1,5 +1,5 @@
 import {act} from 'react-test-renderer';
-import {renderHookWithProviders} from '@akeneo-pim-community/shared';
+import {renderHookWithProviders} from '@akeneo-pim-community/shared/lib/tests';
 import {useCategory, useEditCategoryForm} from '@akeneo-pim-community/settings-ui';
 import {aCategory} from '../../../utils/provideCategoryHelper';
 import {saveEditCategoryForm} from '@akeneo-pim-community/settings-ui/src/infrastructure/savers';

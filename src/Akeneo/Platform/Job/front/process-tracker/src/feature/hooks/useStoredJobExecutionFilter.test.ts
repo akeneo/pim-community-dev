@@ -1,4 +1,4 @@
-import {renderHookWithProviders} from '@akeneo-pim-community/shared';
+import {renderHookWithProviders} from '@akeneo-pim-community/shared/lib/tests';
 import {useStoredJobExecutionFilter} from './useStoredJobExecutionFilter';
 import {getDefaultJobExecutionFilter} from '../models';
 

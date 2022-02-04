@@ -1,6 +1,6 @@
 import {transformVolumesToAxis} from './catalogVolumeWrapper';
 import {getCatalogVolume} from './getCatalogVolume';
-import {mockedDependencies} from '@akeneo-pim-community/shared';
+import {mockedDependencies} from '@akeneo-pim-community/shared/lib/tests';
 
 jest.mock('./catalogVolumeWrapper');
 

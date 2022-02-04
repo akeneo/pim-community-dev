@@ -192,3 +192,14 @@ TODO app:start does not work
          @ ../../../../../../front-packages/shared/lib/index.js 38:13-31
          @ ./src/index.tsx 8:0-81 29:36-69
 
+========================================================================================================================
+@akeneo-pim-community/process-tracker
+========================================================================================================================
+
+eslint needs:
+      "testing-library/no-unnecessary-act": "off",
+      "testing-library/prefer-presence-queries": "off"
+
+../../../../../../front-packages/shared/lib/index.js
+-> exclude test directory from 'shared' package
+-> exclude test directories from tsconfig.json

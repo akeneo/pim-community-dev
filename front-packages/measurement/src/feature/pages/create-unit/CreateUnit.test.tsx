@@ -1,7 +1,7 @@
 import React from 'react';
 import {act, fireEvent, screen} from '@testing-library/react';
 import {CreateUnit} from './CreateUnit';
-import {renderWithProviders} from '@akeneo-pim-community/shared';
+import {renderWithProviders} from '@akeneo-pim-community/shared/lib/tests';
 
 declare global {
   namespace NodeJS {

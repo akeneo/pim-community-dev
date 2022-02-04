@@ -1,5 +1,5 @@
 import {useJobExecutionTable} from './useJobExecutionTable';
-import {renderHookWithProviders} from '@akeneo-pim-community/shared';
+import {renderHookWithProviders} from '@akeneo-pim-community/shared/lib/tests';
 import {JobExecutionTable, getDefaultJobExecutionFilter} from '../models';
 import {act} from '@testing-library/react-hooks';
 
