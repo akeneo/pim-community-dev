@@ -15,6 +15,7 @@ use Webmozart\Assert\Assert;
  */
 final class AclIsUserCategoryGranted implements IsUserCategoryGranted
 {
+    /* @phpstan-ignore-next-line */
     public function __construct(private ?ProductCategoryAccessQueryInterface $productCategoryAccessQuery)
     {
     }
@@ -26,6 +27,7 @@ final class AclIsUserCategoryGranted implements IsUserCategoryGranted
     ): bool {
         Assert::notNull($this->productCategoryAccessQuery);
 
+        /* @phpstan-ignore-next-line */
         $grantedIdentifiers = $this->productCategoryAccessQuery->getGrantedProductIdentifiers(
             [$productIdentifier->asString()],
             $userId,
