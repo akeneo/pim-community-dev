@@ -1,5 +1,17 @@
 # 5.0.x
 
+# 5.0.75 (2022-02-04)
+
+# 5.0.74 (2022-02-04)
+
+# 5.0.73 (2022-02-04)
+
+## Bug fixes
+
+- PIM-10250: [Backport] PIM-9806: Enable authentication temporary lock to protect against brute force attack
+
+# 5.0.72 (2022-02-04)
+
 # 5.0.71 (2022-02-01)
 
 # 5.0.70 (2022-02-01)
