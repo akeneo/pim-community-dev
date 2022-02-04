@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File;
 
-use Akeneo\Platform\TailoredImport\Application\ReadFile\FileHeaderCollection;
-
-interface FlatFileIteratorInterface extends \Iterator
+class InvalidFileHeadersException extends \Exception
 {
-    public function getHeaders(): FileHeaderCollection;
+    private const MESSAGE = 'akeneo.tailored_import.jobs.reader.invalid_file_headers';
+
+    public function __construct()
+    {
+        parent::__construct(self::MESSAGE);
+    }
 }

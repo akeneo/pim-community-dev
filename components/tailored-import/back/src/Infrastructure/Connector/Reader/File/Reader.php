@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File;
 
+use Akeneo\Platform\TailoredImport\Application\Common\ColumnCollection;
+use Akeneo\Platform\TailoredImport\Application\ReadFile\FileHeaderCollection;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
@@ -64,13 +66,22 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Initia
             $this->fileIterator->rewind();
 
             $fileHeaders = $this->fileIterator->getHeaders();
-
-            //TODO RAB-481 validate that fileHeaders match to columns from jobConfiguration
+            $this->checkFileHeaders($fileHeaders);
         }
     }
 
     public function flush(): void
     {
         $this->fileIterator = null;
+    }
+
+    private function checkFileHeaders(FileHeaderCollection $fileHeaders): void
+    {
+        $normalizedColumns = $this->stepExecution->getJobParameters()->get('import_structure')['columns'];
+        $columns = ColumnCollection::createFromNormalized($normalizedColumns);
+
+        if (!$fileHeaders->matchToColumnCollection($columns)) {
+            throw new InvalidFileHeadersException();
+        }
     }
 }

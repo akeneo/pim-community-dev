@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File\Xlsx;
 
+use Akeneo\Platform\TailoredImport\Application\ReadFile\FileHeaderCollection;
 use Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File\FlatFileIteratorInterface;
 use Box\Spout\Common\Entity\Cell;
 use Box\Spout\Reader\Common\Creator\ReaderFactory;
@@ -26,7 +27,7 @@ class FlatFileIterator implements FlatFileIteratorInterface
     private ReaderInterface $fileReader;
     private SheetInterface $sheet;
     private IteratorInterface $rows;
-    private array $headers;
+    private FileHeaderCollection $headers;
 
     public function __construct(
         private string $fileType,
@@ -79,7 +80,7 @@ class FlatFileIterator implements FlatFileIteratorInterface
         return $this->rows->valid();
     }
 
-    public function getHeaders(): array
+    public function getHeaders(): FileHeaderCollection
     {
         return $this->headers;
     }
@@ -112,7 +113,7 @@ class FlatFileIterator implements FlatFileIteratorInterface
         return $sheetIterator->current();
     }
 
-    private function readHeaders(): array
+    private function readHeaders(): FileHeaderCollection
     {
         $rowIterator = $this->sheet->getRowIterator();
 
@@ -127,10 +128,14 @@ class FlatFileIterator implements FlatFileIteratorInterface
         $firstHeaderColumn = $this->fileStructure['header_column'];
         $headerCells = array_slice($headersRow->getCells(), $firstHeaderColumn);
 
-        return array_map(static fn (Cell $headerCell, int $relativeIndex) => [
-            'index' => $firstHeaderColumn + $relativeIndex, // Absolute or relative index ?
+        // /!\ Index is relative => 0 is the first header column but not necessary the first file column
+        // We have to homogenize this index generation with the column list generation from a file (RAB-494)
+        $normalizedHeaders = array_map(static fn (Cell $headerCell, int $relativeIndex) => [
+            'index' => $relativeIndex,
             'label' => $headerCell->getValue(),
         ], array_values($headerCells), array_keys($headerCells));
+
+        return FileHeaderCollection::createFromNormalized($normalizedHeaders);
     }
 
     private function rewindRowIteratorBeforeFirstProductLine(): void
