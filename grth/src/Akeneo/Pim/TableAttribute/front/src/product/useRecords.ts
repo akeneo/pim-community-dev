@@ -29,11 +29,15 @@ const useRecords: (props: UseRecordProps) => {
   const [items, setItems] = useState<ReferenceEntityRecord[] | undefined>();
   const locale = userContext.get('catalogLocale');
   const channel = userContext.get('catalogScope');
+  const [search, setSearch] = useState<string>('');
 
   useEffect(() => {
+    if (search === searchValue) return;
+
     setHasNoMoreResult(false);
     setItems(undefined);
-  }, [searchValue]);
+    setSearch(searchValue);
+  }, [searchValue, search]);
 
   const loadNextPage = useCallback(
     (forcePage: number = page) => {
@@ -56,7 +60,7 @@ const useRecords: (props: UseRecordProps) => {
         setPage(forcePage + 1);
       });
     },
-    [hasNoMoreResult, isLoading, items, itemsPerPage, page, referenceEntityCode, router, searchValue]
+    [channel, hasNoMoreResult, items, itemsPerPage, locale, page, referenceEntityCode, router, searchValue]
   );
 
   useEffect(() => {
@@ -65,9 +69,11 @@ const useRecords: (props: UseRecordProps) => {
     }
   }, [items, isVisible, loadNextPage]);
 
-  const handleNextPage = () => {
-    loadNextPage();
-  };
+  const handleNextPage = useCallback(() => {
+    if (!hasNoMoreResult) {
+      loadNextPage();
+    }
+  }, [hasNoMoreResult, loadNextPage]);
 
   return {items, isLoading, handleNextPage};
 };
