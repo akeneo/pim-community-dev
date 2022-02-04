@@ -16,7 +16,7 @@ class AclIsUserCategoryGrantedSpec extends ObjectBehavior
 {
     function let($productCategoryAccessQuery)
     {
-        FeatureHelper::skipSpecTestWhenPermissionFeatrureIsNotActivated();
+        FeatureHelper::skipSpecTestWhenPermissionFeatureIsNotActivated();
 
         $productCategoryAccessQuery->beADoubleOf(ProductCategoryAccessQueryInterface::class);
     }
