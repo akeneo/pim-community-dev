@@ -98,7 +98,7 @@ class AppActivateContext extends PimContext
     /**
      * @When I click on the consent checkbox
      */
-    public function iClickOnTheConsentCheckbox($label): void
+    public function iClickOnTheConsentCheckbox(): void
     {
         $checkbox = $this->spin(function () {
             /** @var Element $page */
