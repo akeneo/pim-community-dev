@@ -62,7 +62,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "6.0.x-dev",
+        "akeneo/pim-community-dev": "6.0.0",
         "akeneo/pim-onboarder": "^5.0.6",
         "doctrine/doctrine-bundle": "2.5.2",
         "grpc/grpc": "^1.30.0",

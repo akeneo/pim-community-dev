@@ -511,6 +511,9 @@ jobs:
                 command: |
                     APP_ENV=behat docker-compose run --rm -u www-data:www-data php bin/console pim:user:create adminakeneo Q7sKB5xP2ttc5KnqFPOF1BrOkTRSulmEj528BpJzbDcLbYSHU1 product-team@akeneo.com admin1 admin2 en_US --admin -n
           - run:
+                name: Hotfix rnd file - Should be removed
+                command: rm -f .rnd
+          - run:
                 name: Launch Cypress
                 command: PIM_CONTEXT=test CYPRESS_defaultCommandTimeout=8000 CYPRESS_requestTimeout=10000 make end-to-end-front
           - store_artifacts:
