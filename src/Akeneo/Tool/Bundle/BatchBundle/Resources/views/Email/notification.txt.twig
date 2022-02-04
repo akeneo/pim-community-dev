@@ -1,3 +1,5 @@
+{% extends "@PimNotification/Email/notification.txt.twig" %}
+
 {% block emailMessage %}
     Dear {{ email }},
     Akeneo successfully completed your batch {{ jobExecution.jobInstance.type }}.
