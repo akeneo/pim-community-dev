@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.72 (2022-02-04)
+
 ## Bug fixes
 
 - PIM-10243: Add attribute-rule.yml to remove mass actions in the setting/attribute/rule tab
