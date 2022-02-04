@@ -20,11 +20,10 @@ class Feature
 
     public function isEnabled(string $name): bool
     {
-        // TODO: We should always use the FeatureFlags service to check that.
-        if ($name === self::PERMISSION) {
-            return \class_exists('Akeneo\Pim\Permission\Bundle\AkeneoPimPermissionBundle');
+        try {
+            return $this->featureFlags->isEnabled($name);
+        } catch (\InvalidArgumentException) {
+            return false;
         }
-
-        return $this->featureFlags->isEnabled($name);
     }
 }

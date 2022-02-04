@@ -13,7 +13,6 @@ use Akeneo\Pim\Enrichment\Product\Domain\Query\IsUserCategoryGranted;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\AntiCorruptionLayer\Feature;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserCategoryShouldBeGranted;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserCategoryShouldBeGrantedValidator;
-use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\Type;
@@ -32,7 +31,7 @@ class UserCategoryShouldBeGrantedValidatorSpec extends ObjectBehavior
         $this->initialize($context);
     }
 
-    function it_is_initializable()
+    function it_is_a_constraint_validator()
     {
         $this->shouldHaveType(UserCategoryShouldBeGrantedValidator::class);
         $this->shouldImplement(ConstraintValidatorInterface::class);
