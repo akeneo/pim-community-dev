@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.0 (2022-02-04)
+
 ## Bug fixes
 
 - PIM-10005: New Product API Web Permission migration didn't work properly
