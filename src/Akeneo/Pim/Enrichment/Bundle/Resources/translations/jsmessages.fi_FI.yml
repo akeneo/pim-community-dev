@@ -382,7 +382,7 @@ pim_datagrid:
         grid_context: Ruudukon konteksti
         all_attributes: Kaikki attribuutit
         with_codes: Koodien kanssa
-        with_labels: Otsikoiden kanssa
+        with_labels: Arvojen otsikoiden kanssa
         without_media: Ilman mediaa
         with_media: Median kanssa
       flash:

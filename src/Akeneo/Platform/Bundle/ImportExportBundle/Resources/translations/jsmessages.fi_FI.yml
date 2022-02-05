@@ -97,7 +97,7 @@ pim_import_export:
             title: Liite
             help: Yhtä merkkiä käytetään kentän liitteen määrittämiseen
           with_header:
-            title: Otsikon kanssa
+            title: Sarakeotsikon kanssa
             help: Tulostaako sarakkeen nimen vai ei
           with_media:
             title: Vie media
@@ -135,7 +135,7 @@ pim_import_export:
           family_variant_column:
             title: Varianttiperheen sarake
           with_label:
-            title: Otsikoiden kanssa
+            title: Arvojen otsikoiden kanssa
             help: Määritä, näyttääkö vientitiedosto arvojen otsikot arvojen koodien sijasta
           header_with_label:
             title: Sarakenimet otsikoilla
