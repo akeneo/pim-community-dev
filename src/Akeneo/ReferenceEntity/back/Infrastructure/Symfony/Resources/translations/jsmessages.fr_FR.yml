@@ -350,19 +350,12 @@ batch_jobs:
   xlsx_reference_entity_record_import:
     label: Import des enregistrements d'entité référentielle en XLSX
     import.label: Import des enregistrements
-pim_datagrid:
-  cells:
-    type:
-      reference_entity_mass_delete_records: Exécuter la suppression de masse des enregistrements
 job_execution:
   summary:
     records: Enregistrements
 pim_notification:
   types:
     reference_entity_mass_delete_records: Suppression massive des enregistrements
-akeneo_job_process_tracker:
-  type:
-    reference_entity_mass_delete_records: Suppression en masse des enregistrements
 pim_analytics:
   info_type:
     nb_reference_entities: Nombre d'entités référentielles

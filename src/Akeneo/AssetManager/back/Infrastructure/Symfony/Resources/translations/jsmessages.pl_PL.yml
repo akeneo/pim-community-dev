@@ -553,12 +553,6 @@ pim_catalog_volume:
     average_max_assets_per_asset_family: Zasoby na rodzinę zasobów
     average_max_attributes_per_asset_family: Atrybuty na rodzinę zasobów
 pim_import_export:
-  widget:
-    last_operations:
-      job_type:
-        asset_manager_compute_transformations: "Wykonaj transformację zasobów"
-        asset_manager_link_assets_to_products: "Połącz zasoby z produktami"
-        asset_manager_execute_naming_convention: Wykonaj konwencję nazewnictwa rodziny zasobów
   form:
     job_instance:
       tab:
@@ -567,16 +561,12 @@ pim_import_export:
             title: Eksportuj prefiks i sufiks
             help: Eksportuj prefiksy i sufiksy atrybutów zasobów linków do multimediów
 akeneo_job_process_tracker:
-  type:
+  type_filter:
     asset_manager_execute_naming_convention: Wykonaj konwencję nazewnictwa rodziny zasobów
     asset_manager_link_assets_to_products: Połącz zasoby z produktami
     asset_manager_compute_transformations: Wykonaj transformację zasobów
-pim_datagrid:
-  cells:
-    type:
-      asset_manager_execute_naming_convention: Wykonaj konwencję nazewnictwa rodziny zasobów
-      asset_manager_mass_delete_assets: Wykonaj masowe usuwanie zasobów
-      asset_manager_mass_edit_assets: Wykonaj masową edycję zasobów
+    asset_manager_mass_delete_assets: Masowe usuwanie zasobów
+    asset_manager_mass_edit_assets: Masowa edycja zasobów
 batch_jobs:
   default_steps:
     execute_naming_convention: Wykonaj konwencję nazewnictwa rodziny zasobów

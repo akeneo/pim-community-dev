@@ -134,10 +134,6 @@ pim_enrich:
 batch_jobs:
   default_steps:
     mass_delete_records: Выполнить массовое удаление записей
-pim_datagrid:
-  cells:
-    type:
-      reference_entity_mass_delete_records: Выполнить массовое удаление записей
 pim_notification:
   types:
     reference_entity_mass_delete_records: Массовое удаление записей

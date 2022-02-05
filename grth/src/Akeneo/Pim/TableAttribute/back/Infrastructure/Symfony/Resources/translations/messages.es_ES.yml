@@ -1,1 +1,6 @@
 pim_catalog_table: Tabla
+pim_table:
+  export_with_label:
+    product: Producto
+    product_model: Modelo del producto
+    attribute: Atributo

@@ -17,14 +17,12 @@ pim_table_configuration:
       too_long_option_label: "选项标签过长：其不得超过 255 个字符"
       duplicated_column_code: '[0,1]每一列都要求唯一的代码。"%duplicateCodes%"已使用|]1,Inf[每一列都要求唯一的代码。"%duplicateCodes%"已使用'
       column_type_must_be_a_string: 列数据类型必须为字符串
-      unknown_data_type: "列数据类型未知。请选择下列类型之一：数字、文本、选择、布尔值"
       column_label_must_be_a_string: 列标签必须为字符串
       option_label_must_be_a_string: 选项标签必须为字符串
       label_locale_does_not_exist_or_is_not_activated: ' 区域设置"{{ locale_code }}"不存在或未激活'
       invalid_labels_format: 列标签必须为键/值对象
       invalid_option_labels_format: 选项标签必须为键/值对象
       must_not_be_filled: 类型 %type% 不允许表配置
-      first_column_should_be_select: '第一列类型应始终为"选择"，当前类型："{{ data_type }}"'
       first_column_code_cannot_be_changed: 无法更改第一列的代码。
       unknown_field: '请确保只使用预期的字段，当前字段: {{ field }}'
       attribute_does_not_exist: 属性"{{ attribute }}"不存在

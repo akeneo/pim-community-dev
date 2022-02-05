@@ -31,13 +31,6 @@ akeneo_assetmanager:
       error: 'La suppression en masse a échoué pour la/les ressources(s) "{{ assets }}" à cause de l''erreur suivante : "{{ error }}"'
     asset_manager_mass_edit:
       error: 'L''édition en masse a échoué pour la/les ressources(s) "{{ assets }}" à cause de l''erreur suivante : "{{ error }}"'
-pim_import_export:
-  widget:
-    last_operations:
-      job_type:
-        asset_manager_compute_transformations: "Calculer les transformations de ressources"
-        asset_manager_link_assets_to_products: "Lier les ressources aux produits"
-        asset_manager_execute_naming_convention: "Exécuter la convention de nommage pour toutes les ressources de la famille"
 pim_analytics:
   info_type:
     api_connection: Nombre de connexions API
@@ -60,14 +53,6 @@ pim_analytics:
 #average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
 #average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
 pim_catalog_asset_collection: Collection de ressources
-pim_datagrid:
-  cells:
-    type:
-      asset_manager_execute_naming_convention: Exécuter la convention de nommage pour toutes les ressources de la famille
-      asset_manager_link_assets_to_products: Lier les ressources aux produits
-      asset_manager_compute_transformations: Calculer les transformations de ressource
-      asset_manager_mass_delete_assets: Supprimer en masse des ressources
-      asset_manager_mass_edit_assets: Edition de masse des ressources
 batch_jobs:
   default_steps:
     execute_naming_convention: Exécuter la convention de nommage pour toutes les ressources de la famille
@@ -87,5 +72,13 @@ pim_mass_edit.notification.asset_manager_mass_edit_assets:
   success: Ressources éditées avec succès
   error: L'édition des ressources a échoué
 pim_api:
+  acl:
+    asset_family:
+      create: Créer et mettre à jour des familles de ressources
+      list: Lister les familles de ressources
+    asset:
+      create: Créer et mettre à jour les ressources
+      list: Lister les ressources
+      remove: Supprimer les ressources
   acl_group:
     asset: Ressources

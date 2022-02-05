@@ -1,3 +1,4 @@
+batch_jobs.akeneo_shared_catalog.label: Naar gedeelde catalogi sturen
 pim_common:
   recipients: Ontvangers
   branding: Huisstijl
@@ -9,13 +10,26 @@ shared_catalog:
     placeholder: bert@akeneo.com
     email: E-mailadres
     invalid_email: Dit is geen geldig e-mailadres.
+    duplicate_email: Sommige ontvangers staan al in de lijst. Deze worden genegeerd.
     helper: "Voeg ontvangers toe om hen toegang te geven tot uw nieuwe gedeelde catalogus. U kunt een adreslijst invullen met scheidingstekens: spatie, komma, puntkomma & regeleinde."
     no_result: Sorry, er komt geen email overeen met je zoekopdracht
     no_data: Nog geen e-mailadres opgegeven
     max_limit_reached: Je hebt de limiet van 500 ontvangers bereikt.
   branding:
+    upload_placeholder: "Sleep uw bestanden of klik hier"
+    uploading: Uploaden...
     validation:
       invalid_extension: "Ongeldige bestandsextensie, toegestane extensies zijn: {{ allowed_extensions }}"
       filesize_too_large: Het opgegeven bestand is te groot, het maximale formaat is 2 MB
+      invalid_file: Het bestand is ongeldig
+      invalid_color: Deze waarde is geen geldige CSS-kleur.
+    color:
+      label: Kleur van branding bepalen
+    logo:
+      label: Logo uploaden
+      file_information_helper: "Max grootte: 2 MB; bestandsformaat: PNG of JPG"
+    cover:
+      label: Omslag uploaden
+      file_information_helper: Deze afbeelding wordt gebruikt op de inlogpagina van de catalogus en op de omslag van pdf-exporten. Als u wilt dat de omslagpagina correct wordt weergegeven na het afdrukken, moeten de afmetingen groter zijn dan 1600px x 2227px.
   button:
     save: Opslaan en delen

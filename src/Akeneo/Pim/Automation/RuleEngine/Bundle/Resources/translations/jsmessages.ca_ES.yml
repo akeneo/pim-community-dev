@@ -56,7 +56,6 @@ pim_enrich:
 flash:
   rule:
     executed: S'ha engegat la execució de la regla. Se li notificarà quan finalitzi.
-pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Configuració de les regles
 batch_jobs:
   add_attribute_value:
     execute_rules.label: Execució de les regles
@@ -85,12 +84,7 @@ pim_menu:
 pim_title:
   pimee_catalog_rule_rule_index: Regles
   pimee_catalog_rule_new: Regles
-pim_import_export:
-  widget:
-    last_operations:
-      job_type:
-        execute_rules: Execució de les regles
 akeneo_job_process_tracker:
-  type:
+  type_filter:
     mass_edit_rule: Editar en massa les regles
     execute_rules: Execució de les regles

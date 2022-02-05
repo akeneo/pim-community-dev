@@ -89,8 +89,4 @@ job_execution:
     updated_entities: 업데이트된 제품/제품 모델
     executed_rules: 실행 완료된 규칙
     errored_rules: 건너뛴 규칙(유효하지 않음)
-pim_datagrid:
-  cells:
-    type:
-      mass_edit_rule: 규칙 설정
-      execute_rules: 규칙 실행
+

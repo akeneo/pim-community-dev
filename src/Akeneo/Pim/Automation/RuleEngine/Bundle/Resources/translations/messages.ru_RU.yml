@@ -30,7 +30,4 @@ btn:
 job_execution:
   summary:
     rule_calculated: Количество привил
-pim_datagrid:
-  cells:
-    type:
-      execute_rules: Выполнение правил
+

@@ -350,16 +350,15 @@ batch_jobs:
   xlsx_reference_entity_record_import:
     label: 참조 엔터티 레코드를 XLSX로 가져오기
     import.label: 레코드 가져오기
-pim_datagrid:
-  cells:
-    type:
-      reference_entity_mass_delete_records: 레코드 대량 삭제 실행
 job_execution:
   summary:
     records: 레코드
 pim_notification:
   types:
     reference_entity_mass_delete_records: 대량 삭제 레코드
+akeneo_job_process_tracker:
+  type_filter:
+    reference_entity_mass_delete_records: 레코드 대량 삭제
 pim_analytics:
   info_type:
     nb_reference_entities: 참조 엔터티 수
