@@ -1,3 +1,4 @@
+batch_jobs.akeneo_shared_catalog.label: Wyślij do udostępnionych katalogów
 pim_common:
   recipients: Odbiorcy
   branding: Marka
@@ -9,13 +10,26 @@ shared_catalog:
     placeholder: betty@akeneo.com
     email: Adres e-mail
     invalid_email: Ta wartość nie jest prawidłowym adresem e-mail.
+    duplicate_email: Niektórzy odbiorcy są już na liście i zostaną zignorowani.
     helper: "Dodaj odbiorców, aby dać im dostęp do nowego katalogu udostępnionego. Możesz wypełnić listę adresów separatorami: spacjami, przecinkami, średnikami i podziałami wierszy."
     no_result: Przepraszamy, żaden e-mail nie pasuje do tego wyszukiwania
     no_data: Nie zadeklarowano jeszcze adresu e-mail
     max_limit_reached: Osiągnięto limit 500 odbiorców.
   branding:
+    upload_placeholder: "Przeciągnij i upuść plik lub kliknij tutaj"
+    uploading: Przesyłanie...
     validation:
       invalid_extension: "Nieprawidłowe rozszerzenie pliku. Dopuszczalne rozszerzenia to: {{ allowed_extensions }}"
       filesize_too_large: Podany plik jest zbyt duży, maksymalny rozmiar to 2 MB
+      invalid_file: Plik jest nieprawidłowy.
+      invalid_color: Ta wartość nie jest prawidłowym kolorem CSS.
+    color:
+      label: Zdefiniuj kolor marki
+    logo:
+      label: Prześlij logo
+      file_information_helper: "Maksymalny rozmiar: 2 MB; format plików: PNG lub JPG"
+    cover:
+      label: Prześlij okładkę
+      file_information_helper: Ten obraz będzie używany na stronie logowania do katalogu oraz na okładce eksportowanych plików PDF. Pamiętaj, że jeżeli okładka ma dobrze wyglądać na wydruku, wymiary obrazu muszą być większe niż 1600 x 2227 pikseli.
   button:
     save: Zapisz i udostępnij

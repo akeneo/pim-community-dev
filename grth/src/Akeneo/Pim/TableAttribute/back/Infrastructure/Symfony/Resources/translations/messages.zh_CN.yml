@@ -1,1 +1,6 @@
 pim_catalog_table: 表
+pim_table:
+  export_with_label:
+    product: 产品
+    product_model: 产品模型
+    attribute: 属性

@@ -34,11 +34,6 @@ pim_analytics:
     average_percentage_localizable_only_attributes: Lokalistoitavia attribuutteja viittaustietoa kohden keskimäärin (%)
     average_percentage_scopable_only_attributes: Kanavakohtaisia attribuutteja viittaustietoa kohden keskimäärin (%)
     average_percentage_scopable_and_localizable_attributes: Lokalistoitavia ja kanavakohtaisia attribuutteja viittaustietoa kohden keskimäärin (%)
-pim_datagrid:
-  cells:
-    type:
-      reference_entity_mass_delete_records: Suorita tietueiden massapoisto
-  reference_entity_mass_delete_records: Massapoisto tietueet
 job_execution:
   summary:
     records: Tietueet

@@ -144,7 +144,6 @@ pim_table_attribute:
       column_code: Code de la colonne
       properties_helper: Vous devez définir la structure du tableau et au moins 2 colonnes avant de pouvoir enregistrer votre attribut tableau
       table_structure_helper_text: Un attribut de type tableau doit contenir au moins 2 colonnes. La première est toujours de type "Colonne à choix unique". Une fois la première colonne créée, vous devez ajouter des options. Pour ce faire, cliquez sur "Gérer les options" et ajoutez jusqu'à {{ limit }} options ! Ensuite, vous aurez la possibilité d'utiliser chacune de ces options comme ligne dans vos tableaux.
-      table_structure_helper_link: Cet article vous permettra d'en savoir plus sur les attributs de type tableau.
       limit_option_reached: Vous avez atteint la limite de {{ limit }} options.
       template_label: Sélectionnez le standard de votre tableau "{{ templateLabel }}"
       delete_column_helper: Lorsque vous supprimez cette colonne, toutes ses valeurs sont supprimées de tous les produits utilisant l'attribut tableau "{{ attributeLabel }}".
@@ -155,6 +154,10 @@ pim_table_attribute:
       please_try_again: Essayez de nouveau
       first_column_type_helper: La première colonne d'un tableau est toujours de type "Colonne à choix unique"
       discard_changes: Vous perdrez les modifications effectuées sur les options si vous quittez la page.
+      completeness: Complétude
+      required_for_completeness: Requis pour la complétude
+      completeness_helper_text: "Pour découvrir comment fonctionne la complétude d'un attribut tableau,"
+      completeness_helper_link: consultez notre centre d'aide.
     product:
       items_per_page: Éléments par page
       current_items: "{{ minItem }}-{{ maxItem }} sur {{ itemCount }}"
@@ -162,7 +165,8 @@ pim_table_attribute:
       no_search_result: "Désolé, il n'y a pas de lignes pour votre recherche !"
       no_rows_title: "Votre tableau {{ attributeLabel }} est vide."
       no_rows_subtitle: Ajouter des lignes pour définir de nouvelles propriétés
-      no_rows_subtitle_on_readonly: Pour pouvoir modifier cet attribut, allez dans la page de configuration de l'attribut ou contactez votre administrateur PIM.
+      no_results: Il n'y a aucun résultat
+      no_options: Il n'y a pas d'option
       no_add_options_unallowed: Contactez votre administrateur PIM pour gérer les options de l'attribut "{{ attributeLabel }}"
       actions:
         delete_row: Supprimer cette ligne
@@ -170,6 +174,8 @@ pim_table_attribute:
         move_first: Déplacer en première position
         move_last: Déplacer en dernière position
       order: Ordre
+      save_options_error: Une erreur est survenue lors de la sauvegarde des options
+      save_options_success: Options mise à jour avec succès
   properties:
     data_type:
       text: Texte
@@ -178,6 +184,7 @@ pim_table_attribute:
       select: Colonne à choix unique
   validations:
     column_code_must_be_filled: Le code doit être rempli
+    not_available_code: Ce code de colonne n'est pas disponible
     column_data_type_must_be_filled: Le type de données doit être renseigné
     invalid_column_code: Le code de la colonne ne peut contenir que des lettres, des chiffres et des tirets bas
     invalid_code: Le code ne peut contenir que des lettres, des chiffres et des tirets bas
@@ -227,3 +234,11 @@ batch_jobs:
   xlsx_table_attribute_options_export.label: Export des options des attributs tableau en XLSX
   csv_table_attribute_options_import.label: Import des options des attributs tableau en CSV
   xlsx_table_attribute_options_import.label: Import des options des attributs tableau en XLSX
+  csv_product_table_values_export.label: Export des valeurs des tableaux de produits en CSV
+  xlsx_product_table_values_export.label: Export des valeurs des tableaux de produits en XLSX
+  csv_product_model_table_values_export.label: Export des valeurs des tableaux de modèles de produits en CSV
+  xlsx_product_model_table_values_export.label: Export des valeurs des tableaux de modèles de produits en XLSX
+  csv_product_table_values_import.label: Import des valeurs des tableaux de produits en CSV
+  xlsx_product_table_values_import.label: Import des valeurs des tableaux de produits en XLSX
+  csv_product_model_table_values_import.label: Import des valeurs des tableaux de modèles de produits en CSV
+  xlsx_product_model_table_values_import.label: Import des valeurs des tableaux de modèles de produits en XLSX

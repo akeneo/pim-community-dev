@@ -34,11 +34,6 @@ pim_analytics:
     average_percentage_localizable_only_attributes: 每个参考实体可本地化属性的平均百分比
     average_percentage_scopable_only_attributes: 每个参考实体可扩展属性的平均百分比
     average_percentage_scopable_and_localizable_attributes: 每个参考实体可本地化和可扩展属性的平均百分比
-pim_datagrid:
-  cells:
-    type:
-      reference_entity_mass_delete_records: 执行记录批量删除
-  reference_entity_mass_delete_records: 批量删除记录
 job_execution:
   summary:
     records: 记录

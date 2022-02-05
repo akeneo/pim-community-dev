@@ -34,11 +34,6 @@ pim_analytics:
     average_percentage_localizable_only_attributes: 참조 엔터티당 지역화만 가능한 특성의 평균 퍼센트
     average_percentage_scopable_only_attributes: 참조 엔터티당 확장만 가능한 특성의 평균 퍼센트
     average_percentage_scopable_and_localizable_attributes: 참조 엔터티당 지역화 가능 및 확장 가능 특성의 평균 퍼센트
-pim_datagrid:
-  cells:
-    type:
-      reference_entity_mass_delete_records: 레코드 대량 삭제 실행
-  reference_entity_mass_delete_records: 대량 삭제 레코드
 job_execution:
   summary:
     records: 레코드
@@ -54,5 +49,13 @@ pim_mass_edit:
 akeneo_reference_entity: 참조 엔터티 단일 링크
 akeneo_reference_entity_collection: 참조 엔터티 다중 링크
 pim_api:
+  acl:
+    reference_entity:
+      create: 참조 엔터티 생성 및 업데이트
+      list: 참조 엔터티 나열
+    record:
+      create: 참조 엔터티 레코드 생성 및 업데이트
+      list: 참조 엔터티 레코드 나열
+      remove: 참조 엔터티 레코드 삭제
   acl_group:
     reference_entity: 참조 엔터티

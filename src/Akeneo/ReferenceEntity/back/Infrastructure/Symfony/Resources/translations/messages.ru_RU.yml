@@ -6,11 +6,6 @@ akeneo_referenceentity:
     reference_entity_mass_delete:
       error: 'Массовое удаление записей "{{ records }}" завершилось с ошибкой: "{{ error }}"'
       used_as_product_variant_axis: 'Вы не можете удалить эти записи, так как они используются в качестве разновидности измерения в одном или нескольких вариантах продукта'
-pim_datagrid:
-  cells:
-    type:
-      reference_entity_mass_delete_records: Выполнить массовое удаление записей
-  reference_entity_mass_delete_records: Массовое удаление записей
 job_execution:
   summary:
     records: Записи

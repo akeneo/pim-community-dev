@@ -350,15 +350,14 @@ batch_jobs:
   xlsx_reference_entity_record_import:
     label: Importar registros de entidad de referencia en XLSX
     import.label: Importar registros
-pim_datagrid:
-  cells:
-    type:
-      reference_entity_mass_delete_records: Ejecutar eliminación en masa de registros
 job_execution:
   summary:
     records: Registros
 pim_notification:
   types:
+    reference_entity_mass_delete_records: Eliminar en masa registros
+akeneo_job_process_tracker:
+  type_filter:
     reference_entity_mass_delete_records: Eliminar en masa registros
 pim_analytics:
   info_type:

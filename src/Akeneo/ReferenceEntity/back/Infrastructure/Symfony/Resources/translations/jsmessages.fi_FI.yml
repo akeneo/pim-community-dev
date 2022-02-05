@@ -316,10 +316,6 @@ batch_jobs:
   xlsx_reference_entity_record_import:
     label: Viitetiedon tietueiden tuonti XLSX-muodossa
     import.label: Tietueiden tuonti
-pim_datagrid:
-  cells:
-    type:
-      reference_entity_mass_delete_records: Suorita tietueiden massapoisto
 job_execution:
   summary:
     records: Tietueet

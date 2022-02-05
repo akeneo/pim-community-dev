@@ -69,3 +69,19 @@ category.permissions:
   no_access_to_products: Usted no tiene acceso a productos en ningún árbol. Contacte con su administrador
   apply_on_children.label: Aplicar cambios en secundarios
   apply_on_children.help: Se mantienen los permisos existentes en secundarios
+pim_permissions:
+  widget:
+    entity:
+      attribute_group:
+        label: Grupos de atributos
+        help: Si quiere que su aplicación pueda modificar todos los datos de sus productos, elija la opción Todo en el nivel de Edición. De lo contrario, seleccione solo los grupos de atributos que su aplicación podrá ver o modificar según el nivel.
+      category:
+        label: Árboles de categorías
+        help: Si quiere que su aplicación pueda modificar sus productos sin utilizar las propuestas PIM, elija el nivel Administrar. En caso contrario, elija el nivel Editar.
+      locale:
+        label: Configuraciones regionales
+        help: Si quiere que su aplicación pueda editar sus productos en todos los idiomas, elija la opción Todos en el nivel de edición. De lo contrario, seleccione solo los idiomas que su aplicación podrá ver o modificar según el nivel.
+      not_granted_warning: Esta sección solo es accesible para los usuarios con el {{ permission }}. Póngase en contacto con su administrador. Con el permiso adecuado, podrá volver a la configuración de la aplicación y editarla.
+pimee_enrich.acl.category.edit_permissions: Administrar permisos de categoría
+pimee_enrich.acl.attribute_group.edit_permissions: Administrar permisos de atributos de grupo
+pimee_enrich.acl.locale.edit_permissions: Administrar permisos de configuración regional
