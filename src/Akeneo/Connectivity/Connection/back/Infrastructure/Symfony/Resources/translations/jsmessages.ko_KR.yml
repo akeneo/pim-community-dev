@@ -11,16 +11,19 @@ pim_menu:
     connection_audit: 연결 대시보드
     connection_settings: 연결
     connection_settings_edit: 연결 설정
+    connection_monitoring: 오류 모니터링
     connection_webhook_edit: 이벤트 구독
     connection_webhook_event_logs: 이벤트 로그
     data_flows: 데이터 흐름
     connect_connection_settings: 연결 설정
     marketplace: 마켓플레이스
+    connected_apps: 앱
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: 마켓플레이스
   akeneo_connectivity_connection_connect_marketplace_profile: 마켓플레이스
   akeneo_connectivity_connection_connect_apps_activate: 연결
   akeneo_connectivity_connection_connect_apps_authorize: 연결
+  akeneo_connectivity_connection_connect_apps_authenticate: 연결
   akeneo_connectivity_connection_settings_index: 연결 설정
   akeneo_connectivity_connection_settings_edit: 연결 설정
   akeneo_connectivity_connection_settings_any: 연결 설정
@@ -32,6 +35,9 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: 이벤트 구독
   akeneo_connectivity_connection_webhook_event_logs: 이벤트 로그
   akeneo_connectivity_connection_settings_redirect: 연결
+  akeneo_connectivity_connection_connect_connected_apps: 앱
+  akeneo_connectivity_connection_connect_connected_apps_edit: 앱 설정
+  akeneo_connectivity_connection_connect_connected_apps_delete: 앱 삭제
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -44,10 +50,10 @@ akeneo_connectivity.connection:
         description: 이는 간단한 개요입니다. 자세한 정보는 마켓플레이스에서 살펴보십시오.
         link: 웹 마켓플레이스로 이동
       card:
-        developed_by: '개발자:'
         read_more: 더보기
         more_info: 자세한 정보
         connect: 연결
+        connected: 연결됨
       extensions:
         title: 커넥터
         total: '{0} 커넥터 없음|{1} 1개 커넥터|[2,Inf] {{ total }}개 커넥터'
@@ -58,21 +64,76 @@ akeneo_connectivity.connection:
         empty: 사용 중인 버전과 호환되는 앱이 없습니다
       unreachable: 마켓플레이스에 연결할 수 없습니다. 잠시 후 다시 시도하십시오.
       scroll_to_top: 맨 위로 스크롤
+      test_apps:
+        modal:
+          credentials:
+            title: 자격 증명
+        delete:
+          title: 삭제 확인
     connected_apps:
+      list:
+        apps:
+          title: 연결된 앱
+          total: '{0} 앱 없음|{1} 1개 앱|[2,Inf] {{ total }}개 앱'
+          empty: 아직 연결된 앱이 없습니다.
+          check_marketplace: '{{ marketplaceLink }}에서 제공되는 모든 콘텐츠를 살펴보고 첫 앱을 설치해보십시오.'
+          marketplace_link_anchor: 마켓플레이스
+        helper:
+          title: '[0,1] PIM이 {{ count }}개 앱에 연결되어 있습니다.|[2,Inf] PIM이 {{ count }}개 앱에 연결되어 있습니다'
+          description_1: 새로운 앱이 꾸준히 개발되고 있으므로 계속 지켜봐주시고 마켓플레이스 페이지를 자주 확인하여 PIM을 연결하는 방법을 알아보십시오.
+          description_2: 앱에 대해 더 알아보고 싶으십니까?
+          link: 자세한 내용은 도움말 센터를 확인하십시오.
+        card:
+          manage_app: 앱 관리
+          open_app: 앱 열기
+        flash:
+          error: 죄송합니다. 연결된 앱 목록을 가져오는 동안 오류가 발생했습니다.
       edit:
+        not_found: 앱을 찾을 수 없음
         tabs:
           settings: 설정
           permissions: 권한
+          error_monitoring: 오류 모니터링
+        settings:
+          monitoring:
+            title: 일반 설정
+          authorizations:
+            title: 권한 부여
+            information: '앱 권한 부여에 관한 자세한 내용은 {{ link }}을(를) 확인하십시오.'
+            information_link_anchor: 도움말 문서
+            no_scope: 특정 권한 부여 요청이 없습니다.
         error_monitoring:
+          error: 이런, 문제가 발생했습니다!
+          helper:
+            description: 지난 7일간 이 앱에 대한 각 오류의 세부 정보를 여기서 볼 수 있습니다. 오류 개수는 100개 오류로 제한됩니다.
+          not_data_source: 현재 모니터링 페이지는 소스 앱에만 사용할 수 있습니다.
           not_auditable:
+            title: 모니터링되지 않는 앱
             description:
-              1: To track errors on this app,
+              1: 이 앱에서 오류를 추적하려면
               2: 설정에서
               3: 모니터링을 활성화하십시오.
+        flash:
+          load_permissions_error.title: '{{ entity }}에 저장된 권한을 로드할 수 없습니다.'
+          load_permissions_error.description: 나중에 다시 시도하십시오.
+          save_permissions_error.title: '{{ entity }}에 있는 권한을 업데이트할 수 없습니다.'
+          save_permissions_error.description: 앱 권한 설정을 확인해주십시오.
+          success: 앱 설정이 업데이트되었습니다.
+          monitoring_settings_error.description: 죄송합니다. 앱을 편집하는 동안 오류가 발생했습니다.
       delete:
+        subtitle: 앱
         title: 삭제 확인
+        description: 앱을 삭제하시겠습니까? 그 영향에 대해 잘 모르시겠습니까?
         link: 다음과 같이 진행됩니다.
+        flash:
+          success: 앱이 삭제되었습니다.
+          error: 죄송합니다. 앱을 삭제하는 동안 오류가 발생했습니다.
     apps:
+      loader:
+        message: 로드 중...
+      flash:
+        permissions_error.title: '{{ entity }}에 있는 권한을 저장할 수 없습니다.'
+        permissions_error.description: 앱 권한 설정을 확인해주십시오.
       wizard:
         title: 연결
         action:
@@ -81,11 +142,30 @@ akeneo_connectivity.connection:
           previous: 이전
           next: 다음
           allow_and_next: 허용 후 다음
+          allow_and_finish: 허용 후 완료
         progress:
+          authentication: 권한 부여
           authorizations: 권한 부여
           permissions: 권한
+          summary: 잘하셨습니다!
+        authentication:
+          title: '{{ app_name }}에서 다음을 요청'
+          helper: 앱 권한 부여에 관한 자세한 내용은 문서를 확인하십시오.
+          helper_link: PIM을 앱에 연결하는 방법
+          scope_profile: 이름 확인
+          scope_email: 이메일 주소 확인
         authorize:
+          title: '{{ app_name }}에서 다음을 요청'
+          no_scope_title: '{{ app_name }}에서 PIM에 액세스하려고 합니다.'
           no_scope: 특정 권한 부여 요청이 없습니다.
+          helper: 앱 권한 부여에 관해 자세히 알아보려면
+          helper_link: 도움말 문서를 확인하십시오.
+        flash:
+          success: 앱이 구성되었습니다.
+          error: 죄송합니다. 앱에 연결하는 동안 오류가 발생했습니다.
+        permission:
+          helper: 도움이 필요한 경우, 문서를 확인하십시오
+          helper_link: 앱 권한을 설정하는 방법
       title: 연결
       activate:
         flash:
@@ -103,12 +183,17 @@ akeneo_connectivity.connection:
           channel_settings: 채널
           association_types: 연결 유형
           products: 제품 및 제품 모델
+          reference_entity: 참조 엔터티
+          reference_entity_record: 참조 엔터티 레코드
+          asset_families: 애셋 패밀리
+          assets: 애셋
       error:
         sub_text: 앱 개발자 또는 Akeneo 지원 팀에 문의해주십시오
       constraint:
         client_id:
           not_blank: client_id가 필요합니다.
           must_be_valid: 알려진 클라이언트 중 이 client_id와 일치하는 것이 없습니다.
+          must_have_ongoing_authorization: 현재 진행 중인 권한 부여 프로세스가 client_id에 없습니다.
         response_type:
           not_blank: response_type이 필요합니다.
           must_be_code: response_type은 '코드'여야 합니다.
@@ -118,11 +203,13 @@ akeneo_connectivity.connection:
   connections: 연결
   secondary_actions:
     title: 기타 작업
+  developer_mode: 개발자 모드
   connection:
     code: 코드
     label: 레이블
     flow_type: 흐름 유형
     image: 이미지
+    auditable: 데이터 흐름 추적 대시보드 
     client_id: 클라이언트 ID
     secret: 비밀번호
     username: 사용자 이름
@@ -144,6 +231,9 @@ akeneo_connectivity.connection:
         invalid: 연결 흐름 유형은 'data_source', 'data_destination' 또는 '기타'여야만 합니다.
       image:
         must_exist: 이미지를 찾을 수 없습니다. 다시 시도하십시오.
+      type:
+        required: 연결 유형이 필요합니다.
+        too_long: 연결 유형이 너무 깁니다. 30자 이하여야 합니다.
   flow_type:
     data_source: 데이터 소스 | 데이터 소스
     data_destination: 데이터 대상 | 데이터 대상
@@ -155,7 +245,6 @@ akeneo_connectivity.connection:
     message_link: 여기를 클릭하십시오.
   create_connection:
     title: 새 연결 만들기
-    description: 최대 50개 연결을 만들 수 있습니다.
     flash:
       success: 연결이 생성되었습니다.
       error: 죄송합니다. 연결을 생성하는 동안 오류가 발생했습니다.
@@ -251,6 +340,9 @@ akeneo_connectivity.connection:
       content: 여러분의 피드백은 매우 중요합니다. 질문 하나가 나오는 이 설문조사에 답하여 다음 위젯을 선택하는 데 도움을 주시기 바랍니다.
       button: 시작!
     connection_selector:
+      title:
+        source: 데이터 연결
+        destination: 대상
       all: 모두
     charts:
       inbound: 인바운드
@@ -264,10 +356,12 @@ akeneo_connectivity.connection:
     error_management:
       data_source_error_chart:
         section:
+          title: 데이터 소스 오류
           helper: 여기에서 비즈니스 오류를 포함한 총 오류 개수를 확인할 수 있습니다.
         chart:
           title: 1일 오류 개수
       widget:
+        title: 데이터 소스별 비즈니스 오류
         over_the_last_seven_days: 지난 7일간
         business_errors: 비즈니스 오류
     no_connection:
@@ -353,6 +447,7 @@ akeneo_connectivity.connection:
           message: 메시지
   error_management:
     connection_monitoring:
+      title: 오류 모니터링
       helper:
         title: '{0} {{ count }}개 오류가 있습니다. |[1,Inf] {{ count }}개 오류가 있습니다.'
         description: 지난 7일간 이 연결에 대한 각 오류의 세부 정보를 여기서 볼 수 있습니다. 오류 개수는 100개 오류로 제한됩니다.
@@ -390,4 +485,9 @@ pim_permissions:
   widget:
     action:
       all: 모두
+      clear: 지우기
+    level:
+      own: 고유
+      edit: 편집
+      view: 보기
     all: 모두

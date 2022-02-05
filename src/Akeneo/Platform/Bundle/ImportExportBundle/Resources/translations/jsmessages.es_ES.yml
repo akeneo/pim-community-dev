@@ -154,26 +154,12 @@ pim_import_export:
   widget:
     last_operations:
       empty: No hay ninguna operación para mostrar por ahora.
-      date: Fecha
-      profile_name: Nombre del perfil
       details: Detalles
-      warning_count: Advertencias
-      username: Nombre de usuario
-      job_type:
-        import: Importación
-        export: Export
-        mass_edit: Edición en masa
-        mass_edit_rule: Configuración de reglas
-        quick_export: Exportación rápida
-        compute_family_variant_structure_changes: Calcular los cambios de estructura de las variantes de la familia
-        compute_completeness_of_products_family: Calcular la completitud de la familia de productos
-        mass_delete: Eliminación masiva de prodcutos
-        clean_removed_attribute_job: Limpiando valores de atributos eliminados
       header.view_all: Ver todo
   batch_status:
     1: Finalizado
     2: Iniciando
-    3: Iniciado
+    3: In progress
     4: Suspendiendo
     5: Suspendido
     6: Fallido
@@ -182,7 +168,6 @@ pim_import_export:
   job_status:
     COMPLETED: Finalizado
     STARTING: Iniciando
-    STARTED: Iniciado
     STOPPING: Suspendiendo
     STOPPED: Suspendido
     FAILED: Fallido

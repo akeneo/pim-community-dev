@@ -11,16 +11,19 @@ pim_menu:
     connection_audit: Connectie dashboard
     connection_settings: Verbindingen
     connection_settings_edit: Verbindingen instellingen
+    connection_monitoring: Foutenmonitoring
     connection_webhook_edit: Abonnement voor gebeurtenissen
     connection_webhook_event_logs: Gebeurtenislogboeken
     data_flows: Gegevensstromen
     connect_connection_settings: Verbindingen instellingen
     marketplace: Marktplaats
+    connected_apps: Apps
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: Marktplaats
   akeneo_connectivity_connection_connect_marketplace_profile: Marktplaats
   akeneo_connectivity_connection_connect_apps_activate: Verbinden
   akeneo_connectivity_connection_connect_apps_authorize: Verbinden
+  akeneo_connectivity_connection_connect_apps_authenticate: Verbinden
   akeneo_connectivity_connection_settings_index: Verbindingsinstellingen
   akeneo_connectivity_connection_settings_edit: Verbindingen instellingen
   akeneo_connectivity_connection_settings_any: Verbindingen instellingen
@@ -32,6 +35,9 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: Abonnement voor gebeurtenissen
   akeneo_connectivity_connection_webhook_event_logs: Gebeurtenislogboeken
   akeneo_connectivity_connection_settings_redirect: Verbindingen
+  akeneo_connectivity_connection_connect_connected_apps: Apps
+  akeneo_connectivity_connection_connect_connected_apps_edit: App-instellingen
+  akeneo_connectivity_connection_connect_connected_apps_delete: App verwijderen
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -44,10 +50,10 @@ akeneo_connectivity.connection:
         description: Dit is slechts een overzicht. Neem voor meer details een kijkje op onze marktplaats op internet.
         link: Ga naar marktplaats op internet
       card:
-        developed_by: Ontwikkeld door
         read_more: meer lezen
         more_info: Meer informatie
         connect: Verbinden
+        connected: Verbonden
       extensions:
         title: Connectoren
         total: '{0} Geen connectoren|{1} 1 connector|[2,Inf] {{ total }} connectoren'
@@ -58,21 +64,76 @@ akeneo_connectivity.connection:
         empty: Er zijn geen apps die compatibel zijn met uw versie
       unreachable: We kunnen de marktplaats niet bereiken. Kom later terug.
       scroll_to_top: Naar boven scrollen
+      test_apps:
+        modal:
+          credentials:
+            title: Toegangsgegevens
+        delete:
+          title: Bevestig verwijderen
     connected_apps:
+      list:
+        apps:
+          title: Verbonden apps
+          total: '{0} Geen apps|{1} 1 app|[2,Inf] {{ total }} apps'
+          empty: Nog geen apps verbonden.
+          check_marketplace: 'Kijk op {{ marketplaceLink }} om alle beschikbare content te bekijken en uw eerste app te installeren.'
+          marketplace_link_anchor: Marktplaats
+        helper:
+          title: '[0,1] Uw PIM is verbonden met {{ count }} app.|[2,Inf] Uw PIM is verbonden met {{ count }} apps.'
+          description_1: Er worden regelmatig nieuwe apps ontwikkeld, dus blijf het in de gaten houden en controleer regelmatig onze Marketplace-pagina om te ontdekken hoe u uw PIM kunt verbinden.
+          description_2: Wilt u graag meer weten over apps?
+          link: Ga naar Hulp voor meer informatie.
+        card:
+          manage_app: App beheren
+          open_app: App openen
+        flash:
+          error: Er is een fout opgetreden tijdens het ophalen van de lijst met verbonden apps.
       edit:
+        not_found: App niet gevonden
         tabs:
           settings: Instellingen
           permissions: Machtigingen
+          error_monitoring: Foutenmonitoring
+        settings:
+          monitoring:
+            title: Algemene instellingen
+          authorizations:
+            title: autorisaties
+            information: 'Bekijk onze {{ link }} voor meer informatie over app-autorisaties.'
+            information_link_anchor: Artikel in Hulp
+            no_scope: Er zijn geen specifieke autorisaties aangevraagd.
         error_monitoring:
+          error: Er is iets fout gegaan.
+          helper:
+            description: Hier kunt u de details van alle fouten voor deze app in de afgelopen 7 dagen zien. Het aantal fouten is beperkt tot 100.
+          not_data_source: Op dit moment is de monitoringspagina alleen beschikbaar voor de bronapp.
           not_auditable:
+            title: Niet-gemonitorde app
             description:
-              1: To track errors on this app,
+              1: Om fouten in deze app bij te houden,
               2: activeer monitoring
               3: in de instellingen.
+        flash:
+          load_permissions_error.title: 'De opgeslagen machtigingen op {{ entity }} kunnen niet worden geladen.'
+          load_permissions_error.description: Probeer het later opnieuw.
+          save_permissions_error.title: 'De machtigingen op {{ entity }} kunnen niet worden bijgewerkt.'
+          save_permissions_error.description: Controleer de instellingen voor app-machtigingen.
+          success: De app-instellingen zijn bijgewerkt.
+          monitoring_settings_error.description: Er is een fout opgetreden tijdens het bewerken van de app.
       delete:
+        subtitle: Apps
         title: Bevestig verwijderen
+        description: Weet u zeker dat u de app wilt verwijderen? Niet zeker over de gevolgen?
         link: Dat is wat er gaat gebeuren.
+        flash:
+          success: De app is verwijderd.
+          error: Er is een fout opgetreden tijdens het verwijderen van de app.
     apps:
+      loader:
+        message: Bezig met laden...
+      flash:
+        permissions_error.title: 'De machtigingen in {{ entity }} kunnen niet worden opgeslagen.'
+        permissions_error.description: Controleer de instellingen voor app-machtigingen.
       wizard:
         title: Verbinden
         action:
@@ -81,11 +142,30 @@ akeneo_connectivity.connection:
           previous: Vorige
           next: Volgende
           allow_and_next: Toestaan en volgende
+          allow_and_finish: Toestaan en eindigen
         progress:
+          authentication: Authenticatie
           authorizations: Autorisaties
           permissions: Machtigingen
+          summary: Goed gedaan!
+        authentication:
+          title: '{{ app_name }} moet'
+          helper: Bekijk ons artikel voor meer informatie over app-authenticatie
+          helper_link: Hoe verbind ik mijn PIM met apps?
+          scope_profile: Uw voor- en achternaam weergeven
+          scope_email: Uw e-mailadres weergeven
         authorize:
+          title: '{{ app_name }} moet'
+          no_scope_title: ' {{ app_name }} wil toegang tot uw PIM.'
           no_scope: Er zijn geen specifieke autorisaties aangevraagd.
+          helper: Voor meer informatie over het autoriseren van apps,
+          helper_link: kunt u het artikel in Hulp raadplegen.
+        flash:
+          success: De app is geconfigureerd.
+          error: Er is een fout opgetreden tijdens het verbinden van de app.
+        permission:
+          helper: Lees ons artikel als u hulp nodig heeft
+          helper_link: App-machtigingen instellen
       title: Verbinden
       activate:
         flash:
@@ -103,12 +183,17 @@ akeneo_connectivity.connection:
           channel_settings: kanalen
           association_types: associatietypes
           products: producten en productmodellen
+          reference_entity: referentie-entiteiten
+          reference_entity_record: Records van referentie-entiteiten
+          asset_families: assetfamilies
+          assets: assets
       error:
         sub_text: Neem contact op met de ontwikkelaar of met de helpdesk van Akeneo
       constraint:
         client_id:
           not_blank: De klant_id is vereist
           must_be_valid: De klant_id komt niet overeen met een bekende klant.
+          must_have_ongoing_authorization: Er loopt op dit moment geen autorisatieproces voor de client_id
         response_type:
           not_blank: Het reactie_type is vereist.
           must_be_code: Het reactie_type moet "code" zijn.
@@ -118,11 +203,13 @@ akeneo_connectivity.connection:
   connections: Verbindingen
   secondary_actions:
     title: Overige acties
+  developer_mode: Ontwikkelaarsmodus
   connection:
     code: Code
     label: Label
     flow_type: Type stroom
     image: Afbeelding
+    auditable: Bijhouden in dashboard Gegevensstromen
     client_id: Klant ID
     secret: Geheim
     username: Gebruikersnaam
@@ -158,7 +245,6 @@ akeneo_connectivity.connection:
     message_link: klik hier.
   create_connection:
     title: Maak een nieuwe verbinding
-    description: U kunt maximaal 50 verbindingen maken.
     flash:
       success: Verbinding succesvol aangemaakt.
       error: Er is een fout opgetreden tijdens het maken van de verbinding.
@@ -254,6 +340,9 @@ akeneo_connectivity.connection:
       content: Jouw feedback is erg waardevol voor ons. Help ons met het kiezen van de volgende widget door het beantwoorden van deze één-vraag enquête!
       button: Laten we beginnen!
     connection_selector:
+      title:
+        source: Gegevensverbindingen
+        destination: Bestemmingen
       all: Alles
     charts:
       inbound: Inkomend
@@ -267,10 +356,12 @@ akeneo_connectivity.connection:
     error_management:
       data_source_error_chart:
         section:
+          title: Fouten voor gegevensbronnen
           helper: Hier kunt u het totale aantal fouten zien, inclusief verwerkingsfouten.
         chart:
           title: Aantal fouten per dag
       widget:
+        title: Bedrijfsfouten per gegevensbron
         over_the_last_seven_days: Over de afgelopen 7 dagen
         business_errors: Verwerkingsfouten
     no_connection:
@@ -356,6 +447,7 @@ akeneo_connectivity.connection:
           message: Bericht
   error_management:
     connection_monitoring:
+      title: Foutenmonitoring
       helper:
         title: '{0} U heeft {{ count }} fout |[1,Inf] U heeft {{ count }} fouten'
         description: Hier kunt u details van alle fouten zien voor deze verbinding van de laatste 7 dagen. Het aantal fouten is beperkt tot 100.
@@ -393,4 +485,9 @@ pim_permissions:
   widget:
     action:
       all: Alles
+      clear: Wissen
+    level:
+      own: Eigen
+      edit: Bewerken
+      view: Weergeven
     all: Alles
