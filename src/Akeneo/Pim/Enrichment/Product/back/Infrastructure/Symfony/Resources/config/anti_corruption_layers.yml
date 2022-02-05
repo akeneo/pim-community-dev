@@ -7,3 +7,4 @@ services:
         class: Akeneo\Pim\Enrichment\Product\Infrastructure\AntiCorruptionLayer\AclIsUserCategoryGranted
         arguments:
             - '@?pimee_security.query.product_category_access_with_ids'
+            - '@pim_user.repository.user'

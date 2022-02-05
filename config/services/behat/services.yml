@@ -26,8 +26,6 @@ services:
             - '@pim_user.repository.group'
             - '@pim_user.repository.role'
             - '@security.token_storage'
-            - '@pim_user.repository.user'
-            - '@pim_user.saver.user'
 
     akeneo_legacy_behat_tests.loader.reference_data_loader:
         class: 'Akeneo\Test\IntegrationTestsBundle\Loader\ReferenceDataLoader'
