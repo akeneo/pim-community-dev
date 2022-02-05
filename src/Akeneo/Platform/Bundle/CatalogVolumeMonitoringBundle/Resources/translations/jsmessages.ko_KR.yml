@@ -26,4 +26,23 @@ pim_catalog_volume:
     count_category_trees: 카테고리 트리
     count_variant_products: 변형 제품
     count_product_models: 제품 모델
+    count_product_and_product_model_values: 제품 값
+    average_max_product_and_product_model_values: 제품별 제품 값
+    count_reference_entity: 참조 엔터티
+    average_max_records_per_reference_entity: 참조 엔터티별 레코드
+    average_max_attributes_per_reference_entity: 참조 엔터티별 특성
+    count_asset_family: 애셋 패밀리
+    average_max_assets_per_asset_family: 애셋 패밀리별 애셋
+    average_max_attributes_per_asset_family: 애셋 패밀리별 특성
+    title:
+      product: 제품
+      catalog: 카탈로그
+      product_structure: 제품 구조
+      variant_modeling: 변형 모델링
+      reference_entities: 참조 엔터티
+      assets: 애셋
+  mean: '평균:'
   max: '최대:'
+  error:
+    generic_title: 죄송합니다. 오류가 발생했습니다.
+    generic_message: 잠시 후에 다시 시도해주십시오.

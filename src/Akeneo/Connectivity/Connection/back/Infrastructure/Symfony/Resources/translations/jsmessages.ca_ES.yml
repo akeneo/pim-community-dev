@@ -16,6 +16,13 @@ pim_title:
   akeneo_connectivity_connection_settings_redirect: Connexions
 akeneo_connectivity.connection:
   connect:
+    marketplace:
+      test_apps:
+        modal:
+          credentials:
+            title: Credencials
+        delete:
+          title: Confirmar l'eliminació
     connected_apps:
       edit:
         tabs:
@@ -68,7 +75,6 @@ akeneo_connectivity.connection:
     message_link: feu clic aquí.
   create_connection:
     title: Crear una nova connexió
-    description: Pot crear fins a 50 connexions.
     flash:
       success: Connexió creada correctament.
       error: Ho sentim, s'ha produït un error durant la creació de la connexió.

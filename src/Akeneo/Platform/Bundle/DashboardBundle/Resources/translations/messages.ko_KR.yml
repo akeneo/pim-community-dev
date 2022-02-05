@@ -6,5 +6,3 @@ pim_dashboard:
       title: 채널 및 로케일에 대한 완성도
     last_operations:
       title: 마지막 작업
-      status: 상태
-      type: 유형
