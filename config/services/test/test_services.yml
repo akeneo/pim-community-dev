@@ -128,8 +128,6 @@ services:
             - '@pim_user.repository.group'
             - '@pim_user.repository.role'
             - '@security.token_storage'
-            - '@pim_user.repository.user'
-            - '@pim_user.saver.user'
 
     akeneo_integration_tests.catalog.fixture.build_entity:
         class: 'AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder'
