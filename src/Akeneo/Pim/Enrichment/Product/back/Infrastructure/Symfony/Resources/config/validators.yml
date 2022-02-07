@@ -8,9 +8,8 @@ services:
 
     Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserCategoryShouldBeGrantedValidator:
         arguments:
-            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\IsUserCategoryGranted'
-            - '@pim_catalog.repository.product'
-            - '@Akeneo\Pim\Enrichment\Product\Infrastructure\AntiCorruptionLayer\Feature'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes'
+            - '@Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories'
         tags:
             - { name: validator.constraint_validator }
 
