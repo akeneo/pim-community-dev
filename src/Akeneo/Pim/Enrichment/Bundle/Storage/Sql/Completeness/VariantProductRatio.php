@@ -53,7 +53,7 @@ final class VariantProductRatio implements VariantProductRatioInterface
         return <<<SQL
                 FROM pim_catalog_product_model AS root_product_model
                 INNER JOIN pim_catalog_product_model as sub_product_model ON sub_product_model.parent_id = root_product_model.id
-                INNER JOIN pim_catalog_product product ON product.product_model_id = sub_product_model.id
+                INNER JOIN pim_catalog_product product ON product.product_model_id = sub_product_model.id AND product.product_model_id IS NOT NULL
 SQL;
     }
 
@@ -61,7 +61,7 @@ SQL;
     {
         return <<<SQL
                 FROM pim_catalog_product_model AS root_product_model
-                INNER JOIN pim_catalog_product product ON product.product_model_id = root_product_model.id
+                INNER JOIN pim_catalog_product product ON product.product_model_id = root_product_model.id AND product.product_model_id IS NOT NULL
 SQL;
     }
 
@@ -82,7 +82,7 @@ SQL;
                 %s
                 INNER JOIN pim_catalog_completeness completeness ON product.id = completeness.product_id
                 WHERE
-                    root_product_model.id IS NOT NULL AND root_product_model.id = :root_product_model_id
+                    root_product_model.id = :root_product_model_id
               ) AS product
             INNER JOIN pim_catalog_locale locale ON locale.id = product.locale_id
             INNER JOIN pim_catalog_channel channel ON channel.id = product.channel_id
