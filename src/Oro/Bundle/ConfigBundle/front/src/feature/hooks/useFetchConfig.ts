@@ -1,10 +1,11 @@
-import {FetchResult, useFetchSimpler, useRoute} from '@akeneo-pim-community/shared';
+import {useRoute} from '@akeneo-pim-community/shared';
 import {
   configBackToFront,
   ConfigServicePayloadBackend,
   ConfigServicePayloadFrontend,
 } from '../models/ConfigServicePayload';
 import {useEffect} from 'react';
+import {FetchResult, useFetchSimpler} from './useFetchSimpler';
 
 export function useFetchConfig(): FetchResult<ConfigServicePayloadFrontend> {
   const configUrl = useRoute('oro_config_configuration_system_get');

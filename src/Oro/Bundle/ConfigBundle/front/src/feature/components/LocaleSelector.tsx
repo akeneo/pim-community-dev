@@ -1,5 +1,6 @@
-import {Locale, LocaleCode, useFetchSimpler, useRoute, useTranslate} from '@akeneo-pim-community/shared';
+import {Locale, LocaleCode, useRoute, useTranslate} from '@akeneo-pim-community/shared';
 import {Helper, SelectInput, Locale as LocaleComponent} from 'akeneo-design-system';
+import {useFetchSimpler} from '../hooks/useFetchSimpler';
 import React, {useEffect} from 'react';
 
 interface Props {
