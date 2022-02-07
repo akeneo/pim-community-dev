@@ -15,6 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File;
 
 use Akeneo\Platform\TailoredImport\Application\Common\ColumnCollection;
 use Akeneo\Platform\TailoredImport\Application\ReadFile\FileHeaderCollection;
+use Akeneo\Platform\TailoredImport\Infrastructure\FlatFileIterator\FlatFileIteratorInterface;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;

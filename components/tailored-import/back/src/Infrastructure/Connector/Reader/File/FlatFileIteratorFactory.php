@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File;
 
-use Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File\Xlsx\FlatFileIterator as XlsxFlatFileIterator;
+use Akeneo\Platform\TailoredImport\Infrastructure\FlatFileIterator\FlatFileIteratorInterface;
+use Akeneo\Platform\TailoredImport\Infrastructure\FlatFileIterator\XlsxFlatFileIterator;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\UndefinedJobParameterException;
 

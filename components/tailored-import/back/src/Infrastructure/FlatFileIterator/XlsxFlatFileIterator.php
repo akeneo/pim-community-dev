@@ -11,10 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File\Xlsx;
+namespace Akeneo\Platform\TailoredImport\Infrastructure\FlatFileIterator;
 
 use Akeneo\Platform\TailoredImport\Application\ReadFile\FileHeaderCollection;
-use Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File\FlatFileIteratorInterface;
 use Box\Spout\Common\Entity\Cell;
 use Box\Spout\Reader\Common\Creator\ReaderFactory;
 use Box\Spout\Reader\IteratorInterface;
@@ -22,7 +21,7 @@ use Box\Spout\Reader\ReaderInterface;
 use Box\Spout\Reader\SheetInterface;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
-class FlatFileIterator implements FlatFileIteratorInterface
+class XlsxFlatFileIterator implements FlatFileIteratorInterface
 {
     private ReaderInterface $fileReader;
     private SheetInterface $sheet;

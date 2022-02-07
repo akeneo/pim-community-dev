@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File;
+namespace Akeneo\Platform\TailoredImport\Infrastructure\FlatFileIterator;
 
 use Akeneo\Platform\TailoredImport\Application\ReadFile\FileHeaderCollection;
 
