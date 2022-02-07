@@ -1,4 +1,5 @@
 export * from './Attribute';
+export * from './AttributeOption';
 export * from './TableConfiguration';
 export * from './TableFilter';
 export * from './TableValue';

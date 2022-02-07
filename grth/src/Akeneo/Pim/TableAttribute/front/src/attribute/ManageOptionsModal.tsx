@@ -17,7 +17,7 @@ import {
   uuid,
 } from 'akeneo-design-system';
 import {getLabel, Locale, LocaleCode, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {AttributeCode, SelectColumnDefinition, SelectOption, TableAttribute} from '../models';
+import {AttributeOption, SelectColumnDefinition, SelectOption, TableAttribute} from '../models';
 import {TwoColumnsLayout} from './TwoColumnsLayout';
 import {FieldsList} from '../shared';
 import styled from 'styled-components';
@@ -338,8 +338,28 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
     </>
   );
 
-  const handleImportOptions = (attributeCode: AttributeCode) => {
-    console.log(attributeCode);
+  const handleImportOptions = (attributeOptions: AttributeOption[]) => {
+    if (options) {
+      const newOptions = [...options];
+      const newFilteredOptionIds = {};
+      attributeOptions.forEach(attributeOption => {
+        const existingOptionIndex = (options || []).findIndex(({code}) => code === attributeOption.code);
+        if (existingOptionIndex >= 0) {
+          newOptions[existingOptionIndex].labels = attributeOption.labels;
+        } else {
+          const id = uuid();
+          newOptions.push({
+            ...attributeOption,
+            id,
+            isNew: true,
+          });
+          newFilteredOptionIds[id] = true;
+        }
+      });
+
+      setOptionsAndValidate(newOptions);
+      setFilteredOptionsIds({...filteredOptionsIds, ...newFilteredOptionIds});
+    }
   };
 
   return (

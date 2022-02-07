@@ -1,11 +1,13 @@
 import React from 'react';
-import {ArrowDownIcon, Button, Dropdown, getColor, useBooleanState} from 'akeneo-design-system';
+import {ArrowDownIcon, Button, Dropdown, getColor, LoaderIcon, useBooleanState} from 'akeneo-design-system';
 import {useAttributeWithOptions} from './useAttributeWithOptions';
 import styled from 'styled-components';
-import {AttributeCode} from '../models';
+import {AttributeCode, AttributeOption} from '../models';
+import {useRouter} from '@akeneo-pim-community/shared';
+import {AttributeOptionFetcher} from '../fetchers';
 
 type ImportOptionsButtonProps = {
-  onClick: (attributeCode: AttributeCode) => void;
+  onClick: (attributeOptions: AttributeOption[]) => void;
 };
 
 const DropdownItem = styled(Dropdown.Item)`
@@ -21,25 +23,39 @@ const AttributeLabel = styled.div`
   font-size: ${({theme}) => theme.fontSize.bigger};
   color: ${getColor('grey', 140)};
 `;
+
 const OptionsCount = styled.div`
   font-size: ${({theme}) => theme.fontSize.small};
 `;
 
 const ImportOptionsButton: React.FC<ImportOptionsButtonProps> = ({onClick}) => {
   const [isOpen, open, close] = useBooleanState();
+  const [isImporting, setIsImporting] = React.useState<boolean>(false);
   const attributes = useAttributeWithOptions(isOpen);
+  const router = useRouter();
 
-  const handleClick = (attributeCode: AttributeCode) => {
+  const handleClick = (selectAttributeCode: AttributeCode) => {
     close();
-    onClick(attributeCode);
+    setIsImporting(true);
+    AttributeOptionFetcher.byAttributeCode(router, selectAttributeCode).then(attributeOptions => {
+      onClick(attributeOptions);
+      setIsImporting(false);
+    });
   };
 
   return (
     <Dropdown>
-      <Button level='tertiary' ghost={true} onClick={open}>
-        Import from existing attribute <ArrowDownIcon />
+      <Button
+        level='tertiary'
+        ghost={true}
+        onClick={() => {
+          !isImporting && open();
+        }}
+        disabled={isImporting}
+      >
+        Import from existing attribute {isImporting ? <LoaderIcon /> : <ArrowDownIcon />}
       </Button>
-      {isOpen && (
+      {isOpen && !isImporting && (
         <Dropdown.Overlay onClose={close} dropdownOpenerVisible={true}>
           <Dropdown.ItemCollection>
             {attributes.map(attribute => {
