@@ -57,7 +57,7 @@ test('it adds data mapping with attribute target', async () => {
   );
 
   await act(async () => {
-    userEvent.click(screen.getByText('akeneo.tailored_import.add_data_mapping.target.add'));
+    userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping_list.add'));
   });
 
   expect(screen.getByText('System')).toBeInTheDocument();
@@ -95,7 +95,7 @@ test('it adds data mapping with property target', async () => {
   );
 
   await act(async () => {
-    userEvent.click(screen.getByText('akeneo.tailored_import.add_data_mapping.target.add'));
+    userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping_list.add'));
   });
 
   userEvent.click(screen.getByText('Categories'));
@@ -120,7 +120,7 @@ test('it cannot add a data mapping when the limit is reached', async () => {
     <AddDataMappingDropdown canAddDataMapping={false} onDataMappingAdded={handleDataMappingAdded} />
   );
 
-  const addDataMappingButton = screen.getByText('akeneo.tailored_import.add_data_mapping.target.add');
+  const addDataMappingButton = screen.getByText('akeneo.tailored_import.data_mapping_list.add');
   expect(addDataMappingButton).toHaveAttribute('disabled');
   expect(addDataMappingButton).toHaveAttribute(
     'title',

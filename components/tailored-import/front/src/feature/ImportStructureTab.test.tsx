@@ -1,8 +1,8 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
-import {ImportStructureTab} from './ImportStructureTab';
 import {screen, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import {ImportStructureTab} from './ImportStructureTab';
 import {InitializeColumnsModalProps, DataMappingListProps} from './components';
 import {DataMapping, StructureConfiguration} from './models';
 
@@ -94,6 +94,7 @@ test('it can open the modal to generate columns', async () => {
   renderWithProviders(
     <ImportStructureTab
       structureConfiguration={defaultStructureConfiguration}
+      validationErrors={[]}
       onStructureConfigurationChange={onStructureConfigurationChange}
     />
   );
@@ -114,6 +115,7 @@ test('it can open and close the modal', async () => {
   renderWithProviders(
     <ImportStructureTab
       structureConfiguration={defaultStructureConfiguration}
+      validationErrors={[]}
       onStructureConfigurationChange={jest.fn()}
     />
   );
@@ -144,6 +146,7 @@ test('it can add data mapping from the column list', () => {
   renderWithProviders(
     <ImportStructureTab
       structureConfiguration={structureConfiguration}
+      validationErrors={[]}
       onStructureConfigurationChange={onStructureConfigurationChange}
     />
   );
@@ -173,6 +176,7 @@ test('it can display and update the data mapping detail when clicking on the dat
   renderWithProviders(
     <ImportStructureTab
       structureConfiguration={structureConfiguration}
+      validationErrors={[]}
       onStructureConfigurationChange={handleStructureConfigurationChange}
     />
   );

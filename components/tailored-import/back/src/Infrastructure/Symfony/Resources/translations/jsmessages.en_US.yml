@@ -1,7 +1,6 @@
 batch_jobs.xlsx_tailored_product_import.label: Tailored product import in XLSX
 
 akeneo.tailored_import:
-  sources: Sources
   column_initialization:
     button: Initialize columns
     max_column_count_reached: You have reached the limit columns, only {{ limit }} first columns will be imported.
@@ -14,19 +13,18 @@ akeneo.tailored_import:
   data_mapping_list:
     title: Data mappings
     no_sources: No sources
+    add: Add a data mapping
   data_mapping:
     title: Data mapping
     no_data_mapping_selected: No data mapping selected
-    source:
+    sources:
+      title: Sources
       add: Add a source
-      disabled: You have reached the limit of {{ limit }} sources, you can no longer add sources to this data mapping.
-    sources: Sources
     target:
-      target_parameters: Target parameters
+      title: Target parameters
+      identifier: No settings available for the identifier attribute used as a target.
       locale_specific: This attribute is locale specific
-  add_data_mapping:
-    target:
-      add: Add a data mapping
+      clear_if_empty: Clear if empty in file
   form:
     job_instance:
       tab:
@@ -49,7 +47,7 @@ akeneo.tailored_import:
       uuid:
         should_be_unique: This data mapping UUID already exists, please enter a new one.
       sources:
-        min_count_reached: You need to add at least {{ limit }} sources to your data mapping.
+        min_count_reached: You need to add at least one source to your data mapping.
         max_count_reached: You have reached the limit of {{ limit }} sources, you can no longer add sources to your data mapping.
         should_be_unique: This source already exists, please enter a new one.
         should_exist: One of the source does not exist anymore, please delete all sources of this data mapping and retry

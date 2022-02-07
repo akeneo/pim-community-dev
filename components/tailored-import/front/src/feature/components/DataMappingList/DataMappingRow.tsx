@@ -31,7 +31,7 @@ const DataMappingRow = ({dataMapping, columns, onSelect, isSelected, hasError}: 
       <Table.Cell>
         {sources.length === 0
           ? translate('akeneo.tailored_import.data_mapping_list.no_sources')
-          : `${translate('akeneo.tailored_import.sources')}: ${sources.join(' ')}`}
+          : `${translate('akeneo.tailored_import.data_mapping.sources.title')}: ${sources.join(' ')}`}
         <Spacer />
         {hasError && <Pill level="danger" />}
       </Table.Cell>

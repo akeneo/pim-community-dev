@@ -1,17 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import {SectionTitle} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
-import {
-  Column,
-  DataMapping,
-  generateColumnName,
-  MAX_SOURCE_COUNT_BY_DATA_MAPPING,
-  isAttributeTarget,
-  Target,
-} from '../../models';
-import {SourceDropdown} from '../SourceDropdown';
-import {AttributeTargetParameters} from './AttributeTargetParameters';
+import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
+import {Column, DataMapping, Target, ColumnIdentifier} from '../../models';
+import {Sources} from './Sources';
+import {TargetParameters} from './TargetParameters';
 
 const Container = styled.div`
   height: 100%;
@@ -24,15 +17,15 @@ const Container = styled.div`
 type ColumnDetailsProps = {
   columns: Column[];
   dataMapping: DataMapping;
+  validationErrors: ValidationError[];
   onDataMappingChange: (dataMapping: DataMapping) => void;
 };
 
-const DataMappingDetails = ({columns, dataMapping, onDataMappingChange}: ColumnDetailsProps) => {
+const DataMappingDetails = ({columns, dataMapping, validationErrors, onDataMappingChange}: ColumnDetailsProps) => {
   const translate = useTranslate();
-  const canAddSource = MAX_SOURCE_COUNT_BY_DATA_MAPPING > dataMapping.sources.length;
 
-  const handleAddSource = (selectedColumn: Column) => {
-    onDataMappingChange({...dataMapping, sources: [...dataMapping.sources, selectedColumn.uuid]});
+  const handleSourcesChange = (sources: ColumnIdentifier[]) => {
+    onDataMappingChange({...dataMapping, sources});
   };
 
   const handleTargetParametersChange = (target: Target) => {
@@ -44,20 +37,17 @@ const DataMappingDetails = ({columns, dataMapping, onDataMappingChange}: ColumnD
       <SectionTitle sticky={0}>
         <SectionTitle.Title>{translate('akeneo.tailored_import.data_mapping.title')}</SectionTitle.Title>
       </SectionTitle>
-      {isAttributeTarget(dataMapping.target) && (
-        <AttributeTargetParameters target={dataMapping.target} onTargetChange={handleTargetParametersChange} />
-      )}
-      <SectionTitle sticky={0}>
-        <SectionTitle.Title>{translate('akeneo.tailored_import.sources')}</SectionTitle.Title>
-      </SectionTitle>
-      <ul>
-        {dataMapping.sources.map((uuid, index) => {
-          const column = columns.find(column => uuid === column.uuid);
-
-          return <li key={`${uuid}${index}`}>{column ? generateColumnName(column) : ''}</li>;
-        })}
-      </ul>
-      <SourceDropdown columns={columns} onColumnSelected={handleAddSource} disabled={!canAddSource} />
+      <TargetParameters
+        target={dataMapping.target}
+        validationErrors={filterErrors(validationErrors, '[target]')}
+        onTargetChange={handleTargetParametersChange}
+      />
+      <Sources
+        sources={dataMapping.sources}
+        columns={columns}
+        validationErrors={filterErrors(validationErrors, '[sources]')}
+        onSourcesChange={handleSourcesChange}
+      />
     </Container>
   );
 };

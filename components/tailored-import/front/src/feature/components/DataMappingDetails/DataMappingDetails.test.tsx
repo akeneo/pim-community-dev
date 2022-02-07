@@ -48,7 +48,7 @@ const propertyDataMapping: DataMapping = {
   sample_data: [],
 };
 
-jest.mock('../SourceDropdown', () => ({
+jest.mock('./SourceDropdown', () => ({
   SourceDropdown: ({
     onColumnSelected,
     disabled,
@@ -71,21 +71,31 @@ jest.mock('../SourceDropdown', () => ({
 
 test('it displays a property data mapping', async () => {
   await renderWithProviders(
-    <DataMappingDetails dataMapping={propertyDataMapping} columns={columns} onDataMappingChange={jest.fn()} />
+    <DataMappingDetails
+      dataMapping={propertyDataMapping}
+      columns={columns}
+      validationErrors={[]}
+      onDataMappingChange={jest.fn()}
+    />
   );
 
   expect(screen.getByText('akeneo.tailored_import.data_mapping.title')).toBeInTheDocument();
-  expect(screen.getByText('akeneo.tailored_import.sources')).toBeInTheDocument();
+  expect(screen.getByText('akeneo.tailored_import.data_mapping.sources.title')).toBeInTheDocument();
   expect(screen.getByText('Product identifier (A)')).toBeInTheDocument();
 });
 
 test('it displays an attribute data mapping', async () => {
   await renderWithProviders(
-    <DataMappingDetails dataMapping={attributeDataMapping} columns={columns} onDataMappingChange={jest.fn()} />
+    <DataMappingDetails
+      dataMapping={attributeDataMapping}
+      columns={columns}
+      validationErrors={[]}
+      onDataMappingChange={jest.fn()}
+    />
   );
 
   expect(screen.getByText('akeneo.tailored_import.data_mapping.title')).toBeInTheDocument();
-  expect(screen.getByText('akeneo.tailored_import.sources')).toBeInTheDocument();
+  expect(screen.getByText('akeneo.tailored_import.data_mapping.sources.title')).toBeInTheDocument();
   expect(screen.getByText('Name (B)')).toBeInTheDocument();
 });
 
@@ -105,6 +115,7 @@ test('it can change target parameters', async () => {
     <DataMappingDetails
       dataMapping={{...attributeDataMapping, target: attributeTarget}}
       columns={columns}
+      validationErrors={[]}
       onDataMappingChange={handleDataMappingChange}
     />
   );
@@ -128,6 +139,7 @@ test('it can add a source to a data mapping', async () => {
     <DataMappingDetails
       dataMapping={propertyDataMapping}
       columns={columns}
+      validationErrors={[]}
       onDataMappingChange={handleDataMappingChange}
     />
   );
@@ -138,26 +150,4 @@ test('it can add a source to a data mapping', async () => {
     ...propertyDataMapping,
     sources: ['288d85cb-3ffb-432d-a422-d2c6810113ab', 'dba0d9f8-2283-4a07-82b7-67e0435b7dcc'],
   });
-});
-
-test('it cannot add a source to a data mapping when limit is reached', async () => {
-  const dataMapping = {
-    ...propertyDataMapping,
-    sources: [
-      '288d85cb-3ffb-432d-a422-d2c6810113ab',
-      'dba0d9f8-2283-4a07-82b7-67e0435b7dcc',
-      '288d85cb-3ffb-432d-a422-d2c6810113ab',
-      'dba0d9f8-2283-4a07-82b7-67e0435b7dcc',
-    ],
-  };
-
-  const handleDataMappingChange = jest.fn();
-
-  await renderWithProviders(
-    <DataMappingDetails dataMapping={dataMapping} columns={columns} onDataMappingChange={handleDataMappingChange} />
-  );
-
-  userEvent.click(screen.getByText('Add source'));
-
-  expect(handleDataMappingChange).not.toHaveBeenCalled();
 });

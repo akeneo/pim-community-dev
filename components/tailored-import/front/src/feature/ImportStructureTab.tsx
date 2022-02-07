@@ -1,14 +1,9 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {Button, useBooleanState} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {DataMappingDetails, DataMappingDetailsPlaceholder, DataMappingList, InitializeColumnsModal} from './components';
 import {Column, createDefaultDataMapping, DataMapping, StructureConfiguration, updateDataMapping} from './models';
-
-type ImportStructureTabProps = {
-  structureConfiguration: StructureConfiguration;
-  onStructureConfigurationChange: (structureConfiguration: StructureConfiguration) => void;
-};
 
 const Container = styled.div`
   display: flex;
@@ -17,7 +12,17 @@ const Container = styled.div`
   height: 100%;
 `;
 
-const ImportStructureTab = ({structureConfiguration, onStructureConfigurationChange}: ImportStructureTabProps) => {
+type ImportStructureTabProps = {
+  structureConfiguration: StructureConfiguration;
+  validationErrors: ValidationError[];
+  onStructureConfigurationChange: (structureConfiguration: StructureConfiguration) => void;
+};
+
+const ImportStructureTab = ({
+  structureConfiguration,
+  validationErrors,
+  onStructureConfigurationChange,
+}: ImportStructureTabProps) => {
   const [isInitModalOpen, openInitModal, closeInitModal] = useBooleanState();
   const translate = useTranslate();
   const [selectedDataMappingUuid, setSelectedDataMappingUuid] = useState<string | null>(null);
@@ -41,20 +46,21 @@ const ImportStructureTab = ({structureConfiguration, onStructureConfigurationCha
     });
   };
 
+  const handleDataMappingSelected = (dataMappingSelectedUuid: string) => {
+    setSelectedDataMappingUuid(dataMappingSelectedUuid);
+  };
+
   const handleDataMappingAdded = (dataMapping: DataMapping): void => {
     onStructureConfigurationChange({
       ...structureConfiguration,
       data_mappings: [...structureConfiguration.data_mappings, dataMapping],
     });
-  };
-
-  const handleDataMappingSelected = (dataMappingSelectedUuid: string) => {
-    setSelectedDataMappingUuid(dataMappingSelectedUuid);
+    handleDataMappingSelected(dataMapping.uuid);
   };
 
   return (
     <>
-      {structureConfiguration.columns.length === 0 ? (
+      {0 === structureConfiguration.columns.length ? (
         <Button level="primary" onClick={openInitModal}>
           {translate('akeneo.tailored_import.column_initialization.button')}
         </Button>
@@ -64,7 +70,7 @@ const ImportStructureTab = ({structureConfiguration, onStructureConfigurationCha
             dataMappings={structureConfiguration.data_mappings}
             columns={structureConfiguration.columns}
             selectedDataMappingUuid={selectedDataMappingUuid}
-            validationErrors={[]}
+            validationErrors={filterErrors(validationErrors, `[data_mappings]`)}
             onDataMappingAdded={handleDataMappingAdded}
             onDataMappingSelected={handleDataMappingSelected}
           />
@@ -74,6 +80,7 @@ const ImportStructureTab = ({structureConfiguration, onStructureConfigurationCha
             <DataMappingDetails
               columns={structureConfiguration.columns}
               dataMapping={selectedDataMapping}
+              validationErrors={filterErrors(validationErrors, `[data_mappings][${selectedDataMapping.uuid}]`)}
               onDataMappingChange={handleDataMappingChange}
             />
           )}

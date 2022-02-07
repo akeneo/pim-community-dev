@@ -10,7 +10,7 @@ import {
   StructureConfiguration,
 } from '@akeneo-pim-enterprise/tailored-import';
 import {pimTheme} from 'akeneo-design-system';
-import {Channel, filterErrors, ValidationError} from '@akeneo-pim-community/shared';
+import {Channel, filterErrors, formatParameters, ValidationError} from '@akeneo-pim-community/shared';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
 const __ = require('oro/translator');
@@ -38,9 +38,9 @@ class ColumnView extends BaseView {
     });
 
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', event => {
-      this.setValidationErrors(event.response.normalized_errors);
+      const errors = formatParameters(filterErrors(event.response.normalized_errors, '[import_structure]'));
+      this.setValidationErrors(errors);
 
-      const errors = filterErrors(this.validationErrors, '[import-structure]');
       if (errors.length > 0) {
         this.getRoot().trigger('pim_enrich:form:form-tabs:add-errors', {
           tabCode: this.getTabCode(),
@@ -83,6 +83,7 @@ class ColumnView extends BaseView {
 
     const props: ImportStructureTabProps = {
       structureConfiguration,
+      validationErrors: this.validationErrors,
       onStructureConfigurationChange: this.setStructureConfigurationData.bind(this),
     };
 
@@ -98,16 +99,14 @@ class ColumnView extends BaseView {
             {
               value: {
                 attribute: {
-                  fetchByIdentifiers: (identifiers: string[]): Promise<Attribute[]> => {
-                    return new Promise(resolve =>
+                  fetchByIdentifiers: (identifiers: string[]): Promise<Attribute[]> =>
+                    new Promise(resolve =>
                       fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(identifiers).then(resolve)
-                    );
-                  },
+                    ),
                 },
                 channel: {
-                  fetchAll: (): Promise<Channel[]> => {
-                    return new Promise(resolve => fetcherRegistry.getFetcher('channel').fetchAll().then(resolve));
-                  },
+                  fetchAll: (): Promise<Channel[]> =>
+                    new Promise(resolve => fetcherRegistry.getFetcher('channel').fetchAll().then(resolve)),
                 },
               },
             },

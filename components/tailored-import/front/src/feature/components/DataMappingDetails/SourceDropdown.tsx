@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {Column, generateColumnName} from '../models';
+import {Column, generateColumnName, MAX_SOURCE_COUNT_BY_DATA_MAPPING} from '../../models';
 import {
   ArrowDownIcon,
   Button,
@@ -44,9 +44,15 @@ const SourceDropdown = ({columns, onColumnSelected, disabled}: SourceDropdownPro
       <Button
         onClick={open}
         disabled={disabled}
-        title={disabled ? translate('akeneo.tailored_import.data_mapping.source.disabled') : undefined}
+        title={
+          disabled
+            ? translate('akeneo.tailored_import.validation.data_mappings.sources.max_count_reached', {
+                limit: MAX_SOURCE_COUNT_BY_DATA_MAPPING,
+              })
+            : undefined
+        }
       >
-        {translate('akeneo.tailored_import.data_mapping.source.add')} <ArrowDownIcon />
+        {translate('akeneo.tailored_import.data_mapping.sources.add')} <ArrowDownIcon />
       </Button>
       {isOpen && (
         <Dropdown.Overlay verticalPosition="down" onClose={close}>

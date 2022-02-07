@@ -145,7 +145,9 @@ test('it displays the data mapping', async () => {
   );
 
   expect(screen.getByText('a_code')).toBeInTheDocument();
-  expect(screen.getByText('akeneo.tailored_import.sources: Source 1 (A) Source 3 (C)')).toBeInTheDocument();
+  expect(
+    screen.getByText('akeneo.tailored_import.data_mapping.sources.title: Source 1 (A) Source 3 (C)')
+  ).toBeInTheDocument();
 });
 
 test('it call handler when row is clicked', async () => {

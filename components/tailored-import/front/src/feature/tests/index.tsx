@@ -51,6 +51,15 @@ const attributes: Attribute[] = [
     is_locale_specific: false,
     available_locales: [],
   },
+  {
+    type: 'pim_catalog_identifier',
+    code: 'sku',
+    labels: {fr_FR: 'Scul', en_US: 'Sku'},
+    scopable: false,
+    localizable: false,
+    is_locale_specific: false,
+    available_locales: [],
+  },
 ];
 
 const channels: Channel[] = [

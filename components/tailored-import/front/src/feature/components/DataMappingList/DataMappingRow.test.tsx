@@ -73,7 +73,9 @@ test('it displays a data mapping row', () => {
 
   expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   expect(screen.getByText('sku')).toBeInTheDocument();
-  expect(screen.getByText('akeneo.tailored_import.sources: Source 1 (A) Source 3 (C)')).toBeInTheDocument();
+  expect(
+    screen.getByText('akeneo.tailored_import.data_mapping.sources.title: Source 1 (A) Source 3 (C)')
+  ).toBeInTheDocument();
 });
 
 test('it displays a pill when there is an validation error', () => {

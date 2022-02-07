@@ -73,7 +73,7 @@ const AddDataMappingDropdown = ({canAddDataMapping, onDataMappingAdded}: AddData
         disabled={!canAddDataMapping}
         onClick={open}
       >
-        {translate('akeneo.tailored_import.add_data_mapping.target.add')} <ArrowDownIcon />
+        {translate('akeneo.tailored_import.data_mapping_list.add')} <ArrowDownIcon />
       </Button>
       {isOpen && (
         <Dropdown.Overlay verticalPosition="down" onClose={handleClose}>

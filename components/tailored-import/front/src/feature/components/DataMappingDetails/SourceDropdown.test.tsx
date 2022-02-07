@@ -1,8 +1,8 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
-import {SourceDropdown} from './SourceDropdown';
 import {screen, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import {SourceDropdown} from './SourceDropdown';
 
 test('it can add a source', () => {
   const onColumnSelected = jest.fn();
@@ -21,7 +21,7 @@ test('it can add a source', () => {
 
   renderWithProviders(<SourceDropdown columns={columns} onColumnSelected={onColumnSelected} disabled={false} />);
 
-  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.source.add'));
+  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.sources.add'));
   userEvent.click(screen.getByText('Product (B)'));
 
   expect(onColumnSelected).toHaveBeenCalledWith({
@@ -50,7 +50,7 @@ test('it can filter sources with a text search', () => {
 
   renderWithProviders(<SourceDropdown columns={columns} onColumnSelected={onColumnSelected} disabled={false} />);
 
-  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.source.add'));
+  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.sources.add'));
 
   userEvent.type(screen.getByPlaceholderText('pim_common.search'), 'Sku');
   act(() => {
@@ -86,9 +86,12 @@ test('it cannot add a source when disabled', () => {
 
   renderWithProviders(<SourceDropdown columns={columns} onColumnSelected={handleColumnSelected} disabled={true} />);
 
-  const addSourceButton = screen.getByText('akeneo.tailored_import.data_mapping.source.add');
-  expect(addSourceButton).toHaveAttribute('disabled');
-  expect(addSourceButton).toHaveAttribute('title', 'akeneo.tailored_import.data_mapping.source.disabled');
+  const addSourceButton = screen.getByText('akeneo.tailored_import.data_mapping.sources.add');
+  expect(addSourceButton).toBeDisabled();
+  expect(addSourceButton).toHaveAttribute(
+    'title',
+    'akeneo.tailored_import.validation.data_mappings.sources.max_count_reached'
+  );
 
   userEvent.click(addSourceButton);
   expect(handleColumnSelected).not.toHaveBeenCalled();

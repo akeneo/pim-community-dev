@@ -10,7 +10,14 @@ import {
   ImportXlsxIllustration,
   TabBar,
 } from 'akeneo-design-system';
-import {NotificationLevel, useNotify, useRoute, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
+import {
+  filterErrors,
+  NotificationLevel,
+  useNotify,
+  useRoute,
+  useTranslate,
+  ValidationError,
+} from '@akeneo-pim-community/shared';
 import {ImportStructureTab, StructureConfiguration} from './feature';
 
 const JOB_CODE = 'tailoredimport';
@@ -64,7 +71,7 @@ type JobConfiguration = {
 
 const FakePIM = () => {
   const [jobConfiguration, setJobConfiguration] = useState<JobConfiguration | null>(null);
-  const [, setValidationErrors] = useState<ValidationError[]>([]);
+  const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
   const route = useRoute('pim_enrich_job_instance_rest_import_get', {identifier: JOB_CODE});
   const saveRoute = useRoute('pim_enrich_job_instance_rest_import_put', {identifier: JOB_CODE});
   const notify = useNotify();
@@ -151,6 +158,7 @@ const FakePIM = () => {
         </TabBar>
         <ImportStructureTab
           structureConfiguration={jobConfiguration.configuration.import_structure}
+          validationErrors={filterErrors(validationErrors, '[import_structure]')}
           onStructureConfigurationChange={handleStructureConfigurationChange}
         />
       </Page>

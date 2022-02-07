@@ -12,4 +12,10 @@ type Attribute = {
   reference_data_name?: string;
 };
 
+const isIdentifierAttribute = ({type}: Attribute): boolean => 'pim_catalog_identifier' === type;
+
+const isMultiSourceAttribute = ({type}: Attribute): boolean =>
+  ['pim_catalog_multiselect', 'akeneo_reference_entity_collection', 'pim_catalog_asset_collection'].includes(type);
+
 export type {Attribute};
+export {isMultiSourceAttribute, isIdentifierAttribute};
