@@ -23,6 +23,12 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
+/**
+ * This validator checks that several conditions are respected when saving a Measurement Family which is linked to a
+ * Table Column:
+ *  - No unit has been removed from the family
+ *  - No operation has been edited for any unit of the family
+ */
 final class MeasurementFamilyUsedInATableAttributeValidator extends ConstraintValidator
 {
     public function __construct(

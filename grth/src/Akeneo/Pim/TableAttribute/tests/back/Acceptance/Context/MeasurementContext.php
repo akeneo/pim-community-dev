@@ -175,43 +175,6 @@ final class MeasurementContext implements Context
         $this->measurementFamilyHandler->handle($command);
     }
 
-    // @todo dupplicate with next
-//    /**
-//     * @When I add the :unitCode unit and update the labels of the :measurementFamilyCode family
-//     */
-//    public function addUnitAndUpdateLabelsOfFamily(string $unitCode, string $measurementFamilyCode)
-//    {
-//        $measurementFamily = $this->measurementFamilyRepository
-//            ->getByCode(MeasurementFamilyCode::fromString($measurementFamilyCode));
-//
-//        $normalized = $measurementFamily->normalizeWithIndexedUnits();
-//
-//        $normalized['units'][$unitCode] = [
-//            'code' => $unitCode,
-//            'labels' => [],
-//            'convert_from_standard' => [['operator' => 'mul', 'value' => '1']],
-//            'symbol' => $unitCode,
-//        ];
-//
-//        $normalized['labels'] = ['en_US' => 'Duration'];
-//
-//        $command = new SaveMeasurementFamilyCommand();
-//        $command->code = $measurementFamilyCode;
-//        $command->standardUnitCode = $normalized['standard_unit_code'];
-//        $command->labels = $normalized['labels'];
-//        $command->units = $normalized['units'];
-//
-//        $violations = $this->validator->validate($command);
-//        if ($violations->count() > 0) {
-//            $this->constraintViolationsContext->add($violations);
-//
-//            return;
-//        }
-//
-//        $this->measurementFamilyHandler->handle($command);
-//    }
-
-    // @todo dupplicate with previous
     /**
      * @When I add the :unitCode unit and update the labels of the :measurementFamilyCode family to :jsonLabels
      */
