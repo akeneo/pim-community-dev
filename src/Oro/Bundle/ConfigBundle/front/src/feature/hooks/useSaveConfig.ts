@@ -4,7 +4,7 @@ import {
   configFrontToBack,
   ConfigServicePayloadBackend,
   ConfigServicePayloadFrontend,
-} from 'feature/models/ConfigServicePayload';
+} from '../models/ConfigServicePayload';
 
 export function useSaveConfig() {
   const __ = useTranslate();

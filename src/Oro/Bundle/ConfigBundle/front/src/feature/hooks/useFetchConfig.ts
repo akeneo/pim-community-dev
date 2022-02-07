@@ -3,7 +3,7 @@ import {
   configBackToFront,
   ConfigServicePayloadBackend,
   ConfigServicePayloadFrontend,
-} from 'feature/models/ConfigServicePayload';
+} from '../models/ConfigServicePayload';
 import {useEffect} from 'react';
 
 export function useFetchConfig(): FetchResult<ConfigServicePayloadFrontend> {
