@@ -45,4 +45,9 @@ class Column
     {
         return $this->label;
     }
+
+    public function getUuid(): string
+    {
+        return $this->uuid;
+    }
 }

@@ -1,10 +1,14 @@
 services:
-  akeneo.tailored_import.reader.file.factory.xlsx:
+  akeneo.tailored_import.reader.file.factory:
     class: Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File\FlatFileIteratorFactory
     arguments:
-      - 'xlsx'
+      - '@akeneo.tailored_import.spout.cell_formatter'
 
   akeneo.tailored_import.reader.file.xlsx:
     class: Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File\Reader
     arguments:
-      - '@akeneo.tailored_import.reader.file.factory.xlsx'
+      - 'xlsx'
+      - '@akeneo.tailored_import.reader.file.factory'
+
+  akeneo.tailored_import.spout.cell_formatter:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\FlatFileIterator\CellsFormatter

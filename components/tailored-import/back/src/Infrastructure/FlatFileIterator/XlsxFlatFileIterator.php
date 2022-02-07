@@ -31,7 +31,8 @@ class XlsxFlatFileIterator implements FlatFileIteratorInterface
     public function __construct(
         private string $fileType,
         private string $filePath,
-        private array $fileStructure
+        private array $fileStructure,
+        private CellsFormatter $cellsFormatter,
     ) {
         $this->fileReader = $this->openFile();
         $this->sheet = $this->selectSheet();
@@ -61,7 +62,9 @@ class XlsxFlatFileIterator implements FlatFileIteratorInterface
 
         $firstProductColumn = $this->fileStructure['product_column'];
 
-        return array_slice($productRow->toArray(), $firstProductColumn);
+        $cells = array_slice($productRow->toArray(), $firstProductColumn);
+
+        return $this->cellsFormatter->format($cells);
     }
 
     public function next(): void
@@ -92,7 +95,6 @@ class XlsxFlatFileIterator implements FlatFileIteratorInterface
         }
 
         $fileReader = ReaderFactory::createFromType($this->fileType);
-        $fileReader->setShouldFormatDates(true);
         $fileReader->open($this->filePath);
 
         return $fileReader;

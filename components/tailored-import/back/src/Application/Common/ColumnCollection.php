@@ -30,6 +30,11 @@ class ColumnCollection
         return new self($columnInstances);
     }
 
+    public function getColumnUuids(): array
+    {
+        return array_map(fn (Column $column) => $column->getUuid(), $this->columns);
+    }
+
     public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->columns);

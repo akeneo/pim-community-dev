@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File;
 
 use Akeneo\Platform\TailoredImport\Application\Common\ColumnCollection;
+use Akeneo\Platform\TailoredImport\Application\Common\Row;
 use Akeneo\Platform\TailoredImport\Application\ReadFile\FileHeaderCollection;
 use Akeneo\Platform\TailoredImport\Infrastructure\FlatFileIterator\FlatFileIteratorInterface;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
@@ -29,7 +30,8 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Initia
     private ?FlatFileIteratorInterface $fileIterator = null;
 
     public function __construct(
-        private FlatFileIteratorFactory $flatFileIteratorFactory
+        private string $fileType,
+        private FlatFileIteratorFactory $flatFileIteratorFactory,
     ) {
     }
 
@@ -48,10 +50,12 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Initia
         }
 
         // Should we check if the numbers of cells in product line is equals to the number of columns/headers ?
+        // TODO format cell to string (instead of DateTime, number, bool)
 
-        // TODO RAB-482 instantiate the DTO
+        $normalizedColumns = $this->stepExecution->getJobParameters()->get('import_structure')['columns'];
+        $columns = ColumnCollection::createFromNormalized($normalizedColumns);
 
-        return $currentProductLine;
+        return new Row(array_combine($columns->getColumnUuids(), $currentProductLine));
     }
 
     public function setStepExecution(StepExecution $stepExecution): void
@@ -63,7 +67,7 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Initia
     {
         if (null === $this->fileIterator) {
             $jobParameters = $this->stepExecution->getJobParameters();
-            $this->fileIterator = $this->flatFileIteratorFactory->create($jobParameters);
+            $this->fileIterator = $this->flatFileIteratorFactory->create($this->fileType, $jobParameters);
             $this->fileIterator->rewind();
 
             $fileHeaders = $this->fileIterator->getHeaders();

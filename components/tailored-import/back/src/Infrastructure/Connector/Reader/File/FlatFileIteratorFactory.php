@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File;
 
+use Akeneo\Platform\TailoredImport\Infrastructure\FlatFileIterator\CellsFormatter;
 use Akeneo\Platform\TailoredImport\Infrastructure\FlatFileIterator\FlatFileIteratorInterface;
 use Akeneo\Platform\TailoredImport\Infrastructure\FlatFileIterator\XlsxFlatFileIterator;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -20,12 +21,12 @@ use Akeneo\Tool\Component\Batch\Job\UndefinedJobParameterException;
 
 class FlatFileIteratorFactory
 {
-    public function __construct(
-        private string $fileType,
-    ) {
+    public function __construct(private CellsFormatter $cellsFormatter)
+    {
+
     }
 
-    public function create(JobParameters $jobParameters): FlatFileIteratorInterface
+    public function create(string $fileType, JobParameters $jobParameters): FlatFileIteratorInterface
     {
         $filePath = $jobParameters->get('filePath');
 
@@ -42,9 +43,9 @@ class FlatFileIteratorFactory
             ];
         }
 
-        return match ($this->fileType) {
-            'xlsx' => new XlsxFlatFileIterator($this->fileType, $filePath, $fileStructure),
-            default => throw new \InvalidArgumentException(sprintf('Unsupported file type "%s"', $this->fileType)),
+        return match ($fileType) {
+            'xlsx' => new XlsxFlatFileIterator('xlsx', $filePath, $fileStructure, $this->cellsFormatter),
+            default => throw new \InvalidArgumentException(sprintf('Unsupported file type "%s"', $fileType)),
         };
     }
 }
