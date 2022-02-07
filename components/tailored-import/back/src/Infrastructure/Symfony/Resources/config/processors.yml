@@ -1,5 +1,6 @@
 services:
-  akeneo.tailored_import.processor.dummy:
-    class: Akeneo\Platform\TailoredImport\Infrastructure\Connector\Processor\DummyProcessor
+  akeneo.tailored_import.processor.product:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Connector\Processor\ProductProcessor
     arguments:
       - '@logger'
+
