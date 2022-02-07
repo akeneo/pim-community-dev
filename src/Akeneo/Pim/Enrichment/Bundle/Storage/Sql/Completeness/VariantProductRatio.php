@@ -82,7 +82,7 @@ SQL;
                 %s
                 INNER JOIN pim_catalog_completeness completeness ON product.id = completeness.product_id
                 WHERE
-                    root_product_model.id = :root_product_model_id
+                    root_product_model.id IS NOT NULL AND root_product_model.id = :root_product_model_id
               ) AS product
             INNER JOIN pim_catalog_locale locale ON locale.id = product.locale_id
             INNER JOIN pim_catalog_channel channel ON channel.id = product.channel_id
