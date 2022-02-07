@@ -40,6 +40,23 @@ CSV;
     }
 
     /** @test */
+    public function itExportsTableValuesInCsvInFr(): void
+    {
+        $config = ['header_with_label' => true, 'with_label' => true, 'withHeader' => true, 'file_locale' => 'fr_FR'];
+        $csv = $this->jobLauncher->launchExport(static::CSV_EXPORT_JOB_CODE, null, $config);
+
+        $expected = <<<CSV
+Produit;Attribut;ingredient;[quantity];"Est allergène";[additional_info];[nutrition_score]
+111111;"foo (français France, [mobile])";[sugar];50;Non;"this is a text";[B]
+111111;"foo (français France, [mobile])";Oeuf;23;Oui;;[C]
+111111;"foo (anglais États-Unis, Ecommerce)";[sugar];66;Oui;"this is a second text";[B]
+111111;"foo (anglais États-Unis, Ecommerce)";Oeuf;20;Oui;;[C]
+
+CSV;
+        Assert::assertSame($expected, $csv);
+    }
+
+    /** @test */
     public function itExportsTableValuesInXlsx(): void
     {
         $config = ['header_with_label' => true, 'with_label' => true, 'withHeader' => true, 'file_locale' => 'en_US'];
@@ -121,16 +138,16 @@ CSV;
                         ['code' => 'sugar', 'labels' => ['en_US' => 'Sugar']],
                         ['code' => 'egg', 'labels' => ['fr_FR' => 'Oeuf']],
                     ],
-                    'labels' => ['en_US' => 'Ingredient'],
+                    'labels' => ['en_US' => 'Ingredient', 'fr_FR' => 'ingredient'],
+                ],
+                [
+                    'data_type' => 'number',
+                    'code' => 'quantity',
                 ],
                 [
                     'data_type' => 'boolean',
                     'code' => 'allergen',
                     'labels' => ['fr_FR' => 'Est allergène', 'en_US' => 'Is allergenic']
-                ],
-                [
-                    'data_type' => 'number',
-                    'code' => 'quantity',
                 ],
                 [
                     'data_type' => 'text',
