@@ -11,7 +11,7 @@ const useEvaluateProduct = (product: Product) => {
       ? 'akeneo_data_quality_insights_evaluate_product_model'
       : 'akeneo_data_quality_insights_evaluate_product';
 
-    return router.generate(routeName, {productId: null !== product.meta.id ? product.meta.id.toString() : ''})
+    return router.generate(routeName, {productId: product.meta.id?.toString() || ''})
   }, [router, product]);
 
   return useCallback(async () => {
