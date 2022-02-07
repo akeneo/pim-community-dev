@@ -16,7 +16,7 @@ import {
   useBooleanState,
   uuid,
 } from 'akeneo-design-system';
-import {getLabel, Locale, LocaleCode, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {getLabel, LocaleCode, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {AttributeOption, SelectColumnDefinition, SelectOption, TableAttribute} from '../models';
 import {TwoColumnsLayout} from './TwoColumnsLayout';
 import {FieldsList} from '../shared';
@@ -24,8 +24,9 @@ import styled from 'styled-components';
 import {ManageOptionsRow} from './ManageOptionsRow';
 import {LocaleSwitcher} from './LocaleSwitcher';
 import {DeleteOptionModal} from './DeleteOptionModal';
-import {LocaleRepository, SelectOptionRepository} from '../repositories';
+import {SelectOptionRepository} from '../repositories';
 import {ImportOptionsButton} from './ImportOptionsButton';
+import {useActivatedLocales} from './useActivatedLocales';
 
 const TableContainer = styled.div`
   height: calc(100vh - 270px);
@@ -93,10 +94,11 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
   const userContext = useUserContext();
   const router = useRouter();
   const translate = useTranslate();
+  const activatedLocales = useActivatedLocales();
 
   const [page, setPage] = React.useState<number>(1);
   const [violations, setViolations] = React.useState<{[optionId: string]: string[]}>({});
-  const [activatedLocales, setActivatedLocales] = React.useState<Locale[]>();
+
   const [options, setOptions] = React.useState<SelectOptionWithId[]>();
   const [selectedOptionIndex, setSelectedOptionIndex] = React.useState<number | undefined>(undefined);
   const [currentLocaleCode, setCurrentLocaleCode] = React.useState<LocaleCode>(userContext.get('catalogLocale'));
@@ -172,10 +174,6 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
       }
     }
   }, [options?.length]);
-
-  React.useEffect(() => {
-    LocaleRepository.findActivated(router).then((activeLocales: Locale[]) => setActivatedLocales(activeLocales));
-  }, [router]);
 
   const setOptionsAndValidate = (newOptions: SelectOptionWithId[]) => {
     setOptions([...newOptions]);

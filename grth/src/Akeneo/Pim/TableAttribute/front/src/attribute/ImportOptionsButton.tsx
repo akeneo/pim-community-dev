@@ -3,7 +3,7 @@ import {ArrowDownIcon, Button, Dropdown, getColor, LoaderIcon, useBooleanState} 
 import {useAttributeWithOptions} from './useAttributeWithOptions';
 import styled from 'styled-components';
 import {AttributeCode, AttributeOption} from '../models';
-import {useRouter} from '@akeneo-pim-community/shared';
+import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {AttributeOptionFetcher} from '../fetchers';
 
 type ImportOptionsButtonProps = {
@@ -29,6 +29,7 @@ const OptionsCount = styled.div`
 `;
 
 const ImportOptionsButton: React.FC<ImportOptionsButtonProps> = ({onClick}) => {
+  const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState();
   const [isImporting, setIsImporting] = React.useState<boolean>(false);
   const attributes = useAttributeWithOptions(isOpen);
@@ -37,7 +38,9 @@ const ImportOptionsButton: React.FC<ImportOptionsButtonProps> = ({onClick}) => {
   const handleClick = (selectAttributeCode: AttributeCode) => {
     close();
     setIsImporting(true);
+    console.log('handle click');
     AttributeOptionFetcher.byAttributeCode(router, selectAttributeCode).then(attributeOptions => {
+      console.log('fetched');
       onClick(attributeOptions);
       setIsImporting(false);
     });
@@ -53,7 +56,8 @@ const ImportOptionsButton: React.FC<ImportOptionsButtonProps> = ({onClick}) => {
         }}
         disabled={isImporting}
       >
-        Import from existing attribute {isImporting ? <LoaderIcon /> : <ArrowDownIcon />}
+        {translate('pim_table_attribute.form.attribute.import_from_existing_attribute')}{' '}
+        {isImporting ? <LoaderIcon data-testid={'isLoading'} /> : <ArrowDownIcon />}
       </Button>
       {isOpen && !isImporting && (
         <Dropdown.Overlay onClose={close} dropdownOpenerVisible={true}>
@@ -62,7 +66,13 @@ const ImportOptionsButton: React.FC<ImportOptionsButtonProps> = ({onClick}) => {
               return (
                 <DropdownItem onClick={() => handleClick(attribute.code)} key={attribute.code}>
                   <AttributeLabel>{attribute.label}</AttributeLabel>
-                  <OptionsCount>{attribute.options_count} options</OptionsCount>
+                  <OptionsCount>
+                    {translate(
+                      'pim_table_attribute.form.attribute.option_count',
+                      {count: attribute.options_count},
+                      attribute.options_count
+                    )}
+                  </OptionsCount>
                 </DropdownItem>
               );
             })}
