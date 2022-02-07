@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\Domain\Model\Permission\AccessLevel;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
-use Akeneo\Pim\Enrichment\Product\Domain\Query\IsUserCategoryGranted;
-use Akeneo\Pim\Enrichment\Product\Infrastructure\AntiCorruptionLayer\Feature;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
@@ -32,9 +30,8 @@ use Webmozart\Assert\Assert;
 final class UserCategoryShouldBeGrantedValidator extends ConstraintValidator
 {
     public function __construct(
-        private IsUserCategoryGranted $isUserCategoryGranted,
-        private ProductRepositoryInterface $productRepository,
-        private Feature $feature
+        private GetCategoryCodes $getCategoryCodes,
+        private GetOwnedCategories $getOwnedCategories
     ) {
     }
 
@@ -43,27 +40,24 @@ final class UserCategoryShouldBeGrantedValidator extends ConstraintValidator
         Assert::isInstanceOf($command, UpsertProductCommand::class);
         Assert::isInstanceOf($constraint, UserCategoryShouldBeGranted::class);
 
-        if (!$this->feature->isEnabled(Feature::PERMISSION)) {
-            return;
-        }
-
-        $product = $this->productRepository->findOneByIdentifier($command->productIdentifier());
-        if (null === $product) {
-            // A new product without category is always granted (from a category permission point of view).
-            // TODO later: if we create with a category, we have to check the category is granted
-            return;
-        }
-
         try {
             $productIdentifier = ProductIdentifier::fromString($command->productIdentifier());
         } catch (\InvalidArgumentException) {
             return;
         }
 
-        if (!$this->isUserCategoryGranted->forProductAndAccessLevel(
-            $command->userId(),
-            $productIdentifier,
-            AccessLevel::OWN_PRODUCTS
+        $productCategoryCodes = $this->getCategoryCodes->fromProductIdentifiers([$productIdentifier])[$productIdentifier->asString()] ?? null;
+        if (null === $productCategoryCodes || [] === $productCategoryCodes) {
+            // null => product does not exist
+            // [] => product exists and has no category
+            // A new product without category is always granted (from a category permission point of view).
+            // TODO later: if we create/add with a category, we have to check the category is granted
+            return;
+        }
+
+        if ([] === $this->getOwnedCategories->forUserGroupIds(
+            $productCategoryCodes,
+            $command->userId()
         )) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }
