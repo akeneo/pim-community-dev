@@ -1,2 +1,2 @@
-export * from './useFetchConfig'
+export * from './useFetchConfig';
 export * from './useSaveConfig';

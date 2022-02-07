@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react';
+import React, {ReactNode} from 'react';
 import styled from 'styled-components';
-import { AkeneoIcon, CommonStyle, getColor } from 'akeneo-design-system';
+import {AkeneoIcon, CommonStyle, getColor} from 'akeneo-design-system';
 
 type Props = {
   children?: ReactNode;
@@ -29,7 +29,7 @@ const Page = styled.div`
   padding: 40px;
 `;
 
-const FakePIM = ({ children }: Props) => {
+const FakePIM = ({children}: Props) => {
   return (
     <Container>
       <Menu>
@@ -40,4 +40,4 @@ const FakePIM = ({ children }: Props) => {
   );
 };
 
-export { FakePIM };
+export {FakePIM};
