@@ -1,5 +1,11 @@
 # 5.0.x
 
+# 5.0.76 (2022-02-07)
+
+## Bug fixes
+
+- PIM-10257: Fix content Security Policy error log
+
 # 5.0.75 (2022-02-04)
 
 # 5.0.74 (2022-02-04)
