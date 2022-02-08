@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Processor;
 
 use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
@@ -10,11 +12,15 @@ use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 
+/**
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
     private StepExecution $stepExecution;
 
-    public function process($item)
+    public function process($item): array
     {
         if (!$item instanceof Row) {
             throw new \RuntimeException('Invalid type of item');

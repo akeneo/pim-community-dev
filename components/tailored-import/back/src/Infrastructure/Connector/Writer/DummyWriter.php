@@ -25,6 +25,6 @@ class DummyWriter implements ItemWriterInterface
 
     public function write(array $items): void
     {
-        $this->logger->debug('[TI] Writings items', ['items' => $items]);
+        $this->logger->critical('[TI] Writings items', ['items' => $items]);
     }
 }
