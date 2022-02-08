@@ -21,17 +21,13 @@ use Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
+use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
 use PHPUnit\Framework\Assert;
 
-final class UpsertProductWithPermissionIntegration extends TestCase
+final class UpsertProductWithPermissionIntegration extends EnrichmentProductTestCase
 {
     private UpsertProductHandler $upsertProductHandler;
     private ProductRepositoryInterface $productRepository;
-
-    protected function getConfiguration(): Configuration
-    {
-        return $this->catalog->useTechnicalCatalog();
-    }
 
     /**
      * {@inheritdoc}
@@ -40,6 +36,8 @@ final class UpsertProductWithPermissionIntegration extends TestCase
     {
         FeatureHelper::skipIntegrationTestWhenPermissionFeatureIsNotActivated();
         parent::setUp();
+
+        $this->loadEnrichmentProductFunctionalFixtures();
 
         $this->upsertProductHandler = $this->get(UpsertProductHandler::class);
         $this->productRepository = $this->get('pim_catalog.repository.product');
@@ -51,7 +49,7 @@ final class UpsertProductWithPermissionIntegration extends TestCase
         // Creates empty product (use command/handler when we can set a category)
         $product = $this->get('pim_catalog.builder.product')->createProduct('identifier');
         $this->get('pim_catalog.updater.product')->update($product, [
-            'categories' => ['categoryA'],
+            'categories' => ['print'],
         ]);
         $this->get('pim_catalog.saver.product')->save($product);
 
@@ -72,7 +70,7 @@ final class UpsertProductWithPermissionIntegration extends TestCase
     public function it_creates_a_new_uncategorized_product(): void
     {
         $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'new_product', valuesUserIntent: [
-            new SetTextValue('a_text', null, null, 'foo'),
+            new SetTextValue('name', null, null, 'foo'),
         ]);
         ($this->upsertProductHandler)($command);
 
