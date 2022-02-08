@@ -93,53 +93,16 @@ SQL;
     public function forType(string $attributeType): array
     {
         $query = <<<SQL
-            WITH locale_specific_codes AS (
-                SELECT attribute_locale.attribute_id, JSON_ARRAYAGG(locale.code) AS locale_codes
-                FROM pim_catalog_attribute_locale attribute_locale
-                INNER JOIN pim_catalog_locale locale ON attribute_locale.locale_id = locale.id
-                GROUP BY attribute_locale.attribute_id
-            )
-            SELECT attribute.code,
-                   attribute.attribute_type,
-                   attribute.properties,
-                   attribute.is_scopable,
-                   attribute.is_localizable,
-                   attribute.metric_family,
-                   attribute.default_metric_unit,
-                   attribute.decimals_allowed,
-                   attribute.backend_type,
-                   attribute.useable_as_grid_filter,
-                   COALESCE(locale_codes, JSON_ARRAY()) AS available_locale_codes
+            SELECT attribute.code
             FROM pim_catalog_attribute attribute
-            LEFT JOIN locale_specific_codes on attribute.id = attribute_id  
             WHERE attribute.attribute_type = (:attribute_type)
         SQL;
 
-        $rawResults = $this->connection->executeQuery(
+        $codes = $this->connection->executeQuery(
             $query,
             ['attribute_type' => $attributeType]
-        )->fetchAllAssociative();
+        )->fetchFirstColumn();
 
-        $attributes = [];
-
-        foreach ($rawResults as $rawAttribute) {
-            $properties = unserialize($rawAttribute['properties']);
-
-            $attributes[$rawAttribute['code']] = new Attribute(
-                $rawAttribute['code'],
-                $rawAttribute['attribute_type'],
-                $properties,
-                boolval($rawAttribute['is_localizable']),
-                boolval($rawAttribute['is_scopable']),
-                $rawAttribute['metric_family'],
-                $rawAttribute['default_metric_unit'],
-                boolval($rawAttribute['decimals_allowed']),
-                $rawAttribute['backend_type'],
-                json_decode($rawAttribute['available_locale_codes']),
-                boolval($rawAttribute['useable_as_grid_filter'])
-            );
-        }
-
-        return $attributes;
+        return $this->forCodes($codes);
     }
 }
