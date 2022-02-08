@@ -21,6 +21,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PHPUnit\Framework\Assert;
 
@@ -39,16 +40,18 @@ abstract class EnrichmentProductTestCase extends TestCase
         $this->createCategory(['code' => 'suppliers']);
         $this->createCategory(['code' => 'sales']);
 
-        $this->get(UserGroupCategoryPermissionsSaver::class)->save('All', [
-            'own' => ['all' => false, 'identifiers' => []],
-            'edit' => ['all' => false, 'identifiers' => []],
-            'view' => ['all' => false, 'identifiers' => []],
-        ]);
-        $this->get(UserGroupCategoryPermissionsSaver::class)->save('Redactor', [
-            'own' => ['all' => false, 'identifiers' => []],
-            'edit' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales']],
-            'view' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales']],
-        ]);
+        if (FeatureHelper::isPermissionFeatureActivated()) {
+            $this->get('Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver')->save('All', [
+                'own' => ['all' => false, 'identifiers' => []],
+                'edit' => ['all' => false, 'identifiers' => []],
+                'view' => ['all' => false, 'identifiers' => []],
+            ]);
+            $this->get('Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver')->save('Redactor', [
+                'own' => ['all' => false, 'identifiers' => []],
+                'edit' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales']],
+                'view' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales']],
+            ]);
+        }
 
         $this->createAttribute('name', ['type' => AttributeTypes::TEXT]);
         $this->createAttribute('sub_name', ['type' => AttributeTypes::TEXT]);
