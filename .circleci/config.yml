@@ -578,8 +578,8 @@ workflows:
     jobs:
       - pull-up/pull-up:
           from: "5.0"
-          into: "master"
-          branch_prefix: "50_to_master"
+          into: "6.0"
+          branch_prefix: "50_to_60"
           checkout_ours: 'src/Akeneo/Platform/EnterpriseVersion.php **/translations/*.yml'
           github_token: MICHEL_TAG_TOKEN
           github_username: "micheltag"
