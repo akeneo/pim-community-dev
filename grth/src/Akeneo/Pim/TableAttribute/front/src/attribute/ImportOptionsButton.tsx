@@ -38,9 +38,7 @@ const ImportOptionsButton: React.FC<ImportOptionsButtonProps> = ({onClick}) => {
   const handleClick = (selectAttributeCode: AttributeCode) => {
     close();
     setIsImporting(true);
-    console.log('handle click');
     AttributeOptionFetcher.byAttributeCode(router, selectAttributeCode).then(attributeOptions => {
-      console.log('fetched');
       onClick(attributeOptions);
       setIsImporting(false);
     });

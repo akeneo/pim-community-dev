@@ -10,8 +10,10 @@ const useAttributeWithOptions: (isOpen: boolean) => AttributeWithOptions[] = isO
   const [attributes, setAttributes] = React.useState<AttributeWithOptions[] | undefined>();
 
   React.useEffect(() => {
-    AttributeFetcher.findAttributeWithOptions(router, locale).then(attributes => setAttributes(attributes));
-  }, [isOpen]);
+    if (isOpen && !attributes) {
+      AttributeFetcher.findAttributeWithOptions(router, locale).then(attributes => setAttributes(attributes));
+    }
+  }, [isOpen, attributes, locale, router]);
 
   return attributes || [];
 };

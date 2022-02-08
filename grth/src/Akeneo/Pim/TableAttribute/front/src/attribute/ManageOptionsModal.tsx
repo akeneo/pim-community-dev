@@ -344,7 +344,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
         const existingOptionIndex = (options || []).findIndex(({code}) => code === attributeOption.code);
         if (existingOptionIndex >= 0) {
           newOptions[existingOptionIndex].labels = attributeOption.labels;
-        } else {
+        } else if (newOptions.length < limit) {
           const id = uuid();
           newOptions.push({
             ...attributeOption,
