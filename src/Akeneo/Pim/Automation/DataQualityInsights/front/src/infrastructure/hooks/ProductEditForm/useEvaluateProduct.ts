@@ -6,12 +6,19 @@ const useEvaluateProduct = (product: Product) => {
   const router = useRouter();
 
   const url = useMemo(() => {
-    const routeName =
-    'product_model' === product.meta.model_type
-      ? 'akeneo_data_quality_insights_evaluate_product_model'
-      : 'akeneo_data_quality_insights_evaluate_product';
+    if (null === product.meta.id) {
+      throw Error('Product id is not defined');
+    }
+    if ('product_model' !== product.meta.model_type && 'product' !== product.meta.model_type) {
+      throw Error('Invalid product type');
+    }
 
-    return router.generate(routeName, {productId: product.meta.id?.toString() || ''})
+    const routeName =
+      'product_model' === product.meta.model_type
+        ? 'akeneo_data_quality_insights_evaluate_product_model'
+        : 'akeneo_data_quality_insights_evaluate_product';
+
+    return router.generate(routeName, {productId: product.meta.id.toString()});
   }, [router, product]);
 
   return useCallback(async () => {
