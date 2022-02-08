@@ -7,7 +7,7 @@
   "scripts": {
     "lib:build": "echo 'Building Akeneo Design System lib...' && tsc -p ./tsconfig.build.json && echo 'Done!'",
     "lib:watch": "tsc -p ./tsconfig.build.json --watch",
-    "test": "yarn lint:check && yarn test:unit:run && yarn test:visual:run",
+    "test": "yarn lint && yarn test:unit:run && yarn test:visual:run",
     "test:unit:run": "jest --config ./jest.unit.config.js --maxWorkers=3",
     "test:unit:watch": "jest --config ./jest.unit.config.js --watch --maxWorkers=3",
     "test:visual:run": "yarn storybook:extract && jest --config ./jest.visual.config.js",
