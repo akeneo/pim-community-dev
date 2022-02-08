@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Enrichment\Product\Integration\Query;
 
-use Akeneo\Pim\Enrichment\Product\back\Test\Integration\EnrichmentProductTestCase;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Query\SqlGetCategoryCodes;
+use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
 use PHPUnit\Framework\Assert;
 
 final class SqlGetCategoryCodesIntegration extends EnrichmentProductTestCase
