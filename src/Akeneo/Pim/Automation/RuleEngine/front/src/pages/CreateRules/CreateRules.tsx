@@ -19,6 +19,8 @@ import {Payload} from '../../rules.types';
 import {LocaleCode} from '../../models';
 import {pimTheme} from 'akeneo-design-system';
 
+const RuleManager = require('pimee/rule-manager');
+
 const transformFormData = (
   formData: FormDataInput,
   currentCatalogLocale: LocaleCode
@@ -75,6 +77,7 @@ const CreateRules: React.FC<Props> = ({originalRuleCode}) => {
       return error;
     }
     if (result.ok) {
+      RuleManager.familyAttributesRulesNumberPromise = null;
       notify(
         NotificationLevel.SUCCESS,
         translate('pimee_catalog_rule.form.creation.notification.success')

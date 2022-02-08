@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10262: Fix Helper about rule does not show under the related attribute on the PEF
+
 # 5.0.76 (2022-02-07)
 
 # 5.0.75 (2022-02-04)

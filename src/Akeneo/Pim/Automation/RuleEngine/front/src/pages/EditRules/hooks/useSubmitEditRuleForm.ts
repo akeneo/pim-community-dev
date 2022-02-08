@@ -18,6 +18,8 @@ import {
 } from '../components/conditions/DateConditionLines/dateConditionLines.utils';
 import {getErrorPath} from './ErrorPathResolver';
 
+const RuleManager = require('pimee/rule-manager');
+
 const registerConditions = (
   register: Control['register'],
   conditions: Condition[]
@@ -211,6 +213,7 @@ const submitEditRuleForm = (
       body: transformFormData(formData),
     });
     if (updateResponse.ok) {
+      RuleManager.familyAttributesRulesNumberPromise = null;
       formData = createCalculateDefaultValues(formData);
       reset(formData);
       registerConditions(register, formData.content?.conditions || []);

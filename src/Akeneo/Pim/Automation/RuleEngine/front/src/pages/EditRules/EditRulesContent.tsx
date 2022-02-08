@@ -24,6 +24,8 @@ import {Dropdown} from '../../components/Dropdown';
 import {AlertDialog} from '../../components/AlertDialog/AlertDialog';
 import {Breadcrumb, pimTheme} from 'akeneo-design-system';
 
+const RuleManager = require('pimee/rule-manager');
+
 const Illustration = styled.div`
   background-image: url('/bundles/akeneopimruleengine/assets/illustrations/rules.svg');
 `;
@@ -130,6 +132,7 @@ const EditRulesContent: React.FC<Props> = ({
     }
 
     if (result.ok) {
+      RuleManager.familyAttributesRulesNumberPromise = null;
       notify(
         NotificationLevel.SUCCESS,
         translate('pimee_catalog_rule.form.delete.notification.success')
