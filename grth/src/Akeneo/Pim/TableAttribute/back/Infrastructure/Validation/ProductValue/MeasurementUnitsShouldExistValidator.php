@@ -41,8 +41,13 @@ final class MeasurementUnitsShouldExistValidator extends ConstraintValidator
         $tableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($value->getAttributeCode());
 
         foreach ($value->getData() as $rowIndex => $row) {
-            foreach ($row as $columnId => $cell) {
-                $column = $tableConfiguration->getColumn(ColumnId::fromString($columnId));
+            foreach ($row as $stringColumnId => $cell) {
+                try {
+                    $columnId = ColumnId::fromString($stringColumnId);
+                } catch (\InvalidArgumentException) {
+                    continue;
+                }
+                $column = $tableConfiguration->getColumn($columnId);
 
                 if (!$column instanceof MeasurementColumn) {
                     continue;
