@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Test\Acceptance\Infrastructure\Connector\Reader\File;
+namespace Akeneo\Platform\TailoredImport\Test\Acceptance\Infrastructure\Connector\Reader;
 
 use Akeneo\Platform\TailoredImport\Application\Common\Row;
 use Akeneo\Platform\TailoredImport\Domain\Exception\MismatchedFileHeadersException;
-use Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File\Reader;
+use Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\FileReader;
 use Akeneo\Platform\TailoredImport\Test\Acceptance\AcceptanceTestCase;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 
-class ReaderTest extends AcceptanceTestCase
+class FileReaderTest extends AcceptanceTestCase
 {
     private const DEFAULT_COLUMN_CONFIGURATION = [
         ['label' => 'Sku', 'uuid' => '25621f5a-504f-4893-8f0c-9f1b0076e53e', 'index' => 0],
@@ -36,7 +36,7 @@ class ReaderTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function it_returns_a_list_of_cell_from_a_file()
+    public function it_returns_a_list_of_cell_from_a_file(): void
     {
         $expectedData = [
             new Row([
@@ -72,7 +72,7 @@ class ReaderTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function it_skip_row_that_contain_out_of_bound_data()
+    public function it_skip_row_that_contain_out_of_bound_data(): void
     {
         $this->expectException(InvalidItemException::class);
         $this->launchRead(sheetName: 'Out of bound value');
@@ -81,7 +81,7 @@ class ReaderTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function it_check_that_file_column_match_with_column_configuration()
+    public function it_check_that_file_column_match_with_column_configuration(): void
     {
         $this->expectException(MismatchedFileHeadersException::class);
         $columnConfiguration = [
@@ -97,18 +97,14 @@ class ReaderTest extends AcceptanceTestCase
     }
 
     private function launchRead(
-        string $filePath = 'components/tailored-import/back/tests/Common/simple_import.xlsx',
-        int $headerLine = 0,
-        int $firstColumn = 0,
-        int $productLine = 1,
         string $sheetName = 'Products',
         array $columnConfiguration = self::DEFAULT_COLUMN_CONFIGURATION
     ): array {
-        $stepExecution = $this->getJobExecution($filePath, $headerLine, $firstColumn, $productLine, $sheetName, $columnConfiguration);
+        $stepExecution = $this->getStepExecution($sheetName, $columnConfiguration);
         $reader = $this->getReader($stepExecution);
 
         $readData = [];
-        while($data = $reader->read()) {
+        while ($data = $reader->read()) {
             $readData[] = $data;
         }
 
@@ -117,22 +113,18 @@ class ReaderTest extends AcceptanceTestCase
         return $readData;
     }
 
-    private function getJobExecution(
-        string $filePath = 'components/tailored-import/back/tests/Common/simple_import.xlsx',
-        int $headerLine = 0,
-        int $firstColumn = 0,
-        int $productLine = 1,
+    private function getStepExecution(
         string $sheetName = 'Products',
         array $columnConfiguration = self::DEFAULT_COLUMN_CONFIGURATION
-    ) {
+    ): StepExecution {
         $jobParameters = new JobParameters([
             'file_structure' => [
-                'header_line' => $headerLine,
-                'first_column' => $firstColumn,
-                'product_line' => $productLine,
+                'header_line' => 0,
+                'first_column' => 0,
+                'product_line' => 1,
                 'sheet_name' => $sheetName,
             ],
-            'filePath' => $filePath,
+            'filePath' => 'components/tailored-import/back/tests/Common/simple_import.xlsx',
             'import_structure' => [
                 'columns' => $columnConfiguration
             ]
@@ -144,7 +136,7 @@ class ReaderTest extends AcceptanceTestCase
         return new StepExecution('step_name', $jobExecution);
     }
 
-    private function getReader(StepExecution $stepExecution): Reader
+    private function getReader(StepExecution $stepExecution): FileReader
     {
         $reader = $this->get('akeneo.tailored_import.reader.file.xlsx');
         $reader->setStepExecution($stepExecution);

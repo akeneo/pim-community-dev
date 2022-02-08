@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\Infrastructure\Spout;
 
-use Akeneo\Platform\TailoredImport\Application\ReadFile\FileHeaderCollection;
 use Akeneo\Platform\TailoredImport\Domain\Exception\FileNotFoundException;
 use Akeneo\Platform\TailoredImport\Domain\Exception\SheetNotFoundException;
+use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FileHeaderCollection;
 use Akeneo\Platform\TailoredImport\Infrastructure\Spout\XlsxFlatFileIterator;
 use Akeneo\Platform\TailoredImport\Test\Acceptance\AcceptanceTestCase;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;

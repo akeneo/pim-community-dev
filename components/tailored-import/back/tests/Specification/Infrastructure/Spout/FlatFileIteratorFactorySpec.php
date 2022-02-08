@@ -33,7 +33,7 @@ class FlatFileIteratorFactorySpec extends ObjectBehavior
                 'header_line' => 0,
                 'first_column' => 0,
                 'product_line' => 1,
-                'sheet_name' => 'Sheet1',
+                'sheet_name' => 'Products',
             ]
         ]);
 
@@ -48,7 +48,7 @@ class FlatFileIteratorFactorySpec extends ObjectBehavior
                 'header_line' => 0,
                 'first_column' => 0,
                 'product_line' => 1,
-                'sheet_name' => 'Sheet1',
+                'sheet_name' => 'Products',
             ]
         ]);
 

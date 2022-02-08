@@ -39,6 +39,7 @@ $rules = [
             'Psr\Log\LoggerInterface',
             'Symfony\Contracts',
             'Symfony\Component',
+            'Webmozart\Assert\Assert',
             'Akeneo\Platform\TailoredImport\Application',
             'Akeneo\Platform\TailoredImport\Domain',
 

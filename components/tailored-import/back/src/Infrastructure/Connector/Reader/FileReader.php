@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File;
+namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader;
 
 use Akeneo\Platform\TailoredImport\Application\Common\ColumnCollection;
 use Akeneo\Platform\TailoredImport\Application\Common\Row;
-use Akeneo\Platform\TailoredImport\Application\ReadFile\FileHeaderCollection;
 use Akeneo\Platform\TailoredImport\Domain\Exception\MismatchedFileHeadersException;
+use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FileHeaderCollection;
 use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FlatFileIteratorFactory;
 use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FlatFileIteratorInterface;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
@@ -28,7 +28,7 @@ use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 
-class Reader implements ItemReaderInterface, StepExecutionAwareInterface, InitializableInterface, FlushableInterface, TrackableItemReaderInterface
+class FileReader implements ItemReaderInterface, StepExecutionAwareInterface, InitializableInterface, FlushableInterface, TrackableItemReaderInterface
 {
     private StepExecution $stepExecution;
     private ?FlatFileIteratorInterface $fileIterator = null;
@@ -105,7 +105,7 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Initia
         return $this->fileIterator;
     }
 
-    protected function checkColumnNumber(array $productLine)
+    protected function checkColumnNumber(array $productLine): void
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $headerCount = count($this->fileIterator->getHeaders());
