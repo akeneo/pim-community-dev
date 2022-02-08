@@ -9,6 +9,11 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation:
             id: true
             generator:
                 strategy: AUTO
+        product_uuid:
+            type: binary
+            nullable: true
+            length: 16
+            fixed: true
     uniqueConstraints:
         locale_foreign_key_idx:
             columns:
