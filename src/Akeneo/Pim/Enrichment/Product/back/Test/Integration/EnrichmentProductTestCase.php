@@ -14,12 +14,14 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Enrichment\Product\Integration;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PHPUnit\Framework\Assert;
 
 abstract class EnrichmentProductTestCase extends TestCase
@@ -31,9 +33,22 @@ abstract class EnrichmentProductTestCase extends TestCase
 
     protected function loadEnrichmentProductFunctionalFixtures(): void
     {
+        $this->createUser('mary', ['ROLE_USER'], ['Redactor']);
+
         $this->createCategory(['code' => 'print']);
         $this->createCategory(['code' => 'suppliers']);
         $this->createCategory(['code' => 'sales']);
+
+        $this->get(UserGroupCategoryPermissionsSaver::class)->save('All', [
+            'own' => ['all' => false, 'identifiers' => []],
+            'edit' => ['all' => false, 'identifiers' => []],
+            'view' => ['all' => false, 'identifiers' => []],
+        ]);
+        $this->get(UserGroupCategoryPermissionsSaver::class)->save('Redactor', [
+            'own' => ['all' => false, 'identifiers' => []],
+            'edit' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales']],
+            'view' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales']],
+        ]);
 
         $this->createAttribute('name', ['type' => AttributeTypes::TEXT]);
         $this->createAttribute('sub_name', ['type' => AttributeTypes::TEXT]);
@@ -131,5 +146,32 @@ abstract class EnrichmentProductTestCase extends TestCase
         }
 
         $this->get('pim_catalog.saver.attribute_option')->saveAll($attributeOptions);
+    }
+
+    protected function createUser(string $username, array $stringRoles, array $groupNames): UserInterface
+    {
+        $user = $this->get('pim_user.factory.user')->create();
+        $user->setUsername($username);
+        $user->setPassword('password');
+        $user->setEmail($username . '@example.com');
+
+        $groups = $this->get('pim_user.repository.group')->findAll();
+        foreach ($groups as $group) {
+            if (\in_array($group->getName(), $groupNames)) {
+                $user->addGroup($group);
+            }
+        }
+
+        $roles = $this->get('pim_user.repository.role')->findAll();
+        foreach ($roles as $role) {
+            if (\in_array($role->getRole(), $stringRoles)) {
+                $user->addRole($role);
+            }
+        }
+
+        $this->get('validator')->validate($user);
+        $this->get('pim_user.saver.user')->save($user);
+
+        return $user;
     }
 }

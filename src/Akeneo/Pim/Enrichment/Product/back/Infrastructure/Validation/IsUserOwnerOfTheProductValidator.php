@@ -27,7 +27,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class UserCategoryShouldBeGrantedValidator extends ConstraintValidator
+final class IsUserOwnerOfTheProductValidator extends ConstraintValidator
 {
     public function __construct(
         private GetCategoryCodes $getCategoryCodes,
@@ -38,7 +38,7 @@ final class UserCategoryShouldBeGrantedValidator extends ConstraintValidator
     public function validate($command, Constraint $constraint): void
     {
         Assert::isInstanceOf($command, UpsertProductCommand::class);
-        Assert::isInstanceOf($constraint, UserCategoryShouldBeGranted::class);
+        Assert::isInstanceOf($constraint, IsUserOwnerOfTheProduct::class);
 
         try {
             $productIdentifier = ProductIdentifier::fromString($command->productIdentifier());
