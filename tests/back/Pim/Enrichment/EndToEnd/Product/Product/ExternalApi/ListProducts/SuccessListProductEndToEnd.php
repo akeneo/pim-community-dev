@@ -492,7 +492,7 @@ JSON;
 
     public function testListProductsWithQualityScores()
     {
-        $this->createProduct('simple_with_family_and_values', [
+        $product1 = $this->createProduct('simple_with_family_and_values', [
             'categories' => ['master'],
             'family' => 'familyA',
             'values' => [
@@ -501,7 +501,7 @@ JSON;
                 ]
             ],
         ]);
-        $this->createProduct('simple_with_no_family', [
+        $product2 = $this->createProduct('simple_with_no_family', [
             'categories' => ['master'],
             'values' => [
                 'a_text' => [
@@ -509,10 +509,16 @@ JSON;
                 ]
             ],
         ]);
-        $this->createProduct('simple_with_no_values', [
+        $product3 = $this->createProduct('simple_with_no_values', [
             'categories' => ['master'],
             'family' => 'familyA',
             'values' => [],
+        ]);
+
+        ($this->get('Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'))([
+            $product1->getId(),
+            $product2->getId(),
+            $product3->getId(),
         ]);
 
         $values = '{

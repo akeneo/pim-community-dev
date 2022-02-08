@@ -19,15 +19,13 @@ $rules = [
             //External dependencies
             'Ramsey\Uuid\Uuid',
             'Akeneo\Pim\Structure\Component\AttributeTypes',
+            'Symfony\Contracts\EventDispatcher\Event',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Domain'),
 
     $builder->only(
         [
             'Akeneo\Pim\Automation\DataQualityInsights\Domain',
-
-            //To fix: Create an interface or extract its call in a subscriber
-            'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductsIndex',
 
             //External dependencies
             'Psr\Log\LoggerInterface',
