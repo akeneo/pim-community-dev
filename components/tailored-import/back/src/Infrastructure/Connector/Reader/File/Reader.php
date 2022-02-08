@@ -48,7 +48,6 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Initia
 
     public function read()
     {
-        $this->fileIterator->next();
         if ($this->fileIterator->valid()) {
             $this->stepExecution->incrementSummaryInfo('item_position');
         }
@@ -58,6 +57,7 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Initia
             return null;
         }
 
+        $this->fileIterator->next();
         $this->checkColumnNumber($currentProductLine);
 
         $normalizedColumns = $this->stepExecution->getJobParameters()->get('import_structure')['columns'];
