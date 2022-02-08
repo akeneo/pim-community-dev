@@ -11,10 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Infrastructure\FlatFileIterator;
+namespace Akeneo\Platform\TailoredImport\Infrastructure\Spout;
 
 use Akeneo\Platform\TailoredImport\Application\ReadFile\FileHeaderCollection;
 
+/**
+ * @extends \Iterator<int, array | null>
+ */
 interface FlatFileIteratorInterface extends \Iterator
 {
     public function getHeaders(): FileHeaderCollection;

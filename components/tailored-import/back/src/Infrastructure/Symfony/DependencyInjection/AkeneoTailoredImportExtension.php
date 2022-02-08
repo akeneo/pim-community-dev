@@ -33,6 +33,7 @@ class AkeneoTailoredImportExtension extends Extension
         $loader->load('queries.yml');
         $loader->load('readers.yml');
         $loader->load('services.yml');
+        $loader->load('spout.yml');
         $loader->load('validations.yml');
         $loader->load('writers.yml');
 

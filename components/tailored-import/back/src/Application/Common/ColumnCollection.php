@@ -35,6 +35,9 @@ class ColumnCollection
         return array_map(fn (Column $column) => $column->getUuid(), $this->columns);
     }
 
+    /**
+     * @return \ArrayIterator<int, Column>
+     */
     public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->columns);

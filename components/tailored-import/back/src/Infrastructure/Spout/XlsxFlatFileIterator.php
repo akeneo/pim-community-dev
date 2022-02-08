@@ -11,15 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Infrastructure\FlatFileIterator;
+namespace Akeneo\Platform\TailoredImport\Infrastructure\Spout;
 
 use Akeneo\Platform\TailoredImport\Application\ReadFile\FileHeaderCollection;
+use Akeneo\Platform\TailoredImport\Domain\Exception\FileNotFoundException;
+use Akeneo\Platform\TailoredImport\Domain\Exception\SheetNotFoundException;
 use Box\Spout\Common\Entity\Cell;
 use Box\Spout\Reader\Common\Creator\ReaderFactory;
 use Box\Spout\Reader\IteratorInterface;
 use Box\Spout\Reader\ReaderInterface;
 use Box\Spout\Reader\SheetInterface;
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+use Box\Spout\Reader\XLSX\Reader;
 
 class XlsxFlatFileIterator implements FlatFileIteratorInterface
 {
@@ -29,7 +31,6 @@ class XlsxFlatFileIterator implements FlatFileIteratorInterface
     private FileHeaderCollection $headers;
 
     public function __construct(
-        private string $fileType,
         private string $filePath,
         private array $fileStructure,
         private CellsFormatter $cellsFormatter,
@@ -47,34 +48,41 @@ class XlsxFlatFileIterator implements FlatFileIteratorInterface
 
     public function rewind(): void
     {
-        $this->rewindRowIteratorBeforeFirstProductLine();
+        $this->rewindRowIteratorOnFirstProductLine();
     }
 
     public function current(): ?array
     {
         $productRow = $this->rows->current();
-
         if (!$this->valid() || null === $productRow || empty($productRow)) {
             $this->rewind();
 
             return null;
         }
 
-        $firstProductColumn = $this->fileStructure['product_column'];
+        $firstColumn = $this->fileStructure['first_column'];
 
-        $cells = array_slice($productRow->toArray(), $firstProductColumn);
+        $cells = array_values(array_slice($productRow->toArray(), $firstColumn));
+        $formattedCells = $this->cellsFormatter->format($cells);
 
-        return $this->cellsFormatter->format($cells);
+        return $this->addTrimmedCells($formattedCells);
     }
 
     public function next(): void
     {
         $this->rows->next();
+        if (!$this->rows->valid()) {
+            return;
+        }
+
+        if (empty(array_filter($this->rows->current()->toArray()))) {
+            $this->next();
+        }
     }
 
-    public function key(): mixed
+    public function key(): int
     {
-        return $this->rows->key();
+        return $this->rows->key() - 1 - $this->fileStructure['product_line'];
     }
 
     public function valid(): bool
@@ -91,10 +99,13 @@ class XlsxFlatFileIterator implements FlatFileIteratorInterface
     {
         $fileInfo = new \SplFileInfo($this->filePath);
         if (!$fileInfo->isFile()) {
-            throw new FileNotFoundException(sprintf('File "%s" could not be found', $this->filePath));
+            throw new FileNotFoundException($this->filePath);
         }
 
-        $fileReader = ReaderFactory::createFromType($this->fileType);
+        /** @var Reader $fileReader */
+        $fileReader = ReaderFactory::createFromType('xlsx');
+        $fileReader->setShouldPreserveEmptyRows(true);
+        $fileReader->setShouldFormatDates(true);
         $fileReader->open($this->filePath);
 
         return $fileReader;
@@ -103,21 +114,21 @@ class XlsxFlatFileIterator implements FlatFileIteratorInterface
     private function selectSheet(): SheetInterface
     {
         $sheetIterator = $this->fileReader->getSheetIterator();
-
         $sheetIterator->rewind();
 
-        $sheetIndex = $this->fileStructure['sheet_index'];
-        while (1 + $sheetIndex !== $sheetIterator->key()) { // Iterator keys starts from 1
-            $sheetIterator->next();
+        $sheetName = $this->fileStructure['sheet_name'];
+        foreach ($sheetIterator as $sheet) {
+            if ($sheet->getName() === $sheetName) {
+                return $sheet;
+            }
         }
 
-        return $sheetIterator->current();
+        throw new SheetNotFoundException($sheetName);
     }
 
     private function readHeaders(): FileHeaderCollection
     {
         $rowIterator = $this->sheet->getRowIterator();
-
         $rowIterator->rewind();
 
         $headersRowIndex = $this->fileStructure['header_line'];
@@ -126,26 +137,34 @@ class XlsxFlatFileIterator implements FlatFileIteratorInterface
         }
 
         $headersRow = $rowIterator->current();
-        $firstHeaderColumn = $this->fileStructure['header_column'];
-        $headerCells = array_slice($headersRow->getCells(), $firstHeaderColumn);
+        $firstColumn = $this->fileStructure['first_column'];
+        $headerCells = array_values(array_slice($headersRow->getCells(), $firstColumn));
 
         // /!\ Index is relative => 0 is the first header column but not necessary the first file column
         // We have to homogenize this index generation with the column list generation from a file (RAB-494)
         $normalizedHeaders = array_map(static fn (Cell $headerCell, int $relativeIndex) => [
-            'index' => $relativeIndex,
+            'index' => $firstColumn + $relativeIndex,
             'label' => $headerCell->getValue(),
         ], array_values($headerCells), array_keys($headerCells));
 
         return FileHeaderCollection::createFromNormalized($normalizedHeaders);
     }
 
-    private function rewindRowIteratorBeforeFirstProductLine(): void
+    private function rewindRowIteratorOnFirstProductLine(): void
     {
-        $this->rows->rewind();
-
         $firstProductLine = $this->fileStructure['product_line'];
-        while ($firstProductLine !== $this->rows->key()) {  // Iterator keys starts from 1
-            $this->rows->next();
+        foreach ($this->rows as $index => $row) {
+            if ($index - 1 === $firstProductLine) {
+                return;
+            }
         }
+    }
+
+    private function addTrimmedCells(array $formattedCells): array
+    {
+        $firstColumn = $this->fileStructure['first_column'];
+        $expectedValueCount = $this->headers->count() - $firstColumn;
+
+        return array_replace(array_fill(0, $expectedValueCount, ''), $formattedCells);
     }
 }

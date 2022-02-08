@@ -16,15 +16,19 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File;
 use Akeneo\Platform\TailoredImport\Application\Common\ColumnCollection;
 use Akeneo\Platform\TailoredImport\Application\Common\Row;
 use Akeneo\Platform\TailoredImport\Application\ReadFile\FileHeaderCollection;
-use Akeneo\Platform\TailoredImport\Infrastructure\FlatFileIterator\FlatFileIteratorInterface;
+use Akeneo\Platform\TailoredImport\Domain\Exception\MismatchedFileHeadersException;
+use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FlatFileIteratorFactory;
+use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FlatFileIteratorInterface;
+use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
+use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 
-// TODO implement TrackableItemReaderInterface
-class Reader implements ItemReaderInterface, StepExecutionAwareInterface, InitializableInterface, FlushableInterface
+class Reader implements ItemReaderInterface, StepExecutionAwareInterface, InitializableInterface, FlushableInterface, TrackableItemReaderInterface
 {
     private StepExecution $stepExecution;
     private ?FlatFileIteratorInterface $fileIterator = null;
@@ -35,22 +39,26 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Initia
     ) {
     }
 
+    public function totalItems(): int
+    {
+        $iterator = $this->createFileIterator();
+
+        return max(iterator_count($iterator) - 1, 0);
+    }
+
     public function read()
     {
         $this->fileIterator->next();
-
         if ($this->fileIterator->valid()) {
             $this->stepExecution->incrementSummaryInfo('item_position');
         }
 
         $currentProductLine = $this->fileIterator->current();
-
         if (null === $currentProductLine) {
             return null;
         }
 
-        // Should we check if the numbers of cells in product line is equals to the number of columns/headers ?
-        // TODO format cell to string (instead of DateTime, number, bool)
+        $this->checkColumnNumber($currentProductLine);
 
         $normalizedColumns = $this->stepExecution->getJobParameters()->get('import_structure')['columns'];
         $columns = ColumnCollection::createFromNormalized($normalizedColumns);
@@ -66,9 +74,7 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Initia
     public function initialize(): void
     {
         if (null === $this->fileIterator) {
-            $jobParameters = $this->stepExecution->getJobParameters();
-            $this->fileIterator = $this->flatFileIteratorFactory->create($this->fileType, $jobParameters);
-            $this->fileIterator->rewind();
+            $this->fileIterator = $this->createFileIterator();
 
             $fileHeaders = $this->fileIterator->getHeaders();
             $this->checkFileHeaders($fileHeaders);
@@ -86,7 +92,36 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Initia
         $columns = ColumnCollection::createFromNormalized($normalizedColumns);
 
         if (!$fileHeaders->matchToColumnCollection($columns)) {
-            throw new InvalidFileHeadersException();
+            throw new MismatchedFileHeadersException();
+        }
+    }
+
+    private function createFileIterator(): FlatFileIteratorInterface
+    {
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $this->fileIterator = $this->flatFileIteratorFactory->create($this->fileType, $jobParameters);
+        $this->fileIterator->rewind();
+
+        return $this->fileIterator;
+    }
+
+    protected function checkColumnNumber(array $productLine)
+    {
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $headerCount = count($this->fileIterator->getHeaders());
+        $columnCount = count($productLine);
+
+        if ($headerCount < count($productLine)) {
+            throw new InvalidItemException(
+                'pim_connector.steps.file_reader.invalid_item_columns_count',
+                new FileInvalidItem($productLine, ($this->stepExecution->getSummaryInfo('item_position'))),
+                [
+                    '%totalColumnsCount%' => $headerCount,
+                    '%itemColumnsCount%'  => $columnCount,
+                    '%filePath%' => $jobParameters->get('filePath'),
+                    '%lineno%' => $this->fileIterator->key()
+                ]
+            );
         }
     }
 }

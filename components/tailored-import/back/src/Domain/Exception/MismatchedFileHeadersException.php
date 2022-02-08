@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\File;
+namespace Akeneo\Platform\TailoredImport\Domain\Exception;
 
-class InvalidFileHeadersException extends \Exception
+class MismatchedFileHeadersException extends \Exception
 {
-    private const MESSAGE = 'akeneo.tailored_import.jobs.reader.invalid_file_headers';
+    private const MESSAGE = 'akeneo.tailored_import.jobs.reader.mismatched_file_headers';
 
     public function __construct()
     {

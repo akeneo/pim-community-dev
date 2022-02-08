@@ -16,7 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Application\ReadFile;
 use Akeneo\Platform\TailoredImport\Application\Common\ColumnCollection;
 use Webmozart\Assert\Assert;
 
-class FileHeaderCollection
+class FileHeaderCollection implements \Countable
 {
     private function __construct(
         private array $fileHeaders,
@@ -53,5 +53,10 @@ class FileHeaderCollection
         }
 
         return true;
+    }
+
+    public function count(): int
+    {
+        return count($this->fileHeaders);
     }
 }

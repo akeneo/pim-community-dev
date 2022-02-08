@@ -11,12 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Infrastructure\FlatFileIterator;
+namespace Akeneo\Platform\TailoredImport\Infrastructure\Spout;
 
 class CellsFormatter
 {
     /**
      * @params array<mixed> $cells
+     *
      * @return array<string>
      */
     public function format(array $cells): array
@@ -28,7 +29,7 @@ class CellsFormatter
 
     private function formatCell(mixed $cell): string
     {
-        switch(true) {
+        switch (true) {
             case $cell instanceof \DateTime:
                 return $cell->format('c');
             case is_bool($cell):
@@ -37,7 +38,7 @@ class CellsFormatter
             case is_numeric($cell):
                 return (string) $cell;
             case is_null($cell):
-                /** TODO validate the error message that we want expose to the user */
+                /* TODO validate the error message that we want expose to the user */
                 throw new \RuntimeException('');
             default:
                 throw new \RuntimeException(sprintf('Unsupported cell format "%s"', gettype($cell)));

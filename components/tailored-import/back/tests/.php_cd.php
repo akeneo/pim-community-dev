@@ -34,6 +34,9 @@ $rules = [
 
     $builder->only(
         [
+            'Box\Spout\Common',
+            'Box\Spout\Reader',
+            'Psr\Log\LoggerInterface',
             'Symfony\Contracts',
             'Symfony\Component',
             'Akeneo\Platform\TailoredImport\Application',
