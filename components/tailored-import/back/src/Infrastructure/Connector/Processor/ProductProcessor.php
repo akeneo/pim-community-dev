@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Processor;
 
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
-use Akeneo\Platform\TailoredImport\Application\Common\DataMapping;
 use Akeneo\Platform\TailoredImport\Application\Common\DataMappingCollection;
 use Akeneo\Platform\TailoredImport\Application\Common\Row;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingHandler;
@@ -21,7 +19,7 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
     private StepExecution $stepExecution;
-    private DataMappingCollection $dataMappingCollection;
+    private ?DataMappingCollection $dataMappingCollection = null;
 
     public function __construct(
         private ExecuteDataMappingHandler $handler

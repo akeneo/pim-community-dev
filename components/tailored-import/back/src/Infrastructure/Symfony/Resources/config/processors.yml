@@ -2,5 +2,5 @@ services:
   akeneo.tailored_import.processor.product:
     class: Akeneo\Platform\TailoredImport\Infrastructure\Connector\Processor\ProductProcessor
     arguments:
-      - '@logger'
+      - '@akeneo.tailored_import.handler.execute_data_mapping'
 

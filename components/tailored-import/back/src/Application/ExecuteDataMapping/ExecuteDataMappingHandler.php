@@ -6,7 +6,12 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping;
 
 use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredImport\Application\Common\DataMapping;
+use Akeneo\Platform\TailoredImport\Application\Common\DataMappingCollection;
+use Akeneo\Platform\TailoredImport\Application\Common\TargetAttribute;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -14,6 +19,12 @@ use Akeneo\Platform\TailoredImport\Application\Common\DataMapping;
  */
 class ExecuteDataMappingHandler
 {
+    private const IDENTIFIER_ATTRIBUTE_TYPE = 'pim_catalog_identifier';
+
+    public function __construct(
+        private GetAttributes $getAttributes
+    ) {}
+
     public function handle(ExecuteDataMappingQuery $executeDataMappingQuery)
     {
         $userIntents = [];
@@ -32,6 +43,30 @@ class ExecuteDataMappingHandler
             $userIntents[] = new SetTextValue($target->getCode(), $target->getLocale(), $target->getChannel(), $cellData);
         }
 
-        return new UpsertProductCommand(valuesUserIntent: $userIntents);
+        return new UpsertProductCommand(
+            userId: 1,
+            productIdentifier: $this->getIdentifierAttributeCode($executeDataMappingQuery->getDataMappingCollection()),
+            valuesUserIntent: $userIntents
+        );
+    }
+
+    private function getIdentifierAttributeCode(DataMappingCollection $dataMappingCollection)
+    {
+        $attributeTargetCodes = [];
+
+        /** @var DataMapping $dataMapping */
+        foreach ($dataMappingCollection->getIterator() as $dataMapping) {
+            if ($dataMapping->getTarget() instanceof TargetAttribute) {
+                $attributeTargetCodes[] = $dataMapping->getTarget()->getCode();
+            }
+        }
+
+        $targetedAttributes = $this->getAttributes->forCodes($attributeTargetCodes);
+        /** @var Attribute $targetedIdentifierAttribute */
+        $targetedIdentifierAttribute = current(array_filter($targetedAttributes, function (?Attribute $attribute) {
+            return null !== $attribute && self::IDENTIFIER_ATTRIBUTE_TYPE === $attribute->type();
+        }));
+
+        return $targetedIdentifierAttribute->code();
     }
 }
