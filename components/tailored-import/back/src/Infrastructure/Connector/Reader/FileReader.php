@@ -32,6 +32,7 @@ class FileReader implements ItemReaderInterface, StepExecutionAwareInterface, In
 {
     private StepExecution $stepExecution;
     private ?FlatFileIteratorInterface $fileIterator = null;
+    private ?ColumnCollection $columnCollection = null;
 
     public function __construct(
         private string $fileType,
@@ -60,10 +61,7 @@ class FileReader implements ItemReaderInterface, StepExecutionAwareInterface, In
         $this->fileIterator->next();
         $this->checkColumnNumber($currentProductLine);
 
-        $normalizedColumns = $this->stepExecution->getJobParameters()->get('import_structure')['columns'];
-        $columns = ColumnCollection::createFromNormalized($normalizedColumns);
-
-        return new Row(array_combine($columns->getColumnUuids(), $currentProductLine));
+        return new Row(array_combine($this->columnCollection->getColumnUuids(), $currentProductLine));
     }
 
     public function setStepExecution(StepExecution $stepExecution): void
@@ -74,7 +72,9 @@ class FileReader implements ItemReaderInterface, StepExecutionAwareInterface, In
     public function initialize(): void
     {
         if (null === $this->fileIterator) {
+            $normalizedColumns = $this->stepExecution->getJobParameters()->get('import_structure')['columns'];
             $this->fileIterator = $this->createFileIterator();
+            $this->columnCollection = ColumnCollection::createFromNormalized($normalizedColumns);
 
             $fileHeaders = $this->fileIterator->getHeaders();
             $this->checkFileHeaders($fileHeaders);
@@ -88,10 +88,7 @@ class FileReader implements ItemReaderInterface, StepExecutionAwareInterface, In
 
     private function checkFileHeaders(FileHeaderCollection $fileHeaders): void
     {
-        $normalizedColumns = $this->stepExecution->getJobParameters()->get('import_structure')['columns'];
-        $columns = ColumnCollection::createFromNormalized($normalizedColumns);
-
-        if (!$fileHeaders->matchToColumnCollection($columns)) {
+        if (!$fileHeaders->matchToColumnCollection($this->columnCollection)) {
             throw new MismatchedFileHeadersException();
         }
     }
