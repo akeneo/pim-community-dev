@@ -8,6 +8,7 @@
 - PIM-10241: Fix user account disabled can connect regression
 - PIM-10264: Optimize variant product ratio query
 - PIM-10248: Fix NOT BETWEEN filter does not work on products and product models (created and updated property)
+- PIM-10259: Fix Arabic text being reversed in product PDF exports
 
 ## Improvements
 
