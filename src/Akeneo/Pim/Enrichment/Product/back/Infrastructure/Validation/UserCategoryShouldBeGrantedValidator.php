@@ -55,10 +55,7 @@ final class UserCategoryShouldBeGrantedValidator extends ConstraintValidator
             return;
         }
 
-        if ([] === $this->getOwnedCategories->forUserGroupIds(
-            $productCategoryCodes,
-            $command->userId()
-        )) {
+        if ([] === $this->getOwnedCategories->forUserId($productCategoryCodes, $command->userId())) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }
     }

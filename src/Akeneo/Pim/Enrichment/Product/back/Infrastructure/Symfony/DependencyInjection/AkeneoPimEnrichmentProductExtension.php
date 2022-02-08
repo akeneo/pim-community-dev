@@ -21,7 +21,6 @@ final class AkeneoPimEnrichmentProductExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('anti_corruption_layers.yml');
         $loader->load('queries.yml');
         $loader->load('validators.yml');
     }

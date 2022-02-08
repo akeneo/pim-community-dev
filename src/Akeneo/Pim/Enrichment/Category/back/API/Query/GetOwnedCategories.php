@@ -18,5 +18,5 @@ interface GetOwnedCategories
      * @param int $userId
      * @return string[]
      */
-    public function forUserGroupIds(array $categoryCodes, int $userId): array;
+    public function forUserId(array $categoryCodes, int $userId): array;
 }
