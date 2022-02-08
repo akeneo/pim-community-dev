@@ -1,9 +1,6 @@
 batch_jobs.xlsx_tailored_product_import.label: Tailored product import in XLSX
 
 akeneo.tailored_import:
-  jobs:
-    reader:
-      invalid_file_headers: The file headers does not match with the column configuration.
   sources: Sources
   column_initialization:
     button: Initialize columns

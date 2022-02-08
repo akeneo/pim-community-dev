@@ -15,10 +15,4 @@ namespace Akeneo\Platform\TailoredImport\Domain\Exception;
 
 class MismatchedFileHeadersException extends \Exception
 {
-    private const MESSAGE = 'akeneo.tailored_import.jobs.reader.mismatched_file_headers';
-
-    public function __construct()
-    {
-        parent::__construct(self::MESSAGE);
-    }
 }
