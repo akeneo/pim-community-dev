@@ -82,6 +82,10 @@ data-quality-insights-integration-back:
 
 .PHONY: data-quality-insights-lint-front
 data-quality-insights-lint-front:
+	$(YARN_RUN) prettier --parser typescript --check "./src/Akeneo/Pim/Automation/DataQualityInsights/front/**/*.{js,ts,tsx}"
+
+.PHONY: data-quality-insights-lint-front-fix
+data-quality-insights-lint-front-fix:
 	$(YARN_RUN) prettier --parser typescript --write "./src/Akeneo/Pim/Automation/DataQualityInsights/front/**/*.{js,ts,tsx}"
 
 .PHONY: data-quality-insights-unit-front
