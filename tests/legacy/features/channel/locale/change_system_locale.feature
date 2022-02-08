@@ -18,7 +18,9 @@ Feature: Change system locale
   Scenario: Successfully display a localized login form according to the system locale
     Given I am on the System index page
     And I select French locale
+    And I save the configuration
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
     And I logout
     And I should see the "Connexion" button
+    

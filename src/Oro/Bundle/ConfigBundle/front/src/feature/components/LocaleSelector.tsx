@@ -36,6 +36,8 @@ export function LocaleSelector(props: Props) {
   }
   return (
     <SelectInput
+      id="system-locale"
+      name="system-locale"
       openLabel={__('pim_common.open')}
       emptyResultLabel={__('pim_common.no_result')}
       onChange={props.onChange}

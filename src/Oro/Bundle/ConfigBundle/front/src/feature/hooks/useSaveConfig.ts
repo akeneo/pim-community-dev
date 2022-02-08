@@ -22,7 +22,7 @@ export function useSaveConfig() {
     });
     if (response.ok) {
       notify(NotificationLevel.SUCCESS, __('oro_config.form.config.save_ok'));
-      return configBackToFront(response.json() as unknown as ConfigServicePayloadBackend);
+      return configBackToFront(await response.json() as unknown as ConfigServicePayloadBackend);
     }
     notify(NotificationLevel.ERROR, __('oro_config.form.config.save_error', {reason: response.statusText}));
     return config;
