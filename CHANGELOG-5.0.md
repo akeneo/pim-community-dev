@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10258: Increase buffer size to avoid memory size issue for product associations query
+
 # 5.0.76 (2022-02-07)
 
 ## Bug fixes
