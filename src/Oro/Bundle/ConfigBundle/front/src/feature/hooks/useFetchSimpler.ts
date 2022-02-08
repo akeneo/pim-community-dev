@@ -44,7 +44,9 @@ const useFetchSimpler = <BackendPayload, FrontendPayload = BackendPayload>(
     } catch (e) {
       setResult({type: 'error', message: (e as unknown as Error).message});
     }
-  }, [url]);
+    // because it reports BackendPayload as a missing dependency
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [url, payloadConverter, init]);
 
   return [result, doFetch];
 };

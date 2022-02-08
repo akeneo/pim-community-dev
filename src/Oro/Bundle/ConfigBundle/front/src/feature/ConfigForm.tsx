@@ -79,7 +79,9 @@ const ConfigForm = () => {
           />
         </PageHeader.UserActions>
         <PageHeader.Actions>
-          <Button className="AknButton--apply" onClick={handleSave}>Save</Button>
+          <Button className="AknButton--apply" onClick={handleSave}>
+            Save
+          </Button>
         </PageHeader.Actions>
         <PageHeader.State>
           {isModified && (
