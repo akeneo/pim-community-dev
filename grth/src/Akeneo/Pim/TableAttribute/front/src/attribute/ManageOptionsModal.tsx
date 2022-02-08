@@ -339,7 +339,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
   const handleImportOptions = (attributeOptions: AttributeOption[]) => {
     if (options) {
       const newOptions = [...options];
-      const newFilteredOptionIds = {};
+      const newFilteredOptionIds: {[optionId: string]: boolean} = {};
       attributeOptions.forEach(attributeOption => {
         const existingOptionIndex = (options || []).findIndex(({code}) => code === attributeOption.code);
         if (existingOptionIndex >= 0) {
