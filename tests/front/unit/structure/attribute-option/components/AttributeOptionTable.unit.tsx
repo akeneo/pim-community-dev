@@ -287,7 +287,7 @@ describe('Attribute options table', () => {
     expect(manuallySortAttributeOptionsCallback).not.toHaveBeenCalled();
   });
 
-  test('it finds item element in the list after a search', async () => {
+  xit('it finds item element in the list after a search', async () => {
     jest.useFakeTimers();
 
     await renderComponent(options, false, jest.fn(), jest.fn(), jest.fn(), jest.fn(), null);
@@ -310,7 +310,7 @@ describe('Attribute options table', () => {
     });
   });
 
-  test('it does not find any item in the list after a search', async () => {
+  xit('it does not find any item in the list after a search', async () => {
     jest.useFakeTimers();
 
     await renderComponent(options, false, jest.fn(), jest.fn(), jest.fn(), jest.fn(), null);

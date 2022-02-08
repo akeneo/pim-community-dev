@@ -5,6 +5,7 @@ import {
   fetchMockResponseOnce,
 } from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {dependencies} from '@akeneo-pim-community/legacy-bridge';
+import fetchMock from 'jest-fetch-mock';
 
 afterEach(() => {
   fetchMock.resetMocks();

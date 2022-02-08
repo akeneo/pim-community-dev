@@ -178,6 +178,7 @@ Needs to add
 
 eslint, prettier and jest
   - TODO is not working because there is no configuration file ??
+  - TODO tests are executed from CE
 
 ========================================================================================================================
 @akeneo-pim-community/catalog-volume-monitoring
@@ -233,3 +234,34 @@ Webpack needs:
         Module build failed (from ./node_modules/expose-loader/dist/cjs.js):
         TypeError: this.getOptions is not a function
             at Object.loader (/srv/pim/node_modules/expose-loader/dist/index.js:19:24)
+
+lint needs:
+- lint
+- a babel.config.json file
+
+========================================================================================================================
+@akeneo-pim-community/communication-channel
+========================================================================================================================
+
+"react-markdown": "<6.0.0"
+    -> "source" does not exist
+TODO tests are executed from CE
+
+-> "json-schema-to-typescript": "<8.0.0",
+  Generates "id", but "ajv" is looking for "$id"
+    node:internal/process/promises:246
+              triggerUncaughtException(err, true /* fromPromise */);
+              ^
+    [UnhandledPromiseRejection: This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). The promise rejected with the reason "Error: NOT SUPPORTED: keyword "id", use "$id" for schema ID".] {
+
+"html-webpack-plugin": "<4.0.0"
+    https://github.com/DanielSchaffer/webpack-babel-multi-target-plugin/issues/91
+    ➤ YN0000: [pim-community-dev]: Starting webpack from /srv/pim in dev mode
+    ➤ YN0000: [pim-community-dev]: [webpack-cli] TypeError: Cannot read properties of undefined (reading 'tapAsync')
+    ➤ YN0000: [pim-community-dev]:     at /srv/pim/node_modules/html-webpack-inline-source-plugin/index.js:21:59
+
+test:integration
+    TODO Does not match anything
+test:acceptance
+    TODO 0 scenarios
+

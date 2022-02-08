@@ -37,6 +37,7 @@ cypress/videos
 cypress/screenshots
 .yarn/*
 .editorconfig
+src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front/node_modules/*
 
 # The "lib/" folder must be ignored here to not be taken into account when the DSM is extracted to its own repository.
 # See ".github/actions/extract/entrypoint.sh"
