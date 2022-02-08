@@ -40,12 +40,35 @@ final class SqlGetCategoryCodes implements GetCategoryCodes
         );
 
         $sql = <<<SQL
-        SELECT
-            p.identifier, IF(COUNT(c.code) = 0, JSON_ARRAY(), JSON_ARRAYAGG(c.code)) AS category_codes
-        FROM pim_catalog_product p
-            LEFT JOIN pim_catalog_category_product cp ON cp.product_id = p.id
-            LEFT JOIN pim_catalog_category c ON c.id = cp.category_id
-        WHERE p.identifier IN (:product_identifiers)
+        WITH
+        existing_product AS (
+            SELECT id, product_model_id, identifier FROM pim_catalog_product WHERE identifier IN (:product_identifiers)
+        )
+        SELECT p.identifier, IF(COUNT(mc.category_code) = 0, JSON_ARRAY(), JSON_ARRAYAGG(mc.category_code)) as category_codes
+        FROM 
+            existing_product p
+            LEFT JOIN (
+                SELECT
+                    p.identifier, c.code AS category_code
+                FROM existing_product p
+                    INNER JOIN pim_catalog_category_product cp ON cp.product_id = p.id
+                    INNER JOIN pim_catalog_category c ON c.id = cp.category_id
+                UNION ALL
+                SELECT
+                    p.identifier, c.code AS category_code
+                FROM existing_product p
+                    INNER JOIN pim_catalog_product_model sub ON sub.id = p.product_model_id
+                    INNER JOIN pim_catalog_category_product_model cpm ON cpm.product_model_id = sub.id
+                    INNER JOIN pim_catalog_category c ON c.id = cpm.category_id
+                UNION ALL
+                SELECT
+                    p.identifier, c.code AS category_code
+                FROM existing_product p
+                    INNER JOIN pim_catalog_product_model sub ON sub.id = p.product_model_id
+                    INNER JOIN pim_catalog_product_model root ON root.id = sub.parent_id
+                    INNER JOIN pim_catalog_category_product_model cpm ON cpm.product_model_id = root.id
+                    INNER JOIN pim_catalog_category c ON c.id = cpm.category_id
+            ) AS mc ON mc.identifier = p.identifier
         GROUP BY p.identifier
         SQL;
 
