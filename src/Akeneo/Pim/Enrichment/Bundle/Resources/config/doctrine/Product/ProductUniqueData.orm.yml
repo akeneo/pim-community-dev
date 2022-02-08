@@ -8,6 +8,11 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueData:
             id: true
             generator:
                 strategy: AUTO
+        product_uuid:
+            type: binary
+            nullable: true
+            length: 16
+            fixed: true
         rawData:
             type: string
             column: raw_data
