@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\Permission\AccessLevel;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\IsUserCategoryGranted;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\AntiCorruptionLayer\Feature;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserCategoryShouldBeGranted;
@@ -18,16 +18,23 @@ use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContext;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class UserCategoryShouldBeGrantedValidatorSpec extends ObjectBehavior
 {
     function let(
-        IsUserCategoryGranted $isUserCategoryGranted,
-        ProductRepositoryInterface $productRepository,
-        Feature $feature,
+        GetCategoryCodes $getCategoryCodes,
+        GetOwnedCategories $getOwnedCategories,
         ExecutionContext $context
     ) {
-        $this->beConstructedWith($isUserCategoryGranted, $productRepository, $feature);
+        $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('unknown')])
+            ->willReturn([]);
+        $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('product_without_category')])
+            ->willReturn(['product_without_category' => []]);
+        $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('product_with_category')])
+            ->willReturn(['product_with_category' => ['master', 'print']]);
+
+        $this->beConstructedWith($getCategoryCodes, $getOwnedCategories);
         $this->initialize($context);
     }
 
@@ -50,45 +57,45 @@ class UserCategoryShouldBeGrantedValidatorSpec extends ObjectBehavior
             ->during('validate', [new \stdClass(), new UserCategoryShouldBeGranted([])]);
     }
 
-    function it_does_nothing_when_permission_feature_is_not_activated(Feature $feature, ExecutionContext $context)
+    function it_does_nothing_when_product_does_not_exist(ExecutionContext $context)
     {
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'foo');
-        $feature->isEnabled(Feature::PERMISSION)->shouldBeCalledOnce()->willReturn(false);
-
+        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'unknown');
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate($command, new UserCategoryShouldBeGranted());
     }
 
-    function it_does_nothing_when_product_does_not_exist(
-        ProductRepositoryInterface $productRepository,
-        Feature $feature,
-        ExecutionContext $context
-    ) {
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'foo');
-        $feature->isEnabled(Feature::PERMISSION)->shouldBeCalledOnce()->willReturn(true);
-        $productRepository->findOneByIdentifier('foo')->shouldBeCalledOnce()->willReturn(null);
-
+    function it_validates_when_the_product_does_not_have_any_category(ExecutionContext $context)
+    {
+        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_without_category');
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate($command, new UserCategoryShouldBeGranted());
     }
 
-    function it_validates_the_user_category_is_granted(
-        IsUserCategoryGranted $isUserCategoryGranted,
-        ProductRepositoryInterface $productRepository,
-        Feature $feature,
+    function it_validates_when_the_product_has_owned_category(
+        GetOwnedCategories $getOwnedCategories,
         ExecutionContext $context
     ) {
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'foo');
-
-        $feature->isEnabled(Feature::PERMISSION)->shouldBeCalledOnce()->willReturn(true);
-        $productRepository->findOneByIdentifier('foo')->shouldBeCalledOnce()->willReturn(new Product());
-        $isUserCategoryGranted->forProductAndAccessLevel(1, ProductIdentifier::fromString('foo'), AccessLevel::OWN_PRODUCTS)
-            ->shouldBeCalledOnce()->willReturn(true);
-
+        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_with_category');
+        $getOwnedCategories->forUserId(['master', 'print'], 1)->willReturn(['master']);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate($command, new UserCategoryShouldBeGranted());
+    }
+
+    function it_adds_a_violation_when_the_product_does_not_have_owned_category(
+        GetOwnedCategories $getOwnedCategories,
+        ExecutionContext $context,
+        ConstraintViolationBuilderInterface $constraintViolationBuilder
+    ) {
+        $constraint = new UserCategoryShouldBeGranted();
+
+        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_with_category');
+        $getOwnedCategories->forUserId(['master', 'print'], 1)->willReturn([]);
+        $context->buildViolation($constraint->message)->shouldBeCalledOnce()->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->addViolation()->shouldBeCalledOnce();
+
+        $this->validate($command, $constraint);
     }
 }

@@ -1,4 +1,0 @@
-services:
-    Akeneo\Pim\Enrichment\Product\Infrastructure\AntiCorruptionLayer\Feature:
-        arguments:
-            - '@feature_flags'
