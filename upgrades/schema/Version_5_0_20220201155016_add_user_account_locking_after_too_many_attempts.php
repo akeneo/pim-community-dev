@@ -6,10 +6,9 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 /**
- * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * Auto-generated Migration: Please modify to your needs!
  */
-final class Version_6_0_20210427163307_add_user_account_locking_after_too_many_attempts extends AbstractMigration
+final class Version_5_0_20220201155016_add_user_account_locking_after_too_many_attempts extends AbstractMigration
 {
     public function up(Schema $schema): void
     {

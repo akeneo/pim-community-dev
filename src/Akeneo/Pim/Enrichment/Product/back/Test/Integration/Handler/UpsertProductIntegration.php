@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Enrichment\Product\Integration\Handler;
 
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\LegacyViolationsException;
+use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler;
@@ -94,8 +94,8 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_throws_an_exception_when_giving_a_locale_for_a_non_localizable_product(): void
     {
-        $this->expectException(LegacyViolationsException::class);
-        $this->expectExceptionMessageMatches('/The a_text attribute requires neither a channel \(nothing was detected\) nor a locale \(en_US was detected\)/');
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('The a_text attribute does not require a locale, "en_US" was detected');
 
         $command = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier', valuesUserIntent: [
             new SetTextValue('a_text', 'en_US', null, 'foo'),
