@@ -9,4 +9,5 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model;
  */
 class ProductUniqueData extends AbstractProductUniqueData
 {
+    protected $product_uuid;
 }
