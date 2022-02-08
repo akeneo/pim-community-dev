@@ -62,6 +62,32 @@
     "src/Akeneo/Connectivity/Connection/workspaces/permission-form",
     "src/Akeneo/Pim/Automation/DataQualityInsights/front",
     "src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front",
-    "src/Akeneo/Platform/Job/front/process-tracker"
-  ]
+    "src/Akeneo/Platform/Job/front/process-tracker",
+    "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front",
+    "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge",
+    "src/Akeneo/Pim/Structure/Bundle/Resources/workspaces/settings-ui",
+    "src/Akeneo/UserManagement/Bundle/Resources/workspaces/user-ui",
+    "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity",
+    "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/system",
+    "src/Akeneo/Pim/Enrichment/Bundle/Resources/workspaces/enrichment"
+  ],
+  "dependencies": {
+    "babel-polyfill": "*",
+    "core-js": "<3.0.0",
+    "expose-loader": "<1.0.0",
+    "extra-watch-webpack-plugin": "*",
+    "imports-loader": "<1.0.0",
+    "json-schema-to-typescript": "*",
+    "react-markdown": "*",
+    "react-redux": "*",
+    "redux": "*",
+    "redux-devtools-extension": "*",
+    "summernote": "*",
+    "thread-loader": "*",
+    "ts-loader": "<9.0.0",
+    "typescript-plugin-styled-components": "*",
+    "webpack": "^4.44.2",
+    "webpack-cli": "*",
+    "yamljs": "*"
+  }
 }

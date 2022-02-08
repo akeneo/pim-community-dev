@@ -203,3 +203,33 @@ eslint needs:
 ../../../../../../front-packages/shared/lib/index.js
 -> exclude test directory from 'shared' package
 -> exclude test directories from tsconfig.json
+
+========================================================================================================================
+pim-community-dev
+========================================================================================================================
+
+Webpack needs:
+    "webpack": "^4.44.2"
+        -> A lot of webpack options failed
+
+    "core-js": "<3.0.0",
+        ERROR in ./node_modules/babel-polyfill/lib/index.js
+        Module not found: Error: Can't resolve 'core-js/fn/regexp/escape' in '/srv/pim/node_modules/babel-polyfill/lib'
+        Module not found: Error: Can't resolve 'core-js/shim' in '/srv/pim/node_modules/babel-polyfill/lib'
+         @ ./node_modules/babel-polyfill/lib/index.js 7:0-35
+         @ multi babel-polyfill ./public/bundles/pimui/js/index.js
+
+    "ts-loader": "<9.0.0",
+        TypeError: loaderContext.getOptions is not a function
+            at getLoaderOptions (/srv/pim/node_modules/ts-loader/dist/index.js:91:41)
+            at Object.loader (/srv/pim/node_modules/ts-loader/dist/index.js:14:21)
+
+    "imports-loader": "<1.0.0",
+        Module build failed (from ./node_modules/imports-loader/dist/cjs.js):
+        TypeError: this.getOptions is not a function
+            at Object.loader (/srv/pim/node_modules/imports-loader/dist/index.js:23:24)
+
+    "expose-loader": "<1.0.0",
+        Module build failed (from ./node_modules/expose-loader/dist/cjs.js):
+        TypeError: this.getOptions is not a function
+            at Object.loader (/srv/pim/node_modules/expose-loader/dist/index.js:19:24)
