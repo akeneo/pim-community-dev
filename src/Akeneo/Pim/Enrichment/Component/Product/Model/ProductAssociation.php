@@ -11,5 +11,4 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model;
  */
 class ProductAssociation extends AbstractAssociation implements ProductAssociationInterface
 {
-    protected $product_uuid;
 }
