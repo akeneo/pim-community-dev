@@ -5,9 +5,9 @@ import {createAssetFamilyFromNormalized} from 'akeneoassetmanager/domain/model/a
 import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
 import * as fetch from 'akeneoassetmanager/tools/fetch';
 
-jest.mock('pim/router', () => {});
-jest.mock('pim/security-context', () => {}, {virtual: true});
-jest.mock('routing');
+jest.mock('routing', () => ({
+  generate: (url: string) => url,
+}));
 
 describe('akeneoassetmanager/infrastructure/saver/asset-family', () => {
   it('It saves an asset family', async () => {

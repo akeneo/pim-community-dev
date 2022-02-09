@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   slack: circleci/slack@3.4.2
+  pull-up: akeneo-orbs/pull-up@1.0
 
 aliases:
   - &slack-fail-post-step
@@ -880,6 +881,20 @@ workflows:
                 <<: *slack-fail-post-step
                 requires:
                     - build_dev
+  pull_up:
+      jobs:
+          - pull-up/pull-up:
+              from: "6.0"
+              into: "master"
+              branch_prefix: "60_to_master"
+              checkout_ours: 'src/Akeneo/Platform/EnterpriseVersion.php **/translations/*.yml'
+              github_token: MICHEL_TAG_TOKEN
+              github_username: "micheltag"
+              slack_webhook: "${SLACK_URL_PULL_UP}"
+              filters:
+                  branches:
+                      only:
+                        - "6.0"
 
 commands:
   install_yq:

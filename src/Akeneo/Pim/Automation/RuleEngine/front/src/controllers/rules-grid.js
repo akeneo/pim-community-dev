@@ -21,7 +21,7 @@ define(['underscore', 'pim/form', 'pim/common/grid', 'pim/user-context'], functi
      */
     render: function() {
       if (!this.grid) {
-        this.grid = new Grid('rule-grid', {
+        this.grid = new Grid('attribute-rule-grid', {
           resourceName: this.config.resourceName,
           resourceId: this.getFormData().meta.id,
           localeCode: UserContext.get('catalogLocale')
