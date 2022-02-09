@@ -42,8 +42,7 @@ final class Version_5_0_20220201155016_add_user_account_locking_after_too_many_a
         $this->dropColumnIfExists();
         Assert::assertEquals(false, $this->columnExists());
 
-        /** TODO pull up 6.0 replace by $this->reExecuteMigration(self::MIGRATION_LABEL) as doctrine migration handle this correctly */
-        $this->createColumn();
+        $this->reExecuteMigration(self::MIGRATION_LABEL);
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
         Assert::assertEquals(true, $this->columnExists());
@@ -64,12 +63,5 @@ final class Version_5_0_20220201155016_add_user_account_locking_after_too_many_a
         $columns = $this->connection->getSchemaManager()->listTableColumns('oro_user');
 
         return isset($columns['consecutive_authentication_failure_counter'], $columns['authentication_failure_reset_date']);
-    }
-
-    /** TODO pull up 6.0 remove this function */
-    private function createColumn(): void
-    {
-        $this->connection->executeUpdate('alter table oro_user add consecutive_authentication_failure_counter int default 0');
-        $this->connection->executeUpdate('alter table oro_user add authentication_failure_reset_date datetime  default null');
     }
 }
