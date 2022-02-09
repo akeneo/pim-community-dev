@@ -4,9 +4,9 @@ import remover from 'akeneoassetmanager/infrastructure/remover/asset';
 import * as fetch from 'akeneoassetmanager/tools/fetch';
 import {createQuery} from 'akeneoassetmanager/application/hooks/grid';
 
-jest.mock('pim/router', () => {});
-jest.mock('pim/security-context', () => {}, {virtual: true});
-jest.mock('routing');
+jest.mock('routing', () => ({
+  generate: (url: string) => url,
+}));
 
 describe('akeneoassetmanager/infrastructure/remover/asset', () => {
   it('It deletes a asset', async () => {
