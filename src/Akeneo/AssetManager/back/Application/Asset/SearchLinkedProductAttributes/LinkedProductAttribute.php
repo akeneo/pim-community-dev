@@ -25,7 +25,7 @@ class LinkedProductAttribute
         private array $labels,
         private string $referenceDataName,
         private bool $useableAsGridFilter
-    ){
+    ) {
     }
 
     public function normalize(): array

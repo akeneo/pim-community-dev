@@ -26,7 +26,7 @@ class SearchLinkedProductAttributes
     public function __construct(
         private GetAttributes $getAttributes,
         private GetAttributeTranslations $getAttributeTranslations
-    ){
+    ) {
     }
 
     /**
@@ -36,7 +36,7 @@ class SearchLinkedProductAttributes
     {
         $productAttributes = $this->getAttributes->forType('pim_catalog_asset_collection');
 
-        $filteredProductAttributes = array_filter($productAttributes, function($attribute) use ($assetFamilyIdentifier) {
+        $filteredProductAttributes = array_filter($productAttributes, function ($attribute) use ($assetFamilyIdentifier) {
             return $attribute->properties()['reference_data_name'] === (string) $assetFamilyIdentifier;
         });
 
