@@ -10,7 +10,7 @@ namespace Akeneo\Platform\TailoredImport\Application\Common;
  */
 interface TargetInterface
 {
-    public function getCode(): string;
-    public function getAction(): string;
-    public function getIfEmpty(): string;
+    public function code(): string;
+    public function action(): string;
+    public function ifEmpty(): string;
 }

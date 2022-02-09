@@ -39,8 +39,8 @@ class ExecuteDataMappingHandler
              */
             $cellData = implode("", array_map(static fn(string $uuid) => $executeDataMappingQuery->getRow()->getCellData($uuid), $dataMapping->getSources()));
             /** TODO Iterate over operation */
-            $target = $dataMapping->getTarget();
-            $valueUserIntents[] = new SetTextValue($target->getCode(), $target->getLocale(), $target->getChannel(), $cellData);
+            $target = $dataMapping->target();
+            $valueUserIntents[] = new SetTextValue($target->code(), $target->locale(), $target->channel(), $cellData);
         }
 
         return new UpsertProductCommand(
@@ -55,9 +55,9 @@ class ExecuteDataMappingHandler
         $attributeTargetCodes = [];
 
         /** @var DataMapping $dataMapping */
-        foreach ($dataMappingCollection->getIterator() as $dataMapping) {
-            if ($dataMapping->getTarget() instanceof TargetAttribute) {
-                $attributeTargetCodes[] = $dataMapping->getTarget()->getCode();
+        foreach ($dataMappingCollection->iterator() as $dataMapping) {
+            if ($dataMapping->target() instanceof TargetAttribute) {
+                $attributeTargetCodes[] = $dataMapping->target()->code();
             }
         }
 

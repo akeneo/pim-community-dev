@@ -32,31 +32,31 @@ class TargetAttribute implements TargetInterface
         );
     }
 
-    public function getCode(): string
+    public function code(): string
     {
         return $this->code;
     }
 
 
-    public function getChannel(): ?string
+    public function channel(): ?string
     {
         return $this->channel;
     }
 
 
-    public function getLocale(): ?string
+    public function locale(): ?string
     {
         return $this->locale;
     }
 
 
-    public function getAction(): string
+    public function action(): string
     {
         return $this->action;
     }
 
 
-    public function getIfEmpty(): string
+    public function ifEmpty(): string
     {
         return $this->ifEmpty;
     }

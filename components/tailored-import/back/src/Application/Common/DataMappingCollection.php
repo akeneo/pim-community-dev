@@ -25,7 +25,7 @@ class DataMappingCollection
         return new self($dataMappingInstances);
     }
 
-    public function getIterator(): \ArrayIterator
+    public function iterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->dataMappings);
     }

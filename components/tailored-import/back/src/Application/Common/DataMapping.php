@@ -39,27 +39,27 @@ class DataMapping
         };
     }
 
-    public function getUuid(): string
+    public function uuid(): string
     {
         return $this->uuid;
     }
 
-    public function getTarget(): TargetInterface
+    public function target(): TargetInterface
     {
         return $this->target;
     }
 
-    public function getSources(): array
+    public function sources(): array
     {
         return $this->sources;
     }
 
-    public function getOperations(): array
+    public function operations(): array
     {
         return $this->operations;
     }
 
-    public function getSampleData(): array
+    public function sampleData(): array
     {
         return $this->sampleData;
     }

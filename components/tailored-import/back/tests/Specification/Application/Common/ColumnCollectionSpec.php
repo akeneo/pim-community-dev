@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Platform\TailoredImport\Application;
+namespace Specification\Akeneo\Platform\TailoredImport\Application\Common;
 
 use PhpSpec\ObjectBehavior;
 
@@ -19,7 +19,7 @@ class ColumnCollectionSpec extends ObjectBehavior
 {
     public function it_returns_the_column_uuids()
     {
-        $this->beConstructedThrough('createFromNormalized', [
+        $this->beConstructedThrough('createFromNormalized', [[
             [
                 'index' => 0,
                 'label' => 'A column',
@@ -30,7 +30,7 @@ class ColumnCollectionSpec extends ObjectBehavior
                 'label' => 'Another column',
                 'uuid' => 'a07b9dd7-f0ff-4d89-85a5-dee411cf53c2',
             ]
-        ]);
+        ]]);
 
         $this->columnUuids()->shouldReturn(['f9be9837-df82-4ad7-8c76-565ac274e900', 'a07b9dd7-f0ff-4d89-85a5-dee411cf53c2']);
     }
