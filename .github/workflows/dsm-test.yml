@@ -26,9 +26,9 @@ jobs:
           path: '**/front-packages/akeneo-design-system/node_modules'
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/front-packages/akeneo-design-system/yarn.lock') }}
 
-      - name: Install peer dependencies
+      #- name: Install peer dependencies
         # TODO RAC-594 Do not used fixed peer dependencies
-        run: cd front-packages/akeneo-design-system && yarn add --dev react@^16.14.0 react-dom@^16.9.12 styled-components@^5.1.1
+        #run: cd front-packages/akeneo-design-system && yarn add --dev react@^16.14.0 react-dom@^16.9.12 styled-components@^5.1.1
 
       - name: Install node modules
         run: cd front-packages/akeneo-design-system && yarn install
@@ -56,7 +56,7 @@ jobs:
         run: cd front-packages/akeneo-design-system && yarn lib:build
 
       - name: Launch lint checks
-        run: cd front-packages/akeneo-design-system && yarn lint:check
+        run: cd front-packages/akeneo-design-system && yarn lint
 
       - uses: actions/cache@v2
         name: Cache jest cache
