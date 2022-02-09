@@ -30,7 +30,6 @@ class InitDataQualityInsightsDbSchemaSubscriber implements EventSubscriberInterf
         $query = <<<'SQL'
 CREATE TABLE pim_data_quality_insights_product_criteria_evaluation (
   product_id int NOT NULL,
-  product_uuid varbinary(16) DEFAULT NULL,
   criterion_code varchar(40) NOT NULL,
   evaluated_at datetime NULL,
   status varchar(15) NOT NULL,
@@ -53,7 +52,6 @@ CREATE TABLE pim_data_quality_insights_product_model_criteria_evaluation (
 
 CREATE TABLE pim_data_quality_insights_product_score (
     product_id INT NOT NULL,
-    product_uuid varbinary(16) DEFAULT NULL,
     evaluated_at DATE NOT NULL,
     scores JSON NOT NULL,
     PRIMARY KEY (product_id, evaluated_at),
