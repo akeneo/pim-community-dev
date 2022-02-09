@@ -28,8 +28,6 @@ abstract class AbstractProduct implements ProductInterface
     /** @var int|string */
     protected $id;
 
-    protected $uuid;
-
     protected array $rawValues;
 
     protected ?\DateTime $created = null;
