@@ -15,8 +15,8 @@ class EnterpriseVersionSpec extends ObjectBehavior
      *
      * Test to remove when tagging a major version.
      */
-    function it_is_master_version()
+    function it_checks_version()
     {
-        Assert::assertSame('master', EnterpriseVersion::VERSION);
+        Assert::assertSame('Maple', EnterpriseVersion::VERSION_CODENAME);
     }
 }

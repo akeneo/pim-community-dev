@@ -22,7 +22,7 @@ class EnterpriseVersion
     const VERSION = 'master';
 
     /** @staticvar string */
-    const VERSION_CODENAME = 'Buttercup';
+    const VERSION_CODENAME = 'Maple';
 
     /** @staticvar string */
     const EDITION = 'Serenity';

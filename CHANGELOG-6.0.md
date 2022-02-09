@@ -1,3 +1,13 @@
+# 6.0.x
+
+# 6.0.3 (2022-02-09)
+
+# 6.0.2 (2022-02-09)
+
+# 6.0.1 (2022-02-07)
+
+# 6.0.0 (2022-02-04)
+
 ## Bug fixes
 
 - PIM-9955: Handle duplicated code asset in the import batch.
