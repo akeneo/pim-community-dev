@@ -33,6 +33,10 @@ services:
     tags:
       - { name: akeneo.tailored_export.operation_applier }
 
+  Akeneo\Platform\TailoredExport\Application\MapValues\OperationApplier\MeasurementRoundingOperationApplier:
+    tags:
+      - { name: akeneo.tailored_export.operation_applier }
+
   Akeneo\Platform\TailoredExport\Application\MapValues\OperationApplier\CleanHTMLTagsOperationApplier:
     tags:
       - { name: akeneo.tailored_export.operation_applier, priority: 101 }

@@ -2,7 +2,12 @@ import {
   isMeasurementSource,
   MeasurementSource,
   isMeasurementConversionOperation,
+  isDefaultMeasurementConversionOperation,
+  getDefaultMeasurementConversionOperation,
   isMeasurementDecimalSeparator,
+  isMeasurementRoundingOperation,
+  isDefaultMeasurementRoundingOperation,
+  getDefaultMeasurementRoundingOperation,
 } from './model';
 
 const source: MeasurementSource = {
@@ -36,6 +41,11 @@ test('it validates that something is a measurement source', () => {
         measurement_conversion: {
           type: 'measurement_conversion',
           target_unit_code: null,
+        },
+        measurement_rounding: {
+          type: 'measurement_rounding',
+          rounding_type: 'standard',
+          precision: 2,
         },
       },
     })
@@ -72,4 +82,40 @@ test('it can validate that it is a measurement conversion operation', async () =
     })
   ).toBe(false);
   expect(isMeasurementConversionOperation(undefined)).toBe(false);
+});
+
+test('it validates that it is a default conversion operation', async () => {
+  expect(isDefaultMeasurementConversionOperation(getDefaultMeasurementConversionOperation())).toBe(true);
+});
+
+test('it validates that it is a measurement rounding operation', async () => {
+  expect(
+    isMeasurementRoundingOperation({
+      type: 'measurement_rounding',
+      rounding_type: 'no_rounding',
+    })
+  ).toBe(true);
+  expect(
+    isMeasurementRoundingOperation({
+      type: 'measurement_rounding',
+      rounding_type: 'no_rounding',
+    })
+  ).toBe(true);
+  expect(
+    isMeasurementRoundingOperation({
+      type: 'measurement_rounding',
+      rounding_type: 'standard',
+    })
+  ).toBe(true);
+  expect(
+    isMeasurementRoundingOperation({
+      type: 'test',
+      rounding_type: 'unsupported_type',
+    })
+  ).toBe(false);
+  expect(isMeasurementRoundingOperation(undefined)).toBe(false);
+});
+
+test('it validates that it is a default rounding operation', async () => {
+  expect(isDefaultMeasurementRoundingOperation(getDefaultMeasurementRoundingOperation())).toBe(true);
 });

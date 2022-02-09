@@ -17,17 +17,17 @@ use PhpSpec\ObjectBehavior;
 
 class MeasurementConversionOperationSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedWith('a_measurement_family_code', 'a_target_unit_code');
     }
 
-    public function it_returns_the_measurement_family_code()
+    public function it_returns_the_measurement_family_code(): void
     {
         $this->getMeasurementFamilyCode()->shouldReturn('a_measurement_family_code');
     }
 
-    public function it_returns_the_target_unit_code()
+    public function it_returns_the_target_unit_code(): void
     {
         $this->getTargetUnitCode()->shouldReturn('a_target_unit_code');
     }

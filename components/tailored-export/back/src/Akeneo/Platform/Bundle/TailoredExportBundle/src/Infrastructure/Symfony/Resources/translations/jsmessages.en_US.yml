@@ -131,6 +131,21 @@ akeneo.tailored_export:
           title: Conversion
           placeholder: No conversion
           target_unit_code.label: Convert to
+        measurement_rounding:
+          title: Rounding
+          rounding_type:
+            label: Rounding type
+            types:
+              no_rounding: No rounding
+              standard: Round
+              round_up: Round up
+              round_down: Round down
+          precision:
+            label: Precision
+            placeholder: Define the number of digits after the decimal separator
+            validation:
+              precision_should_not_be_blank: Precision should not be empty
+              precision_is_out_of_range: Precision should be between {{ min }} and {{ max }}
         replacement:
           title: Replace value
           placeholder: Define the replacement value
