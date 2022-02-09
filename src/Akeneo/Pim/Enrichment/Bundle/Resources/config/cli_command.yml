@@ -25,3 +25,13 @@ services:
             - '@database_connection'
         tags:
             - { name: 'console.command' }
+
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidCreateColumns:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidCommand:
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidCreateColumns'
+        tags:
+            - { name: 'console.command' }
