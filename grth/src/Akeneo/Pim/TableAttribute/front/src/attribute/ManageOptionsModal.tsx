@@ -15,6 +15,7 @@ import {
   TextInput,
   useBooleanState,
   uuid,
+  AkeneoThemedProps,
 } from 'akeneo-design-system';
 import {getLabel, LocaleCode, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {AttributeOption, SelectColumnDefinition, SelectOption, TableAttribute} from '../models';
@@ -28,8 +29,8 @@ import {SelectOptionRepository} from '../repositories';
 import {ImportOptionsButton} from './ImportOptionsButton';
 import {useActivatedLocales} from './useActivatedLocales';
 
-const TableContainer = styled.div`
-  height: calc(100vh - 270px);
+const TableContainer = styled.div<{withSticky: boolean} & AkeneoThemedProps>`
+  height: calc(100vh - ${({withSticky}) => (withSticky ? 270 : 340)}px);
   overflow: auto;
 `;
 
@@ -41,19 +42,6 @@ const ScrollableFieldList = styled(FieldsList)`
 const OptionsTwoColumnsLayout = styled(TwoColumnsLayout)`
   width: 1200px;
   height: calc(100vh - 150px);
-`;
-
-const ManageOptionsBody = styled(Table.Body)`
-  & > tr:last-child {
-    position: sticky;
-    bottom: -1px;
-    background-color: ${getColor('white')};
-    z-index: 1;
-
-    & > td {
-      border-bottom: 1px solid ${getColor('white')};
-    }
-  }
 `;
 
 const ManageOptionsSectionTitle = styled(SectionTitle.Title)`
@@ -401,7 +389,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
                     followPage={setPage}
                   />
                 )}
-                <TableContainer ref={tableContainerRef}>
+                <TableContainer withSticky={options && options.length < limit} ref={tableContainerRef}>
                   <Table>
                     <Table.Header>
                       <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
@@ -410,7 +398,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
                       </Table.HeaderCell>
                       <Table.HeaderCell />
                     </Table.Header>
-                    <ManageOptionsBody>
+                    <Table.Body>
                       {filteredOptions.slice((page - 1) * OPTIONS_PER_PAGE, page * OPTIONS_PER_PAGE).map(option => (
                         <ManageOptionsRow
                           codeInputRef={isLastOption(option) ? lastCodeInputRef : undefined}
@@ -430,6 +418,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
                       ))}
                       {options && options.length < limit && (
                         <ManageOptionsRow
+                          isSticky={true}
                           codeInputRef={newCodeInputRef}
                           labelInputRef={newLabelInputRef}
                           isSelected={selectedOptionIndex === -1}
@@ -442,7 +431,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
                           forceAutocomplete={true}
                         />
                       )}
-                    </ManageOptionsBody>
+                    </Table.Body>
                   </Table>
                   {filteredOptions.length === 0 && searchValue !== '' && (
                     <Placeholder
