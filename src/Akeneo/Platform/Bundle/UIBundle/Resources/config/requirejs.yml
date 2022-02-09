@@ -212,7 +212,11 @@ config:
           options:
             urls:
               get: pim_enrich_job_execution_rest_get
-
+        ui-locale:
+          module: pim/base-fetcher
+          options:
+            urls:
+              list: pim_localization_locale_index
     pim/controller-registry:
       defaultController:
         module: pim/controller/template

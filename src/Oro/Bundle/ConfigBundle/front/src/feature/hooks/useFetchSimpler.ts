@@ -26,14 +26,18 @@ export type FetchResult<Payload> =
 
 export type FetchHookResult<FrontendPayload> = [result: FetchResult<FrontendPayload>, fetch: () => Promise<void>];
 
+const defaultConverter = (payload: any) => payload;
+
 const useFetchSimpler = <BackendPayload, FrontendPayload = BackendPayload>(
   url: string,
-  payloadConverter: (payload: BackendPayload) => FrontendPayload = payload => payload as unknown as FrontendPayload,
+  payloadConverter: (payload: BackendPayload) => FrontendPayload = defaultConverter,
   init?: RequestInit
 ): FetchHookResult<FrontendPayload> => {
   const [result, setResult] = useState<FetchResult<FrontendPayload>>({type: 'idle'});
 
   const doFetch = useCallback(async () => {
+    if (result.type !== 'idle') return;
+
     setResult({type: 'fetching'});
 
     try {
@@ -46,7 +50,7 @@ const useFetchSimpler = <BackendPayload, FrontendPayload = BackendPayload>(
     }
     // because it reports BackendPayload as a missing dependency
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [url, payloadConverter, init]);
+  }, [url]);
 
   return [result, doFetch];
 };
