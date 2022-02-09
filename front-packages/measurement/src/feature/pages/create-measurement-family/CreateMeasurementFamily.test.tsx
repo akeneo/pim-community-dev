@@ -1,7 +1,7 @@
 import React from 'react';
 import {act, screen} from '@testing-library/react';
 import {CreateMeasurementFamily} from './CreateMeasurementFamily';
-import {renderWithProviders} from '@akeneo-pim-community/shared';
+import {renderWithProviders} from '@akeneo-pim-community/shared/lib/tests';
 import userEvent from '@testing-library/user-event';
 declare global {
   namespace NodeJS {

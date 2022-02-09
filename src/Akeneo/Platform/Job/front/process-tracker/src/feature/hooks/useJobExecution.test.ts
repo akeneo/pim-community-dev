@@ -1,6 +1,6 @@
 import {useJobExecution} from './useJobExecution';
 import {act} from 'react-test-renderer';
-import {renderHookWithProviders} from '@akeneo-pim-community/shared';
+import {renderHookWithProviders} from '@akeneo-pim-community/shared/lib/tests';
 
 declare global {
   namespace NodeJS {

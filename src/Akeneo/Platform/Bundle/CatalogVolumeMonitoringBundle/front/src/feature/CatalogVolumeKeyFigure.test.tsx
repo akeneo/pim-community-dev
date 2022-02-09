@@ -1,5 +1,5 @@
 import React from 'react';
-import {renderWithProviders} from '@akeneo-pim-community/shared';
+import {renderWithProviders} from '@akeneo-pim-community/shared/lib/tests';
 import {screen} from '@testing-library/react';
 import {CatalogVolumeKeyFigure} from './CatalogVolumeKeyFigure';
 import {AverageMaxValue, CatalogVolume} from './model/catalog-volume';

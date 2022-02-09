@@ -1,5 +1,5 @@
 import React from 'react';
-import {renderWithProviders} from '@akeneo-pim-community/shared';
+import {renderWithProviders} from '@akeneo-pim-community/shared/lib/tests';
 import {Progress} from './Progress';
 
 const mockTranslate = jest.fn((key: string, parameters: any, count: number) => {

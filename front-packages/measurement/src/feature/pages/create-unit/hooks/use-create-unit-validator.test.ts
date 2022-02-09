@@ -1,5 +1,5 @@
 import {useCreateUnitValidator} from './use-create-unit-validator';
-import {renderHookWithProviders} from '@akeneo-pim-community/shared';
+import {renderHookWithProviders} from '@akeneo-pim-community/shared/lib/tests';
 
 declare global {
   namespace NodeJS {

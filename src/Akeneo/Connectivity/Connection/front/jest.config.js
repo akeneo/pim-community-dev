@@ -12,4 +12,5 @@ module.exports = {
     },
     setupFiles: ['./tests/mocks/fetch-mock.ts'],
     collectCoverageFrom: ['<rootDir>/src/**/*.{ts,tsx}'],
+    testRunner: 'jest-jasmine2'
 };

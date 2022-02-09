@@ -1,5 +1,5 @@
 import {useJobExecutionUsers} from './useJobExecutionUsers';
-import {renderHookWithProviders} from '@akeneo-pim-community/shared';
+import {renderHookWithProviders} from '@akeneo-pim-community/shared/lib/tests';
 import {act} from '@testing-library/react-hooks';
 
 const expectedFetchedJobExecutionUsers: string[] = ['peter', 'mary'];

@@ -1,17 +1,33 @@
 {
-    "name": "@akeneo-pim-community/connectivity-connection",
-    "version": "1.0.0",
-    "license": "OSL-3.0",
-    "main": "src/index.ts",
-    "scripts": {
-        "eslint": "eslint --config .eslintrc.json --quiet {src,tests}/**/*.{ts,tsx}",
-        "prettier": "prettier --config .prettierrc.json {src,tests}/**/*.{ts,tsx}",
-        "jest": "jest --config jest.config.js"
-    },
-    "private": true,
-    "devDependencies": {
-        "eslint": "^6.5.1",
-        "jest": "^26.4.2",
-        "prettier": "^2.1.1"
-    }
+  "name": "@akeneo-pim-community/connectivity-connection",
+  "version": "1.0.0",
+  "license": "OSL-3.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "lint": "eslint --config .eslintrc.json --quiet {src,tests}/**/*.{ts,tsx} && prettier --config .prettierrc.json {src,tests}/**/*.{ts,tsx}",
+    "test:unit:run": "jest --env=jsdom --config jest.config.js"
+  },
+  "private": true,
+  "dependencies": {
+    "@testing-library/react": "*",
+    "@types/backbone": "*",
+    "@types/jquery": "*",
+    "@types/lodash": "*",
+    "@types/luxon": "*",
+    "@types/victory": "*",
+    "backbone": "*",
+    "eslint": "*",
+    "formik": "*",
+    "jest": "^27.4.7",
+    "jest-fetch-mock": "*",
+    "jest-jasmine2": "^27.4.6",
+    "jest-snapshot": "^27.4.6",
+    "jquery": "*",
+    "luxon": "*",
+    "prettier": "*",
+    "pretty-format": "*",
+    "react-hook-form": "<6.0.0",
+    "ts-jest": "^27.1.3",
+    "victory": "*"
+  }
 }

@@ -3,7 +3,7 @@ import {Router} from 'react-router';
 import {screen, fireEvent} from '@testing-library/react';
 import {MeasurementFamilyTable} from './MeasurementFamilyTable';
 import {createMemoryHistory} from 'history';
-import {renderWithProviders} from '@akeneo-pim-community/shared';
+import {renderWithProviders} from '@akeneo-pim-community/shared/lib/tests';
 
 const measurementFamilies = [
   {

@@ -11,7 +11,10 @@ const fetcher = jest.fn(
 
 jest.useFakeTimers();
 
-const flushPromises = () => new Promise(setImmediate);
+const flushPromises = () => {
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  setTimeout(() => {}, 0);
+};
 
 test('It can fetch paginated results', async () => {
   const {result} = renderHook(() => usePaginatedResults<string>(fetcher, []));

@@ -5,5 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "generate-models": "node ./../../../../../../frontend/build/json-schema-to-typescript.js src/definitions/ src/models/"
+  },
+  "dependencies": {
+    "react-markdown": "<6.0.0"
   }
 }

@@ -1,5 +1,5 @@
 import {useJobExecutionTypes} from './useJobExecutionTypes';
-import {renderHookWithProviders} from '@akeneo-pim-community/shared';
+import {renderHookWithProviders} from '@akeneo-pim-community/shared/lib/tests';
 import {act} from '@testing-library/react-hooks';
 
 const expectedFetchedJobExecutionTypes: string[] = ['import', 'export', 'mass_edit'];

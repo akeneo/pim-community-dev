@@ -1,5 +1,5 @@
 import {useMeasurementFamilyRemover, MeasurementFamilyRemoverResult} from './use-measurement-family-remover';
-import {renderHookWithProviders} from '@akeneo-pim-community/shared';
+import {renderHookWithProviders} from '@akeneo-pim-community/shared/lib/tests';
 
 afterEach(() => {
   global.fetch && global.fetch.mockClear();

@@ -1,6 +1,6 @@
 import {transformVolumesToAxis} from './catalogVolumeWrapper';
 import {getCatalogVolume} from './getCatalogVolume';
-import {mockedDependencies} from '@akeneo-pim-community/shared';
+import {mockedDependencies} from '@akeneo-pim-community/shared/lib/tests';
 
 jest.mock('./catalogVolumeWrapper');
 
@@ -40,12 +40,10 @@ beforeEach(() => {
 
 test('get Catalog volume with success', async () => {
   // Given
-  global.fetch = jest.fn(() =>
-    Promise.resolve({
-      ok: true,
-      json: () => Promise.resolve(volumesResponse),
-    })
-  );
+  global.fetch = jest.fn().mockImplementation(() => ({
+    ok: true,
+    json: () => Promise.resolve(volumesResponse),
+  }));
 
   // When
   await getCatalogVolume(mockedDependencies.router);

@@ -1,4 +1,4 @@
-import {renderHookWithProviders} from '@akeneo-pim-community/shared';
+import {renderHookWithProviders} from '@akeneo-pim-community/shared/lib/tests';
 import {useCatalogVolumeByAxis} from './useCatalogVolumeByAxis';
 import {getMockCatalogVolume} from '../fetcher';
 

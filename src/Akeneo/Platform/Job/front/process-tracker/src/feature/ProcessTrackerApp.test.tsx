@@ -1,5 +1,5 @@
 import React from 'react';
-import {renderWithProviders} from '@akeneo-pim-community/shared';
+import {renderWithProviders} from '@akeneo-pim-community/shared/lib/tests';
 import {ProcessTrackerApp} from './ProcessTrackerApp';
 import {screen} from '@testing-library/react';
 import {createHashHistory} from 'history';
