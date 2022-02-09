@@ -1,0 +1,41 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2022 Akeneo SAS (https://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Akeneo\Platform\TailoredImport\Infrastructure\Spout;
+
+use Akeneo\Platform\TailoredImport\Application\Common\Column;
+use Webmozart\Assert\Assert;
+
+class FileHeader
+{
+    private function __construct(
+        private int $index,
+        private string $label,
+    ) {
+        Assert::greaterThanEq($index, 0);
+        Assert::stringNotEmpty($label);
+    }
+
+    public static function createFromNormalized(array $normalizedFileHeader): self
+    {
+        return new self(
+            $normalizedFileHeader['index'],
+            $normalizedFileHeader['label']
+        );
+    }
+
+    public function matchToColumn(Column $column): bool
+    {
+        return $this->index === $column->index() && $this->label === $column->label();
+    }
+}

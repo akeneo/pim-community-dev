@@ -6,6 +6,7 @@ services:
       - '@event_dispatcher'
       - '@akeneo_batch.job_repository'
       -
+        - '@pim_connector.step.charset_validator'
         - '@akeneo.tailored_import.connector.step.xlsx_product.import'
       - true
     tags:
@@ -17,9 +18,9 @@ services:
       - 'import'
       - '@event_dispatcher'
       - '@akeneo_batch.job_repository'
-      - '@pim_connector.reader.file.xlsx_product'
-      - '@pim_connector.processor.denormalization.product'
-      - '@pim_connector.writer.database.product'
+      - '@akeneo.tailored_import.reader.file.xlsx'
+      - '@akeneo.tailored_import.processor.dummy'
+      - '@akeneo.tailored_import.writer.dummy'
       - '%pim_job_product_batch_size%'
       - '@akeneo_batch.job.job_stopper'
 

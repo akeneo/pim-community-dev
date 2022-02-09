@@ -11,15 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Platform\TailoredImport\Domain;
+namespace Akeneo\Platform\TailoredImport\Domain\Exception;
 
-use Akeneo\Platform\TailoredImport\Domain\Dummy;
-use PhpSpec\ObjectBehavior;
-
-class DummySpec extends ObjectBehavior
+class SheetNotFoundException extends \RuntimeException
 {
-    public function it_is_initializable(): void
-    {
-        $this->shouldHaveType(Dummy::class);
-    }
 }
