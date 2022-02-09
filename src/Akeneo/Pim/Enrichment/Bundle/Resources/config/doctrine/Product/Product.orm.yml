@@ -9,11 +9,6 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
             id: true
             generator:
                 strategy: AUTO
-        uuid:
-            type: binary
-            nullable: true
-            length: 16
-            fixed: true
         enabled:
             type: boolean
             column: is_enabled
