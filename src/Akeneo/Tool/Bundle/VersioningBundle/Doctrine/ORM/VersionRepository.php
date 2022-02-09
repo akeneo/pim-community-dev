@@ -33,6 +33,11 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
         );
     }
 
+    public function getProductEntries($resourceId)
+    {
+
+    }
+
     /**
      * {@inheritdoc}
      */
