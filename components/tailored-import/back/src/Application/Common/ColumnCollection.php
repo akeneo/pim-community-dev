@@ -32,7 +32,7 @@ class ColumnCollection
 
     public function columnUuids(): array
     {
-        return array_map(fn (Column $column) => $column->getUuid(), $this->columns);
+        return array_map(fn (Column $column) => $column->uuid(), $this->columns);
     }
 
     /**
