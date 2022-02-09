@@ -12,4 +12,4 @@ Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand:
         valuesUserIntent:
             - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelShouldBeConsistent: ~
     constraints:
-        - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\IsUserOwnerOfTheProduct: ~
+        - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\ProxyConstraint: UserCategoryShouldBeGranted

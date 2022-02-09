@@ -6,15 +6,29 @@ services:
         tags:
             - { name: validator.constraint_validator }
 
-    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\IsUserOwnerOfTheProductValidator:
-        arguments:
-            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes'
-            - '@Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories'
-        tags:
-            - { name: validator.constraint_validator }
+#    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\IsUserOwnerOfTheProductValidator:
+#        arguments:
+#            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes'
+#            - '@Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories'
+#        tags:
+#            - { name: validator.constraint_validator }
 
     Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserShouldExistValidator:
         arguments:
             - '@pim_user.repository.user'
         tags:
             - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\ProxyConstraintValidator:
+        arguments:
+            - !tagged_iterator { tag: 'pim_enrichment_product.validator', index_by: 'key' }
+        tags:
+            - { name: validator.constraint_validator }
+
+    # App validation
+    Akeneo\Pim\Enrichment\Product\Api\Validation\IsUserOwnerOfTheProduct:
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes'
+            - '@Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories'
+        tags:
+            - { name: 'pim_enrichment_product.validator', key: 'UserCategoryShouldBeGranted' }
