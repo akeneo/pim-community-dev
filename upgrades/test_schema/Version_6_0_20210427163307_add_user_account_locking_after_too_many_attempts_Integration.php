@@ -9,7 +9,7 @@ use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
-final class Version_6_0_20210427163307_add_user_account_locking_after_too_many_attempts_Integration  extends TestCase
+final class Version_6_0_20210427163307_add_user_account_locking_after_too_many_attempts_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
