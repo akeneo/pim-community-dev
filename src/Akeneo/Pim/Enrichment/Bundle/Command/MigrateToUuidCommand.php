@@ -12,7 +12,9 @@ class MigrateToUuidCommand extends Command
     protected static $defaultName = 'pim:product:migrate-to-uuid';
 
     public function __construct(
-        private MigrateToUuidCreateColumns $migrateToUuidCreateColumns
+        private MigrateToUuidCreateColumns $migrateToUuidCreateColumns,
+        private MigrateToUuidFillUuids $migrateToUuidFillUuids,
+        private MigrateToUuidFillJson $migrateToUuidFillJson,
     ) {
         parent::__construct();
     }
@@ -27,12 +29,19 @@ class MigrateToUuidCommand extends Command
     {
         $dryRun = $input->getOption('dry-run');
 
-        $missingCount = $this->migrateToUuidCreateColumns->getMissingCount($output);
-        $output->writeln(sprintf('Step1: Missing %d columns', $missingCount));
-        if ($missingCount > 0 && !$dryRun) {
-            $output->writeln(sprintf('Add missing columns...'));
-            $this->migrateToUuidCreateColumns->addMissing($output);
-            $output->writeln(sprintf('Done'));
+        foreach ([$this->migrateToUuidCreateColumns, $this->migrateToUuidFillUuids, $this->migrateToUuidFillJson] as $step) {
+            $missingCount = $step->getMissingCount($output);
+            $output->writeln(sprintf('Missing %d elements', $missingCount));
+            if ($missingCount > 0 && !$dryRun) {
+                $output->writeln(sprintf('Add missing elements...'));
+                $step->addMissing($output);
+                $output->writeln(sprintf('Done'));
+            }
+
+            if ($missingCount > 0 && $dryRun) {
+                $output->writeln('Enleve le dry run avant de continuer michel');
+                return Command::SUCCESS;
+            }
         }
 
         $output->writeln(sprintf('LEZGO'));
