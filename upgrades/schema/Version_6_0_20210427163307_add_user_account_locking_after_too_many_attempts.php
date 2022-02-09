@@ -22,6 +22,6 @@ final class Version_6_0_20210427163307_add_user_account_locking_after_too_many_a
 
     public function down(Schema $schema) : void
     {
-        // this down() migration is auto-generated, please modify it to your needs
+        $this->throwIrreversibleMigrationException();
     }
 }
