@@ -6,12 +6,12 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping;
 
 use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\ValueUserIntent;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredImport\Application\Common\DataMapping;
 use Akeneo\Platform\TailoredImport\Application\Common\DataMappingCollection;
 use Akeneo\Platform\TailoredImport\Application\Common\TargetAttribute;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -27,7 +27,8 @@ class ExecuteDataMappingHandler
 
     public function handle(ExecuteDataMappingQuery $executeDataMappingQuery)
     {
-        $userIntents = [];
+        /** @var array<ValueUserIntent> $valueUserIntents */
+        $valueUserIntents = [];
 
         /** @var DataMapping $dataMapping */
         foreach ($executeDataMappingQuery->getDataMappingCollection()->getIterator() as $dataMapping) {
@@ -39,18 +40,17 @@ class ExecuteDataMappingHandler
             $cellData = implode("", array_map(static fn(string $uuid) => $executeDataMappingQuery->getRow()->getCellData($uuid), $dataMapping->getSources()));
             /** TODO Iterate over operation */
             $target = $dataMapping->getTarget();
-            /** Do we create UserIntentCollection ? */
-            $userIntents[] = new SetTextValue($target->getCode(), $target->getLocale(), $target->getChannel(), $cellData);
+            $valueUserIntents[] = new SetTextValue($target->getCode(), $target->getLocale(), $target->getChannel(), $cellData);
         }
 
         return new UpsertProductCommand(
             userId: 1,
             productIdentifier: $this->getIdentifierAttributeCode($executeDataMappingQuery->getDataMappingCollection()),
-            valuesUserIntent: $userIntents
+            valuesUserIntent: $valueUserIntents
         );
     }
 
-    private function getIdentifierAttributeCode(DataMappingCollection $dataMappingCollection)
+    private function getIdentifierAttributeCode(DataMappingCollection $dataMappingCollection): string
     {
         $attributeTargetCodes = [];
 

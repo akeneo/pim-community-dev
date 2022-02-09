@@ -1,5 +1,5 @@
 services:
-  akeneo.tailored_import.writer.dummy:
-    class: Akeneo\Platform\TailoredImport\Infrastructure\Connector\Writer\DummyWriter
+  akeneo.tailored_import.writer.product:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Connector\Writer\ProductWriter
     arguments:
-      - '@logger'
+      - '@Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler'
