@@ -153,9 +153,9 @@ class User implements UserInterface
     /** @var array $property bag for properties extension */
     private $properties = [];
 
-    private int $consecutiveAuthenticationFailureCounter=0;
+    private int $consecutiveAuthenticationFailureCounter = 0;
 
-    private ?\DateTime $authenticationFailureResetDate=null;
+    private ?\DateTime $authenticationFailureResetDate = null;
 
     protected $type = self::TYPE_USER;
 
