@@ -28,7 +28,6 @@ jobs:
 
 workflows:
     version: 2
-
     merge_config_workflow:
         jobs:
             - merge_config

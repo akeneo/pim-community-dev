@@ -20,6 +20,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
 use Akeneo\Tool\Bundle\ApiBundle\Cache\WarmupQueryCache;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
 use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
@@ -85,6 +86,8 @@ class ProductModelController
     private SecurityFacade $security;
     private RemoveProductModelHandler $removeProductModelHandler;
     private ValidatorInterface $validator;
+
+    private ?Client $productAndProductModelClient;
 
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,

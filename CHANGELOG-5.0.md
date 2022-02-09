@@ -1,5 +1,32 @@
 # 5.0.x
 
+# 5.0.76 (2022-02-07)
+
+## Bug fixes
+
+- PIM-10257: Fix content Security Policy error log
+
+# 5.0.75 (2022-02-04)
+
+# 5.0.74 (2022-02-04)
+
+# 5.0.73 (2022-02-04)
+
+## Bug fixes
+
+- PIM-10250: [Backport] PIM-9806: Enable authentication temporary lock to protect against brute force attack
+
+# 5.0.72 (2022-02-04)
+
+# 5.0.71 (2022-02-01)
+
+# 5.0.70 (2022-02-01)
+
+## Bug fixes
+
+- PIM-10248: Fix NOT BETWEEN filter does not work on products and product models (created and updated property)
+- PIM-10223: Add missing "s" on "remove-orphans" option in Makefile
+
 # 5.0.69 (2022-01-21)
 
 ## Bug fixes

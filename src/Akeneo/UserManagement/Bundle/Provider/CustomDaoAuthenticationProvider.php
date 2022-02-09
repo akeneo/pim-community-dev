@@ -5,17 +5,14 @@ namespace Akeneo\UserManagement\Bundle\Provider;
 
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Bundle\Model\LockedAccountException;
-use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -63,6 +60,7 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
         $user->setConsecutiveAuthenticationFailureCounter(
             1 + $user->getConsecutiveAuthenticationFailureCounter()
         );
+
         $this->userManager->updateUser($user);
     }
 
