@@ -36,17 +36,17 @@ class Column
         );
     }
 
-    public function getIndex(): int
+    public function index(): int
     {
         return $this->index;
     }
 
-    public function getLabel(): string
+    public function label(): string
     {
         return $this->label;
     }
 
-    public function getUuid(): string
+    public function uuid(): string
     {
         return $this->uuid;
     }

@@ -36,6 +36,6 @@ class FileHeader
 
     public function matchToColumn(Column $column): bool
     {
-        return $this->index === $column->getIndex() && $this->label === $column->getLabel();
+        return $this->index === $column->index() && $this->label === $column->label();
     }
 }

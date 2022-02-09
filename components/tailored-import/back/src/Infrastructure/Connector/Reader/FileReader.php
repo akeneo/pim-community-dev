@@ -61,7 +61,7 @@ class FileReader implements ItemReaderInterface, StepExecutionAwareInterface, In
         $this->fileIterator->next();
         $this->checkColumnNumber($currentProductLine);
 
-        return new Row(array_combine($this->columnCollection->getColumnUuids(), $currentProductLine));
+        return new Row(array_combine($this->columnCollection->columnUuids(), $currentProductLine));
     }
 
     public function setStepExecution(StepExecution $stepExecution): void
