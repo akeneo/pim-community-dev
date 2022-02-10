@@ -48,6 +48,9 @@ SQL;
         return $attributeTranslations;
     }
 
+    /**
+     * @return array<array{locale: string, label: string}>
+     */
     public function byAttributeCodes(array $attributeCodes): array
     {
         if (empty($attributeCodes)) {
