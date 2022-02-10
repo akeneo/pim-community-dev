@@ -5,6 +5,7 @@ import {Attribute} from '../models';
 type FetcherValue = {
   attribute: {
     fetchByIdentifiers: (identifiers: string[]) => Promise<Attribute[]>;
+    fetchAttributeIdentifier: () => Promise<Attribute>;
   };
   channel: {
     fetchAll: () => Promise<Channel[]>;
@@ -15,6 +16,9 @@ const FetcherContext = createContext<FetcherValue>({
   attribute: {
     fetchByIdentifiers: () => {
       throw new Error('Fetch attributes by identifiers needs to be implemented');
+    },
+    fetchAttributeIdentifier: () => {
+      throw new Error('Fetch attribute identifier needs to be implemented');
     },
   },
   channel: {

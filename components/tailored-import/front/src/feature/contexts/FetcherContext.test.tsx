@@ -9,6 +9,14 @@ test('Fetch attributes by identifiers needs to be implemented', () => {
   }).toThrowError('Fetch attributes by identifiers needs to be implemented');
 });
 
+test('Fetch attribute identifier needs to be implemented', () => {
+  const {result} = renderHookWithProviders(() => useFetchers());
+
+  expect(() => {
+    result.current.attribute.fetchAttributeIdentifier();
+  }).toThrowError('Fetch attribute identifier needs to be implemented');
+});
+
 test('Fetch all channels needs to be implemented', () => {
   const {result} = renderHookWithProviders(() => useFetchers());
 

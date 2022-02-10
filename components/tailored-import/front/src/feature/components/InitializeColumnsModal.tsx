@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
-import {Button, Field, Modal, TextAreaInput, ImportIllustration} from 'akeneo-design-system';
+import {Button, Helper, Field, Modal, TextAreaInput, ImportIllustration} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Column, extractColumnLabels, generateColumns, MAX_COLUMN_COUNT} from '../models';
-import {Helper} from 'akeneo-design-system';
 
 type InitializeColumnsModalProps = {
   onConfirm: (columns: Column[]) => void;
