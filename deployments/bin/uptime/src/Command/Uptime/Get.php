@@ -34,10 +34,7 @@ class Get extends Command
         
         $metrics = new MetricServiceClient(['projectId' => $projectId]);
         $projectName = $metrics->projectName($projectId);
-        
-        $uptimeCheckClient = new UptimeCheckServiceClient(['projectId' => $projectId]);
-        $uptimeCheckClient->projectName($projectId);
-        
+
         try {
             $filter = 'metric.type="monitoring.googleapis.com/uptime_check/check_passed" resource.type="uptime_url"';
         
@@ -109,6 +106,7 @@ class Get extends Command
                 }
             }
             unset($resultTotal);
+
             $resultOk = $metrics->listTimeSeries(
                 $projectName,
                 $filter,
@@ -142,11 +140,10 @@ class Get extends Command
         
                 }
             }
-        
-        
         } finally {
             $metrics->close();
         }
+
         return Command::SUCCESS;
     }
 }

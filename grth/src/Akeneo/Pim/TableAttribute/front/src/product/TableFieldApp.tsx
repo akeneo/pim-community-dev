@@ -9,7 +9,7 @@ import {AddRowsButton} from './AddRowsButton';
 import {ProductFieldElement, useRenderElements} from './useRenderElements';
 import {UNIQUE_ID_KEY, useUniqueIds} from './useUniqueIds';
 import {useToggleRow} from './useToggleRow';
-import {SelectOptionRepository} from '../repositories';
+import {ReferenceEntityRecordRepository, SelectOptionRepository} from '../repositories';
 import {AttributeContext, LocaleCodeContext} from '../contexts';
 
 const TableInputContainer = styled.div<{isCompareTranslate: boolean} & AkeneoThemedProps>`
@@ -135,6 +135,13 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
 
   React.useEffect(() => {
     SelectOptionRepository.clearCache();
+  }, []);
+
+  React.useEffect(() => {
+    // clear cache on unmount
+    return () => {
+      ReferenceEntityRecordRepository.clearCache();
+    };
   }, []);
 
   const renderElements = useRenderElements(attributeState.code, elements);

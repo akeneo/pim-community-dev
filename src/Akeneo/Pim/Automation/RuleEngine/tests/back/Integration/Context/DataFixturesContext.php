@@ -21,6 +21,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
@@ -601,5 +602,20 @@ final class DataFixturesContext implements Context
                 $this->transport->ack($envelope);
             }
         }
+    }
+
+    /**
+     * @Given the :identifier reference entity
+     */
+    public function theReferenceEntity(string $identifier): void
+    {
+        $createCommand = new CreateReferenceEntityCommand($identifier, []);
+
+        $violations = $this->container->get('validator')->validate($createCommand);
+        if ($violations->count() > 0) {
+            throw new \LogicException(sprintf('Cannot create reference entity: %s', $violations->get(0)->getMessage()));
+        }
+
+        ($this->container->get('akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'))($createCommand);
     }
 }

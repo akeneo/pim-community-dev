@@ -1,9 +1,12 @@
 {
     "description": "Deployment command",
     "require": {
-        "google/cloud-monitoring": "^1.0.0",
+        "google/cloud-monitoring": "v1.0.4",
         "monolog/monolog": "^2.3",
         "symfony/console": "^5"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.4.6"
     },
     "autoload": {
         "psr-4": {

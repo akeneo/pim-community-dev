@@ -1,5 +1,20 @@
 # 5.0.x
 
+# 5.0.76 (2022-02-07)
+
+# 5.0.75 (2022-02-04)
+
+# 5.0.74 (2022-02-04)
+
+# 5.0.73 (2022-02-04)
+
+# 5.0.72 (2022-02-04)
+
+## Bug fixes
+
+- PIM-10243: Add attribute-rule.yml to remove mass actions in the setting/attribute/rule tab
+- PIM-10253: [BACKPORT PIM-10190] Fix "Label" column shows the code in attribute rules tab
+
 # 5.0.71 (2022-02-01)
 
 # 5.0.70 (2022-02-01)

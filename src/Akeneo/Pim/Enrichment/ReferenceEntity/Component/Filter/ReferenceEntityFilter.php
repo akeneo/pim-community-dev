@@ -174,6 +174,7 @@ class ReferenceEntityFilter extends AbstractAttributeFilter implements Attribute
     protected function checkValue(AttributeInterface $attribute, $values)
     {
         FieldFilterHelper::checkArray($attribute->getCode(), $values, static::class);
+        FieldFilterHelper::checkArrayOfStrings($attribute->getCode(), $values, static::class);
 
         foreach ($values as $recordCode) {
             FieldFilterHelper::checkIdentifier($attribute->getCode(), $recordCode, static::class);

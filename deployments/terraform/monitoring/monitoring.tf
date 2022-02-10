@@ -44,7 +44,6 @@ resource "google_monitoring_uptime_check_config" "https" {
     type = "uptime_url"
 
     labels = {
-      pfid = local.pfid
       project_id = var.google_project_id
       host       = replace(var.dns_external, "/\\.$/", "")
     }

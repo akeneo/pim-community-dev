@@ -483,6 +483,8 @@ services:
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\Writer\File\TableValuesColumnSorter:
         arguments:
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
+            - '@translator'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableColumnTranslator'
 
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\Writer\Database\SelectOption:
         arguments:

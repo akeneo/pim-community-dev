@@ -1,14 +1,24 @@
 services:
-    Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateUppercaseWords:
+    Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\ComputeCaseWords\ComputeLowerCaseWordsRate: ~
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\ComputeCaseWords\ComputeUppercaseWordsRate: ~
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateCaseWords:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateUppercaseWords:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateCaseWords'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\ComputeCaseWords\ComputeUppercaseWordsRate'
         tags:
             - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_criterion' }
             - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_model_criterion' }
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateLowerCaseWords:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateCaseWords'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\ComputeCaseWords\ComputeLowerCaseWordsRate'
         tags:
             - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_criterion' }
             - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_model_criterion' }
