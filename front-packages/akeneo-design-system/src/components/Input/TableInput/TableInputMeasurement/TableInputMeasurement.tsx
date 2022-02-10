@@ -43,7 +43,6 @@ const TableInputMeasurementUnit = styled(SelectInput)`
     & > div {
       background: none;
       color: ${getColor('grey', 100)};
-      text-transform: uppercase;
 
       & > input {
         border: none;
@@ -52,10 +51,6 @@ const TableInputMeasurementUnit = styled(SelectInput)`
       }
     }
   }
-`;
-
-const MeasurementReadOnlyUnit = styled.span`
-  text-transform: uppercase;
 `;
 
 type TableInputMeasurementProps = {
@@ -92,7 +87,7 @@ const TableInputMeasurement: React.FC<TableInputMeasurementProps> = ({
 
   return readOnly ? (
     <TableInputReadOnlyCell>
-      {amount} <MeasurementReadOnlyUnit>{selectedUnit?.symbol || selectedUnit?.label}</MeasurementReadOnlyUnit>
+      {amount} <span>{selectedUnit?.symbol || selectedUnit?.label}</span>
     </TableInputReadOnlyCell>
   ) : (
     <TableInputMeasurementContainer {...rest}>
