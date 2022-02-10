@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\Common;
 
+use Webmozart\Assert\Assert;
+
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -17,6 +19,9 @@ class TargetProperty implements TargetInterface
         private string $action,
         private string $ifEmpty,
     ) {
+        Assert::stringNotEmpty($this->code);
+        Assert::inArray($this->action, ['set', 'add']);
+        Assert::inArray($this->ifEmpty, ['clear', 'skip']);
     }
 
     public static function createFromNormalized(array $normalizedPropertyTarget): self

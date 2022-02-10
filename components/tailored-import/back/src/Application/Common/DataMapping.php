@@ -38,7 +38,7 @@ class DataMapping
         return match ($normalizedTarget['type']) {
             TargetAttribute::TYPE => TargetAttribute::createFromNormalized($normalizedTarget),
             TargetProperty::TYPE => TargetProperty::createFromNormalized($normalizedTarget),
-            default => throw new \RuntimeException(sprintf("unknow Target type provided: %s", $normalizedTarget['type'])),
+            default => throw new \RuntimeException(sprintf('Unknown target type: %s', $normalizedTarget['type'])),
         };
     }
 

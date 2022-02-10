@@ -24,15 +24,12 @@ class ExecuteDataMappingHandler
         $valueUserIntents = [];
 
         $dataMappingCollection = $executeDataMappingQuery->getDataMappingCollection();
-        $identifierAttributeCode = $this->getIdentifierAttributeCode($dataMappingCollection);
+        $identifierAttributeCode = $this->getIdentifierAttributeCode();
+        $productIdentifier = null;
 
         /** @var DataMapping $dataMapping */
         foreach ($dataMappingCollection->iterator() as $dataMapping) {
             $target = $dataMapping->target();
-
-            if ($identifierAttributeCode === $target->code()) {
-                continue;
-            }
 
             /**
              * How do we structure the code to determine the type of target property OR attribute,
@@ -42,19 +39,23 @@ class ExecuteDataMappingHandler
             $cellData = $this->mergeCellData($executeDataMappingQuery->getRow(), $dataMapping->sources());
             /** TODO Iterate over operation */
             if ($target instanceof TargetAttribute) {
-                $valueUserIntents[] = new SetTextValue(
-                    $target->code(),
-                    $target->locale(),
-                    $target->channel(),
-                    $cellData,
-                );
+                if ($identifierAttributeCode === $target->code()) {
+                    $productIdentifier = $cellData;
+                } else {
+                    $valueUserIntents[] = new SetTextValue(
+                        $target->code(),
+                        $target->locale(),
+                        $target->channel(),
+                        $cellData,
+                    );
+                }
             }
         }
 
         return new UpsertProductCommand(
             userId: 1,
-            productIdentifier: $identifierAttributeCode,
-            valuesUserIntent: $valueUserIntents
+            productIdentifier: $productIdentifier,
+            valuesUserIntent: $valueUserIntents,
         );
     }
 
@@ -67,7 +68,7 @@ class ExecuteDataMappingHandler
     }
 
     // TODO: use the upcoming get by attribute type public api query
-    private function getIdentifierAttributeCode(DataMappingCollection $dataMappingCollection): string
+    private function getIdentifierAttributeCode(): string
     {
         return 'sku';
     }
