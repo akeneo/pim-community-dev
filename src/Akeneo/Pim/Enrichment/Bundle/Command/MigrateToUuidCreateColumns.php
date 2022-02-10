@@ -24,16 +24,20 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
         'pim_versioning_version' => ['resource_id', 'resource_uuid'],
     ];
 
-    public function __construct(private Connection $dbConnection)
+    public function __construct(private Connection $connection)
     {
     }
 
-    public function getMissingCount(OutputInterface $output): int
+    public function getDescription(): string
+    {
+        return 'Add uuid columns for pim_catalog_product table and every foreign tables';
+    }
+
+    public function getMissingCount(): int
     {
         $count = 0;
         foreach (self::TABLES as $tableName => $columnNames) {
             if ($this->tableExists($tableName) && !$this->columnExists($tableName, $columnNames[1])) {
-                $output->writeln(sprintf('... missing %s', $tableName));
                 $count++;
             }
         }
@@ -41,23 +45,24 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
         return $count;
     }
 
-    public function addMissing(OutputInterface $output): void
+    public function addMissing(bool $dryRun, OutputInterface $output): void
     {
         foreach (self::TABLES as $tableName => $columnNames) {
             if ($this->tableExists($tableName) && !$this->columnExists($tableName, $columnNames[1])) {
-                $output->writeln(sprintf('... add %s', $tableName));
-                $addUuidColumnQuery = sprintf(<<<SQL
-    ALTER TABLE `%s` ADD `%s` BINARY(16) DEFAULT NULL AFTER `%s`, LOCK=NONE, ALGORITHM=INPLACE;
-    SQL, $tableName, $columnNames[1], $columnNames[0]);
-
-                $this->dbConnection->executeQuery($addUuidColumnQuery);
+                $output->writeln(sprintf('    Will add %s', $tableName));
+                if (!$dryRun) {
+                    $addUuidColumnQuery = sprintf(<<<SQL
+        ALTER TABLE `%s` ADD `%s` BINARY(16) DEFAULT NULL AFTER `%s`, LOCK=NONE, ALGORITHM=INPLACE;
+        SQL, $tableName, $columnNames[1], $columnNames[0]);
+                    $this->connection->executeQuery($addUuidColumnQuery);
+                }
             }
         }
     }
 
     private function columnExists(string $tableName, string $columnName): bool
     {
-        $rows = $this->dbConnection->fetchAllAssociative(sprintf('SHOW COLUMNS FROM %s LIKE :columnName', $tableName),
+        $rows = $this->connection->fetchAllAssociative(sprintf('SHOW COLUMNS FROM %s LIKE :columnName', $tableName),
             [
                 'columnName' => $columnName,
             ]);
@@ -67,7 +72,7 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
 
     private function tableExists(string $tableName): bool
     {
-        $rows = $this->dbConnection->fetchAllAssociative(
+        $rows = $this->connection->fetchAllAssociative(
             'SHOW TABLES LIKE :tableName',
             [
                 'tableName' => $tableName,

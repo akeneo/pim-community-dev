@@ -30,10 +30,14 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidFillUuids:
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidFillProductUuid:
         arguments:
             - '@database_connection'
-            -
+
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidFillForeignUuid:
+        arguments:
+            - '@database_connection'
+
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidFillJson:
         arguments:
             - '@database_connection'
@@ -41,7 +45,8 @@ services:
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidCommand:
         arguments:
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidCreateColumns'
-            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidFillUuids'
+            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidFillProductUuid'
+            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidFillForeignUuid'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidFillJson'
         tags:
             - { name: 'console.command' }
