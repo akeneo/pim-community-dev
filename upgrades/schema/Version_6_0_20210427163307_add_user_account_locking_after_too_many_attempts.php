@@ -13,7 +13,6 @@ final class Version_6_0_20210427163307_add_user_account_locking_after_too_many_a
 {
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
         $this->skipIf(
             $this->hasColumn($schema, 'consecutive_authentication_failure_counter') && $this->hasColumn($schema, 'authentication_failure_reset_date'),

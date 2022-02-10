@@ -1,12 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\InternalApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
