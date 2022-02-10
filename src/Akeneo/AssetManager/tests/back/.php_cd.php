@@ -20,7 +20,8 @@ $rules = [
         'Symfony\Component\Validator',
         'Webmozart\Assert\Assert',
         'Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetAttributeTranslations',
-        'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes'
+        'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute',
+        'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes',
     ])->in('Akeneo\AssetManager\Application'),
     $builder->only([
         'Akeneo\AssetManager\Application',

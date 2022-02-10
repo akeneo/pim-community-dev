@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Application\Asset\SearchLinkedProductAttributes;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetAttributeTranslations;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 
 /**
@@ -36,13 +37,13 @@ class SearchLinkedProductAttributes
     {
         $productAttributes = $this->getAttributes->forType('pim_catalog_asset_collection');
 
-        $filteredProductAttributes = array_filter($productAttributes, function ($attribute) use ($assetFamilyIdentifier) {
+        $filteredProductAttributes = array_filter($productAttributes, function (Attribute $attribute) use ($assetFamilyIdentifier) {
             return $attribute->properties()['reference_data_name'] === (string) $assetFamilyIdentifier;
         });
 
         $labels = $this->getAttributeTranslations->byAttributeCodes(array_keys($filteredProductAttributes));
 
-        return array_map(function ($attribute) use ($labels) {
+        return array_map(function (Attribute $attribute) use ($labels) {
             return new LinkedProductAttribute(
                 $attribute->code(),
                 $attribute->type(),
