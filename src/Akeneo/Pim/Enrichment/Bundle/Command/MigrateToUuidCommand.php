@@ -12,9 +12,10 @@ class MigrateToUuidCommand extends Command
     protected static $defaultName = 'pim:product:migrate-to-uuid';
 
     public function __construct(
-        private MigrateToUuidCreateColumns $migrateToUuidCreateColumns,
-        private MigrateToUuidFillUuids $migrateToUuidFillUuids,
-        private MigrateToUuidFillJson $migrateToUuidFillJson,
+        private MigrateToUuidStep $migrateToUuidCreateColumns,
+        private MigrateToUuidStep $migrateToUuidFillProductUuid,
+        private MigrateToUuidStep $migrateToUuidFillForeignUuid,
+        private MigrateToUuidStep $migrateToUuidFillJson,
     ) {
         parent::__construct();
     }
@@ -29,22 +30,27 @@ class MigrateToUuidCommand extends Command
     {
         $dryRun = $input->getOption('dry-run');
 
-        foreach ([$this->migrateToUuidCreateColumns, $this->migrateToUuidFillUuids, $this->migrateToUuidFillJson] as $step) {
-            $missingCount = $step->getMissingCount($output);
-            $output->writeln(sprintf('Missing %d elements', $missingCount));
+        $i = 1;
+        foreach ([
+            $this->migrateToUuidCreateColumns,
+            $this->migrateToUuidFillProductUuid,
+            $this->migrateToUuidFillForeignUuid,
+            $this->migrateToUuidFillJson
+        ] as $step) {
+            /** @var $step MigrateToUuidStep */
+            $output->writeln(sprintf('<info>Step %d: %s</info>', $i, $step->getDescription()));
+            $missingCount = $step->getMissingCount();
+            $output->writeln(sprintf('    Missing %d items', $missingCount));
             if ($missingCount > 0 && !$dryRun) {
-                $output->writeln(sprintf('Add missing elements...'));
-                $step->addMissing($output);
-                $output->writeln(sprintf('Done'));
+                $output->writeln(sprintf('    Add missing items... '));
+                $step->addMissing($dryRun, $output);
+                $output->writeln(sprintf('    Done'));
             }
-
-            if ($missingCount > 0 && $dryRun) {
-                $output->writeln('Enleve le dry run avant de continuer michel');
-                return Command::SUCCESS;
-            }
+            $output->writeln('');
+            $i++;
         }
 
-        $output->writeln(sprintf('LEZGO'));
+        $output->writeln(sprintf('Migration done!'));
 
         return Command::SUCCESS;
     }
