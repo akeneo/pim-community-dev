@@ -23,6 +23,10 @@ data-quality-insights-lint-back: #Doc: launch PHP linter for quality-insights
 
 .PHONY: data-quality-insights-lint-front
 data-quality-insights-lint-front:
+	$(YARN_RUN) prettier --config vendor/akeneo/pim-community-dev/.prettierrc.json --parser typescript --check "./src/Akeneo/Pim/Automation/DataQualityInsights/front/**/*.{js,ts,tsx}"
+
+.PHONY: data-quality-insights-lint-front-fix
+data-quality-insights-lint-front-fix:
 	$(YARN_RUN) prettier --config vendor/akeneo/pim-community-dev/.prettierrc.json --parser typescript --write "./src/Akeneo/Pim/Automation/DataQualityInsights/front/**/*.{js,ts,tsx}"
 
 .PHONY: data-quality-insights-cs-fix

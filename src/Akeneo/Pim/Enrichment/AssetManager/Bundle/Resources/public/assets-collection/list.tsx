@@ -148,7 +148,7 @@ const DisplayValues = ({
         <AssetCollectionContainer key={value.attribute.code} data-attribute={value.attribute.code}>
           <SectionTitle>
             {!value.editable && <LockIcon size={18} />}
-            <SectionTitle.Title readonly={!value.editable}>
+            <SectionTitle.Title>
               {getAttributeGroupLabel(attributeGroups, value.attribute.group, context.locale)}&nbsp;/&nbsp;
               {getAttributeLabel(value.attribute, context.locale)}
             </SectionTitle.Title>

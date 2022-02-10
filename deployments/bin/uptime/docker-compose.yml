@@ -2,10 +2,10 @@ version: '3.7'
 
 services:
   composer:
-    image: 'composer:2'
-    working_dir: '/app'
+    image: 'composer:2.1'
     volumes:
-      - ./:/app
+      - ./composer.json:/app/composer.json
+      - ./vendor:/app/vendor
   php:
     image: eu.gcr.io/akeneo-ci/php-deployment:latest
     environment:

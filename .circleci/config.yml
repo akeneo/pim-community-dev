@@ -600,6 +600,7 @@ jobs:
         name: Push Terraform modules to GCS
         command: |
           BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/trial-edition-dev/${IMAGE_TAG}/
+          BOTO_CONFIG=/dev/null gsutil -m cp -r tria/deployments/terraform/redirection_trial gs://akecld-terraform-modules/trial-edition-dev/${IMAGE_TAG}/deployments/terraform/
     - run:
         name: Persist env vars for next jobs
         command: |
@@ -2435,6 +2436,21 @@ workflows:
                         PRODUCT_TYPE: ["srnt", "grth", "tria"]
                 requires:
                     - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+          - create_release_candidate?:
+                name: "[<< matrix.PRODUCT_TYPE >>] Create release candidate?"
+                type: approval
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                requires:
+                    - "[<< matrix.PRODUCT_TYPE >>] Test deploy"
+          - release:
+                name: "[<< matrix.PRODUCT_TYPE >>] Create release candidate"
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                requires:
+                    - "[<< matrix.PRODUCT_TYPE >>] Create release candidate?"
           - test_deploy_last_release:
                 name: "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
                 matrix:

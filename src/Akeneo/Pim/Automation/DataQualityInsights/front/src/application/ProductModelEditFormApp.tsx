@@ -25,6 +25,7 @@ import {
   followAttributeOptionSpellingCriterion,
   followAttributeSpellingCriterion,
 } from './user-actions';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
 interface ProductModelEditFormAppProps {
   catalogChannel: string;
@@ -38,57 +39,59 @@ const ProductModelEditFormApp: FunctionComponent<ProductModelEditFormAppProps> =
   catalogLocale,
 }) => {
   return (
-    <ThemeProvider theme={pimTheme}>
-      <Provider store={productEditFormStore}>
-        <CatalogContextListener catalogChannel={catalogChannel} catalogLocale={catalogLocale} />
-        <PageContextListener />
-        <ProductContextListener product={product} productFetcher={fetchProductModel} />
+    <DependenciesProvider>
+      <ThemeProvider theme={pimTheme}>
+        <Provider store={productEditFormStore}>
+          <CatalogContextListener catalogChannel={catalogChannel} catalogLocale={catalogLocale} />
+          <PageContextListener />
+          <ProductContextListener product={product} productFetcher={fetchProductModel} />
 
-        <AttributesTabContent product={product} />
+          <AttributesTabContent product={product} />
 
-        <AxesContextProvider axes={['enrichment', 'consistency']}>
-          <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductModelEvaluation}>
-            <AxisEvaluation axis={'enrichment'}>
-              <Criterion code={'completeness_of_non_required_attributes'}>
-                <Icon type={EditIcon} />
-              </Criterion>
-              <Criterion code={'completeness_of_required_attributes'}>
-                <Icon type={EditIcon} />
-              </Criterion>
-            </AxisEvaluation>
+          <AxesContextProvider axes={['enrichment', 'consistency']}>
+            <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductModelEvaluation}>
+              <AxisEvaluation axis={'enrichment'}>
+                <Criterion code={'completeness_of_non_required_attributes'}>
+                  <Icon type={EditIcon} />
+                </Criterion>
+                <Criterion code={'completeness_of_required_attributes'}>
+                  <Icon type={EditIcon} />
+                </Criterion>
+              </AxisEvaluation>
 
-            <AxisEvaluation axis={'consistency'}>
-              <Criterion code={'consistency_spelling'}>
-                <Icon type={EditIcon} />
-              </Criterion>
-              <Criterion code={'consistency_textarea_lowercase_words'}>
-                <Icon type={EditIcon} />
-              </Criterion>
-              <Criterion code={'consistency_textarea_uppercase_words'}>
-                <Icon type={EditIcon} />
-              </Criterion>
-              <Criterion code={'consistency_text_title_formatting'}>
-                <Icon type={EditIcon} />
-              </Criterion>
-              <Criterion
-                code={'consistency_attribute_spelling'}
-                followCriterionRecommendation={followAttributeSpellingCriterion}
-                isFollowingCriterionRecommendationAllowed={checkFollowingAttributeSpellingCriterionActive}
-              >
-                <Icon type={SettingsIcon} />
-              </Criterion>
-              <Criterion
-                code={'consistency_attribute_option_spelling'}
-                followCriterionRecommendation={followAttributeOptionSpellingCriterion}
-                isFollowingCriterionRecommendationAllowed={checkFollowingAttributeOptionSpellingCriterionActive}
-              >
-                <Icon type={SettingsIcon} />
-              </Criterion>
-            </AxisEvaluation>
-          </DataQualityInsightsTabContent>
-        </AxesContextProvider>
-      </Provider>
-    </ThemeProvider>
+              <AxisEvaluation axis={'consistency'}>
+                <Criterion code={'consistency_spelling'}>
+                  <Icon type={EditIcon} />
+                </Criterion>
+                <Criterion code={'consistency_textarea_lowercase_words'}>
+                  <Icon type={EditIcon} />
+                </Criterion>
+                <Criterion code={'consistency_textarea_uppercase_words'}>
+                  <Icon type={EditIcon} />
+                </Criterion>
+                <Criterion code={'consistency_text_title_formatting'}>
+                  <Icon type={EditIcon} />
+                </Criterion>
+                <Criterion
+                  code={'consistency_attribute_spelling'}
+                  followCriterionRecommendation={followAttributeSpellingCriterion}
+                  isFollowingCriterionRecommendationAllowed={checkFollowingAttributeSpellingCriterionActive}
+                >
+                  <Icon type={SettingsIcon} />
+                </Criterion>
+                <Criterion
+                  code={'consistency_attribute_option_spelling'}
+                  followCriterionRecommendation={followAttributeOptionSpellingCriterion}
+                  isFollowingCriterionRecommendationAllowed={checkFollowingAttributeOptionSpellingCriterionActive}
+                >
+                  <Icon type={SettingsIcon} />
+                </Criterion>
+              </AxisEvaluation>
+            </DataQualityInsightsTabContent>
+          </AxesContextProvider>
+        </Provider>
+      </ThemeProvider>
+    </DependenciesProvider>
   );
 };
 

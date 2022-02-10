@@ -1,6 +1,5 @@
 RELEASE ?= latest
 
-.PHONY: buildPush
 buildPush: build push
 	@echo "Done"
 
@@ -12,15 +11,17 @@ push:
 	@echo "Push"
 	docker push eu.gcr.io/akeneo-ci/php-deployment:${RELEASE}
 
-.PHONY: install
 install:
-	composer install
-	
+	docker-compose run --rm composer install
 
-.PHONY: deployment-uptime-clear
+phpstan:
+	docker-compose run --rm php php -d memory_limit=-1 ./vendor/phpstan/phpstan/phpstan analyse
+
+test: phpstan
+	@echo "Tests done"
+
 deployment-uptime-clear:
 	./deployment deployment:uptime:clear
 
-.PHONY: deployment-uptime-get
 deployment-uptime-get:
 	./deployment deployment:uptime:get
