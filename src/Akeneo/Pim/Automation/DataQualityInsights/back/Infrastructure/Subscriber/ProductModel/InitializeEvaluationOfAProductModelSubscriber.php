@@ -26,18 +26,14 @@ class InitializeEvaluationOfAProductModelSubscriber implements EventSubscriberIn
 
     private LoggerInterface $logger;
 
-    private EvaluatePendingCriteria $evaluatePendingCriteria;
-
     public function __construct(
         FeatureFlag $dataQualityInsightsFeature,
         CreateCriteriaEvaluations $createProductModelCriteriaEvaluations,
         LoggerInterface $logger,
-        EvaluatePendingCriteria $evaluatePendingCriteria
     ) {
         $this->dataQualityInsightsFeature = $dataQualityInsightsFeature;
         $this->createProductModelCriteriaEvaluations = $createProductModelCriteriaEvaluations;
         $this->logger = $logger;
-        $this->evaluatePendingCriteria = $evaluatePendingCriteria;
     }
 
     public static function getSubscribedEvents()
@@ -62,12 +58,10 @@ class InitializeEvaluationOfAProductModelSubscriber implements EventSubscriberIn
             return;
         }
 
-        $productModelId = intval($subject->getId());
-        $this->initializeProductModelCriteria($productModelId);
-        $this->evaluatePendingCriteria->evaluateSynchronousCriteria([$productModelId]);
+        $this->initializeProductModelCriteria(intval($subject->getId()));
     }
 
-    private function initializeProductModelCriteria($productModelId)
+    private function initializeProductModelCriteria(int $productModelId): void
     {
         try {
             $this->createProductModelCriteriaEvaluations->createAll([new ProductId($productModelId)]);

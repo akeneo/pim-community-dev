@@ -1,3 +1,5 @@
+{% extends "@PimNotification/Email/notification.txt.twig" %}
+
 {% block emailMessage %}
     Dear {{ user.userIdentifier }},
     We just received a request to reset your Akeneo PIM password.

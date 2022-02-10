@@ -5,20 +5,19 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductsIndex;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Event\ProductsEvaluated;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @todo Create an interface for UpdateProductsIndex or extract its call in a subscriber.
  */
 class EvaluateProducts
 {
     public function __construct(
         private EvaluatePendingCriteria $evaluatePendingProductCriteria,
         private ConsolidateProductScores $consolidateProductScores,
-        private UpdateProductsIndex $updateProductsIndex
+        private EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -26,6 +25,6 @@ class EvaluateProducts
     {
         $this->evaluatePendingProductCriteria->evaluateAllCriteria($productIds);
         $this->consolidateProductScores->consolidate($productIds);
-        $this->updateProductsIndex->execute($productIds);
+        $this->eventDispatcher->dispatch(new ProductsEvaluated($productIds));
     }
 }
