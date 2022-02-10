@@ -6,9 +6,10 @@ Feature: Execute all rules on a set of products
   Background:
     Given a "clothing" catalog configuration
     And the following products:
-      | sku        | categories | family  |
-      | navy_blue  | jackets    | jackets |
-      | light_blue | jeans      | pants   |
+      | sku        | categories | family  | description-fr_FR-mobile |
+      | navy_blue  | jackets    | jackets |                   |
+      | light_blue | jeans      | pants   |                   |
+      | pink       | jeans      | pants   | Belle description |
     And the following product rule definitions:
       """
       set_US_description:
@@ -38,3 +39,4 @@ Feature: Execute all rules on a set of products
     And the fr_FR mobile description of "navy_blue" should be ""
     And the en_US mobile description of "light_blue" should be "Nice description"
     And the fr_FR mobile description of "light_blue" should be ""
+    And there is 1 skipped product

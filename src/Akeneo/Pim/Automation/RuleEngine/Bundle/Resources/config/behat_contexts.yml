@@ -67,6 +67,7 @@ services:
         - '@akeneo_batch.job.job_instance_repository'
         - '@pim_user.provider.user'
         - '@pim_connector.doctrine.cache_clearer'
+        - '@pim_enrich.repository.job_execution'
 
     Context\ConnectivityContext:
         - '@messenger.transport.business_event'

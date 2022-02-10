@@ -14,6 +14,8 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\Engine;
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsSaver;
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsUpdater;
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsValidator;
+use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\ApplierInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SavedSubjectsEvent;
@@ -22,6 +24,7 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Applies a rule on products
@@ -30,27 +33,16 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class ProductRuleApplier implements ApplierInterface
 {
-    protected ProductsUpdater $productsUpdater;
-    protected ProductsValidator $productsValidator;
-    protected ProductsSaver $productsSaver;
-    protected EventDispatcherInterface $eventDispatcher;
-    protected EntityManagerClearerInterface $cacheClearer;
-    protected int $pageSize;
-
     public function __construct(
-        ProductsUpdater $productsUpdater,
-        ProductsValidator $productsValidator,
-        ProductsSaver $productsSaver,
-        EventDispatcherInterface $eventDispatcher,
-        EntityManagerClearerInterface $cacheClearer,
-        $pageSize = 1000
+        protected ProductsUpdater $productsUpdater,
+        protected ProductsValidator $productsValidator,
+        protected ProductsSaver $productsSaver,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected EntityManagerClearerInterface $cacheClearer,
+        protected FilterInterface $productFilter,
+        protected NormalizerInterface $productNormalizer,
+        protected $pageSize = 1000,
     ) {
-        $this->productsUpdater = $productsUpdater;
-        $this->productsValidator = $productsValidator;
-        $this->productsSaver = $productsSaver;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->cacheClearer = $cacheClearer;
-        $this->pageSize = $pageSize;
     }
 
     /**
@@ -82,12 +74,25 @@ class ProductRuleApplier implements ApplierInterface
     }
 
     /**
+     * @param ProductInterface $product
+     * @param array            $filteredItem
+     *
+     * @return array
+     */
+    protected function filterIdenticalData(ProductInterface $product, array $filteredItem): array
+    {
+        return $this->productFilter->filter($product, $filteredItem);
+    }
+
+    /**
      * @param RuleInterface $rule
      * @param array $products
      */
     protected function updateProducts(RuleInterface $rule, array $products)
     {
         $updatedProducts = $this->productsUpdater->update($rule, $products);
+        var_dump('xouxou');
+
         $validProducts = $this->productsValidator->validate($rule, $updatedProducts);
         $this->eventDispatcher->dispatch(new SavedSubjectsEvent($rule, $validProducts), RuleEvents::PRE_SAVE_SUBJECTS);
         $this->productsSaver->save($rule, $validProducts);
