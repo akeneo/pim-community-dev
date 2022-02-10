@@ -2405,112 +2405,12 @@ jobs:
                     LAST_HOUR_TIME=$(( CURRENT_TIME - 60*60 ))
                     curl --location -s -g -H "Content-Type: application/json" -H "DD-API-KEY: ${DATADOG_API_KEY}" -H "DD-APPLICATION-KEY: ${DATADOG_APP_KEY}" --request GET "https://api.datadoghq.eu/api/v1/query?from=${LAST_HOUR_TIME}&to=${CURRENT_TIME}&query=top(sum:kubernetes.containers.running{project:akecld-saas-prod,short_image:pim-enterprise-dev,app:pim,component:pim-web,type:<<parameters.PRODUCT_TYPE>>}by{image_tag},%20100,%20%27max%27,%20%27desc%27)" | jq -r .series[].tag_set[0] | cut -c11- | sort
 
-  ###################################
-  # TAILORED IMPORT CUSTOM WORKFLOW #
-  ###################################
-  test_tailored_import:
-    machine:
-      image: ubuntu-2004:202010-01
-    parameters:
-      PRODUCT_TYPE:
-        type: string
-        default: ""
-    resource_class: medium
-    steps:
-      - checkout
-      - run:
-          name: Copy docker-compose.override.yml.dist
-          command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
-      - run:
-          name: Creating cache key for PHP Docker image
-          command: |
-            find Dockerfile docker/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/php-docker-image.hash
-            date +%F >> ~/php-docker-image.hash
-      - restore_cache:
-          name: Restore PHP docker image cache
-          key: php-docker-image-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/php-docker-image.hash" }}
-      - run:
-          name: Build the latest Docker images
-          command: |
-            ls php-pim-image.tar && docker load -i php-pim-image.tar
-            ls php-pim-image.tar || make php-image-dev
-            ls php-pim-image.tar || docker save -o php-pim-image.tar akeneo/pim-dev/php:8.0
-      - run:
-          name: Setup tests results folder and log folder
-          command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.cache/Cypress ~/.composer
-      - run:
-          name: Creating cache key for JS and PHP dependencies
-          command: |
-            cat yarn.lock > ~/front-dependency.hash && date +%F >> ~/front-dependency.hash
-            cat composer.json > ~/back-dependency.hash && date +%F >> ~/back-dependency.hash
-      - restore_cache:
-          name: Restore cache - yarn and Cypress dependency cache
-          keys:
-            - frontend-dependency-cache-{{ checksum "~/front-dependency.hash" }}
-      - restore_cache:
-          name: Restore cache - composer dependency cache
-          keys:
-            - backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}
-      - run:
-          name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
-          command: |
-            sudo chown -R 1000:1000 ../project
-            sudo chown -R 1000:1000 ~/.composer
-            sudo chown -R 1000:1000 ~/.cache
-      - run:
-          name: Install back and front dependencies
-          command: make dependencies
-          environment:
-            YARN_REGISTRY: "http://registry.yarnpkg.com"
-      - run:
-          name: Build DSM
-          command: ls vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system/lib 1> /dev/null 2>&1 || make dsm
-      - run:
-          name: Build front-packages
-          command: make front-packages
-      - run:
-          name: Change owner on project dir after installing when there is no cache
-          command: sudo chmod -R 777 ../project
-      - run:
-          name: Change owner on project dir in order to archive the project into the workspace
-          command: sudo chown -R 1000:1000 ../project
-      - run:
-          name: Start containers
-          command: |
-            docker load -i php-pim-image.tar
-            APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
-            docker/wait_docker_up.sh
-      - run:
-          name: Install database
-          command: APP_ENV=test make database
-      - run:
-          name: CI back
-          command: PIM_CONTEXT=tailored-import make ci-back
-      - run:
-          name: CI front
-          command: PIM_CONTEXT=tailored-import make ci-front
-      - store_test_results:
-          path: var/tests/phpunit
-      - store_artifacts:
-          path: var/tests/phpunit
-      - store_artifacts:
-          path: var/logs
-
 workflows:
   pull_request:
       when:
           not:
               equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
       jobs:
-          - ready_to_test_tailored_import?:
-              type: approval
-              filters:
-                branches:
-                  ignore:
-                    - "master"
-          - test_tailored_import:
-              requires:
-                - ready_to_test_tailored_import?
           - ready_to_build?:
                 type: approval
                 filters:
