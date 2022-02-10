@@ -22,7 +22,7 @@ class DataMappingCollectionSpec extends ObjectBehavior
                 'channel' => 'web',
                 'locale' => 'fr_FR',
                 'action' => 'set',
-                'if_empty' => 'test',
+                'if_empty' => 'skip',
             ],
             'sources' => [],
             'operations' => [],

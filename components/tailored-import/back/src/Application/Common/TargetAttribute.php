@@ -24,8 +24,8 @@ class TargetAttribute implements TargetInterface
         Assert::stringNotEmpty($this->code);
         Assert::notSame($this->channel, '');
         Assert::notSame($this->locale, '');
-        Assert::inArray($this->action, ['set', 'add']);
-        Assert::inArray($this->ifEmpty, ['clear', 'skip']);
+        Assert::inArray($this->action, [TargetInterface::ACTION_ADD, TargetInterface::ACTION_SET]);
+        Assert::inArray($this->ifEmpty, [TargetInterface::IF_EMPTY_CLEAR, TargetInterface::IF_EMPTY_SKIP]);
     }
 
     public static function createFromNormalized(array $normalizedAttributeTarget): self
@@ -44,24 +44,20 @@ class TargetAttribute implements TargetInterface
         return $this->code;
     }
 
-
     public function channel(): ?string
     {
         return $this->channel;
     }
-
 
     public function locale(): ?string
     {
         return $this->locale;
     }
 
-
     public function action(): string
     {
         return $this->action;
     }
-
 
     public function ifEmpty(): string
     {

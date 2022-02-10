@@ -10,6 +10,11 @@ namespace Akeneo\Platform\TailoredImport\Application\Common;
  */
 interface TargetInterface
 {
+    public const ACTION_ADD = 'add';
+    public const ACTION_SET = 'set';
+    public const IF_EMPTY_CLEAR = 'clear';
+    public const IF_EMPTY_SKIP = 'skip';
+
     public function code(): string;
     public function action(): string;
     public function ifEmpty(): string;
