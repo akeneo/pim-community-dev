@@ -15,7 +15,7 @@ class CommunityVersion
     public const VERSION = 'master';
 
     /** @staticvar string */
-    public const VERSION_CODENAME = 'Buccaneer Bunny';
+    public const VERSION_CODENAME = 'Community master';
 
     /** @staticvar string */
     public const EDITION = 'CE';
