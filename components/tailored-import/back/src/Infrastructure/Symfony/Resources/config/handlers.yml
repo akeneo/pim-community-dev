@@ -6,5 +6,3 @@ services:
 
   akeneo.tailored_import.handler.execute_data_mapping:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingHandler
-    arguments:
-      - '@akeneo.pim.structure.query.get_attributes'

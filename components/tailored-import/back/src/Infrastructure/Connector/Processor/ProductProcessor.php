@@ -18,12 +18,13 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
  */
 class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
-    private StepExecution $stepExecution;
+    private ?StepExecution $stepExecution = null;
     private ?DataMappingCollection $dataMappingCollection = null;
 
     public function __construct(
-        private ExecuteDataMappingHandler $handler
-    ){}
+        private ExecuteDataMappingHandler $executeDataMappingHandler,
+    ) {
+    }
 
     public function process($item)
     {
@@ -32,18 +33,26 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         }
 
         $query = new ExecuteDataMappingQuery($item, $this->getDataMappingCollection());
-        return $this->handler->handle($query);
+
+        return $this->executeDataMappingHandler->handle($query);
     }
 
     private function getDataMappingCollection(): DataMappingCollection
     {
         if (null === $this->dataMappingCollection) {
-            $this->dataMappingCollection = DataMappingCollection::createFromNormalized($this->stepExecution->getJobParameters()->get('import_structure')['data_mappings']);
+            if (!$this->stepExecution instanceof StepExecution) {
+                throw new \LogicException('Processor has not been properly initialized');
+            }
+
+            $normalizedDataMappings = $this->stepExecution->getJobParameters()->get('import_structure')['data_mappings'];
+            // TODO: introduce hydrators?
+            $this->dataMappingCollection = DataMappingCollection::createFromNormalized($normalizedDataMappings);
         }
+
         return $this->dataMappingCollection;
     }
 
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }

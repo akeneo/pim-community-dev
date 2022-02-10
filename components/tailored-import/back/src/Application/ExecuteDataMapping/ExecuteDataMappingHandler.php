@@ -7,10 +7,9 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\ValueUserIntent;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredImport\Application\Common\DataMapping;
 use Akeneo\Platform\TailoredImport\Application\Common\DataMappingCollection;
+use Akeneo\Platform\TailoredImport\Application\Common\Row;
 use Akeneo\Platform\TailoredImport\Application\Common\TargetAttribute;
 
 /**
@@ -19,54 +18,57 @@ use Akeneo\Platform\TailoredImport\Application\Common\TargetAttribute;
  */
 class ExecuteDataMappingHandler
 {
-    private const IDENTIFIER_ATTRIBUTE_TYPE = 'pim_catalog_identifier';
-
-    public function __construct(
-        private GetAttributes $getAttributes
-    ) {}
-
-    public function handle(ExecuteDataMappingQuery $executeDataMappingQuery)
+    public function handle(ExecuteDataMappingQuery $executeDataMappingQuery): UpsertProductCommand
     {
         /** @var array<ValueUserIntent> $valueUserIntents */
         $valueUserIntents = [];
 
+        $dataMappingCollection = $executeDataMappingQuery->getDataMappingCollection();
+        $identifierAttributeCode = $this->getIdentifierAttributeCode($dataMappingCollection);
+
         /** @var DataMapping $dataMapping */
-        foreach ($executeDataMappingQuery->getDataMappingCollection()->getIterator() as $dataMapping) {
+        foreach ($dataMappingCollection->iterator() as $dataMapping) {
+            $target = $dataMapping->target();
+
+            if ($identifierAttributeCode === $target->code()) {
+                continue;
+            }
+
             /**
              * How do we structure the code to determine the type of target property OR attribute,
              *  - Attribute: deal with action type set OR add, and ValueUserIntent based on primitive type of the cellData value
-             *  - Property:  Determine the correct
+             *  - Property:  Determine the correct user intent
              */
-            $cellData = implode("", array_map(static fn(string $uuid) => $executeDataMappingQuery->getRow()->getCellData($uuid), $dataMapping->getSources()));
+            $cellData = $this->mergeCellData($executeDataMappingQuery->getRow(), $dataMapping->sources());
             /** TODO Iterate over operation */
-            $target = $dataMapping->target();
-            $valueUserIntents[] = new SetTextValue($target->code(), $target->locale(), $target->channel(), $cellData);
+            if ($target instanceof TargetAttribute) {
+                $valueUserIntents[] = new SetTextValue(
+                    $target->code(),
+                    $target->locale(),
+                    $target->channel(),
+                    $cellData,
+                );
+            }
         }
 
         return new UpsertProductCommand(
             userId: 1,
-            productIdentifier: $this->getIdentifierAttributeCode($executeDataMappingQuery->getDataMappingCollection()),
+            productIdentifier: $identifierAttributeCode,
             valuesUserIntent: $valueUserIntents
         );
     }
 
+    private function mergeCellData(Row $row, array $sources): string
+    {
+        return implode('', array_map(
+            static fn (string $uuid) => $row->getCellData($uuid),
+            $sources,
+        ));
+    }
+
+    // TODO: use the upcoming get by attribute type public api query
     private function getIdentifierAttributeCode(DataMappingCollection $dataMappingCollection): string
     {
-        $attributeTargetCodes = [];
-
-        /** @var DataMapping $dataMapping */
-        foreach ($dataMappingCollection->iterator() as $dataMapping) {
-            if ($dataMapping->target() instanceof TargetAttribute) {
-                $attributeTargetCodes[] = $dataMapping->target()->code();
-            }
-        }
-
-        $targetedAttributes = $this->getAttributes->forCodes($attributeTargetCodes);
-        /** @var Attribute $targetedIdentifierAttribute */
-        $targetedIdentifierAttribute = current(array_filter($targetedAttributes, function (?Attribute $attribute) {
-            return null !== $attribute && self::IDENTIFIER_ATTRIBUTE_TYPE === $attribute->type();
-        }));
-
-        return $targetedIdentifierAttribute->code();
+        return 'sku';
     }
 }

@@ -19,7 +19,7 @@ class ColumnSpec extends ObjectBehavior
 {
     public function it_can_be_initialized_from_normalized()
     {
-        $this->beConstructedThrough('createFromNormalized',[[
+        $this->beConstructedThrough('createFromNormalized', [[
             'index' => 0,
             'label' => 'label',
             'uuid' => 'f9be9837-df82-4ad7-8c76-565ac274e900',
@@ -32,7 +32,7 @@ class ColumnSpec extends ObjectBehavior
 
     public function it_throws_an_exception_when_uuid_is_invalid()
     {
-        $this->beConstructedThrough('createFromNormalized',[[
+        $this->beConstructedThrough('createFromNormalized', [[
             'index' => 0,
             'label' => 'label',
             'uuid' => 'invalid_uuid',
@@ -43,7 +43,7 @@ class ColumnSpec extends ObjectBehavior
 
     public function it_throws_an_exception_when_index_is_invalid()
     {
-        $this->beConstructedThrough('createFromNormalized',[[
+        $this->beConstructedThrough('createFromNormalized', [[
             'index' => -1,
             'label' => 'label',
             'uuid' => 'f9be9837-df82-4ad7-8c76-565ac274e900',
@@ -54,7 +54,7 @@ class ColumnSpec extends ObjectBehavior
 
     public function it_throws_an_exception_when_label_is_invalid()
     {
-        $this->beConstructedThrough('createFromNormalized',[[
+        $this->beConstructedThrough('createFromNormalized', [[
             'index' => 0,
             'label' => '',
             'uuid' => 'f9be9837-df82-4ad7-8c76-565ac274e900',

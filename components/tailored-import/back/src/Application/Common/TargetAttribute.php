@@ -17,18 +17,18 @@ class TargetAttribute implements TargetInterface
         private ?string $channel,
         private ?string $locale,
         private string $action,
-        private string $ifEmpty)
-    {
+        private string $ifEmpty,
+    ) {
     }
 
-    public static function createFromNormalized(array $normalizedAttributeTarget)
+    public static function createFromNormalized(array $normalizedAttributeTarget): self
     {
         return new self(
             $normalizedAttributeTarget['code'],
             $normalizedAttributeTarget['channel'],
             $normalizedAttributeTarget['locale'],
             $normalizedAttributeTarget['action'],
-            $normalizedAttributeTarget['if_empty']
+            $normalizedAttributeTarget['if_empty'],
         );
     }
 

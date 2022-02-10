@@ -17,20 +17,19 @@ class DataMapping
         private TargetInterface $target,
         private array $sources,
         private array $operations,
-        private array $sampleData
-    )
-    {
+        private array $sampleData,
+    ) {
         Assert::uuid($uuid);
     }
 
-    public static function createFromNormalized(array $normalizedDataMapping)
+    public static function createFromNormalized(array $normalizedDataMapping): self
     {
         return new self(
-          $normalizedDataMapping['uuid'],
-          self::createTarget($normalizedDataMapping['target']),
-          $normalizedDataMapping['sources'],
-          $normalizedDataMapping['operations'],
-          $normalizedDataMapping['sample_data'],
+            $normalizedDataMapping['uuid'],
+            self::createTarget($normalizedDataMapping['target']),
+            $normalizedDataMapping['sources'],
+            $normalizedDataMapping['operations'],
+            $normalizedDataMapping['sample_data'],
         );
     }
 
@@ -67,6 +66,4 @@ class DataMapping
     {
         return $this->sampleData;
     }
-
-
 }

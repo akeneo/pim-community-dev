@@ -17,11 +17,11 @@ class TargetPropertySpec extends ObjectBehavior
         $this->beConstructedThrough('createFromNormalized', [[
             'code' => 'test_code',
             'action' => 'set',
-            'if_empty' => 'test'
+            'if_empty' => 'skip',
         ]]);
 
         $this->code()->shouldReturn('test_code');
         $this->action()->shouldReturn('set');
-        $this->ifEmpty()->shouldReturn('test');
+        $this->ifEmpty()->shouldReturn('skip');
     }
 }

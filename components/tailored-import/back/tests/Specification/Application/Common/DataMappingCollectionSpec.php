@@ -14,15 +14,15 @@ class DataMappingCollectionSpec extends ObjectBehavior
 {
     public function it_can_be_initialized_from_normalized()
     {
-        $this->beConstructedThrough('createFromNormalized',[[[
-            'uuid' => "b244c45c-d5ec-4993-8cff-7ccd04e82fef",
+        $this->beConstructedThrough('createFromNormalized', [[[
+            'uuid' => 'b244c45c-d5ec-4993-8cff-7ccd04e82fef',
             'target' => [
                 'type' => 'attribute',
                 'code' => 'code',
                 'channel' => 'web',
                 'locale' => 'fr_FR',
                 'action' => 'set',
-                'if_empty' => 'test'
+                'if_empty' => 'test',
             ],
             'sources' => [],
             'operations' => [],

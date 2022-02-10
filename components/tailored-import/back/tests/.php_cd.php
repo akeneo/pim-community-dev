@@ -22,29 +22,34 @@ $rules = [
     $builder->only(
         [
             'Webmozart\Assert\Assert',
-            'Akeneo\Platform\TailoredImport\Domain',
         ],
-    )->in('Akeneo\Platform\TailoredImport\Application'),
+    )->in('Akeneo\Platform\TailoredImport\Domain'),
 
     $builder->only(
         [
             'Webmozart\Assert\Assert',
+            'Akeneo\Platform\TailoredImport\Domain',
+
+            'Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand',
+            'Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent',
         ],
-    )->in('Akeneo\Platform\TailoredImport\Domain'),
+    )->in('Akeneo\Platform\TailoredImport\Application'),
 
     $builder->only(
         [
             'Box\Spout\Common',
             'Box\Spout\Reader',
             'Psr\Log\LoggerInterface',
-            'Symfony\Contracts',
             'Symfony\Component',
+            'Symfony\Contracts',
             'Webmozart\Assert\Assert',
             'Akeneo\Platform\TailoredImport\Application',
             'Akeneo\Platform\TailoredImport\Domain',
 
-            'Akeneo\Pim\Structure\Component\Query\PublicApi',
             'Akeneo\Channel\Component\Query\PublicApi',
+            'Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand',
+            'Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler',
+            'Akeneo\Pim\Structure\Component\Query\PublicApi',
             'Akeneo\Tool',
             'Akeneo\UserManagement\Component\Model\UserInterface',
         ],

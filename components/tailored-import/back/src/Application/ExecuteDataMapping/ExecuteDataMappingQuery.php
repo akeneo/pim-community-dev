@@ -15,8 +15,9 @@ class ExecuteDataMappingQuery
 {
     public function __construct(
         private Row $row,
-        private DataMappingCollection $dataMappingCollection
-    ) {}
+        private DataMappingCollection $dataMappingCollection,
+    ) {
+    }
 
     public function getRow(): Row
     {

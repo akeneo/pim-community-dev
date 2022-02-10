@@ -19,13 +19,13 @@ class TargetAttributeSpec extends ObjectBehavior
             'channel' => 'web',
             'locale' => 'fr_FR',
             'action' => 'set',
-            'if_empty' => 'test'
+            'if_empty' => 'skip',
         ]]);
 
         $this->code()->shouldReturn('test_code');
         $this->channel()->shouldReturn('web');
         $this->locale()->shouldReturn('fr_FR');
         $this->action()->shouldReturn('set');
-        $this->ifEmpty()->shouldReturn('test');
+        $this->ifEmpty()->shouldReturn('skip');
     }
 }

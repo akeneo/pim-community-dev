@@ -21,10 +21,11 @@ use Webmozart\Assert\Assert;
 class ProductWriter implements ItemWriterInterface
 {
     public function __construct(
-        private UpsertProductHandler $upsertProductHandler
-    ) {}
+        private UpsertProductHandler $upsertProductHandler,
+    ) {
+    }
 
-    public function write(array $items)
+    public function write(array $items): void
     {
         Assert::allIsInstanceOf($items, UpsertProductCommand::class);
 

@@ -13,18 +13,24 @@ use Webmozart\Assert\Assert;
 class DataMappingCollection
 {
     private function __construct(
-        private array $dataMappings
-    )
-    {
+        private array $dataMappings,
+    ) {
         Assert::allIsInstanceOf($this->dataMappings, DataMapping::class);
     }
 
     public static function createFromNormalized(array $normalizedDataMappings): self
     {
-        $dataMappingInstances = array_map(static fn(array $dataMappingNormalized) => DataMapping::createFromNormalized($dataMappingNormalized), $normalizedDataMappings);
+        $dataMappingInstances = array_map(
+            static fn (array $dataMappingNormalized) => DataMapping::createFromNormalized($dataMappingNormalized),
+            $normalizedDataMappings,
+        );
+
         return new self($dataMappingInstances);
     }
 
+    /**
+     * @return \ArrayIterator<int, DataMapping>
+     */
     public function iterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->dataMappings);

@@ -14,17 +14,17 @@ class TargetProperty implements TargetInterface
 
     private function __construct(
         private string $code,
-        private string $action, 
-        private string $ifEmpty)
-    {
+        private string $action,
+        private string $ifEmpty,
+    ) {
     }
 
-    public static function createFromNormalized(array $normalizedPropertyTarget)
+    public static function createFromNormalized(array $normalizedPropertyTarget): self
     {
         return new self(
             $normalizedPropertyTarget['code'],
             $normalizedPropertyTarget['action'],
-            $normalizedPropertyTarget['if_empty']
+            $normalizedPropertyTarget['if_empty'],
         );
     }
 
