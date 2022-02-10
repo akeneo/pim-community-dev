@@ -14,6 +14,7 @@
         },
         "psr-4": {
             "Pim\\Upgrade\\": "upgrades/",
+            "Akeneo\\Channel\\": "src/Akeneo/Channel/back",
             "Akeneo\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
             "Akeneo\\Platform\\CommunicationChannel\\": "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back",
             "Akeneo\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/back",
@@ -30,6 +31,7 @@
         },
         "psr-4": {
             "Pim\\Behat\\": "tests/legacy/features/Behat",
+            "Akeneo\\Test\\Channel\\": "src/Akeneo/Channel/back/Test",
             "Akeneo\\Connectivity\\Connection\\Tests\\": "src/Akeneo/Connectivity/Connection/back/tests",
             "Akeneo\\Connectivity\\Connection\\Tests\\EndToEnd\\": "src/Akeneo/Connectivity/Connection/tests/",
             "AkeneoTest\\": "tests/back",

@@ -30,6 +30,7 @@ return [
     Akeneo\Tool\Bundle\MessengerBundle\AkeneoMessengerBundle::class => ['all' => true],
     Oro\Bundle\PimFilterBundle\PimFilterBundle::class => ['all' => true],
     Akeneo\UserManagement\Bundle\PimUserBundle::class => ['all' => true],
+    Akeneo\Channel\Infrastructure\Symfony\AkeneoChannelApiBundle::class => ['all' => true],
     Akeneo\Channel\Bundle\AkeneoChannelBundle::class => ['all' => true],
     Akeneo\Pim\Enrichment\Bundle\AkeneoPimEnrichmentBundle::class => ['all' => true],
     Akeneo\Pim\Enrichment\Product\Infrastructure\Symfony\AkeneoPimEnrichmentProductBundle::class => ['all' => true],

@@ -18,3 +18,9 @@ services:
             - '@pim_user.repository.user'
         tags:
             - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUserValidator:
+        arguments:
+            - '@Akeneo\Channel\API\Query\GetEditableLocaleCodes'
+        tags:
+            - { name: validator.constraint_validator }
