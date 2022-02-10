@@ -7,6 +7,15 @@ import {FetcherContext} from '../contexts';
 
 const attributes: Attribute[] = [
   {
+    code: 'sku',
+    type: 'pim_catalog_identifier',
+    labels: {},
+    scopable: false,
+    localizable: false,
+    is_locale_specific: false,
+    available_locales: [],
+  },
+  {
     code: 'locale_specific',
     type: 'pim_catalog_text',
     labels: {},
@@ -146,6 +155,7 @@ const fetchers = {
   attribute: {
     fetchByIdentifiers: (identifiers: string[]): Promise<Attribute[]> =>
       Promise.resolve(attributes.filter(({code}) => identifiers.includes(code))),
+    fetchAttributeIdentifier: (): Promise<Attribute> => Promise.resolve(attributes[0]),
   },
   channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve(channels)},
 };

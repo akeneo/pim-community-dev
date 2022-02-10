@@ -1,5 +1,5 @@
 import React from 'react';
-import {renderWithProviders} from '@akeneo-pim-community/shared';
+import {renderWithProviders} from 'feature/tests';
 import {screen, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {ImportStructureTab} from './ImportStructureTab';
@@ -91,7 +91,7 @@ const getDefaultIdentifierDataMapping = (): DataMapping => ({
 
 test('it can open the modal to generate columns', async () => {
   const onStructureConfigurationChange = jest.fn();
-  renderWithProviders(
+  await renderWithProviders(
     <ImportStructureTab
       structureConfiguration={defaultStructureConfiguration}
       validationErrors={[]}
@@ -112,7 +112,7 @@ test('it can open the modal to generate columns', async () => {
 });
 
 test('it can open and close the modal', async () => {
-  renderWithProviders(
+  await renderWithProviders(
     <ImportStructureTab
       structureConfiguration={defaultStructureConfiguration}
       validationErrors={[]}

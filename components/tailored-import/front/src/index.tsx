@@ -12,8 +12,7 @@ import {
 import {routes} from './routes.json';
 import translations from './translations.json';
 import {FakePIM} from './FakePIM';
-import {Attribute} from './feature/models';
-import {FetcherContext} from './feature/contexts';
+import {Attribute, FetcherContext} from './feature';
 
 const baseFetcher = async (route: string) => {
   const response = await fetch(route);
@@ -42,6 +41,15 @@ const FetcherProvider: FC = ({children}) => {
           });
 
           return cachedFetcher(route);
+        },
+        fetchAttributeIdentifier: async (): Promise<Attribute> => {
+          const route = router.generate('pim_enrich_attribute_rest_index', {
+            types: 'pim_catalog_identifier',
+          });
+
+          const attributes = await cachedFetcher(route);
+
+          return attributes[0];
         },
       },
       channel: {

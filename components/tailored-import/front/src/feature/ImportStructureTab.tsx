@@ -4,6 +4,7 @@ import {Button, useBooleanState} from 'akeneo-design-system';
 import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {DataMappingDetails, DataMappingDetailsPlaceholder, DataMappingList, InitializeColumnsModal} from './components';
 import {Column, createDefaultDataMapping, DataMapping, StructureConfiguration, updateDataMapping} from './models';
+import {useFetchers} from './contexts';
 
 const Container = styled.div`
   display: flex;
@@ -28,14 +29,20 @@ const ImportStructureTab = ({
   const [selectedDataMappingUuid, setSelectedDataMappingUuid] = useState<string | null>(null);
   const selectedDataMapping =
     structureConfiguration.data_mappings.find(dataMapping => dataMapping.uuid === selectedDataMappingUuid) ?? null;
+  const attributeFetcher = useFetchers().attribute;
 
-  const handleConfirm = (generatedColumns: Column[]): void => {
-    const dataMapping = createDefaultDataMapping(generatedColumns);
-    onStructureConfigurationChange({
-      ...structureConfiguration,
-      columns: generatedColumns,
-      data_mappings: [dataMapping],
-    });
+  const handleConfirm = async (generatedColumns: Column[]): Promise<void> => {
+    const attributeIdentifier = await attributeFetcher.fetchAttributeIdentifier();
+
+    if (attributeIdentifier) {
+      const dataMapping = createDefaultDataMapping(attributeIdentifier, generatedColumns);
+      onStructureConfigurationChange({
+        ...structureConfiguration,
+        columns: generatedColumns,
+        data_mappings: [dataMapping],
+      });
+    }
+
     closeInitModal();
   };
 

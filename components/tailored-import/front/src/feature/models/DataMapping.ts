@@ -17,10 +17,10 @@ const MAX_SOURCE_COUNT_BY_DATA_MAPPING = 4;
 
 type DataMappingType = 'attribute' | 'property';
 
-const createDefaultDataMapping = (columns: Column[]) => {
+const createDefaultDataMapping = (attribute: Attribute, columns: Column[]) => {
   const defaultDataMapping: DataMapping = {
     uuid: uuid(),
-    target: createAttributeTarget('sku', null, null),
+    target: createAttributeTarget(attribute.code, null, null),
     sources: [],
     operations: [],
     sample_data: [],
