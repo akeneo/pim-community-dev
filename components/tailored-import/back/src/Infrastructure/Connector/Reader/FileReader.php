@@ -96,10 +96,10 @@ class FileReader implements ItemReaderInterface, StepExecutionAwareInterface, In
     private function createFileIterator(): FlatFileIteratorInterface
     {
         $jobParameters = $this->stepExecution->getJobParameters();
-        $this->fileIterator = $this->flatFileIteratorFactory->create($this->fileType, $jobParameters);
-        $this->fileIterator->rewind();
+        $fileIterator = $this->flatFileIteratorFactory->create($this->fileType, $jobParameters);
+        $fileIterator->rewind();
 
-        return $this->fileIterator;
+        return $fileIterator;
     }
 
     protected function checkColumnNumber(array $productLine): void

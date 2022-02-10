@@ -8,7 +8,6 @@ use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\ValueUserIntent;
 use Akeneo\Platform\TailoredImport\Application\Common\DataMapping;
-use Akeneo\Platform\TailoredImport\Application\Common\DataMappingCollection;
 use Akeneo\Platform\TailoredImport\Application\Common\Row;
 use Akeneo\Platform\TailoredImport\Application\Common\TargetAttribute;
 
