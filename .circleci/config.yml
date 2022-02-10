@@ -2436,6 +2436,21 @@ workflows:
                         PRODUCT_TYPE: ["srnt", "grth", "tria"]
                 requires:
                     - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+          - create_release_candidate?:
+                name: "[<< matrix.PRODUCT_TYPE >>] Create release candidate?"
+                type: approval
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                requires:
+                    - "[<< matrix.PRODUCT_TYPE >>] Test deploy"
+          - release:
+                name: "[<< matrix.PRODUCT_TYPE >>] Create release candidate"
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                requires:
+                    - "[<< matrix.PRODUCT_TYPE >>] Create release candidate?"
           - test_deploy_last_release:
                 name: "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
                 matrix:
