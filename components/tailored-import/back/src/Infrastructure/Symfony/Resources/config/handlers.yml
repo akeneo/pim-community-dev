@@ -3,3 +3,6 @@ services:
     class: Akeneo\Platform\TailoredImport\Application\GetGroupedTargets\GetGroupedTargetsHandler
     arguments:
       - '@akeneo.tailored_import.query.get_grouped_targets'
+
+  akeneo.tailored_import.handler.execute_data_mapping:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingHandler

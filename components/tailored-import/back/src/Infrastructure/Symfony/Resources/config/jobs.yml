@@ -19,8 +19,8 @@ services:
       - '@event_dispatcher'
       - '@akeneo_batch.job_repository'
       - '@akeneo.tailored_import.reader.file.xlsx'
-      - '@akeneo.tailored_import.processor.dummy'
-      - '@akeneo.tailored_import.writer.dummy'
+      - '@akeneo.tailored_import.processor.product'
+      - '@akeneo.tailored_import.writer.product'
       - '%pim_job_product_batch_size%'
       - '@akeneo_batch.job.job_stopper'
 
