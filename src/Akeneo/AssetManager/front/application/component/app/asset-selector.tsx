@@ -3,6 +3,7 @@ import $ from 'jquery';
 import {LocaleCode, getLabel, ChannelCode} from '@akeneo-pim-community/shared';
 import AssetCode, {denormalizeAssetCode, assetCodeStringValue} from 'akeneoassetmanager/domain/model/asset/code';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
 import ChannelReference, {channelReferenceStringValue} from 'akeneoassetmanager/domain/model/channel-reference';
 
@@ -10,7 +11,6 @@ const routing = require('routing');
 import {isNull, isArray} from 'akeneoassetmanager/domain/model/utils';
 import ListAsset, {getListAssetMainMediaThumbnail} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
-import {useAssetFetcher} from 'akeneoassetmanager/infrastructure/fetcher/useAssetFetcher';
 
 const renderRow = (
   label: string,
@@ -163,7 +163,6 @@ export default class AssetSelector extends React.Component<AssetSelectorProps> {
           },
         },
         initSelection: async (element: any, callback: (item: Select2Item | Select2Item[]) => void) => {
-          const assetFetcher = useAssetFetcher();
           if (this.props.multiple) {
             const initialAssetCodes = element
               .val()
