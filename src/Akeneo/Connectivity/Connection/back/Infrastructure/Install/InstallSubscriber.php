@@ -11,6 +11,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnection
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionAuditTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionEventsApiRequestCountTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionTableQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateTestAppTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateUserConsentTable;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateWrongCredentialsCombinationQuery;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
@@ -47,13 +48,14 @@ class InstallSubscriber implements EventSubscriberInterface
 
     public function createConnectionsTable(): void
     {
-        $this->dbalConnection->exec(CreateConnectionTableQuery::QUERY);
-        $this->dbalConnection->exec(CreateConnectionAuditTableQuery::QUERY);
-        $this->dbalConnection->exec(CreateWrongCredentialsCombinationQuery::QUERY);
-        $this->dbalConnection->exec(CreateConnectionAuditErrorTableQuery::QUERY);
-        $this->dbalConnection->exec(CreateConnectionEventsApiRequestCountTableQuery::QUERY);
-        $this->dbalConnection->exec(CreateAppTableQuery::QUERY);
-        $this->dbalConnection->exec(CreateUserConsentTable::QUERY);
+        $this->dbalConnection->executeStatement(CreateConnectionTableQuery::QUERY);
+        $this->dbalConnection->executeStatement(CreateConnectionAuditTableQuery::QUERY);
+        $this->dbalConnection->executeStatement(CreateWrongCredentialsCombinationQuery::QUERY);
+        $this->dbalConnection->executeStatement(CreateConnectionAuditErrorTableQuery::QUERY);
+        $this->dbalConnection->executeStatement(CreateConnectionEventsApiRequestCountTableQuery::QUERY);
+        $this->dbalConnection->executeStatement(CreateAppTableQuery::QUERY);
+        $this->dbalConnection->executeStatement(CreateUserConsentTable::QUERY);
+        $this->dbalConnection->executeStatement(CreateTestAppTableQuery::QUERY);
     }
 
     public function loadFixtures(InstallerEvent $installerEvent): void

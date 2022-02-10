@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
@@ -22,16 +20,12 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
     public function let(
         FeatureFlag $dataQualityInsightsFeature,
         CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
-        LoggerInterface $logger,
-        EvaluatePendingCriteria $evaluatePendingCriteria,
-        ConsolidateProductScores $consolidateProductScores
+        LoggerInterface $logger
     ) {
         $this->beConstructedWith(
             $dataQualityInsightsFeature,
             $createProductsCriteriaEvaluations,
-            $logger,
-            $evaluatePendingCriteria,
-            $consolidateProductScores
+            $logger
         );
     }
 
@@ -78,16 +72,11 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
     public function it_creates_criteria_on_unitary_product_post_save(
         $dataQualityInsightsFeature,
         $createProductsCriteriaEvaluations,
-        $evaluatePendingCriteria,
-        $consolidateProductScores,
         ProductInterface $product
     ) {
         $product->getId()->willReturn(12345);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
         $createProductsCriteriaEvaluations->createAll([new ProductId(12345)])->shouldBeCalled();
-
-        $evaluatePendingCriteria->evaluateSynchronousCriteria([12345])->shouldBeCalled();
-        $consolidateProductScores->consolidate([12345])->shouldBeCalled();
 
         $this->onPostSave(new GenericEvent($product->getWrappedObject(), ['unitary' => true]));
     }

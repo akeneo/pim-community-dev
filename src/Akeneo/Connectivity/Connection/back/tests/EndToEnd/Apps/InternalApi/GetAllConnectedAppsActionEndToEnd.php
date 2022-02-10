@@ -12,7 +12,6 @@ use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserGroupLoad
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -33,37 +32,6 @@ class GetAllConnectedAppsActionEndToEnd extends WebTestCase
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
-    }
-
-    public function test_it_throws_not_found_exception_with_feature_flag_disabled(): void
-    {
-        $this->featureFlagMarketplaceActivate->disable();
-        $this->authenticateAsAdmin();
-
-        $this->client->request(
-            'GET',
-            '/rest/apps/connected-apps'
-        );
-        $response = $this->client->getResponse();
-
-        Assert::assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-    }
-
-    public function test_it_redirects_on_missing_xmlhttprequest_header(): void
-    {
-        $this->featureFlagMarketplaceActivate->enable();
-        $this->authenticateAsAdmin();
-
-        $this->client->request(
-            'GET',
-            '/rest/apps/connected-apps'
-        );
-
-        $response = $this->client->getResponse();
-
-        Assert::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
-        assert($response instanceof RedirectResponse);
-        Assert::assertEquals('/', $response->getTargetUrl());
     }
 
     public function test_it_gets_connected_apps(): void
@@ -114,6 +82,7 @@ class GetAllConnectedAppsActionEndToEnd extends WebTestCase
                 'categories' => ['category A1', 'category A2'],
                 'certified' => false,
                 'partner' => 'partner A',
+                'is_test_app' => false,
             ],
             [
                 'id' => '2677e764-f852-4956-bf9b-1a1ec1b0d145',
@@ -126,6 +95,7 @@ class GetAllConnectedAppsActionEndToEnd extends WebTestCase
                 'categories' => ['category B1'],
                 'certified' => true,
                 'partner' => null,
+                'is_test_app' => false,
             ],
         ];
 

@@ -5,7 +5,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AsymmetricKeys;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\SaveAsymmetricKeysQueryInterface;
-use Akeneo\Connectivity\Connection\Domain\Clock;
+use Akeneo\Connectivity\Connection\Domain\ClockInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 
@@ -17,9 +17,9 @@ class SaveAsymmetricKeysQuery implements SaveAsymmetricKeysQueryInterface
 {
     public const OPTION_CODE = 'OPENID_ASYMMETRIC_KEYS';
     private Connection $connection;
-    private Clock $clock;
+    private ClockInterface $clock;
 
-    public function __construct(Connection $connection, Clock $clock)
+    public function __construct(Connection $connection, ClockInterface $clock)
     {
         $this->connection = $connection;
         $this->clock = $clock;

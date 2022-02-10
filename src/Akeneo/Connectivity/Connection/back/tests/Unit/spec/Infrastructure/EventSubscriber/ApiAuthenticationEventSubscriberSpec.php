@@ -7,7 +7,7 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Write\WrongCredentialsCombination;
-use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Repository\WrongCredentialsCombinationRepository;
+use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Repository\WrongCredentialsCombinationRepositoryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext;
 use Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\ApiAuthenticationEvent;
 use PhpSpec\ObjectBehavior;
@@ -17,7 +17,7 @@ class ApiAuthenticationEventSubscriberSpec extends ObjectBehavior
 {
     public function let(
         ConnectionContext $connectionContext,
-        WrongCredentialsCombinationRepository $repository
+        WrongCredentialsCombinationRepositoryInterface $repository
     ): void {
         $this->beConstructedWith($connectionContext, $repository);
     }

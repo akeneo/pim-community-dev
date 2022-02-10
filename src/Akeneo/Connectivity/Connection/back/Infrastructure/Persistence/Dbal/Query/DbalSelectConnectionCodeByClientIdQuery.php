@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
-use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\SelectConnectionCodeByClientIdQuery;
+use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\SelectConnectionCodeByClientIdQueryInterface;
 use Doctrine\DBAL\Connection;
 
-class DbalSelectConnectionCodeByClientIdQuery implements SelectConnectionCodeByClientIdQuery
+class DbalSelectConnectionCodeByClientIdQuery implements SelectConnectionCodeByClientIdQueryInterface
 {
     private Connection $dbalConnection;
 

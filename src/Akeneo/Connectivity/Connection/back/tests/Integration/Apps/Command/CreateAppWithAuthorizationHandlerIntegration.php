@@ -8,9 +8,9 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthori
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler;
-use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
@@ -41,7 +41,7 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
     private PropertyAccessor $propertyAccessor;
     private FakeWebMarketplaceApi $webMarketplaceApi;
     private DbalConnectedAppRepository $appRepository;
-    private ConnectionRepository $connectionRepository;
+    private ConnectionRepositoryInterface $connectionRepository;
     private RoleWithPermissionsRepository $roleWithPermissionsRepository;
     private ScopeMapperRegistry $scopeMapperRegistry;
 
@@ -160,7 +160,7 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
     {
         $command = new CreateAppWithAuthorizationCommand($clientId);
 
-        $this->expectException(InvalidAppAuthorizationRequest::class);
+        $this->expectException(InvalidAppAuthorizationRequestException::class);
         $this->expectExceptionMessage($expectedMessage);
         $this->handler->handle($command);
     }

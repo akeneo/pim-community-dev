@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Audit\Command;
 
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\ExtractConnectionsProductEventCountQuery;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCountRepository;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\ExtractConnectionsProductEventCountQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCountRepositoryInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -14,13 +14,13 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCoun
  */
 final class UpdateDataSourceProductEventCountHandler
 {
-    private ExtractConnectionsProductEventCountQuery $extractConnectionsEventCountQuery;
+    private ExtractConnectionsProductEventCountQueryInterface $extractConnectionsEventCountQuery;
 
-    private EventCountRepository $eventCountRepository;
+    private EventCountRepositoryInterface $eventCountRepository;
 
     public function __construct(
-        ExtractConnectionsProductEventCountQuery $extractConnectionsEventCountQuery,
-        EventCountRepository $eventCountRepository
+        ExtractConnectionsProductEventCountQueryInterface $extractConnectionsEventCountQuery,
+        EventCountRepositoryInterface $eventCountRepository
     ) {
         $this->extractConnectionsEventCountQuery = $extractConnectionsEventCountQuery;
         $this->eventCountRepository = $eventCountRepository;

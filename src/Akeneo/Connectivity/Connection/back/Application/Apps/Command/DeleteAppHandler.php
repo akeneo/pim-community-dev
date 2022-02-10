@@ -10,18 +10,18 @@ use Akeneo\Connectivity\Connection\Application\Settings\Service\DeleteClientInte
 use Akeneo\Connectivity\Connection\Application\Settings\Service\DeleteUserInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\DeleteConnectedAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppDeletionQueryInterface;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class DeleteAppHandler
+class DeleteAppHandler
 {
     private GetAppDeletionQueryInterface $getAppDeletionQuery;
     private DeleteConnectedAppQueryInterface $deleteConnectedAppQuery;
-    private ConnectionRepository $connectionRepository;
+    private ConnectionRepositoryInterface $connectionRepository;
     private DeleteUserInterface $deleteUser;
     private DeleteClientInterface $deleteClient;
     private DeleteUserGroupInterface $deleteUserGroup;
@@ -30,7 +30,7 @@ final class DeleteAppHandler
     public function __construct(
         GetAppDeletionQueryInterface $getAppDeletionQuery,
         DeleteConnectedAppQueryInterface $deleteConnectedAppQuery,
-        ConnectionRepository $connectionRepository,
+        ConnectionRepositoryInterface $connectionRepository,
         DeleteUserInterface $deleteUser,
         DeleteClientInterface $deleteClient,
         DeleteUserGroupInterface $deleteUserGroup,

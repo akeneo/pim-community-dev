@@ -10,7 +10,7 @@ use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorization
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\CreateUserConsentQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
-use Akeneo\Connectivity\Connection\Domain\Clock;
+use Akeneo\Connectivity\Connection\Domain\ClockInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -22,14 +22,14 @@ class ConsentAppAuthenticationHandler
     private GetAppConfirmationQueryInterface $getAppConfirmationQuery;
     private AppAuthorizationSessionInterface $appAuthorizationSession;
     private CreateUserConsentQueryInterface $createUserConsentQuery;
-    private Clock $clock;
+    private ClockInterface $clock;
     private ValidatorInterface $validator;
 
     public function __construct(
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         AppAuthorizationSessionInterface $appAuthorizationSession,
         CreateUserConsentQueryInterface $createUserConsentQuery,
-        Clock $clock,
+        ClockInterface $clock,
         ValidatorInterface $validator
     ) {
         $this->getAppConfirmationQuery = $getAppConfirmationQuery;

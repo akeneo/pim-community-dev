@@ -7,12 +7,12 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Command\GenerateWebhookSe
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\GenerateWebhookSecretHandler;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\GenerateSecretInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\ConnectionWebhookNotFoundException;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SaveWebhookSecretQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SaveWebhookSecretQueryInterface;
 use PhpSpec\ObjectBehavior;
 
 class GenerateWebhookSecretHandlerSpec extends ObjectBehavior
 {
-    public function let(GenerateSecretInterface $generateSecret, SaveWebhookSecretQuery $saveQuery): void
+    public function let(GenerateSecretInterface $generateSecret, SaveWebhookSecretQueryInterface $saveQuery): void
     {
         $this->beConstructedWith($generateSecret, $saveQuery);
     }

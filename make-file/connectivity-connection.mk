@@ -64,14 +64,25 @@ connectivity-connection-lint-back:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --diff --dry-run --config=src/Akeneo/Connectivity/Connection/back/tests/.php_cs.php
-	$(PHP_RUN) vendor/bin/phpstan analyse --level=8 src/Akeneo/Connectivity/Connection/back/Application src/Akeneo/Connectivity/Connection/back/Domain
-	$(PHP_RUN) vendor/bin/phpstan analyse --level=5 src/Akeneo/Connectivity/Connection/back/Infrastructure
+	$(PHP_RUN) vendor/bin/phpstan analyse \
+		--level=8 \
+		--configuration src/Akeneo/Connectivity/Connection/back/tests/phpstan.neon \
+		src/Akeneo/Connectivity/Connection/back/Application \
+		src/Akeneo/Connectivity/Connection/back/Domain
+	$(PHP_RUN) vendor/bin/phpstan analyse \
+		--level=5 \
+		--configuration src/Akeneo/Connectivity/Connection/back/tests/phpstan.neon \
+		src/Akeneo/Connectivity/Connection/back/Infrastructure
 
 connectivity-connection-lint-back_fix:
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=src/Akeneo/Connectivity/Connection/back/tests/.php_cs.php
 
 connectivity-connection-unit-back:
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Connectivity/Connection/back/tests/Unit/spec/
+	# Scope Mapper unit tests
+	$(PHP_RUN) vendor/bin/phpspec run tests/back/Pim/Structure/Specification/Component/Security/
+	$(PHP_RUN) vendor/bin/phpspec run tests/back/Pim/Enrichment/Specification/Component/Security/
+	$(PHP_RUN) vendor/bin/phpspec run tests/back/Channel/Specification/Component/Security/
 
 connectivity-connection-acceptance-back: var/tests/behat/connectivity/connection
 	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat.yml --format pim --out var/tests/behat/connectivity/connection --format progress --out std --colors
@@ -170,7 +181,7 @@ connectivity-connection-coverage:
 		coverage/Connectivity/Back/Global/
 
 connectivity-connection-insight:
-	$(PHP_RUN) vendor/bin/phpinsights analyse --no-interaction ${O}
+	$(PHP_RUN) vendor/bin/phpinsights analyse -v --no-interaction -c src/Akeneo/Connectivity/Connection/back/tests/phpinsights.php src/Akeneo/Connectivity/Connection/back
 
 connectivity-connection-psalm:
 	$(PHP_RUN) vendor/bin/psalm -c src/Akeneo/Connectivity/Connection/back/tests/psalm.xml

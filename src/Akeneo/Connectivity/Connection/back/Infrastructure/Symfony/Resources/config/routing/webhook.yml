@@ -1,24 +1,24 @@
 regenerate_secret:
   path: '/{code}/webhook/regenerate-secret'
-  defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.webhook:regenerateSecret }
+  controller: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Webhook\RegenerateSecretAction
   methods: [GET]
   requirements:
     code: '[a-zA-Z0-9_]+'
 
 get:
   path: '/{code}/webhook'
-  defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.webhook:get }
+  controller: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Webhook\GetWebhookAction
   methods: [GET]
   requirements:
     code: '[a-zA-Z0-9_]+'
     
 check_reachability:
   path: '/{code}/webhook/check-reachability'
-  defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.webhook:checkWebhookReachability }
+  controller: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Webhook\CheckWebhookReachabilityAction
 
 update:
   path: '/{code}/webhook'
-  defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.webhook:update }
+  controller: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Webhook\UpdateWebhookAction
   methods: [POST]
   requirements:
     code: '[a-zA-Z0-9_]+'

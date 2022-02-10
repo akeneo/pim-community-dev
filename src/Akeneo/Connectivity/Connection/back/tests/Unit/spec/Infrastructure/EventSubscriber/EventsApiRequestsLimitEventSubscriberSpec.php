@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\LimitOfEventsApiRequestsReachedLogger;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\LimitOfEventsApiRequestsReachedLoggerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\ReachRequestLimitLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\MessageProcessedEvent;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepositoryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiRequestsLimitEventSubscriber;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\GetDelayUntilNextRequest;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\Sleep;
@@ -22,8 +22,8 @@ class EventsApiRequestsLimitEventSubscriberSpec extends ObjectBehavior
         GetDelayUntilNextRequest $getDelayUntilNextRequest,
         Sleep $sleep,
         ReachRequestLimitLogger $reachRequestLimitLogger,
-        LimitOfEventsApiRequestsReachedLogger $limitOfEventsApiRequestsReachedLogger,
-        EventsApiDebugRepository $eventsApiDebugRepository
+        LimitOfEventsApiRequestsReachedLoggerInterface $limitOfEventsApiRequestsReachedLogger,
+        EventsApiDebugRepositoryInterface $eventsApiDebugRepository
     ): void {
         $this->beConstructedWith(
             $getDelayUntilNextRequest,
@@ -65,8 +65,8 @@ class EventsApiRequestsLimitEventSubscriberSpec extends ObjectBehavior
 
     public function it_logs_for_the_events_api_debug_that_the_limit_is_reached(
         GetDelayUntilNextRequest $getDelayUntilNextRequest,
-        LimitOfEventsApiRequestsReachedLogger $limitOfEventsApiRequestsReachedLogger,
-        EventsApiDebugRepository $eventsApiDebugRepository
+        LimitOfEventsApiRequestsReachedLoggerInterface $limitOfEventsApiRequestsReachedLogger,
+        EventsApiDebugRepositoryInterface $eventsApiDebugRepository
     ): void {
         $getDelayUntilNextRequest
             ->execute(Argument::cetera())

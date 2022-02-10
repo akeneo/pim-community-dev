@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionWithCredentialsByCodeQuery;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionWithCredentialsByCodeQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryConnectionRepository;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryUserPermissionsRepository;
 
@@ -14,7 +14,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repositor
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class InMemorySelectConnectionWithCredentialsByCodeQuery implements SelectConnectionWithCredentialsByCodeQuery
+class InMemorySelectConnectionWithCredentialsByCodeQuery implements SelectConnectionWithCredentialsByCodeQueryInterface
 {
     private InMemoryConnectionRepository $connectionRepository;
 

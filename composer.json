@@ -18,7 +18,8 @@
             "Akeneo\\Platform\\CommunicationChannel\\": "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back",
             "Akeneo\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/back",
             "Akeneo\\Platform\\Job\\": "src/Akeneo/Platform/Job/back",
-            "Akeneo\\FreeTrial\\": "src/Akeneo/FreeTrial/back"
+            "Akeneo\\FreeTrial\\": "src/Akeneo/FreeTrial/back",
+            "Akeneo\\Pim\\Enrichment\\Product\\": "src/Akeneo/Pim/Enrichment/Product/back"
         }
     },
     "autoload-dev": {
@@ -36,7 +37,8 @@
             "Pim\\Upgrade\\Schema\\Tests\\": "upgrades/test_schema/",
             "Akeneo\\Platform\\CommunicationChannel\\Test\\": "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests",
             "Akeneo\\Platform\\Job\\Test\\": "src/Akeneo/Platform/Job/back/tests",
-            "Akeneo\\Test\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/tests/back"
+            "Akeneo\\Test\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/tests/back",
+            "Akeneo\\Test\\Pim\\Enrichment\\Product\\": "src/Akeneo/Pim/Enrichment/Product/back/Test"
         }
     },
     "require": {
@@ -64,7 +66,7 @@
         "doctrine/common": "^3.2.0",
         "doctrine/data-fixtures": "^1.4.2",
         "doctrine/dbal": "^2.13.4",
-        "doctrine/doctrine-bundle": "^2.4.3",
+        "doctrine/doctrine-bundle": "^2.5.5",
         "doctrine/doctrine-fixtures-bundle": "^3.4.1",
         "doctrine/doctrine-migrations-bundle": "^3.2.0",
         "doctrine/event-manager": "^1.1.1",

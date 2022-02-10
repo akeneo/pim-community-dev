@@ -10,7 +10,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedAppIn
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectionInterface;
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface;
 use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
-use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
@@ -58,7 +58,7 @@ class CreateAppWithAuthorizationHandler
     {
         $violations = $this->validator->validate($command);
         if (count($violations) > 0) {
-            throw new InvalidAppAuthorizationRequest($violations);
+            throw new InvalidAppAuthorizationRequestException($violations);
         }
 
         $appId = $command->getClientId();

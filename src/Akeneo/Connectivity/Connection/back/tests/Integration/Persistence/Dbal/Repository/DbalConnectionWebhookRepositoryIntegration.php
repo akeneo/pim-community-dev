@@ -5,7 +5,7 @@ namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Write\ConnectionWebhook;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\ConnectionWebhookRepository;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\ConnectionWebhookRepositoryInterface;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -20,7 +20,7 @@ class DbalConnectionWebhookRepositoryIntegration extends TestCase
     /** @var Connection */
     private $dbalConnection;
 
-    /** @var ConnectionWebhookRepository */
+    /** @var ConnectionWebhookRepositoryInterface */
     private $repository;
 
     public function test_it_updates_a_webhook(): void

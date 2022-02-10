@@ -201,3 +201,23 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
             - '@akeneo.pim.automation.calculate_product_model_completeness_of_required_attributes'
             - '@akeneo.pim.automation.calculate_product_model_completeness_of_non_required_attributes'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts:
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.evaluate_products_pending_criteria'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores'
+            - '@event_dispatcher'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels:
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.evaluate_product_models_pending_criteria'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateOutdatedProduct:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\HasUpToDateProductEvaluationQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateOutdatedProductModel:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\HasUpToDateProductModelEvaluationQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels'

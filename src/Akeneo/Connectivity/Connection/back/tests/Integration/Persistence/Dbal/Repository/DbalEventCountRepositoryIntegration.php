@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCountRepository;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCountRepositoryInterface;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -110,7 +110,7 @@ SQL;
         return $this->get('database_connection');
     }
 
-    private function getEventCountRepository(): EventCountRepository
+    private function getEventCountRepository(): EventCountRepositoryInterface
     {
         return $this->get('akeneo_connectivity.connection.persistence.repository.event_count');
     }

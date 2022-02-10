@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
@@ -26,22 +24,14 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
 
     private LoggerInterface $logger;
 
-    private EvaluatePendingCriteria $evaluatePendingCriteria;
-
-    private ConsolidateProductScores $consolidateProductScores;
-
     public function __construct(
         FeatureFlag $dataQualityInsightsFeature,
         CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
         LoggerInterface $logger,
-        EvaluatePendingCriteria $evaluatePendingCriteria,
-        ConsolidateProductScores $consolidateProductScores
     ) {
         $this->dataQualityInsightsFeature = $dataQualityInsightsFeature;
         $this->createProductsCriteriaEvaluations = $createProductsCriteriaEvaluations;
         $this->logger = $logger;
-        $this->evaluatePendingCriteria = $evaluatePendingCriteria;
-        $this->consolidateProductScores = $consolidateProductScores;
     }
 
     public static function getSubscribedEvents()
@@ -67,13 +57,10 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
             return;
         }
 
-        $productId = intval($subject->getId());
-        $this->initializeCriteria($productId);
-        $this->evaluatePendingCriteria->evaluateSynchronousCriteria([$productId]);
-        $this->consolidateProductScores->consolidate([$productId]);
+        $this->initializeCriteria(intval($subject->getId()));
     }
 
-    private function initializeCriteria($productId)
+    private function initializeCriteria(int $productId): void
     {
         try {
             $this->createProductsCriteriaEvaluations->createAll([new ProductId($productId)]);

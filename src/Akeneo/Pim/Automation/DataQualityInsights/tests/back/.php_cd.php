@@ -19,6 +19,7 @@ $rules = [
             //External dependencies
             'Ramsey\Uuid\Uuid',
             'Akeneo\Pim\Structure\Component\AttributeTypes',
+            'Symfony\Contracts\EventDispatcher\Event',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Domain'),
 

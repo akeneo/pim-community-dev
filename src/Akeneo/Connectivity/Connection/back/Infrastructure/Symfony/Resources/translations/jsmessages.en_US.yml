@@ -40,7 +40,8 @@ pim_title:
     akeneo_connectivity_connection_connect_connected_apps: Apps
     akeneo_connectivity_connection_connect_connected_apps_edit: App settings
     akeneo_connectivity_connection_connect_connected_apps_delete: App delete
-
+    akeneo_connectivity_connection_connect_marketplace_test_app_create: Create a test app
+    akeneo_connectivity_connection_connect_marketplace_test_app_delete: Delete test app
 akeneo_connectivity.connection:
     connect:
         marketplace:
@@ -53,7 +54,7 @@ akeneo_connectivity.connection:
                 description: This is just an overview. For more details, take a look at our web marketplace.
                 link: Go to web marketplace
             card:
-                developed_by: Developed by
+                developed_by: 'Developed by {{ author }}'
                 read_more: read more
                 more_info: More info
                 connect: Connect
@@ -68,6 +69,49 @@ akeneo_connectivity.connection:
                 empty: No apps compatible with your version
             unreachable: We can't reach the marketplace, please come back later.
             scroll_to_top: Scroll to the top
+            test_apps:
+                title: My test apps
+                removed_user: Removed user
+                create_a_test_app: Create a test app
+                modal:
+                    subtitle: Create a test app
+                    app_information:
+                        title: App information
+                        description: If you need help, please check our article
+                        link: How to test my App before publishing it?
+                        fields:
+                            name: Name
+                            activate_url: Activate url
+                            callback_url: Callback url
+                    credentials :
+                        title: Credentials
+                        warning: Make sure to save these credentials somewhere as we show them only once here.
+                        client_id: Client id
+                        client_secret: Client secret
+                errors:
+                    creation:
+                        name:
+                            max_length: The name of the test app is too long. It must have 255 characters or less.
+                            not_blank: The name of the test app is required.
+                        client_id:
+                            max_length: The client id of the test app is too long. It must have 36 characters or less.
+                            not_blank: The client id is required.
+                        activate_url:
+                            max_length: The activate url of the test app is too long. It must have 255 characters or less.
+                            must_be_url: The activate url must be a valid URL.
+                            not_blank: The activate url is required.
+                        callback_url:
+                            max_length: The callback url of the test app is too long. It must have 255 characters or less.
+                            must_be_url: The callback url must be a valid URL.
+                            not_blank: The callback url is required.
+                delete:
+                    subtitle: Apps
+                    title: Confirm deletion
+                    description: You are about to delete your test app from this PIM.
+                    warning: By confirming the deletion, you will delete the test app on the marketplace page and the related connected app.
+                    flash:
+                        success: Test app successfully deleted.
+                        error: Sorry, an error occured while deleting the test app.
         connected_apps:
             list:
                 apps:
@@ -76,13 +120,16 @@ akeneo_connectivity.connection:
                     empty: No apps connected yet.
                     check_marketplace: 'Check the {{ marketplaceLink }} to browse all the available content and install your first app.'
                     marketplace_link_anchor: Marketplace
+                test_apps:
+                    title: My test apps
+                    removed_user: Removed user
                 helper:
                     title: '[0,1] Your PIM is connected with {{ count }} app.|[2,Inf] Your PIM is connected with {{ count }} apps.'
                     description_1: New apps are developed regularly, so stay tuned and check our Marketplace page frequently to discover how to connect your PIM.
                     description_2: Eager to know more about Apps ?
                     link: Check out our Help Center for more information.
                 card:
-                    developed_by: Developed by
+                    developed_by: 'Developed by {{ author }}'
                     manage_app: Manage app
                     open_app: Open App
                 flash:
@@ -128,6 +175,8 @@ akeneo_connectivity.connection:
                     success: App successfully deleted.
                     error: Sorry, an error occured while deleting the app.
         apps:
+            loader:
+                message: Loading ...
             flash:
                 permissions_error.title: 'Permissions on {{ entity }} could not be saved.'
                 permissions_error.description: Please check the App permission settings.
@@ -200,6 +249,7 @@ akeneo_connectivity.connection:
     connections: Connections
     secondary_actions:
         title: Other actions
+    developer_mode: Developer mode
     connection:
         code: Code
         label: Label
@@ -213,6 +263,7 @@ akeneo_connectivity.connection:
         user_role_id: Role
         user_group_id: Group
         constraint:
+            connections_number_limit_reached: You reached the limit of 50 connections and connected Apps.
             code:
                 required: Connection code is required.
                 invalid: Connection code may contain only letters, numbers and underscores.
@@ -241,7 +292,7 @@ akeneo_connectivity.connection:
         message_link: click here.
     create_connection:
         title: Create a new connection
-        description: You can create up to 50 connections.
+        description: You can connect up to 50 third-parties or Apps.
         flash:
             success: Connection successfully created.
             error: Sorry, an error occurred while creating the connection.

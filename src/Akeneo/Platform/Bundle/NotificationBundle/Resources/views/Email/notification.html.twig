@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% block head %}
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+            <title>{% block title %} {% endblock %}</title>
+
+            {% block link %} {% endblock %}
+        {% endblock %}
+    </head>
+    <body style="margin: 30px 40px 0 40px; max-width: 600px; height: auto; font-family: 'Lato', sans-serif; color: #11324D;
+    font-weight: 400; text-align: center;">
+        {% block content %}
+            <table style="border: none; border-spacing: 0; border-collapse: collapse; vertical-align: top;">
+                <tbody style="border: none; border-spacing: 0; border-collapse: collapse; vertical-align: top;">
+
+                    <!-- header -->
+                    <tr style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;">
+                        <td style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;padding-bottom: 20px;">
+                            {% block emailHeader %}
+                                <img style="width: 100%; height: auto; max-width: 242px; max-height: 59px;"
+                                     alt="Akeneo logo"
+                                     src="{{ akeneo_pim_url ~ asset('/bundles/pimnotification/images/email/logo.svg') }}">
+                            {% endblock %}
+                        </td>
+                    </tr>
+
+                    <!-- message -->
+                    <tr style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;">
+                        <td style="border: none; border-spacing: 0; border-collapse: collapse; vertical-align: top;
+                        padding-bottom: 30px; width: 100%; max-width: 444px;">
+                            {% block emailMessage %} {% endblock %}
+                        </td>
+                    </tr>
+
+                    <!-- action -->
+                    <tr style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;">
+                        <td style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top; padding-bottom: 30px;font-family: 'Lato', sans-serif">
+                            {% block emailUserAction %} {% endblock %}
+                        </td>
+                    </tr>
+
+                    <!-- footer -->
+                    <tr style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;">
+                        <td style="border: none;border-spacing: 0;border-collapse: collapse;vertical-align: top;
+                        width: 100%; max-width: 520px; max-height: 230px; padding: 15px 88px; background-color: #9452ba;
+                        border-radius: 10px 10px 0 0; color: #F5F9FC; font-weight: 500; font-family: 'Lato', sans-serif"
+                            id="footerContainer">
+                            {% block emailFooter %}
+                                <p style="font-size: 12px;">
+                                    If you have any questions regarding Akeneo PIM,<br/>you can visit our Help Center.
+                                </p>
+                                <p style="margin: auto;font-size: 9px;">
+                                    Copyright © {{ 'now' | date('Y') }} Akeneo, All rights reserved.
+                                </p>
+                                <img style="width: 100%; height: auto; max-height: 32px; max-width: 131px; margin-top: 15px;"
+                                     alt="Akeneo signature"
+                                     src="{{ akeneo_pim_url ~ asset('bundles/pimnotification/images/email/signature.png') }}">
+                            {% endblock %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        {% endblock %}
+    </body>
+</html>

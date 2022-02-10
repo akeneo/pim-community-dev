@@ -7,7 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestFailedEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceededEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\MessageProcessedEvent;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiRequestCountRepository;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiRequestCountRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -16,10 +16,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 final class EventsApiRequestsLimitIncrementSubscriber implements EventSubscriberInterface
 {
-    private EventsApiRequestCountRepository $repository;
+    private EventsApiRequestCountRepositoryInterface $repository;
     private int $count;
 
-    public function __construct(EventsApiRequestCountRepository $repository)
+    public function __construct(EventsApiRequestCountRepositoryInterface $repository)
     {
         $this->repository = $repository;
         $this->count = 0;

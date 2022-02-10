@@ -5,7 +5,7 @@ namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\PurgeAuditProductQuery;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\PurgeAuditProductQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\AuditLoader;
 use Akeneo\Test\Integration\Configuration;
@@ -18,7 +18,7 @@ class DbalPurgeAuditProductQueryIntegration extends TestCase
     /** @var AuditLoader */
     private $auditLoader;
 
-    /** @var PurgeAuditProductQuery */
+    /** @var PurgeAuditProductQueryInterface */
     private $purge;
 
     /** @var Connection */

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Application\Audit\Command;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataSourceProductEventCountHandler;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\ExtractConnectionsProductEventCountQuery;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCountRepository;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\ExtractConnectionsProductEventCountQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCountRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -16,7 +16,7 @@ use PhpSpec\ObjectBehavior;
  */
 class UpdateDataSourceProductEventCountHandlerSpec extends ObjectBehavior
 {
-    public function let(ExtractConnectionsProductEventCountQuery $extractConnectionsEventCountQuery, EventCountRepository $eventCountRepository)
+    public function let(ExtractConnectionsProductEventCountQueryInterface $extractConnectionsEventCountQuery, EventCountRepositoryInterface $eventCountRepository)
     {
         $this->beConstructedWith($extractConnectionsEventCountQuery, $eventCountRepository);
     }
