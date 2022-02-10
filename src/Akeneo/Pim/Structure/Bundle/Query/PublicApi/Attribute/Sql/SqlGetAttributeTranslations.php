@@ -57,11 +57,11 @@ SQL;
         $query = <<<SQL
             SELECT
                 code,
-                CONCAT('{', GROUP_CONCAT(CONCAT('"', at.locale, '":"',at.label,'"')), '}') labels
-            FROM pim_catalog_attribute a
-                LEFT JOIN pim_catalog_attribute_translation at ON a.id = at.foreign_key
-            WHERE code IN (:attributeCodes)
-            GROUP BY code;
+                JSON_OBJECTAGG(attribute_translation.locale, attribute_translation.label) as labels
+            FROM pim_catalog_attribute attribute
+                LEFT JOIN pim_catalog_attribute_translation attribute_translation ON attribute.id = attribute_translation.foreign_key
+            WHERE attribute.code IN (:attributeCodes)
+            GROUP BY attribute.code;
         SQL;
 
         $rows = $this->connection->executeQuery(
