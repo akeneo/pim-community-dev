@@ -31,4 +31,24 @@ class DataMappingSpec extends ObjectBehavior
 
         $this->uuid()->shouldReturn('b244c45c-d5ec-4993-8cff-7ccd04e82fef');
     }
+
+    public function it_throws_an_exception_when_uuid_is_invalid()
+    {
+        $this->beConstructedThrough('createFromNormalized',[[
+            'uuid' => "invalid-uuid",
+            'target' => [
+                'type' => 'attribute',
+                'code' => 'code',
+                'channel' => 'web',
+                'locale' => 'fr_FR',
+                'action' => 'set',
+                'if_empty' => 'test'
+            ],
+            'sources' => [],
+            'operations' => [],
+            'sample_data' => [],
+        ]]);
+
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
 }
