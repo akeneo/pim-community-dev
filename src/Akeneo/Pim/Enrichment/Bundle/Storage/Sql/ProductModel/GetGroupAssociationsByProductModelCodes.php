@@ -41,6 +41,7 @@ final class GetGroupAssociationsByProductModelCodes
 
         $query = <<<SQL
 SELECT
+    /*+ SET_VAR(sort_buffer_size = 1000000) */
     product_model_code,
     JSON_OBJECTAGG(association_type_code, group_associations_by_type) as associations
 FROM (
