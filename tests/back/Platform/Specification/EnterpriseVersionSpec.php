@@ -17,6 +17,6 @@ class EnterpriseVersionSpec extends ObjectBehavior
      */
     function it_checks_version()
     {
-        Assert::assertSame('Maple', EnterpriseVersion::VERSION_CODENAME);
+        Assert::assertSame('master', EnterpriseVersion::VERSION);
     }
 }
