@@ -103,6 +103,10 @@ class ColumnView extends BaseView {
                     new Promise(resolve =>
                       fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(identifiers).then(resolve)
                     ),
+                  fetchAttributeIdentifier: (): Promise<Attribute> =>
+                    new Promise(resolve =>
+                      fetcherRegistry.getFetcher('attribute').getIdentifierAttribute().then(resolve)
+                    ),
                 },
                 channel: {
                   fetchAll: (): Promise<Channel[]> =>
