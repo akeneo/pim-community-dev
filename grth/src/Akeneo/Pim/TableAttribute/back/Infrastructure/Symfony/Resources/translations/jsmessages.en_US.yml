@@ -163,6 +163,8 @@ pim_table_attribute:
             completeness_helper_text: "To discover how completeness works for a table attribute,"
             completeness_helper_link: check out our help center.
             reference_entity: Reference entity
+            import_from_existing_attribute: Import from existing attribute
+            option_count: "{0,1}{{ count }} option|]1, Inf[{{ count }} options"
 
         product:
             items_per_page: Items per page
