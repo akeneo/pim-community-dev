@@ -7,6 +7,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class MigrateToUuidCreateColumns implements MigrateToUuidStep
 {
+    use MigrateToUuidTrait;
+
     public const TABLES = [
         'pim_catalog_product' => ['id', 'uuid'],
         'pim_catalog_association' => ['owner_id', 'owner_uuid'],
@@ -31,6 +33,14 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
     public function getDescription(): string
     {
         return 'Add uuid columns for pim_catalog_product table and every foreign tables';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function shouldBeExecuted(): bool
+    {
+        return 0 < $this->getMissingCount();
     }
 
     public function getMissingCount(): int
@@ -72,18 +82,6 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
             [
                 'columnName' => $columnName,
             ]);
-
-        return count($rows) >= 1;
-    }
-
-    private function tableExists(string $tableName): bool
-    {
-        $rows = $this->connection->fetchAllAssociative(
-            'SHOW TABLES LIKE :tableName',
-            [
-                'tableName' => $tableName,
-            ]
-        );
 
         return count($rows) >= 1;
     }
