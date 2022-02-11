@@ -23,7 +23,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
      */
     public function shouldBeExecuted(): bool
     {
-        foreach (MigrateToUuidCreateColumns::TABLES as $tableName => $columnNames) {
+        foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
             if ($tableName === 'pim_catalog_product') {
                 continue;
             }
@@ -59,7 +59,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
     public function getMissingCount(): int
     {
         $count = 0;
-        foreach (MigrateToUuidCreateColumns::TABLES as $tableName => $columnNames) {
+        foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
             if ($tableName === 'pim_catalog_product') {
                 continue;
             }
@@ -72,7 +72,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
 
     public function addMissing(bool $dryRun, OutputInterface $output): void
     {
-        foreach (MigrateToUuidCreateColumns::TABLES as $tableName => $columnNames) {
+        foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
             if ($tableName === 'pim_catalog_product') {
                 continue;
             }
@@ -125,15 +125,5 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
             $uuidColumnName,
             $idColumnName
         ));
-    }
-
-    private function columnExists(string $tableName, string $columnName): bool
-    {
-        $rows = $this->connection->fetchAllAssociative(sprintf('SHOW COLUMNS FROM %s LIKE :columnName', $tableName),
-            [
-                'columnName' => $columnName,
-            ]);
-
-        return count($rows) >= 1;
     }
 }
