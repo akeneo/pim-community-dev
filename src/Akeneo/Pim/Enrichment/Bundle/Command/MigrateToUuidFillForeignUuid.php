@@ -34,7 +34,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
 
             $isColumnExist = $this->columnExists($tableName, $columnNames[1]);
             $sql = <<<SQL
-            SELECT EXISTS(
+            SELECT EXISTS (
                 SELECT 1 FROM {table_name} WHERE {column_name} IS {not} NULL {extra_condition} LIMIT 1
             ) as missing
             SQL;
@@ -48,7 +48,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
                     : '',
             ]);
 
-            if (0 < (int) $this->connection->fetchOne($sql)) {
+            if ((bool) $this->connection->fetchOne($sql)) {
                 return true;
             }
         }
