@@ -24,4 +24,24 @@ trait MigrateToUuidTrait
 
         return count($rows) >= 1;
     }
+
+    protected function columnExists(string $tableName, string $columnName): bool
+    {
+        $rows = $this->connection->fetchAllAssociative(sprintf('SHOW COLUMNS FROM %s LIKE :columnName', $tableName),
+            [
+                'columnName' => $columnName,
+            ]);
+
+        return count($rows) >= 1;
+    }
+
+    protected function triggerExists(string $triggerName): bool
+    {
+        $rows = $this->connection->fetchAllAssociative(
+            'SHOW TRIGGERS LIKE :triggerName',
+            ['triggerName' => $triggerName]
+        );
+
+        return count($rows) >= 1;
+    }
 }
