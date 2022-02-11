@@ -55,6 +55,12 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
         ALTER TABLE `%s` ADD `%s` BINARY(16) DEFAULT NULL AFTER `%s`, LOCK=NONE, ALGORITHM=INPLACE;
         SQL, $tableName, $columnNames[1], $columnNames[0]);
                     $this->connection->executeQuery($addUuidColumnQuery);
+
+                    $indexName = 'product_uuid';
+                    $addIndexColumnQuery = sprintf(<<<SQL
+        ALTER TABLE %s ADD INDEX %s (%s), ALGORITHM=INPLACE, LOCK=NONE;
+        SQL, $tableName, $indexName, $columnNames[1]);
+                    $this->connection->executeQuery($addIndexColumnQuery);
                 }
             }
         }
