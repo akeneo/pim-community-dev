@@ -24,11 +24,13 @@ class MigrateToUuidCommand extends Command
     {
         $this->setDescription('Migrate databases to product uuids');
         $this->addOption('dry-run', 'd', InputOption::VALUE_NEGATABLE, 'dry run', false);
+        $this->addOption('with-stats', 's', InputOption::VALUE_NEGATABLE, 'Display stats (be careful the command is way too slow)', false);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $dryRun = $input->getOption('dry-run');
+        $withStats = $input->getOption('with-stats');
 
         $i = 1;
         foreach ([
@@ -39,9 +41,12 @@ class MigrateToUuidCommand extends Command
         ] as $step) {
             /** @var $step MigrateToUuidStep */
             $output->writeln(sprintf('<info>Step %d: %s</info>', $i, $step->getDescription()));
-            $missingCount = $step->getMissingCount();
-            $output->writeln(sprintf('    Missing %d items', $missingCount));
-            if ($missingCount > 0) {
+            if ($withStats) {
+                $missingCount = $step->getMissingCount();
+                $output->writeln(sprintf('    Missing %d items', $missingCount));
+            }
+
+            if ($step->shouldBeExecuted()) {
                 $output->writeln(sprintf('    Add missing items... '));
                 $step->addMissing($dryRun, $output);
                 $output->writeln(sprintf('    Done'));
