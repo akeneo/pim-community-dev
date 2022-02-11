@@ -16,6 +16,7 @@ class MigrateToUuidCommand extends Command
         private MigrateToUuidStep $migrateToUuidFillProductUuid,
         private MigrateToUuidStep $migrateToUuidFillForeignUuid,
         private MigrateToUuidStep $migrateToUuidFillJson,
+        private MigrateToUuidAddTriggers $migrateToUuidAddTriggers
     ) {
         parent::__construct();
     }
@@ -37,7 +38,8 @@ class MigrateToUuidCommand extends Command
             $this->migrateToUuidCreateColumns,
             $this->migrateToUuidFillProductUuid,
             $this->migrateToUuidFillForeignUuid,
-            $this->migrateToUuidFillJson
+            $this->migrateToUuidFillJson,
+            $this->migrateToUuidAddTriggers,
         ] as $step) {
             /** @var $step MigrateToUuidStep */
             $output->writeln(sprintf('<info>Step %d: %s</info>', $i, $step->getDescription()));
@@ -55,7 +57,7 @@ class MigrateToUuidCommand extends Command
             $i++;
         }
 
-        $output->writeln(sprintf('Migration done!'));
+        $output->writeln('<info>Migration done!</info>');
 
         return Command::SUCCESS;
     }
