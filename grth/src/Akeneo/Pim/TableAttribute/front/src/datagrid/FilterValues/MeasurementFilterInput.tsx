@@ -34,7 +34,6 @@ const MeasurementSelectInput = styled(SelectInput)`
     & > div {
       background: none;
       color: ${getColor('grey', 100)};
-      text-transform: uppercase;
     }
   }
 `;
