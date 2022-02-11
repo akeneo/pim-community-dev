@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-10287: Fix deprecated methods for Symfony\Component\Console\Helper\TableStyle
+- BH-986: Add missing migration file for standard.
 
 # 6.0.4 (2022-02-10)
 
