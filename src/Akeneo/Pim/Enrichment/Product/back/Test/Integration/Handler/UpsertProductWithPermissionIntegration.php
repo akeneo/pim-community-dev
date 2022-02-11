@@ -61,6 +61,29 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     }
 
     /** @test */
+    public function it_throws_an_exception_when_user_locale_is_not_granted(): void
+    {
+        // Creates empty product (use command/handler when we can set a category)
+        $product = $this->get('pim_catalog.builder.product')->createProduct('identifier');
+        $this->get('pim_catalog.updater.product')->update($product, [
+            'categories' => ['print'],
+        ]);
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
+
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('Locale en_GB cannot be edited by user'); // @todo the translation is not found
+
+        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'identifier', valuesUserIntent: [
+            new SetTextValue('a_text', 'en_GB', null, 'foo'),
+        ]);
+        ($this->upsertProductHandler)($command);
+    }
+
+    /** @test */
     public function it_creates_a_new_uncategorized_product(): void
     {
         $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'new_product', valuesUserIntent: [
