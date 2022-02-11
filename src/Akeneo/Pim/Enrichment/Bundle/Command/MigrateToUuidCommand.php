@@ -41,7 +41,7 @@ class MigrateToUuidCommand extends Command
             $output->writeln(sprintf('<info>Step %d: %s</info>', $i, $step->getDescription()));
             $missingCount = $step->getMissingCount();
             $output->writeln(sprintf('    Missing %d items', $missingCount));
-            if ($missingCount > 0 && !$dryRun) {
+            if ($missingCount > 0) {
                 $output->writeln(sprintf('    Add missing items... '));
                 $step->addMissing($dryRun, $output);
                 $output->writeln(sprintf('    Done'));
