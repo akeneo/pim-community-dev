@@ -1520,6 +1520,12 @@ jobs:
       CLUSTER_NEXT:
         type: boolean
         default: false
+      INSTANCE_NAME:
+        type: string
+        default: ""
+      REMOVE_ENV:
+        type: boolean
+        default: true
     environment:
         <<: *envVarsDeployDev
     <<: *dockerJenkinsCloudDeployer
@@ -1587,15 +1593,32 @@ jobs:
         - store_artifacts:
             path: deployment.log
             destination: test_upgrade_from_last_release_deployment.log
-        - run:
-            name: Remove env on kubernetes
-            command: |
-                ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-                UNCOMMIT_INSTANCE_STATUS_CODE=0
-                for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
-                exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
-            when: always
+        - when:
+            condition:
+              equal: [true, << parameters.REMOVE_ENV >> ]
+            steps:
+              - run:
+                  name: Remove env on kubernetes
+                  command: |
+                      ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      UNCOMMIT_INSTANCE_STATUS_CODE=0
+                      for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
+                      exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
+                  when: always
+        - when:
+            condition:
+              equal: [false, << parameters.REMOVE_ENV >> ]
+            steps:
+              - run:
+                  name: Remove env on kubernetes
+                  command: |
+                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                    export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                    UNCOMMIT_INSTANCE_STATUS_CODE=0
+                    for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
+                    exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
+                  when: on_fail
 
   test_clone_from_customer_db:
       parameters:
@@ -1605,6 +1628,9 @@ jobs:
         SOURCE_PFID:
           type: string
           default: ""
+        LONG_TTL_INSTANCE:
+          type: boolean
+          default: false
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
@@ -1621,8 +1647,8 @@ jobs:
               name: Define value for next steps
               command: |
                 SOURCE_PFID=<< parameters.SOURCE_PFID >>
-                INSTANCE_NAME_PREFIX=pimci-duplic
-                INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-$(echo "${SOURCE_PFID}" | cut -c1-20)-${CIRCLE_BUILD_NUM}
+                INSTANCE_NAME_PREFIX=pimci<<# parameters.LONG_TTL_INSTANCE >>-long<</ parameters.LONG_TTL_INSTANCE >>-duplic
+                INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-$(echo "${SOURCE_PFID}" | cut -c1-15)-${CIRCLE_BUILD_NUM}
 
                 echo export SOURCE_PFID=${SOURCE_PFID} >> $BASH_ENV
                 echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
@@ -1632,6 +1658,7 @@ jobs:
                 echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                 echo "Instance name: ${INSTANCE_NAME}"
                 echo "Image tag: ${IMAGE_TAG}"
+                echo "Long ttl tag: << parameters.LONG_TTL_INSTANCE >>"
           - run:
               name: DATADOG deployment Livetail logs page
               command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
@@ -1767,7 +1794,6 @@ jobs:
           - add_ssh_keys
           - set_gcloud_config_dev
           - restore_persisted_env_vars
-
           - run:
               name: Define value for next steps
               command: |
@@ -2235,6 +2261,9 @@ jobs:
         PRODUCT_TYPE:
           type: string
           default: ""
+        INSTANCE_NAME:
+          type: string
+          default: ""
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
@@ -2557,6 +2586,104 @@ workflows:
                     - test_back_data_migrations
                     - test_grth
                     - test_tria
+
+  on_demand_check_update_against_client:
+      when:
+          not:
+            equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+      jobs:
+          - check?:
+                type: approval
+                filters:
+                    branches:
+                        ignore:
+                            - "master"
+          - checkout:
+                requires:
+                  - check?
+          - build_srnt_prod:
+                name: "[srnt] Build"
+                requires:
+                    - "checkout"
+          - build_grth:
+                name: "[grth] Build"
+                requires:
+                    - "checkout"
+          - test_clone_from_customer_db:
+                name: "[<< matrix.PRODUCT_TYPE >>] Clone << matrix.SOURCE_PFID >>"
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["grth"]
+                        SOURCE_PFID: ["grth-sirius-staging"]
+                        LONG_TTL_INSTANCE: [true]
+                requires:
+                    - "[<< matrix.PRODUCT_TYPE >>] Build"
+          - test_upgrade_from_last_release:
+                name: "[<< matrix.PRODUCT_TYPE >>] Upgrade << matrix.INSTANCE_NAME >>"
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["grth"]
+                        INSTANCE_NAME: ["grth-sirius-staging"]
+                        REMOVE_ENV: [false]
+                requires:
+                    - "[<< matrix.PRODUCT_TYPE >>] Clone << matrix.INSTANCE_NAME >>"
+          - delete_pr_environment?:
+              name: "[<< matrix.PRODUCT_TYPE >>] Delete environment << matrix.INSTANCE_NAME >> ?"
+              type: approval
+              matrix:
+                  parameters:
+                      PRODUCT_TYPE: ["grth"]
+                      INSTANCE_NAME: ["grth-sirius-staging"]
+              requires:
+                  - "[<< matrix.PRODUCT_TYPE >>] Upgrade << matrix.INSTANCE_NAME >>"
+          - delete_pr_environment:
+              name: "[<< matrix.PRODUCT_TYPE >>] Delete environment << matrix.INSTANCE_NAME >>"
+              matrix:
+                  parameters:
+                      PRODUCT_TYPE: ["grth"]
+                      INSTANCE_NAME: ["grth-sirius-staging"]
+              requires:
+                  - "[<< matrix.PRODUCT_TYPE >>] Delete environment << matrix.INSTANCE_NAME >> ?"
+          - test_clone_from_customer_db:
+                name: "[<< matrix.PRODUCT_TYPE >>] Clone << matrix.SOURCE_PFID >>"
+                matrix:
+                    parameters:
+                        PRODUCT_TYPE: ["srnt"]
+#                        SOURCE_PFID: ["srnt-madeira-production", "srnt-petra", "srnt-rdoequipment-prod", "srnt-electrodepot", "srnt-distributionnow-prod"]
+                        SOURCE_PFID: ["srnt-petra"]
+                        LONG_TTL_INSTANCE: [true]
+                requires:
+                    - "[<< matrix.PRODUCT_TYPE >>] Build"
+          - test_upgrade_from_last_release:
+              name: "[<< matrix.PRODUCT_TYPE >>] Upgrade << matrix.INSTANCE_NAME >>"
+              matrix:
+                  parameters:
+                      PRODUCT_TYPE: ["srnt"]
+#                        INSTANCE_NAME: ["srnt-madeira-production", "srnt-petra", "srnt-rdoequipment-prod", "srnt-electrodepot", "srnt-distributionnow-prod"]
+                      INSTANCE_NAME: ["srnt-petra"]
+                      REMOVE_ENV: [false]
+              requires:
+                  - "[<< matrix.PRODUCT_TYPE >>] Clone << matrix.INSTANCE_NAME >>"
+          - delete_pr_environment?:
+              name: "[<< matrix.PRODUCT_TYPE >>] Delete environment << matrix.INSTANCE_NAME >> ?"
+              type: approval
+              matrix:
+                  parameters:
+                      PRODUCT_TYPE: ["srnt"]
+#                      INSTANCE_NAME: ["srnt-madeira-production", "srnt-petra", "srnt-rdoequipment-prod", "srnt-electrodepot", "srnt-distributionnow-prod"]
+                      INSTANCE_NAME: ["srnt-petra"]
+              requires:
+                  - "[<< matrix.PRODUCT_TYPE >>] Upgrade << matrix.INSTANCE_NAME >>"
+          - delete_pr_environment:
+              name: "[<< matrix.PRODUCT_TYPE >>] Delete environment << matrix.INSTANCE_NAME >>"
+              matrix:
+                  parameters:
+                      PRODUCT_TYPE: ["srnt"]
+#                      INSTANCE_NAME: ["srnt-madeira-production", "srnt-petra", "srnt-rdoequipment-prod", "srnt-electrodepot", "srnt-distributionnow-prod"]
+                      INSTANCE_NAME: ["srnt-petra"]
+              requires:
+                  - "[<< matrix.PRODUCT_TYPE >>] Delete environment << matrix.INSTANCE_NAME >> ?"
+
 
   on_demand_deployment_validation:
     when:
