@@ -130,7 +130,7 @@ oro_config:
                         enabler:
                             label: Enable loading messages
                         messages:
-                            label: Add own loading messages
+                            label: Add your own loading messages
 
 
 pim_ui:

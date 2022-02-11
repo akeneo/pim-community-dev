@@ -1,9 +1,38 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {PageContent, PageHeader, PimView, Section, useRoute, useTranslate} from '@akeneo-pim-community/shared';
-import {BooleanInput, Breadcrumb, Button, Field, Helper, SectionTitle, TextAreaInput} from 'akeneo-design-system';
+import {
+  PageContent as PageContentWithoutMargin,
+  PageHeader,
+  PimView,
+  UnsavedChanges,
+  useRoute,
+  useTranslate,
+} from '@akeneo-pim-community/shared';
+import {
+  BooleanInput,
+  Breadcrumb,
+  Button,
+  Field as FieldWithoutMargin,
+  Helper,
+  SectionTitle,
+  TextAreaInput,
+} from 'akeneo-design-system';
 import {LocaleSelector} from './components/LocaleSelector';
 import {ConfigServicePayloadFrontend} from './models/ConfigServicePayload';
 import {useFetchConfig, useSaveConfig} from './hooks';
+import styled from 'styled-components';
+
+const PageContent = styled(PageContentWithoutMargin)`
+  padding-bottom: 40px;
+`;
+
+const Section = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Field = styled(FieldWithoutMargin)`
+  margin-top: 20px;
+`;
 
 const ConfigForm = () => {
   const __ = useTranslate();
@@ -83,13 +112,11 @@ const ConfigForm = () => {
             Save
           </Button>
         </PageHeader.Actions>
-        <PageHeader.State>
-          {isModified && (
-            <Helper inline level="warning">
-              {__('pim_common.entity_updated')}
-            </Helper>
-          )}
-        </PageHeader.State>
+        {isModified && (
+          <PageHeader.State>
+            <UnsavedChanges />
+          </PageHeader.State>
+        )}
         <PageHeader.Title>{__('pim_menu.item.configuration')}</PageHeader.Title>
       </PageHeader>
       <PageContent>
