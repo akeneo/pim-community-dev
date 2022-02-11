@@ -10,5 +10,7 @@ interface MigrateToUuidStep
 
     public function addMissing(bool $dryRun, OutputInterface $output): void;
 
+    public function shouldBeExecuted(): bool;
+
     public function getDescription(): string;
 }
