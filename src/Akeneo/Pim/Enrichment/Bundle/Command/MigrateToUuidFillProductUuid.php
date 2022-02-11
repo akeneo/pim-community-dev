@@ -19,6 +19,15 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
         return 'Generates uuid4 for every product';
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function shouldBeExecuted(): bool
+    {
+        // @todo: improve
+        return 0 < $this->getMissingCount();
+    }
+
     public function getMissingCount(): int
     {
         return $this->getMissingProductUuidCount();
