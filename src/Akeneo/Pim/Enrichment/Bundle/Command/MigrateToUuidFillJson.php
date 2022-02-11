@@ -119,19 +119,25 @@ LIMIT :limit";
         while (count($associations) > 0) {
             $productIdToUuidMap = $this->getProductIdToUuidMap($associations);
 
+
             for ($pi = 0; $pi < count($associations); $pi++) {
                 $formerAssociation = $associations[$pi]['quantified_associations'];
                 $productId = $associations[$pi]['id'];
+                $notFound = false;
                 foreach ($formerAssociation as $associationName => $entityAssociations) {
                     for ($i = 0; $i < count($entityAssociations['products']); $i++) {
                         $associatedProductId = $entityAssociations['products'][$i]['id'];
                         if (array_key_exists($associatedProductId, $productIdToUuidMap)) {
                             $associatedProductUuid = $productIdToUuidMap[$associatedProductId];
-                            $associations[$pi][$associationName]['products'][$i]['uuid'] = $associatedProductUuid;
+                            $formerAssociation[$associationName]['products'][$i]['uuid'] = $associatedProductUuid;
                         } else {
                             $output->writeln(sprintf('    <comment>Associated product %d not found for product %d</comment>', $associatedProductId, $productId));
+                            $notFound = true;
                         }
                     }
+                }
+                if (!$notFound) {
+                    $associations[$pi]['quantified_associations'] = $formerAssociation;
                 }
                 $previousEntityId = $productId;
             }
