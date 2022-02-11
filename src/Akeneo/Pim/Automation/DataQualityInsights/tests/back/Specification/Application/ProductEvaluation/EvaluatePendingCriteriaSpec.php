@@ -25,6 +25,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
@@ -84,7 +85,7 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
         $criteriaProduct123 = (new Write\CriterionEvaluationCollection())
             ->add($criteria['product_123_non_required_att_completeness']);
 
-        $getPendingCriteriaEvaluationsQuery->execute([42, 123])->willreturn([
+        $getPendingCriteriaEvaluationsQuery->execute(ProductIdCollection::fromInts([42, 123]))->willreturn([
             42 => $criteriaProduct42,
             123 => $criteriaProduct123
         ]);
@@ -107,7 +108,7 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
 
         $repository->update(Argument::any())->shouldBeCalledTimes(2);
 
-        $this->evaluateAllCriteria([42, 123]);
+        $this->evaluateAllCriteria(ProductIdCollection::fromInts([42, 123]));
 
         foreach ($criteria as $criterionEvaluation) {
             Assert::eq(CriterionEvaluationStatus::done(), $criterionEvaluation->getStatus());
@@ -135,7 +136,7 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
             CriterionEvaluationStatus::pending()
         );
 
-        $getPendingCriteriaEvaluationsQuery->execute([42, 123])->willreturn([
+        $getPendingCriteriaEvaluationsQuery->execute(ProductIdCollection::fromInts([42, 123]))->willreturn([
             42 => (new Write\CriterionEvaluationCollection())->add($criterionA),
             123 => (new Write\CriterionEvaluationCollection())->add($criterionB),
         ]);
@@ -152,7 +153,7 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
 
         $repository->update(Argument::any())->shouldBeCalledTimes(2);
 
-        $this->evaluateAllCriteria([42, 123]);
+        $this->evaluateAllCriteria(ProductIdCollection::fromInts([42, 123]));
 
         Assert::eq(CriterionEvaluationStatus::error(), $criterionA->getStatus());
         Assert::eq(CriterionEvaluationStatus::done(), $criterionB->getStatus());
@@ -183,7 +184,7 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
 
         $product42CriteriaCollection = (new Write\CriterionEvaluationCollection())->add($criteria['product_42_non_required_att_completeness']);
         $product123CriteriaCollection = (new Write\CriterionEvaluationCollection())->add($criteria['product_123_non_required_att_completeness']);
-        $getPendingCriteriaEvaluationsQuery->execute([42, 123])->willreturn([
+        $getPendingCriteriaEvaluationsQuery->execute(ProductIdCollection::fromInts([42, 123]))->willreturn([
             42 => $product42CriteriaCollection,
             123 => $product123CriteriaCollection
         ]);
@@ -209,7 +210,7 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
             $criteria['product_123_non_required_att_completeness'],
         ]);
 
-        $this->evaluateSynchronousCriteria([42, 123]);
+        $this->evaluateSynchronousCriteria(ProductIdCollection::fromInts([42, 123]));
 
         Assert::eq($criteria['product_42_non_required_att_completeness']->getStatus(), CriterionEvaluationStatus::done());
         Assert::eq($criteria['product_123_non_required_att_completeness']->getStatus(), CriterionEvaluationStatus::done());

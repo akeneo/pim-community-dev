@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateColl
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -36,11 +37,10 @@ final class GetUpToDateLatestProductScoresQuery implements GetLatestProductScore
         return new ChannelLocaleRateCollection();
     }
 
-    public function byProductIds(array $productIds): array
+    public function byProductIds(ProductIdCollection $productIdCollection): array
     {
-        $upToDateProducts = $this->hasUpToDateEvaluationQuery->forProductIds($productIds);
+        $upToDateProducts = $this->hasUpToDateEvaluationQuery->forProductIds($productIdCollection);
 
-        return empty($upToDateProducts) ? [] : $this->getLatestProductScoresQuery->byProductIds($upToDateProducts);
-        ;
+        return is_null($upToDateProducts) ? [] : $this->getLatestProductScoresQuery->byProductIds($upToDateProducts);
     }
 }

@@ -20,6 +20,8 @@ $rules = [
             'Ramsey\Uuid\Uuid',
             'Akeneo\Pim\Structure\Component\AttributeTypes',
             'Symfony\Contracts\EventDispatcher\Event',
+            'Webmozart\Assert\Assert',
+            'Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException'
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Domain'),
 

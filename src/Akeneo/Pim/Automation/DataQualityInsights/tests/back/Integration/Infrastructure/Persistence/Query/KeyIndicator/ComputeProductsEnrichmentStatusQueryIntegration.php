@@ -6,6 +6,7 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastruct
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator\ComputeProductsEnrichmentStatusQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
@@ -48,9 +49,9 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
         $this->givenNotInvolvedProduct();
 
         $productIds = array_keys($expectedProductsEnrichmentStatus);
-        $productIds = array_map(fn(int $productId) => new ProductId($productId), $productIds);
 
-        $productsEnrichmentStatus = $this->get(ComputeProductsEnrichmentStatusQuery::class)->compute($productIds);
+        $productsEnrichmentStatus = $this->get(ComputeProductsEnrichmentStatusQuery::class)
+            ->compute(ProductIdCollection::fromInts($productIds));
 
         $this->assertEquals($expectedProductsEnrichmentStatus, $productsEnrichmentStatus);
     }
@@ -65,7 +66,7 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
             ]
         ])->getId();
 
-        ($this->get(EvaluateProducts::class))([$productId]);
+        ($this->get(EvaluateProducts::class))(ProductIdCollection::fromInt($productId));
 
         $expectedEnrichmentStatus = [$productId => [
             'ecommerce' => [
@@ -91,7 +92,7 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
             ]
         ])->getId();
 
-        ($this->get(EvaluateProducts::class))([$productId]);
+        ($this->get(EvaluateProducts::class))(ProductIdCollection::fromInt($productId));
 
         $expectedEnrichmentStatus = [$productId => [
             'ecommerce' => [

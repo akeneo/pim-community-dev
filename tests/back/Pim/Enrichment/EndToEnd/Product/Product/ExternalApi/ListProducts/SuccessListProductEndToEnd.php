@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\ListProducts;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
@@ -515,11 +516,12 @@ JSON;
             'values' => [],
         ]);
 
-        ($this->get('Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'))([
-            $product1->getId(),
-            $product2->getId(),
-            $product3->getId(),
-        ]);
+        ($this->get('Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'))(
+            ProductIdCollection::fromInts([
+                $product1->getId(),
+                $product2->getId(),
+                $product3->getId(),
+            ]));
 
         $values = '{
             "a_text": [{

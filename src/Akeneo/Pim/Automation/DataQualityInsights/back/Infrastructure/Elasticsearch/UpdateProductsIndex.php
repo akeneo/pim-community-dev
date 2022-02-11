@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductScoresQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
 /**
@@ -32,14 +32,12 @@ class UpdateProductsIndex
         $this->getProductScoresQuery = $getProductScoresQuery;
     }
 
-    public function execute(array $productIds): void
+    public function execute(ProductIdCollection $productIdCollection): void
     {
-        $productIds = array_map(fn (int $productId) => new ProductId($productId), $productIds);
+        $productsScores = $this->getProductScoresQuery->byProductIds($productIdCollection);
+        $productsKeyIndicators = $this->getProductsKeyIndicators->compute($productIdCollection);
 
-        $productsScores = $this->getProductScoresQuery->byProductIds($productIds);
-        $productsKeyIndicators = $this->getProductsKeyIndicators->compute($productIds);
-
-        foreach ($productIds as $productId) {
+        foreach ($productIdCollection->toArray() as $productId) {
             $productId = $productId->toInt();
             if (!array_key_exists($productId, $productsScores)) {
                 continue;

@@ -9,10 +9,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject;
 
-use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException;
 use Webmozart\Assert\Assert;
 
-final class ProductIdCollection implements \IteratorAggregate
+final class ProductIdCollection implements \IteratorAggregate, \Countable
 {
     /**
      * @var array<ProductId>
@@ -23,6 +22,14 @@ final class ProductIdCollection implements \IteratorAggregate
     {
         // Unique process is checking in test and working with ProductId::class__toString() method.
         $this->productIds = array_values(array_unique($productIds));
+    }
+
+    public static function fromStrings(array $productIds): self
+    {
+        Assert::allString($productIds);
+        $productIdList = array_map(fn ($idString) => intval($idString), $productIds);
+
+        return self::fromInts($productIdList);
     }
 
     public static function fromInts(array $productIds): self
@@ -41,17 +48,22 @@ final class ProductIdCollection implements \IteratorAggregate
         return self::fromInts([$productId]);
     }
 
+    public static function fromString(string $productId): self
+    {
+        return self::fromStrings([$productId]);
+    }
+
+    public static function fromProductId(ProductId $productId): self
+    {
+        return self::fromProductIds([$productId]);
+    }
+
     public static function fromProductIds(array $productIds): self
     {
         foreach ($productIds as $id) {
             Assert::isInstanceOf($id, ProductId::class);
         }
         return new self($productIds);
-    }
-
-    public static function fromProductId(ProductId $productId): self
-    {
-        return self::fromProductIds([$productId]);
     }
 
     public function addProductId(ProductId $productId): self
@@ -61,11 +73,14 @@ final class ProductIdCollection implements \IteratorAggregate
         return new self($this->productIds);
     }
 
-    public function findByInt(int $productId): ?ProductId {
-        $result = array_values(array_filter($this->productIds,
+    public function findByInt(int $productId): ?ProductId
+    {
+        $result = array_values(array_filter(
+            $this->productIds,
             function (ProductId $product) use ($productId) {
                 return $product->toInt() === $productId;
-        }));
+            }
+        ));
 
         if (!$result) {
             return null;
@@ -82,8 +97,26 @@ final class ProductIdCollection implements \IteratorAggregate
         return $this->productIds;
     }
 
+    /**
+     * @return array<Int>
+     */
+    public function toArrayInt(): array
+    {
+        return array_map(fn (ProductId $productId) => $productId->toInt(), $this->productIds);
+    }
+
     public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->productIds);
+    }
+
+    public function count(): int
+    {
+        return count($this->productIds);
+    }
+
+    public function isEmpty(): bool
+    {
+        return empty($this->productIds);
     }
 }

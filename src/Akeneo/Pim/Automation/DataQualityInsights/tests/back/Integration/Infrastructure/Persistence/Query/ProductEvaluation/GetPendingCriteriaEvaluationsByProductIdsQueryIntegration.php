@@ -9,6 +9,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluat
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
 final class GetPendingCriteriaEvaluationsByProductIdsQueryIntegration extends DataQualityInsightsTestCase
@@ -34,7 +35,7 @@ final class GetPendingCriteriaEvaluationsByProductIdsQueryIntegration extends Da
         $this->givenAProductWithOnePendingEvaluation('not_involved_product');
 
         $evaluations = $this->get('akeneo.pim.automation.data_quality_insights.query.get_product_pending_criteria_evaluations')
-            ->execute([$productIdA, $productIdB, $productIdC]);
+            ->execute(ProductIdCollection::fromInts([$productIdA, $productIdB, $productIdC]));
 
         $this->assertCount(2, $evaluations);
         $this->assertArrayHasKey($productIdA, $evaluations);
@@ -54,7 +55,7 @@ final class GetPendingCriteriaEvaluationsByProductIdsQueryIntegration extends Da
         $this->givenAProductModelWithOnePendingEvaluation('not_involved_product_model');
 
         $evaluations = $this->get('akeneo.pim.automation.data_quality_insights.query.get_product_model_pending_criteria_evaluations')
-            ->execute([$productModelIdA, $productModelIdB, $productModelIdC]);
+            ->execute(ProductIdCollection::fromInts([$productModelIdA, $productModelIdB, $productModelIdC]));
 
         $this->assertCount(2, $evaluations);
         $this->assertArrayHasKey($productModelIdA, $evaluations);
@@ -66,7 +67,7 @@ final class GetPendingCriteriaEvaluationsByProductIdsQueryIntegration extends Da
     public function test_it_returns_an_empty_array_if_there_is_no_pending_criteria_evaluations()
     {
         $this->assertEmpty($this->get('akeneo.pim.automation.data_quality_insights.query.get_product_pending_criteria_evaluations')
-            ->execute([42]));
+            ->execute(ProductIdCollection::fromInt(42)));
     }
 
     private function givenAProductWithTwoPendingAndOneDoneEvaluations(string $productCode): int
