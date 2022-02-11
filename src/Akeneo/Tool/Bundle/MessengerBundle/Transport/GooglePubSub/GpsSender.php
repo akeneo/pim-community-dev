@@ -42,7 +42,11 @@ final class GpsSender implements SenderInterface
         }
 
         try {
-            $this->topic->publish($message);
+            $this->topic->publish($message, [
+                'grpcOptions' => [
+                    'timeoutMs' => 60000
+                ]
+            ]);
         } catch (GoogleException $e) {
             throw new TransportException($e->getMessage(), 0, $e);
         }
