@@ -22,6 +22,15 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         return 'Adds product_uuid field in JSON objects';
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function shouldBeExecuted(): bool
+    {
+        // @todo: improve
+        return 0 < $this->getMissingCount();
+    }
+
     public function getMissingCount(): int
     {
         $sql = "

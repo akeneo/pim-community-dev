@@ -7,6 +7,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
 {
+    use MigrateToUuidTrait;
+
     public function __construct(private Connection $connection)
     {
     }
@@ -14,6 +16,44 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
     public function getDescription(): string
     {
         return 'Fill foreign tables with product uuids';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function shouldBeExecuted(): bool
+    {
+        foreach (MigrateToUuidCreateColumns::TABLES as $tableName => $columnNames) {
+            if ($tableName === 'pim_catalog_product') {
+                continue;
+            }
+
+            if (!$this->tableExists($tableName)) {
+                continue;
+            }
+
+            $isColumnExist = $this->columnExists($tableName, $columnNames[1]);
+            $sql = <<<SQL
+            SELECT EXISTS(
+                SELECT 1 FROM {table_name} WHERE {column_name} IS {not} NULL {extra_condition} LIMIT 1
+            ) as missing
+            SQL;
+
+            $sql = strtr($sql, [
+                '{table_name}' => $tableName,
+                '{column_name}' => $isColumnExist ? $columnNames[1] : $columnNames[0],
+                '{not}' => $isColumnExist ? '' : 'NOT',
+                '{extra_condition}' => $tableName === 'pim_versioning_version'
+                    ? ' AND resource_name="Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"'
+                    : '',
+            ]);
+
+            if (0 < (int) $this->connection->fetchOne($sql)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getMissingCount(): int
@@ -47,6 +87,10 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
 
     private function getMissingCount2(string $tableName, string $uuidColumnName, string $idColumnName): int
     {
+        if (!$this->tableExists($tableName)) {
+            return 0;
+        }
+
         if ($this->columnExists($tableName, $uuidColumnName)) {
             return $this->getMissingUuidCount($tableName, $uuidColumnName);
         }
