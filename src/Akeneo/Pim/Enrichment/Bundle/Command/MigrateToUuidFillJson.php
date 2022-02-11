@@ -27,8 +27,23 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
      */
     public function shouldBeExecuted(): bool
     {
-        // @todo: improve
-        return 0 < $this->getMissingCount();
+        $sql = <<<SQL
+            SELECT EXISTS(
+                SELECT 1
+                FROM %s
+                WHERE JSON_CONTAINS_PATH(quantified_associations, 'one', '$.*.products[*].id')
+                    AND NOT JSON_CONTAINS_PATH(quantified_associations, 'one', '$.*.products[*].uuid')
+                LIMIT 1
+            ) as missing
+        SQL;
+
+        foreach (self::TABLE_NAMES as $tableName) {
+            if ((bool) $this->connection->executeQuery(\sprintf($sql, $tableName))->fetchOne()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getMissingCount(): int
