@@ -33,9 +33,9 @@ final class LocaleShouldBeEditableByUserValidator extends ConstraintValidator
         $userEditableLocaleCodes = $this->getEditableLocaleCodes->forUserId($command->userId());
 
         foreach ($command->valuesUserIntent() as $valueUserIntent) {
-            $localCode = $valueUserIntent->localeCode();
-            if (!\in_array($valueUserIntent->localeCode(), $userEditableLocaleCodes)) {
-                $this->context->buildViolation($constraint->message, ['{{ locale_code }}' => $localCode])->addViolation();
+            $localeCode = $valueUserIntent->localeCode();
+            if (!empty($localeCode) && !\in_array($valueUserIntent->localeCode(), $userEditableLocaleCodes)) {
+                $this->context->buildViolation($constraint->message, ['{{ locale_code }}' => $localeCode])->addViolation();
             }
         }
     }
