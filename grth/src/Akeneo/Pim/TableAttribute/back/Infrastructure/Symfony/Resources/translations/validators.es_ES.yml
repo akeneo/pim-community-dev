@@ -17,12 +17,14 @@ pim_table_configuration:
       too_long_option_label: "La etiqueta de opción es demasiado larga: debe tener 255 caracteres o menos"
       duplicated_column_code: '[0,1]Cada columna requiere un código único. «%duplicateCodes%» ya está usado|]1,Inf[Cada columna requiere un código único. «%duplicateCodes%» ya están en uso'
       column_type_must_be_a_string: El tipo de datos de columna debe ser una cadena
+      unknown_data_type: 'El tipo de datos de la columna es desconocido. Elija uno de los siguientes: {{ allowed_data_types }}'
       column_label_must_be_a_string: La etiqueta de columna debe ser una cadena
       option_label_must_be_a_string: La etiqueta de opción debe ser una cadena
       label_locale_does_not_exist_or_is_not_activated: La configuración regional de «{{ locale_code }}» no existe o no está activado
       invalid_labels_format: Las etiquetas de columna deben ser un objeto clave/valor
       invalid_option_labels_format: Las etiquetas de opción deben ser un objeto clave/valor
       must_not_be_filled: El tipo %type% no permite table_configuration
+      first_column_should_be_valid: '{1}El tipo de la primera columna debe ser siempre «{{ allowed_data_types }}», el tipo actual es «{{ data_type }}».|]1,Inf[El tipo de la primera columna puede ser {{ allowed_data_types_except_last }} o «{{ last_allowed_data_types }}», el tipo actual es «{{ data_type }}».'
       first_column_code_cannot_be_changed: El código de su primera columna no se puede cambiar.
       unknown_field: 'Asegúrese de utilizar solo los campos esperados, el campo actual: {{ field }}'
       attribute_does_not_exist: El atributo «{{ attribute }}» no existe
@@ -31,6 +33,10 @@ pim_table_configuration:
       not_select_column: La columna «{{ column }}» del atributo «{{ attribute }}» no es una «seleccionar»
       max_should_be_greater_than_min: El valor máximo debe ser mayor que el valor mínimo.
       options_cannot_be_set: No se pueden establecer opciones para un tipo de columna «{{ data_type }}»
+      reference_entity_identifier_cannot_be_set: No se puede establecer el identificador de entidad de referencia para un tipo de columna «{{ data_type }}»
+      reference_entity_identifier_must_be_filled: Se debe rellenar el identificador de la entidad de referencia
+      reference_entity_identifier_should_exist: Asegúrese de que la entidad de referencia «{{ reference_entity_identifier }}» existe antes de añadirla a la tabla
+      reference_entity_identifier_is_immutable: No se puede actualizar el reference_entity_identifier
       no_validations_allowed: 'No utilice Validaciones en la columna «{{ columnType }}», tipo de columna actual: «{{ given }}»'
       invalid_validation_key: 'Las validaciones «{{ given }}» no funcionan en una columna «{{ columnType }}», permitidas: «{{ expected }}»'
       too_many_table_attributes: Ha alcanzado el número máximo de atributos de la tabla dentro de su PIM ({{ limit }})
@@ -45,5 +51,8 @@ pim_table_configuration:
       value_integer_required: 'El valor requerido es un entero'
       max_length_validation: Este valor debe contener {{ limit }} caracteres o menos.
       too_many_rows: Ha alcanzado el número máximo de registros en su tabla ({{ limit }}).
+      record_should_exist: 'El registro «{{ recordCode }}» en la entidad de referencia «{{ referenceEntityIdentifier }}» no existe'
     product_value_collection:
       too_many_cells: Ha alcanzado el número máximo de celdas de la tabla en su producto ({{ count }} celdas, solo se permiten {{ limit }}).
+    reference_entity:
+      should_not_be_linked: 'Esta entidad de referencia se utiliza en un atributo de producto, por lo tanto no se puede eliminar.'

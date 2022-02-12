@@ -183,6 +183,7 @@ pimee_catalog_rule:
           select_reference_entity: 참조 엔터티 선택
           select_asset: 애셋 선택
           select_measurement_unit: 단위 선택
+          table_attribute_helper: 이 특성의 이전 값은 모든 제품 선택으로 대체됩니다
         set_quantified_associations:
           title: 수량 연결 설정
           helper: 수량 연결을 설정하려면 연결 유형을 선택한 다음 제품, 제품 모델, 또는 제품 선택과 연결하려는 그룹을 선택하십시오.

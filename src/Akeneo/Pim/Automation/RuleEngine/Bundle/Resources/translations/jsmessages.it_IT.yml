@@ -183,6 +183,7 @@ pimee_catalog_rule:
           select_reference_entity: Seleziona le tue entità di riferimento
           select_asset: Seleziona i tuoi asset
           select_measurement_unit: Seleziona la tua unità
+          table_attribute_helper: I valori precedenti di questo attributo saranno sostituiti in tutta la selezione del prodotto
         set_quantified_associations:
           title: IMPOSTA associazioni quantificate
           helper: Per impostare le associazioni quantificate, seleziona i tipi di associazione e poi i prodotti, i modelli prodotto o i gruppi che vuoi associare alla selezione del prodotto.

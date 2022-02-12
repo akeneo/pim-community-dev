@@ -183,6 +183,7 @@ pimee_catalog_rule:
           select_reference_entity: 选择参考实体
           select_asset: 选择资产
           select_measurement_unit: 选择单位
+          table_attribute_helper: 此属性以前的值将在您所有的产品选择中被替换
         set_quantified_associations:
           title: SET 量化关联
           helper: 要设置量化关联，请选择您的关联类型，然后选择您想要关联到产品选择的产品、产品模型或组。

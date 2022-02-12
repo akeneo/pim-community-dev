@@ -183,6 +183,7 @@ pimee_catalog_rule:
           select_reference_entity: Seleccione sus entidades de referencia
           select_asset: Seleccione sus activos
           select_measurement_unit: Seleccione su unidad
+          table_attribute_helper: Los valores anteriores de este atributo serán sustituidos en toda su selección de productos
         set_quantified_associations:
           title: ESTABLECER asociaciones cuantificadas
           helper: Para establecer asociaciones cuantificadas, seleccione su(s) tipo(s) de asociación y, a continuación, los productos, modelos de productos o grupos que desee asociar a su selección de productos.
