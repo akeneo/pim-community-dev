@@ -38,6 +38,8 @@ pim_title:
   akeneo_connectivity_connection_connect_connected_apps: 应用
   akeneo_connectivity_connection_connect_connected_apps_edit: 应用设置
   akeneo_connectivity_connection_connect_connected_apps_delete: 删除应用
+  akeneo_connectivity_connection_connect_marketplace_test_app_create: 创建测试应用
+  akeneo_connectivity_connection_connect_marketplace_test_app_delete: 删除测试应用
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -50,6 +52,7 @@ akeneo_connectivity.connection:
         description: 这只是概览，还有更多内容，请探索我们的网上商城。
         link: 前往网上商城
       card:
+        developed_by: '开发者：{{ author }}'
         read_more: 阅读更多
         more_info: 更多信息
         connect: 连接
@@ -65,11 +68,48 @@ akeneo_connectivity.connection:
       unreachable: 无法访问商城，请稍后再试。
       scroll_to_top: 滚动到顶部
       test_apps:
+        title: 我的测试应用
+        removed_user: 已移除用户
+        create_a_test_app: 创建测试应用
         modal:
+          subtitle: 创建测试应用
+          app_information:
+            title: 应用信息
+            description: 如果您需要帮助，请查阅我们的文章
+            link: 如何在发布之前测试我的应用？
+            fields:
+              name: 名称
+              activate_url: 激活 URL
+              callback_url: 回调 URL
           credentials:
             title: 凭据
+            warning: 确保将这些凭据保存在某处，因为我们仅在此处显示一次。
+            client_id: 客戶端 ID
+            client_secret: 客户端密钥
+        errors:
+          creation:
+            name:
+              max_length: 测试应用的名称太长。其不得超过 255 个字符。
+              not_blank: 测试应用的名称为必填项。
+            client_id:
+              max_length: 测试应用的客户端 ID 太长。其不得超过 255 个字符。
+              not_blank: 客户端 ID 为必填项。
+            activate_url:
+              max_length: 测试应用的激活 URL 太长。其不得超过 255 个字符。
+              must_be_url: 激活 URL 必须为有效的 URL。
+              not_blank: 激活 URL 为必填项。
+            callback_url:
+              max_length: 测试应用的回调 URL 太长。其不得超过 255 个字符。
+              must_be_url: 回调 URL 必须为有效的 URL。
+              not_blank: 回调 URL 为必填项。
         delete:
+          subtitle: 应用
           title: 确认删除 
+          description: 您将要从该 PIM 中删除您的测试应用。
+          warning: 确认删除后，商城页面上的测试应用以及相关的连接应用都将被删除。
+          flash:
+            success: 测试应用已成功删除。
+            error: 抱歉，删除测试应用时出现错误。
     connected_apps:
       list:
         apps:
@@ -78,12 +118,16 @@ akeneo_connectivity.connection:
           empty: 尚未连接任何应用。
           check_marketplace: '检查 {{ marketplaceLink }} 以浏览所有可用的内容并安装您的第一个应用。'
           marketplace_link_anchor: 商城
+        test_apps:
+          title: 我的测试应用
+          removed_user: 已移除用户
         helper:
           title: '[0,1] 您的 PIM 已与 {{ count }} 个应用连接。|[2,Inf] 您的 PIM 已与 {{ count }} 个应用连接。'
           description_1: 我们定期开发新的应用，请随时关注并查看我们的商城页面以探索如何连接您的 PIM。
           description_2: 想了解更多关于应用的信息？
           link: 查看我们的“帮助中心”获取更多信息。
         card:
+          developed_by: '开发者：{{ author }}'
           manage_app: 管理应用
           open_app: 打开应用
         flash:
@@ -217,6 +261,7 @@ akeneo_connectivity.connection:
     user_role_id: 角色
     user_group_id: 分组
     constraint:
+      connections_number_limit_reached: 您已达到连接和连接应用的上限数目 50。
       code:
         required: 连接码必填。
         invalid: 连接码只能包含字母、数字和下划线。
@@ -231,6 +276,9 @@ akeneo_connectivity.connection:
         invalid: 连接流类型只能是“数据源”、“数据目标”或“其它”。
       image:
         must_exist: 找不到图像。请重试。
+      type:
+        required: 连接类型是必填的。
+        too_long: 连接类型太长。连接类型最多只能有30个字符。
   flow_type:
     data_source: 数据源 | 数据源
     data_destination: 数据目标 | 数据目标
@@ -242,6 +290,7 @@ akeneo_connectivity.connection:
     message_link: 点击此处。
   create_connection:
     title: 创建新连接
+    description: 您最多可以连接 50 个第三方连接或应用。
     flash:
       success: 已成功创建连接。
       error: 抱歉，创建连接时发生错误。
