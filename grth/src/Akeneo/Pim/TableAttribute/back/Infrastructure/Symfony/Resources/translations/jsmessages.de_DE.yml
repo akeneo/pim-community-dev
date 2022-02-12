@@ -14,6 +14,8 @@ table_attribute_template:
       label: 'Pro 100g'
     per_serving:
       label: 'Pro Portion (x g)'
+    percentage_reference_intake:
+      label: '% der Referenzaufnahme (pro 100g oder Servierung)'
   nutrition-unitedstates:
     nutrition_facts:
       label: Nährwertangaben
@@ -142,6 +144,8 @@ pim_table_attribute:
       column_code: Spaltencode
       properties_helper: Sie müssen die Tabellenstruktur und mindestens 2 Spalten definieren, bevor Sie Ihr Tabellenattribut speichern können
       table_structure_helper_text: Ein Tabellenattribut muss mindestens 2 Spalten enthalten. Sobald Sie die erste Spalte erstellt haben, müssen Sie Optionen hinzufügen. Dazu klicken Sie auf „Optionen verwalten“ und fügen Sie {{ limit }} Optionen hinzu! Dann können Sie jede dieser Optionen als Zeilen in Ihren Produkttabellen verwenden.
+      table_structure_helper_text_with_reference_entity: Ein Tabellenattribut muss mindestens 2 Spalten enthalten. Sobald Sie die erste Spalte mit den Spaltentypen „Auswählen“ oder „Referenz-Entitäten“ erstellt haben, definieren und verwalten Sie Datensätze basierend auf Optionen oder Datensätzen.
+      table_structure_helper_link: Weitere Informationen finden Sie in unserem Hilfe-Center.
       limit_option_reached: Sie haben das Limit von {{ limit }} Optionen erreicht.
       template_label: Wählen Sie den Standard Ihrer "{{ templateLabel }}" Tabelle
       delete_column_helper: Wenn Sie diese Spalte löschen, werden alle ihre Werte mit dem Attribut "{{ attributeLabel }}" aus allen Produkten entfernt.
@@ -151,11 +155,13 @@ pim_table_attribute:
       no_options: Keine Optionen gefunden
       please_try_again: Bitte versuche es noch einmal
       first_column_type_helper: Die erste Spalte einer Tabelle ist immer ein Spaltentyp.
+      first_column_type_helper_with_reference_entity: Die erste Spalte einer Tabelle ist entweder ein Spaltentyp "Auswahl" oder "Referenz-Entität".
       discard_changes: Wenn Sie die Seite verlassen, verlieren Sie die Änderungen an den Auswahloptionen.
       completeness: Vollständigkeit
       required_for_completeness: Erforderlich für die Vollständigkeit
       completeness_helper_text: "Um herauszufinden, wie Vollständigkeit für ein Tabellenattribut funktioniert,"
       completeness_helper_link: schauen Sie sich unser Hilfe-Center an.
+      reference_entity: Referenz-Entität
     product:
       items_per_page: Elemente pro Seite
       current_items: "{{ minItem }}-{{ maxItem }} von {{ itemCount }}"
@@ -163,9 +169,13 @@ pim_table_attribute:
       no_search_result: "Leider gibt es keine Zeilen für Ihre Suche!"
       no_rows_title: "Ihre {{ attributeLabel }} -Tabelle ist leer."
       no_rows_subtitle: Füge Zeilen hinzu, um neue Eigenschaften zu definieren
+      no_rows_subtitle_no_permission: Um dieses Attribut bearbeiten zu können, gehen Sie auf die Attribut-Einstellungsseite oder wenden Sie sich an Ihren PIM-Administrator.
       no_results: Es gibt keine Ergebnisse
       no_options: Es gibt keine Optionen
+      no_records: Es gibt keine Datensätze
       no_add_options_unallowed: Kontaktieren Sie Ihren PIM-Administrator, um die "{{ attributeLabel }}" Optionen zu verwalten
+      edit_records_unallowed: Kontaktieren Sie Ihren PIM-Administrator, um die "{{ referenceEntityLabel }}" Referenz-Entität zu verwalten
+      manage_records: Datensätze verwalten
       actions:
         delete_row: Diese Zeile löschen
         clear_row: Diese Zeile leeren
@@ -180,6 +190,7 @@ pim_table_attribute:
       number: Nummer
       boolean: Ja/Nein
       select: Auswählen
+      reference_entity: Referenz-Entität
   validations:
     column_code_must_be_filled: Der Code muss ausgefüllt werden
     not_available_code: Dieser Spaltencode ist nicht verfügbar
