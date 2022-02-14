@@ -4,3 +4,13 @@ services:
     public: true
     arguments:
       - '@akeneo.tailored_import.handler.get_grouped_targets'
+
+  akeneo.tailored_import.controller.upload_action:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\UploadAction
+    public: true
+    arguments:
+      - '@validator'
+      - '@akeneo_file_storage.file_storage.path_generator'
+      - '@akeneo_file_storage.file_storage.file.file_storer'
+      - '@akeneo_file_storage.repository.file_info'
+      - '@serializer'
