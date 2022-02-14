@@ -262,6 +262,12 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\AddUuidSubscriber:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }
+
     Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Family\FamilyAttributeAsLabelChangedSubscriber:
         arguments:
           - '@pim_catalog.doctrine.query.find_attribute_code_as_label_for_family'
