@@ -29,9 +29,10 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         ProductRepositoryInterface $productRepository,
         ProductBuilderInterface $productBuilder,
         SaverInterface $productSaver,
-        ObjectUpdaterInterface $productUpdater
+        ObjectUpdaterInterface $productUpdater,
+        ValidatorInterface $productValidator,
     ) {
-        $this->beConstructedWith($validator, $productRepository, $productBuilder, $productSaver, $productUpdater);
+        $this->beConstructedWith($validator, $productRepository, $productBuilder, $productSaver, $productUpdater, $productValidator);
     }
 
     function it_is_intializable()
@@ -43,7 +44,8 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ProductRepositoryInterface $productRepository,
         ProductBuilderInterface $productBuilder,
-        SaverInterface $productSaver
+        SaverInterface $productSaver,
+        ValidatorInterface $productValidator,
     ) {
         $command = new UpsertProductCommand(1, 'identifier1');
         $product = new Product();
@@ -51,7 +53,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $productRepository->findOneByIdentifier('identifier1')->shouldBeCalledOnce()->willReturn(null);
         $productBuilder->createProduct('identifier1')->shouldBeCalledOnce()->willReturn($product);
-        $validator->validate($product)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
+        $productValidator->validate($product)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $productSaver->save($product)->shouldBeCalledOnce();
 
         $this->__invoke($command);
@@ -61,7 +63,8 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ProductRepositoryInterface $productRepository,
         ProductBuilderInterface $productBuilder,
-        SaverInterface $productSaver
+        SaverInterface $productSaver,
+        ValidatorInterface $productValidator,
     ) {
         $command = new UpsertProductCommand(1, 'identifier1');
         $product = new Product();
@@ -69,7 +72,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $productRepository->findOneByIdentifier('identifier1')->shouldBeCalledOnce()->willReturn($product);
         $productBuilder->createProduct('identifier1')->shouldNotBeCalled();
-        $validator->validate($product)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
+        $productValidator->validate($product)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $productSaver->save($product)->shouldBeCalledOnce();
 
         $this->__invoke($command);
@@ -94,7 +97,8 @@ class UpsertProductHandlerSpec extends ObjectBehavior
     function it_throws_an_exception_when_product_is_not_valid(
         ValidatorInterface $validator,
         ProductRepositoryInterface $productRepository,
-        SaverInterface $productSaver
+        SaverInterface $productSaver,
+        ValidatorInterface $productValidator
     ) {
         $command = new UpsertProductCommand(1, 'identifier1');
         $product = new Product();
@@ -104,7 +108,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $productRepository->findOneByIdentifier('identifier1')->shouldBeCalledOnce()->willReturn($product);
-        $validator->validate($product)->shouldBeCalledOnce()->willReturn($violations);
+        $productValidator->validate($product)->shouldBeCalledOnce()->willReturn($violations);
         $productSaver->save($product)->shouldNotBeCalled();
 
         $this->shouldThrow(new LegacyViolationsException($violations))->during('__invoke', [$command]);
@@ -114,7 +118,8 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ProductRepositoryInterface $productRepository,
         SaverInterface $productSaver,
-        ObjectUpdaterInterface $productUpdater
+        ObjectUpdaterInterface $productUpdater,
+        ValidatorInterface $productValidator,
     ) {
         $command = new UpsertProductCommand(1, 'identifier1', valuesUserIntent: [new SetTextValue('name', null, null, 'foo')]);
         $product = new Product();
@@ -124,7 +129,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $productUpdater->update($product, Argument::cetera())->shouldbeCalledOnce()->willThrow(
             InvalidPropertyException::expected('error', 'class')
         );
-        $validator->validate($product)->shouldNotBeCalled();
+        $productValidator->validate($product)->shouldNotBeCalled();
         $productSaver->save($product)->shouldNotBeCalled();
 
         $this->shouldThrow(LegacyViolationsException::class)->during('__invoke', [$command]);
@@ -134,7 +139,8 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ProductRepositoryInterface $productRepository,
         SaverInterface $productSaver,
-        ObjectUpdaterInterface $productUpdater
+        ObjectUpdaterInterface $productUpdater,
+        ValidatorInterface $productValidator,
     ) {
         $command = new UpsertProductCommand(1, 'identifier1', valuesUserIntent: [new SetTextValue('name', null, null, 'foo')]);
         $product = new Product();
@@ -143,7 +149,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier('identifier1')->shouldBeCalledOnce()->willReturn($product);
 
         $productUpdater->update($product, Argument::cetera())->shouldbeCalledOnce();
-        $validator->validate($product)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
+        $productValidator->validate($product)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $productSaver->save($product)->shouldBeCalledOnce();
 
         $this->__invoke($command);
@@ -153,7 +159,8 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ProductRepositoryInterface $productRepository,
         SaverInterface $productSaver,
-        ObjectUpdaterInterface $productUpdater
+        ObjectUpdaterInterface $productUpdater,
+        ValidatorInterface $productValidator,
     ) {
         $unknownUserIntent = new class implements ValueUserIntent {
             public function attributeCode(): string
@@ -183,7 +190,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier('identifier')->shouldBeCalledOnce()->willReturn($product);
 
         $productUpdater->update($product, Argument::cetera())->shouldNotbeCalled();
-        $validator->validate($product)->shouldNotBeCalled();
+        $productValidator->validate($product)->shouldNotBeCalled();
         $productSaver->save($product)->shouldNotBeCalled();
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('__invoke', [$command]);
