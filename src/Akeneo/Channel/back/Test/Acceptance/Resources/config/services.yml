@@ -1,0 +1,6 @@
+services:
+    # Queries
+    Akeneo\Channel\API\Query\GetEditableLocaleCodes:
+        class: Akeneo\Channel\Test\Acceptance\InMemory\InMemoryGetEditableLocaleCodes
+        arguments:
+            - '@pim_catalog.repository.locale'

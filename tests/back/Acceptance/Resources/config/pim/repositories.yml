@@ -21,13 +21,13 @@ services:
 
     ### Catalog
     pim_catalog.repository.group:
-        class: '\Akeneo\Test\Acceptance\Catalog\InMemoryGroupRepository'
+        class: 'Akeneo\Test\Acceptance\Catalog\InMemoryGroupRepository'
 
     pim_catalog.repository.category:
         class: 'Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository'
 
     pim_catalog.repository.group_type:
-        class: '\Akeneo\Test\Acceptance\Catalog\InMemoryGroupTypeRepository'
+        class: 'Akeneo\Test\Acceptance\Catalog\InMemoryGroupTypeRepository'
 
     pim_catalog.repository.product:
         class: 'Akeneo\Test\Acceptance\Product\InMemoryProductRepository'

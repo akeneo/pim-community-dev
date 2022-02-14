@@ -63,7 +63,7 @@ class InMemoryRoleRepository implements RoleRepositoryInterface, SaverInterface,
      */
     public function findAll()
     {
-        throw new NotImplementedException();
+        return $this->roles->toArray();
     }
 
     /**

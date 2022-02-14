@@ -1,0 +1,27 @@
+services:
+    # Contexts
+    Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ConstraintViolationsContext:
+        public: true
+
+    Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ProductContext:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ConstraintViolationsContext'
+            - '@validator'
+            - '@pim_user.repository.user'
+
+    Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\UserContext:
+        public: true
+        arguments:
+            - '@pim_user.repository.role'
+            - '@pim_user.repository.group'
+            - '@pim_user.repository.user'
+            - '@pim_user.factory.user'
+            - '@validator'
+            - '@security.token_storage'
+
+    # Queries
+    Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes:
+        class: Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetCategoryCodes
+        arguments:
+            - '@pim_catalog.repository.product'

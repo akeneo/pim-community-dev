@@ -1,0 +1,29 @@
+default:
+    suites:
+        acceptance:
+            paths:
+                - '%paths.base%/Feature'
+            contexts:
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ConstraintViolationsContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ProductContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\UserContext
+                - test.channel.context
+                - test.locale.context
+                - test.attribute.context
+            filters:
+                tags: '@acceptance-back&&~@only-ee'
+#        acceptance_ee:
+#            paths:
+#                - '%paths.base%/Feature'
+#            contexts:
+#            filters:
+#                tags: '@acceptance-back&&~@only-ge'
+    extensions:
+        Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
+        FriendsOfBehat\SymfonyExtension:
+            bootstrap: config/bootstrap.php
+            kernel:
+                path: src/Kernel.php
+                class: Kernel
+                environment: test_fake
+                debug: false
