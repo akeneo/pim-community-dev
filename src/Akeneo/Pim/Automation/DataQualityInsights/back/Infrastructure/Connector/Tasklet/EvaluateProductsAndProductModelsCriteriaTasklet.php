@@ -16,17 +16,19 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
  */
 final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletInterface
 {
-    private const LIMIT_PER_LOOP = 1000;
-    private const BULK_SIZE = 100;
-    private const TIMEBOX_IN_SECONDS_ALLOWED = 1700; // ~28 minutes
+
 
     private ?StepExecution $stepExecution;
 
     public function __construct(
         private GetProductIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery,
         private GetProductIdsToEvaluateQueryInterface $getProductModelsIdsToEvaluateQuery,
-        private EvaluateProducts $evaluateProducts,
-        private EvaluateProductModels $evaluateProductModels
+        private EvaluateProducts                      $evaluateProducts,
+        private EvaluateProductModels                 $evaluateProductModels,
+        private int                                   $limitPerLoop = 1000,
+        private int                                   $bulkSize = 100,
+        private int                                   $timeBoxInSecondsAllowed = 1700, //~28 minutes
+        private int                                   $noEvaluationSleep = 60,
     ) {
     }
 
@@ -66,7 +68,7 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
             }
 
             if ($continueToEvaluateProducts === false && $continueToEvaluateProductModels === false) {
-                sleep(60);
+                sleep($this->noEvaluationSleep);
                 $continueToEvaluateProducts = true;
                 $continueToEvaluateProductModels = true;
             }
@@ -83,7 +85,7 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
     private function evaluatePendingProductCriteria(): int
     {
         $evaluationCount = 0;
-        foreach ($this->getProductIdsToEvaluateQuery->execute(self::LIMIT_PER_LOOP, self::BULK_SIZE) as $productIds) {
+        foreach ($this->getProductIdsToEvaluateQuery->execute($this->limitPerLoop, $this->bulkSize) as $productIds) {
             ($this->evaluateProducts)($productIds);
 
             $evaluationCount += count($productIds);
@@ -96,7 +98,7 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
     private function evaluatePendingProductModelCriteria(): int
     {
         $evaluationCount = 0;
-        foreach ($this->getProductModelsIdsToEvaluateQuery->execute(self::LIMIT_PER_LOOP, self::BULK_SIZE) as $productModelIds) {
+        foreach ($this->getProductModelsIdsToEvaluateQuery->execute($this->limitPerLoop, $this->bulkSize) as $productModelIds) {
             ($this->evaluateProductModels)($productModelIds);
 
             $evaluationCount += count($productModelIds);
@@ -111,10 +113,6 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
         $actualTime = time();
         $timeSpentFromBegining = $actualTime - $startTime;
 
-        if ($timeSpentFromBegining >= self::TIMEBOX_IN_SECONDS_ALLOWED) {
-            return true;
-        }
-
-        return false;
+        return $timeSpentFromBegining >= $this->timeBoxInSecondsAllowed;
     }
 }
