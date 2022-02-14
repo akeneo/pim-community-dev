@@ -25,9 +25,10 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
     public function __construct(
         private GetProductIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery,
         private GetProductIdsToEvaluateQueryInterface $getProductModelsIdsToEvaluateQuery,
-        private EvaluateProducts $evaluateProducts,
-        private EvaluateProductModels $evaluateProductModels
-    ) {
+        private EvaluateProducts                      $evaluateProducts,
+        private EvaluateProductModels                 $evaluateProductModels
+    )
+    {
     }
 
     public function execute(): void
@@ -35,24 +36,44 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
         $continueToEvaluateProducts = true;
         $continueToEvaluateProductModels = true;
         $startTime = time();
+        $evaluationTime['products'] = [
+            'count' => 0,
+            'time' => 0
+        ];
+        $evaluationTime['product_models'] = [
+            'count' => 0,
+            'time' => 0
+        ];
 
         do {
             if ($continueToEvaluateProducts) {
+                $evaluationProductsStartTime = microtime(true);
                 $evaluationCount = $this->evaluatePendingProductCriteria();
+                $evaluationProductsEndTime = microtime(true);
                 $continueToEvaluateProducts = $evaluationCount > 0;
+
+                $evaluationTime['products']['count'] += $evaluationCount;
+                $evaluationTime['products']['time'] += round($evaluationProductsEndTime - $evaluationProductsStartTime, 2);
             }
 
             if ($continueToEvaluateProductModels) {
+                $evaluationProductModelsStartTime = microtime(true);
                 $evaluationCount = $this->evaluatePendingProductModelCriteria();
+                $evaluationProductModelsEndTime = microtime(true);
                 $continueToEvaluateProductModels = $evaluationCount > 0;
+
+                $evaluationTime['product_models']['count'] += $evaluationCount;
+                $evaluationTime['product_models']['time'] += round($evaluationProductModelsEndTime - $evaluationProductModelsStartTime, 2);
             }
 
             if ($continueToEvaluateProducts === false && $continueToEvaluateProductModels === false) {
-                sleep(60);
+                sleep(1);
                 $continueToEvaluateProducts = true;
                 $continueToEvaluateProductModels = true;
             }
         } while ($this->isTimeboxReached($startTime) === false);
+
+        $this->stepExecution->setTrackingData(array_merge($this->stepExecution->getTrackingData(), ['evaluations' => $evaluationTime]));
     }
 
     public function setStepExecution(StepExecution $stepExecution)
