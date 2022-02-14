@@ -20,7 +20,7 @@ use Doctrine\DBAL\Connection;
 // in CE the SQL query return all activated locales
 // in EE the SQL query return activated locales on which
 
-final class DumbGetEditableLocaleCodes implements GetEditableLocaleCodes
+final class DummyGetEditableLocaleCodes implements GetEditableLocaleCodes
 {
     public function __construct(private Connection $connection)
     {
@@ -28,19 +28,8 @@ final class DumbGetEditableLocaleCodes implements GetEditableLocaleCodes
 
     public function forUserId(int $userId): array
     {
-        $sql = <<<SQL
-        SELECT code
-        FROM pim_catalog_locale l
-        WHERE l.is_activated = 1
-        SQL;
+        $sql = 'SELECT code FROM pim_catalog_locale l WHERE l.is_activated = 1';
 
-        $queryResult = $this->connection->fetchAllAssociative($sql);
-
-        $result = [];
-        foreach ($queryResult as $data) {
-            $result[] = $data['code'] ?? null;
-        }
-
-        return $result;
+        return $this->connection->executeQuery($sql)->fetchFirstColumn();
     }
 }

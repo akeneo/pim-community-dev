@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraint;
  */
 final class LocaleShouldBeEditableByUser extends Constraint
 {
-    public string $message = 'channel.validation.upsert.locale_not_editable';
+    public string $message = 'pim_enrich.product.validation.upsert.locale_no_access_to_products';
 
     /**
      * {@inheritDoc}

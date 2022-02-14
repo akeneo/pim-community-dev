@@ -1,4 +1,0 @@
-channel:
-    validation:
-        upsert:
-            locale_not_editable: 'Locale {{ local_code }} cannot be edited by user'
