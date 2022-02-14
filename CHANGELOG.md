@@ -10,6 +10,7 @@
 - PIM-10238: Add permissions to view mass delete assets, mass edit assets and mass delete records job logs
 - PIM-10249: Fix error message when importing YML rule containing a reference entity record with numeric value
 - PIM-10255: Fix LocaleCodeContext initialization place for table condition line inside rules
+- PIM-10269: Fix regression in asset-selector component
 - PIM-10256: Fix MainImage as asset using React Component
 
 ## Improvements
