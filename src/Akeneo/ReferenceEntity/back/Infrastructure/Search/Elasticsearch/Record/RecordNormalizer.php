@@ -43,14 +43,15 @@ class RecordNormalizer implements RecordNormalizerInterface
     /** @var FindValueKeysByAttributeTypeInterface */
     private $findValueKeysByAttributeType;
 
-    /** @var FindActivatedLocalesInterface */
+    /** @var ?FindActivatedLocalesInterface */
     private $findActivatedLocales;
 
+    // TODO pull-up master remove nullable
     public function __construct(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
         SqlFindSearchableRecords $findSearchableRecords,
         FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
-        FindActivatedLocalesInterface $findActivatedLocales
+        FindActivatedLocalesInterface $findActivatedLocales = null
     ) {
         $this->findValueKeysToIndexForAllChannelsAndLocales = $findValueKeysToIndexForAllChannelsAndLocales;
         $this->findSearchableRecords = $findSearchableRecords;
@@ -103,11 +104,20 @@ class RecordNormalizer implements RecordNormalizerInterface
     private function createCodeLabelMatrix(SearchableRecordItem $searchableRecordItem): array
     {
         $matrix = [];
-        $activatedLocales = $this->findActivatedLocales->findAll();
+        // TODO pull-up master remove condition
+        if (null !== $this->findActivatedLocales) {
+            $activatedLocales = $this->findActivatedLocales->findAll();
 
-        foreach ($activatedLocales as $localeCode) {
-            $label = array_key_exists($localeCode, $searchableRecordItem->labels) ? $searchableRecordItem->labels[$localeCode] : '';
-            $matrix[$localeCode] = trim(sprintf('%s %s', $searchableRecordItem->code, $label));
+            foreach ($activatedLocales as $localeCode) {
+                $label = array_key_exists($localeCode, $searchableRecordItem->labels) ? $searchableRecordItem->labels[$localeCode] : '';
+                $matrix[$localeCode] = trim(sprintf('%s %s', $searchableRecordItem->code, $label));
+            }
+
+            return $matrix;
+        }
+
+        foreach ($searchableRecordItem->labels as $localeCode => $label) {
+            $matrix[$localeCode] = sprintf('%s %s', $searchableRecordItem->code, $label);
         }
 
         return $matrix;
