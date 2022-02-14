@@ -44,7 +44,7 @@ services:
 
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidAddTriggers:
         arguments:
-            - '@database_connection'
+            - '@doctrine.dbal.root_connection_connection'
 
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidCommand:
         arguments:

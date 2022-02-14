@@ -51,8 +51,6 @@ final class MigrateToUuidAddTriggers implements MigrateToUuidStep
 
     public function addMissing(bool $dryRun, OutputInterface $output): void
     {
-        /** @todo Fix the privilege issues :sad_dog: */
-
         $templateSql = <<<SQL
 CREATE TRIGGER {trigger_name} /*+ SET_VAR( log_bin_trust_function_creators = 1) */
     AFTER {action} ON {table_name} FOR EACH ROW
