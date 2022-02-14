@@ -46,11 +46,11 @@ CSV;
         $csv = $this->jobLauncher->launchExport(static::CSV_EXPORT_JOB_CODE, null, $config);
 
         $expected = <<<CSV
-Produit;Attribut;ingredient;[quantity];"Est allergène";[additional_info];[nutrition_score]
-111111;"foo (français France, [mobile])";[sugar];50;Non;"this is a text";[B]
-111111;"foo (français France, [mobile])";Oeuf;23;Oui;;[C]
-111111;"foo (anglais États-Unis, Ecommerce)";[sugar];66;Oui;"this is a second text";[B]
-111111;"foo (anglais États-Unis, Ecommerce)";Oeuf;20;Oui;;[C]
+Produit;Attribut;ingredient;[quantity];"Est allergène";[additional_info];[nutrition_score];Poids
+111111;"foo (français France, [mobile])";[sugar];50;Non;"this is a text";[B];"42 Kilogramme"
+111111;"foo (français France, [mobile])";Oeuf;23;Oui;;[C];"69 Milligramme"
+111111;"foo (anglais États-Unis, Ecommerce)";[sugar];66;Oui;"this is a second text";[B];"55 Kilogramme"
+111111;"foo (anglais États-Unis, Ecommerce)";Oeuf;20;Oui;;[C];
 
 CSV;
         Assert::assertSame($expected, $csv);
