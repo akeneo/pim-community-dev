@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Writer;
 
 use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\LegacyViolationsException;
+use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler;
 use Akeneo\Platform\TailoredImport\Application\Common\Column;
 use Akeneo\Platform\TailoredImport\Infrastructure\Connector\RowPayload;
@@ -21,6 +22,7 @@ use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Webmozart\Assert\Assert;
 
 class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface
@@ -41,10 +43,21 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface
             try {
                 ($this->upsertProductHandler)($rowPayload->getUpsertProductCommand());
             } catch (LegacyViolationsException $legacyViolationsException) {
-                foreach ($legacyViolationsException->violations() as $violation) {
-                    $this->stepExecution->addWarning($violation->getMessage(), $violation->getParameters(), new FileInvalidItem($this->getFormattedCells($rowPayload), $rowPayload->getRowPosition()));
-                }
+                $this->addWarning($legacyViolationsException->violations(), $rowPayload);
+            } catch (ViolationsException $violationsException) {
+                $this->addWarning($violationsException->violations(), $rowPayload);
             }
+        }
+    }
+
+    private function addWarning(ConstraintViolationList $violationList,RowPayload $rowPayload): void
+    {
+        foreach ($violationList as $violation) {
+            $this->stepExecution->addWarning(
+                $violation->getMessage(),
+                $violation->getParameters(),
+                new FileInvalidItem($this->getFormattedCells($rowPayload),$rowPayload->getRowPosition())
+            );
         }
     }
 

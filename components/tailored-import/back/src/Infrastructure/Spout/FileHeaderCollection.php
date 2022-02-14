@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Spout;
 
 use Akeneo\Platform\TailoredImport\Domain\Model\ColumnCollection;
+use Akeneo\Platform\TailoredImport\Domain\Exception\MismatchedFileHeadersException;
 use Webmozart\Assert\Assert;
 
 class FileHeaderCollection implements \Countable
@@ -31,13 +32,13 @@ class FileHeaderCollection implements \Countable
         return new self($fileHeaderInstances);
     }
 
-    public function matchToColumnCollection(ColumnCollection $columnCollection): bool
+    public function assertColumnMatch(ColumnCollection $columnCollection): bool
     {
         $fileHeaderIterator = new \ArrayIterator($this->fileHeaders);
         $columnIterator = $columnCollection->getIterator();
 
         if ($fileHeaderIterator->count() !== $columnIterator->count()) {
-            return false;
+            throw new MismatchedFileHeadersException($columnCollection->getLabels(), array_map(fn (FileHeader $fileHeader) => $fileHeader->getLabel(), $this->fileHeaders));
         }
 
         while ($fileHeaderIterator->valid()) {
@@ -45,7 +46,7 @@ class FileHeaderCollection implements \Countable
             $currentColumn = $columnIterator->current();
 
             if (!$currentFileHeader->matchToColumn($currentColumn)) {
-                return false;
+                throw new MismatchedFileHeadersException($columnCollection->getLabels(), array_map(fn (FileHeader $fileHeader) => $fileHeader->getLabel(), $this->fileHeaders));
             }
 
             $fileHeaderIterator->next();

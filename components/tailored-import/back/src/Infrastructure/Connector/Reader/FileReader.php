@@ -82,20 +82,13 @@ class FileReader implements ItemReaderInterface, StepExecutionAwareInterface, In
             $this->columnCollection = ColumnCollection::createFromNormalized($normalizedColumns);
 
             $fileHeaders = $this->fileIterator->getHeaders();
-            $this->checkFileHeaders($fileHeaders);
+            $fileHeaders->assertColumnMatch($this->columnCollection);
         }
     }
 
     public function flush(): void
     {
         $this->fileIterator = null;
-    }
-
-    private function checkFileHeaders(FileHeaderCollection $fileHeaders): void
-    {
-        if (!$fileHeaders->matchToColumnCollection($this->columnCollection)) {
-            throw new MismatchedFileHeadersException();
-        }
     }
 
     private function createFileIterator(): FlatFileIteratorInterface
