@@ -4,11 +4,11 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.query.get_product_criteria_evaluations'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ComputeProductScores'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ComputeScores'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ComputeProductScores:
+    Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ComputeScores:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
             - '@akeneo.pim.automation.data_quality_insights.product_criteria_evaluation_registry'
