@@ -7,7 +7,7 @@ import {
 } from '../models/ConfigServicePayload';
 
 export function useSaveConfig() {
-  const __ = useTranslate();
+  const translate = useTranslate();
   const notify = useNotify();
   const configUrl = useRoute('oro_config_configuration_system_get');
 
@@ -21,10 +21,10 @@ export function useSaveConfig() {
       body: JSON.stringify(configFrontToBack(config)),
     });
     if (response.ok) {
-      notify(NotificationLevel.SUCCESS, __('oro_config.form.config.save_ok'));
+      notify(NotificationLevel.SUCCESS, translate('oro_config.form.config.save_ok'));
       return configBackToFront((await response.json()) as unknown as ConfigServicePayloadBackend);
     }
-    notify(NotificationLevel.ERROR, __('oro_config.form.config.save_error', {reason: response.statusText}));
+    notify(NotificationLevel.ERROR, translate('oro_config.form.config.save_error', {reason: response.statusText}));
     return config;
   };
 }

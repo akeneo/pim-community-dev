@@ -35,7 +35,7 @@ const Field = styled(FieldWithoutMargin)`
 `;
 
 const ConfigForm = () => {
-  const __ = useTranslate();
+  const translate = useTranslate();
 
   const systemHref = useRoute('pim_system_index');
 
@@ -85,7 +85,7 @@ const ConfigForm = () => {
   if (configFetchResult.type === 'error') {
     return (
       <Helper level="error">
-        {__('Unexpected error occurred. Please contact system administrator.')}: {configFetchResult.message}
+        {translate('Unexpected error occurred. Please contact system administrator.')}: {configFetchResult.message}
       </Helper>
     );
   }
@@ -97,8 +97,8 @@ const ConfigForm = () => {
       <PageHeader>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
-            <Breadcrumb.Step href={`#${systemHref}`}>{__('pim_menu.tab.system')}</Breadcrumb.Step>
-            <Breadcrumb.Step>{__('pim_menu.item.configuration')}</Breadcrumb.Step>
+            <Breadcrumb.Step href={`#${systemHref}`}>{translate('pim_menu.tab.system')}</Breadcrumb.Step>
+            <Breadcrumb.Step>{translate('pim_menu.item.configuration')}</Breadcrumb.Step>
           </Breadcrumb>
         </PageHeader.Breadcrumb>
         <PageHeader.UserActions>
@@ -117,57 +117,57 @@ const ConfigForm = () => {
             <UnsavedChanges />
           </PageHeader.State>
         )}
-        <PageHeader.Title>{__('pim_menu.item.configuration')}</PageHeader.Title>
+        <PageHeader.Title>{translate('pim_menu.item.configuration')}</PageHeader.Title>
       </PageHeader>
       <PageContent>
         <Section>
           <SectionTitle>
-            <SectionTitle.Title>{__('oro_config.form.config.group.loading_message.title')}</SectionTitle.Title>
+            <SectionTitle.Title>{translate('oro_config.form.config.group.loading_message.title')}</SectionTitle.Title>
           </SectionTitle>
-          <Helper level="info">{__('oro_config.form.config.group.loading_message.helper')}</Helper>
+          <Helper level="info">{translate('oro_config.form.config.group.loading_message.helper')}</Helper>
           <Field
             data-testid="loading_message__enabler"
-            label={__('oro_config.form.config.group.loading_message.fields.enabler.label')}
+            label={translate('oro_config.form.config.group.loading_message.fields.enabler.label')}
           >
             <BooleanInput
               readOnly={false}
               value={config.pim_ui___loading_message_enabled.value}
-              yesLabel={__('pim_common.yes')}
-              noLabel={__('pim_common.no')}
+              yesLabel={translate('pim_common.yes')}
+              noLabel={translate('pim_common.no')}
               onChange={handleChange('pim_ui___loading_message_enabled')}
             />
           </Field>
-          <Field label={__('oro_config.form.config.group.loading_message.fields.messages.label')}>
+          <Field label={translate('oro_config.form.config.group.loading_message.fields.messages.label')}>
             <TextAreaInput
               readOnly={false}
               value={config.pim_ui___loading_messages.value}
               onChange={handleChange('pim_ui___loading_messages')}
-              placeholder={__('oro_config.form.config.group.loading_message.placeholder')}
+              placeholder={translate('oro_config.form.config.group.loading_message.placeholder')}
             />
           </Field>
         </Section>
         <Section>
           <SectionTitle>
-            <SectionTitle.Title>{__('oro_config.form.config.group.localization.title')}</SectionTitle.Title>
+            <SectionTitle.Title>{translate('oro_config.form.config.group.localization.title')}</SectionTitle.Title>
           </SectionTitle>
-          <Field label={__('oro_config.form.config.group.localization.fields.system_locale.label')}>
+          <Field label={translate('oro_config.form.config.group.localization.fields.system_locale.label')}>
             <LocaleSelector value={config.pim_ui___language.value} onChange={handleChange('pim_ui___language')} />
           </Field>
         </Section>
         <Section>
           <SectionTitle>
-            <SectionTitle.Title>{__('oro_config.form.config.group.notification.title')}</SectionTitle.Title>
+            <SectionTitle.Title>{translate('oro_config.form.config.group.notification.title')}</SectionTitle.Title>
           </SectionTitle>
-          <Helper level="info">{__('oro_config.form.config.group.notification.helper')}</Helper>
+          <Helper level="info">{translate('oro_config.form.config.group.notification.helper')}</Helper>
           <Field
             data-testid="notification_message__enabler"
-            label={__('oro_config.form.config.group.notification.fields.enabler.label')}
+            label={translate('oro_config.form.config.group.notification.fields.enabler.label')}
           >
             <BooleanInput
               readOnly={false}
               value={config.pim_analytics___version_update.value}
-              yesLabel={__('pim_common.yes')}
-              noLabel={__('pim_common.no')}
+              yesLabel={translate('pim_common.yes')}
+              noLabel={translate('pim_common.no')}
               onChange={handleChange('pim_analytics___version_update')}
             />
           </Field>
