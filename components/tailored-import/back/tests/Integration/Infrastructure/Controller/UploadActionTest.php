@@ -47,7 +47,6 @@ class UploadActionTest extends ControllerIntegrationTestCase
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         $fileInfo = \json_decode($response->getContent(), true);
-        $this->assertSame('simple_import.xlsx', $fileInfo['original_filename']);
         $this->assertFileIsStored($fileInfo['file_key']);
     }
 
@@ -78,6 +77,6 @@ class UploadActionTest extends ControllerIntegrationTestCase
      */
     protected function getConfiguration(): Configuration
     {
-        return $this->catalog->useFunctionalCatalog('catalog_modeling');
+        return $this->catalog->useMinimalCatalog();
     }
 }

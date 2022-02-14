@@ -11,9 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Domain\Filesystem;
+namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation;
 
-class Storage
+use Symfony\Component\Validator\Constraint;
+
+class UploadedFlatFile extends Constraint
 {
-    public const FILE_STORAGE_ALIAS = 'tailoredImport';
 }

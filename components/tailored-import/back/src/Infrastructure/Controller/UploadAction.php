@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Controller;
 
 use Akeneo\Platform\TailoredImport\Domain\Filesystem\Storage;
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\UploadedFlatFile;
 use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\PathGeneratorInterface;
@@ -24,7 +25,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UploadAction
@@ -50,11 +50,7 @@ class UploadAction
             return new JsonResponse([], 400);
         }
 
-        //TODO RAB-567: define rules for file (size limit, extension, ...)
-        $violations = $this->validator->validate($uploadedFile, [
-            new Assert\Valid(),
-            new Assert\File(),
-        ]);
+        $violations = $this->validator->validate($uploadedFile, new UploadedFlatFile());
 
         if (count($violations) > 0) {
             return new JsonResponse($this->normalizer->normalize($violations), 400);
@@ -62,12 +58,7 @@ class UploadAction
 
         $file = $this->storeFile($uploadedFile);
 
-        return new JsonResponse(
-            [
-                'original_filename' => $uploadedFile->getClientOriginalName(),
-                'file_key'         => $file->getKey()
-            ]
-        );
+        return new JsonResponse(['file_key' => $file->getKey()]);
     }
 
     protected function storeFile(UploadedFile $uploadedFile): FileInfoInterface
