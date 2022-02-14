@@ -54,6 +54,7 @@ final class SqlGetCategoryCodesIntegration extends EnrichmentProductTestCase
             $this->sqlGetCategoryCodes->fromProductIdentifiers([
                 ProductIdentifier::fromString('product_without_category'),
                 ProductIdentifier::fromString('product_with_categories'),
+                ProductIdentifier::fromString('unknown'),
             ])
         );
     }

@@ -45,11 +45,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     public function it_throws_an_exception_when_user_category_is_not_granted(): void
     {
         // Creates empty product (use command/handler when we can set a category)
-        $product = $this->get('pim_catalog.builder.product')->createProduct('identifier');
-        $this->get('pim_catalog.updater.product')->update($product, [
-            'categories' => ['print'],
-        ]);
-        $this->get('pim_catalog.saver.product')->save($product);
+        $this->createProduct('identifier', ['categories' => ['print']]);
 
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
@@ -76,6 +72,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $product = $this->productRepository->findOneByIdentifier('new_product');
         Assert::assertNotNull($product);
         Assert::assertSame('new_product', $product->getIdentifier());
+        Assert::assertNotNull($product->getValue('name'));
     }
 
     private function getUserId(string $username): int
