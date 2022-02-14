@@ -15,3 +15,6 @@ oneup_flysystem:
         data_quality_insights_shared_adapter:
             local:
                 location: '%kernel.project_dir%/var/file_storage/data_quality_insights_shared'
+        tailored_import_adapter:
+            local:
+                location: '%kernel.project_dir%/var/file_storage/tailored_import'
