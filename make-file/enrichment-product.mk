@@ -23,3 +23,7 @@ enrichment-product-lint-back:
 		src/Akeneo/Pim/Enrichment/Product/back/Infrastructure \
 		src/Akeneo/Pim/Enrichment/Product/back/Test/Helper \
 		src/Akeneo/Pim/Enrichment/Product/back/Test/Integration
+
+.PHONY: enrichment-product-integration-back
+enrichment-product-integration-back:
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite Enrichment_Product $(O)
