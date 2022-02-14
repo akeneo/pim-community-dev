@@ -13,13 +13,10 @@ use Ramsey\Uuid\Uuid;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CreateUserConsentQuery implements CreateUserConsentQueryInterface
+final class CreateUserConsentQuery implements CreateUserConsentQueryInterface
 {
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private Connection $connection)
     {
-        $this->connection = $connection;
     }
 
     public function execute(int $userId, string $appId, array $authenticationScopes, \DateTimeImmutable $consentDate): void

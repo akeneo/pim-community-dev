@@ -10,7 +10,7 @@ use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\CreateConnectedAppQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAppConfirmationQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup;
 use Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUser;
@@ -23,7 +23,7 @@ use Akeneo\Test\Integration\TestCase;
  */
 class GetAppConfirmationQueryIntegration extends TestCase
 {
-    private DbalConnectedAppRepository $repository;
+    private CreateConnectedAppQuery $createConnectedAppQuery;
     private GetAppConfirmationQuery $query;
     private CreateConnection $createConnection;
     private ClientProvider $clientProvider;
@@ -39,7 +39,7 @@ class GetAppConfirmationQueryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->repository = $this->get(DbalConnectedAppRepository::class);
+        $this->createConnectedAppQuery = $this->get(CreateConnectedAppQuery::class);
         $this->query = $this->get(GetAppConfirmationQuery::class);
         $this->createConnection = $this->get(CreateConnection::class);
         $this->clientProvider = $this->get('akeneo_connectivity.connection.service.apps.client_provider');
@@ -79,7 +79,7 @@ class GetAppConfirmationQueryIntegration extends TestCase
             $user->id()
         );
 
-        $this->repository->create(
+        $this->createConnectedAppQuery->execute(
             new ConnectedApp(
                 'connectedAppId_' . $appPublicId,
                 'App',

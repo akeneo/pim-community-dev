@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi;
 
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Repository\ConnectedAppRepositoryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\FindOneConnectedAppByConnectionCodeQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
@@ -18,12 +18,12 @@ class GetConnectedAppActionSpec extends ObjectBehavior
     public function let(
         FeatureFlag $featureFlag,
         SecurityFacade $security,
-        ConnectedAppRepositoryInterface $connectedAppRepository,
+        FindOneConnectedAppByConnectionCodeQueryInterface $findOneConnectedAppByConnectionCodeQuery,
     ): void {
         $this->beConstructedWith(
             $featureFlag,
             $security,
-            $connectedAppRepository,
+            $findOneConnectedAppByConnectionCodeQuery,
         );
     }
 
@@ -65,13 +65,13 @@ class GetConnectedAppActionSpec extends ObjectBehavior
     public function it_throws_not_found_exception_with_wrong_connection_code(
         FeatureFlag $featureFlag,
         SecurityFacade $security,
-        ConnectedAppRepositoryInterface $connectedAppRepository,
+        FindOneConnectedAppByConnectionCodeQueryInterface $findOneConnectedAppByConnectionCodeQuery,
         Request $request,
     ): void {
         $featureFlag->isEnabled()->willReturn(true);
         $request->isXmlHttpRequest()->willReturn(true);
         $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(true);
-        $connectedAppRepository->findOneByConnectionCode('foo')->willReturn(null);
+        $findOneConnectedAppByConnectionCodeQuery->execute('foo')->willReturn(null);
 
         $this
             ->shouldThrow(new NotFoundHttpException('Connected app with connection code foo does not exist.'))

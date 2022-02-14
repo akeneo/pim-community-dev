@@ -49,7 +49,7 @@ services:
 
     Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp:
         arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\CreateConnectedAppQuery'
 
     Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection:
         arguments:
@@ -65,10 +65,6 @@ services:
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\AsymmetricKeysGenerator:
         public: true
-
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository:
-        arguments:
-            - '@database_connection'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer: ~
 
@@ -171,5 +167,21 @@ services:
             - '@akeneo_connectivity.connection.clock'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAccessTokenQuery:
+        arguments:
+            - '@database_connection'
+            -
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\CreateConnectedAppQuery:
+        arguments:
+            - '@database_connection'
+            -
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\FindAllConnectedAppsQuery:
+        arguments:
+            - '@database_connection'
+            -
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\FindOneConnectedAppByConnectionCodeQuery:
+        arguments:
+            - '@database_connection'
+            -
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\FindOneConnectedAppByIdQuery:
         arguments:
             - '@database_connection'

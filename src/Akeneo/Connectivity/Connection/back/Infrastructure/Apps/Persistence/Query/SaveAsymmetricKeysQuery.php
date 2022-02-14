@@ -13,16 +13,14 @@ use Doctrine\DBAL\Types\Types;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SaveAsymmetricKeysQuery implements SaveAsymmetricKeysQueryInterface
+final class SaveAsymmetricKeysQuery implements SaveAsymmetricKeysQueryInterface
 {
     public const OPTION_CODE = 'OPENID_ASYMMETRIC_KEYS';
-    private Connection $connection;
-    private ClockInterface $clock;
 
-    public function __construct(Connection $connection, ClockInterface $clock)
-    {
-        $this->connection = $connection;
-        $this->clock = $clock;
+    public function __construct(
+        private Connection $connection,
+        private ClockInterface $clock,
+    ) {
     }
 
     public function execute(AsymmetricKeys $asymmetricKeys): void

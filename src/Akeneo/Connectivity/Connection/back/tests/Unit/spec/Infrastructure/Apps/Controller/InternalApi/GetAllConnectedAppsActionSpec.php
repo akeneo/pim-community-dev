@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi;
 
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Repository\ConnectedAppRepositoryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\FindAllConnectedAppsQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -15,11 +15,11 @@ class GetAllConnectedAppsActionSpec extends ObjectBehavior
 {
     public function let(
         FeatureFlag $featureFlag,
-        ConnectedAppRepositoryInterface $connectedAppRepository,
+        FindAllConnectedAppsQueryInterface $findAllConnectedAppsQuery,
     ): void {
         $this->beConstructedWith(
             $featureFlag,
-            $connectedAppRepository,
+            $findAllConnectedAppsQuery,
         );
     }
 

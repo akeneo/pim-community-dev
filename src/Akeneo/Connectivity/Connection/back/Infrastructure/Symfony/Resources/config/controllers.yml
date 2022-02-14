@@ -202,7 +202,7 @@ services:
         class: 'Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetAllConnectedAppsAction'
         arguments:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\FindAllConnectedAppsQuery'
 
     akeneo_connectivity.connection.internal_api.controller.apps.get_connected_app:
         public: true
@@ -210,7 +210,7 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
             - '@oro_security.security_facade'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\FindOneConnectedAppByConnectionCodeQuery'
 
     akeneo_connectivity.connection.internal_api.controller.apps.connected_app.get_all_scope_messages:
         public: true
@@ -218,7 +218,7 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
             - '@oro_security.security_facade'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\FindOneConnectedAppByConnectionCodeQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\DeleteAppAction:
@@ -226,7 +226,7 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
             - '@oro_security.security_facade'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\FindOneConnectedAppByConnectionCodeQuery'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\GetOpenIdPublicKeyAction:
