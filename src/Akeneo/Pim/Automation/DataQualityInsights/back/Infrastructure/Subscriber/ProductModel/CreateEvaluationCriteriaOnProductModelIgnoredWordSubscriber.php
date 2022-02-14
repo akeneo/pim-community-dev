@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Crea
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\ProductModelWordIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetDescendantVariantProductIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductModelIdsQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Psr\Log\LoggerInterface;
@@ -43,12 +44,12 @@ class CreateEvaluationCriteriaOnProductModelIgnoredWordSubscriber implements Eve
     private $createProductsCriteriaEvaluations;
 
     public function __construct(
-        FeatureFlag $dataQualityInsightsFeature,
-        CreateCriteriaEvaluations $createProductModelCriteriaEvaluations,
-        LoggerInterface $logger,
+        FeatureFlag                                  $dataQualityInsightsFeature,
+        CreateCriteriaEvaluations                    $createProductModelCriteriaEvaluations,
+        LoggerInterface                              $logger,
         GetDescendantVariantProductIdsQueryInterface $getDescendantVariantProductIdsQuery,
-        DescendantProductModelIdsQueryInterface $getDescendantProductModelIdsQuery,
-        CreateCriteriaEvaluations $createProductsCriteriaEvaluations
+        DescendantProductModelIdsQueryInterface      $getDescendantProductModelIdsQuery,
+        CreateCriteriaEvaluations                    $createProductsCriteriaEvaluations
     ) {
         $this->dataQualityInsightsFeature = $dataQualityInsightsFeature;
         $this->createProductModelCriteriaEvaluations = $createProductModelCriteriaEvaluations;
@@ -67,7 +68,7 @@ class CreateEvaluationCriteriaOnProductModelIgnoredWordSubscriber implements Eve
 
     public function onIgnoredWord(ProductModelWordIgnoredEvent $event)
     {
-        if (! $this->dataQualityInsightsFeature->isEnabled()) {
+        if (!$this->dataQualityInsightsFeature->isEnabled()) {
             return;
         }
 
@@ -79,7 +80,9 @@ class CreateEvaluationCriteriaOnProductModelIgnoredWordSubscriber implements Eve
     private function initializeProductModelCriteria($productModelId)
     {
         try {
-            $this->createProductModelCriteriaEvaluations->createAll([new ProductId($productModelId)]);
+            $this->createProductModelCriteriaEvaluations->createAll(
+                ProductIdCollection::fromInt($productModelId)
+            );
         } catch (\Throwable $e) {
             $this->logger->error(
                 'Unable to create product model criteria evaluation',
@@ -101,19 +104,22 @@ class CreateEvaluationCriteriaOnProductModelIgnoredWordSubscriber implements Eve
 
     private function initializeCriteriaForVariantProducts(ProductId $productId): void
     {
-        $variantProductIds = $this->getDescendantVariantProductIdsQuery->fromProductModelIds([$productId->toInt()]);
-        foreach ($variantProductIds as $variantProductId) {
-            try {
-                $this->createProductsCriteriaEvaluations->createAll([new ProductId((int) $variantProductId)]);
-            } catch (\Throwable $e) {
-                $this->logger->error(
-                    'Unable to create product criteria evaluation',
-                    [
-                        'error_code' => 'unable_to_create_product_criteria_evaluation',
-                        'error_message' => $e->getMessage(),
-                    ]
-                );
-            }
+        $variantProductIds = $this->getDescendantVariantProductIdsQuery->fromProductModelIds(
+            ProductIdCollection::fromProductId($productId)
+        );
+
+        try {
+            $this->createProductsCriteriaEvaluations->createAll(
+                ProductIdCollection::fromStrings($variantProductIds)
+            );
+        } catch (\Throwable $e) {
+            $this->logger->error(
+                'Unable to create product criteria evaluation',
+                [
+                    'error_code' => 'unable_to_create_product_criteria_evaluation',
+                    'error_message' => $e->getMessage(),
+                ]
+            );
         }
     }
 }

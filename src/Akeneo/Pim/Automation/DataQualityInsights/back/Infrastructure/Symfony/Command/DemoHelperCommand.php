@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjec
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionType;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryGenerator;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductsIndex;
 use Doctrine\DBAL\Connection;
@@ -371,23 +372,19 @@ final class DemoHelperCommand extends Command
 
     private function evaluateProducts(array $ids): void
     {
-        $productIds = array_map(function ($id) {
-            return new ProductId($id);
-        }, $ids);
+        $productIdCollection = ProductIdCollection::fromInts($ids);
 
-        $this->createProductsCriteriaEvaluations->createAll($productIds);
-        $this->evaluatePendingCriteria->evaluateAllCriteria($ids);
-        $this->consolidateProductScores->consolidate($ids);
-        $this->updateProductsIndex->execute($ids);
+        $this->createProductsCriteriaEvaluations->createAll($productIdCollection);
+        $this->evaluatePendingCriteria->evaluateAllCriteria($productIdCollection);
+        $this->consolidateProductScores->consolidate($productIdCollection);
+        $this->updateProductsIndex->execute($productIdCollection);
     }
 
     private function evaluateProductModels(array $ids): void
     {
-        $productIds = array_map(function ($id) {
-            return new ProductId($id);
-        }, $ids);
+        $productIdCollection = ProductIdCollection::fromInts($ids);
 
-        $this->createProductModelsCriteriaEvaluations->createAll($productIds);
-        $this->evaluateProductModelsPendingCriteria->evaluateAllCriteria($ids);
+        $this->createProductModelsCriteriaEvaluations->createAll($productIdCollection);
+        $this->evaluateProductModelsPendingCriteria->evaluateAllCriteria($productIdCollection);
     }
 }
