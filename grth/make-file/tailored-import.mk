@@ -22,10 +22,10 @@ endif
 .PHONY: acceptance-back
 acceptance-back: #Doc: launch PHPUnit acceptance tests for tailored import
 ifeq ($(CI),true)
-	rm -rf var/cache/*
+	APP_ENV=test_fake $(CMD_ON_PROJECT) rm -rf var/cache/*
 	APP_ENV=test_fake $(PHP_RUN) vendor/bin/phpunit -c components/tailored-import/back/tests/phpunit-grth.xml --log-junit var/tests/phpunit/phpunit_$$(uuidgen).xml --testsuite TailoredImport_Acceptance_Test
 else
-	rm -rf var/cache/*
+	APP_ENV=test_fake $(CMD_ON_PROJECT) rm -rf var/cache/*
 	APP_ENV=test_fake $(PHP_RUN) vendor/bin/phpunit -c components/tailored-import/back/tests/phpunit-grth.xml --testsuite TailoredImport_Acceptance_Test $(O)
 endif
 
