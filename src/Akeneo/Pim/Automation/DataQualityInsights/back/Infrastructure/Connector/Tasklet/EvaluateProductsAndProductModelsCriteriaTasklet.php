@@ -25,10 +25,9 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
     public function __construct(
         private GetProductIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery,
         private GetProductIdsToEvaluateQueryInterface $getProductModelsIdsToEvaluateQuery,
-        private EvaluateProducts                      $evaluateProducts,
-        private EvaluateProductModels                 $evaluateProductModels
-    )
-    {
+        private EvaluateProducts $evaluateProducts,
+        private EvaluateProductModels $evaluateProductModels
+    ) {
     }
 
     public function execute(): void
@@ -67,7 +66,7 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
             }
 
             if ($continueToEvaluateProducts === false && $continueToEvaluateProductModels === false) {
-                sleep(1);
+                sleep(60);
                 $continueToEvaluateProducts = true;
                 $continueToEvaluateProductModels = true;
             }
