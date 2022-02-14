@@ -6,6 +6,8 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal
 
 use Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\AccessDeniedException;
+use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Repository\ConnectedAppRepositoryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -49,10 +51,6 @@ final class DeleteAppAction
             return new RedirectResponse('/');
         }
 
-        if (!$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
-            throw new AccessDeniedHttpException();
-        }
-
         $connectedApp = $this->connectedAppRepository->findOneByConnectionCode($connectionCode);
 
         if (null === $connectedApp) {
@@ -61,8 +59,21 @@ final class DeleteAppAction
             );
         }
 
+        $this->denyAccessUnlessGrantedToManage($connectedApp);
+
         $this->deleteAppHandler->handle(new DeleteAppCommand($connectedApp->getId()));
 
         return new Response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    private function denyAccessUnlessGrantedToManage(ConnectedApp $app): void
+    {
+        if (!$app->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
+            throw new AccessDeniedException();
+        }
+
+        if ($app->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')) {
+            throw new AccessDeniedException();
+        }
     }
 }

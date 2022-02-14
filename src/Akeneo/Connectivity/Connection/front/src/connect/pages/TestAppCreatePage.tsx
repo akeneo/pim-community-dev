@@ -1,12 +1,14 @@
 import React, {useCallback, useState} from 'react';
 import {useHistory} from 'react-router';
-import {Modal, AppIllustration, getColor, getFontSize} from 'akeneo-design-system';
+import {AppIllustration, getColor, getFontSize, Modal} from 'akeneo-design-system';
 import styled from '../../common/styled-with-theme';
 import {useTranslate} from '../../shared/translate';
 import {useRouter} from '../../shared/router/use-router';
 import {CreateTestAppForm} from '../components/TestApp/CreateTestAppForm';
 import {TestAppCredentials} from '../../model/Apps/test-app-credentials';
 import {CreateTestAppCredentials} from '../components/TestApp/CreateTestAppCredentials';
+import {FullScreenError} from '@akeneo-pim-community/shared';
+import {useAppDeveloperMode} from '../hooks/use-app-developer-mode';
 
 const Subtitle = styled.h3`
     color: ${getColor('brand', 100)};
@@ -21,6 +23,17 @@ export const TestAppCreatePage = () => {
     const generateUrl = useRouter();
     const translate = useTranslate();
     const [credentials, setCredentials] = useState<TestAppCredentials | null>(null);
+    const isDeveloperModeEnabled = useAppDeveloperMode();
+
+    if (!isDeveloperModeEnabled) {
+        return (
+            <FullScreenError
+                title={translate('error.exception', {status_code: '403'})}
+                message={translate('error.forbidden')}
+                code={403}
+            />
+        );
+    }
 
     const handleCloseModal = useCallback(() => {
         history.push(generateUrl('akeneo_connectivity_connection_connect_marketplace'));

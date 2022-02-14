@@ -8,6 +8,9 @@ use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnection
 use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionQuery;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\AccessDeniedException;
+use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Repository\ConnectedAppRepositoryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionType;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
@@ -16,7 +19,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
@@ -31,6 +33,7 @@ final class UpdateConnectedAppMonitoringSettingsAction
         private SecurityFacade $security,
         private FindAConnectionHandler $findAConnectionHandler,
         private UpdateConnectionHandler $updateConnectionHandler,
+        private ConnectedAppRepositoryInterface $connectedAppRepository,
     ) {
     }
 
@@ -44,8 +47,10 @@ final class UpdateConnectedAppMonitoringSettingsAction
             return new RedirectResponse('/');
         }
 
-        if (!$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
-            throw new AccessDeniedHttpException();
+        $connectedApp = $this->connectedAppRepository->findOneByConnectionCode($connectionCode);
+
+        if (null === $connectedApp) {
+            throw new NotFoundHttpException("Connected app with connection code $connectionCode does not exist.");
         }
 
         $connection = $this->findAConnectionHandler->handle(new FindAConnectionQuery($connectionCode));
@@ -97,5 +102,16 @@ final class UpdateConnectedAppMonitoringSettingsAction
         }
 
         return $errors;
+    }
+
+    private function denyAccessUnlessGrantedToManage(ConnectedApp $app): void
+    {
+        if (!$app->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
+            throw new AccessDeniedException();
+        }
+
+        if ($app->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')) {
+            throw new AccessDeniedException();
+        }
     }
 }

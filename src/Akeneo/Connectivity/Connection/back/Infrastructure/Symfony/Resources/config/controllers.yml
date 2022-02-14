@@ -240,6 +240,7 @@ services:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
             - '@oro_security.security_facade'
             - '@akeneo_connectivity.connection.application.handler.find_a_connection'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\UpdateConnectedAppMonitoringSettingsAction:
         public: true
@@ -248,6 +249,7 @@ services:
             - '@oro_security.security_facade'
             - '@akeneo_connectivity.connection.application.handler.find_a_connection'
             - '@akeneo_connectivity.connection.application.handler.update_connection'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository'
 
     Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\IsConnectionsNumberLimitReachedAction:
         public: true
