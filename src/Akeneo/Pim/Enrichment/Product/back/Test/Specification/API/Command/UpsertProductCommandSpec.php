@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Product\Api\Command;
+namespace Specification\Akeneo\Pim\Enrichment\Product\API\Command;
 
-use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetNumberValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use PhpSpec\ObjectBehavior;
 
 /**

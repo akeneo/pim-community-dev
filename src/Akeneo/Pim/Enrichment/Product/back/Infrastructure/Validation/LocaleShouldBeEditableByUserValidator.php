@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
 use Akeneo\Channel\Locale\API\Query\GetEditableLocaleCodes;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;

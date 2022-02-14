@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Enrichment\Product\Integration\Handler;
 
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\ViolationsException;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
 use PHPUnit\Framework\Assert;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent;
+namespace Akeneo\Pim\Enrichment\Product\API\Command\UserIntent;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)

@@ -5,10 +5,16 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Enrichment\Product\Integration\Handler;
 
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+<<<<<<< HEAD
 use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
+=======
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+>>>>>>> CPM-499: Add coupling config
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;

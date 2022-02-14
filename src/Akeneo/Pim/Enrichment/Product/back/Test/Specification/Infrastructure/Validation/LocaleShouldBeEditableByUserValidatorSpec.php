@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
 use Akeneo\Channel\Locale\API\Query\GetEditableLocaleCodes;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUser;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUserValidator;
 use PhpSpec\ObjectBehavior;

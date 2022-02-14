@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Product\Api\Command;
+namespace Akeneo\Pim\Enrichment\Product\API\Command;
 
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\ValueUserIntent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Webmozart\Assert\Assert;
 
 /**
