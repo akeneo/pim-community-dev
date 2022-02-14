@@ -15,9 +15,10 @@ final class ViolationsException extends \LogicException
 {
     public function __construct(private ConstraintViolationListInterface $constraintViolationList)
     {
-        parent::__construct($this->constraintViolationList instanceof ConstraintViolationList
-            ? (string) $this->constraintViolationList
-            : 'Some violation(s) are raised'
+        parent::__construct(
+            $this->constraintViolationList instanceof ConstraintViolationList
+                ? (string) $this->constraintViolationList
+                : 'Some violation(s) are raised'
         );
     }
 
