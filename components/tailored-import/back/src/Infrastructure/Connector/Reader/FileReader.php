@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader;
 use Akeneo\Platform\TailoredImport\Domain\Exception\MismatchedFileHeadersException;
 use Akeneo\Platform\TailoredImport\Domain\Model\ColumnCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Row;
+use Akeneo\Platform\TailoredImport\Infrastructure\Connector\RowPayload;
 use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FileHeaderCollection;
 use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FlatFileIteratorFactory;
 use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FlatFileIteratorInterface;
@@ -61,7 +62,11 @@ class FileReader implements ItemReaderInterface, StepExecutionAwareInterface, In
         $this->fileIterator->next();
         $this->checkColumnNumber($currentProductLine);
 
-        return new Row(array_combine($this->columnCollection->getColumnUuids(), $currentProductLine));
+        return new RowPayload(
+            new Row(array_combine($this->columnCollection->getColumnUuids(), $currentProductLine)),
+            $this->columnCollection,
+            $this->fileIterator->key()
+        );
     }
 
     public function setStepExecution(StepExecution $stepExecution): void
