@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class UploadedFlatFileValidator extends ConstraintValidator
 {
-    public function validate($uploadedFlatFile, Constraint $constraint)
+    public function validate($uploadedFlatFile, Constraint $constraint): void
     {
         if (!$constraint instanceof UploadedFlatFile) {
             throw new UnexpectedTypeException($constraint, ImportStructure::class);
