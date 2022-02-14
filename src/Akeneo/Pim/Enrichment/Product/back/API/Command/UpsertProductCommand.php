@@ -15,21 +15,27 @@ use Webmozart\Assert\Assert;
  */
 final class UpsertProductCommand
 {
+    /**
+     * @param ValueUserIntent[] $valuesUserIntent
+     */
     public function __construct(
         private int $userId,
         private string $productIdentifier,
-        private $identifierUserIntent = null,
-        private $familyUserIntent = null,
-        private $categoryUserIntent = null,
-        private $parentUserIntent = null,
-        private $groupsUserIntent = null,
-        private $enabledUserIntent = null,
-        private $associationsUserIntent = null,
+        private mixed $identifierUserIntent = null,
+        private mixed $familyUserIntent = null,
+        private mixed $categoryUserIntent = null,
+        private mixed $parentUserIntent = null,
+        private mixed $groupsUserIntent = null,
+        private mixed $enabledUserIntent = null,
+        private mixed $associationsUserIntent = null,
         private array $valuesUserIntent = []
     ) {
         Assert::allImplementsInterface($this->valuesUserIntent, ValueUserIntent::class);
     }
 
+    /**
+     * @param ValueUserIntent[] $userIntents
+     */
     public static function createFromCollection(int $userId, string $productIdentifier, array $userIntents): self
     {
         $valuesUserIntents = [];

@@ -65,7 +65,7 @@ final class UpsertProductHandler
         $this->productSaver->save($product);
     }
 
-    private function updateProduct(ProductInterface $product, UpsertProductCommand $command)
+    private function updateProduct(ProductInterface $product, UpsertProductCommand $command): void
     {
         foreach ($command->valuesUserIntent() as $index => $valueUserIntent) {
             $found = false;

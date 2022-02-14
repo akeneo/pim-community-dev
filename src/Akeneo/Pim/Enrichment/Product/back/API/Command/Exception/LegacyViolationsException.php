@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\API\Command\Exception;
 
 use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -12,12 +13,15 @@ use Symfony\Component\Validator\ConstraintViolationList;
  */
 final class LegacyViolationsException extends \LogicException
 {
-    public function __construct(private ConstraintViolationList $constraintViolationList)
+    public function __construct(private ConstraintViolationListInterface $constraintViolationList)
     {
-        parent::__construct((string) $this->constraintViolationList);
+        parent::__construct($this->constraintViolationList instanceof ConstraintViolationList
+            ? (string) $this->constraintViolationList
+            : 'Some violation(s) are raised'
+        );
     }
 
-    public function violations(): ConstraintViolationList
+    public function violations(): ConstraintViolationListInterface
     {
         return $this->constraintViolationList;
     }

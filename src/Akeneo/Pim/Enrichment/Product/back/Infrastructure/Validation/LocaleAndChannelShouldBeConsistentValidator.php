@@ -24,7 +24,7 @@ final class LocaleAndChannelShouldBeConsistentValidator extends ConstraintValida
     ) {
     }
 
-    public function validate($valueUserIntents, Constraint $constraint)
+    public function validate($valueUserIntents, Constraint $constraint): void
     {
         Assert::isInstanceOf($constraint, LocaleAndChannelShouldBeConsistent::class);
         Assert::isArray($valueUserIntents);
@@ -155,6 +155,9 @@ final class LocaleAndChannelShouldBeConsistentValidator extends ConstraintValida
         }
     }
 
+    /**
+     * @param array<string, string> $messageParameters
+     */
     private function addViolation(string $message, array $messageParameters = [], ?string $path = null): void
     {
         $builder = $this->context->buildViolation($message, $messageParameters);

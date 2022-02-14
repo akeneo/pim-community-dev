@@ -7,4 +7,4 @@ enrichment-product-coupling-back:
 
 .PHONY: enrichment-product-static-back
 enrichment-product-static-back:
-	$(PHP_RUN) vendor/bin/phpstan analyse --level=2 src/Akeneo/Pim/Enrichment
+	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/Pim/Enrichment/Product/back/Test/phpstan.neon

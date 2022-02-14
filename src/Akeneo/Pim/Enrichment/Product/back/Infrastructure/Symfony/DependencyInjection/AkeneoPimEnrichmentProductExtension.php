@@ -16,6 +16,8 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 final class AkeneoPimEnrichmentProductExtension extends Extension
 {
     /**
+     * @param array<string, mixed> $configs
+     *
      * {@inheritDoc}
      */
     public function load(array $configs, ContainerBuilder $container): void
