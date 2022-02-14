@@ -28,7 +28,7 @@ final class HandleScalarValueTest extends AttributeTestCase
     /**
      * @dataProvider provider
      */
-    public function test_it_can_transform_a_reference_entity_value(
+    public function test_it_can_transform_a_scalar_value(
         array $operations,
         SelectionInterface $selection,
         SourceValueInterface $value,

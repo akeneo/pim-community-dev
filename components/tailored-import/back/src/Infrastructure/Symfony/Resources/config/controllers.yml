@@ -1,0 +1,6 @@
+services:
+  akeneo.tailored_import.controller.get_grouped_targets_action:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\GetGroupedTargetsAction
+    public: true
+    arguments:
+      - '@akeneo.tailored_import.handler.get_grouped_targets'

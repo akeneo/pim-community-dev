@@ -88,6 +88,7 @@ return [
     Akeneo\SharedCatalog\AkeneoSharedCatalogBundle::class => ['all' => true],
     AkeneoEnterprise\Connectivity\Connection\Infrastructure\Symfony\AkeneoEnterpriseConnectivityConnectionBundle::class => ['all' => true],
     Akeneo\Platform\TailoredExport\Infrastructure\Symfony\AkeneoTailoredExportBundle::class => ['all' => true],
+    Akeneo\Platform\TailoredImport\Infrastructure\Symfony\AkeneoTailoredImportBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\FrameworkBundle\PimEnterpriseFrameworkBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\EnterpriseBatchQueueBundle\AkeneoEnterpriseBatchQueueBundle::class => ['all' => true],
 

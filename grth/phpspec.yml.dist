@@ -32,3 +32,11 @@ suites:
     spec_path: components/tailored-export/back/tests
     src_path: components/tailored-export/back/src
     spec_prefix: Specification
+
+  ## Tailored import context
+  TailoredImport:
+      namespace: Akeneo\Platform\TailoredImport
+      psr4_prefix: Akeneo\Platform\TailoredImport
+      spec_path: components/tailored-import/back/tests
+      src_path: components/tailored-import/back/src
+      spec_prefix: Specification

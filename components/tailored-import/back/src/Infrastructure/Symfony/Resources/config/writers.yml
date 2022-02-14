@@ -1,0 +1,5 @@
+services:
+  akeneo.tailored_import.writer.product:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Connector\Writer\ProductWriter
+    arguments:
+      - '@Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler'

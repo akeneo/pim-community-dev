@@ -22,6 +22,7 @@
                 "grth/src/Akeneo/Platform"
             ],
             "Akeneo\\Platform\\TailoredExport\\": "components/tailored-export/back/src/",
+            "Akeneo\\Platform\\TailoredImport\\": "components/tailored-import/back/src",
             "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/back",
             "AkeneoEnterprise\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
             "Pim\\Upgrade\\": "upgrades/"
@@ -58,6 +59,9 @@
             "Akeneo\\Onboarder\\Test\\": "vendor/akeneo/pim-onboarder/tests/",
             "spec\\Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/tests/back/spec",
             "Akeneo\\Platform\\TailoredExport\\Test\\": "components/tailored-export/back/tests",
+            "Specification\\Akeneo\\Platform\\TailoredExport\\": "components/tailored-export/back/tests/Specification",
+            "Akeneo\\Platform\\TailoredImport\\Test\\": "components/tailored-import/back/tests",
+            "Specification\\Akeneo\\Platform\\TailoredImport\\": "components/tailored-import/back/tests/Specification",
             "Akeneo\\Test\\Pim\\TableAttribute\\": "grth/src/Akeneo/Pim/TableAttribute/tests/back"
         }
     },

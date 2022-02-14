@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "config": {
-    "front_packages_path": "../../vendor/akeneo/pim-community-dev/front-packages"
+    "front_packages_path": "../../../vendor/akeneo/pim-community-dev/front-packages"
   },
   "peerDependencies": {
     "babel-loader": "8.1.0",
