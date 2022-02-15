@@ -1,66 +1,128 @@
-import React, {FC} from 'react';
+import React, {FC, HTMLAttributes} from 'react';
 import styled, {css} from 'styled-components';
+import {AkeneoThemedProps, getColor, Override} from 'akeneo-design-system';
 
-type Props = {
-  score: string | null;
-  appearance?: 'regular' | 'stacked';
-  className?: string;
-  isSelected?: boolean;
-};
+type Props = Override<
+  HTMLAttributes<HTMLDivElement>,
+  {
+    score: string | null;
+    size?: 'normal' | 'big';
+    stacked?: boolean;
+    rounded?: Rounded;
+  }
+>;
 
-// TODO remove className prop ? (seems unused)
+type Rounded = 'all' | 'left' | 'right' | 'none';
 
-const QualityScore: FC<Props> = ({score, className, isSelected, appearance = 'regular'}) => {
+/**
+ * <QualityScore score='A' isSelected stacked />
+ *
+ * <QualityScore score='A' isSelected />
+ *
+ * <QualityScore score='B' stacked />
+ *
+ * <QualityScore score='B' />
+ *
+ * <QualityScore score={null} />
+ *
+ * <QualityScore score='N/A' />
+ *
+ */
+const QualityScore: FC<Props> = ({score, size = 'normal', stacked = false, rounded = 'all', ...props}) => {
   if (score === 'N/A' || score === null) {
     return <>N/A</>;
   }
 
-  const topStackStyle = isSelected
-    ? {
-        top: 0,
-        left: -2,
-      }
-    : {top: 0, left: 0};
-
-  return (
-    <Wrapper isSelected={isSelected}>
-      {appearance === 'stacked' && isSelected && (
-        <>
-          <Container
-            isSelected
-            className={className}
-            score={score}
-            displayBackground={false}
-            style={{top: topStackStyle.top - 4, left: topStackStyle.left + 4}}
-          />
-          <Container
-            isSelected
-            className={className}
-            score={score}
-            displayBackground={false}
-            style={{top: topStackStyle.top - 2, left: topStackStyle.left + 2}}
-          />
-        </>
-      )}
-      <Container
-        isSelected={isSelected}
-        score={score}
-        className={className}
-        style={topStackStyle}
-        displayBackground={true}
-      >
+  return stacked ? (
+    <Wrapper size={size}>
+      <>
+        <QualityScoreEmptyContainer size={size} score={score} top={-2} left={4} />
+        <QualityScoreEmptyContainer size={size} score={score} top={0} left={2} />
+      </>
+      <Container size={size} score={score} stacked={stacked} rounded={rounded} {...props}>
         {score}
       </Container>
     </Wrapper>
+  ) : (
+    <Container size={size} score={score} rounded={rounded} {...props}>
+      {score}
+    </Container>
   );
 };
 
-const Wrapper = styled.div<{isSelected?: boolean}>`
-  position: relative;
-  ${props => (props.isSelected ? bigSize : standardSize)};
+const getContainerBorderRadius = (rounded: Rounded) => {
+  switch (rounded) {
+    case 'all':
+      return '4px';
+    case 'left':
+      return '4px 0 0 4px';
+    case 'right':
+      return '0 4px 4px 0';
+    case 'none':
+      return '0';
+  }
+};
+
+const containerStackedStyled = css<{score: string; size: string}>`
+  position: absolute;
+  left: 2px;
+  border-radius: ${getContainerBorderRadius('all')};
+
+  ${({score, size}) =>
+    size === 'big'
+      ? css`
+          border: 1px solid ${switchContainer(score)};
+          top: 2px;
+        `
+      : css`
+          z-index: -1;
+        `}
 `;
 
-const switchContainer = (score: any) => {
+const Container = styled.div<{size: string; score: string; stacked?: boolean; rounded: Rounded}>`
+  text-align: center;
+  display: inline-block;
+  text-transform: uppercase;
+  font-weight: bold;
+  width: 20px;
+  height: 20px;
+  font-size: 13px;
+  border-radius: ${({rounded}) => getContainerBorderRadius(rounded)};
+
+  ${({size}) =>
+    size === 'big' &&
+    css`
+      width: 25px;
+      height: 25px;
+      font-size: 15px;
+      line-height: 25px;
+      top: -2px;
+      position: relative;
+      margin: 0 -2px 0 -2px;
+      border-radius: ${getContainerBorderRadius('all')};
+    `};
+
+  ${({score}) => score === 'A' && AScore}
+  ${({score}) => score === 'B' && BScore}
+  ${({score}) => score === 'C' && CScore}
+  ${({score}) => score === 'D' && DScore}
+  ${({score}) => score === 'E' && EScore}
+
+  ${({stacked}) => stacked && containerStackedStyled}
+`;
+Container.defaultProps = {
+  stacked: false,
+  rounded: 'all',
+};
+
+const Wrapper = styled.div<{size: string}>`
+  position: relative;
+  width: ${({size}) => (size === 'big' ? '25px' : '20px')};
+  height: ${({size}) => (size === 'big' ? '25px' : '20px')};
+  margin: -2px 2px 0 -2px;
+`;
+
+const switchContainer = (score: string) => {
   switch (score) {
     case 'A': {
       return ABorderScore;
@@ -82,68 +144,18 @@ const switchContainer = (score: any) => {
   }
 };
 
-const Container = styled.div<{score?: string; isSelected?: boolean; displayBackground?: boolean}>`
+const QualityScoreEmptyContainer = styled.div<
+  {size: string; score: string; top: number; left: number} & AkeneoThemedProps
+>`
+  top: ${({top}) => top}px;
+  left: ${({left}) => left}px;
   position: absolute;
-  text-align: center;
   display: inline-block;
-  text-transform: uppercase;
-  font-weight: bold;
-
-  ${({isSelected, score}) =>
-    isSelected
-      ? css`
-          width: 25px;
-          height: 25px;
-          font-size: 15px;
-          line-height: 25px;
-          border-radius: 4px !important;
-          border: 1px solid ${switchContainer(score)};
-        `
-      : css`
-          width: 20px;
-          height: 20px;
-          font-size: 12px;
-          z-index: -1;
-        `}
-
-  ${props => props.score === 'A' && AScore}
-  ${props => props.score === 'B' && BScore}
-  ${props => props.score === 'C' && CScore}
-  ${props => props.score === 'D' && DScore}
-  ${props => props.score === 'E' && EScore}
-`;
-
-const standardSize = css`
-  width: 20px;
-  height: 20px;
-`;
-
-const bigSize = css`
-  width: 25px;
-  height: 25px;
-`;
-
-const AScore = css<{displayBackground: boolean}>`
-  background: ${({theme, displayBackground}) => (displayBackground ? theme.color.green20 : theme.color.white)};
-  color: ${({theme}) => theme.color.green120};
-  border-radius: 4px 0 0 4px;
-`;
-const BScore = css<{displayBackground: boolean}>`
-  background: ${({theme, displayBackground}) => (displayBackground ? theme.color.green60 : theme.color.white)};
-  color: ${({theme}) => theme.color.green140};
-`;
-const CScore = css<{displayBackground: boolean}>`
-  background: ${({theme, displayBackground}) => (displayBackground ? theme.color.yellow20 : theme.color.white)};
-  color: ${({theme}) => theme.color.yellow120};
-`;
-const DScore = css<{displayBackground: boolean}>`
-  background: ${({theme, displayBackground}) => (displayBackground ? theme.color.red20 : theme.color.white)};
-  color: ${({theme}) => theme.color.red100};
-`;
-const EScore = css<{displayBackground: boolean}>`
-  background: ${({theme, displayBackground}) => (displayBackground ? theme.color.red60 : theme.color.white)};
-  color: ${({theme}) => theme.color.red140};
-  border-radius: 0 4px 4px 0;
+  width: ${({size}) => (size === 'big' ? '25px' : '20px')};
+  height: ${({size}) => (size === 'big' ? '25px' : '20px')};
+  border-radius: 4px !important;
+  border: 1px solid ${({score}) => switchContainer(score)};
+  background: ${getColor('white')};
 `;
 
 const ABorderScore = css`
@@ -160,6 +172,27 @@ const DBorderScore = css`
 `;
 const EBorderScore = css`
   ${({theme}) => theme.color.red100};
+`;
+
+const AScore = css`
+  background: ${({theme}) => theme.color.green20};
+  color: ${({theme}) => theme.color.green120};
+`;
+const BScore = css`
+  background: ${({theme}) => theme.color.green60};
+  color: ${({theme}) => theme.color.green140};
+`;
+const CScore = css`
+  background: ${({theme}) => theme.color.yellow20};
+  color: ${({theme}) => theme.color.yellow120};
+`;
+const DScore = css`
+  background: ${({theme}) => theme.color.red20};
+  color: ${({theme}) => theme.color.red100};
+`;
+const EScore = css`
+  background: ${({theme}) => theme.color.red60};
+  color: ${({theme}) => theme.color.red140};
 `;
 
 export {QualityScore};

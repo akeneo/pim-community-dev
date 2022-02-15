@@ -1,27 +1,54 @@
 import React, {FC} from 'react';
-import {QualityScore} from './QualityScore';
 import styled, {css} from 'styled-components';
 import {DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB} from '../listener';
+import {QualityScore} from './QualityScore';
 
 type Props = {
   currentScore: string | null;
-  appearance?: 'regular' | 'stacked';
+  stacked?: boolean;
 };
 
-const QualityScoreBar: FC<Props> = ({currentScore, appearance = 'regular'}) => {
+const QualityScoreBar: FC<Props> = ({currentScore, stacked = false}) => {
   return (
     <Container
       currentScore={currentScore}
       onClick={() => window.dispatchEvent(new CustomEvent(DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB))}
     >
-      {['A', 'B', 'C', 'D', 'E'].map((score: string) => (
-        <QualityScore
-          key={`ranking-score-${score}`}
-          isSelected={score === currentScore}
-          score={score}
-          appearance={appearance}
-        />
-      ))}
+      <QualityScore
+        key={`ranking-score-A`}
+        score={'A'}
+        size={'A' === currentScore ? 'big' : 'normal'}
+        stacked={stacked && 'A' === currentScore}
+        rounded={'left'}
+      />
+      <QualityScore
+        key={`ranking-score-B`}
+        score={'B'}
+        size={'B' === currentScore ? 'big' : 'normal'}
+        stacked={stacked && 'B' === currentScore}
+        rounded={'none'}
+      />
+      <QualityScore
+        key={`ranking-score-C`}
+        score={'C'}
+        size={'C' === currentScore ? 'big' : 'normal'}
+        stacked={stacked && 'C' === currentScore}
+        rounded={'none'}
+      />
+      <QualityScore
+        key={`ranking-score-D`}
+        score={'D'}
+        size={'D' === currentScore ? 'big' : 'normal'}
+        stacked={stacked && 'D' === currentScore}
+        rounded={'none'}
+      />
+      <QualityScore
+        key={`ranking-score-E`}
+        score={'E'}
+        size={'E' === currentScore ? 'big' : 'normal'}
+        stacked={stacked && 'E' === currentScore}
+        rounded={'right'}
+      />
     </Container>
   );
 };
