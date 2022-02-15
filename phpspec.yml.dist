@@ -15,6 +15,13 @@ suites:
         src_path: src/Akeneo/Channel
         spec_prefix: Specification
 
+    ChannelAcceptance:
+        namespace: Akeneo\Channel\Test\Acceptance
+        psr4_prefix: Akeneo\Channel\Test\Acceptance
+        src_path: src/Akeneo/Channel/back/Test/Acceptance
+        spec_path: src/Akeneo/Channel/back/Test/Acceptance
+        spec_prefix: Specification
+
     ## Structure context
     Structure:
         namespace: Akeneo\Pim\Structure
@@ -24,6 +31,13 @@ suites:
         spec_prefix: Specification
 
     ## Enrichment context
+    EnrichmentProductAcceptance:
+        namespace: Akeneo\Pim\Enrichment\Product\Test\Acceptance
+        psr4_prefix: Akeneo\Pim\Enrichment\Product\Test\Acceptance
+        src_path: src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance
+        spec_path: src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance
+        spec_prefix: Specification
+
     EnrichmentProduct:
         namespace: Akeneo\Pim\Enrichment\Product
         psr4_prefix: Akeneo\Pim\Enrichment\Product

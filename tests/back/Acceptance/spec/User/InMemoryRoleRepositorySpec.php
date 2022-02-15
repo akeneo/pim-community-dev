@@ -53,4 +53,17 @@ class InMemoryRoleRepositorySpec extends ObjectBehavior
     {
         $this->getIdentifierProperties()->shouldReturn(['role']);
     }
+
+    function it_returns_all_roles()
+    {
+        $role1 = new Role();
+        $role1->setRole('ROLE_ROLE1');
+        $this->save($role1);
+
+        $role2 = new Role();
+        $role2->setRole('ROLE_ROLE2');
+        $this->save($role2);
+
+        $this->findAll()->shouldReturn(['ROLE_ROLE1' => $role1, 'ROLE_ROLE2' => $role2]);
+    }
 }

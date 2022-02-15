@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
-use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -15,7 +15,7 @@ use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
  */
 final class InMemoryGetCategoryCodes implements GetCategoryCodes
 {
-    public function __construct(private InMemoryProductRepository $productRepository)
+    public function __construct(private ProductRepositoryInterface $productRepository)
     {
     }
 
