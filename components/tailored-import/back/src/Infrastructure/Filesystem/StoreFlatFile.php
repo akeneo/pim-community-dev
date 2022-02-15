@@ -30,13 +30,11 @@ class StoreFlatFile implements StoreFlatFileInterface
     public function store(string $filePath, string $originalFilename): FlatFileInfo
     {
         $hash = sha1_file($filePath);
-        $file = $this->fileInfoRepository->findOneBy(
-            [
-                'hash'             => $hash,
-                'originalFilename' => $originalFilename,
-                'storage'          => Storage::FILE_STORAGE_ALIAS
-            ]
-        );
+        $file = $this->fileInfoRepository->findOneBy([
+            'hash' => $hash,
+            'originalFilename' => $originalFilename,
+            'storage' => Storage::FILE_STORAGE_ALIAS,
+        ]);
 
         if (null === $file) {
             $uploadedFile = new \SplFileInfo($filePath);
