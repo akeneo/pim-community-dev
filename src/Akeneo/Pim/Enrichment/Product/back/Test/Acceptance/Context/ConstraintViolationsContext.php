@@ -28,6 +28,14 @@ final class ConstraintViolationsContext implements Context
     }
 
     /**
+     * @BeforeScenario
+     */
+    public function clean(): void
+    {
+        $this->constraintViolationList = new ConstraintViolationList();
+    }
+
+    /**
      * @Then There is no violation
      */
     public function thereIsNoViolation(): void

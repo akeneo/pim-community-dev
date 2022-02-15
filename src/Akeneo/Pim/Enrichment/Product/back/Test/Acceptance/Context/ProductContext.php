@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -16,6 +18,9 @@ use Webmozart\Assert\Assert;
  */
 final class ProductContext implements Context
 {
+    /** @var ValueUserIntent[] */
+    private array $valueUserIntents = [];
+
     public function __construct(
         private ConstraintViolationsContext $constraintViolationsContext,
         private ValidatorInterface $validator,
@@ -24,11 +29,37 @@ final class ProductContext implements Context
     }
 
     /**
+     * @BeforeScenario
+     */
+    public function cleanIntents(): void
+    {
+        $this->valueUserIntents = [];
+    }
+
+    /**
+     * @Given  /^a set text value intent on the "([^"]*)" attribute with the "([^"]*)" text value$/
+     */
+    public function aSetTextValueIntentOnTheAttributeWithTheTextValue(string $attribute, string $text): void
+    {
+        $attributeInfo = \explode('-', $attribute);
+        Assert::count($attributeInfo, 3);
+        $channelCode = $attributeInfo[1] === 'null' ? null : $attributeInfo[1];
+        $localeCode = $attributeInfo[2] === 'null' ? null : $attributeInfo[2];
+
+        $this->valueUserIntents[] = new SetTextValue($attributeInfo[0], $localeCode, $channelCode, $text);
+    }
+
+    /**
      * @When /^the "([^"]*)" user upserts a product with the "([^"]*)" identifier$/
+     * @When /^the "([^"]*)" user upserts a product with the "([^"]*)" identifier and the previous intents$/
      */
     public function theUserUpsertsAProductWithTheIdentifier(string $username, string $identifier): void
     {
-        $command = new UpsertProductCommand(userId: $this->getUserId($username), productIdentifier: $identifier);
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId($username),
+            productIdentifier: $identifier,
+            valuesUserIntent: $this->valueUserIntents,
+        );
         $this->upsertProduct($command);
     }
 
