@@ -16,8 +16,6 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
  */
 final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletInterface
 {
-
-
     private ?StepExecution $stepExecution;
 
     public function __construct(
