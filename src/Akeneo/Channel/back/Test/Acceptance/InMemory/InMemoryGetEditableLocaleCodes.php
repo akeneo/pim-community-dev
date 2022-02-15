@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Channel\Test\Acceptance\InMemory;
 
 use Akeneo\Channel\API\Query\GetEditableLocaleCodes;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -14,7 +14,10 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
  */
 final class InMemoryGetEditableLocaleCodes implements GetEditableLocaleCodes
 {
-    public function __construct(private LocaleRepositoryInterface $localeRepository)
+    /** @var array<string, string[]> */
+    private array $editableLocalesPerUserGroupName = [];
+
+    public function __construct(private UserRepositoryInterface $userRepository)
     {
     }
 
@@ -23,14 +26,26 @@ final class InMemoryGetEditableLocaleCodes implements GetEditableLocaleCodes
      */
     public function forUserId(int $userId): array
     {
-        $localeCodes = [];
-        /** @var LocaleInterface $locale */
-        foreach ($this->localeRepository->findAll() as $locale) {
-            if ($locale->isActivated()) {
-                $localeCodes[] = $locale->getCode();
-            }
+        /** @var UserInterface $user */
+        $user = $this->userRepository->findOneBy(['id' => $userId]);
+        if (null === $user) {
+            return [];
         }
 
-        return $localeCodes;
+        $ownedCategoryCodes = [];
+        $user->getGroupNames();
+        foreach ($user->getGroupNames() as $groupName) {
+            $ownedCategoryCodes = \array_merge(
+                $ownedCategoryCodes,
+                $this->editableLocalesPerUserGroupName[$groupName] ?? []
+            );
+        }
+
+        return \array_unique($ownedCategoryCodes);
+    }
+
+    public function addOwnedCategoryCode(string $groupName, string $localeCode): void
+    {
+        $this->editableLocalesPerUserGroupName[$groupName][] = $localeCode;
     }
 }

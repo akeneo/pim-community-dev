@@ -80,6 +80,7 @@ final class ProductContext implements Context
             productIdentifier: $identifier,
             valuesUserIntent: $this->valueUserIntents,
         );
+        $this->valueUserIntents = [];
         $this->upsertProduct($command);
     }
 

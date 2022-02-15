@@ -8,6 +8,7 @@ default:
                 - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ProductContext
                 - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\UserContext
                 - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\CategoryContext
+                - Akeneo\Channel\Test\Acceptance\Context\ChannelContext
                 - test.channel.context
                 - test.locale.context
                 - test.attribute.context

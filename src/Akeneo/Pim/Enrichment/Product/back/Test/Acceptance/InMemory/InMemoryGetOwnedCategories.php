@@ -17,9 +17,8 @@ final class InMemoryGetOwnedCategories implements GetOwnedCategories
     /** @var array<string, string[]> */
     private array $ownedCategoryCodesPerUserGroupName = [];
 
-    public function __construct(
-        private UserRepositoryInterface $userRepository,
-    ) {
+    public function __construct(private UserRepositoryInterface $userRepository)
+    {
     }
 
     /**
@@ -42,15 +41,14 @@ final class InMemoryGetOwnedCategories implements GetOwnedCategories
             );
         }
 
-        return \array_unique($ownedCategoryCodes);
+        return \array_filter(
+            \array_unique($ownedCategoryCodes),
+            static fn (string $ownedCategoryCode): bool => \in_array($ownedCategoryCode, $categoryCodes)
+        );
     }
 
     public function addOwnedCategoryCode(string $groupName, string $categoryCode): void
     {
-//        if (!\array_key_exists($groupName, $this->ownedCategoryCodesPerUserGroupName)) {
-//            $this->ownedCategoryCodesPerUserGroupName[$groupName] = [];
-//        }
-
         $this->ownedCategoryCodesPerUserGroupName[$groupName][] = $categoryCode;
     }
 }

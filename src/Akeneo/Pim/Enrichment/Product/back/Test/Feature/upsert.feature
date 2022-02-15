@@ -40,18 +40,18 @@ Feature: Upsert a product
     Then there is a violation with message: The a_text attribute does not require a locale, "en_US" was detected
     And there is a violation with message: The a_text attribute does not require a channel, "ecommerce" was detected
 
-  Scenario: Create a product with missing locale and scope for text attribute value
+  Scenario: Cannot create a product with missing locale and scope for text attribute value
     Given a set text value intent on the "localizable_scopable_text-null-null" attribute with the "test" text value
     When the "julia" user upserts a product with the "foo" identifier and the previous intents
     Then there is a violation with message: The localizable_scopable_text attribute requires a channel
     And there is a violation with message: The localizable_scopable_text attribute requires a locale
 
-  Scenario: Create a product with unknown scope for text attribute value
+  Scenario: Cannot create a product with unknown scope for text attribute value
     Given a set text value intent on the "localizable_scopable_text-unknown_scope-unknown_locale" attribute with the "test" text value
     When the "julia" user upserts a product with the "foo" identifier and the previous intents
     Then there is a violation with message: The unknown_scope channel does not exist
 
-  Scenario: Create a product with unknown locale for text attribute value
+  Scenario: Cannot create a product with unknown locale for text attribute value
     Given a set text value intent on the "localizable_scopable_text-ecommerce-unknown_locale" attribute with the "test" text value
     When the "julia" user upserts a product with the "foo" identifier and the previous intents
     Then there is a violation with message: The unknown_locale locale is not activated for the ecommerce channel
