@@ -6,6 +6,8 @@ services:
     Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ProductContext:
         public: true
         arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.category'
             - '@Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ConstraintViolationsContext'
             - '@validator'
             - '@pim_user.repository.user'
@@ -20,8 +22,19 @@ services:
             - '@validator'
             - '@security.token_storage'
 
+    Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\CategoryContext:
+        public: true
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories'
+
     # Queries
     Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes:
         class: Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetCategoryCodes
         arguments:
             - '@pim_catalog.repository.product'
+
+    Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories:
+        class: Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetOwnedCategories
+        arguments:
+            - '@pim_user.repository.user'

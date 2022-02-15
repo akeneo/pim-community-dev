@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
+use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -22,6 +25,8 @@ final class ProductContext implements Context
     private array $valueUserIntents = [];
 
     public function __construct(
+        private InMemoryProductRepository $productRepository,
+        private CategoryRepositoryInterface $categoryRepository,
         private ConstraintViolationsContext $constraintViolationsContext,
         private ValidatorInterface $validator,
         private UserRepositoryInterface $userRepository
@@ -34,6 +39,21 @@ final class ProductContext implements Context
     public function cleanIntents(): void
     {
         $this->valueUserIntents = [];
+    }
+
+    /**
+     * @Given a product with :identifier identifier in the :categoryCode category
+     */
+    public function aProductWithIdentifierInTheCategory(string $identifier, string $categoryCode): void
+    {
+        $product = new Product();
+        $product->setIdentifier($identifier);
+
+        $category = $this->categoryRepository->findOneByIdentifier($categoryCode);
+        Assert::notNull($category);
+        $product->addCategory($category);
+
+        $this->productRepository->save($product);
     }
 
     /**

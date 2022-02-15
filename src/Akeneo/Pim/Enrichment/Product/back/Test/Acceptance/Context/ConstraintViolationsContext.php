@@ -36,7 +36,7 @@ final class ConstraintViolationsContext implements Context
     }
 
     /**
-     * @Then There is no violation
+     * @Then there is no violation
      */
     public function thereIsNoViolation(): void
     {
@@ -52,7 +52,7 @@ final class ConstraintViolationsContext implements Context
     }
 
     /**
-     * @Then /^There is a violation with message: (?P<message>.*)$/
+     * @Then /^there is a violation with message: (?P<message>.*)$/
      */
     public function thereIsAViolationWithMessage(string $message): void
     {

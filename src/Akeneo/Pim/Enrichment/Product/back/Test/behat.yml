@@ -7,17 +7,12 @@ default:
                 - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ConstraintViolationsContext
                 - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ProductContext
                 - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\UserContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\CategoryContext
                 - test.channel.context
                 - test.locale.context
                 - test.attribute.context
             filters:
-                tags: '@acceptance-back&&~@only-ee'
-#        acceptance_ee:
-#            paths:
-#                - '%paths.base%/Feature'
-#            contexts:
-#            filters:
-#                tags: '@acceptance-back&&~@only-ge'
+                tags: '@acceptance-back'
     extensions:
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
         FriendsOfBehat\SymfonyExtension:

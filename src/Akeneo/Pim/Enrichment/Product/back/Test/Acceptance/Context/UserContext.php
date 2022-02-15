@@ -48,11 +48,11 @@ final class UserContext implements Context
     }
 
     /**
-     * @Given the :username manager user
+     * @Given the :username :userGroup user
      */
-    public function theManagerUser(string $username): void
+    public function theManagerUser(string $username, string $userGroup): void
     {
-        $this->createUser($username, ['ROLE_ADMIN'], []);
+        $this->createUser($username, ['ROLE_ADMIN'], [$userGroup]);
     }
 
     /**
@@ -87,7 +87,6 @@ final class UserContext implements Context
 
         $roles = $this-> roleRepository->findAll();
         foreach ($roles as $role) {
-            print_r('role = ' . $role->getRole() . "\n");
             if (\in_array($role->getRole(), $stringRoles)) {
                 $user->addRole($role);
             }
@@ -95,7 +94,6 @@ final class UserContext implements Context
 
         $groups = $this->groupRepository->findAll();
         foreach ($groups as $group) {
-            print_r('group = ' . $group->getName() . "\n");
             if (\in_array($group->getName(), $groupNames) || 'All' === $group->getName()) {
                 $user->addGroup($group);
             }
