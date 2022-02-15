@@ -75,10 +75,10 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
         $this->expectException(ViolationsException::class);
-        $this->expectExceptionMessage('Locale en_GB cannot be edited by user'); // @todo the translation is not found
+        $this->expectExceptionMessage('You don\'t have access to product data in any activated locale, please contact your administrator');
 
         $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'identifier', valuesUserIntent: [
-            new SetTextValue('a_text', 'en_GB', null, 'foo'),
+            new SetTextValue('name', 'en_GB', null, 'foo'),
         ]);
         ($this->upsertProductHandler)($command);
     }
