@@ -27,24 +27,24 @@ class ExecuteDataMappingHandler
         $productIdentifier = null;
 
         /** @var DataMapping $dataMapping */
-        foreach ($dataMappingCollection->iterator() as $dataMapping) {
-            $target = $dataMapping->target();
+        foreach ($dataMappingCollection->getIterator() as $dataMapping) {
+            $target = $dataMapping->getTarget();
 
             /**
              * How do we structure the code to determine the type of target property OR attribute,
              *  - Attribute: deal with action type set OR add, and ValueUserIntent based on primitive type of the cellData value
              *  - Property:  Determine the correct user intent
              */
-            $cellData = $this->mergeCellData($executeDataMappingQuery->getRow(), $dataMapping->sources());
+            $cellData = $this->mergeCellData($executeDataMappingQuery->getRow(), $dataMapping->getSources());
             /** TODO Iterate over operation */
             if ($target instanceof TargetAttribute) {
-                if ($identifierAttributeCode === $target->code()) {
+                if ($identifierAttributeCode === $target->getCode()) {
                     $productIdentifier = $cellData;
                 } else {
                     $valueUserIntents[] = new SetTextValue(
-                        $target->code(),
-                        $target->locale(),
-                        $target->channel(),
+                        $target->getCode(),
+                        $target->getLocale(),
+                        $target->getChannel(),
                         $cellData,
                     );
                 }

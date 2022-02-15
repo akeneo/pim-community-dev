@@ -29,7 +29,7 @@ class DataMappingSpec extends ObjectBehavior
             'sample_data' => [],
         ]]);
 
-        $this->uuid()->shouldReturn('b244c45c-d5ec-4993-8cff-7ccd04e82fef');
+        $this->getUuid()->shouldReturn('b244c45c-d5ec-4993-8cff-7ccd04e82fef');
     }
 
     public function it_throws_an_exception_when_uuid_is_invalid()

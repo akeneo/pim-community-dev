@@ -39,27 +39,27 @@ class TargetAttribute implements TargetInterface
         );
     }
 
-    public function code(): string
+    public function getCode(): string
     {
         return $this->code;
     }
 
-    public function channel(): ?string
+    public function getChannel(): ?string
     {
         return $this->channel;
     }
 
-    public function locale(): ?string
+    public function getLocale(): ?string
     {
         return $this->locale;
     }
 
-    public function action(): string
+    public function getActionIfNotEmpty(): string
     {
         return $this->action;
     }
 
-    public function ifEmpty(): string
+    public function getActionIfEmpty(): string
     {
         return $this->ifEmpty;
     }

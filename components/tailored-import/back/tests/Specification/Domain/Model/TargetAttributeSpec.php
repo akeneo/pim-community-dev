@@ -22,10 +22,10 @@ class TargetAttributeSpec extends ObjectBehavior
             'if_empty' => 'skip',
         ]]);
 
-        $this->code()->shouldReturn('test_code');
-        $this->channel()->shouldReturn('web');
-        $this->locale()->shouldReturn('fr_FR');
-        $this->action()->shouldReturn('set');
-        $this->ifEmpty()->shouldReturn('skip');
+        $this->getCode()->shouldReturn('test_code');
+        $this->getChannel()->shouldReturn('web');
+        $this->getLocale()->shouldReturn('fr_FR');
+        $this->getActionIfNotEmpty()->shouldReturn('set');
+        $this->getActionIfEmpty()->shouldReturn('skip');
     }
 }

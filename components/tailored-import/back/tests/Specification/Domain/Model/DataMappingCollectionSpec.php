@@ -29,6 +29,6 @@ class DataMappingCollectionSpec extends ObjectBehavior
             'sample_data' => [],
         ]]]);
 
-        $this->iterator()->shouldHaveCount(1);
+        $this->getIterator()->shouldHaveCount(1);
     }
 }

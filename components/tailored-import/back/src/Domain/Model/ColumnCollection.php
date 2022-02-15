@@ -30,9 +30,9 @@ class ColumnCollection
         return new self($columnInstances);
     }
 
-    public function columnUuids(): array
+    public function getColumnUuids(): array
     {
-        return array_map(fn (Column $column) => $column->uuid(), $this->columns);
+        return array_map(fn (Column $column) => $column->getUuid(), $this->columns);
     }
 
     /**

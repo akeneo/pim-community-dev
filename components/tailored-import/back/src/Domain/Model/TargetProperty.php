@@ -33,17 +33,17 @@ class TargetProperty implements TargetInterface
         );
     }
 
-    public function code(): string
+    public function getCode(): string
     {
         return $this->code;
     }
 
-    public function action(): string
+    public function getActionIfNotEmpty(): string
     {
         return $this->action;
     }
 
-    public function ifEmpty(): string
+    public function getActionIfEmpty(): string
     {
         return $this->ifEmpty;
     }

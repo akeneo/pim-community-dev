@@ -32,6 +32,6 @@ class ColumnCollectionSpec extends ObjectBehavior
             ]
         ]]);
 
-        $this->columnUuids()->shouldReturn(['f9be9837-df82-4ad7-8c76-565ac274e900', 'a07b9dd7-f0ff-4d89-85a5-dee411cf53c2']);
+        $this->getColumnUuids()->shouldReturn(['f9be9837-df82-4ad7-8c76-565ac274e900', 'a07b9dd7-f0ff-4d89-85a5-dee411cf53c2']);
     }
 }
