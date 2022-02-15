@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Platform\TailoredImport\Application\Common;
+namespace Specification\Akeneo\Platform\TailoredImport\Domain\Model;
 
 use PhpSpec\ObjectBehavior;
 

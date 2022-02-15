@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Platform\TailoredImport\Application\Common;
+namespace Specification\Akeneo\Platform\TailoredImport\Domain\Model;
 
 use PhpSpec\ObjectBehavior;
 
