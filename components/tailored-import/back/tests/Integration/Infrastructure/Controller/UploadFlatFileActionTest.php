@@ -21,9 +21,9 @@ use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 
-class UploadActionTest extends ControllerIntegrationTestCase
+class UploadFlatFileActionTest extends ControllerIntegrationTestCase
 {
-    private const ROUTE = 'pimee_tailored_import_upload_action';
+    private const ROUTE = 'pimee_tailored_import_upload_flat_file_action';
     private WebClientHelper $webClientHelper;
     private FilesystemProvider $filesystemProvider;
 

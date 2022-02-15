@@ -1,0 +1,6 @@
+services:
+  akeneo.tailored_import.filesystem.store_flat_file:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Filesystem\StoreFlatFile
+    arguments:
+      - '@akeneo_file_storage.repository.file_info'
+      - '@akeneo_file_storage.file_storage.file.file_storer'

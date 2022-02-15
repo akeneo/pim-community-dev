@@ -13,12 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Controller;
 
-use Akeneo\Platform\TailoredImport\Domain\Filesystem\Storage;
+use Akeneo\Platform\TailoredImport\Application\UploadFlatFile\UploadFlatFileCommand;
+use Akeneo\Platform\TailoredImport\Application\UploadFlatFile\UploadFlatFileHandler;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\UploadedFlatFile;
-use Akeneo\Tool\Component\FileStorage\File\FileStorer;
-use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
-use Akeneo\Tool\Component\FileStorage\PathGeneratorInterface;
-use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,13 +24,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class UploadAction
+class UploadFlatFileAction
 {
     public function __construct(
-        protected ValidatorInterface $validator,
-        protected PathGeneratorInterface $pathGenerator,
-        private FileStorer $fileStorer,
-        private FileInfoRepositoryInterface $fileInfoRepository,
+        private UploadFlatFileHandler $uploadFlatFileHandler,
+        private ValidatorInterface $validator,
         private NormalizerInterface $normalizer
     ) {
     }
@@ -56,27 +51,12 @@ class UploadAction
             return new JsonResponse($this->normalizer->normalize($violations), 400);
         }
 
-        $file = $this->storeFile($uploadedFile);
+        $uploadFlatFileCommand = new UploadFlatFileCommand();
+        $uploadFlatFileCommand->filePath = $uploadedFile->getPathname();
+        $uploadFlatFileCommand->originalFilename = $uploadedFile->getClientOriginalName();
 
-        return new JsonResponse(['file_key' => $file->getKey()]);
-    }
+        $fileInfo = $this->uploadFlatFileHandler->handle($uploadFlatFileCommand);
 
-    protected function storeFile(UploadedFile $uploadedFile): FileInfoInterface
-    {
-        $hash = sha1_file($uploadedFile->getPathname());
-        $originalFilename = $uploadedFile->getClientOriginalName();
-        $file = $this->fileInfoRepository->findOneBy(
-            [
-                'hash'             => $hash,
-                'originalFilename' => $originalFilename,
-                'storage'          => Storage::FILE_STORAGE_ALIAS
-            ]
-        );
-
-        if (null === $file) {
-            $file = $this->fileStorer->store($uploadedFile, Storage::FILE_STORAGE_ALIAS);
-        }
-
-        return $file;
+        return new JsonResponse($fileInfo->normalize());
     }
 }

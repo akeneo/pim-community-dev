@@ -5,12 +5,10 @@ services:
     arguments:
       - '@akeneo.tailored_import.handler.get_grouped_targets'
 
-  akeneo.tailored_import.controller.upload_action:
-    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\UploadAction
+  akeneo.tailored_import.controller.upload_flat_file_action:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\UploadFlatFileAction
     public: true
     arguments:
+      - '@akeneo.tailored_import.handler.upload_flat_file'
       - '@validator'
-      - '@akeneo_file_storage.file_storage.path_generator'
-      - '@akeneo_file_storage.file_storage.file.file_storer'
-      - '@akeneo_file_storage.repository.file_info'
       - '@serializer'
