@@ -15,8 +15,8 @@ namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\Attribute;
 
 use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
-use Akeneo\Platform\TailoredImport\Application\Common\DataMappingCollection;
-use Akeneo\Platform\TailoredImport\Application\Common\Row;
+use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
+use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingQuery;
 use PHPUnit\Framework\Assert;
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Spout;
 
-use Akeneo\Platform\TailoredImport\Application\Common\Column;
+use Akeneo\Platform\TailoredImport\Domain\Model\Column;
 use Webmozart\Assert\Assert;
 
 class FileHeader

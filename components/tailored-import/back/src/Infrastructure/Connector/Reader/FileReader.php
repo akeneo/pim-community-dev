@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader;
 
-use Akeneo\Platform\TailoredImport\Application\Common\ColumnCollection;
-use Akeneo\Platform\TailoredImport\Application\Common\Row;
+use Akeneo\Platform\TailoredImport\Domain\Model\ColumnCollection;
+use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Domain\Exception\MismatchedFileHeadersException;
 use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FileHeaderCollection;
 use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FlatFileIteratorFactory;

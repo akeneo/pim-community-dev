@@ -7,9 +7,9 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\ValueUserIntent;
-use Akeneo\Platform\TailoredImport\Application\Common\DataMapping;
-use Akeneo\Platform\TailoredImport\Application\Common\Row;
-use Akeneo\Platform\TailoredImport\Application\Common\TargetAttribute;
+use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
+use Akeneo\Platform\TailoredImport\Domain\Model\Row;
+use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
