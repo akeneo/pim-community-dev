@@ -5,16 +5,10 @@ import {DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB} from '../listener';
 
 type Props = {
   currentScore: string | null;
-  appearance: 'regular' | 'stacked';
+  appearance?: 'regular' | 'stacked';
 };
 
-const QualityScoreBar: FC<Props> = props => {
-  const {
-    currentScore,
-    // for testing PLG-747, should be 'regular' by default
-    // TODO change this in last commit
-    appearance = 'stacked',
-  } = props;
+const QualityScoreBar: FC<Props> = ({currentScore, appearance = 'regular'}) => {
   return (
     <Container
       currentScore={currentScore}
@@ -42,17 +36,6 @@ const Container = styled.div<{currentScore: string | null}>`
   padding-top: 2px;
   height: 25px;
   cursor: pointer;
-
-  > :first-child {
-    border-radius: 4px 0 0 4px;
-  }
-  > :last-child {
-    border-radius: 0 4px 4px 0;
-  }
-
-  > :not(:first-child):not(:last-child) {
-    border-radius: 0;
-  }
 
   ${props => props.currentScore === null && NoScoreStyle}
 `;

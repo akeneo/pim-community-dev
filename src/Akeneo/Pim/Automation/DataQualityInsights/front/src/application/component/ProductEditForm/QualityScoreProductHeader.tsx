@@ -6,6 +6,7 @@ import {QualityScoreLoader} from '../QualityScoreLoader';
 const QualityScoreProductHeader = () => {
   const {channel, locale} = useCatalogContext();
   const {score, isLoading} = useFetchProductQualityScore(channel, locale);
+
   return isLoading ? <QualityScoreLoader /> : <QualityScoreBar currentScore={score} />;
 };
 
