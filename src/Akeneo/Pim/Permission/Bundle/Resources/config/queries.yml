@@ -18,7 +18,6 @@ services:
         class: Akeneo\Pim\Permission\Bundle\Entity\Query\ProductCategoryAccessQuery
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.product.class%'
 
     pimee_security.query.product_model_category_access_with_ids:
         class: Akeneo\Pim\Permission\Bundle\Entity\Query\ProductModelCategoryAccessQuery

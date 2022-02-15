@@ -25,7 +25,8 @@
             "Akeneo\\Platform\\TailoredImport\\": "components/tailored-import/back/src",
             "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/back",
             "AkeneoEnterprise\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
-            "Pim\\Upgrade\\": "upgrades/"
+            "Pim\\Upgrade\\": "upgrades/",
+            "AkeneoEnterprise\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back"
         },
         "exclude-from-classmap": [
             "vendor/akeneo/pim-community-dev/src/Kernel.php"
@@ -62,7 +63,10 @@
             "Specification\\Akeneo\\Platform\\TailoredExport\\": "components/tailored-export/back/tests/Specification",
             "Akeneo\\Platform\\TailoredImport\\Test\\": "components/tailored-import/back/tests",
             "Specification\\Akeneo\\Platform\\TailoredImport\\": "components/tailored-import/back/tests/Specification",
-            "Akeneo\\Test\\Pim\\TableAttribute\\": "grth/src/Akeneo/Pim/TableAttribute/tests/back"
+            "Akeneo\\Test\\Pim\\TableAttribute\\": "grth/src/Akeneo/Pim/TableAttribute/tests/back",
+            "Akeneo\\Test\\Pim\\Enrichment\\Product\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Product/back/Test",
+            "Akeneo\\Test\\Pim\\Enrichment\\Category\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Category/back/Test",
+            "AkeneoEnterprise\\Test\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back/Test"
         }
     },
     "require": {
