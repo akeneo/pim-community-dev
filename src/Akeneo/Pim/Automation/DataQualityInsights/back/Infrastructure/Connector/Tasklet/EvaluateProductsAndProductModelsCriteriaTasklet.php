@@ -54,7 +54,7 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
                 $continueToEvaluateProducts = $evaluationCount > 0;
 
                 $evaluationTime['products']['count'] += $evaluationCount;
-                $evaluationTime['products']['time'] += round($evaluationProductsEndTime - $evaluationProductsStartTime, 2);
+                $evaluationTime['products']['time'] += round($evaluationProductsEndTime - $evaluationProductsStartTime, 3);
             }
 
             if ($continueToEvaluateProductModels) {
@@ -64,7 +64,7 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
                 $continueToEvaluateProductModels = $evaluationCount > 0;
 
                 $evaluationTime['product_models']['count'] += $evaluationCount;
-                $evaluationTime['product_models']['time'] += round($evaluationProductModelsEndTime - $evaluationProductModelsStartTime, 2);
+                $evaluationTime['product_models']['time'] += round($evaluationProductModelsEndTime - $evaluationProductModelsStartTime, 3);
             }
 
             if ($continueToEvaluateProducts === false && $continueToEvaluateProductModels === false) {
