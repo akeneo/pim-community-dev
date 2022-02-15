@@ -27,7 +27,6 @@ final class UpsertProductCommand
         private $associationsUserIntent = null,
         private array $valuesUserIntent = []
     ) {
-        Assert::stringNotEmpty($this->productIdentifier);
         Assert::allImplementsInterface($this->valuesUserIntent, ValueUserIntent::class);
     }
 
