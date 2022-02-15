@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
 use Doctrine\DBAL\Connection;
-use Symfony\Component\Console\Output\OutputInterface;
+use Monolog\Logger;
 
 class MigrateToUuidFillJson implements MigrateToUuidStep
 {
@@ -13,7 +13,7 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         'pim_catalog_product_model'
     ];
 
-    public function __construct(private Connection $connection)
+    public function __construct(private Connection $connection, private Logger $logger)
     {
     }
 
@@ -63,10 +63,10 @@ AND NOT JSON_CONTAINS_PATH(quantified_associations, 'one', '$.*.products[*].uuid
         return $count;
     }
 
-    public function addMissing(bool $dryRun, OutputInterface $output): void
+    public function addMissing(bool $dryRun): void
     {
         foreach (self::TABLE_NAMES as $tableName) {
-            $this->addMissingForTable($dryRun, $output, $tableName);
+            $this->addMissingForTable($dryRun, $tableName);
         }
     }
 
@@ -136,7 +136,7 @@ LIMIT :limit";
         return $result;
     }
 
-    private function addMissingForTable(bool $dryRun, OutputInterface $output, string $tableName): void
+    private function addMissingForTable(bool $dryRun, string $tableName): void
     {
         $previousEntityId = -1;
         $associations = $this->getFormerAssociations($tableName, $previousEntityId);
@@ -155,7 +155,7 @@ LIMIT :limit";
                             $associatedProductUuid = $productIdToUuidMap[$associatedProductId];
                             $formerAssociation[$associationName]['products'][$i]['uuid'] = $associatedProductUuid;
                         } else {
-                            $output->writeln(sprintf('    <comment>Associated product %d not found for product %d</comment>', $associatedProductId, $productId));
+                            $this->logger->info(sprintf('    <comment>Associated product %d not found for product %d</comment>', $associatedProductId, $productId));
                             $notFound = true;
                         }
                     }
@@ -166,12 +166,12 @@ LIMIT :limit";
                 $previousEntityId = $productId;
             }
 
-            $output->writeln(sprintf('    Will update %s entities in %s table', count($associations), $tableName));
+            $this->logger->info(sprintf('    Will update %s entities in %s table', count($associations), $tableName));
             if (!$dryRun) {
                 $this->updateAssociations($tableName, $associations);
                 $associations = $this->getFormerAssociations($tableName, $previousEntityId);
             } else {
-                $output->writeln(sprintf('    Option --dry-run is set, will continue to next step.'));
+                $this->logger->info(sprintf('    Option --dry-run is set, will continue to next step.'));
                 $associations = [];
             }
         }

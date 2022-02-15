@@ -3,13 +3,13 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
 use Doctrine\DBAL\Connection;
-use Symfony\Component\Console\Output\OutputInterface;
+use Monolog\Logger;
 
 class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
 {
     use MigrateToUuidTrait;
 
-    public function __construct(private Connection $connection)
+    public function __construct(private Connection $connection,private Logger $logger)
     {
     }
 
@@ -70,7 +70,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
         return $count;
     }
 
-    public function addMissing(bool $dryRun, OutputInterface $output): void
+    public function addMissing(bool $dryRun): void
     {
         foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
             if ($tableName === 'pim_catalog_product') {
@@ -78,7 +78,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
             }
 
             $count = $this->getMissingCount2($tableName, $columnNames[1], $columnNames[0]);
-            $output->writeln(sprintf('    Will add %d foreign uuids in "%s" table', $count, $tableName));
+            $this->logger->info(sprintf('    Will add %d foreign uuids in "%s" table', $count, $tableName));
             if ($count > 0 && !$dryRun) {
                 $this->fillMissingForeignUuidInsert($tableName, $columnNames[0], $columnNames[1]);
             }

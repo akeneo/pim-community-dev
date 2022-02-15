@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
 use Doctrine\DBAL\Connection;
-use Symfony\Component\Console\Output\OutputInterface;
+use Monolog\Logger;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -15,7 +15,7 @@ final class MigrateToUuidAddTriggers implements MigrateToUuidStep
 {
     use MigrateToUuidTrait;
 
-    public function __construct(private Connection $connection)
+    public function __construct(private Connection $connection, private Logger $logger)
     {
     }
 
@@ -49,7 +49,7 @@ final class MigrateToUuidAddTriggers implements MigrateToUuidStep
         return $count;
     }
 
-    public function addMissing(bool $dryRun, OutputInterface $output): void
+    public function addMissing(bool $dryRun): void
     {
         /** @todo Fix the privilege issues :sad_dog: */
 
@@ -67,7 +67,7 @@ SQL;
 
             $insertTriggerName = $this->getInsertTrigger($tableName);
             if (!$this->triggerExists($insertTriggerName)) {
-                $output->writeln(sprintf('    Will add %s trigger on "%s" table', $insertTriggerName, $tableName));
+                $this->logger->info(sprintf('    Will add %s trigger on "%s" table', $insertTriggerName, $tableName));
                 if (!$dryRun) {
                     $insertTriggerSql = strtr($templateSql, [
                         '{trigger_name}' => $insertTriggerName,
@@ -83,7 +83,7 @@ SQL;
 
             $updateTriggerName = $this->getUpdateTrigger($tableName);
             if (!$this->triggerExists($insertTriggerName)) {
-                $output->writeln(sprintf('    Will add %s trigger on "%s" table', $updateTriggerName, $tableName));
+                $this->logger->info(sprintf('    Will add %s trigger on "%s" table', $updateTriggerName, $tableName));
                 if (!$dryRun) {
                     $updateTriggerSql = strtr($templateSql, [
                         '{trigger_name}' => $updateTriggerName,

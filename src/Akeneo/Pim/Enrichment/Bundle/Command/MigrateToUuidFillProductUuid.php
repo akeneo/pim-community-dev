@@ -3,14 +3,14 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
 use Doctrine\DBAL\Connection;
+use Monolog\Logger;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class MigrateToUuidFillProductUuid implements MigrateToUuidStep
 {
     private const BATCH_SIZE = 1000;
 
-    public function __construct(private Connection $connection)
+    public function __construct(private Connection $connection, private Logger $logger)
     {
     }
 
@@ -33,16 +33,16 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
         return $this->getMissingProductUuidCount();
     }
 
-    public function addMissing(bool $dryRun, OutputInterface $output): void
+    public function addMissing(bool $dryRun): void
     {
         $count = $this->getMissingProductUuidCount();
         while ($count > 0) {
-            $output->writeln(sprintf('    Will add %d uuids (still missing: %d)', min(self::BATCH_SIZE, $count), $count));
+            $this->logger->info(sprintf('    Will add %d uuids (still missing: %d)', min(self::BATCH_SIZE, $count), $count));
             if (!$dryRun) {
                 $this->fillMissingProductUuidsInsert();
                 $count = $this->getMissingProductUuidCount();
             } else {
-                $output->writeln(sprintf('    Option --dry-run is set, will continue to next step.'));
+                $this->logger->info(sprintf('    Option --dry-run is set, will continue to next step.'));
                 $count = 0;
             }
         }

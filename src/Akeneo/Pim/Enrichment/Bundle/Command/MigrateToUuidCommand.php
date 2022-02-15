@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
+use Monolog\Logger;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -12,6 +13,7 @@ class MigrateToUuidCommand extends Command
     protected static $defaultName = 'pim:product:migrate-to-uuid';
 
     public function __construct(
+        private Logger $logger,
         private MigrateToUuidStep $migrateToUuidCreateColumns,
         private MigrateToUuidStep $migrateToUuidFillProductUuid,
         private MigrateToUuidStep $migrateToUuidFillForeignUuid,
@@ -43,22 +45,21 @@ class MigrateToUuidCommand extends Command
 //            $this->migrateToUuidAddTriggers,
         ] as $step) {
             /** @var $step MigrateToUuidStep */
-            $output->writeln(sprintf('<info>Step %d: %s</info>', $i, $step->getDescription()));
+            $this->logger->info(sprintf('<info>Step %d: %s</info>', $i, $step->getDescription()));
             if ($withStats) {
                 $missingCount = $step->getMissingCount();
-                $output->writeln(sprintf('    Missing %d items', $missingCount));
+                $this->logger->info(sprintf('    Missing %d items', $missingCount));
             }
 
             if ($step->shouldBeExecuted()) {
-                $output->writeln(sprintf('    Add missing items... '));
-                $step->addMissing($dryRun, $output);
-                $output->writeln(sprintf('    Done'));
+                $this->logger->info('Add missing items');
+                $step->addMissing($dryRun);
+                $this->logger->info('Done');
             }
-            $output->writeln('');
             $i++;
         }
 
-        $output->writeln('<info>Migration done!</info>');
+        $this->logger->info('<info>Migration done!</info>');
 
         return Command::SUCCESS;
     }

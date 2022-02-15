@@ -3,13 +3,13 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
 use Doctrine\DBAL\Connection;
-use Symfony\Component\Console\Output\OutputInterface;
+use Monolog\Logger;
 
 class MigrateToUuidCreateColumns implements MigrateToUuidStep
 {
     use MigrateToUuidTrait;
 
-    public function __construct(private Connection $connection)
+    public function __construct(private Connection $connection,private Logger $logger)
     {
     }
 
@@ -38,11 +38,11 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
         return $count;
     }
 
-    public function addMissing(bool $dryRun, OutputInterface $output): void
+    public function addMissing(bool $dryRun): void
     {
         foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
             if ($this->tableExists($tableName) && !$this->columnExists($tableName, $columnNames[1])) {
-                $output->writeln(sprintf('    Will add %s', $tableName));
+                $this->logger->info(sprintf('    Will add %s', $tableName));
                 if (!$dryRun) {
                     $addUuidColumnQuery = sprintf(<<<SQL
         ALTER TABLE `%s` ADD `%s` BINARY(16) DEFAULT NULL AFTER `%s`, LOCK=NONE, ALGORITHM=INPLACE;

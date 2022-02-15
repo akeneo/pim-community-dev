@@ -27,7 +27,7 @@ interface MigrateToUuidStep
 
     public function getMissingCount(): int;
 
-    public function addMissing(bool $dryRun, OutputInterface $output): void;
+    public function addMissing(bool $dryRun): void;
 
     public function shouldBeExecuted(): bool;
 
