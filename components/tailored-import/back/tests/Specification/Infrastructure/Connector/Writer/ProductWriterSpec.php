@@ -15,7 +15,6 @@ use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 
 /**
@@ -47,7 +46,7 @@ class ProductWriterSpec extends ObjectBehavior
 
     public function it_execute_upsert_command(UpsertProductHandlerInterface $upsertProductHandler)
     {
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: "identifier",valuesUserIntent: []);
+        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: "identifier", valuesUserIntent: []);
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
         $upsertProductHandler->__invoke($upsertProductCommand)->shouldBeCalled();
         $this->write([$this->rowPayload]);
@@ -57,7 +56,7 @@ class ProductWriterSpec extends ObjectBehavior
     {
         $constraintViolation->getParameters()->willReturn([]);
         $constraintViolation->getMessage()->willReturn("error");
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: "identifier",valuesUserIntent: []);
+        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: "identifier", valuesUserIntent: []);
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
         $upsertProductHandler->__invoke($upsertProductCommand)->willThrow(new LegacyViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject(), $constraintViolation->getWrappedObject()])));
         $stepExecution->addWarning("error", [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1'], 0))->shouldBeCalled();
@@ -68,7 +67,7 @@ class ProductWriterSpec extends ObjectBehavior
     {
         $constraintViolation->getParameters()->willReturn([]);
         $constraintViolation->getMessage()->willReturn("error");
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: "identifier",valuesUserIntent: []);
+        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: "identifier", valuesUserIntent: []);
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
         $upsertProductHandler->__invoke($upsertProductCommand)->willThrow(new ViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject(), $constraintViolation->getWrappedObject()])));
         $stepExecution->addWarning("error", [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1'], 0))->shouldBeCalled();

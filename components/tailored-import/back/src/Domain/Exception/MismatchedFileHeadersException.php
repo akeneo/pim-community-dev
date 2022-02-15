@@ -15,7 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Domain\Exception;
 
 class MismatchedFileHeadersException extends \Exception
 {
-    public function __construct(array $expectedHeader,array $actualHeader)
+    public function __construct(array $expectedHeader, array $actualHeader)
     {
         $message = sprintf(
             "Header label does not match job configuration.\nExpected: %s\nActual: %s",

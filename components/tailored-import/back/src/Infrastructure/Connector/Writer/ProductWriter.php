@@ -50,13 +50,13 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface
         }
     }
 
-    private function addWarning(ConstraintViolationList $violationList,RowPayload $rowPayload): void
+    private function addWarning(ConstraintViolationList $violationList, RowPayload $rowPayload): void
     {
         foreach ($violationList as $violation) {
             $this->stepExecution->addWarning(
                 $violation->getMessage(),
                 $violation->getParameters(),
-                new FileInvalidItem($this->getFormattedCells($rowPayload),$rowPayload->getRowPosition())
+                new FileInvalidItem($this->getFormattedCells($rowPayload), $rowPayload->getRowPosition())
             );
         }
     }

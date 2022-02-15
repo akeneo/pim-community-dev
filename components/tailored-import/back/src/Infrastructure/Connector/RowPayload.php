@@ -7,7 +7,6 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
 use Akeneo\Platform\TailoredImport\Application\Common\ColumnCollection;
 use Akeneo\Platform\TailoredImport\Application\Common\Row;
-use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FileHeaderCollection;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -21,7 +20,8 @@ class RowPayload
         private Row $row,
         private ColumnCollection $columnCollection,
         private int $rowPosition
-    ) {}
+    ) {
+    }
 
     public function setUpsertProductCommand(?UpsertProductCommand $upsertProductCommand): RowPayload
     {
