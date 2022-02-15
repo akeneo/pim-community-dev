@@ -30,13 +30,13 @@ describe('ReferenceEntityRowSelector', () => {
 
     expect(await screen.findByText('Lannion')).toBeInTheDocument();
 
-    act(() => {
-      fireEvent.click(screen.getByTitle('pim_common.open'));
+    await act(async () => {
+      fireEvent.click(await screen.findByTitle('pim_common.open'));
     });
     act(() => scroll());
-    expect(screen.getAllByText('Lannion')).toHaveLength(2);
-    expect(screen.getByTitle('vannes00bcf56a_2aa9_47c5_ac90_a973460b18a3')).toBeInTheDocument();
-    fireEvent.click(screen.getByTitle('vannes00bcf56a_2aa9_47c5_ac90_a973460b18a3'));
+    expect(await screen.findAllByText('Lannion')).toHaveLength(2);
+    expect(await screen.findByTitle('vannes00bcf56a_2aa9_47c5_ac90_a973460b18a3')).toBeInTheDocument();
+    fireEvent.click(await screen.findByTitle('vannes00bcf56a_2aa9_47c5_ac90_a973460b18a3'));
     expect(handleChange).toBeCalledWith('vannes00bcf56a_2aa9_47c5_ac90_a973460b18a3');
   });
 
@@ -49,7 +49,7 @@ describe('ReferenceEntityRowSelector', () => {
     );
 
     expect(await screen.findByText('Lannion')).toBeInTheDocument();
-    fireEvent.click(screen.getByTitle('pim_common.clear_value'));
+    fireEvent.click(await screen.findByTitle('pim_common.clear_value'));
     expect(handleChange).toBeCalledWith(undefined);
   });
 
@@ -62,10 +62,10 @@ describe('ReferenceEntityRowSelector', () => {
     );
 
     expect(await screen.findByText('Lannion')).toBeInTheDocument();
-    act(() => {
-      fireEvent.click(screen.getByTitle('pim_common.open'));
+    await act(async () => {
+      fireEvent.click(await screen.findByTitle('pim_common.open'));
     });
-    fireEvent.click(screen.getByText('pim_table_attribute.datagrid.any_row'));
+    fireEvent.click(await screen.findByText('pim_table_attribute.datagrid.any_row'));
     expect(handleChange).toBeCalledWith(null);
   });
 });

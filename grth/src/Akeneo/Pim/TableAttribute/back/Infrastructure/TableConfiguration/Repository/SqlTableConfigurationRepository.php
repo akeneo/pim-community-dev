@@ -29,13 +29,17 @@ use Ramsey\Uuid\Uuid;
  */
 final class SqlTableConfigurationRepository implements TableConfigurationRepository
 {
-    private Connection $connection;
-    private TableConfigurationFactory $tableConfigurationFactory;
+    /** @var string[] */
+    private array $propertyKeys = [
+        'reference_entity_identifier',
+        'measurement_family_code',
+        'measurement_default_unit_code',
+    ];
 
-    public function __construct(Connection $connection, TableConfigurationFactory $tableConfigurationFactory)
-    {
-        $this->connection = $connection;
-        $this->tableConfigurationFactory = $tableConfigurationFactory;
+    public function __construct(
+        private Connection $connection,
+        private TableConfigurationFactory $tableConfigurationFactory
+    ) {
     }
 
     public function getNextIdentifier(ColumnCode $columnCode): ColumnId
@@ -80,8 +84,10 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
         foreach ($tableConfiguration->normalize() as $columnOrder => $columnDefinition) {
             $properties = [];
 
-            if (\array_key_exists('reference_entity_identifier', $columnDefinition)) {
-                $properties['reference_entity_identifier'] = $columnDefinition['reference_entity_identifier'];
+            foreach ($this->propertyKeys as $propertyKey) {
+                if (\array_key_exists($propertyKey, $columnDefinition)) {
+                    $properties[$propertyKey] = $columnDefinition[$propertyKey];
+                }
             }
 
             $insertValues = [
@@ -152,8 +158,10 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
                     ];
 
                     $properties = \json_decode($row['properties'], true);
-                    if (\array_key_exists('reference_entity_identifier', $properties)) {
-                        $data['reference_entity_identifier'] = $properties['reference_entity_identifier'];
+                    foreach ($this->propertyKeys as $propertyKey) {
+                        if (\array_key_exists($propertyKey, $properties)) {
+                            $data[$propertyKey] = $properties[$propertyKey];
+                        }
                     }
 
                     return $data;

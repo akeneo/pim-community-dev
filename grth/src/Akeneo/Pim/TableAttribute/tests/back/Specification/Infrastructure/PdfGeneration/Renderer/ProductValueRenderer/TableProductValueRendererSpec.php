@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\PdfGeneration\R
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
@@ -50,6 +51,7 @@ class TableProductValueRendererSpec extends ObjectBehavior
             ['id' => ColumnIdGenerator::isAllergenic(), 'data_type' => 'boolean', 'code' => 'is_allergenic'],
             ['id' => ColumnIdGenerator::description(), 'data_type' => 'text', 'code' => 'description'],
             ['id' => $aqrId, 'data_type' => 'select', 'code' => 'aqr'],
+            ['id' => ColumnIdGenerator::duration(), 'data_type' => 'measurement', 'code' => 'duration', 'measurement_family_code' => 'duration', 'measurement_default_unit_code' => 's'],
         ];
 
         $attribute
@@ -64,7 +66,7 @@ class TableProductValueRendererSpec extends ObjectBehavior
                 BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'data_type' => 'boolean', 'code' => 'is_allergenic']),
                 TextColumn::fromNormalized(['id' => ColumnIdGenerator::description(), 'data_type' => 'text', 'code' => 'description']),
                 SelectColumn::fromNormalized(['id' => $aqrId, 'data_type' => 'select', 'code' => 'aqr']),
-            ])
+                MeasurementColumn::fromNormalized(['id' => ColumnIdGenerator::duration(), 'data_type' => 'measurement', 'code' => 'duration', 'measurement_family_code' => 'duration', 'measurement_default_unit_code' => 's']),            ])
         );
 
         $value
@@ -77,8 +79,13 @@ class TableProductValueRendererSpec extends ObjectBehavior
                     ColumnIdGenerator::isAllergenic() => true,
                     ColumnIdGenerator::description() => 'a <description>',
                     $aqrId => 'A',
+                    ColumnIdGenerator::duration() => ['amount' => 12.5, 'unit' => 'm'],
                 ],
-                [ColumnIdGenerator::ingredient() => 'salt', ColumnIdGenerator::isAllergenic() => false],
+                [
+                    ColumnIdGenerator::ingredient() => 'salt',
+                    ColumnIdGenerator::isAllergenic() => false,
+                    ColumnIdGenerator::duration() => ['amount' => '5', 'unit' => 's']
+                ],
                 [ColumnIdGenerator::ingredient() => 'eggs'],
             ]));
 
@@ -86,10 +93,10 @@ class TableProductValueRendererSpec extends ObjectBehavior
         $translator->trans('No')->shouldBeCalled()->willReturn('Faux');
 
         $this->render($environment, $attribute, $value, 'en_US')->shouldReturn('<table>
-<thead><tr><th>ingredient</th><th>quantity</th><th>is_allergenic</th><th>description</th><th>aqr</th></tr></thead>
-<tbody><tr><td>sugar</td><td>42</td><td>Vrai</td><td>a &lt;description&gt;</td><td>A</td></tr>
-<tr><td>salt</td><td></td><td>Faux</td><td></td><td></td></tr>
-<tr><td>eggs</td><td></td><td></td><td></td><td></td></tr>
+<thead><tr><th>ingredient</th><th>quantity</th><th>is_allergenic</th><th>description</th><th>aqr</th><th>duration</th></tr></thead>
+<tbody><tr><td>sugar</td><td>42</td><td>Vrai</td><td>a &lt;description&gt;</td><td>A</td><td>12.5 m</td></tr>
+<tr><td>salt</td><td></td><td>Faux</td><td></td><td></td><td>5 s</td></tr>
+<tr><td>eggs</td><td></td><td></td><td></td><td></td><td></td></tr>
 </tbody>
 </table>');
     }

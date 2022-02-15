@@ -46,6 +46,15 @@ final class GetAttributeEndToEnd extends AbstractAttributeApiTestCase
                 ],
                 'is_required_for_completeness' => false,
             ],
+            [
+                'code' => 'manufacturing_time',
+                'data_type' => 'measurement',
+                'labels' => [],
+                'validations' => [],
+                'is_required_for_completeness' => false,
+                'measurement_family_code' => 'duration',
+                'measurement_default_unit_code' => 'second',
+            ],
         ], $decoded['table_configuration']);
     }
 
@@ -79,6 +88,15 @@ final class GetAttributeEndToEnd extends AbstractAttributeApiTestCase
                     'max_length' => 100,
                 ],
                 'is_required_for_completeness' => false,
+            ],
+            [
+                'code' => 'manufacturing_time',
+                'data_type' => 'measurement',
+                'labels' => [],
+                'validations' => [],
+                'is_required_for_completeness' => false,
+                'measurement_family_code' => 'duration',
+                'measurement_default_unit_code' => 'second',
             ],
         ], $decoded['table_configuration']);
     }

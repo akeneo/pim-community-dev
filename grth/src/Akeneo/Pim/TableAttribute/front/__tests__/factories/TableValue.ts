@@ -14,7 +14,7 @@ export const getTableValueWithId: (firstColumnType?: 'select' | 'reference_entit
   firstColumnType = 'select'
 ) => {
   return firstColumnType === 'select'
-    ? [
+    ? ([
         {
           'unique id': 'uniqueidsugar',
           ingredient: 'sugar',
@@ -22,10 +22,11 @@ export const getTableValueWithId: (firstColumnType?: 'select' | 'reference_entit
           part: '10g',
           is_allergenic: true,
           nutrition_score: 'A',
+          ElectricCharge: {amount: 10, unit: 'MILLICOULOMB'},
         },
         {'unique id': 'uniqueidsalt', ingredient: 'salt', part: '66g', is_allergenic: false, nutrition_score: 'B'},
         {'unique id': 'uniqueidcaramel', ingredient: 'caramel'},
-      ]
+      ] as TableValueWithId)
     : ([
         {
           'unique id': 'uniqueidvannes',
@@ -34,6 +35,7 @@ export const getTableValueWithId: (firstColumnType?: 'select' | 'reference_entit
           part: '10g',
           is_allergenic: true,
           nutrition_score: 'A',
+          ElectricCharge: {amount: 10, unit: 'MILLICOULOMB'},
         },
         {
           'unique id': 'uniqueidnantes',

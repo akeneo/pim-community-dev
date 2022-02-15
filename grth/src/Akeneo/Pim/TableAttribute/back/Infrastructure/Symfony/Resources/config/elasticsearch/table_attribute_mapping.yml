@@ -62,3 +62,8 @@ mappings:
         mapping:
           type: 'keyword'
           normalizer: 'attribute_option_normalizer'
+    -
+      table_values_measurement:
+        path_match: 'table_values.*.value-measurement'
+        mapping:
+          type: 'double'

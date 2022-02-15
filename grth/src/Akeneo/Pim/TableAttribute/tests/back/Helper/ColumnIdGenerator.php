@@ -66,4 +66,9 @@ final class ColumnIdGenerator
     {
         return 'record_d39d3c48-46e6-4744-8196-56e08563fd46';
     }
+
+    public static function duration(): string
+    {
+        return 'duration_1c48443d-44d6-4df4-b7ba-946281bb3c34';
+    }
 }

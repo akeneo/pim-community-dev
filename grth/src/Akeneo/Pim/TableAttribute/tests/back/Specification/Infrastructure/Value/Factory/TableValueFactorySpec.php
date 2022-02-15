@@ -164,21 +164,22 @@ class TableValueFactorySpec extends ObjectBehavior
         );
     }
 
-    function it_throws_an_exception_if_cell_is_not_a_string()
+    function it_throws_an_exception_if_cell_has_not_a_valid_format()
     {
         $attribute = $this->buildTableAttribute(false, false);
+        $value = new \stdClass();
 
         $this->shouldThrow(InvalidPropertyTypeException::validArrayStructureExpected(
             'nutrition',
-            'The cell value must be a text string, a number or a boolean.',
+            'The cell value must be a text string, a number, a boolean or an array.',
             TableValueFactory::class,
-            [['foo' => ['an array']]]
+            [['foo' => $value]]
         ))->during(
             'createByCheckingData', [
                 $attribute,
                 null,
                 null,
-                [['foo' => ['an array']]]
+                [['foo' => $value]]
             ]
         );
     }

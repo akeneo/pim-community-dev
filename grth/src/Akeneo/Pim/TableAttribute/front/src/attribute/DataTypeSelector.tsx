@@ -19,6 +19,7 @@ const DataTypeSelector: React.FC<DataTypeSelectorProps> = ({dataType, onChange, 
     number: {useable_as_first_column: false},
     boolean: {useable_as_first_column: false},
     reference_entity: {useable_as_first_column: true, flag: 'reference_entity'},
+    measurement: {useable_as_first_column: false},
   };
 
   const dataTypes: DataType[] = Object.keys(dataTypesMapping).filter((dataType: string) => {
