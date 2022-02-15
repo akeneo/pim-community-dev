@@ -15,20 +15,18 @@ type Props = Override<
 type Rounded = 'all' | 'left' | 'right' | 'none';
 
 /**
- * <QualityScore score='A' isSelected stacked />
- *
- * <QualityScore score='A' isSelected />
- *
- * <QualityScore score='B' stacked />
- *
- * <QualityScore score='B' />
- *
  * <QualityScore score={null} />
  *
- * <QualityScore score='N/A' />
+ * <QualityScore score={'N/A'} />
+ *
+ * <QualityScore score={'A'} />
+ *
+ * <QualityScore score={'A'} size={'big'} />
+ *
+ * <QualityScore score={'A'} size={'big'} rounded={'left} stacked />
  *
  */
-const QualityScore: FC<Props> = ({score, size = 'normal', stacked = false, rounded = 'all', ...props}) => {
+const QualityScore: FC<Props> = ({score, size = 'normal', rounded = 'all', stacked = false, ...props}) => {
   if (score === 'N/A' || score === null) {
     return <>N/A</>;
   }
@@ -36,15 +34,15 @@ const QualityScore: FC<Props> = ({score, size = 'normal', stacked = false, round
   return stacked ? (
     <Wrapper size={size}>
       <>
-        <QualityScoreEmptyContainer size={size} score={score} top={-2} left={4} />
-        <QualityScoreEmptyContainer size={size} score={score} top={0} left={2} />
+        <QualityScoreEmptyContainer score={score} size={size} top={-2} left={4} />
+        <QualityScoreEmptyContainer score={score} size={size} top={0} left={2} />
       </>
-      <Container size={size} score={score} stacked={stacked} rounded={rounded} {...props}>
+      <Container score={score} size={size} rounded={rounded} stacked={stacked} {...props}>
         {score}
       </Container>
     </Wrapper>
   ) : (
-    <Container size={size} score={score} rounded={rounded} {...props}>
+    <Container score={score} size={size} rounded={rounded} {...props}>
       {score}
     </Container>
   );
@@ -79,7 +77,7 @@ const containerStackedStyled = css<{score: string; size: string}>`
         `}
 `;
 
-const Container = styled.div<{size: string; score: string; stacked?: boolean; rounded: Rounded}>`
+const Container = styled.div<{score: string; size: string; rounded: Rounded; stacked?: boolean}>`
   text-align: center;
   display: inline-block;
   text-transform: uppercase;
@@ -145,7 +143,7 @@ const switchContainer = (score: string) => {
 };
 
 const QualityScoreEmptyContainer = styled.div<
-  {size: string; score: string; top: number; left: number} & AkeneoThemedProps
+  {score: string; size: string; top: number; left: number} & AkeneoThemedProps
 >`
   top: ${({top}) => top}px;
   left: ${({left}) => left}px;

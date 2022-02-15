@@ -18,22 +18,22 @@ const QualityScoreBar: FC<Props> = ({currentScore, stacked = false}) => {
         key={`ranking-score-A`}
         score={'A'}
         size={'A' === currentScore ? 'big' : 'normal'}
-        stacked={stacked && 'A' === currentScore}
         rounded={'left'}
+        stacked={stacked && 'A' === currentScore}
       />
       <QualityScore
         key={`ranking-score-B`}
         score={'B'}
         size={'B' === currentScore ? 'big' : 'normal'}
-        stacked={stacked && 'B' === currentScore}
         rounded={'none'}
+        stacked={stacked && 'B' === currentScore}
       />
       <QualityScore
         key={`ranking-score-C`}
         score={'C'}
         size={'C' === currentScore ? 'big' : 'normal'}
-        stacked={stacked && 'C' === currentScore}
         rounded={'none'}
+        stacked={stacked && 'C' === currentScore}
       />
       <QualityScore
         key={`ranking-score-D`}
