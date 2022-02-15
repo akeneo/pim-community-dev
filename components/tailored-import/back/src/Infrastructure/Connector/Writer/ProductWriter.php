@@ -15,7 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Writer;
 
 use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\ViolationsException;
-use Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler;
+use Akeneo\Pim\Enrichment\Product\Api\UpsertProductHandlerInterface;
 use Akeneo\Platform\TailoredImport\Application\Common\Column;
 use Akeneo\Platform\TailoredImport\Infrastructure\Connector\RowPayload;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
@@ -30,7 +30,7 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface
     private ?StepExecution $stepExecution;
 
     public function __construct(
-        private UpsertProductHandler $upsertProductHandler,
+        private UpsertProductHandlerInterface $upsertProductHandler,
     ) {
     }
 
