@@ -2,3 +2,8 @@ pimee_tailored_import_get_grouped_targets_action:
     path: /rest/tailored-import/targets
     defaults: { _controller: akeneo.tailored_import.controller.get_grouped_targets_action }
     methods: [GET]
+
+pimee_tailored_import_upload_flat_file_action:
+    path: /rest/tailored-import/upload
+    defaults: { _controller: akeneo.tailored_import.controller.upload_flat_file_action }
+    methods: [POST]
