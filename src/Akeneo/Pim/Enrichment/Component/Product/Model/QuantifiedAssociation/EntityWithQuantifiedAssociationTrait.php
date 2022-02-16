@@ -161,6 +161,7 @@ trait EntityWithQuantifiedAssociationTrait
      */
     public function updateRawQuantifiedAssociations(
         IdMapping $mappedProductIdentifiers,
+        UuidMapping $uuidMappedProductIdentifiers,
         IdMapping $mappedProductModelIdentifiers
     ): void {
         if (null === $this->quantifiedAssociationCollection) {
@@ -169,6 +170,7 @@ trait EntityWithQuantifiedAssociationTrait
 
         $normalized = $this->quantifiedAssociationCollection->normalizeWithMapping(
             $mappedProductIdentifiers,
+            $uuidMappedProductIdentifiers,
             $mappedProductModelIdentifiers
         );
 

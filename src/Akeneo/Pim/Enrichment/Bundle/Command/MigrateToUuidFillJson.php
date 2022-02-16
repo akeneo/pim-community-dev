@@ -138,6 +138,11 @@ LIMIT :limit";
 
     private function addMissingForTable(bool $dryRun, OutputInterface $output, string $tableName): void
     {
+        if (!$this->columnExists('pim_catalog_product', 'uuid')) {
+            $output->writeln(sprintf('    <comment>The uuid column does not exist. Skip'));
+
+            return;
+        }
         $previousEntityId = -1;
         $associations = $this->getFormerAssociations($tableName, $previousEntityId);
         while (count($associations) > 0) {
@@ -175,6 +180,16 @@ LIMIT :limit";
                 $associations = [];
             }
         }
+    }
+
+    private function columnExists(string $tableName, string $columnName): bool
+    {
+        $rows = $this->connection->fetchAllAssociative(sprintf('SHOW COLUMNS FROM %s LIKE :columnName', $tableName),
+            [
+                'columnName' => $columnName,
+            ]);
+
+        return count($rows) >= 1;
     }
 }
 
