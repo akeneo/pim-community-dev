@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\Infrastructure\Connector\Reader;
 
 use Akeneo\Platform\TailoredImport\Domain\Exception\MismatchedFileHeadersException;
+use Akeneo\Platform\TailoredImport\Domain\Model\ColumnCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\FileReader;
 use Akeneo\Platform\TailoredImport\Infrastructure\Connector\RowPayload;

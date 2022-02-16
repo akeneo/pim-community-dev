@@ -45,6 +45,6 @@ class ColumnCollection
 
     public function getLabels(): array
     {
-        return array_map(fn (Column $column) => $column->label(), $this->columns);
+        return array_map(fn (Column $column) => $column->getLabel(), $this->columns);
     }
 }
