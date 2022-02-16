@@ -15,6 +15,6 @@ oneup_flysystem:
         data_quality_insights_shared_adapter:
             custom:
                 service: 'akeneo_flysystem_adapter.googlecloudstorage.data_quality_insights_shared_adapter'
-        tailored_import_adapter:
+        tailored_import_storage_adapter:
             custom:
-                service: 'akeneo_flysystem_adapter.googlecloudstorage.tailored_import_adapter'  # TODO should we create a bucket in Google Cloud Storage? (see with SREs)
+                service: 'akeneo_flysystem_adapter.googlecloudstorage.tailored_import_storage_adapter'  # TODO should we create a bucket in Google Cloud Storage? (see with SREs)

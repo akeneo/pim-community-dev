@@ -40,7 +40,7 @@ services:
             $bucket: '@Google\Cloud\Storage\Bucket'
             $prefix: 'data_quality_insights'
 
-    akeneo_flysystem_adapter.googlecloudstorage.tailored_import_adapter:
+    akeneo_flysystem_adapter.googlecloudstorage.tailored_import_storage_adapter:
         class: 'League\Flysystem\GoogleCloudStorage\GoogleCloudStorageAdapter'
         arguments:
             $bucket: '@Google\Cloud\Storage\Bucket'
