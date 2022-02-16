@@ -53,7 +53,7 @@ class TargetValidator extends ConstraintValidator
                         ]
                     ]),
                 ],
-                'action' => [
+                'action_if_not_empty' => [
                     new Choice([
                         'choices' => [
                             'set',
@@ -61,7 +61,7 @@ class TargetValidator extends ConstraintValidator
                         ]
                     ]),
                 ],
-                'if_empty' => [
+                'action_if_empty' => [
                     new Choice([
                         'choices' => [
                             'clear',

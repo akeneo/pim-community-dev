@@ -20,8 +20,8 @@ jest.mock('./PropertyTargetParameters', () => ({
 const attributeTarget: AttributeTarget = {
   code: 'description',
   type: 'attribute',
-  action: 'set',
-  if_empty: 'skip',
+  action_if_not_empty: 'set',
+  action_if_empty: 'skip',
   channel: 'ecommerce',
   locale: 'fr_FR',
 };
@@ -29,8 +29,8 @@ const attributeTarget: AttributeTarget = {
 const propertyTarget: PropertyTarget = {
   code: 'parent',
   type: 'property',
-  action: 'set',
-  if_empty: 'skip',
+  action_if_not_empty: 'set',
+  action_if_empty: 'skip',
 };
 
 test('it displays Property target parameters when target is a property and handles change', () => {

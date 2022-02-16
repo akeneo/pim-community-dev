@@ -8,15 +8,15 @@ type AttributeTarget = {
   channel: ChannelReference;
   locale: LocaleReference;
   type: 'attribute';
-  action: TargetAction;
-  if_empty: TargetEmptyAction;
+  action_if_not_empty: TargetAction;
+  action_if_empty: TargetEmptyAction;
 };
 
 type PropertyTarget = {
   code: string;
   type: 'property';
-  action: TargetAction;
-  if_empty: TargetEmptyAction;
+  action_if_not_empty: TargetAction;
+  action_if_empty: TargetEmptyAction;
 };
 
 type Target = AttributeTarget | PropertyTarget;
@@ -26,15 +26,15 @@ const createAttributeTarget = (code: string, channel: ChannelReference, locale: 
   type: 'attribute',
   locale,
   channel,
-  action: 'set',
-  if_empty: 'skip',
+  action_if_not_empty: 'set',
+  action_if_empty: 'skip',
 });
 
 const createPropertyTarget = (code: string): PropertyTarget => ({
   code,
   type: 'property',
-  action: 'set',
-  if_empty: 'skip',
+  action_if_not_empty: 'set',
+  action_if_empty: 'skip',
 });
 
 const isAttributeTarget = (target: Target): target is AttributeTarget =>

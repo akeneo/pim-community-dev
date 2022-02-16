@@ -18,14 +18,14 @@ class TargetAttribute implements TargetInterface
         private string $code,
         private ?string $channel,
         private ?string $locale,
-        private string $action,
-        private string $ifEmpty,
+        private string $actionIfNotEmpty,
+        private string $actionIfEmpty,
     ) {
         Assert::stringNotEmpty($this->code);
         Assert::notSame($this->channel, '');
         Assert::notSame($this->locale, '');
-        Assert::inArray($this->action, [TargetInterface::ACTION_ADD, TargetInterface::ACTION_SET]);
-        Assert::inArray($this->ifEmpty, [TargetInterface::IF_EMPTY_CLEAR, TargetInterface::IF_EMPTY_SKIP]);
+        Assert::inArray($this->actionIfNotEmpty, [TargetInterface::ACTION_ADD, TargetInterface::ACTION_SET]);
+        Assert::inArray($this->actionIfEmpty, [TargetInterface::IF_EMPTY_CLEAR, TargetInterface::IF_EMPTY_SKIP]);
     }
 
     public static function createFromNormalized(array $normalizedAttributeTarget): self
@@ -34,8 +34,8 @@ class TargetAttribute implements TargetInterface
             $normalizedAttributeTarget['code'],
             $normalizedAttributeTarget['channel'],
             $normalizedAttributeTarget['locale'],
-            $normalizedAttributeTarget['action'],
-            $normalizedAttributeTarget['if_empty'],
+            $normalizedAttributeTarget['action_if_not_empty'],
+            $normalizedAttributeTarget['action_if_empty'],
         );
     }
 
@@ -56,11 +56,11 @@ class TargetAttribute implements TargetInterface
 
     public function getActionIfNotEmpty(): string
     {
-        return $this->action;
+        return $this->actionIfNotEmpty;
     }
 
     public function getActionIfEmpty(): string
     {
-        return $this->ifEmpty;
+        return $this->actionIfEmpty;
     }
 }
