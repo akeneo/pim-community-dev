@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- PIM-10287: Fix deprecated methods for Symfony\Component\Console\Helper\TableStyle
+
 # 6.0.4 (2022-02-10)
 
 # 6.0.3 (2022-02-09)
