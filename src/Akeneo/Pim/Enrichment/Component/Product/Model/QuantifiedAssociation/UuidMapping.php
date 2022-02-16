@@ -14,11 +14,11 @@ use Webmozart\Assert\Assert;
  */
 final class UuidMapping
 {
-    /** @var array  */
-    private $uuidsToIdentifiers;
+    /** @var array<string, string> */
+    private array $uuidsToIdentifiers;
 
-    /** @var array  */
-    private $identifiersToUuids;
+    /** @var array<string, string> */
+    private array $identifiersToUuids;
 
     private function __construct(array $mapping)
     {
