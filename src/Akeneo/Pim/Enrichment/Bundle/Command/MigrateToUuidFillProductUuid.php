@@ -93,10 +93,12 @@ VALUES %s ON DUPLICATE KEY UPDATE uuid=VALUES(uuid)', implode(', ', $values));
 
     private function columnExists(string $tableName, string $columnName): bool
     {
-        $rows = $this->connection->fetchAllAssociative(sprintf('SHOW COLUMNS FROM %s LIKE :columnName', $tableName),
+        $rows = $this->connection->fetchAllAssociative(
+            sprintf('SHOW COLUMNS FROM %s LIKE :columnName', $tableName),
             [
                 'columnName' => $columnName,
-            ]);
+            ]
+        );
 
         return count($rows) >= 1;
     }
