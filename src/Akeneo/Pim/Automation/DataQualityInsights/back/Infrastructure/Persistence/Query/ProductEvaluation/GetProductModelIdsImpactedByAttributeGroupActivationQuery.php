@@ -24,7 +24,10 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQuery implements
         $this->dbConnection = $dbConnection;
     }
 
-    public function updatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Iterator
+    /**
+     * @return \Generator<int, array<ProductId>>
+     */
+    public function updatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Generator
     {
         $productModelIds = [];
         $stmtRootProductModels = $this->executeQueryToRetrieveImpactedRootProductModels($updatedSince);
