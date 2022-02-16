@@ -53,6 +53,8 @@ final class UpdateConnectedAppMonitoringSettingsAction
             throw new NotFoundHttpException("Connected app with connection code $connectionCode does not exist.");
         }
 
+        $this->denyAccessUnlessGrantedToManage($connectedApp);
+
         $connection = $this->findAConnectionHandler->handle(new FindAConnectionQuery($connectionCode));
 
         if (null === $connection || ConnectionType::APP_TYPE !== $connection->type()) {

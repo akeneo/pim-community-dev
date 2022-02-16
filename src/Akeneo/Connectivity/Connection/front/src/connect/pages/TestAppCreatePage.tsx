@@ -8,7 +8,7 @@ import {CreateTestAppForm} from '../components/TestApp/CreateTestAppForm';
 import {TestAppCredentials} from '../../model/Apps/test-app-credentials';
 import {CreateTestAppCredentials} from '../components/TestApp/CreateTestAppCredentials';
 import {FullScreenError} from '@akeneo-pim-community/shared';
-import {useAppDeveloperMode} from '../hooks/use-app-developer-mode';
+import {useDeveloperMode} from '../hooks/use-developer-mode';
 
 const Subtitle = styled.h3`
     color: ${getColor('brand', 100)};
@@ -23,7 +23,7 @@ export const TestAppCreatePage = () => {
     const generateUrl = useRouter();
     const translate = useTranslate();
     const [credentials, setCredentials] = useState<TestAppCredentials | null>(null);
-    const isDeveloperModeEnabled = useAppDeveloperMode();
+    const isDeveloperModeEnabled = useDeveloperMode();
 
     if (!isDeveloperModeEnabled) {
         return (
