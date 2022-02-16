@@ -164,7 +164,7 @@ connectivity-connection-coverage:
 		mkdir -p coverage/Connectivity/Back/Global/ && \
 		cp coverage/Connectivity/Back/Unit/coverage.php coverage/Connectivity/Back/Global/Unit.cov && \
 		cp coverage/Connectivity/Back/Integration/coverage.php coverage/Connectivity/Back/Global/Integration.cov && \
-		cp coverage/Connectivity/Back/EndToEnd/coverage.php coverage/Connectivity/Back/Global/EndToEnd.cov
+		cp coverage/Connectivity/Back/EndToEnd/coverage.php coverage/Connectivity/Back/Global/EndToEnd.cov"
 	# run the command to merge all the code coverage on scope connectivity
 	XDEBUG_MODE=coverage ${PHP_RUN} -d memory_limit=-1 phpcov.phar merge \
 		--clover coverage/Connectivity/Back/Global/coverage.cov \
