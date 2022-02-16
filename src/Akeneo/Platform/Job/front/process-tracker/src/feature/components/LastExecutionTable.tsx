@@ -68,7 +68,7 @@ const LastExecutionTable = ({sticky, jobExecutionRows, onTableRefresh}: LastExec
               <JobExecutionStatus
                 status={jobExecutionRow.status}
                 hasWarning={jobExecutionRow.warning_count > 0}
-                hasError={jobExecutionRow.error_count > 0}
+                hasError={jobExecutionRow.has_error}
                 currentStep={jobExecutionRow.tracking.current_step}
                 totalSteps={jobExecutionRow.tracking.total_step}
               />
