@@ -21,15 +21,15 @@ class DataMappingSpec extends ObjectBehavior
                 'code' => 'code',
                 'channel' => 'web',
                 'locale' => 'fr_FR',
-                'action' => 'set',
-                'if_empty' => 'skip'
+                'action_if_not_empty' => 'set',
+                'action_if_empty' => 'skip'
             ],
             'sources' => [],
             'operations' => [],
             'sample_data' => [],
         ]]);
 
-        $this->uuid()->shouldReturn('b244c45c-d5ec-4993-8cff-7ccd04e82fef');
+        $this->getUuid()->shouldReturn('b244c45c-d5ec-4993-8cff-7ccd04e82fef');
     }
 
     public function it_throws_an_exception_when_uuid_is_invalid()
@@ -41,8 +41,8 @@ class DataMappingSpec extends ObjectBehavior
                 'code' => 'code',
                 'channel' => 'web',
                 'locale' => 'fr_FR',
-                'action' => 'set',
-                'if_empty' => 'skip'
+                'action_if_not_empty' => 'set',
+                'action_if_empty' => 'skip'
             ],
             'sources' => [],
             'operations' => [],

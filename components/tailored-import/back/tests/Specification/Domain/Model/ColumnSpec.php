@@ -25,9 +25,9 @@ class ColumnSpec extends ObjectBehavior
             'uuid' => 'f9be9837-df82-4ad7-8c76-565ac274e900',
         ]]);
 
-        $this->index()->shouldReturn(0);
-        $this->label()->shouldReturn('label');
-        $this->uuid()->shouldReturn('f9be9837-df82-4ad7-8c76-565ac274e900');
+        $this->getIndex()->shouldReturn(0);
+        $this->getLabel()->shouldReturn('label');
+        $this->getUuid()->shouldReturn('f9be9837-df82-4ad7-8c76-565ac274e900');
     }
 
     public function it_throws_an_exception_when_uuid_is_invalid()

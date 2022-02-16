@@ -21,14 +21,14 @@ class DataMappingCollectionSpec extends ObjectBehavior
                 'code' => 'code',
                 'channel' => 'web',
                 'locale' => 'fr_FR',
-                'action' => 'set',
-                'if_empty' => 'skip',
+                'action_if_not_empty' => 'set',
+                'action_if_empty' => 'skip',
             ],
             'sources' => [],
             'operations' => [],
             'sample_data' => [],
         ]]]);
 
-        $this->iterator()->shouldHaveCount(1);
+        $this->getIterator()->shouldHaveCount(1);
     }
 }

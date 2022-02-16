@@ -76,8 +76,8 @@ test('it adds data mapping with attribute target', async () => {
     target: {
       code: 'name',
       type: 'attribute',
-      action: 'set',
-      if_empty: 'skip',
+      action_if_not_empty: 'set',
+      action_if_empty: 'skip',
       channel: null,
       locale: null,
     },
@@ -104,8 +104,8 @@ test('it adds data mapping with property target', async () => {
     target: {
       code: 'category',
       type: 'property',
-      action: 'set',
-      if_empty: 'skip',
+      action_if_not_empty: 'set',
+      action_if_empty: 'skip',
     },
     sources: [],
     operations: [],

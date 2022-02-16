@@ -16,12 +16,12 @@ class TargetPropertySpec extends ObjectBehavior
     {
         $this->beConstructedThrough('createFromNormalized', [[
             'code' => 'test_code',
-            'action' => 'set',
-            'if_empty' => 'skip',
+            'action_if_not_empty' => 'set',
+            'action_if_empty' => 'skip',
         ]]);
 
-        $this->code()->shouldReturn('test_code');
-        $this->action()->shouldReturn('set');
-        $this->ifEmpty()->shouldReturn('skip');
+        $this->getCode()->shouldReturn('test_code');
+        $this->getActionIfNotEmpty()->shouldReturn('set');
+        $this->getActionIfEmpty()->shouldReturn('skip');
     }
 }

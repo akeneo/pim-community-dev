@@ -16,35 +16,35 @@ class TargetProperty implements TargetInterface
 
     private function __construct(
         private string $code,
-        private string $action,
-        private string $ifEmpty,
+        private string $actionIfNotEmpty,
+        private string $actionIfEmpty,
     ) {
         Assert::stringNotEmpty($this->code);
-        Assert::inArray($this->action, [TargetInterface::ACTION_ADD, TargetInterface::ACTION_SET]);
-        Assert::inArray($this->ifEmpty, [TargetInterface::IF_EMPTY_CLEAR, TargetInterface::IF_EMPTY_SKIP]);
+        Assert::inArray($this->actionIfNotEmpty, [TargetInterface::ACTION_ADD, TargetInterface::ACTION_SET]);
+        Assert::inArray($this->actionIfEmpty, [TargetInterface::IF_EMPTY_CLEAR, TargetInterface::IF_EMPTY_SKIP]);
     }
 
     public static function createFromNormalized(array $normalizedPropertyTarget): self
     {
         return new self(
             $normalizedPropertyTarget['code'],
-            $normalizedPropertyTarget['action'],
-            $normalizedPropertyTarget['if_empty'],
+            $normalizedPropertyTarget['action_if_not_empty'],
+            $normalizedPropertyTarget['action_if_empty'],
         );
     }
 
-    public function code(): string
+    public function getCode(): string
     {
         return $this->code;
     }
 
-    public function action(): string
+    public function getActionIfNotEmpty(): string
     {
-        return $this->action;
+        return $this->actionIfNotEmpty;
     }
 
-    public function ifEmpty(): string
+    public function getActionIfEmpty(): string
     {
-        return $this->ifEmpty;
+        return $this->actionIfEmpty;
     }
 }

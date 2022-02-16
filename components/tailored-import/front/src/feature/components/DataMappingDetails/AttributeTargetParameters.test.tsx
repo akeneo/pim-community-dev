@@ -8,8 +8,8 @@ import userEvent from '@testing-library/user-event';
 const attributeTarget: AttributeTarget = {
   code: 'description',
   type: 'attribute',
-  action: 'set',
-  if_empty: 'skip',
+  action_if_not_empty: 'set',
+  action_if_empty: 'skip',
   channel: 'ecommerce',
   locale: 'fr_FR',
 };
@@ -92,7 +92,7 @@ test('it can change the if_empty case when hitting the checkbox', async () => {
 
   expect(handleTargetChange).toHaveBeenCalledWith({
     ...attributeTarget,
-    if_empty: 'clear',
+    action_if_empty: 'clear',
   });
 });
 
