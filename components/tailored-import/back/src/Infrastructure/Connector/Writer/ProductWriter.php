@@ -15,7 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Writer;
 
 use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\ViolationsException;
-use Akeneo\Platform\TailoredImport\Application\Common\Column;
+use Akeneo\Platform\TailoredImport\Domain\Model\Column;
 use Akeneo\Platform\TailoredImport\Infrastructure\Connector\RowPayload;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
@@ -67,7 +67,7 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface
         $columns = $rowPayload->getColumnCollection()->getIterator();
         /** @var Column $column */
         foreach ($columns as $column) {
-            $formattedCells[$column->label()] = $rowPayload->getRow()->getCellData($column->uuid());
+            $formattedCells[$column->getLabel()] = $rowPayload->getRow()->getCellData($column->getUuid());
         }
 
         return $formattedCells;

@@ -7,9 +7,8 @@ namespace Specification\Akeneo\Platform\TailoredImport\Infrastructure\Connector\
 use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\Api\UpsertProductHandlerInterface;
-use Akeneo\Platform\TailoredImport\Application\Common\ColumnCollection;
-use Akeneo\Platform\TailoredImport\Application\Common\Row;
+use Akeneo\Platform\TailoredImport\Domain\Model\ColumnCollection;
+use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Infrastructure\Connector\RowPayload;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
