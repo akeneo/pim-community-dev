@@ -62,7 +62,9 @@ jest.mock('./components/DataMappingDetails/DataMappingDetails', () => ({
   }) => (
     <>
       Data mapping details of {dataMapping.uuid}
-      <button onClick={() => onDataMappingChange({...dataMapping, target: {...dataMapping.target, action_if_empty: 'clear'}})}>
+      <button
+        onClick={() => onDataMappingChange({...dataMapping, target: {...dataMapping.target, action_if_empty: 'clear'}})}
+      >
         Update data mapping
       </button>
     </>
