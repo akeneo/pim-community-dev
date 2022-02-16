@@ -40,7 +40,7 @@ class UuidMappingSpec extends ObjectBehavior
         $this->hasIdentifier(Uuid::fromString('52254bba-a2c8-40bb-abe1-195e3970bd93'))->shouldReturn(false);
     }
 
-    public function it_throws_if_the_product_id_is_not_an_integer()
+    public function it_throws_if_the_product_uuid_is_not_a_real_uuid()
     {
         $invalidUuid = 'wrong_uuid';
         $this->shouldThrow(\InvalidArgumentException::class)
