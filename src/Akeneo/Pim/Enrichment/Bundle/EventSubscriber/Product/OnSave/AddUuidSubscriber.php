@@ -20,12 +20,12 @@ class AddUuidSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::POST_SAVE => 'reIndex',
-            StorageEvents::POST_SAVE_ALL => 'reIndexAll',
+            StorageEvents::POST_SAVE => 'fillSingleUuid',
+            StorageEvents::POST_SAVE_ALL => 'fillMultipleUuid',
         ];
     }
 
-    public function reIndex(GenericEvent $event): void
+    public function fillSingleUuid(GenericEvent $event): void
     {
         $product = $event->getSubject();
         $unitary = $event->getArguments()['unitary'] ?? false;
@@ -35,7 +35,7 @@ class AddUuidSubscriber implements EventSubscriberInterface
         $this->fillUuids([$product->getIdentifier()]);
     }
 
-    public function reIndexAll(GenericEvent $event): void
+    public function fillMultipleUuid(GenericEvent $event): void
     {
         $products = $event->getSubject();
         if (!reset($products) instanceof ProductInterface) {
@@ -44,13 +44,17 @@ class AddUuidSubscriber implements EventSubscriberInterface
 
         $identifiers = [];
         foreach ($products as $product) {
-            $identifiers[] = $product->getIdentifiers();
+            $identifiers[] = $product->getIdentifier();
         }
         $this->fillUuids($identifiers);
     }
 
     private function fillUuids(array $identifiers): void
     {
+        if (!$this->columnExists('pim_catalog_product', 'uuid')) {
+            return;
+        }
+
         foreach ($identifiers as $identifier) {
             $this->connection->executeQuery(
                 'UPDATE pim_catalog_product SET uuid=UUID_TO_BIN(:uuid) WHERE identifier=:identifier',
@@ -60,5 +64,15 @@ class AddUuidSubscriber implements EventSubscriberInterface
                 ]
             );
         }
+    }
+
+    private function columnExists(string $tableName, string $columnName): bool
+    {
+        $rows = $this->connection->fetchAllAssociative(sprintf('SHOW COLUMNS FROM %s LIKE :columnName', $tableName),
+            [
+                'columnName' => $columnName,
+            ]);
+
+        return count($rows) >= 1;
     }
 }
