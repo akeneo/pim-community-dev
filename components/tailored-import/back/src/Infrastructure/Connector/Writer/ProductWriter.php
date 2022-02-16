@@ -15,13 +15,13 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Writer;
 
 use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\ViolationsException;
-use Akeneo\Pim\Enrichment\Product\Api\UpsertProductHandlerInterface;
 use Akeneo\Platform\TailoredImport\Application\Common\Column;
 use Akeneo\Platform\TailoredImport\Infrastructure\Connector\RowPayload;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Webmozart\Assert\Assert;
 
@@ -30,7 +30,7 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface
     private ?StepExecution $stepExecution;
 
     public function __construct(
-        private UpsertProductHandlerInterface $upsertProductHandler,
+        private MessageBusInterface $messageBus
     ) {
     }
 
@@ -41,7 +41,7 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface
         /** @var RowPayload $rowPayload */
         foreach ($items as $rowPayload) {
             try {
-                ($this->upsertProductHandler)($rowPayload->getUpsertProductCommand());
+                $this->messageBus->dispatch($rowPayload->getUpsertProductCommand());
             } catch (LegacyViolationsException $legacyViolationsException) {
                 $this->addWarning($legacyViolationsException->violations(), $rowPayload);
             } catch (ViolationsException $violationsException) {
