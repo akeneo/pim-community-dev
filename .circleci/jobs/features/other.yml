@@ -1,5 +1,5 @@
 aliases:
-    - &executor-machine: ubuntu-2004:202111-02
+    - &executor-machine: ubuntu-2004:202111-01
 
 jobs:
     test_back_static_and_acceptance:
