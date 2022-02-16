@@ -1,4 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
+import styled from 'styled-components';
+
 import {
   PageContent as PageContentWithoutMargin,
   PageHeader,
@@ -16,10 +18,10 @@ import {
   SectionTitle,
   TextAreaInput,
 } from 'akeneo-design-system';
+
 import {LocaleSelector} from './components/LocaleSelector';
 import {ConfigServicePayloadFrontend} from './models/ConfigServicePayload';
 import {useFetchConfig, useSaveConfig} from './hooks';
-import styled from 'styled-components';
 
 const PageContent = styled(PageContentWithoutMargin)`
   padding-bottom: 40px;
@@ -28,6 +30,7 @@ const PageContent = styled(PageContentWithoutMargin)`
 const Section = styled.div`
   display: flex;
   flex-direction: column;
+  margin-top: 20px;
 `;
 
 const Field = styled(FieldWithoutMargin)`
