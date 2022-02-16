@@ -23,6 +23,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Structure\SpellCheckResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductIdsWithOutdatedAttributeSpellcheckQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeSpellcheckRepository;
@@ -51,6 +52,7 @@ final class GetProductIdsWithOutdatedAttributeSpellcheckQueryIntegration extends
         $productsIds = $this->get(GetProductIdsWithOutdatedAttributeSpellcheckQuery::class)
             ->evaluatedSince($spellcheckEvaluatedSince, 2);
         $productsIds = iterator_to_array($productsIds);
+        $productsIds = array_map(fn (ProductIdCollection $collection) => $collection->toArray(), $productsIds);
 
         $this->assertCount(2, $productsIds);
         $this->assertEqualsCanonicalizing($expectedProductsIds, array_merge(...$productsIds));

@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Cons
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\UpdatedFamily;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsWithUpdatedFamilyAttributesListQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetFamiliesWithUpdatedAttributesListQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Doctrine\DBAL\Connection;
 
 final class GetProductModelIdsWithUpdatedFamilyAttributesListQuery implements GetProductIdsWithUpdatedFamilyAttributesListQueryInterface
@@ -62,17 +62,17 @@ SQL;
             ]);
 
             while ($productModelId = $stmt->fetchColumn()) {
-                $productModelIds[] = new ProductId(intval($productModelId));
+                $productModelIds[] = $productModelId;
 
                 if (count($productModelIds) >= $bulkSize) {
-                    yield $productModelIds;
+                    yield ProductIdCollection::fromStrings($productModelIds);
                     $productModelIds = [];
                 }
             }
         }
 
         if (!empty($productModelIds)) {
-            yield $productModelIds;
+            yield ProductIdCollection::fromStrings($productModelIds);
         }
     }
 }

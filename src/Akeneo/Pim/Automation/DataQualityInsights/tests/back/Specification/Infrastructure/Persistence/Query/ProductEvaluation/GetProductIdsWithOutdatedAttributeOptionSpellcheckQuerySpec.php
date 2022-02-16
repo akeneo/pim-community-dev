@@ -23,6 +23,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use PhpSpec\ObjectBehavior;
 use Webmozart\Assert\Assert;
 
@@ -70,34 +71,34 @@ final class GetProductIdsWithOutdatedAttributeOptionSpellcheckQuerySpec extends 
         $productId43 = new ProductId(43);
 
         $getProductIdsByAttributeOptionCodesQuery->execute($colorRedSpellcheck->getAttributeOptionCode(), $bulkSize)->willReturn(new \ArrayIterator([
-            [$productId12, $productId34, $productId56],
-            [$productId78, $productId90, $productId99],
-            [$productId42, $productId43]
+            ProductIdCollection::fromProductIds([$productId12, $productId34, $productId56]),
+            ProductIdCollection::fromProductIds([$productId78, $productId90, $productId99]),
+            ProductIdCollection::fromProductIds([$productId42, $productId43]),
         ]));
 
         $filterProductIdsWithCriterionNotEvaluatedSinceQuery->execute(
-            [$productId12, $productId34, $productId56], $colorRedSpellcheck->getEvaluatedAt(), new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE)
-        )->willReturn([$productId12, $productId34]);
+            ProductIdCollection::fromProductIds([$productId12, $productId34, $productId56]), $colorRedSpellcheck->getEvaluatedAt(), new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE)
+        )->willReturn( ProductIdCollection::fromProductIds([$productId12, $productId34]));
         $filterProductIdsWithCriterionNotEvaluatedSinceQuery->execute(
-            [$productId78, $productId90, $productId99], $colorRedSpellcheck->getEvaluatedAt(), new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE)
-        )->willReturn([]);
+            ProductIdCollection::fromProductIds([$productId78, $productId90, $productId99]), $colorRedSpellcheck->getEvaluatedAt(), new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE)
+        )->willReturn(ProductIdCollection::fromProductIds([]));
         $filterProductIdsWithCriterionNotEvaluatedSinceQuery->execute(
-            [$productId42, $productId43], $colorRedSpellcheck->getEvaluatedAt(), new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE)
-        )->willReturn([$productId42, $productId43]);
+            ProductIdCollection::fromProductIds([$productId42, $productId43]), $colorRedSpellcheck->getEvaluatedAt(), new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE)
+        )->willReturn(ProductIdCollection::fromProductIds([$productId42, $productId43]));
 
         $productId123 = new ProductId(123);
         $getProductIdsByAttributeOptionCodesQuery->execute($materialWoodSpellcheck->getAttributeOptionCode(), $bulkSize)->willReturn(new \ArrayIterator([
-            [$productId123]
+            ProductIdCollection::fromProductIds([$productId123])
         ]));
         $filterProductIdsWithCriterionNotEvaluatedSinceQuery->execute(
-            [$productId123], $materialWoodSpellcheck->getEvaluatedAt(), new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE)
-        )->willReturn([$productId123]);
+            ProductIdCollection::fromProductIds([$productId123]), $materialWoodSpellcheck->getEvaluatedAt(), new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE)
+        )->willReturn(ProductIdCollection::fromProductIds([$productId123]));
 
         $productIds = $this->evaluatedSince($evaluatedSince, $bulkSize);
 
         Assert::eq(iterator_to_array($productIds->getWrappedObject()), [
-            [$productId12, $productId34, $productId42],
-            [$productId43, $productId123]
+            ProductIdCollection::fromProductIds([$productId12, $productId34, $productId42]),
+            ProductIdCollection::fromProductIds([$productId43, $productId123])
         ]);
     }
 }
