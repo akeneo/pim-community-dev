@@ -184,10 +184,12 @@ LIMIT :limit";
 
     private function columnExists(string $tableName, string $columnName): bool
     {
-        $rows = $this->connection->fetchAllAssociative(sprintf('SHOW COLUMNS FROM %s LIKE :columnName', $tableName),
+        $rows = $this->connection->fetchAllAssociative(
+            sprintf('SHOW COLUMNS FROM %s LIKE :columnName', $tableName),
             [
                 'columnName' => $columnName,
-            ]);
+            ]
+        );
 
         return count($rows) >= 1;
     }
@@ -200,4 +202,3 @@ UPDATE pim_catalog_product SET quantified_associations='{"SOIREEFOOD10": {"produ
 UPDATE pim_catalog_product SET quantified_associations='{"SOIREEFOOD10": {"products": [{"id": 400000, "quantity": 50000}, {"id": 10, "quantity": 1}, {"id": 100, "quantity": 1}], "product_models": []}}' WHERE id=1217;
 UPDATE pim_catalog_product_model SET quantified_associations='{"SOIREEFOOD10": {"products": [{"id": 1, "quantity": 10}, {"id": 10, "quantity": 1}], "product_models": []}}' WHERE id=1;
 */
-
