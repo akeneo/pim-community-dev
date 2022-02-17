@@ -16,32 +16,39 @@ class TargetAttribute implements TargetInterface
 
     private function __construct(
         private string $code,
+        private string $type,
         private ?string $channel,
         private ?string $locale,
         private string $actionIfNotEmpty,
         private string $actionIfEmpty,
     ) {
         Assert::stringNotEmpty($this->code);
+        Assert::stringNotEmpty($this->type, '');
         Assert::notSame($this->channel, '');
         Assert::notSame($this->locale, '');
         Assert::inArray($this->actionIfNotEmpty, [TargetInterface::ACTION_ADD, TargetInterface::ACTION_SET]);
         Assert::inArray($this->actionIfEmpty, [TargetInterface::IF_EMPTY_CLEAR, TargetInterface::IF_EMPTY_SKIP]);
     }
 
-    public static function createFromNormalized(array $normalizedAttributeTarget): self
-    {
-        return new self(
-            $normalizedAttributeTarget['code'],
-            $normalizedAttributeTarget['channel'],
-            $normalizedAttributeTarget['locale'],
-            $normalizedAttributeTarget['action_if_not_empty'],
-            $normalizedAttributeTarget['action_if_empty'],
-        );
+    public static function create(
+        string $code,
+        string $type,
+        ?string $channel,
+        ?string $locale,
+        string $actionIfNotEmpty,
+        string $actionIfEmpty
+    ): self {
+        return new self($code, $type, $channel, $locale, $actionIfNotEmpty, $actionIfEmpty);
     }
 
     public function getCode(): string
     {
         return $this->code;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
     }
 
     public function getChannel(): ?string

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Domain\Model;
 
+use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -14,40 +15,40 @@ class DataMappingSpec extends ObjectBehavior
 {
     public function it_can_be_initialized_from_normalized()
     {
-        $this->beConstructedThrough('createFromNormalized', [[
-            'uuid' => 'b244c45c-d5ec-4993-8cff-7ccd04e82fef',
-            'target' => [
-                'type' => 'attribute',
-                'code' => 'code',
-                'channel' => 'web',
-                'locale' => 'fr_FR',
-                'action_if_not_empty' => 'set',
-                'action_if_empty' => 'skip'
-            ],
-            'sources' => [],
-            'operations' => [],
-            'sample_data' => [],
-        ]]);
+        $this->beConstructedThrough('create', [
+            'b244c45c-d5ec-4993-8cff-7ccd04e82fef',
+            TargetAttribute::create(
+                'code',
+                'pim_catalog_text',
+                'web',
+                'fr_FR',
+                'set',
+                'skip'
+            ),
+            [],
+            [],
+            [],
+        ]);
 
         $this->getUuid()->shouldReturn('b244c45c-d5ec-4993-8cff-7ccd04e82fef');
     }
 
     public function it_throws_an_exception_when_uuid_is_invalid()
     {
-        $this->beConstructedThrough('createFromNormalized', [[
-            'uuid' => 'invalid-uuid',
-            'target' => [
-                'type' => 'attribute',
-                'code' => 'code',
-                'channel' => 'web',
-                'locale' => 'fr_FR',
-                'action_if_not_empty' => 'set',
-                'action_if_empty' => 'skip'
-            ],
-            'sources' => [],
-            'operations' => [],
-            'sample_data' => [],
-        ]]);
+        $this->beConstructedThrough('create', [
+            'invalid-uuid',
+            TargetAttribute::create(
+                'code',
+                'pim_catalog_text',
+                'web',
+                'fr_FR',
+                'set',
+                'skip'
+            ),
+            [],
+            [],
+            [],
+        ]);
 
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }

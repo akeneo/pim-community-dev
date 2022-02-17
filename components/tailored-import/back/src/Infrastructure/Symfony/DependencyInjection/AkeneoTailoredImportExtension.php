@@ -29,12 +29,14 @@ class AkeneoTailoredImportExtension extends Extension
         $loader->load('controllers.yml');
         $loader->load('filesystem.yml');
         $loader->load('handlers.yml');
+        $loader->load('hydrators.yml');
         $loader->load('jobs.yml');
         $loader->load('processors.yml');
         $loader->load('queries.yml');
         $loader->load('readers.yml');
         $loader->load('services.yml');
         $loader->load('spout.yml');
+        $loader->load('user_intent_builders.yml');
         $loader->load('validations.yml');
         $loader->load('writers.yml');
 
