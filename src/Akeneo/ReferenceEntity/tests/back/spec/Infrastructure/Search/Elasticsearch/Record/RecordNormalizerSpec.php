@@ -4,15 +4,11 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
 
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysToIndexForAllChannelsAndLocalesInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\SearchableRecordItem;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindSearchableRecords;
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordNormalizer;
@@ -28,12 +24,14 @@ class RecordNormalizerSpec extends ObjectBehavior
     function let(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
         SqlFindSearchableRecords $findSearchableRecords,
-        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType
+        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
+        FindActivatedLocalesInterface $findActivatedLocales
     ) {
         $this->beConstructedWith(
             $findValueKeysToIndexForAllChannelsAndLocales,
             $findSearchableRecords,
-            $findValueKeysByAttributeType
+            $findValueKeysByAttributeType,
+            $findActivatedLocales
         );
     }
 
@@ -46,6 +44,7 @@ class RecordNormalizerSpec extends ObjectBehavior
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
         SqlFindSearchableRecords $findSearchableRecords,
         FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
+        FindActivatedLocalesInterface $findActivatedLocales,
         \DateTimeImmutable $updatedAt
     ) {
         $recordIdentifier = RecordIdentifier::fromString('stark');
@@ -87,6 +86,9 @@ class RecordNormalizerSpec extends ObjectBehavior
                 ['option', 'option_collection', 'record', 'record_collection']
             )
             ->willReturn([$stark->referenceEntityIdentifier]);
+        $findActivatedLocales
+            ->findAll()
+            ->willReturn(['fr_FR', 'en_US']);
 
         $normalizedRecord = $this->normalizeRecord($recordIdentifier);
         $normalizedRecord['identifier']->shouldBeEqualTo('designer_stark_fingerprint');
@@ -104,6 +106,11 @@ class RecordNormalizerSpec extends ObjectBehavior
         $normalizedRecord['complete_value_keys']->shouldBeEqualTo([
                 'name'                     => true,
                 'description_mobile_en_US' => true,
+            ]
+        );
+        $normalizedRecord['record_code_label_search']->shouldBeEqualTo([
+                'fr_FR' => 'stark Philippe Stark',
+                'en_US' => 'stark',
             ]
         );
 
