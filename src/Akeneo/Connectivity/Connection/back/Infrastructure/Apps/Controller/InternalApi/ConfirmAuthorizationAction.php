@@ -2,18 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi;
 
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler;
-use Akeneo\Connectivity\Connection\Domain\Apps\Exception\AccessDeniedException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthenticationException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider;
@@ -33,47 +34,43 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 final class ConfirmAuthorizationAction
 {
-    private CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler;
-    private FeatureFlag $featureFlag;
-    private GetAppConfirmationQueryInterface $getAppConfirmationQuery;
-    private ViolationListNormalizer $violationListNormalizer;
-    private LoggerInterface $logger;
-    private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator;
-    private AppAuthorizationSessionInterface $appAuthorizationSession;
-    private ConnectedPimUserProvider $connectedPimUserProvider;
-    private ConsentAppAuthenticationHandler $consentAppAuthenticationHandler;
-
     public function __construct(
-        CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler,
-        FeatureFlag $featureFlag,
-        GetAppConfirmationQueryInterface $getAppConfirmationQuery,
-        ViolationListNormalizer $violationListNormalizer,
-        LoggerInterface $logger,
-        RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
-        AppAuthorizationSessionInterface $appAuthorizationSession,
-        ConnectedPimUserProvider $connectedPimUserProvider,
-        ConsentAppAuthenticationHandler $consentAppAuthenticationHandler
+        private CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler,
+        private FeatureFlag $marketplaceActivateFeatureFlag,
+        private GetAppConfirmationQueryInterface $getAppConfirmationQuery,
+        private ViolationListNormalizer $violationListNormalizer,
+        private SecurityFacade $security,
+        private LoggerInterface $logger,
+        private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
+        private AppAuthorizationSessionInterface $appAuthorizationSession,
+        private ConnectedPimUserProvider $connectedPimUserProvider,
+        private ConsentAppAuthenticationHandler $consentAppAuthenticationHandler,
+        private GetAppQueryInterface $getAppQuery,
     ) {
-        $this->createAppWithAuthorizationHandler = $createAppWithAuthorizationHandler;
-        $this->featureFlag = $featureFlag;
-        $this->getAppConfirmationQuery = $getAppConfirmationQuery;
-        $this->violationListNormalizer = $violationListNormalizer;
-        $this->logger = $logger;
-        $this->redirectUriWithAuthorizationCodeGenerator = $redirectUriWithAuthorizationCodeGenerator;
-        $this->appAuthorizationSession = $appAuthorizationSession;
-        $this->connectedPimUserProvider = $connectedPimUserProvider;
-        $this->consentAppAuthenticationHandler = $consentAppAuthenticationHandler;
     }
 
     public function __invoke(Request $request, string $clientId): Response
     {
-        if (!$this->featureFlag->isEnabled()) {
+        if (!$this->marketplaceActivateFeatureFlag->isEnabled()) {
             throw new NotFoundHttpException();
         }
 
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
+
+        $app = $this->getAppQuery->execute($clientId);
+        if (null === $app) {
+            return new JsonResponse([
+                'errors' => [
+                    [
+                        'message' => 'akeneo_connectivity.connection.connect.apps.error.app_not_found',
+                    ],
+                ],
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $this->denyAccessUnlessGrantedToManage($app);
 
         $connectedPimUserId = $this->connectedPimUserProvider->getCurrentUserId();
 
@@ -96,8 +93,6 @@ final class ConfirmAuthorizationAction
             return new JsonResponse([
                 'errors' => $this->violationListNormalizer->normalize($exception->getConstraintViolationList()),
             ], Response::HTTP_BAD_REQUEST);
-        } catch (AccessDeniedException $exception) {
-            throw new AccessDeniedHttpException('Missing permissions', $exception);
         }
 
         $appConfirmation = $this->getAppConfirmationQuery->execute($clientId);
@@ -116,5 +111,16 @@ final class ConfirmAuthorizationAction
             'userGroup' => $appConfirmation->getUserGroup(),
             'redirectUrl' => $redirectUrl,
         ]);
+    }
+
+    private function denyAccessUnlessGrantedToManage(App $app): void
+    {
+        if (!$app->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
+            throw new AccessDeniedHttpException();
+        }
+
+        if ($app->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')) {
+            throw new AccessDeniedHttpException();
+        }
     }
 }

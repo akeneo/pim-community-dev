@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Apps;
+namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Apps\InternalApi;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
@@ -18,14 +18,12 @@ use Symfony\Component\HttpFoundation\Response;
 class GetAppActivateUrlEndToEnd extends WebTestCase
 {
     private FakeWebMarketplaceApi $webMarketplaceApi;
-    private FakeFeatureFlag $featureFlagMarketplaceActivate;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->webMarketplaceApi = $this->get('akeneo_connectivity.connection.marketplace.web_marketplace_api');
-        $this->featureFlagMarketplaceActivate = $this->get('akeneo_connectivity.connection.marketplace_activate.feature');
         $this->loadAppsFixtures();
     }
 

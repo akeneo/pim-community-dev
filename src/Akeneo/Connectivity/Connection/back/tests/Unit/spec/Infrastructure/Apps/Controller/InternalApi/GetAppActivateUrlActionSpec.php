@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Apps;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi;
 
 use Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\IsConnectionsNumberLimitReachedQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
@@ -24,7 +25,7 @@ class GetAppActivateUrlActionSpec extends ObjectBehavior
         GetAppQueryInterface $getAppQuery,
         ClientProviderInterface $clientProvider,
         SecurityFacade $security,
-        FeatureFlag $featureFlag,
+        FeatureFlag $marketplaceActivateFeatureFlag,
         IsConnectionsNumberLimitReachedQueryInterface $isConnectionsNumberLimitReachedQuery,
     ): void {
         $this->beConstructedWith(
@@ -32,13 +33,13 @@ class GetAppActivateUrlActionSpec extends ObjectBehavior
             $clientProvider,
             new AppUrlGenerator(new PimUrl('https://some_pim_url')),
             $security,
-            $featureFlag,
+            $marketplaceActivateFeatureFlag,
             $isConnectionsNumberLimitReachedQuery,
         );
     }
 
     public function it_redirects_on_missing_xmlhttprequest_header(
-        FeatureFlag $featureFlag,
+        FeatureFlag $marketplaceActivateFeatureFlag,
         Request $request,
     ): void {
         $this->__invoke($request, 'foo')
@@ -46,11 +47,11 @@ class GetAppActivateUrlActionSpec extends ObjectBehavior
     }
 
     public function it_throws_not_found_exception_with_feature_flag_disabled(
-        FeatureFlag $featureFlag,
+        FeatureFlag $marketplaceActivateFeatureFlag,
         Request $request,
     ): void {
         $request->isXmlHttpRequest()->willReturn(true);
-        $featureFlag->isEnabled()->willReturn(false);
+        $marketplaceActivateFeatureFlag->isEnabled()->willReturn(false);
 
         $this
             ->shouldThrow(new NotFoundHttpException())
@@ -58,13 +59,13 @@ class GetAppActivateUrlActionSpec extends ObjectBehavior
     }
 
     public function it_throws_bad_request_exception_when_too_much_apps(
-        FeatureFlag $featureFlag,
+        FeatureFlag $marketplaceActivateFeatureFlag,
         SecurityFacade $security,
         IsConnectionsNumberLimitReachedQueryInterface $isConnectionsNumberLimitReachedQuery,
         Request $request,
     ): void {
         $request->isXmlHttpRequest()->willReturn(true);
-        $featureFlag->isEnabled()->willReturn(true);
+        $marketplaceActivateFeatureFlag->isEnabled()->willReturn(true);
         $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(true);
         $isConnectionsNumberLimitReachedQuery->execute()->willReturn(true);
 
@@ -74,14 +75,14 @@ class GetAppActivateUrlActionSpec extends ObjectBehavior
     }
 
     public function it_throws_not_found_exception_with_wrong_app_identifier(
-        FeatureFlag $featureFlag,
+        FeatureFlag $marketplaceActivateFeatureFlag,
         SecurityFacade $security,
         IsConnectionsNumberLimitReachedQueryInterface $isConnectionsNumberLimitReachedQuery,
         GetAppQueryInterface $getAppQuery,
         Request $request,
     ): void {
         $request->isXmlHttpRequest()->willReturn(true);
-        $featureFlag->isEnabled()->willReturn(true);
+        $marketplaceActivateFeatureFlag->isEnabled()->willReturn(true);
         $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(true);
         $isConnectionsNumberLimitReachedQuery->execute()->willReturn(false);
         $getAppQuery->execute('foo')->willReturn(null);
@@ -89,5 +90,63 @@ class GetAppActivateUrlActionSpec extends ObjectBehavior
         $this
             ->shouldThrow(new NotFoundHttpException('Invalid app identifier'))
             ->during('__invoke', [$request, 'foo']);
+    }
+
+    public function it_throws_access_denied_exception_when_the_app_is_found_but_manage_apps_permission_is_missing(
+        FeatureFlag $marketplaceActivateFeatureFlag,
+        SecurityFacade $security,
+        IsConnectionsNumberLimitReachedQueryInterface $isConnectionsNumberLimitReachedQuery,
+        GetAppQueryInterface $getAppQuery,
+        Request $request,
+    ): void {
+        $marketplaceActivateFeatureFlag->isEnabled()->willReturn(true);
+        $request->isXmlHttpRequest()->willReturn(true);
+        $isConnectionsNumberLimitReachedQuery->execute()->willReturn(false);
+
+        $clientId = 'a_client_id';
+        $app = App::fromWebMarketplaceValues([
+            'id' => $clientId,
+            'name' => 'some app',
+            'activate_url' => 'http://url.test',
+            'callback_url' => 'http://url.test',
+            'logo' => 'logo',
+            'author' => 'admin',
+            'url' => 'http://manage_app.test',
+            'categories' => ['master'],
+        ]);
+        $getAppQuery->execute($clientId)->willReturn($app);
+
+        $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(false);
+
+        $this
+            ->shouldThrow(AccessDeniedHttpException::class)
+            ->during('__invoke', [$request, $clientId]);
+    }
+
+    public function it_throws_access_denied_exception_when_the_test_app_is_found_but_manage_test_apps_permission_is_missing(
+        FeatureFlag $marketplaceActivateFeatureFlag,
+        SecurityFacade $security,
+        IsConnectionsNumberLimitReachedQueryInterface $isConnectionsNumberLimitReachedQuery,
+        GetAppQueryInterface $getAppQuery,
+        Request $request,
+    ): void {
+        $marketplaceActivateFeatureFlag->isEnabled()->willReturn(true);
+        $request->isXmlHttpRequest()->willReturn(true);
+        $isConnectionsNumberLimitReachedQuery->execute()->willReturn(false);
+
+        $clientId = 'a_client_id';
+        $app = App::fromTestAppValues([
+            'id' => $clientId,
+            'name' => 'test app',
+            'activate_url' => 'http://url.test',
+            'callback_url' => 'http://url.test',
+        ]);
+        $getAppQuery->execute($clientId)->willReturn($app);
+
+        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(false);
+
+        $this
+            ->shouldThrow(AccessDeniedHttpException::class)
+            ->during('__invoke', [$request, $clientId]);
     }
 }

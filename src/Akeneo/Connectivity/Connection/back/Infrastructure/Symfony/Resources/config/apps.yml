@@ -19,7 +19,6 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\AppRoleWithScopesFactory'
             - '@akeneo_connectivity.connection.service.apps.client_provider'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp'
-            - '@oro_security.security_facade'
 
     Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler:
         arguments:
@@ -35,7 +34,6 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
             - '@akeneo_connectivity.connection.marketplace.get_app_query'
-            - '@oro_security.security_facade'
 
     Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler:
         arguments:
