@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query\ProductEnrichment;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetDescendantVariantProductIds;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
@@ -46,7 +47,9 @@ class GetDescendantVariantProductIdsIntegration extends TestCase
         Assert::assertEqualsCanonicalizing(
             $productIds,
             $this->get(GetDescendantVariantProductIds::class)
-                ->fromProductModelIds([$shirtProductModel->getId(), $shoeProductModel->getId()])
+                ->fromProductModelIds(
+                    ProductIdCollection::fromInts([$shirtProductModel->getId(), $shoeProductModel->getId()])
+                )
         );
     }
 
@@ -121,7 +124,9 @@ class GetDescendantVariantProductIdsIntegration extends TestCase
         Assert::assertEqualsCanonicalizing(
             $productIds,
             $this->get(GetDescendantVariantProductIds::class)
-                ->fromProductModelIds([$shirtProductModel->getId(), $shoeProductModel->getId()])
+                ->fromProductModelIds(
+                    ProductIdCollection::fromInts([$shirtProductModel->getId(), $shoeProductModel->getId()])
+                )
         );
     }
 
@@ -183,7 +188,9 @@ class GetDescendantVariantProductIdsIntegration extends TestCase
         Assert::assertEqualsCanonicalizing(
             $productIds,
             $this->get(GetDescendantVariantProductIds::class)
-                ->fromProductModelIds([$shirtProductModel->getId(), $shoeProductModel->getId()])
+                ->fromProductModelIds(
+                    ProductIdCollection::fromInts([$shirtProductModel->getId(), $shoeProductModel->getId()])
+                )
         );
     }
 

@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdsByAttributeOptionCodeQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
@@ -65,11 +65,11 @@ final class GetProductModelIdsByAttributeOptionCodeQuery implements GetProductId
         while (!empty($result['hits']['hits'])) {
             $productModelIds = [];
             foreach ($result['hits']['hits'] as $product) {
-                $productModelIds[] = new ProductId(intval(str_replace('product_model_', '', $product['_source']['id'])));
+                $productModelIds[] = str_replace('product_model_', '', $product['_source']['id']);
                 $searchAfter = $product['sort'];
             }
 
-            yield $productModelIds;
+            yield ProductIdCollection::fromStrings($productModelIds);
 
             $returnedProductModels += count($productModelIds);
             $result = $returnedProductModels < $totalProductModels ? $this->searchAfter($searchQuery, $searchAfter) : [];

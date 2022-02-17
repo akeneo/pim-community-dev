@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\FilterProductIdsWithCriterionNotEvaluatedSinceQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Doctrine\DBAL\Connection;
 
 final class FilterProductIdsWithCriterionNotEvaluatedSinceQuery implements FilterProductIdsWithCriterionNotEvaluatedSinceQueryInterface
@@ -33,7 +33,7 @@ final class FilterProductIdsWithCriterionNotEvaluatedSinceQuery implements Filte
         $this->tableName = $tableName;
     }
 
-    public function execute(array $productIds, \DateTimeImmutable $evaluatedSince, CriterionCode $criterionCode): array
+    public function execute(ProductIdCollection $productIds, \DateTimeImmutable $evaluatedSince, CriterionCode $criterionCode): ProductIdCollection
     {
         $tableName = $this->tableName;
 
@@ -44,20 +44,14 @@ WHERE product_id IN (:productIds) AND criterion_code = :criterionCode
     AND status != 'pending' AND (evaluated_at IS NULL OR evaluated_at < :evaluateSince)
 SQL;
 
-        $productIds = array_map(function (ProductId $productId) {
-            return $productId->toInt();
-        }, $productIds);
-
         $stmt = $this->dbConnection->executeQuery($query, [
-            'productIds' => $productIds,
+            'productIds' => $productIds->toArrayInt(),
             'criterionCode' => $criterionCode,
             'evaluateSince' => $evaluatedSince->format(Clock::TIME_FORMAT),
         ], [
             'productIds' => Connection::PARAM_INT_ARRAY,
         ]);
 
-        return array_map(function ($productId) {
-            return new ProductId(intval($productId));
-        }, $stmt->fetchFirstColumn());
+        return ProductIdCollection::fromStrings($stmt->fetchFirstColumn());
     }
 }

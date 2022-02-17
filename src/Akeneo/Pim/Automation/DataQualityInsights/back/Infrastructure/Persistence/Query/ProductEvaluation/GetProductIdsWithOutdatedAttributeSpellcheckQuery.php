@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Cons
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsWithOutdatedAttributeSpellcheckQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Doctrine\DBAL\Connection;
 
 final class GetProductIdsWithOutdatedAttributeSpellcheckQuery implements GetProductIdsWithOutdatedAttributeSpellcheckQueryInterface
@@ -53,16 +54,16 @@ SQL;
 
         $productIds = [];
         while ($productId = $stmt->fetchColumn()) {
-            $productIds[] = new ProductId(intval($productId));
+            $productIds[] = $productId;
 
             if (count($productIds) >= $bulkSize) {
-                yield $productIds;
+                yield ProductIdCollection::fromStrings($productIds);
                 $productIds = [];
             }
         }
 
         if (!empty($productIds)) {
-            yield $productIds;
+            yield ProductIdCollection::fromStrings($productIds);
         }
     }
 }

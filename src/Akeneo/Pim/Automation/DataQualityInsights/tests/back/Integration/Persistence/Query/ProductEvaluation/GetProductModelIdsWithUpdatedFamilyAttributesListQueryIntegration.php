@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsWithUpdatedFamilyAttributesListQuery;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -61,6 +62,7 @@ final class GetProductModelIdsWithUpdatedFamilyAttributesListQueryIntegration ex
 
         $productModelIds = $this->get(GetProductModelIdsWithUpdatedFamilyAttributesListQuery::class)->updatedSince($now, 2);
         $productModelIds = iterator_to_array($productModelIds);
+        $productModelIds = array_map(fn (ProductIdCollection $collection) => $collection->toArray(), $productModelIds);
 
         $this->assertCount(2, $productModelIds);
         $this->assertCount(2, $productModelIds[0]);
