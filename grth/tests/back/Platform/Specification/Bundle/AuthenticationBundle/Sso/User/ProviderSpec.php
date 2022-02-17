@@ -21,6 +21,7 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
+
 class ProviderSpec extends ObjectBehavior
 {
 
@@ -80,6 +81,19 @@ class ProviderSpec extends ObjectBehavior
         $userRepository->findOneBy(['username' => 'julia@example.com'])->willReturn($julia);
         $this->loadUserByUsername('julia@example.com')->shouldReturn($julia);
     }
+
+    function it_throws_an_exception_if_user_is_disabled($userRepository, $configRepository)
+    {
+        $ssoConfiguration = $this->getEnabledConfiguration();
+        $configRepository->find('authentication_sso')->shouldBeCalled()->willReturn($ssoConfiguration);
+
+        $julia = new User('julia@example.com', 'kitten123', [], false);
+
+        $userRepository->findOneBy(['username' => 'julia@example.com'])->willReturn($julia);
+
+        $this->shouldThrow(UsernameNotFoundException::class)->during('loadUserByUsername', ['julia@example.com']);
+    }
+
 
     function it_refreshes_a_user($userRepository, UserInterface $julia)
     {
