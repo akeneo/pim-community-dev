@@ -3,13 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@akeneo-pim-community/shared": "link:../../../../../../front-packages/shared",
-    "akeneo-design-system": "link:../../../../../../front-packages/akeneo-design-system",
+    "@akeneo-pim-community/shared": "1.0.0",
+    "@babel/core": "^7.16.7",
+    "@testing-library/dom": "^8.11.1",
+    "akeneo-design-system": "0.0.0",
+    "babel-loader": "8.1.0",
+    "eslint": "^7.11.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-is": "^17.0.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
-    "typescript": "^4.0.3",
-    "web-vitals": "^0.2.4"
+    "styled-components": "^5.1.1",
+    "typescript": "^3.2.1",
+    "web-vitals": "^0.2.4",
+    "webpack": "^5.65.0"
   },
   "scripts": {
     "app:start": "yarn translation:build && yarn route:build && yarn packages:build && react-scripts start",
@@ -75,12 +84,5 @@
         "lines": 100
       }
     }
-  },
-  "peerDependencies": {
-    "babel-loader": "8.1.0",
-    "eslint": "^7.11.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "styled-components": "^5.1.1"
   }
 }
