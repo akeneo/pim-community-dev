@@ -8,7 +8,7 @@ type Props = {
   stacked?: boolean;
 };
 
-const QualityScoreBar: FC<Props> = ({currentScore, stacked = false}) => {
+const QualityScoreBar: FC<Props> = ({currentScore, stacked = true}) => {
   return (
     <Container
       currentScore={currentScore}

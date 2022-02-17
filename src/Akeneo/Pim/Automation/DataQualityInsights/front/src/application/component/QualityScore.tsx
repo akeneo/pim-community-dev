@@ -67,14 +67,11 @@ const containerStackedStyled = css<{score: string; size: string}>`
   border-radius: ${getContainerBorderRadius('all')};
 
   ${({score, size}) =>
-    size === 'big'
-      ? css`
-          border: 1px solid ${switchContainer(score)};
-          top: 2px;
-        `
-      : css`
-          z-index: -1;
-        `}
+    size === 'big' &&
+    css`
+      border: 1px solid ${switchContainer(score)};
+      top: 2px;
+    `};
 `;
 
 const Container = styled.div<{score: string; size: string; rounded: Rounded; stacked?: boolean}>`
