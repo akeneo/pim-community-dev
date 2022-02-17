@@ -13,7 +13,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 interface GetProductIdsImpactedByAttributeGroupActivationQueryInterface
 {
     /**
-     * @return \Generator<int, array<ProductId>>
+     * @return \Iterator<int, array<ProductId>>
      */
-    public function updatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Generator;
+    public function updatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Iterator;
 }

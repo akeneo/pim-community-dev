@@ -23,7 +23,10 @@ class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
         $this->esClient = $esClient;
     }
 
-    public function since(\DateTimeImmutable $updatedSince, int $bulkSize): \Iterator
+    /**
+     * @return \Generator<array<ProductId>>
+     */
+    public function since(\DateTimeImmutable $updatedSince, int $bulkSize): \Generator
     {
         $query = [
             'bool' => [

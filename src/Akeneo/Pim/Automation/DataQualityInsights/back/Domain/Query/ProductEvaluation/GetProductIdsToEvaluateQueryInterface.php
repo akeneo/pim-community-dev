@@ -10,5 +10,8 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluati
  */
 interface GetProductIdsToEvaluateQueryInterface
 {
+    /**
+     * @return \Iterator<int, array<int>>
+     */
     public function execute(int $limit, int $bulkSize): \Iterator;
 }
