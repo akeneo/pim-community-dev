@@ -37,16 +37,16 @@ final class MarkCriteriaToEvaluateSpec extends ObjectBehavior
         $updatedProductIdsBatch1 = [new ProductId(42), new ProductId(123)];
         $updatedProductIdsBatch2 = [new ProductId(321)];
 
-        $getUpdatedProductIdsQuery->since($updatedSince, 2)->willReturn(
-            new \ArrayIterator([$updatedProductIdsBatch1, $updatedProductIdsBatch2])
+        $getUpdatedProductIdsQuery->since($updatedSince, 2)->willYield(
+            [$updatedProductIdsBatch1, $updatedProductIdsBatch2]
         );
 
         $createProductsCriteriaEvaluations->createAll($updatedProductIdsBatch1)->shouldBeCalled();
         $createProductsCriteriaEvaluations->createAll($updatedProductIdsBatch2)->shouldBeCalled();
 
         $impactedProductIdsBatch = [new ProductId(24), new ProductId(654)];
-        $getProductIdsImpactedByAttributeGroupActivationQuery->updatedSince($updatedSince, 2)->willReturn(
-            new \ArrayIterator([$impactedProductIdsBatch])
+        $getProductIdsImpactedByAttributeGroupActivationQuery->updatedSince($updatedSince, 2)->willYield(
+            [$impactedProductIdsBatch]
         );
 
         $createProductsCriteriaEvaluations->createAll($impactedProductIdsBatch)->shouldBeCalled();
