@@ -50,9 +50,6 @@ jobs:
                     name: Unit back
                     command: make connectivity-connection-unit-back
             -   run:
-                    name: Acceptance back
-                    command: make connectivity-connection-acceptance-back
-            -   run:
                     name: Pull docker images
                     command: docker-compose pull fpm mysql elasticsearch object-storage pubsub-emulator
             -   run:
