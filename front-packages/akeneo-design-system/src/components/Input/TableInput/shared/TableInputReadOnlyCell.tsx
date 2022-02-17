@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {getColor} from '../../../theme';
+import {getColor} from '../../../../theme';
 
 const TableInputReadOnlyCell = styled.div`
   white-space: nowrap;
@@ -10,6 +10,9 @@ const TableInputReadOnlyCell = styled.div`
   color: ${getColor('grey', 100)};
   height: 39px;
   line-height: 39px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 export {TableInputReadOnlyCell};
