@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -76,7 +77,7 @@ class InitializeEvaluationOfAProductModelSubscriberSpec extends ObjectBehavior
     ) {
         $productModel->getId()->willReturn(12345);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
-        $createCriteriaEvaluations->createAll([new ProductId(12345)])->shouldBeCalled();
+        $createCriteriaEvaluations->createAll(ProductIdCollection::fromInt(12345))->shouldBeCalled();
 
         $this->onPostSave(new GenericEvent($productModel->getWrappedObject(), ['unitary' => true]));
     }
@@ -87,9 +88,10 @@ class InitializeEvaluationOfAProductModelSubscriberSpec extends ObjectBehavior
         $logger,
         ProductModelInterface $productModel
     ) {
-        $productModel->getId()->willReturn(12345);
+        $productModelId = 12345;
+        $productModel->getId()->willReturn($productModelId);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
-        $createCriteriaEvaluations->createAll([new ProductId(12345)])->willThrow(\Exception::class);
+        $createCriteriaEvaluations->createAll(ProductIdCollection::fromInt($productModelId))->willThrow(\Exception::class);
 
         $logger->error('Unable to create product model criteria evaluation', Argument::any())->shouldBeCalledOnce();
 

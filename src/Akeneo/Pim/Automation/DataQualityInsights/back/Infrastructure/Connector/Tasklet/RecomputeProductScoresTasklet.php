@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\RecomputeProductScoresParameters;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
@@ -76,7 +77,7 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
         $this->scheduleNextRecomputeProductsScoresJob($lastProductId);
     }
 
-    private function getNextProductIds($lastProductId): array
+    private function getNextProductIds($lastProductId): ProductIdCollection
     {
         $stmt = $this->connection->executeQuery(
             sprintf(
@@ -86,9 +87,11 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
             )
         );
 
-        return array_map(function ($resultRow) {
-            return intval($resultRow['id']);
+        $nextProductIds = array_map(function ($resultRow) {
+            return $resultRow['id'];
         }, $stmt->fetchAllAssociative());
+
+        return ProductIdCollection::fromStrings($nextProductIds);
     }
 
     private function isTimeboxReached(int $startTime): bool

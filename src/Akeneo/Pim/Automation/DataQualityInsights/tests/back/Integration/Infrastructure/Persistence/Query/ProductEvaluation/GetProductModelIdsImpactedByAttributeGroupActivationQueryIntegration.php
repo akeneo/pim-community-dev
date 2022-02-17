@@ -6,6 +6,7 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastruct
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsImpactedByAttributeGroupActivationQuery;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
@@ -49,6 +50,8 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQueryIntegration
 
         $productModelIds = iterator_to_array($this->get(GetProductModelIdsImpactedByAttributeGroupActivationQuery::class)
             ->updatedSince($this->updatedSince, 2));
+
+        $productModelIds = array_map(fn (ProductIdCollection $collection) => $collection->toArray(), $productModelIds);
 
         $this->assertCount(3, $productModelIds);
         $this->assertEqualsCanonicalizing($expectedProductModelIds, array_merge_recursive(...$productModelIds));

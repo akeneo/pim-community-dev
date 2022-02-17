@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -24,18 +25,16 @@ final class GetLatestProductScoresQuery implements GetLatestProductScoresQueryIn
 
     public function byProductId(ProductId $productId): ChannelLocaleRateCollection
     {
-        $productScores = $this->byProductIds([$productId]);
+        $productScores = $this->byProductIds(ProductIdCollection::fromProductId($productId));
 
         return $productScores[$productId->toInt()] ?? new ChannelLocaleRateCollection();
     }
 
-    public function byProductIds(array $productIds): array
+    public function byProductIds(ProductIdCollection $productIdCollection): array
     {
-        if (empty($productIds)) {
+        if ($productIdCollection->isEmpty()) {
             return [];
         }
-
-        $productIds = array_map(fn (ProductId $productId) => $productId->toInt(), $productIds);
 
         $query = <<<SQL
 SELECT latest_score.product_id, latest_score.scores
@@ -49,7 +48,7 @@ SQL;
 
         $stmt = $this->dbConnection->executeQuery(
             $query,
-            ['product_ids' => $productIds],
+            ['product_ids' => $productIdCollection->toArrayInt()],
             ['product_ids' => Connection::PARAM_INT_ARRAY]
         );
 
