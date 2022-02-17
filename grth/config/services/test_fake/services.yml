@@ -9,12 +9,8 @@ imports:
     - { resource: ../../../vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/behat/services.yml }
     - { resource: ../../../vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/pim/messenger.yml }
     # Akeneo/Connectivity/Connection
-    - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance/Resources/config/queries.yml }
-    - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance/Resources/config/repositories.yml }
-    - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance/Resources/config/services.yml }
     - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/CatalogBuilder/Resources/config/loaders.yml }
     - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/tests/Resources/config/services.yml }
-    - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance/Resources/config/queries.yml }
     # AkeneoJobBundle
     - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/back/tests/Acceptance/Resources/config/services.yml }
     # Tailored Exports
