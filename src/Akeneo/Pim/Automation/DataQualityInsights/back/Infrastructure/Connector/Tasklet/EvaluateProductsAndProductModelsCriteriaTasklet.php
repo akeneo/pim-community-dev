@@ -63,11 +63,11 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
     private function evaluatePendingProductCriteria(): int
     {
         $evaluationCount = 0;
-        foreach ($this->getProductIdsToEvaluateQuery->execute(self::LIMIT_PER_LOOP, self::BULK_SIZE) as $productIds) {
-            ($this->evaluateProducts)($productIds);
+        foreach ($this->getProductIdsToEvaluateQuery->execute(self::LIMIT_PER_LOOP, self::BULK_SIZE) as $productIdCollection) {
+            ($this->evaluateProducts)($productIdCollection);
 
-            $evaluationCount += count($productIds);
-            $this->stepExecution->setWriteCount($this->stepExecution->getWriteCount() + count($productIds));
+            $evaluationCount += count($productIdCollection);
+            $this->stepExecution->setWriteCount($this->stepExecution->getWriteCount() + count($productIdCollection));
         }
 
         return $evaluationCount;
@@ -76,11 +76,11 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
     private function evaluatePendingProductModelCriteria(): int
     {
         $evaluationCount = 0;
-        foreach ($this->getProductModelsIdsToEvaluateQuery->execute(self::LIMIT_PER_LOOP, self::BULK_SIZE) as $productModelIds) {
-            ($this->evaluateProductModels)($productModelIds);
+        foreach ($this->getProductModelsIdsToEvaluateQuery->execute(self::LIMIT_PER_LOOP, self::BULK_SIZE) as $productModelIdCollection) {
+            ($this->evaluateProductModels)($productModelIdCollection);
 
-            $evaluationCount += count($productModelIds);
-            $this->stepExecution->setWriteCount($this->stepExecution->getWriteCount() + count($productModelIds));
+            $evaluationCount += count($productModelIdCollection);
+            $this->stepExecution->setWriteCount($this->stepExecution->getWriteCount() + count($productModelIdCollection));
         }
 
         return $evaluationCount;

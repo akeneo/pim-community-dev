@@ -8,7 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductScoreRepositoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -36,11 +36,10 @@ class ConsolidateProductScores
         $this->clock = $clock;
     }
 
-    public function consolidate(array $productIds): void
+    public function consolidate(ProductIdCollection $productIdCollection): void
     {
         $productsScores = [];
-        foreach ($productIds as $productId) {
-            $productId = new ProductId($productId);
+        foreach ($productIdCollection as $productId) {
             $criteriaEvaluations = $this->getCriteriaEvaluationsQuery->execute($productId);
             $scores = $this->computeProductScores->fromCriteriaEvaluations($criteriaEvaluations);
             $productsScores[] = new ProductScores($productId, $this->clock->getCurrentTime(), $scores);

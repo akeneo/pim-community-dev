@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -14,30 +15,21 @@ use Doctrine\DBAL\Connection;
  */
 final class HasUpToDateProductModelEvaluationQuery implements HasUpToDateEvaluationQueryInterface
 {
-    /** @var Connection */
-    private $dbConnection;
-
-    public function __construct(Connection $dbConnection)
+    public function __construct(private Connection $dbConnection)
     {
-        $this->dbConnection = $dbConnection;
     }
 
     public function forProductId(ProductId $productId): bool
     {
-        $upToDateProducts = $this->forProductIds([$productId]);
-
-        return !empty($upToDateProducts);
+        $upToDateProducts = $this->forProductIds(ProductIdCollection::fromProductId($productId));
+        return !is_null($upToDateProducts);
     }
 
-    public function forProductIds(array $productIds): array
+    public function forProductIds(ProductIdCollection $productIdCollection): ?ProductIdCollection
     {
-        if (empty($productIds)) {
-            return [];
+        if ($productIdCollection->isEmpty()) {
+            return null;
         }
-
-        $productIds = array_map(function (ProductId $productId) {
-            return $productId->toInt();
-        }, $productIds);
 
         $query = <<<SQL
 SELECT product_model.id
@@ -54,18 +46,24 @@ SQL;
 
         $stmt = $this->dbConnection->executeQuery(
             $query,
-            ['product_ids' => $productIds],
+            ['product_ids' => $productIdCollection->toArrayInt()],
             ['product_ids' => Connection::PARAM_INT_ARRAY]
         );
 
         $result = $stmt->fetchAllAssociative();
 
         if (!is_array($result)) {
-            return [];
+            return null;
         }
 
-        return array_map(function ($resultRow) {
-            return new ProductId(intval($resultRow['id']));
+        $ids = array_map(function ($resultRow) {
+            return $resultRow['id'];
         }, $result);
+
+        if (empty($result)) {
+            return null;
+        }
+
+        return ProductIdCollection::fromStrings($ids);
     }
 }

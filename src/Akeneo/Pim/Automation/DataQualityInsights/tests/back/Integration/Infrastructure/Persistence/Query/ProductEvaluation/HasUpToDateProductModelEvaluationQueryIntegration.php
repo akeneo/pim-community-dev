@@ -6,6 +6,7 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastruct
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\HasUpToDateProductModelEvaluationQuery;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -179,7 +180,8 @@ SQL;
     private function createProductModelCriteriaEvaluations(ProductId $productModelId, \DateTimeImmutable $createdAt): void
     {
         $this->removeProductModelEvaluations($productModelId);
-        $this->get('akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations')->createAll([$productModelId]);
+        $this->get('akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations')
+            ->createAll(ProductIdCollection::fromProductId($productModelId));
         $this->updateProductModelEvaluationsAt($productModelId, $createdAt);
     }
 

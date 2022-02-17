@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluationRatesByProductsAndCriterionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultCodes;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds;
 use Doctrine\DBAL\Connection;
@@ -17,17 +18,11 @@ use Doctrine\DBAL\Connection;
  */
 final class GetEvaluationRatesByProductsAndCriterionQuery implements GetEvaluationRatesByProductsAndCriterionQueryInterface
 {
-    private Connection $dbConnection;
-
-    private TransformCriterionEvaluationResultIds $transformCriterionEvaluationResultIds;
-
-    public function __construct(Connection $dbConnection, TransformCriterionEvaluationResultIds $transformCriterionEvaluationResultIds)
+    public function __construct(private Connection $dbConnection, private TransformCriterionEvaluationResultIds $transformCriterionEvaluationResultIds)
     {
-        $this->dbConnection = $dbConnection;
-        $this->transformCriterionEvaluationResultIds = $transformCriterionEvaluationResultIds;
     }
 
-    public function toArrayInt(array $productIds, CriterionCode $criterionCode): array
+    public function toArrayInt(ProductIdCollection $productIdCollection, CriterionCode $criterionCode): array
     {
         $ratesPath = sprintf('$."%s"', TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates']);
 
@@ -40,7 +35,7 @@ SQL;
         $stmt = $this->dbConnection->executeQuery(
             $query,
             [
-                'productIds' => array_map(fn (ProductId $productId) => $productId->toInt(), $productIds),
+                'productIds' => $productIdCollection->toArrayInt(),
                 'criterionCode' => $criterionCode,
             ],
             [

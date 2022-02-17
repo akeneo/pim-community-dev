@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
@@ -65,7 +66,7 @@ class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
                 $searchAfter = $product['sort'] ?? $searchAfter;
             }
 
-            yield $productIds;
+            yield ProductIdCollection::fromProductIds($productIds);
 
             $returnedProducts += count($productIds);
             $result = $returnedProducts < $totalProducts && $searchAfter !== $previousSearchAfter

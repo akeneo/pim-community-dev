@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsToEvaluateQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -34,16 +35,16 @@ SQL;
 
         $productIds = [];
         while ($productId = $stmt->fetchOne()) {
-            $productIds[] = intval($productId);
+            $productIds[] = $productId;
 
             if (count($productIds) >= $bulkSize) {
-                yield $productIds;
+                yield ProductIdCollection::fromStrings($productIds);
                 $productIds = [];
             }
         }
 
         if (!empty($productIds)) {
-            yield $productIds;
+            yield ProductIdCollection::fromStrings($productIds);
         }
     }
 }

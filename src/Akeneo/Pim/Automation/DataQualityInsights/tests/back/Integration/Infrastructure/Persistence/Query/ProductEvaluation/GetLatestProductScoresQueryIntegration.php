@@ -9,6 +9,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetLatestProductScoresQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository;
@@ -79,7 +80,9 @@ final class GetLatestProductScoresQueryIntegration extends DataQualityInsightsTe
         ];
 
         $productAxesRates = $this->get(GetLatestProductScoresQuery::class)
-            ->byProductIds([new ProductId($productIdA), new ProductId($productIdB), new ProductId($productIdD)]);
+            ->byProductIds(ProductIdCollection::fromProductIds(
+                [new ProductId($productIdA), new ProductId($productIdB), new ProductId($productIdD)])
+            );
 
         $this->assertEqualsCanonicalizing($expectedProductsScores, $productAxesRates);
     }
