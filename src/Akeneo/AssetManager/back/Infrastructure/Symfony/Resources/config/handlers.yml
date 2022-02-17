@@ -96,6 +96,12 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_items_for_identifiers_and_query'
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets'
 
+    akeneo_assetmanager.application.asset.search_linked_product_attribute:
+        class: Akeneo\AssetManager\Application\Asset\SearchLinkedProductAttributes\SearchLinkedProductAttributes
+        arguments:
+            - '@akeneo.pim.structure.query.sql_get_attributes'
+            - '@akeneo.pim.structure.query.get_attribute_translations'
+
     akeneo_assetmanager.application.asset.search_connector_asset:
         class: Akeneo\AssetManager\Application\Asset\SearchAsset\SearchConnectorAsset
         arguments:
