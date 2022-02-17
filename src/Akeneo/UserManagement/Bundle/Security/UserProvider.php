@@ -41,6 +41,10 @@ class UserProvider implements UserProviderInterface
             throw new UsernameNotFoundException(sprintf('User with username "%s" does not exist.', $username));
         }
 
+        if (!$user->isEnabled()) {
+            throw new UsernameNotFoundException('User account is disabled.');
+        }
+
         return $user;
     }
 
