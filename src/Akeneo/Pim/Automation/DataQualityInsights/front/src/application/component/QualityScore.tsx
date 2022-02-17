@@ -1,6 +1,6 @@
-import React, {FC, HTMLAttributes} from 'react';
-import styled, {css} from 'styled-components';
-import {AkeneoThemedProps, getColor, Override} from 'akeneo-design-system';
+import React, { FC, HTMLAttributes } from 'react';
+import styled, { css } from 'styled-components';
+import { AkeneoThemedProps, getColor, Override } from 'akeneo-design-system';
 
 type Props = Override<
   HTMLAttributes<HTMLDivElement>,
@@ -26,7 +26,7 @@ type Rounded = 'all' | 'left' | 'right' | 'none';
  * <QualityScore score={'A'} size={'big'} rounded={'left} stacked />
  *
  */
-const QualityScore: FC<Props> = ({score, size = 'normal', rounded = 'all', stacked = false, ...props}) => {
+const QualityScore: FC<Props> = ({ score, size = 'normal', rounded = 'all', stacked = false, ...props }) => {
   if (score === 'N/A' || score === null) {
     return <>N/A</>;
   }
@@ -61,12 +61,12 @@ const getContainerBorderRadius = (rounded: Rounded) => {
   }
 };
 
-const containerStackedStyled = css<{score: string; size: string}>`
+const containerStackedStyled = css<{ score: string; size: string }>`
   position: absolute;
   left: 2px;
   border-radius: ${getContainerBorderRadius('all')};
 
-  ${({score, size}) =>
+  ${({ score, size }) =>
     size === 'big' &&
     css`
       border: 1px solid ${switchContainer(score)};
@@ -74,7 +74,7 @@ const containerStackedStyled = css<{score: string; size: string}>`
     `};
 `;
 
-const Container = styled.div<{score: string; size: string; rounded: Rounded; stacked?: boolean}>`
+const Container = styled.div<{ score: string; size: string; rounded: Rounded; stacked?: boolean }>`
   text-align: center;
   display: inline-block;
   text-transform: uppercase;
@@ -82,9 +82,9 @@ const Container = styled.div<{score: string; size: string; rounded: Rounded; sta
   width: 20px;
   height: 20px;
   font-size: 13px;
-  border-radius: ${({rounded}) => getContainerBorderRadius(rounded)};
+  border-radius: ${({ rounded }) => getContainerBorderRadius(rounded)};
 
-  ${({size}) =>
+  ${({ size }) =>
     size === 'big' &&
     css`
       width: 25px;
@@ -97,23 +97,31 @@ const Container = styled.div<{score: string; size: string; rounded: Rounded; sta
       border-radius: ${getContainerBorderRadius('all')};
     `};
 
-  ${({score}) => score === 'A' && AScore}
-  ${({score}) => score === 'B' && BScore}
-  ${({score}) => score === 'C' && CScore}
-  ${({score}) => score === 'D' && DScore}
-  ${({score}) => score === 'E' && EScore}
+  ${({ size, stacked, score }) =>
+    size === 'normal' && stacked &&
+    css`
+    top: 2px;
+    left: 0px !important;
+    border: 1px solid  ${switchContainer(score)};
+    `};
 
-  ${({stacked}) => stacked && containerStackedStyled}
+  ${({ score }) => score === 'A' && AScore}
+  ${({ score }) => score === 'B' && BScore}
+  ${({ score }) => score === 'C' && CScore}
+  ${({ score }) => score === 'D' && DScore}
+  ${({ score }) => score === 'E' && EScore}
+
+  ${({ stacked }) => stacked && containerStackedStyled}
 `;
 Container.defaultProps = {
   stacked: false,
   rounded: 'all',
 };
 
-const Wrapper = styled.div<{size: string}>`
+const Wrapper = styled.div<{ size: string }>`
   position: relative;
-  width: ${({size}) => (size === 'big' ? '25px' : '20px')};
-  height: ${({size}) => (size === 'big' ? '25px' : '20px')};
+  width: ${({ size }) => (size === 'big' ? '25px' : '20px')};
+  height: ${({ size }) => (size === 'big' ? '25px' : '20px')};
   margin: -2px 2px 0 -2px;
 `;
 
@@ -140,54 +148,54 @@ const switchContainer = (score: string) => {
 };
 
 const QualityScoreEmptyContainer = styled.div<
-  {score: string; size: string; top: number; left: number} & AkeneoThemedProps
->`
-  top: ${({top}) => top}px;
-  left: ${({left}) => left}px;
+  { score: string; size: string; top: number; left: number } & AkeneoThemedProps
+  >`
+  top: ${({ top }) => top}px;
+  left: ${({ left }) => left}px;
   position: absolute;
   display: inline-block;
-  width: ${({size}) => (size === 'big' ? '25px' : '20px')};
-  height: ${({size}) => (size === 'big' ? '25px' : '20px')};
+  width: ${({ size }) => (size === 'big' ? '25px' : '20px')};
+  height: ${({ size }) => (size === 'big' ? '25px' : '20px')};
   border-radius: 4px !important;
-  border: 1px solid ${({score}) => switchContainer(score)};
+  border: 1px solid ${({ score }) => switchContainer(score)};
   background: ${getColor('white')};
 `;
 
 const ABorderScore = css`
-  ${({theme}) => theme.color.green60};
+  ${({ theme }) => theme.color.green60};
 `;
 const BBorderScore = css`
-  ${({theme}) => theme.color.green100};
+  ${({ theme }) => theme.color.green100};
 `;
 const CBorderScore = css`
-  ${({theme}) => theme.color.yellow60};
+  ${({ theme }) => theme.color.yellow60};
 `;
 const DBorderScore = css`
-  ${({theme}) => theme.color.red40};
+  ${({ theme }) => theme.color.red40};
 `;
 const EBorderScore = css`
-  ${({theme}) => theme.color.red100};
+  ${({ theme }) => theme.color.red100};
 `;
 
 const AScore = css`
-  background: ${({theme}) => theme.color.green20};
-  color: ${({theme}) => theme.color.green120};
+  background: ${({ theme }) => theme.color.green20};
+  color: ${({ theme }) => theme.color.green120};
 `;
 const BScore = css`
-  background: ${({theme}) => theme.color.green60};
-  color: ${({theme}) => theme.color.green140};
+  background: ${({ theme }) => theme.color.green60};
+  color: ${({ theme }) => theme.color.green140};
 `;
 const CScore = css`
-  background: ${({theme}) => theme.color.yellow20};
-  color: ${({theme}) => theme.color.yellow120};
+  background: ${({ theme }) => theme.color.yellow20};
+  color: ${({ theme }) => theme.color.yellow120};
 `;
 const DScore = css`
-  background: ${({theme}) => theme.color.red20};
-  color: ${({theme}) => theme.color.red100};
+  background: ${({ theme }) => theme.color.red20};
+  color: ${({ theme }) => theme.color.red100};
 `;
 const EScore = css`
-  background: ${({theme}) => theme.color.red60};
-  color: ${({theme}) => theme.color.red140};
+  background: ${({ theme }) => theme.color.red60};
+  color: ${({ theme }) => theme.color.red140};
 `;
 
-export {QualityScore};
+export { QualityScore };
