@@ -18,4 +18,9 @@ interface GetAttributes
     public function forCodes(array $attributeCodes): array;
 
     public function forCode(string $attributeCode): ?Attribute;
+
+    /**
+     * @return Attribute[]
+     */
+    public function forType(string $attributeType): array;
 }

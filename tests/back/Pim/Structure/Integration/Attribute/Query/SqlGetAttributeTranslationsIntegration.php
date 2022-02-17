@@ -50,6 +50,50 @@ final class SqlGetAttributeTranslationsIntegration extends TestCase
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
+    public function test_it_gets_attribute_translations_by_giving_attribute_codes(): void
+    {
+        $query = $this->getQuery();
+
+        $this->givenAttributes([
+            [
+                'code' => 'a_boolean',
+                'type' => AttributeTypes::BOOLEAN,
+                'localizable' => false,
+                'scopable' => false,
+                'group' => 'other',
+                'labels' => [
+                    'en_US' => 'a boolean',
+                    'fr_FR' => 'un booléen'
+                ]
+            ],
+            [
+                'code' => 'a_textarea',
+                'type' => AttributeTypes::TEXTAREA,
+                'localizable' => false,
+                'scopable' => false,
+                'group' => 'other',
+                'labels' => [
+                    'en_US' => 'a textarea',
+                    'fr_FR' => 'une zone de texte'
+                ]
+            ]
+        ]);
+
+        $expected = [
+            'a_textarea' => [
+                'en_US' => 'a textarea',
+                'fr_FR' => 'une zone de texte'
+            ],
+            'a_boolean' => [
+                'en_US' => 'a boolean',
+                'fr_FR' => 'un booléen'
+            ],
+        ];
+        $actual = $query->byAttributeCodes(['a_boolean', 'a_textarea']);
+
+        $this->assertEqualsCanonicalizing($expected, $actual);
+    }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
