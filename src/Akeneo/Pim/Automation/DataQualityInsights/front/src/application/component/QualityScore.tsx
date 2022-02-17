@@ -34,8 +34,8 @@ const QualityScore: FC<Props> = ({score, size = 'normal', rounded = 'all', stack
   return stacked ? (
     <Wrapper size={size}>
       <>
-        <QualityScoreEmptyContainer score={score} size={size} top={-2} left={4} />
-        <QualityScoreEmptyContainer score={score} size={size} top={0} left={2} />
+        <EmptyContainer score={score} size={size} top={-2} left={4} data-testid="empty-container-back" />
+        <EmptyContainer score={score} size={size} top={0} left={2} data-testid="empty-container-middle" />
       </>
       <Container score={score} size={size} rounded={rounded} stacked={stacked} {...props}>
         {score}
@@ -140,9 +140,7 @@ const switchContainer = (score: string) => {
   }
 };
 
-const QualityScoreEmptyContainer = styled.div<
-  {score: string; size: string; top: number; left: number} & AkeneoThemedProps
->`
+const EmptyContainer = styled.div<{score: string; size: string; top: number; left: number} & AkeneoThemedProps>`
   top: ${({top}) => top}px;
   left: ${({left}) => left}px;
   position: absolute;
