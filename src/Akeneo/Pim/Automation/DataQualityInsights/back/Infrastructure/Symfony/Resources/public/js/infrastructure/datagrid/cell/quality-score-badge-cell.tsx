@@ -12,7 +12,7 @@ class QualityScoreBadgeCell extends StringCell {
 
     ReactDOM.render(
       <ThemeProvider theme={pimTheme}>
-        <QualityScore score={productQualityScore} stacked />
+        <QualityScore score={productQualityScore} />
       </ThemeProvider>,
       this.el
     );
