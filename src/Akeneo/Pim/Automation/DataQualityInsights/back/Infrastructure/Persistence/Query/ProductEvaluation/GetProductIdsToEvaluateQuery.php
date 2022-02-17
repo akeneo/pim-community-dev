@@ -22,7 +22,10 @@ final class GetProductIdsToEvaluateQuery implements GetProductIdsToEvaluateQuery
         $this->db = $db;
     }
 
-    public function execute(int $limit, int $bulkSize): \Iterator
+    /**
+     * @return \Generator<int, ProductIdCollection>
+     */
+    public function execute(int $limit, int $bulkSize): \Generator
     {
         $sql = <<<SQL
 SELECT DISTINCT product_id
