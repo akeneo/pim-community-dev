@@ -1,18 +1,19 @@
-import React, { FC } from 'react';
-import styled, { css } from 'styled-components';
-import { DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB } from '../listener';
-import { QualityScore } from './QualityScore';
+import React, {FC} from 'react';
+import styled, {css} from 'styled-components';
+import {DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB} from '../listener';
+import {QualityScore} from './QualityScore';
 
 type Props = {
   currentScore: string | null;
   stacked?: boolean;
 };
 
-const QualityScoreBar: FC<Props> = ({ currentScore, stacked = false }) => {
+const QualityScoreBar: FC<Props> = ({currentScore, stacked = false}) => {
   return (
     <Container
       currentScore={currentScore}
       onClick={() => window.dispatchEvent(new CustomEvent(DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB))}
+      data-testid="quality-score-bar"
     >
       <QualityScore
         key={`ranking-score-A`}
@@ -53,11 +54,11 @@ const QualityScoreBar: FC<Props> = ({ currentScore, stacked = false }) => {
   );
 };
 
-const Container = styled.div<{ currentScore: string | null }>`
+const Container = styled.div<{currentScore: string | null}>`
   display: flex;
   position: relative;
   top: 1px;
-  border-right: 1px ${({ theme }) => theme.color.grey80} solid;
+  border-right: 1px ${({theme}) => theme.color.grey80} solid;
   padding-right: 20px;
   margin-right: 20px;
   padding-top: 2px;
@@ -71,4 +72,4 @@ const NoScoreStyle = css`
   opacity: 0.3;
 `;
 
-export { QualityScoreBar };
+export {QualityScoreBar};
