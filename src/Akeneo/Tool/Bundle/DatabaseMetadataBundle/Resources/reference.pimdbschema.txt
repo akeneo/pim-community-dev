@@ -110,6 +110,7 @@ pim_data_quality_insights_attribute_group_activation | BASE TABLE
 pim_data_quality_insights_dashboard_scores_projection | BASE TABLE
 pim_data_quality_insights_product_criteria_evaluation | BASE TABLE
 pim_data_quality_insights_product_model_criteria_evaluation | BASE TABLE
+pim_data_quality_insights_product_model_score | BASE TABLE
 pim_data_quality_insights_product_score | BASE TABLE
 pim_datagrid_view | BASE TABLE
 pim_index_migration | BASE TABLE
@@ -712,6 +713,9 @@ pim_data_quality_insights_product_model_criteria_evaluation | criterion_code | N
 pim_data_quality_insights_product_model_criteria_evaluation | evaluated_at | YES | datetime |
 pim_data_quality_insights_product_model_criteria_evaluation | status | NO | varchar(15) | MUL
 pim_data_quality_insights_product_model_criteria_evaluation | result | YES | json |
+pim_data_quality_insights_product_model_score | product_model_id | NO | int | PRI
+pim_data_quality_insights_product_model_score | evaluated_at | NO | date |
+pim_data_quality_insights_product_model_score | scores | NO | json |
 pim_data_quality_insights_product_score | product_id | NO | int | PRI
 pim_data_quality_insights_product_score | evaluated_at | NO | date | PRI
 pim_data_quality_insights_product_score | scores | NO | json |
