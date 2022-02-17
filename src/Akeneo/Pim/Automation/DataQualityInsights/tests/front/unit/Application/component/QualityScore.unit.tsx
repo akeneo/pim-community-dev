@@ -138,5 +138,5 @@ test('it renders a quality score equal to A stacked in big size', () => {
   expect(emptyContainerMiddle).toHaveStyle({border: `1px solid ${pimTheme.color.green60}`, top: '0', left: '2px'});
   const emptyContainerBack = screen.getByTestId('empty-container-back');
   expect(emptyContainerBack).toBeInTheDocument();
-  expect(emptyContainerBack).toHaveStyle({border: `1px solid ${pimTheme.color.green60}`, top: '-2px', left: '3px'});
+  expect(emptyContainerBack).toHaveStyle({border: `1px solid ${pimTheme.color.green60}`, top: '-2px', left: '4px'});
 });
