@@ -21,6 +21,24 @@ const roundedProperties = {
   none: '0',
 };
 
+const borderContainerColorProperties: any = {
+  A: css`
+    ${({theme}) => theme.color.green60};
+  `,
+  B: css`
+    ${({theme}) => theme.color.green100};
+  `,
+  C: css`
+    ${({theme}) => theme.color.yellow60};
+  `,
+  D: css`
+    ${({theme}) => theme.color.red40};
+  `,
+  E: css`
+    ${({theme}) => theme.color.red100};
+  `,
+};
+
 /**
  * <QualityScore score={null} />
  *
@@ -64,7 +82,7 @@ const containerStackedStyled = css<{score: string; size: string}>`
   position: absolute;
   top: 2px;
   left: 2px;
-  border: 1px solid ${({score}) => switchContainer(score)};
+  border: 1px solid ${({score}) => borderContainerColorProperties[score]};
   border-radius: ${roundedProperties['all']};
 
   ${({size}) =>
@@ -110,28 +128,6 @@ Container.defaultProps = {
   rounded: 'all',
 };
 
-const switchContainer = (score: string) => {
-  switch (score) {
-    case 'A': {
-      return ABorderScore;
-    }
-    case 'B': {
-      return BBorderScore;
-    }
-    case 'C': {
-      return CBorderScore;
-    }
-    case 'D': {
-      return DBorderScore;
-    }
-    case 'E': {
-      return EBorderScore;
-    }
-    default:
-      return 'black';
-  }
-};
-
 const EmptyContainer = styled.div<{score: string; size: string; top: number; left: number} & AkeneoThemedProps>`
   top: ${({top}) => top}px;
   left: ${({left}) => left}px;
@@ -140,24 +136,8 @@ const EmptyContainer = styled.div<{score: string; size: string; top: number; lef
   width: ${({size}) => (size === 'big' ? '25px' : '20px')};
   height: ${({size}) => (size === 'big' ? '25px' : '20px')};
   border-radius: 4px !important;
-  border: 1px solid ${({score}) => switchContainer(score)};
+  border: 1px solid ${({score}) => borderContainerColorProperties[score]};
   background: ${getColor('white')};
-`;
-
-const ABorderScore = css`
-  ${({theme}) => theme.color.green60};
-`;
-const BBorderScore = css`
-  ${({theme}) => theme.color.green100};
-`;
-const CBorderScore = css`
-  ${({theme}) => theme.color.yellow60};
-`;
-const DBorderScore = css`
-  ${({theme}) => theme.color.red40};
-`;
-const EBorderScore = css`
-  ${({theme}) => theme.color.red100};
 `;
 
 const AScore = css`
