@@ -1,8 +1,10 @@
-const UserContext = require('pim/user-context');
-
-const formatDateForUILocale = (date: string, options?: Intl.DateTimeFormatOptions): string => {
-  const locale = UserContext.get('uiLocale').replace('_', '-');
-  const timeZone = UserContext.get('timezone');
+const formatDateForUILocale = (
+  date: string,
+  uiLocale: string,
+  timeZone: string,
+  options?: Intl.DateTimeFormatOptions
+): string => {
+  const locale = uiLocale.replace('_', '-');
   options = {timeZone, ...options};
 
   try {

@@ -70,3 +70,5 @@ When working on a PR that involves a branch on both CE & EE, here is a command t
 
     docker-compose run -u www-data --rm php php -d memory_limit=4G /usr/local/bin/composer require akeneo/pim-community-dev:dev-<BRANCH_NAME>
 
+
+

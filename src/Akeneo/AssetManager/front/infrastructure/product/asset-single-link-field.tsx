@@ -9,6 +9,7 @@ import __ from 'akeneoassetmanager/tools/translator';
 
 const Field = require('pim/field');
 const UserContext = require('pim/user-context');
+const Router = require('pim/router');
 
 /**
  * Asset family field for attribute form
@@ -32,6 +33,7 @@ class AssetFamilyField extends (Field as {new (config: any): any}) {
 
     ReactDOM.render(
       <AssetSelector
+        router={Router}
         assetFamilyIdentifier={denormalizeAssetFamilyIdentifier(templateContext.attribute.reference_data_name)}
         value={valueData}
         locale={denormalizeLocaleReference(UserContext.get('catalogLocale'))}
