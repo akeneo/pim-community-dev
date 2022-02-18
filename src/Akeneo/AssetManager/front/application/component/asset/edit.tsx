@@ -14,6 +14,7 @@ import {
   ChannelCode,
   UnsavedChanges,
   PageHeader,
+  useUserContext,
 } from '@akeneo-pim-community/shared';
 import {EditState as State} from 'akeneoassetmanager/application/reducer/asset/edit';
 import {AssetBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
@@ -137,6 +138,7 @@ const AssetEditView = ({form, asset, context, structure, events, hasEditRightOnA
   const translate = useTranslate();
   const {isGranted} = useSecurity();
   const dispatch = useDispatch();
+  const userContext = useUserContext();
   const assetFetcher = useAssetFetcher();
   const [isDeleteModalOpen, openDeleteModal, closeDeleteModal] = useBooleanState();
 
@@ -148,6 +150,8 @@ const AssetEditView = ({form, asset, context, structure, events, hasEditRightOnA
   const label = getLabel(asset.labels, context.locale, asset.code);
   const TabView = useTabView('akeneo_asset_manager_asset_edit', 'enrich');
   const completeness = getEditionAssetCompleteness(asset, context.channel, context.locale);
+  const uiLocale = userContext.get('uiLocale');
+  const timeZone = userContext.get('timezone');
 
   const canEditAsset = isGranted('akeneo_assetmanager_asset_edit') && hasEditRightOnAssetFamily;
   const canDeleteAsset =
@@ -210,7 +214,7 @@ const AssetEditView = ({form, asset, context, structure, events, hasEditRightOnA
               <span>
                 <DateLabel>
                   {translate('pim_asset_manager.asset.created_at')}:{' '}
-                  {formatDateForUILocale(context.createdAt, {
+                  {formatDateForUILocale(context.createdAt, uiLocale, timeZone, {
                     year: 'numeric',
                     month: 'numeric',
                     day: 'numeric',
@@ -221,7 +225,7 @@ const AssetEditView = ({form, asset, context, structure, events, hasEditRightOnA
                 |
                 <DateLabel>
                   {translate('pim_asset_manager.asset.updated_at')}:{' '}
-                  {formatDateForUILocale(context.updatedAt, {
+                  {formatDateForUILocale(context.updatedAt, uiLocale, timeZone, {
                     year: 'numeric',
                     month: 'numeric',
                     day: 'numeric',
