@@ -213,8 +213,8 @@ define([
             });
           break;
         case 'validate':
-          var loadingMask = new LoadingMask();
-          loadingMask.render().$el.appendTo(this.getRoot().$el).show();
+          loadingMask = new LoadingMask();
+          loadingMask.render().$el.appendTo(this.getRoot().$el).css({'z-index': '2000'}).show();
 
           $.ajax({
             method: 'POST',
