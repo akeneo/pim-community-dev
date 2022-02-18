@@ -132,6 +132,11 @@ akeneo_asset_manager_image_preview:
     defaults: { _controller: akeneo_assetmanager.infrastructure.action.image_preview }
     methods: [GET, POST]
 
+akeneo_asset_manager_linked_product_attributes:
+    path: '/rest/asset_manager/{assetFamilyIdentifier}/searchLinkedProductAttributes'
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset.search_linked_product_attributes }
+    methods: [GET]
+
 akeneo_asset_manager_file_upload:
     path: '/rest/asset_manager/file/upload'
     defaults: { _controller: akeneo_assetmanager.infrastructure.action.file_upload }

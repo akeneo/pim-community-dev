@@ -447,7 +447,7 @@ endif
 .PHONY: delete_expired_uptime_check
 delete_expired_uptime_check:
 	cd $(DEPLOYMENT_DIR)/bin/uptime && docker-compose run --rm composer composer install
-	cd $(DEPLOYMENT_DIR)/bin/uptime && LOG_LEVEL=info docker-compose run --rm php make deployment-uptime-clear
+	cd $(DEPLOYMENT_DIR)/bin/uptime && CLOUDSDK_PYTHON=python2 LOG_LEVEL=info docker-compose run --rm php make deployment-uptime-clear
 
 .PHONY: remove_unused_resources
 remove_unused_resources: remove_unused_gcloud_dns remove_unused_gcloud_pubsub remove_unused_gcloud_bucket remove_unused_disk remove_unused_mailgun_credentials remove_unused_iam remove_unused_gcloud_logging_metrics

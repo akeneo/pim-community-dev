@@ -124,6 +124,11 @@ services:
             - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
             - '@security.token_storage'
 
+    akeneo_assetmanager.infrastructure.action.asset.search_linked_product_attributes:
+        class: Akeneo\AssetManager\Infrastructure\Controller\Asset\SearchLinkedProductAttributesAction
+        arguments:
+            - '@akeneo_assetmanager.application.asset.search_linked_product_attribute'
+
     #  Assets
     akeneo_assetmanager.infrastructure.action.asset.create:
         class: Akeneo\AssetManager\Infrastructure\Controller\Asset\CreateAction
