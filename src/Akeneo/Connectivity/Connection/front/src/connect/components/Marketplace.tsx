@@ -60,7 +60,7 @@ export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
                     key={1}
                     id={app.id}
                     isConnected={app.connected}
-                    isDisabled={!isManageAppsAuthorized || !isLimitReached}
+                    isDisabled={!isManageAppsAuthorized || isLimitReached}
                 />,
             ]}
         />
@@ -88,7 +88,7 @@ export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
                     )}
                     emptyMessage={translate('akeneo_connectivity.connection.connect.marketplace.apps.empty')}
                     warningMessage={
-                        false === isLimitReached
+                        !isLimitReached
                             ? null
                             : translate(
                                   'akeneo_connectivity.connection.connection.constraint.connections_number_limit_reached'

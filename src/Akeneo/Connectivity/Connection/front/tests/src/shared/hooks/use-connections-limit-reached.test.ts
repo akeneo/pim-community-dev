@@ -29,7 +29,7 @@ test('it returns false when max connections limit is false ', async () => {
 
     expect(result.current).toStrictEqual(false);
 
-    await waitForNextUpdate();
+    await new Promise(setImmediate);
 
     expect(result.current).toStrictEqual(false);
 });
