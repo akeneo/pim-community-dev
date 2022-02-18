@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Hydrator;
 
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
 use Akeneo\Platform\TailoredImport\Domain\Model\TargetInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\TargetProperty;
@@ -24,13 +25,16 @@ class TargetHydrator
         return match ($normalizedTarget['type']) {
             TargetAttribute::TYPE => $this->hydrateAttribute($normalizedTarget, $indexedAttributes),
             TargetProperty::TYPE => $this->hydrateProperty($normalizedTarget),
-            default => throw new \RuntimeException(sprintf('Unknown target type: %s', $normalizedTarget['type'])),
+            default => throw new \InvalidArgumentException(sprintf('Unsupported "%s" target type', $normalizedTarget['type'])),
         };
     }
 
     private function hydrateAttribute(array $normalizedTarget, array $indexedAttributes): TargetAttribute
     {
-        $attribute = $indexedAttributes[$normalizedTarget['code']];
+        $attribute = $indexedAttributes[$normalizedTarget['code']] ?? null;
+        if (!$attribute instanceof Attribute) {
+            throw new \InvalidArgumentException(sprintf('Attribute "%s" does not exist', $normalizedTarget['code']));
+        }
 
         return TargetAttribute::create(
             $normalizedTarget['code'],
