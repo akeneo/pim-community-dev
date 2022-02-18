@@ -80,9 +80,9 @@ export const ListConnections = () => {
     const createButton = (
         <ApplyButton
             onClick={handleCreate}
-            disabled={!isLimitReached}
+            disabled={isLimitReached}
             title={
-                !isLimitReached
+                isLimitReached
                     ? translate('akeneo_connectivity.connection.connection.constraint.connections_number_limit_reached')
                     : ''
             }
