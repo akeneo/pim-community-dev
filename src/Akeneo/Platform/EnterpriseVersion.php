@@ -19,7 +19,7 @@ namespace Akeneo\Platform;
 class EnterpriseVersion
 {
     /** @staticvar string */
-    const VERSION = '5.0.77';
+    const VERSION = '5.0.78';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'Buttercup';

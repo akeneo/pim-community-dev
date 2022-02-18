@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.78 (2022-02-18)
+
 ## Bug fixes
 
 - PIM-10272: Rules - Reference entity records cannot be found if they contain upper cases
