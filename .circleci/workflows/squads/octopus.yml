@@ -11,7 +11,7 @@ workflows:
                   filters:
                       branches:
                           only:
-                              - /CXP-.*/
+                              - /^(CXP|OCT)-.*/
             - build_dev:
                   name: build_dev_ce
                   is_ee_built: false
