@@ -46,18 +46,14 @@ class SearchJobUser implements SearchJobUserInterface
             $wherePart = 'AND job_execution.user LIKE :username';
         }
 
-        $sql = sprintf($sql, $wherePart);
-
-        return $sql;
+        return sprintf($sql, $wherePart);
     }
 
     private function fetchUsers(string $sql, SearchJobUserQuery $query): array
     {
-        $jobUsers = $this->connection->executeQuery(
+        return $this->connection->executeQuery(
             $sql,
             ['username' => sprintf('%%%s%%', $query->search)],
         )->fetchFirstColumn();
-
-        return $jobUsers;
     }
 }

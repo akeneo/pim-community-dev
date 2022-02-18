@@ -79,6 +79,10 @@ connectivity-connection-lint-back_fix:
 
 connectivity-connection-unit-back:
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Connectivity/Connection/back/tests/Unit/spec/
+	# Scope Mapper unit tests
+	$(PHP_RUN) vendor/bin/phpspec run tests/back/Pim/Structure/Specification/Component/Security/
+	$(PHP_RUN) vendor/bin/phpspec run tests/back/Pim/Enrichment/Specification/Component/Security/
+	$(PHP_RUN) vendor/bin/phpspec run tests/back/Channel/Specification/Component/Security/
 
 connectivity-connection-acceptance-back: var/tests/behat/connectivity/connection
 	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat.yml --format pim --out var/tests/behat/connectivity/connection --format progress --out std --colors

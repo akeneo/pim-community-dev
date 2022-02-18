@@ -303,9 +303,6 @@ jobs:
                   name: Change owner of PIM as some files have been created with wrong owner
                   command: sudo chown -R 1000:1000 ~/project
             - run:
-                  name: Execute static analysis
-                  command: PIM_CONTEXT=onboarder make test-static-analysis
-            - run:
                   name: PHP coupling detector
                   command: PIM_CONTEXT=onboarder make test-coupling-detector
             - run:

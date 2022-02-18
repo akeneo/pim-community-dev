@@ -26,7 +26,7 @@ class StepExecutionTrackingHydrator
         $endTime = $stepExecution['end_time'] ? \DateTimeImmutable::createFromFormat('Y-m-d H:i:s.u', $stepExecution['end_time']) : null;
         $errorCount = array_reduce(
             $stepExecution['errors'],
-            static fn (int $errorCount, string $error) => $errorCount + count(unserialize($error)),
+            static fn (int $errorCount, string $error) => $errorCount + (is_countable(unserialize($error)) ? count(unserialize($error)) : 0),
             0,
         );
         $status = Status::fromStatus((int) $stepExecution['status']);
@@ -47,7 +47,7 @@ class StepExecutionTrackingHydrator
     private function computeDuration(Status $status, ?\DateTimeImmutable $startTime, ?\DateTimeImmutable $endTime): int
     {
         $now = $this->clock->now();
-        if ($status->getStatus() === Status::STARTING || null === $startTime) {
+        if (Status::STARTING === $status->getStatus() || null === $startTime) {
             return 0;
         }
 

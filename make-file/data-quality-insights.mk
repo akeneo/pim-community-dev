@@ -80,6 +80,14 @@ data-quality-insights-cs-fix:
 data-quality-insights-integration-back:
 	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit --testsuite=Data_Quality_Insights --testdox $(O)
 
+.PHONY: data-quality-insights-lint-front
+data-quality-insights-lint-front:
+	$(YARN_RUN) prettier --parser typescript --check "./src/Akeneo/Pim/Automation/DataQualityInsights/front/**/*.{js,ts,tsx}"
+
+.PHONY: data-quality-insights-lint-front-fix
+data-quality-insights-lint-front-fix:
+	$(YARN_RUN) prettier --parser typescript --write "./src/Akeneo/Pim/Automation/DataQualityInsights/front/**/*.{js,ts,tsx}"
+
 .PHONY: data-quality-insights-unit-front
 data-quality-insights-unit-front:
 	$(YARN_RUN) jest --coverage=false --maxWorkers=4 --config src/Akeneo/Pim/Automation/DataQualityInsights/tests/front/unit/unit.jest.js ${W}

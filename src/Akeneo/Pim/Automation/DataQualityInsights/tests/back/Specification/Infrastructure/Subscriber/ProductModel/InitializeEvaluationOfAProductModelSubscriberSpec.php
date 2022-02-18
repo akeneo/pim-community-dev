@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\ProductModel;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetDescendantVariantProductIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductModelIdsQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
@@ -23,20 +20,12 @@ class InitializeEvaluationOfAProductModelSubscriberSpec extends ObjectBehavior
     public function let(
         FeatureFlag $dataQualityInsightsFeature,
         CreateCriteriaEvaluations $createCriteriaEvaluations,
-        LoggerInterface $logger,
-        EvaluatePendingCriteria $evaluatePendingCriteria,
-        GetDescendantVariantProductIdsQueryInterface $getDescendantVariantProductIdsQuery,
-        DescendantProductModelIdsQueryInterface $getDescendantProductModelIdsQuery,
-        CreateCriteriaEvaluations $createProductsCriteriaEvaluations
+        LoggerInterface $logger
     ) {
         $this->beConstructedWith(
             $dataQualityInsightsFeature,
             $createCriteriaEvaluations,
-            $logger,
-            $evaluatePendingCriteria,
-            $getDescendantVariantProductIdsQuery,
-            $getDescendantProductModelIdsQuery,
-            $createProductsCriteriaEvaluations
+            $logger
         );
     }
 
@@ -83,14 +72,11 @@ class InitializeEvaluationOfAProductModelSubscriberSpec extends ObjectBehavior
     public function it_creates_criteria_on_unitary_product_post_save(
         $dataQualityInsightsFeature,
         $createCriteriaEvaluations,
-        $evaluatePendingCriteria,
         ProductModelInterface $productModel
     ) {
         $productModel->getId()->willReturn(12345);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
         $createCriteriaEvaluations->createAll([new ProductId(12345)])->shouldBeCalled();
-
-        $evaluatePendingCriteria->evaluateSynchronousCriteria([12345])->shouldBeCalled();
 
         $this->onPostSave(new GenericEvent($productModel->getWrappedObject(), ['unitary' => true]));
     }

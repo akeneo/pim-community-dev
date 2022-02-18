@@ -31,7 +31,8 @@ final class UpsertProductHandler
         private ProductRepositoryInterface $productRepository,
         private ProductBuilderInterface $productBuilder,
         private SaverInterface $productSaver,
-        private ObjectUpdaterInterface $productUpdater
+        private ObjectUpdaterInterface $productUpdater,
+        private ValidatorInterface $productValidator
     ) {
     }
 
@@ -55,7 +56,7 @@ final class UpsertProductHandler
 
         // This product validation is legacy. We should remove it as soon all validations will
         // be migrated on the command validation.
-        $violations = $this->validator->validate($product);
+        $violations = $this->productValidator->validate($product);
         if (0 < $violations->count()) {
             throw new LegacyViolationsException($violations);
         }
