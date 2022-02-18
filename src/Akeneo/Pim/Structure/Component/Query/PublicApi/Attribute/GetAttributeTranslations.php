@@ -7,4 +7,5 @@ namespace Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute;
 interface GetAttributeTranslations
 {
     public function byAttributeCodesAndLocale(array $attributeCodes, string $locale): array;
+    public function byAttributeCodes(array $attributeCodes): array;
 }

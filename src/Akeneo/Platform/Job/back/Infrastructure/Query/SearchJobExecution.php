@@ -84,7 +84,7 @@ SQL;
             'start_time', step_execution.start_time,
             'end_time', step_execution.end_time,
             'warning_count', step_execution.warning_count,
-            'errors', JSON_ARRAY(IFNULL(step_execution.failure_exceptions, 'a:0:{}'), IFNULL(step_execution.errors, 'a:0:{}')),
+            'has_error', IF(IFNULL(step_execution.failure_exceptions, 'a:0:{}') <> 'a:0:{}' OR IFNULL(step_execution.errors, 'a:0:{}') <> 'a:0:{}', 1, 0),
             'total_items', JSON_EXTRACT(step_execution.tracking_data, '$.totalItems'),
             'processed_items', JSON_EXTRACT(step_execution.tracking_data, '$.processedItems'),
             'status', step_execution.status,
