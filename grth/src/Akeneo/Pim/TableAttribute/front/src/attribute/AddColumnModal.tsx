@@ -1,6 +1,7 @@
 import {AttributesIllustration, Button, Field, Helper, Modal, TextInput} from 'akeneo-design-system';
 import React from 'react';
 import {
+  castMeasurementColumnDefinition,
   castReferenceEntityColumnDefinition,
   ColumnCode,
   ColumnDefinition,
@@ -13,6 +14,9 @@ import {LocaleLabel} from './LocaleLabel';
 import {FieldsList} from '../shared';
 import {DataTypeSelector} from './DataTypeSelector';
 import {ReferenceEntitySelector} from './ReferenceEntitySelector';
+import {MeasurementFamilySelector} from './MeasurementFamilySelector';
+import {MeasurementFamilyCode, MeasurementUnitCode} from '../models/MeasurementFamily';
+import {MeasurementUnitSelector} from './MeasurementUnitSelector';
 
 type AddColumnModalProps = {
   close: () => void;
@@ -25,6 +29,8 @@ type UndefinedColumnDefinition = {
   label: string;
   data_type: DataType | null;
   reference_entity_identifier: ReferenceEntityIdentifierOrCode | undefined;
+  measurement_family_code?: MeasurementFamilyCode;
+  measurement_default_unit_code?: MeasurementUnitCode;
 };
 
 type ErrorValidations = {
@@ -44,6 +50,8 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
     label: '',
     data_type: null,
     reference_entity_identifier: undefined,
+    measurement_family_code: undefined,
+    measurement_default_unit_code: undefined,
   });
 
   const [errorValidations, setErrorValidations] = React.useState<ErrorValidations>({
@@ -84,6 +92,21 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
     setColumnDefinition(columnDefinition => {
       return {...columnDefinition, reference_entity_identifier: referenceEntityIdentifier};
     });
+  };
+
+  const handleMeasurementChange = (measurementFamilyCode?: MeasurementFamilyCode) => {
+    setColumnDefinition(columnDefinition => ({
+      ...columnDefinition,
+      measurement_family_code: measurementFamilyCode,
+      measurement_default_unit_code: undefined,
+    }));
+  };
+
+  const handleMeasurementUnitChange = (measurementUnitCode?: MeasurementUnitCode) => {
+    setColumnDefinition(columnDefinition => ({
+      ...columnDefinition,
+      measurement_default_unit_code: measurementUnitCode,
+    }));
   };
 
   const handleDataTypeChange = (data_type: DataType | null) => {
@@ -130,6 +153,11 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
       return false;
     if (columnDefinition.data_type === 'reference_entity' && !columnDefinition.reference_entity_identifier)
       return false;
+    if (
+      columnDefinition.data_type === 'measurement' &&
+      (!columnDefinition.measurement_family_code || !columnDefinition.measurement_default_unit_code)
+    )
+      return false;
     return true;
   };
 
@@ -146,6 +174,12 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
     if (columnDefinition.reference_entity_identifier) {
       castReferenceEntityColumnDefinition(newColumn).reference_entity_identifier =
         columnDefinition.reference_entity_identifier;
+    }
+    if (columnDefinition.data_type === 'measurement') {
+      castMeasurementColumnDefinition(newColumn).measurement_family_code =
+        columnDefinition.measurement_family_code as MeasurementFamilyCode;
+      castMeasurementColumnDefinition(newColumn).measurement_default_unit_code =
+        columnDefinition.measurement_default_unit_code as MeasurementUnitCode;
     }
     onCreate(newColumn);
   };
@@ -216,6 +250,29 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
               value={columnDefinition.reference_entity_identifier}
             />
           </Field>
+        )}
+        {columnDefinition.data_type === 'measurement' && (
+          <>
+            <Field
+              label={translate('pim_table_attribute.form.attribute.measurement_family')}
+              requiredLabel={translate('pim_common.required_label')}
+            >
+              <MeasurementFamilySelector
+                onChange={handleMeasurementChange}
+                value={columnDefinition.measurement_family_code}
+              />
+            </Field>
+            <Field
+              label={translate('pim_table_attribute.form.attribute.measurement_default_unit')}
+              requiredLabel={translate('pim_common.required_label')}
+            >
+              <MeasurementUnitSelector
+                measurementFamilyCode={columnDefinition.measurement_family_code}
+                onChange={handleMeasurementUnitChange}
+                value={columnDefinition.measurement_default_unit_code}
+              />
+            </Field>
+          </>
         )}
       </FieldsList>
       <Modal.BottomButtons>

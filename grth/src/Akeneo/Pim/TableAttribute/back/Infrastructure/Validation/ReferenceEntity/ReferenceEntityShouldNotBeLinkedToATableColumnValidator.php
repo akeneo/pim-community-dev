@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\ReferenceEntity;
 
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsLinkedToATableColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsReferenceEntityLinkedToATableColumn;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
 final class ReferenceEntityShouldNotBeLinkedToATableColumnValidator extends ConstraintValidator
 {
-    public function __construct(private IsLinkedToATableColumn $isLinkedToATableColumn)
+    public function __construct(private IsReferenceEntityLinkedToATableColumn $isLinkedToATableColumn)
     {
     }
 

@@ -40,3 +40,16 @@ Feature: Update a table attribute
     When I update the "en_US" label of the "brand" column as "Brand"
     Then There is no violation
     And the "en_US" label of the "brand" column should be "Brand"
+
+  Scenario: Cannot update the measurement family of an existing measurement column
+    Given the duration measurement family with the second,minute units
+    And the length measurement family with the meter,centimeter units
+    And a valid table attribute with a measurement column using duration measurement family and second default unit code
+    When I update the measurement family code with length value
+    Then There is a violation with message: The measurement_family_code cannot be updated
+
+  Scenario: Can update the measurement default unit of an existing measurement column
+    Given the duration measurement family with the second,minute units
+    And a valid table attribute with a measurement column using duration measurement family and second default unit code
+    When I update the measurement default unit code with minute value
+    Then There is no violation

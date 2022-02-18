@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Query;
 
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsLinkedToATableColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsReferenceEntityLinkedToATableColumn;
 use Doctrine\DBAL\Connection;
 
-final class SqlIsLinkedToATableColumn implements IsLinkedToATableColumn
+final class SqlIsReferenceEntityLinkedToATableColumn implements IsReferenceEntityLinkedToATableColumn
 {
     private Connection $connection;
 

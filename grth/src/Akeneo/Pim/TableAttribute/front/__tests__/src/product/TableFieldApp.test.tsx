@@ -9,6 +9,7 @@ import {mockScroll} from '../../shared/mockScroll';
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 jest.mock('../../../src/product/AddRowsButton');
+jest.mock('../../../src/fetchers/MeasurementFamilyFetcher');
 mockScroll();
 
 const getTemplateContext: () => TemplateContext = () => {

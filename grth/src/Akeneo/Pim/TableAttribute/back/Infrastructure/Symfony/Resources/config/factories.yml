@@ -13,3 +13,4 @@ services:
                 boolean: Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn
                 select: Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn
                 reference_entity: Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn
+                measurement: Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn

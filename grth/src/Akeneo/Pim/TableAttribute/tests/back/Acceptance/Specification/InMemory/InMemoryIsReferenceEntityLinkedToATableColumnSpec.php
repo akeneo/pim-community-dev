@@ -6,13 +6,13 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsLinkedToATableColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsReferenceEntityLinkedToATableColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
-use Akeneo\Test\Pim\TableAttribute\Acceptance\InMemory\InMemoryIsLinkedToATableColumn;
+use Akeneo\Test\Pim\TableAttribute\Acceptance\InMemory\InMemoryIsReferenceEntityLinkedToATableColumn;
 use PhpSpec\ObjectBehavior;
 
-class InMemoryIsLinkedToATableColumnSpec extends ObjectBehavior
+class InMemoryIsReferenceEntityLinkedToATableColumnSpec extends ObjectBehavior
 {
     public function let(AttributeRepositoryInterface $attributeRepository)
     {
@@ -21,8 +21,8 @@ class InMemoryIsLinkedToATableColumnSpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(InMemoryIsLinkedToATableColumn::class);
-        $this->shouldImplement(IsLinkedToATableColumn::class);
+        $this->shouldHaveType(InMemoryIsReferenceEntityLinkedToATableColumn::class);
+        $this->shouldImplement(IsReferenceEntityLinkedToATableColumn::class);
     }
 
     public function it_returns_true_if_reference_entity_is_linked_to_a_table_attribute(

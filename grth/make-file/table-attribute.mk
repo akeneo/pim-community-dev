@@ -46,3 +46,7 @@ table-attribute-lint-front:
 .PHONY: table-attribute-prettier-check-front
 table-attribute-prettier-check-front:
 	$(YARN_RUN) run --cwd=src/Akeneo/Pim/TableAttribute/front prettier-check
+
+.PHONY: table-attribute-prettier-fix-front
+table-attribute-prettier-fix-front:
+	$(YARN_RUN) run --cwd=src/Akeneo/Pim/TableAttribute/front prettier

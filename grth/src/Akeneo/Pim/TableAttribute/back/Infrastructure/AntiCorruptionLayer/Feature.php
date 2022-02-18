@@ -18,6 +18,7 @@ use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 class Feature
 {
     const REFERENCE_ENTITY = 'reference_entity';
+    const MEASUREMENT = 'measurement';
 
     public function __construct(private FeatureFlags $featureFlags)
     {

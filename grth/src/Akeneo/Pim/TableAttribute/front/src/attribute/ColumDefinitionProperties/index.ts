@@ -4,6 +4,7 @@ import SelectProperties from './SelectProperties';
 import NumberProperties from './NumberProperties';
 import TextProperties from './TextProperties';
 import ReferenceEntityProperties from './ReferenceEntityProperties';
+import MeasurementProperties from './MeasurementProperties';
 
 type ColumnDefinitionProps = {
   attribute: TableAttribute;
@@ -18,6 +19,7 @@ const ColumnDefinitions: {[dataType: string]: ColumnProperties} = {
   number: NumberProperties,
   text: TextProperties,
   reference_entity: ReferenceEntityProperties,
+  measurement: MeasurementProperties,
 };
 
 export {ColumnDefinitions};

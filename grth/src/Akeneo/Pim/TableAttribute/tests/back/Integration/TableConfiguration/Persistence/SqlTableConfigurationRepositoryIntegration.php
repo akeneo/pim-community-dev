@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\TableAttribute\Integration\TableConfiguration\Persistence;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
@@ -57,6 +58,12 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'is_allergenic']),
             ReferenceEntityColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'record', 'reference_entity_identifier' => 'entity']),
+            MeasurementColumn::fromNormalized([
+                'id' => ColumnIdGenerator::duration(),
+                'code' => 'duration',
+                'measurement_family_code' => 'family',
+                'measurement_default_unit_code' => 'unit',
+            ]),
         ]);
         $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
 
@@ -65,7 +72,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
             ['attribute_id' => $this->tableAttributeId]
         )->fetchAllAssociative();
 
-        self::assertCount(4, $rows);
+        self::assertCount(5, $rows);
         self::assertSame(0, (int)$rows[0]['column_order']);
         self::assertSame('ingredient', $rows[0]['code']);
         self::assertSame('select', $rows[0]['data_type']);
@@ -85,6 +92,14 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         self::assertSame(3, (int)$rows[3]['column_order']);
         self::assertSame('0', $rows[3]['is_required_for_completeness']);
         self::assertSame('{"reference_entity_identifier": "entity"}', $rows[3]['properties']);
+
+        self::assertSame(ColumnIdGenerator::duration(), $rows[4]['id']);
+        self::assertSame(4, (int)$rows[4]['column_order']);
+        self::assertSame('0', $rows[4]['is_required_for_completeness']);
+        $properties = \json_decode($rows[4]['properties'], true, 512, JSON_THROW_ON_ERROR);
+        self::assertCount(2, $properties);
+        self::assertSame('family', $properties['measurement_family_code'] ?? null);
+        self::assertSame('unit', $properties['measurement_default_unit_code'] ?? null);
     }
 
     /** @test */
@@ -95,6 +110,12 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
             TextColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
             BooleanColumn::fromNormalized(['id' => ColumnIdGenerator::isAllergenic(), 'code' => 'is_allergenic']),
             ReferenceEntityColumn::fromNormalized(['id' => ColumnIdGenerator::record(), 'code' => 'record', 'reference_entity_identifier' => 'entity']),
+            MeasurementColumn::fromNormalized([
+                'id' => ColumnIdGenerator::duration(),
+                'code' => 'duration',
+                'measurement_family_code' => 'family',
+                'measurement_default_unit_code' => 'unit',
+            ]),
         ]);
         $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
 
@@ -103,7 +124,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
             ['attribute_id' => $this->tableAttributeId]
         )->fetchFirstColumn();
 
-        self::assertCount(4, $ids);
+        self::assertCount(5, $ids);
         [$ingredientId, $quantityId,] = $ids;
 
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
@@ -270,6 +291,20 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
                 'properties' => \json_encode(['reference_entity_identifier' => 'entity']),
             ]
         );
+        $this->connection->executeQuery(
+            $sql,
+            [
+                'id' => ColumnIdGenerator::duration(),
+                'attribute_id' => $this->tableAttributeId,
+                'code' => 'duration',
+                'data_type' => 'measurement',
+                'column_order' => 3,
+                'labels' => '{}',
+                'validations' => '{}',
+                'is_required_for_completeness' => '0',
+                'properties' => \json_encode(['measurement_family_code' => 'family', 'measurement_default_unit_code' => 'unit']),
+            ]
+        );
 
         $sql = <<<SQL
         INSERT INTO pim_catalog_table_column_select_option (column_id, code, labels)
@@ -317,7 +352,16 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
                     'is_required_for_completeness' => false,
                     'reference_entity_identifier' => 'entity',
                 ],
-
+                [
+                    'id' => ColumnIdGenerator::duration(),
+                    'code' => 'duration',
+                    'data_type' => 'measurement',
+                    'labels' => (object)[],
+                    'validations' => (object) [],
+                    'is_required_for_completeness' => false,
+                    'measurement_family_code' => 'family',
+                    'measurement_default_unit_code' => 'unit',
+                ],
             ],
             $result->normalize()
         );

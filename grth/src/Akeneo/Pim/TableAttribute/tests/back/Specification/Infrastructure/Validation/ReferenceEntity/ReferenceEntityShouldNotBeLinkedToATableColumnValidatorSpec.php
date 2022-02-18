@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Validation\ReferenceEntity;
 
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsLinkedToATableColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsReferenceEntityLinkedToATableColumn;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldNotBeLinkedToATableColumn;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldNotBeLinkedToATableColumnValidator;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityCommand;
@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class ReferenceEntityShouldNotBeLinkedToATableColumnValidatorSpec extends ObjectBehavior
 {
-    function let(ExecutionContext $context, IsLinkedToATableColumn $isLinkedToATableColumn)
+    function let(ExecutionContext $context, IsReferenceEntityLinkedToATableColumn $isLinkedToATableColumn)
     {
         if (! class_exists(AkeneoReferenceEntityBundle::class)) {
             throw new SkippingException('ReferenceEntity are not available in this scope');
@@ -67,7 +67,7 @@ class ReferenceEntityShouldNotBeLinkedToATableColumnValidatorSpec extends Object
 
     function it_does_not_add_violation_when_reference_entity_is_not_linked_to_column(
         ExecutionContext $context,
-        IsLinkedToATableColumn $isLinkedToATableColumn
+        IsReferenceEntityLinkedToATableColumn $isLinkedToATableColumn
     ) {
         $isLinkedToATableColumn->forIdentifier('brand')->willReturn(false);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
@@ -79,9 +79,9 @@ class ReferenceEntityShouldNotBeLinkedToATableColumnValidatorSpec extends Object
     }
 
     function it_adds_violation_when_reference_entity_is_linked_to_column(
-        ExecutionContext                    $context,
-        IsLinkedToATableColumn              $isLinkedToATableColumn,
-        ConstraintViolationBuilderInterface $violationBuilder
+        ExecutionContext                      $context,
+        IsReferenceEntityLinkedToATableColumn $isLinkedToATableColumn,
+        ConstraintViolationBuilderInterface   $violationBuilder
     ) {
         $isLinkedToATableColumn->forIdentifier('brand')->willReturn(true);
 

@@ -52,10 +52,10 @@ class TableValueFactory implements ValueFactory
                     continue;
                 }
 
-                if (!is_scalar($cell)) {
+                if (!is_scalar($cell) && !\is_array($cell)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $attribute->code(),
-                        'The cell value must be a text string, a number or a boolean.',
+                        'The cell value must be a text string, a number, a boolean or an array.',
                         static::class,
                         $data
                     );
@@ -96,7 +96,7 @@ class TableValueFactory implements ValueFactory
         $foundOptionCodes = [];
         foreach ($data as $rowIndex => $row) {
             foreach ($row as $columnId => $value) {
-                if ($firstColumnId === \strtolower((string) $columnId)) {
+                if ($firstColumnId === \strtolower((string) $columnId) && \is_scalar($value)) {
                     $optionCode = \strtolower((string) $value);
                     if (array_key_exists($optionCode, $foundOptionCodes)) {
                         unset($data[$foundOptionCodes[$optionCode]]);

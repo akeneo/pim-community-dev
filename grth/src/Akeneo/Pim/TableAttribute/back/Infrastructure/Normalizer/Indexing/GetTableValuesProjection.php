@@ -16,18 +16,19 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Indexing;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductModelProjectionInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
+use Akeneo\Pim\TableAttribute\Infrastructure\AntiCorruptionLayer\AclMeasureConverter;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
 use Webmozart\Assert\Assert;
 
 class GetTableValuesProjection implements GetAdditionalPropertiesForProductProjectionInterface, GetAdditionalPropertiesForProductModelProjectionInterface
 {
-    private TableConfigurationRepository $tableConfigurationRepository;
-
-    public function __construct(TableConfigurationRepository $tableConfigurationRepository)
-    {
-        $this->tableConfigurationRepository = $tableConfigurationRepository;
+    public function __construct(
+        private TableConfigurationRepository $tableConfigurationRepository,
+        private AclMeasureConverter $measureConverter
+    ) {
     }
 
     /**
@@ -126,10 +127,18 @@ class GetTableValuesProjection implements GetAdditionalPropertiesForProductProje
         foreach ($table->normalize() as $row) {
             foreach ($row as $columnId => $cellValue) {
                 $column = $tableConfiguration->getColumnFromStringId($columnId);
+                $value = $column instanceof MeasurementColumn
+                    ? $this->measureConverter->convertAmountInStandardUnit(
+                        $column->measurementFamilyCode(),
+                        (string) $cellValue['amount'],
+                        $cellValue['unit']
+                    )
+                    : $cellValue
+                ;
                 $normalizedCell = [
                     'row' => $row[$stringFirstColumnId],
                     'column' => $column->code()->asString(),
-                    \sprintf('value-%s', $column->dataType()->asString()) => $cellValue,
+                    \sprintf('value-%s', $column->dataType()->asString()) => $value,
                     'is_column_complete' => $filledCellsCountByColumn[$columnId] === $rowCount,
                 ];
                 if (null !== $tableValue->getLocaleCode()) {

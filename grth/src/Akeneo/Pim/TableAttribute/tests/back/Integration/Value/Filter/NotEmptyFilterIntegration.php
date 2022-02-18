@@ -212,4 +212,64 @@ final class NotEmptyFilterIntegration extends AbstractFilterIntegration
             []
         );
     }
+
+    /** @test */
+    public function it_filters_on_not_empty_operator_on_measurement_column(): void
+    {
+        $this->createNutritionAttributeWithMeasurementColumn();
+        $this->createProductWithValues('empty_product', [], 'family_with_table');
+        $this->createProductWithValues('product_with_empty_column', [
+            'nutrition_with_measurement' => [
+                [
+                    'locale' => null,
+                    'scope' => null,
+                    'data' => [
+                        [
+                            'ingredient' => 'sugar',
+                        ],
+                        [
+                            'ingredient' => 'egg',
+                        ],
+                    ],
+                ]
+            ],
+        ]);
+        $this->createProductWithValues('product_with_non_empty_column', [
+            'nutrition_with_measurement' => [
+                [
+                    'locale' => null,
+                    'scope' => null,
+                    'data' => [
+                        [
+                            'ingredient' => 'sugar',
+                            'energy_per_100g' => ['unit' => 'KILOCALORIE', 'amount' => '10.5'],
+                        ],
+                        [
+                            'ingredient' => 'egg',
+                        ],
+                    ],
+                ]
+            ],
+        ]);
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+
+        // Filter on column
+        $this->assertFilter(
+            'nutrition_with_measurement',
+            ['column' => 'energy_per_100g'],
+            ['product_with_non_empty_column']
+        );
+
+        // Filter on column + row
+        $this->assertFilter(
+            'nutrition_with_measurement',
+            ['column' => 'energy_per_100g', 'row' => 'sugar'],
+            ['product_with_non_empty_column'],
+        );
+        $this->assertFilter(
+            'nutrition_with_measurement',
+            ['column' => 'energy_per_100g', 'row' => 'egg'],
+            [],
+        );
+    }
 }

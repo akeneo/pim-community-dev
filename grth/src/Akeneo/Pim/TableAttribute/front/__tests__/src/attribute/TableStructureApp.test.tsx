@@ -113,6 +113,7 @@ describe('TableStructureApp', () => {
       getComplexTableConfiguration()[3],
       getComplexTableConfiguration()[1],
       getComplexTableConfiguration()[4],
+      getComplexTableConfiguration()[5],
     ]);
   });
 
@@ -215,6 +216,7 @@ describe('TableStructureApp', () => {
       getComplexTableConfiguration()[2],
       {...getComplexTableConfiguration()[3], validations: {max_length: 50}},
       getComplexTableConfiguration()[4],
+      getComplexTableConfiguration()[5],
     ]);
   });
 

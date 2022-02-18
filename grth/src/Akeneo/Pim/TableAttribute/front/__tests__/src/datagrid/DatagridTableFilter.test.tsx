@@ -9,6 +9,7 @@ import {TestAttributeContextProvider} from '../../shared/TestAttributeContextPro
 jest.mock('../../../src/fetchers/AttributeFetcher');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 jest.mock('../../../src/fetchers/RecordFetcher');
+jest.mock('../../../src/fetchers/MeasurementFamilyFetcher');
 const scroll = mockScroll();
 
 const openDropdown = async () => {

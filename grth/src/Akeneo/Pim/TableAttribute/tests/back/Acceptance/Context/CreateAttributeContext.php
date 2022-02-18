@@ -15,6 +15,7 @@ namespace Akeneo\Test\Pim\TableAttribute\Acceptance\Context;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
@@ -283,6 +284,33 @@ final class CreateAttributeContext implements Context
             ],
         ]);
         $this->saveAttribute($attribute);
+    }
+
+    /**
+     * @Given a table attribute with measurement column from :familyCode family code and :defaultUnitCode default unit code
+     */
+    public function aTableAttributeWithMeasurementColumnFromFamilyCodeAndDefaultUnitCode(string $familyCode, string $defaultUnitCode): void
+    {
+        $attribute = $this->attributeBuilder
+            ->withCode('table')
+            ->withGroupCode('marketing')
+            ->withType(AttributeTypes::TABLE)
+            ->build();
+        $attribute->setRawTableConfiguration([
+            [
+                'data_type' => 'select',
+                'code' => 'ingredients',
+                'options' => [],
+                'is_required_for_completeness' => true,
+            ],
+            [
+                'data_type' => MeasurementColumn::DATATYPE,
+                'code' => "measurement_column",
+                'measurement_family_code' => $familyCode,
+                'measurement_default_unit_code' => $defaultUnitCode,
+            ],
+        ]);
+        $this->saveAttribute($attribute, true);
     }
 
     private function saveAttribute(AttributeInterface $attribute, bool $throwOnvalidationError = false): void
