@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductModelScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Event\ProductModelsEvaluated;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
@@ -20,7 +20,7 @@ class EvaluateProductModelsSpec extends ObjectBehavior
 {
     public function let(
         EvaluatePendingCriteria $evaluatePendingProductModelCriteria,
-        ConsolidateProductScores $consolidateProductScores,
+        ConsolidateProductModelScores $consolidateProductScores,
         EventDispatcherInterface $eventDispatcher
     ): void
     {
