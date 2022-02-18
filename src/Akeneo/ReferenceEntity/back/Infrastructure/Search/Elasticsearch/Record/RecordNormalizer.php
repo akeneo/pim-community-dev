@@ -40,7 +40,7 @@ class RecordNormalizer implements RecordNormalizerInterface
         private FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
         private SqlFindSearchableRecords $findSearchableRecords,
         private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
-        Private FindActivatedLocalesInterface $findActivatedLocales = null,
+        private ?FindActivatedLocalesInterface $findActivatedLocales = null,
     ) {
     }
 

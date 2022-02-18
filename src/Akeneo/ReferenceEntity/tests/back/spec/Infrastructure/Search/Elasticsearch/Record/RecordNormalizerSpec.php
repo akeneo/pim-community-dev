@@ -177,10 +177,14 @@ class RecordNormalizerSpec extends ObjectBehavior
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
         SqlFindSearchableRecords $findSearchableRecords,
         FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
+        FindActivatedLocalesInterface $findActivatedLocales,
         \DateTimeImmutable $updatedAt
     ) {
         $recordIdentifier = RecordIdentifier::fromString('stark');
         $updatedAt->getTimestamp()->willReturn(1589524960);
+        $findActivatedLocales
+            ->findAll()
+            ->willReturn(['fr_FR', 'en_US']);
 
         $stark = new SearchableRecordItem();
         $stark->identifier = 'designer_stark_fingerprint';
