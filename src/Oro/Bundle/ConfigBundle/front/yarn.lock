@@ -3,8 +3,7 @@
 
 
 "@akeneo-pim-community/shared@link:../../../../../front-packages/shared":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@babel/code-frame@7.10.4":
   version "7.10.4"
@@ -2271,7 +2270,11 @@ ajv@^8.0.1:
 
 "akeneo-design-system@link:../../../../../front-packages/akeneo-design-system":
   version "0.0.0"
-  uid ""
+  dependencies:
+    draft-js "^0.10.5"
+    draftjs-to-html "^0.8.4"
+    html-to-draftjs "^1.5.0"
+    react-draft-wysiwyg "^1.12.13"
 
 alphanum-sort@^1.0.0:
   version "1.0.2"
@@ -10988,9 +10991,9 @@ url-loader@4.1.1:
     schema-utils "^3.0.0"
 
 url-parse@^1.4.3:
-  version "1.5.4"
-  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.5.4.tgz#e4f645a7e2a0852cc8a66b14b292a3e9a11a97fd"
-  integrity sha512-ITeAByWWoqutFClc/lRZnFplgXgEZr3WJ6XngMM/N9DMIm4K8zXPCZ1Jdu0rERwO84w1WC5wkle2ubwTA4NTBg==
+  version "1.5.7"
+  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.5.7.tgz#00780f60dbdae90181f51ed85fb24109422c932a"
+  integrity sha512-HxWkieX+STA38EDk7CE9MEryFeHCKzgagxlGvsdS7WBImq9Mk+PGwiT56w82WI3aicwJA8REp42Cxo98c8FZMA==
   dependencies:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
