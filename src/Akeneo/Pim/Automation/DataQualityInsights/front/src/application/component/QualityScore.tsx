@@ -14,6 +14,13 @@ type Props = Override<
 
 type Rounded = 'all' | 'left' | 'right' | 'none';
 
+const roundedProperties = {
+  all: '4px',
+  left: '4px 0 0 4px',
+  right: '0 4px 4px 0',
+  none: '0',
+};
+
 /**
  * <QualityScore score={null} />
  *
@@ -33,10 +40,8 @@ const QualityScore: FC<Props> = ({score, size = 'normal', rounded = 'all', stack
 
   return stacked ? (
     <Wrapper size={size}>
-      <>
-        <EmptyContainer score={score} size={size} top={-2} left={4} data-testid="empty-container-back" />
-        <EmptyContainer score={score} size={size} top={0} left={2} data-testid="empty-container-middle" />
-      </>
+      <EmptyContainer score={score} size={size} top={-2} left={4} data-testid="empty-container-back" />
+      <EmptyContainer score={score} size={size} top={0} left={2} data-testid="empty-container-middle" />
       <Container score={score} size={size} rounded={rounded} stacked={stacked} {...props}>
         {score}
       </Container>
@@ -55,25 +60,12 @@ const Wrapper = styled.div<{size: string}>`
   margin: -2px 2px 0 -2px;
 `;
 
-const getContainerBorderRadius = (rounded: Rounded) => {
-  switch (rounded) {
-    case 'all':
-      return '4px';
-    case 'left':
-      return '4px 0 0 4px';
-    case 'right':
-      return '0 4px 4px 0';
-    case 'none':
-      return '0';
-  }
-};
-
 const containerStackedStyled = css<{score: string; size: string}>`
   position: absolute;
   top: 2px;
   left: 2px;
   border: 1px solid ${({score}) => switchContainer(score)};
-  border-radius: ${getContainerBorderRadius('all')};
+  border-radius: ${roundedProperties['all']};
 
   ${({size}) =>
     size === 'normal' &&
@@ -90,7 +82,7 @@ const Container = styled.div<{score: string; size: string; rounded: Rounded; sta
   width: 20px;
   height: 20px;
   font-size: 13px;
-  border-radius: ${({rounded}) => getContainerBorderRadius(rounded)};
+  border-radius: ${({rounded}) => roundedProperties[rounded]};
 
   ${({size}) =>
     size === 'big' &&
@@ -102,7 +94,7 @@ const Container = styled.div<{score: string; size: string; rounded: Rounded; sta
       top: -2px;
       position: relative;
       margin: 0 -2px 0 -2px;
-      border-radius: ${getContainerBorderRadius('all')};
+      border-radius: ${roundedProperties['all']};
     `};
 
   ${({score}) => score === 'A' && AScore}

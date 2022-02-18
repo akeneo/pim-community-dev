@@ -1,20 +1,22 @@
-import React, {FC} from 'react';
+import React, {FC, SyntheticEvent} from 'react';
 import styled, {css} from 'styled-components';
-import {DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB} from '../listener';
 import {QualityScore} from './QualityScore';
 
 type Props = {
   currentScore: string | null;
+  onClick?: (event: SyntheticEvent) => void;
   stacked?: boolean;
 };
 
-const QualityScoreBar: FC<Props> = ({currentScore, stacked = false}) => {
+const QualityScoreBar: FC<Props> = ({currentScore, onClick, stacked = false}) => {
+  const handleAction = (event: SyntheticEvent) => {
+    if (undefined === onClick) return;
+
+    onClick(event);
+  };
+
   return (
-    <Container
-      currentScore={currentScore}
-      onClick={() => window.dispatchEvent(new CustomEvent(DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB))}
-      data-testid="quality-score-bar"
-    >
+    <Container currentScore={currentScore} onClick={handleAction} data-testid="quality-score-bar">
       <QualityScore
         key={`ranking-score-A`}
         score={'A'}
