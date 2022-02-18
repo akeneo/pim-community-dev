@@ -102,7 +102,7 @@ class UserContextSpec extends ObjectBehavior
     }
 
     function it_provides_user_locale_if_locale_is_not_present_in_user_session(
-        User $user,
+        UserInterface $user,
         $request,
         $session,
         $de
@@ -178,7 +178,7 @@ class UserContextSpec extends ObjectBehavior
         $this->getUserLocaleCodes()->shouldReturn(['en_US', 'fr_FR', 'de_DE']);
     }
 
-    function its_get_user_tree_method_returns_user_tree_if_available(User $user, $secondTree)
+    function its_get_user_tree_method_returns_user_tree_if_available(UserInterface $user, $secondTree)
     {
         $user->getDefaultTree()->willReturn($secondTree);
         $this->getUserProductCategoryTree()->shouldReturn($secondTree);

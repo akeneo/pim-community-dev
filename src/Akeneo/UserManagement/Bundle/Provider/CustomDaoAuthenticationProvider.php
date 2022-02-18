@@ -39,6 +39,11 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
      */
     public function checkAuthentication(SecurityUserInterface $user, UsernamePasswordToken $token)
     {
+        if (!$user instanceof UserInterface) {
+            parent::checkAuthentication($user, $token);
+            return;
+        }
+
         $this->assertAccountIsUnlocked($user);
         if ($this->shouldResetCounter($user)) {
             $this->resetLockingState($user);
