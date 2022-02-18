@@ -16,6 +16,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * "Light" version of the EntityWithFamilyVariantNormalizer, it only returns the needed information
@@ -112,6 +113,15 @@ final class LightEntityWithFamilyVariantNormalizer implements NormalizerInterfac
         $valuesForLocale = [];
         foreach ($this->attributesProvider->getAxes($entity) as $axisAttribute) {
             $value = $entity->getValue($axisAttribute->getCode());
+            Assert::notNull(
+                $value,
+                \sprintf(
+                    'No value found for %s attribute (type: %s, code: %s)',
+                    $axisAttribute->getCode(),
+                    $axisAttribute->getType(),
+                    $axisAttribute->getCode()
+                )
+            );
             $normalizedValue = (string)$value;
 
             $attributeNormalizer = $this->getAttributeLabelsNormalizer($axisAttribute);
