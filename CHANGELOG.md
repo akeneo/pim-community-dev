@@ -12,6 +12,7 @@
 - PIM-10255: Fix LocaleCodeContext initialization place for table condition line inside rules
 - PIM-10269: Fix regression in asset-selector component
 - PIM-10256: Fix MainImage as asset using React Component
+- PIM-10259: Fix Arabic text being reversed in product PDF exports
 
 ## Improvements
 
