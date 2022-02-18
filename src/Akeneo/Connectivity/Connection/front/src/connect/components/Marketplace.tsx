@@ -47,7 +47,7 @@ export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
     const isDeveloperModeEnabled = useDeveloperMode();
     const security = useSecurity();
     const isManageAppsAuthorized = security.isGranted('akeneo_connectivity_connection_manage_apps');
-    const isLimitReached = useConnectionsLimitReached();
+    const {isLimitReached} = useConnectionsLimitReached();
     const extensionsList = extensions.extensions.map((extension: Extension) => (
         <MarketplaceCard key={extension.id} item={extension} />
     ));

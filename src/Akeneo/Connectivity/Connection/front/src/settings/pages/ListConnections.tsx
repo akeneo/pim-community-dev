@@ -40,7 +40,7 @@ export const ListConnections = () => {
         }),
     });
 
-    const isLimitReached = useConnectionsLimitReached();
+    const {isLimitReached} = useConnectionsLimitReached();
 
     useEffect(() => {
         let cancelled = false;
