@@ -12,6 +12,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysToIndexForAllChannelsAndLocalesInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\SearchableRecordItem;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindSearchableRecords;
@@ -42,14 +43,20 @@ class RecordNormalizer implements RecordNormalizerInterface
     /** @var FindValueKeysByAttributeTypeInterface */
     private $findValueKeysByAttributeType;
 
+    /** @var ?FindActivatedLocalesInterface */
+    private $findActivatedLocales;
+
+    // TODO pull-up master remove nullable
     public function __construct(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
         SqlFindSearchableRecords $findSearchableRecords,
-        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType
+        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
+        FindActivatedLocalesInterface $findActivatedLocales = null
     ) {
         $this->findValueKeysToIndexForAllChannelsAndLocales = $findValueKeysToIndexForAllChannelsAndLocales;
         $this->findSearchableRecords = $findSearchableRecords;
         $this->findValueKeysByAttributeType = $findValueKeysByAttributeType;
+        $this->findActivatedLocales = $findActivatedLocales;
     }
 
     public function normalizeRecord(RecordIdentifier $recordIdentifier): array
@@ -97,6 +104,17 @@ class RecordNormalizer implements RecordNormalizerInterface
     private function createCodeLabelMatrix(SearchableRecordItem $searchableRecordItem): array
     {
         $matrix = [];
+        // TODO pull-up master remove condition
+        if (null !== $this->findActivatedLocales) {
+            $activatedLocales = $this->findActivatedLocales->findAll();
+
+            foreach ($activatedLocales as $localeCode) {
+                $label = array_key_exists($localeCode, $searchableRecordItem->labels) ? $searchableRecordItem->labels[$localeCode] : '';
+                $matrix[$localeCode] = trim(sprintf('%s %s', $searchableRecordItem->code, $label));
+            }
+
+            return $matrix;
+        }
 
         foreach ($searchableRecordItem->labels as $localeCode => $label) {
             $matrix[$localeCode] = sprintf('%s %s', $searchableRecordItem->code, $label);
@@ -155,7 +173,7 @@ class RecordNormalizer implements RecordNormalizerInterface
             self::RECORD_CODE_LABEL_SEARCH => $codeLabelMatrix,
             self::UPDATED_AT => $searchableRecordItem->updatedAt->getTimestamp(),
             self::COMPLETE_VALUE_KEYS => $filledValueKeysMatrix,
-            self::VALUES_FIELD => $filterableValues
+            self::VALUES_FIELD => $filterableValues,
         ];
 
         return $normalizedRecord;
@@ -169,7 +187,7 @@ class RecordNormalizer implements RecordNormalizerInterface
                 OptionAttribute::ATTRIBUTE_TYPE,
                 OptionCollectionAttribute::ATTRIBUTE_TYPE,
                 RecordAttribute::ATTRIBUTE_TYPE,
-                RecordCollectionAttribute::ATTRIBUTE_TYPE
+                RecordCollectionAttribute::ATTRIBUTE_TYPE,
             ]
         );
         $result = [];
