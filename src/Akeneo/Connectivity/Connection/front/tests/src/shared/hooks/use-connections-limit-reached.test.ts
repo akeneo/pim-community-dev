@@ -11,7 +11,7 @@ test('it returns true when max connections limit is true ', async () => {
 
     const {result, waitForNextUpdate} = renderHook(() => useConnectionsLimitReached());
 
-    expect(result.current).toBeNull();
+    expect(result.current).toStrictEqual(false);
 
     await waitForNextUpdate();
 
