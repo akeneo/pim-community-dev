@@ -44,7 +44,9 @@ final class MigrationToUuidCommandIntegration extends TestCase
     private function clean(): void
     {
         foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
-            $this->removeColumn($tableName, $columnNames[MigrateToUuidStep::UUID_COLUMN_INDEX]);
+            if ($this->tableExists($tableName)) {
+                $this->removeColumn($tableName, $columnNames[MigrateToUuidStep::UUID_COLUMN_INDEX]);
+            }
         }
     }
 
@@ -68,20 +70,24 @@ final class MigrationToUuidCommandIntegration extends TestCase
     private function assertTheColumnsDoNotExist(): void
     {
         foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
-            Assert::assertFalse(
-                $this->columnExists($tableName, $columnNames[MigrateToUuidStep::UUID_COLUMN_INDEX]),
-                \sprintf('The "%s" column exists in the "%s" table', $columnNames[MigrateToUuidStep::UUID_COLUMN_INDEX], $tableName)
-            );
+            if ($this->tableExists($tableName)) {
+                Assert::assertFalse(
+                    $this->columnExists($tableName, $columnNames[MigrateToUuidStep::UUID_COLUMN_INDEX]),
+                    \sprintf('The "%s" column exists in the "%s" table', $columnNames[MigrateToUuidStep::UUID_COLUMN_INDEX], $tableName)
+                );
+            }
         }
     }
 
     private function assertTheColumnsExist(): void
     {
         foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
-            Assert::assertTrue(
-                $this->columnExists($tableName, $columnNames[MigrateToUuidStep::UUID_COLUMN_INDEX]),
-                \sprintf('The "%s" column does not exist in the "%s" table', $columnNames[MigrateToUuidStep::UUID_COLUMN_INDEX], $tableName)
-            );
+            if ($this->tableExists($tableName)) {
+                Assert::assertTrue(
+                    $this->columnExists($tableName, $columnNames[MigrateToUuidStep::UUID_COLUMN_INDEX]),
+                    \sprintf('The "%s" column does not exist in the "%s" table', $columnNames[MigrateToUuidStep::UUID_COLUMN_INDEX], $tableName)
+                );
+            }
         }
     }
 
@@ -96,7 +102,7 @@ final class MigrationToUuidCommandIntegration extends TestCase
 
     private function removeColumn(string $tableName, string $columnName): void
     {
-        if ($this->columnExists($tableName, $columnName)) {
+        if ($this->tableExists($tableName) && $this->columnExists($tableName, $columnName)) {
             $this->connection->executeQuery(\sprintf('ALTER TABLE %s DROP COLUMN %s', $tableName, $columnName));
         }
     }
@@ -110,5 +116,15 @@ final class MigrationToUuidCommandIntegration extends TestCase
                 productIdentifier: 'identifier' . $i
             ));
         }
+    }
+
+    private function tableExists(string $tableName): bool
+    {
+        $rows = $this->connection->fetchAllAssociative(
+            'SHOW TABLES LIKE :tableName',
+            ['tableName' => $tableName]
+        );
+
+        return count($rows) >= 1;
     }
 }
