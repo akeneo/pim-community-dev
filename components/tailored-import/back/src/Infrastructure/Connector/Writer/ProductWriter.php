@@ -41,6 +41,9 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface
         /** @var RowPayload $rowPayload */
         foreach ($items as $rowPayload) {
             try {
+                if (null === $rowPayload->getUpsertProductCommand()) {
+                    throw new \RuntimeException("RowPayload wrongly formed missing UpsertCommand");
+                }
                 $this->messageBus->dispatch($rowPayload->getUpsertProductCommand());
             } catch (LegacyViolationsException $legacyViolationsException) {
                 $this->addWarning($legacyViolationsException->violations(), $rowPayload);

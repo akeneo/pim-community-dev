@@ -14,7 +14,7 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Row;
  */
 class RowPayload
 {
-    private ?UpsertProductCommand $upsertProductCommand;
+    private ?UpsertProductCommand $upsertProductCommand = null;
 
     public function __construct(
         private Row $row,
@@ -26,7 +26,6 @@ class RowPayload
     public function setUpsertProductCommand(?UpsertProductCommand $upsertProductCommand): RowPayload
     {
         $this->upsertProductCommand = $upsertProductCommand;
-        return $this;
     }
 
     public function getUpsertProductCommand(): ?UpsertProductCommand
