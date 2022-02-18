@@ -40,5 +40,10 @@ class AkeneoTailoredImportExtension extends Extension
         if ('test' === $container->getParameter('kernel.environment')) {
             $loader->load('test/services.yml');
         }
+
+        $isEnabled = (bool)($_ENV['FLAG_TAILORED_IMPORT_ENABLED'] ?? false);
+        if (!$isEnabled) {
+            $container->removeDefinition('akeneo.tailored_import.job.xlsx_product.import');
+        }
     }
 }
