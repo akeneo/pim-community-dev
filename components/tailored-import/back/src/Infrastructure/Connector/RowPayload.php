@@ -23,7 +23,7 @@ class RowPayload
     ) {
     }
 
-    public function setUpsertProductCommand(?UpsertProductCommand $upsertProductCommand): RowPayload
+    public function setUpsertProductCommand(?UpsertProductCommand $upsertProductCommand): void
     {
         $this->upsertProductCommand = $upsertProductCommand;
     }
