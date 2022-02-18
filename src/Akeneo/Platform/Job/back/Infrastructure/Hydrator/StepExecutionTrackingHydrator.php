@@ -24,11 +24,6 @@ class StepExecutionTrackingHydrator
     {
         $startTime = $stepExecution['start_time'] ? \DateTimeImmutable::createFromFormat('Y-m-d H:i:s.u', $stepExecution['start_time']) : null;
         $endTime = $stepExecution['end_time'] ? \DateTimeImmutable::createFromFormat('Y-m-d H:i:s.u', $stepExecution['end_time']) : null;
-        $errorCount = array_reduce(
-            $stepExecution['errors'],
-            static fn (int $errorCount, string $error) => $errorCount + count(unserialize($error)),
-            0,
-        );
         $status = Status::fromStatus((int) $stepExecution['status']);
         $duration = $this->computeDuration($status, $startTime, $endTime);
 
@@ -36,7 +31,7 @@ class StepExecutionTrackingHydrator
             (int) $stepExecution['id'],
             $duration,
             (int) $stepExecution['warning_count'],
-            $errorCount,
+            (bool) $stepExecution['has_error'],
             (int) $stepExecution['total_items'],
             (int) $stepExecution['processed_items'],
             (bool) $stepExecution['is_trackable'],
