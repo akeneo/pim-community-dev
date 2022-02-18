@@ -35,7 +35,10 @@ final class GetProductIdsWithUpdatedFamilyAttributesListQuery implements GetProd
         $this->getFamiliesWithUpdatedAttributesListQuery = $getFamiliesWithUpdatedAttributesListQuery;
     }
 
-    public function updatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Iterator
+    /**
+     * @return \Generator<int, ProductIdCollection>
+     */
+    public function updatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Generator
     {
         $updatedFamilies = $this->getFamiliesWithUpdatedAttributesListQuery->updatedSince($updatedSince);
 

@@ -31,7 +31,10 @@ final class GetProductIdsWithOutdatedAttributeSpellcheckQuery implements GetProd
         $this->dbConnection = $dbConnection;
     }
 
-    public function evaluatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Iterator
+    /**
+     * @return \Generator<int, ProductIdCollection>
+     */
+    public function evaluatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Generator
     {
         $query = <<<SQL
 SELECT DISTINCT product.id

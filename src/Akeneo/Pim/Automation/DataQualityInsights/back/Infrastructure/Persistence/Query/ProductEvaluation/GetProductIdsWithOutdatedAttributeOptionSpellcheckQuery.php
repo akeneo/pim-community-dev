@@ -44,7 +44,10 @@ final class GetProductIdsWithOutdatedAttributeOptionSpellcheckQuery implements G
         $this->filterProductIdsWithCriterionNotEvaluatedSinceQuery = $filterProductIdsWithCriterionNotEvaluatedSinceQuery;
     }
 
-    public function evaluatedSince(\DateTimeImmutable $evaluatedSince, int $bulkSize): \Iterator
+    /**
+     * @return \Generator<int, ProductIdCollection>
+     */
+    public function evaluatedSince(\DateTimeImmutable $evaluatedSince, int $bulkSize): \Generator
     {
         $productIdsBulk = [];
         /** @var AttributeOptionSpellcheck $attributeOptionSpellcheck */

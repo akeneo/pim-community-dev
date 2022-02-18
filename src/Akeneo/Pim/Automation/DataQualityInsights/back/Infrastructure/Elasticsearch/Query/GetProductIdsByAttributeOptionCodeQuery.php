@@ -29,7 +29,10 @@ final class GetProductIdsByAttributeOptionCodeQuery implements GetProductIdsByAt
         $this->esClient = $esClient;
     }
 
-    public function execute(AttributeOptionCode $attributeOptionCode, int $bulkSize): \Iterator
+    /**
+     * @return \Generator<int, ProductIdCollection>
+     */
+    public function execute(AttributeOptionCode $attributeOptionCode, int $bulkSize): \Generator
     {
         $query = [
             'bool' => [
