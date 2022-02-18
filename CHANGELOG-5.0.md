@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.78 (2022-02-18)
+
 ## Bug fixes
 
 - PIM-10270: Fix insufficient limit when fetching a lot of attribute groups in families settings
