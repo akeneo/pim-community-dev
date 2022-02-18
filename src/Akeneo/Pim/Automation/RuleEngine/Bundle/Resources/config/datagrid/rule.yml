@@ -88,7 +88,7 @@ datagrid:
             delete:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--trash
-                type: delete
+                type: delete-rule
                 label: pim_common.delete
                 link: delete_link
                 acl_resource:  pimee_catalog_rule_rule_delete_permissions
@@ -140,7 +140,7 @@ datagrid:
                     error: pimee_catalog_rule.datagrid.rule-grid.mass_action.execute.error
                     empty_selection: pimee_catalog_rule.datagrid.rule-grid.mass_action.execute.empty_selection
             delete:
-                type: rules
+                type: delete-rules
                 entity_name: rule
                 acl_resource: pimee_catalog_rule_rule_delete_permissions
                 handler: mass_delete_rule

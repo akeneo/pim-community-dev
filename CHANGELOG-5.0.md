@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-10272: Rules - Reference entity records cannot be found if they contain upper cases
+- PIM-10262: Fix Helper about rule does not show under the related attribute on the PEF
 
 # 5.0.77 (2022-02-10)
 

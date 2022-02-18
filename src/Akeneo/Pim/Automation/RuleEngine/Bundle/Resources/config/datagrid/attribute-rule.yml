@@ -88,7 +88,7 @@ datagrid:
             delete:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--trash
-                type: delete
+                type: delete-rule
                 label: pim_common.delete
                 link: delete_link
                 acl_resource:  pimee_catalog_rule_rule_delete_permissions

@@ -17,6 +17,7 @@ import {
   formatDateLocaleTimeConditionsToBackend,
 } from '../components/conditions/DateConditionLines/dateConditionLines.utils';
 import {getErrorPath} from './ErrorPathResolver';
+import {dependencies} from '../../../dependenciesTools/provider/dependencies';
 
 const registerConditions = (
   register: Control['register'],
@@ -211,6 +212,7 @@ const submitEditRuleForm = (
       body: transformFormData(formData),
     });
     if (updateResponse.ok) {
+      dependencies.ruleManager.familyAttributesRulesNumberPromise = null;
       formData = createCalculateDefaultValues(formData);
       reset(formData);
       registerConditions(register, formData.content?.conditions || []);
