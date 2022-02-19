@@ -1,0 +1,47 @@
+akeneo_job:
+  job_status:
+    COMPLETED: Completat
+    STARTED: En procés
+    STARTING: Començant
+    STOPPING: Aturant
+    STOPPED: Aturat
+    FAILED: Fallit
+    IN_PROGRESS: En procés
+akeneo_job_process_tracker:
+  last_executions:
+    title: Últimes execucions
+  job_execution_list:
+    table:
+      headers:
+        type: Tipus
+        started_at: Va començar a
+        username: Nom d’usuari
+        progress: Progrés
+        status: Estat
+        warning_count: Avisos
+  type_filter:
+    label: Tipus
+    all: Tot
+    quick_export: Exportació ràpida
+    import: Importar
+    export: Exportar
+    mass_edit: Edició massiva
+    mass_delete: Esborrat massiu de productes
+    execute_rules: Executar regles
+  user_filter:
+    label: Usuari
+    all: Tot
+    search: Cercar
+  status_filter:
+    label: Estat
+    all: Tot
+    abandoned: Abandonat
+    completed: Acabat
+    failed: Fallit
+    starting: Començant
+    stopped: Aturat
+    stopping: Aturant
+    unknown: Desconegut
+    in_progress: En procés
+  tracking:
+    not_started: Pendent

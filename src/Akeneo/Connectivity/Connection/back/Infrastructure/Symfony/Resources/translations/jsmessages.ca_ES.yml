@@ -1,4 +1,8 @@
 pim_menu:
+  tab:
+    connect: Connectar
+  navigation_back:
+    connection: Tornar a connectar
   navigation_block:
     connection: Navegació de connexió
   item:
@@ -6,7 +10,13 @@ pim_menu:
     connection_settings: Connexions
     connection_settings_edit: Configuració de la connexió
     connect_connection_settings: Configuració de la connexió
+    connected_apps: Aplicacions
 pim_title:
+  akeneo_connectivity_connection_connect_marketplace: Marketplace
+  akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
+  akeneo_connectivity_connection_connect_apps_activate: Connectar
+  akeneo_connectivity_connection_connect_apps_authorize: Connectar
+  akeneo_connectivity_connection_connect_apps_authenticate: Connectar
   akeneo_connectivity_connection_settings_edit: Configuració de la connexió
   akeneo_connectivity_connection_settings_any: Configuració de la connexió
   akeneo_connectivity_connection_audit_index: Panell de connexions
@@ -14,27 +24,79 @@ pim_title:
   akeneo_connectivity_connection_error_management_dashboard: Panell de connexions
   akeneo_connectivity_connection_error_management_connection_monitoring: Monitorització de la connexió
   akeneo_connectivity_connection_settings_redirect: Connexions
+  akeneo_connectivity_connection_connect_connected_apps: Aplicacions
+  akeneo_connectivity_connection_connect_connected_apps_edit: Configuració de l'aplicació
 akeneo_connectivity.connection:
   connect:
     marketplace:
+      card:
+        read_more: llegiu-ne més
+        more_info: Més informació
+        connect: Connectar
+        connected: Connectat
+      extensions:
+        title: Connectors
+        total: '{0} Sense connectors|{1} 1 connector|[2,Inf] {{ total }} connectors'
+      apps:
+        title: Aplicacions
+        total: '{0} Cap aplicació|{1} 1 aplicació|[2,Inf] {{ total }} aplicacions'
       test_apps:
         modal:
+          app_information:
+            title: Informació de l'app
+            fields:
+              name: Nom
           credentials:
             title: Credencials
+            client_id: Identificador del client
+            client_secret: Secret del client
         delete:
+          subtitle: Aplicacions
           title: Confirmar l'eliminació
     connected_apps:
+      list:
+        apps:
+          marketplace_link_anchor: Marketplace
+        card:
+          manage_app: Administra l'aplicació
       edit:
         tabs:
           settings: Preferències
           permissions: Permisos
       delete:
+        subtitle: Aplicacions
         title: Confirmar l'eliminació
         link: Això passarà.
     apps:
+      loader:
+        message: Carregant ...
       wizard:
+        title: Connectar
+        action:
+          confirm: Confirmar
+          cancel: Cancel·lar
+          previous: Anterior
+          next: Següent
         progress:
+          authentication: Autentificació
+          authorizations: Autoritzacions
           permissions: Permisos
+          summary: Ben fet!
+      scope:
+        type:
+          view: 'Veure {{ entities }}'
+          edit: 'Veure i editar {{ entities }}'
+          delete: 'Veure, editar i eliminar {{ entities }}'
+        entities:
+          attribute_options: opcions d'atribut
+          categories: categories
+          channel_localization: configuració regional i monedes
+          channel_settings: canals
+          association_types: tipus d'associació
+          products: productes i models de producte
+          reference_entity: entitats de referència
+          asset_families: famílies de recursos
+          assets: recursos
   connections: Connexions
   secondary_actions:
     title: Altres accions
@@ -157,6 +219,9 @@ akeneo_connectivity.connection:
       content: Els seus comentaris són realment valuosos per a nosaltres. Ajuda'ns a escollir el proper widget responent aquesta enquesta de només una pregunta.
       button: Som-hi!
     connection_selector:
+      title:
+        source: Connexió de dades
+        destination: Destinacions
       all: Tot
     charts:
       number_of_products_created: Productes creats
@@ -199,11 +264,24 @@ akeneo_connectivity.connection:
         regenerate: Regenera
       link: Això passarà.
     event_logs:
+      level:
+        info: Informació
+        error: Error
       list:
         search:
+          level: Nivell
           all: Tot
+          none: Cap
         date_range_filter:
+          label: Data i hora
+          reset: Reinicia
+          from: Des de
+          to: fins
           all: Tot
+        headers:
+          datetime: Data i hora
+          level: Nivell
+          message: Missatge
   error_management:
     connection_monitoring:
       helper:
@@ -229,4 +307,8 @@ pim_permissions:
   widget:
     action:
       all: Tot
+      clear: Esborra
+    level:
+      edit: Editar
+      view: Vista
     all: Tot

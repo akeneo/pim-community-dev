@@ -1,1 +1,27 @@
+pim_analytics:
+  system_info:
+    download: Baixar
+  info_header:
+    information: Informació
+  info_type:
+    pim_edition: Edició
+    pim_version: Versió
+    pim_storage_driver: Emmagatzematge
+    nb_products: Nombre de productes
+    nb_product_models: Nombre de models de producte
+    nb_variant_products: Nombre de variants de productes
+    nb_family_variants: Nombre de variants de la família
+    nb_attributes: Nombre d'atributs
+    nb_locales: Nombre de configuracions regionals
+    nb_families: Nombre de famílies
+    nb_users: Nombre d'usuaris
+    nb_categories: Nombre de categories
+    nb_category_trees: Número d'arbres de categoria
+    os_version: Versió de Sistema Operatiu
+    php_version: Versió PHP
+    mysql_version: Versió MySQL
+    mariadb_version: Versió MariaDB
+    server_version: Versió del servidor
+    api_connection: Connexions d'API
+    activated_app_ids: Aplicacions connectades
 
