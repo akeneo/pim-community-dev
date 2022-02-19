@@ -1,4 +1,9 @@
 akeneo_data_quality_insights:
   axis:
     consistency: Consistència
+  attribute_grid:
+    quality_column_label: Qualitat
+  product_grid:
+    filter_label:
+      spelling_quality: Qualitat ortogràfica
 Consistency: Consistència

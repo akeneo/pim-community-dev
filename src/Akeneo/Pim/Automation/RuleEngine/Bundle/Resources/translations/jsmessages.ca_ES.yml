@@ -1,17 +1,23 @@
 pimee_catalog_rule:
   overview: "]-Inf, 1]{{ count }} regla|]1, Inf[{{ count }} regles"
   execution_button: Executar regles
+  dropdown:
+    title: Altres accions
   popin:
     execute_rules:
       confirm_title: Confirmar l'execució
   notification:
+    fail: Acció no realitzada
     launched: S'ha engegat la execució de la regla. Se li notificarà quan finalitzi.
   attribute:
     list:
       code.label: Codi
       condition.label: Condició
       action.label: Acció
+      no_rule_yet.label: Cap regla de moment
   rule:
+    value: Valor
+    include_children: Inclou fills
     condition:
       if.label: si
     action:
@@ -43,10 +49,117 @@ pimee_catalog_rule:
           error: S'ha produït un error durant la supressió de les regles.
           empty_selection: No hi ha cap regla seleccionada.
   form:
+    category:
+      catalog: Catàleg
+      select: Selecciona una categoria
+      open_tree: Obrir arbre de categories
+      tree: Arbre de Categories
+      menu: Selecciona un arbre de categories
+      folder:
+        selected: Carpeta seleccionada
+        not_selected: Carpeta
+      folders:
+        selected: Carpetes seleccionades
+        not_selected: Carpetes
     attribute:
       tab:
         rules:
           title: Regles
+    creation:
+      english_flag: Etiqueta per l'Anglès
+      title: Crear una nova regla
+      notification:
+        success: Regla creada correctament
+        failed: Error al crear la regla
+      constraint:
+        code:
+          required: És requereix un codi de regla
+    edit:
+      properties:
+        section:
+          general: Paràmetres generals
+          labels: Traduccions d'etiquetes
+      priority:
+        label: Prioritat
+      status:
+        label: Estat
+        enabled: Habilitat
+        disabled: Deshabilitat
+      add_to_category: Afegir a la categoria
+      add_conditions: Afegir condicions
+      products_count:
+        products: "]-Inf, 1]{{ count }} producte|]1, +Inf[{{ count }} productes"
+        product_models: "]-Inf, 1]{{ count }} model de producte|]1, +Inf[{{ count }} models de producte"
+        products_and_product_models: "{{ products }} i {{ product_models }}"
+      product_selection: Selecció de producte
+      preview: Vista prèvia
+      fields:
+        family: Família
+        family_variant: Variants familiars
+        category: Categoria
+        identifier: Identificador
+        attribute: Atribut
+        groups: Grups
+        parent: Pare
+        measurement_unit: Unitat de mesura
+      actions:
+        category:
+          no_category_tree: Seleccioneu primer un arbre de categories, si us plau
+        set_family:
+          title: ESTABLIR Família
+          subtitle: Selecciona la teva família
+        set_attribute:
+          title: ESTABLIR valor de l'atribut
+          target_subtitle: Selecciona el teu objectiu
+          value_subtitle: Defineix el teu valor
+          attribute_label: Atribut
+          select_measurement_unit: Selecciona la teva unitat
+        set_associations:
+          title: ESTABLIR Associacions
+          select_association_type: Selecciona el teu tipus d'associació
+          association_types: Tipus d'associació
+          add_group: Afegir un grup
+          add_product: Afegir un producte
+          add_product_model: Afegir un model de producte
+          select_title:
+            groups: Selecciona els teus grups
+          select:
+            products: Productes
+            product_models: Models de producte
+            groups: Grups
+          counts:
+            products: ']-Inf, 1]{{ count }} producte|]1, +Inf[{{ count }} productes'
+            product_models: ']-Inf, 1]{{ count }} model de producte|]1, +Inf[{{ count }} models de producte'
+            groups: ']-Inf, 1]{{ count }} grup|]1, +Inf[{{ count }} grups'
+        add_associations:
+          title: Afegir associacions
+        clear_attribute:
+          attribute_label: Atribut
+        calculate:
+          operator:
+            subtract: Treu
+            multiply: Multiplicar
+            divide: Dividir
+        concatenate:
+          add_text: Afegir text
+          add_attribute: Afegir atribut
+      conditions:
+        operators:
+          "STARTS WITH": comença amb
+          "ENDS WITH": acaba amb
+          "CONTAINS": conté
+          "DOES NOT CONTAIN": no conté
+          "EMPTY": està buit
+          "NOT EMPTY": no és buit
+          "IN": en
+          "NOT IN": no en
+          "BETWEEN": entre
+          "NOT BETWEEN": no entre
+    date:
+      operators:
+        specific_date: Data específica
+      label:
+        date_present: Ara
 pim_enrich:
   entity:
     rule:
@@ -61,7 +174,14 @@ batch_jobs:
   add_attribute_value:
     execute_rules.label: Execució de les regles
   default_steps:
+    export_rules: Exportar regles
+    import_rules: Importar regles
+    calculate_affected_products: Calcula els productes afectats
     execute_rules: Execució de les regles
+  yml_rule_import:
+    import.label: Importar regles
+  yml_rule_export:
+    export.label: Exportar regles
   rule_impacted_product_count:
     perform.label: Comptar productes afectats
   csv_product_import_with_rules:
@@ -84,6 +204,7 @@ pim_menu:
     rule: Regles
 pim_title:
   pimee_catalog_rule_rule_index: Regles
+  pimee_catalog_rule_edit: Editar regla
   pimee_catalog_rule_new: Regles
 pim_import_export:
   widget:

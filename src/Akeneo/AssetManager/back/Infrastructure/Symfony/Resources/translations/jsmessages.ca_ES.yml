@@ -137,6 +137,9 @@ pim_asset_manager:
         confirm_title: Confirmar l'execució
         execute_rules: Executar regles
         cancel: Cancelar
+      execute_naming_convention:
+        confirm_title: Confirmar l'execució
+        cancel: Cancel·lar
     properties:
       title: Propietats de les families de recursos
       identifier: Codi
@@ -164,6 +167,7 @@ pim_asset_manager:
       header:
         title: Crear
       subtitle: Families de recursos
+      title: Crear una nova família de recursos
       input:
         label: Etiqueta
         code: Codi (requerit)
@@ -181,7 +185,17 @@ pim_asset_manager:
     no_data:
       no_asset:
         title: Ho sento, això no és un recurs!
+        link: Clic aquí per afegir un recurs
+      no_asset_family:
+        title: Ho sentim, no hi ha cap família de recursos!
+        link: Clic aquí per afegir una família de recursos
+  permission:
+    no_data:
+      title: No teniu cap grup d'usuaris
+      link: Clic aquí per afegir el teu primer grup usuari
   asset:
+    created_at: Creat
+    updated_at: Actualitzat
     no_data:
       title: No hi ha cap recurs per {{ entityLabel }}
     no_result:
@@ -189,6 +203,10 @@ pim_asset_manager:
     selector:
       no_value: Feu clic aquí per seleccionar un recurs.
     button:
+      save: Desar
+      create: Crear un recurs
+      mass_upload: Carregar en massa
+      delete: Eliminar
       back: Torna a la llista
       fullscreen: Pantalla completa
     product:
@@ -200,14 +218,21 @@ pim_asset_manager:
       not_enough_items:
         button: Veure tots els productes
     enrich:
+      code: Codi
+      label: Etiqueta
       edit_subsection: Editar recurs
     title: Recursos
     create:
+      header:
+        title: Crear
+      subtitle: Families de recursos
       input:
         label: Etiqueta
+        code: Codi (requerit)
         create_another: Crear un altre recurs
       confirm: Desar
     upload:
+      lines: Arxius
       retry: Torna-ho a provar
       remove_all: Eliminar tot
       add_to_product: Afegir a producte
@@ -255,23 +280,55 @@ pim_asset_manager:
     default:
       code: Codi
       label: Etiqueta
+      media_file: Arxiu multimèdia
     type:
       text: Text
+      media_file: Arxiu multimèdia
       option: Única opció
       option_collection: Múltiples opcions
       number: Número
+      media_link: Enllaç multimèdia
     is_required: necessari per la integritat
     button:
       add: Afegeix un atribut
     create:
       header:
         title: Crear
+      subtitle: Families de recursos
       input:
         label: Etiqueta
+        type: Tipus d'atribut
+        value_per_locale: Valor per local
+        value_per_channel: Valor per canal
       confirm: Desar
     edit:
+      delete: Eliminar l'atribut
+      title: Editar atribut {{ code }}
+      save: Desar
+      cancel: Cancel·lar
       input:
+        code: Codi (requerit)
+        label: Etiqueta
+        type: Tipus d'atribut
         asset_type: Família de recursos relacionada (requerit)
+        value_per_locale: Valor per local
+        value_per_channel: Valor per canal
+        is_required: Necessaris per a la integritat
+        is_read_only: Només lectura a la interfície d'usuari
+        max_length: Màxim de caràcters
+        textarea: Àrea de Text
+        is_rich_text_editor: Editor de text enriquit
+        max_file_size: Mida màxima de l'arxiu (MB)
+        allowed_extensions: Extensions permeses
+        validation_rule: Regla de validació
+        regular_expression: Expressió regular
+        min_value: Valor mínim
+        max_value: Valor màxim
+        manage_options:
+          confirmation:
+            discard_changes: Perdreu els canvis realitzats en la llista d'opcions si sortiu de la pàgina
+          quick_edit:
+            label: Administrar opcions
     delete:
       message: Esteu segur que voleu suprimir l'atribut "{{ attributeLabel }}"?
       title: Atribut
@@ -289,6 +346,8 @@ pim_asset_manager:
       sub_title: Families de recursos
       helper:
         title: Traduccions d'etiquetes
+    media_file:
+      uploading: Pujant...
   modal:
     delete:
       subtitle: Confirmar l'eliminació
