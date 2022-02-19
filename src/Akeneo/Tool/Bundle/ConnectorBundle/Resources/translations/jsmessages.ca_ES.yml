@@ -143,6 +143,8 @@ batch_jobs:
   xlsx_group_type_export:
     label: Exportació de tipus de grup en XLSX
     export.label: Exportació de tipus de grup
+  xlsx_user_export:
+    export.label: Exportació d'usuaris
   xlsx_attribute_group_import:
     label: Impoftació de grup d'atributs en XLSX
     import.label: Importació de grup d'atributs
