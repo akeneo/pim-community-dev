@@ -183,6 +183,7 @@ pimee_catalog_rule:
           select_reference_entity: Wybierz obiekty referencyjne
           select_asset: Wybierz zasoby
           select_measurement_unit: Wybierz jednostkę
+          table_attribute_helper: Poprzednie wartości tego atrybutu zostaną zastąpione w całym zakresie wyboru produktów.
         set_quantified_associations:
           title: USTAW Powiązania ilościowe
           helper: Aby ustawić powiązania ilościowe, wybierz typy powiązań, a następnie produkty, modele produktów lub grupy, które chcesz powiązać z wyborem produktów.
