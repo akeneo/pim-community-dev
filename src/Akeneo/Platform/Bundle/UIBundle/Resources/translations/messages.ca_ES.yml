@@ -62,12 +62,16 @@ pim_common:
   name: Nom
   remove: Eliminar
   code: Codi
+  quantity: Quantitat
   products: Productes
   product_models: Models de producte
   categories: Categories
+  family_variant: Variants familiars
   enabled: Habilitat
   family: Família
+  parent: Pare
   groups: Grups
+  unit: Unitat
   yes: "Sí"
   no: "No"
 pim_enrich:
@@ -353,6 +357,7 @@ Decimals allowed: Permetre decimals
 Negative allowed: Permetre valors negatius
 Date min: Data mínima
 Date max: Data màxima
+Metric family: Família de mètrica
 Max file size: Mida màxima de l'arxiu (MB)
 Allowed extensions: Extensions permeses
 None: Cap
@@ -377,6 +382,7 @@ pim_catalog_file: Arxiu
 pim_catalog_image: Imatge
 pim_catalog_boolean: "Sí/No"
 pim_catalog_date: Data
+pim_catalog_metric: Mètrica
 pim_reference_data_simpleselect: Selecció simple de dades de referència
 pim_reference_data_multiselect: Selecció múltiple de dades de referència
 #Locales
@@ -435,6 +441,8 @@ pim_datagrid:
       label: Estat
     completeness:
       label: Complet
+    parent:
+      label: Pare
     identifier:
       label: Identificador
 #Versioning / history
@@ -522,3 +530,7 @@ job_tracker:
     title: Seguiment del procés
   filter:
     started_at: Va començar a
+pim_login:
+  logo_title: Akeneo PIM
+  footer:
+    powered: Funciona amb

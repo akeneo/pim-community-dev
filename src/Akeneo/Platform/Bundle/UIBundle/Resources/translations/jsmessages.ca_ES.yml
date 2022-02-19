@@ -21,6 +21,8 @@ Second: Segon
 Millisecond: Mil·lisegon
 Microsecond: Microsegon
 "Time Zone": "Zona horària"
+duration:
+  seconds: "{0}0 segons|{1}1 segon|]1, Inf[{{ count }} segons"
 #PIM messages
 Localized value: Valor amb configuració regional
 Columns: Columnes
@@ -154,7 +156,10 @@ pim_common:
   before: Abans
   by: per
   cancel: Cancel·lar
+  clear_value: Esborra el valor
+  close: Tancar
   code: Codi
+  completeness: Integritat
   confirm: Confirmar
   confirm_deletion: Confirmar l'eliminació
   confirm_revocation: Confirmar la revocació
@@ -168,6 +173,8 @@ pim_common:
   from: Des de
   general_properties: Propietats generals
   history: Històric
+  identifier: Identificador
+  image: Imatge
   label: Etiqueta
   label_translations: Traduccions d'etiquetes
   Label or identifier: etiqueta o identificador
@@ -181,11 +188,13 @@ pim_common:
   not_available: N/D
   now: Ara
   ok: OK
+  other_actions: Altres accions
   permissions: Permisos
   previous: Anterior
   properties: Propietats
   remove: Eliminar
   required_label: (obligatori)
+  result_count: "{0}0 resultats|{1}1 resultat|]1, Inf[{{ itemsCount }} resultats"
   save: Desar
   search: Cercar
   select2:
@@ -196,6 +205,7 @@ pim_common:
   to: fins a
   type: Tipus
   update: Actualitzar
+  updated: Actualitzat
   "yes": "Sí"
   operator: Operador
   operators:
@@ -211,6 +221,7 @@ pim_common:
     DOES NOT CONTAIN: No conté
     STARTS WITH: S'inicia amb
     ENDS WITH: Acaba amb
+  read_more: Llegiu-ne més
 error:
   exception: Oh no! S'ha produït un error de {{ status_code }}...
   forbidden: Prohibit. No té permís per accedir a aquesta pàgina
