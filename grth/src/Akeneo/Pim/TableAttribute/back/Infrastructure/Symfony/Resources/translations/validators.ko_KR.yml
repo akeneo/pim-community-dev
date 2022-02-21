@@ -17,14 +17,12 @@ pim_table_configuration:
       too_long_option_label: "옵션 레이블이 너무 깁니다. 255자 이하여야 합니다"
       duplicated_column_code: '[0,1]각 열에는 고유한 코드가 필요합니다. ''%duplicateCodes%''은(는) 이미 사용 중입니다|]1,Inf[각 열에는 고유한 코드가 필요합니다. ''%duplicateCodes%''은(는) 이미 사용 중입니다'
       column_type_must_be_a_string: 열 데이터 유형은 문자열이어야 합니다
-      unknown_data_type: '열 데이터 유형을 알 수 없습니다. {{ allowed_data_types }} 중에서 선택하십시오'
       column_label_must_be_a_string: 열 레이블은 문자열이어야 합니다
       option_label_must_be_a_string: 옵션 레이블은 문자열이어야 합니다
       label_locale_does_not_exist_or_is_not_activated: '''{{ locale_code }}'' 로케일이 없거나 활성화되지 않았습니다'
       invalid_labels_format: 열 레이블은 키/값 객체여야 합니다
       invalid_option_labels_format: 옵션 레이블은 키/값 객체여야 합니다
       must_not_be_filled: '%type% 유형은 table_configuration을 허용하지 않습니다'
-      first_column_should_be_valid: '{1}첫 번째 열 유형은 항상 ''{{ allowed_data_types }}''이(가) 되어야 합니다. 현재 열 유형은 ''{{ data_type }}''입니다.|]1,Inf[첫 번째 열 유형은 ''{{ allowed_data_types_except_last }}'' 또는 ''{{ last_allowed_data_types }}''일 수 있습니다. 현재 유형은 ''{{ data_type }}''입니다.'
       first_column_code_cannot_be_changed: 첫 번째 열의 코드는 변경할 수 없습니다.
       unknown_field: '필요한 필드만 사용하십시오. 현재 필드: {{ field }}'
       attribute_does_not_exist: '''{{ attribute }}'' 특성이 없습니다'
@@ -33,10 +31,6 @@ pim_table_configuration:
       not_select_column: '''{{ attribute }}'' 특성의 ''{{ column }}'' 열이 ''셀렉트''가 아닙니다'
       max_should_be_greater_than_min: 최댓값은 최솟값보다 커야 합니다
       options_cannot_be_set: '''{{ data_type }}'' 열 유형에 대한 옵션을 설정할 수 없습니다'
-      reference_entity_identifier_cannot_be_set: '''{{ data_type }}'' 열 유형에 대한 참조 엔터티 식별자를 설정할 수 없습니다'
-      reference_entity_identifier_must_be_filled: 참조 엔터티 식별자를 입력해야 합니다
-      reference_entity_identifier_should_exist: '''{{ reference_entity_identifier }}'' 참조 엔터티를 테이블에 추가하기 전에 해당 엔터티가 있는지 확인하십시오'
-      reference_entity_identifier_is_immutable: reference_entity_identifier를 업데이트할 수 없습니다
       no_validations_allowed: '''{{ columnType }}'' 열에서 유효성 검사를 사용하지 마십시오. 현재 열 유형: ''{{ given }}'''
       invalid_validation_key: '''{{ given }}'' 유효성 검사는 ''{{ columnType }}'' 열에서 작동하지 않습니다. 허용된 검사: ''{{ expected }}'''
       too_many_table_attributes: PIM 내의 테이블 특성이 최대 수에 도달했습니다({{ limit }}개)
@@ -51,8 +45,5 @@ pim_table_configuration:
       value_integer_required: '필요한 값은 정수입니다'
       max_length_validation: 이 값은 {{ limit }}자 이하여야 합니다.
       too_many_rows: 테이블의 열이 최대 수에 도달했습니다({{ limit }}개)
-      record_should_exist: '''{{ recordCode }}'' 레코드가 ''{{ referenceEntityIdentifier }}'' 참조 엔터티에 없습니다'
     product_value_collection:
       too_many_cells: 제품의 테이블 셀이 최대 수에 도달했습니다({{ count }}개 셀, 최대 {{ limit }}개만 허용).
-    reference_entity:
-      should_not_be_linked: '이 참조 엔터티는 제품 특성에 사용되므로 제거할 수 없습니다.'

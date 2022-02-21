@@ -144,8 +144,6 @@ pim_table_attribute:
       column_code: Código de columna
       properties_helper: Debe definir la estructura de la tabla y al menos 2 columnas antes de poder guardar su atributo de tabla
       table_structure_helper_text: Un atributo de tabla debe contener al menos 2 columnas. La primera es siempre un tipo de columna «seleccionar». Una vez que haya creado la primera columna, debe añadir opciones. ¡Para ello, haga clic en «administrar opciones» y añada hasta {{ limit }} opciones! Luego, podrá usar cada una de estas opciones como filas en las tablas de sus productos.
-      table_structure_helper_text_with_reference_entity: Un atributo de la tabla debe contener al menos 2 columnas. Una vez que haya creado la primera, utilizando los tipos de columna «Seleccionar» o «Entidades de referencia», defina y gestione las filas en función de las opciones o los registros.
-      table_structure_helper_link: Consulte nuestro centro de ayuda para obtener más información.
       limit_option_reached: Ha alcanzado el límite de {{ limit }} opciones.
       template_label: Seleccione el estándar de su tabla «{{ templateLabel }}»
       delete_column_helper: Al eliminar esta columna, todos sus valores se eliminan de todos los productos usando el atributo de tabla «{{ attributeLabel }}».
@@ -155,13 +153,11 @@ pim_table_attribute:
       no_options: No se encontraron opciones
       please_try_again: Inténtelo de nuevo
       first_column_type_helper: La primera columna de una tabla es siempre un tipo de columna Select.
-      first_column_type_helper_with_reference_entity: La primera columna de una Tabla es de tipo «Seleccionar» o «Entidad de referencia».
       discard_changes: Perderá los cambios en las opciones de selección si abandona la página.
       completeness: Integridad
       required_for_completeness: Necesarios para la integridad
       completeness_helper_text: "Para descubrir cómo funciona la integridad para un atributo de tabla,"
       completeness_helper_link: consulte nuestro centro de ayuda.
-      reference_entity: Entidad de referencia
     product:
       items_per_page: Elementos por página
       current_items: "{{ minItem }}-{{ maxItem }} de {{ itemCount }}"
@@ -169,13 +165,9 @@ pim_table_attribute:
       no_search_result: "¡Lo sentimos, no hay líneas para su búsqueda!"
       no_rows_title: "Su tabla {{ attributeLabel }} está vacía."
       no_rows_subtitle: Añada filas para definir nuevas propiedades
-      no_rows_subtitle_no_permission: Para poder editar este atributo, vaya a la página de configuración de atributos o póngase en contacto con el administrador de PIM.
       no_results: No hay resultados
       no_options: No hay opciones
-      no_records: No hay registros
       no_add_options_unallowed: Póngase en contacto con el administrador de PIM para administrar las opciones de «{{ attributeLabel }}»
-      edit_records_unallowed: Póngase en contacto con el administrador de PIM para gestionar la entidad de referencia «{{ referenceEntityLabel }}»
-      manage_records: Gestionar los registros
       actions:
         delete_row: Eliminar esta fila
         clear_row: Borrar esta fila
@@ -190,7 +182,6 @@ pim_table_attribute:
       number: Número
       boolean: Sí/No
       select: Seleccionar
-      reference_entity: Entidad de referencia
   validations:
     column_code_must_be_filled: Debe rellenar el código
     not_available_code: Este código de columna no está disponible

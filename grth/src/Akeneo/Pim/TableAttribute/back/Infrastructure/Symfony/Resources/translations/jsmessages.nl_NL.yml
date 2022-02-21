@@ -144,8 +144,6 @@ pim_table_attribute:
       column_code: Kolomcode
       properties_helper: U moet de tabelstructuur en ten minste 2 kolommen definiëren voordat u het tabelattribuut kunt opslaan
       table_structure_helper_text: Een tabelattribuut moet ten minste 2 kolommen bevatten. De eerste is altijd een kolomtype. Zodra u de eerste kolom hebt gemaakt, moet u opties toevoegen. Om dit te doen, klik op "opties beheren" en voeg {{ limit }} opties toe! Vervolgens kunt u elk van deze opties gebruiken als rijen in uw producttabellen.
-      table_structure_helper_text_with_reference_entity: Een tabelattribuut moet minstens 2 kolommen bevatten. Nadat u de eerste hebt gemaakt, met een van de kolomtypen "Selecteren" of "Referentie-entiteiten", kunt u rijen definiëren en beheren op basis van opties of records.
-      table_structure_helper_link: Kijk in ons helpcenter voor meer informatie.
       limit_option_reached: U hebt de limiet van {{ %limit% }} transformaties bereikt
       template_label: Selecteer de standaard van uw "{{ templateLabel }}" tabel
       delete_column_helper: Wanneer u deze kolom verwijdert, worden alle waarden ervan verwijderd uit alle producten die gebruik maken van het "{{ attributeLabel }}" tabelattribuut.
@@ -155,13 +153,11 @@ pim_table_attribute:
       no_options: Geen opties gevonden.
       please_try_again: Probeer nog eens
       first_column_type_helper: De eerste kolom van een tabel is altijd een kolomtype selecteren.
-      first_column_type_helper_with_reference_entity: De eerste kolom van een tabel is ofwel kolomtype "Selecteren" of "Referentie-entiteit".
       discard_changes: Als u deze pagina verlaat verliest u de wijzigingen aan de geselecteerde opties.
       completeness: Volledigheid
       required_for_completeness: Vereist voor volledigheid
       completeness_helper_text: "Om te ontdekken hoe volledigheid werkt voor een tabelattribuut,"
       completeness_helper_link: bekijk ons hulpcentrum
-      reference_entity: Referentie-entiteit
     product:
       items_per_page: Items per pagina
       current_items: "{{ minItem }}-{{ maxItem }} van {{ itemCount }}"
@@ -169,13 +165,9 @@ pim_table_attribute:
       no_search_result: "Sorry, er zijn gen regels voor uw zoekopdracht!"
       no_rows_title: "Uw {{ attributeLabel }} tabel is leeg."
       no_rows_subtitle: Voeg rijen toe om nieuwe eigenschappen te definiëren.
-      no_rows_subtitle_no_permission: Om dit attribuut te kunnen bewerken, gaat u naar de pagina met attribuutinstellingen of neemt u contact op met uw PIM-beheerder.
       no_results: Er zijn geen resultaten
       no_options: Er zijn geen opties
-      no_records: Er zijn geen records
       no_add_options_unallowed: Neem contact op met uw PIM beheerder om de "{{ attributeLabel }}" opties te beheren
-      edit_records_unallowed: Neem contact op met uw PIM-beheerder om de referentie-entiteit "{{ referenceEntityLabel }}" te beheren
-      manage_records: Records beheren
       actions:
         delete_row: Deze rij verwijderen
         clear_row: Wis deze rij
@@ -190,7 +182,6 @@ pim_table_attribute:
       number: Nummer
       boolean: Ja/Nee
       select: Selecteer
-      reference_entity: Referentie-entiteit
   validations:
     column_code_must_be_filled: De code moet worden ingevuld
     not_available_code: Deze kolomcode is niet beschikbaar

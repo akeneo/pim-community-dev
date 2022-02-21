@@ -4,39 +4,15 @@ pimee_catalog_rule:
       actions:
         execute: Executar
       title: Regles
-      column:
-        label: Etiqueta
-        tags:
-          label: Accions
-        priority: Prioritat
-        status: Estat
       mass_edit_action:
         execute: Executar
         delete: Suprimir
-  condition:
-    fields:
-      family: Família
-      family_variant: Variants familiars
-      associations: Associacions
-      groups: Grups
-      categories: Categories
-      completeness: Integritat
-      identifier: Identificador
-      parent: Pare
-      enabled: Estat
-      entity_type: Tipus d'entitat
-      created: Creat
-      updated: Actualitzat
-    field_groups:
-      system: Sistema
   acl_group:
     rule: Regles
   acl:
     rule:
-      edit_permissions: Edita les regles
       view_permissions: Veure regles
       delete_permissions: Eliminar regles
-      create_permissions: Crear regles
       execute_permissions: Executar regles
   attribute:
     tab:

@@ -183,7 +183,6 @@ pimee_catalog_rule:
           select_reference_entity: 参照エンティティを選択してください
           select_asset: アセットを選択してください
           select_measurement_unit: ユニットを選択してください
-          table_attribute_helper: この属性の前の値は、すべての商品の選択で置き換えられます
         set_quantified_associations:
           title: 数量関係の設定
           helper: 数量の関連を設定するには、関連タイプを選択してから商品の選択に関連付ける商品、商品モデル、またはグループを選択してください。

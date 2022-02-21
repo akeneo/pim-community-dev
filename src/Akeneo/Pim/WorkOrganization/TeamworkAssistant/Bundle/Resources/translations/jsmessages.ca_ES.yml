@@ -31,12 +31,10 @@ teamwork_assistant:
     no_project_create: crear un nou projecte
     description: Descripció
     due_date: Data límit
-    done: Fet
     all_contributors: Tots els col·laboradors
     you: Tú
     display_products: Mostrar productes
     projects: Projectes
-    contributors: Col·laboradors
     placeholder:
       contributor_selector: Buscar col·laborador
       project_selector: Buscar projecte
@@ -44,7 +42,6 @@ teamwork_assistant:
       to_start: PRODUCTES A COMENÇAR
       in_progress: Productes en progrés
       done: Productes acabats
-    searching: cercant...
 pim_datagrid:
   view_selector:
     project: Projectes

@@ -41,4 +41,3 @@ authentication:
         acs_url:
           label: URL ACS
           tooltip_label: Copiar URL
-        copy: Copiar

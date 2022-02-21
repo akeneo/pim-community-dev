@@ -144,8 +144,6 @@ pim_table_attribute:
       column_code: 列代码
       properties_helper: 您必须先定义表结构和至少 2 列才能保存您的表属性
       table_structure_helper_text: 表属性必须包含至少 2 列。第一列始终为“选择”列类型。创建第一列后，必须添加选项。为此，请点击“管理选项”并添加最多 {{ limit }} 个选项！这样，您就可以将每个选项用作产品表中的行。
-      table_structure_helper_text_with_reference_entity: 表属性必须包含至少 2 列。创建第一列后，使用“选择”或“参考实体”列类型，基于选项或记录定义并管理行。
-      table_structure_helper_link: 查看我们的“帮助中心”获取更多信息。
       limit_option_reached: 您已达到选项的上限数目 {{ %limit% }}。
       template_label: 选择您的 "{{ templateLabel }}" 表的标准
       delete_column_helper: 删除此列时，它的所有值会从使用 "{{ attributeLabel }}" 表属性的所有产品中移除。
@@ -155,13 +153,11 @@ pim_table_attribute:
       no_options: 没有找到选项
       please_try_again: 请再试一次
       first_column_type_helper: 表的第一列始终为“选择”列类型。
-      first_column_type_helper_with_reference_entity: 表的第一列为“选择”或“参考实体”列类型。
       discard_changes: 如果离开此页面，将会丢失对选择选项的更改。
       completeness: 完成度
       required_for_completeness: 完成度必填
       completeness_helper_text: "要探索完成度如何用于表属性，"
       completeness_helper_link: 请查看我们的“帮助中心”。
-      reference_entity: 参考实体
     product:
       items_per_page: 每页项目数
       current_items: "{{ minItem }}-{{ maxItem }}/{{ itemCount }}"
@@ -169,13 +165,8 @@ pim_table_attribute:
       no_search_result: "抱歉，找不到与搜索相符的行！"
       no_rows_title: "您的 {{ attributeLabel }} 表为空。"
       no_rows_subtitle: 添加行以定义新属性
-      no_rows_subtitle_no_permission: 要编辑此属性，请前往属性设置页面或联系您的 PIM 管理员。
-      no_results: 没有结果
       no_options: 没有选项
-      no_records: 没有记录
       no_add_options_unallowed: 联系您的 PIM 管理员来管理"{{ attributeLabel }}"选项
-      edit_records_unallowed: 请联系您的 PIM 管理员来管理“{{ referenceEntityLabel }}”参考实体
-      manage_records: 管理记录
       actions:
         delete_row: 删除此行
         clear_row: 清除此行
@@ -190,7 +181,6 @@ pim_table_attribute:
       number: 数字
       boolean: 是/否
       select: 选择
-      reference_entity: 参考实体
   validations:
     column_code_must_be_filled: 必须填写代码
     not_available_code: 此列代码不可用
@@ -226,7 +216,7 @@ pim_table_attribute:
     search: 搜索
   datagrid:
     placeholder: 预览不可用，请打开产品页面访问表属性值
-    any: 任何 
+    any: 任何
     select_your_column: 选择列
     select_your_row: 选择行
     select_your_operator: 选择运算符

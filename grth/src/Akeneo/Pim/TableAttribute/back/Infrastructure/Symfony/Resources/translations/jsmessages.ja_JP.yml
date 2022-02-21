@@ -144,8 +144,6 @@ pim_table_attribute:
       column_code: 列コー​​ド
       properties_helper: テーブル属性を保存するには、テーブル構造と少なくとも 2 つの列を定義する必要があります
       table_structure_helper_text: テーブル属性には少なくとも 2 つの列が必要です。最初の列は常に "選択" 列タイプです。最初の列を作成した後、オプションを追加する必要があります。オプションを追加するには、"オプションを管理" をクリックします。最大{{ limit }}個のオプションまで追加できます！その後、これらのオプションを製品テーブル行としてそれぞれ使用できるようになります。
-      table_structure_helper_text_with_reference_entity: テーブル属性には少なくとも2つの列が必要です。"選択" または "参照エンティティ" 列タイプのいずれかを使用して最初の列を作成したら、オプションまたはレコードに基づいて行を定義および管理します。
-      table_structure_helper_link: 詳細についてはヘルプセンターをご確認ください。
       limit_option_reached: オプションの上限 {{ %limit% }} に達しました。
       template_label: '"{{ templateLabel }}" テーブルのスタンダードを選択'
       delete_column_helper: この列を削除すると、この列のすべての値が "{{ attributeLabel }}" テーブル属性を使用するすべての製品から削除されます。
@@ -155,13 +153,11 @@ pim_table_attribute:
       no_options: オプションが見つかりません
       please_try_again: もう一度やり直してください
       first_column_type_helper: テーブルの最初の列は常に選択の列タイプです。
-      first_column_type_helper_with_reference_entity: テーブルの最初の列は "選択" または "参照エンティティ" 列タイプのいずれかです。
       discard_changes: このページから移動すると選択オプションに対する変更が失われます
       completeness: 完全性
       required_for_completeness: 完全性のために必要
       completeness_helper_text: "テーブル属性の完全性がどう機能するのかを理解するには、"
       completeness_helper_link: ヘルプセンターをご覧ください。
-      reference_entity: 参照エンティティ
     product:
       items_per_page: ページあたりのアイテム数
       current_items: "{{ minItem }}-{{ maxItem }} / {{ itemCount }}"
@@ -169,13 +165,9 @@ pim_table_attribute:
       no_search_result: "検索条件に合う行がありません！"
       no_rows_title: "{{ attributeLabel }} テーブルが空です。"
       no_rows_subtitle: 新しいプロパティを定義する行を追加
-      no_rows_subtitle_no_permission: この属性を編集できるようにするには、属性設定ページに移動するか、PIM管理者に連絡してください。
       no_results: 結果がありません
       no_options: オプションがありません
-      no_records: レコードがありません。
       no_add_options_unallowed: '"{{ attributeLabel }}" オプションを管理するには、PIM管理者に連絡してください'
-      edit_records_unallowed: '"{{ referenceEntityLabel }}" 参照エンティティを管理するには、PIM管理者に連絡してください'
-      manage_records: レコードを管理
       actions:
         delete_row: この行を削除
         clear_row: この行をクリア
@@ -190,7 +182,6 @@ pim_table_attribute:
       number: 数値
       boolean: はい/いいえ
       select: 選択
-      reference_entity: 参照エンティティ
   validations:
     column_code_must_be_filled: コードを入力する必要があります
     not_available_code: この列コー​​ドは使用できません

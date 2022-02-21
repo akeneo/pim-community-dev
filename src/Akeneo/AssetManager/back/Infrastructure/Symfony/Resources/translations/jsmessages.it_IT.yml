@@ -12,7 +12,7 @@ pim_asset_manager:
   asset_counter: '{0} Nessun asset|{1} {{ count }} asset|]1,Inf] {{ count }} asset'
   asset_selected: '{0} {{ assetCount }} asset selezionati|{1} {{ assetCount }} asset selezionato|]1,Inf] {{ assetCount }} asset selezionati'
   asset_collection:
-    add_asset: 'Aggiungi asset'
+    add_asset: 'Aggiungi attività'
     upload_asset: 'Carica asset'
     add_asset_title: 'Apri il selettore attività per aggiungere attività alla raccolta'
     no_asset_in_collection: 'Spiacenti, non c''è alcuna attività in questa raccolta.'

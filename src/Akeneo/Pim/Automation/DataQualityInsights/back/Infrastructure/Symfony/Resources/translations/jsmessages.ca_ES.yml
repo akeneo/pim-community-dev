@@ -31,12 +31,3 @@ akeneo_data_quality_insights:
   product_grid:
     filter_label:
       spelling_quality: Qualitat ortogràfica
-  dictionary:
-    words: Paraules
-    searchPlaceholder: Cerca una paraula
-pimee_enrich.entity.locale:
-  grid:
-    columns:
-      dictionary_words_count:
-        title: Nombre de paraules
-    add_words: Afegir paraules

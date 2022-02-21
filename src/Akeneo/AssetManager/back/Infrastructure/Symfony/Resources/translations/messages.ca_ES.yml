@@ -28,9 +28,3 @@ pim_catalog_asset_collection: Col·lecció de recursos
 batch_jobs:
   default_steps:
     link_assets_to_products: Enllaçar els recursos dels productes
-job_execution:
-  summary:
-    assets: Recursos
-pim_api:
-  acl_group:
-    asset: Recursos

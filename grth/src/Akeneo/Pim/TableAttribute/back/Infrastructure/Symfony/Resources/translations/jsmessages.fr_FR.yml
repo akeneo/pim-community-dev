@@ -158,7 +158,6 @@ pim_table_attribute:
       required_for_completeness: Requis pour la complétude
       completeness_helper_text: "Pour découvrir comment fonctionne la complétude d'un attribut tableau,"
       completeness_helper_link: consultez notre centre d'aide.
-      reference_entity: Entité référentielle
     product:
       items_per_page: Éléments par page
       current_items: "{{ minItem }}-{{ maxItem }} sur {{ itemCount }}"
@@ -183,7 +182,6 @@ pim_table_attribute:
       number: Nombre
       boolean: Oui/Non
       select: Colonne à choix unique
-      reference_entity: Entité référentielle
   validations:
     column_code_must_be_filled: Le code doit être rempli
     not_available_code: Ce code de colonne n'est pas disponible
