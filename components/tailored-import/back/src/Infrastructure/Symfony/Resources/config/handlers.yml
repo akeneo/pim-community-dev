@@ -6,8 +6,23 @@ services:
 
   akeneo.tailored_import.handler.execute_data_mapping:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingHandler
+    arguments:
+      - '@akeneo.tailored_import.operation_applier'
+      - '@akeneo.tailored_import.user_intent_registry'
+      - '@akeneo.tailored_import.user_intent_aggregator'
 
   akeneo.tailored_import.handler.upload_flat_file:
     class: Akeneo\Platform\TailoredImport\Application\UploadFlatFile\UploadFlatFileHandler
     arguments:
       - '@akeneo.tailored_import.filesystem.store_flat_file'
+
+  akeneo.tailored_import.operation_applier:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier
+
+  akeneo.tailored_import.user_intent_registry:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry
+    arguments:
+      - !tagged_iterator akeneo.tailored_import.user_intent_factory
+
+  akeneo.tailored_import.user_intent_aggregator:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentAggregator\UserIntentAggregator

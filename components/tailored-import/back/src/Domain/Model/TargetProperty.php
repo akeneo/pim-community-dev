@@ -24,13 +24,9 @@ class TargetProperty implements TargetInterface
         Assert::inArray($this->actionIfEmpty, [TargetInterface::IF_EMPTY_CLEAR, TargetInterface::IF_EMPTY_SKIP]);
     }
 
-    public static function createFromNormalized(array $normalizedPropertyTarget): self
+    public static function create(string $code, string $actionIfNotEmpty, string $actionIfEmpty): self
     {
-        return new self(
-            $normalizedPropertyTarget['code'],
-            $normalizedPropertyTarget['action_if_not_empty'],
-            $normalizedPropertyTarget['action_if_empty'],
-        );
+        return new self($code, $actionIfNotEmpty, $actionIfEmpty);
     }
 
     public function getCode(): string

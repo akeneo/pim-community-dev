@@ -9,27 +9,24 @@ use Webmozart\Assert\Assert;
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @implements \IteratorAggregate<int, DataMapping>
  */
-class DataMappingCollection
+class DataMappingCollection implements \IteratorAggregate
 {
     private function __construct(
         private array $dataMappings,
     ) {
         Assert::allIsInstanceOf($this->dataMappings, DataMapping::class);
+        Assert::notEmpty($this->dataMappings);
     }
 
-    public static function createFromNormalized(array $normalizedDataMappings): self
+    public static function create(array $dataMappings): self
     {
-        $dataMappingInstances = array_map(
-            static fn (array $dataMappingNormalized) => DataMapping::createFromNormalized($dataMappingNormalized),
-            $normalizedDataMappings,
-        );
-
-        return new self($dataMappingInstances);
+        return new self($dataMappings);
     }
 
     /**
-     * @return \ArrayIterator<int, DataMapping>
+     * @return DataMapping[] | \ArrayIterator<int, DataMapping>
      */
     public function getIterator(): \ArrayIterator
     {

@@ -14,11 +14,11 @@ class TargetPropertySpec extends ObjectBehavior
 {
     public function it_can_be_initialized_from_normalized()
     {
-        $this->beConstructedThrough('createFromNormalized', [[
-            'code' => 'test_code',
-            'action_if_not_empty' => 'set',
-            'action_if_empty' => 'skip',
-        ]]);
+        $this->beConstructedThrough('create', [
+            'test_code',
+            'set',
+            'skip',
+        ]);
 
         $this->getCode()->shouldReturn('test_code');
         $this->getActionIfNotEmpty()->shouldReturn('set');

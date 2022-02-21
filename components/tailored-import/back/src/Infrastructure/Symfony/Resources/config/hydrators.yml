@@ -1,0 +1,8 @@
+services:
+  akeneo.tailored_import.hydrator.data_mapping_collection:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\DataMappingCollectionHydrator
+    arguments:
+      - "@akeneo.tailored_import.hydrator.target"
+
+  akeneo.tailored_import.hydrator.target:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\TargetHydrator

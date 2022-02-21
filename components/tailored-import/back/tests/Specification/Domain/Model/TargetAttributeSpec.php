@@ -14,15 +14,17 @@ class TargetAttributeSpec extends ObjectBehavior
 {
     public function it_can_be_initialized_from_normalized()
     {
-        $this->beConstructedThrough('createFromNormalized', [[
-            'code' => 'test_code',
-            'channel' => 'web',
-            'locale' => 'fr_FR',
-            'action_if_not_empty' => 'set',
-            'action_if_empty' => 'skip',
-        ]]);
+        $this->beConstructedThrough('create', [
+            'test_code',
+            'pim_catalog_text',
+            'web',
+            'fr_FR',
+            'set',
+            'skip',
+        ]);
 
         $this->getCode()->shouldReturn('test_code');
+        $this->getType()->shouldReturn('pim_catalog_text');
         $this->getChannel()->shouldReturn('web');
         $this->getLocale()->shouldReturn('fr_FR');
         $this->getActionIfNotEmpty()->shouldReturn('set');

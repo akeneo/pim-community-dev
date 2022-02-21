@@ -22,24 +22,14 @@ class DataMapping
         Assert::uuid($uuid);
     }
 
-    public static function createFromNormalized(array $normalizedDataMapping): self
-    {
-        return new self(
-            $normalizedDataMapping['uuid'],
-            self::createTarget($normalizedDataMapping['target']),
-            $normalizedDataMapping['sources'],
-            $normalizedDataMapping['operations'],
-            $normalizedDataMapping['sample_data'],
-        );
-    }
-
-    private static function createTarget(array $normalizedTarget): TargetInterface
-    {
-        return match ($normalizedTarget['type']) {
-            TargetAttribute::TYPE => TargetAttribute::createFromNormalized($normalizedTarget),
-            TargetProperty::TYPE => TargetProperty::createFromNormalized($normalizedTarget),
-            default => throw new \RuntimeException(sprintf('Unknown target type: %s', $normalizedTarget['type'])),
-        };
+    public static function create(
+        string $uuid,
+        TargetInterface $target,
+        array $sources,
+        array $operations,
+        array $sampleData,
+    ): self {
+        return new self($uuid, $target, $sources, $operations, $sampleData);
     }
 
     public function getUuid(): string
