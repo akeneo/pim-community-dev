@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class AkeneoChannelApiExtension extends Extension
+final class AkeneoChannelExtension extends Extension
 {
     /**
      * {@inheritDoc}
