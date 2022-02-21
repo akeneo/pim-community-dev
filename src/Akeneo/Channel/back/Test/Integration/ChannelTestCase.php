@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2022 Akeneo SAS (https://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Channel\Test\Integration;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
@@ -30,7 +21,7 @@ class ChannelTestCase extends TestCase
 
     protected function loadChannelFunctionalFixtures(): void
     {
-        $this->createChannel(
+        $this->createOrUpdateChannel(
             'mobile_app',
             [
                 'locales' => [
@@ -55,6 +46,10 @@ class ChannelTestCase extends TestCase
         }
     }
 
+    /**
+     * @param string[] $stringRoles
+     * @param string[] $groupNames
+     */
     protected function createUser(string $username, array $stringRoles, array $groupNames): UserInterface
     {
         $user = $this->get('pim_user.factory.user')->create();
@@ -76,17 +71,15 @@ class ChannelTestCase extends TestCase
             }
         }
 
-        $this->get('validator')->validate($user);
+        $violations = $this->get('validator')->validate($user);
+        Assert::assertSame(0, $violations->count(), (string) $violations);
         $this->get('pim_user.saver.user')->save($user);
 
         return $user;
     }
 
     /**
-     * @param string $localeCode
      * @param ChannelInterface[] $channels
-     *
-     * @return void
      */
     protected function createLocale(string $localeCode, array $channels = []): LocaleInterface
     {
@@ -101,7 +94,10 @@ class ChannelTestCase extends TestCase
         return $locale;
     }
 
-    protected function createChannel(string $code, array $data = []): ChannelInterface
+    /**
+     * @param array<string, mixed> $data
+     */
+    protected function createOrUpdateChannel(string $code, array $data = []): ChannelInterface
     {
         $defaultData = [
             'code' => $code,
@@ -117,15 +113,8 @@ class ChannelTestCase extends TestCase
         }
 
         $this->get('pim_catalog.updater.channel')->update($channel, $data);
-        $errors = $this->get('validator')->validate($channel);
-
-        $errorMessage = '';
-        foreach ($errors as $error) {
-            $errorMessage .= PHP_EOL.$error->getMessage();
-        }
-
-        Assert::assertCount(0, $errors, 'Invalid channel: ' . $errorMessage);
-
+        $violations = $this->get('validator')->validate($channel);
+        Assert::assertSame(0, $violations->count(), (string) $violations);
         $this->get('pim_catalog.saver.channel')->save($channel);
 
         return $channel;

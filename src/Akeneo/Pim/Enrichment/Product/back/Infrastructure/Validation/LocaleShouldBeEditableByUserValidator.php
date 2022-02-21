@@ -25,12 +25,17 @@ final class LocaleShouldBeEditableByUserValidator extends ConstraintValidator
         Assert::isInstanceOf($command, UpsertProductCommand::class);
         Assert::isInstanceOf($constraint, LocaleShouldBeEditableByUser::class);
 
-        $userEditableLocaleCodes = $this->getEditableLocaleCodes->forUserId($command->userId());
-
+        $userEditableLocaleCodes = null;
         foreach ($command->valuesUserIntent() as $valueUserIntent) {
             $localeCode = $valueUserIntent->localeCode();
-            if (!empty($localeCode) && !\in_array($valueUserIntent->localeCode(), $userEditableLocaleCodes)) {
-                $this->context->buildViolation($constraint->message, ['{{ locale_code }}' => $localeCode])->addViolation();
+            if (!empty($localeCode)) {
+                if (null === $userEditableLocaleCodes) {
+                    $userEditableLocaleCodes = $this->getEditableLocaleCodes->forUserId($command->userId());
+                }
+
+                if (!\in_array($localeCode, $userEditableLocaleCodes)) {
+                    $this->context->buildViolation($constraint->message, ['{{ locale_code }}' => $localeCode])->addViolation();
+                }
             }
         }
     }

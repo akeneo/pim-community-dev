@@ -6,7 +6,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
 use Akeneo\Channel\API\Query\GetEditableLocaleCodes;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\ValueUserIntent;
+use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUser;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUserValidator;
 use PhpSpec\ObjectBehavior;
@@ -47,25 +47,9 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
         ExecutionContext $context,
         getEditableLocaleCodes $getEditableLocaleCodes
     ) {
-        $userIntent = new class implements ValueUserIntent {
-            public function attributeCode(): string
-            {
-                return 'a_text';
-            }
-            public function value(): mixed
-            {
-                return 'new value';
-            }
-            public function localeCode(): ?string
-            {
-                return 'en_US';
-            }
-            public function channelCode(): ?string
-            {
-                return null;
-            }
-        };
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_identifier', valuesUserIntent: [$userIntent]);
+        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_identifier', valuesUserIntent: [
+            new SetTextValue('a_text', 'en_US', null, 'new value'),
+        ]);
 
         $getEditableLocaleCodes->forUserId(1)->willReturn(['en_US', 'fr_FR']);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
@@ -79,27 +63,9 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $constraintViolationBuilder
     ) {
         $constraint = new LocaleShouldBeEditableByUser();
-
-        $userIntent = new class implements ValueUserIntent {
-            public function attributeCode(): string
-            {
-                return 'a_text';
-            }
-            public function value(): mixed
-            {
-                return 'new value';
-            }
-            public function localeCode(): ?string
-            {
-                return 'de_DE';
-            }
-            public function channelCode(): ?string
-            {
-                return null;
-            }
-        };
-
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_identifier', valuesUserIntent: [$userIntent]);
+        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_identifier', valuesUserIntent: [
+            new SetTextValue('a_text', 'de_DE', null, 'new value'),
+        ]);
 
         $getEditableLocaleCodes->forUserId(1)->willReturn(['en_US', 'fr_FR']);
         $context->buildViolation($constraint->message, ['{{ locale_code }}' => 'de_DE'])
@@ -116,50 +82,10 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $constraintViolationBuilder
     ) {
         $constraint = new LocaleShouldBeEditableByUser();
-
-        $userIntent1 = new class implements ValueUserIntent {
-            public function attributeCode(): string
-            {
-                return 'a_text';
-            }
-            public function value(): mixed
-            {
-                return 'new value';
-            }
-            public function localeCode(): ?string
-            {
-                return 'de_DE';
-            }
-            public function channelCode(): ?string
-            {
-                return null;
-            }
-        };
-
-        $userIntent2 = new class implements ValueUserIntent {
-            public function attributeCode(): string
-            {
-                return 'a_text';
-            }
-            public function value(): mixed
-            {
-                return 'new value';
-            }
-            public function localeCode(): ?string
-            {
-                return 'en_GB';
-            }
-            public function channelCode(): ?string
-            {
-                return null;
-            }
-        };
-
-        $command = new UpsertProductCommand(
-            userId: 1,
-            productIdentifier: 'product_identifier',
-            valuesUserIntent: [$userIntent1, $userIntent2]
-        );
+        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_identifier', valuesUserIntent: [
+            new SetTextValue('a_text', 'de_DE', null, 'new value'),
+            new SetTextValue('a_text', 'en_GB', null, 'new value'),
+        ]);
 
         $getEditableLocaleCodes->forUserId(1)->willReturn(['en_US', 'fr_FR']);
         $context->buildViolation($constraint->message, ['{{ locale_code }}' => 'de_DE'])
