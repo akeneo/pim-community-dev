@@ -24,7 +24,9 @@ use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Doctrine\ORM\Exception\MissingIdentifierField;
 use Doctrine\Persistence\ObjectManager;
+use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -152,7 +154,7 @@ class PublishedProductManager
         $published = $this->publishedRepositoryWithoutPermission->findOneByOriginalProduct($product);
         if ($published) {
             $this->unpublisher->unpublish($published);
-            $this->remover->remove($published);
+            $this->removeWithRetries($product);
         }
 
         $published = $this->publisher->publish($originalProduct, $publishOptions);
@@ -273,5 +275,22 @@ class PublishedProductManager
     protected function dispatchEvent(string $name, ProductInterface $product, PublishedProductInterface $published = null)
     {
         $this->eventDispatcher->dispatch(new PublishedProductEvent($product, $published), $name);
+    }
+
+    private function removeWithRetries(ProductInterface $product, array $timings = [1, 2, 5]): void
+    {
+        try {
+            $published = $this->publishedRepositoryWithoutPermission->findOneByOriginalProduct($product);
+            if($published) {
+                $this->remover->remove($published);
+            }
+        } catch (Missing404Exception | MissingIdentifierField $e ) {
+            if(\count($timings) === 0) {
+                throw $e;
+            }
+            $timing = \array_shift($timings);
+            \sleep($timing);
+            $this->removeWithRetries($published, $timings);
+        }
     }
 }

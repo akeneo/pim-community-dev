@@ -254,4 +254,7 @@ class PublishedProductsManagerIntegration extends TestCase
     {
         return $this->get('pimee_workflow.query.get_published_product_completenesses');
     }
+
+    // todo: call Elasticsearch/Indexer/PublishedProductIndexer.php(84): Akeneo\Tool\Bundle\ElasticsearchBundle\Client->delete()
+    // to mock a deleted published product index
 }

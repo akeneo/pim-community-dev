@@ -8,6 +8,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Persistence\ObjectManager;
+use Elasticsearch\Common\Exceptions\Missing404Exception;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -206,5 +207,10 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $bulkRemover->removeAll([$fullPublished1, $fullPublished2])->shouldBeCalled();
 
         $this->unpublishAll([$filteredPublished1, $filteredPublished2]);
+    }
+
+    function it_toto()
+    {
+        $remover->remove($fullPublished)->shouldBeCalledTimes(4)->willThrow(Missing404Exception);
     }
 }
