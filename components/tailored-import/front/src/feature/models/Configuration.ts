@@ -9,6 +9,11 @@ type Column = {
   label: string;
 };
 
+type ErrorAction = 'skip_value' | 'skip_product';
+
+const isValidErrorAction = (errorAction: string): errorAction is ErrorAction =>
+  ['skip_value', 'skip_product'].includes(errorAction);
+
 type StructureConfiguration = {
   columns: Column[];
   data_mappings: DataMapping[];
@@ -52,5 +57,5 @@ const generateColumnName = ({index, label}: Column): string => {
   return `${label} (${columnLetter})`;
 };
 
-export type {StructureConfiguration, Column, ColumnIdentifier};
-export {extractColumnLabels, generateColumns, generateColumnName, MAX_COLUMN_COUNT};
+export type {StructureConfiguration, Column, ColumnIdentifier, ErrorAction};
+export {extractColumnLabels, generateColumns, generateColumnName, isValidErrorAction, MAX_COLUMN_COUNT};

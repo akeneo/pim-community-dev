@@ -1,6 +1,12 @@
 batch_jobs.xlsx_tailored_product_import.label: Tailored product import in XLSX
 
 akeneo.tailored_import:
+  global_settings:
+    error_management:
+      label: Operation error management
+      skip_product: Skip product
+      skip_value: Skip value
+      helper_message: Define the behavior in case of an error in an operation.
   column_initialization:
     button: Initialize columns
     max_column_count_reached: You have reached the limit columns, only {{ limit }} first columns will be imported.

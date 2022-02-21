@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\ImportStructure;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
+use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 
 class ConstraintCollectionProvider implements ConstraintCollectionProviderInterface
@@ -36,6 +37,7 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
         $constraintFields = $baseConstraint->fields;
 
         $constraintFields['import_structure'] = new ImportStructure();
+        $constraintFields['error_action'] = new Choice(['skip_value', 'skip_product']);
 
         return new Collection(['fields' => $constraintFields]);
     }
