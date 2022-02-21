@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2022 Akeneo SAS (https://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Channel\Test\Integration\Query;
 
 use Akeneo\Channel\API\Query\GetEditableLocaleCodes;
@@ -34,10 +25,8 @@ final class GetEditableLocaleCodesIntegration extends ChannelTestCase
         $this->loadChannelFunctionalFixtures();
     }
 
-    /**
-     * @test
-     */
-    public function it_returns_all_activated_locale_codes_for_any_userid()
+    /** @test */
+    public function it_returns_all_activated_locale_codes_for_any_userid(): void
     {
         $expectedLocales = ['en_US', 'de_DE', 'fr_FR'];
 

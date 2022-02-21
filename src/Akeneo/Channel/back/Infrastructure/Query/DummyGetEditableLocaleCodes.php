@@ -2,24 +2,15 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2022 Akeneo SAS (https://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Channel\Infrastructure\Query;
 
 use Akeneo\Channel\API\Query\GetEditableLocaleCodes;
 use Doctrine\DBAL\Connection;
 
-// @todo: should be tested ? If yes how to test this only in CE ?
-// in CE the SQL query return all activated locales
-// in EE the SQL query return activated locales on which
-
+/**
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 final class DummyGetEditableLocaleCodes implements GetEditableLocaleCodes
 {
     public function __construct(private Connection $connection)
