@@ -91,6 +91,7 @@ akeneo_connectivity.connection:
                 errors:
                     creation:
                         name:
+                            min_length: The name of the test app is too short. It must have 3 characters or more.
                             max_length: The name of the test app is too long. It must have 255 characters or less.
                             not_blank: The name of the test app is required.
                         client_id:
