@@ -17,13 +17,10 @@ final class CategoriesLabelSelection implements CategoriesSelectionInterface
 {
     public const TYPE = 'label';
 
-    private string $separator;
-    private string $locale;
-
-    public function __construct(string $separator, string $locale)
-    {
-        $this->separator = $separator;
-        $this->locale = $locale;
+    public function __construct(
+        private string $separator,
+        private string $locale,
+    ) {
     }
 
     public function getSeparator(): string

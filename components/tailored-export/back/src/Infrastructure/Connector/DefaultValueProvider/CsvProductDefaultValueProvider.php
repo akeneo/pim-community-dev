@@ -19,20 +19,13 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface
 
 class CsvProductDefaultValueProvider implements DefaultValuesProviderInterface
 {
-    private DefaultValuesProviderInterface $simpleProvider;
-
-    /** @var string[] */
-    private array $supportedJobNames;
-
     /**
      * @param string[] $supportedJobNames
      */
     public function __construct(
-        DefaultValuesProviderInterface $simpleProvider,
-        array $supportedJobNames
+        private DefaultValuesProviderInterface $simpleProvider,
+        private array $supportedJobNames,
     ) {
-        $this->simpleProvider = $simpleProvider;
-        $this->supportedJobNames = $supportedJobNames;
     }
 
     /**
@@ -55,13 +48,13 @@ class CsvProductDefaultValueProvider implements DefaultValuesProviderInterface
                 [
                     'field' => 'categories',
                     'operator' => Operators::NOT_IN_LIST,
-                    'value' => []
+                    'value' => [],
                 ],
                 [
                     'field' => 'completeness',
                     'operator' => 'ALL',
                     'value' => 100,
-                ]
+                ],
             ],
         ];
 

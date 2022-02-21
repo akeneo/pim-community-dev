@@ -17,13 +17,10 @@ final class MeasurementUnitLabelSelection implements MeasurementSelectionInterfa
 {
     public const TYPE = 'unit_label';
 
-    private string $measurementFamilyCode;
-    private string $locale;
-
-    public function __construct(string $measurementFamilyCode, string $locale)
-    {
-        $this->measurementFamilyCode = $measurementFamilyCode;
-        $this->locale = $locale;
+    public function __construct(
+        private string $measurementFamilyCode,
+        private string $locale,
+    ) {
     }
 
     public function getMeasurementFamilyCode(): string

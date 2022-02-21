@@ -23,15 +23,10 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface;
 
 class QuantifiedAssociationsLabelSelectionApplier implements SelectionApplierInterface
 {
-    private FindProductLabelsInterface $findProductLabels;
-    private FindProductModelLabelsInterface $findProductModelLabels;
-
     public function __construct(
-        FindProductLabelsInterface $findProductLabels,
-        FindProductModelLabelsInterface $findProductModelLabels
+        private FindProductLabelsInterface $findProductLabels,
+        private FindProductModelLabelsInterface $findProductModelLabels,
     ) {
-        $this->findProductLabels = $findProductLabels;
-        $this->findProductModelLabels = $findProductModelLabels;
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -59,7 +54,7 @@ class QuantifiedAssociationsLabelSelectionApplier implements SelectionApplierInt
 
     private function getAssociatedEntityLabels(
         QuantifiedAssociationsLabelSelection $selection,
-        array $associatedEntityCodes
+        array $associatedEntityCodes,
     ): array {
         if ($selection->isProductsSelection()) {
             return $this->findProductLabels->byIdentifiers(
@@ -95,14 +90,14 @@ class QuantifiedAssociationsLabelSelectionApplier implements SelectionApplierInt
     /**
      * @param string[] $associatedEntityLabels
      * @param array<string, string> $associatedEntityCodes
+     *
      * @return string[]
      */
     private function formatLabels(array $associatedEntityLabels, array $associatedEntityCodes): array
     {
         return \array_map(
-            static fn ($associatedEntityCode) =>
-                $associatedEntityLabels[$associatedEntityCode] ?? \sprintf('[%s]', $associatedEntityCode),
-            $associatedEntityCodes
+            static fn ($associatedEntityCode) => $associatedEntityLabels[$associatedEntityCode] ?? \sprintf('[%s]', $associatedEntityCode),
+            $associatedEntityCodes,
         );
     }
 }

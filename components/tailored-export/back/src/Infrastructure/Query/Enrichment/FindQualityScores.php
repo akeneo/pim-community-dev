@@ -18,11 +18,9 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindQualityScoresInterface;
 
 class FindQualityScores implements FindQualityScoresInterface
 {
-    private GetLatestProductScoresQueryInterface $getLatestProductScoresQuery;
-
-    public function __construct(GetLatestProductScoresQueryInterface $getLatestProductScoresQuery)
-    {
-        $this->getLatestProductScoresQuery = $getLatestProductScoresQuery;
+    public function __construct(
+        private GetLatestProductScoresQueryInterface $getLatestProductScoresQuery,
+    ) {
     }
 
     public function forProduct(string $productIdentifier, string $channel, string $locale): ?string

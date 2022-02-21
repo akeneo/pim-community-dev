@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 /**
-
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2021 Akeneo SAS (https://www.akeneo.com)

@@ -23,15 +23,10 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindAssetMainMediaDataInterface;
 
 class AssetCollectionMediaFileSelectionApplier implements SelectionApplierInterface
 {
-    private FindAssetMainMediaDataInterface $findAssetMainMediaData;
-    private MediaPathGeneratorInterface $mediaPathGenerator;
-
     public function __construct(
-        FindAssetMainMediaDataInterface $findAssetMainMediaData,
-        MediaPathGeneratorInterface $mediaPathGenerator
+        private FindAssetMainMediaDataInterface $findAssetMainMediaData,
+        private MediaPathGeneratorInterface $mediaPathGenerator,
     ) {
-        $this->findAssetMainMediaData = $findAssetMainMediaData;
-        $this->mediaPathGenerator = $mediaPathGenerator;
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -47,7 +42,7 @@ class AssetCollectionMediaFileSelectionApplier implements SelectionApplierInterf
             $selection->getAssetFamilyCode(),
             $value->getAssetCodes(),
             $selection->getChannel(),
-            $selection->getLocale()
+            $selection->getLocale(),
         );
 
         $selectedData = array_map(
@@ -60,8 +55,9 @@ class AssetCollectionMediaFileSelectionApplier implements SelectionApplierInterf
                             $value->getEntityIdentifier(),
                             $selection->getAttributeCode(),
                             $value->getChannelReference(),
-                            $value->getLocaleReference()
+                            $value->getLocaleReference(),
                         );
+
                         return sprintf('%s%s', $exportDirectory, $data['originalFilename']);
                     case AssetCollectionMediaFileSelection::ORIGINAL_FILENAME_PROPERTY:
                         return $data['originalFilename'];
@@ -69,7 +65,7 @@ class AssetCollectionMediaFileSelectionApplier implements SelectionApplierInterf
                         throw new \InvalidArgumentException('Cannot apply Asset Collection selection on this entity');
                 }
             },
-            $assetMainMediaFileData
+            $assetMainMediaFileData,
         );
 
         return implode($selection->getSeparator(), $selectedData);

@@ -28,10 +28,10 @@ class EnabledSourceValidator extends ConstraintValidator
         $validator = $this->context->getValidator();
         $sourceConstraintFields = SourceConstraintProvider::getConstraintCollection()->fields;
         $sourceConstraintFields['selection'] = new Collection(['fields' => [
-            'type' => new EqualTo(['value' => 'code'])
+            'type' => new EqualTo(['value' => 'code']),
         ]]);
         $sourceConstraintFields['operations'] = new Collection(['fields' => [
-            'replacement' => new Optional(new ReplacementOperationConstraint())
+            'replacement' => new Optional(new ReplacementOperationConstraint()),
         ]]);
 
         $violations = $validator->validate($source, new Collection(['fields' => $sourceConstraintFields]));
@@ -39,7 +39,7 @@ class EnabledSourceValidator extends ConstraintValidator
         foreach ($violations as $violation) {
             $this->context->buildViolation(
                 $violation->getMessage(),
-                $violation->getParameters()
+                $violation->getParameters(),
             )
                 ->atPath($violation->getPropertyPath())
                 ->addViolation();

@@ -14,13 +14,10 @@ use Akeneo\Platform\TailoredExport\Application\Common\ValueCollection;
  */
 class MapValuesQuery
 {
-    private ColumnCollection $columnCollection;
-    private ValueCollection $valueCollection;
-
-    public function __construct(ColumnCollection $columnCollection, ValueCollection $valueCollection)
-    {
-        $this->columnCollection = $columnCollection;
-        $this->valueCollection = $valueCollection;
+    public function __construct(
+        private ColumnCollection $columnCollection,
+        private ValueCollection $valueCollection,
+    ) {
     }
 
     public function getColumnCollection(): ColumnCollection

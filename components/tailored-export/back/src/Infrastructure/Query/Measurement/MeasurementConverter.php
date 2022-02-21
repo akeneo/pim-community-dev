@@ -18,19 +18,16 @@ use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 
 class MeasurementConverter implements MeasurementConverterInterface
 {
-    private MeasureConverter $measureConverter;
-
     public function __construct(
-        MeasureConverter $measureConverter
+        private MeasureConverter $measureConverter,
     ) {
-        $this->measureConverter = $measureConverter;
     }
 
     public function convert(
         string $measurementFamilyCode,
         string $currentUnitCode,
         string $targetUnitCode,
-        string $value
+        string $value,
     ): string {
         $this->measureConverter->setFamily($measurementFamilyCode);
 

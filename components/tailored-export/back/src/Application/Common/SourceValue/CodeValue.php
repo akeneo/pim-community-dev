@@ -15,11 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\SourceValue;
 
 class CodeValue implements SourceValueInterface
 {
-    private string $data;
-
-    public function __construct(string $data)
-    {
-        $this->data = $data;
+    public function __construct(
+        private string $data,
+    ) {
     }
 
     public function getData(): string

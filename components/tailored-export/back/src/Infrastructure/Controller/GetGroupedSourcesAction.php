@@ -31,21 +31,12 @@ final class GetGroupedSourcesAction
     private const SYSTEM_GROUP_TRANSLATION_KEY = 'System';
     private const DEFAULT_LOCALE = 'en_US';
 
-    private TranslatorInterface $translator;
-    private FindSystemSourcesInterface $getSystemSources;
-    private FindAssociationTypesInterface $findAssociationTypes;
-    private FindViewableAttributesInterface $findViewableAttributes;
-
     public function __construct(
-        TranslatorInterface $translator,
-        FindSystemSourcesInterface $getSystemSources,
-        FindAssociationTypesInterface $findAssociationTypes,
-        FindViewableAttributesInterface $findViewableAttributes
+        private TranslatorInterface $translator,
+        private FindSystemSourcesInterface $getSystemSources,
+        private FindAssociationTypesInterface $findAssociationTypes,
+        private FindViewableAttributesInterface $findViewableAttributes,
     ) {
-        $this->translator = $translator;
-        $this->getSystemSources = $getSystemSources;
-        $this->findAssociationTypes = $findAssociationTypes;
-        $this->findViewableAttributes = $findViewableAttributes;
     }
 
     public function __invoke(Request $request): Response
@@ -73,20 +64,20 @@ final class GetGroupedSourcesAction
             $localeCode,
             $limit,
             $attributeOffset,
-            $search
+            $search,
         );
 
         return new JsonResponse([
             'results' => array_merge(
                 $this->formatSystemFields($paginatedFields, $localeCode),
                 $this->formatAssociationFields($paginatedAssociations, $localeCode),
-                $this->formatAttributes($attributesResult->getAttributes())
+                $this->formatAttributes($attributesResult->getAttributes()),
             ),
             'offset' => [
                 'system' => $systemOffset + count($paginatedFields),
                 'association_type' => $associationTypeOffset + count($paginatedAssociations),
-                'attribute' => $attributesResult->getOffset()
-            ]
+                'attribute' => $attributesResult->getOffset(),
+            ],
         ]);
     }
 
@@ -103,7 +94,7 @@ final class GetGroupedSourcesAction
                 sprintf('%s%s', self::FIELD_TRANSLATION_BASE, $field),
                 [],
                 null,
-                $localeCode
+                $localeCode,
             ),
         ], $fields);
 

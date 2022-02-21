@@ -22,19 +22,20 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\QuantifiedAsso
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SimpleAssociationsValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 
+/**
+ * @phpstan-type NormalizedProducts array{identifier: string, quantity: int}
+ * @phpstan-type NormalizedProductModels array{identifier: string, quantity: int}
+ * @phpstan-type NormalizedAssociation array{products: NormalizedProducts, product_models: NormalizedProductModels}
+ */
 final class AssociationTypeValueHydrator
 {
-    /**
-     * @param ProductInterface|ProductModelInterface $productOrProductModel
-     */
     public function hydrate(
-        $productOrProductModel,
+        ProductInterface|ProductModelInterface $productOrProductModel,
         string $associationTypeCode,
-        bool $isQuantified
+        bool $isQuantified,
     ): SourceValueInterface {
-        $this->checkProductOrProductModelEntity($productOrProductModel);
-
         if ($isQuantified) {
+            /** @var NormalizedAssociation[] $normalizedQuantifiedAssociations */
             $normalizedQuantifiedAssociations = $productOrProductModel->getQuantifiedAssociations()->normalize()[$associationTypeCode] ?? [];
 
             return new QuantifiedAssociationsValue(
@@ -50,15 +51,12 @@ final class AssociationTypeValueHydrator
         );
     }
 
-    /**
-     * @param ProductInterface|ProductModelInterface $productOrProductModel
-     */
-    private function getAssociatedProductIdentifiers($productOrProductModel, string $associationTypeCode): array
-    {
-        $this->checkProductOrProductModelEntity($productOrProductModel);
-
+    private function getAssociatedProductIdentifiers(
+        ProductInterface|ProductModelInterface $productOrProductModel,
+        string $associationTypeCode,
+    ): array {
         $association = $this->getAssociationForTypeCode($productOrProductModel, $associationTypeCode);
-        $associatedProducts = $association !== null ? $association->getProducts()->toArray() : [];
+        $associatedProducts = null !== $association ? $association->getProducts()->toArray() : [];
 
         return array_map(
             static fn (ProductInterface $associatedProduct): string => $associatedProduct->getIdentifier(),
@@ -66,15 +64,12 @@ final class AssociationTypeValueHydrator
         );
     }
 
-    /**
-     * @param ProductInterface|ProductModelInterface $productOrProductModel
-     */
-    private function getAssociatedProductModelCodes($productOrProductModel, string $associationTypeCode): array
-    {
-        $this->checkProductOrProductModelEntity($productOrProductModel);
-
+    private function getAssociatedProductModelCodes(
+        ProductInterface|ProductModelInterface $productOrProductModel,
+        string $associationTypeCode,
+    ): array {
         $association = $this->getAssociationForTypeCode($productOrProductModel, $associationTypeCode);
-        $associatedProductModels = $association !== null ? $association->getProductModels()->toArray() : [];
+        $associatedProductModels = null !== $association ? $association->getProductModels()->toArray() : [];
 
         return array_map(
             static fn (ProductModelInterface $associatedProductModel): string => $associatedProductModel->getCode(),
@@ -82,15 +77,12 @@ final class AssociationTypeValueHydrator
         );
     }
 
-    /**
-     * @param ProductInterface|ProductModelInterface $productOrProductModel
-     */
-    private function getAssociatedGroupCodes($productOrProductModel, string $associationTypeCode): array
-    {
-        $this->checkProductOrProductModelEntity($productOrProductModel);
-
+    private function getAssociatedGroupCodes(
+        ProductInterface|ProductModelInterface $productOrProductModel,
+        string $associationTypeCode,
+    ): array {
         $association = $this->getAssociationForTypeCode($productOrProductModel, $associationTypeCode);
-        $associatedGroups = $association !== null ? $association->getGroups()->toArray() : [];
+        $associatedGroups = null !== $association ? $association->getGroups()->toArray() : [];
 
         return array_map(
             static fn (GroupInterface $associationGroup): string => $associationGroup->getCode(),
@@ -98,13 +90,10 @@ final class AssociationTypeValueHydrator
         );
     }
 
-    /**
-     * @param ProductInterface|ProductModelInterface $productOrProductModel
-     */
-    private function getAssociationForTypeCode($productOrProductModel, string $typeCode): ?AssociationInterface
-    {
-        $this->checkProductOrProductModelEntity($productOrProductModel);
-
+    private function getAssociationForTypeCode(
+        ProductInterface|ProductModelInterface $productOrProductModel,
+        string $typeCode,
+    ): ?AssociationInterface {
         foreach ($productOrProductModel->getAllAssociations() as $association) {
             if ($association->getAssociationType()->getCode() === $typeCode) {
                 return $association;
@@ -115,10 +104,7 @@ final class AssociationTypeValueHydrator
     }
 
     /**
-     * @param array $normalizedQuantifiedAssociations = [
-     *     'products' => array<{identifier': string, "quantity": int}>,
-     *     'product_models' => array<{identifier': string, "quantity": int}>
-     * ]
+     * @param NormalizedAssociation[] $normalizedQuantifiedAssociations
      *
      * @return QuantifiedAssociation[]
      */
@@ -131,15 +117,12 @@ final class AssociationTypeValueHydrator
                 $productQuantifiedAssociation['identifier'],
                 $productQuantifiedAssociation['quantity'],
             ),
-            $normalizedProductQuantifiedAssociations
+            $normalizedProductQuantifiedAssociations,
         );
     }
 
     /**
-     * @param array $normalizedQuantifiedAssociations = [
-     *     'products' => array<{identifier': string, "quantity": int}>,
-     *     'product_models' => array<{identifier': string, "quantity": int}>
-     * ]
+     * @param NormalizedAssociation[] $normalizedQuantifiedAssociations
      *
      * @return QuantifiedAssociation[]
      */
@@ -152,20 +135,7 @@ final class AssociationTypeValueHydrator
                 $productQuantifiedAssociation['identifier'],
                 $productQuantifiedAssociation['quantity'],
             ),
-            $normalizedProductModelQuantifiedAssociations
+            $normalizedProductModelQuantifiedAssociations,
         );
-    }
-
-    /**
-     * @param ProductInterface|ProductModelInterface $productOrProductModel
-     */
-    private function checkProductOrProductModelEntity($productOrProductModel): void
-    {
-        if (
-            !$productOrProductModel instanceof ProductInterface
-            && !$productOrProductModel instanceof ProductModelInterface
-        ) {
-            throw new \InvalidArgumentException('Cannot hydrate this entity');
-        }
     }
 }

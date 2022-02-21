@@ -30,16 +30,13 @@ class SimpleAssociationSelectionValidator extends ConstraintValidator
 {
     private const ENTITY_TYPES_WITH_CHANNEL = [
         SimpleAssociationsSelectionInterface::ENTITY_TYPE_PRODUCTS,
-        SimpleAssociationsSelectionInterface::ENTITY_TYPE_PRODUCT_MODELS
+        SimpleAssociationsSelectionInterface::ENTITY_TYPE_PRODUCT_MODELS,
     ];
 
-    /** @var string[] */
-    private array $availableCollectionSeparator;
-
-    /** @var string[] $availableCollectionSeparator */
-    public function __construct(array $availableCollectionSeparator)
-    {
-        $this->availableCollectionSeparator = $availableCollectionSeparator;
+    /** @param string[] $availableCollectionSeparator */
+    public function __construct(
+        private array $availableCollectionSeparator,
+    ) {
     }
 
     public function validate($selection, Constraint $constraint): void
@@ -58,7 +55,7 @@ class SimpleAssociationSelectionValidator extends ConstraintValidator
                                         SimpleAssociationsSelectionInterface::ENTITY_TYPE_PRODUCT_MODELS,
                                         SimpleAssociationsSelectionInterface::ENTITY_TYPE_GROUPS,
                                     ],
-                                ]
+                                ],
                             ),
                             'type' => new Choice(
                                 [
@@ -66,17 +63,17 @@ class SimpleAssociationSelectionValidator extends ConstraintValidator
                                         SimpleAssociationsCodeSelection::TYPE,
                                         SimpleAssociationsLabelSelection::TYPE,
                                     ],
-                                ]
+                                ],
                             ),
                             'separator' => new Choice(
                                 [
                                     'choices' => $this->availableCollectionSeparator,
-                                ]
+                                ],
                             ),
                             'locale' => new Optional([new Type(['type' => 'string'])]),
                             'channel' => new Optional([new Type(['type' => 'string'])]),
                         ],
-                    ]
+                    ],
                 ),
             );
 
@@ -87,7 +84,7 @@ class SimpleAssociationSelectionValidator extends ConstraintValidator
                     ->atPath('[channel]')
                     ->validate($selection['channel'] ?? null, [
                         new NotBlank(),
-                        new ChannelShouldExist()
+                        new ChannelShouldExist(),
                     ]);
             }
 
@@ -96,7 +93,7 @@ class SimpleAssociationSelectionValidator extends ConstraintValidator
                 ->atPath('[locale]')
                 ->validate($selection['locale'] ?? null, [
                     new NotBlank(),
-                    new LocaleShouldBeActive()
+                    new LocaleShouldBeActive(),
                 ]);
         }
     }

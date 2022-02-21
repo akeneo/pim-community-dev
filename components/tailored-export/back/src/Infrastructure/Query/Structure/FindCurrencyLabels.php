@@ -18,21 +18,19 @@ use Akeneo\Tool\Component\Localization\CurrencyTranslatorInterface;
 
 class FindCurrencyLabels implements FindCurrencyLabelsInterface
 {
-    private CurrencyTranslatorInterface $currencyTranslator;
-
-    public function __construct(CurrencyTranslatorInterface $currencyTranslator)
-    {
-        $this->currencyTranslator = $currencyTranslator;
+    public function __construct(
+        private CurrencyTranslatorInterface $currencyTranslator,
+    ) {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function byCodes(array $currencyCodes, string $locale): array
     {
         return array_reduce($currencyCodes, function (array $accumulator, string $currencyCode) use ($locale) {
             $currencyTranslation = $this->currencyTranslator->translate($currencyCode, $locale, '');
-            $accumulator[$currencyCode] = $currencyTranslation === '' ? null : $currencyTranslation;
+            $accumulator[$currencyCode] = '' === $currencyTranslation ? null : $currencyTranslation;
 
             return $accumulator;
         }, []);

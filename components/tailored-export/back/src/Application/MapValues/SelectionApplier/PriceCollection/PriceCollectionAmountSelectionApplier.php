@@ -33,7 +33,8 @@ class PriceCollectionAmountSelectionApplier implements SelectionApplierInterface
 
         $priceCollection = $value->getPriceCollection();
         $currencies = $selection->getCurrencies();
-        if ($currencies) {
+
+        if (!empty($currencies)) {
             $priceCollection = array_filter($priceCollection, static fn (Price $price) => in_array($price->getCurrency(), $currencies));
         }
 

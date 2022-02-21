@@ -32,24 +32,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class SourcesValidator extends ConstraintValidator
 {
     private const MAX_SOURCE_COUNT = 4;
-    private GetAttributes $getAttributes;
-    private GetAssociationTypesInterface $getAssociationTypes;
-
-    /** @var Constraint[] */
-    private array $attributeConstraints;
-    /** @var Constraint[] */
-    private array $propertyConstraints;
 
     public function __construct(
-        GetAttributes $getAttributes,
-        GetAssociationTypesInterface $getAssociationTypes,
-        array $attributeConstraints,
-        array $propertyConstraints
+        private GetAttributes $getAttributes,
+        private GetAssociationTypesInterface $getAssociationTypes,
+        private array $attributeConstraints,
+        private array $propertyConstraints,
     ) {
-        $this->getAttributes = $getAttributes;
-        $this->getAssociationTypes = $getAssociationTypes;
-        $this->attributeConstraints = $attributeConstraints;
-        $this->propertyConstraints = $propertyConstraints;
     }
 
     public function validate($sources, Constraint $constraint): void
@@ -63,15 +52,15 @@ class SourcesValidator extends ConstraintValidator
             new Type(['type' => 'array']),
             new Count([
                 'max' => self::MAX_SOURCE_COUNT,
-                'maxMessage' => 'akeneo.tailored_export.validation.sources.max_source_count_reached'
-            ])
+                'maxMessage' => 'akeneo.tailored_export.validation.sources.max_source_count_reached',
+            ]),
         ]);
 
         if (0 < $violations->count()) {
             foreach ($violations as $violation) {
                 $this->context->buildViolation(
                     $violation->getMessage(),
-                    $violation->getParameters()
+                    $violation->getParameters(),
                 )
                     ->addViolation();
             }
@@ -147,7 +136,7 @@ class SourcesValidator extends ConstraintValidator
                 Sources::ATTRIBUTE_SHOULD_EXIST,
                 [
                     '{{ attribute_code }}' => $source['code'],
-                ]
+                ],
             )
                 ->atPath(sprintf('[%s]', $source['uuid']))
                 ->addViolation();
@@ -170,11 +159,11 @@ class SourcesValidator extends ConstraintValidator
         foreach ($violations as $violation) {
             $builder = $this->context->buildViolation(
                 $violation->getMessage(),
-                $violation->getParameters()
+                $violation->getParameters(),
             )
                 ->atPath(sprintf('[%s]%s', $source['uuid'], $violation->getPropertyPath()));
             if ($violation->getPlural()) {
-                $builder->setPlural((int)$violation->getPlural());
+                $builder->setPlural((int) $violation->getPlural());
             }
             $builder->addViolation();
         }

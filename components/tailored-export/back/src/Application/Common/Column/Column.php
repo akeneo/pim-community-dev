@@ -18,18 +18,11 @@ use Akeneo\Platform\TailoredExport\Application\Common\Source\SourceCollection;
 
 class Column
 {
-    private string $target;
-    private SourceCollection $sourceCollection;
-    private FormatInterface $format;
-
     public function __construct(
-        string $target,
-        SourceCollection $sourceCollection,
-        FormatInterface $format
+        private string $target,
+        private SourceCollection $sourceCollection,
+        private FormatInterface $format,
     ) {
-        $this->target = $target;
-        $this->sourceCollection = $sourceCollection;
-        $this->format = $format;
     }
 
     public function getTarget(): string

@@ -22,12 +22,9 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterfa
 
 class MultiSelectLabelSelectionApplier implements SelectionApplierInterface
 {
-    private FindAttributeOptionLabelsInterface $getAttributeOptionLabels;
-
     public function __construct(
-        FindAttributeOptionLabelsInterface $getAttributeOptionLabels
+        private FindAttributeOptionLabelsInterface $getAttributeOptionLabels,
     ) {
-        $this->getAttributeOptionLabels = $getAttributeOptionLabels;
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -43,7 +40,7 @@ class MultiSelectLabelSelectionApplier implements SelectionApplierInterface
         $attributeOptionTranslations = $this->getAttributeOptionLabels->byAttributeCodeAndOptionCodes(
             $attributeCode,
             $optionsCodes,
-            $locale
+            $locale,
         );
 
         $selectedData = array_map(static function ($optionCode) use ($attributeOptionTranslations, $value) {

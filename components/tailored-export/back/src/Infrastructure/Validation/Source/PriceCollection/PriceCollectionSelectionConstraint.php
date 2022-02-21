@@ -20,7 +20,7 @@ class PriceCollectionSelectionConstraint extends Constraint
     public const CURRENCY_SHOULD_BE_ACTIVATE_ON_CHANNEL_MESSAGE = 'akeneo.tailored_export.validation.currency.should_be_active_on_channel';
     public const CURRENCY_SHOULD_BE_ACTIVATE_MESSAGE = 'akeneo.tailored_export.validation.currency.should_be_active';
 
-    public ?string $channelReference;
+    public ?string $channelReference = null;
 
     public function validatedBy(): string
     {

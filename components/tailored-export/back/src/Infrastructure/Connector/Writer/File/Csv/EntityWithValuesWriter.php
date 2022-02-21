@@ -22,7 +22,7 @@ class EntityWithValuesWriter extends AbstractItemMediaWriter
         return [
             'fieldDelimiter' => $this->getDelimiter(),
             'fieldEnclosure' => $this->getEnclosure(),
-            'shouldAddBOM'   => false,
+            'shouldAddBOM' => false,
         ];
     }
 

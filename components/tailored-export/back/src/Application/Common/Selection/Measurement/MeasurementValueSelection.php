@@ -17,11 +17,9 @@ final class MeasurementValueSelection implements MeasurementSelectionInterface
 {
     public const TYPE = 'value';
 
-    private string $decimalSeparator;
-
-    public function __construct(string $decimalSeparator)
-    {
-        $this->decimalSeparator = $decimalSeparator;
+    public function __construct(
+        private string $decimalSeparator,
+    ) {
     }
 
     public function getDecimalSeparator(): string

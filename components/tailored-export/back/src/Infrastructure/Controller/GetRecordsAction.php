@@ -25,12 +25,9 @@ final class GetRecordsAction
 {
     private const LIMIT_DEFAULT = 25;
 
-    private SearchRecordsInterface $searchRecords;
-
     public function __construct(
-        SearchRecordsInterface $searchRecords
+        private SearchRecordsInterface $searchRecords,
     ) {
-        $this->searchRecords = $searchRecords;
     }
 
     public function __invoke(Request $request): Response

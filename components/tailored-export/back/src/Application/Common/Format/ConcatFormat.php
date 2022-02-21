@@ -15,13 +15,10 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\Format;
 
 class ConcatFormat implements FormatInterface
 {
-    private ElementCollection $elementCollection;
-    private bool $hasSpaceBetween;
-
-    public function __construct(ElementCollection $elementCollection, bool $hasSpaceBetween)
-    {
-        $this->elementCollection = $elementCollection;
-        $this->hasSpaceBetween = $hasSpaceBetween;
+    public function __construct(
+        private ElementCollection $elementCollection,
+        private bool $hasSpaceBetween,
+    ) {
     }
 
     public function hasSpaceBetween(): bool

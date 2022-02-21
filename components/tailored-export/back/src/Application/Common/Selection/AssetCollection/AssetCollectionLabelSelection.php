@@ -17,21 +17,12 @@ final class AssetCollectionLabelSelection implements AssetCollectionSelectionInt
 {
     public const TYPE = 'label';
 
-    private string $separator;
-    private string $locale;
-    private string $assetFamilyCode;
-    private string $attributeCode;
-
     public function __construct(
-        string $separator,
-        string $locale,
-        string $assetFamilyCode,
-        string $attributeCode
+        private string $separator,
+        private string $locale,
+        private string $assetFamilyCode,
+        private string $attributeCode,
     ) {
-        $this->separator = $separator;
-        $this->locale = $locale;
-        $this->assetFamilyCode = $assetFamilyCode;
-        $this->attributeCode = $attributeCode;
     }
 
     public function getSeparator(): string

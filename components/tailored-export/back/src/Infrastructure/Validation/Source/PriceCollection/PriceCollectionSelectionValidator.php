@@ -29,15 +29,10 @@ use Webmozart\Assert\Assert;
 
 class PriceCollectionSelectionValidator extends ConstraintValidator
 {
-    private array $availableCollectionSeparator;
-    private FindActivatedCurrenciesInterface $findActivatedCurrencies;
-
     public function __construct(
-        array $availableCollectionSeparator,
-        FindActivatedCurrenciesInterface $findActivatedCurrencies
+        private array $availableCollectionSeparator,
+        private FindActivatedCurrenciesInterface $findActivatedCurrencies,
     ) {
-        $this->availableCollectionSeparator = $availableCollectionSeparator;
-        $this->findActivatedCurrencies = $findActivatedCurrencies;
     }
 
     public function validate($selection, Constraint $constraint): void
@@ -56,13 +51,13 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
                             PriceCollectionCurrencyLabelSelection::TYPE,
                             PriceCollectionAmountSelection::TYPE,
                         ],
-                    ]
+                    ],
                 ),
                 'locale' => new Optional([new Type('string')]),
                 'separator' => new Choice(
                     [
                         'choices' => $this->availableCollectionSeparator,
-                    ]
+                    ],
                 ),
                 'currencies' => new Optional(),
             ],
@@ -71,7 +66,7 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
         if (PriceCollectionCurrencyLabelSelection::TYPE === $selection['type']) {
             $validator->atPath('[locale]')->validate($selection['locale'], [
                 new NotBlank(),
-                new LocaleShouldBeActive()
+                new LocaleShouldBeActive(),
             ]);
         }
 
@@ -96,7 +91,7 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
                 ->context
                 ->buildViolation($errorMessage, [
                     '{{ channel_code }}' => $channelReference,
-                    '{{ currency_codes }}' => implode(', ', $inactiveCurrencies)
+                    '{{ currency_codes }}' => implode(', ', $inactiveCurrencies),
                 ])
                 ->setPlural(count($inactiveCurrencies))
                 ->atPath('[currencies]')

@@ -23,12 +23,9 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class MeasurementConversionOperationValidator extends ConstraintValidator
 {
-    private GetAttributes $getAttributes;
-
     public function __construct(
-        GetAttributes $getAttributes
+        private GetAttributes $getAttributes,
     ) {
-        $this->getAttributes = $getAttributes;
     }
 
     public function validate($operation, Constraint $constraint): void
@@ -51,7 +48,7 @@ class MeasurementConversionOperationValidator extends ConstraintValidator
                     'target_unit_code' => new UnitBelongsToMeasurementFamily([
                         'measurementFamilyCode' => $attribute->metricFamily(),
                     ]),
-                ]
+                ],
             ]));
     }
 }

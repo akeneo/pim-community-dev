@@ -17,5 +17,5 @@ use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Select
 
 interface MeasurementApplierInterface extends SelectionApplierInterface
 {
-    const DEFAULT_DECIMAL_SEPARATOR = '.';
+    public const DEFAULT_DECIMAL_SEPARATOR = '.';
 }

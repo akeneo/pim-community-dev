@@ -21,6 +21,6 @@ interface FindRecordLabelsInterface
     public function byReferenceEntityCodeAndRecordCodes(
         string $referenceEntityCode,
         array $recordCodes,
-        string $locale
+        string $locale,
     ): array;
 }

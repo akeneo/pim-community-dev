@@ -32,7 +32,7 @@ class QuantifiedAssociationTypeSourceValidator extends ConstraintValidator
         foreach ($violations as $violation) {
             $this->context->buildViolation(
                 $violation->getMessage(),
-                $violation->getParameters()
+                $violation->getParameters(),
             )
                 ->atPath($violation->getPropertyPath())
                 ->addViolation();

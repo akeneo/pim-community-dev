@@ -40,12 +40,12 @@ class ParentSelectionValidator extends ConstraintValidator
                                 ParentCodeSelection::TYPE,
                                 ParentLabelSelection::TYPE,
                             ],
-                        ]
+                        ],
                     ),
                     'channel' => new Optional([new Type(['type' => 'string'])]),
                     'locale' => new Optional([new Type(['type' => 'string'])]),
                 ],
-            ]
+            ],
         ));
 
         if (0 < $violations->count()) {
@@ -53,7 +53,7 @@ class ParentSelectionValidator extends ConstraintValidator
             foreach ($violations as $violation) {
                 $this->context->buildViolation(
                     $violation->getMessage(),
-                    $violation->getParameters()
+                    $violation->getParameters(),
                 )
                     ->atPath($violation->getPropertyPath())
                     ->addViolation();

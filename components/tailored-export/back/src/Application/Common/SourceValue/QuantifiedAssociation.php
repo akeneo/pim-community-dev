@@ -15,13 +15,10 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\SourceValue;
 
 class QuantifiedAssociation
 {
-    private string $identifier;
-    private int $quantity;
-
-    public function __construct(string $identifier, int $quantity)
-    {
-        $this->identifier = $identifier;
-        $this->quantity = $quantity;
+    public function __construct(
+        private string $identifier,
+        private int $quantity,
+    ) {
     }
 
     public function getIdentifier(): string

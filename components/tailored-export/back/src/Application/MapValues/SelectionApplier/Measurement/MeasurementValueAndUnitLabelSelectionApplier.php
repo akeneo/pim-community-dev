@@ -21,11 +21,9 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface;
 
 class MeasurementValueAndUnitLabelSelectionApplier implements MeasurementApplierInterface
 {
-    private FindUnitLabelInterface $findUnitLabels;
-
-    public function __construct(FindUnitLabelInterface $findUnitLabels)
-    {
-        $this->findUnitLabels = $findUnitLabels;
+    public function __construct(
+        private FindUnitLabelInterface $findUnitLabels,
+    ) {
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -42,7 +40,7 @@ class MeasurementValueAndUnitLabelSelectionApplier implements MeasurementApplier
         $unitTranslation = $this->findUnitLabels->byFamilyCodeAndUnitCode(
             $selection->getMeasurementFamilyCode(),
             $unitCode,
-            $selection->getLocale()
+            $selection->getLocale(),
         );
 
         $measurementValue = str_replace(self::DEFAULT_DECIMAL_SEPARATOR, $selection->getDecimalSeparator(), $value->getValue());
