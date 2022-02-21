@@ -63,8 +63,7 @@ test('it renders quality score bar with A stacked score selected', () => {
 
   expect(screen.getByTestId('quality-score-bar')).toBeInTheDocument();
   expect(screen.getByText('A')).toHaveStyle({
-    border: `1px solid`,
-    borderColor: `${pimTheme.color.green60}`,
+    border: `1px solid ${pimTheme.color.green60}`,
     top: '2px',
     left: '2px',
     height: '25px',
@@ -73,16 +72,14 @@ test('it renders quality score bar with A stacked score selected', () => {
   const emptyContainerMiddle = screen.getByTestId('empty-container-middle');
   expect(emptyContainerMiddle).toBeInTheDocument();
   expect(emptyContainerMiddle).toHaveStyle({
-    border: `1px solid`,
-    borderColor: `${pimTheme.color.green60}`,
+    border: `1px solid ${pimTheme.color.green60}`,
     top: '0',
     left: '2px',
   });
   const emptyContainerBack = screen.getByTestId('empty-container-back');
   expect(emptyContainerBack).toBeInTheDocument();
   expect(emptyContainerBack).toHaveStyle({
-    border: `1px solid`,
-    borderColor: `${pimTheme.color.green60}`,
+    border: `1px solid ${pimTheme.color.green60}`,
     top: '-2px',
     left: '4px',
   });
