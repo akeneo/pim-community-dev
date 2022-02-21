@@ -114,13 +114,28 @@ test('it renders a quality score equal to A stacked in normal size', () => {
     </DependenciesProvider>
   );
 
-  expect(screen.getByText('A')).toHaveStyle({border: `1px solid ${pimTheme.color.green60}`, top: '2px', left: '0'});
+  expect(screen.getByText('A')).toHaveStyle({
+    border: `1px solid`,
+    borderColor: `${pimTheme.color.green60}`,
+    top: '2px',
+    left: '0',
+  });
   const emptyContainerMiddle = screen.getByTestId('empty-container-middle');
   expect(emptyContainerMiddle).toBeInTheDocument();
-  expect(emptyContainerMiddle).toHaveStyle({border: `1px solid ${pimTheme.color.green60}`, top: '0', left: '2px'});
+  expect(emptyContainerMiddle).toHaveStyle({
+    border: `1px solid`,
+    borderColor: `${pimTheme.color.green60}`,
+    top: '0',
+    left: '2px',
+  });
   const emptyContainerBack = screen.getByTestId('empty-container-back');
   expect(emptyContainerBack).toBeInTheDocument();
-  expect(emptyContainerBack).toHaveStyle({border: `1px solid ${pimTheme.color.green60}`, top: '-2px', left: '4px'});
+  expect(emptyContainerBack).toHaveStyle({
+    border: `1px solid`,
+    borderColor: `${pimTheme.color.green60}`,
+    top: '-2px',
+    left: '4px',
+  });
 });
 
 test('it renders a quality score equal to A stacked in big size', () => {
@@ -132,11 +147,26 @@ test('it renders a quality score equal to A stacked in big size', () => {
     </DependenciesProvider>
   );
 
-  expect(screen.getByText('A')).toHaveStyle({border: `1px solid ${pimTheme.color.green60}`, top: '2px', left: '2px'});
+  expect(screen.getByText('A')).toHaveStyle({
+    border: `1px solid`,
+    borderColor: `${pimTheme.color.green60}`,
+    top: '2px',
+    left: '2px',
+  });
   const emptyContainerMiddle = screen.getByTestId('empty-container-middle');
   expect(emptyContainerMiddle).toBeInTheDocument();
-  expect(emptyContainerMiddle).toHaveStyle({border: `1px solid ${pimTheme.color.green60}`, top: '0', left: '2px'});
+  expect(emptyContainerMiddle).toHaveStyle({
+    border: `1px solid`,
+    borderColor: `${pimTheme.color.green60}`,
+    top: '0',
+    left: '2px',
+  });
   const emptyContainerBack = screen.getByTestId('empty-container-back');
   expect(emptyContainerBack).toBeInTheDocument();
-  expect(emptyContainerBack).toHaveStyle({border: `1px solid ${pimTheme.color.green60}`, top: '-2px', left: '4px'});
+  expect(emptyContainerBack).toHaveStyle({
+    border: `1px solid`,
+    borderColor: `${pimTheme.color.green60}`,
+    top: '-2px',
+    left: '4px',
+  });
 });

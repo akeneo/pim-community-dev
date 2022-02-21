@@ -21,22 +21,52 @@ const roundedProperties = {
   none: '0',
 };
 
-const borderContainerColorProperties: any = {
-  A: css`
-    ${({theme}) => theme.color.green60};
-  `,
-  B: css`
-    ${({theme}) => theme.color.green100};
-  `,
-  C: css`
-    ${({theme}) => theme.color.yellow60};
-  `,
-  D: css`
-    ${({theme}) => theme.color.red40};
-  `,
-  E: css`
-    ${({theme}) => theme.color.red100};
-  `,
+const colorProperties: any = {
+  A: {
+    generic: css`
+      background-color: ${({theme}) => theme.color.green20};
+      color: ${({theme}) => theme.color.green120};
+    `,
+    stacked: css`
+      border-color: ${({theme}) => theme.color.green60};
+    `,
+  },
+  B: {
+    generic: css`
+      background-color: ${({theme}) => theme.color.green60};
+      color: ${({theme}) => theme.color.green140};
+    `,
+    stacked: css`
+      border-color: ${({theme}) => theme.color.green100};
+    `,
+  },
+  C: {
+    generic: css`
+      background-color: ${({theme}) => theme.color.yellow20};
+      color: ${({theme}) => theme.color.yellow120};
+    `,
+    stacked: css`
+      border-color: ${({theme}) => theme.color.yellow60};
+    `,
+  },
+  D: {
+    generic: css`
+      background-color: ${({theme}) => theme.color.red20};
+      color: ${({theme}) => theme.color.red100};
+    `,
+    stacked: css`
+      border-color: ${({theme}) => theme.color.red40};
+    `,
+  },
+  E: {
+    generic: css`
+      background-color: ${({theme}) => theme.color.red60};
+      color: ${({theme}) => theme.color.red140};
+    `,
+    stacked: css`
+      border-color: ${({theme}) => theme.color.red100};
+    `,
+  },
 };
 
 /**
@@ -82,8 +112,9 @@ const containerStackedStyled = css<{score: string; size: string}>`
   position: absolute;
   top: 2px;
   left: 2px;
-  border: 1px solid ${({score}) => borderContainerColorProperties[score]};
+  border: 1px solid;
   border-radius: ${roundedProperties['all']};
+  ${({score}) => colorProperties[score].stacked}
 
   ${({size}) =>
     size === 'normal' &&
@@ -115,11 +146,7 @@ const Container = styled.div<{score: string; size: string; rounded: Rounded; sta
       border-radius: ${roundedProperties['all']};
     `};
 
-  ${({score}) => score === 'A' && AScore}
-  ${({score}) => score === 'B' && BScore}
-  ${({score}) => score === 'C' && CScore}
-  ${({score}) => score === 'D' && DScore}
-  ${({score}) => score === 'E' && EScore}
+  ${({score}) => colorProperties[score].generic}
 
   ${({stacked}) => stacked && containerStackedStyled}
 `;
@@ -136,29 +163,9 @@ const EmptyContainer = styled.div<{score: string; size: string; top: number; lef
   width: ${({size}) => (size === 'big' ? '25px' : '20px')};
   height: ${({size}) => (size === 'big' ? '25px' : '20px')};
   border-radius: 4px !important;
-  border: 1px solid ${({score}) => borderContainerColorProperties[score]};
-  background: ${getColor('white')};
-`;
-
-const AScore = css`
-  background: ${({theme}) => theme.color.green20};
-  color: ${({theme}) => theme.color.green120};
-`;
-const BScore = css`
-  background: ${({theme}) => theme.color.green60};
-  color: ${({theme}) => theme.color.green140};
-`;
-const CScore = css`
-  background: ${({theme}) => theme.color.yellow20};
-  color: ${({theme}) => theme.color.yellow120};
-`;
-const DScore = css`
-  background: ${({theme}) => theme.color.red20};
-  color: ${({theme}) => theme.color.red100};
-`;
-const EScore = css`
-  background: ${({theme}) => theme.color.red60};
-  color: ${({theme}) => theme.color.red140};
+  border: 1px solid;
+  ${({score}) => colorProperties[score].stacked}
+  background-color: ${getColor('white')};
 `;
 
 export {QualityScore};
