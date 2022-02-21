@@ -89,11 +89,11 @@ final class JobContext implements Context
         $stepExecutions = $jobExecution->getStepExecutions();
         foreach ($stepExecutions as $stepExecution) {
             $skippedNoDiff = $stepExecution->getSummary()['skipped_no_diff'] ?? null;
-            var_dump($stepExecution->getSummary()['skipped_no_diff']);
             if(null !== $skippedNoDiff) {
                 Assert::same($skippedNoDiff, $number);
                 return;
             }
         }
+        throw new \Exception('Cannot find skipped product info');
     }
 }

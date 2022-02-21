@@ -62,7 +62,6 @@ final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInt
 
     public function execute()
     {
-        // passe par là
         $dryRun = $this->stepExecution->getJobParameters()->get('dry_run');
         $this->stepExecution->setTotalItems($this->getTotalItemImpacted());
         $this->stepExecution->setSummary(

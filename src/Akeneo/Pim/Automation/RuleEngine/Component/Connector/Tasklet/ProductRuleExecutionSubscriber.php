@@ -94,7 +94,6 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
 
     public function skipAction(SkippedActionForSubjectEvent $event): void
     {
-        // passe par là
         $message = \sprintf(
             'Rule "%s": Could not apply "%s" action to %s: %s',
             $this->currentRule->getCode(),

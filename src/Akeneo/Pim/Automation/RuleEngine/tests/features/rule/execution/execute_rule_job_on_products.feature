@@ -6,10 +6,10 @@ Feature: Execute all rules on a set of products
   Background:
     Given a "clothing" catalog configuration
     And the following products:
-      | sku        | categories | family  | description-fr_FR-mobile |
-      | navy_blue  | jackets    | jackets |                   |
-      | light_blue | jeans      | pants   |                   |
-      | pink       | jeans      | pants   | Belle description |
+      | sku        | categories | family  | description-en_US-mobile |
+      | navy_blue  | jackets    | jackets |                                  |
+      | light_blue | jeans      | pants   |                                  |
+      | pink       | jeans      | pants   | Nice description                |
     And the following product rule definitions:
       """
       set_US_description:

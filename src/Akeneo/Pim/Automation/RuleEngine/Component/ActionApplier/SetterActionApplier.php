@@ -62,8 +62,6 @@ class SetterActionApplier implements ActionApplierInterface
                 $this->setDataOnEntityWithValues($entityWithValues, $action);
             } catch (NonApplicableActionException $e) {
                 unset($entitiesWithValues[$index]);
-                // içi on appelle les skip
-                // passe par là
                 $this->eventDispatcher->dispatch(
                     new SkippedActionForSubjectEvent($action, $entityWithValues, $e->getMessage())
                 );

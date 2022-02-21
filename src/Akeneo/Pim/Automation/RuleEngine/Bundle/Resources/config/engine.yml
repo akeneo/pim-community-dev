@@ -29,8 +29,6 @@ services:
             - '@pimee_catalog_rule.applier.product.saver'
             - '@event_dispatcher'
             - '@pim_connector.doctrine.cache_clearer'
-            - '@pim_catalog.comparator.filter.product'
-            - '@pim_catalog.normalizer.standard.product'
             - '%pim_job_product_batch_size%'
 
     pimee_catalog_rule.applier.product.updater:
