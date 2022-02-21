@@ -115,8 +115,8 @@ connectivity-connection-back:
 # Tests Front
 
 connectivity-connection-unit-front:
-	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --ci
-	$(_PERMISSION_FORM_YARN_RUN) jest --ci --coverage
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --ci ${O}
+	$(_PERMISSION_FORM_YARN_RUN) jest --ci --coverage ${O}
 
 connectivity-connection-lint-front:
 	$(_CONNECTIVITY_CONNECTION_YARN_RUN) eslint

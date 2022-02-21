@@ -9,6 +9,7 @@ import {CreateTestAppCredentials} from '@src/connect/components/TestApp/CreateTe
 import {TestAppCredentials} from '@src/model/Apps/test-app-credentials';
 import userEvent from '@testing-library/user-event';
 import {act} from '@testing-library/react-hooks';
+import {useFeatureFlags} from '@src/shared/feature-flags';
 
 beforeEach(() => {
     fetchMock.resetMocks();
@@ -21,6 +22,11 @@ type CreateTestAppFormProps = {
     setCredentials: (credentials: TestAppCredentials) => void;
 };
 
+jest.mock('@src/shared/feature-flags/use-feature-flags', () => ({
+    useFeatureFlags: jest.fn().mockImplementation(() => ({
+        isEnabled: () => true,
+    })),
+}));
 jest.mock('@src/connect/components/TestApp/CreateTestAppForm', () => ({
     ...jest.requireActual('@src/connect/components/TestApp/CreateTestAppForm'),
     CreateTestAppForm: jest.fn(({onCancel, setCredentials}: CreateTestAppFormProps) => {
@@ -48,7 +54,7 @@ test('it renders the form without credentials and display them when form is subm
     renderWithProviders(<TestAppCreatePage />);
 
     expect(
-        screen.getByText('akeneo_connectivity.connection.connect.marketplace.test_apps.modal.subtitle')
+        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.modal.subtitle')
     ).toBeInTheDocument();
 
     expect(CreateTestAppForm).toHaveBeenCalled();
@@ -67,4 +73,60 @@ test('it renders the form without credentials and display them when form is subm
         }),
         {}
     );
+});
+
+test('it renders a 404 when the app developer mode feature flag is disabled', () => {
+    (useFeatureFlags as jest.Mock).mockImplementation(() => ({
+        isEnabled: (feature: string) => {
+            switch (feature) {
+                case 'app_developer_mode':
+                    return false;
+                case 'marketplace_activate':
+                    return true;
+            }
+        },
+    }));
+    renderWithProviders(<TestAppCreatePage />);
+
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.modal.subtitle')
+    ).not.toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.errors.page_not_found')
+    ).toBeInTheDocument();
+});
+
+test('it renders a 404 when the activate feature flag is disabled', () => {
+    (useFeatureFlags as jest.Mock).mockImplementation(() => ({
+        isEnabled: (feature: string) => {
+            switch (feature) {
+                case 'app_developer_mode':
+                    return true;
+                case 'marketplace_activate':
+                    return false;
+            }
+        },
+    }));
+    renderWithProviders(<TestAppCreatePage />);
+
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.modal.subtitle')
+    ).not.toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.errors.page_not_found')
+    ).toBeInTheDocument();
+});
+
+test('it renders a 404 when the feature flags are disabled', () => {
+    (useFeatureFlags as jest.Mock).mockImplementation(() => ({
+        isEnabled: () => false,
+    }));
+    renderWithProviders(<TestAppCreatePage />);
+
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.modal.subtitle')
+    ).not.toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.errors.page_not_found')
+    ).toBeInTheDocument();
 });

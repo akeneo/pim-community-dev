@@ -28,7 +28,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class CreateTestAppsActionSpec extends ObjectBehavior
 {
     public function let(
-        FeatureFlag $featureFlag,
+        FeatureFlag $appDevFeatureFlag,
+        FeatureFlag $activateFeatureFlag,
         ValidatorInterface $validator,
         TokenStorageInterface $tokenStorage,
         CreateTestAppCommandHandler $createTestAppCommandHandler,
@@ -36,7 +37,8 @@ class CreateTestAppsActionSpec extends ObjectBehavior
         SecurityFacade $security,
     ): void {
         $this->beConstructedWith(
-            $featureFlag,
+            $appDevFeatureFlag,
+            $activateFeatureFlag,
             $validator,
             $tokenStorage,
             $createTestAppCommandHandler,
@@ -51,7 +53,8 @@ class CreateTestAppsActionSpec extends ObjectBehavior
     }
 
     public function it_answers_that_the_entity_has_not_been_created_because_the_secret_can_not_be_retrieved(
-        FeatureFlag $featureFlag,
+        FeatureFlag $appDevFeatureFlag,
+        FeatureFlag $activateFeatureFlag,
         Request $request,
         ValidatorInterface $validator,
         TokenStorageInterface $tokenStorage,
@@ -61,7 +64,8 @@ class CreateTestAppsActionSpec extends ObjectBehavior
         GetTestAppSecretQueryInterface $getTestAppSecretQuery,
         SecurityFacade $security,
     ): void {
-        $featureFlag->isEnabled()->willReturn(true);
+        $appDevFeatureFlag->isEnabled()->willReturn(true);
+        $activateFeatureFlag->isEnabled()->willReturn(true);
         $request->isXmlHttpRequest()->willReturn(true);
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
@@ -83,32 +87,50 @@ class CreateTestAppsActionSpec extends ObjectBehavior
         ));
     }
 
-    public function it_answers_that_the_endpoint_does_not_exist_if_the_feature_flag_is_disabled(
-        FeatureFlag $featureFlag,
+    public function it_answers_that_the_endpoint_does_not_exist_if_the_dev_mode_feature_flag_is_disabled(
+        FeatureFlag $appDevFeatureFlag,
+        FeatureFlag $activateFeatureFlag,
         Request $request,
     ): void {
-        $featureFlag->isEnabled()->willReturn(false);
+        $appDevFeatureFlag->isEnabled()->willReturn(false);
+        $activateFeatureFlag->isEnabled()->willReturn(true);
+        $this
+            ->shouldThrow(new NotFoundHttpException())
+            ->during('__invoke', [$request]);
+    }
+
+    public function it_answers_that_the_endpoint_does_not_exist_if_the_activate_feature_flag_is_disabled(
+        FeatureFlag $appDevFeatureFlag,
+        FeatureFlag $activateFeatureFlag,
+        Request $request,
+    ): void {
+        $activateFeatureFlag->isEnabled()->willReturn(false);
+        $appDevFeatureFlag->isEnabled()->willReturn(true);
         $this
             ->shouldThrow(new NotFoundHttpException())
             ->during('__invoke', [$request]);
     }
 
     public function it_redirects_to_the_root_if_the_request_does_not_come_from_ajax(
-        FeatureFlag $featureFlag,
+        FeatureFlag $appDevFeatureFlag,
+        FeatureFlag $activateFeatureFlag,
         Request $request,
     ): void {
-        $featureFlag->isEnabled()->willReturn(true);
+        $appDevFeatureFlag->isEnabled()->willReturn(true);
+        $activateFeatureFlag->isEnabled()->willReturn(true);
         $request->isXmlHttpRequest()->willReturn(false);
 
         $this->__invoke($request)->shouldBeLike(new RedirectResponse('/'));
     }
 
     public function it_answers_an_access_denied_if_the_endpoint_is_not_granted_to_the_user(
-        FeatureFlag $featureFlag,
+        FeatureFlag $appDevFeatureFlag,
+        FeatureFlag $activateFeatureFlag,
         Request $request,
         SecurityFacade $security,
     ): void {
-        $featureFlag->isEnabled()->willReturn(true);
+        $appDevFeatureFlag->isEnabled()->willReturn(true);
+        $activateFeatureFlag->isEnabled()->willReturn(true);
         $request->isXmlHttpRequest()->willReturn(true);
         $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(false);
 
@@ -118,12 +140,14 @@ class CreateTestAppsActionSpec extends ObjectBehavior
     }
 
     public function it_answers_that_a_bad_request_has_been_done_because_the_token_does_not_exist(
-        FeatureFlag $featureFlag,
+        FeatureFlag $appDevFeatureFlag,
+        FeatureFlag $activateFeatureFlag,
         Request $request,
         TokenStorageInterface $tokenStorage,
         SecurityFacade $security,
     ): void {
-        $featureFlag->isEnabled()->willReturn(true);
+        $appDevFeatureFlag->isEnabled()->willReturn(true);
+        $activateFeatureFlag->isEnabled()->willReturn(true);
         $request->isXmlHttpRequest()->willReturn(true);
         $tokenStorage->getToken()->willReturn(null);
         $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(true);
@@ -135,13 +159,15 @@ class CreateTestAppsActionSpec extends ObjectBehavior
     }
 
     public function it_answers_that_a_bad_request_has_been_done_because_the_user_does_not_exist(
-        FeatureFlag $featureFlag,
+        FeatureFlag $appDevFeatureFlag,
+        FeatureFlag $activateFeatureFlag,
         Request $request,
         TokenStorageInterface $tokenStorage,
         TokenInterface $token,
         SecurityFacade $security,
     ): void {
-        $featureFlag->isEnabled()->willReturn(true);
+        $appDevFeatureFlag->isEnabled()->willReturn(true);
+        $activateFeatureFlag->isEnabled()->willReturn(true);
         $request->isXmlHttpRequest()->willReturn(true);
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn(null);
@@ -154,7 +180,8 @@ class CreateTestAppsActionSpec extends ObjectBehavior
     }
 
     public function it_answers_that_the_entity_is_unprocessable_with_details_if_the_command_is_not_valid(
-        FeatureFlag $featureFlag,
+        FeatureFlag $appDevFeatureFlag,
+        FeatureFlag $activateFeatureFlag,
         Request $request,
         ValidatorInterface $validator,
         TokenStorageInterface $tokenStorage,
@@ -162,7 +189,8 @@ class CreateTestAppsActionSpec extends ObjectBehavior
         UserInterface $user,
         SecurityFacade $security,
     ): void {
-        $featureFlag->isEnabled()->willReturn(true);
+        $appDevFeatureFlag->isEnabled()->willReturn(true);
+        $activateFeatureFlag->isEnabled()->willReturn(true);
         $request->isXmlHttpRequest()->willReturn(true);
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
