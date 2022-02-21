@@ -38,8 +38,6 @@ pim_title:
   akeneo_connectivity_connection_connect_connected_apps: 앱
   akeneo_connectivity_connection_connect_connected_apps_edit: 앱 설정
   akeneo_connectivity_connection_connect_connected_apps_delete: 앱 삭제
-  akeneo_connectivity_connection_connect_marketplace_test_app_create: 테스트 앱 만들기
-  akeneo_connectivity_connection_connect_marketplace_test_app_delete: 테스트 앱 삭제
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -52,7 +50,6 @@ akeneo_connectivity.connection:
         description: 이는 간단한 개요입니다. 자세한 정보는 마켓플레이스에서 살펴보십시오.
         link: 웹 마켓플레이스로 이동
       card:
-        developed_by: '개발자: {{ author }}'
         read_more: 더보기
         more_info: 자세한 정보
         connect: 연결
@@ -68,48 +65,11 @@ akeneo_connectivity.connection:
       unreachable: 마켓플레이스에 연결할 수 없습니다. 잠시 후 다시 시도하십시오.
       scroll_to_top: 맨 위로 스크롤
       test_apps:
-        title: 내 테스트 앱
-        removed_user: 제거된 사용자
-        create_a_test_app: 테스트 앱 만들기
         modal:
-          subtitle: 테스트 앱 만들기
-          app_information:
-            title: 앱 정보
-            description: 도움이 필요한 경우 문서를 확인하십시오
-            link: 앱을 게시하기 전에 테스트하는 방법
-            fields:
-              name: 이름
-              activate_url: 활성화 URL
-              callback_url: 콜백 URL
           credentials:
             title: 자격 증명
-            warning: 자격 증명은 여기에서 한 번만 표시되므로 이 정보를 다른 곳에 반드시 저장하십시오.
-            client_id: 클라이언트 ID
-            client_secret: 클라이언트 비밀번호
-        errors:
-          creation:
-            name:
-              max_length: 테스트 앱 이름이 너무 깁니다. 255자 이하여야 합니다.
-              not_blank: 테스트 앱 이름이 필요합니다.
-            client_id:
-              max_length: 테스트 앱의 클라이언트 ID가 너무 깁니다. 36자 이하여야 합니다.
-              not_blank: 클라이언트 ID가 필요합니다.
-            activate_url:
-              max_length: 테스트 앱의 활성화 URL이 너무 깁니다. 255자 이하여야 합니다.
-              must_be_url: 활성화 URL이 유효한 URL이어야 합니다.
-              not_blank: 활성화 URL이 필요합니다.
-            callback_url:
-              max_length: 테스트 앱의 콜백 URL이 너무 깁니다. 255자 이하여야 합니다.
-              must_be_url: 콜백 URL이 유효한 URL이어야 합니다.
-              not_blank: 콜백 URL이 필요합니다.
         delete:
-          subtitle: 앱
           title: 삭제 확인
-          description: 이 PIM에서 테스트 앱을 삭제하려고 합니다.
-          warning: 삭제를 확인하면 마켓플레이스 페이지 및 관련된 연결 앱에서 테스트 앱이 삭제됩니다.
-          flash:
-            success: 테스트 앱이 삭제되었습니다.
-            error: 죄송합니다. 테스트 앱을 삭제하는 동안 오류가 발생했습니다.
     connected_apps:
       list:
         apps:
@@ -118,16 +78,12 @@ akeneo_connectivity.connection:
           empty: 아직 연결된 앱이 없습니다.
           check_marketplace: '{{ marketplaceLink }}에서 제공되는 모든 콘텐츠를 살펴보고 첫 앱을 설치해보십시오.'
           marketplace_link_anchor: 마켓플레이스
-        test_apps:
-          title: 내 테스트 앱
-          removed_user: 제거된 사용자
         helper:
           title: '[0,1] PIM이 {{ count }}개 앱에 연결되어 있습니다.|[2,Inf] PIM이 {{ count }}개 앱에 연결되어 있습니다'
           description_1: 새로운 앱이 꾸준히 개발되고 있으므로 계속 지켜봐주시고 마켓플레이스 페이지를 자주 확인하여 PIM을 연결하는 방법을 알아보십시오.
           description_2: 앱에 대해 더 알아보고 싶으십니까?
           link: 자세한 내용은 도움말 센터를 확인하십시오.
         card:
-          developed_by: '개발자: {{ author }}'
           manage_app: 앱 관리
           open_app: 앱 열기
         flash:
@@ -253,7 +209,7 @@ akeneo_connectivity.connection:
     label: 레이블
     flow_type: 흐름 유형
     image: 이미지
-    auditable: 데이터 흐름 추적 대시보드 
+    auditable: 데이터 흐름 추적 대시보드
     client_id: 클라이언트 ID
     secret: 비밀번호
     username: 사용자 이름
@@ -261,7 +217,6 @@ akeneo_connectivity.connection:
     user_role_id: 역할
     user_group_id: 그룹
     constraint:
-      connections_number_limit_reached: 연결 및 연결된 앱의 개수 제한인 50개에 도달했습니다.
       code:
         required: 연결 코드는 필수입니다.
         invalid: 연결 코드는 문자, 숫자 및 밑줄만 포함할 수 있습니다.
@@ -290,7 +245,6 @@ akeneo_connectivity.connection:
     message_link: 여기를 클릭하십시오.
   create_connection:
     title: 새 연결 만들기
-    description: 최대 50개의 타사 앱 및 앱에 연결할 수 있습니다.
     flash:
       success: 연결이 생성되었습니다.
       error: 죄송합니다. 연결을 생성하는 동안 오류가 발생했습니다.
@@ -314,7 +268,7 @@ akeneo_connectivity.connection:
         list: '지난 7일간 사용된 사용자 이름 목록:'
         username_date: '{{ wrong_username }}: {{ date }}, {{ time }}'
       password_helper:
-        message: 암호를 잊어버린 경우, 여기서 새 암호를 생성할 수 있습니다. 
+        message: 암호를 잊어버린 경우, 여기서 새 암호를 생성할 수 있습니다.
         link: 추가 정보...
       clear_password_helper:
         message: 이 암호는 두 번 표시되지 않으므로 이 암호를 따로 저장해 두십시오.
@@ -343,7 +297,7 @@ akeneo_connectivity.connection:
       regenerate: 다시 생성
     flash:
       success: 연결 비밀번호가 다시 생성되었습니다.
-      error: 죄송합니다. 연결 비밀번호를 다시 생성하는 동안 오류가 발생했습니다. 
+      error: 죄송합니다. 연결 비밀번호를 다시 생성하는 동안 오류가 발생했습니다.
   regenerate_password:
     title: 다시 생성 확인
     description: 연결 암호를 다시 생성하시겠습니까? 그 영향에 대해 잘 모르십니까?
@@ -352,7 +306,7 @@ akeneo_connectivity.connection:
       regenerate: 다시 생성
     flash:
       success: 연결 암호가 다시 생성되었습니다.
-      error: 죄송합니다. 연결 암호를 다시 생성하는 동안 오류가 발생했습니다. 
+      error: 죄송합니다. 연결 암호를 다시 생성하는 동안 오류가 발생했습니다.
   delete_connection:
     title: 삭제 확인
     description: 연결을 삭제하시겠습니까? 그 영향에 대해 잘 모르십니까?
@@ -451,7 +405,7 @@ akeneo_connectivity.connection:
       link: 다음과 같이 진행됩니다.
       flash:
         success: 웹훅 비밀번호가 다시 생성되었습니다.
-        error: 죄송합니다. 웹훅 비밀번호를 다시 생성하는 동안 오류가 발생했습니다. 
+        error: 죄송합니다. 웹훅 비밀번호를 다시 생성하는 동안 오류가 발생했습니다.
     active_event_subscriptions_limit_reached:
       message: 연결할 수 있는 이벤트 구독 기능은 최대 {{ limit }}개입니다. 현재 이 제한에 도달했습니다.
       link: 이벤트 구독 구성에 관해 자세히 알아보십시오.

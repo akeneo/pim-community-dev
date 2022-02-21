@@ -64,14 +64,9 @@ pim_enrich.entity.locale:
   label: configuració regional
   uppercase_label: Configuració Regional
   plural_label: Configuracions regionals
-  page_title:
-    index: "]-Inf, 1]{{ count }} configuració regional habilitada|]1, Inf[{{ count }} configuracions regionals habilitades"
-  helper: "Per habilitar o deshabilitar un local, vagi a un dels <a href={{ href }}>seus canals</a> i afegeix o elimina un local."
   grid:
     columns:
       code: Locals activats
-    filters:
-      search_placeholder: Cercar una configuració regional habilitada
     no_search_result: Ho sentim, no hi ha cap resultat de la cerca.
 pim_enrich.entity.currency:
   plural_label: Monedes

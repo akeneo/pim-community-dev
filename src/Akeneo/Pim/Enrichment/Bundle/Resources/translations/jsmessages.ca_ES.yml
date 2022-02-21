@@ -202,15 +202,6 @@ pim_enrich.entity.category:
   label: categoria
   uppercase_label: Categoria
   plural_label: Categories
-  content:
-    tree_list:
-      columns:
-        label: Etiqueta de l'arbre
-        number_of_categories: Nombre de categories
-    edit:
-      default_tree_label: Arbre
-  new_category: Nova categoria
-  new_category_tree: Nou arbre de categories
 pim_enrich.export.product:
   data:
     title: Filtrar els productes
@@ -284,8 +275,6 @@ pim_enrich.export.product:
       operators:
         BETWEEN: Entre
         NOT BETWEEN: No entre
-    quality-score:
-      title: Puntuació de qualitat
   global_settings:
     title: Configuració global
 pim_enrich.mass_edit.product:
@@ -342,7 +331,6 @@ pim_enrich.mass_edit.product:
       description: El pare de les variants o models de subproducte seleccionats a la quadrícula es canviarà al model de producte escollits.
 pim_datagrid:
   no_entities: "No {{ entityHint }} trobat"
-  no_entities.product: "Cap producte trobat" #Custom translation for product grid
   mass_action_group:
     bulk_actions:
       label: Accions massives
@@ -412,7 +400,6 @@ pim_datagrid:
       label: Actualitzat el
     identifier:
       label: Identificador
-  search: Cercar per {{ label }}
 batch_jobs:
   add_association:
     label: Associa

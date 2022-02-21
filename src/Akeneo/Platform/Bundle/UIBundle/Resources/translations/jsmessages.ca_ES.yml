@@ -21,8 +21,6 @@ Second: Segon
 Millisecond: Mil·lisegon
 Microsecond: Microsegon
 "Time Zone": "Zona horària"
-duration:
-  seconds: "{0}0 segons|{1}1 segon|]1, Inf[{{ count }} segons"
 #PIM messages
 Localized value: Valor amb configuració regional
 Columns: Columnes
@@ -156,10 +154,7 @@ pim_common:
   before: Abans
   by: per
   cancel: Cancel·lar
-  clear_value: Esborra el valor
-  close: Tancar
   code: Codi
-  completeness: Integritat
   confirm: Confirmar
   confirm_deletion: Confirmar l'eliminació
   confirm_revocation: Confirmar la revocació
@@ -174,8 +169,6 @@ pim_common:
   from: Des de
   general_properties: Propietats generals
   history: Històric
-  identifier: Identificador
-  image: Imatge
   label: Etiqueta
   label_translations: Traduccions d'etiquetes
   Label or identifier: etiqueta o identificador
@@ -192,14 +185,11 @@ pim_common:
   ok: OK
   open: Obre
   no_result: No s'han trobat resultats
-  other_actions: Altres accions
   permissions: Permisos
   previous: Anterior
   properties: Propietats
-  quality_score: Puntuació de qualitat
   remove: Eliminar
   required_label: (obligatori)
-  result_count: "{0}0 resultats|{1}1 resultat|]1, Inf[{{ itemsCount }} resultats"
   save: Desar
   search: Cercar
   select2:
@@ -210,7 +200,6 @@ pim_common:
   to: fins a
   type: Tipus
   update: Actualitzar
-  updated: Actualitzat
   "yes": "Sí"
   operator: Operador
   operators:
@@ -228,7 +217,6 @@ pim_common:
     ENDS WITH: Acaba amb
     IN: A la llista
     "NOT IN": Fora de llista
-  read_more: Llegiu-ne més
   channel: Canal
   locale: Local
   categories: Categories
@@ -240,9 +228,7 @@ pim_common:
   products: Productes
   product_models: Models de producte
   more: Més
-  public_view: Vista pública
 error:
-  exception: S'ha produït un error de {{ status_code }}...
   forbidden: Prohibit. No té permís per accedir a aquesta pàgina
 alert:
   attribute_option:
@@ -287,7 +273,6 @@ pim_title:
   pim_enrich_catalog_volume_index: Seguiment del volum del catàleg
   pim_enrich_categorytree_index: Arbres de categories
   pim_enrich_categorytree_create: Arbres de categories | Crear
-  pim_enrich_categorytree_edit: Categoria {{ category.label }} | Editar
   pim_enrich_categorytree_create_tree: Arbres de categories | Crear
   pim_enrich_categorytree_tree: Arbre de categoria {{ category.label }} | Editar
   pim_enrich_attribute_index: Atributs
@@ -333,7 +318,6 @@ pim_menu:
     attribute_group: Grups d'atribut
     channel: Canals
     currency: Monedes
-    dashboard: Activitat del panell de control
     family: Famílies
     group: Grups
     group_type: Tipus de grup
@@ -355,7 +339,6 @@ pim_menu:
     system: Sistema de navegació
     user: Navegació de gestió d'usuaris
     settings:
-      catalog: Configuració del catàleg
       collapsed_label: Navegació de configuració
     product: Navegació de producte
     product_infos: Informació del Producte
@@ -368,18 +351,6 @@ pim_notification:
     export: Exportació
     quick_export: Exportació ràpida
     mass_edit: Edició massiva
-pim_settings:
-  settings_menu: Menú de configuració
-  catalog_settings: Configuració del catàleg
-  product_settings: Configuració de producte
 pim_system:
-  system_menu: Menú del sistema
   system_navigation: Sistema de navegació
   users_management_navigation: Navegació de gestió d'usuaris
-  sso:
-    enabled: Activat SSO
-    disabled: Desactivat SSO
-pim_datagrid:
-  mass_action:
-    default:
-      select_action: Selecciona acció

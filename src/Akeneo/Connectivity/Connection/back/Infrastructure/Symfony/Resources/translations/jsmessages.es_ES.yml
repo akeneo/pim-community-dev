@@ -38,8 +38,6 @@ pim_title:
   akeneo_connectivity_connection_connect_connected_apps: Aplicaciones
   akeneo_connectivity_connection_connect_connected_apps_edit: Ajustes de la aplicación
   akeneo_connectivity_connection_connect_connected_apps_delete: Eliminación de la aplicación
-  akeneo_connectivity_connection_connect_marketplace_test_app_create: Crear una aplicación de prueba
-  akeneo_connectivity_connection_connect_marketplace_test_app_delete: Eliminar aplicación de prueba
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -52,7 +50,6 @@ akeneo_connectivity.connection:
         description: Esto es solo un resumen. Para más detalles, eche un vistazo a nuestro sitio web.
         link: Ir al mercado web
       card:
-        developed_by: 'Desarrollado por {{ author }}'
         read_more: leer más
         more_info: Más información
         connect: Conectar
@@ -68,48 +65,11 @@ akeneo_connectivity.connection:
       unreachable: No podemos llegar al mercado, vuelva más tarde.
       scroll_to_top: Desplazar hasta la parte superior
       test_apps:
-        title: Mis aplicaciones de prueba
-        removed_user: Usuario eliminado
-        create_a_test_app: Crear una aplicación de prueba
         modal:
-          subtitle: Crear una aplicación de prueba
-          app_information:
-            title: Información de la aplicación
-            description: Si necesita ayuda, consulte nuestro artículo
-            link: '¿Cómo probar mi aplicación antes de publicarla?'
-            fields:
-              name: Nombre
-              activate_url: URL de activación
-              callback_url: URL de Callback
           credentials:
             title: Credenciales
-            warning: Asegúrese de guardar estas credenciales en algún lugar ya que las mostramos una sola vez aquí.
-            client_id: ID de cliente
-            client_secret: Secreto del cliente
-        errors:
-          creation:
-            name:
-              max_length: El nombre de la aplicación de prueba es demasiado largo. Debe tener 255 caracteres o menos.
-              not_blank: Se requiere el nombre de la aplicación de prueba.
-            client_id:
-              max_length: El ID de cliente de la aplicación de prueba es demasiado largo. Debe tener 36 caracteres o menos.
-              not_blank: El ID de cliente es obligatorio.
-            activate_url:
-              max_length: La URL de activación de la aplicación de prueba es demasiado larga. Debe tener 255 caracteres o menos.
-              must_be_url: La URL de activación debe ser válida.
-              not_blank: La URL de activación es obligatoria.
-            callback_url:
-              max_length: La URL de Callback de la aplicación de prueba es demasiado larga. Debe tener 255 caracteres o menos.
-              must_be_url: La URL de Callback debe ser válida.
-              not_blank: La URL de Callback es obligatoria.
         delete:
-          subtitle: Aplicaciones
           title: Confirmar la eliminación
-          description: Está a punto de eliminar su aplicación de prueba de este PIM.
-          warning: Al confirmar la eliminación, eliminará la aplicación de prueba en la página del mercado y la aplicación conectada relacionada.
-          flash:
-            success: Aplicación de prueba eliminada con éxito.
-            error: Ha ocurrido un error durante la eliminación de la aplicación de prueba.
     connected_apps:
       list:
         apps:
@@ -118,16 +78,12 @@ akeneo_connectivity.connection:
           empty: Aún no hay aplicaciones conectadas.
           check_marketplace: 'Comprueba el {{ marketplaceLink }} para navegar por todo el contenido disponible e instalar tu primera aplicación.'
           marketplace_link_anchor: Mercado
-        test_apps:
-          title: Mis aplicaciones de prueba
-          removed_user: Usuario eliminado
         helper:
           title: '[0,1] Su PIM está conectado con {{ count }} aplicación.|[2,Inf] Su PIM está conectado con {{ count }} aplicaciones.'
           description_1: Se desarrollan nuevas aplicaciones con regularidad, así que esté atento y consulte con frecuencia nuestra página del Mercado para descubrir cómo conectar su PIM.
           description_2: '¿Quiere saber más sobre las aplicaciones?'
           link: Eche un vistazo a nuestro Centro de ayuda para más información.
         card:
-          developed_by: 'Desarrollado por {{ author }}'
           manage_app: Administrar aplicación
           open_app: Abrir aplicación
         flash:
@@ -261,7 +217,6 @@ akeneo_connectivity.connection:
     user_role_id: Rol
     user_group_id: Grupo
     constraint:
-      connections_number_limit_reached: Ha alcanzado el límite de 50 conexiones y aplicaciones conectadas.
       code:
         required: Se requiere código de conexión.
         invalid: El código de conexión solo puede contener letras, números y guiones bajos.
@@ -290,7 +245,6 @@ akeneo_connectivity.connection:
     message_link: pulse aquí.
   create_connection:
     title: Crear una conexión nueva
-    description: Puede conectar hasta 50 terceros o aplicaciones.
     flash:
       success: Conexión creada correctamente.
       error: Lo sentimos, se ha producido un error al crear la conexión.
@@ -417,7 +371,7 @@ akeneo_connectivity.connection:
         data_destination: '¿Quieres ver algunos gráficos elegantes sobre tus conexiones de destino?'
       message_with_permission:
         message: Crea y comienza a rastrear tu primer
-        link: aquí. 
+        link: aquí.
       message_without_permission:
         message: Solicite a su administrador que cree una.
         link: Más información sobre conexiones aquí...

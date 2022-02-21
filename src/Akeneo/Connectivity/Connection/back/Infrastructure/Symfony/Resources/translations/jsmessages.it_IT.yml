@@ -38,8 +38,6 @@ pim_title:
   akeneo_connectivity_connection_connect_connected_apps: App
   akeneo_connectivity_connection_connect_connected_apps_edit: Impostazioni app
   akeneo_connectivity_connection_connect_connected_apps_delete: Eliminazione app
-  akeneo_connectivity_connection_connect_marketplace_test_app_create: Crea un'app di prova
-  akeneo_connectivity_connection_connect_marketplace_test_app_delete: Elimina app di prova
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -52,7 +50,6 @@ akeneo_connectivity.connection:
         description: Questa è solo una panoramica. Per maggiori dettagli; ti invitiamo a dare un'occhiata al nostro web marketplace.
         link: Vai al web marketplace
       card:
-        developed_by: 'Sviluppata da {{ author }}'
         read_more: mostra di più
         more_info: Maggiori info
         connect: Connetti
@@ -68,48 +65,11 @@ akeneo_connectivity.connection:
       unreachable: Non riusciamo a raggiungere il marketplace, torna più tardi.
       scroll_to_top: Scorri in alto
       test_apps:
-        title: Mie app di prova
-        removed_user: Utente rimosso
-        create_a_test_app: Crea un'app di prova
         modal:
-          subtitle: Crea un'app di prova
-          app_information:
-            title: Informazioni app
-            description: Se hai bisogno di aiuto, consulta il nostro articolo
-            link: Come testare la mia app prima di pubblicarla?
-            fields:
-              name: Nome
-              activate_url: URL di attivazione
-              callback_url: URL di callback
           credentials:
             title: Credenziali
-            warning: Assicurati di salvare le credenziali da qualche parte poiché saranno mostrate qui solo una volta.
-            client_id: ID client
-            client_secret: Chiave privata client
-        errors:
-          creation:
-            name:
-              max_length: Il nome dell'app di prova è troppo lungo. Non deve contenere più di 255 caratteri.
-              not_blank: Il nome dell'app di prova è obbligatorio.
-            client_id:
-              max_length: L'ID client dell'app di prova è troppo lungo. Non deve contenere più di 36 caratteri.
-              not_blank: L'ID client è obbligatorio.
-            activate_url:
-              max_length: L'URL di attivazione dell'app di prova è troppo lungo. Non deve contenere più di 255 caratteri.
-              must_be_url: L'URL di attivazione deve essere un URL valido.
-              not_blank: L'URL di attivazione è obbligatorio.
-            callback_url:
-              max_length: L'URL di callback dell'app di prova è troppo lungo. Non deve contenere più di 255 caratteri.
-              must_be_url: L'URL di callback deve essere un URL valido
-              not_blank: L'URL di callback è obbligatorio.
         delete:
-          subtitle: App
           title: Conferma eliminazione
-          description: Stai per eliminare la tua app di prova da questo PIM.
-          warning: Confermando l'eliminazione, eliminerai l'app di prova sulla pagina del marketplace e la relativa app connessa.
-          flash:
-            success: App di prova eliminata con successo.
-            error: Spiacenti, si è verificato un errore durante l'eliminazione dell'app di prova.
     connected_apps:
       list:
         apps:
@@ -118,16 +78,12 @@ akeneo_connectivity.connection:
           empty: Nessuna app ancora connessa
           check_marketplace: 'Controlla {{ marketplaceLink }} per sfogliare tutti i contenuti disponibili e installare la tua prima app.'
           marketplace_link_anchor: Marketplace
-        test_apps:
-          title: Mie app di prova
-          removed_user: Utente rimosso
         helper:
           title: '[0,1] Il tuo PIM è connesso con {{ count }} app.<unk> [2,Inf] Il tuo PIM è connesso con {{ count }} app.'
           description_1: Nuove app sono sviluppate regolarmente, quindi rimani sintonizzato e controlla spesso la pagina del nostro Marketplace per scoprire come connettere il tuo PIM.
           description_2: Desideri scoprire di più sulle app?
           link: Consulta il nostro Help Center per ulteriori informazioni.
         card:
-          developed_by: 'Sviluppata da {{ author }}'
           manage_app: Gestisci app
           open_app: Apri app
         flash:
@@ -261,7 +217,6 @@ akeneo_connectivity.connection:
     user_role_id: Ruolo
     user_group_id: Gruppo
     constraint:
-      connections_number_limit_reached: Hai raggiunto il limite di 50 connessioni e app connesse.
       code:
         required: Il codice connessione è obbligatorio.
         invalid: Il codice connessione può contenere solo lettere, numeri e trattini bassi
@@ -290,7 +245,6 @@ akeneo_connectivity.connection:
     message_link: clicca qui.
   create_connection:
     title: Crea una nuova connessione
-    description: Puoi connettere fino a 50 terze parti o app.
     flash:
       success: Connessione creata correttamente.
       error: Si è verificato un errore durante la creazione della connessione.

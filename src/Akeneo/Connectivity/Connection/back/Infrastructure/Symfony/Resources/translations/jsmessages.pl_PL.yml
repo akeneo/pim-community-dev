@@ -38,8 +38,6 @@ pim_title:
   akeneo_connectivity_connection_connect_connected_apps: Aplikacje
   akeneo_connectivity_connection_connect_connected_apps_edit: Ustawienia aplikacji
   akeneo_connectivity_connection_connect_connected_apps_delete: Usuń aplikację
-  akeneo_connectivity_connection_connect_marketplace_test_app_create: Utwórz aplikację testową
-  akeneo_connectivity_connection_connect_marketplace_test_app_delete: Usuń aplikację testową
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -52,7 +50,6 @@ akeneo_connectivity.connection:
         description: To tylko podgląd. Aby uzyskać więcej szczegółów, zobacz nasz rynek internetowy.
         link: Przejdź do rynku internetowego
       card:
-        developed_by: 'Autor: {{ author }}'
         read_more: czytaj więcej
         more_info: Więcej informacji
         connect: Połącz
@@ -68,48 +65,11 @@ akeneo_connectivity.connection:
       unreachable: Nie możemy nawiązać połączenia z rynkiem. Spróbuj ponownie później.
       scroll_to_top: Przewiń do początku
       test_apps:
-        title: Moje aplikacje testowe
-        removed_user: Użytkownik usunięty
-        create_a_test_app: Utwórz aplikację testową
         modal:
-          subtitle: Utwórz aplikację testową
-          app_information:
-            title: Informacje o aplikacji
-            description: Jeśli potrzebujesz pomocy, zapoznaj się z naszym artykułem.
-            link: Jak przetestować aplikację przed jej publikacją?
-            fields:
-              name: Nazwa
-              activate_url: Adres URL aktywacji
-              callback_url: Adres URL wywołania zwrotnego
           credentials:
             title: Dane uwierzytelniające
-            warning: Pamiętaj o zapisaniu tych poświadczeń, ponieważ wyświetlamy je tu tylko raz.
-            client_id: Identyfikator klienta
-            client_secret: Sekret klienta
-        errors:
-          creation:
-            name:
-              max_length: Nazwa aplikacji testowej jest za długa. Może składać się z maksymalnie 255 znaków.
-              not_blank: Nazwa aplikacji testowej jest wymagana.
-            client_id:
-              max_length: Identyfikator klienta jest za długi. Może składać się z maksymalnie 36 znaków.
-              not_blank: Identyfikator klienta jest wymagany.
-            activate_url:
-              max_length: Adres URL aktywacji jest za długi. Może składać się z maksymalnie 255 znaków.
-              must_be_url: Adres URL aktywacji musi być prawidłowym adresem URL.
-              not_blank: Adres URL aktywacji jest wymagany.
-            callback_url:
-              max_length: Adres URL wywołania zwrotnego jest za długi. Może składać się z maksymalnie 255 znaków.
-              must_be_url: Adres URL wywołania zwrotnego musi być prawidłowym adresem URL.
-              not_blank: Adres URL wywołania zwrotnego jest wymagany.
         delete:
-          subtitle: Aplikacje
           title: Potwierdź usunięcie
-          description: Za chwilę usuniesz aplikację testową z tego PIM.
-          warning: Potwierdzenie spowoduje usunięcie aplikacji testowej ze strony rynku i połączonej z nią aplikacji.
-          flash:
-            success: Aplikacja testowa została usunięta z powodzeniem.
-            error: Przepraszamy, w czasie usuwania aplikacji testowej wystąpił błąd.
     connected_apps:
       list:
         apps:
@@ -118,16 +78,12 @@ akeneo_connectivity.connection:
           empty: Nie połączono jeszcze żadnych aplikacji.
           check_marketplace: 'Przejdź na stronę {{ marketplaceLink }}, aby przeglądać całą dostępną treść i zainstalować swoją pierwszą aplikację.'
           marketplace_link_anchor: Rynek
-        test_apps:
-          title: Moje aplikacje testowe
-          removed_user: Użytkownik usunięty
         helper:
           title: '[0,1] Twój PIM jest połączony z {{ count }} aplikacją.|[2,Inf] Twój PIM jest połączony z {{ count }} aplikacjami.'
           description_1: Nowe aplikacje powstają regularnie, więc regularnie zaglądaj na stronę Rynek, aby przekonać się, jak możesz połączyć Twój PIM z innymi aplikacjami.
           description_2: Chcesz dowiedzieć się więcej o aplikacjach?
           link: Aby uzyskać więcej informacji, sprawdź nasze Centrum Pomocy.
         card:
-          developed_by: 'Autor: {{ author }}'
           manage_app: Zarządzaj aplikacją
           open_app: Otwórz aplikację
         flash:
@@ -261,7 +217,6 @@ akeneo_connectivity.connection:
     user_role_id: Rola
     user_group_id: Grupa
     constraint:
-      connections_number_limit_reached: Osiągnięto limit 50 połaczeń i podłączonych aplikacji.
       code:
         required: Kod połączenia jest wymagany
         invalid: Kod połączenia może zawierać tylko litery, cyfry i podkreślenia.
@@ -290,7 +245,6 @@ akeneo_connectivity.connection:
     message_link: kliknij tutaj.
   create_connection:
     title: Utwórz nowe połączenie
-    description: Możesz podłaczyć maksymalnie 50 podmiotów zewnętrznych lub aplikacji.
     flash:
       success: Połączenie zostało pomyślnie utworzone.
       error: Przepraszamy, wystąpił błąd podczas tworzenia połączenia.
