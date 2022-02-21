@@ -139,7 +139,7 @@ final class UpsertProductIntegration extends TestCase
         $this->expectExceptionMessage('The a_text attribute does not require a locale, "en_US" was detected');
 
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
-            new SetTextValue('a_text', 'en_US', null, 'foo'),
+            new SetTextValue('a_text', null, 'en_US', 'foo'),
         ]);
         ($this->upsertProductHandler)($command);
     }

@@ -16,7 +16,7 @@ class SetTextValueSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('name', 'en_US', 'ecommerce', 'foo');
+        $this->beConstructedWith('name', 'ecommerce', 'en_US', 'foo');
     }
 
     function it_is_initializable()

@@ -2,26 +2,21 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2022 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Specification\Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent;
 
 use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\ValueUserIntent;
 use PhpSpec\ObjectBehavior;
 
+/**
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class SetNumberValueSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('name', 'en_US', 'ecommerce', 10);
+        $this->beConstructedWith('name', 'ecommerce', 'en_US', 10);
     }
 
     function it_is_initializable()
