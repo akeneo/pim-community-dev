@@ -60,7 +60,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'identifier', valuesUserIntent: [
             new SetTextValue('name', 'en_GB', null, 'foo'),
         ]);
-        ($this->upsertProductHandler)($command);
+        $this->messageBus->dispatch($command);
     }
 
     /** @test */
