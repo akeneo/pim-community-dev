@@ -63,8 +63,8 @@ SQL;
 
     private function hydrateScores(string $rawScores): ChannelLocaleRateCollection
     {
-        $scores = json_decode($rawScores, true, 512, JSON_THROW_ON_ERROR);
+        $scores = \json_decode($rawScores, true, 512, JSON_THROW_ON_ERROR);
 
-        return ChannelLocaleRateCollection::fromNormalizedRates($scores, fn (array $score) => $score['value']);
+        return ChannelLocaleRateCollection::fromNormalizedRates($scores);
     }
 }

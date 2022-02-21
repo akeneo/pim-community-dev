@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -49,14 +50,22 @@ final class ChannelLocaleRateCollection implements \IteratorAggregate
         return $rateCollection;
     }
 
-    public static function fromNormalizedRates(array $normalizedRates, \Closure $getNormalizedRateValue): self
+    /**
+     * Format of a normalized of a Rate:
+     *  [
+     *      'rank'  => int, // Rank of the rate (from 1 to 5)
+     *      'value' => int, // Raw value (from 0 to 100)
+     *  ]
+     */
+    public static function fromNormalizedRates(array $normalizedRates): self
     {
         $rateCollection = new self();
 
         $rateCollection->rates = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData(
             $normalizedRates,
-            function ($normalizedRate) use ($getNormalizedRateValue) {
-                return new Rate(intval($getNormalizedRateValue($normalizedRate)));
+            function (array $normalizedRate) {
+                Assert::keyExists($normalizedRate, 'value', 'The normalized rate is malformed');
+                return new Rate(intval($normalizedRate['value']));
             }
         );
 
