@@ -12,7 +12,7 @@ use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\CreateConnectedAppQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateConnectedAppQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup;
 use Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUser;

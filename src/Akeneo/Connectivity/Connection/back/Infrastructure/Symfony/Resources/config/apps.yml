@@ -22,9 +22,9 @@ services:
 
     Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler:
         arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAppConfirmationQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAppConfirmationQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\CreateUserConsentQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateUserConsentQuery'
             - '@akeneo_connectivity.connection.clock'
             - '@validator'
 
@@ -38,18 +38,18 @@ services:
     Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\AsymmetricKeysGenerator'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\SaveAsymmetricKeysQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveAsymmetricKeysQuery'
 
     Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthenticationHandler:
         arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetUserConsentedAuthenticationScopesQuery'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\CreateUserConsentQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetUserConsentedAuthenticationScopesQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateUserConsentQuery'
             - '@akeneo_connectivity.connection.clock'
             - '@validator'
 
     Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp:
         arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\CreateConnectedAppQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateConnectedAppQuery'
 
     Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection:
         arguments:
@@ -85,19 +85,19 @@ services:
             - '@fos_oauth_server.storage.default'
             - '@akeneo_connectivity.connection.service.apps.client_provider'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Service\RandomCodeGenerator'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAppConfirmationQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAppConfirmationQuery'
             - '@pim_user.repository.user'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateJsonWebToken'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetConnectedAppScopesQuery'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetUserConsentedAuthenticationUuidQuery'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetUserConsentedAuthenticationScopesQuery'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAccessTokenQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetConnectedAppScopesQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetUserConsentedAuthenticationUuidQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetUserConsentedAuthenticationScopesQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAccessTokenQuery'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateJsonWebToken:
         arguments:
             - '@akeneo_connectivity.connection.clock'
             - '@pim_framework.service.pim_url'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAsymmetricKeysQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAsymmetricKeysQuery'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup:
         arguments:
@@ -108,8 +108,8 @@ services:
 
     Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler:
         arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAppDeletionQuery'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\DeleteConnectedAppQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAppDeletionQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DeleteConnectedAppQuery'
             - '@akeneo_connectivity.connection.persistence.repository.connection'
             - '@akeneo_connectivity.connection.service.user.delete_user'
             - '@akeneo_connectivity.connection.service.client.delete_client'
@@ -125,63 +125,63 @@ services:
             - !tagged_iterator pim_api.security.scope_mapper
 
     # queries
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAllConnectedAppsPublicIdsQuery:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAllConnectedAppsPublicIdsQuery:
         arguments:
             - '@database_connection'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAppConfirmationQuery:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAppConfirmationQuery:
         arguments:
             - '@database_connection'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\DeleteConnectedAppQuery:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DeleteConnectedAppQuery:
         arguments:
             - '@database_connection'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAppDeletionQuery:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAppDeletionQuery:
         arguments:
             - '@database_connection'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetConnectedAppScopesQuery:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetConnectedAppScopesQuery:
         arguments:
             - '@database_connection'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetUserConsentedAuthenticationScopesQuery:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetUserConsentedAuthenticationScopesQuery:
         arguments:
             - '@database_connection'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetUserConsentedAuthenticationUuidQuery:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetUserConsentedAuthenticationUuidQuery:
         arguments:
             - '@database_connection'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\CreateUserConsentQuery:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateUserConsentQuery:
         arguments:
             - '@database_connection'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAsymmetricKeysQuery:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAsymmetricKeysQuery:
         arguments:
             - '@database_connection'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\SaveAsymmetricKeysQuery:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveAsymmetricKeysQuery:
         arguments:
             - '@database_connection'
             - '@akeneo_connectivity.connection.clock'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAccessTokenQuery:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAccessTokenQuery:
         arguments:
             - '@database_connection'
             -
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\CreateConnectedAppQuery:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateConnectedAppQuery:
         arguments:
             - '@database_connection'
             -
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\FindAllConnectedAppsQuery:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindAllConnectedAppsQuery:
         arguments:
             - '@database_connection'
             -
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\FindOneConnectedAppByConnectionCodeQuery:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByConnectionCodeQuery:
         arguments:
             - '@database_connection'
             -
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\FindOneConnectedAppByIdQuery:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByIdQuery:
         arguments:
             - '@database_connection'

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi;
 
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\FindAllConnectedAppsQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindAllConnectedAppsQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\RedirectResponse;

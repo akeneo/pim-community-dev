@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Apps;
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AsymmetricKeys;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\OpenIdKeysNotFoundException;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\SaveAsymmetricKeysQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveAsymmetricKeysQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\PimConfigurationLoader;
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\DBAL\Connection;
@@ -54,7 +54,7 @@ class GetOpenIdPublicKeyEndToEnd extends WebTestCase
     public function test_it_gets_an_error_if_there_is_no_openid_public_key_into_database(): void
     {
         $this->resetPimConfiguration();
-        
+
         $this->client->request(
             'GET',
             '/connect/apps/v1/openid/public-key',

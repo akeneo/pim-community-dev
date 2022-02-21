@@ -7,7 +7,7 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Int
 use Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionQuery;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\FindOneConnectedAppByConnectionCodeQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByConnectionCodeQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;

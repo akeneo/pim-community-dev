@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Apps\Service;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\CreateConnectedAppQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\CreateConnectedAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App as MarketplaceApp;
 
 /**

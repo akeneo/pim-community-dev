@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\AsymmetricKeysGeneratorInterface;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\SaveAsymmetricKeysQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\SaveAsymmetricKeysQueryInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
