@@ -43,8 +43,8 @@ class ExecuteDataMappingHandler
                 } else {
                     $valueUserIntents[] = new SetTextValue(
                         $target->code(),
-                        $target->locale(),
                         $target->channel(),
+                        $target->locale(),
                         $cellData,
                     );
                 }

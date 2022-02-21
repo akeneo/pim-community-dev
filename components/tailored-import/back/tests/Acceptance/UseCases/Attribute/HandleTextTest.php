@@ -98,7 +98,7 @@ final class HandleTextTest extends AttributeTestCase
                     productIdentifier: 'this-is-a-sku',
                     valuesUserIntent: [
                         new SetTextValue('name', null, null, 'this is a name'),
-                        new SetTextValue('description', 'fr_FR', 'ecommerce', 'this is a description'),
+                        new SetTextValue('description', 'ecommerce', 'fr_FR', 'this is a description'),
                     ],
                 ),
             ],
