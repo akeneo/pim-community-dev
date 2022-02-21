@@ -7,9 +7,9 @@ namespace Akeneo\Test\Pim\Enrichment\Product\Integration\Handler;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler;
-use Akeneo\Pim\Enrichment\Product\back\Api\Command\UserIntent\SetNumberValue;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
@@ -96,14 +96,14 @@ final class UpsertProductIntegration extends TestCase
     public function it_creates_a_product_with_a_number_value(): void
     {
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
-            new SetNumberValue('a_number', null, null, 10),
+            new SetNumberValue('a_number_integer', null, null, 10),
         ]);
         ($this->upsertProductHandler)($command);
 
         $this->clearDoctrineUoW();
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
-        $value = $product->getValue('a_number', null, null);
+        $value = $product->getValue('a_number_integer', null, null);
         Assert::assertNotNull($value);
         Assert::assertSame(10, $value->getData());
     }
@@ -120,14 +120,14 @@ final class UpsertProductIntegration extends TestCase
 
         // Update product with number value
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
-            new SetNumberValue('a_number', null, null, 10),
+            new SetNumberValue('a_number_integer', null, null, 10),
         ]);
         ($this->upsertProductHandler)($command);
 
         $this->clearDoctrineUoW();
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
-        $value = $product->getValue('a_number', null, null);
+        $value = $product->getValue('a_number_integer', null, null);
         Assert::assertNotNull($value);
         Assert::assertSame(10, $value->getData());
     }

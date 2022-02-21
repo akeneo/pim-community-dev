@@ -11,11 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Enrichment\Product\back\Api\Command\UserIntent;
+namespace Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent;
 
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\ValueUserIntent;
-
-class SetNumberValue implements ValueUserIntent
+final class SetNumberValue implements ValueUserIntent
 {
     public function __construct(
         private string $attributeCode,
