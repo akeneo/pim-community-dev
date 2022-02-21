@@ -7,7 +7,7 @@ namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Write\ConnectionWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectWebhookSecretQueryInterface;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\ConnectionWebhookRepositoryInterface;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\UpdateConnectionWebhookQueryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -17,24 +17,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class UpdateWebhookHandler
 {
-    private ConnectionWebhookRepositoryInterface $repository;
-
-    private ValidatorInterface $validator;
-
-    private SelectWebhookSecretQueryInterface $selectWebhookSecretQuery;
-
-    private GenerateWebhookSecretHandler $generateWebhookSecretHandler;
-
     public function __construct(
-        ConnectionWebhookRepositoryInterface $repository,
-        ValidatorInterface $validator,
-        SelectWebhookSecretQueryInterface $selectWebhookSecretQuery,
-        GenerateWebhookSecretHandler $generateWebhookSecretHandler
+        private UpdateConnectionWebhookQueryInterface $updateConnectionWebhookQuery,
+        private ValidatorInterface $validator,
+        private SelectWebhookSecretQueryInterface $selectWebhookSecretQuery,
+        private GenerateWebhookSecretHandler $generateWebhookSecretHandler
     ) {
-        $this->repository = $repository;
-        $this->validator = $validator;
-        $this->selectWebhookSecretQuery = $selectWebhookSecretQuery;
-        $this->generateWebhookSecretHandler = $generateWebhookSecretHandler;
     }
 
     public function handle(UpdateWebhookCommand $command): void
@@ -48,7 +36,7 @@ class UpdateWebhookHandler
             throw new ConstraintViolationListException($violations);
         }
 
-        $this->repository->update($webhook);
+        $this->updateConnectionWebhookQuery->execute($webhook);
 
         $secret = $this->selectWebhookSecretQuery->execute($connectionCode);
         if (null === $secret) {
