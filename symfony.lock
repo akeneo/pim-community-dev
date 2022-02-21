@@ -294,6 +294,9 @@
     "justinrainbow/json-schema": {
         "version": "5.2.9"
     },
+    "khaled.alshamaa/ar-php": {
+        "version": "v6.2.0"
+    },
     "laminas/laminas-code": {
         "version": "3.4.1"
     },
