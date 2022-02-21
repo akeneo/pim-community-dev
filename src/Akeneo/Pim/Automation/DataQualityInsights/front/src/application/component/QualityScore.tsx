@@ -2,6 +2,8 @@ import React, {FC, HTMLAttributes} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, Override} from 'akeneo-design-system';
 
+type Rounded = 'all' | 'left' | 'right' | 'none';
+
 type Props = Override<
   HTMLAttributes<HTMLDivElement>,
   {
@@ -12,7 +14,7 @@ type Props = Override<
   }
 >;
 
-type Rounded = 'all' | 'left' | 'right' | 'none';
+const defaultScores = ['A', 'B', 'C', 'D', 'E'];
 
 const roundedProperties = {
   all: '4px',
@@ -100,7 +102,8 @@ const containerStackedStyled = css<{score: string; size: string}>`
   position: absolute;
   top: 2px;
   left: 2px;
-  border: 1px solid ${({theme, score}) => theme.color[colorProperties[score].stackedBorderColor]};
+  border: 1px solid
+    ${({theme, score}) => defaultScores.includes(score) && theme.color[colorProperties[score].stackedBorderColor]};
   border-radius: ${roundedProperties['all']};
 
   ${({size}) =>
@@ -118,8 +121,9 @@ const Container = styled.div<{score: string; size: string; rounded: Rounded; sta
   width: 20px;
   height: 20px;
   font-size: 13px;
-  background-color: ${({theme, score}) => theme.color[colorProperties[score].backgroundColor]};
-  color: ${({theme, score}) => theme.color[colorProperties[score].color]};
+  background-color: ${({theme, score}) =>
+    defaultScores.includes(score) && theme.color[colorProperties[score].backgroundColor]};
+  color: ${({theme, score}) => defaultScores.includes(score) && theme.color[colorProperties[score].color]};
   border-radius: ${({rounded}) => roundedProperties[rounded]};
 
   ${({size}) =>
@@ -150,7 +154,8 @@ const EmptyContainer = styled.div<{score: string; size: string; top: number; lef
   width: ${({size}) => (size === 'big' ? '25px' : '20px')};
   height: ${({size}) => (size === 'big' ? '25px' : '20px')};
   border-radius: 4px !important;
-  border: 1px solid ${({theme, score}) => theme.color[colorProperties[score].stackedBorderColor]};
+  border: 1px solid
+    ${({theme, score}) => defaultScores.includes(score) && theme.color[colorProperties[score].stackedBorderColor]};
   background-color: ${getColor('white')};
 `;
 
