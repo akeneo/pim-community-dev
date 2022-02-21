@@ -552,3 +552,4 @@ pim_login:
   footer:
     powered: Creado con
     powered_image_title: logo de Akeneo
+pim_system.acl_group.developer_mode: Modo de desarrollador

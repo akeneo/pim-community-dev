@@ -23,6 +23,8 @@ pim_api:
       edit: Crear i actualitzar canals
       list: Llistar canals
     locale.list: Llistar configuracions regionals
+    product:
+      list: Llistar productes
     currency.list: Llistar monedes
     association_type:
       edit: Crear i actualitzar els tipus d'associació

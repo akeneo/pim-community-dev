@@ -80,6 +80,8 @@ akeneo_data_quality_insights:
     back_to_products: Tornar als productes
   attribute_group:
     helper_dqi_link: Més informació en el centre d'ajuda.
+    activation: Habilitat
+    activated: Habilitat
     disabled: Deshabilitat
   product_grid:
     filter_label:
@@ -88,3 +90,5 @@ akeneo_data_quality_insights:
     filter_value:
       good: Bé
       to_improve: A millorar
+      "yes": "Sí"
+      "no": "No"
