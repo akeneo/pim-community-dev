@@ -21,7 +21,15 @@ const roundedProperties = {
   none: '0',
 };
 
-const colorProperties: any = {
+type ColorProperty = {
+  [score: string]: {
+    backgroundColor: string;
+    color: string;
+    stackedBorderColor: string;
+  };
+};
+
+const colorProperties: ColorProperty = {
   A: {
     backgroundColor: 'green20',
     color: 'green120',
