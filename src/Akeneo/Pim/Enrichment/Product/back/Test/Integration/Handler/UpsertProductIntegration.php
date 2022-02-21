@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler;
+use Akeneo\Pim\Enrichment\Product\back\Api\Command\UserIntent\SetNumberValue;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
@@ -89,6 +90,46 @@ final class UpsertProductIntegration extends TestCase
         $value = $product->getValue('a_text', null, null);
         Assert::assertNotNull($value);
         Assert::assertSame('foo', $value->getData());
+    }
+
+    /** @test */
+    public function it_creates_a_product_with_a_number_value(): void
+    {
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
+            new SetNumberValue('a_number', null, null, 10),
+        ]);
+        ($this->upsertProductHandler)($command);
+
+        $this->clearDoctrineUoW();
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        $value = $product->getValue('a_number', null, null);
+        Assert::assertNotNull($value);
+        Assert::assertSame(10, $value->getData());
+    }
+
+    /** @test */
+    public function it_updates_a_product_with_a_number_value(): void
+    {
+        // Creates empty product
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier');
+        ($this->upsertProductHandler)($command);
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
+
+        // Update product with number value
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
+            new SetNumberValue('a_number', null, null, 10),
+        ]);
+        ($this->upsertProductHandler)($command);
+
+        $this->clearDoctrineUoW();
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        $value = $product->getValue('a_number', null, null);
+        Assert::assertNotNull($value);
+        Assert::assertSame(10, $value->getData());
     }
 
     /** @test */
