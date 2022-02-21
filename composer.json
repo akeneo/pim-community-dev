@@ -19,7 +19,8 @@
             "Akeneo\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/back",
             "Akeneo\\Platform\\Job\\": "src/Akeneo/Platform/Job/back",
             "Akeneo\\FreeTrial\\": "src/Akeneo/FreeTrial/back",
-            "Akeneo\\Pim\\Enrichment\\Product\\": "src/Akeneo/Pim/Enrichment/Product/back"
+            "Akeneo\\Pim\\Enrichment\\Product\\": "src/Akeneo/Pim/Enrichment/Product/back",
+            "Akeneo\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back"
         }
     },
     "autoload-dev": {
@@ -38,7 +39,8 @@
             "Akeneo\\Platform\\CommunicationChannel\\Test\\": "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests",
             "Akeneo\\Platform\\Job\\Test\\": "src/Akeneo/Platform/Job/back/tests",
             "Akeneo\\Test\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/tests/back",
-            "Akeneo\\Test\\Pim\\Enrichment\\Product\\": "src/Akeneo/Pim/Enrichment/Product/back/Test"
+            "Akeneo\\Test\\Pim\\Enrichment\\Product\\": "src/Akeneo/Pim/Enrichment/Product/back/Test",
+            "Akeneo\\Test\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back/Test"
         }
     },
     "require": {
@@ -83,6 +85,7 @@
         "guzzlehttp/guzzle": "6.5.5",
         "imagine/imagine": "1.2.4",
         "justinrainbow/json-schema": "^5.2",
+        "khaled.alshamaa/ar-php": "^6.2",
         "lcobucci/jwt": "^4.1",
         "league/flysystem": "^2.0",
         "league/flysystem-memory": "^2.0",

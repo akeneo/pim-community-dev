@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- BH-986: Add missing migration file for standard.
+
 # 6.0.4 (2022-02-10)
 
 # 6.0.3 (2022-02-09)

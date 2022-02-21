@@ -1,4 +1,0 @@
-Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand:
-  properties:
-    valuesUserIntent:
-      - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelShouldBeConsistent: ~

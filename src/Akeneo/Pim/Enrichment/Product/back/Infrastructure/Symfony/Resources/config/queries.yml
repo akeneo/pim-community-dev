@@ -1,0 +1,5 @@
+services:
+    Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes:
+        class: Akeneo\Pim\Enrichment\Product\Infrastructure\Query\SqlGetCategoryCodes
+        arguments:
+            - '@database_connection'
