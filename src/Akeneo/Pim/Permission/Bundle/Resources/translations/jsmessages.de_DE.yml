@@ -80,6 +80,8 @@ pim_permissions:
         help: Wenn Sie möchten, dass Ihre App in der Lage ist, Ihre Produkte ohne PIM-Vorschläge zu modifizieren, wählen Sie die Eigene Ebene. Andernfalls wählen Sie die Ebene bearbeiten.
       locale:
         label: Gebietsschemata
+        help: Wenn Sie möchten, dass Ihre App Ihre Produkte in allen Sprachen bearbeiten kann, wählen Sie die Option Alle in der Ebene bearbeiten. Andernfalls wählen Sie nur die Sprachen, die Ihre App je nach Level sehen oder ändern kann.
+      not_granted_warning: Dieser Abschnitt ist nur für Benutzer mit der {{ permission }}. Bitte kontaktiere deinen Administrator. Mit der Rechte-Genehmigung, könne sie zurück zu den Einstellungen zurück und diese bearbeiten.
 pimee_enrich.acl.category.edit_permissions: Kategorieberechtigungen verwalten
 pimee_enrich.acl.attribute_group.edit_permissions: Attributgruppenberechtigungen verwalten
 pimee_enrich.acl.locale.edit_permissions: Gebietsschema Berechtigungen verwalten

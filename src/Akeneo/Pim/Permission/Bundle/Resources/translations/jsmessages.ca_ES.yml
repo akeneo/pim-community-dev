@@ -50,3 +50,8 @@ batch_jobs:
     send_for_approval: Enviar per a la seva aprovació
 pim_title:
   pimee_enrich_locale_edit: Local | Editar
+pim_permissions:
+  widget:
+    entity:
+      locale:
+        label: Configuracions regionals

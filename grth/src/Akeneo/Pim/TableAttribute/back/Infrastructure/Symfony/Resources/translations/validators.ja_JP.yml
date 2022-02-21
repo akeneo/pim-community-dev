@@ -17,12 +17,14 @@ pim_table_configuration:
       too_long_option_label: "オプションラベルが長すぎます。255 文字以下にする必要があります"
       duplicated_column_code: '[0,1]各列に固有のコードが必要です。"%duplicateCodes%" はすでに使用されています|]1,Inf[各列に固有のコードが必要です。"%duplicateCodes%" はすでに使用されています'
       column_type_must_be_a_string: 列データタイプは文字列である必要があります
+      unknown_data_type: '列データタイプが不明です。次のうちいずれかを選択してください: {{ allowed_data_types }}'
       column_label_must_be_a_string: 列ラベルは文字列である必要があります
       option_label_must_be_a_string: オプションラベルは文字列である必要があります
       label_locale_does_not_exist_or_is_not_activated: '"{{ locale_code }}" ロケールは存在しないか、有効になっていません'
       invalid_labels_format: 列ラベルはキー/値オブジェクトである必要があります
       invalid_option_labels_format: オプションラベルはキー/値オブジェクトである必要があります
       must_not_be_filled: '%type%タイプにtable_configurationを使用できません'
+      first_column_should_be_valid: '{1}最初の列タイプは常に "{{ allowed_data_types }}" である必要があります。現在のタイプは "{{ data_type }}" です。|]1,Inf[最初の列タイプは{{ allowed_data_types_except_last }}または "{{ last_allowed_data_types }}" のいずれかにすることができます。現在のタイプは "{{ data_type }}" です。'
       first_column_code_cannot_be_changed: 最初の列のコードは変更できません。
       unknown_field: '必要なフィールドのみを使用していることを確認してください。現在のフィールドは {{ field }} です'
       attribute_does_not_exist: '"{{ attribute }}" 属性は存在しません'
@@ -31,6 +33,10 @@ pim_table_configuration:
       not_select_column: '"{{ attribute }}" 属性の "{{ column }}" 列が "選択" ではありません'
       max_should_be_greater_than_min: 最大値は最小値よりも大きくする必要があります。
       options_cannot_be_set: '"{{ data_type }}" 列タイプのオプションは設定できません'
+      reference_entity_identifier_cannot_be_set: 参照エンティティ識別子は "{{ data_type }}" 列タイプに設定できません
+      reference_entity_identifier_must_be_filled: 参照エンティティ識別子を入力する必要があります
+      reference_entity_identifier_should_exist: テーブルに追加する前に "{{ reference_entity_identifier }}" 参照エンティティが存在することを確認してください
+      reference_entity_identifier_is_immutable: reference_entity_identifierは更新できません
       no_validations_allowed: '"{{ columnType }}" 列で検証を使用しないでください。現在の列タイプは "{{ given }}" です'
       invalid_validation_key: '"{{ given }}" 検証は "{{ columnType }}" 列では機能しません。許可されているのは "{{ expected }}" です'
       too_many_table_attributes: PIM内のテーブル属性の最大数 ({{ limit }}) に達しました。
@@ -45,5 +51,8 @@ pim_table_configuration:
       value_integer_required: '必須の値は整数です'
       max_length_validation: 値が長すぎます。{{ limit }} 以下の文字数で設定してください。
       too_many_rows: テーブルの最大行数 (10) に達しました
+      record_should_exist: '"{{ referenceEntityIdentifier }}" 参照エンティティ内の "{{ recordCode }}" レコードが存在しません'
     product_value_collection:
       too_many_cells: 製品のテーブルセルの最大数に達しました ({{ count }}セル。最大数は{{ limit }}個)
+    reference_entity:
+      should_not_be_linked: 'この参照エンティティは商品属性で使用されているため、削除できません。'

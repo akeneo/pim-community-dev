@@ -17,12 +17,14 @@ pim_table_configuration:
       too_long_option_label: "Etykieta opcji jest za długa: może składać się z maksymalnie 255 znaków."
       duplicated_column_code: '[0,1]Każda kolumna musi mieć niepowtarzalny kod. Kod %duplicateCodes% jest już używany.]1,Inf[Każda kolumna musi mieć niepowtarzalny kod. Kody "%duplicateCodes%" są już używane.'
       column_type_must_be_a_string: Typ danych kolumny musi być ciągiem znaków.
+      unknown_data_type: 'Typ danych kolumny jest nieznany. Wybierz jeden z następujących typów: {{ allowed_data_types }}.'
       column_label_must_be_a_string: Etykieta kolumny musi być ciągiem znaków.
       option_label_must_be_a_string: Etykieta opcji musi być ciągiem znaków.
       label_locale_does_not_exist_or_is_not_activated: Wersja językowa „{{ locale_code }}” nie istnieje lub nie jest aktywna.
       invalid_labels_format: Etykiety kolumny muszą być obiektem typu klucz/wartość.
       invalid_option_labels_format: Etykiety opcji muszą być obiektem typu klucz/wartość.
       must_not_be_filled: Typ %type% nie zezwala na konfigurację tabeli.
+      first_column_should_be_valid: '{1}Pierwsza kolumna powinna zawsze być następującego typu: „{{ allowed_data_types }}”, bieżący typ to „{{ data_type }}”.|]1,Inf[Pierwsza kolumna może być kolumną typu: {{ allowed_data_types_except_last }} lub „{{ last_allowed_data_types }}”, bieżący typ to „{{ data_type }}”.'
       first_column_code_cannot_be_changed: Nie możesz zmienić kodu pierwszej kolumny.
       unknown_field: 'Upewnij się, że korzystasz tylko z oczekiwanych pól, bieżące pole: {{ field }}.'
       attribute_does_not_exist: Atrybut „{{ attribute }}” nie istnieje.
@@ -31,6 +33,10 @@ pim_table_configuration:
       not_select_column: Kolumna „{{ column }}” atrybutu „{{ attribute }}” nie jest kolumną typu „wybór”.
       max_should_be_greater_than_min: Wartość maksymalna powinna być wyższa niż wartość minimalna.
       options_cannot_be_set: Nie można konfigurować opcji w kolumnach typu „{{ data_type }}”.
+      reference_entity_identifier_cannot_be_set: Nie można skonfigurować identyfikatora obiektu referencyjnego kolumny typu „{{ data_type }}”.
+      reference_entity_identifier_must_be_filled: Należy wskazać identyfikator obiektu referencyjnego.
+      reference_entity_identifier_should_exist: Zanim dodasz go do tabeli, upewnij się, że obiekt referencyjny „{{ reference_entity_identifier }}” istnieje.
+      reference_entity_identifier_is_immutable: Nie można zaktualizować obiektu reference_entity_identifier.
       no_validations_allowed: 'Nie używaj sprawdzania poprawności w kolumnie „{{ columnType }}”, bieżący typ kolumny: „{{ given }}”.'
       invalid_validation_key: 'Sprawdzenie poprawności wartości „{{ given }}” nie działa w kolumnie typu „{{ columnType }}”, dopuszczalna wartość: „{{ expected }}”.'
       too_many_table_attributes: Osiągnięto maksymalną liczbę atrybutów tabeli w ramach PIM ({{ limit }}).
@@ -45,5 +51,8 @@ pim_table_configuration:
       value_integer_required: 'Wymagana wartość musi być liczbą całkowitą.'
       max_length_validation: Ta wartość powinna zawierać maksymalnie {{ limit }} znaków.
       too_many_rows: Osiągnięto maksymalną liczbę wierszy w tabeli ({{ limit }}).
+      record_should_exist: 'Rekord „{{ recordCode }}” w obiekcie referencyjnym „{{ referenceEntityIdentifier }}” nie istnieje.'
     product_value_collection:
       too_many_cells: 'Osiągnięto maksymalną liczbę komórek tabeli w Twoim produkcie (Liczba komórek: {{ count }}, dozwolony limit: {{ limit }}).'
+    reference_entity:
+      should_not_be_linked: 'Ten obiekt referencyjny jest używany w atrybucie produktu, dlatego nie można go usunąć.'
