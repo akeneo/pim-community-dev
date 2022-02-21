@@ -26,4 +26,11 @@ services:
         public: true
         shared: false
         tags:
-            - { name:  oro_datagrid.extension.mass_action.type, type: rules }
+            - { name: oro_datagrid.extension.mass_action.type, type: rules }
+
+    pim_datagrid.extension.mass_action.type.delete_rules:
+        class: '%oro_datagrid.extension.mass_action.type.ajax.class%'
+        public: true
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: delete-rules }

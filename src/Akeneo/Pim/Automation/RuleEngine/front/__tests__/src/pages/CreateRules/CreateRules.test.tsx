@@ -3,6 +3,7 @@ import 'jest-fetch-mock';
 import {CreateRules} from '../../../../src/pages/CreateRules';
 import userEvent from '@testing-library/user-event';
 import {render, screen, act, fireEvent} from '../../../../test-utils';
+import {dependencies} from '../../../../src/dependenciesTools/provider/dependencies';
 
 describe('CreateRules', () => {
   it('should render the page', async () => {
@@ -73,6 +74,8 @@ describe('CreateRules', () => {
     ).toBeInTheDocument();
   });
   it('should redirect to the original rule edit page', async () => {
+    // Given
+    dependencies.ruleManager = jest.fn();
     // When
     render(<CreateRules originalRuleCode={'original_rule'} />, {
       legacy: true,
