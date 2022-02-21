@@ -54,4 +54,34 @@ final class ChannelLocaleRateCollectionSpec extends ObjectBehavior
 
         $this->getByChannelAndLocale(new ChannelCode('mobile'), new LocaleCode('fr_FR'))->shouldReturn($rateMobileFr);
     }
+
+    public function it_returns_the_rates_in_a_normalized_format(): void
+    {
+        $rateMobileEn = new Rate(42);
+        $rateMobileFr = new Rate(86);
+        $ratePrintEn = new Rate(73);
+
+        $this->addRate(new ChannelCode('mobile'), new LocaleCode('en_US'), $rateMobileEn);
+        $this->addRate(new ChannelCode('mobile'), new LocaleCode('fr_FR'), $rateMobileFr);
+        $this->addRate(new ChannelCode('print'), new LocaleCode('en_US'), $ratePrintEn);
+
+        $this->toNormalizedRates()->shouldReturn([
+            'mobile' => [
+                'en_US' => [
+                    'rank' => 5,
+                    'value' => 42,
+                ],
+                'fr_FR' => [
+                    'rank' => 2,
+                    'value' => 86,
+                ],
+            ],
+            'print' => [
+                'en_US' => [
+                    'rank' => 3,
+                    'value' => 73,
+                ],
+            ],
+        ]);
+    }
 }
