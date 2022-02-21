@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Channel\Test\Integration;
+namespace Akeneo\Test\Channel\Locale\Integration;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
@@ -54,6 +54,8 @@ class ChannelTestCase extends TestCase
     {
         $user = $this->get('pim_user.factory.user')->create();
         $user->setUsername($username);
+        $user->setFirstName($username);
+        $user->setLastName($username);
         $user->setPassword('password');
         $user->setEmail($username . '@example.com');
 

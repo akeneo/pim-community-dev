@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
-use Akeneo\Channel\API\Query\GetEditableLocaleCodes;
+use Akeneo\Channel\Locale\API\Query\GetEditableLocaleCodes;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

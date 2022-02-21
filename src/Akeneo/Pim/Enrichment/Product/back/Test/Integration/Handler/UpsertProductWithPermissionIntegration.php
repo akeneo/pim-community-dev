@@ -54,17 +54,6 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     /** @test */
     public function it_throws_an_exception_when_user_locale_is_not_granted(): void
     {
-        // Creates empty product (use command/handler when we can set a category)
-        $product = $this->get('pim_catalog.builder.product')->createProduct('identifier');
-        $this->get('pim_catalog.updater.product')->update($product, [
-            'categories' => ['print'],
-        ]);
-        $this->get('pim_catalog.saver.product')->save($product);
-
-        $product = $this->productRepository->findOneByIdentifier('identifier');
-        Assert::assertNotNull($product);
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
-
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('You don\'t have access to product data in any activated locale, please contact your administrator');
 

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Channel\Infrastructure\Query;
+namespace Akeneo\Channel\Locale\Infrastructure\Query;
 
-use Akeneo\Channel\API\Query\GetEditableLocaleCodes;
+use Akeneo\Channel\Locale\API\Query\GetEditableLocaleCodes;
 use Doctrine\DBAL\Connection;
 
 /**

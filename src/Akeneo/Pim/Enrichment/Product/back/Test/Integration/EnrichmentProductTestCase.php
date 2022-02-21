@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Enrichment\Product\Integration;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -146,6 +145,8 @@ abstract class EnrichmentProductTestCase extends TestCase
     {
         $user = $this->get('pim_user.factory.user')->create();
         $user->setUsername($username);
+        $user->setFirstName($username);
+        $user->setLastName($username);
         $user->setPassword('password');
         $user->setEmail($username . '@example.com');
 
@@ -163,7 +164,8 @@ abstract class EnrichmentProductTestCase extends TestCase
             }
         }
 
-        $this->get('validator')->validate($user);
+        $violations = $this->get('validator')->validate($user);
+        Assert::assertSame(0, $violations->count(), (string) $violations);
         $this->get('pim_user.saver.user')->save($user);
 
         return $user;

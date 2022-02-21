@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Channel\Test\Integration\Query;
+namespace Akeneo\Test\Channel\Locale\Integration\Query;
 
-use Akeneo\Channel\API\Query\GetEditableLocaleCodes;
-use Akeneo\Channel\Test\Integration\ChannelTestCase;
+use Akeneo\Channel\Locale\API\Query\GetEditableLocaleCodes;
+use Akeneo\Test\Channel\Locale\Integration\ChannelTestCase;
 use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use PHPUnit\Framework\Assert;
 
