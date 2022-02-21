@@ -371,7 +371,7 @@ akeneo_connectivity.connection:
         data_destination: '¿Quieres ver algunos gráficos elegantes sobre tus conexiones de destino?'
       message_with_permission:
         message: Crea y comienza a rastrear tu primer
-        link: aquí. 
+        link: aquí.
       message_without_permission:
         message: Solicite a su administrador que cree una.
         link: Más información sobre conexiones aquí...
