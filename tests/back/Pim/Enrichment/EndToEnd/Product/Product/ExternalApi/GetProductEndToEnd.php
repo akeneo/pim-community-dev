@@ -201,11 +201,15 @@ class GetProductEndToEnd extends AbstractProductTestCase
 
     public function test_it_gets_a_product_with_quality_scores()
     {
-        $this->createProduct('product', [
+        $product = $this->createProduct('product', [
             'family'     => 'familyA',
             'categories' => [],
             'groups'     => [],
             'values'     => [],
+        ]);
+
+        ($this->get('Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'))([
+            $product->getId(),
         ]);
 
         $client = $this->createAuthenticatedClient();

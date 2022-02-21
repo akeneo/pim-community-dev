@@ -1,12 +1,12 @@
 import React from 'react';
 import {QualityScoreBar} from '../QualityScoreBar';
 import {useCatalogContext, useFetchProductQualityScore} from '../../../infrastructure/hooks';
+import {QualityScoreLoader} from '../QualityScoreLoader';
 
 const QualityScoreProductHeader = () => {
   const {channel, locale} = useCatalogContext();
-  const score = useFetchProductQualityScore(channel, locale);
-
-  return <QualityScoreBar currentScore={score ? score : null} />;
+  const {score, isLoading} = useFetchProductQualityScore(channel, locale);
+  return isLoading ? <QualityScoreLoader /> : <QualityScoreBar currentScore={score} />;
 };
 
 export {QualityScoreProductHeader};

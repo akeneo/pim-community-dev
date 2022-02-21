@@ -12,8 +12,8 @@ const useProductEvaluation = () => {
     const evaluation = productId ? state.productEvaluation[productId] : undefined;
 
     return {
-      evaluation: evaluation,
-      productId: productId,
+      evaluation,
+      productId,
       productUpdated,
     };
   });

@@ -48,12 +48,21 @@ final class VariantProductRatio implements VariantProductRatioInterface
         return $this->fetchResults($join, $productModel, $channel, $locale);
     }
 
+    /**
+     * At first, the `product_model_id` filtering on to check that is not null seems to be irrelevant.
+     * Actually, it is useful because Mysql has not enough information to determine itself that `product_model_id` is not null.
+     * Therefore, if there are many empty values for `product_model_id` in the database (= many simple products),
+     * it does not use the index on parent id when looking for a variant product.
+     * In such case, Mysql think that filtering on `product_model_id` is not a good filter and prefer to perform a very expensive Full Table Scan on the product table.
+     * See https://dev.mysql.com/doc/refman/8.0/en/index-statistics.html
+     * Another option would be to use `innodb_stats_method=nulls_unequal` but it can have many side effects.
+     */
     private function joinToProductWithTwoLevels(): string
     {
         return <<<SQL
                 FROM pim_catalog_product_model AS root_product_model
                 INNER JOIN pim_catalog_product_model as sub_product_model ON sub_product_model.parent_id = root_product_model.id
-                INNER JOIN pim_catalog_product product ON product.product_model_id = sub_product_model.id
+                INNER JOIN pim_catalog_product product ON product.product_model_id = sub_product_model.id AND product.product_model_id IS NOT NULL
 SQL;
     }
 

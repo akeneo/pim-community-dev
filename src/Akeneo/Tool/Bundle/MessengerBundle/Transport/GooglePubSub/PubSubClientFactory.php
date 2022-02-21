@@ -27,7 +27,8 @@ class PubSubClientFactory
     public function createPubSubClient(array $config): PubSubClient
     {
         return new PubSubClient(array_merge([
-            'keyFilePath' => $this->keyFilePath
+            'keyFilePath' => $this->keyFilePath,
+            'transport' => 'rest',
         ], $config));
     }
 }
