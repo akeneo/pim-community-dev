@@ -16,7 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserInte
 use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\UserIntent;
 use Akeneo\Platform\TailoredImport\Domain\Model\TargetInterface;
 
-interface UserIntentCreatorInterface
+interface UserIntentFactoryInterface
 {
     public function create(TargetInterface $target, string $value): UserIntent;
 

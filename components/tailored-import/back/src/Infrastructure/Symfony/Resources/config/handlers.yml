@@ -22,7 +22,7 @@ services:
   akeneo.tailored_import.user_intent_registry:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry
     arguments:
-      - !tagged_iterator akeneo.tailored_import.user_intent_creator
+      - !tagged_iterator akeneo.tailored_import.user_intent_factory
 
   akeneo.tailored_import.user_intent_aggregator:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentAggregator\UserIntentAggregator

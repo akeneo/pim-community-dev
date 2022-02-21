@@ -13,28 +13,28 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry;
 
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentCreatorInterface;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\TargetInterface;
 use PhpSpec\ObjectBehavior;
 
 class UserIntentRegistrySpec extends ObjectBehavior
 {
-    public function it_return_the_first_supported_user_intent_creator(
+    public function it_return_the_first_supported_user_intent_factory(
         TargetInterface $target,
-        UserIntentCreatorInterface $supportedUserIntentCreator,
-        UserIntentCreatorInterface $unsupportedUserIntentCreator,
-        UserIntentCreatorInterface $anotherSupportedUserIntentCreator,
+        UserIntentFactoryInterface $supportedUserIntentFactory,
+        UserIntentFactoryInterface $unsupportedUserIntentFactory,
+        UserIntentFactoryInterface $anotherSupportedUserIntentFactory,
     ) {
-        $unsupportedUserIntentCreator->supports($target)->willReturn(false);
-        $supportedUserIntentCreator->supports($target)->willReturn(true);
-        $anotherSupportedUserIntentCreator->supports($target)->willReturn(true);
+        $unsupportedUserIntentFactory->supports($target)->willReturn(false);
+        $supportedUserIntentFactory->supports($target)->willReturn(true);
+        $anotherSupportedUserIntentFactory->supports($target)->willReturn(true);
 
         $this->beConstructedWith([
-            $unsupportedUserIntentCreator,
-            $supportedUserIntentCreator,
-            $anotherSupportedUserIntentCreator
+            $unsupportedUserIntentFactory,
+            $supportedUserIntentFactory,
+            $anotherSupportedUserIntentFactory
         ]);
 
-        $this->getUserIntentCreator($target)->shouldReturn($supportedUserIntentCreator);
+        $this->getUserIntentFactory($target)->shouldReturn($supportedUserIntentFactory);
     }
 }

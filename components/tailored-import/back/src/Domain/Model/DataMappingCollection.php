@@ -17,6 +17,7 @@ class DataMappingCollection implements \IteratorAggregate
         private array $dataMappings,
     ) {
         Assert::allIsInstanceOf($this->dataMappings, DataMapping::class);
+        Assert::notEmpty($this->dataMappings);
     }
 
     public static function create(array $dataMappings): self

@@ -38,8 +38,8 @@ class ExecuteDataMappingHandler
             if ($target instanceof TargetAttribute && $target->getCode() === $identifierAttributeCode) {
                 $productIdentifier = $value;
             } else {
-                $userIntentCreator = $this->userIntentRegistry->getUserIntentCreator($target);
-                $userIntents[] = $userIntentCreator->create($target, $value);
+                $userIntentFactory = $this->userIntentRegistry->getUserIntentFactory($target);
+                $userIntents[] = $userIntentFactory->create($target, $value);
             }
         }
 

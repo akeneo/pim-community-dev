@@ -18,13 +18,13 @@ use Akeneo\Platform\TailoredImport\Domain\Model\TargetInterface;
 class UserIntentRegistry
 {
     /**
-     * @var iterable<UserIntentCreatorInterface> $factories
+     * @var iterable<UserIntentFactoryInterface> $factories
      */
     public function __construct(private iterable $factories)
     {
     }
 
-    public function getUserIntentCreator(TargetInterface $target): UserIntentCreatorInterface
+    public function getUserIntentFactory(TargetInterface $target): UserIntentFactoryInterface
     {
         foreach ($this->factories as $factory) {
             if ($factory->supports($target)) {

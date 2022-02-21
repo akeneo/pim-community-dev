@@ -23,7 +23,7 @@ class TargetAttribute implements TargetInterface
         private string $actionIfEmpty,
     ) {
         Assert::stringNotEmpty($this->code);
-        Assert::stringNotEmpty($this->type, '');
+        Assert::stringNotEmpty($this->type);
         Assert::notSame($this->channel, '');
         Assert::notSame($this->locale, '');
         Assert::inArray($this->actionIfNotEmpty, [TargetInterface::ACTION_ADD, TargetInterface::ACTION_SET]);

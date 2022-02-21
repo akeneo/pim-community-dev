@@ -37,4 +37,10 @@ class DataMappingCollectionSpec extends ObjectBehavior
 
         $this->getIterator()->shouldHaveCount(1);
     }
+
+    public function it_cannot_be_initialized_without_data_mapping()
+    {
+        $this->beConstructedThrough('create', [[]]);
+        $this->shouldThrow(new \InvalidArgumentException('Expected a non-empty value. Got: array'))->duringInstantiation();
+    }
 }
