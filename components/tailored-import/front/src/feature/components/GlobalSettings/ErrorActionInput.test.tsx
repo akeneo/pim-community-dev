@@ -4,38 +4,28 @@ import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {ErrorActionInput} from './ErrorActionInput';
 
-const mockUuid = 'd1249682-720e-11ec-90d6-0242ac120003';
-jest.mock('akeneo-design-system', () => ({
-  ...jest.requireActual('akeneo-design-system'),
-  uuid: () => mockUuid,
-}));
-
-test('it displays the error action input', async () => {
+test('it displays the error action input', () => {
   const handleChange = jest.fn();
   renderWithProviders(<ErrorActionInput value="skip_value" onChange={handleChange} validationErrors={[]} />);
 
   expect(
-    screen.getByText('akeneo.tailored_import.global_settings.error_management.helper_message')
+    screen.getByText('akeneo.tailored_import.global_settings.error_action.helper_message')
   ).toBeInTheDocument();
 
-  userEvent.click(screen.getByText('akeneo.tailored_import.global_settings.error_management.label'));
-  userEvent.click(screen.getByText('akeneo.tailored_import.global_settings.error_management.skip_product'));
+  userEvent.click(screen.getByText('akeneo.tailored_import.global_settings.error_action.label'));
+  userEvent.click(screen.getByText('akeneo.tailored_import.global_settings.error_action.skip_product'));
 
   expect(handleChange).toBeCalledWith('skip_product');
 });
 
-test('it can set the error action', async () => {
+test('it can set the error action', () => {
   const handleChange = jest.fn();
-  renderWithProviders(<ErrorActionInput value="skip_value" onChange={handleChange} validationErrors={[]} />);
+  renderWithProviders(<ErrorActionInput value="skip_product" onChange={handleChange} validationErrors={[]} />);
 
-  expect(
-    screen.getByText('akeneo.tailored_import.global_settings.error_management.helper_message')
-  ).toBeInTheDocument();
+  userEvent.click(screen.getByText('akeneo.tailored_import.global_settings.error_action.label'));
+  userEvent.click(screen.getByText('akeneo.tailored_import.global_settings.error_action.skip_value'));
 
-  userEvent.click(screen.getByText('akeneo.tailored_import.global_settings.error_management.label'));
-  userEvent.click(screen.getByText('akeneo.tailored_import.global_settings.error_management.skip_product'));
-
-  expect(handleChange).toBeCalledWith('skip_product');
+  expect(handleChange).toBeCalledWith('skip_value');
 });
 
 test('it display the validation errors', async () => {

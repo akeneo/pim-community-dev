@@ -13,7 +13,7 @@ const ErrorActionInput = ({value, validationErrors, onChange}: ErrorActionInputP
   const translate = useTranslate();
 
   return (
-    <Field label={translate('akeneo.tailored_import.global_settings.error_management.label')}>
+    <Field label={translate('akeneo.tailored_import.global_settings.error_action.label')}>
       <SelectInput
         invalid={validationErrors.length > 0}
         emptyResultLabel={translate('pim_common.no_result')}
@@ -27,14 +27,14 @@ const ErrorActionInput = ({value, validationErrors, onChange}: ErrorActionInputP
         clearable={false}
       >
         <SelectInput.Option value="skip_product">
-          {translate('akeneo.tailored_import.global_settings.error_management.skip_product')}
+          {translate('akeneo.tailored_import.global_settings.error_action.skip_product')}
         </SelectInput.Option>
         <SelectInput.Option value="skip_value">
-          {translate('akeneo.tailored_import.global_settings.error_management.skip_value')}
+          {translate('akeneo.tailored_import.global_settings.error_action.skip_value')}
         </SelectInput.Option>
       </SelectInput>
       <Helper level="info">
-        {translate('akeneo.tailored_import.global_settings.error_management.helper_message')}
+        {translate('akeneo.tailored_import.global_settings.error_action.helper_message')}
       </Helper>
       {validationErrors.map((error, index) => (
         <Helper key={index} inline={true} level="error">

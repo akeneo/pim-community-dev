@@ -2,7 +2,7 @@ batch_jobs.xlsx_tailored_product_import.label: Tailored product import in XLSX
 
 akeneo.tailored_import:
   global_settings:
-    error_management:
+    error_action:
       label: Operation error management
       skip_product: Skip product
       skip_value: Skip value
