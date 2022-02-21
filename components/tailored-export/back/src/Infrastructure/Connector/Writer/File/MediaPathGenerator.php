@@ -23,12 +23,12 @@ class MediaPathGenerator implements MediaPathGeneratorInterface
         $target = sprintf('files/%s/%s', $identifier, $attributeCode);
 
         if (null !== $locale) {
-            $target .= DIRECTORY_SEPARATOR . $locale;
+            $target .= DIRECTORY_SEPARATOR.$locale;
         }
         if (null !== $scope) {
-            $target .= DIRECTORY_SEPARATOR . $scope;
+            $target .= DIRECTORY_SEPARATOR.$scope;
         }
 
-        return $target . DIRECTORY_SEPARATOR;
+        return $target.DIRECTORY_SEPARATOR;
     }
 }

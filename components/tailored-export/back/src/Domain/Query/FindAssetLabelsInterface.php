@@ -17,11 +17,12 @@ interface FindAssetLabelsInterface
 {
     /**
      * @params string[] $assetCodes
+     *
      * @return array<string, string>
      */
     public function byAssetFamilyCodeAndAssetCodes(
         string $assetFamilyCode,
         array $assetCodes,
-        string $locale
+        string $locale,
     ): array;
 }

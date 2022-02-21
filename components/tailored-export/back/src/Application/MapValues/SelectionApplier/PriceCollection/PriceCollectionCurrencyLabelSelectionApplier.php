@@ -23,11 +23,9 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindCurrencyLabelsInterface;
 
 class PriceCollectionCurrencyLabelSelectionApplier implements SelectionApplierInterface
 {
-    private FindCurrencyLabelsInterface $findCurrencyLabels;
-
-    public function __construct(FindCurrencyLabelsInterface $findCurrencyLabels)
-    {
-        $this->findCurrencyLabels = $findCurrencyLabels;
+    public function __construct(
+        private FindCurrencyLabelsInterface $findCurrencyLabels,
+    ) {
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -39,7 +37,8 @@ class PriceCollectionCurrencyLabelSelectionApplier implements SelectionApplierIn
 
         $priceCollection = $value->getPriceCollection();
         $currencies = $selection->getCurrencies();
-        if ($currencies) {
+
+        if (!empty($currencies)) {
             $priceCollection = array_filter($priceCollection, static fn (Price $price) => in_array($price->getCurrency(), $currencies));
         }
 

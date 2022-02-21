@@ -25,15 +25,10 @@ use Webmozart\Assert\Assert;
  */
 final class IsValidAttributeValidator extends ConstraintValidator
 {
-    private GetAttributes $getAttributes;
-    private ChannelExistsWithLocaleInterface $channelExistsWithLocale;
-
     public function __construct(
-        GetAttributes $getAttributes,
-        ChannelExistsWithLocaleInterface $channelExistsWithLocale
+        private GetAttributes $getAttributes,
+        private ChannelExistsWithLocaleInterface $channelExistsWithLocale,
     ) {
-        $this->getAttributes = $getAttributes;
-        $this->channelExistsWithLocale = $channelExistsWithLocale;
     }
 
     /**
@@ -64,7 +59,7 @@ final class IsValidAttributeValidator extends ConstraintValidator
     }
 
     /**
-     * Check if channel data is consistent with the attribute is scopable property
+     * Check if channel data is consistent with the attribute is scopable property.
      */
     private function validateChannel(Attribute $attribute, ?string $channel): void
     {
@@ -85,7 +80,7 @@ final class IsValidAttributeValidator extends ConstraintValidator
     }
 
     /**
-     * Check if locale data is consistent with the attribute localizable property
+     * Check if locale data is consistent with the attribute localizable property.
      */
     private function validateLocale(Attribute $attribute, ?string $channel, ?string $localeCode): void
     {

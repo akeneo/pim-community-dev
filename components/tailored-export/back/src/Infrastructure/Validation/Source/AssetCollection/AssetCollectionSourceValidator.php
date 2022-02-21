@@ -26,8 +26,8 @@ class AssetCollectionSourceValidator extends ConstraintValidator
     {
         $validator = $this->context->getValidator();
         $sourceConstraintFields = SourceConstraintProvider::getConstraintCollection()->fields;
-        $sourceConstraintFields['selection'] =  new AssetCollectionSelectionConstraint([
-            'attributeCode' => $source['code'] ?? ''
+        $sourceConstraintFields['selection'] = new AssetCollectionSelectionConstraint([
+            'attributeCode' => $source['code'] ?? '',
         ]);
         $sourceConstraintFields['operations'] = new Collection(['fields' => [
             'default_value' => new Optional(new DefaultValueOperationConstraint()),
@@ -38,7 +38,7 @@ class AssetCollectionSourceValidator extends ConstraintValidator
         foreach ($violations as $violation) {
             $this->context->buildViolation(
                 $violation->getMessage(),
-                $violation->getParameters()
+                $violation->getParameters(),
             )
                 ->atPath($violation->getPropertyPath())
                 ->addViolation();

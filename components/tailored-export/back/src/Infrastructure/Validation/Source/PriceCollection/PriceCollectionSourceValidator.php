@@ -36,11 +36,11 @@ class PriceCollectionSourceValidator extends ConstraintValidator
         foreach ($violations as $violation) {
             $builder = $this->context->buildViolation(
                 $violation->getMessage(),
-                $violation->getParameters()
+                $violation->getParameters(),
             )
                 ->atPath($violation->getPropertyPath());
             if ($violation->getPlural()) {
-                $builder->setPlural((int)$violation->getPlural());
+                $builder->setPlural((int) $violation->getPlural());
             }
             $builder->addViolation();
         }

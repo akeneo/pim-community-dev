@@ -20,27 +20,14 @@ class PropertySource implements SourceInterface
 {
     public const TYPE = 'property';
 
-    private string $uuid;
-    private string $name;
-    private ?string $channelReference;
-    private ?string $localeReference;
-    private OperationCollection $operations;
-    private SelectionInterface $selection;
-
     public function __construct(
-        string $uuid,
-        string $name,
-        ?string $channelReference,
-        ?string $localeReference,
-        OperationCollection $operations,
-        SelectionInterface $selection
+        private string $uuid,
+        private string $name,
+        private ?string $channelReference,
+        private ?string $localeReference,
+        private OperationCollection $operations,
+        private SelectionInterface $selection,
     ) {
-        $this->uuid = $uuid;
-        $this->name = $name;
-        $this->channelReference = $channelReference;
-        $this->localeReference = $localeReference;
-        $this->operations = $operations;
-        $this->selection = $selection;
     }
 
     public function getUuid(): string

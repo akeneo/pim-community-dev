@@ -117,7 +117,7 @@ class AssetFamilyEditController extends BaseController {
     );
 
     this.store.dispatch(updateChannels(fetcherRegistry.getFetcher('channel')) as any);
-    this.store.dispatch(updateActivatedLocales() as any);
+    this.store.dispatch(updateActivatedLocales(fetcherRegistry.getFetcher('locale')) as any);
     this.store.dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));
     this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
     this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')) as any);

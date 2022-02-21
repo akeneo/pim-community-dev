@@ -3,9 +3,11 @@ import {getView} from 'akeneoassetmanager/application/configuration/sidebar';
 import {fakeConfig} from '../../utils/FakeConfigProvider';
 import {default as AttributeEditView} from 'akeneoassetmanager/application/component/asset-family/edit/attribute';
 
+const fakeSecurity = {isGranted: () => true};
+
 describe('akeneo > asset family > application > configuration --- sidebar', () => {
   test('I can get the tab list', () => {
-    expect(getTabs(fakeConfig.sidebar, 'akeneo_asset_manager_asset_family_edit')).toEqual([
+    expect(getTabs(fakeSecurity, fakeConfig.sidebar, 'akeneo_asset_manager_asset_family_edit')).toEqual([
       {
         code: 'attribute',
         label: 'First tab',
@@ -20,7 +22,7 @@ describe('akeneo > asset family > application > configuration --- sidebar', () =
     };
 
     try {
-      getTabs(tabConfig, 'my_view');
+      getTabs(fakeSecurity, tabConfig, 'my_view');
     } catch (error) {
       const confPath = `
 config:
@@ -49,7 +51,7 @@ Actual conf: {\"my_view\":{}}`;
     };
 
     try {
-      getTabs(tabConfig, 'my_view');
+      getTabs(fakeSecurity, tabConfig, 'my_view');
     } catch (error) {
       const confPath = `
 config:

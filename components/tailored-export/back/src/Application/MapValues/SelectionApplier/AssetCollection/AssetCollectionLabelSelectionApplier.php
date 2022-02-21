@@ -22,11 +22,9 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindAssetLabelsInterface;
 
 class AssetCollectionLabelSelectionApplier implements SelectionApplierInterface
 {
-    private FindAssetLabelsInterface $findAssetLabels;
-
-    public function __construct(FindAssetLabelsInterface $findAssetLabels)
-    {
-        $this->findAssetLabels = $findAssetLabels;
+    public function __construct(
+        private FindAssetLabelsInterface $findAssetLabels,
+    ) {
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -43,11 +41,11 @@ class AssetCollectionLabelSelectionApplier implements SelectionApplierInterface
         $assetTranslations = $this->findAssetLabels->byAssetFamilyCodeAndAssetCodes(
             $assetFamilyCode,
             $assetCodes,
-            $selection->getLocale()
+            $selection->getLocale(),
         );
 
         $selectedData = array_map(static fn ($assetCode) => $assetTranslations[$assetCode] ??
-            sprintf('[%s]', $assetCode), $assetCodes);
+            sprintf('[%s]', $assetCode), $assetCodes, );
 
         return implode($selection->getSeparator(), $selectedData);
     }

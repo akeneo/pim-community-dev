@@ -18,22 +18,20 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindAssetLabelsInterface;
 
 class FindAssetLabels implements FindAssetLabelsInterface
 {
-    private FindAssetLabelTranslationInterface $findAssetLabelTranslation;
-
-    public function __construct(FindAssetLabelTranslationInterface $findAssetLabelTranslation)
-    {
-        $this->findAssetLabelTranslation = $findAssetLabelTranslation;
+    public function __construct(
+        private FindAssetLabelTranslationInterface $findAssetLabelTranslation,
+    ) {
     }
 
     public function byAssetFamilyCodeAndAssetCodes(
         string $assetFamilyCode,
         array $assetCodes,
-        string $locale
+        string $locale,
     ): array {
         return $this->findAssetLabelTranslation->byFamilyCodeAndAssetCodes(
             $assetFamilyCode,
             $assetCodes,
-            $locale
+            $locale,
         );
     }
 }

@@ -22,11 +22,9 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyVariantLabelInterface;
 
 class FamilyVariantLabelSelectionApplier implements SelectionApplierInterface
 {
-    private FindFamilyVariantLabelInterface $findFamilyVariantLabel;
-
-    public function __construct(FindFamilyVariantLabelInterface $findFamilyVariantLabel)
-    {
-        $this->findFamilyVariantLabel = $findFamilyVariantLabel;
+    public function __construct(
+        private FindFamilyVariantLabelInterface $findFamilyVariantLabel,
+    ) {
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string

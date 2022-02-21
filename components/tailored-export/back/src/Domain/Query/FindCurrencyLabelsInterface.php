@@ -17,7 +17,8 @@ interface FindCurrencyLabelsInterface
 {
     /**
      * @param string[] $currencyCodes
-     * @return array<string, string | null>
+     *
+     * @return array<string, string|null>
      */
     public function byCodes(array $currencyCodes, string $locale): array;
 }

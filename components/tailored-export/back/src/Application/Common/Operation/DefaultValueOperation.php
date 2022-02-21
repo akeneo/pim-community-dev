@@ -15,11 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\Operation;
 
 class DefaultValueOperation implements OperationInterface
 {
-    private string $defaultValue;
-
-    public function __construct(string $defaultValue)
-    {
-        $this->defaultValue = $defaultValue;
+    public function __construct(
+        private string $defaultValue,
+    ) {
     }
 
     public function getDefaultValue(): string

@@ -25,7 +25,7 @@ class AkeneoTailoredExportExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('controllers.yml');
         $loader->load('format_appliers.yml');
         $loader->load('hydrators.yml');
@@ -42,13 +42,13 @@ class AkeneoTailoredExportExtension extends Extension
 
     /**
      * Enable or disable services related to Asset Manager based
-     * on the presence of the Asset Manager bundle
+     * on the presence of the Asset Manager bundle.
      */
     private function configureAssetManagerRelatedServices(ContainerBuilder $container): void
     {
         $bundles = $container->getParameter('kernel.bundles');
         if (isset($bundles['AkeneoAssetManagerBundle'])) {
-            $loader =  new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config/asset_manager'));
+            $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/asset_manager'));
             $loader->load('services.yml');
             $loader->load('queries.yml');
             $loader->load('validations.yml');
@@ -58,13 +58,13 @@ class AkeneoTailoredExportExtension extends Extension
 
     /**
      * Enable or disable services related to Asset Manager based
-     * on the presence of the Reference Entity bundle
+     * on the presence of the Reference Entity bundle.
      */
     private function configureReferenceEntityRelatedServices(ContainerBuilder $container): void
     {
         $bundles = $container->getParameter('kernel.bundles');
         if (isset($bundles['AkeneoReferenceEntityBundle'])) {
-            $loader =  new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config/reference_entity'));
+            $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/reference_entity'));
             $loader->load('controllers.yml');
             $loader->load('queries.yml');
             $loader->load('selection_appliers.yml');

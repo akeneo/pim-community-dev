@@ -24,15 +24,10 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 final class IsValidAssetAttributeValidator extends ConstraintValidator
 {
-    private GetAttributeAsMainMediaInterface $getAttributeAsMainMedia;
-    private ChannelExistsWithLocaleInterface $channelExistsWithLocale;
-
     public function __construct(
-        GetAttributeAsMainMediaInterface $getAttributeAsMainMedia,
-        ChannelExistsWithLocaleInterface $channelExistsWithLocale
+        private GetAttributeAsMainMediaInterface $getAttributeAsMainMedia,
+        private ChannelExistsWithLocaleInterface $channelExistsWithLocale,
     ) {
-        $this->getAttributeAsMainMedia = $getAttributeAsMainMedia;
-        $this->channelExistsWithLocale = $channelExistsWithLocale;
     }
 
     /**
@@ -58,12 +53,12 @@ final class IsValidAssetAttributeValidator extends ConstraintValidator
     }
 
     /**
-     * Check if channel data is consistent with the attribute is scopable property
+     * Check if channel data is consistent with the attribute is scopable property.
      */
     private function validateChannel(
         AttributeAsMainMedia $attributeAsMainMedia,
         string $assetFamilyCode,
-        ?string $channel
+        ?string $channel,
     ): void {
         if ($attributeAsMainMedia->isScopable()) {
             $this->validateScopableAttribute($assetFamilyCode, $channel);
@@ -82,13 +77,13 @@ final class IsValidAssetAttributeValidator extends ConstraintValidator
     }
 
     /**
-     * Check if locale data is consistent with the attribute localizable property
+     * Check if locale data is consistent with the attribute localizable property.
      */
     private function validateLocale(
         AttributeAsMainMedia $attributeAsMainMedia,
         string $assetFamilyCode,
         ?string $channel,
-        ?string $localeCode
+        ?string $localeCode,
     ): void {
         if (!$attributeAsMainMedia->isLocalizable() && null !== $localeCode) {
             $this->context->buildViolation(

@@ -21,23 +21,15 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
  * Job profile voter, allows to know if a job profile can be executed or edited by
- * a user depending on the attributes and locales in the sources of the job
+ * a user depending on the attributes and locales in the sources of the job.
  */
 class JobProfileVoter extends Voter implements VoterInterface
 {
-    private ?Voter $decoratedVoter;
-    private CanEditTailoredExport $canEditTailoredExport;
-    /** @var string[] */
-    private array $tailoredExportJobNames;
-
     public function __construct(
-        ?Voter $decoratedVoter,
-        CanEditTailoredExport $canEditTailoredExport,
-        array $tailoredExportJobNames
+        private ?Voter $decoratedVoter,
+        private CanEditTailoredExport $canEditTailoredExport,
+        private array $tailoredExportJobNames,
     ) {
-        $this->decoratedVoter = $decoratedVoter;
-        $this->canEditTailoredExport = $canEditTailoredExport;
-        $this->tailoredExportJobNames = $tailoredExportJobNames;
     }
 
     /**

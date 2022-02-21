@@ -21,17 +21,14 @@ use Akeneo\Platform\TailoredExport\Domain\Query\MeasurementConverterInterface;
 
 class MeasurementConversionOperationApplier implements OperationApplierInterface
 {
-    private MeasurementConverterInterface $measurementConverter;
-
     public function __construct(
-        MeasurementConverterInterface $measurementConverter
+        private MeasurementConverterInterface $measurementConverter,
     ) {
-        $this->measurementConverter = $measurementConverter;
     }
 
     public function applyOperation(
         OperationInterface $operation,
-        SourceValueInterface $value
+        SourceValueInterface $value,
     ): SourceValueInterface {
         if (
             !$operation instanceof MeasurementConversionOperation

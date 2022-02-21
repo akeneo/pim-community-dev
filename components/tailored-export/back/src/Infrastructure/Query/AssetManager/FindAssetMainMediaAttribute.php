@@ -23,32 +23,27 @@ use Akeneo\Platform\TailoredExport\Domain\Query\AssetCollection\MediaLinkAsMainM
 
 class FindAssetMainMediaAttribute implements FindAssetMainMediaAttributeInterface
 {
-    private GetAttributeAsMainMediaInterface $getAttributeAsMainMedia;
-
-    public function __construct(GetAttributeAsMainMediaInterface $getAttributeAsMainMedia)
-    {
-        $this->getAttributeAsMainMedia = $getAttributeAsMainMedia;
+    public function __construct(
+        private GetAttributeAsMainMediaInterface $getAttributeAsMainMedia,
+    ) {
     }
 
     public function forAssetFamily(string $assetFamilyCode): AttributeAsMainMedia
     {
         $attributeAsMainMedia = $this->getAttributeAsMainMedia->forAssetFamilyCode($assetFamilyCode);
 
-        switch (true) {
-            case $attributeAsMainMedia instanceof AssetManagerMediaFileAsMainMedia:
-                return new MediaFileAsMainMedia(
-                    $attributeAsMainMedia->isScopable(),
-                    $attributeAsMainMedia->isLocalizable()
-                );
-            case $attributeAsMainMedia instanceof AssetManagerMediaLinkAsMainMedia:
-                return new MediaLinkAsMainMedia(
-                    $attributeAsMainMedia->isScopable(),
-                    $attributeAsMainMedia->isLocalizable(),
-                    $attributeAsMainMedia->getPrefix(),
-                    $attributeAsMainMedia->getSuffix()
-                );
-            default:
-                throw new \InvalidArgumentException('Unsupported attribute type as main media');
-        }
+        return match (true) {
+            $attributeAsMainMedia instanceof AssetManagerMediaFileAsMainMedia => new MediaFileAsMainMedia(
+                $attributeAsMainMedia->isScopable(),
+                $attributeAsMainMedia->isLocalizable(),
+            ),
+            $attributeAsMainMedia instanceof AssetManagerMediaLinkAsMainMedia => new MediaLinkAsMainMedia(
+                $attributeAsMainMedia->isScopable(),
+                $attributeAsMainMedia->isLocalizable(),
+                $attributeAsMainMedia->getPrefix(),
+                $attributeAsMainMedia->getSuffix(),
+            ),
+            default => throw new \InvalidArgumentException('Unsupported attribute type as main media'),
+        };
     }
 }

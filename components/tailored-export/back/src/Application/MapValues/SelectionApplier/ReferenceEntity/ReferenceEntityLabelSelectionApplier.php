@@ -22,11 +22,9 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface;
 
 class ReferenceEntityLabelSelectionApplier implements SelectionApplierInterface
 {
-    private FindRecordLabelsInterface $findRecordLabels;
-
-    public function __construct(FindRecordLabelsInterface $findRecordLabels)
-    {
-        $this->findRecordLabels = $findRecordLabels;
+    public function __construct(
+        private FindRecordLabelsInterface $findRecordLabels,
+    ) {
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -40,7 +38,7 @@ class ReferenceEntityLabelSelectionApplier implements SelectionApplierInterface
         $recordTranslations = $this->findRecordLabels->byReferenceEntityCodeAndRecordCodes(
             $referenceEntityCode,
             [$recordCode],
-            $selection->getLocale()
+            $selection->getLocale(),
         );
 
         return $recordTranslations[$recordCode] ?? sprintf('[%s]', $recordCode);

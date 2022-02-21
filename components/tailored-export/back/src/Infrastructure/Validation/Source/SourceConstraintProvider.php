@@ -30,7 +30,7 @@ class SourceConstraintProvider
             'fields' => [
                 'uuid' => [
                     new NotBlank(),
-                    new Uuid()
+                    new Uuid(),
                 ],
                 'code' => [
                     new Type([
@@ -48,7 +48,7 @@ class SourceConstraintProvider
                         'type' => 'string',
                     ]),
                 ],
-                'type' =>  new Choice([
+                'type' => new Choice([
                     'choices' => [AttributeSource::TYPE, PropertySource::TYPE, AssociationTypeSource::TYPE],
                 ]),
             ],

@@ -30,12 +30,9 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class MeasurementSelectionValidator extends ConstraintValidator
 {
-    /** @var string[] */
-    private array $availableDecimalSeparator;
-
-    public function __construct(array $availableDecimalSeparator)
-    {
-        $this->availableDecimalSeparator = $availableDecimalSeparator;
+    public function __construct(
+        private array $availableDecimalSeparator,
+    ) {
     }
 
     public function validate($selection, Constraint $constraint): void
@@ -54,23 +51,23 @@ class MeasurementSelectionValidator extends ConstraintValidator
                                 MeasurementValueAndUnitLabelSelection::TYPE,
                                 MeasurementValueAndUnitSymbolSelection::TYPE,
                             ],
-                        ]
+                        ],
                     ),
                     'locale' => new Optional([new Type('string')]),
                     'decimal_separator' => new Optional(new Choice(
                         [
                             'choices' => $this->availableDecimalSeparator,
-                        ]
+                        ],
                     )),
                 ],
-            ]
+            ],
         ));
 
         if (0 < $violations->count()) {
             foreach ($violations as $violation) {
                 $this->context->buildViolation(
                     $violation->getMessage(),
-                    $violation->getParameters()
+                    $violation->getParameters(),
                 )
                     ->atPath($violation->getPropertyPath())
                     ->addViolation();
@@ -79,18 +76,19 @@ class MeasurementSelectionValidator extends ConstraintValidator
             return;
         }
 
-        if (MeasurementUnitLabelSelection::TYPE === $selection['type']
+        if (
+            MeasurementUnitLabelSelection::TYPE === $selection['type']
             || MeasurementValueAndUnitLabelSelection::TYPE === $selection['type']
         ) {
             $violations = $validator->validate($selection['locale'], [
                 new NotBlank(),
-                new LocaleShouldBeActive()
+                new LocaleShouldBeActive(),
             ]);
 
             foreach ($violations as $violation) {
                 $this->context->buildViolation(
                     $violation->getMessage(),
-                    $violation->getParameters()
+                    $violation->getParameters(),
                 )
                     ->atPath('[locale]')
                     ->addViolation();

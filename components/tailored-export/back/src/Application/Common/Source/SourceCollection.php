@@ -31,7 +31,7 @@ class SourceCollection implements \IteratorAggregate
     }
 
     /**
-     * @return SourceInterface[] | \Iterator
+     * @return SourceInterface[]|\Iterator
      */
     public function getIterator(): \Iterator
     {
@@ -40,7 +40,6 @@ class SourceCollection implements \IteratorAggregate
 
     /**
      * @param SourceInterface[] $sources
-     * @return SourceCollection
      */
     public static function create(array $sources): self
     {

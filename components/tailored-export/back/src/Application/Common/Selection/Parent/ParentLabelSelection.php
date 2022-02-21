@@ -17,15 +17,10 @@ final class ParentLabelSelection implements ParentSelectionInterface
 {
     public const TYPE = 'label';
 
-    private string $locale;
-    private string $channel;
-
     public function __construct(
-        string $locale,
-        string $channel
+        private string $locale,
+        private string $channel,
     ) {
-        $this->locale = $locale;
-        $this->channel = $channel;
     }
 
     public function getLocale(): string

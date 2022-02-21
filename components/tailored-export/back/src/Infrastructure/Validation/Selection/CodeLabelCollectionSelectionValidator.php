@@ -24,12 +24,9 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class CodeLabelCollectionSelectionValidator extends ConstraintValidator
 {
-    /** @var string[] */
-    private array $availableCollectionSeparator;
-
-    public function __construct(array $availableCollectionSeparator)
-    {
-        $this->availableCollectionSeparator = $availableCollectionSeparator;
+    public function __construct(
+        private array $availableCollectionSeparator,
+    ) {
     }
 
     public function validate($selection, Constraint $constraint): void
@@ -45,16 +42,16 @@ class CodeLabelCollectionSelectionValidator extends ConstraintValidator
                                     'code',
                                     'label',
                                 ],
-                            ]
+                            ],
                         ),
                         'separator' => new Choice(
                             [
                                 'choices' => $this->availableCollectionSeparator,
-                            ]
+                            ],
                         ),
                         'locale' => new Optional([new Type(['type' => 'string'])]),
                     ],
-                ]
+                ],
             ),
         ]);
 
@@ -62,7 +59,7 @@ class CodeLabelCollectionSelectionValidator extends ConstraintValidator
             foreach ($violations as $violation) {
                 $this->context->buildViolation(
                     $violation->getMessage(),
-                    $violation->getParameters()
+                    $violation->getParameters(),
                 )
                     ->atPath($violation->getPropertyPath())
                     ->addViolation();
@@ -74,13 +71,13 @@ class CodeLabelCollectionSelectionValidator extends ConstraintValidator
         if ('label' === $selection['type']) {
             $violations = $validator->validate($selection['locale'] ?? null, [
                 new NotBlank(),
-                new LocaleShouldBeActive()
+                new LocaleShouldBeActive(),
             ]);
 
             foreach ($violations as $violation) {
                 $this->context->buildViolation(
                     $violation->getMessage(),
-                    $violation->getParameters()
+                    $violation->getParameters(),
                 )
                     ->atPath('[locale]')
                     ->addViolation();

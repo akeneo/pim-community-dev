@@ -1,18 +1,17 @@
 import React from 'react';
 import $ from 'jquery';
-import {LocaleCode, getLabel, ChannelCode} from '@akeneo-pim-community/shared';
+import {LocaleCode, getLabel, ChannelCode, Router} from '@akeneo-pim-community/shared';
 import AssetCode, {denormalizeAssetCode, assetCodeStringValue} from 'akeneoassetmanager/domain/model/asset/code';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
 import ChannelReference, {channelReferenceStringValue} from 'akeneoassetmanager/domain/model/channel-reference';
-
-const routing = require('routing');
 import {isNull, isArray} from 'akeneoassetmanager/domain/model/utils';
 import ListAsset, {getListAssetMainMediaThumbnail} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 
 const renderRow = (
+  router: Router,
   label: string,
   normalizedAsset: ListAsset,
   withLink: boolean,
@@ -22,7 +21,7 @@ const renderRow = (
 ) => {
   return `
   <img width="34" height="34" src="${getMediaPreviewUrl(
-    routing,
+    router,
     getListAssetMainMediaThumbnail(normalizedAsset, channel, locale)
   )}" style="object-fit: cover;"/>
   <span class="select2-result-label-main">
@@ -38,7 +37,7 @@ const renderRow = (
       data-asset-family-identifier="${normalizedAsset.assetFamilyIdentifier}"
       data-asset-code="${normalizedAsset.code}"
       target="_blank"
-      href="#${routing.generate('akeneo_asset_manager_asset_edit', {
+      href="#${router.generate('akeneo_asset_manager_asset_edit', {
         assetFamilyIdentifier: normalizedAsset.assetFamilyIdentifier,
         assetCode: normalizedAsset.code,
         tab: 'enrich',
@@ -48,6 +47,7 @@ const renderRow = (
 };
 
 export type AssetSelectorProps = {
+  router: Router;
   value: AssetCode[] | AssetCode | null;
   assetFamilyIdentifier: AssetFamilyIdentifier;
   multiple?: boolean;
@@ -118,7 +118,7 @@ export default class AssetSelector extends React.Component<AssetSelectorProps> {
         dropdownCssClass,
         containerCssClass,
         ajax: {
-          url: routing.generate('akeneo_asset_manager_asset_index_rest', {
+          url: this.props.router.generate('akeneo_asset_manager_asset_index_rest', {
             assetFamilyIdentifier: this.props.assetFamilyIdentifier,
           }),
           quietMillis: 250,
@@ -200,6 +200,7 @@ export default class AssetSelector extends React.Component<AssetSelectorProps> {
             .append(
               $(
                 renderRow(
+                  this.props.router,
                   asset.text,
                   asset.original,
                   false,
@@ -216,6 +217,7 @@ export default class AssetSelector extends React.Component<AssetSelectorProps> {
             .append(
               $(
                 renderRow(
+                  this.props.router,
                   asset.text,
                   asset.original,
                   false,

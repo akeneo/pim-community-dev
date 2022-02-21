@@ -19,19 +19,13 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface
 
 class XlsxProductModelDefaultValueProvider implements DefaultValuesProviderInterface
 {
-    private DefaultValuesProviderInterface $simpleProvider;
-    /** @var string[] */
-    private array $supportedJobNames;
-
     /**
      * @param string[] $supportedJobNames
      */
     public function __construct(
-        DefaultValuesProviderInterface $simpleProvider,
-        array $supportedJobNames
+        private DefaultValuesProviderInterface $simpleProvider,
+        private array $supportedJobNames,
     ) {
-        $this->simpleProvider = $simpleProvider;
-        $this->supportedJobNames = $supportedJobNames;
     }
 
     /**
@@ -45,10 +39,10 @@ class XlsxProductModelDefaultValueProvider implements DefaultValuesProviderInter
         $defaultValues['filters'] = [
             'data' => [
                 [
-                    'field'    => 'categories',
+                    'field' => 'categories',
                     'operator' => Operators::NOT_IN_LIST,
-                    'value'    => []
-                ]
+                    'value' => [],
+                ],
             ],
         ];
 

@@ -15,11 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\Format;
 
 class SourceElement implements ElementInterface
 {
-    private string $value;
-
-    public function __construct(string $value)
-    {
-        $this->value = $value;
+    public function __construct(
+        private string $value,
+    ) {
     }
 
     public function getValue(): string

@@ -19,17 +19,12 @@ final class PriceCollectionCurrencyLabelSelection implements PriceCollectionSele
 {
     public const TYPE = 'currency_label';
 
-    private string $separator;
-    private string $locale;
-    private array $currencies;
-
-    public function __construct(string $separator, string $locale, array $currencies)
-    {
+    public function __construct(
+        private string $separator,
+        private string $locale,
+        private array $currencies,
+    ) {
         Assert::allString($currencies);
-
-        $this->separator = $separator;
-        $this->locale = $locale;
-        $this->currencies = $currencies;
     }
 
     public function getSeparator(): string

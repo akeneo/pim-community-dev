@@ -54,7 +54,6 @@ const Records = async (nodeElement, createElementDecorator, page) => {
   const filterOption = async (attributeCode, options) => {
     const containerSelector = `.AknFilterBox-filter[data-attribute="${attributeCode}"]`;
     await page.waitForSelector(containerSelector);
-    const container = await nodeElement.$(containerSelector);
 
     const filterSelector = `.AknFilterBox-filter[data-attribute="${attributeCode}"] .AknFilterBox-filterLabel`;
     await page.waitForSelector(filterSelector);

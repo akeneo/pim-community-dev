@@ -16,27 +16,25 @@ use Akeneo\Platform\TailoredExport\Domain\Query\MediaFileInfo\MediaFileInfo;
  */
 class FindMediaFileInfoCollection implements FindMediaFileInfoCollectionInterface
 {
-    private GetMainMediaFileInfoCollectionInterface $getMainMediaFileInfoCollection;
-
-    public function __construct(GetMainMediaFileInfoCollectionInterface $getMainMediaFileInfoCollection)
-    {
-        $this->getMainMediaFileInfoCollection = $getMainMediaFileInfoCollection;
+    public function __construct(
+        private GetMainMediaFileInfoCollectionInterface $getMainMediaFileInfoCollection,
+    ) {
     }
 
     public function forAssetFamilyAndAssetCodes(string $assetFamilyIdentifier, array $assetCodes): array
     {
         $mediaFileInfoCollection = $this->getMainMediaFileInfoCollection->forAssetFamilyAndAssetCodes(
             $assetFamilyIdentifier,
-            $assetCodes
+            $assetCodes,
         );
 
         return array_map(
             static fn (AssetManagerMediaFileInfo $assetManagerMediaFileInfo) => new MediaFileInfo(
                 $assetManagerMediaFileInfo->getFileKey(),
                 $assetManagerMediaFileInfo->getOriginalFilename(),
-                $assetManagerMediaFileInfo->getStorage()
+                $assetManagerMediaFileInfo->getStorage(),
             ),
-            $mediaFileInfoCollection
+            $mediaFileInfoCollection,
         );
     }
 }

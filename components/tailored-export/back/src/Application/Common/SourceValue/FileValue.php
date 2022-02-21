@@ -15,27 +15,14 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\SourceValue;
 
 class FileValue implements SourceValueInterface
 {
-    private string $entityIdentifier;
-    private string $storage;
-    private string $key;
-    private string $originalFilename;
-    private ?string $channel;
-    private ?string $locale;
-
     public function __construct(
-        string $entityIdentifier,
-        string $storage,
-        string $key,
-        string $originalFilename,
-        ?string $channel,
-        ?string $locale
+        private string $entityIdentifier,
+        private string $storage,
+        private string $key,
+        private string $originalFilename,
+        private ?string $channel,
+        private ?string $locale,
     ) {
-        $this->entityIdentifier = $entityIdentifier;
-        $this->storage = $storage;
-        $this->key = $key;
-        $this->originalFilename = $originalFilename;
-        $this->channel = $channel;
-        $this->locale = $locale;
     }
 
     public function getEntityIdentifier(): string

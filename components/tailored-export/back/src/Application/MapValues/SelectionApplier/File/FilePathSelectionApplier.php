@@ -22,11 +22,9 @@ use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Select
 
 class FilePathSelectionApplier implements SelectionApplierInterface
 {
-    private MediaPathGeneratorInterface $mediaPathGenerator;
-
-    public function __construct(MediaPathGeneratorInterface $mediaPathGenerator)
-    {
-        $this->mediaPathGenerator = $mediaPathGenerator;
+    public function __construct(
+        private MediaPathGeneratorInterface $mediaPathGenerator,
+    ) {
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -42,7 +40,7 @@ class FilePathSelectionApplier implements SelectionApplierInterface
             $value->getEntityIdentifier(),
             $selection->getAttributeCode(),
             $value->getChannelReference(),
-            $value->getLocaleReference()
+            $value->getLocaleReference(),
         );
 
         return sprintf('%s%s', $exportDirectory, $value->getOriginalFilename());

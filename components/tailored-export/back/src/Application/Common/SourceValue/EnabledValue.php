@@ -15,11 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\SourceValue;
 
 class EnabledValue implements SourceValueInterface
 {
-    private bool $isEnabled;
-
-    public function __construct(bool $isEnabled)
-    {
-        $this->isEnabled = $isEnabled;
+    public function __construct(
+        private bool $isEnabled,
+    ) {
     }
 
     public function isEnabled(): bool

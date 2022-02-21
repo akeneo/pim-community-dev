@@ -16,6 +16,6 @@ interface FindMediaFileInfoCollectionInterface
      */
     public function forAssetFamilyAndAssetCodes(
         string $assetFamilyIdentifier,
-        array $assetCodes
+        array $assetCodes,
     ): array;
 }

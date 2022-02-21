@@ -17,12 +17,9 @@ final class MultiSelectCodeSelection implements MultiSelectSelectionInterface
 {
     public const TYPE = 'code';
 
-    private string $separator;
-
     public function __construct(
-        string $separator
+        private string $separator,
     ) {
-        $this->separator = $separator;
     }
 
     public function getSeparator(): string

@@ -18,11 +18,9 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyVariantLabelInterface;
 
 class FindFamilyVariantLabel implements FindFamilyVariantLabelInterface
 {
-    private GetFamilyVariantTranslations $getFamilyVariantTranslations;
-
-    public function __construct(GetFamilyVariantTranslations $getFamilyVariantTranslations)
-    {
-        $this->getFamilyVariantTranslations = $getFamilyVariantTranslations;
+    public function __construct(
+        private GetFamilyVariantTranslations $getFamilyVariantTranslations,
+    ) {
     }
 
     public function byCode(string $familyVariantCode, string $locale): ?string

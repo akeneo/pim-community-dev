@@ -19,5 +19,6 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInt
 interface OperationApplierInterface
 {
     public function applyOperation(OperationInterface $operation, SourceValueInterface $value): SourceValueInterface;
+
     public function supports(OperationInterface $operation, SourceValueInterface $value): bool;
 }

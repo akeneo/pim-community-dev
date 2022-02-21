@@ -17,18 +17,11 @@ final class ReferenceEntityCollectionLabelSelection implements ReferenceEntityCo
 {
     public const TYPE = 'label';
 
-    private string $separator;
-    private string $locale;
-    private string $referenceEntityCode;
-
     public function __construct(
-        string $separator,
-        string $locale,
-        string $referenceEntityCode
+        private string $separator,
+        private string $locale,
+        private string $referenceEntityCode,
     ) {
-        $this->separator = $separator;
-        $this->locale = $locale;
-        $this->referenceEntityCode = $referenceEntityCode;
     }
 
     public function getSeparator(): string
