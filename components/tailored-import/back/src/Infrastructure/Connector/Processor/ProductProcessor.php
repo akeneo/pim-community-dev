@@ -8,8 +8,8 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingHandler;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingQuery;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
-use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
+use Akeneo\Platform\TailoredImport\Infrastructure\Connector\RowPayload;
 use Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\DataMappingCollectionHydrator;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -33,13 +33,15 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
 
     public function process($item)
     {
-        if (!$item instanceof Row) {
+        if (!$item instanceof RowPayload) {
             throw new \RuntimeException('Invalid type of item');
         }
 
-        $query = new ExecuteDataMappingQuery($item, $this->getDataMappingCollection());
+        $query = new ExecuteDataMappingQuery($item->getRow(), $this->getDataMappingCollection());
 
-        return $this->executeDataMappingHandler->handle($query);
+        $item->setUpsertProductCommand($this->executeDataMappingHandler->handle($query));
+
+        return $item;
     }
 
     private function getDataMappingCollection(): DataMappingCollection

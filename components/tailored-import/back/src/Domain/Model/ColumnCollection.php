@@ -42,4 +42,9 @@ class ColumnCollection
     {
         return new \ArrayIterator($this->columns);
     }
+
+    public function getLabels(): array
+    {
+        return array_map(static fn (Column $column) => $column->getLabel(), $this->columns);
+    }
 }

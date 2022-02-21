@@ -48,10 +48,12 @@ $rules = [
 
             'Akeneo\Channel\Component\Query\PublicApi',
             'Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand',
-            'Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler',
+            'Akeneo\Pim\Enrichment\Product\Api\UpsertProductHandlerInterface',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
             'Akeneo\Tool',
             'Akeneo\UserManagement\Component\Model\UserInterface',
+            'Akeneo\Pim\Enrichment\Product\Api\Command\Exception\LegacyViolationsException',
+            'Akeneo\Pim\Enrichment\Product\Api\Command\Exception\ViolationsException'
         ],
     )->in('Akeneo\Platform\TailoredImport\Infrastructure'),
 ];

@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader;
 
-use Akeneo\Platform\TailoredImport\Domain\Exception\MismatchedFileHeadersException;
 use Akeneo\Platform\TailoredImport\Domain\Model\ColumnCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Row;
-use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FileHeaderCollection;
+use Akeneo\Platform\TailoredImport\Infrastructure\Connector\RowPayload;
 use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FlatFileIteratorFactory;
 use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FlatFileIteratorInterface;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
@@ -58,10 +57,15 @@ class FileReader implements ItemReaderInterface, StepExecutionAwareInterface, In
             return null;
         }
 
+        $rowPosition = $this->fileIterator->key();
         $this->fileIterator->next();
         $this->checkColumnNumber($currentProductLine);
 
-        return new Row(array_combine($this->columnCollection->getColumnUuids(), $currentProductLine));
+        return new RowPayload(
+            new Row(array_combine($this->columnCollection->getColumnUuids(), $currentProductLine)),
+            $this->columnCollection,
+            $rowPosition
+        );
     }
 
     public function setStepExecution(StepExecution $stepExecution): void
@@ -77,20 +81,13 @@ class FileReader implements ItemReaderInterface, StepExecutionAwareInterface, In
             $this->columnCollection = ColumnCollection::createFromNormalized($normalizedColumns);
 
             $fileHeaders = $this->fileIterator->getHeaders();
-            $this->checkFileHeaders($fileHeaders);
+            $fileHeaders->assertColumnMatch($this->columnCollection);
         }
     }
 
     public function flush(): void
     {
         $this->fileIterator = null;
-    }
-
-    private function checkFileHeaders(FileHeaderCollection $fileHeaders): void
-    {
-        if (!$fileHeaders->matchToColumnCollection($this->columnCollection)) {
-            throw new MismatchedFileHeadersException();
-        }
     }
 
     private function createFileIterator(): FlatFileIteratorInterface

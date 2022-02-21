@@ -104,7 +104,7 @@ class XlsxFlatFileIteratorTest extends AcceptanceTestCase
      */
     public function it_throw_an_exception_when_sheet_is_not_found(): void
     {
-        $this->expectException(SheetNotFoundException::class);
+        $this->expectExceptionObject(new SheetNotFoundException('unknown sheet'));
         $this->getFlatFileIterator(sheetName: 'unknown sheet');
     }
 

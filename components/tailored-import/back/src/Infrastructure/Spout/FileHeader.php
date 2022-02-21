@@ -38,4 +38,9 @@ class FileHeader
     {
         return $this->index === $column->getIndex() && $this->label === $column->getLabel();
     }
+
+    public function getLabel(): string
+    {
+        return $this->label;
+    }
 }
