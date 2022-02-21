@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsExceptio
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
+use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -70,7 +71,7 @@ final class UpsertProductHandler
         foreach ($command->valuesUserIntent() as $index => $valueUserIntent) {
             $found = false;
             try {
-                if ($valueUserIntent instanceof SetTextValue || $valueUserIntent instanceof SetNumberValue) {
+                if ($valueUserIntent instanceof SetTextValue || $valueUserIntent instanceof SetNumberValue || $valueUserIntent instanceof SetTextareaValue) {
                     $found = true;
                     $this->productUpdater->update($product, [
                         'values' => [

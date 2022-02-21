@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Product\API\Command;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use PhpSpec\ObjectBehavior;
@@ -59,6 +60,26 @@ class UpsertProductCommandSpec extends ObjectBehavior
     function it_can_be_constructed_with_a_set_number_value_intent()
     {
         $valuesUserIntents = [new SetNumberValue('name', null, null, 10)];
+        $this->beConstructedWith(
+            1,
+            'identifier1',
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            $valuesUserIntents
+        );
+        $this->userId()->shouldReturn(1);
+        $this->productIdentifier()->shouldReturn('identifier1');
+        $this->valuesUserIntent()->shouldReturn($valuesUserIntents);
+    }
+
+    function it_can_be_constructed_with_a_set_textarea_value_intent()
+    {
+        $valuesUserIntents = [new SetTextareaValue('name', null, null, "<p><span style=\"font-weight: bold;\">title</span></p><p>text</p>")];
         $this->beConstructedWith(
             1,
             'identifier1',
