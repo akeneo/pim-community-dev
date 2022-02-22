@@ -1,6 +1,6 @@
 services:
   akeneo.job.command.launch_scheduled_jobs:
-    class: Akeneo\Platform\Job\back\Infrastructure\Command\LaunchScheduledJobsCommand
+    class: Akeneo\Platform\Job\Infrastructure\Command\LaunchScheduledJobsCommand
     arguments:
       - '@akeneo_batch.job.job_instance_repository'
       - '@pim_user.repository.user'

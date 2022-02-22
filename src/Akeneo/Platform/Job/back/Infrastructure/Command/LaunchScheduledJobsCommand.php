@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\Job\back\Infrastructure\Command;
+namespace Akeneo\Platform\Job\Infrastructure\Command;
 
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Launcher\QueueJobLauncher;
@@ -38,5 +38,7 @@ class LaunchScheduledJobsCommand extends Command
         $admin = $this->userRepository->findOneByIdentifier('admin');
 
         $this->queueJobLauncher->launch($productExport, $admin);
+
+        return 0;
     }
 }
