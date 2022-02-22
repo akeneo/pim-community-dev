@@ -48,11 +48,12 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
 
     public function getMissingCount(): int
     {
-        $sql = "
-SELECT COUNT(1)
-FROM %s
-WHERE JSON_CONTAINS_PATH(quantified_associations, 'one', '$.*.products[*].id')
-AND NOT JSON_CONTAINS_PATH(quantified_associations, 'one', '$.*.products[*].uuid');";
+        $sql = <<<SQL
+            SELECT COUNT(1)
+            FROM %s
+            WHERE JSON_CONTAINS_PATH(quantified_associations, 'one', '$.*.products[*].id')
+                AND NOT JSON_CONTAINS_PATH(quantified_associations, 'one', '$.*.products[*].uuid');
+        SQL;
 
         $count = 0;
         foreach (self::TABLE_NAMES as $tableName) {
@@ -72,7 +73,7 @@ AND NOT JSON_CONTAINS_PATH(quantified_associations, 'one', '$.*.products[*].uuid
 
     private function updateAssociations(string $tableName, $productAssociations): void
     {
-        // TODO Should be better than that
+        // TODO Optimize this query with Insert
 
         foreach ($productAssociations as $productAssociation) {
             $this->connection->executeQuery(sprintf(
@@ -86,13 +87,15 @@ AND NOT JSON_CONTAINS_PATH(quantified_associations, 'one', '$.*.products[*].uuid
 
     private function getFormerAssociations(string $tableName, $previousProductId = -1): array
     {
-        $associationsSql = "SELECT id, quantified_associations
-FROM %s
-WHERE JSON_CONTAINS_PATH(quantified_associations, 'one', '$.*.products[*].id')
-AND NOT JSON_CONTAINS_PATH(quantified_associations, 'one', '$.*.products[*].uuid')
-AND id > :previousProductId
-ORDER BY id 
-LIMIT :limit";
+        $associationsSql = <<<SQL
+            SELECT id, quantified_associations
+            FROM %s
+            WHERE JSON_CONTAINS_PATH(quantified_associations, 'one', '$.*.products[*].id')
+                AND NOT JSON_CONTAINS_PATH(quantified_associations, 'one', '$.*.products[*].uuid')
+                AND id > :previousProductId
+            ORDER BY id
+            LIMIT :limit
+        SQL;
 
         $associations = $this->connection->fetchAllAssociative(sprintf($associationsSql, $tableName), [
             'previousProductId' => $previousProductId,
