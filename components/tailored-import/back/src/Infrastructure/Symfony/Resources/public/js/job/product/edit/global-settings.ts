@@ -5,7 +5,7 @@ import {GlobalSettingsTab, GlobalSettingsTabProps} from '@akeneo-pim-enterprise/
 
 const __ = require('oro/translator');
 
-class ColumnView extends BaseView {
+class GlobalSettingsView extends BaseView {
   public config: any;
   private validationErrors: ValidationError[] = [];
 
@@ -80,4 +80,4 @@ class ColumnView extends BaseView {
   }
 }
 
-export = ColumnView;
+export = GlobalSettingsView;
