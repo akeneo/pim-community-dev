@@ -16,8 +16,7 @@ use Webmozart\Assert\Assert;
  */
 final class ChannelLocaleRateCollection implements \IteratorAggregate
 {
-    /** @var ChannelLocaleDataCollection */
-    private $rates;
+    private ChannelLocaleDataCollection $rates;
 
     public function __construct()
     {
@@ -56,7 +55,7 @@ final class ChannelLocaleRateCollection implements \IteratorAggregate
      *      'rank'  => int, // Rank of the rate (from 1 to 5)
      *      'value' => int, // Raw value (from 0 to 100)
      *  ]
-     * @param array{rank: int, value: int} $normalizedRates
+     * @param array<string, array<string, array{rank: int, value: int}>> $normalizedRates
      */
     public static function fromNormalizedRates(array $normalizedRates): self
     {
@@ -93,7 +92,7 @@ final class ChannelLocaleRateCollection implements \IteratorAggregate
     }
 
    /**
-    * @return array<int, array{rank: int, value: int}>
+    * @return array<string, array<string, array{rank: int, value: int}>>
     **/
     public function toNormalizedRates(): array
     {

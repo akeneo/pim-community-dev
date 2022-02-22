@@ -21,6 +21,12 @@ final class GetDataQualityInsightsPropertiesForProductModelProjection implements
     ) {
     }
 
+    /**
+     * @param array<string> $productModelCodes
+     * @param array<string, mixed> $context
+     *
+     * @return array<string, array{data_quality_insights: array{scores: array}}>
+     */
     public function fromProductModelCodes(array $productModelCodes, array $context = []): array
     {
         $productModelCodesIds = $this->getProductModelIdsFromProductModelCodesQuery->execute($productModelCodes);

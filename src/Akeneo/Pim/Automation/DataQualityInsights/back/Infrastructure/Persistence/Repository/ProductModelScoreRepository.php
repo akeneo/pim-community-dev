@@ -20,6 +20,9 @@ class ProductModelScoreRepository implements ProductModelScoreRepositoryInterfac
     ) {
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function saveAll(array $productsScores): void
     {
         if (empty($productsScores)) {
@@ -32,7 +35,6 @@ class ProductModelScoreRepository implements ProductModelScoreRepositoryInterfac
         $queriesParameters = [];
         $queriesParametersTypes = [];
 
-        /** @var Write\ProductScores $productModelScore */
         foreach ($productsScores as $index => $productModelScore) {
             $productModelId = sprintf('productModelId_%d', $index);
             $evaluatedAt = sprintf('evaluatedAt_%d', $index);

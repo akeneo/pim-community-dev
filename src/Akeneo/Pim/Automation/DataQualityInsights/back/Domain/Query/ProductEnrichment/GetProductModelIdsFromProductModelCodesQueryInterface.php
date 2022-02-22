@@ -13,7 +13,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 interface GetProductModelIdsFromProductModelCodesQueryInterface
 {
     /**
-     * @param string[] $productModelCodes
+     * @param array<string> $productModelCodes
      *
      * @return array<string, ProductId>
      */

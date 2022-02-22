@@ -19,10 +19,8 @@ final class GetProductModelIdsFromProductModelCodesQuery implements GetProductMo
     ) {
     }
 
-
     /**
-     * @param string[] $productIdentifiers
-     * @return array<string, ProductId>
+     * {@inheritdoc}
      */
     public function execute(array $productModelCodes): array
     {

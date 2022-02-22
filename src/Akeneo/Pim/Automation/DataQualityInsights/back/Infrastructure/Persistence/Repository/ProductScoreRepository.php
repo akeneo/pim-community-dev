@@ -42,6 +42,9 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
         $this->dbConnection = $dbConnection;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function saveAll(array $productsScores): void
     {
         if (empty($productsScores)) {
@@ -52,7 +55,6 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
         $queriesParameters = [];
         $queriesParametersTypes = [];
 
-        /** @var Write\ProductScores $productScore */
         foreach ($productsScores as $index => $productScore) {
             Assert::isInstanceOf($productScore, Write\ProductScores::class);
             $productId = sprintf('productId_%d', $index);
