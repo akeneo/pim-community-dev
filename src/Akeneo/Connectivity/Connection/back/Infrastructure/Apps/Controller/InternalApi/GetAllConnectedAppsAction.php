@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Repository\ConnectedAppRepositoryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindAllConnectedAppsQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,15 +19,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 final class GetAllConnectedAppsAction
 {
-    private FeatureFlag $featureFlag;
-    private ConnectedAppRepositoryInterface $connectedAppRepository;
-
     public function __construct(
-        FeatureFlag $featureFlag,
-        ConnectedAppRepositoryInterface $connectedAppRepository
+        private FeatureFlag $featureFlag,
+        private FindAllConnectedAppsQueryInterface $findAllConnectedAppsQuery,
     ) {
-        $this->featureFlag = $featureFlag;
-        $this->connectedAppRepository = $connectedAppRepository;
     }
 
     public function __invoke(Request $request): Response
@@ -40,7 +35,7 @@ final class GetAllConnectedAppsAction
             return new RedirectResponse('/');
         }
 
-        $connectedApps = $this->connectedAppRepository->findAll();
+        $connectedApps = $this->findAllConnectedAppsQuery->execute();
 
         return new JsonResponse(
             \array_map(fn (ConnectedApp $connectedApp) => $connectedApp->normalize(), $connectedApps)

@@ -7,7 +7,7 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Int
 use Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionQuery;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Repository\ConnectedAppRepositoryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByConnectionCodeQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
@@ -21,13 +21,13 @@ class DeleteAppActionSpec extends ObjectBehavior
     public function let(
         FeatureFlag $featureFlag,
         SecurityFacade $security,
-        ConnectedAppRepositoryInterface $connectedAppRepository,
+        FindOneConnectedAppByConnectionCodeQueryInterface $findOneConnectedAppByConnectionCodeQuery,
         DeleteAppHandler $deleteAppHandler,
     ): void {
         $this->beConstructedWith(
             $featureFlag,
             $security,
-            $connectedAppRepository,
+            $findOneConnectedAppByConnectionCodeQuery,
             $deleteAppHandler,
         );
     }

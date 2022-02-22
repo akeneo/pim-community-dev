@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Pim\Upgrade\Schema;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AsymmetricKeys;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\SaveAsymmetricKeysQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveAsymmetricKeysQuery;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
