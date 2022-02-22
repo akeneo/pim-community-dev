@@ -8,4 +8,4 @@ services:
             - '@pim_catalog.updater.product'
             - '@pim_catalog.validator.product'
         tags:
-            - { name: 'akeneo.pim.enrichment.product.handler', command: 'Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand' }
+            - { name: 'akeneo.pim.enrichment.product.handler', command: 'Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand' }

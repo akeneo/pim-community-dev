@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Product\Api;
+namespace Specification\Akeneo\Pim\Enrichment\Product\API;
 
-use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\Api\MessageBus;
-use Akeneo\Pim\Enrichment\Product\Api\UnknownCommandException;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\MessageBus;
+use Akeneo\Pim\Enrichment\Product\API\UnknownCommandException;
 use Akeneo\Test\Pim\Enrichment\Product\Helper\DummyHandler;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

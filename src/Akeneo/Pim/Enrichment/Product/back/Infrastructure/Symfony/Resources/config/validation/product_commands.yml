@@ -1,4 +1,4 @@
-Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand:
+Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand:
     group_sequence:
         - User
         - UpsertProductCommand

@@ -75,7 +75,9 @@ final class SqlGetCategoryCodes implements GetCategoryCodes
 
         $indexedResults = [];
         foreach ($results as $result) {
-            $indexedResults[$result['identifier']] = \json_decode($result['category_codes'], true);
+            /** @var string[] $decoded */
+            $decoded = \json_decode($result['category_codes'], true);
+            $indexedResults[(string) $result['identifier']] = $decoded;
         }
 
         return $indexedResults;

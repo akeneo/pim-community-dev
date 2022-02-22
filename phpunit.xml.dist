@@ -78,7 +78,7 @@
         </testsuite>
 
         <testsuite name="Enrichment_Product">
-            <directory suffix="Integration.php">src/Akeneo/Pim/Enrichment/Product/tests/back/Integration</directory>
+            <directory suffix="Integration.php">src/Akeneo/Pim/Enrichment/Product/back/Test/Integration</directory>
         </testsuite>
     </testsuites>
 </phpunit>
