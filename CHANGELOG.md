@@ -11,7 +11,7 @@
 - PIM-10259: Fix Arabic text being reversed in product PDF exports
 
 ## Improvements
-
+- PIM-10293: add batch-size option to pim:completness:calculate command
 - PIM-10229: Enforce strict samesite policy for session cookies
 
 ## New features
