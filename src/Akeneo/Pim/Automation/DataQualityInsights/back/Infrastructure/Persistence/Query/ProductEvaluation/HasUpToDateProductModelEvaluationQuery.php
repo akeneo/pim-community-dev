@@ -10,7 +10,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollec
 use Doctrine\DBAL\Connection;
 
 /**
- * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 final class HasUpToDateProductModelEvaluationQuery implements HasUpToDateEvaluationQueryInterface
@@ -21,11 +21,11 @@ final class HasUpToDateProductModelEvaluationQuery implements HasUpToDateEvaluat
 
     public function forProductId(ProductId $productId): bool
     {
-        $upToDateProducts = $this->forProductIds(ProductIdCollection::fromProductId($productId));
+        $upToDateProducts = $this->forProductIdCollection(ProductIdCollection::fromProductId($productId));
         return !is_null($upToDateProducts);
     }
 
-    public function forProductIds(ProductIdCollection $productIdCollection): ?ProductIdCollection
+    public function forProductIdCollection(ProductIdCollection $productIdCollection): ?ProductIdCollection
     {
         if ($productIdCollection->isEmpty()) {
             return null;
@@ -39,8 +39,6 @@ WHERE product_model.id IN (:product_ids)
   AND EXISTS(
         SELECT 1 FROM pim_data_quality_insights_product_model_criteria_evaluation AS evaluation
         WHERE evaluation.product_id = product_model.id
-          AND evaluation.evaluated_at >=
-              IF(parent.updated > product_model.updated, parent.updated, product_model.updated)
     )
 SQL;
 
@@ -60,7 +58,7 @@ SQL;
             return $resultRow['id'];
         }, $result);
 
-        if (empty($result)) {
+        if (empty($ids)) {
             return null;
         }
 
