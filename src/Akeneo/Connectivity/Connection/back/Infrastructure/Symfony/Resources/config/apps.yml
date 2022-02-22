@@ -113,6 +113,13 @@ services:
             - '@akeneo_connectivity.connection.application.handler.find_a_connection'
             - '@akeneo_connectivity.connection.application.handler.update_connection'
 
+    # COMMANDS
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Command\CreateOpenIdKeysCommand:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler'
+        tags:
+            - { name: 'console.command' }
+
     akeneo_connectivity.connection.service.apps.client_provider:
         class: Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider
         arguments:

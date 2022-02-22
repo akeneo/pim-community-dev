@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Cli;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Command;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler;
