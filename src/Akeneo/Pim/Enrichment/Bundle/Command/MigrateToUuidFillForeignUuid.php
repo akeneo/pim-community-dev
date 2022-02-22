@@ -23,23 +23,24 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
      */
     public function shouldBeExecuted(): bool
     {
-        foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
-            if ($tableName === 'pim_catalog_product') {
-                continue;
-            }
-
+        foreach ($this->getTablesWithoutProductTable() as $tableName => $columnNames) {
             if (!$this->tableExists($tableName)) {
                 continue;
             }
 
             $isColumnExist = $this->columnExists($tableName, $columnNames[1]);
             $sql = <<<SQL
-            SELECT EXISTS (
-                SELECT 1 FROM {table_name} WHERE {column_name} IS {not} NULL {extra_condition} LIMIT 1
-            ) as missing
+                SELECT EXISTS (
+                    SELECT 1
+                    FROM {table_name}
+                    WHERE {column_name} 
+                    IS {not} NULL
+                    {extra_condition}
+                    LIMIT 1
+                ) as missing
             SQL;
 
-            $sql = strtr($sql, [
+            $query = strtr($sql, [
                 '{table_name}' => $tableName,
                 '{column_name}' => $isColumnExist ? $columnNames[1] : $columnNames[0],
                 '{not}' => $isColumnExist ? '' : 'NOT',
@@ -48,7 +49,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
                     : '',
             ]);
 
-            if ((bool) $this->connection->fetchOne($sql)) {
+            if ((bool) $this->connection->fetchOne($query)) {
                 return true;
             }
         }
@@ -59,11 +60,8 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
     public function getMissingCount(): int
     {
         $count = 0;
-        foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
-            if ($tableName === 'pim_catalog_product') {
-                continue;
-            }
-            $missingUuidCount = $this->getMissingCount2($tableName, $columnNames[1], $columnNames[0]);
+        foreach ($this->getTablesWithoutProductTable() as $tableName => $columnNames) {
+            $missingUuidCount = $this->getMissingForeignUuidCount($tableName, $columnNames[1], $columnNames[0]);
             $count += $missingUuidCount;
         }
 
@@ -72,12 +70,8 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
 
     public function addMissing(bool $dryRun, OutputInterface $output): void
     {
-        foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
-            if ($tableName === 'pim_catalog_product') {
-                continue;
-            }
-
-            $count = $this->getMissingCount2($tableName, $columnNames[1], $columnNames[0]);
+        foreach ($this->getTablesWithoutProductTable() as $tableName => $columnNames) {
+            $count = $this->getMissingForeignUuidCount($tableName, $columnNames[1], $columnNames[0]);
             $output->writeln(sprintf('    Will add %d foreign uuids in "%s" table', $count, $tableName));
             if ($count > 0 && !$dryRun) {
                 $this->fillMissingForeignUuidInsert($tableName, $columnNames[0], $columnNames[1]);
@@ -85,36 +79,43 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
         }
     }
 
-    private function getMissingCount2(string $tableName, string $uuidColumnName, string $idColumnName): int
+    private function getMissingForeignUuidCount(string $tableName, string $uuidColumnName, string $idColumnName): int
     {
         if (!$this->tableExists($tableName)) {
             return 0;
         }
 
         if ($this->columnExists($tableName, $uuidColumnName)) {
-            return $this->getMissingUuidCount($tableName, $uuidColumnName);
+            return $this->getNullCellCount($tableName, $uuidColumnName);
         }
 
-        return $this->getMissingUuidCount($tableName, $idColumnName, true);
+        return $this->getNullCellCount($tableName, $idColumnName, true);
     }
 
-    private function getMissingUuidCount(string $tableName, string $uuidColumnName, bool $not = false): int
+    private function getNullCellCount(string $tableName, string $columnName, bool $not = false): int
     {
-        $sql = sprintf('SELECT COUNT(*) FROM %s WHERE %s IS %s NULL', $tableName, $uuidColumnName, $not ? 'NOT' : '');
+        $sql = <<<SQL
+            SELECT COUNT(*)
+            FROM %s 
+            WHERE %s IS %s NULL
+        SQL;
+
+        $query = sprintf($sql, $tableName, $columnName, $not ? 'NOT' : '');
         if ($tableName === 'pim_versioning_version') {
-            $sql .= ' AND resource_name="Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"';
+            $query .= ' AND resource_name="Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"';
         }
 
-        $result = $this->connection->fetchOne($sql);
-
-        return (int) $result;
+        return (int) $this->connection->fetchOne($query);
     }
 
     private function fillMissingForeignUuidInsert(string $tableName, string $idColumnName, string $uuidColumnName): void
     {
-        // TODO CREATE INDEX toto ON pim_catalog_product (uuid);
+        $sql = <<<SQL
+            UPDATE %s t, pim_catalog_product p 
+            SET t.%s = p.uuid
+            WHERE t.%s=p.id
+        SQL;
 
-        $sql = 'UPDATE %s t, pim_catalog_product p SET t.%s = p.uuid WHERE t.%s=p.id';
         if ($tableName === 'pim_versioning_version') {
             $sql .= ' AND t.resource_name="Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"';
         }
@@ -125,5 +126,14 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
             $uuidColumnName,
             $idColumnName
         ));
+    }
+
+    private function getTablesWithoutProductTable(): array
+    {
+        return array_filter(
+            self::TABLES,
+            fn (string $tableName): bool => $tableName !== 'pim_catalog_product',
+            ARRAY_FILTER_USE_KEY
+        );
     }
 }
