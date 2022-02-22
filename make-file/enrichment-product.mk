@@ -21,7 +21,8 @@ enrichment-product-lint-back:
 		src/Akeneo/Pim/Enrichment/Product/back/Application \
 		src/Akeneo/Pim/Enrichment/Product/back/Domain \
 		src/Akeneo/Pim/Enrichment/Product/back/Infrastructure \
-		src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance \
+		src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance/Context \
+		src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance/InMemory \
 		src/Akeneo/Pim/Enrichment/Product/back/Test/Helper \
 		src/Akeneo/Pim/Enrichment/Product/back/Test/Integration
 
