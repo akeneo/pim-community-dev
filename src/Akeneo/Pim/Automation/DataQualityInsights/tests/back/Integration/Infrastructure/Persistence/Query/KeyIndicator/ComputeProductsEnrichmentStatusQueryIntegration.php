@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\KeyIndicator;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator\ComputeProductsEnrichmentStatusQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
@@ -64,6 +65,8 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
             ]
         ])->getId();
 
+        ($this->get(EvaluateProducts::class))([$productId]);
+
         $expectedEnrichmentStatus = [$productId => [
             'ecommerce' => [
                 'en_US' => false,
@@ -87,6 +90,8 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
                 'description' => [['scope' => 'ecommerce', 'locale' => null, 'data' => 'Sample A']],
             ]
         ])->getId();
+
+        ($this->get(EvaluateProducts::class))([$productId]);
 
         $expectedEnrichmentStatus = [$productId => [
             'ecommerce' => [

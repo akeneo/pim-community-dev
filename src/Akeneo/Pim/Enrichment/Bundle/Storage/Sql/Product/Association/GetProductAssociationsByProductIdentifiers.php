@@ -41,6 +41,7 @@ final class GetProductAssociationsByProductIdentifiers
 
         $query = <<<SQL
 SELECT
+    /*+ SET_VAR(sort_buffer_size = 1000000) */
     product_identifier,
     JSON_OBJECTAGG(association_type_code, associations_by_type) as associations
 FROM (

@@ -1,7 +1,9 @@
+executor-machine: &executor-machine 'ubuntu-2004:202111-02'
+
 jobs:
     test_back_static_and_acceptance:
         machine:
-            image: ubuntu-2004:202101-01
+            image: *executor-machine
         steps:
             - attach_workspace:
                   at: ~/
@@ -38,7 +40,7 @@ jobs:
 
     test_back_phpunit:
         machine:
-            image: ubuntu-2004:202101-01
+            image: *executor-machine
         parallelism: 20
         steps:
             - attach_workspace:
@@ -70,7 +72,7 @@ jobs:
 
     cypress_sanity_checks:
         machine:
-            image: ubuntu-1604:201903-01
+            image: *executor-machine
         resource_class: large
         steps:
             - attach_workspace:
@@ -103,7 +105,7 @@ jobs:
 
     test_back_behat_legacy:
         machine:
-            image: ubuntu-2004:202101-01
+            image: *executor-machine
         parallelism: 40
         steps:
             - attach_workspace:
@@ -159,7 +161,7 @@ jobs:
 
     test_front_static_acceptance_and_integration:
         machine:
-            image: ubuntu-2004:202101-01
+            image: *executor-machine
         steps:
             - attach_workspace:
                   at: ~/
@@ -181,7 +183,7 @@ jobs:
 
     test_back_performance:
         machine:
-            image: ubuntu-2004:202101-01
+            image: *executor-machine
         steps:
             - attach_workspace:
                   at: ~/
@@ -207,7 +209,7 @@ jobs:
 
     test_back_missing_structure_migrations:
         machine:
-            image: ubuntu-2004:202101-01
+            image: *executor-machine
         steps:
             -   attach_workspace:
                     at: ~/
@@ -234,7 +236,7 @@ jobs:
 
     test_back_data_migrations:
         machine:
-            image: ubuntu-2004:202101-01
+            image: *executor-machine
         steps:
             - attach_workspace:
                   at: ~/
@@ -262,7 +264,7 @@ jobs:
 
     test_onboarder_bundle:
         machine:
-            image: ubuntu-2004:202101-01
+            image: *executor-machine
         environment:
             FLAG_ONBOARDER_ENABLED: 1
         steps:
@@ -302,9 +304,6 @@ jobs:
             - run:
                   name: Change owner of PIM as some files have been created with wrong owner
                   command: sudo chown -R 1000:1000 ~/project
-            - run:
-                  name: Execute static analysis
-                  command: PIM_CONTEXT=onboarder make test-static-analysis
             - run:
                   name: PHP coupling detector
                   command: PIM_CONTEXT=onboarder make test-coupling-detector
@@ -346,7 +345,7 @@ jobs:
 
     test_database:
         machine:
-            image: ubuntu-2004:202010-01
+            image: *executor-machine
         parallelism: 1
         steps:
             - attach_workspace:

@@ -1,6 +1,5 @@
 import {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
-import {get as _get} from 'lodash';
 
 import {getProductEvaluationAction} from '../../reducer';
 import {useCatalogContext, useProductEvaluation} from '../index';
@@ -36,6 +35,29 @@ const useFetchProductDataQualityEvaluation = (productEvaluationFetcher: ProductE
 
   const dispatchAction = useDispatch();
 
+  // @todo To rework to avoid the "@ts-ignore"
+  const hasEvaluationInProgress = function (): boolean {
+    // @ts-ignore
+    if (false === evaluation.hasOwnProperty(channel)) {
+      return false;
+    }
+
+    // @ts-ignore
+    const channelEvaluations = evaluation[channel];
+    if (false === channelEvaluations.hasOwnProperty(locale)) {
+      return false;
+    }
+
+    // @ts-ignore
+    for (const criterionEvaluation of channelEvaluations[locale]) {
+      if (criterionEvaluation.status === 'in_progress') {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
   useEffect(() => {
     if (productId && hasToBeEvaluated && retries < MAXIMUM_RETRIES) {
       setTimeout(() => {
@@ -52,17 +74,12 @@ const useFetchProductDataQualityEvaluation = (productEvaluationFetcher: ProductE
 
   useEffect(() => {
     if (evaluation !== undefined) {
-      const notEvaluatedAxesList = Object.values(evaluation).filter(axisEvaluation => {
-        // @ts-ignore
-        return _get(axisEvaluation, [channel, locale, 'rate']) === null;
-      });
-
-      if (notEvaluatedAxesList.length === 0) {
-        setRetries(0);
-        setHasToBeEvaluated(false);
-      } else {
+      if (true === hasEvaluationInProgress()) {
         setRetries(retries + 1);
         setHasToBeEvaluated(retries < MAXIMUM_RETRIES);
+      } else {
+        setRetries(0);
+        setHasToBeEvaluated(false);
       }
     }
   }, [evaluation]);

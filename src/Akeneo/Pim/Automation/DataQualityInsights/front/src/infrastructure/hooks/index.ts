@@ -8,6 +8,7 @@ import {useFetchProductQualityScore} from './ProductEditForm/useFetchProductQual
 import usePageContext from './ProductEditForm/usePageContext';
 import useProductEvaluation from './ProductEditForm/useProductEvaluation';
 import {useFetchKeyIndicators} from './Dashboard/useFetchKeyIndicators';
+import {useEvaluateProduct} from './ProductEditForm/useEvaluateProduct';
 import {RawScoreEvolutionData, useFetchQualityScoreEvolution} from './Dashboard/useFetchQualityScoreEvolution';
 
 export * from './AttributeGroup';
@@ -24,5 +25,6 @@ export {
   useProductEvaluation,
   useFetchKeyIndicators,
   useFetchQualityScoreEvolution,
+  useEvaluateProduct,
   RawScoreEvolutionData,
 };

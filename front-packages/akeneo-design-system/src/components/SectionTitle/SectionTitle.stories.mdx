@@ -6,14 +6,12 @@ import {Scrollable, Content} from '../../storybook/PreviewGallery';
 
 <Meta
   title="Components/Section title"
+  component={SectionTitle}
   subcomponents={{
-    SectionTitle,
-  }}
-  argTypes={{
-    SectionTitle: {control: {type: 'text'}, description: 'Define the section title text'},
+    'SectionTitle.Title': SectionTitle.Title,
   }}
   args={{
-    SectionTitle: 'General parameters',
+    children: 'General parameters',
   }}
 />
 
@@ -34,7 +32,7 @@ Use this component only for title, not for description or help message.
     {args => {
       return (
         <SectionTitle>
-          <SectionTitle.Title>{args.SectionTitle}</SectionTitle.Title>
+          <SectionTitle.Title>{args.children}</SectionTitle.Title>
         </SectionTitle>
       );
     }}
@@ -77,5 +75,22 @@ Use this component only for title, not for description or help message.
       </SectionTitle>
       <Content height={400}>Some other content</Content>
     </Scrollable>
+  </Story>
+</Canvas>
+
+## Variation on `SectionTitle.Title` level
+
+<Canvas>
+  <Story name="Title level">
+    <SectionTitle>
+      <SectionTitle.Title>Primary section</SectionTitle.Title>
+      <SectionTitle.Spacer />
+      <Button>Action</Button>
+    </SectionTitle>
+    <SectionTitle>
+      <SectionTitle.Title level="secondary">Secondary section</SectionTitle.Title>
+      <SectionTitle.Spacer />
+      <Button>Action</Button>
+    </SectionTitle>
   </Story>
 </Canvas>

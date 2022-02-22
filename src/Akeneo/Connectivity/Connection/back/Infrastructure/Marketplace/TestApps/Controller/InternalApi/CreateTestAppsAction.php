@@ -29,6 +29,7 @@ final class CreateTestAppsAction
 {
     public function __construct(
         private FeatureFlag $appDevModeFeatureFlag,
+        private FeatureFlag $activateFeatureFlag,
         private ValidatorInterface $validator,
         private TokenStorageInterface $tokenStorage,
         private CreateTestAppCommandHandler $createTestAppCommandHandler,
@@ -39,7 +40,7 @@ final class CreateTestAppsAction
 
     public function __invoke(Request $request): Response
     {
-        if (!$this->appDevModeFeatureFlag->isEnabled()) {
+        if (!$this->appDevModeFeatureFlag->isEnabled() || !$this->activateFeatureFlag->isEnabled()) {
             throw new NotFoundHttpException();
         }
 

@@ -84,7 +84,7 @@ SQL;
             'start_time', step_execution.start_time,
             'end_time', step_execution.end_time,
             'warning_count', step_execution.warning_count,
-            'errors', JSON_ARRAY(IFNULL(step_execution.failure_exceptions, 'a:0:{}'), IFNULL(step_execution.errors, 'a:0:{}')),
+            'has_error', IF(IFNULL(step_execution.failure_exceptions, 'a:0:{}') <> 'a:0:{}' OR IFNULL(step_execution.errors, 'a:0:{}') <> 'a:0:{}', 1, 0),
             'total_items', JSON_EXTRACT(step_execution.tracking_data, '$.totalItems'),
             'processed_items', JSON_EXTRACT(step_execution.tracking_data, '$.processedItems'),
             'status', step_execution.status,
@@ -129,12 +129,12 @@ SQL;
 
         if (!empty($search)) {
             $searchParts = explode(' ', $search);
-            foreach ($searchParts as $index => $searchPart) {
+            foreach (array_keys($searchParts) as $index) {
                 $sqlWhereParts[] = sprintf('job_instance.label LIKE :%s_%s', self::SEARCH_PART_PARAM_SUFFIX, $index);
             }
         }
 
-        return empty($sqlWhereParts) ? '' : 'AND ' . implode(' AND ', $sqlWhereParts);
+        return empty($sqlWhereParts) ? '' : 'AND '.implode(' AND ', $sqlWhereParts);
     }
 
     private function buildSqlOrderByPart(SearchJobExecutionQuery $query): string
@@ -142,11 +142,11 @@ SQL;
         $sortDirection = $query->sortDirection;
 
         $orderByColumn = match ($query->sortColumn) {
-            'job_name' => sprintf("job_instance.label %s", $sortDirection),
-            'type' => sprintf("job_instance.type %s", $sortDirection),
-            'started_at' => sprintf("job_execution.start_time %s", $sortDirection),
-            'username' => sprintf("job_execution.user %s", $sortDirection),
-            'status' => sprintf("job_execution.status %s", $sortDirection),
+            'job_name' => sprintf('job_instance.label %s', $sortDirection),
+            'type' => sprintf('job_instance.type %s', $sortDirection),
+            'started_at' => sprintf('job_execution.start_time %s', $sortDirection),
+            'username' => sprintf('job_execution.user %s', $sortDirection),
+            'status' => sprintf('job_execution.status %s', $sortDirection),
             default => throw new \InvalidArgumentException(sprintf('Unknown sort column "%s"', $query->sortColumn)),
         };
 
