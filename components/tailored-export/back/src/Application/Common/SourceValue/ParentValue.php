@@ -15,11 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\SourceValue;
 
 class ParentValue implements SourceValueInterface
 {
-    private string $parentCode;
-
-    public function __construct(string $parentCode)
-    {
-        $this->parentCode = $parentCode;
+    public function __construct(
+        private string $parentCode,
+    ) {
     }
 
     public function getParentCode(): string

@@ -23,28 +23,15 @@ use Akeneo\Platform\TailoredExport\Application\Common\ValueCollection;
 
 class ValueCollectionHydrator
 {
-    private ValueHydrator $valueHydrator;
-
     public function __construct(
-        ValueHydrator $valueHydrator
+        private ValueHydrator $valueHydrator,
     ) {
-        $this->valueHydrator = $valueHydrator;
     }
 
-    /**
-     * @param ProductInterface|ProductModelInterface $productOrProductModel
-     */
     public function hydrate(
-        $productOrProductModel,
-        ColumnCollection $columnConfiguration
+        ProductInterface|ProductModelInterface $productOrProductModel,
+        ColumnCollection $columnConfiguration,
     ): ValueCollection {
-        if (
-            !$productOrProductModel instanceof ProductInterface
-            && !$productOrProductModel instanceof ProductModelInterface
-        ) {
-            throw new \InvalidArgumentException('Cannot hydrate this entity');
-        }
-
         $allSources = $columnConfiguration->getAllSources();
         $valueCollection = new ValueCollection();
 

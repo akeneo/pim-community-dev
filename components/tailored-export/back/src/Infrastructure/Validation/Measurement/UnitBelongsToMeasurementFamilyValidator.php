@@ -19,11 +19,9 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class UnitBelongsToMeasurementFamilyValidator extends ConstraintValidator
 {
-    private MeasureManager $measureManager;
-
-    public function __construct(MeasureManager $measureManager)
-    {
-        $this->measureManager = $measureManager;
+    public function __construct(
+        private MeasureManager $measureManager,
+    ) {
     }
 
     /**
@@ -40,7 +38,7 @@ class UnitBelongsToMeasurementFamilyValidator extends ConstraintValidator
                 UnitBelongsToMeasurementFamily::FAMILY_DOES_NOT_EXIST,
                 [
                     '{{ measurement_family_code }}' => $constraint->measurementFamilyCode,
-                ]
+                ],
             )->addViolation();
         }
 
@@ -50,7 +48,7 @@ class UnitBelongsToMeasurementFamilyValidator extends ConstraintValidator
                 [
                     '{{ measurement_family_code }}' => $constraint->measurementFamilyCode,
                     '{{ unit_code }}' => $unitCode,
-                ]
+                ],
             )->addViolation();
         }
     }

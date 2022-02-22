@@ -30,7 +30,7 @@ class FileSourceValidator extends ConstraintValidator
     {
         $validator = $this->context->getValidator();
         $sourceConstraintFields = SourceConstraintProvider::getConstraintCollection()->fields;
-        $sourceConstraintFields['selection'] =  new Collection(
+        $sourceConstraintFields['selection'] = new Collection(
             [
                 'fields' => [
                     'type' => new Choice(
@@ -40,10 +40,10 @@ class FileSourceValidator extends ConstraintValidator
                                 FileNameSelection::TYPE,
                                 FilePathSelection::TYPE,
                             ],
-                        ]
-                    )
+                        ],
+                    ),
                 ],
-            ]
+            ],
         );
         $sourceConstraintFields['operations'] = new Collection(['fields' => [
             'default_value' => new Optional(new DefaultValueOperationConstraint()),
@@ -54,7 +54,7 @@ class FileSourceValidator extends ConstraintValidator
         foreach ($violations as $violation) {
             $this->context->buildViolation(
                 $violation->getMessage(),
-                $violation->getParameters()
+                $violation->getParameters(),
             )
                 ->atPath($violation->getPropertyPath())
                 ->addViolation();

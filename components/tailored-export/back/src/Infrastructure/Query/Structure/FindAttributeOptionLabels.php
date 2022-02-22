@@ -9,15 +9,13 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterfa
 
 class FindAttributeOptionLabels implements FindAttributeOptionLabelsInterface
 {
-    private GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues;
-
-    public function __construct(GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues)
-    {
-        $this->getExistingAttributeOptionsWithValues = $getExistingAttributeOptionsWithValues;
+    public function __construct(
+        private GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues,
+    ) {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function byAttributeCodeAndOptionCodes(string $attributeCode, array $optionCodes, string $locale): array
     {
@@ -34,7 +32,7 @@ class FindAttributeOptionLabels implements FindAttributeOptionLabelsInterface
 
                 return $carry;
             },
-            []
+            [],
         );
     }
 }

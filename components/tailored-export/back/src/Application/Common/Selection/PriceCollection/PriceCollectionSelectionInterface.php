@@ -18,5 +18,6 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterfa
 interface PriceCollectionSelectionInterface extends SelectionInterface
 {
     public function getSeparator(): string;
+
     public function getCurrencies(): array;
 }

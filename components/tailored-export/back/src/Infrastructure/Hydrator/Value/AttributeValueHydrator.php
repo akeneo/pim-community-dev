@@ -39,18 +39,15 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AttributeValueHydrator
 {
-    private NormalizerInterface $normalizer;
-
     public function __construct(
-        NormalizerInterface $normalizer
+        private NormalizerInterface $normalizer,
     ) {
-        $this->normalizer = $normalizer;
     }
 
     public function hydrate(
         ?ValueInterface $value,
         string $attributeType,
-        EntityWithValuesInterface $productOrProductModel
+        EntityWithValuesInterface $productOrProductModel,
     ): SourceValueInterface {
         if (
             !$productOrProductModel instanceof ProductInterface
@@ -71,7 +68,7 @@ class AttributeValueHydrator
                     array_map('strval', $data),
                     $productOrProductModel->getIdentifier(),
                     $value->getScopeCode(),
-                    $value->getLocaleCode()
+                    $value->getLocaleCode(),
                 );
             case 'pim_catalog_file':
             case 'pim_catalog_image':
@@ -81,7 +78,7 @@ class AttributeValueHydrator
                     $data->getKey(),
                     $data->getOriginalFilename(),
                     $value->getScopeCode(),
-                    $value->getLocaleCode()
+                    $value->getLocaleCode(),
                 );
             case 'pim_catalog_boolean':
                 return new BooleanValue($data);

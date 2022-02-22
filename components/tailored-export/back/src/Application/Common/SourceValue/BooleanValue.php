@@ -15,11 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\SourceValue;
 
 class BooleanValue implements SourceValueInterface
 {
-    private bool $data;
-
-    public function __construct(bool $data)
-    {
-        $this->data = $data;
+    public function __construct(
+        private bool $data,
+    ) {
     }
 
     public function getData(): bool

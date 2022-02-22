@@ -14,18 +14,11 @@ use Akeneo\Platform\TailoredExport\Application\Common\Source\SourceCollection;
 
 class ColumnCollectionHydrator
 {
-    private SelectionHydrator $selectionHydrator;
-    private FormatHydrator $formatHydrator;
-    private OperationCollectionHydrator $operationCollectionHydrator;
-
     public function __construct(
-        SelectionHydrator $selectionHydrator,
-        FormatHydrator $formatHydrator,
-        OperationCollectionHydrator $operationCollectionHydrator
+        private SelectionHydrator $selectionHydrator,
+        private FormatHydrator $formatHydrator,
+        private OperationCollectionHydrator $operationCollectionHydrator,
     ) {
-        $this->selectionHydrator = $selectionHydrator;
-        $this->formatHydrator = $formatHydrator;
-        $this->operationCollectionHydrator = $operationCollectionHydrator;
     }
 
     public function hydrate(array $columns, array $indexedAttributes, array $indexedAssociationTypes): ColumnCollection
@@ -49,7 +42,7 @@ class ColumnCollectionHydrator
     private function hydrateSourceCollection(
         array $sources,
         array $indexedAttributes,
-        array $indexedAssociationTypes
+        array $indexedAssociationTypes,
     ): SourceCollection {
         $sourceCollection = array_map(function ($source) use ($indexedAttributes, $indexedAssociationTypes) {
             if (AttributeSource::TYPE === $source['type']) {

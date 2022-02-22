@@ -9,15 +9,13 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface;
 
 class FindProductModelLabels implements FindProductModelLabelsInterface
 {
-    private GetProductModelLabelsInterface $getProductModelLabels;
-
-    public function __construct(GetProductModelLabelsInterface $getProductModelLabels)
-    {
-        $this->getProductModelLabels = $getProductModelLabels;
+    public function __construct(
+        private GetProductModelLabelsInterface $getProductModelLabels,
+    ) {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function byCodes(array $productModelCodes, string $channel, string $locale): array
     {

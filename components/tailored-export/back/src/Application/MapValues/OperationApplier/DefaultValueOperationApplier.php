@@ -23,7 +23,7 @@ class DefaultValueOperationApplier implements OperationApplierInterface
 {
     public function applyOperation(
         OperationInterface $operation,
-        SourceValueInterface $value
+        SourceValueInterface $value,
     ): SourceValueInterface {
         if (
             !$operation instanceof DefaultValueOperation

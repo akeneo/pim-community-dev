@@ -18,18 +18,18 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInt
 
 class OperationApplier
 {
-    /** @var iterable<OperationApplierInterface> */
-    private iterable $operationAppliers;
-
-    public function __construct(iterable $operationAppliers)
-    {
-        $this->operationAppliers = $operationAppliers;
+    /**
+     * @param OperationApplierInterface[] $operationAppliers
+     */
+    public function __construct(
+        private iterable $operationAppliers,
+    ) {
     }
 
     /** Check how we scale this part (only have Applier corresponding to the attribute type or sort Applier ?) */
     public function applyOperations(
         OperationCollection $operationCollection,
-        SourceValueInterface $value
+        SourceValueInterface $value,
     ): SourceValueInterface {
         foreach ($this->operationAppliers as $applier) {
             foreach ($operationCollection as $operation) {

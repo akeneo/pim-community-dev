@@ -36,12 +36,12 @@ class QualityScoreSourceValidator extends ConstraintValidator
         $sourceConstraintFields['channel'] = [
             new Type(['type' => 'string']),
             new NotBlank(),
-            new ChannelShouldExist()
+            new ChannelShouldExist(),
         ];
         $sourceConstraintFields['locale'] = [
             new Type(['type' => 'string']),
             new NotBlank(),
-            new LocaleShouldBeActive()
+            new LocaleShouldBeActive(),
         ];
 
         $violations = $validator->validate($source, new Collection(['fields' => $sourceConstraintFields]));
@@ -49,7 +49,7 @@ class QualityScoreSourceValidator extends ConstraintValidator
         foreach ($violations as $violation) {
             $this->context->buildViolation(
                 $violation->getMessage(),
-                $violation->getParameters()
+                $violation->getParameters(),
             )
                 ->atPath($violation->getPropertyPath())
                 ->addViolation();

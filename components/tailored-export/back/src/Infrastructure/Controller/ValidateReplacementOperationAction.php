@@ -24,15 +24,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class ValidateReplacementOperationAction
 {
-    private ValidatorInterface $validator;
-    private NormalizerInterface $violationNormalizer;
-
     public function __construct(
-        ValidatorInterface $validator,
-        NormalizerInterface $violationNormalizer
+        private ValidatorInterface $validator,
+        private NormalizerInterface $violationNormalizer,
     ) {
-        $this->validator = $validator;
-        $this->violationNormalizer = $violationNormalizer;
     }
 
     public function __invoke(Request $request): Response
@@ -48,8 +43,8 @@ final class ValidateReplacementOperationAction
                 $violations,
                 'internal_api',
                 [
-                    'translate' => false
-                ]
+                    'translate' => false,
+                ],
             ), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 

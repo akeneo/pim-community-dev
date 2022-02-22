@@ -17,15 +17,10 @@ final class GroupsLabelSelection implements GroupsSelectionInterface
 {
     public const TYPE = 'label';
 
-    private string $separator;
-    private string $locale;
-
     public function __construct(
-        string $separator,
-        string $locale
+        private string $separator,
+        private string $locale,
     ) {
-        $this->separator = $separator;
-        $this->locale = $locale;
     }
 
     public function getSeparator(): string

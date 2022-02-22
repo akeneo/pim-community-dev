@@ -37,11 +37,11 @@ class CodeLabelSelectionValidator extends ConstraintValidator
                                     'code',
                                     'label',
                                 ],
-                            ]
+                            ],
                         ),
                         'locale' => new Optional([new Type(['type' => 'string'])]),
                     ],
-                ]
+                ],
             ),
         ]);
 
@@ -49,7 +49,7 @@ class CodeLabelSelectionValidator extends ConstraintValidator
             foreach ($violations as $violation) {
                 $this->context->buildViolation(
                     $violation->getMessage(),
-                    $violation->getParameters()
+                    $violation->getParameters(),
                 )
                     ->atPath($violation->getPropertyPath())
                     ->addViolation();
@@ -61,13 +61,13 @@ class CodeLabelSelectionValidator extends ConstraintValidator
         if ('label' === $selection['type']) {
             $violations = $validator->validate($selection['locale'], [
                 new NotBlank(),
-                new LocaleShouldBeActive()
+                new LocaleShouldBeActive(),
             ]);
 
             foreach ($violations as $violation) {
                 $this->context->buildViolation(
                     $violation->getMessage(),
-                    $violation->getParameters()
+                    $violation->getParameters(),
                 )
                     ->atPath('[locale]')
                     ->addViolation();

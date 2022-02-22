@@ -18,12 +18,12 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInt
 
 class SelectionApplier
 {
-    /** @var iterable<SelectionApplierInterface> */
-    private iterable $selectionAppliers;
-
-    public function __construct(iterable $selectionAppliers)
-    {
-        $this->selectionAppliers = $selectionAppliers;
+    /**
+     * @param SelectionApplierInterface[] $selectionAppliers
+     */
+    public function __construct(
+        private iterable $selectionAppliers,
+    ) {
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -34,6 +34,6 @@ class SelectionApplier
             }
         }
 
-        throw new \LogicException(sprintf('No selection available for "%s" and "%s"', get_class($value), get_class($selection)));
+        throw new \LogicException(sprintf('No selection available for "%s" and "%s"', $value::class, $selection::class));
     }
 }

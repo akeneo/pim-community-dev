@@ -22,7 +22,7 @@ class MeasurementRoundingOperationApplier implements OperationApplierInterface
 {
     public function applyOperation(
         OperationInterface $operation,
-        SourceValueInterface $value
+        SourceValueInterface $value,
     ): SourceValueInterface {
         if (
             !$operation instanceof MeasurementRoundingOperation
@@ -31,7 +31,7 @@ class MeasurementRoundingOperationApplier implements OperationApplierInterface
             throw new \InvalidArgumentException('Cannot apply Measurement Rounding operation');
         }
 
-        $valueToRound = (float)$value->getValue();
+        $valueToRound = (float) $value->getValue();
         $precision = $operation->getPrecision();
         $roundingType = $operation->getType();
 
@@ -42,11 +42,11 @@ class MeasurementRoundingOperationApplier implements OperationApplierInterface
             default => throw new \RuntimeException(sprintf('Unsupported rounding type %s', $roundingType))
         };
 
-        return new MeasurementValue((string)$roundedValue, $value->getUnitCode());
+        return new MeasurementValue((string) $roundedValue, $value->getUnitCode());
     }
 
     /**
-     * @link https://gist.github.com/gh640/6d65226c6203f2cb0ebe42fbddca8ece
+     * @see https://gist.github.com/gh640/6d65226c6203f2cb0ebe42fbddca8ece
      */
     private function ceil(float $value, int $precision): float
     {
@@ -56,7 +56,7 @@ class MeasurementRoundingOperationApplier implements OperationApplierInterface
     }
 
     /**
-     * @link https://gist.github.com/gh640/6d65226c6203f2cb0ebe42fbddca8ece
+     * @see https://gist.github.com/gh640/6d65226c6203f2cb0ebe42fbddca8ece
      */
     private function floor(float $value, int $precision): float
     {

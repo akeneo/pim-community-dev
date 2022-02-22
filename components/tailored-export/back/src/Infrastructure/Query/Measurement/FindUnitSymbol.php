@@ -19,7 +19,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnit;
 class FindUnitSymbol implements FindUnitSymbolInterface
 {
     public function __construct(
-        private GetUnit $getUnit
+        private GetUnit $getUnit,
     ) {
     }
 
@@ -27,7 +27,7 @@ class FindUnitSymbol implements FindUnitSymbolInterface
     {
         $unit = $this->getUnit->byMeasurementFamilyCodeAndUnitCode(
             $familyCode,
-            $unitCode
+            $unitCode,
         );
 
         return $unit->symbol ?? null;

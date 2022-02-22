@@ -15,11 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\SourceValue;
 
 class QualityScoreValue implements SourceValueInterface
 {
-    private string $score;
-
-    public function __construct(string $score)
-    {
-        $this->score = $score;
+    public function __construct(
+        private string $score,
+    ) {
     }
 
     public function getScore(): string

@@ -23,7 +23,7 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindUnitSymbolInterface;
 class MeasurementUnitSymbolSelectionApplier implements SelectionApplierInterface
 {
     public function __construct(
-        private FindUnitSymbolInterface $findUnitSymbol
+        private FindUnitSymbolInterface $findUnitSymbol,
     ) {
     }
 
@@ -36,12 +36,10 @@ class MeasurementUnitSymbolSelectionApplier implements SelectionApplierInterface
             throw new \InvalidArgumentException('Cannot apply Measurement unit symbol selection on this entity');
         }
 
-        $unitSymbol = $this->findUnitSymbol->byFamilyCodeAndUnitCode(
+        return $this->findUnitSymbol->byFamilyCodeAndUnitCode(
             $selection->getMeasurementFamilyCode(),
             $value->getUnitCode(),
         );
-
-        return $unitSymbol;
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool

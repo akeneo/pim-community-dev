@@ -17,18 +17,11 @@ final class MultiSelectLabelSelection implements MultiSelectSelectionInterface
 {
     public const TYPE = 'label';
 
-    private string $separator;
-    private string $locale;
-    private string $attributeCode;
-
     public function __construct(
-        string $separator,
-        string $locale,
-        string $attributeCode
+        private string $separator,
+        private string $locale,
+        private string $attributeCode,
     ) {
-        $this->separator = $separator;
-        $this->locale = $locale;
-        $this->attributeCode = $attributeCode;
     }
 
     public function getSeparator(): string

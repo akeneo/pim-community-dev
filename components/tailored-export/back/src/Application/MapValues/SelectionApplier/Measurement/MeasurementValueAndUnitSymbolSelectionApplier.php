@@ -22,7 +22,7 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindUnitSymbolInterface;
 class MeasurementValueAndUnitSymbolSelectionApplier implements MeasurementApplierInterface
 {
     public function __construct(
-        private FindUnitSymbolInterface $findUnitSymbol
+        private FindUnitSymbolInterface $findUnitSymbol,
     ) {
     }
 

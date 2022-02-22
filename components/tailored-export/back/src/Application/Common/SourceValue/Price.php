@@ -15,13 +15,10 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\SourceValue;
 
 class Price
 {
-    private string $amount;
-    private string $currency;
-
-    public function __construct(string $amount, string $currency)
-    {
-        $this->amount = $amount;
-        $this->currency = $currency;
+    public function __construct(
+        private string $amount,
+        private string $currency,
+    ) {
     }
 
     public function getAmount(): string

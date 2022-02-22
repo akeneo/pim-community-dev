@@ -35,19 +35,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AssetCollectionSelectionValidator extends ConstraintValidator
 {
-    private GetAttributes $getAttributes;
-    private GetAttributeAsMainMediaInterface $getAttributeAsMainMedia;
-    /** @var string[] */
-    private array $availableCollectionSeparator;
-
     public function __construct(
-        GetAttributes $getAttributes,
-        GetAttributeAsMainMediaInterface $getAttributeAsMainMedia,
-        array $availableCollectionSeparator
+        private GetAttributes $getAttributes,
+        private GetAttributeAsMainMediaInterface $getAttributeAsMainMedia,
+        private array $availableCollectionSeparator,
     ) {
-        $this->getAttributes = $getAttributes;
-        $this->getAttributeAsMainMedia = $getAttributeAsMainMedia;
-        $this->availableCollectionSeparator = $availableCollectionSeparator;
     }
 
     public function validate($selection, Constraint $constraint): void
@@ -67,21 +59,21 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
                                     'code',
                                     'label',
                                     'media_file',
-                                    'media_link'
+                                    'media_link',
                                 ],
-                            ]
+                            ],
                         ),
                         'separator' => new Choice(
                             [
                                 'choices' => $this->availableCollectionSeparator,
-                            ]
+                            ],
                         ),
                         'locale' => new Optional([new Type(['type' => 'string'])]),
                         'channel' => new Optional([new Type(['type' => 'string'])]),
                         'property' => new Optional([new Type(['type' => 'string'])]),
-                        'with_prefix_and_suffix' => new Optional([new Type(['type' => 'bool'])])
+                        'with_prefix_and_suffix' => new Optional([new Type(['type' => 'bool'])]),
                     ],
-                ]
+                ],
             ),
         ]);
 
@@ -94,7 +86,7 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
         if ('label' === $selection['type']) {
             $violations = $validator->validate($selection['locale'] ?? null, [
                 new NotBlank(),
-                new LocaleShouldBeActive()
+                new LocaleShouldBeActive(),
             ]);
             $this->buildViolations($violations, '[locale]');
         } elseif ('media_file' === $selection['type'] || 'media_link' === $selection['type']) {
@@ -109,7 +101,7 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
                 [
                     new Collection(['fields' => ['locale' => new Required(), 'channel' => new Required()], 'allowExtraFields' => true]),
                     new IsValidAssetAttribute(['assetFamilyCode' => $assetFamilyCode]),
-                ]
+                ],
             );
 
             $attributeAsMainMedia = $this->getAttributeAsMainMedia->forAssetFamilyCode($assetFamilyCode);
@@ -126,7 +118,7 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
         foreach ($violations as $violation) {
             $this->context->buildViolation(
                 $violation->getMessage(),
-                $violation->getParameters()
+                $violation->getParameters(),
             )
                 ->atPath($path ?? $violation->getPropertyPath())
                 ->addViolation();
@@ -137,12 +129,12 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
         array $selection,
         string $assetFamilyCode,
         AttributeAsMainMedia $attributeAsMainMedia,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
     ): void {
         if (!$attributeAsMainMedia instanceof MediaFileAsMainMedia) {
             $this->context
                 ->buildViolation('akeneo.tailored_export.validation.asset_collection.invalid_type', [
-                    'asset_family_code' => $assetFamilyCode
+                    'asset_family_code' => $assetFamilyCode,
                 ])
                 ->atPath('[type]')
                 ->addViolation();
@@ -160,11 +152,11 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
                                 AssetCollectionMediaFileSelection::FILE_PATH_PROPERTY,
                                 AssetCollectionMediaFileSelection::ORIGINAL_FILENAME_PROPERTY,
                             ],
-                        ]
-                    )
-                ])
+                        ],
+                    ),
+                ]),
             ],
-            'allowExtraFields' => true
+            'allowExtraFields' => true,
         ]));
 
         $this->buildViolations($propertyViolations);
@@ -174,12 +166,12 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
         array $selection,
         string $assetFamilyCode,
         AttributeAsMainMedia $attributeAsMainMedia,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
     ): void {
         if (!$attributeAsMainMedia instanceof MediaLinkAsMainMedia) {
             $this->context
                 ->buildViolation('akeneo.tailored_export.validation.asset_collection.invalid_type', [
-                    'asset_family_code' => $assetFamilyCode
+                    'asset_family_code' => $assetFamilyCode,
                 ])
                 ->atPath('[type]')
                 ->addViolation();
@@ -189,9 +181,9 @@ class AssetCollectionSelectionValidator extends ConstraintValidator
 
         $withSuffixAndPrefixViolations = $validator->validate($selection, new Collection([
             'fields' => [
-                'with_prefix_and_suffix' => new Required()
+                'with_prefix_and_suffix' => new Required(),
             ],
-            'allowExtraFields' => true
+            'allowExtraFields' => true,
         ]));
 
         $this->buildViolations($withSuffixAndPrefixViolations);

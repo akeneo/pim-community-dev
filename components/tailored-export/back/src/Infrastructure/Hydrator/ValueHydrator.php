@@ -26,44 +26,28 @@ use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value\PropertyValueHy
 
 class ValueHydrator
 {
-    private AttributeValueHydrator $attributeValueHydrator;
-    private PropertyValueHydrator $propertyValueHydrator;
-    private AssociationTypeValueHydrator $associationTypeValueHydrator;
-
     public function __construct(
-        AttributeValueHydrator $attributeValueHydrator,
-        PropertyValueHydrator $propertyValueHydrator,
-        AssociationTypeValueHydrator $associationTypeValueHydrator
+        private AttributeValueHydrator $attributeValueHydrator,
+        private PropertyValueHydrator $propertyValueHydrator,
+        private AssociationTypeValueHydrator $associationTypeValueHydrator,
     ) {
-        $this->attributeValueHydrator = $attributeValueHydrator;
-        $this->propertyValueHydrator = $propertyValueHydrator;
-        $this->associationTypeValueHydrator = $associationTypeValueHydrator;
     }
 
-    /**
-     * @param ProductInterface|ProductModelInterface $productOrProductModel
-     */
     public function hydrate(
-        $productOrProductModel,
-        SourceInterface $source
+        ProductInterface|ProductModelInterface $productOrProductModel,
+        SourceInterface $source,
     ): SourceValueInterface {
-        if (
-            !$productOrProductModel instanceof ProductInterface
-            && !$productOrProductModel instanceof ProductModelInterface
-        ) {
-            throw new \InvalidArgumentException('Cannot hydrate this entity');
-        }
-
         switch (true) {
             case $source instanceof AttributeSource:
                 $value = $productOrProductModel->getValue($source->getCode(), $source->getLocale(), $source->getChannel());
+
                 return $this->attributeValueHydrator->hydrate($value, $source->getAttributeType(), $productOrProductModel);
             case $source instanceof PropertySource:
                 return $this->propertyValueHydrator->hydrate($source, $productOrProductModel);
             case $source instanceof AssociationTypeSource:
                 return $this->associationTypeValueHydrator->hydrate($productOrProductModel, $source->getCode(), $source->isQuantified());
             default:
-                throw new \InvalidArgumentException(sprintf('Unsupported source type "%s"', get_class($source)));
+                throw new \InvalidArgumentException(sprintf('Unsupported source type "%s"', $source::class));
         }
     }
 }

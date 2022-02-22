@@ -15,11 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\SourceValue;
 
 class FamilyVariantValue implements SourceValueInterface
 {
-    private string $familyVariantCode;
-
-    public function __construct(string $familyVariantCode)
-    {
-        $this->familyVariantCode = $familyVariantCode;
+    public function __construct(
+        private string $familyVariantCode,
+    ) {
     }
 
     public function getFamilyVariantCode(): string
