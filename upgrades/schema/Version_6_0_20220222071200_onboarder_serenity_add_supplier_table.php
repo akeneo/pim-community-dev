@@ -16,7 +16,7 @@ final class Version_6_0_20220222071200_onboarder_serenity_add_supplier_table ext
     {
         $sql = <<<SQL
             CREATE TABLE IF NOT EXISTS `akeneo_onboarder_serenity_supplier` (
-              `identifier` varchar(36) NOT NULL,
+              `identifier` char(36) NOT NULL,
               `code` varchar(200) NOT NULL,
               `label` varchar(200) NOT NULL,
               PRIMARY KEY (`identifier`),

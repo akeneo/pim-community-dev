@@ -16,5 +16,7 @@ final class AkeneoOnboarderSerenityExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         $loader->load('supplier/services.yml');
+        $loader->load('supplier/fake_services.yml');
+        $loader->load('tool/services.yml');
     }
 }
