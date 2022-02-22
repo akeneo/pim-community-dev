@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Apps;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi;
 
 use Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;

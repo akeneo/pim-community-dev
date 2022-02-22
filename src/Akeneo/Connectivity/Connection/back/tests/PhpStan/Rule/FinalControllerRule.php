@@ -10,7 +10,7 @@ use PHPStan\Analyser\Scope;
 
 final class FinalControllerRule extends AbstractControllerRule
 {
-    private const ERROR_MESSAGE = 'Controller must be final';
+    private const ERROR_MESSAGE = 'ExternalApi must be final';
 
     /**
      * @param Class_ $node

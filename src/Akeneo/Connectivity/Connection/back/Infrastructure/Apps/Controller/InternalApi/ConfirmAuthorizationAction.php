@@ -2,12 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi;
 
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthenticationException;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
+use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
@@ -26,38 +30,41 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ConfirmAuthenticationAction
+final class ConfirmAuthorizationAction
 {
+    private CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler;
     private FeatureFlag $featureFlag;
     private GetAppConfirmationQueryInterface $getAppConfirmationQuery;
+    private ViolationListNormalizer $violationListNormalizer;
     private SecurityFacade $security;
+    private LoggerInterface $logger;
     private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator;
     private AppAuthorizationSessionInterface $appAuthorizationSession;
     private ConnectedPimUserProvider $connectedPimUserProvider;
     private ConsentAppAuthenticationHandler $consentAppAuthenticationHandler;
-    private LoggerInterface $logger;
-    private ViolationListNormalizer $violationListNormalizer;
 
     public function __construct(
+        CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler,
         FeatureFlag $featureFlag,
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
+        ViolationListNormalizer $violationListNormalizer,
         SecurityFacade $security,
+        LoggerInterface $logger,
         RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
         AppAuthorizationSessionInterface $appAuthorizationSession,
         ConnectedPimUserProvider $connectedPimUserProvider,
-        ConsentAppAuthenticationHandler $consentAppAuthenticationHandler,
-        LoggerInterface $logger,
-        ViolationListNormalizer $violationListNormalizer
+        ConsentAppAuthenticationHandler $consentAppAuthenticationHandler
     ) {
+        $this->createAppWithAuthorizationHandler = $createAppWithAuthorizationHandler;
         $this->featureFlag = $featureFlag;
         $this->getAppConfirmationQuery = $getAppConfirmationQuery;
+        $this->violationListNormalizer = $violationListNormalizer;
         $this->security = $security;
+        $this->logger = $logger;
         $this->redirectUriWithAuthorizationCodeGenerator = $redirectUriWithAuthorizationCodeGenerator;
         $this->appAuthorizationSession = $appAuthorizationSession;
         $this->connectedPimUserProvider = $connectedPimUserProvider;
         $this->consentAppAuthenticationHandler = $consentAppAuthenticationHandler;
-        $this->logger = $logger;
-        $this->violationListNormalizer = $violationListNormalizer;
     }
 
     public function __invoke(Request $request, string $clientId): Response
@@ -66,7 +73,7 @@ final class ConfirmAuthenticationAction
             throw new NotFoundHttpException();
         }
 
-        if (!$this->security->isGranted('akeneo_connectivity_connection_open_apps')) {
+        if (!$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
             throw new AccessDeniedHttpException();
         }
 
@@ -77,8 +84,17 @@ final class ConfirmAuthenticationAction
         $connectedPimUserId = $this->connectedPimUserProvider->getCurrentUserId();
 
         try {
-            $this->consentAppAuthenticationHandler->handle(new ConsentAppAuthenticationCommand($clientId, $connectedPimUserId));
-        } catch (InvalidAppAuthenticationException $exception) {
+            $this->createAppWithAuthorizationHandler->handle(new CreateAppWithAuthorizationCommand($clientId));
+
+            $appAuthorization = $this->appAuthorizationSession->getAppAuthorization($clientId);
+            if (null === $appAuthorization) {
+                throw new \LogicException('There is no active app authorization in session');
+            }
+
+            if ($appAuthorization->getAuthenticationScopes()->hasScope(AuthenticationScope::SCOPE_OPENID)) {
+                $this->consentAppAuthenticationHandler->handle(new ConsentAppAuthenticationCommand($clientId, $connectedPimUserId));
+            }
+        } catch (InvalidAppAuthorizationRequestException | InvalidAppAuthenticationException $exception) {
             $this->logger->warning(
                 sprintf('App activation failed with validation error "%s"', $exception->getMessage())
             );
@@ -86,11 +102,6 @@ final class ConfirmAuthenticationAction
             return new JsonResponse([
                 'errors' => $this->violationListNormalizer->normalize($exception->getConstraintViolationList()),
             ], Response::HTTP_BAD_REQUEST);
-        }
-
-        $appAuthorization = $this->appAuthorizationSession->getAppAuthorization($clientId);
-        if (null === $appAuthorization) {
-            throw new \LogicException('There is no active app authorization in session');
         }
 
         $appConfirmation = $this->getAppConfirmationQuery->execute($clientId);
@@ -105,6 +116,8 @@ final class ConfirmAuthenticationAction
         );
 
         return new JsonResponse([
+            'appId' => $appConfirmation->getAppId(),
+            'userGroup' => $appConfirmation->getUserGroup(),
             'redirectUrl' => $redirectUrl,
         ]);
     }

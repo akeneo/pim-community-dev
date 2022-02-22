@@ -1,36 +1,36 @@
 akeneo_connectivity_connection_apps_rest_get_app_activate_url:
     path: '/activate/{id}'
-    controller: akeneo_connectivity.connection.internal_api.controller.apps.get_app_activate_url
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetAppActivateUrlAction
     methods: [GET]
 
 akeneo_connectivity_connection_apps_rest_get_wizard_data:
     path: '/load-wizard-data/{clientId}'
-    controller: akeneo_connectivity.connection.public.controller.apps.get_wizard_data
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\ExternalApi\GetWizardDataAction
     methods: [GET]
 
 akeneo_connectivity_connection_apps_rest_confirm_authorization:
     path: '/confirm-authorization/{clientId}'
-    controller: akeneo_connectivity.connection.apps.controller.apps.confirm_authorization
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\ConfirmAuthorizationAction
     methods: [POST]
 
 akeneo_connectivity_connection_apps_rest_confirm_authentication:
     path: '/confirm-authentication/{clientId}'
-    controller: akeneo_connectivity.connection.apps.controller.apps.confirm_authentication
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\ConfirmAuthenticationAction
     methods: [POST]
 
 akeneo_connectivity_connection_apps_rest_get_all_connected_app_scope_messages:
     path: '/connected-apps/{connectionCode}/scope-messages'
-    controller: akeneo_connectivity.connection.internal_api.controller.apps.connected_app.get_all_scope_messages
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetAllConnectedAppScopeMessagesAction
     methods: [GET]
 
 akeneo_connectivity_connection_apps_rest_get_connected_app:
     path: '/connected-apps/{connectionCode}'
-    controller: akeneo_connectivity.connection.internal_api.controller.apps.get_connected_app
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetConnectedAppAction
     methods: [GET]
 
 akeneo_connectivity_connection_apps_rest_get_all_connected_apps:
     path: '/connected-apps'
-    controller: akeneo_connectivity.connection.internal_api.controller.apps.get_all_connected_apps
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetAllConnectedAppsAction
     methods: [GET]
 
 akeneo_connectivity_connection_apps_rest_delete:

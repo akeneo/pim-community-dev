@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Apps;
+namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Apps\InternalApi;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection;
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;

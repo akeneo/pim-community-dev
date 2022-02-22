@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\ExternalApi;
 
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthenticationCommand;

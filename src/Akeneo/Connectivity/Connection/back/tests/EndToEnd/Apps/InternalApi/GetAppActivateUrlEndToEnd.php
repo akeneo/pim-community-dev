@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Apps;
+namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Apps\InternalApi;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
