@@ -23,7 +23,7 @@ final class GetProductModelScoresQuery implements GetProductModelScoresQueryInte
 
     public function byProductModelId(ProductId $productId): ChannelLocaleRateCollection
     {
-        $productScores = $this->byProductIdCollection(ProductIdCollection::fromProductId($productId));
+        $productScores = $this->byProductModelIds(ProductIdCollection::fromProductId($productId));
 
         return $productScores[$productId->toInt()] ?? new ChannelLocaleRateCollection();
     }

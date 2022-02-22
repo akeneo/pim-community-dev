@@ -17,7 +17,7 @@ interface GetProductModelScoresQueryInterface
     public function byProductModelId(ProductId $productId): ChannelLocaleRateCollection;
 
     /**
-     * @return ChannelLocaleRateCollection[]
+     * @return array<ChannelLocaleRateCollection>
      */
     public function byProductModelIds(ProductIdCollection $productModelIds): array;
 }

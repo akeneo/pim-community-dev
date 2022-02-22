@@ -22,10 +22,14 @@ final class GetProductModelQualityScoreController
     public function __invoke(string $productId): JsonResponse
     {
         try {
-            $productId = ProductId::fromString($productId);
-            return new JsonResponse($this->getProductModelScores->get($productId));
+            return new JsonResponse($this->getProductModelScores->get(ProductId::fromString($productId)));
+        } catch (\InvalidArgumentException $exception) {
+            return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         } catch (\Throwable) {
-            return new JsonResponse(['message' => 'Cannot get product model score.'], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(
+                ['message' => 'Cannot get product model score.'],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
     }
 }
