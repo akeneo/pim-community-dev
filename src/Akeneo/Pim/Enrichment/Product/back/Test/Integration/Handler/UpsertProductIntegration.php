@@ -21,6 +21,8 @@ final class UpsertProductIntegration extends TestCase
     private MessageBusInterface $messageBus;
     private ProductRepositoryInterface $productRepository;
 
+    private const TEXT_AREA_VALUE = "<p><span style=\"font-weight: bold;\">title</span></p><p>text</p>";
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
@@ -99,20 +101,20 @@ final class UpsertProductIntegration extends TestCase
     public function it_creates_a_product_with_a_textarea_value(): void
     {
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
-            new SetTextareaValue('a_text_area', null, null, "<p><span style=\"font-weight: bold;\">title</span></p><p>text</p>"),
+            new SetTextareaValue('a_text_area', null, null, self::TEXT_AREA_VALUE),
         ]);
         $this->messageBus->dispatch($command);
 
         $this->clearDoctrineUoW();
 
-        $this->assertProductHasCorrectValueByAttributeCode('a_text_area', "<p><span style=\"font-weight: bold;\">title</span></p><p>text</p>");
+        $this->assertProductHasCorrectValueByAttributeCode('a_text_area', self::TEXT_AREA_VALUE);
     }
 
     /** @test */
     public function it_updates_a_product_with_a_textarea_value(): void
     {
-        $this->updateProduct(new SetTextareaValue('a_text_area', null, null, "<p><span style=\"font-weight: bold;\">title</span></p><p>text</p>"));
-        $this->assertProductHasCorrectValueByAttributeCode('a_text_area', "<p><span style=\"font-weight: bold;\">title</span></p><p>text</p>");
+        $this->updateProduct(new SetTextareaValue('a_text_area', null, null, self::TEXT_AREA_VALUE));
+        $this->assertProductHasCorrectValueByAttributeCode('a_text_area', self::TEXT_AREA_VALUE);
     }
 
     /** @test */
