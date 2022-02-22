@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Install;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler;
-use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateAppTableQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Install\CreateAppTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionAuditErrorTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionAuditTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionEventsApiRequestCountTableQuery;
