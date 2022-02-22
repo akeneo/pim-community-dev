@@ -1,10 +1,13 @@
 # 5.0.x
 
+# 5.0.79 (2022-02-21)
+
 # 5.0.78 (2022-02-18)
 
 ## Bug fixes
 
 - PIM-10270: Fix insufficient limit when fetching a lot of attribute groups in families settings
+- PIM-10288: Fix product associations came duplicated in API
 
 # 5.0.77 (2022-02-10)
 
