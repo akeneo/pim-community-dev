@@ -30,8 +30,8 @@ $rules = [
             'Webmozart\Assert\Assert',
             'Akeneo\Platform\TailoredImport\Domain',
 
-            'Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand',
-            'Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent',
+            'Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand',
+            'Akeneo\Pim\Enrichment\Product\API\Command\UserIntent',
         ],
     )->in('Akeneo\Platform\TailoredImport\Application'),
 
@@ -47,7 +47,7 @@ $rules = [
             'Akeneo\Platform\TailoredImport\Domain',
 
             'Akeneo\Channel\Component\Query\PublicApi',
-            'Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand',
+            'Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand',
             'Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
             'Akeneo\Tool',

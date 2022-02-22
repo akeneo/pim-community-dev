@@ -120,6 +120,7 @@ integration-back: var/tests/phpunit pim-integration-back #Doc: launch all integr
 	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-integration-back
 	PIM_CONTEXT=rule-engine $(MAKE) rule-engine-integration-back
 	PIM_CONTEXT=tailored-export $(MAKE) integration-back
+	PIM_CONTEXT=enrichment-product $(MAKE) enrichment-product-integration-back
 
 .PHONY: pim-integration-back
 pim-integration-back: #Doc: launch all PHPUnit integration tests

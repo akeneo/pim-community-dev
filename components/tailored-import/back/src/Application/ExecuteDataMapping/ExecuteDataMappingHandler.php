@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping;
 
-use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\ValueUserIntent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Platform\TailoredImport\Application\Common\DataMapping;
 use Akeneo\Platform\TailoredImport\Application\Common\Row;
 use Akeneo\Platform\TailoredImport\Application\Common\TargetAttribute;
