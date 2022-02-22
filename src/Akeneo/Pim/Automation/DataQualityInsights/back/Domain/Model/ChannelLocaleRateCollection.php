@@ -56,6 +56,7 @@ final class ChannelLocaleRateCollection implements \IteratorAggregate
      *      'rank'  => int, // Rank of the rate (from 1 to 5)
      *      'value' => int, // Raw value (from 0 to 100)
      *  ]
+     * @param array{rank: int, value: int} $normalizedRates)
      */
     public static function fromNormalizedRates(array $normalizedRates): self
     {
