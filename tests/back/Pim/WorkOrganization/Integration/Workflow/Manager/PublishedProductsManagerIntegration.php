@@ -168,7 +168,6 @@ class PublishedProductsManagerIntegration extends TestCase
         $this->assertNull($this->publishedProductRepository->findOneByOriginalProduct($product));
     }
 
-    // @todo better name
     public function testPublishAProductWithRemovedElasticSearchIndex()
     {
         $product = $this->productRepository->findOneByIdentifier('foo');
@@ -177,21 +176,17 @@ class PublishedProductsManagerIntegration extends TestCase
         $product = $this->productRepository->findOneByIdentifier('foo');
         $productValue = $product->getValue('a_scopable_price', null, 'ecommerce');
         $product->removeValue($productValue);
-
-        $publishedProduct = $this->publishedProductRepository->findOneByOriginalProduct($product);
-        $this->publishedProductIndexer->remove($publishedProduct->getId());
-
         $this->productSaver->save($product);
 
-
-        $deletedPublishedProductIndex = $this->publishedProductIndexer->index($publishedProduct);
-        $this->assertNull($deletedPublishedProductIndex);
-
-
+        $publishedProduct = $this->publishedProductRepository->findOneByOriginalProduct($product);
+        // remove published product from published product index
+        $this->publishedProductIndexer->remove($publishedProduct->getId());
+        $this->assertNull($this->publishedProductIndexer->index($publishedProduct));
 
         $this->publishedProductManager->publish($product);
+
         $publishedProduct = $this->publishedProductRepository->findOneByOriginalProduct($product);
-        $this->assertNotNull($publishedProduct->getValue('a_scopable_price', null, 'ecommerce'));
+        $this->assertNull($publishedProduct->getValue('a_scopable_price', null, 'ecommerce'));
     }
 
     /**
