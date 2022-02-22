@@ -1,0 +1,5 @@
+services:
+    Akeneo\Channel\Locale\API\Query\GetEditableLocaleCodes:
+        class: AkeneoEnterprise\Channel\Locale\Infrastructure\Query\SqlGetEditableLocaleCodes
+        arguments:
+            - '@database_connection'
