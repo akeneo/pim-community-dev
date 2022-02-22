@@ -56,16 +56,17 @@ class PublishedProductManagerSpec extends ObjectBehavior
             $publishedProductBulkSaver,
             $remover,
             $bulkRemover,
-            $repositoryWithoutPermission
+            $repositoryWithoutPermission,
+            [1, 1, 1]
         );
     }
 
     function it_publishes_a_product(
-        $eventDispatcher,
-        $publisher,
-        $repositoryWithPermission,
-        $publishedProductSaver,
-        $productRepository,
+        EventDispatcherInterface $eventDispatcher,
+        PublisherInterface $publisher,
+        PublishedProductRepositoryInterface $repositoryWithPermission,
+        SaverInterface $publishedProductSaver,
+        ProductRepositoryInterface $productRepository,
         ProductInterface $product,
         PublishedProductInterface $published
     ) {
@@ -83,11 +84,11 @@ class PublishedProductManagerSpec extends ObjectBehavior
     }
 
     function it_publishes_products_with_associations(
-        $publisher,
-        $repositoryWithPermission,
-        $remover,
-        $productRepository,
-        $repositoryWithoutPermission,
+        PublisherInterface $publisher,
+        PublishedProductRepositoryInterface $repositoryWithPermission,
+        RemoverInterface $remover,
+        ProductRepositoryInterface $productRepository,
+        PublishedProductRepositoryInterface $repositoryWithoutPermission,
         BulkSaverInterface $publishedProductBulkSaver,
         ProductInterface $productFoo,
         ProductInterface $productBar,
@@ -128,13 +129,13 @@ class PublishedProductManagerSpec extends ObjectBehavior
     }
 
     function it_publishes_a_product_already_published(
-        $eventDispatcher,
-        $publisher,
-        $unpublisher,
-        $productRepository,
-        $remover,
-        $publishedProductSaver,
-        $repositoryWithoutPermission,
+        EventDispatcherInterface $eventDispatcher,
+        PublisherInterface $publisher,
+        UnpublisherInterface $unpublisher,
+        ProductRepositoryInterface $productRepository,
+        RemoverInterface $remover,
+        SaverInterface $publishedProductSaver,
+        PublishedProductRepositoryInterface $repositoryWithoutPermission,
         ProductInterface $filteredProduct,
         PublishedProductInterface $alreadyPublished,
         PublishedProductInterface $published,
@@ -157,10 +158,10 @@ class PublishedProductManagerSpec extends ObjectBehavior
     }
 
     function it_unpublishes_a_product(
-        $eventDispatcher,
-        $unpublisher,
-        $remover,
-        $repositoryWithoutPermission,
+        EventDispatcherInterface $eventDispatcher,
+        UnpublisherInterface $unpublisher,
+        RemoverInterface $remover,
+        PublishedProductRepositoryInterface $repositoryWithoutPermission,
         PublishedProductInterface $fullPublished,
         PublishedProductInterface $filteredPublished,
         ProductInterface $product
@@ -180,10 +181,10 @@ class PublishedProductManagerSpec extends ObjectBehavior
     }
 
     function it_unpublishes_products(
-        $eventDispatcher,
-        $unpublisher,
-        $bulkRemover,
-        $repositoryWithoutPermission,
+        EventDispatcherInterface $eventDispatcher,
+        UnpublisherInterface $unpublisher,
+        BulkRemoverInterface $bulkRemover,
+        PublishedProductRepositoryInterface $repositoryWithoutPermission,
         PublishedProductInterface $fullPublished1,
         PublishedProductInterface $filteredPublished1,
         PublishedProductInterface $fullPublished2,
@@ -209,8 +210,33 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $this->unpublishAll([$filteredPublished1, $filteredPublished2]);
     }
 
-    function it_toto()
-    {
-        $remover->remove($fullPublished)->shouldBeCalledTimes(4)->willThrow(Missing404Exception);
+    function it_retries_when_removing_an_already_published_product_failed(
+        PublishedProductRepositoryInterface $repositoryWithoutPermission,
+        ProductRepositoryInterface $productRepository,
+        PublisherInterface $publisher,
+        EventDispatcherInterface $eventDispatcher,
+        UnpublisherInterface $unpublisher,
+        RemoverInterface $remover,
+        SaverInterface $publishedProductSaver,
+        PublishedProductInterface $alreadyPublished,
+        ProductInterface $filteredProduct,
+        ProductInterface $fullProduct
+    ) {
+        $productRepository->find(1)->willReturn($fullProduct);
+        $filteredProduct->getId()->willReturn(1);
+        $alreadyPublished->getId()->willReturn(1);
+        $repositoryWithoutPermission->findOneByOriginalProduct(Argument::any())->willReturn($alreadyPublished);
+        $repositoryWithoutPermission->find(1)->willReturn($alreadyPublished);
+        $alreadyPublished->getOriginalProduct()->willReturn($fullProduct);
+
+        $eventDispatcher->dispatch(Argument::any(), PublishedProductEvents::PRE_PUBLISH)->shouldBeCalled();
+        $unpublisher->unpublish($alreadyPublished)->shouldBeCalled();
+        $remover->remove($alreadyPublished)->shouldBeCalledTimes(4)->willThrow(new Missing404Exception("test message"));
+
+        $publisher->publish(Argument::any())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::any(), PublishedProductEvents::POST_PUBLISH)->shouldNotBeCalled();
+        $publishedProductSaver->save(Argument::any())->shouldNotBeCalled();
+
+        $this->shouldThrow(new Missing404Exception("test message"))->during('publish', [$filteredProduct]);
     }
 }

@@ -15,6 +15,7 @@
 - PIM-10259: Fix Arabic text being reversed in product PDF exports
 - PIM-10284: Clean product values after reference entity removal
 - PIM-10277: Reject disabled user when coming from SAML auth
+- PIM-10285: Fix concurrent bulk publish issue
 
 ## Improvements
 

@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer\PublishedProductIndexer;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
@@ -32,6 +33,7 @@ class PublishedProductsManagerIntegration extends TestCase
 {
     use AssertEventCountTrait;
 
+    private PublishedProductIndexer $publishedProductIndexer;
     private PublishedProductManager $publishedProductManager;
     private PublishedProductRepositoryInterface $publishedProductRepository;
     private ProductRepositoryInterface $productRepository;
@@ -71,6 +73,7 @@ class PublishedProductsManagerIntegration extends TestCase
             )->build();
         $this->get('pim_catalog.saver.product')->saveAll([$foo, $bar]);
 
+        $this->publishedProductIndexer = $this->get('pim_catalog.elasticsearch.published_product_indexer');
         $this->publishedProductRepository = $this->get('pimee_workflow.repository.published_product');
         $this->publishedProductManager = $this->get('pimee_workflow.manager.published_product');
         $this->productRepository = $this->get('pim_catalog.repository.product');
@@ -165,6 +168,32 @@ class PublishedProductsManagerIntegration extends TestCase
         $this->assertNull($this->publishedProductRepository->findOneByOriginalProduct($product));
     }
 
+    // @todo better name
+    public function testPublishAProductWithRemovedElasticSearchIndex()
+    {
+        $product = $this->productRepository->findOneByIdentifier('foo');
+        $this->publishedProductManager->publish($product);
+
+        $product = $this->productRepository->findOneByIdentifier('foo');
+        $productValue = $product->getValue('a_scopable_price', null, 'ecommerce');
+        $product->removeValue($productValue);
+
+        $publishedProduct = $this->publishedProductRepository->findOneByOriginalProduct($product);
+        $this->publishedProductIndexer->remove($publishedProduct->getId());
+
+        $this->productSaver->save($product);
+
+
+        $deletedPublishedProductIndex = $this->publishedProductIndexer->index($publishedProduct);
+        $this->assertNull($deletedPublishedProductIndex);
+
+
+
+        $this->publishedProductManager->publish($product);
+        $publishedProduct = $this->publishedProductRepository->findOneByOriginalProduct($product);
+        $this->assertNotNull($publishedProduct->getValue('a_scopable_price', null, 'ecommerce'));
+    }
+
     /**
      * Asserts the basic properties of a published product are the same as the product.
      *
@@ -254,7 +283,4 @@ class PublishedProductsManagerIntegration extends TestCase
     {
         return $this->get('pimee_workflow.query.get_published_product_completenesses');
     }
-
-    // todo: call Elasticsearch/Indexer/PublishedProductIndexer.php(84): Akeneo\Tool\Bundle\ElasticsearchBundle\Client->delete()
-    // to mock a deleted published product index
 }
