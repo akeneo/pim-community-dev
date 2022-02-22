@@ -25,10 +25,21 @@ interface MigrateToUuidStep
     public const ID_COLUMN_INDEX = 0;
     public const UUID_COLUMN_INDEX = 1;
 
+    /**
+     * Returns the exact item count to be migrated.
+     * The computation of this count can be expensive, to use with caution.
+     *
+     * @return int
+     */
     public function getMissingCount(): int;
 
     public function addMissing(bool $dryRun, OutputInterface $output): void;
 
+    /**
+     * Returns if the migration has to be executed or not
+     *
+     * @return bool
+     */
     public function shouldBeExecuted(): bool;
 
     public function getDescription(): string;

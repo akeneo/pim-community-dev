@@ -9,6 +9,8 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
 {
     use MigrateToUuidTrait;
 
+    private const INDEX_NAME = 'product_uuid';
+
     public function __construct(private Connection $connection)
     {
     }
@@ -30,7 +32,7 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
     {
         $count = 0;
         foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
-            if ($this->tableExists($tableName) && !$this->columnExists($tableName, $columnNames[1])) {
+            if ($this->tableExists($tableName) && !$this->columnExists($tableName, $columnNames[self::UUID_COLUMN_INDEX])) {
                 $count++;
             }
         }
@@ -41,21 +43,59 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
     public function addMissing(bool $dryRun, OutputInterface $output): void
     {
         foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
-            if ($this->tableExists($tableName) && !$this->columnExists($tableName, $columnNames[1])) {
+            if ($this->tableExists($tableName) && !$this->columnExists($tableName, $columnNames[self::UUID_COLUMN_INDEX])) {
                 $output->writeln(sprintf('    Will add %s', $tableName));
                 if (!$dryRun) {
-                    $addUuidColumnQuery = sprintf(<<<SQL
-        ALTER TABLE `%s` ADD `%s` BINARY(16) DEFAULT NULL AFTER `%s`, LOCK=NONE, ALGORITHM=INPLACE;
-        SQL, $tableName, $columnNames[1], $columnNames[0]);
-                    $this->connection->executeQuery($addUuidColumnQuery);
+                    $this->addUuidColumn(
+                        $tableName,
+                        $columnNames[self::UUID_COLUMN_INDEX],
+                        $columnNames[self::ID_COLUMN_INDEX]
+                    );
 
-                    $indexName = 'product_uuid';
-                    $addIndexColumnQuery = sprintf(<<<SQL
-        ALTER TABLE %s ADD INDEX %s (%s), ALGORITHM=INPLACE, LOCK=NONE;
-        SQL, $tableName, $indexName, $columnNames[1]);
-                    $this->connection->executeQuery($addIndexColumnQuery);
+                    $this->addIndexOnUuid(
+                        $tableName,
+                        $columnNames[self::UUID_COLUMN_INDEX]
+                    );
                 }
             }
         }
+    }
+
+    private function addUuidColumn(string $tableName, string $uuidColumName, string $idColumnName): void
+    {
+        $addUuidColumnSql = <<<SQL
+            ALTER TABLE `%s`
+            ADD `%s` BINARY(16) DEFAULT NULL AFTER `%s`,
+            LOCK=NONE,
+            ALGORITHM=INPLACE;
+        SQL;
+
+        $addUuidColumnQuery = sprintf(
+            $addUuidColumnSql,
+            $tableName,
+            $uuidColumName,
+            $idColumnName
+        );
+
+        $this->connection->executeQuery($addUuidColumnQuery);
+    }
+
+    private function addIndexOnUuid(string $tableName, string $uuidColumnName): void
+    {
+        $addIndexOnUuidSql = <<<SQL
+            ALTER TABLE %s 
+            ADD INDEX %s (%s),
+            ALGORITHM=INPLACE,
+            LOCK=NONE;
+        SQL;
+
+        $addIndexColumnQuery = sprintf(
+            $addIndexOnUuidSql,
+            $tableName,
+            self::INDEX_NAME,
+            $uuidColumnName
+        );
+
+        $this->connection->executeQuery($addIndexColumnQuery);
     }
 }
