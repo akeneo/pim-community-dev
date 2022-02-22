@@ -23,7 +23,7 @@ class CalculateCompletenessCommand extends Command
 {
     use LockableTrait;
 
-    private $batchSize = 1000;
+    private const DEFAULT_BATCH_SIZE = 1000;
 
     protected static $defaultName = 'pim:completeness:calculate';
 
@@ -54,7 +54,13 @@ class CalculateCompletenessCommand extends Command
     {
         $this
             ->setDescription('Launch the product completeness calculation')
-            ->addArgument('batch-size', InputArgument::OPTIONAL, 'The number of product completeness calculated in one cycle.')
+            ->addOption(
+                'batch-size',
+                false,
+                InputArgument::OPTIONAL,
+                'The number of product completeness calculated in one cycle.',
+                self::DEFAULT_BATCH_SIZE
+            )
         ;
     }
 
@@ -69,15 +75,13 @@ class CalculateCompletenessCommand extends Command
             return 0;
         }
 
-        if (null !== $input->getArgument('batch-size')) {
-            $this->batchSize = $input->getArgument('batch-size');
-        }
+        $batchSize = (int) $input->getOption('batch-size') ?: self::DEFAULT_BATCH_SIZE;
 
         $progressBar = new ProgressBar($output, $this->getTotalNumberOfProducts());
 
         $output->writeln('<info>Computing product completenesses...</info>');
         $progressBar->start();
-        foreach ($this->getProductIdentifiers() as $productIdentifiers) {
+        foreach ($this->getProductIdentifiers($batchSize) as $productIdentifiers) {
             $this->computeAndPersistProductCompleteness->fromProductIdentifiers($productIdentifiers);
             $this->productAndAncestorsIndexer->indexFromProductIdentifiers($productIdentifiers);
             $progressBar->advance(count($productIdentifiers));
@@ -94,7 +98,7 @@ class CalculateCompletenessCommand extends Command
         return $this->connection->executeQuery('SELECT COUNT(0) FROM pim_catalog_product')->fetchOne();
     }
 
-    private function getProductIdentifiers(): iterable
+    private function getProductIdentifiers(int $batchSize): iterable
     {
         $formerId = 0;
         $sql = <<<SQL
@@ -109,7 +113,7 @@ SQL;
                 $sql,
                 [
                     'formerId' => $formerId,
-                    'limit' => $this->batchSize,
+                    'limit' => $batchSize,
                 ],
                 [
                     'formerId' => \PDO::PARAM_INT,
