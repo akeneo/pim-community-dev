@@ -5,11 +5,12 @@ namespace Specification\Akeneo\UserManagement\Bundle\Security;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\User;
 
-class UserProviderSpec extends ObjectBehavior
+class UserApiProviderSpec extends ObjectBehavior
 {
     function let(UserRepositoryInterface $userRepository)
     {
@@ -36,7 +37,7 @@ class UserProviderSpec extends ObjectBehavior
         $disabledGuy->isApiUser()->willReturn(false);
         $disabledGuy->isEnabled()->willReturn(false);
         $userRepository->findOneByIdentifier('disabled-guy')->willReturn($disabledGuy);
-        $this->shouldThrow(UsernameNotFoundException::class)
+        $this->shouldThrow(DisabledException::class)
             ->during('loadUserByUsername', ['disabled-guy']);
     }
 
@@ -44,7 +45,6 @@ class UserProviderSpec extends ObjectBehavior
     {
         $userRepository->find(42)->willReturn($julia);
         $julia->getId()->willReturn(42);
-        $julia->isApiUser()->shouldBeCalled();
         $this->refreshUser($julia)->shouldReturn($julia);
     }
 
