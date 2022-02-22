@@ -10,15 +10,22 @@ use Symfony\Component\Console\Output\OutputInterface;
 class MigrateToUuidCommand extends Command
 {
     protected static $defaultName = 'pim:product:migrate-to-uuid';
+    /** @var array<MigrateToUuidStep> */
+    private array $steps;
 
     public function __construct(
-        private MigrateToUuidStep $migrateToUuidCreateColumns,
-        private MigrateToUuidStep $migrateToUuidFillProductUuid,
-        private MigrateToUuidStep $migrateToUuidFillForeignUuid,
-        private MigrateToUuidStep $migrateToUuidFillJson,
-        private MigrateToUuidStep $migrateToUuidAddTriggers
+        MigrateToUuidStep $migrateToUuidCreateColumns,
+        MigrateToUuidStep $migrateToUuidFillProductUuid,
+        MigrateToUuidStep $migrateToUuidFillForeignUuid,
+        MigrateToUuidStep $migrateToUuidFillJson
     ) {
         parent::__construct();
+        $this->steps = [
+            $migrateToUuidCreateColumns,
+            $migrateToUuidFillProductUuid,
+            $migrateToUuidFillForeignUuid,
+            $migrateToUuidFillJson,
+        ];
     }
 
     protected function configure()
@@ -33,17 +40,8 @@ class MigrateToUuidCommand extends Command
         $dryRun = $input->getOption('dry-run');
         $withStats = $input->getOption('with-stats');
 
-        $i = 1;
-        foreach ([
-            $this->migrateToUuidCreateColumns,
-            $this->migrateToUuidFillProductUuid,
-            $this->migrateToUuidFillForeignUuid,
-            $this->migrateToUuidFillJson,
-//          @todo: fix permission to create triggers
-//            $this->migrateToUuidAddTriggers,
-        ] as $step) {
-            /** @var $step MigrateToUuidStep */
-            $output->writeln(sprintf('<info>Step %d: %s</info>', $i, $step->getDescription()));
+        foreach ($this->steps as $stepIndex => $step) {
+            $output->writeln(sprintf('<info>Step %d: %s</info>', $stepIndex + 1, $step->getDescription()));
             if ($withStats) {
                 $missingCount = $step->getMissingCount();
                 $output->writeln(sprintf('    Missing %d items', $missingCount));
@@ -52,10 +50,9 @@ class MigrateToUuidCommand extends Command
             if ($step->shouldBeExecuted()) {
                 $output->writeln(sprintf('    Add missing items... '));
                 $step->addMissing($dryRun, $output);
-                $output->writeln(sprintf('    Done'));
+                $output->writeln(sprintf('    Step done'));
             }
             $output->writeln('');
-            $i++;
         }
 
         $output->writeln('<info>Migration done!</info>');
