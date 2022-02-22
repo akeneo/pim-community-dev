@@ -57,7 +57,7 @@ extensions:
             tabCode: pim-job-instance-permission
 
     pim-job-instance-xlsx-tailored-product-import-edit-global:
-        module: pim/job/common/edit/properties
+        module: akeneotailoredimport/js/job/product/edit/global-settings
         parent: pim-job-instance-xlsx-tailored-product-import-edit-tabs
         aclResourceId: pim_importexport_export_profile_property_edit
         targetZone: container
@@ -65,17 +65,6 @@ extensions:
         config:
             tabTitle: pim_enrich.export.product.global_settings.title
             tabCode: pim-job-instance-global
-
-    pim-job-instance-xlsx-tailored-product-import-edit-properties-enabled:
-        module: pim/job/common/edit/field/switch
-        parent: pim-job-instance-xlsx-tailored-product-import-edit-global
-        position: 150
-        targetZone: properties
-        config:
-            fieldCode: configuration.enabled
-            readOnly: false
-            label: pim_import_export.form.job_instance.tab.properties.enabled.title
-            tooltip: pim_import_export.form.job_instance.tab.properties.enabled.help
 
     pim-job-instance-xlsx-tailored-product-import-edit-import-structure:
         module: akeneotailoredimport/js/job/product/edit/import-structure
