@@ -91,9 +91,9 @@ final class ChannelLocaleRateCollection implements \IteratorAggregate
         return $this->rates->mapWith(fn (Rate $rate) => Rank::fromRate($rate)->toInt());
     }
 
-   /**
-    * @return array<string, array<string, array{rank: int, value: int}>>
-    **/
+    /**
+     * @return array<string, array<string, array{rank: int, value: int}>>
+     **/
     public function toNormalizedRates(): array
     {
         return $this->rates->mapWith(function (Rate $score) {
