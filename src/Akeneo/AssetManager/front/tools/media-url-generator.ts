@@ -15,12 +15,12 @@ export const getImageDownloadUrl = (image: File): string => {
 };
 
 export const getMediaPreviewUrl = (mediaPreview: MediaPreview): string => {
-    const isUrlEncoded = mediaPreview.data !== decodeURIComponent(mediaPreview.data);
+  const isUrlEncoded = mediaPreview.data !== decodeURIComponent(mediaPreview.data);
 
-    return routing.generate('akeneo_asset_manager_image_preview', {
-        ...mediaPreview,
-        data: btoa(isUrlEncoded ? mediaPreview.data : encodeURI(mediaPreview.data)),
-    });
+  return routing.generate('akeneo_asset_manager_image_preview', {
+    ...mediaPreview,
+    data: btoa(isUrlEncoded ? mediaPreview.data : encodeURI(mediaPreview.data)),
+  });
 };
 
 export const getAssetEditUrl = (asset: ListAsset): string =>
