@@ -201,6 +201,11 @@ akeneo_connectivity.connection:
                     helper_link: How to connect my PIM with Apps?
                     scope_profile: View your firstname and your lastname
                     scope_email: View your email address
+                    consent:
+                        label: 'I agree to this App’s Privacy Policy and Terms of Use, which can be viewed on the {{ app_marketplace_page }}.'
+                        app_marketplace_page: App marketplace page
+                        subtext: 'You acknowledge and agree that you will be redirected to a third party app. Akeneo is not responsible and cannot be held responsible for the content of this app. If you have any problems while visiting the marketplace, please {{ contact_us }}.'
+                        contact_us: contact us
                 authorize:
                     title: '{{ app_name }} needs to'
                     no_scope_title: '{{ app_name }} would like to access your PIM.'

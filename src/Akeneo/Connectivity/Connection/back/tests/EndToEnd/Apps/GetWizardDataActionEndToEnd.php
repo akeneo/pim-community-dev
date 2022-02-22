@@ -49,6 +49,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
         Assert::assertEquals([
             'appName' => 'Akeneo Shopware 6 Connector by EIKONA Media',
             'appLogo' => 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
+            'appUrl' => 'https://marketplace.akeneo.com/extension/akeneo-shopware-6-connector-eikona-media',
             'scopeMessages' => [
                 [
                     'icon' => 'products',
@@ -135,6 +136,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
         Assert::assertEquals([
             'appName' => 'Akeneo Shopware 6 Connector by EIKONA Media',
             'appLogo' => 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
+            'appUrl' => 'https://marketplace.akeneo.com/extension/akeneo-shopware-6-connector-eikona-media',
             'scopeMessages' => [
                 [
                     'icon' => 'products',
@@ -185,6 +187,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
         Assert::assertEquals([
             'appName' => 'Akeneo Shopware 6 Connector by EIKONA Media',
             'appLogo' => 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
+            'appUrl' => 'https://marketplace.akeneo.com/extension/akeneo-shopware-6-connector-eikona-media',
             'scopeMessages' => [],
             'authenticationScopes' => [],
         ], json_decode($response->getContent(), true));
