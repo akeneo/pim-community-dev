@@ -33,7 +33,10 @@ final class GetDataQualityInsightsPropertiesForProductProjection implements GetA
     }
 
     /**
-     * @inheritDoc
+     * @param array<string> $productIdentifiers
+     * @param array<string, mixed> $context
+     *
+     * @return array<string, array{data_quality_insights: array{scores: array, key_indicators: array}}>
      */
     public function fromProductIdentifiers(array $productIdentifiers, array $context = []): array
     {
