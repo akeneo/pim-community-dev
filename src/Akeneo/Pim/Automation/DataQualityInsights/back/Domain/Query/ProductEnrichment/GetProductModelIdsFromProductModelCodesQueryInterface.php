@@ -15,7 +15,7 @@ interface GetProductModelIdsFromProductModelCodesQueryInterface
     /**
      * @param string[] $productModelCodes
      *
-     * @return ProductId[]
+     * @return array<string, ProductId>
      */
     public function execute(array $productModelCodes): array;
 }
