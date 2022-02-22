@@ -59,7 +59,7 @@ FROM (
                   LEFT JOIN pim_catalog_group associated_group ON product_model_to_group.group_id = associated_group.id
                   WHERE product_model.code IN (:productModelCodes)
                   AND association_type.is_quantified = false
-                  UNION ALL
+                  UNION DISTINCT 
                   SELECT child_product_model.code as product_model_code,
                          association_type.code as association_type_code,
                          associated_group.code as associated_group_code

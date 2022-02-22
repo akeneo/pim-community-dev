@@ -7,6 +7,7 @@
 ## Bug fixes
 
 - PIM-10270: Fix insufficient limit when fetching a lot of attribute groups in families settings
+- PIM-10288: Fix product associations came duplicated in API
 
 # 5.0.77 (2022-02-10)
 
