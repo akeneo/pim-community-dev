@@ -55,7 +55,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $this->valuesUserIntent()->shouldReturn($valuesUserIntents);
     }
 
-    function it_cannot_be_constructed_with_an_empty_product_identifier()
+    function it_cannot_be_constructed_with_bad_value_user_intent()
     {
         $this->beConstructedWith(
             1,
@@ -67,7 +67,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
             null,
             null,
             null,
-            [new SetTextValue('name', null, null, 'foo')]
+            [new \stdClass]
         );
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }

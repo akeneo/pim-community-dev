@@ -12,6 +12,8 @@ aliases:
                   username: _json_key  # default username when using a JSON key file to authenticate
                   password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
 
+executor-machine: &executor-machine 'ubuntu-2004:202111-02'
+
 commands:
     set_gcloud_config_dev:
         description: "Authenticate on GCP services and set config and key to be used by other tools that need to authenticate."
@@ -54,7 +56,7 @@ commands:
 jobs:
     checkout_ee:
         machine:
-            image: ubuntu-2004:202101-01
+            image: *executor-machine
         steps:
             - add_ssh_keys:
                   fingerprints:
@@ -98,7 +100,7 @@ jobs:
 
     checkout_ce:
         machine:
-            image: ubuntu-2004:202101-01
+            image: *executor-machine
         steps:
             - checkout
             - install_yq
@@ -119,7 +121,7 @@ jobs:
                 type: string
                 default: front-packages
         machine:
-            image: ubuntu-2004:202101-01
+            image: *executor-machine
         steps:
             - attach_workspace:
                   at: ~/
@@ -197,7 +199,8 @@ jobs:
                       find << parameters.path_to_front_packages >>/shared -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/shared.hash
                       find << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Job/front/process-tracker -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/process-tracker.hash
                       find << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/catalog-volume-monitoring.hash
-                      echo "$(date +%F) << parameters.path_to_front_packages >>" | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/catalog-volume-monitoring.hash ~/process-tracker.hash
+                      find << parameters.path_to_front_packages >>/../src/Oro/Bundle/ConfigBundle/front -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/config.hash
+                      echo "$(date +%F) << parameters.path_to_front_packages >>" | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/catalog-volume-monitoring.hash ~/process-tracker.hash ~/config.hash
             - run:
                   name: Set directories owner to circleci
                   command: sudo chown -R circleci:circleci .
@@ -216,6 +219,9 @@ jobs:
             - restore_cache:
                   name: Restore micro-frontend Catalog Volume Monitoring cache
                   key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}
+            - restore_cache:
+                  name: Restore micro-frontend Config cache
+                  key: micro-frontend-config-{{ checksum "~/config.hash" }}
             - run:
                   name: Set directories owner to docker
                   command: sudo chown -R 1000:1000 ../project
@@ -263,6 +269,11 @@ jobs:
                   key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}
                   paths:
                       - << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front
+            - save_cache:
+                  name: Save micro-frontend Config cache
+                  key: micro-frontend-config-{{ checksum "~/config.hash" }}
+                  paths:
+                      - << parameters.path_to_front_packages >>/../src/Oro/Bundle/ConfigBundle/front
             - persist_to_workspace:
                   root: ~/
                   paths:
@@ -276,7 +287,7 @@ jobs:
         environment:
             <<: *envVarsDeployDev
         machine:
-            image: ubuntu-2004:202101-01
+            image: *executor-machine
         resource_class: medium
         working_directory: ~/project
         steps:

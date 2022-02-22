@@ -371,7 +371,7 @@ akeneo_connectivity.connection:
         data_destination: Wilt u enkele mooie grafieken zien over uw bestemmingsverbindingen?
       message_with_permission:
         message: Maak en begin met volgen van uw eerste
-        link: hier. 
+        link: hier.
       message_without_permission:
         message: Vraag uw beheerder om er één aan te maken.
         link: Leer hier meer over verbindingen...

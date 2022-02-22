@@ -21,12 +21,13 @@ final class JobExecutionTracking
         Assert::allIsInstanceOf($steps, StepExecutionTracking::class);
     }
 
-    public function getErrorCount(): int
+    public function hasError(): bool
     {
-        return array_reduce(
-            $this->steps,
-            static fn (int $count, StepExecutionTracking $step) => $count + $step->getErrorCount(),
-            0,
+        return 0 < count(
+            array_filter(
+                $this->steps,
+                static fn (StepExecutionTracking $step) => $step->hasError()
+            )
         );
     }
 
