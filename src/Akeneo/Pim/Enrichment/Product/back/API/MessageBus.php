@@ -16,9 +16,12 @@ use Webmozart\Assert\Assert;
  */
 final class MessageBus implements MessageBusInterface
 {
-    /** @var array<string, object> */
+    /** @var array<string, callable> */
     private array $handlers;
 
+    /**
+     * @param iterable<string, callable> $handlers
+     */
     public function __construct(iterable $handlers)
     {
         $this->handlers = $handlers instanceof \Traversable ? iterator_to_array($handlers) : $handlers;
@@ -26,6 +29,9 @@ final class MessageBus implements MessageBusInterface
         Assert::allObject($this->handlers);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function dispatch(object $message, array $stamps = []): Envelope
     {
         $handler = $this->handlers[get_class($message)] ?? null;

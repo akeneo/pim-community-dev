@@ -12,6 +12,8 @@ $rules = [
         // Libs
         'Webmozart\Assert\Assert',
         'Symfony\Component\Validator\ConstraintViolationList',
+        'Symfony\Component\Messenger\Envelope',
+        'Symfony\Component\Messenger\MessageBusInterface',
     ])->in('Akeneo\Pim\Enrichment\Product\API'),
 
     $builder->only([
@@ -44,7 +46,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Category\API',
         'Akeneo\Channel\Component\Query\PublicApi',
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
-        'Akeneo\Channel\API',
+        'Akeneo\Channel\Locale\API',
 
         // Non public APIs
         'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
