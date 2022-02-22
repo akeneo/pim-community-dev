@@ -25,6 +25,8 @@ final class Code
             );
         }
 
+        $code = trim($code);
+
         if (!preg_match('/^[a-z0-9_]+$/', $code)) {
             throw new \InvalidArgumentException(
                 'The supplier code can only contain lowercase letters, numbers and underscores.'

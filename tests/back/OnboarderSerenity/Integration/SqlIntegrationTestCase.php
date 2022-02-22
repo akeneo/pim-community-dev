@@ -19,22 +19,11 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
     {
         static::bootKernel(['debug' => false]);
         $this->connection = $this->get('doctrine.dbal.default_connection');
-
-        $this->resetDatabase();
     }
 
     protected function get(string $service)
     {
         return static::getContainer()->get($service);
-    }
-
-    protected function resetDatabase(): void
-    {
-        $sql = <<<SQL
-            DROP TABLE IF EXISTS `akeneo_onboarder_serenity_supplier`;
-        SQL;
-
-        $this->connection->executeQuery($sql);
     }
 
     protected function tearDown(): void

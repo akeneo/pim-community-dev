@@ -11,16 +11,16 @@ final class Supplier
     private Label $label;
 
     private function __construct(
-        Identifier $identifier,
-        Code $code,
-        Label $label
+        string $identifier,
+        string $code,
+        string $label
     ) {
-        $this->identifier = $identifier;
-        $this->code = $code;
-        $this->label = $label;
+        $this->identifier = Identifier::fromString($identifier);
+        $this->code = Code::fromString($code);
+        $this->label = Label::fromString($label);
     }
 
-    public static function create(Identifier $identifier, Code $code, Label $label): Supplier
+    public static function create(string $identifier, string $code, string $label): Supplier
     {
         return new self(
             $identifier,
@@ -29,26 +29,18 @@ final class Supplier
         );
     }
 
-    public function getIdentifier(): Identifier
+    public function identifier(): string
     {
-        return $this->identifier;
+        return (string) $this->identifier;
     }
 
-    public function getCode(): Code
+    public function code(): string
     {
-        return $this->code;
+        return (string) $this->code;
     }
 
-    public function equals(self $other): bool
+    public function label(): string
     {
-        return $this->identifier->equals($other->identifier)
-            && $other->code->equals($this->code)
-            && $other->label->equals($this->label)
-        ;
-    }
-
-    public function getLabel(): Label
-    {
-        return $this->label;
+        return (string) $this->label;
     }
 }

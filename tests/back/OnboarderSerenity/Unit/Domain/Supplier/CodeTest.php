@@ -49,4 +49,13 @@ final class CodeTest extends KernelTestCase
         static::assertInstanceOf(Code::class, $code);
         static::assertSame('valid_supplier_code', (string) $code);
     }
+
+    /** @test */
+    public function itTrimsExtraWhitespaces(): void
+    {
+        $code = Code::fromString('valid_supplier_code_with_extra_whitespace ');
+
+        static::assertInstanceOf(Code::class, $code);
+        static::assertSame('valid_supplier_code_with_extra_whitespace', (string) $code);
+    }
 }
