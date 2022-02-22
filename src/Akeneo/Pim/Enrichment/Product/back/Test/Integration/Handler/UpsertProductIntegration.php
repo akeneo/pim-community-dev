@@ -98,7 +98,7 @@ final class UpsertProductIntegration extends TestCase
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
             new SetNumberValue('a_number_integer', null, null, 10),
         ]);
-        ($this->upsertProductHandler)($command);
+        $this->messageBus->dispatch($command);
 
         $this->clearDoctrineUoW();
         $product = $this->productRepository->findOneByIdentifier('identifier');
@@ -113,7 +113,7 @@ final class UpsertProductIntegration extends TestCase
     {
         // Creates empty product
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier');
-        ($this->upsertProductHandler)($command);
+        $this->messageBus->dispatch($command);
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
@@ -122,7 +122,7 @@ final class UpsertProductIntegration extends TestCase
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
             new SetNumberValue('a_number_integer', null, null, 10),
         ]);
-        ($this->upsertProductHandler)($command);
+        $this->messageBus->dispatch($command);
 
         $this->clearDoctrineUoW();
         $product = $this->productRepository->findOneByIdentifier('identifier');
