@@ -66,7 +66,7 @@ final class ProductContext implements Context
         $channelCode = $attributeInfo[1] === 'null' ? null : $attributeInfo[1];
         $localeCode = $attributeInfo[2] === 'null' ? null : $attributeInfo[2];
 
-        $this->valueUserIntents[] = new SetTextValue($attributeInfo[0], $localeCode, $channelCode, $text);
+        $this->valueUserIntents[] = new SetTextValue($attributeInfo[0], $channelCode, $localeCode, $text);
     }
 
     /**

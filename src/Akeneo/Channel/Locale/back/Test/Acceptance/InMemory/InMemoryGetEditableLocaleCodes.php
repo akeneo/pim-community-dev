@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Channel\Test\Acceptance\InMemory;
+namespace Akeneo\Test\Channel\Locale\Acceptance\InMemory;
 
-use Akeneo\Channel\API\Query\GetEditableLocaleCodes;
+use Akeneo\Channel\Locale\API\Query\GetEditableLocaleCodes;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 

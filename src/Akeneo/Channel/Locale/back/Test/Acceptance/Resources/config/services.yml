@@ -1,0 +1,12 @@
+services:
+    # Context
+    Akeneo\Test\Channel\Locale\Acceptance\Context\ChannelContext:
+        public: true
+        arguments:
+            - '@Akeneo\Channel\Locale\API\Query\GetEditableLocaleCodes'
+
+    # Queries
+    Akeneo\Channel\Locale\API\Query\GetEditableLocaleCodes:
+        class: Akeneo\Test\Channel\Locale\Acceptance\InMemory\InMemoryGetEditableLocaleCodes
+        arguments:
+            - '@pim_user.repository.user'

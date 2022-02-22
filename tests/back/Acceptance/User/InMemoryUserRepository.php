@@ -36,7 +36,7 @@ class InMemoryUserRepository implements IdentifiableObjectRepositoryInterface, S
             $user->setId(Uuid::uuid4()->toString());
         }
 
-        $this->users->set($user->getUsername(), $user);
+        $this->users->set($user->getUserIdentifier(), $user);
     }
 
     /**
