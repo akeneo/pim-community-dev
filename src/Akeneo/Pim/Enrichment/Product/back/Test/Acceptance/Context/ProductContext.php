@@ -70,8 +70,8 @@ final class ProductContext implements Context
     }
 
     /**
-     * @When /^the "([^"]*)" user upserts a product with the "([^"]*)" identifier$/
-     * @When /^the "([^"]*)" user upserts a product with the "([^"]*)" identifier and the previous intents$/
+     * @When /^the "([^"]*)" user upserts the "([^"]*)" product$/
+     * @When /^the "([^"]*)" user upserts the "([^"]*)" product with the previous intents?$/
      */
     public function theUserUpsertsAProductWithTheIdentifier(string $username, string $identifier): void
     {
@@ -85,12 +85,20 @@ final class ProductContext implements Context
     }
 
     /**
-     * @When /^the "([^"]*)" user id upserts a product with the "([^"]*)" identifier$/
+     * @When /^an unknown user tries to upsert the "([^"]*)" product$/
      */
-    public function theUserIdUpsertsAProductWithTheIdentifier(int $userId, string $identifier): void
+    public function anUnknownUserTriesToUpsertAProductWithTheIdentifier(string $identifier): void
     {
-        $command = new UpsertProductCommand(userId: $userId, productIdentifier: $identifier);
+        $command = new UpsertProductCommand(userId: -10, productIdentifier: $identifier);
         $this->upsertProduct($command);
+    }
+
+    /**
+     * @Then there is a violation saying the user is unknown
+     */
+    public function thereIsAMessageSayingTheUserIsUnknown(): void
+    {
+        $this->constraintViolationsContext->thereIsAViolationWithMessage('The "-10" user does not exist');
     }
 
     private function upsertProduct(UpsertProductCommand $command): void
