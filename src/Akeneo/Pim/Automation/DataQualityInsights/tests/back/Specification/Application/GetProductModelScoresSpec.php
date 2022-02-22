@@ -7,7 +7,6 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\GetUpToDateProductModelScoresQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -40,7 +39,7 @@ final class GetProductModelScoresSpec extends ObjectBehavior
         ]));
 
 
-        $getUpToDateProductModelScoresQuery->byProductId($productModelId)->willReturn((new ChannelLocaleRateCollection())
+        $getUpToDateProductModelScoresQuery->byProductModelId($productModelId)->willReturn((new ChannelLocaleRateCollection())
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(100))
             ->addRate(new ChannelCode('mobile'), new LocaleCode('en_US'), new Rate(80))
         );

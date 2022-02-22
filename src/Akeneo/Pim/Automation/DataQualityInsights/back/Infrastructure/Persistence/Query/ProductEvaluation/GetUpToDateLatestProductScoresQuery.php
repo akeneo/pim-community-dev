@@ -14,7 +14,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollec
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetUpToDateLatestProductScoresQuery implements GetLatestProductScoresQueryInterface
+class GetUpToDateLatestProductScoresQuery implements GetLatestProductScoresQueryInterface
 {
     private HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery;
 
@@ -39,7 +39,7 @@ final class GetUpToDateLatestProductScoresQuery implements GetLatestProductScore
 
     public function byProductIds(ProductIdCollection $productIdCollection): array
     {
-        $upToDateProducts = $this->hasUpToDateEvaluationQuery->forProductIds($productIdCollection);
+        $upToDateProducts = $this->hasUpToDateEvaluationQuery->forProductIdCollection($productIdCollection);
 
         return is_null($upToDateProducts) ? [] : $this->getLatestProductScoresQuery->byProductIds($upToDateProducts);
     }
