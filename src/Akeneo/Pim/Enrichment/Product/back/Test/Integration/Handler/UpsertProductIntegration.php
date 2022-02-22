@@ -8,9 +8,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
@@ -170,7 +170,7 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertSame($expectedValue, $value->getData());
     }
 
-    private function updateProduct(UserIntent $userIntent): void
+    private function updateProduct(ValueUserIntent $userIntent): void
     {
         // Creates empty product
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier');

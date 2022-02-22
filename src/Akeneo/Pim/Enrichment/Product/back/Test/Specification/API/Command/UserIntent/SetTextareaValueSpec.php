@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent;
+namespace Specification\Akeneo\Pim\Enrichment\Product\API\Command\UserIntent;
 
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextareaValue;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\ValueUserIntent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use PhpSpec\ObjectBehavior;
 
 /**
