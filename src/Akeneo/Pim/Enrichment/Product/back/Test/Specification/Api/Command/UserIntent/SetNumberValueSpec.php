@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent;
 
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\ValueUserIntent;
 use PhpSpec\ObjectBehavior;
 
@@ -12,16 +12,16 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SetTextValueSpec extends ObjectBehavior
+class SetNumberValueSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('name', 'ecommerce', 'en_US', 'foo');
+        $this->beConstructedWith('name', 'ecommerce', 'en_US', 10);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(SetTextValue::class);
+        $this->shouldHaveType(SetNumberValue::class);
         $this->shouldImplement(ValueUserIntent::class);
     }
 
@@ -42,6 +42,6 @@ class SetTextValueSpec extends ObjectBehavior
 
     function it_returns_the_value()
     {
-        $this->value()->shouldReturn('foo');
+        $this->value()->shouldReturn(10);
     }
 }
