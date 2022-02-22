@@ -61,7 +61,7 @@ final class AuthorizeAction
             );
         }
 
-        $this->denyAccessUnlessGrantedToManageAndOpen($app);
+        $this->denyAccessUnlessGrantedToManageOrOpen($app);
 
         $command = new RequestAppAuthorizationCommand(
             $clientId,
@@ -122,17 +122,21 @@ final class AuthorizeAction
         return new RedirectResponse($redirectUrl);
     }
 
-    private function denyAccessUnlessGrantedToManageAndOpen(App $app): void
+    private function denyAccessUnlessGrantedToManageOrOpen(App $app): void
     {
-        if (!$this->security->isGranted('akeneo_connectivity_connection_open_apps')) {
+        if (
+            !$app->isTestApp() &&
+            !$this->security->isGranted('akeneo_connectivity_connection_manage_apps') &&
+            !$this->security->isGranted('akeneo_connectivity_connection_open_apps')
+        ) {
             throw new AccessDeniedHttpException();
         }
 
-        if (!$app->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
-            throw new AccessDeniedHttpException();
-        }
-
-        if ($app->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')) {
+        if (
+            $app->isTestApp() &&
+            !$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps') &&
+            !$this->security->isGranted('akeneo_connectivity_connection_open_apps')
+        ) {
             throw new AccessDeniedHttpException();
         }
     }
