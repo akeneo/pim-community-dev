@@ -71,7 +71,10 @@ final class UpsertProductHandler
         foreach ($command->valuesUserIntent() as $index => $valueUserIntent) {
             $found = false;
             try {
-                if ($valueUserIntent instanceof SetTextValue || $valueUserIntent instanceof SetNumberValue || $valueUserIntent instanceof SetTextareaValue) {
+                if ($valueUserIntent instanceof SetTextValue
+                    || $valueUserIntent instanceof SetNumberValue
+                    || $valueUserIntent instanceof SetTextareaValue
+                ) {
                     $found = true;
                     $this->productUpdater->update($product, [
                         'values' => [
