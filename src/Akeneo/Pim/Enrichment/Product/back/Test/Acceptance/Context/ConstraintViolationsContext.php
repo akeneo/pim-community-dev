@@ -41,7 +41,7 @@ final class ConstraintViolationsContext implements Context
     public function thereIsNoViolation(): void
     {
         $violationMessages = [];
-        foreach ($this->constraintViolationList->getIterator() as $constraintViolation) {
+        foreach ($this->constraintViolationList as $constraintViolation) {
             $violationMessages[] = \sprintf('%s: %s', $constraintViolation->getPropertyPath(), $constraintViolation->getMessage());
         }
 
