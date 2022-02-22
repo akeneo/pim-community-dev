@@ -111,6 +111,10 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
         item.author ?? translate('akeneo_connectivity.connection.connect.connected_apps.list.test_apps.removed_user');
     const logo = item.logo ? <Logo src={item.logo} alt={item.name} /> : <AppIllustration width={100} height={100} />;
 
+    const canOpenApp =
+        item.activate_url &&
+        ((!item.is_test_app && security.isGranted('akeneo_connectivity_connection_open_apps')) || item.is_test_app);
+
     return (
         <CardContainer>
             <LogoContainer> {logo} </LogoContainer>
@@ -132,12 +136,7 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
                 >
                     {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')}
                 </Button>
-                <Button
-                    level='secondary'
-                    href={item.activate_url}
-                    disabled={!item.activate_url || !security.isGranted('akeneo_connectivity_connection_open_apps')}
-                    target='_blank'
-                >
+                <Button level='secondary' href={item.activate_url} disabled={!canOpenApp} target='_blank'>
                     {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.open_app')}
                 </Button>
             </Actions>

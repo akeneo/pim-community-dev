@@ -128,6 +128,44 @@ test('The Open App button is disabled when the user doesnt have the permission t
     openAppButton.toHaveAttribute('aria-disabled', 'true');
 });
 
+test('The Open App button is enabled for test app when the user doesnt have the permission to Open Apps', async () => {
+    const isGranted = jest.fn(acl => {
+        if (acl === 'akeneo_connectivity_connection_open_apps') {
+            return false;
+        }
+        return true;
+    });
+
+    const item = {
+        id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
+        name: 'App A',
+        scopes: ['scope A1'],
+        connection_code: 'connectionCodeA',
+        logo: 'http://www.example.test/path/to/logo/a',
+        author: 'author A',
+        user_group_name: 'app_123456abcde',
+        categories: ['category A1', 'category A2'],
+        certified: false,
+        partner: 'partner A',
+        activate_url: 'http://www.example.com/activate',
+        is_test_app: true,
+    };
+
+    renderWithProviders(
+        <SecurityContext.Provider value={{isGranted}}>
+            <ConnectedAppCard item={item} />
+        </SecurityContext.Provider>
+    );
+    await waitFor(() => screen.getByText('App A'));
+
+    const openAppButton = expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.open_app')
+    );
+    openAppButton.toHaveAttribute('href', 'http://www.example.com/activate');
+    openAppButton.not.toHaveAttribute('disabled');
+    openAppButton.not.toHaveAttribute('aria-disabled', 'true');
+});
+
 test('The connected app card displays removed user as author when author is null', async () => {
     const item = {
         id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
