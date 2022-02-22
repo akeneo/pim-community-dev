@@ -35,8 +35,14 @@ class AuthorizationCodeMustBeValidValidator extends ConstraintValidator
 
         /** @var IOAuth2AuthCode|null $authCode */
         $authCode = $this->storage->getAuthCode($value);
-        if (null === $authCode || $authCode->hasExpired()) {
+        if (null === $authCode) {
             $this->context->buildViolation($constraint->message)->addViolation();
+        } elseif ($authCode->hasExpired()) {
+            $this->context->buildViolation(\sprintf(
+                '%s : %s',
+                $constraint->message,
+                'code has expired'
+            ))->addViolation();
         }
     }
 }

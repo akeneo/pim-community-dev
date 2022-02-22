@@ -73,7 +73,7 @@ class AuthorizationCodeMustBeValidValidatorSpec extends ObjectBehavior
         $authCode->hasExpired()->willReturn(true);
 
         $storage->getAuthCode('auth_code_1234')->willReturn($authCode);
-        $context->buildViolation('invalid_grant')->shouldBeCalled()->willReturn($violationBuilder);
+        $context->buildViolation('invalid_grant : code has expired')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate('auth_code_1234', $constraint);
