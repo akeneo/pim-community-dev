@@ -8,6 +8,7 @@ use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -22,7 +23,7 @@ class CalculateCompletenessCommand extends Command
 {
     use LockableTrait;
 
-    private const BATCH_SIZE = 1000;
+    private $batchSize = 1000;
 
     protected static $defaultName = 'pim:completeness:calculate';
 
@@ -51,7 +52,10 @@ class CalculateCompletenessCommand extends Command
      */
     protected function configure()
     {
-        $this->setDescription('Launch the product completeness calculation');
+        $this
+            ->setDescription('Launch the product completeness calculation')
+            ->addArgument('batch-size', InputArgument::OPTIONAL, 'The number of product completeness calculated in one cycle.')
+        ;
     }
 
     /**
@@ -63,6 +67,10 @@ class CalculateCompletenessCommand extends Command
             $output->writeln(sprintf('The command "%s" is still running in another process.', self::$defaultName));
 
             return 0;
+        }
+
+        if (null !== $input->getArgument('batch-size')) {
+            $this->batchSize = $input->getArgument('batch-size');
         }
 
         $progressBar = new ProgressBar($output, $this->getTotalNumberOfProducts());
@@ -101,7 +109,7 @@ SQL;
                 $sql,
                 [
                     'formerId' => $formerId,
-                    'limit' => self::BATCH_SIZE,
+                    'limit' => $this->batchSize,
                 ],
                 [
                     'formerId' => \PDO::PARAM_INT,
