@@ -1,6 +1,7 @@
 # master
 
 ## Bug fixes
+
 - PIM-10215: Fixed last operation widget job type translation key
 - PIM-10233: Fix the saved value by an empty wysiwyg
 - PIM-10232: Fix "A new entity is found through the relationship" errors in jobs
@@ -9,6 +10,7 @@
 - PIM-10264: Optimize variant product ratio query
 - PIM-10248: Fix NOT BETWEEN filter does not work on products and product models (created and updated property)
 - PIM-10259: Fix Arabic text being reversed in product PDF exports
+- PIM-10277: Do not allow disabled user to login
 
 ## Improvements
 
