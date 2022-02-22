@@ -42,16 +42,11 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidAddTriggers:
-        arguments:
-            - '@database_connection'
-
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidCommand:
         arguments:
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidCreateColumns'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidFillProductUuid'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidFillForeignUuid'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidFillJson'
-            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidAddTriggers'
         tags:
             - { name: 'console.command' }
