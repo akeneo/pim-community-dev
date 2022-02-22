@@ -129,7 +129,7 @@ services:
 
     akeneo_connectivity.connection.internal_api.controller.apps.get_app_activate_url:
         public: true
-        class: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Apps\GetAppActivateUrlAction
+        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetAppActivateUrlAction
         arguments:
             - '@akeneo_connectivity.connection.marketplace.get_app_query'
             - '@akeneo_connectivity.connection.service.apps.client_provider'
@@ -151,6 +151,7 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthenticationHandler'
             - '@oro_security.security_facade'
+            - '@akeneo_connectivity.connection.marketplace.get_app_query'
 
     akeneo_connectivity.connection.public.controller.apps.token:
         public: true
@@ -162,7 +163,7 @@ services:
 
     akeneo_connectivity.connection.public.controller.apps.get_wizard_data:
         public: true
-        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\GetWizardDataAction
+        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetWizardDataAction
         arguments:
             - '@akeneo_connectivity.connection.marketplace.get_app_query'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
@@ -170,7 +171,7 @@ services:
 
     akeneo_connectivity.connection.apps.controller.apps.confirm_authorization:
         public: true
-        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\ConfirmAuthorizationAction
+        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\ConfirmAuthorizationAction
         arguments:
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler'
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
@@ -182,10 +183,11 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler'
+            - '@akeneo_connectivity.connection.marketplace.get_app_query'
 
     akeneo_connectivity.connection.apps.controller.apps.confirm_authentication:
         public: true
-        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\ConfirmAuthenticationAction
+        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\ConfirmAuthenticationAction
         arguments:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetAppConfirmationQuery'

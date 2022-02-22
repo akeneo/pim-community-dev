@@ -236,6 +236,7 @@ akeneo_connectivity.connection:
                     assets: assets
             error:
                 sub_text: Please contact the app developer or Akeneo support
+                app_not_found: The client_id does not match any existing app.
             constraint:
                 client_id:
                     not_blank: The client_id is required.

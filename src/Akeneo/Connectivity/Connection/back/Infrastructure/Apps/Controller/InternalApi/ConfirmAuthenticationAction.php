@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi;
 
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationCommand;
@@ -28,41 +28,22 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 final class ConfirmAuthenticationAction
 {
-    private FeatureFlag $featureFlag;
-    private GetAppConfirmationQueryInterface $getAppConfirmationQuery;
-    private SecurityFacade $security;
-    private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator;
-    private AppAuthorizationSessionInterface $appAuthorizationSession;
-    private ConnectedPimUserProvider $connectedPimUserProvider;
-    private ConsentAppAuthenticationHandler $consentAppAuthenticationHandler;
-    private LoggerInterface $logger;
-    private ViolationListNormalizer $violationListNormalizer;
-
     public function __construct(
-        FeatureFlag $featureFlag,
-        GetAppConfirmationQueryInterface $getAppConfirmationQuery,
-        SecurityFacade $security,
-        RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
-        AppAuthorizationSessionInterface $appAuthorizationSession,
-        ConnectedPimUserProvider $connectedPimUserProvider,
-        ConsentAppAuthenticationHandler $consentAppAuthenticationHandler,
-        LoggerInterface $logger,
-        ViolationListNormalizer $violationListNormalizer
+        private FeatureFlag $marketplaceActivateFeatureFlag,
+        private GetAppConfirmationQueryInterface $getAppConfirmationQuery,
+        private SecurityFacade $security,
+        private RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
+        private AppAuthorizationSessionInterface $appAuthorizationSession,
+        private ConnectedPimUserProvider $connectedPimUserProvider,
+        private ConsentAppAuthenticationHandler $consentAppAuthenticationHandler,
+        private LoggerInterface $logger,
+        private ViolationListNormalizer $violationListNormalizer
     ) {
-        $this->featureFlag = $featureFlag;
-        $this->getAppConfirmationQuery = $getAppConfirmationQuery;
-        $this->security = $security;
-        $this->redirectUriWithAuthorizationCodeGenerator = $redirectUriWithAuthorizationCodeGenerator;
-        $this->appAuthorizationSession = $appAuthorizationSession;
-        $this->connectedPimUserProvider = $connectedPimUserProvider;
-        $this->consentAppAuthenticationHandler = $consentAppAuthenticationHandler;
-        $this->logger = $logger;
-        $this->violationListNormalizer = $violationListNormalizer;
     }
 
     public function __invoke(Request $request, string $clientId): Response
     {
-        if (!$this->featureFlag->isEnabled()) {
+        if (!$this->marketplaceActivateFeatureFlag->isEnabled()) {
             throw new NotFoundHttpException();
         }
 
