@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Onboarder\Test\Unit\Domain\Supplier;
+namespace Akeneo\OnboarderSerenity\Test\Unit\Domain\Supplier;
 
-use Akeneo\Onboarder\Domain\Supplier\Code;
-use Akeneo\Onboarder\Domain\Supplier\Identifier;
-use Akeneo\Onboarder\Domain\Supplier\Label;
-use Akeneo\Onboarder\Domain\Supplier\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Code;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Identifier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Label;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Supplier;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 final class SupplierTest extends KernelTestCase

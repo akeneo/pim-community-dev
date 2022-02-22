@@ -20,10 +20,10 @@
     </php>
 
     <testsuites>
-        <testsuite name="Onboarder_v2_Integration_Test">
+        <testsuite name="Onboarder_Serenity_Integration_Test">
             <directory suffix="Integration.php">Integration</directory>
         </testsuite>
-        <testsuite name="Onboarder_v2_Unit_Test">
+        <testsuite name="Onboarder_Serenity_Unit_Test">
             <directory suffix="Test.php">Unit</directory>
         </testsuite>
     </testsuites>

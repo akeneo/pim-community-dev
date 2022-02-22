@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Onboarder\Integration;
+namespace Akeneo\OnboarderSerenity\Integration;
 
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -31,7 +31,7 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
     protected function resetDatabase(): void
     {
         $sql = <<<SQL
-            DROP TABLE IF EXISTS `akeneo_onboarder_v2_supplier`;
+            DROP TABLE IF EXISTS `akeneo_onboarder_serenity_supplier`;
         SQL;
 
         $this->connection->executeQuery($sql);

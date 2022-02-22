@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Onboarder\Test\Unit\Domain\Supplier;
+namespace Akeneo\OnboarderSerenity\Test\Unit\Domain\Supplier;
 
-use Akeneo\Onboarder\Domain\Supplier\Identifier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Identifier;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 final class IdentifierTest extends KernelTestCase

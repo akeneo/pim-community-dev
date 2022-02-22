@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Onboarder\Test\Unit\Domain\Supplier;
+namespace Akeneo\OnboarderSerenity\Test\Unit\Domain\Supplier;
 
-use Akeneo\Onboarder\Domain\Supplier\Label;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Label;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 final class LabelTest extends KernelTestCase

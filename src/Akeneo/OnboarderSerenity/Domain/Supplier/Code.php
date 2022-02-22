@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Onboarder\Domain\Supplier;
+namespace Akeneo\OnboarderSerenity\Domain\Supplier;
 
 final class Code
 {

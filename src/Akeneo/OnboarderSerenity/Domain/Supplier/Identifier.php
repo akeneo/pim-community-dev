@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Onboarder\Domain\Supplier;
+namespace Akeneo\OnboarderSerenity\Domain\Supplier;
 
 use Ramsey\Uuid\Uuid;
 
@@ -13,7 +13,7 @@ final class Identifier
     private function __construct(string $identifier)
     {
         if ('' === $identifier) {
-            throw new \InvalidArgumentException('The supplier identifier cannot be empty');
+            throw new \InvalidArgumentException('The supplier identifier cannot be empty.');
         }
 
         if (!Uuid::isValid($identifier)) {

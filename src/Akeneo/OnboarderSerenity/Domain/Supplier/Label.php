@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Onboarder\Domain\Supplier;
+namespace Akeneo\OnboarderSerenity\Domain\Supplier;
 
 final class Label
 {
-    private const MAX_LENGTH = 100;
+    private const MAX_LENGTH = 200;
 
     private string $label;
 

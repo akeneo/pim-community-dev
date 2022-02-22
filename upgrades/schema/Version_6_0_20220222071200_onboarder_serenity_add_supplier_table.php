@@ -8,14 +8,14 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 /**
- * This migration adds the Onboarder supplier table
+ * This migration adds the Onboarder Serenity supplier table
  */
-final class Version_6_0_20220222071200_onboarder_add_supplier_table extends AbstractMigration
+final class Version_6_0_20220222071200_onboarder_serenity_add_supplier_table extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
         $sql = <<<SQL
-            CREATE TABLE IF NOT EXISTS `akeneo_onboarder_v2_supplier` (
+            CREATE TABLE IF NOT EXISTS `akeneo_onboarder_serenity_supplier` (
               `identifier` varchar(36) NOT NULL,
               `code` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
               `label` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
