@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
@@ -66,15 +67,7 @@ class ProductIndexer implements ProductIndexerInterface
                 $productIdentifiersChunk
             );
 
-            $normalizedProductProjections = (
-                static function (iterable $projections): iterable {
-                    foreach ($projections as $identifier => $projection) {
-                        yield $identifier => $projection->toArray();
-                    }
-                }
-            )($elasticsearchProductProjections);
-
-            $this->productAndProductModelClient->bulkIndexes($normalizedProductProjections, 'id', $indexRefresh);
+            $this->productAndProductModelClient->bulkIndexes($elasticsearchProductProjections, 'id', $indexRefresh);
         }
     }
 

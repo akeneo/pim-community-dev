@@ -27,6 +27,7 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
     private ReadValueCollectionFactory $readValueCollectionFactory;
     /** @var GetAdditionalPropertiesForProductProjectionInterface[] */
     private iterable $additionalDataProviders;
+    private ?bool $columnExistsCache = null;
 
     public function __construct(
         Connection $connection,
@@ -54,7 +55,10 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
             static fn (array $row): string => (string) $row['identifier'],
             $rows
         );
-        $diffIdentifiers = \array_diff($productIdentifiers, $rowIdentifiers);
+        $diffIdentifiers = \array_diff(
+            array_map(fn (string $id): string => strtolower($id), $productIdentifiers),
+            array_map(fn (string $id): string => strtolower($id), $rowIdentifiers)
+        );
         if (\count($diffIdentifiers) > 0) {
             throw new ObjectNotFoundException(\sprintf('Product identifiers "%s" were not found.', \implode(',', $diffIdentifiers)));
         }
@@ -87,6 +91,7 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
 
             $projection = new ElasticsearchProductProjection(
                 $row['id'],
+                $row['uuid'],
                 $row['identifier'],
                 Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue($row['created_date'], $platform),
                 Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue($row['updated_date'], $platform),
@@ -118,7 +123,7 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
 WITH
     product as (
         SELECT
-            product.id,
+            %s,
             product.identifier,
             product.is_enabled,
             product.product_model_id AS parent_product_model_id,
@@ -252,6 +257,7 @@ WITH
     )
     SELECT
         product.id,
+        product.uuid,
         product.identifier,
         product.is_enabled,
         product.parent_product_model_code,
@@ -285,6 +291,12 @@ WITH
         LEFT JOIN family_attributes ON family_attributes.family_id = product.family_id
         LEFT JOIN variant_product_attributes ON variant_product_attributes.family_variant_id = product.family_variant_id
 SQL;
+
+        if ($this->columnExists('pim_catalog_product', 'uuid')) {
+            $sql = sprintf($sql, 'product.id, BIN_TO_UUID(product.uuid) as uuid');
+        } else {
+            $sql = sprintf($sql, 'product.id, NULL as uuid');
+        }
 
         return $this
             ->connection
@@ -379,5 +391,21 @@ SQL;
         }
 
         return $rowsIndexedByProductIdentifier;
+    }
+
+    private function columnExists(string $tableName, string $columnName): bool
+    {
+        if ($this->columnExistsCache === null) {
+            $rows = $this->connection->fetchAllAssociative(
+                sprintf('SHOW COLUMNS FROM %s LIKE :columnName', $tableName),
+                [
+                    'columnName' => $columnName,
+                ]
+            );
+
+            $this->columnExistsCache = count($rows) >= 1;
+        }
+
+        return $this->columnExistsCache;
     }
 }
