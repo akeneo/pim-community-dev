@@ -46,6 +46,7 @@ final class CodeTest extends KernelTestCase
     {
         $code = Code::fromString('valid_supplier_code');
 
+        static::assertInstanceOf(Code::class, $code);
         static::assertSame('valid_supplier_code', (string) $code);
     }
 }
