@@ -24,3 +24,14 @@ akeneo_job_get_job_user_action:
   path: /rest/process-tracker/job-user
   defaults: { _controller: akeneo.job.controller.get_job_user_action }
   methods: [GET]
+
+akeneo_job_get_job_instance_schedule:
+  path: /rest/schedule
+  defaults: { _controller: akeneo.job.controller.get_job_instance_schedule_action }
+  methods: [GET]
+
+akeneo_job_save_job_instance_schedule:
+  path: /rest/schedule
+  defaults: { _controller: akeneo.job.controller.save_job_instance_schedule_action }
+  methods: [POST]
+

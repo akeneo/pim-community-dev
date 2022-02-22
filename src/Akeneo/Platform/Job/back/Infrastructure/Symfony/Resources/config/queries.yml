@@ -14,3 +14,13 @@ services:
         arguments:
             - '@database_connection'
             - '@Akeneo\Platform\Job\Infrastructure\Hydrator\JobExecutionRowHydrator'
+
+    Akeneo\Platform\Job\back\Infrastructure\Query\GetJobInstanceSchedule:
+        class: Akeneo\Platform\Job\Infrastructure\Query\GetJobInstanceSchedule
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Platform\Job\back\Infrastructure\Query\SaveJobInstanceSchedule:
+        class: Akeneo\Platform\Job\Infrastructure\Query\SaveJobInstanceSchedule
+        arguments:
+            - '@database_connection'
