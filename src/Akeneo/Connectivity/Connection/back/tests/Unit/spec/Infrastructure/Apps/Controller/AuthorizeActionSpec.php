@@ -105,7 +105,7 @@ class AuthorizeActionSpec extends ObjectBehavior
             ->shouldBeLike(new RedirectResponse('/#/connect/apps/authorize?error=akeneo_connectivity.connection.connect.apps.error.app_not_found'));
     }
 
-    public function it_throws_access_denied_exception_when_the_app_is_found_but_open_apps_permission_is_missing(
+    public function it_throws_access_denied_exception_when_the_app_is_found_but_permissions_are_missing(
         FeatureFlag $marketplaceActivateFeatureFlag,
         Request $request,
         GetAppQueryInterface $getAppQuery,
@@ -128,35 +128,6 @@ class AuthorizeActionSpec extends ObjectBehavior
         $getAppQuery->execute($clientId)->willReturn($app);
 
         $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(false);
-
-        $this
-            ->shouldThrow(AccessDeniedHttpException::class)
-            ->during('__invoke', [$request]);
-    }
-
-    public function it_throws_access_denied_exception_when_the_app_is_found_but_manage_apps_permission_is_missing(
-        FeatureFlag $marketplaceActivateFeatureFlag,
-        Request $request,
-        GetAppQueryInterface $getAppQuery,
-        SecurityFacade $security,
-    ): void {
-        $marketplaceActivateFeatureFlag->isEnabled()->willReturn(true);
-        $clientId = 'a_client_id';
-        $request->query = new InputBag(['client_id' => $clientId]);
-
-        $app = App::fromWebMarketplaceValues([
-            'id' => $clientId,
-            'name' => 'some app',
-            'activate_url' => 'http://url.test',
-            'callback_url' => 'http://url.test',
-            'logo' => 'logo',
-            'author' => 'admin',
-            'url' => 'http://manage_app.test',
-            'categories' => ['master'],
-        ]);
-        $getAppQuery->execute($clientId)->willReturn($app);
-
-        $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(true);
         $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(false);
 
         $this
@@ -164,7 +135,7 @@ class AuthorizeActionSpec extends ObjectBehavior
             ->during('__invoke', [$request]);
     }
 
-    public function it_throws_access_denied_exception_when_the_test_app_is_found_but_manage_test_apps_permission_is_missing(
+    public function it_throws_access_denied_exception_when_the_test_app_is_found_but_permissions_are_missing(
         FeatureFlag $marketplaceActivateFeatureFlag,
         Request $request,
         GetAppQueryInterface $getAppQuery,
@@ -182,7 +153,7 @@ class AuthorizeActionSpec extends ObjectBehavior
         ]);
         $getAppQuery->execute($clientId)->willReturn($app);
 
-        $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(true);
+        $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(false);
         $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(false);
 
         $this
