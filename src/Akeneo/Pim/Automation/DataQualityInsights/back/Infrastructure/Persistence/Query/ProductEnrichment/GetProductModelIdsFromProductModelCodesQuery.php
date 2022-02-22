@@ -19,6 +19,11 @@ final class GetProductModelIdsFromProductModelCodesQuery implements GetProductMo
     ) {
     }
 
+
+    /**
+     * @param string[] $productIdentifiers
+     * @return array<string, ProductId>
+     */
     public function execute(array $productModelCodes): array
     {
         $query = <<<SQL
