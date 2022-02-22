@@ -5,35 +5,32 @@ namespace Akeneo\Pim\Enrichment\Bundle\Command;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class MigrateToUuidCreateColumns
+class MigrateToUuidCreateColumns implements MigrateToUuidStep
 {
-    private const TABLES = [
-        'pim_catalog_product' => 'id',
-        'pim_catalog_association' => 'owner_id',
-        'pim_catalog_association_product' => 'product_id',
-        'pim_catalog_association_product_model_to_product' => 'product_id',
-        'pim_catalog_category_product' => 'product_id',
-        'pim_catalog_group_product' => 'product_id',
-        'pim_catalog_product_unique_data' => 'product_id',
-        'pim_data_quality_insights_product_criteria_evaluation' => 'product_id',
-        'pim_data_quality_insights_product_score' => 'product_id',
-        'pimee_teamwork_assistant_completeness_per_attribute_group' => 'product_id',
-        'pimee_teamwork_assistant_project_product' => 'product_id',
-        'pimee_workflow_product_draft' => 'product_id',
-        'pimee_workflow_published_product' => 'original_product_id'
-    ];
+    use MigrateToUuidTrait;
 
-    public function __construct(private Connection $dbConnection)
+    public function __construct(private Connection $connection)
     {
     }
 
-    public function getMissingCount(OutputInterface $output): int
+    public function getDescription(): string
+    {
+        return 'Add uuid columns for pim_catalog_product table and every foreign tables';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function shouldBeExecuted(): bool
+    {
+        return 0 < $this->getMissingCount();
+    }
+
+    public function getMissingCount(): int
     {
         $count = 0;
-        foreach (self::TABLES as $tableName => $idColumnName) {
-            $uuidColumnName = $this->getUuidColumnName($idColumnName);
-            if ($this->tableExists($tableName) && !$this->columnExists($tableName, $uuidColumnName)) {
-                $output->writeln(sprintf('... missing %s', $tableName));
+        foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
+            if ($this->tableExists($tableName) && !$this->columnExists($tableName, $columnNames[1])) {
                 $count++;
             }
         }
@@ -41,45 +38,24 @@ class MigrateToUuidCreateColumns
         return $count;
     }
 
-    public function addMissing(OutputInterface $output): void
+    public function addMissing(bool $dryRun, OutputInterface $output): void
     {
-        foreach (self::TABLES as $tableName => $idColumnName) {
-            $uuidColumnName = $this->getUuidColumnName($idColumnName);
-            if ($this->tableExists($tableName) && !$this->columnExists($tableName, $uuidColumnName)) {
-                $output->writeln(sprintf('... add %s', $tableName));
-                $addUuidColumnQuery = sprintf(<<<SQL
-    ALTER TABLE `%s` ADD `%s` BINARY(16) DEFAULT NULL AFTER `%s`, LOCK=NONE, ALGORITHM=INPLACE;
-    SQL, $tableName, $uuidColumnName, $idColumnName);
+        foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
+            if ($this->tableExists($tableName) && !$this->columnExists($tableName, $columnNames[1])) {
+                $output->writeln(sprintf('    Will add %s', $tableName));
+                if (!$dryRun) {
+                    $addUuidColumnQuery = sprintf(<<<SQL
+        ALTER TABLE `%s` ADD `%s` BINARY(16) DEFAULT NULL AFTER `%s`, LOCK=NONE, ALGORITHM=INPLACE;
+        SQL, $tableName, $columnNames[1], $columnNames[0]);
+                    $this->connection->executeQuery($addUuidColumnQuery);
 
-                $this->dbConnection->executeQuery($addUuidColumnQuery);
+                    $indexName = 'product_uuid';
+                    $addIndexColumnQuery = sprintf(<<<SQL
+        ALTER TABLE %s ADD INDEX %s (%s), ALGORITHM=INPLACE, LOCK=NONE;
+        SQL, $tableName, $indexName, $columnNames[1]);
+                    $this->connection->executeQuery($addIndexColumnQuery);
+                }
             }
         }
-    }
-
-    private function columnExists(string $tableName, string $columnName): bool
-    {
-        $rows = $this->dbConnection->fetchAllAssociative(sprintf('SHOW COLUMNS FROM %s LIKE :columnName', $tableName),
-            [
-                'columnName' => $columnName,
-            ]);
-
-        return count($rows) >= 1;
-    }
-
-    private function tableExists(string $tableName): bool
-    {
-        $rows = $this->dbConnection->fetchAllAssociative(
-            'SHOW TABLES LIKE :tableName',
-            [
-                'tableName' => $tableName,
-            ]
-        );
-
-        return count($rows) >= 1;
-    }
-
-    private function getUuidColumnName(string $columnName): string
-    {
-        return preg_replace('/(.*)id$/', '$1uuid', $columnName);
     }
 }

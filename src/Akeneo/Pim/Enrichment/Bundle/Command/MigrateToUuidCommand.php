@@ -12,7 +12,11 @@ class MigrateToUuidCommand extends Command
     protected static $defaultName = 'pim:product:migrate-to-uuid';
 
     public function __construct(
-        private MigrateToUuidCreateColumns $migrateToUuidCreateColumns
+        private MigrateToUuidStep $migrateToUuidCreateColumns,
+        private MigrateToUuidStep $migrateToUuidFillProductUuid,
+        private MigrateToUuidStep $migrateToUuidFillForeignUuid,
+        private MigrateToUuidStep $migrateToUuidFillJson,
+        private MigrateToUuidStep $migrateToUuidAddTriggers
     ) {
         parent::__construct();
     }
@@ -21,21 +25,40 @@ class MigrateToUuidCommand extends Command
     {
         $this->setDescription('Migrate databases to product uuids');
         $this->addOption('dry-run', 'd', InputOption::VALUE_NEGATABLE, 'dry run', false);
+        $this->addOption('with-stats', 's', InputOption::VALUE_NEGATABLE, 'Display stats (be careful the command is way too slow)', false);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $dryRun = $input->getOption('dry-run');
+        $withStats = $input->getOption('with-stats');
 
-        $missingCount = $this->migrateToUuidCreateColumns->getMissingCount($output);
-        $output->writeln(sprintf('Step1: Missing %d columns', $missingCount));
-        if ($missingCount > 0 && !$dryRun) {
-            $output->writeln(sprintf('Add missing columns...'));
-            $this->migrateToUuidCreateColumns->addMissing($output);
-            $output->writeln(sprintf('Done'));
+        $i = 1;
+        foreach ([
+            $this->migrateToUuidCreateColumns,
+            $this->migrateToUuidFillProductUuid,
+            $this->migrateToUuidFillForeignUuid,
+            $this->migrateToUuidFillJson,
+//          @todo: fix permission to create triggers
+//            $this->migrateToUuidAddTriggers,
+        ] as $step) {
+            /** @var $step MigrateToUuidStep */
+            $output->writeln(sprintf('<info>Step %d: %s</info>', $i, $step->getDescription()));
+            if ($withStats) {
+                $missingCount = $step->getMissingCount();
+                $output->writeln(sprintf('    Missing %d items', $missingCount));
+            }
+
+            if ($step->shouldBeExecuted()) {
+                $output->writeln(sprintf('    Add missing items... '));
+                $step->addMissing($dryRun, $output);
+                $output->writeln(sprintf('    Done'));
+            }
+            $output->writeln('');
+            $i++;
         }
 
-        $output->writeln(sprintf('LEZGO'));
+        $output->writeln('<info>Migration done!</info>');
 
         return Command::SUCCESS;
     }
