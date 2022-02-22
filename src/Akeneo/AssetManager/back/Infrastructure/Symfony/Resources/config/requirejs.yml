@@ -88,7 +88,6 @@ config:
 
         # TODO RAC-546
         pim/attribute-edit-form/properties/asset-family: akeneoassetmanager/infrastructure/attribute/asset-single-link-field.ts
-        pim/asset-single-link-field: akeneoassetmanager/infrastructure/product/asset-single-link-field.tsx
 
         pim/export/asset-family-field: akeneoassetmanager/infrastructure/export/asset-family-field.ts
 
