@@ -19,8 +19,9 @@ final class GetProductModelIdsFromProductModelCodesQueryIntegration extends Data
         $this->createMinimalFamilyAndFamilyVariant('family_V', 'family_V_1');
         $productModelIdA = $this->createProductModel('product_model_A', 'family_V_1')->getId();
         $productModelIdB = $this->createProductModel('product_model_B', 'family_V_1')->getId();
+        $this->createProductModel('product_model_C', 'family_V_1')->getId();
 
-        $productModelIds = $this->get(GetProductModelIdsFromProductModelCodesQuery::class)->execute(['product_model_A', 'product_model_B']);
+        $productModelIds = $this->get(GetProductModelIdsFromProductModelCodesQuery::class)->execute(['product_model_A', 'product_model_B', 'unknown_product_model']);
         $expectedProductIds = [
             'product_model_A' => new ProductId($productModelIdA),
             'product_model_B' => new ProductId($productModelIdB),
