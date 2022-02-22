@@ -20,7 +20,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class LaunchScheduledJobs extends Command
+class LaunchScheduledJobsCommand extends Command
 {
     protected static $defaultName = 'akeneo:batch:launch-scheduled-jobs';
 
