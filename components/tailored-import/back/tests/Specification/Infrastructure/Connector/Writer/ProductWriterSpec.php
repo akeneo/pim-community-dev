@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Infrastructure\Connector\Writer;
 
-use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\LegacyViolationsException;
-use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\ViolationsException;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Platform\TailoredImport\Domain\Model\ColumnCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Infrastructure\Connector\RowPayload;

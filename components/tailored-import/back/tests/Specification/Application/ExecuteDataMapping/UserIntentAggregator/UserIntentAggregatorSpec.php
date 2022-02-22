@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentAggregator;
 
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use PhpSpec\ObjectBehavior;
 
 class UserIntentAggregatorSpec extends ObjectBehavior

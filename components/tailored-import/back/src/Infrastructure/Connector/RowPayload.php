@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector;
 
-use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Platform\TailoredImport\Domain\Model\ColumnCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Writer;
 
-use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\LegacyViolationsException;
-use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\ViolationsException;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Platform\TailoredImport\Domain\Model\Column;
 use Akeneo\Platform\TailoredImport\Infrastructure\Connector\RowPayload;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;

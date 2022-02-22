@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory;
 
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
 use Akeneo\Platform\TailoredImport\Domain\Model\TargetInterface;
