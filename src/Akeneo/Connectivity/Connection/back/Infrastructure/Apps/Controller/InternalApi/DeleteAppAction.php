@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal
 
 use Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Repository\ConnectedAppRepositoryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByConnectionCodeQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,21 +22,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 final class DeleteAppAction
 {
-    private FeatureFlag $featureFlag;
-    private SecurityFacade $security;
-    private ConnectedAppRepositoryInterface $connectedAppRepository;
-    private DeleteAppHandler $deleteAppHandler;
-
     public function __construct(
-        FeatureFlag $featureFlag,
-        SecurityFacade $security,
-        ConnectedAppRepositoryInterface $connectedAppRepository,
-        DeleteAppHandler $deleteAppHandler
+        private FeatureFlag $featureFlag,
+        private SecurityFacade $security,
+        private FindOneConnectedAppByConnectionCodeQueryInterface $findOneConnectedAppByConnectionCodeQuery,
+        private DeleteAppHandler $deleteAppHandler,
     ) {
-        $this->featureFlag = $featureFlag;
-        $this->security = $security;
-        $this->connectedAppRepository = $connectedAppRepository;
-        $this->deleteAppHandler = $deleteAppHandler;
     }
 
     public function __invoke(Request $request, string $connectionCode): Response
@@ -53,7 +44,7 @@ final class DeleteAppAction
             throw new AccessDeniedHttpException();
         }
 
-        $connectedApp = $this->connectedAppRepository->findOneByConnectionCode($connectionCode);
+        $connectedApp = $this->findOneConnectedAppByConnectionCodeQuery->execute($connectionCode);
 
         if (null === $connectedApp) {
             throw new NotFoundHttpException(

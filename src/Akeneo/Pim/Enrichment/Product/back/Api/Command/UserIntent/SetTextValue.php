@@ -12,8 +12,8 @@ final class SetTextValue implements ValueUserIntent
 {
     public function __construct(
         private string $attributeCode,
-        private ?string $localeCode,
         private ?string $channelCode,
+        private ?string $localeCode,
         private string $value
     ) {
     }

@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2022 Akeneo SAS (https://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Test\Pim\Enrichment\Product\Integration\Handler;
 
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -56,6 +47,18 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
 
         $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'identifier', valuesUserIntent: [
             new SetTextValue('a_text', null, null, 'foo'),
+        ]);
+        $this->messageBus->dispatch($command);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_user_locale_is_not_granted(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('You don\'t have access to product data in any activated locale, please contact your administrator');
+
+        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'identifier', valuesUserIntent: [
+            new SetTextValue('name', null, 'en_GB', 'foo'),
         ]);
         $this->messageBus->dispatch($command);
     }

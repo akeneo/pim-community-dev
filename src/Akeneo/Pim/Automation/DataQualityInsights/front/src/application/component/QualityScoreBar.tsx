@@ -1,30 +1,62 @@
-import React, {FC} from 'react';
-import {QualityScore} from './QualityScore';
+import React, {FC, SyntheticEvent} from 'react';
 import styled, {css} from 'styled-components';
-import {DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB} from '../listener';
+import {QualityScore} from './QualityScore';
 
 type Props = {
   currentScore: string | null;
+  onClick?: (event: SyntheticEvent) => void;
+  stacked?: boolean;
 };
 
-const QualityScoreBar: FC<Props> = ({currentScore}) => {
+const QualityScoreBar: FC<Props> = ({currentScore, onClick, stacked = false}) => {
+  const handleAction = (event: SyntheticEvent) => {
+    if (undefined === onClick) return;
+
+    onClick(event);
+  };
+
   return (
-    <Container
-      currentScore={currentScore}
-      onClick={() => window.dispatchEvent(new CustomEvent(DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB))}
-    >
-      {['A', 'B', 'C', 'D', 'E'].map((score: string) => {
-        return score === currentScore ? (
-          <SelectedScore key={`ranking-score-${currentScore}`} score={currentScore} />
-        ) : (
-          <QualityScore key={`ranking-score-${score}`} score={score} />
-        );
-      })}
+    <Container currentScore={currentScore} onClick={handleAction} data-testid="quality-score-bar">
+      <QualityScore
+        key={`ranking-score-A`}
+        score={'A'}
+        size={'A' === currentScore ? 'big' : 'normal'}
+        rounded={'left'}
+        stacked={stacked && 'A' === currentScore}
+      />
+      <QualityScore
+        key={`ranking-score-B`}
+        score={'B'}
+        size={'B' === currentScore ? 'big' : 'normal'}
+        rounded={'none'}
+        stacked={stacked && 'B' === currentScore}
+      />
+      <QualityScore
+        key={`ranking-score-C`}
+        score={'C'}
+        size={'C' === currentScore ? 'big' : 'normal'}
+        rounded={'none'}
+        stacked={stacked && 'C' === currentScore}
+      />
+      <QualityScore
+        key={`ranking-score-D`}
+        score={'D'}
+        size={'D' === currentScore ? 'big' : 'normal'}
+        stacked={stacked && 'D' === currentScore}
+        rounded={'none'}
+      />
+      <QualityScore
+        key={`ranking-score-E`}
+        score={'E'}
+        size={'E' === currentScore ? 'big' : 'normal'}
+        stacked={stacked && 'E' === currentScore}
+        rounded={'right'}
+      />
     </Container>
   );
 };
 
-const Container = styled.div<Props>`
+const Container = styled.div<{currentScore: string | null}>`
   display: flex;
   position: relative;
   top: 1px;
@@ -35,33 +67,11 @@ const Container = styled.div<Props>`
   height: 25px;
   cursor: pointer;
 
-  > :first-child {
-    border-radius: 4px 0 0 4px;
-  }
-  > :last-child {
-    border-radius: 0 4px 4px 0;
-  }
-
-  > :not(:first-child):not(:last-child) {
-    border-radius: 0;
-  }
-
   ${props => props.currentScore === null && NoScoreStyle}
 `;
 
 const NoScoreStyle = css`
   opacity: 0.3;
-`;
-
-const SelectedScore = styled(QualityScore)`
-  width: 25px;
-  height: 25px;
-  border-radius: 4px !important;
-  line-height: 25px;
-  font-size: 15px;
-  top: -2px;
-  position: relative;
-  margin: 0 -2px 0 -2px;
 `;
 
 export {QualityScoreBar};
