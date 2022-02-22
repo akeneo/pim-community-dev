@@ -21,7 +21,6 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-broken
 
 class ProviderSpec extends ObjectBehavior
 {
@@ -83,16 +82,17 @@ class ProviderSpec extends ObjectBehavior
         $this->loadUserByUsername('julia@example.com')->shouldReturn($julia);
     }
 
-    // function it_throws_an_exception_if_user_is_disabled($userRepository) {
-    //     $ssoConfiguration = $this->getEnabledConfiguration();
-    //     $configRepository->find('authentication_sso')->shouldBeCalled()->willReturn($ssoConfiguration);
+    function it_throws_an_exception_if_user_is_disabled($userRepository, $configRepository)
+    {
+        $ssoConfiguration = $this->getEnabledConfiguration();
+        $configRepository->find('authentication_sso')->shouldBeCalled()->willReturn($ssoConfiguration);
 
-    //     $julia = new User('julia@example.com', 'kitten123', [], false);
+        $julia = new User('julia@example.com', 'kitten123', [], false);
 
-    //     $userRepository->findOneBy(['username' => 'julia@example.com'])->willReturn($julia);
-    //     $this->shouldThrow(UnsupportedUserException::class)->during('aloadUserByUsername', [julia@example.com]);
+        $userRepository->findOneBy(['username' => 'julia@example.com'])->willReturn($julia);
 
-    // }
+        $this->shouldThrow(UsernameNotFoundException::class)->during('loadUserByUsername', ['julia@example.com']);
+    }
 
 
     function it_refreshes_a_user($userRepository, UserInterface $julia)
@@ -109,7 +109,6 @@ class ProviderSpec extends ObjectBehavior
         $this->shouldThrow(UnsupportedUserException::class)->during('refreshUser', [$julia]);
     }
 
-  
     private function getEnabledConfiguration(): Configuration
     {
         return $this->getConfiguration(true);
