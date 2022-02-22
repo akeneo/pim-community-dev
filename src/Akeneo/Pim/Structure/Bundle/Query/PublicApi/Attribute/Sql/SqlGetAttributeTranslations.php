@@ -47,4 +47,41 @@ SQL;
 
         return $attributeTranslations;
     }
+
+    /**
+     * @return array<array{locale: string, label: string}>
+     */
+    public function byAttributeCodes(array $attributeCodes): array
+    {
+        if (empty($attributeCodes)) {
+            return [];
+        }
+
+        $query = <<<SQL
+            SELECT
+                code,
+                JSON_OBJECTAGG(attribute_translation.locale, attribute_translation.label) as labels
+            FROM pim_catalog_attribute attribute
+                LEFT JOIN pim_catalog_attribute_translation attribute_translation ON attribute.id = attribute_translation.foreign_key
+            WHERE attribute.code IN (:attributeCodes)
+            GROUP BY attribute.code;
+        SQL;
+
+        $rows = $this->connection->executeQuery(
+            $query,
+            [
+                'attributeCodes' => $attributeCodes
+            ],
+            [
+                'attributeCodes' => Connection::PARAM_STR_ARRAY,
+            ]
+        )->fetchAllAssociative();
+
+        $attributeTranslations = [];
+        foreach ($rows as $attribute) {
+            $attributeTranslations[$attribute['code']] = json_decode($attribute['labels'], true);
+        }
+
+        return $attributeTranslations;
+    }
 }
