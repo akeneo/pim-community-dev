@@ -58,7 +58,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->expectExceptionMessage('You don\'t have access to product data in any activated locale, please contact your administrator');
 
         $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'identifier', valuesUserIntent: [
-            new SetTextValue('name', 'en_GB', null, 'foo'),
+            new SetTextValue('name', null, 'en_GB', 'foo'),
         ]);
         $this->messageBus->dispatch($command);
     }

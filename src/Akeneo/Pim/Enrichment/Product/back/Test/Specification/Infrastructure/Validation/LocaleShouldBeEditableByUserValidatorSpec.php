@@ -48,7 +48,7 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
         getEditableLocaleCodes $getEditableLocaleCodes
     ) {
         $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_identifier', valuesUserIntent: [
-            new SetTextValue('a_text', 'en_US', null, 'new value'),
+            new SetTextValue('a_text', null, 'en_US', 'new value'),
         ]);
 
         $getEditableLocaleCodes->forUserId(1)->willReturn(['en_US', 'fr_FR']);
@@ -64,7 +64,7 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
     ) {
         $constraint = new LocaleShouldBeEditableByUser();
         $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_identifier', valuesUserIntent: [
-            new SetTextValue('a_text', 'de_DE', null, 'new value'),
+            new SetTextValue('a_text', null, 'de_DE', 'new value'),
         ]);
 
         $getEditableLocaleCodes->forUserId(1)->willReturn(['en_US', 'fr_FR']);
@@ -83,8 +83,8 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
     ) {
         $constraint = new LocaleShouldBeEditableByUser();
         $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_identifier', valuesUserIntent: [
-            new SetTextValue('a_text', 'de_DE', null, 'new value'),
-            new SetTextValue('a_text', 'en_GB', null, 'new value'),
+            new SetTextValue('a_text', null, 'de_DE', 'new value'),
+            new SetTextValue('a_text', null, 'en_GB', 'new value'),
         ]);
 
         $getEditableLocaleCodes->forUserId(1)->willReturn(['en_US', 'fr_FR']);
