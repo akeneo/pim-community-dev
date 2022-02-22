@@ -14,11 +14,14 @@ export const getImageDownloadUrl = (image: File): string => {
   return routing.generate('pim_enrich_media_download', {filename});
 };
 
-export const getMediaPreviewUrl = (mediaPreview: MediaPreview): string =>
-  routing.generate('akeneo_asset_manager_image_preview', {
-    ...mediaPreview,
-    data: btoa(encodeURI(mediaPreview.data)),
-  });
+export const getMediaPreviewUrl = (mediaPreview: MediaPreview): string => {
+    const isUrlEncoded = mediaPreview.data !== decodeURIComponent(mediaPreview.data);
+
+    return routing.generate('akeneo_asset_manager_image_preview', {
+        ...mediaPreview,
+        data: btoa(isUrlEncoded ? mediaPreview.data : encodeURI(mediaPreview.data)),
+    });
+};
 
 export const getAssetEditUrl = (asset: ListAsset): string =>
   `#${routing.generate('akeneo_asset_manager_asset_edit', {
