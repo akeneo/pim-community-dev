@@ -40,8 +40,8 @@ pim_table_configuration:
       first_column_required: 'La columna «{{ columnCode }}» es obligatoria'
       unknown_option: 'Asegúrese de que solo utiliza los códigos de opciones existentes, el valor actual: «{{ optionCode }}»'
       integer_required: 'Este valor debe ser un entero: {{ invalid_value }}'
-      min_validation: este valor debe ser {{ limit }} o más 
-      max_validation: este valor debe ser {{ limit }} o menos 
+      min_validation: este valor debe ser {{ limit }} o más
+      max_validation: este valor debe ser {{ limit }} o menos
       value_integer_required: 'El valor requerido es un entero'
       max_length_validation: Este valor debe contener {{ limit }} caracteres o menos.
       too_many_rows: Ha alcanzado el número máximo de registros en su tabla ({{ limit }}).

@@ -23,6 +23,7 @@ import {NotificationLevel, Security} from '../../dependenciesTools';
 import {Dropdown} from '../../components/Dropdown';
 import {AlertDialog} from '../../components/AlertDialog/AlertDialog';
 import {Breadcrumb, pimTheme} from 'akeneo-design-system';
+import {dependencies} from '../../dependenciesTools/provider/dependencies';
 
 const Illustration = styled.div`
   background-image: url('/bundles/akeneopimruleengine/assets/illustrations/rules.svg');
@@ -129,6 +130,7 @@ const EditRulesContent: React.FC<Props> = ({
     }
 
     if (result.ok) {
+      dependencies.ruleManager.familyAttributesRulesNumberPromise = null;
       notify(
         NotificationLevel.SUCCESS,
         translate('pimee_catalog_rule.form.delete.notification.success')
