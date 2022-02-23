@@ -16,11 +16,10 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\Selection\File;
 final class FilePathSelection implements FileSelectionInterface
 {
     public const TYPE = 'path';
-    private string $attributeCode;
 
-    public function __construct(string $attributeCode)
-    {
-        $this->attributeCode = $attributeCode;
+    public function __construct(
+        private string $attributeCode,
+    ) {
     }
 
     public function getAttributeCode(): string

@@ -22,18 +22,17 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyLabelInterface;
 
 class FamilyLabelSelectionApplier implements SelectionApplierInterface
 {
-    private FindFamilyLabelInterface $findFamilyLabel;
-
-    public function __construct(FindFamilyLabelInterface $findFamilyLabel)
-    {
-        $this->findFamilyLabel = $findFamilyLabel;
+    public function __construct(
+        private FindFamilyLabelInterface $findFamilyLabel,
+    ) {
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {
         if (
             !$selection instanceof FamilyLabelSelection
-            || !$value instanceof FamilyValue) {
+            || !$value instanceof FamilyValue
+        ) {
             throw new \InvalidArgumentException('Cannot apply Family selection on this entity');
         }
 

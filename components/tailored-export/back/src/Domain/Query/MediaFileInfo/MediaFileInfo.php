@@ -11,15 +11,11 @@ namespace Akeneo\Platform\TailoredExport\Domain\Query\MediaFileInfo;
  */
 class MediaFileInfo
 {
-    private string $fileKey;
-    private string $originalFilename;
-    private string $storage;
-
-    public function __construct(string $fileKey, string $originalFilename, string $storage)
-    {
-        $this->fileKey = $fileKey;
-        $this->originalFilename = $originalFilename;
-        $this->storage = $storage;
+    public function __construct(
+        private string $fileKey,
+        private string $originalFilename,
+        private string $storage,
+    ) {
     }
 
     public function getFileKey(): string

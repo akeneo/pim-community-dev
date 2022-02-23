@@ -40,15 +40,15 @@ class ColumnsValidator extends ConstraintValidator
             new Type('array'),
             new Count([
                 'max' => self::MAX_COLUMN_COUNT,
-                'maxMessage' => 'akeneo.tailored_export.validation.columns.max_column_count_reached'
-            ])
+                'maxMessage' => 'akeneo.tailored_export.validation.columns.max_column_count_reached',
+            ]),
         ]);
 
         if (0 < $violations->count()) {
             foreach ($violations as $violation) {
                 $this->context->buildViolation(
                     $violation->getMessage(),
-                    $violation->getParameters()
+                    $violation->getParameters(),
                 )
                     ->addViolation();
             }
@@ -83,8 +83,8 @@ class ColumnsValidator extends ConstraintValidator
                     new NotBlank(['message' => Columns::TARGET_SHOULD_NOT_BE_BLANK]),
                     new Length([
                         'max' => self::TARGET_MAX_LENGTH,
-                        'maxMessage' => Columns::TARGET_MAX_LENGTH_REACHED
-                    ])
+                        'maxMessage' => Columns::TARGET_MAX_LENGTH_REACHED,
+                    ]),
                 ],
                 'sources' => new Sources(),
                 'format' => new Format(),
@@ -94,12 +94,12 @@ class ColumnsValidator extends ConstraintValidator
         foreach ($violations as $violation) {
             $builder = $this->context->buildViolation(
                 $violation->getMessage(),
-                $violation->getParameters()
+                $violation->getParameters(),
             )
                 ->atPath(sprintf('[%s]%s', $column['uuid'], $violation->getPropertyPath()))
                 ->setInvalidValue($violation->getInvalidValue());
             if ($violation->getPlural()) {
-                $builder->setPlural((int)$violation->getPlural());
+                $builder->setPlural((int) $violation->getPlural());
             }
             $builder->addViolation();
         }

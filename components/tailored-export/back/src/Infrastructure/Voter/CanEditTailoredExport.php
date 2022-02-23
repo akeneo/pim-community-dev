@@ -19,18 +19,11 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 
 class CanEditTailoredExport
 {
-    protected GetAllViewableLocalesForUserInterface $getAllViewableLocales;
-    protected GetViewableAttributeCodesForUserInterface $getViewableAttributes;
-    protected GetAttributes $getAttributes;
-
     public function __construct(
-        GetAllViewableLocalesForUserInterface $getAllViewableLocales,
-        GetViewableAttributeCodesForUserInterface $getViewableAttributes,
-        GetAttributes $getAttributes
+        protected GetAllViewableLocalesForUserInterface $getAllViewableLocales,
+        protected GetViewableAttributeCodesForUserInterface $getViewableAttributes,
+        protected GetAttributes $getAttributes,
     ) {
-        $this->getAllViewableLocales = $getAllViewableLocales;
-        $this->getViewableAttributes = $getViewableAttributes;
-        $this->getAttributes = $getAttributes;
     }
 
     public function execute(JobInstance $jobInstance, int $userId): bool
@@ -49,7 +42,7 @@ class CanEditTailoredExport
         $jobAttributeCodes = array_unique(array_reduce($columns, function (array $accumulator, array $column) {
             $attributeSources = array_filter(
                 $column['sources'],
-                static fn (array $source) => AttributeSource::TYPE === $source['type']
+                static fn (array $source) => AttributeSource::TYPE === $source['type'],
             );
             $attributeCodes = array_map(static fn (array $source) => $source['code'], $attributeSources);
 

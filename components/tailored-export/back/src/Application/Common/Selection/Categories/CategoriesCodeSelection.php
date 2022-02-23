@@ -17,11 +17,9 @@ final class CategoriesCodeSelection implements CategoriesSelectionInterface
 {
     public const TYPE = 'code';
 
-    private string $separator;
-
-    public function __construct(string $separator)
-    {
-        $this->separator = $separator;
+    public function __construct(
+        private string $separator,
+    ) {
     }
 
     public function getSeparator(): string

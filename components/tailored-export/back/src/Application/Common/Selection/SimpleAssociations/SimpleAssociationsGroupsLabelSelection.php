@@ -17,15 +17,10 @@ final class SimpleAssociationsGroupsLabelSelection implements SimpleAssociations
 {
     public const TYPE = 'label';
 
-    private string $locale;
-    private string $separator;
-
     public function __construct(
-        string $locale,
-        string $separator
+        private string $locale,
+        private string $separator,
     ) {
-        $this->locale = $locale;
-        $this->separator = $separator;
     }
 
     public function getLocale(): string

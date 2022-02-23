@@ -20,28 +20,14 @@ final class AssetCollectionMediaFileSelection implements AssetCollectionSelectio
     public const FILE_PATH_PROPERTY = 'file_path';
     public const ORIGINAL_FILENAME_PROPERTY = 'original_filename';
 
-
-    private string $separator;
-    private ?string $locale;
-    private ?string $channel;
-    private string $assetFamilyCode;
-    private string $attributeCode;
-    private string $property;
-
     public function __construct(
-        string $separator,
-        ?string $channel,
-        ?string $locale,
-        string $assetFamilyCode,
-        string $attributeCode,
-        string $property
+        private string $separator,
+        private ?string $channel,
+        private ?string $locale,
+        private string $assetFamilyCode,
+        private string $attributeCode,
+        private string $property,
     ) {
-        $this->separator = $separator;
-        $this->channel = $channel;
-        $this->locale = $locale;
-        $this->assetFamilyCode = $assetFamilyCode;
-        $this->attributeCode = $attributeCode;
-        $this->property = $property;
     }
 
     public function getSeparator(): string

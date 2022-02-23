@@ -23,11 +23,9 @@ use Webmozart\Assert\Assert;
  */
 final class LocaleShouldBeActiveValidator extends ConstraintValidator
 {
-    private ChannelExistsWithLocaleInterface $channelExistsWithLocale;
-
-    public function __construct(ChannelExistsWithLocaleInterface $channelExistsWithLocale)
-    {
-        $this->channelExistsWithLocale = $channelExistsWithLocale;
+    public function __construct(
+        private ChannelExistsWithLocaleInterface $channelExistsWithLocale,
+    ) {
     }
 
     /**
@@ -45,7 +43,7 @@ final class LocaleShouldBeActiveValidator extends ConstraintValidator
                 LocaleShouldBeActive::NOT_ACTIVE_MESSAGE,
                 [
                     '{{ locale_code }}' => $localeCode,
-                ]
+                ],
             )->addViolation();
         }
     }

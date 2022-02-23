@@ -18,6 +18,7 @@ import {AkeneoSpinner} from '../../components';
 import {Payload} from '../../rules.types';
 import {LocaleCode} from '../../models';
 import {pimTheme} from 'akeneo-design-system';
+import {dependencies} from '../../dependenciesTools/provider/dependencies';
 
 const transformFormData = (
   formData: FormDataInput,
@@ -75,6 +76,7 @@ const CreateRules: React.FC<Props> = ({originalRuleCode}) => {
       return error;
     }
     if (result.ok) {
+      dependencies.ruleManager.familyAttributesRulesNumberPromise = null;
       notify(
         NotificationLevel.SUCCESS,
         translate('pimee_catalog_rule.form.creation.notification.success')

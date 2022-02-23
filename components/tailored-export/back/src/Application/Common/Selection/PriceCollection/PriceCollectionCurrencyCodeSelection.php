@@ -19,15 +19,11 @@ final class PriceCollectionCurrencyCodeSelection implements PriceCollectionSelec
 {
     public const TYPE = 'currency_code';
 
-    private string $separator;
-    private array $currencies;
-
-    public function __construct(string $separator, array $currencies)
-    {
+    public function __construct(
+        private string $separator,
+        private array $currencies,
+    ) {
         Assert::allString($currencies);
-
-        $this->separator = $separator;
-        $this->currencies = $currencies;
     }
 
     public function getSeparator(): string

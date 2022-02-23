@@ -17,15 +17,10 @@ final class ReferenceEntityLabelSelection implements ReferenceEntitySelectionInt
 {
     public const TYPE = 'label';
 
-    private string $locale;
-    private string $referenceEntityCode;
-
     public function __construct(
-        string $locale,
-        string $referenceEntityCode
+        private string $locale,
+        private string $referenceEntityCode,
     ) {
-        $this->locale = $locale;
-        $this->referenceEntityCode = $referenceEntityCode;
     }
 
     public function getLocale(): string

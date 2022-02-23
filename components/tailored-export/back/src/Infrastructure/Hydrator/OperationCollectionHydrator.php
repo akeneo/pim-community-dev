@@ -17,22 +17,20 @@ class OperationCollectionHydrator
 {
     public function createAttributeOperationCollection(
         array $normalizedOperations,
-        Attribute $attribute
+        Attribute $attribute,
     ): OperationCollection {
         return OperationCollection::create(array_filter(
             array_map(
-                function (array $normalizedOperation) use ($attribute) {
-                    return match ($normalizedOperation['type']) {
-                        'measurement_conversion' => new MeasurementConversionOperation(
-                            $attribute->metricFamily(),
-                            $normalizedOperation['target_unit_code'],
-                        ),
-                        'measurement_rounding' => new MeasurementRoundingOperation(
-                            $normalizedOperation['rounding_type'],
-                            $normalizedOperation['precision'],
-                        ),
-                        default => $this->createCommonOperation($normalizedOperation),
-                    };
+                fn (array $normalizedOperation) => match ($normalizedOperation['type']) {
+                    'measurement_conversion' => new MeasurementConversionOperation(
+                        $attribute->metricFamily(),
+                        $normalizedOperation['target_unit_code'],
+                    ),
+                    'measurement_rounding' => new MeasurementRoundingOperation(
+                        $normalizedOperation['rounding_type'],
+                        $normalizedOperation['precision'],
+                    ),
+                    default => $this->createCommonOperation($normalizedOperation),
                 },
                 $normalizedOperations,
             ),
@@ -61,15 +59,11 @@ class OperationCollectionHydrator
 
     private function createCommonOperation(array $normalizedOperation): ?OperationInterface
     {
-        switch ($normalizedOperation['type']) {
-            case 'replacement':
-                return new ReplacementOperation($normalizedOperation['mapping']);
-            case 'default_value':
-                return new DefaultValueOperation($normalizedOperation['value']);
-            case 'clean_html_tags':
-                return new CleanHTMLTagsOperation();
-            default:
-                return null;
-        }
+        return match ($normalizedOperation['type']) {
+            'replacement' => new ReplacementOperation($normalizedOperation['mapping']),
+            'default_value' => new DefaultValueOperation($normalizedOperation['value']),
+            'clean_html_tags' => new CleanHTMLTagsOperation(),
+            default => null,
+        };
     }
 }

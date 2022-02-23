@@ -196,7 +196,7 @@ pimee_catalog_rule:
           add_product_model: Dodaj model produktu
           add_association_type: Dodaj typ powiązania
           select_title:
-            products: Wybierz produkty 
+            products: Wybierz produkty
             product_models: Wybierz modele produktów
             groups: Wybierz grupy
           select:

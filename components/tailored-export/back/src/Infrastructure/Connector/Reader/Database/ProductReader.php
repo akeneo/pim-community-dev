@@ -22,21 +22,16 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 
-class ProductReader implements
-    ItemReaderInterface,
-    InitializableInterface,
-    StepExecutionAwareInterface,
-    TrackableItemReaderInterface
+class ProductReader implements ItemReaderInterface, InitializableInterface, StepExecutionAwareInterface, TrackableItemReaderInterface
 {
-    private ProductQueryBuilderFactoryInterface $pqbFactory;
     private ?StepExecution $stepExecution = null;
     /** @var CursorInterface<ProductInterface>|null */
     private ?CursorInterface $products = null;
     private bool $firstRead = true;
 
-    public function __construct(ProductQueryBuilderFactoryInterface $pqbFactory)
-    {
-        $this->pqbFactory = $pqbFactory;
+    public function __construct(
+        private ProductQueryBuilderFactoryInterface $pqbFactory,
+    ) {
     }
 
     public function totalItems(): int
@@ -103,11 +98,12 @@ class ProductReader implements
             $filters = $this->getStepExecution()->getJobParameters()->get('filters')['data'] ?? [];
         }
 
-        return array_filter($filters, static fn ($filter) => count($filter) > 0);
+        return array_filter($filters, static fn ($filter) => (is_countable($filter) ? count($filter) : 0) > 0);
     }
 
     /**
      * @param array<array> $filters
+     *
      * @return CursorInterface<ProductInterface>
      */
     private function getProductsCursor(array $filters): CursorInterface
@@ -118,7 +114,7 @@ class ProductReader implements
                 $filter['field'],
                 $filter['operator'],
                 $filter['value'],
-                $filter['context'] ?? []
+                $filter['context'] ?? [],
             );
         }
 

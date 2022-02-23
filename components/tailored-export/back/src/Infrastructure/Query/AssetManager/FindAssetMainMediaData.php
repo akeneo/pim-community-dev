@@ -18,11 +18,9 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindAssetMainMediaDataInterface;
 
 class FindAssetMainMediaData implements FindAssetMainMediaDataInterface
 {
-    private GetAssetMainMediaDataInterface $getAssetMainMediaData;
-
-    public function __construct(GetAssetMainMediaDataInterface $getAssetMainMediaData)
-    {
-        $this->getAssetMainMediaData = $getAssetMainMediaData;
+    public function __construct(
+        private GetAssetMainMediaDataInterface $getAssetMainMediaData,
+    ) {
     }
 
     public function forAssetFamilyAndAssetCodes(string $assetFamilyIdentifier, array $assetCodes, ?string $channel, ?string $locale): array

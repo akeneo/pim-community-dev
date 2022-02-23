@@ -25,7 +25,7 @@ final class QuantifiedAssociationsValue implements SourceValueInterface
 
     public function __construct(
         array $productAssociations,
-        array $productModelAssociations
+        array $productModelAssociations,
     ) {
         Assert::allIsInstanceOf($productAssociations, QuantifiedAssociation::class);
         Assert::allIsInstanceOf($productModelAssociations, QuantifiedAssociation::class);

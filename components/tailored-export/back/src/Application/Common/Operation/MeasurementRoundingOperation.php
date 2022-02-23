@@ -27,7 +27,7 @@ class MeasurementRoundingOperation implements OperationInterface
 
     public function __construct(
         private string $type,
-        private int $precision
+        private int $precision,
     ) {
         Assert::oneOf($type, self::ROUNDING_TYPES);
         Assert::greaterThanEq($precision, self::MIN_PRECISION_SUPPORTED);

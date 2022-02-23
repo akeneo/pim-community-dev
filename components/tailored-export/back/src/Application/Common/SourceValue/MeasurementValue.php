@@ -15,13 +15,10 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\SourceValue;
 
 class MeasurementValue implements SourceValueInterface
 {
-    private string $value;
-    private string $unitCode;
-
-    public function __construct(string $value, string $unitCode)
-    {
-        $this->value = $value;
-        $this->unitCode = $unitCode;
+    public function __construct(
+        private string $value,
+        private string $unitCode,
+    ) {
     }
 
     public function getValue(): string

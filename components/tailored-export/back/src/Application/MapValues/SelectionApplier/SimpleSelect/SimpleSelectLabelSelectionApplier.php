@@ -22,12 +22,9 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterfa
 
 class SimpleSelectLabelSelectionApplier implements SelectionApplierInterface
 {
-    private FindAttributeOptionLabelsInterface $getAttributeOptionLabels;
-
     public function __construct(
-        FindAttributeOptionLabelsInterface $getAttributeOptionLabels
+        private FindAttributeOptionLabelsInterface $getAttributeOptionLabels,
     ) {
-        $this->getAttributeOptionLabels = $getAttributeOptionLabels;
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string

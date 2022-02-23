@@ -22,7 +22,7 @@ class ConcatFormatApplier
 {
     public function applyFormat(
         ConcatFormat $format,
-        array $mappedValues
+        array $mappedValues,
     ): string {
         return implode(
             $format->hasSpaceBetween() ? ' ' : '',
@@ -32,11 +32,12 @@ class ConcatFormatApplier
 
     /**
      * @throws \InvalidArgumentException
+     *
      * @return string[]
      */
     private function getFormattedValues(
         ElementCollection $elementCollection,
-        array $mappedValues
+        array $mappedValues,
     ): array {
         $formattedValues = [];
 

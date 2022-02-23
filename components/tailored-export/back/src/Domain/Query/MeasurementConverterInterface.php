@@ -19,6 +19,6 @@ interface MeasurementConverterInterface
         string $measurementFamilyCode,
         string $currentUnitCode,
         string $targetUnitCode,
-        string $value
+        string $value,
     ): string;
 }

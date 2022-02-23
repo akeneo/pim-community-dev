@@ -29,13 +29,13 @@ class CleanHTMLTagsOperationValidator extends ConstraintValidator
             'fields' => [
                 'type' => new EqualTo(['value' => 'clean_html_tags']),
                 'value' => new Type('bool'),
-            ]
+            ],
         ]));
 
         foreach ($violations as $violation) {
             $this->context->buildViolation(
                 $violation->getMessage(),
-                $violation->getParameters()
+                $violation->getParameters(),
             )
                 ->atPath($violation->getPropertyPath())
                 ->addViolation();

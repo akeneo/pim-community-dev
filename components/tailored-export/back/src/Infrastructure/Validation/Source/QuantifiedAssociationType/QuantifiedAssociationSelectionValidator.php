@@ -29,13 +29,10 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class QuantifiedAssociationSelectionValidator extends ConstraintValidator
 {
-    /** @var string[] */
-    private array $availableCollectionSeparator;
-
-    /** @var string[] $availableCollectionSeparator */
-    public function __construct(array $availableCollectionSeparator)
-    {
-        $this->availableCollectionSeparator = $availableCollectionSeparator;
+    /** @param string[] $availableCollectionSeparator */
+    public function __construct(
+        private array $availableCollectionSeparator,
+    ) {
     }
 
     public function validate($selection, Constraint $constraint): void
@@ -52,7 +49,7 @@ class QuantifiedAssociationSelectionValidator extends ConstraintValidator
                                         QuantifiedAssociationsSelectionInterface::ENTITY_TYPE_PRODUCTS,
                                         QuantifiedAssociationsSelectionInterface::ENTITY_TYPE_PRODUCT_MODELS,
                                     ],
-                                ]
+                                ],
                             ),
                             'type' => new Choice(
                                 [
@@ -61,17 +58,17 @@ class QuantifiedAssociationSelectionValidator extends ConstraintValidator
                                         QuantifiedAssociationsLabelSelection::TYPE,
                                         QuantifiedAssociationsQuantitySelection::TYPE,
                                     ],
-                                ]
+                                ],
                             ),
                             'separator' => new Choice(
                                 [
                                     'choices' => $this->availableCollectionSeparator,
-                                ]
+                                ],
                             ),
                             'locale' => new Optional([new Type(['type' => 'string'])]),
                             'channel' => new Optional([new Type(['type' => 'string'])]),
                         ],
-                    ]
+                    ],
                 ),
             ]);
 
@@ -81,7 +78,7 @@ class QuantifiedAssociationSelectionValidator extends ConstraintValidator
                 ->atPath('[channel]')
                 ->validate($selection['channel'] ?? null, [
                     new NotBlank(),
-                    new ChannelShouldExist()
+                    new ChannelShouldExist(),
                 ]);
 
             $this->context->getValidator()
@@ -89,7 +86,7 @@ class QuantifiedAssociationSelectionValidator extends ConstraintValidator
                 ->atPath('[locale]')
                 ->validate($selection['locale'] ?? null, [
                     new NotBlank(),
-                    new LocaleShouldBeActive()
+                    new LocaleShouldBeActive(),
                 ]);
         }
     }

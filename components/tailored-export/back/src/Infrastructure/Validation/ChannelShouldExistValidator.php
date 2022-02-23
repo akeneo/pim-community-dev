@@ -20,11 +20,9 @@ use Webmozart\Assert\Assert;
 
 class ChannelShouldExistValidator extends ConstraintValidator
 {
-    private ChannelExistsWithLocaleInterface $channelExistsWithLocale;
-
-    public function __construct(ChannelExistsWithLocaleInterface $channelExistsWithLocale)
-    {
-        $this->channelExistsWithLocale = $channelExistsWithLocale;
+    public function __construct(
+        private ChannelExistsWithLocaleInterface $channelExistsWithLocale,
+    ) {
     }
 
     /**
@@ -42,7 +40,7 @@ class ChannelShouldExistValidator extends ConstraintValidator
                 ChannelShouldExist::NOT_EXIST_MESSAGE,
                 [
                     '{{ channel_code }}' => $channel,
-                ]
+                ],
             )->addViolation();
         }
     }

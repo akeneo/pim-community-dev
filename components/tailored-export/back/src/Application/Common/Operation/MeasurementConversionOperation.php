@@ -15,15 +15,10 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\Operation;
 
 class MeasurementConversionOperation implements OperationInterface
 {
-    private string $measurementFamilyCode;
-    private string $targetUnitCode;
-
     public function __construct(
-        string $measurementFamilyCode,
-        string $targetUnitCode
+        private string $measurementFamilyCode,
+        private string $targetUnitCode,
     ) {
-        $this->measurementFamilyCode = $measurementFamilyCode;
-        $this->targetUnitCode = $targetUnitCode;
     }
 
     public function getMeasurementFamilyCode(): string

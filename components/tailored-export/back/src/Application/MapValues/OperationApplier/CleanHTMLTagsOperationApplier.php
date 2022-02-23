@@ -29,9 +29,9 @@ class CleanHTMLTagsOperationApplier implements OperationApplierInterface
         return new StringValue(
             strip_tags(
                 htmlspecialchars_decode(
-                    str_replace('&nbsp;', ' ', $value->getData())
-                )
-            )
+                    str_replace('&nbsp;', ' ', $value->getData()),
+                ),
+            ),
         );
     }
 

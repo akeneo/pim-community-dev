@@ -28,7 +28,7 @@ final class ValueCollection
         SourceValueInterface $value,
         string $code,
         ?string $channelReference,
-        ?string $localeReference
+        ?string $localeReference,
     ): void {
         if (!$this->has($code, $channelReference, $localeReference)) {
             $this->values[$this->getKey($code, $channelReference, $localeReference)] = $value;
@@ -38,7 +38,7 @@ final class ValueCollection
     public function get(
         string $code,
         ?string $channelReference,
-        ?string $localeReference
+        ?string $localeReference,
     ): SourceValueInterface {
         return $this->values[$this->getKey($code, $channelReference, $localeReference)];
     }
@@ -59,7 +59,7 @@ final class ValueCollection
     public function has(
         string $code,
         ?string $channelReference,
-        ?string $localeReference
+        ?string $localeReference,
     ): bool {
         return array_key_exists($this->getKey($code, $channelReference, $localeReference), $this->values);
     }
@@ -67,13 +67,13 @@ final class ValueCollection
     private function getKey(
         string $code,
         ?string $channelReference,
-        ?string $localeReference
+        ?string $localeReference,
     ): string {
         return sprintf(
             '%s-%s-%s',
             $code,
             $channelReference ?? '<all_channels>',
-            $localeReference ?? '<all_locales>'
+            $localeReference ?? '<all_locales>',
         );
     }
 }

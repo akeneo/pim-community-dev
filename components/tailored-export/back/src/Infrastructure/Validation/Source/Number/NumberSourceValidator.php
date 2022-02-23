@@ -23,12 +23,9 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class NumberSourceValidator extends ConstraintValidator
 {
-    /** @var string[] */
-    private array $availableDecimalSeparator;
-
-    public function __construct(array $availableDecimalSeparator)
-    {
-        $this->availableDecimalSeparator = $availableDecimalSeparator;
+    public function __construct(
+        private array $availableDecimalSeparator,
+    ) {
     }
 
     public function validate($source, Constraint $constraint): void
@@ -42,10 +39,10 @@ class NumberSourceValidator extends ConstraintValidator
                     'decimal_separator' => new Choice(
                         [
                             'choices' => $this->availableDecimalSeparator,
-                        ]
-                    )
+                        ],
+                    ),
                 ],
-            ]
+            ],
         );
         $sourceConstraintFields['operations'] = new Collection(['fields' => [
             'default_value' => new Optional(new DefaultValueOperationConstraint()),
@@ -56,7 +53,7 @@ class NumberSourceValidator extends ConstraintValidator
         foreach ($violations as $violation) {
             $this->context->buildViolation(
                 $violation->getMessage(),
-                $violation->getParameters()
+                $violation->getParameters(),
             )
                 ->atPath($violation->getPropertyPath())
                 ->addViolation();

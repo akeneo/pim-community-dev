@@ -19,26 +19,16 @@ final class SimpleAssociationsLabelSelection implements SimpleAssociationsSelect
 {
     public const TYPE = 'label';
 
-    private string $entityType;
-    private string $channel;
-    private string $locale;
-    private string $separator;
-
     public function __construct(
-        string $entityType,
-        string $channel,
-        string $locale,
-        string $separator
+        private string $entityType,
+        private string $channel,
+        private string $locale,
+        private string $separator,
     ) {
         Assert::inArray($entityType, [
             self::ENTITY_TYPE_PRODUCTS,
             self::ENTITY_TYPE_PRODUCT_MODELS,
         ]);
-
-        $this->entityType = $entityType;
-        $this->channel = $channel;
-        $this->locale = $locale;
-        $this->separator = $separator;
     }
 
     public function isProductsSelection(): bool

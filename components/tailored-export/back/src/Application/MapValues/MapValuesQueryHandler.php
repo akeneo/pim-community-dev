@@ -19,22 +19,15 @@ use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Select
 
 class MapValuesQueryHandler
 {
-    private OperationApplier $operationApplier;
-    private SelectionApplier $selectionApplier;
-    private FormatApplier $formatApplier;
-
     public function __construct(
-        OperationApplier $operationApplier,
-        SelectionApplier $selectionApplier,
-        FormatApplier $formatApplier
+        private OperationApplier $operationApplier,
+        private SelectionApplier $selectionApplier,
+        private FormatApplier $formatApplier,
     ) {
-        $this->operationApplier = $operationApplier;
-        $this->selectionApplier = $selectionApplier;
-        $this->formatApplier = $formatApplier;
     }
 
     public function handle(
-        MapValuesQuery $mapValuesQuery
+        MapValuesQuery $mapValuesQuery,
     ): array {
         $mappedProduct = [];
 
@@ -47,18 +40,18 @@ class MapValuesQueryHandler
 
                 $transformedValue = $this->operationApplier->applyOperations(
                     $operations,
-                    $value
+                    $value,
                 );
 
                 $mappedValues[$source->getUuid()] = $this->selectionApplier->applySelection(
                     $source->getSelection(),
-                    $transformedValue
+                    $transformedValue,
                 );
             }
 
             $mappedProduct[$column->getTarget()] = $this->formatApplier->applyFormat(
                 $column->getFormat(),
-                $mappedValues
+                $mappedValues,
             );
         }
 

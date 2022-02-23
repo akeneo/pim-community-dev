@@ -15,11 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\SourceValue;
 
 class ReferenceEntityValue implements SourceValueInterface
 {
-    private string $recordCode;
-
-    public function __construct(string $recordCode)
-    {
-        $this->recordCode = $recordCode;
+    public function __construct(
+        private string $recordCode,
+    ) {
     }
 
     public function getRecordCode(): string

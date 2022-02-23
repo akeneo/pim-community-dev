@@ -29,7 +29,7 @@ class SimpleAssociationsValue implements SourceValueInterface
     public function __construct(
         array $associatedProductIdentifiers,
         array $associatedProductModelCodes,
-        array $associatedGroupCodes
+        array $associatedGroupCodes,
     ) {
         Assert::allString($associatedProductIdentifiers);
         Assert::allString($associatedProductModelCodes);

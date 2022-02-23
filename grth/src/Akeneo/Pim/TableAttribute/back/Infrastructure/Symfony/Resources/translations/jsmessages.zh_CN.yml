@@ -216,7 +216,7 @@ pim_table_attribute:
     search: 搜索
   datagrid:
     placeholder: 预览不可用，请打开产品页面访问表属性值
-    any: 任何 
+    any: 任何
     select_your_column: 选择列
     select_your_row: 选择行
     select_your_operator: 选择运算符

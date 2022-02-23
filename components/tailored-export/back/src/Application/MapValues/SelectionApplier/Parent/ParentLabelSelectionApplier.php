@@ -22,11 +22,9 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface;
 
 class ParentLabelSelectionApplier implements SelectionApplierInterface
 {
-    private FindProductModelLabelsInterface $findProductModelLabels;
-
-    public function __construct(FindProductModelLabelsInterface $findProductModelLabels)
-    {
-        $this->findProductModelLabels = $findProductModelLabels;
+    public function __construct(
+        private FindProductModelLabelsInterface $findProductModelLabels,
+    ) {
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -42,7 +40,7 @@ class ParentLabelSelectionApplier implements SelectionApplierInterface
         $parentTranslations = $this->findProductModelLabels->byCodes(
             [$parentCode],
             $selection->getChannel(),
-            $selection->getLocale()
+            $selection->getLocale(),
         );
 
         return $parentTranslations[$parentCode] ?? sprintf('[%s]', $parentCode);

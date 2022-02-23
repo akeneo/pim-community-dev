@@ -32,7 +32,7 @@ class ColumnCollection implements \IteratorAggregate
     }
 
     /**
-     * @return Column[] | \Iterator
+     * @return Column[]|\Iterator
      */
     public function getIterator(): \Iterator
     {
@@ -41,7 +41,6 @@ class ColumnCollection implements \IteratorAggregate
 
     /**
      * @param Column[] $columns
-     * @return ColumnCollection
      */
     public static function create(array $columns): self
     {
@@ -52,9 +51,8 @@ class ColumnCollection implements \IteratorAggregate
     {
         $sources = array_reduce(
             $this->columns,
-            static fn (array $result, Column $column) =>
-            [...$result, ...$column->getSourceCollection()],
-            []
+            static fn (array $result, Column $column) => [...$result, ...$column->getSourceCollection()],
+            [],
         );
 
         return SourceCollection::create($sources);

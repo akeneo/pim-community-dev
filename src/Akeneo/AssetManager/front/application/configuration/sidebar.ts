@@ -1,5 +1,5 @@
-import * as React from 'react';
-const securityContext = require('pim/security-context');
+import React from 'react';
+import {Security} from '@akeneo-pim-community/shared';
 
 class SidebarMissConfigurationError extends Error {}
 
@@ -19,7 +19,7 @@ interface TabsConfiguration {
   };
 }
 
-const getTabs = (configuration: TabsConfiguration, sidebarIdentifier: string): Tab[] => {
+const getTabs = (securityContext: Security, configuration: TabsConfiguration, sidebarIdentifier: string): Tab[] => {
   const viewPathIsNotWellConfigured = undefined === configuration[sidebarIdentifier].tabs;
 
   if (viewPathIsNotWellConfigured) {

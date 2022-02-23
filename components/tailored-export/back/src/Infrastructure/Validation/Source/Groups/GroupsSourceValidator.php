@@ -30,7 +30,7 @@ class GroupsSourceValidator extends ConstraintValidator
         $sourceConstraintFields = SourceConstraintProvider::getConstraintCollection()->fields;
         $sourceConstraintFields['selection'] = [
             new NotBlank(),
-            new CodeLabelCollectionSelectionConstraint()
+            new CodeLabelCollectionSelectionConstraint(),
         ];
 
         $sourceConstraintFields['operations'] = new Collection(['fields' => [
@@ -42,7 +42,7 @@ class GroupsSourceValidator extends ConstraintValidator
         foreach ($violations as $violation) {
             $this->context->buildViolation(
                 $violation->getMessage(),
-                $violation->getParameters()
+                $violation->getParameters(),
             )
                 ->atPath($violation->getPropertyPath())
                 ->addViolation();

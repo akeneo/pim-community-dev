@@ -44,8 +44,8 @@ class MeasurementRoundingOperationValidator extends ConstraintValidator
                             new NotBlank(['message' => self::PRECISION_NOT_BLANK_MESSAGE]),
                             new Type('int'),
                             new Range(['min' => 0, 'max' => 12], notInRangeMessage: self::PRECISION_OUT_OF_RANGE_MESSAGE),
-                        ]
-                ]
+                        ],
+                ],
             ]));
     }
 }

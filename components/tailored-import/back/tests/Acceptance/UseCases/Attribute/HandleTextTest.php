@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\Attribute;
 
-use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Platform\TailoredImport\Application\Common\DataMappingCollection;
 use Akeneo\Platform\TailoredImport\Application\Common\Row;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingQuery;
@@ -98,7 +98,7 @@ final class HandleTextTest extends AttributeTestCase
                     productIdentifier: 'this-is-a-sku',
                     valuesUserIntent: [
                         new SetTextValue('name', null, null, 'this is a name'),
-                        new SetTextValue('description', 'fr_FR', 'ecommerce', 'this is a description'),
+                        new SetTextValue('description', 'ecommerce', 'fr_FR', 'this is a description'),
                     ],
                 ),
             ],

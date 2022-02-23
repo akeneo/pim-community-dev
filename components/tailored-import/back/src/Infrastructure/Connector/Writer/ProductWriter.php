@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Writer;
 
-use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Webmozart\Assert\Assert;

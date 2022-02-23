@@ -15,11 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\SourceValue;
 
 class DateValue implements SourceValueInterface
 {
-    private \DateTimeInterface $data;
-
-    public function __construct(\DateTimeInterface $data)
-    {
-        $this->data = $data;
+    public function __construct(
+        private \DateTimeInterface $data,
+    ) {
     }
 
     public function getData(): \DateTimeInterface

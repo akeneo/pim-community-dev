@@ -17,11 +17,9 @@ final class FamilyLabelSelection implements FamilySelectionInterface
 {
     public const TYPE = 'label';
 
-    private string $locale;
-
-    public function __construct(string $locale)
-    {
-        $this->locale = $locale;
+    public function __construct(
+        private string $locale,
+    ) {
     }
 
     public function getLocale(): string

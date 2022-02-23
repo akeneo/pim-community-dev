@@ -32,29 +32,17 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 
 class EntityWithValuesExportProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
-    private GetAttributes $getAttributes;
-    private GetAssociationTypesInterface $getAssociationTypes;
-    private ValueCollectionHydrator $valueCollectionHydrator;
-    private ColumnCollectionHydrator $columnCollectionHydrator;
-    private MapValuesQueryHandler $mapValuesQueryHandler;
-    private ExtractMediaQueryHandler $extractMediaQueryHandler;
     private ?StepExecution $stepExecution = null;
     private ?ColumnCollection $columnCollection = null;
 
     public function __construct(
-        GetAttributes $getAttributes,
-        GetAssociationTypesInterface $getAssociationTypes,
-        ValueCollectionHydrator $valueCollectionHydrator,
-        ColumnCollectionHydrator $columnCollectionHydrator,
-        MapValuesQueryHandler $mapValuesQueryHandler,
-        ExtractMediaQueryHandler $extractMediaQueryHandler
+        private GetAttributes $getAttributes,
+        private GetAssociationTypesInterface $getAssociationTypes,
+        private ValueCollectionHydrator $valueCollectionHydrator,
+        private ColumnCollectionHydrator $columnCollectionHydrator,
+        private MapValuesQueryHandler $mapValuesQueryHandler,
+        private ExtractMediaQueryHandler $extractMediaQueryHandler,
     ) {
-        $this->getAttributes = $getAttributes;
-        $this->getAssociationTypes = $getAssociationTypes;
-        $this->valueCollectionHydrator = $valueCollectionHydrator;
-        $this->columnCollectionHydrator = $columnCollectionHydrator;
-        $this->mapValuesQueryHandler = $mapValuesQueryHandler;
-        $this->extractMediaQueryHandler = $extractMediaQueryHandler;
     }
 
     /**

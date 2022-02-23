@@ -7,17 +7,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class InMemoryFindSystemSources implements FindSystemSourcesInterface
 {
-    private array $fields;
-    private TranslatorInterface $translator;
-
-    public function __construct(array $fields, TranslatorInterface $translator)
-    {
-        $this->fields = $fields;
-        $this->translator = $translator;
+    public function __construct(
+        private array $fields,
+        private TranslatorInterface $translator,
+    ) {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function execute(string $localeCode, int $limit, int $offset = 0, string $search = null): array
     {
@@ -33,6 +30,7 @@ class InMemoryFindSystemSources implements FindSystemSourcesInterface
         }
 
         $search = strtolower($search);
+
         return array_filter($fields, function (string $field) use ($search, $localeCode): bool {
             $label = $this->translator->trans(sprintf('pim_common.%s', $field), [], null, $localeCode);
 

@@ -13,6 +13,8 @@
 - PIM-10269: Fix regression in asset-selector component
 - PIM-10256: Fix MainImage as asset using React Component
 - PIM-10259: Fix Arabic text being reversed in product PDF exports
+- PIM-10284: Clean product values after reference entity removal
+- PIM-10277: Reject disabled user when coming from SAML auth
 
 ## Improvements
 
