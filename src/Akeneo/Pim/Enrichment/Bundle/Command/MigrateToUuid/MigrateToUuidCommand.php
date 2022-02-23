@@ -1,12 +1,16 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\Command;
+namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class MigrateToUuidCommand extends Command
 {
     protected static $defaultName = 'pim:product:migrate-to-uuid';
@@ -48,9 +52,11 @@ class MigrateToUuidCommand extends Command
             }
 
             if ($step->shouldBeExecuted()) {
-                $output->writeln(sprintf('    Add missing items... '));
+                $output->writeln('    Add missing items... ');
                 $step->addMissing($dryRun, $output);
-                $output->writeln(sprintf('    Step done'));
+                $output->writeln('    Step done');
+            } else {
+                $output->writeln('    No items to migrate, skip.');
             }
             $output->writeln('');
         }
