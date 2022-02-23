@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Infrastructure\Command;
 
+use Akeneo\Platform\Job\Application\Schedule\GetDueJobs;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Launcher\QueueJobLauncher;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
@@ -28,16 +29,21 @@ class LaunchScheduledJobsCommand extends Command
         private JobInstanceRepository $jobRepository,
         private UserRepositoryInterface $userRepository,
         private QueueJobLauncher $queueJobLauncher,
+        private GetDueJobs $getDueJobs,
     ) {
         parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $productExport = $this->jobRepository->findOneByIdentifier('csv_product_export');
         $admin = $this->userRepository->findOneByIdentifier('admin');
 
-        $this->queueJobLauncher->launch($productExport, $admin);
+        $dueJobCodes = $this->getDueJobs->getDueJobs();
+        $jobs = $this->jobRepository->findBy(['code' => $dueJobCodes]);
+
+        foreach ($jobs as $job) {
+            $this->queueJobLauncher->launch($job, $admin);
+        }
 
         return 0;
     }

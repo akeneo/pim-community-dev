@@ -8,3 +8,7 @@ services:
 
     Akeneo\Platform\Job\Infrastructure\Clock\ClockInterface:
         class: Akeneo\Platform\Job\Infrastructure\Clock\SystemClock
+
+    Akeneo\Platform\Job\Application\Schedule\GetDueJobs:
+        arguments:
+            - '@database_connection'

@@ -5,5 +5,6 @@ services:
       - '@akeneo_batch.job.job_instance_repository'
       - '@pim_user.repository.user'
       - '@akeneo_batch_queue.launcher.queue_job_launcher'
+      - '@Akeneo\Platform\Job\Application\Schedule\GetDueJobs'
     tags:
       - { name: console.command }
