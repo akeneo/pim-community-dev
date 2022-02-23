@@ -1,10 +1,14 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\Command;
+namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
 {
     use MigrateToUuidTrait;
@@ -18,9 +22,6 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
         return 'Fill foreign tables with product uuids';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function shouldBeExecuted(): bool
     {
         foreach ($this->getTablesWithoutProductTable() as $tableName => $columnNames) {
@@ -40,7 +41,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
                 ) as missing
             SQL;
 
-            $query = strtr($sql, [
+            $query = \strtr($sql, [
                 '{table_name}' => $tableName,
                 '{column_name}' => $isColumnExist ? $columnNames[1] : $columnNames[0],
                 '{not}' => $isColumnExist ? '' : 'NOT',
@@ -96,14 +97,19 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
     {
         $sql = <<<SQL
             SELECT COUNT(*)
-            FROM %s 
-            WHERE %s IS %s NULL
+            FROM {table_name}
+            WHERE {column_name} IS {not} NULL
+            {extra_condition}
         SQL;
 
-        $query = sprintf($sql, $tableName, $columnName, $not ? 'NOT' : '');
-        if ($tableName === 'pim_versioning_version') {
-            $query .= ' AND resource_name="Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"';
-        }
+        $query = \strtr($sql, [
+            '{table_name}' => $tableName,
+            '{column_name}' => $columnName,
+            '{not}' => $not ? 'NOT' : '',
+            '{extra_condition}' => ($tableName === 'pim_versioning_version') ?
+                ' AND resource_name="Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"' :
+                ''
+        ]);
 
         return (int) $this->connection->fetchOne($query);
     }
@@ -111,20 +117,22 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
     private function fillMissingForeignUuidInsert(string $tableName, string $idColumnName, string $uuidColumnName): void
     {
         $sql = <<<SQL
-            UPDATE %s t, pim_catalog_product p 
-            SET t.%s = p.uuid
-            WHERE t.%s=p.id
+            UPDATE {table_name} t, pim_catalog_product p 
+            SET t.{uuid_column_name}=p.uuid
+            WHERE t.{id_column_name}=p.id
+            {extra_condition}
         SQL;
 
-        if ($tableName === 'pim_versioning_version') {
-            $sql .= ' AND t.resource_name="Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"';
-        }
-
-        $this->connection->executeQuery(sprintf(
+        $this->connection->executeQuery(\strtr(
             $sql,
-            $tableName,
-            $uuidColumnName,
-            $idColumnName
+            [
+                '{table_name}' => $tableName,
+                '{uuid_column_name}' => $uuidColumnName,
+                '{id_column_name}' => $idColumnName,
+                '{extra_condition}' => $tableName === 'pim_versioning_version' ?
+                    ' AND t.resource_name="Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"' :
+                    ''
+            ]
         ));
     }
 
