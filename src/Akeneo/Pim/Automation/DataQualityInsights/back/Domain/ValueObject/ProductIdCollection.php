@@ -119,12 +119,4 @@ final class ProductIdCollection implements \IteratorAggregate, \Countable
     {
         return empty($this->productIds);
     }
-
-    public function lastElement(): ?ProductId
-    {
-        if(empty($this->productIds)){
-            return null;
-        }
-        return end($this->productIds);
-    }
 }

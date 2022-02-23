@@ -40,7 +40,7 @@ class PopulateProductModelScoresCommand extends Command
     {
         if (!$this->migrationCanBeStarted()) {
             $output->writeln('This process has already been performed or is in progress.');
-            return 0;
+            return Command::SUCCESS;
         }
 
         $output->writeln('process has started...');
@@ -48,15 +48,18 @@ class PopulateProductModelScoresCommand extends Command
 
         $lastProductModelId = 0;
 
-        while ($lastProductModelId !== null && $productModelIds = $this->getNextProductModelIdCollection($lastProductModelId)) {
-            $lastProductModelId = $productModelIds->lastElement() ? $productModelIds->lastElement()->toInt() : null;
-            $this->consolidateProductModelScores->consolidate($productModelIds);
+        while ($productModelIds = $this->getNextProductModelIds($lastProductModelId)) {
+            if (empty($productModelIds)) {
+                $output->writeln('There is no product model ids.');
+                return Command::SUCCESS;
+            }
+            $this->consolidateProductModelScores->consolidate(ProductIdCollection::fromInts($productModelIds));
+            $lastProductModelId = end($productModelIds);
         }
 
 //        $this->persistMigrationDone();
         $output->writeln('process complete.');
-
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**
@@ -103,7 +106,7 @@ SQL;
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws Exception
      */
-    private function getNextProductModelIdCollection(int $lastProductModelId): ?ProductIdCollection
+    private function getNextProductModelIds(int $lastProductModelId): array
     {
         $query = <<<SQL
 SELECT product_model.id 
@@ -125,10 +128,8 @@ SQL;
             ]
         );
 
-        $productModelIds = array_map(static function ($resultRow) {
-            return $resultRow['id'];
+        return array_map(static function ($resultRow) {
+            return (int)$resultRow['id'];
         }, $bulkResult->fetchAllAssociative());
-
-        return ProductIdCollection::fromStrings($productModelIds);
     }
 }
