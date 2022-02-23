@@ -3,6 +3,40 @@ parameters:
     akeneo_pim_marketplace_api_pagination_size: 100
 
 services:
+    # CONTROLLERS
+    ## INTERNAL API
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Controller\InternalApi\GetWebMarketplaceUrlAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace.url_generator'
+            - '@pim_user.context.user'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Controller\InternalApi\GetAllExtensionsAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace.get_all_extensions_query'
+            - '@akeneo_connectivity.connection.marketplace.analytics_generator'
+            - '@pim_user.context.user'
+            - '@logger'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Controller\InternalApi\GetAllAppsAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace.app_url_generator'
+            - '@akeneo_connectivity.connection.marketplace.get_all_apps_query'
+            - '@akeneo_connectivity.connection.marketplace.analytics_generator'
+            - '@pim_user.context.user'
+            - '@logger'
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Controller\InternalApi\GetAllTestAppsAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.app_developer_mode.feature'
+            - '@akeneo_connectivity.connection.marketplace.app_url_generator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllTestAppsQuery'
+
+    # OTHERS
     akeneo_connectivity.connection.marketplace.url_generator:
         class: Akeneo\Connectivity\Connection\Application\Marketplace\MarketplaceUrlGenerator
         arguments:
