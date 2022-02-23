@@ -156,7 +156,7 @@ final class UpsertProductIntegration extends TestCase
             new SetMetricValue('a_metric', null, null, 'michel', 'KILOWATT'),
         ]);
         $this->messageBus->dispatch($command);
-     }
+    }
 
     /** @test */
     public function it_throws_an_exception_when_a_metric_unit_is_unknown(): void
@@ -167,7 +167,7 @@ final class UpsertProductIntegration extends TestCase
             new SetMetricValue('a_metric', null, null, '1275', 'unknown'),
         ]);
         $this->messageBus->dispatch($command);
-     }
+    }
 
     /** @test */
     public function it_throws_an_exception_when_giving_a_locale_for_a_non_localizable_product(): void
