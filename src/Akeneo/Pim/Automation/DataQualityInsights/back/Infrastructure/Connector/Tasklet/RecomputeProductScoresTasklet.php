@@ -62,8 +62,8 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
                 if (empty($productIds)) {
                     return;
                 }
-                $this->consolidateProductScores->consolidate($productIds);
-                $lastProductId = $productIds->lastElement() ? $productIds->lastElement()->toInt() : null ;
+                $this->consolidateProductScores->consolidate(ProductIdCollection::fromInts($productIds));
+                $lastProductId = end($productIds);
             } while ($this->isTimeboxReached($startTime) === false);
         } catch (\Exception $exception) {
             $this->stepExecution->addFailureException($exception);
@@ -77,7 +77,7 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
         $this->scheduleNextRecomputeProductsScoresJob($lastProductId);
     }
 
-    private function getNextProductIds($lastProductId): ProductIdCollection
+    private function getNextProductIds($lastProductId): array
     {
         $stmt = $this->connection->executeQuery(
             sprintf(
@@ -87,11 +87,9 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
             )
         );
 
-        $nextProductIds = array_map(function ($resultRow) {
-            return $resultRow['id'];
+        return array_map(function ($resultRow) {
+            return (int)$resultRow['id'];
         }, $stmt->fetchAllAssociative());
-
-        return ProductIdCollection::fromStrings($nextProductIds);
     }
 
     private function isTimeboxReached(int $startTime): bool
