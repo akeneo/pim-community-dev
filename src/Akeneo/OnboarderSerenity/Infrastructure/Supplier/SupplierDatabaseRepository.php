@@ -18,10 +18,10 @@ final class SupplierDatabaseRepository implements SupplierRepository
         $this->connection = $connection;
     }
 
-    public function add(Supplier $supplier): void
+    public function save(Supplier $supplier): void
     {
         $sql = <<<SQL
-            INSERT INTO `akeneo_onboarder_serenity_supplier` (identifier, code, label)
+            REPLACE INTO `akeneo_onboarder_serenity_supplier` (identifier, code, label)
             VALUES (:identifier, :code, :label)
         SQL;
 

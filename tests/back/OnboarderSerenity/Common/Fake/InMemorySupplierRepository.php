@@ -13,12 +13,8 @@ final class InMemorySupplierRepository implements SupplierRepository
 {
     private array $suppliers = [];
 
-    public function add(Supplier $supplier): void
+    public function save(Supplier $supplier): void
     {
-        if (isset($this->suppliers[$supplier->identifier()])) {
-            return;
-        }
-
         $this->suppliers[$supplier->identifier()] = $supplier;
     }
 
