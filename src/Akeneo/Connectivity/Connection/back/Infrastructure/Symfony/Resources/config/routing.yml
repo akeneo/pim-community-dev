@@ -48,7 +48,7 @@ akeneo_connectivity_connection_marketplace_rest:
     prefix: /rest/marketplace
 
 akeneo_connectivity_connection_apps:
-    resource: ./routing/apps.yml
+    resource: ./Apps/routing/apps.yml
     prefix: /rest/apps
 
 # Frontend
