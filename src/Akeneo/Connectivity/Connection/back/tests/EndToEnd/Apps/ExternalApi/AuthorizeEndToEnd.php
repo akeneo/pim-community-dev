@@ -38,7 +38,7 @@ class AuthorizeEndToEnd extends WebTestCase
 
         $this->webMarketplaceApi = $this->get('akeneo_connectivity.connection.marketplace.web_marketplace_api');
         $this->featureFlagMarketplaceActivate = $this->get('akeneo_connectivity.connection.marketplace_activate.feature');
-        $this->clientProvider = $this->get('akeneo_connectivity.connection.service.apps.client_provider');
+        $this->clientProvider = $this->get(ClientProvider::class);
         $this->session = $this->get('session');
         $this->appAuthorizationHandler = $this->get(RequestAppAuthorizationHandler::class);
         $this->createAppWithAuthorizationHandler = $this->get(CreateAppWithAuthorizationHandler::class);

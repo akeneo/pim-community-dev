@@ -118,7 +118,7 @@ class RequestAccessTokenActionEndToEnd extends WebTestCase
 
         $this->webMarketplaceApi = $this->get('akeneo_connectivity.connection.marketplace.web_marketplace_api');
         $this->featureFlagMarketplaceActivate = $this->get('akeneo_connectivity.connection.marketplace_activate.feature');
-        $this->clientProvider = $this->get('akeneo_connectivity.connection.service.apps.client_provider');
+        $this->clientProvider = $this->get(ClientProvider::class);
         $this->generateAsymmetricKeysHandler = $this->get(GenerateAsymmetricKeysHandler::class);
         $this->appAuthorizationHandler = $this->get(RequestAppAuthorizationHandler::class);
         $this->clientId = '90741597-54c5-48a1-98da-a68e7ee0a715';

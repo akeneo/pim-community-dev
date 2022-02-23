@@ -198,7 +198,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
         parent::setUp();
 
         $this->webMarketplaceApi = $this->get('akeneo_connectivity.connection.marketplace.web_marketplace_api');
-        $this->clientProvider = $this->get('akeneo_connectivity.connection.service.apps.client_provider');
+        $this->clientProvider = $this->get(ClientProvider::class);
         $this->appAuthorizationHandler = $this->get(RequestAppAuthorizationHandler::class);
         $this->get('akeneo_connectivity.connection.marketplace_activate.feature')->enable();
         $this->loadAppsFixtures();

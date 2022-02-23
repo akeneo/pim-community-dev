@@ -53,7 +53,7 @@ class ConfirmAuthenticationEndToEnd extends WebTestCase
         $this->appAuthorizationSession = $this->get(AppAuthorizationSession::class);
         $this->createConnectedAppQuery = $this->get(CreateConnectedAppQuery::class);
         $this->createConnection = $this->get(CreateConnection::class);
-        $this->clientProvider = $this->get('akeneo_connectivity.connection.service.apps.client_provider');
+        $this->clientProvider = $this->get(ClientProvider::class);
         $this->createUserGroup = $this->get(CreateUserGroup::class);
         $this->createUser = $this->get('akeneo_connectivity.connection.service.user.create_user');
     }
