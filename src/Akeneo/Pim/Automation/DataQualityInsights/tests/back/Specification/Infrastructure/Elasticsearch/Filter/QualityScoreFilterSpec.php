@@ -23,10 +23,18 @@ final class QualityScoreFilterSpec extends ObjectBehavior
 
     public function it_adds_filter_on_quality_score_with_letter_values($queryBuilder)
     {
+        $queryBuilder->addMustNot(
+            [
+                'term' => [
+                    'document_type' => 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface'
+                ],
+            ]
+        )->shouldBeCalled();
+
         $queryBuilder->addFilter(
             [
                 'terms' => [
-                   'data_quality_insights.scores.ecommerce.en_US' => [1, 2]
+                    'data_quality_insights.scores.ecommerce.en_US' => [1, 2]
                 ],
             ]
         )->shouldBeCalled();
@@ -36,10 +44,18 @@ final class QualityScoreFilterSpec extends ObjectBehavior
 
     public function it_adds_filter_on_quality_score_with_integer_values($queryBuilder)
     {
+        $queryBuilder->addMustNot(
+            [
+                'term' => [
+                    'document_type' => 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface'
+                ],
+            ]
+        )->shouldBeCalled();
+
         $queryBuilder->addFilter(
             [
                 'terms' => [
-                   'data_quality_insights.scores.ecommerce.en_US' => [1, 3]
+                    'data_quality_insights.scores.ecommerce.en_US' => [1, 3]
                 ],
             ]
         )->shouldBeCalled();
