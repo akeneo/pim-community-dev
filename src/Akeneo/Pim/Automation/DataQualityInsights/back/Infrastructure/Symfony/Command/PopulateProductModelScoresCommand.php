@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PopulateProductModelScoresCommand extends Command
 {
-    private const BULK_SIZE = 30;
+    private const BULK_SIZE = 1000;
     protected static $defaultName = 'pim:data-quality-insights:populate-product-models-scores';
 
     public function __construct(private Connection $dbConnection, private ConsolidateProductModelScores $consolidateProductModelScores)
@@ -32,40 +32,36 @@ class PopulateProductModelScoresCommand extends Command
         $this->setDescription('Populate scores for existing product models');
     }
 
-    /**
-     * @throws Exception
-     * @throws \Doctrine\DBAL\Driver\Exception
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if (!$this->migrationCanBeStarted()) {
+
+        if (!$this->CommandCanBeStarted()) {
             $output->writeln('This process has already been performed or is in progress.');
             return Command::SUCCESS;
         }
 
         $output->writeln('process has started...');
-//        $this->persistMigrationStart();
+        $this->persistCommandStart();
 
         $lastProductModelId = 0;
 
         while ($productModelIds = $this->getNextProductModelIds($lastProductModelId)) {
-            if (empty($productModelIds)) {
-                $output->writeln('There is no product model ids.');
-                return Command::SUCCESS;
-            }
+            try {
             $this->consolidateProductModelScores->consolidate(ProductIdCollection::fromInts($productModelIds));
             $lastProductModelId = end($productModelIds);
+            } catch (\Throwable $e){
+                //Removes line in pim_one_time_task in order to be able to re-run the command if it previously failed
+                $this->deleteTask();
+                throw $e;
+            }
         }
 
-//        $this->persistMigrationDone();
+        $this->persistCommandDone();
         $output->writeln('process complete.');
         return Command::SUCCESS;
     }
 
-    /**
-     * @throws Exception
-     */
-    private function persistMigrationStart(): void
+    private function persistCommandStart(): void
     {
         $query = <<<SQL
 INSERT IGNORE INTO pim_one_time_task (code, status, start_time) VALUES 
@@ -78,7 +74,7 @@ SQL;
     /**
      * @throws Exception
      */
-    private function persistMigrationDone(): void
+    private function persistCommandDone(): void
     {
         $query = <<<SQL
 UPDATE pim_one_time_task 
@@ -89,11 +85,17 @@ SQL;
         $this->dbConnection->executeQuery($query, ['code' => self::$defaultName]);
     }
 
-    /**
-     * @throws \Doctrine\DBAL\Driver\Exception
-     * @throws Exception
-     */
-    private function migrationCanBeStarted(): bool
+    private function deleteTask(): void
+    {
+        $query = <<<SQL
+DELETE
+FROM pim_one_time_task 
+WHERE code = :code;
+SQL;
+        $this->dbConnection->executeQuery($query, ['code' => self::$defaultName]);
+    }
+
+    private function CommandCanBeStarted(): bool
     {
         $query = <<<SQL
 SELECT 1 FROM pim_one_time_task WHERE code = :code
@@ -102,10 +104,6 @@ SQL;
         return !(bool)$this->dbConnection->executeQuery($query, ['code' => self::$defaultName])->fetchOne();
     }
 
-    /**
-     * @throws \Doctrine\DBAL\Driver\Exception
-     * @throws Exception
-     */
     private function getNextProductModelIds(int $lastProductModelId): array
     {
         $query = <<<SQL
