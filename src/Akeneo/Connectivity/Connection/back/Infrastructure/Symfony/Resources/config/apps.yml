@@ -82,6 +82,13 @@ services:
             - '@akeneo_connectivity.connection.application.handler.find_a_connection'
             - '@akeneo_connectivity.connection.application.handler.update_connection'
 
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetWizardDataAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace.get_app_query'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
+
     ## EXTERNAL API
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\ExternalApi\AuthorizeAction:
         public: true
@@ -102,13 +109,6 @@ services:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
             - '@validator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateAccessToken'
-
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\ExternalApi\GetWizardDataAction:
-        public: true
-        arguments:
-            - '@akeneo_connectivity.connection.marketplace.get_app_query'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\ExternalApi\GetOpenIdPublicKeyAction:
         public: true

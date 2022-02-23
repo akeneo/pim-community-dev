@@ -5,7 +5,7 @@ akeneo_connectivity_connection_apps_rest_get_app_activate_url:
 
 akeneo_connectivity_connection_apps_rest_get_wizard_data:
     path: '/load-wizard-data/{clientId}'
-    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\ExternalApi\GetWizardDataAction
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetWizardDataAction
     methods: [GET]
 
 akeneo_connectivity_connection_apps_rest_confirm_authorization:
