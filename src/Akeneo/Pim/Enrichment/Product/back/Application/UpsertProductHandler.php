@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsExceptio
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
@@ -87,6 +88,7 @@ final class UpsertProductHandler
             try {
                 if ($valueUserIntent instanceof SetTextValue
                     || $valueUserIntent instanceof SetNumberValue
+                    || $valueUserIntent instanceof SetMetricValue
                     || $valueUserIntent instanceof SetTextareaValue
                 ) {
                     $found = true;
