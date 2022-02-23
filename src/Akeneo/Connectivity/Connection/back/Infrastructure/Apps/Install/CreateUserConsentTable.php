@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Install\Query;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Install;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)

@@ -345,3 +345,9 @@ services:
             - '@pim_user.updater.group'
             - '@pim_user.saver.group'
             - '@validator'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Install\InstallSubscriber:
+        arguments:
+            - '@database_connection'
+        tags:
+            - {name: kernel.event_subscriber}

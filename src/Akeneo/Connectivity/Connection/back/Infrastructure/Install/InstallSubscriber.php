@@ -6,13 +6,11 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Install;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Install\CreateAppTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionAuditErrorTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionAuditTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionEventsApiRequestCountTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateTestAppTableQuery;
-use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateUserConsentTable;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateWrongCredentialsCombinationQuery;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
@@ -53,8 +51,6 @@ class InstallSubscriber implements EventSubscriberInterface
         $this->dbalConnection->executeStatement(CreateWrongCredentialsCombinationQuery::QUERY);
         $this->dbalConnection->executeStatement(CreateConnectionAuditErrorTableQuery::QUERY);
         $this->dbalConnection->executeStatement(CreateConnectionEventsApiRequestCountTableQuery::QUERY);
-        $this->dbalConnection->executeStatement(CreateAppTableQuery::QUERY);
-        $this->dbalConnection->executeStatement(CreateUserConsentTable::QUERY);
         $this->dbalConnection->executeStatement(CreateTestAppTableQuery::QUERY);
     }
 
