@@ -12,7 +12,9 @@ const CreateSupplier = ({onSupplierCreated}: CreateSupplierProps) => {
 
     return (
         <>
-            <Button onClick={openModal}>Create</Button>
+            <Button onClick={openModal}>
+                {translate('onboarder.supplier.create_supplier.create_button.label')}
+            </Button>
             {isOpen && (<Modal
                 onClose={closeModal}
                 closeTitle={translate('pim_common.close')}
