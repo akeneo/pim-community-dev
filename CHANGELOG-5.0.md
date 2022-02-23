@@ -1,5 +1,13 @@
 # 5.0.x
 
+# 5.0.80 (2022-02-23)
+
+# 5.0.79 (2022-02-21)
+
+## Bug fixes
+
+- PIM-10271: Fix cannot delete an unused association type
+
 # 5.0.78 (2022-02-18)
 
 ## Bug fixes
