@@ -13,7 +13,9 @@ trait MigrateToUuidTrait
     protected function tableExists(string $tableName): bool
     {
         $rows = $this->connection->fetchAllAssociative(
-            'SHOW TABLES LIKE :tableName',
+            <<<SQL
+                SHOW TABLES LIKE :tableName
+            SQL,
             ['tableName' => $tableName]
         );
 
@@ -23,10 +25,13 @@ trait MigrateToUuidTrait
     protected function columnExists(string $tableName, string $columnName): bool
     {
         $rows = $this->connection->fetchAllAssociative(
-            sprintf('SHOW COLUMNS FROM %s LIKE :columnName', $tableName),
-            [
-                'columnName' => $columnName,
-            ]
+            \strtr(
+                <<<SQL
+                    SHOW COLUMNS FROM {table_name} LIKE :columnName
+                SQL,
+                ['{table_name}' => $tableName]
+            ),
+            ['columnName' => $columnName]
         );
 
         return count($rows) >= 1;
@@ -35,7 +40,9 @@ trait MigrateToUuidTrait
     protected function triggerExists(string $triggerName): bool
     {
         $rows = $this->connection->fetchAllAssociative(
-            'SHOW TRIGGERS LIKE :triggerName',
+            <<<SQL
+                SHOW TRIGGERS LIKE :triggerName
+            SQL,
             ['triggerName' => $triggerName]
         );
 
