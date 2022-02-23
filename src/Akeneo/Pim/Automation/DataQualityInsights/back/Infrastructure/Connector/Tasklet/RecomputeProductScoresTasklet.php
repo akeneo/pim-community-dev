@@ -63,7 +63,7 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
                     return;
                 }
                 $this->consolidateProductScores->consolidate($productIds);
-                $lastProductId = end($productIds);
+                $lastProductId = $productIds->lastElement() ? $productIds->lastElement()->toInt() : null ;
             } while ($this->isTimeboxReached($startTime) === false);
         } catch (\Exception $exception) {
             $this->stepExecution->addFailureException($exception);
