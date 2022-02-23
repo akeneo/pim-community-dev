@@ -33,6 +33,9 @@ jobs:
           name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
           command: sudo chown -R 1000:1000 ../project
       - run:
+          name: Load php image
+          command: docker load -i php-pim-image.tar
+      - run:
           name: Lint back
           command: PIM_CONTEXT=tailored-import make lint-back
       - run:

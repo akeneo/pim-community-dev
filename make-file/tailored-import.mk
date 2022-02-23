@@ -31,6 +31,12 @@ else
 	APP_ENV=test_fake $(PHP_RUN) vendor/bin/phpunit -c components/tailored-import/back/tests/phpunit-ee.xml --testsuite TailoredImport_Acceptance_Test $(O)
 endif
 
+lint-front:
+	$(YARN_RUN) run --cwd=components/tailored-import/front test:unit:run
+
+unit-front:
+	$(YARN_RUN) run --cwd=components/tailored-import/front lint:check
+
 .PHONY: ci-back
 ci-back: lint-back coupling-back unit-back acceptance-back integration-back
 
