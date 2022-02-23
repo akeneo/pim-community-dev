@@ -86,6 +86,7 @@
         "google/cloud-pubsub": "1.29.1",
         "guzzlehttp/guzzle": "6.5.5",
         "imagine/imagine": "1.2.4",
+        "jms/cg": "^1.2",
         "justinrainbow/json-schema": "^5.2",
         "khaled.alshamaa/ar-php": "^6.2",
         "lcobucci/jwt": "^4.1",

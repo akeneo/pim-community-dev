@@ -57,4 +57,5 @@ return [
     Akeneo\FreeTrial\Infrastructure\Symfony\AkeneoCommunityFreeTrialBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\FrameworkBundle\PimFrameworkBundle::class => ['all' => true],
     Akeneo\Platform\Job\Infrastructure\Symfony\AkeneoJobBundle::class => ['all' => true],
+    Akeneo\Tool\Bundle\LoggingBundle\LoggingBundle::class => ['all' => true],
 ];

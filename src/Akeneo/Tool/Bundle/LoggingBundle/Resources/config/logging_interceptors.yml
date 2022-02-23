@@ -1,0 +1,17 @@
+parameters:
+  proxies.cache_dir: '%kernel.cache_dir%/logging_interceptors'
+
+services:
+  Akeneo\Tool\Bundle\LoggingBundle\Domain\Service\AuditLogInterceptor:
+    arguments:
+      - '@monolog.logger'
+    public: true
+    tags:
+      - {name: logging.interceptor}
+
+  Akeneo\Tool\Bundle\LoggingBundle\Domain\Service\LoggingContextInterceptor:
+    tags:
+      - {name: logging.interceptor}
+  Akeneo\Tool\Bundle\LoggingBundle\Domain\Service\InterceptorLoader:
+    arguments:
+      - '@service_container'
