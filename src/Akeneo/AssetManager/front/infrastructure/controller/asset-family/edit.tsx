@@ -42,7 +42,6 @@ const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
 const fetcherRegistry = require('pim/fetcher-registry');
 const router = require('pim/router');
-const Routing = require('routing');
 const datagridState = require('pim/datagrid/state');
 const {notify} = require('oro/messenger');
 
@@ -152,7 +151,7 @@ class AssetFamilyEditController extends BaseController {
                       history.replaceState(
                         null,
                         '',
-                        '#' + Routing.generate(route.name, {...route.params, tab: tabCode})
+                        '#' + router.generate(route.name, {...route.params, tab: tabCode})
                       );
                     }
                   }}

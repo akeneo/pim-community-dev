@@ -22,7 +22,7 @@ use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Webmozart\Assert\Assert;
 
 class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface
@@ -53,7 +53,7 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface
         }
     }
 
-    private function addWarning(ConstraintViolationList $violationList, RowPayload $rowPayload): void
+    private function addWarning(ConstraintViolationListInterface $violationList, RowPayload $rowPayload): void
     {
         foreach ($violationList as $violation) {
             $this->stepExecution->addWarning(

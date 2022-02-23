@@ -29,9 +29,9 @@ class TextUserIntentFactory implements UserIntentFactoryInterface
 
         return new SetTextValue(
             $target->getCode(),
-            $target->getLocale(),
             $target->getChannel(),
-            $value
+            $target->getLocale(),
+            $value,
         );
     }
 
