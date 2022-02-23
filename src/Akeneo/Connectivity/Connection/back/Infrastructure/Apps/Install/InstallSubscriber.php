@@ -22,7 +22,7 @@ class InstallSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            InstallerEvents::POST_DB_CREATE => 'createConnectionsTable',
+            InstallerEvents::POST_DB_CREATE => ['createConnectionsTable', -10],
         ];
     }
 
