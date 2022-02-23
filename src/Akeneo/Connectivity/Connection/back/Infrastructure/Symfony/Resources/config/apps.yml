@@ -1,6 +1,6 @@
 services:
     # CONTROLLERS
-    ## INTERNAL API
+    ## INTERNAL
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetAppActivateUrlAction:
         public: true
         arguments:
@@ -89,8 +89,8 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
 
-    ## EXTERNAL API
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\ExternalApi\AuthorizeAction:
+    ## PUBLIC
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\AuthorizeAction:
         public: true
         arguments:
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler'
@@ -103,14 +103,14 @@ services:
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthenticationHandler'
             - '@oro_security.security_facade'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\ExternalApi\RequestAccessTokenAction:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\RequestAccessTokenAction:
         public: true
         arguments:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
             - '@validator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateAccessToken'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\ExternalApi\GetOpenIdPublicKeyAction:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\GetOpenIdPublicKeyAction:
         public: true
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAsymmetricKeysQuery'

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\ExternalApi;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAccessTokenInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;

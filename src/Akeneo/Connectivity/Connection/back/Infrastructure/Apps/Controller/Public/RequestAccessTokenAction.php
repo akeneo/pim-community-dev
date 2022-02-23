@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\ExternalApi;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAccessTokenInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AccessTokenRequest;

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Apps\ExternalApi;
+namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Apps\Public;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AsymmetricKeys;
