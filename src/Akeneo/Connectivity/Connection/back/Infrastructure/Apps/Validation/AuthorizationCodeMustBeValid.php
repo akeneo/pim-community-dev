@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraint;
 class AuthorizationCodeMustBeValid extends Constraint
 {
     public string $message = 'invalid_grant';
+    public string $codeExpiredMessage = 'invalid_grant : code has expired';
 
     public function getTargets(): string
     {
