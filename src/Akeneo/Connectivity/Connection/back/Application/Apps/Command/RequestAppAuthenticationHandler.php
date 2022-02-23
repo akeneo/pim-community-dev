@@ -6,8 +6,8 @@ namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\UserConsentRequiredException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\CreateUserConsentQueryInterface;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetUserConsentedAuthenticationScopesQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\CreateUserConsentQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetUserConsentedAuthenticationScopesQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\ClockInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 

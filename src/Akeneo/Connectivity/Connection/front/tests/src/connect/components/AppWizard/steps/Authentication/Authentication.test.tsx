@@ -10,9 +10,20 @@ jest.mock('@src/connect/components/AppWizard/steps/Authentication/UserAvatar', (
 jest.mock('@src/connect/components/AppWizard/steps/Authentication/ConsentList', () => ({
     ConsentList: () => <div>ConsentList</div>,
 }));
+jest.mock('@src/connect/components/AppWizard/steps/Authentication/ConsentCheckbox', () => ({
+    ConsentCheckbox: () => <div>ConsentCheckbox</div>,
+}));
 
 test('it renders correctly', async () => {
-    renderWithProviders(<Authentication appName='MyApp' scopes={[]} />);
+    renderWithProviders(
+        <Authentication
+            appName='MyApp'
+            scopes={[]}
+            appUrl={null}
+            scopesConsentGiven={false}
+            setScopesConsent={() => null}
+        />
+    );
 
     await waitFor(() =>
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authentication.title?app_name=MyApp')
@@ -23,4 +34,5 @@ test('it renders correctly', async () => {
     ).toBeInTheDocument();
     expect(screen.queryByText('UserAvatar')).toBeInTheDocument();
     expect(screen.queryByText('ConsentList')).toBeInTheDocument();
+    expect(screen.queryByText('ConsentCheckbox')).toBeInTheDocument();
 });

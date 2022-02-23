@@ -60,6 +60,7 @@ final class GetWizardDataAction
         return new JsonResponse([
             'appName' => $app->getName(),
             'appLogo' => $app->getLogo(),
+            'appUrl' => $app->getUrl(),
             'scopeMessages' => $authorizationScopeMessages,
             'authenticationScopes' => array_values($authenticationScopesThatRequireConsent)
         ]);

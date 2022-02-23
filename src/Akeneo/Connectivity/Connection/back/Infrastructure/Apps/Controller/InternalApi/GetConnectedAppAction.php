@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi;
 
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Repository\ConnectedAppRepositoryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByConnectionCodeQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,18 +20,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 final class GetConnectedAppAction
 {
-    private FeatureFlag $featureFlag;
-    private SecurityFacade $security;
-    private ConnectedAppRepositoryInterface $connectedAppRepository;
-
     public function __construct(
-        FeatureFlag $featureFlag,
-        SecurityFacade $security,
-        ConnectedAppRepositoryInterface $connectedAppRepository
+        private FeatureFlag $featureFlag,
+        private SecurityFacade $security,
+        private FindOneConnectedAppByConnectionCodeQueryInterface $findOneConnectedAppByConnectionCodeQuery,
     ) {
-        $this->featureFlag = $featureFlag;
-        $this->security = $security;
-        $this->connectedAppRepository = $connectedAppRepository;
     }
 
     public function __invoke(Request $request, string $connectionCode): Response
@@ -48,7 +41,7 @@ final class GetConnectedAppAction
             throw new AccessDeniedHttpException();
         }
 
-        $connectedApp = $this->connectedAppRepository->findOneByConnectionCode($connectionCode);
+        $connectedApp = $this->findOneConnectedAppByConnectionCodeQuery->execute($connectionCode);
 
         if (null === $connectedApp) {
             throw new NotFoundHttpException("Connected app with connection code $connectionCode does not exist.");

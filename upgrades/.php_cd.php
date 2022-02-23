@@ -30,7 +30,7 @@ $rules = [
             'Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException',
             'Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials',
             'Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType',
-            'Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\SaveAsymmetricKeysQuery',
+            'Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveAsymmetricKeysQuery',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer',

@@ -26,6 +26,7 @@ export const AppWizardWithPermissions: FC<Props> = ({clientId}) => {
     const [wizardData, setWizardData] = useState<AppWizardData | null>(null);
     const fetchWizardData = useFetchAppWizardData(clientId);
     const [steps, setSteps] = useState<Step[]>([]);
+    const [authenticationScopesConsentGiven, setAuthenticationScopesConsent] = useState<boolean>(false);
 
     const permissionFormRegistry = usePermissionFormRegistry();
     const [providers, setProviders] = useState<PermissionFormProvider<any>[]>([]);
@@ -84,6 +85,8 @@ export const AppWizardWithPermissions: FC<Props> = ({clientId}) => {
         return <FullScreenLoader />;
     }
 
+    const userConsentRequired = wizardData.authenticationScopes.length !== 0 && !authenticationScopesConsentGiven;
+
     return (
         <WizardModal
             appLogo={wizardData.appLogo}
@@ -91,11 +94,18 @@ export const AppWizardWithPermissions: FC<Props> = ({clientId}) => {
             onClose={redirectToMarketplace}
             onConfirm={confirm}
             steps={steps}
+            maxAllowedStep={userConsentRequired ? 'authentication' : null}
         >
             {step => (
                 <>
                     {step.name === 'authentication' && (
-                        <Authentication appName={wizardData.appName} scopes={wizardData.authenticationScopes} />
+                        <Authentication
+                            appName={wizardData.appName}
+                            scopes={wizardData.authenticationScopes}
+                            appUrl={wizardData.appUrl}
+                            scopesConsentGiven={authenticationScopesConsentGiven}
+                            setScopesConsent={setAuthenticationScopesConsent}
+                        />
                     )}
                     {step.name === 'authorizations' && (
                         <Authorizations appName={wizardData.appName} scopeMessages={wizardData.scopeMessages} />

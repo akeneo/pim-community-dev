@@ -7,8 +7,15 @@ import {AppWizard} from '@src/connect/components/AppWizard/AppWizard';
 import userEvent from '@testing-library/user-event';
 import {NotificationLevel, NotifyContext} from '@src/shared/notify';
 
+const checkboxConsent = jest
+    .fn(setScopesConsent => setScopesConsent(false))
+    .mockImplementationOnce(setScopesConsent => setScopesConsent(false))
+    .mockImplementationOnce(setScopesConsent => setScopesConsent(true));
+
 jest.mock('@src/connect/components/AppWizard/steps/Authentication/Authentication', () => ({
-    Authentication: () => <div>authentication-component</div>,
+    Authentication: ({setScopesConsent}: {setScopesConsent: (newValue: boolean) => void}) => (
+        <div onClick={() => checkboxConsent(setScopesConsent)}>authentication-component</div>
+    ),
 }));
 
 jest.mock('@src/connect/components/AppWizard/steps/Authorizations', () => ({
@@ -188,4 +195,53 @@ test('The wizard display the authentication step', async () => {
 
     expect(screen.queryByText('authentication-component')).toBeInTheDocument();
     expect(screen.queryByText('authorizations-component')).not.toBeInTheDocument();
+});
+
+test('The wizard prevents going past the authentication step without consent', async () => {
+    const fetchAppWizardDataResponses: MockFetchResponses = {
+        'akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=8d8a7dc1-0827-4cc9-9ae5-577c6419230b': {
+            json: {
+                appName: 'MyApp',
+                appLogo: 'http://example.com/logo.png',
+                scopeMessages: [],
+                authenticationScopes: ['profile'],
+            },
+        },
+    };
+
+    mockFetchResponses({
+        ...fetchAppWizardDataResponses,
+    });
+
+    renderWithProviders(<AppWizard clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
+    await waitFor(() => screen.getByAltText('MyApp'));
+    expect(screen.getByAltText('MyApp')).toBeInTheDocument();
+
+    expect(screen.queryByText('authentication-component')).toBeInTheDocument();
+
+    act(() => {
+        userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next'));
+    });
+
+    expect(screen.queryByText('authorizations-component')).not.toBeInTheDocument();
+
+    act(() => {
+        userEvent.click(screen.getByText('authentication-component'));
+    });
+
+    act(() => {
+        userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next'));
+    });
+
+    expect(screen.queryByText('authorizations-component')).not.toBeInTheDocument();
+
+    act(() => {
+        userEvent.click(screen.getByText('authentication-component'));
+    });
+
+    act(() => {
+        userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next'));
+    });
+
+    expect(screen.queryByText('authorizations-component')).toBeInTheDocument();
 });
