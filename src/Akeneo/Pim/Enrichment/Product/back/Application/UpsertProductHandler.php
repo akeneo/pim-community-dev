@@ -88,7 +88,7 @@ final class UpsertProductHandler
                             ],
                         ],
                     ]);
-                } else if($valueUserIntent instanceof ClearValue) {
+                } elseif ($valueUserIntent instanceof ClearValue) {
                     $found = true;
                     $this->productUpdater->update($product, [
                         'values' => [

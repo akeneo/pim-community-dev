@@ -39,9 +39,4 @@ class ClearValueSpec extends ObjectBehavior
     {
         $this->channelCode()->shouldReturn('ecommerce');
     }
-
-    function it_returns_the_value()
-    {
-        $this->value()->shouldReturn(null);
-    }
 }
