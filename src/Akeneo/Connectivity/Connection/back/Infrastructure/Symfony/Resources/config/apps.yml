@@ -1,7 +1,7 @@
 services:
     # CONTROLLERS
     ## INTERNAL API
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetAppActivateUrlAction:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetAppActivateUrlAction:
         public: true
         arguments:
             - '@akeneo_connectivity.connection.marketplace.get_app_query'
@@ -11,7 +11,7 @@ services:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\IsConnectionsNumberLimitReachedQuery'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\ConfirmAuthorizationAction:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\ConfirmAuthorizationAction:
         public: true
         arguments:
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler'
@@ -25,7 +25,7 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\ConfirmAuthenticationAction:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\ConfirmAuthenticationAction:
         public: true
         arguments:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
@@ -38,20 +38,20 @@ services:
             - '@logger'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetAllConnectedAppsAction:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetAllConnectedAppsAction:
         public: true
         arguments:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindAllConnectedAppsQuery'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetConnectedAppAction:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetConnectedAppAction:
         public: true
         arguments:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
             - '@oro_security.security_facade'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByConnectionCodeQuery'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetAllConnectedAppScopeMessagesAction:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetAllConnectedAppScopeMessagesAction:
         public: true
         arguments:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
@@ -59,7 +59,7 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByConnectionCodeQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\DeleteAppAction:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\DeleteAppAction:
         public: true
         arguments:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
@@ -67,14 +67,14 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByConnectionCodeQuery'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetConnectedAppMonitoringSettingsAction:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetConnectedAppMonitoringSettingsAction:
         public: true
         arguments:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
             - '@oro_security.security_facade'
             - '@akeneo_connectivity.connection.application.handler.find_a_connection'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\UpdateConnectedAppMonitoringSettingsAction:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\UpdateConnectedAppMonitoringSettingsAction:
         public: true
         arguments:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
@@ -82,7 +82,7 @@ services:
             - '@akeneo_connectivity.connection.application.handler.find_a_connection'
             - '@akeneo_connectivity.connection.application.handler.update_connection'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi\GetWizardDataAction:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetWizardDataAction:
         public: true
         arguments:
             - '@akeneo_connectivity.connection.marketplace.get_app_query'
