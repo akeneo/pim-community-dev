@@ -1,11 +1,15 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\Command;
+namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class MigrateToUuidFillProductUuid implements MigrateToUuidStep
 {
     use MigrateToUuidTrait;
@@ -25,9 +29,7 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
     {
         return $this->getMissingProductUuidCount();
     }
-    /**
-     * {@inheritDoc}
-     */
+
     public function shouldBeExecuted(): bool
     {
         if (!$this->columnExists('pim_catalog_product', 'uuid')) {
@@ -43,7 +45,7 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
             ) AS missing
         SQL;
 
-        return (bool) $this->connection->fetchOne(\sprintf($sql, 'uuid'));
+        return (bool) $this->connection->fetchOne($sql);
     }
 
     public function addMissing(bool $dryRun, OutputInterface $output): void
@@ -73,10 +75,10 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
         $sql = <<<SQL
             SELECT COUNT(*) 
             FROM pim_catalog_product
-            WHERE %s IS NULL
+            WHERE {uuid_column_name} IS NULL
         SQL;
 
-        return (int) $this->connection->fetchOne(sprintf($sql, $uuidColumnName));
+        return (int) $this->connection->fetchOne(\strtr($sql, ['{uuid_column_name}' => $uuidColumnName]));
     }
 
     private function getProductCount(): int
@@ -99,19 +101,21 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
          * We need to insert mysql valid row, even if the ON DUPLICATE KEY updates only uuid.
          * The double md5(rand()) is here to be sure there will not be any collision on identifier.
          */
-        $values = array_map(fn (string $productId): string => sprintf(
-            '(%s, UUID_TO_BIN("%s"), 1, CONCAT(md5(rand()), md5(rand())), "{}", NOW(), NOW())',
-            $productId,
-            Uuid::uuid4()->toString()
+        $values = array_map(fn (string $productId): string => \strtr(
+            '({product_id}, UUID_TO_BIN("{uuid}"), 1, CONCAT(md5(rand()), md5(rand())), "{}", NOW(), NOW())',
+            [
+                '{product_id}' => $productId,
+                '{uuid}' => Uuid::uuid4()->toString(),
+            ]
         ), $productIdsWithNullUuids);
 
         $insertSql = <<<SQL
             INSERT INTO pim_catalog_product (id, uuid, is_enabled, identifier, raw_values, created, updated)
-            VALUES %s
+            VALUES {values}
             ON DUPLICATE KEY UPDATE uuid=VALUES(uuid)
         SQL;
 
-        $this->connection->executeQuery(sprintf($insertSql, implode(', ', $values)));
+        $this->connection->executeQuery(\strtr($insertSql, ['{values}' => implode(', ', $values)]));
         $this->connection->commit();
     }
 
@@ -121,11 +125,11 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
             SELECT id
             FROM pim_catalog_product 
             WHERE uuid is NULL
-            LIMIT %d
+            LIMIT {batch_size}
         SQL;
 
         return $this->connection->fetchFirstColumn(
-            sprintf($sqlProductIdsWithNullUuids, self::BATCH_SIZE)
+            \strtr($sqlProductIdsWithNullUuids, ['{batch_size}' => self::BATCH_SIZE])
         );
     }
 }

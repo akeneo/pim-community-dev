@@ -26,27 +26,27 @@ services:
         tags:
             - { name: 'console.command' }
 
-    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidCreateColumns:
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCreateColumns:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidFillProductUuid:
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillProductUuid:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidFillForeignUuid:
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillForeignUuid:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidFillJson:
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillJson:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidCommand:
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCommand:
         arguments:
-            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidCreateColumns'
-            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidFillProductUuid'
-            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidFillForeignUuid'
-            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuidFillJson'
+            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCreateColumns'
+            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillProductUuid'
+            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillForeignUuid'
+            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillJson'
         tags:
             - { name: 'console.command' }
