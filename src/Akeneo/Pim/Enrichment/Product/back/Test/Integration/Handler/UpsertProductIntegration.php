@@ -6,6 +6,7 @@ namespace Akeneo\Test\Pim\Enrichment\Product\Integration\Handler;
 
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
@@ -145,6 +146,28 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertEquals(100, $value->getData()->getData());
         Assert::assertEquals('KILOWATT', $value->getData()->getUnit());
     }
+
+    /** @test */
+    public function it_throws_an_exception_when_a_metric_amount_is_not_numeric(): void
+    {
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('The a_metric attribute requires a number, and the submitted michel value is not.');
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
+            new SetMetricValue('a_metric', null, null, 'michel', 'KILOWATT'),
+        ]);
+        $this->messageBus->dispatch($command);
+     }
+
+    /** @test */
+    public function it_throws_an_exception_when_a_metric_unit_is_unknown(): void
+    {
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('Please specify a valid metric unit');
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
+            new SetMetricValue('a_metric', null, null, '1275', 'unknown'),
+        ]);
+        $this->messageBus->dispatch($command);
+     }
 
     /** @test */
     public function it_throws_an_exception_when_giving_a_locale_for_a_non_localizable_product(): void
