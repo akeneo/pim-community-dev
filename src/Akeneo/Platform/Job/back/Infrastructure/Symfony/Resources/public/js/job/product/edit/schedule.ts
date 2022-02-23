@@ -1,6 +1,8 @@
 import BaseView = require('pimui/js/view/base');
 import {ScheduleTab, ScheduleTabProps} from './ScheduleTab';
 
+const mediator = require('oro/mediator');
+
 class ScheduleView extends BaseView {
   public config: any;
 
@@ -15,8 +17,13 @@ class ScheduleView extends BaseView {
       code: this.getTabCode(),
       label: this.config.tabTitle,
     });
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', this.handlePreSave);
 
     return BaseView.prototype.configure.apply(this, arguments);
+  }
+
+  handlePreSave() {
+    mediator.trigger('job_schedule:pre_save');
   }
 
   getTabCode(): string {
@@ -27,12 +34,13 @@ class ScheduleView extends BaseView {
    * {@inheritdoc}
    */
   render(): BaseView {
+    const {code} = this.getFormData(); // `job_name` also works
+
     const props: ScheduleTabProps = {
-      // We need to retrieve the current job instance code
-      jobInstanceCode: 'csv_product_export',
+      jobInstanceCode: code,
     };
 
-    this.renderReact(ScheduleTab, props, this.el)
+    this.renderReact(ScheduleTab, props, this.el);
 
     return this;
   }
