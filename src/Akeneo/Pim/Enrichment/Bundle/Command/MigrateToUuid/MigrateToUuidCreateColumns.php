@@ -72,7 +72,8 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
         SQL;
 
         $addUuidColumnQuery = \strtr(
-            $addUuidColumnSql, [
+            $addUuidColumnSql,
+            [
                 '{table_name}' => $tableName,
                 '{uuid_column_name}' => $uuidColumName,
                 '{id_column_name}' => $idColumnName,
