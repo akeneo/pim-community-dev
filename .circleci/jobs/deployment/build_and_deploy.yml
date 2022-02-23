@@ -229,9 +229,6 @@ jobs:
                   name: Restore micro-frontend Catalog Volume Monitoring cache
                   key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}-{{ .Environment.CACHE_VERSION }}
             - restore_cache:
-                  name: Restore micro-frontend Catalog Volume Monitoring cache
-                  key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}-{{ .Environment.CACHE_VERSION }}
-            - restore_cache:
                   name: Restore micro-frontend Config cache
                   key: micro-frontend-config-{{ checksum "~/config.hash" }}-{{ .Environment.CACHE_VERSION }}
             - run:

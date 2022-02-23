@@ -32,10 +32,10 @@ else
 endif
 
 lint-front:
-	$(YARN_RUN) run --cwd=components/tailored-import/front test:unit:run
+	$(YARN_RUN) run --cwd=components/tailored-import/front lint:check
 
 unit-front:
-	$(YARN_RUN) run --cwd=components/tailored-import/front lint:check
+	$(YARN_RUN) run --cwd=components/tailored-import/front test:unit:run
 
 .PHONY: ci-back
 ci-back: lint-back coupling-back unit-back acceptance-back integration-back
