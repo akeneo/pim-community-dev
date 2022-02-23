@@ -44,14 +44,6 @@ final class QualityScoreFilterSpec extends ObjectBehavior
 
     public function it_adds_filter_on_quality_score_with_integer_values($queryBuilder)
     {
-        $queryBuilder->addMustNot(
-            [
-                'term' => [
-                    'document_type' => 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface'
-                ],
-            ]
-        )->shouldBeCalled();
-
         $queryBuilder->addFilter(
             [
                 'terms' => [
