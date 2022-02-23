@@ -6,11 +6,11 @@ find-legacy-translations:
 	.circleci/find_legacy_translations.sh
 
 .PHONY: coupling-back
-coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back job-coupling-back data-quality-insights-coupling-back
+coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back job-coupling-back data-quality-insights-coupling-back enrichment-product-coupling-back
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=upgrades/.php_cd.php upgrades/schema
 
 ### Static tests
-static-back: check-pullup check-sf-services
+static-back: check-pullup check-sf-services enrichment-product-static-back
 	echo "Job done! Nothing more to do here..."
 
 .PHONY: check-pullup
@@ -34,6 +34,7 @@ lint-back:
 	$(MAKE) data-quality-insights-lint-back
 	$(MAKE) data-quality-insights-phpstan
 	$(MAKE) job-lint-back
+	$(MAKE) enrichment-product-lint-back
 
 .PHONY: lint-front
 lint-front:
@@ -59,7 +60,6 @@ unit-front:
 .PHONY: acceptance-back
 acceptance-back:
 	APP_ENV=behat ${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
-	$(MAKE) connectivity-connection-acceptance-back
 	$(MAKE) job-acceptance-back
 ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Measurement_Acceptance

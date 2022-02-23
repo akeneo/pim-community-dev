@@ -16,11 +16,15 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 final class AkeneoPimEnrichmentProductExtension extends Extension
 {
     /**
+     * @param array<string, mixed> $configs
+     *
      * {@inheritDoc}
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('handlers.yml');
+        $loader->load('message_bus.yml');
         $loader->load('queries.yml');
         $loader->load('validators.yml');
     }

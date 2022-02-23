@@ -1,4 +1,4 @@
-Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand:
+Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand:
     group_sequence:
         - User
         - UpsertProductCommand
@@ -13,3 +13,4 @@ Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand:
             - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelShouldBeConsistent: ~
     constraints:
         - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\IsUserOwnerOfTheProduct: ~
+        - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUser: ~

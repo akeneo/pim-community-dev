@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
 use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelShouldBeConsistent;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelShouldBeConsistentValidator;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
@@ -43,7 +43,7 @@ class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
     function it_throws_an_exception_for_a_wrong_constraint(): void
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [
-            [new SetTextValue('name', 'en_US', 'ecommerce', 'My beautiful product')],
+            [new SetTextValue('name', 'ecommerce', 'en_US', 'My beautiful product')],
             new NotBlank(),
         ]);
     }
@@ -72,7 +72,7 @@ class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
         $context->addViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate(
-            [new SetTextValue('name', 'en_US', 'ecommerce', 'My beautiful product')],
+            [new SetTextValue('name', 'ecommerce', 'en_US', 'My beautiful product')],
             new LocaleAndChannelShouldBeConsistent()
         );
     }
@@ -123,7 +123,7 @@ class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
-            [new SetTextValue('name', null, 'ecommerce', 'My beautiful product')],
+            [new SetTextValue('name', 'ecommerce', null , 'My beautiful product')],
             new LocaleAndChannelShouldBeConsistent()
         );
     }
@@ -148,7 +148,7 @@ class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
-            [new SetTextValue('name', null, 'mobile', 'My beautiful product')],
+            [new SetTextValue('name', 'mobile', null, 'My beautiful product')],
             new LocaleAndChannelShouldBeConsistent()
         );
     }
@@ -199,7 +199,7 @@ class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
-            [new SetTextValue('name', 'en_US', null, 'My beautiful product')],
+            [new SetTextValue('name', null, 'en_US', 'My beautiful product')],
             new LocaleAndChannelShouldBeConsistent()
         );
     }
@@ -224,7 +224,7 @@ class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
-            [new SetTextValue('name', 'es_ES', null, 'My beautiful product')],
+            [new SetTextValue('name', null, 'es_ES', 'My beautiful product')],
             new LocaleAndChannelShouldBeConsistent()
         );
     }
@@ -250,7 +250,7 @@ class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
-            [new SetTextValue('name', 'fr_FR', 'ecommerce', 'My beautiful product')],
+            [new SetTextValue('name', 'ecommerce', 'fr_FR', 'My beautiful product')],
             new LocaleAndChannelShouldBeConsistent()
         );
     }
@@ -277,7 +277,7 @@ class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate(
-            [new SetTextValue('name', 'fr_FR', null, 'My beautiful product')],
+            [new SetTextValue('name', null, 'fr_FR', 'My beautiful product')],
             new LocaleAndChannelShouldBeConsistent()
         );
     }
@@ -305,10 +305,10 @@ class LocaleAndChannelShouldBeConsistentValidatorSpec extends ObjectBehavior
 
         $this->validate(
             [
-                new SetTextValue('scopable_localizable', 'en_US', 'ecommerce', 'My beautiful product'),
-                new SetTextValue('scopable', null, 'ecommerce', 'My beautiful product'),
-                new SetTextValue('localizable', 'fr_FR', null, 'My beautiful product'),
-                new SetTextValue('locale_specific', 'en_US', null, 'My beautiful product'),
+                new SetTextValue('scopable_localizable', 'ecommerce', 'en_US', 'My beautiful product'),
+                new SetTextValue('scopable', 'ecommerce', null, 'My beautiful product'),
+                new SetTextValue('localizable', null, 'fr_FR', 'My beautiful product'),
+                new SetTextValue('locale_specific', null, 'en_US', 'My beautiful product'),
                 new SetTextValue('simple', null, null, 'My beautiful product'),
             ],
             new LocaleAndChannelShouldBeConsistent()

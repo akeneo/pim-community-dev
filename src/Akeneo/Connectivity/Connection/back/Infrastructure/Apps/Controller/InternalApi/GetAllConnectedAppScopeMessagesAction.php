@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi;
 
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Repository\ConnectedAppRepositoryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByConnectionCodeQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -21,21 +21,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 final class GetAllConnectedAppScopeMessagesAction
 {
-    private FeatureFlag $featureFlag;
-    private SecurityFacade $security;
-    private ConnectedAppRepositoryInterface $connectedAppRepository;
-    private ScopeMapperRegistry $scopeMapperRegistry;
-
     public function __construct(
-        FeatureFlag $featureFlag,
-        SecurityFacade $security,
-        ConnectedAppRepositoryInterface $connectedAppRepository,
-        ScopeMapperRegistry $scopeMapperRegistry
+        private FeatureFlag $featureFlag,
+        private SecurityFacade $security,
+        private FindOneConnectedAppByConnectionCodeQueryInterface $findOneConnectedAppByConnectionCodeQuery,
+        private ScopeMapperRegistry $scopeMapperRegistry,
     ) {
-        $this->featureFlag = $featureFlag;
-        $this->security = $security;
-        $this->connectedAppRepository = $connectedAppRepository;
-        $this->scopeMapperRegistry = $scopeMapperRegistry;
     }
 
     public function __invoke(Request $request, string $connectionCode): Response
@@ -52,7 +43,7 @@ final class GetAllConnectedAppScopeMessagesAction
             throw new AccessDeniedHttpException();
         }
 
-        $connectedApp = $this->connectedAppRepository->findOneByConnectionCode($connectionCode);
+        $connectedApp = $this->findOneConnectedAppByConnectionCodeQuery->execute($connectionCode);
 
         if (null === $connectedApp) {
             throw new NotFoundHttpException("Connected app with connection code $connectionCode does not exist.");

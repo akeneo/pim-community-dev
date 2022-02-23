@@ -7,10 +7,12 @@ namespace Akeneo\Pim\Enrichment\Product\Application;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\LegacyViolationsException;
-use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\ViolationsException;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -64,12 +66,15 @@ final class UpsertProductHandler
         $this->productSaver->save($product);
     }
 
-    private function updateProduct(ProductInterface $product, UpsertProductCommand $command)
+    private function updateProduct(ProductInterface $product, UpsertProductCommand $command): void
     {
         foreach ($command->valuesUserIntent() as $index => $valueUserIntent) {
             $found = false;
             try {
-                if ($valueUserIntent instanceof SetTextValue) {
+                if ($valueUserIntent instanceof SetTextValue
+                    || $valueUserIntent instanceof SetNumberValue
+                    || $valueUserIntent instanceof SetTextareaValue
+                ) {
                     $found = true;
                     $this->productUpdater->update($product, [
                         'values' => [
