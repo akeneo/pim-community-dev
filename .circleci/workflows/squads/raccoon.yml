@@ -7,12 +7,16 @@ workflows:
       not:
         equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
     jobs:
-      - checkout:
+      - ready_to_build?:
+          type: approval
           filters:
             branches:
               only:
                 - /RAB-.*/
                 - /RAC-.*/
+      - checkout:
+          requires:
+            - ready_to_build?
       - build_srnt_dev:
           requires:
             - checkout
