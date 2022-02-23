@@ -1,12 +1,26 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\Command;
+namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ *  Queries to try this migration:
+ *
+    UPDATE pim_catalog_product SET quantified_associations='{"SOIREEFOOD10": {"products": [{"id": 1034, "quantity": 10000}], "product_models": [{"id": 1, "quantity": 1}, {"id": 12, "quantity": 1}]}}' WHERE id=1022;
+    UPDATE pim_catalog_product SET quantified_associations='{"SOIREEFOOD10": {"products": [{"id": 10, "quantity": 1}], "product_models": []}}' WHERE id=1111;
+    UPDATE pim_catalog_product SET quantified_associations='{"SOIREEFOOD10": {"products": [{"id": 1, "quantity": 50000}, {"id": 10, "quantity": 1}, {"id": 100, "quantity": 1}], "product_models": []}}' WHERE id=1207;
+    UPDATE pim_catalog_product SET quantified_associations='{"SOIREEFOOD10": {"products": [{"id": 400000, "quantity": 50000}, {"id": 10, "quantity": 1}, {"id": 100, "quantity": 1}], "product_models": []}}' WHERE id=1217;
+    UPDATE pim_catalog_product_model SET quantified_associations='{"SOIREEFOOD10": {"products": [{"id": 1, "quantity": 10}, {"id": 10, "quantity": 1}], "product_models": []}}' WHERE id=1;
+ *
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class MigrateToUuidFillJson implements MigrateToUuidStep
 {
+    use MigrateToUuidTrait;
+
     private const BATCH_SIZE = 1000;
     private const TABLE_NAMES = [
         'pim_catalog_product',
@@ -22,15 +36,12 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         return 'Adds product_uuid field in JSON objects';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function shouldBeExecuted(): bool
     {
         $sql = <<<SQL
             SELECT EXISTS(
                 SELECT 1
-                FROM %s
+                FROM {table_name}
                 WHERE JSON_CONTAINS_PATH(quantified_associations, 'one', '$.*.products[*].id')
                     AND NOT JSON_CONTAINS_PATH(quantified_associations, 'one', '$.*.products[*].uuid')
                 LIMIT 1
@@ -38,7 +49,7 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         SQL;
 
         foreach (self::TABLE_NAMES as $tableName) {
-            if ((bool) $this->connection->executeQuery(\sprintf($sql, $tableName))->fetchOne()) {
+            if ((bool) $this->connection->executeQuery(\strtr($sql, ['{table_name}' => $tableName]))->fetchOne()) {
                 return true;
             }
         }
@@ -50,14 +61,14 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
     {
         $sql = <<<SQL
             SELECT COUNT(1)
-            FROM %s
+            FROM {table_name}
             WHERE JSON_CONTAINS_PATH(quantified_associations, 'one', '$.*.products[*].id')
                 AND NOT JSON_CONTAINS_PATH(quantified_associations, 'one', '$.*.products[*].uuid');
         SQL;
 
         $count = 0;
         foreach (self::TABLE_NAMES as $tableName) {
-            $result = $this->connection->fetchOne(sprintf($sql, $tableName));
+            $result = $this->connection->fetchOne(\strtr($sql, ['{table_name}' => $tableName]));
             $count += (int) $result;
         }
 
@@ -71,25 +82,53 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         }
     }
 
-    private function updateAssociations(string $tableName, $productAssociations): void
+    private function updateProductAssociations($productAssociations): void
     {
-        // TODO Optimize this query with Insert
+        $values = array_map(fn (array $productAssociation): string => \strtr(
+            '({product_id}, \'{quantified_associations}\', 1, CONCAT(md5(rand()), md5(rand())), "{}", NOW(), NOW())',
+            [
+                '{product_id}' => $productAssociation['id'],
+                '{quantified_associations}' => \json_encode($productAssociation['quantified_associations']),
+            ]
+        ), $productAssociations);
 
-        foreach ($productAssociations as $productAssociation) {
-            $this->connection->executeQuery(sprintf(
-                'UPDATE %s SET quantified_associations=\'%s\' WHERE id=%d',
-                $tableName,
-                \json_encode($productAssociation['quantified_associations']),
-                $productAssociation['id']
-            ));
-        }
+        $insertSql = <<<SQL
+            INSERT INTO pim_catalog_product (id, quantified_associations, is_enabled, identifier, raw_values, created, updated)
+            VALUES {values}
+            ON DUPLICATE KEY UPDATE quantified_associations=VALUES(quantified_associations)
+        SQL;
+
+        $this->connection->executeQuery(\strtr($insertSql, [
+            '{values}' => implode(', ', $values),
+        ]));
+    }
+
+    private function updateProductModelAssociations($productAssociations): void
+    {
+        $values = array_map(fn (array $productAssociation): string => \strtr(
+            '({product_model_id}, \'{quantified_associations}\', CONCAT(md5(rand()), md5(rand())), "{}", NOW(), NOW())',
+            [
+                '{product_model_id}' => $productAssociation['id'],
+                '{quantified_associations}' => \json_encode($productAssociation['quantified_associations']),
+            ]
+        ), $productAssociations);
+
+        $insertSql = <<<SQL
+            INSERT INTO pim_catalog_product_model (id, quantified_associations, code, raw_values, created, updated)
+            VALUES {values}
+            ON DUPLICATE KEY UPDATE quantified_associations=VALUES(quantified_associations)
+        SQL;
+
+        $this->connection->executeQuery(\strtr($insertSql, [
+            '{values}' => implode(', ', $values),
+        ]));
     }
 
     private function getFormerAssociations(string $tableName, $previousProductId = -1): array
     {
-        $associationsSql = <<<SQL
+        $sql = <<<SQL
             SELECT id, quantified_associations
-            FROM %s
+            FROM {table_name}
             WHERE JSON_CONTAINS_PATH(quantified_associations, 'one', '$.*.products[*].id')
                 AND NOT JSON_CONTAINS_PATH(quantified_associations, 'one', '$.*.products[*].uuid')
                 AND id > :previousProductId
@@ -97,7 +136,7 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
             LIMIT :limit
         SQL;
 
-        $associations = $this->connection->fetchAllAssociative(sprintf($associationsSql, $tableName), [
+        $associations = $this->connection->fetchAllAssociative(\strtr($sql, ['{table_name}' => $tableName]), [
             'previousProductId' => $previousProductId,
             'limit' => self::BATCH_SIZE
         ], [
@@ -124,8 +163,12 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
             }
         }
 
-        $productsSql = "SELECT id, BIN_TO_UUID(uuid) as uuid FROM pim_catalog_product WHERE id IN (:productIds)";
-        $products = $this->connection->fetchAllAssociative($productsSql, [
+        $sql = <<<SQL
+            SELECT id, BIN_TO_UUID(uuid) as uuid 
+            FROM pim_catalog_product 
+            WHERE id IN (:productIds)
+        SQL;
+        $products = $this->connection->fetchAllAssociative($sql, [
             'productIds' => $productIds,
         ], [
             'productIds' => Connection::PARAM_INT_ARRAY
@@ -141,16 +184,10 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
 
     private function addMissingForTable(bool $dryRun, OutputInterface $output, string $tableName): void
     {
-        if (!$this->columnExists('pim_catalog_product', 'uuid')) {
-            $output->writeln(sprintf('    <comment>The uuid column does not exist. Skip'));
-
-            return;
-        }
         $previousEntityId = -1;
         $associations = $this->getFormerAssociations($tableName, $previousEntityId);
         while (count($associations) > 0) {
-            $productIdToUuidMap = $this->getProductIdToUuidMap($associations);
-
+            $productIdToUuidMap = $dryRun ? [] : $this->getProductIdToUuidMap($associations);
 
             for ($pi = 0; $pi < count($associations); $pi++) {
                 $formerAssociation = $associations[$pi]['quantified_associations'];
@@ -163,7 +200,9 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
                             $associatedProductUuid = $productIdToUuidMap[$associatedProductId];
                             $formerAssociation[$associationName]['products'][$i]['uuid'] = $associatedProductUuid;
                         } else {
-                            $output->writeln(sprintf('    <comment>Associated product %d not found for product %d</comment>', $associatedProductId, $productId));
+                            if (!$dryRun) {
+                                $output->writeln(sprintf('    <comment>Associated product uuid %d not found for product %d</comment>', $associatedProductId, $productId));
+                            }
                             $notFound = true;
                         }
                     }
@@ -176,7 +215,11 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
 
             $output->writeln(sprintf('    Will update %s entities in %s table', count($associations), $tableName));
             if (!$dryRun) {
-                $this->updateAssociations($tableName, $associations);
+                if ($tableName === 'pim_catalog_product') {
+                    $this->updateProductAssociations($associations);
+                } else {
+                    $this->updateProductModelAssociations($associations);
+                }
                 $associations = $this->getFormerAssociations($tableName, $previousEntityId);
             } else {
                 $output->writeln(sprintf('    Option --dry-run is set, will continue to next step.'));
@@ -184,24 +227,4 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
             }
         }
     }
-
-    private function columnExists(string $tableName, string $columnName): bool
-    {
-        $rows = $this->connection->fetchAllAssociative(
-            sprintf('SHOW COLUMNS FROM %s LIKE :columnName', $tableName),
-            [
-                'columnName' => $columnName,
-            ]
-        );
-
-        return count($rows) >= 1;
-    }
 }
-
-/*
-UPDATE pim_catalog_product SET quantified_associations='{"SOIREEFOOD10": {"products": [{"id": 1034, "quantity": 10000}], "product_models": [{"id": 1, "quantity": 1}, {"id": 12, "quantity": 1}]}}' WHERE id=1022;
-UPDATE pim_catalog_product SET quantified_associations='{"SOIREEFOOD10": {"products": [{"id": 10, "quantity": 1}], "product_models": []}}' WHERE id=1111;
-UPDATE pim_catalog_product SET quantified_associations='{"SOIREEFOOD10": {"products": [{"id": 1, "quantity": 50000}, {"id": 10, "quantity": 1}, {"id": 100, "quantity": 1}], "product_models": []}}' WHERE id=1207;
-UPDATE pim_catalog_product SET quantified_associations='{"SOIREEFOOD10": {"products": [{"id": 400000, "quantity": 50000}, {"id": 10, "quantity": 1}, {"id": 100, "quantity": 1}], "product_models": []}}' WHERE id=1217;
-UPDATE pim_catalog_product_model SET quantified_associations='{"SOIREEFOOD10": {"products": [{"id": 1, "quantity": 10}, {"id": 10, "quantity": 1}], "product_models": []}}' WHERE id=1;
-*/
