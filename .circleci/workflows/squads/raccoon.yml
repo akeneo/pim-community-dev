@@ -1,0 +1,28 @@
+version: 2.1
+workflows:
+  version: 2
+
+  raccoon_pull_request:
+    when:
+      not:
+        equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+    jobs:
+      - checkout:
+          filters:
+            branches:
+              only:
+                - /RAB-.*/
+                - /RAC-.*/
+      - build_srnt_dev:
+          requires:
+            - checkout
+      - test_front_tailored_import:
+          requires:
+            - build_srnt_dev
+      - test_back_tailored_import:
+          requires:
+            - build_srnt_dev
+      - pull_request_success:
+          requires:
+            - test_front_tailored_import
+            - test_back_tailored_import
