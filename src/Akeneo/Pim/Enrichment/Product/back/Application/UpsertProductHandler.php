@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
@@ -83,6 +84,19 @@ final class UpsertProductHandler
                                     'locale' => $valueUserIntent->localeCode(),
                                     'scope' => $valueUserIntent->channelCode(),
                                     'data' => $valueUserIntent->value(),
+                                ],
+                            ],
+                        ],
+                    ]);
+                } else if($valueUserIntent instanceof ClearValue) {
+                    $found = true;
+                    $this->productUpdater->update($product, [
+                        'values' => [
+                            $valueUserIntent->attributeCode() => [
+                                [
+                                    'locale' => $valueUserIntent->localeCode(),
+                                    'scope' => $valueUserIntent->channelCode(),
+                                    'data' => null,
                                 ],
                             ],
                         ],

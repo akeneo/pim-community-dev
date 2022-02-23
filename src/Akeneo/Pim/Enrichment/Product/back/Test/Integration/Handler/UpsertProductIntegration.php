@@ -7,6 +7,7 @@ namespace Akeneo\Test\Pim\Enrichment\Product\Integration\Handler;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
@@ -151,6 +152,43 @@ final class UpsertProductIntegration extends TestCase
             new SetTextValue('a_text', null, null, 'foo'),
         ]);
         $this->messageBus->dispatch($command);
+    }
+
+    /** @test */
+    public function it_clears_values(): void
+    {
+        // Creates product with values
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
+            new SetTextValue('a_text', null, null, 'foo'),
+            new SetNumberValue('a_number_integer', null, null, 10),
+            new SetTextareaValue('a_text_area', null, null, self::TEXT_AREA_VALUE),
+        ]);
+        $this->messageBus->dispatch($command);
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
+
+        // Update product with clear values
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
+            new ClearValue('a_text', null, null),
+            new ClearValue('a_number_integer', null, null),
+            new ClearValue('a_text_area', null, null),
+            // add a false value for attribute
+        ]);
+        $this->messageBus->dispatch($command);
+
+        $this->clearDoctrineUoW();
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        $valueText = $product->getValue('a_text', null, null);
+        $valueNumber = $product->getValue('a_number_integer', null, null);
+        $valueTextarea = $product->getValue('a_text_area', null, null);
+
+        Assert::assertNull($valueText);
+        Assert::assertNull($valueNumber);
+        Assert::assertNull($valueTextarea);
     }
 
     private function getUserId(string $username): int
