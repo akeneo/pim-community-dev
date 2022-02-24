@@ -13,6 +13,8 @@ Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand:
             - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelShouldBeConsistent: ~
             - Valid:
                   traverse: true
+            - All:
+                - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeGroupShouldBeEditable: ~
     constraints:
         - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\IsUserOwnerOfTheProduct: ~
         - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUser: ~
