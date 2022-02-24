@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub;
 
+use Akeneo\Platform\Bundle\FrameworkBundle\Messenger\TenantIdStamp;
 use Akeneo\Tool\Bundle\MessengerBundle\Ordering\OrderingKeySolver;
 use Google\Cloud\Core\Exception\GoogleException;
 use Google\Cloud\PubSub\Topic;
@@ -33,10 +34,13 @@ final class GpsSender implements SenderInterface
     {
         $encodedMessage = $this->serializer->encode($envelope);
 
+        $tenantId = $envelope->last(TenantIdStamp::class)?->pimTenantId() ?? 'default_id';
+
         $message = [
             'data' => $encodedMessage['body'],
-            'attributes' => $encodedMessage['headers'],
+            'attributes' => $encodedMessage['headers'] + ['tenant_id' => $tenantId],
         ];
+
         if (null !== $orderingKey = $this->orderingKeySolver->solve($envelope)) {
             $message['orderingKey'] = $orderingKey;
         }
