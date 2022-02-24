@@ -25,12 +25,12 @@ final class HasUpToDateProductEvaluationQuery implements HasUpToDateEvaluationQu
 
     public function forProductId(ProductId $productId): bool
     {
-        $upToDateProducts = $this->forProductIds(ProductIdCollection::fromProductId($productId));
+        $upToDateProducts = $this->forProductIdCollection(ProductIdCollection::fromProductId($productId));
 
         return !is_null($upToDateProducts);
     }
 
-    public function forProductIds(ProductIdCollection $productIdCollection): ?ProductIdCollection
+    public function forProductIdCollection(ProductIdCollection $productIdCollection): ?ProductIdCollection
     {
         if ($productIdCollection->isEmpty()) {
             return null;

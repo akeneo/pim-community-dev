@@ -15,5 +15,5 @@ interface HasUpToDateEvaluationQueryInterface
 {
     public function forProductId(ProductId $productId): bool;
 
-    public function forProductIds(ProductIdCollection $productIdCollection): ?ProductIdCollection;
+    public function forProductIdCollection(ProductIdCollection $productIdCollection): ?ProductIdCollection;
 }

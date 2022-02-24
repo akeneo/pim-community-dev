@@ -220,3 +220,8 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetLatestProductScoresByIdentifiersQuery:
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\GetUpToDateProductModelScoresQuery:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\HasUpToDateProductModelEvaluationQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelScoresQuery'

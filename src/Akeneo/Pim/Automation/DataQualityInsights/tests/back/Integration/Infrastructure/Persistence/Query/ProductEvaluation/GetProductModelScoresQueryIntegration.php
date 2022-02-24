@@ -21,55 +21,102 @@ use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsigh
  */
 final class GetProductModelScoresQueryIntegration extends DataQualityInsightsTestCase
 {
+    public function test_it_returns_product_model_scores_by_id(): void
+    {
+        $productModelIds = $this->provideProductModelIds();
+        $scores = $this->provideScores($productModelIds);
+
+        $this->assertEqualsScore($scores, $productModelIds['idA']);
+
+        $this->assertEqualsNoScore();
+    }
+
     public function test_it_returns_product_model_scores_by_ids(): void
     {
-        $channelMobile = new ChannelCode('mobile');
-        $localeEn = new LocaleCode('en_US');
-        $localeFr = new LocaleCode('fr_FR');
+        $productModelIds = $this->provideProductModelIds();
+        $scores = $this->provideScores($productModelIds);
 
+        $expectedProductModelsScores = [
+            $productModelIds['idA'] => $scores['product_model_A_scores']->getScores(),
+            $productModelIds['idB'] => $scores['product_model_B_scores']->getScores(),
+        ];
+
+        $productAxesRates = $this->get(GetProductModelScoresQuery::class)
+            ->byProductModelIds(ProductIdCollection::fromProductIds(
+                [new ProductId($productModelIds['idA']), new ProductId($productModelIds['idB'])])
+            );
+
+        $this->assertEqualsCanonicalizing($expectedProductModelsScores, $productAxesRates);
+    }
+
+    /**
+     * @param ProductScores[] $scores
+     */
+    private function assertEqualsScore(array $scores, int $productModelId)
+    {
+        $searchProductId = new ProductId($productModelId);
+        $result = $this->get(GetProductModelScoresQuery::class)->byProductModelId($searchProductId);
+        $this->assertEquals($result, $scores['product_model_A_scores']->getScores());
+    }
+
+    private function assertEqualsNoScore()
+    {
+        $missingProductId = new ProductId(1590);
+        $result = $this->get(GetProductModelScoresQuery::class)->byProductModelId($missingProductId);
+        $this->assertEquals($result, new ChannelLocaleRateCollection());
+    }
+
+    /**
+     * @return int[]
+     */
+    private function provideProductModelIds(): array
+    {
         $this->createMinimalFamilyAndFamilyVariant('family_V', 'family_V_1');
         $productModelIdA = $this->createProductModel('product_model_A', 'family_V_1')->getId();
         $productModelIdB = $this->createProductModel('product_model_B', 'family_V_1')->getId();
         $productModelIdC = $this->createProductModel('product_model_C', 'family_V_1')->getId();
 
+        return ['idA' => $productModelIdA, 'idB' => $productModelIdB, 'idC' => $productModelIdC];
+    }
+
+    /**
+     * @param int[]
+     * @return ProductScores[]
+     */
+    private function provideScores(array $productModelIds): array
+    {
+        $channelMobile = new ChannelCode('mobile');
+        $localeEn = new LocaleCode('en_US');
+        $localeFr = new LocaleCode('fr_FR');
+
         $this->resetProductModelsScores();
 
         $productModelsScores = [
             'product_model_A_scores' => new ProductScores(
-                new ProductId($productModelIdA),
+                new ProductId($productModelIds['idA']),
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(96))
                     ->addRate($channelMobile, $localeFr, new Rate(36))
             ),
             'product_model_B_scores' => new ProductScores(
-                new ProductId($productModelIdB),
+                new ProductId($productModelIds['idB']),
                 new \DateTimeImmutable('2020-01-09'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(100))
                     ->addRate($channelMobile, $localeFr, new Rate(95))
             ),
             'other_product_model_scores' => new ProductScores(
-                new ProductId($productModelIdC),
+                new ProductId($productModelIds['idC']),
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(87))
                     ->addRate($channelMobile, $localeFr, new Rate(95))
-            ),
+            )
         ];
 
         $this->get(ProductModelScoreRepository::class)->saveAll(array_values($productModelsScores));
 
-        $expectedProductModelsScores = [
-            $productModelIdA => $productModelsScores['product_model_A_scores']->getScores(),
-            $productModelIdB => $productModelsScores['product_model_B_scores']->getScores(),
-        ];
-
-        $productAxesRates = $this->get(GetProductModelScoresQuery::class)
-            ->byProductModelIds(ProductIdCollection::fromProductIds(
-                [new ProductId($productModelIdA), new ProductId($productModelIdB)])
-            );
-
-        $this->assertEqualsCanonicalizing($expectedProductModelsScores, $productAxesRates);
+        return $productModelsScores;
     }
 }

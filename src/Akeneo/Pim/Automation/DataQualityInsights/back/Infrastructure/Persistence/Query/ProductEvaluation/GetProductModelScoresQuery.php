@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Doctrine\DBAL\Connection;
 
@@ -18,6 +19,13 @@ final class GetProductModelScoresQuery implements GetProductModelScoresQueryInte
     public function __construct(
         private Connection $dbConnection
     ) {
+    }
+
+    public function byProductModelId(ProductId $productId): ChannelLocaleRateCollection
+    {
+        $productScores = $this->byProductModelIds(ProductIdCollection::fromProductId($productId));
+
+        return $productScores[$productId->toInt()] ?? new ChannelLocaleRateCollection();
     }
 
     public function byProductModelIds(ProductIdCollection $productModelIds): array
