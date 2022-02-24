@@ -77,6 +77,9 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
         $this->scheduleNextRecomputeProductsScoresJob($lastProductId);
     }
 
+    /**
+     * @return int[]
+     */
     private function getNextProductIds($lastProductId): array
     {
         $stmt = $this->connection->executeQuery(

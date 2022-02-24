@@ -35,7 +35,7 @@ class PopulateProductModelScoresCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
 
-        if (!$this->CommandCanBeStarted()) {
+        if (!$this->commandCanBeStarted() && $output->isVerbose()) {
             $output->writeln('This process has already been performed or is in progress.');
             return Command::SUCCESS;
         }
@@ -95,7 +95,7 @@ SQL;
         $this->dbConnection->executeQuery($query, ['code' => self::$defaultName]);
     }
 
-    private function CommandCanBeStarted(): bool
+    private function commandCanBeStarted(): bool
     {
         $query = <<<SQL
 SELECT 1 FROM pim_one_time_task WHERE code = :code
@@ -104,6 +104,9 @@ SQL;
         return !(bool)$this->dbConnection->executeQuery($query, ['code' => self::$defaultName])->fetchOne();
     }
 
+    /**
+     * @return int[]
+     */
     private function getNextProductModelIds(int $lastProductModelId): array
     {
         $query = <<<SQL
