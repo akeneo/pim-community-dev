@@ -8,11 +8,14 @@ const StringCell = require('oro/datagrid/string-cell');
 
 class QualityScoreBadgeCell extends StringCell {
   render() {
-    const productQualityScore: string = this.formatter.fromRaw(this.model.get(this.column.get('name')));
+    const qualityScoreProps = {
+      score: this.formatter.fromRaw(this.model.get(this.column.get('name'))),
+      stacked: this.model.attributes.document_type === 'product_model',
+    };
 
     ReactDOM.render(
       <ThemeProvider theme={pimTheme}>
-        <QualityScore score={productQualityScore} />
+        <QualityScore {...qualityScoreProps} />
       </ThemeProvider>,
       this.el
     );
