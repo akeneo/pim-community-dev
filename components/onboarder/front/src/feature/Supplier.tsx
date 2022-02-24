@@ -1,10 +1,10 @@
 import React from 'react';
 import {Breadcrumb} from 'akeneo-design-system';
 import {useTranslate, PageContent, PageHeader, PimView} from '@akeneo-pim-community/shared';
-import styled from "styled-components";
-import {useSuppliers} from "./hooks/useSuppliers";
-import {SupplierList} from "./components/SupplierList";
-import {EmptySupplierList} from "./components/EmptySupplierList";
+import styled from 'styled-components';
+import {useSuppliers} from './hooks/useSuppliers';
+import {SupplierList} from './components/SupplierList';
+import {EmptySupplierList} from './components/EmptySupplierList';
 
 const Container = styled.div``;
 
@@ -27,16 +27,10 @@ const Supplier = () => {
                         className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
                     />
                 </PageHeader.UserActions>
-                <PageHeader.Title>
-                    {translate('onboarder.supplier.title')}
-                </PageHeader.Title>
+                <PageHeader.Title>{translate('onboarder.supplier.title')}</PageHeader.Title>
             </PageHeader>
             <PageContent>
-                {
-                    0 === suppliers.length
-                        ? (<EmptySupplierList />)
-                        : (<SupplierList suppliers={suppliers}/>)
-                }
+                {0 === suppliers.length ? <EmptySupplierList /> : <SupplierList suppliers={suppliers} />}
             </PageContent>
         </Container>
     );

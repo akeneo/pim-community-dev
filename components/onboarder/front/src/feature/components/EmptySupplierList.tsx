@@ -1,8 +1,8 @@
 import React from 'react';
-import {CreateSupplier} from "./CreateSupplier";
+import {CreateSupplier} from './CreateSupplier';
 import {CityIllustration} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const EmptySupplierList = () => {
     const translate = useTranslate();
@@ -15,13 +15,10 @@ const EmptySupplierList = () => {
     return (
         <Container>
             <CityIllustration size={256} />
-            <p>
-                {translate('onboarder.supplier.no_supplier')}
-            </p>
-            <CreateSupplier onSupplierCreated={() => {}}/>
+            <p>{translate('onboarder.supplier.no_supplier')}</p>
+            <CreateSupplier onSupplierCreated={() => {}} />
         </Container>
     );
-}
+};
 
 export {EmptySupplierList};
-

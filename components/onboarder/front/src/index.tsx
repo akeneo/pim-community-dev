@@ -8,12 +8,12 @@ import translations from './translations.json';
 import {FakePIM} from './FakePIM';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ThemeProvider theme={pimTheme}>
-      <MicroFrontendDependenciesProvider routes={routes as Routes} translations={translations as Translations}>
-        <FakePIM />
-      </MicroFrontendDependenciesProvider>
-    </ThemeProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <ThemeProvider theme={pimTheme}>
+            <MicroFrontendDependenciesProvider routes={routes as Routes} translations={translations as Translations}>
+                <FakePIM />
+            </MicroFrontendDependenciesProvider>
+        </ThemeProvider>
+    </React.StrictMode>,
+    document.getElementById('root')
 );
