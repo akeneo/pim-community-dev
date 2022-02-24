@@ -291,6 +291,9 @@
     "instaclick/php-webdriver": {
         "version": "1.4.6"
     },
+    "jms/cg": {
+        "version": "1.2.0"
+    },
     "justinrainbow/json-schema": {
         "version": "5.2.9"
     },

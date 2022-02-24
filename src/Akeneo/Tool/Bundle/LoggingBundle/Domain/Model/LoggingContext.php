@@ -12,5 +12,4 @@ namespace Akeneo\Tool\Bundle\LoggingBundle\Domain\Model;
 #[\Attribute(\Attribute::TARGET_PARAMETER)]
 class LoggingContext
 {
-
 }

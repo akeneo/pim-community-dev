@@ -17,5 +17,4 @@ class LoggingBundle extends Bundle
     {
         $container->addCompilerPass(new LoggingProxyGeneratorPass());
     }
-
 }

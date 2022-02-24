@@ -12,6 +12,11 @@ services:
   Akeneo\Tool\Bundle\LoggingBundle\Domain\Service\LoggingContextInterceptor:
     tags:
       - {name: logging.interceptor}
+
   Akeneo\Tool\Bundle\LoggingBundle\Domain\Service\InterceptorLoader:
     arguments:
       - '@service_container'
+
+  Akeneo\Tool\Bundle\LoggingBundle\Domain\Service\ContextProvider:
+    arguments:
+      - '@doctrine.orm.default_entity_manager'

@@ -15,5 +15,4 @@ class InterceptorAttributesBag
     public function __construct(public MethodInterceptorInterface $interceptor, public AttributesBag $attributesBag)
     {
     }
-
 }

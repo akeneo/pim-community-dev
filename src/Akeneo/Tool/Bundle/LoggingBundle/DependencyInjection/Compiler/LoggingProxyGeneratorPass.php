@@ -21,12 +21,12 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class LoggingProxyGeneratorPass implements CompilerPassInterface
 {
-
     public function process(ContainerBuilder $container)
     {
         $baseCacheDir = $container->getParameterBag()
             ->resolveValue(
-                $container->getParameter('proxies.cache_dir'));
+                $container->getParameter('proxies.cache_dir')
+            );
         $cacheDir = $baseCacheDir . '/proxies';
 
         $interceptors = [];
@@ -42,7 +42,6 @@ class LoggingProxyGeneratorPass implements CompilerPassInterface
 
             $classAnnotations = [];
             foreach (ReflectionUtils::getOverrideableMethods($class) as $reflectionMethod) {
-
                 if ('__construct' === $reflectionMethod->name) {
                     continue;
                 }
@@ -52,7 +51,6 @@ class LoggingProxyGeneratorPass implements CompilerPassInterface
                     continue;
                 }
                 $classAnnotations[$reflectionMethod->getName()] = [AuditLogInterceptor::class ];
-
             }
             if (empty($classAnnotations)) {
                 continue;
@@ -104,8 +102,9 @@ class LoggingProxyGeneratorPass implements CompilerPassInterface
     {
         /** @var \ReflectionClass $tmpClass */
         while ($tmpClass = $class->getParentClass()) {
-            if ($tmpClass->name == $expectedClass)
+            if ($tmpClass->name == $expectedClass) {
                 return true;
+            }
         }
         return false;
     }
@@ -128,5 +127,4 @@ class LoggingProxyGeneratorPass implements CompilerPassInterface
 
         return $path;
     }
-
 }

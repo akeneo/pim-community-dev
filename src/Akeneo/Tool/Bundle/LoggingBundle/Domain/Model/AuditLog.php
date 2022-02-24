@@ -11,5 +11,4 @@ namespace Akeneo\Tool\Bundle\LoggingBundle\Domain\Model;
 #[\Attribute(\Attribute::TARGET_METHOD)]
 class AuditLog
 {
-
 }

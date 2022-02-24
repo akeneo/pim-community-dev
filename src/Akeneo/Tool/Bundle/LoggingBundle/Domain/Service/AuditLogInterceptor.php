@@ -34,15 +34,15 @@ class AuditLogInterceptor implements MethodInterceptorInterface
         $baseContext = $this->initBaseContext($invocation);
         $baseMessage = $this->initBaseMessage($baseContext);
 
-        $this->logger->info(">> {$baseMessage}",$this->enrichWithExecution($baseContext, $this->startExecutionContext()));
+        $this->logger->info(">> {$baseMessage}", $this->enrichWithExecution($baseContext, $this->startExecutionContext()));
         $startTime = hrtime(true);//side effect this could be a
 
         try {
             $returnedValue = $invocation->proceed();
-            $this->logger->info("ERROR<<: {$baseMessage}", $this->enrichWithExecution($baseContext, $this->endExecutionContext($startTime)));
+            $this->logger->info("<< {$baseMessage}", $this->enrichWithExecution($baseContext, $this->endExecutionContext($startTime)));
             return $returnedValue;
         } catch (\Throwable $e) {
-            $this->logger->error("<<: {$baseMessage}", $this->enrichWithExecution($baseContext, $this->endExecutionContext($startTime, $e)));
+            $this->logger->error("ERROR<< {$baseMessage}", $this->enrichWithExecution($baseContext, $this->endExecutionContext($startTime, $e)));
             throw $e;
         }
     }
@@ -69,7 +69,7 @@ class AuditLogInterceptor implements MethodInterceptorInterface
 
     protected function computeLatencyInMicroSecs($startTime)
     {
-        return intdiv(hrtime(true) - $startTime,1000);
+        return intdiv(hrtime(true) - $startTime, 1000);
     }
 
     protected function initBaseContext(MethodInvocation $invocation): array
@@ -89,6 +89,4 @@ class AuditLogInterceptor implements MethodInterceptorInterface
     {
         return "{$baseContext[self::CLASS_NAME]}->{$baseContext[self::METHOD_NAME]}: LOC {$baseContext[self::LINE_NUMBER]}";
     }
-
-
 }

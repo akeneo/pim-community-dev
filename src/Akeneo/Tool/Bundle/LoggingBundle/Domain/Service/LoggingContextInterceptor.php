@@ -19,5 +19,4 @@ class LoggingContextInterceptor implements MethodInterceptorInterface
     {
 //        \DateTime::
     }
-
 }

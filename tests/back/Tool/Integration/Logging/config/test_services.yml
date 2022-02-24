@@ -1,0 +1,4 @@
+services:
+#  monolog.logger:
+#    class: AkeneoTest\Tool\Integration\Logging\src\InMemoryLogger
+  AkeneoTest\Tool\Integration\Logging\src\TestServiceFixture: ~
