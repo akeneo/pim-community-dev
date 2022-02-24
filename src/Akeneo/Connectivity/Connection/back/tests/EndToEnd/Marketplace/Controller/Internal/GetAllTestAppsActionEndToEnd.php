@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Marketplace;
+namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Marketplace\Controller\Internal;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Test\Integration\Configuration;
