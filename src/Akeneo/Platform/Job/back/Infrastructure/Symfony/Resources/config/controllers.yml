@@ -22,3 +22,15 @@ services:
             - '@security.helper'
             - '@oro_security.security_facade'
             - '@Akeneo\Platform\Job\Application\SearchJobUser\SearchJobUserHandler'
+
+    akeneo.job.controller.get_job_instance_server_credentials_action:
+        class: 'Akeneo\Platform\Job\Infrastructure\Controller\GetJobInstanceServerCredentialsAction'
+        public: true
+        arguments:
+            - '@akeneo.job.query.get_job_instance_server_credentials'
+
+    akeneo.job.controller.save_job_instance_server_credentials_action:
+        class: 'Akeneo\Platform\Job\Infrastructure\Controller\SaveJobInstanceServerCredentialsAction'
+        public: true
+        arguments:
+            - '@akeneo.job.query.save_job_instance_server_credentials'
