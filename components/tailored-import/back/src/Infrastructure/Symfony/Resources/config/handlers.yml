@@ -4,17 +4,23 @@ services:
     arguments:
       - '@akeneo.tailored_import.query.get_grouped_targets'
 
+  akeneo.tailored_import.handler.upload_structure_file:
+    class: Akeneo\Platform\TailoredImport\Application\UploadStructureFile\UploadStructureFileHandler
+    arguments:
+      - '@akeneo.tailored_import.query.filesystem.store_file'
+
+  akeneo.tailored_import.handler.read_columns:
+    class: Akeneo\Platform\TailoredImport\Application\ReadColumns\ReadColumnsHandler
+    arguments:
+      - '@akeneo.tailored_import.query.filesystem.read_file_headers'
+      - '@akeneo.tailored_import.ramsey.uuid_generator'
+
   akeneo.tailored_import.handler.execute_data_mapping:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingHandler
     arguments:
       - '@akeneo.tailored_import.operation_applier'
       - '@akeneo.tailored_import.user_intent_registry'
       - '@akeneo.tailored_import.user_intent_aggregator'
-
-  akeneo.tailored_import.handler.upload_flat_file:
-    class: Akeneo\Platform\TailoredImport\Application\UploadFlatFile\UploadFlatFileHandler
-    arguments:
-      - '@akeneo.tailored_import.filesystem.store_flat_file'
 
   akeneo.tailored_import.operation_applier:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier

@@ -40,3 +40,11 @@ services:
     tags:
       - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.target' }
     public: true
+
+  akeneo.tailored_import.validation.file_key:
+    class: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\FileKeyValidator'
+    arguments:
+      - '@akeneo_file_storage.file_storage.filesystem_provider'
+    tags:
+      - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.file_key' }
+    public: true

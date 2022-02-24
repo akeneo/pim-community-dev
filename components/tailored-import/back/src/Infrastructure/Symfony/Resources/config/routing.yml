@@ -3,7 +3,12 @@ pimee_tailored_import_get_grouped_targets_action:
     defaults: { _controller: akeneo.tailored_import.controller.get_grouped_targets_action }
     methods: [GET]
 
-pimee_tailored_import_upload_flat_file_action:
-    path: /rest/tailored-import/upload
-    defaults: { _controller: akeneo.tailored_import.controller.upload_flat_file_action }
+pimee_tailored_import_upload_structure_file_action:
+    path: /rest/tailored-import/upload-structure-file
+    defaults: { _controller: akeneo.tailored_import.controller.upload_structure_file_action }
+    methods: [POST]
+
+pimee_tailored_import_read_columns_action:
+    path: /rest/tailored-import/read-columns
+    defaults: { _controller: akeneo.tailored_import.controller.read_columns_action }
     methods: [POST]

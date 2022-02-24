@@ -43,6 +43,7 @@ $rules = [
             'Symfony\Component',
             'Symfony\Contracts',
             'Webmozart\Assert\Assert',
+            'Ramsey\Uuid\Uuid',
             'Akeneo\Platform\TailoredImport\Application',
             'Akeneo\Platform\TailoredImport\Domain',
 

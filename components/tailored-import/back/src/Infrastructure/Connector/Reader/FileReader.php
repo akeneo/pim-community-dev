@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader;
 
 use Akeneo\Platform\TailoredImport\Domain\Model\ColumnCollection;
+use Akeneo\Platform\TailoredImport\Domain\Model\File\FileStructure;
 use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Infrastructure\Connector\RowPayload;
-use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FlatFileIteratorFactory;
-use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FlatFileIteratorInterface;
+use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FileIteratorFactory;
+use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FileIteratorInterface;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
@@ -30,12 +31,12 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 class FileReader implements ItemReaderInterface, StepExecutionAwareInterface, InitializableInterface, FlushableInterface, TrackableItemReaderInterface
 {
     private ?StepExecution $stepExecution;
-    private ?FlatFileIteratorInterface $fileIterator = null;
+    private ?FileIteratorInterface $fileIterator = null;
     private ?ColumnCollection $columnCollection = null;
 
     public function __construct(
         private string $fileType,
-        private FlatFileIteratorFactory $flatFileIteratorFactory,
+        private FileIteratorFactory $flatFileIteratorFactory,
     ) {
     }
 
@@ -90,10 +91,14 @@ class FileReader implements ItemReaderInterface, StepExecutionAwareInterface, In
         $this->fileIterator = null;
     }
 
-    private function createFileIterator(): FlatFileIteratorInterface
+    private function createFileIterator(): FileIteratorInterface
     {
         $jobParameters = $this->stepExecution->getJobParameters();
-        $fileIterator = $this->flatFileIteratorFactory->create($this->fileType, $jobParameters);
+        $fileIterator = $this->flatFileIteratorFactory->create(
+            $this->fileType,
+            $jobParameters->get('filePath'),
+            FileStructure::createFromNormalized($jobParameters->get('file_structure')),
+        );
         $fileIterator->rewind();
 
         return $fileIterator;

@@ -66,10 +66,7 @@ const SaveButton = styled(Button)`
 
 type JobConfiguration = {
   code: string;
-  configuration: {
-    import_structure: StructureConfiguration;
-    error_action: ErrorAction;
-  };
+  configuration: StructureConfiguration;
 };
 
 const FakePIM = () => {
@@ -125,16 +122,13 @@ const FakePIM = () => {
   if (null === jobConfiguration) return null;
 
   const handleStructureConfigurationChange = (newStructureConfiguration: StructureConfiguration): void => {
-    setJobConfiguration({
+    setJobConfiguration(jobConfiguration => ({
       ...jobConfiguration,
       configuration: {
         ...jobConfiguration.configuration,
-        import_structure: {
-          ...jobConfiguration.configuration.import_structure,
-          ...newStructureConfiguration,
-        },
+        ...newStructureConfiguration,
       },
-    });
+    }));
   };
 
   const handleGlobalSettingsChange = (newGlobalSettings: GlobalSettings) => {
@@ -185,7 +179,7 @@ const FakePIM = () => {
         )}
         {isCurrent('import_structure') && (
           <ImportStructureTab
-            structureConfiguration={jobConfiguration.configuration.import_structure}
+            structureConfiguration={jobConfiguration.configuration}
             validationErrors={filterErrors(validationErrors, '[import_structure]')}
             onStructureConfigurationChange={handleStructureConfigurationChange}
           />

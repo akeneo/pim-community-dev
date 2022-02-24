@@ -15,7 +15,10 @@ namespace Akeneo\Platform\TailoredImport\Domain\Model;
 
 use Webmozart\Assert\Assert;
 
-class ColumnCollection
+/**
+ * @implements \IteratorAggregate<int, Column>
+ */
+class ColumnCollection implements \IteratorAggregate
 {
     private function __construct(
         private array $columns,
@@ -23,20 +26,23 @@ class ColumnCollection
         Assert::allIsInstanceOf($columns, Column::class);
     }
 
+    public static function create(array $columns): self
+    {
+        return new self($columns);
+    }
+
     public static function createFromNormalized(array $normalizedColumns): self
     {
-        $columnInstances = array_map(static fn (array $column) => Column::createFromNormalized($column), $normalizedColumns);
-
-        return new self($columnInstances);
+        return new self(array_map(static fn (array $normalizedColumn) => Column::createFromNormalized($normalizedColumn), $normalizedColumns));
     }
 
     public function getColumnUuids(): array
     {
-        return array_map(fn (Column $column) => $column->getUuid(), $this->columns);
+        return array_map(static fn (Column $column) => $column->getUuid(), $this->columns);
     }
 
     /**
-     * @return \ArrayIterator<int, Column>
+     * @return Column[] | \ArrayIterator<int, Column>
      */
     public function getIterator(): \ArrayIterator
     {
@@ -46,5 +52,10 @@ class ColumnCollection
     public function getLabels(): array
     {
         return array_map(static fn (Column $column) => $column->getLabel(), $this->columns);
+    }
+
+    public function normalize(): array
+    {
+        return array_map(static fn (Column $column) => $column->normalize(), $this->columns);
     }
 }

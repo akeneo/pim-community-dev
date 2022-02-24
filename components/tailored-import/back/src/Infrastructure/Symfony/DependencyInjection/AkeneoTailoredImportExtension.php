@@ -27,12 +27,12 @@ class AkeneoTailoredImportExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('controllers.yml');
-        $loader->load('filesystem.yml');
         $loader->load('handlers.yml');
         $loader->load('hydrators.yml');
         $loader->load('jobs.yml');
         $loader->load('processors.yml');
         $loader->load('queries.yml');
+        $loader->load('ramsey.yml');
         $loader->load('readers.yml');
         $loader->load('services.yml');
         $loader->load('spout.yml');

@@ -1,6 +1,6 @@
 import BaseView = require('pimui/js/view/base');
 import {GlobalSettings} from '@akeneo-pim-enterprise/tailored-import';
-import {filterErrors, formatParameters, ValidationError} from '@akeneo-pim-community/shared';
+import {formatParameters, ValidationError} from '@akeneo-pim-community/shared';
 import {GlobalSettingsTab, GlobalSettingsTabProps} from '@akeneo-pim-enterprise/tailored-import';
 
 const __ = require('oro/translator');

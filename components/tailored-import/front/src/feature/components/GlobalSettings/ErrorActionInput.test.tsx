@@ -8,9 +8,7 @@ test('it displays the error action input', () => {
   const handleChange = jest.fn();
   renderWithProviders(<ErrorActionInput value="skip_value" onChange={handleChange} validationErrors={[]} />);
 
-  expect(
-    screen.getByText('akeneo.tailored_import.global_settings.error_action.helper_message')
-  ).toBeInTheDocument();
+  expect(screen.getByText('akeneo.tailored_import.global_settings.error_action.helper_message')).toBeInTheDocument();
 
   userEvent.click(screen.getByText('akeneo.tailored_import.global_settings.error_action.label'));
   userEvent.click(screen.getByText('akeneo.tailored_import.global_settings.error_action.skip_product'));

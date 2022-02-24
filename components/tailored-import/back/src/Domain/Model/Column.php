@@ -27,6 +27,11 @@ class Column
         Assert::stringNotEmpty($label);
     }
 
+    public static function create(string $uuid, int $index, string $label): self
+    {
+        return new self($uuid, $index, $label);
+    }
+
     public static function createFromNormalized(array $normalizedColumn): self
     {
         return new self(
@@ -49,5 +54,14 @@ class Column
     public function getUuid(): string
     {
         return $this->uuid;
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'uuid' => $this->uuid,
+            'index' => $this->index,
+            'label' => $this->label,
+        ];
     }
 }

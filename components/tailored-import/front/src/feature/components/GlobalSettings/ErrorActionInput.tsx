@@ -33,9 +33,7 @@ const ErrorActionInput = ({value, validationErrors, onChange}: ErrorActionInputP
           {translate('akeneo.tailored_import.global_settings.error_action.skip_value')}
         </SelectInput.Option>
       </SelectInput>
-      <Helper level="info">
-        {translate('akeneo.tailored_import.global_settings.error_action.helper_message')}
-      </Helper>
+      <Helper level="info">{translate('akeneo.tailored_import.global_settings.error_action.helper_message')}</Helper>
       {validationErrors.map((error, index) => (
         <Helper key={index} inline={true} level="error">
           {translate(error.messageTemplate, error.parameters)}
