@@ -114,7 +114,7 @@ for NAMESPACE in ${NS_LIST}; do
     fi
 
     # Theses environments are test deploy serenity / growth edition (pimci) and aged of 1 hour
-    if [[ ${INSTANCE_NAME} == pimci* ]] && ! ([[ ${INSTANCE_NAME} == pimci-pr* ]]) ; then
+    if [[ ${INSTANCE_NAME} == pimci* ]] && ! ([[ ${INSTANCE_NAME} == pimci-pr* ]]) && ! ([[ ${INSTANCE_NAME} == pimci-*duplic* ]]) ; then
         if [[ ${NS_AGE} == *h* ]] || [[ ${NS_AGE} == *d* ]] ; then
             DELETE_INSTANCE=true
             INSTANCE_NAME_PREFIX=pimci
