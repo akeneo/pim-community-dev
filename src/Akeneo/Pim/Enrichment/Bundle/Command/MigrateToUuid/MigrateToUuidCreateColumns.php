@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
 use Doctrine\DBAL\Connection;
-use Symfony\Component\Console\Output\OutputInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -15,7 +15,10 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
 
     private const INDEX_NAME = 'product_uuid';
 
-    public function __construct(private Connection $connection)
+    public function __construct(
+        private LoggerInterface $logger,
+        private Connection $connection
+    )
     {
     }
 
@@ -41,11 +44,11 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
         return $count;
     }
 
-    public function addMissing(bool $dryRun, OutputInterface $output): void
+    public function addMissing(bool $dryRun): void
     {
         foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
             if ($this->tableExists($tableName) && !$this->columnExists($tableName, $columnNames[self::UUID_COLUMN_INDEX])) {
-                $output->writeln(sprintf('    Will add %s', $tableName));
+                $this->logger->info(sprintf('    Will add %s', $tableName));
                 if (!$dryRun) {
                     $this->addUuidColumn(
                         $tableName,

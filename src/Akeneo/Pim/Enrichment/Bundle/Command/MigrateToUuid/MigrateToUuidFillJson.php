@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
 use Doctrine\DBAL\Connection;
-use Symfony\Component\Console\Output\OutputInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  *  Queries to try this migration:
@@ -27,7 +27,10 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         'pim_catalog_product_model'
     ];
 
-    public function __construct(private Connection $connection)
+    public function __construct(
+        private LoggerInterface $logger,
+        private Connection $connection
+    )
     {
     }
 
@@ -75,10 +78,10 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         return $count;
     }
 
-    public function addMissing(bool $dryRun, OutputInterface $output): void
+    public function addMissing(bool $dryRun): void
     {
         foreach (self::TABLE_NAMES as $tableName) {
-            $this->addMissingForTable($dryRun, $output, $tableName);
+            $this->addMissingForTable($dryRun, $tableName);
         }
     }
 
@@ -182,7 +185,7 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         return $result;
     }
 
-    private function addMissingForTable(bool $dryRun, OutputInterface $output, string $tableName): void
+    private function addMissingForTable(bool $dryRun, string $tableName): void
     {
         $previousEntityId = -1;
         $associations = $this->getFormerAssociations($tableName, $previousEntityId);
@@ -201,7 +204,7 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
                             $formerAssociation[$associationName]['products'][$i]['uuid'] = $associatedProductUuid;
                         } else {
                             if (!$dryRun) {
-                                $output->writeln(sprintf('    <comment>Associated product uuid %d not found for product %d</comment>', $associatedProductId, $productId));
+                                $this->logger->info(sprintf('    <comment>Associated product uuid %d not found for product %d</comment>', $associatedProductId, $productId));
                             }
                             $notFound = true;
                         }
@@ -213,7 +216,7 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
                 $previousEntityId = $productId;
             }
 
-            $output->writeln(sprintf('    Will update %s entities in %s table', count($associations), $tableName));
+            $this->logger->info(sprintf('    Will update %s entities in %s table', count($associations), $tableName));
             if (!$dryRun) {
                 if ($tableName === 'pim_catalog_product') {
                     $this->updateProductAssociations($associations);
@@ -222,7 +225,7 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
                 }
                 $associations = $this->getFormerAssociations($tableName, $previousEntityId);
             } else {
-                $output->writeln(sprintf('    Option --dry-run is set, will continue to next step.'));
+                $this->logger->info(sprintf('    Option --dry-run is set, will continue to next step.'));
                 $associations = [];
             }
         }

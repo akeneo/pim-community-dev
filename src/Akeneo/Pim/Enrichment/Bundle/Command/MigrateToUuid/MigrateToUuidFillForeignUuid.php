@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
 use Doctrine\DBAL\Connection;
-use Symfony\Component\Console\Output\OutputInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -15,7 +15,10 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
 
     private const BATCH_SIZE = 50000;
 
-    public function __construct(private Connection $connection)
+    public function __construct(
+        private LoggerInterface $logger,
+        private Connection $connection
+    )
     {
     }
 
@@ -71,18 +74,18 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
         return $count;
     }
 
-    public function addMissing(bool $dryRun, OutputInterface $output): void
+    public function addMissing(bool $dryRun): void
     {
         foreach ($this->getTablesWithoutProductTable() as $tableName => $columnNames) {
             $count = $this->getMissingForeignUuidCount($tableName, $columnNames[1], $columnNames[0]);
-            $output->writeln(sprintf('    Missing %d foreign uuids in "%s" table', $count, $tableName));
+            $this->logger->info(sprintf('    Missing %d foreign uuids in "%s" table', $count, $tableName));
             while ($count > 0) {
-                $output->writeln(sprintf('    Will add %d foreign uuids in "%s" table', min($count, self::BATCH_SIZE), $tableName));
+                $this->logger->info(sprintf('    Will add %d foreign uuids in "%s" table', min($count, self::BATCH_SIZE), $tableName));
                 if (!$dryRun) {
                     $this->fillMissingForeignUuidInsert($tableName, $columnNames[0], $columnNames[1]);
                     $count = $this->getMissingForeignUuidCount($tableName, $columnNames[1], $columnNames[0]);
                 } else {
-                    $output->writeln(sprintf('    Option --dry-run is set, will continue to next step.'));
+                    $this->logger->info(sprintf('    Option --dry-run is set, will continue to next step.'));
                     $count = 0;
                 }
             }

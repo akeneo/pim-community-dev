@@ -3,8 +3,8 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
 use Doctrine\DBAL\Connection;
+use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -16,7 +16,10 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
 
     private const BATCH_SIZE = 1000;
 
-    public function __construct(private Connection $connection)
+    public function __construct(
+        private LoggerInterface $logger,
+        private Connection $connection
+    )
     {
     }
 
@@ -48,16 +51,16 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
         return (bool) $this->connection->fetchOne($sql);
     }
 
-    public function addMissing(bool $dryRun, OutputInterface $output): void
+    public function addMissing(bool $dryRun): void
     {
         $count = $this->getMissingProductUuidCount();
         while ($count > 0) {
-            $output->writeln(sprintf('    Will add %d uuids (still missing: %d)', min(self::BATCH_SIZE, $count), $count));
+            $this->logger->info(sprintf('    Will add %d uuids (still missing: %d)', min(self::BATCH_SIZE, $count), $count));
             if (!$dryRun) {
                 $this->fillMissingProductUuids();
                 $count = $this->getMissingProductUuidCount();
             } else {
-                $output->writeln(sprintf('    Option --dry-run is set, will continue to next step.'));
+                $this->logger->info(sprintf('    Option --dry-run is set, will continue to next step.'));
                 $count = 0;
             }
         }

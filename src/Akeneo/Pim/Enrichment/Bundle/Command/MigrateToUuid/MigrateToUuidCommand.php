@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -18,6 +19,7 @@ class MigrateToUuidCommand extends Command
     private array $steps;
 
     public function __construct(
+        private LoggerInterface $logger,
         MigrateToUuidStep $migrateToUuidCreateColumns,
         MigrateToUuidStep $migrateToUuidFillProductUuid,
         MigrateToUuidStep $migrateToUuidFillForeignUuid,
@@ -45,23 +47,22 @@ class MigrateToUuidCommand extends Command
         $withStats = $input->getOption('with-stats');
 
         foreach ($this->steps as $stepIndex => $step) {
-            $output->writeln(sprintf('<info>Step %d: %s</info>', $stepIndex + 1, $step->getDescription()));
+            $this->logger->info(sprintf('<info>Step %d: %s</info>', $stepIndex + 1, $step->getDescription()));
             if ($withStats) {
                 $missingCount = $step->getMissingCount();
-                $output->writeln(sprintf('    Missing %d items', $missingCount));
+                $this->logger->info(sprintf('    Missing %d items', $missingCount));
             }
 
             if ($step->shouldBeExecuted()) {
-                $output->writeln('    Add missing items... ');
-                $step->addMissing($dryRun, $output);
-                $output->writeln('    Step done');
+                $this->logger->info('    Add missing items... ');
+                $step->addMissing($dryRun);
+                $this->logger->info('    Step done');
             } else {
-                $output->writeln('    No items to migrate, skip.');
+                $this->logger->info('    No items to migrate, skip.');
             }
-            $output->writeln('');
         }
 
-        $output->writeln('<info>Migration done!</info>');
+        $this->logger->info('<info>Migration done!</info>');
 
         return Command::SUCCESS;
     }
