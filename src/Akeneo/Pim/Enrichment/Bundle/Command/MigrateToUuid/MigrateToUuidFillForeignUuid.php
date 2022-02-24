@@ -13,6 +13,8 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
 {
     use MigrateToUuidTrait;
 
+    private const BATCH_SIZE = 50000;
+
     public function __construct(private Connection $connection)
     {
     }
@@ -73,9 +75,16 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
     {
         foreach ($this->getTablesWithoutProductTable() as $tableName => $columnNames) {
             $count = $this->getMissingForeignUuidCount($tableName, $columnNames[1], $columnNames[0]);
-            $output->writeln(sprintf('    Will add %d foreign uuids in "%s" table', $count, $tableName));
-            if ($count > 0 && !$dryRun) {
-                $this->fillMissingForeignUuidInsert($tableName, $columnNames[0], $columnNames[1]);
+            $output->writeln(sprintf('    Missing %d foreign uuids in "%s" table', $count, $tableName));
+            while ($count > 0) {
+                $output->writeln(sprintf('    Will add %d foreign uuids in "%s" table', min($count, self::BATCH_SIZE), $tableName));
+                if (!$dryRun) {
+                    $this->fillMissingForeignUuidInsert($tableName, $columnNames[0], $columnNames[1]);
+                    $count = $this->getMissingForeignUuidCount($tableName, $columnNames[1], $columnNames[0]);
+                } else {
+                    $output->writeln(sprintf('    Option --dry-run is set, will continue to next step.'));
+                    $count = 0;
+                }
             }
         }
     }
@@ -117,10 +126,17 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
     private function fillMissingForeignUuidInsert(string $tableName, string $idColumnName, string $uuidColumnName): void
     {
         $sql = <<<SQL
-            UPDATE {table_name} t, pim_catalog_product p 
+            WITH batched_id AS (
+                SELECT {id_column_name}
+                FROM {table_name}
+                WHERE {uuid_column_name} IS NULL
+                {extra_condition}
+                LIMIT {limit}
+            )
+            UPDATE {table_name} t, pim_catalog_product p, batched_id b
             SET t.{uuid_column_name}=p.uuid
             WHERE t.{id_column_name}=p.id
-            {extra_condition}
+                AND t.{id_column_name}=b.{id_column_name}
         SQL;
 
         $this->connection->executeQuery(\strtr(
@@ -130,8 +146,9 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
                 '{uuid_column_name}' => $uuidColumnName,
                 '{id_column_name}' => $idColumnName,
                 '{extra_condition}' => $tableName === 'pim_versioning_version' ?
-                    ' AND t.resource_name="Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"' :
-                    ''
+                    ' AND resource_name="Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"' :
+                    '',
+                '{limit}' => self::BATCH_SIZE,
             ]
         ));
     }
