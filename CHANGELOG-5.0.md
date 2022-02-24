@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10294: Display blocked message when user is actually blocked at 5th attempt and not at 6th
+
 # 5.0.81 (2022-02-25)
 
 ## Bug fixes
@@ -8,6 +12,10 @@
 
 # 5.0.80 (2022-02-23)
 
+## Bug fixes
+
+- PIM-10288: Fix product associations came duplicated in API
+
 # 5.0.79 (2022-02-21)
 
 # 5.0.78 (2022-02-18)
@@ -15,7 +23,6 @@
 ## Bug fixes
 
 - PIM-10270: Fix insufficient limit when fetching a lot of attribute groups in families settings
-- PIM-10288: Fix product associations came duplicated in API
 
 # 5.0.77 (2022-02-10)
 
