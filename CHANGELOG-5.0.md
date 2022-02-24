@@ -2,6 +2,8 @@
 
 # 5.0.80 (2022-02-23)
 
+- PIM-10296: Fix measurement attributes with value zero not displayed correctly in product grid
+
 # 5.0.79 (2022-02-21)
 
 # 5.0.78 (2022-02-18)
