@@ -37,8 +37,8 @@ class PopulateProductModelScoresCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if (!$this->commandCanBeStarted() && $output->isVerbose()) {
-            $output->writeln('This process has already been performed or is in progress.');
+        if (!$this->commandCanBeStarted()) {
+            $output->writeln('This process has already been performed or is in progress.', OutputInterface::VERBOSITY_VERBOSE);
             return Command::SUCCESS;
         }
 
