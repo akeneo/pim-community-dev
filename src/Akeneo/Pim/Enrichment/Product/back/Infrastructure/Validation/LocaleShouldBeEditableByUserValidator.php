@@ -26,7 +26,7 @@ final class LocaleShouldBeEditableByUserValidator extends ConstraintValidator
         Assert::isInstanceOf($constraint, LocaleShouldBeEditableByUser::class);
 
         $userEditableLocaleCodes = null;
-        foreach ($command->valuesUserIntent() as $valueUserIntent) {
+        foreach ($command->valueUserIntents() as $valueUserIntent) {
             $localeCode = $valueUserIntent->localeCode();
             if (!empty($localeCode)) {
                 if (null === $userEditableLocaleCodes) {

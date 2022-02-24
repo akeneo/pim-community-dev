@@ -169,7 +169,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
     ) {
-        $command = new UpsertProductCommand(1, 'identifier1', valuesUserIntent: [new SetTextValue('name', null, null, 'foo')]);
+        $command = new UpsertProductCommand(1, 'identifier1', valueUserIntents: [new SetTextValue('name', null, null, 'foo')]);
         $product = new Product();
         $product->setIdentifier('identifier1');
 
@@ -192,7 +192,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         ValidatorInterface $productValidator,
         EventDispatcherInterface $eventDispatcher,
     ) {
-        $command = new UpsertProductCommand(1, 'identifier1', valuesUserIntent: [new SetTextValue('name', null, null, 'foo')]);
+        $command = new UpsertProductCommand(1, 'identifier1', valueUserIntents: [new SetTextValue('name', null, null, 'foo')]);
         $product = new Product();
         $product->setIdentifier('identifier1');
 
@@ -233,7 +233,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
                 return null;
             }
         };
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier', valueUserIntents: [
             $unknownUserIntent
         ]);
 

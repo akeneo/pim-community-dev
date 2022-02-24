@@ -47,7 +47,7 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
         ExecutionContext $context,
         getEditableLocaleCodes $getEditableLocaleCodes
     ) {
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_identifier', valueUserIntents: [
             new SetTextValue('a_text', null, 'en_US', 'new value'),
         ]);
 
@@ -63,7 +63,7 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $constraintViolationBuilder
     ) {
         $constraint = new LocaleShouldBeEditableByUser();
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_identifier', valueUserIntents: [
             new SetTextValue('a_text', null, 'de_DE', 'new value'),
         ]);
 
@@ -82,7 +82,7 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $constraintViolationBuilder
     ) {
         $constraint = new LocaleShouldBeEditableByUser();
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_identifier', valueUserIntents: [
             new SetTextValue('a_text', null, 'de_DE', 'new value'),
             new SetTextValue('a_text', null, 'en_GB', 'new value'),
         ]);

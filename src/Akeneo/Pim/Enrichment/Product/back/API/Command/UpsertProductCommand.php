@@ -16,7 +16,7 @@ use Webmozart\Assert\Assert;
 final class UpsertProductCommand
 {
     /**
-     * @param ValueUserIntent[] $valuesUserIntent
+     * @param ValueUserIntent[] $valueUserIntents
      */
     public function __construct(
         private int $userId,
@@ -28,9 +28,9 @@ final class UpsertProductCommand
         private mixed $groupsUserIntent = null,
         private mixed $enabledUserIntent = null,
         private mixed $associationsUserIntent = null,
-        private array $valuesUserIntent = []
+        private array $valueUserIntents = []
     ) {
-        Assert::allImplementsInterface($this->valuesUserIntent, ValueUserIntent::class);
+        Assert::allImplementsInterface($this->valueUserIntents, ValueUserIntent::class);
     }
 
     /**
@@ -38,17 +38,17 @@ final class UpsertProductCommand
      */
     public static function createFromCollection(int $userId, string $productIdentifier, array $userIntents): self
     {
-        $valuesUserIntents = [];
+        $valueUserIntents = [];
         foreach ($userIntents as $userIntent) {
             if ($userIntent instanceof ValueUserIntent) {
-                $valuesUserIntents[] = $userIntent;
+                $valueUserIntents[] = $userIntent;
             }
         }
 
         return new self(
             userId: $userId,
             productIdentifier: $productIdentifier,
-            valuesUserIntent: $valuesUserIntents
+            valueUserIntents: $valueUserIntents
         );
     }
 
@@ -65,8 +65,8 @@ final class UpsertProductCommand
     /**
      * @return ValueUserIntent[]
      */
-    public function valuesUserIntent(): array
+    public function valueUserIntents(): array
     {
-        return $this->valuesUserIntent;
+        return $this->valueUserIntents;
     }
 }

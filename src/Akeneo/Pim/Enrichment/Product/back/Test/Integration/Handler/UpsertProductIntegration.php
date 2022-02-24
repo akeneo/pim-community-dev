@@ -63,7 +63,7 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_creates_a_product_with_a_text_value(): void
     {
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
             new SetTextValue('a_text', null, null, 'foo'),
         ]);
         $this->messageBus->dispatch($command);
@@ -84,7 +84,7 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_creates_a_product_with_a_number_value(): void
     {
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
             new SetNumberValue('a_number_integer', null, null, 10),
         ]);
         $this->messageBus->dispatch($command);
@@ -104,7 +104,7 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_creates_a_product_with_a_textarea_value(): void
     {
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
             new SetTextareaValue('a_text_area', null, null, self::TEXT_AREA_VALUE),
         ]);
         $this->messageBus->dispatch($command);
@@ -175,7 +175,7 @@ final class UpsertProductIntegration extends TestCase
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('The a_text attribute does not require a locale, "en_US" was detected');
 
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
             new SetTextValue('a_text', null, 'en_US', 'foo'),
         ]);
         $this->messageBus->dispatch($command);
@@ -187,7 +187,7 @@ final class UpsertProductIntegration extends TestCase
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('The "0" user does not exist');
 
-        $command = new UpsertProductCommand(userId: 0, productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: 0, productIdentifier: 'identifier', valueUserIntents: [
             new SetTextValue('a_text', null, null, 'foo'),
         ]);
         $this->messageBus->dispatch($command);
@@ -199,7 +199,7 @@ final class UpsertProductIntegration extends TestCase
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('The product identifier requires a non empty string');
 
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: '', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: '', valueUserIntents: [
             new SetTextValue('a_text', null, null, 'foo'),
         ]);
         $this->messageBus->dispatch($command);
@@ -231,7 +231,7 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertNotNull($product->getValue('a_text', null, null));
 
         // Update product with clear values
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
             new ClearValue('a_date', null, null),
             new ClearValue('a_file', null, null),
             new ClearValue('a_metric', null, null),
@@ -299,7 +299,7 @@ final class UpsertProductIntegration extends TestCase
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
         // Update product with userIntent value
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
             $userIntent
         ]);
         $this->messageBus->dispatch($command);
