@@ -9,7 +9,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollec
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductModelsIndex;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
-use PDO;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,8 +26,7 @@ class PopulateProductModelScoresCommand extends Command
         private Connection $dbConnection,
         private ConsolidateProductModelScores $consolidateProductModelScores,
         private UpdateProductModelsIndex $updateProductModelsIndex,
-    )
-    {
+    ) {
         parent::__construct();
     }
 
@@ -39,7 +37,6 @@ class PopulateProductModelScoresCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-
         if (!$this->commandCanBeStarted() && $output->isVerbose()) {
             $output->writeln('This process has already been performed or is in progress.');
             return Command::SUCCESS;
@@ -56,7 +53,7 @@ class PopulateProductModelScoresCommand extends Command
                 $this->consolidateProductModelScores->consolidate($productModelIdsCollection);
                 $this->updateProductModelsIndex->execute($productModelIdsCollection);
                 $lastProductModelId = end($productModelIds);
-            } catch (\Throwable $e){
+            } catch (\Throwable $e) {
                 //Removes line in pim_one_time_task in order to be able to re-run the command if it previously failed
                 $this->deleteTask();
                 throw $e;
@@ -131,8 +128,8 @@ SQL;
                 'bulkSize' => self::BULK_SIZE,
             ],
             [
-                'lastId' => PDO::PARAM_INT,
-                'bulkSize' => PDO::PARAM_INT,
+                'lastId' => \PDO::PARAM_INT,
+                'bulkSize' => \PDO::PARAM_INT,
             ]
         );
 

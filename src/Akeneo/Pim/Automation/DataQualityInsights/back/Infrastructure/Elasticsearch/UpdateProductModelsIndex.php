@@ -18,8 +18,7 @@ class UpdateProductModelsIndex
     public function __construct(
         private Client                              $esClient,
         private GetProductModelScoresQueryInterface $getProductModelScoresQuery,
-    )
-    {
+    ) {
     }
 
     public function execute(ProductIdCollection $productIdCollection): void
