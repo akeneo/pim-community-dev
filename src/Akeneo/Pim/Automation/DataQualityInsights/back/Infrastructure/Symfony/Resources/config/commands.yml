@@ -69,5 +69,6 @@ services:
         arguments:
             - '@database_connection'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductModelScores'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductModelsIndex'
         tags:
             - { name: 'console.command' }
