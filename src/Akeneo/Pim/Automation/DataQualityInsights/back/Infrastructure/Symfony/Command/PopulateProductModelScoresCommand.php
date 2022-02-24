@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Comma
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductModelScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductModelsIndex;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use PDO;
@@ -22,7 +23,11 @@ class PopulateProductModelScoresCommand extends Command
     private const BULK_SIZE = 1000;
     protected static $defaultName = 'pim:data-quality-insights:populate-product-models-scores';
 
-    public function __construct(private Connection $dbConnection, private ConsolidateProductModelScores $consolidateProductModelScores)
+    public function __construct(
+        private Connection $dbConnection,
+        private ConsolidateProductModelScores $consolidateProductModelScores,
+        private UpdateProductModelsIndex $updateProductModelsIndex,
+    )
     {
         parent::__construct();
     }
@@ -47,8 +52,10 @@ class PopulateProductModelScoresCommand extends Command
 
         while ($productModelIds = $this->getNextProductModelIds($lastProductModelId)) {
             try {
-            $this->consolidateProductModelScores->consolidate(ProductIdCollection::fromInts($productModelIds));
-            $lastProductModelId = end($productModelIds);
+                $productModelIdsCollection = ProductIdCollection::fromInts($productModelIds);
+                $this->consolidateProductModelScores->consolidate($productModelIdsCollection);
+                $this->updateProductModelsIndex->execute($productModelIdsCollection);
+                $lastProductModelId = end($productModelIds);
             } catch (\Throwable $e){
                 //Removes line in pim_one_time_task in order to be able to re-run the command if it previously failed
                 $this->deleteTask();
