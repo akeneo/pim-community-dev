@@ -287,7 +287,7 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
           </>
         ) : (
           <>
-            <ImportIllustration size={isCompact ? 47 : 180} />
+            <ImportIllustration size={isCompact ? 47 : 140} />
             <MediaFilePlaceholder>{hasUploadFailed ? uploadErrorLabel : placeholder}</MediaFilePlaceholder>
           </>
         )}
