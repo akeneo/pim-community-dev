@@ -23,7 +23,7 @@ const getActivatedLocales = async (router: Router): Promise<Locale[]> => {
 const clearCache = () => {
   cachedLocales = undefined;
   cacheActivatedLocales = undefined;
-}
+};
 
 const LocaleRepository = {
   find: getLocale,
