@@ -24,15 +24,14 @@ final class SetMetricValue implements ValueUserIntent
         return $this->attributeCode;
     }
 
-    /**
-     * @return array<string, string>
-     */
-    public function value(): array
+    public function amount(): string
     {
-        return [
-            'amount' => (string) $this->amount,
-            'unit' => $this->unit,
-        ];
+        return (string) $this->amount;
+    }
+
+    public function unit(): string
+    {
+        return $this->unit;
     }
 
     public function channelCode(): ?string

@@ -40,11 +40,13 @@ class SetMetricValueSpec extends ObjectBehavior
         $this->channelCode()->shouldReturn('ecommerce');
     }
 
-    function it_returns_the_value()
+    function it_returns_the_amount()
     {
-        $this->value()->shouldReturn([
-            'amount' => '100',
-            'unit' => 'KILOWATT',
-        ]);
+        $this->amount()->shouldReturn('100');
+    }
+
+    function it_returns_the_unit()
+    {
+        $this->unit()->shouldReturn('KILOWATT');
     }
 }

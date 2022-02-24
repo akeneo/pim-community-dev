@@ -88,7 +88,6 @@ final class UpsertProductHandler
             try {
                 if ($valueUserIntent instanceof SetTextValue
                     || $valueUserIntent instanceof SetNumberValue
-                    || $valueUserIntent instanceof SetMetricValue
                     || $valueUserIntent instanceof SetTextareaValue
                 ) {
                     $found = true;
@@ -99,6 +98,22 @@ final class UpsertProductHandler
                                     'locale' => $valueUserIntent->localeCode(),
                                     'scope' => $valueUserIntent->channelCode(),
                                     'data' => $valueUserIntent->value(),
+                                ],
+                            ],
+                        ],
+                    ]);
+                } elseif ($valueUserIntent instanceof SetMetricValue) {
+                    $found = true;
+                    $this->productUpdater->update($product, [
+                        'values' => [
+                            $valueUserIntent->attributeCode() => [
+                                [
+                                    'locale' => $valueUserIntent->localeCode(),
+                                    'scope' => $valueUserIntent->channelCode(),
+                                    'data' => [
+                                        'amount' => $valueUserIntent->amount(),
+                                        'unit' => $valueUserIntent->unit(),
+                                    ],
                                 ],
                             ],
                         ],
