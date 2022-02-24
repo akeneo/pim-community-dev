@@ -33,7 +33,7 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
     public function shouldBeExecuted(): bool
     {
         if (!$this->columnExists('pim_catalog_product', 'uuid')) {
-            return false;
+            return true;
         }
 
         $sql = <<<SQL
