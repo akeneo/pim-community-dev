@@ -4,7 +4,7 @@ import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
 import {IllustrationProps} from '../../illustrations/IllustrationProps';
 
-type PlaceholderSize = 'normal' | 'large';
+type PlaceholderSize = 'default' | 'large';
 
 const CenteredHelperContainer = styled.div<{size: PlaceholderSize}>`
   padding: 0 20px;
@@ -28,7 +28,7 @@ type PlaceholderProps = Override<
   }
 >;
 
-const Placeholder: FC<PlaceholderProps> = ({illustration, title, size = 'normal', children, ...rest}) => {
+const Placeholder: FC<PlaceholderProps> = ({illustration, title, size = 'default', children, ...rest}) => {
   return (
     <CenteredHelperContainer size={size} {...rest}>
       {cloneElement(illustration, {size: 'large' === size ? 256 : 120})}
