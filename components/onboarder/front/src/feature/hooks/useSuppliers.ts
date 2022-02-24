@@ -8,5 +8,5 @@ const useSuppliers = (search: string, page: number): [SupplierRow[], () => void]
     return [[], () => {}];
 };
 
-export {useSuppliers};
 export type {SupplierRow};
+export {useSuppliers};

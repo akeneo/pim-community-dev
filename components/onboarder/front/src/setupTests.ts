@@ -5,10 +5,10 @@
 import '@testing-library/jest-dom/extend-expect';
 
 beforeEach(() => {
-  const intersectionObserverMock = () => ({
-    observe: jest.fn(),
-    unobserve: jest.fn(),
-  });
+    const intersectionObserverMock = () => ({
+        observe: jest.fn(),
+        unobserve: jest.fn(),
+    });
 
-  window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
+    window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
 });
