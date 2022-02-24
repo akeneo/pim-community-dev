@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Button, Modal, useBooleanState, NoResultsIllustration, Field, TextInput} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {useTranslate, useRoute} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 
 type CreateSupplierProps = {
@@ -12,28 +12,43 @@ const StyledField = styled(Field)`
 `;
 
 // Max length for supplier label and code
-const SUPPLIER_LABEL_MAX_LENGTH = 200;
+const LABEL_MAX_LENGTH = 200;
 
 const CreateSupplier = ({onSupplierCreated}: CreateSupplierProps) => {
     const [isOpen, openModal, closeModal] = useBooleanState(false);
     const translate = useTranslate();
+    // const saveRoute = useRoute('');
+    const [code, setCode] = useState('');
+    const [label, setLabel] = useState('');
+    const [codeHasBeenChangedManually, setCodeHasBeenChangedManually] = useState(false);
 
-    const [code, setSupplierCode] = useState('');
-    let supplierCodeHasBeenChangedManually = false;
-
-    const manuallyUpdateSupplierCode = (supplierCode: string) => {
-        supplierCodeHasBeenChangedManually = true;
-        setSupplierCode(cleanSupplierCode(supplierCode));
+    const manuallyUpdateCode = (code: string) => {
+        setCodeHasBeenChangedManually(true);
+        setCode(cleanCode(code));
     }
 
-    const updateSupplierCode = (supplierLabel: string) => {
-        if (!supplierCodeHasBeenChangedManually) {
-            setSupplierCode(cleanSupplierCode(supplierLabel));
+    const onChangeLabel = (label: string) => {
+        setLabel(label);
+        if (!codeHasBeenChangedManually) {
+            setCode(cleanCode(label));
         }
     };
 
-    const cleanSupplierCode = (supplierCode: string): string => {
-        return supplierCode.trim().toLowerCase().replace(/[^a-z0-9]/g, '_');
+    const saveSupplier = async () => {
+        // const response = await fetch(saveRoute, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'X-Requested-With': 'XMLHttpRequest',
+        //     },
+        //     body: JSON.stringify({code, label}),
+        // });
+        onSupplierCreated();
+        closeModal();
+    }
+
+    const cleanCode = (code: string): string => {
+        return code.trim().toLowerCase().replace(/[^a-z0-9]/g, '_');
     }
 
     return (
@@ -50,16 +65,16 @@ const CreateSupplier = ({onSupplierCreated}: CreateSupplierProps) => {
                     </Modal.SectionTitle>
                     <Modal.Title>{translate('pim_common.create')}</Modal.Title>
                     <StyledField label={translate('onboarder.supplier.create_supplier.code.label')}>
-                        <TextInput onChange={manuallyUpdateSupplierCode} value={code} maxLength={SUPPLIER_LABEL_MAX_LENGTH} />
+                        <TextInput onChange={manuallyUpdateCode} value={code} maxLength={LABEL_MAX_LENGTH} />
                     </StyledField>
                     <StyledField label={translate('onboarder.supplier.create_supplier.label.label')}>
-                        <TextInput onChange={updateSupplierCode} maxLength={SUPPLIER_LABEL_MAX_LENGTH} />
+                        <TextInput onChange={onChangeLabel} maxLength={LABEL_MAX_LENGTH} value={label} />
                     </StyledField>
                     <Modal.BottomButtons>
                         <Button level="tertiary" onClick={closeModal}>
                             {translate('pim_common.cancel')}
                         </Button>
-                        <Button level="primary" onClick={() => {}}>
+                        <Button level="primary" onClick={saveSupplier}>
                             {translate('pim_common.save')}
                         </Button>
                     </Modal.BottomButtons>

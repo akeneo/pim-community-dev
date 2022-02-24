@@ -4,19 +4,24 @@ import {CityIllustration} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 
-const EmptySupplierList = () => {
+const Container = styled.div`
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+`;
+
+type EmptySupplierProps = {
+    onSupplierCreated: () => void;
+};
+
+const EmptySupplierList = ({onSupplierCreated}: EmptySupplierProps) => {
     const translate = useTranslate();
-    const Container = styled.div`
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-    `;
 
     return (
         <Container>
             <CityIllustration size={256} />
             <p>{translate('onboarder.supplier.no_supplier')}</p>
-            <CreateSupplier onSupplierCreated={() => {}} />
+            <CreateSupplier onSupplierCreated={onSupplierCreated} />
         </Container>
     );
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Breadcrumb} from 'akeneo-design-system';
 import {useTranslate, PageContent, PageHeader, PimView} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
@@ -10,7 +10,9 @@ const Container = styled.div``;
 
 const Supplier = () => {
     const translate = useTranslate();
-    const [suppliers, refreshSuppliers] = useSuppliers('', 1);
+    const [searchValue, setSearchValue] = useState('');
+    const [page, setPage] = useState<number>(1);
+    const [suppliers, totalSuppliers, refreshSuppliers] = useSuppliers(searchValue, page);
 
     return (
         <Container>
@@ -30,7 +32,18 @@ const Supplier = () => {
                 <PageHeader.Title>{translate('onboarder.supplier.title')}</PageHeader.Title>
             </PageHeader>
             <PageContent>
-                {0 === suppliers.length ? <EmptySupplierList /> : <SupplierList suppliers={suppliers} />}
+                {
+                    0 === suppliers.length ?
+                    <EmptySupplierList onSupplierCreated={refreshSuppliers} /> :
+                    <SupplierList
+                        suppliers={suppliers}
+                        onSearchChange={setSearchValue}
+                        searchValue={searchValue}
+                        totalSuppliers={totalSuppliers}
+                        onChangePage={setPage}
+                        currentPage={page}
+                    />
+                }
             </PageContent>
         </Container>
     );
