@@ -14,9 +14,12 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\Domain\Event\ProductWasCreated;
+use Akeneo\Pim\Enrichment\Product\Domain\Event\ProductWasUpdated;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -35,7 +38,8 @@ final class UpsertProductHandler
         private ProductBuilderInterface $productBuilder,
         private SaverInterface $productSaver,
         private ObjectUpdaterInterface $productUpdater,
-        private ValidatorInterface $productValidator
+        private ValidatorInterface $productValidator,
+        private EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -51,7 +55,9 @@ final class UpsertProductHandler
         }
 
         $product = $this->productRepository->findOneByIdentifier($command->productIdentifier());
+        $isCreation = false;
         if (null === $product) {
+            $isCreation = true;
             $product = $this->productBuilder->createProduct($command->productIdentifier());
         }
 
@@ -64,7 +70,14 @@ final class UpsertProductHandler
             throw new LegacyViolationsException($violations);
         }
 
+        $isUpdate = $product->isDirty();
         $this->productSaver->save($product);
+
+        if ($isCreation) {
+            $this->eventDispatcher->dispatch(new ProductWasCreated($product->getIdentifier()));
+        } elseif ($isUpdate) {
+            $this->eventDispatcher->dispatch(new ProductWasUpdated($product->getIdentifier()));
+        }
     }
 
     private function updateProduct(ProductInterface $product, UpsertProductCommand $command): void
