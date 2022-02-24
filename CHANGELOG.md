@@ -11,6 +11,7 @@
 - PIM-10248: Fix NOT BETWEEN filter does not work on products and product models (created and updated property)
 - PIM-10259: Fix Arabic text being reversed in product PDF exports
 - PIM-10277: Do not allow disabled user to login
+- PIM-10292: Fix error 500 when role page contain a validation errors
 
 ## Improvements
 - PIM-10293: add batch-size option to pim:completness:calculate command
