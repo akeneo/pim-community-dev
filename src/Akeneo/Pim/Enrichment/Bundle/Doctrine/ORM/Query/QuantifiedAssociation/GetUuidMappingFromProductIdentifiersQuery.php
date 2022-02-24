@@ -27,8 +27,11 @@ class GetUuidMappingFromProductIdentifiersQuery implements GetUuidMappingFromPro
         }
 
         $query = <<<SQL
-        SELECT BIN_TO_UUID(uuid) as uuid, identifier from pim_catalog_product WHERE identifier IN (:product_identifiers)
-SQL;
+            SELECT BIN_TO_UUID(uuid) as uuid, identifier
+            FROM pim_catalog_product
+            WHERE identifier IN (:product_identifiers)
+            AND uuid IS NOT NULL
+        SQL;
 
         $mapping = array_column($this->connection->executeQuery(
             $query,
