@@ -1,8 +1,8 @@
 import {Locale, LocaleCode, Router} from '@akeneo-pim-community/shared';
 import {LocaleFetcher} from '../fetchers';
 
-let cacheActivatedLocales: Locale[]|null;
-let cachedLocales: Locale[]|null;
+let cacheActivatedLocales: Locale[] | undefined;
+let cachedLocales: Locale[] | undefined;
 
 const getLocale = async (router: Router, code: LocaleCode): Promise<Locale | undefined> => {
   if (!cachedLocales) {
@@ -21,8 +21,8 @@ const getActivatedLocales = async (router: Router): Promise<Locale[]> => {
 };
 
 const clearCache = () => {
-  cachedLocales = null;
-  cacheActivatedLocales = null;
+  cachedLocales = undefined;
+  cacheActivatedLocales = undefined;
 }
 
 const LocaleRepository = {
