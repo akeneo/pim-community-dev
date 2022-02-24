@@ -17,6 +17,8 @@ const CenteredHelperContainer = styled.div<{size: PlaceholderSize}>`
 const CenteredHelperTitle = styled.div<{size: PlaceholderSize} & AkeneoThemedProps>`
   color: ${getColor('grey', 140)};
   font-size: ${({size}) => getFontSize('large' === size ? 'title' : 'big')};
+  line-height: ${({size}) => getFontSize('large' === size ? 'title' : 'big')};
+  text-align: center;
 `;
 
 type PlaceholderProps = Override<
