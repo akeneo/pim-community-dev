@@ -9,7 +9,7 @@ akeneo.tailored_import:
       helper_message: Define the behavior in case of an error in an operation.
   file_structure:
     placeholder:
-      title: Logoden biniou degemer mat an penn ar bed kuzuliañ ha hag oferenn gwastell noazh
+      title: Logoden biniou degemer mat an penn ar bed kuzuliañ
       button: Initialize file structure
     modal:
       title: Define your file structure

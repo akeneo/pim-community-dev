@@ -35,15 +35,6 @@ const Content = styled.div`
   padding: 0 2px;
 `;
 
-const PlaceholderContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  gap: 20px;
-  align-items: center;
-  padding: 40px;
-`;
-
 type InitializeFileStructureProps = {
   onConfirm: (fileKey: string, columns: Column[]) => void;
 };
@@ -125,15 +116,15 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
       </Container>
     </Modal>
   ) : (
-    <PlaceholderContainer>
-      <Placeholder
-        title={translate('akeneo.tailored_import.file_structure.placeholder.title')}
-        illustration={<AttributesIllustration />}
-      />
-      <Button level="primary" onClick={openModal}>
+    <Placeholder
+      size="large"
+      title={translate('akeneo.tailored_import.file_structure.placeholder.title')}
+      illustration={<AttributesIllustration />}
+    >
+      <Button ghost={true} level="secondary" onClick={openModal}>
         {translate('akeneo.tailored_import.file_structure.placeholder.button')}
       </Button>
-    </PlaceholderContainer>
+    </Placeholder>
   );
 };
 
