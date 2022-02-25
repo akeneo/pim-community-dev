@@ -16,6 +16,7 @@
 - PIM-10284: Clean product values after reference entity removal
 - PIM-10277: Reject disabled user when coming from SAML auth
 - PIM-10285: Fix concurrent bulk publish issue
+- PIM-10268: SKU filter is always shown in the product grid
 
 ## Improvements
 
