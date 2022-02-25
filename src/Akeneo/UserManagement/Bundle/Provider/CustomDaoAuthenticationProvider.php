@@ -9,14 +9,12 @@ use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -48,7 +46,7 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
      */
     public function checkAuthentication(SecurityUserInterface $user, UsernamePasswordToken $token)
     {
-        $this->validateAccountUnlocked($user);
+        $this->assertAccountIsUnlocked($user);
         if ($this->shouldResetCounter($user)) {
             $this->resetLockingState($user);
         }
@@ -57,6 +55,8 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
             $this->resetLockingState($user);
         } catch (BadCredentialsException $e) {
             $this->incrementFailureCounter($user);
+            $this->assertAccountIsUnlocked($user);
+
             throw $e;
         }
     }
@@ -73,7 +73,7 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
         $this->updateUser($user);
     }
 
-    private function validateAccountUnlocked(UserInterface $user): void
+    private function assertAccountIsUnlocked(UserInterface $user): void
     {
         if ($this->isCounterReset($user)) {
             return;
