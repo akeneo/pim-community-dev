@@ -212,6 +212,7 @@ class PublishedProductWithPermissionRepository extends EntityRepository implemen
         $qb = $this->createQueryBuilder('pp');
         $qb
             ->innerJoin('pp.associations', 'ppa')
+            ->innerJoin('ppa.products', 'ppap')
             ->andWhere('ppa.associationType = :association_type')
             ->setParameter('association_type', $associationType);
 
