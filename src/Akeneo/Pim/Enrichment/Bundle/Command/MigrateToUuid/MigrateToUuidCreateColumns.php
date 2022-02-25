@@ -18,8 +18,7 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
     public function __construct(
         private LoggerInterface $logger,
         private Connection $connection
-    )
-    {
+    ) {
     }
 
     public function getDescription(): string
