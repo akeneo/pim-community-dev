@@ -29,6 +29,7 @@ $rules = [
         // TODO the feature use the datagrid
         'Oro\Bundle\DataGridBundle',
         'Oro\Bundle\PimDataGridBundle',
+        'Oro\Bundle\FilterBundle',
         // TODO: dependencies related to the front end, remove twig screens
         'Twig',
 
