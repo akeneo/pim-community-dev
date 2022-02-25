@@ -10,7 +10,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Updat
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -47,8 +46,6 @@ class PopulateProductModelScoresCommand extends Command
         $this->persistCommandStart();
 
         $lastProductModelId = 0;
-        $progressBar = new ProgressBar($output, $this->countPM());
-        $progressBar->start();
 
         while ($productModelIds = $this->getNextProductModelIds($lastProductModelId)) {
             try {
@@ -56,14 +53,12 @@ class PopulateProductModelScoresCommand extends Command
                 $this->consolidateProductModelScores->consolidate($productModelIdsCollection);
                 $this->updateProductModelsIndex->execute($productModelIdsCollection);
                 $lastProductModelId = end($productModelIds);
-                $progressBar->advance(count($productModelIdsCollection));
             } catch (\Throwable $e) {
                 //Removes line in pim_one_time_task in order to be able to re-run the command if it previously failed
                 $this->deleteTask();
                 throw $e;
             }
         }
-        $progressBar->finish();
 
         $this->persistCommandDone();
         $output->writeln('process complete.');
@@ -113,14 +108,6 @@ SQL;
         return !(bool)$this->dbConnection->executeQuery($query, ['code' => self::$defaultName])->fetchOne();
     }
 
-    private function countPM(): int
-    {
-        $query = <<<SQL
-SELECT COUNT(*) 
-FROM pim_catalog_product_model
-SQL;
-        return (int)$this->dbConnection->executeQuery($query)->fetchOne();
-    }
     /**
      * @return int[]
      */
