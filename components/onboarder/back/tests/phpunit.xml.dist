@@ -8,7 +8,7 @@
         convertWarningsToExceptions="true"
         processIsolation="true"
         stopOnFailure="false"
-        bootstrap="../../../config/bootstrap.php">
+        bootstrap="../../../../config/bootstrap.php">
     <php>
         <ini name="date.timezone" value="UTC"/>
         <ini name="intl.default_locale" value="en"/>

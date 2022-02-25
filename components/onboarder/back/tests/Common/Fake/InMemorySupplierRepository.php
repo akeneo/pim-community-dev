@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Common\Fake;
+namespace Akeneo\OnboarderSerenity\Test\Common\Fake;
 
 use Akeneo\OnboarderSerenity\Domain\Supplier\Identifier;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Supplier;

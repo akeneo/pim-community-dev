@@ -13,7 +13,7 @@ final class AkeneoOnboarderSerenityExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $loader->load('supplier/services.yml');
         $loader->load('supplier/fake_services.yml');

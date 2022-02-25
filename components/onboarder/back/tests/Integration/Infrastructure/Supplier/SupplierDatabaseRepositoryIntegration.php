@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Integration\Infrastructure\Supplier;
+namespace Akeneo\OnboarderSerenity\Test\Integration\Infrastructure\Supplier;
 
 use Akeneo\OnboarderSerenity\Domain\Supplier\Identifier;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Supplier;
 use Akeneo\OnboarderSerenity\Domain\Supplier\SupplierRepository;
-use Akeneo\OnboarderSerenity\Integration\SqlIntegrationTestCase;
+use Akeneo\OnboarderSerenity\Test\Integration\SqlIntegrationTestCase;
 
 final class SupplierDatabaseRepositoryIntegration extends SqlIntegrationTestCase
 {

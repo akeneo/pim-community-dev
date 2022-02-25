@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Integration;
+namespace Akeneo\OnboarderSerenity\Test\Integration;
 
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -19,6 +19,10 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
     {
         static::bootKernel(['debug' => false]);
         $this->connection = $this->get('doctrine.dbal.default_connection');
+
+        $this->connection->executeStatement(<<<SQL
+            DELETE FROM `akeneo_onboarder_serenity_supplier`;
+        SQL);
     }
 
     protected function get(string $service)

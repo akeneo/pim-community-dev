@@ -1,4 +1,4 @@
 services:
     # Repositories
     Akeneo\OnboarderSerenity\Domain\Supplier\SupplierRepository:
-        class: Akeneo\OnboarderSerenity\Common\Fake\InMemorySupplierRepository
+        class: Akeneo\OnboarderSerenity\Test\Common\Fake\InMemorySupplierRepository
