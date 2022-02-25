@@ -49,6 +49,17 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-draft-grid, method: buildBefore }
 
+    pimee_workflow.datagrid.register_identifier_filters:
+        class: Akeneo\Pim\Enrichment\Bundle\Extension\RegisterIdentifierFilters
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@akeneo.pim.structure.query.get_attribute_translations'
+            - '@pim_user.context.user'
+            - '@oro_datagrid.datagrid.request_params'
+            - '@request_stack'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.published-product-grid, method: buildBefore }
+
     pim_enrich.event_listener.product_grid_before_listener:
         class: '%pim_datagrid.event_listener.configure_product_grid_listener.class%'
         arguments:

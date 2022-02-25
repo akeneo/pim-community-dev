@@ -14,6 +14,9 @@
 - PIM-10256: Fix MainImage as asset using React Component
 - PIM-10259: Fix Arabic text being reversed in product PDF exports
 - PIM-10284: Clean product values after reference entity removal
+- PIM-10277: Reject disabled user when coming from SAML auth
+- PIM-10285: Fix concurrent bulk publish issue
+- PIM-10268: SKU filter is always shown in the product grid
 
 ## Improvements
 

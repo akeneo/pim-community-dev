@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\AuthenticationBundle\Sso\User;
@@ -46,6 +47,10 @@ final class Provider implements UserProviderInterface
         $user = $this->userRepository->findOneBy(['username' => $username]);
         if (null === $user) {
             throw new UsernameNotFoundException(sprintf('User with username "%s" does not exist.', $username));
+        }
+
+        if (!$user->isEnabled()) {
+            throw new UsernameNotFoundException('User account is disabled.');
         }
 
         return $user;
