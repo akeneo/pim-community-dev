@@ -68,7 +68,7 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
     }
 
     public function it_rejects_authentication_when_user_just_reach_max_attempt(
-        User $user,
+        UserInterface $user,
         UserProviderInterface $userProvider,
         UsernamePasswordToken $usernamePasswordToken,
         PasswordEncoderInterface $passwordEncoder,
@@ -85,7 +85,7 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
         });
 
         $this->initUsernamePasswordToken($usernamePasswordToken);
-        $userProvider->loadUserByUsername(self::USERNAME)->shouldBeCalled()->willReturn($user);
+        $userProvider->loadUserByIdentifier(self::USERNAME)->shouldBeCalled()->willReturn($user);
         $passwordEncoder->isPasswordValid(Argument::any(), Argument::any(), Argument::any())->willReturn(false);
         $encoderFactory->getEncoder(Argument::any())->willReturn($passwordEncoder);
 
