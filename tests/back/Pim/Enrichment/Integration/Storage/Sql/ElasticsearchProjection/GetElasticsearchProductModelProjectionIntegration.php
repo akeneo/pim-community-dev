@@ -320,7 +320,7 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
         return $product;
     }
 
-    private function checkProductModelProjectionFormat($code, $expected): void
+    private function checkProductModelProjectionFormat(string $code, array $expected): void
     {
         $actual = $this->getProductModelProjectionArray($code);
 
@@ -328,11 +328,11 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
         Assert::assertMatchesRegularExpression($dateRegExp, $actual['created']);
         Assert::assertMatchesRegularExpression($dateRegExp, $actual['updated']);
         Assert::assertMatchesRegularExpression($dateRegExp, $actual['entity_updated']);
-        unset($actual['created']);
-        unset($actual['updated']);
-        unset($actual['entity_updated']);
 
-        Assert::assertEqualsCanonicalizing($expected, $actual);
+        foreach ($expected as $expectedProperty => $expectedValue) {
+            Assert::assertArrayHasKey($expectedProperty, $actual);
+            Assert::assertEqualsCanonicalizing($expectedValue, $actual[$expectedProperty]);
+        }
     }
 
     private function getProductModelProjectionArray($code): array
