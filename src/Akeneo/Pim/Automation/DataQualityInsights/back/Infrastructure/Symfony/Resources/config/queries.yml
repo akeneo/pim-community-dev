@@ -107,7 +107,7 @@ services:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationRatesByProductsAndCriterionQuery'
         tags:
-            - { name: akeneo.pim.automation.data_quality_insights.compute_key_indicator_query }
+            - { name: akeneo.pim.automation.data_quality_insights.compute_product_key_indicator_query }
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator\ComputeAttributesWithPerfectSpellingQuery:
         arguments:
