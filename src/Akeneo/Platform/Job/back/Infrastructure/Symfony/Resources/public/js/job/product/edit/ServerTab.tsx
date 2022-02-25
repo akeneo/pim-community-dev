@@ -26,8 +26,8 @@ const getDefaultServerCredentials = (): Omit<ServerCredentials, 'job_instance_co
 });
 
 const ServerTab = ({jobInstanceCode}: ServerTabProps) => {
-  const getRoute = useRoute('akeneo_job_get_job_instance_server_credentials', {job_instance_code: jobInstanceCode});
-  const saveRoute = useRoute('akeneo_job_save_job_instance_server_credentials');
+  const getRoute = useRoute('akeneo_job_get_job_instance_server_credentials_action', {job_instance_code: jobInstanceCode});
+  const saveRoute = useRoute('akeneo_job_save_job_instance_server_credentials_action');
   const mediator = useMediator();
   const [serverCredentials, setServerCredentials] = useState<ServerCredentials>({
     ...getDefaultServerCredentials(),
