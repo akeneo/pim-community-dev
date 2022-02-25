@@ -1,5 +1,11 @@
 # 5.0.x
 
+# 5.0.81 (2022-02-25)
+
+## Bug fixes
+
+- PIM-10290: [Backport PIM-9984] Fix image preview in asset manager in media link attributes with encoded URL
+
 # 5.0.80 (2022-02-23)
 
 # 5.0.79 (2022-02-21)
