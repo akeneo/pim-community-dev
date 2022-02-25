@@ -41,8 +41,20 @@ final class LRUCachedIsAttributeEditable implements IsAttributeEditable
      */
     private function getEditableAttributeCodes(string $userId): array
     {
-        return $this->connection->executeQuery(
-            'SELECT code from pim_catalog_attribute'
-        )->fetchFirstColumn();
+        $query = <<<SQL
+        SELECT attribute.code
+        FROM pim_catalog_attribute attribute
+        WHERE EXISTS (
+          SELECT *
+          FROM pimee_security_attribute_group_access attribute_access
+                   INNER JOIN oro_user_access_group user_access_group on attribute_access.user_group_id = user_access_group.group_id AND user_access_group.user_id = :userId
+          WHERE attribute_access.attribute_group_id = attribute.group_id
+            AND attribute_access.edit_attributes = 1
+        )
+SQL;
+
+        return $this->connection->executeQuery($query, [
+            'userId' => $userId,
+        ])->fetchFirstColumn();
     }
 }

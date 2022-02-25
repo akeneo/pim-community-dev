@@ -22,7 +22,6 @@ class IsAttributeEditableIntegration extends TestCase
 {
     private IsAttributeEditable $isAttributeEditable;
 
-    // or should we throw an exception ?
     /** @test */
     public function it_returns_false_when_the_attribute_does_not_exist(): void
     {
@@ -39,7 +38,7 @@ class IsAttributeEditableIntegration extends TestCase
     public function it_returns_true_when_the_user_can_edit_the_attribute(): void
     {
         Assert::assertTrue($this->isAttributeEditable->forCode('a_text', $this->getUserId('julia')));
-        Assert::assertTrue($this->isAttributeEditable->forCode('a_simple_select', $this->getUserId('mary')));
+        Assert::assertTrue($this->isAttributeEditable->forCode('a_text_area', $this->getUserId('mary')));
     }
 
     protected function getConfiguration(): Configuration
