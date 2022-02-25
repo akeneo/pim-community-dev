@@ -7,5 +7,6 @@ services:
             - '@pim_catalog.saver.product'
             - '@pim_catalog.updater.product'
             - '@pim_catalog.validator.product'
+            - '@event_dispatcher'
         tags:
             - { name: 'akeneo.pim.enrichment.product.handler', command: 'Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand' }
