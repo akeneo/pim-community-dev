@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.81 (2022-02-25)
+
 ## Bug fixes
 
 - PIM-10275: Missing translation key when error occured during association deletion
