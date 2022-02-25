@@ -41,7 +41,7 @@ class AddProductScorePropertySpec extends ObjectBehavior
             ],
         );
 
-        $this->add($queryParameters, [makeRow(1), makeRow(4)])->shouldHaveScoreProperties();
+        $this->add($queryParameters, [$this->makeRow(1), $this->makeRow(4)])->shouldHaveScoreProperties();
     }
 
     public function getMatchers(): array
@@ -61,22 +61,22 @@ class AddProductScorePropertySpec extends ObjectBehavior
             }
         ];
     }
-}
 
-function makeRow(int $id): Row
-{
-    return Row::fromProduct(
-        strval($id), // identifier
-        null, // family
-        [], // groupCodes
-        true, // $enabled,
-        new \DateTime(), // created
-        new \DateTime(), // updated
-        strval($id), // label
-        null, // image
-        null, // completeness,
-        $id, //technicalId,
-        null, // parentCode,
-        new WriteValueCollection() // values,
-    );
+    private function makeRow(int $id): Row
+    {
+        return Row::fromProduct(
+            strval($id), // identifier
+            null, // family
+            [], // groupCodes
+            true, // $enabled,
+            new \DateTime(), // created
+            new \DateTime(), // updated
+            strval($id), // label
+            null, // image
+            null, // completeness,
+            $id, //technicalId,
+            null, // parentCode,
+            new WriteValueCollection() // values,
+        );
+    }
 }
