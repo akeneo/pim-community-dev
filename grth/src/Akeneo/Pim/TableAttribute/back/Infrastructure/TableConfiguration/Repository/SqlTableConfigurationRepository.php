@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository;
 
+use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
@@ -38,7 +39,8 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
 
     public function __construct(
         private Connection $connection,
-        private TableConfigurationFactory $tableConfigurationFactory
+        private TableConfigurationFactory $tableConfigurationFactory,
+        private ChannelExistsWithLocaleInterface $channelExistsWithLocale
     ) {
     }
 
@@ -152,7 +154,7 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
                         'id' => $row['id'],
                         'code' => $row['code'],
                         'data_type' => $row['data_type'],
-                        'labels' => \json_decode($row['labels'], true),
+                        'labels' => $this->filterNonActiveLabels(\json_decode($row['labels'], true)),
                         'validations' => \json_decode($row['validations'], true),
                         'is_required_for_completeness' => Type::getType(Types::BOOLEAN)->convertToPhpValue($row['is_required_for_completeness'], $platform),
                     ];
@@ -168,6 +170,19 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
                 },
                 $results
             )
+        );
+    }
+
+    /**
+     * @param array<string, string> $labels
+     * @return array<string, string>
+     */
+    private function filterNonActiveLabels(array $labels): array
+    {
+        return \array_filter(
+            $labels,
+            fn ($localeCode) => $this->channelExistsWithLocale->isLocaleActive($localeCode),
+            ARRAY_FILTER_USE_KEY
         );
     }
 }
