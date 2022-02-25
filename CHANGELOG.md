@@ -12,6 +12,7 @@
 - PIM-10259: Fix Arabic text being reversed in product PDF exports
 - PIM-10277: Do not allow disabled user to login
 - PIM-10292: Fix error 500 when role page contain a validation errors
+- PIM-10268: SKU filter is always shown in the product grid
 
 ## Improvements
 - PIM-10293: add batch-size option to pim:completness:calculate command
