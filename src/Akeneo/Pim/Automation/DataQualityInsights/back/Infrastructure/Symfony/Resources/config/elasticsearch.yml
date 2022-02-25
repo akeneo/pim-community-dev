@@ -5,6 +5,11 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetLatestProductScoresQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators'
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductModelsIndex:
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelScoresQuery'
+
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\GetDataQualityInsightsPropertiesForProductProjection:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetLatestProductScoresQuery'
