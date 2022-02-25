@@ -81,4 +81,21 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
 
         $this->validate($valueUserIntent, new LocaleShouldBeEditableByUser());
     }
+
+    function it_does_nothing_when_value_intent_does_not_concern_a_locale(
+        ExecutionContext $context,
+        IsLocaleEditable $isLocaleEditable
+    ) {
+        $valueUserIntent = new SetTextValue('a_text', null, null, 'new value');
+
+        $context->getRoot()->willReturn(new UpsertProductCommand(
+            userId: 1,
+            productIdentifier: 'foo',
+            valuesUserIntent: [$valueUserIntent]
+        ));
+        $isLocaleEditable->forUserId(Argument::any())->shouldNotBeCalled();
+        $context->buildViolation(Argument::any())->shouldNotBeCalled();
+
+        $this->validate($valueUserIntent, new LocaleShouldBeEditableByUser());
+    }
 }
