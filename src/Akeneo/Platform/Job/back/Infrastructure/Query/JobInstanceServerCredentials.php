@@ -20,7 +20,7 @@ class JobInstanceServerCredentials
         private string $host,
         private string $user,
         private string $password,
-        private ?int $port,
+        private int $port,
         private bool $isSecure,
         private ?string $workingDirectory,
     ) {
@@ -32,7 +32,7 @@ class JobInstanceServerCredentials
             $jobInstanceServerCredentials['host'],
             $jobInstanceServerCredentials['user'],
             $jobInstanceServerCredentials['password'],
-            $jobInstanceServerCredentials['port'] ? (int)$jobInstanceServerCredentials['port'] : null,
+            (int)$jobInstanceServerCredentials['port'],
             (bool)$jobInstanceServerCredentials['is_secure'],
             $jobInstanceServerCredentials['working_directory']
         );

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\Job\back\Infrastructure\Controller;
+namespace Akeneo\Platform\Job\Infrastructure\Controller;
 
 use Akeneo\Platform\Job\Infrastructure\Query\JobInstanceServerCredentials;
 use Akeneo\Platform\Job\Infrastructure\Query\SaveJobInstanceSeverCredentials;

@@ -25,12 +25,12 @@ akeneo_job_get_job_user_action:
   defaults: { _controller: akeneo.job.controller.get_job_user_action }
   methods: [GET]
 
-akeneo_get_job_instance_server_credentials:
-  path: /rest/job-file-transfer/server-credentials
+akeneo_job_get_job_instance_server_credentials:
+  path: /rest/job-server-credentials
   defaults: { _controller: akeneo.job.controller.get_job_instance_server_credentials_action }
   methods: [GET]
 
-akeneo_save_job_instance_server_credentials:
-  path: /rest/job-file-transfer/server-credentials
+akeneo_job_save_job_instance_server_credentials:
+  path: /rest/job-server-credentials/save
   defaults: { _controller: akeneo.job.controller.save_job_instance_server_credentials_action }
   methods: [POST]

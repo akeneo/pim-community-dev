@@ -76,6 +76,15 @@ extensions:
             title: pim_common.history
             tabCode: pim-job-instance-history
 
+    pim-job-instance-csv-product-export-edit-server:
+        module: akeneojob/js/job/product/edit/server
+        parent: pim-job-instance-csv-product-export-edit-tabs
+        targetZone: container
+        position: 150
+        config:
+            tabTitle: Server
+            tabCode: pim-job-instance-server-credentials
+
     pim-job-instance-csv-product-export-edit-properties-code:
         module: pim/job/common/edit/field/text
         parent: pim-job-instance-csv-product-export-edit-properties

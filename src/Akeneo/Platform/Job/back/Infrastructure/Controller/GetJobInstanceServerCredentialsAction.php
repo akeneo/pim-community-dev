@@ -26,7 +26,7 @@ class GetJobInstanceServerCredentialsAction
     }
 
     public function __invoke(Request $request): Response {
-        $jobInstanceCode = $request->attributes->get('job_instance_code');
+        $jobInstanceCode = $request->get('job_instance_code');
         $jobInstanceServerCredentials = $this->getJobInstanceServerCredentials->byJobInstanceCode($jobInstanceCode);
 
         return new JsonResponse($jobInstanceServerCredentials ? $jobInstanceServerCredentials->normalize() : []);
