@@ -10,8 +10,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
-use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
-use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -64,22 +62,4 @@ class AddProductModelScorePropertySpec extends ObjectBehavior
             }
         ];
     }
-}
-
-function makeRow(int $id): Row
-{
-    return Row::fromProduct(
-        strval($id), // identifier
-        null, // family
-        [], // groupCodes
-        true, // $enabled,
-        new \DateTime(), // created
-        new \DateTime(), // updated
-        strval($id), // label
-        null, // image
-        null, // completeness,
-        $id, //technicalId,
-        null, // parentCode,
-        new WriteValueCollection() // values,
-    );
 }
