@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
-use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAppQuery;
-use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetTestAppQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;

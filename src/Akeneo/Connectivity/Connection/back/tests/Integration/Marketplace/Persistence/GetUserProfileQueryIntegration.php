@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Tests\Integration\Marketplace;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Marketplace\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetUserProfileQueryInterface;
 use Akeneo\Test\Integration\Configuration;
@@ -33,7 +33,7 @@ class GetUserProfileQueryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->getUserProfileQuery = $this->get('akeneo_connectivity.connection.marketplace.query.get_user_profile');
+        $this->getUserProfileQuery = $this->get('Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetUserProfileQuery');
         $this->dbalConnection = self::$container->get('database_connection');
     }
 

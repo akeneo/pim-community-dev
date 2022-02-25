@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\InternalApi;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\Internal;
 
 use Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command\CreateTestAppCommand;
 use Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command\CreateTestAppCommandHandler;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\GetAllTestAppsResult;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAllTestAppsQueryInterface;

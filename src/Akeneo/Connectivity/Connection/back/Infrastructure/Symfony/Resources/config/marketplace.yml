@@ -14,7 +14,7 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Controller\Internal\GetAllExtensionsAction:
         public: true
         arguments:
-            - '@akeneo_connectivity.connection.marketplace.get_all_extensions_query'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAllExtensionsQuery'
             - '@akeneo_connectivity.connection.marketplace.analytics_generator'
             - '@pim_user.context.user'
             - '@logger'
@@ -23,7 +23,7 @@ services:
         public: true
         arguments:
             - '@akeneo_connectivity.connection.marketplace.app_url_generator'
-            - '@akeneo_connectivity.connection.marketplace.get_all_apps_query'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAllAppsQuery'
             - '@akeneo_connectivity.connection.marketplace.analytics_generator'
             - '@pim_user.context.user'
             - '@logger'
@@ -34,7 +34,7 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.app_developer_mode.feature'
             - '@akeneo_connectivity.connection.marketplace.app_url_generator'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllTestAppsQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAllTestAppsQuery'
 
     Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\Internal\CreateTestAppsAction:
         public: true
@@ -52,7 +52,7 @@ services:
             - '@akeneo_connectivity.connection.app_developer_mode.feature'
             - '@oro_security.security_facade'
             - '@Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command\DeleteTestAppHandler'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetTestAppQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppQuery'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler'
 
     # OTHERS
@@ -62,12 +62,12 @@ services:
             - '%akeneo_pim_marketplace_url%'
             - '@pim_catalog.version_provider'
             - '%env(AKENEO_PIM_URL)%'
-            - '@akeneo_connectivity.connection.marketplace.query.get_user_profile'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetUserProfileQuery'
 
     akeneo_connectivity.connection.marketplace.analytics_generator:
         class: Akeneo\Connectivity\Connection\Application\Marketplace\MarketplaceAnalyticsGenerator
         arguments:
-            - '@akeneo_connectivity.connection.marketplace.query.get_user_profile'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetUserProfileQuery'
             - '@akeneo_connectivity.connection.marketplace.web_marketplace_aliases'
             - '@pim_framework.service.pim_url'
             -
@@ -75,11 +75,6 @@ services:
         class: Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator
         arguments:
             - '@pim_framework.service.pim_url'
-
-    akeneo_connectivity.connection.marketplace.query.get_user_profile:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalGetUserProfileQuery
-        arguments:
-            - '@database_connection'
 
     akeneo_connectivity.connection.marketplace.guzzle_client:
         class: GuzzleHttp\Client
@@ -103,33 +98,37 @@ services:
         arguments:
             - '@pim_catalog.version_provider'
 
-    akeneo_connectivity.connection.marketplace.get_all_extensions_query:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllExtensionsQuery
+    # QUERIES
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetUserProfileQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAllExtensionsQuery:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAllExtensionsQuery
         arguments:
             - '@akeneo_connectivity.connection.marketplace.web_marketplace_api'
             - '%akeneo_pim_marketplace_api_pagination_size%'
             -
-    akeneo_connectivity.connection.marketplace.get_all_apps_query:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllAppsQuery
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAllAppsQuery:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAllAppsQuery
         arguments:
             - '@akeneo_connectivity.connection.marketplace.web_marketplace_api'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAllConnectedAppsPublicIdsQuery'
             - '%akeneo_pim_marketplace_api_pagination_size%'
 
-    akeneo_connectivity.connection.marketplace.get_app_query:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAppQuery
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery:
         arguments:
             - '@akeneo_connectivity.connection.marketplace.web_marketplace_api'
             - '@akeneo_connectivity.connection.app_developer_mode.feature'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetTestAppQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppQuery'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetTestAppQuery:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetTestAppQuery
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppQuery:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppQuery
         arguments:
             - '@database_connection'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllTestAppsQuery:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllTestAppsQuery
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAllTestAppsQuery:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAllTestAppsQuery
         arguments:
             - '@database_connection'
 
@@ -153,5 +152,5 @@ services:
 
     Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command\DeleteTestAppHandler:
         arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetTestAppQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\DeleteTestAppQuery'

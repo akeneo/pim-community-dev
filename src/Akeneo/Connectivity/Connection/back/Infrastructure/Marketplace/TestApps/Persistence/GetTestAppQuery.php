@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Marketplace\TestApps\Persistence\GetTestAppQueryInterface;
 use Doctrine\DBAL\Connection;

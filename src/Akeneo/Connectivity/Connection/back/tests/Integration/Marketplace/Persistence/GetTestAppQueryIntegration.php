@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Tests\Integration\Marketplace;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Marketplace\Persistence;
 
-use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetTestAppQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -18,7 +18,7 @@ class GetTestAppQueryIntegration extends TestCase
 {
     private Connection $connection;
     private ConnectedAppLoader $connectedAppLoader;
-    private GetTestAppQuery $query;
+    private \Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppQuery $query;
 
     protected function setUp(): void
     {

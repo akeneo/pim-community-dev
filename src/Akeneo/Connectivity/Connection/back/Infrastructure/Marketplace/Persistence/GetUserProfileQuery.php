@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetUserProfileQueryInterface;
 use Doctrine\DBAL\Connection;
 
-class DbalGetUserProfileQuery implements GetUserProfileQueryInterface
+class GetUserProfileQuery implements GetUserProfileQueryInterface
 {
     private Connection $connection;
 

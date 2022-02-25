@@ -3,7 +3,7 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetAppActivateUrlAction:
         public: true
         arguments:
-            - '@akeneo_connectivity.connection.marketplace.get_app_query'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider'
             - '@akeneo_connectivity.connection.marketplace.app_url_generator'
             - '@oro_security.security_facade'
@@ -84,7 +84,7 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetWizardDataAction:
         public: true
         arguments:
-            - '@akeneo_connectivity.connection.marketplace.get_app_query'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
 

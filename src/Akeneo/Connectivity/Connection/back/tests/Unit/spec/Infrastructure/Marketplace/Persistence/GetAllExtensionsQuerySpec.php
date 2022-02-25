@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\GetAllExtensionsResult;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\Extension;
-use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllExtensionsQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAllExtensionsQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
-use Akeneo\Platform\VersionProviderInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
