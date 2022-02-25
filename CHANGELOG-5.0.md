@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.82 (2022-02-25)
+
 ## Bug fixes
 
 - PIM-10294: Display blocked message when user is actually blocked at 5th attempt and not at 6th
