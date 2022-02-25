@@ -22,7 +22,7 @@ class RegenerateConnectionPasswordEndToEnd extends WebTestCase
 
         $this->authenticateAsAdmin();
         $this->client->request('POST', '/rest/connections/franklin/regenerate-password');
-        $result = json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true);
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         Assert::assertArrayHasKey('password', $result);

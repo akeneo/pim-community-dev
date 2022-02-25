@@ -64,7 +64,7 @@ class GuzzleWebhookClient implements WebhookClientInterface
             foreach ($webhookRequests as $webhookRequest) {
                 $body = $this->encoder->encode($webhookRequest->content(), 'json');
 
-                $timestamp = time();
+                $timestamp = \time();
                 $signature = Signature::createSignature($webhookRequest->secret(), $timestamp, $body);
 
                 $headers = [
@@ -73,7 +73,7 @@ class GuzzleWebhookClient implements WebhookClientInterface
                     RequestHeaders::HEADER_REQUEST_TIMESTAMP => $timestamp,
                 ];
 
-                $logs[] = new EventSubscriptionSendApiEventRequestLog($webhookRequest, $headers, microtime(true));
+                $logs[] = new EventSubscriptionSendApiEventRequestLog($webhookRequest, $headers, \microtime(true));
 
                 $request = new Request('POST', $webhookRequest->url(), $headers, $body);
 
@@ -94,10 +94,10 @@ class GuzzleWebhookClient implements WebhookClientInterface
                     /** @var EventSubscriptionSendApiEventRequestLog $webhookRequestLog */
                     $webhookRequestLog = $logs[$index];
                     $webhookRequestLog->setSuccess(true);
-                    $webhookRequestLog->setEndTime(microtime(true));
+                    $webhookRequestLog->setEndTime(\microtime(true));
                     $webhookRequestLog->setResponse($response);
 
-                    $pimEvents = array_map(
+                    $pimEvents = \array_map(
                         fn (WebhookEvent $apiEvent) => $apiEvent->getPimEvent(),
                         $webhookRequestLog->getWebhookRequest()->apiEvents()
                     );
@@ -110,7 +110,7 @@ class GuzzleWebhookClient implements WebhookClientInterface
                     $this->debugLogger->logEventsApiRequestSucceed(
                         $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
                         $webhookRequestLog->getWebhookRequest()->apiEvents(),
-                        strval($webhookRequestLog->getWebhookRequest()->url()),
+                        \strval($webhookRequestLog->getWebhookRequest()->url()),
                         $response->getStatusCode(),
                         $response->getHeaders(),
                     );
@@ -122,7 +122,7 @@ class GuzzleWebhookClient implements WebhookClientInterface
                     $webhookRequestLog = $logs[$index];
                     $webhookRequestLog->setMessage($reason->getMessage());
                     $webhookRequestLog->setSuccess(false);
-                    $webhookRequestLog->setEndTime(microtime(true));
+                    $webhookRequestLog->setEndTime(\microtime(true));
                     $webhookRequestLog->setResponse($reason->getResponse());
 
                     $this->sendApiEventRequestLogger->log(
@@ -139,7 +139,7 @@ class GuzzleWebhookClient implements WebhookClientInterface
                         $this->debugLogger->logEventsApiRequestFailed(
                             $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
                             $webhookRequestLog->getWebhookRequest()->apiEvents(),
-                            strval($reason->getRequest()->getUri()),
+                            \strval($reason->getRequest()->getUri()),
                             $reason->getResponse()->getStatusCode(),
                             $reason->getRequest()->getHeaders(),
                         );
@@ -147,7 +147,7 @@ class GuzzleWebhookClient implements WebhookClientInterface
                         $this->debugLogger->logEventsApiRequestTimedOut(
                             $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
                             $webhookRequestLog->getWebhookRequest()->apiEvents(),
-                            strval($reason->getRequest()->getUri()),
+                            \strval($reason->getRequest()->getUri()),
                             $this->config['timeout']
                         );
                     }

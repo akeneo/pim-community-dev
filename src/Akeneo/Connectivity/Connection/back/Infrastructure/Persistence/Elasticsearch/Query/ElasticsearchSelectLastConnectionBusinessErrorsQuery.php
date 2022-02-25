@@ -65,7 +65,7 @@ class ElasticsearchSelectLastConnectionBusinessErrorsQuery implements SelectLast
             $businessErrors[] = new BusinessError(
                 $data['connection_code'],
                 \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, $data['error_datetime'], new \DateTimeZone('UTC')),
-                json_encode($data['content'])
+                \json_encode($data['content'])
             );
         }
 

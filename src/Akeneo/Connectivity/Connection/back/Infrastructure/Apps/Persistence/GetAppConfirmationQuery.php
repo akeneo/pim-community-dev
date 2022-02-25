@@ -38,7 +38,7 @@ SQL;
             'marketplace_public_app_id' => $marketplaceAppId,
         ]);
 
-        if (count($rows) > 1) {
+        if (\count($rows) > 1) {
             throw new \LogicException('There should be only one connected app by marketplace id');
         }
 

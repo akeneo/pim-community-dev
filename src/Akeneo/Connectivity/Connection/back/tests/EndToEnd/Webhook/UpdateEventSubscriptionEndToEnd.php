@@ -50,11 +50,11 @@ class UpdateEventSubscriptionEndToEnd extends WebTestCase
         $this->authenticateAsAdmin();
         $this->client->request(
             'POST',
-            sprintf('/rest/connections/%s/webhook', $connection->code()),
+            \sprintf('/rest/connections/%s/webhook', $connection->code()),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
-            json_encode($data),
+            \json_encode($data),
         );
 
         Assert::assertEquals(Response::HTTP_NO_CONTENT, $this->client->getResponse()->getStatusCode());
@@ -78,13 +78,13 @@ class UpdateEventSubscriptionEndToEnd extends WebTestCase
         $this->authenticateAsAdmin();
         $this->client->request(
             'POST',
-            sprintf('/rest/connections/%s/webhook', $connection->code()),
+            \sprintf('/rest/connections/%s/webhook', $connection->code()),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
-            json_encode($data),
+            \json_encode($data),
         );
-        $result = json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true);
 
         $expectedResult = [
             'errors' => [
@@ -121,13 +121,13 @@ class UpdateEventSubscriptionEndToEnd extends WebTestCase
         $this->authenticateAsAdmin();
         $this->client->request(
             'POST',
-            sprintf('/rest/connections/%s/webhook', $connection->code()),
+            \sprintf('/rest/connections/%s/webhook', $connection->code()),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
-            json_encode($data),
+            \json_encode($data),
         );
-        $result = json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true);
 
         $expectedResult = [
             'errors' => [
@@ -161,9 +161,9 @@ class UpdateEventSubscriptionEndToEnd extends WebTestCase
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
-            json_encode($data),
+            \json_encode($data),
         );
-        $result = json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true);
 
         $expectedResult = [
             'errors' => [
@@ -224,13 +224,13 @@ class UpdateEventSubscriptionEndToEnd extends WebTestCase
         $this->authenticateAsAdmin();
         $this->client->request(
             'POST',
-            sprintf('/rest/connections/%s/webhook', $translationConnection->code()),
+            \sprintf('/rest/connections/%s/webhook', $translationConnection->code()),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
-            json_encode($data),
+            \json_encode($data),
         );
-        $result = json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true);
 
         Assert::assertEquals(
             Response::HTTP_UNPROCESSABLE_ENTITY,
@@ -268,11 +268,11 @@ class UpdateEventSubscriptionEndToEnd extends WebTestCase
         $this->authenticateAsAdmin();
         $this->client->request(
             'POST',
-            sprintf('/rest/connections/%s/webhook', $connection->code()),
+            \sprintf('/rest/connections/%s/webhook', $connection->code()),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
-            json_encode($data),
+            \json_encode($data),
         );
 
         Assert::assertEquals(

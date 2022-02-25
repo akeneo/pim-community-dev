@@ -35,7 +35,7 @@ class CreateClientIntegration extends TestCase
         Assert::assertMatchesRegularExpression('/refresh_token/', $createdClient['allowed_grant_types']);
 
         Assert::assertEquals($createdClient['id'], $client->id());
-        $publicId = sprintf('%s_%s', $createdClient['id'], $createdClient['random_id']);
+        $publicId = \sprintf('%s_%s', $createdClient['id'], $createdClient['random_id']);
         Assert::assertEquals($publicId, $client->clientId());
         Assert::assertEquals($createdClient['secret'], $client->secret());
     }

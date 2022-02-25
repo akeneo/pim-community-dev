@@ -96,7 +96,7 @@ final class ConfirmAuthorizationAction
             }
         } catch (InvalidAppAuthorizationRequestException | InvalidAppAuthenticationException $exception) {
             $this->logger->warning(
-                sprintf('App activation failed with validation error "%s"', $exception->getMessage())
+                \sprintf('App activation failed with validation error "%s"', $exception->getMessage())
             );
 
             return new JsonResponse([

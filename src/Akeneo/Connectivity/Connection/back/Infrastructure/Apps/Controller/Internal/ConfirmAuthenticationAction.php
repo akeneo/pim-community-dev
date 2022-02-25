@@ -80,7 +80,7 @@ final class ConfirmAuthenticationAction
             $this->consentAppAuthenticationHandler->handle(new ConsentAppAuthenticationCommand($clientId, $connectedPimUserId));
         } catch (InvalidAppAuthenticationException $exception) {
             $this->logger->warning(
-                sprintf('App activation failed with validation error "%s"', $exception->getMessage())
+                \sprintf('App activation failed with validation error "%s"', $exception->getMessage())
             );
 
             return new JsonResponse([

@@ -54,8 +54,8 @@ SQL;
         )->fetchAllAssociative();
 
         if (null !== $results && !empty($results)) {
-            array_walk($results, function (array &$combinations) {
-                $combinations['users'] = json_decode($combinations['users'], true);
+            \array_walk($results, function (array &$combinations) {
+                $combinations['users'] = \json_decode($combinations['users'], true);
             });
         }
 

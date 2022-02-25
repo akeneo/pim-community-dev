@@ -25,7 +25,7 @@ abstract class AbstractAuditAction
             $timezone
         );
         if (false === $endDateTimeUser) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 'Unexpected format for the `end_date` parameter "%s". Format must be `Y-m-d`',
                 $endDateUser
             ));
