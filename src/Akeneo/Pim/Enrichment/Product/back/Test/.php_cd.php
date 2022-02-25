@@ -28,6 +28,7 @@ $rules = [
         // Libs
         'Webmozart\Assert\Assert',
         'Symfony\Component\Validator',
+        'Symfony\Component\EventDispatcher',
 
         // Legacy
         'Akeneo\Pim\Enrichment\Component',

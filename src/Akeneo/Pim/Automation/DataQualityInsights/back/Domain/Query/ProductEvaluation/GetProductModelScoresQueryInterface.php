@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 
 /**
@@ -13,8 +14,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollec
  */
 interface GetProductModelScoresQueryInterface
 {
+    public function byProductModelId(ProductId $productId): ChannelLocaleRateCollection;
+
     /**
-     * @return ChannelLocaleRateCollection[]
+     * @return array<ChannelLocaleRateCollection>
      */
     public function byProductModelIds(ProductIdCollection $productModelIds): array;
 }

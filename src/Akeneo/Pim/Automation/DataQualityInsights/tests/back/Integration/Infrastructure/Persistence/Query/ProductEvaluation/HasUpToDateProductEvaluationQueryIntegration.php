@@ -80,7 +80,7 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         $outdatedProductVariantId = $this->givenAProductVariantWithAnOutdatedEvaluationComparedToItsParent($today);
         $this->givenAProductWithAnUpToDateEvaluation($today);
 
-        $productIdsWithUpToDateEvaluation = $this->query->forProductIds(ProductIdCollection::fromProductIds(
+        $productIdsWithUpToDateEvaluation = $this->query->forProductIdCollection(ProductIdCollection::fromProductIds(
             [$outdatedProductId, $outdatedProductVariantId, $expectedProductIdA, $expectedProductIdB]
         ));
         $this->assertEqualsCanonicalizing(
@@ -94,7 +94,7 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         $today = new \DateTimeImmutable('2020-03-02 11:34:27');
         $outdatedProductId = $this->givenAnUpdatedProductWithAnOutdatedEvaluation($today);
 
-        $this->assertNull($this->query->forProductIds(ProductIdCollection::fromProductId($outdatedProductId)));
+        $this->assertNull($this->query->forProductIdCollection(ProductIdCollection::fromProductId($outdatedProductId)));
     }
 
     private function createProduct(): ProductId

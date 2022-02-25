@@ -76,7 +76,7 @@ final class GetUpToDateLatestProductScoresQuerySpec extends ObjectBehavior
                 ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(45)),
         ];
 
-        $hasUpToDateEvaluationQuery->forProductIds($productIdCollection)->willReturn($upToDateProductIdCollection);
+        $hasUpToDateEvaluationQuery->forProductIdCollection($productIdCollection)->willReturn($upToDateProductIdCollection);
         $getLatestProductScoresQuery->byProductIds($upToDateProductIdCollection)->willReturn($productsScores);
 
         $this->byProductIds($productIdCollection)->shouldReturn($productsScores);
@@ -89,7 +89,7 @@ final class GetUpToDateLatestProductScoresQuerySpec extends ObjectBehavior
     {
         $products = ProductIdCollection::fromInts([42, 123]);
 
-        $hasUpToDateEvaluationQuery->forProductIds($products)->willReturn(null);
+        $hasUpToDateEvaluationQuery->forProductIdCollection($products)->willReturn(null);
         $getLatestProductScoresQuery->byProductIds(Argument::any())->shouldNotBeCalled();
 
         $this->byProductIds($products)->shouldReturn([]);
