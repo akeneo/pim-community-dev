@@ -10,7 +10,7 @@ use PHPStan\Analyser\Scope;
 
 final class InvokableControllerRule extends AbstractControllerRule
 {
-    private const ERROR_MESSAGE = 'ExternalApi must be invokable';
+    private const ERROR_MESSAGE = 'Controller must be invokable';
 
     /**
      * @param Class_ $node
