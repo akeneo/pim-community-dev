@@ -17,8 +17,8 @@ final class LocaleShouldBeEditableByUser extends Constraint
     /**
      * {@inheritDoc}
      */
-    public function getTargets()
+    public function getTargets(): string
     {
-        return self::CLASS_CONSTRAINT;
+        return self::PROPERTY_CONSTRAINT;
     }
 }

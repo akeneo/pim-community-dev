@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Channel\Locale\Integration\Query;
 
-use Akeneo\Channel\Locale\API\Query\GetEditableLocaleCodes;
+use Akeneo\Channel\Locale\API\Query\IsLocaleEditable;
 use Akeneo\Test\Channel\Locale\Integration\ChannelTestCase;
 use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use PHPUnit\Framework\Assert;
@@ -21,7 +21,7 @@ final class GetEditableLocaleCodesIntegration extends ChannelTestCase
         }
 
         parent::setUp();
-        $this->sqlGetEditableLocaleCodes = $this->get(GetEditableLocaleCodes::class);
+        $this->sqlGetEditableLocaleCodes = $this->get(IsLocaleEditable::class);
         $this->loadChannelFunctionalFixtures();
     }
 

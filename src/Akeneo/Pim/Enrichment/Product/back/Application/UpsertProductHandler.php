@@ -139,12 +139,12 @@ final class UpsertProductHandler
                         $e->getMessage(),
                         [],
                         $command,
-                        "valueUserIntent[$index]",
+                        "valueUserIntents[$index]",
                         $valueUserIntent
                     ),
                 ]);
 
-                throw new LegacyViolationsException($violations);
+                throw new ViolationsException($violations);
             }
 
             if (!$found) {
