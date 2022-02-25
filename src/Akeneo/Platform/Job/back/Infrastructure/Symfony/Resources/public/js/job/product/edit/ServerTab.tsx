@@ -46,7 +46,7 @@ const ServerTab = ({jobInstanceCode}: ServerTabProps) => {
       const response = await fetch(getRoute);
       const data = await response.json();
 
-      if(0 < data.length) {
+      if([] !== data) {
         setServerCredentials(data);
       }
     };

@@ -30,7 +30,7 @@ WHERE job_instance_code = :job_instance_code;
 SQL;
 
         $statement = $this->connection->executeQuery($query, ['job_instance_code' => $jobInstanceCode]);
-        $rawJobInstanceServerCredentials = $statement->fetchOne();
+        $rawJobInstanceServerCredentials = $statement->fetchAssociative();
 
         if (false === $rawJobInstanceServerCredentials) {
             return null;
