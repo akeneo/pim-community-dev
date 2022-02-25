@@ -26,24 +26,27 @@ services:
         tags:
             - { name: 'console.command' }
 
-    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCreateColumns:
+    base_uuid_migration_step:
         arguments:
+            - '@monolog.logger'
             - '@database_connection'
+        abstract: true
+
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCreateColumns:
+        parent: base_uuid_migration_step
 
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillProductUuid:
-        arguments:
-            - '@database_connection'
+        parent: base_uuid_migration_step
 
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillForeignUuid:
-        arguments:
-            - '@database_connection'
+        parent: base_uuid_migration_step
 
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillJson:
-        arguments:
-            - '@database_connection'
+        parent: base_uuid_migration_step
 
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCommand:
         arguments:
+            - '@monolog.logger'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCreateColumns'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillProductUuid'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillForeignUuid'

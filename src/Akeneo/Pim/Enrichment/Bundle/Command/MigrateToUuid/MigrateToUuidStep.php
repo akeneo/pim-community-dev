@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
-use Symfony\Component\Console\Output\OutputInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -37,7 +37,7 @@ interface MigrateToUuidStep
      */
     public function getMissingCount(): int;
 
-    public function addMissing(bool $dryRun, OutputInterface $output): void;
+    public function addMissing(bool $dryRun): void;
 
     /**
      * Returns if the migration has to be executed or not
