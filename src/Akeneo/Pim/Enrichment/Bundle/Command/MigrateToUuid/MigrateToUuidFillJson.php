@@ -88,43 +88,53 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
 
     private function updateProductAssociations($productAssociations): void
     {
-        $values = array_map(fn (array $productAssociation): string => \strtr(
-            '({product_id}, \'{quantified_associations}\', 1, CONCAT(md5(rand()), md5(rand())), "{}", NOW(), NOW())',
-            [
-                '{product_id}' => $productAssociation['id'],
-                '{quantified_associations}' => \json_encode($productAssociation['quantified_associations']),
-            ]
-        ), $productAssociations);
+        $rows = \array_map(
+            fn (array $productAssociation): string => \sprintf(
+                "ROW(%d, '%s')",
+                $productAssociation['id'],
+                \json_encode($productAssociation['quantified_associations'])
+            ),
+            $productAssociations
+        );
 
-        $insertSql = <<<SQL
-            INSERT INTO pim_catalog_product (id, quantified_associations, is_enabled, identifier, raw_values, created, updated)
-            VALUES {values}
-            ON DUPLICATE KEY UPDATE quantified_associations=VALUES(quantified_associations)
+        $sql = <<<SQL
+        WITH
+        new_quantified_associations AS (
+            SELECT * FROM (VALUES {rows}) as t(id, quantified_associations)
+        )
+        UPDATE pim_catalog_product p, new_quantified_associations nqa
+        SET p.quantified_associations = nqa.quantified_associations
+        WHERE p.id = nqa.id
         SQL;
 
-        $this->connection->executeQuery(\strtr($insertSql, [
-            '{values}' => implode(', ', $values),
+        $this->connection->executeQuery(\strtr($sql, [
+            '{rows}' => implode(',', $rows),
         ]));
     }
 
     private function updateProductModelAssociations($productAssociations): void
     {
-        $values = array_map(fn (array $productAssociation): string => \strtr(
-            '({product_model_id}, \'{quantified_associations}\', CONCAT(md5(rand()), md5(rand())), "{}", NOW(), NOW())',
-            [
-                '{product_model_id}' => $productAssociation['id'],
-                '{quantified_associations}' => \json_encode($productAssociation['quantified_associations']),
-            ]
-        ), $productAssociations);
+        $rows = \array_map(
+            fn (array $productAssociation): string => \sprintf(
+                "ROW(%d, '%s')",
+                $productAssociation['id'],
+                \json_encode($productAssociation['quantified_associations'])
+            ),
+            $productAssociations
+        );
 
-        $insertSql = <<<SQL
-            INSERT INTO pim_catalog_product_model (id, quantified_associations, code, raw_values, created, updated)
-            VALUES {values}
-            ON DUPLICATE KEY UPDATE quantified_associations=VALUES(quantified_associations)
+        $sql = <<<SQL
+        WITH
+        new_quantified_associations AS (
+            SELECT * FROM (VALUES {rows}) as t(id, quantified_associations)
+        )
+        UPDATE pim_catalog_product_model pm, new_quantified_associations nqa
+        SET pm.quantified_associations = nqa.quantified_associations
+        WHERE pm.id = nqa.id
         SQL;
 
-        $this->connection->executeQuery(\strtr($insertSql, [
-            '{values}' => implode(', ', $values),
+        $this->connection->executeQuery(\strtr($sql, [
+            '{rows}' => implode(',', $rows),
         ]));
     }
 
