@@ -51,7 +51,10 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
         foreach ($this->getTablesWithoutProductTable() as $tableName => $columnNames) {
             while ($this->shouldContinue($context, $output, $tableName, $columnNames[self::ID_COLUMN_INDEX], $columnNames[self::UUID_COLUMN_INDEX])) {
                 if (!$context->dryRun()) {
+                    $stepStartTime = \microtime(true);
                     $this->fillMissingForeignUuidInsert($tableName, $columnNames[0], $columnNames[1]);
+                    $stepDuration = \microtime(true) - $stepStartTime;
+                    $output->writeln(sprintf(' : done in %0.2f seconds', $stepDuration));
                 } else {
                     $output->writeln(sprintf('    Option --dry-run is set, will continue to next step.'));
                     break;
