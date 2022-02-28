@@ -6,7 +6,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
 use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidStep;
 use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidTrait;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
