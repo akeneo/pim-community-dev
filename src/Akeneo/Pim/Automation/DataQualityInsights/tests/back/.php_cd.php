@@ -20,6 +20,8 @@ $rules = [
             'Ramsey\Uuid\Uuid',
             'Akeneo\Pim\Structure\Component\AttributeTypes',
             'Symfony\Contracts\EventDispatcher\Event',
+            'Webmozart\Assert\Assert',
+            'Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException'
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Domain'),
 
@@ -89,6 +91,7 @@ $rules = [
             //Datagrid filters, columns, sorting and ES indexation needs
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AbstractFieldFilter',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface',
+            'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductModelProjectionInterface',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field\BaseFieldSorte',
             'Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException',
             'Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductProperties',

@@ -10,6 +10,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -37,9 +38,9 @@ final class GetPendingCriteriaEvaluationsByProductIdsQuery implements GetPending
     /**
      * @inheritDoc
      */
-    public function execute(array $productIds): array
+    public function execute(ProductIdCollection $productIds): array
     {
-        if (empty($productIds)) {
+        if ($productIds->isEmpty()) {
             return [];
         }
 
@@ -54,7 +55,7 @@ GROUP BY product_id
 SQL;
         $params = [
             'status' => CriterionEvaluationStatus::PENDING,
-            'product_ids' => $productIds,
+            'product_ids' => $productIds->toArrayInt(),
         ];
 
         $types = [
@@ -66,7 +67,7 @@ SQL;
 
         $productsCriteriaEvaluations = [];
         while ($resultRow = $stmt->fetchAssociative()) {
-            $productId = new ProductId(intval($resultRow['product_id']));
+            $productId = ProductId::fromString($resultRow['product_id']);
             $criteria = json_decode($resultRow['criteria']);
             $productsCriteriaEvaluations[$productId->toInt()] = $this->hydrateProductCriteriaEvaluations($productId, $criteria);
         }

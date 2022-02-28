@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Event;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
@@ -13,12 +14,12 @@ use Symfony\Contracts\EventDispatcher\Event;
 final class ProductsEvaluated extends Event
 {
     public function __construct(
-        private array $productIds
+        private ProductIdCollection $productIdCollection
     ) {
     }
 
-    public function getProductIds(): array
+    public function getProductIds(): ProductIdCollection
     {
-        return $this->productIds;
+        return $this->productIdCollection;
     }
 }

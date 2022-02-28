@@ -332,6 +332,9 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
         unset($actual['updated']);
         unset($actual['entity_updated']);
 
+        // Removing additional properties from other bounded context than Enrichment
+        $actual = array_intersect_key($actual, $expected);
+
         Assert::assertEqualsCanonicalizing($expected, $actual);
     }
 

@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Pr
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -64,7 +65,7 @@ class InitializeEvaluationOfAProductModelSubscriber implements EventSubscriberIn
     private function initializeProductModelCriteria(int $productModelId): void
     {
         try {
-            $this->createProductModelCriteriaEvaluations->createAll([new ProductId($productModelId)]);
+            $this->createProductModelCriteriaEvaluations->createAll(ProductIdCollection::fromInt($productModelId));
         } catch (\Throwable $e) {
             $this->logger->error(
                 'Unable to create product model criteria evaluation',

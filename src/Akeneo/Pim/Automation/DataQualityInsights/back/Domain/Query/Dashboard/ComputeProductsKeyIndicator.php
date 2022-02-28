@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -14,8 +14,5 @@ interface ComputeProductsKeyIndicator
 {
     public function getName(): string;
 
-    /**
-     * @param ProductId[] $productIds
-     */
-    public function compute(array $productIds): array;
+    public function compute(ProductIdCollection $productIdCollection): array;
 }

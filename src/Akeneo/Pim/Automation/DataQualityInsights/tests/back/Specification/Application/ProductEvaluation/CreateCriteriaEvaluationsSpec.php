@@ -9,6 +9,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvalua
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -24,7 +25,7 @@ final class CreateCriteriaEvaluationsSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith($criterionEvaluationRegistry, $criterionEvaluationRepository);
 
-        $productId = new ProductId(42);
+        $productId = ProductIdCollection::fromInt(42);
 
         $criterionEvaluationRegistry->getCriterionCodes()->willReturn([new CriterionCode('criterion1'), new CriterionCode('criterion2')]);
 
@@ -32,6 +33,6 @@ final class CreateCriteriaEvaluationsSpec extends ObjectBehavior
             return $collection->count() === 2;
         }))->shouldBeCalled();
 
-        $this->createAll([$productId]);
+        $this->createAll($productId);
     }
 }

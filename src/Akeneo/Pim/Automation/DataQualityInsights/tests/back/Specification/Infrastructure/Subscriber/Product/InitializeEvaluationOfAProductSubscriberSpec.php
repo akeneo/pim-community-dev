@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -18,10 +18,11 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
 {
     public function let(
-        FeatureFlag $dataQualityInsightsFeature,
+        FeatureFlag               $dataQualityInsightsFeature,
         CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
-        LoggerInterface $logger
-    ) {
+        LoggerInterface           $logger
+    )
+    {
         $this->beConstructedWith(
             $dataQualityInsightsFeature,
             $createProductsCriteriaEvaluations,
@@ -50,7 +51,8 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         $dataQualityInsightsFeature,
         $createProductsCriteriaEvaluations,
         ProductInterface $product
-    ) {
+    )
+    {
         $dataQualityInsightsFeature->isEnabled()->willReturn(false);
         $createProductsCriteriaEvaluations->createAll(Argument::any())->shouldNotBeCalled();
 
@@ -61,7 +63,8 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         $dataQualityInsightsFeature,
         $createProductsCriteriaEvaluations,
         ProductInterface $product
-    ): void {
+    ): void
+    {
         $dataQualityInsightsFeature->isEnabled()->shouldNotBeCalled();
         $createProductsCriteriaEvaluations->createAll(Argument::any())->shouldNotBeCalled();
 
@@ -73,10 +76,11 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         $dataQualityInsightsFeature,
         $createProductsCriteriaEvaluations,
         ProductInterface $product
-    ) {
+    )
+    {
         $product->getId()->willReturn(12345);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
-        $createProductsCriteriaEvaluations->createAll([new ProductId(12345)])->shouldBeCalled();
+        $createProductsCriteriaEvaluations->createAll(ProductIdCollection::fromInt(12345))->shouldBeCalled();
 
         $this->onPostSave(new GenericEvent($product->getWrappedObject(), ['unitary' => true]));
     }
@@ -86,10 +90,13 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         $createProductsCriteriaEvaluations,
         $logger,
         ProductInterface $product
-    ) {
+    )
+    {
         $product->getId()->willReturn(12345);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
-        $createProductsCriteriaEvaluations->createAll([new ProductId(12345)])->willThrow(\Exception::class);
+        $createProductsCriteriaEvaluations
+            ->createAll(ProductIdCollection::fromInt(12345))
+            ->willThrow(\Exception::class);
 
         $logger->error('Unable to create product criteria evaluation', Argument::any())->shouldBeCalledOnce();
 

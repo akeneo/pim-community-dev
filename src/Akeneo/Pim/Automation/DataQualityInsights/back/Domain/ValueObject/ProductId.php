@@ -22,13 +22,18 @@ final class ProductId
         $this->id = $id;
     }
 
-    public function toInt(): int
+    public static function fromString(string $id): self
     {
-        return $this->id;
+        return new self(intval($id));
     }
 
     public function __toString()
     {
         return strval($this->id);
+    }
+
+    public function toInt(): int
+    {
+        return $this->id;
     }
 }

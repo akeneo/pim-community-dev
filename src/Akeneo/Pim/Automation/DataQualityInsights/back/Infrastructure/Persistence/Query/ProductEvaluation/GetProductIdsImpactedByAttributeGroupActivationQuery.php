@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -23,7 +23,10 @@ final class GetProductIdsImpactedByAttributeGroupActivationQuery implements GetP
         $this->dbConnection = $dbConnection;
     }
 
-    public function updatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Iterator
+    /**
+     * @return \Generator<int, ProductIdCollection>
+     */
+    public function updatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Generator
     {
         $impactedFamilies = $this->retrieveFamiliesWithAttributeGroupActivationUpdatedSince($updatedSince);
 
@@ -43,16 +46,16 @@ SQL;
 
         $productIds = [];
         while ($productId = $stmt->fetchOne()) {
-            $productIds[] = new ProductId(intval($productId));
+            $productIds[] = $productId;
 
             if (count($productIds) >= $bulkSize) {
-                yield $productIds;
+                yield ProductIdCollection::fromStrings($productIds);
                 $productIds = [];
             }
         }
 
         if (!empty($productIds)) {
-            yield $productIds;
+            yield ProductIdCollection::fromStrings($productIds);
         }
     }
 

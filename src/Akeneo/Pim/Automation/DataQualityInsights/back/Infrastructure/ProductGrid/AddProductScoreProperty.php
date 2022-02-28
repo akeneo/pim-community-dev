@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductProperties;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\AdditionalProperty;
@@ -39,7 +40,7 @@ final class AddProductScoreProperty implements AddAdditionalProductProperties
             $productIds[] = new ProductId($row->technicalId());
         }
 
-        $productScores = $this->getProductScores->byProductIds($productIds);
+        $productScores = $this->getProductScores->byProductIds(ProductIdCollection::fromProductIds($productIds));
         $channel = new ChannelCode($queryParameters->channelCode());
         $locale = new LocaleCode($queryParameters->localeCode());
 

@@ -10,6 +10,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PhpSpec\ObjectBehavior;
@@ -17,10 +18,11 @@ use PhpSpec\ObjectBehavior;
 class UpdateProductsIndexSpec extends ObjectBehavior
 {
     public function let(
-        Client $esClient,
+        Client                               $esClient,
         GetLatestProductScoresQueryInterface $getProductScoresQuery,
-        ComputeProductsKeyIndicators $computeProductsKeyIndicators
-    ) {
+        ComputeProductsKeyIndicators         $computeProductsKeyIndicators
+    )
+    {
         $this->beConstructedWith($esClient, $getProductScoresQuery, $computeProductsKeyIndicators);
     }
 
@@ -28,10 +30,11 @@ class UpdateProductsIndexSpec extends ObjectBehavior
         $esClient,
         $getProductScoresQuery,
         $computeProductsKeyIndicators
-    ) {
+    )
+    {
         $channelEcommerce = new ChannelCode('ecommerce');
         $localeEn = new LocaleCode('en_US');
-        $productIds = [new ProductId(123), new ProductId(456), new ProductId(42)];
+        $productIds = ProductIdCollection::fromProductIds([new ProductId(123), new ProductId(456), new ProductId(42)]);
 
         $getProductScoresQuery->byProductIds($productIds)->willReturn([
             123 => (new ChannelLocaleRateCollection)
@@ -98,6 +101,6 @@ class UpdateProductsIndexSpec extends ObjectBehavior
             ],
         ])->shouldBeCalled();
 
-        $this->execute([123, 456, 42]);
+        $this->execute(ProductIdCollection::fromInts([123, 456, 42]));
     }
 }
