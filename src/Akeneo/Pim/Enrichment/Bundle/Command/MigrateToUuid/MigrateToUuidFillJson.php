@@ -38,7 +38,19 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
 
     public function shouldBeExecuted(): bool
     {
-        // TODO Add "if there is no quantified_associations type, continue"
+        $sqlQuantified = <<<SQL
+            SELECT EXISTS(
+               SELECT 1
+               FROM pim_catalog_association_type
+               WHERE is_quantified = 1
+            ) as quantified_association
+        SQL;
+
+        $hasQuantifiedAssociationsType = $this->connection->executeQuery($sqlQuantified)->fetchOne();
+        if (!(bool) $hasQuantifiedAssociationsType) {
+            return false;
+        }
+
         $sql = <<<SQL
             SELECT EXISTS(
                 SELECT 1
