@@ -47,15 +47,10 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
             if ($this->tableExists($tableName) && !$this->columnExists($tableName, $columnNames[self::UUID_COLUMN_INDEX])) {
                 $output->writeln(sprintf('    Will add %s', $tableName));
                 if (!$dryRun) {
-                    $this->addUuidColumn(
+                    $this->addUuidColumnAndIndexOnUuid(
                         $tableName,
                         $columnNames[self::UUID_COLUMN_INDEX],
                         $columnNames[self::ID_COLUMN_INDEX]
-                    );
-
-                    $this->addIndexOnUuid(
-                        $tableName,
-                        $columnNames[self::UUID_COLUMN_INDEX]
                     );
                 }
             }
@@ -64,45 +59,27 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
         return true;
     }
 
-    private function addUuidColumn(string $tableName, string $uuidColumName, string $idColumnName): void
-    {
-        $addUuidColumnSql = <<<SQL
+    private function addUuidColumnAndIndexOnUuid(string $tableName, string $uuidColumName, string $idColumnName): void {
+        $addUuidColumnAndIndexOnUuidSql = <<<SQL
             ALTER TABLE `{table_name}`
-            ADD `{uuid_column_name}` BINARY(16) DEFAULT NULL AFTER `{id_column_name}`,
-            LOCK=NONE,
-            ALGORITHM=INPLACE;
+                ADD `{uuid_column_name}` BINARY(16) DEFAULT NULL AFTER `{id_column_name}`,
+                    ALGORITHM=INPLACE,
+                    LOCK=NONE,
+                ADD INDEX `{index_name}` (`{uuid_column_name}`),
+                    ALGORITHM=INPLACE,
+                    LOCK=NONE;
         SQL;
 
-        $addUuidColumnQuery = \strtr(
-            $addUuidColumnSql,
+        $addUuidColumnAndIndexOnUuidQuery = \strtr(
+            $addUuidColumnAndIndexOnUuidSql,
             [
                 '{table_name}' => $tableName,
                 '{uuid_column_name}' => $uuidColumName,
                 '{id_column_name}' => $idColumnName,
-            ]
-        );
-
-        $this->connection->executeQuery($addUuidColumnQuery);
-    }
-
-    private function addIndexOnUuid(string $tableName, string $uuidColumnName): void
-    {
-        $addIndexOnUuidSql = <<<SQL
-            ALTER TABLE {table_name}
-            ADD INDEX {index_name} ({uuid_column_name}),
-            ALGORITHM=INPLACE,
-            LOCK=NONE;
-        SQL;
-
-        $addIndexColumnQuery = \strtr(
-            $addIndexOnUuidSql,
-            [
-                '{table_name}' => $tableName,
                 '{index_name}' => self::INDEX_NAME,
-                '{uuid_column_name}' => $uuidColumnName,
             ]
         );
 
-        $this->connection->executeQuery($addIndexColumnQuery);
+        $this->connection->executeQuery($addUuidColumnAndIndexOnUuidQuery);
     }
 }
