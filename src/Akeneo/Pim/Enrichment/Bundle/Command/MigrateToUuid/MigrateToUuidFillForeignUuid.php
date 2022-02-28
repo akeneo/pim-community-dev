@@ -72,20 +72,20 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
         if ($context->withStats()) {
             $count = $this->getMissingForeignUuidCount($tableName, $uuidColumnName, $idColumnName);
             $output->writeln(sprintf('    Missing %d foreign uuids in "%s" table', $count, $tableName));
-            $shouldBeExecuted = $count > 0;
-            if ($shouldBeExecuted) {
+            if ($count > 0) {
                 $output->writeln(sprintf('    Will add %d foreign uuids in "%s" table', min($count, self::BATCH_SIZE), $tableName));
+                return true;
             }
 
-            return $shouldBeExecuted;
+            return false;
         }
 
-        $shouldBeExecuted = $this->shouldBeExecutedForTable($tableName, $uuidColumnName);
-        if ($shouldBeExecuted) {
+        $shouldContinue = $this->shouldBeExecutedForTable($tableName, $uuidColumnName);
+        if ($shouldContinue) {
             $output->writeln(sprintf('    Will add up to %d foreign uuids in "%s" table', self::BATCH_SIZE, $tableName));
         }
 
-        return $shouldBeExecuted;
+        return $shouldContinue;
     }
 
     private function shouldBeExecutedForTable($tableName, $uuidColumnName): bool
