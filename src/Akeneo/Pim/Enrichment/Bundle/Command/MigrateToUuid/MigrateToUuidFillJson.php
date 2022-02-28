@@ -86,7 +86,7 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         return $allItemsMigrated;
     }
 
-    private function updateProductAssociations($productAssociations): void
+    private function updateAssociations(string $tableName, array $productAssociations): void
     {
         $rows = \array_map(
             fn (array $productAssociation): string => \sprintf(
@@ -102,39 +102,14 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         new_quantified_associations AS (
             SELECT * FROM (VALUES {rows}) as t(id, quantified_associations)
         )
-        UPDATE pim_catalog_product p, new_quantified_associations nqa
+        UPDATE {tableName} p, new_quantified_associations nqa
         SET p.quantified_associations = nqa.quantified_associations
         WHERE p.id = nqa.id
         SQL;
 
         $this->connection->executeQuery(\strtr($sql, [
             '{rows}' => implode(',', $rows),
-        ]));
-    }
-
-    private function updateProductModelAssociations($productAssociations): void
-    {
-        $rows = \array_map(
-            fn (array $productAssociation): string => \sprintf(
-                "ROW(%d, '%s')",
-                $productAssociation['id'],
-                \json_encode($productAssociation['quantified_associations'])
-            ),
-            $productAssociations
-        );
-
-        $sql = <<<SQL
-        WITH
-        new_quantified_associations AS (
-            SELECT * FROM (VALUES {rows}) as t(id, quantified_associations)
-        )
-        UPDATE pim_catalog_product_model pm, new_quantified_associations nqa
-        SET pm.quantified_associations = nqa.quantified_associations
-        WHERE pm.id = nqa.id
-        SQL;
-
-        $this->connection->executeQuery(\strtr($sql, [
-            '{rows}' => implode(',', $rows),
+            '{tableName}' => $tableName,
         ]));
     }
 
@@ -233,11 +208,7 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
 
             $output->writeln(sprintf('    Will update %s entities in %s table', count($associations), $tableName));
             if (!$dryRun) {
-                if ($tableName === 'pim_catalog_product') {
-                    $this->updateProductAssociations($associations);
-                } else {
-                    $this->updateProductModelAssociations($associations);
-                }
+                $this->updateAssociations($tableName, $associations);
                 $associations = $this->getFormerAssociations($tableName, $previousEntityId);
             } else {
                 $output->writeln(sprintf('    Option --dry-run is set, will continue to next step.'));
