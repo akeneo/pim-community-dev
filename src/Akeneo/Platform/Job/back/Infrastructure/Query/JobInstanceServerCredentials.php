@@ -45,7 +45,7 @@ class JobInstanceServerCredentials
             'user' => $this->user,
             'password' => $this->password,
             'port' => $this->port,
-            'is_secure' => $this->isSecure,
+            'is_secure' => (int)$this->isSecure,
             'working_directory' => $this->workingDirectory,
         ];
     }

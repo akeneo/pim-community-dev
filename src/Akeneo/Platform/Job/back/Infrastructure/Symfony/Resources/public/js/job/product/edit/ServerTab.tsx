@@ -46,7 +46,7 @@ const ServerTab = ({jobInstanceCode}: ServerTabProps) => {
       const response = await fetch(getRoute);
       const data = await response.json();
 
-      if([] !== data) {
+      if(data.length !== 0) {
         setServerCredentials(data);
       }
     };
@@ -56,6 +56,7 @@ const ServerTab = ({jobInstanceCode}: ServerTabProps) => {
 
   useEffect(() => {
     mediator.on('job_server_credentials:pre_save', saveServerCredentials);
+
     return () => {mediator.off('job_server_credentials:pre_save', saveServerCredentials)}
   }, [serverCredentials]);
 
@@ -67,17 +68,17 @@ const ServerTab = ({jobInstanceCode}: ServerTabProps) => {
       <TextField
         label="Host"
         value={serverCredentials.host}
-        onChange={(host: string) => setServerCredentials({...serverCredentials, host})}
+        onChange={(host: string) => setServerCredentials(serverCredentials => ({...serverCredentials, host}))}
       />
       <TextField
         label="User"
         value={serverCredentials.user}
-        onChange={(user: string) => setServerCredentials({...serverCredentials, user})}
+        onChange={(user: string) => setServerCredentials(serverCredentials => ({...serverCredentials, user}))}
       />
       <TextField
         label="Password"
         value={serverCredentials.password}
-        onChange={(password: string) => setServerCredentials({...serverCredentials, password})}
+        onChange={(password: string) => setServerCredentials(serverCredentials => ({...serverCredentials, password}))}
         type="password"
       />
       <Field label="Use secure connection">
@@ -86,20 +87,20 @@ const ServerTab = ({jobInstanceCode}: ServerTabProps) => {
           readOnly={false}
           yesLabel="Yes"
           noLabel="No"
-          onChange={(is_secure: boolean) => setServerCredentials({...serverCredentials, is_secure})}
+          onChange={(is_secure: boolean) => setServerCredentials(serverCredentials => ({...serverCredentials, is_secure}))}
         />
       </Field>
       <Field label="Port">
         <NumberInput
           value={serverCredentials.port ? serverCredentials.port.toString():'21'}
           readOnly={false}
-          onChange={(port: string) => setServerCredentials({...serverCredentials, port: parseInt(port)})}
+          onChange={(port: string) => setServerCredentials(serverCredentials => ({...serverCredentials, port: parseInt(port)}))}
         />
       </Field>
       <TextField
         label="Working directory"
         value={serverCredentials.working_directory ?? ''}
-        onChange={(working_directory: string) => setServerCredentials({...serverCredentials, working_directory})}
+        onChange={(working_directory: string) => setServerCredentials(serverCredentials => ({...serverCredentials, working_directory}))}
       />
     </Section>
   );

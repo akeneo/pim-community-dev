@@ -36,14 +36,6 @@ ON DUPLICATE KEY UPDATE
     working_directory = :working_directory
 SQL;
 
-        $this->connection->executeQuery($sql, [
-            'job_instance_code' => $jobInstanceServerCredentials->getJobInstanceCode(),
-            'host' => $jobInstanceServerCredentials->getHost(),
-            'user' => $jobInstanceServerCredentials->getUser(),
-            'password' => $jobInstanceServerCredentials->getPassword(),
-            'port' => $jobInstanceServerCredentials->getPort(),
-            'is_secure' => $jobInstanceServerCredentials->isSecure(),
-            'working_directory' => $jobInstanceServerCredentials->getWorkingDirectory(),
-        ]);
+        $this->connection->executeQuery($sql, $jobInstanceServerCredentials->normalize());
     }
 }
