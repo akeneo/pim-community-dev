@@ -12,6 +12,8 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Connector\Job\JobFileLocation;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemReader;
+use League\Flysystem\Ftp\FtpAdapter;
+use League\Flysystem\Ftp\FtpConnectionOptions;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -67,7 +69,7 @@ final class FetchRemoteFileBeforeImport implements EventSubscriberInterface
         $jobParameters->set('filePath', $localFilePath);
     }
 
-    private function getFileSystem($jobFileLocation, $jobParameters, JobExecution $jobExecution): ?Filesystem
+    private function getFileSystem($jobFileLocation, $jobParameters, JobExecution $jobExecution): ?FilesystemReader
     {
         if (true === $jobFileLocation->isRemote()) {
             return $this->filesystem;
@@ -75,35 +77,30 @@ final class FetchRemoteFileBeforeImport implements EventSubscriberInterface
 
         if ('ftp' === $jobParameters->get('fileSource')) {
             $serverCredentials = $this->getJobInstanceServerCredentials->byJobInstanceCode($jobExecution->getJobInstance()->getCode());
-            return $this->getFtpFileSystem($serverCredentials);
+            $serverCredentials = $serverCredentials->normalize();
+
+            $adapter = new FtpAdapter(
+                FtpConnectionOptions::fromArray([
+                    'host' => $serverCredentials['host'], // required
+                    'root' => $serverCredentials['working_directory'], // required
+                    'username' => $serverCredentials['user'], // required
+                    'password' => $serverCredentials['password'], // required
+                    'port' => $serverCredentials['port'],
+//                    'ssl' => false,
+//                    'timeout' => 90,
+//                    'utf8' => false,
+//                    'passive' => true,
+//                    'transferMode' => FTP_BINARY,
+//                    'systemType' => null, // 'windows' or 'unix'
+//                    'ignorePassiveAddress' => null, // true or false
+//                    'timestampsOnUnixListingsEnabled' => false, // true or false
+//                    'recurseManually' => true // true
+                ])
+            );
+
+            return new Filesystem($adapter);
         }
 
         return null;
-    }
-
-    private function getFtpFileSystem(JobInstanceServerCredentials $serverCredentials): Filesystem
-    {
-        // The internal adapter
-        $adapter = new League\Flysystem\Ftp\FtpAdapter(
-        // Connection options
-            League\Flysystem\Ftp\FtpConnectionOptions::fromArray([
-                'host' => 'hostname', // required
-                'root' => '/root/path/', // required
-                'username' => 'username', // required
-                'password' => 'password', // required
-                'port' => 21,
-                'ssl' => false,
-                'timeout' => 90,
-                'utf8' => false,
-                'passive' => true,
-                'transferMode' => FTP_BINARY,
-                'systemType' => null, // 'windows' or 'unix'
-                'ignorePassiveAddress' => null, // true or false
-                'timestampsOnUnixListingsEnabled' => false, // true or false
-                'recurseManually' => true // true
-            ])
-        );
-
-        return new Filesystem($adapter);
     }
 }
