@@ -126,5 +126,19 @@ services:
     networks:
       - 'pim'
 
+  ftp_server:
+    image: stilliard/pure-ftpd:hardened
+    environment:
+      PUBLICHOST: ftp_server
+      FTP_USER_NAME: ziggy
+      FTP_USER_PASS: ziggy
+      FTP_USER_HOME: /home/ziggy
+      FTP_USER_UID: 1000
+      FTP_USER_GID: 1000
+    volumes:
+      - ./var/ftp_files:/home/ziggy
+    networks:
+      - 'pim'
+
 networks:
   pim:

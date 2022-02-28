@@ -12,6 +12,7 @@ public/log
 public/app_local.php
 var/archive/*
 var/*
+!var/ftp_files
 !var/SymfonyRequirements.php
 !var/PimRequirements.php
 var/uploads/*
