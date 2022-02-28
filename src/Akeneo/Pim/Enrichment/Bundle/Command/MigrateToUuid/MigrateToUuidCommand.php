@@ -6,6 +6,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -52,15 +53,16 @@ class MigrateToUuidCommand extends Command
             }
 
             if ($step->shouldBeExecuted()) {
-                // TODO Add timing for each migration
                 $output->writeln('    Add missing items... ');
+                $stepStartTime = \microtime(true);
                 if (!$step->addMissing($context, $output)) {
                     $output->writeln('    An item can not be migrated. Stop here.');
 
                     return Command::FAILURE;
                 }
+                $stepDuration = \microtime(true) - $stepStartTime;
 
-                $output->writeln('    Step done');
+                $output->writeln(\sprintf('    Step done in %0.2f seconds', $stepDuration));
             } else {
                 $output->writeln('    No items to migrate, skip.');
             }
