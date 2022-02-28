@@ -56,6 +56,7 @@ const ServerTab = ({jobInstanceCode}: ServerTabProps) => {
 
   useEffect(() => {
     mediator.on('job_server_credentials:pre_save', saveServerCredentials);
+    return () => {mediator.off('job_server_credentials:pre_save', saveServerCredentials)}
   }, [serverCredentials]);
 
   return (
@@ -90,7 +91,7 @@ const ServerTab = ({jobInstanceCode}: ServerTabProps) => {
       </Field>
       <Field label="Port">
         <NumberInput
-          value={serverCredentials.port.toString()}
+          value={serverCredentials.port ? serverCredentials.port.toString():'21'}
           readOnly={false}
           onChange={(port: string) => setServerCredentials({...serverCredentials, port: parseInt(port)})}
         />

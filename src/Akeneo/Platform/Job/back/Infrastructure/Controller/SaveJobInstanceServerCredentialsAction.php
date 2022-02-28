@@ -14,21 +14,21 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Job\Infrastructure\Controller;
 
 use Akeneo\Platform\Job\Infrastructure\Query\JobInstanceServerCredentials;
-use Akeneo\Platform\Job\Infrastructure\Query\SaveJobInstanceSeverCredentials;
+use Akeneo\Platform\Job\Infrastructure\Query\SaveJobInstanceServerCredentials;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class SaveJobInstanceServerCredentialsAction
 {
     public function __construct(
-        private SaveJobInstanceSeverCredentials $saveJobInstanceSeverCredentials,
+        private SaveJobInstanceServerCredentials $saveJobInstanceServerCredentials,
     ) {
     }
 
     public function __invoke(Request $request): Response {
         $jobInstanceServerCredentials = JobInstanceServerCredentials::create(json_decode($request->getContent(), true));
 
-        $this->saveJobInstanceSeverCredentials->save($jobInstanceServerCredentials);
+        $this->saveJobInstanceServerCredentials->save($jobInstanceServerCredentials);
 
         return new Response();
     }

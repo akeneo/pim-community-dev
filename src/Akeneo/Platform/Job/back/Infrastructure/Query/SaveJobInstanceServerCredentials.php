@@ -2,20 +2,11 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2022 Akeneo SAS (https://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Platform\Job\Infrastructure\Query;
 
 use Doctrine\DBAL\Connection;
 
-class SaveJobInstanceSeverCredentials
+class SaveJobInstanceServerCredentials
 {
     public function __construct(
         private Connection $connection,
@@ -34,7 +25,7 @@ INSERT INTO akeneo_batch_job_instance_server_credentials (
     is_secure,
     working_directory
 )
-VALUES (:job_instance_code, :cron_expression)
+VALUES (:job_instance_code, :host, :user, :password, :port, :is_secure, :working_directory)
 ON DUPLICATE KEY UPDATE 
     job_instance_code = :job_instance_code,
     host = :host,
