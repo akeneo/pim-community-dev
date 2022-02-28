@@ -32,17 +32,13 @@ interface MigrateToUuidStep
     /**
      * Returns the exact item count to be migrated.
      * The computation of this count can be expensive, to use with caution.
-     *
-     * @return int
      */
     public function getMissingCount(): int;
 
-    public function addMissing(bool $dryRun, OutputInterface $output): bool;
+    public function addMissing(Context $context, OutputInterface $output): bool;
 
     /**
      * Returns if the migration has to be executed or not
-     *
-     * @return bool
      */
     public function shouldBeExecuted(): bool;
 

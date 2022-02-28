@@ -41,8 +41,8 @@ class MigrateToUuidCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $dryRun = $input->getOption('dry-run');
         $withStats = $input->getOption('with-stats');
+        $context = new Context($input->getOption('dry-run'), $withStats);
         $itemNotMigrated = false;
 
         foreach ($this->steps as $stepIndex => $step) {
@@ -56,10 +56,9 @@ class MigrateToUuidCommand extends Command
             }
 
             if ($step->shouldBeExecuted()) {
-                // TODO Add the with-stats to not count anything in the next steps
                 // TODO Add timing for each migration
                 $output->writeln('    Add missing items... ');
-                $allItemsMigrated = $step->addMissing($dryRun, $output);
+                $allItemsMigrated = $step->addMissing($context, $output);
                 if ($allItemsMigrated) {
                     $output->writeln('    Step done');
                 } else {
