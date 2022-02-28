@@ -45,13 +45,18 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
     {
         foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
             if ($this->tableExists($tableName) && !$this->columnExists($tableName, $columnNames[self::UUID_COLUMN_INDEX])) {
-                $output->writeln(sprintf('    Will add %s', $tableName));
+                $output->write(sprintf('    Will add %s', $tableName));
                 if (!$context->dryRun()) {
+                    $stepStartTime = \microtime(true);
                     $this->addUuidColumnAndIndexOnUuid(
                         $tableName,
                         $columnNames[self::UUID_COLUMN_INDEX],
                         $columnNames[self::ID_COLUMN_INDEX]
                     );
+                    $stepDuration = \microtime(true) - $stepStartTime;
+                    $output->writeln(\sprintf(' - done in %0.2f seconds', $stepDuration));
+                } else {
+                    $output->writeln('');
                 }
             }
         }
