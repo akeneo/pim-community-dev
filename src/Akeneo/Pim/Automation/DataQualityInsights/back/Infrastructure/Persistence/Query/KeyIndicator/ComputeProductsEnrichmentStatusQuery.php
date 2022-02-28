@@ -8,7 +8,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enri
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithGoodEnrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\ComputeProductsKeyIndicator;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductsEvaluationsDataByCriterionInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Channels;
@@ -28,8 +27,7 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
         private Connection                        $db,
         private GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
         private Channels                          $channels,
-        private Locales                           $locales,
-        private GetProductsEvaluationsDataByCriterionInterface $getProductsEvaluationsDataByCriterion
+        private Locales                           $locales
     ) {
     }
 
@@ -79,7 +77,6 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
 
     private function computeEnrichmentStatus(array $evaluations, int $channelId, int $localeId): ?bool
     {
-
         $nonRequiredAttributesEvaluation = $evaluations[EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE] ?? [];
         $requiredAttributesEvaluation = $evaluations[EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE] ?? [];
 
@@ -128,8 +125,25 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
 
     private function getProductsEvaluationsByCriterion(string $criterionCode, array $productIds): array
     {
+        $query = <<<SQL
+SELECT product_id, result
+FROM pim_data_quality_insights_product_criteria_evaluation
+WHERE product_id IN(:productIds) AND criterion_code = :criterionCode
+SQL;
+
+        $stmt = $this->db->executeQuery(
+            $query,
+            [
+                'productIds' => $productIds,
+                'criterionCode' => $criterionCode,
+            ],
+            [
+                'productIds' => Connection::PARAM_INT_ARRAY,
+            ]
+        );
+
         $evaluations = [];
-        foreach ($this->getProductsEvaluationsDataByCriterion->execute($criterionCode, $productIds) as $evaluation) {
+        while ($evaluation = $stmt->fetchAssociative()) {
             $evaluationResult = isset($evaluation['result']) ? json_decode($evaluation['result'], true) : null;
             $evaluationResultData = $evaluationResult[TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data']] ?? [];
 
@@ -143,8 +157,6 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
                 // The data 'attributes_with_rates' is deprecated, but can still exist because of no migration data. (See PLG-468)
                 $evaluations[$evaluation['product_id']]['number_of_improvable_attributes'] = count($evaluationResultData[TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['attributes_with_rates']]);
             }
-
-
         }
 
         return $evaluations;
