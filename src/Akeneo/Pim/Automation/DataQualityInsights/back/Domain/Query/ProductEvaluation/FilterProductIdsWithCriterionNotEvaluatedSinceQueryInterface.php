@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 
-interface GetProductIdsWithOutdatedAttributeSpellcheckQueryInterface
+interface FilterProductIdsWithCriterionNotEvaluatedSinceQueryInterface
 {
-    /**
-     * @return \Iterator<int, ProductIdCollection>
-     */
-    public function evaluatedSince(\DateTimeImmutable $evaluatedSince, int $bulkSize): \Iterator;
+    public function execute(ProductIdCollection $productIds, \DateTimeImmutable $evaluatedSince, CriterionCode $criterionCode): ProductIdCollection;
 }

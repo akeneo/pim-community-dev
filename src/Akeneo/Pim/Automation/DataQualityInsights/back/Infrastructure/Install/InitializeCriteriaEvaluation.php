@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Doctrine\DBAL\Connection;
 
@@ -53,7 +54,7 @@ final class InitializeCriteriaEvaluation
                 return new ProductId($id);
             }, $ids);
 
-            $this->createProductsCriteriaEvaluations->createAll($productIds);
+            $this->createProductsCriteriaEvaluations->createAll(ProductIdCollection::fromProductIds($productIds));
         }
     }
 }
