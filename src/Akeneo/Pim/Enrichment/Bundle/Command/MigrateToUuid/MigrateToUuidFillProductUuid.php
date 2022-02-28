@@ -52,7 +52,10 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
     {
         while ($this->shouldContinue($context, $output) > 0) {
             if (!$context->dryRun()) {
+                $stepStartTime = \microtime(true);
                 $this->fillMissingProductUuids();
+                $stepDuration = \microtime(true) - $stepStartTime;
+                $output->writeln(sprintf(' : done in %0.2f seconds', $stepDuration));
             } else {
                 $output->writeln(sprintf('    Option --dry-run is set, will continue to next step.'));
                 break;
