@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Marketplace\Controller\Internal;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
+use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
@@ -118,6 +119,6 @@ class GetAllExtensionsEndToEnd extends WebTestCase
 
     private function getWebMarketplaceApi(): FakeWebMarketplaceApi
     {
-        return $this->get('akeneo_connectivity.connection.marketplace.web_marketplace_api');
+        return $this->get(WebMarketplaceApi::class);
     }
 }

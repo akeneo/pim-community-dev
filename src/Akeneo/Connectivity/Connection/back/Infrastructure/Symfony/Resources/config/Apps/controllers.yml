@@ -5,7 +5,7 @@ services:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider'
-            - '@akeneo_connectivity.connection.marketplace.app_url_generator'
+            - '@Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator'
             - '@oro_security.security_facade'
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\IsConnectionsNumberLimitReachedQuery'

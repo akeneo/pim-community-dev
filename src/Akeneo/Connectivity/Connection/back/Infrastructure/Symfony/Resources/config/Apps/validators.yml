@@ -19,7 +19,7 @@ services:
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\CodeChallengeMustBeValidValidator:
         arguments:
-            - '@akeneo_connectivity.connection.marketplace.web_marketplace_api'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppQuery'
             - '@akeneo_connectivity.connection.marketplace_fake_apps.feature'
         tags:
