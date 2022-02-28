@@ -18,7 +18,7 @@ class GetTestAppQueryIntegration extends TestCase
 {
     private Connection $connection;
     private ConnectedAppLoader $connectedAppLoader;
-    private \Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppQuery $query;
+    private GetTestAppQuery $query;
 
     protected function setUp(): void
     {

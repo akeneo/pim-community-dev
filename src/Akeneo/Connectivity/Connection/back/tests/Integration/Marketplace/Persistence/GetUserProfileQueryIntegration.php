@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Marketplace\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetUserProfileQueryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetUserProfileQuery;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection as DbalConnection;
@@ -33,7 +34,7 @@ class GetUserProfileQueryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->getUserProfileQuery = $this->get('Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetUserProfileQuery');
+        $this->getUserProfileQuery = $this->get(GetUserProfileQuery::class);
         $this->dbalConnection = self::$container->get('database_connection');
     }
 
