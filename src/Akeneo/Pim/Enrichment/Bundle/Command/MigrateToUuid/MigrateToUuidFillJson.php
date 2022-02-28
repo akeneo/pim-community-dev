@@ -218,12 +218,15 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
                 $previousEntityId = $productId;
             }
 
-            $output->writeln(sprintf('    Will update %s entities in %s table', count($associations), $tableName));
+            $output->write(sprintf('    Will update %s entities in %s table', count($associations), $tableName));
             if (!$dryRun) {
+                $stepStartTime = \microtime(true);
                 $this->updateAssociations($tableName, $associations);
                 $associations = $this->getFormerAssociations($tableName, $previousEntityId);
+                $stepDuration = \microtime(true) - $stepStartTime;
+                $output->writeln(\sprintf(' : done in %0.2f seconds', $stepDuration));
             } else {
-                $output->writeln(sprintf('    Option --dry-run is set, will continue to next step.'));
+                $output->writeln("\n    Option --dry-run is set, will continue to next step.");
                 $associations = [];
             }
         }
