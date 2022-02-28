@@ -22,7 +22,7 @@ import Rates from './Rates.interface';
 import AttributeWithRecommendation from './AttributeWithRecommendation.interface';
 import Evaluation, {ProductEvaluation, AxisEvaluation, CriterionEvaluationResult, Status} from './Evaluation.interface';
 import {KeyIndicator, keyIndicatorMap, KeyIndicatorTips, KeyIndicatorsTips, Tip} from './KeyIndicator';
-import {ProductQualityScore} from './ProductQualityScore';
+import {QualityScore} from './QualityScore';
 export * from './KeyIndicator';
 
 export {
@@ -57,6 +57,6 @@ export {
   KeyIndicatorTips,
   KeyIndicatorsTips,
   Tip,
-  ProductQualityScore,
+  QualityScore,
 };
 export * from './Score';
