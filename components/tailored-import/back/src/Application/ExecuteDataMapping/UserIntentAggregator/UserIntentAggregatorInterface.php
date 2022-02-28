@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentAggregator;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 
 interface UserIntentAggregatorInterface
 {
     /**
-     * @param array<UserIntent> $userIntents
-     * @return array<UserIntent>
+     * @param array<ValueUserIntent> $userIntents
+     * @return array<ValueUserIntent>
      */
     public function aggregateByTarget(array $userIntents): array;
 }

@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
 use Akeneo\Platform\TailoredImport\Domain\Model\TargetInterface;
 
 class TextUserIntentFactory implements UserIntentFactoryInterface
 {
-    public function create(TargetInterface $target, string $value): UserIntent
+    public function create(TargetInterface $target, string $value): ValueUserIntent
     {
         if (!$target instanceof TargetAttribute) {
             throw new \InvalidArgumentException('The target must be a TargetAttribute');
