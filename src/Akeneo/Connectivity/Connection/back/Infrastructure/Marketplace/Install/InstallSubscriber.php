@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Install;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Install;
 
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Doctrine\DBAL\Connection as DbalConnection;
@@ -28,7 +28,6 @@ class InstallSubscriber implements EventSubscriberInterface
 
     public function createTable(): void
     {
-        $this->dbalConnection->executeStatement(CreateAppTableQuery::QUERY);
-        $this->dbalConnection->executeStatement(CreateUserConsentTable::QUERY);
+        $this->dbalConnection->executeStatement(CreateTestAppTableQuery::QUERY);
     }
 }

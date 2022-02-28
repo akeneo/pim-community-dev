@@ -154,3 +154,9 @@ services:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\DeleteTestAppQuery'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Install\InstallSubscriber:
+        arguments:
+            - '@database_connection'
+        tags:
+            - {name: kernel.event_subscriber}
