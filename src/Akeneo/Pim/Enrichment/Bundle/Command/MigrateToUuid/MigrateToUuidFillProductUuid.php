@@ -95,43 +95,34 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
 
     private function fillMissingProductUuids(): void
     {
-        $this->connection->beginTransaction();
+        $rows = [];
+        for ($rowNumber = 1; $rowNumber <= self::BATCH_SIZE; $rowNumber++) {
+            $rows[] = \sprintf("ROW(%d, '%s')", $rowNumber, Uuid::uuid4()->toString());
+        }
 
-        $productIdsWithNullUuids = $this->getProductIdsWithNullUuids();
-
-        /**
-         * We need to insert mysql valid row, even if the ON DUPLICATE KEY updates only uuid.
-         * The double md5(rand()) is here to be sure there will not be any collision on identifier.
-         */
-        $values = array_map(fn (string $productId): string => \strtr(
-            '({product_id}, UUID_TO_BIN("{uuid}"), 1, CONCAT(md5(rand()), md5(rand())), "{}", NOW(), NOW())',
-            [
-                '{product_id}' => $productId,
-                '{uuid}' => Uuid::uuid4()->toString(),
-            ]
-        ), $productIdsWithNullUuids);
-
-        $insertSql = <<<SQL
-            INSERT INTO pim_catalog_product (id, uuid, is_enabled, identifier, raw_values, created, updated)
-            VALUES {values}
-            ON DUPLICATE KEY UPDATE uuid=VALUES(uuid)
-        SQL;
-
-        $this->connection->executeQuery(\strtr($insertSql, ['{values}' => implode(', ', $values)]));
-        $this->connection->commit();
-    }
-
-    private function getProductIdsWithNullUuids(): array
-    {
-        $sqlProductIdsWithNullUuids = <<<SQL
-            SELECT id
-            FROM pim_catalog_product 
+        $sql = <<<SQL
+        WITH
+        product_uuid AS (
+            SELECT * FROM (VALUES
+                {rows}
+            ) as t(rn, uuid)
+        ),
+        product_to_migrate AS (
+            SELECT id, row_number() over () as rn
+            FROM pim_catalog_product
             WHERE uuid is NULL
             LIMIT {batch_size}
+        )
+        UPDATE pim_catalog_product p, product_to_migrate, product_uuid
+        SET p.uuid = UUID_TO_BIN(product_uuid.uuid)
+        WHERE p.id = product_to_migrate.id AND product_to_migrate.rn = product_uuid.rn;
         SQL;
 
-        return $this->connection->fetchFirstColumn(
-            \strtr($sqlProductIdsWithNullUuids, ['{batch_size}' => self::BATCH_SIZE])
-        );
+        $sql = strtr($sql, [
+            '{rows}' => \implode(',', $rows),
+            '{batch_size}' => self::BATCH_SIZE,
+        ]);
+
+        $this->connection->executeQuery($sql);
     }
 }
