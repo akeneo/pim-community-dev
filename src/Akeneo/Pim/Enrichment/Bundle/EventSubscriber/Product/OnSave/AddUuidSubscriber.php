@@ -62,7 +62,7 @@ class AddUuidSubscriber implements EventSubscriberInterface
                     UPDATE pim_catalog_product 
                     SET uuid=UUID_TO_BIN(:uuid)
                     WHERE identifier=:identifier
-                    AND uuid IS NOT NULL;
+                    AND uuid IS NULL;
                 SQL,
                 [
                     'uuid' => Uuid::uuid4()->toString(),
