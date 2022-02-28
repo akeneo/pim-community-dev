@@ -17,7 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-final class MigrationToUuidCommandIntegration extends TestCase
+final class MigrateToUuidCommandIntegration extends TestCase
 {
     use MigrateToUuidTrait;
 
