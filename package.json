@@ -104,7 +104,7 @@
   "dependencies": {
     "@types/backbone": "1.4.8",
     "babel-polyfill": "6.26.0",
-    "backbone": "0.9.10",
+    "backbone": "1.4.1",
     "css-loader": "^3.3.0",
     "dep-diff": "1.0.1",
     "dropzone": "4.0.1",
