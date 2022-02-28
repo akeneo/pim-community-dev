@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub;
 
+use Akeneo\Platform\Bundle\FrameworkBundle\Messenger\TenantIdStamp;
 use Akeneo\Tool\Bundle\MessengerBundle\Stamp\NativeMessageStamp;
 use Google\Cloud\Core\Exception\GoogleException;
 use Google\Cloud\PubSub\Message;
@@ -50,10 +51,13 @@ final class GpsReceiver implements ReceiverInterface
             'headers' => $message->attributes(),
         ]);
 
+        $envelope->getMessage()->tenantId = $message->attribute('tenant_id');
+
         return [
             $envelope
                 ->with(new TransportMessageIdStamp($message->id()))
                 ->with(new NativeMessageStamp($message))
+                ->with(new TenantIdStamp($message->attribute('tenant_id')))
         ];
     }
 
