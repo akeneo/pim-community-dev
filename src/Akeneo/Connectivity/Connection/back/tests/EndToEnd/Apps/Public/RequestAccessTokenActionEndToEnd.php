@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Tests\Integration\Apps\Validation;
+namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Apps\Public;
 
+use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler;
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
-use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AccessTokenRequest;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
@@ -15,118 +16,112 @@ use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class AccessTokenRequestValidationIntegration extends WebTestCase
+class RequestAccessTokenActionEndToEnd extends WebTestCase
 {
-    private ValidatorInterface $validator;
     private FakeWebMarketplaceApi $webMarketplaceApi;
     private FakeFeatureFlag $featureFlagMarketplaceActivate;
     private ClientProvider $clientProvider;
     private RequestAppAuthorizationHandler $appAuthorizationHandler;
     private string $clientId;
+    private GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler;
 
-    public function test_it_validates_the_access_token_request(): void
+    public function test_to_redeem_a_code_for_token(): void
     {
         $this->createApp();
         $authCode = $this->getAuthCode();
 
-        $accessTokenRequest = new AccessTokenRequest($this->clientId, $authCode, 'authorization_code', '12345', '12345');
-        $violations = $this->validator->validate($accessTokenRequest);
+        $this->featureFlagMarketplaceActivate->enable();
+        $this->client->request(
+            'POST',
+            '/connect/apps/v1/oauth2/token',
+            [
+                'client_id' => $this->clientId,
+                'code' => $authCode,
+                'code_identifier' => 'any_code',
+                'code_challenge' => 'code_challenge_hash',
+                'grant_type' => 'authorization_code',
+            ]
+        );
+        $response = $this->client->getResponse();
+        $content = json_decode($response->getContent(), true);
 
-        Assert::assertCount(0, $violations);
+        Assert::assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        Assert::assertIsArray($content);
+        Assert::assertArrayHasKey('access_token', $content);
+        Assert::assertIsString($content['access_token']);
+        Assert::assertArrayHasKey('token_type', $content);
+        Assert::assertEquals('bearer', $content['token_type']);
+        Assert::assertArrayHasKey('scope', $content);
+        Assert::assertEquals('delete_products read_association_types write_catalog_structure', $content['scope']);
     }
 
-    public function test_it_invalidates_a_not_known_client_id(): void
-    {
-        $accessTokenRequest = new AccessTokenRequest('unknown_client_id', '12345', 'authorization_code', '12345', '12345');
-        $violations = $this->validator->validate($accessTokenRequest);
-
-        $this->assertHasViolation($violations, 'clientId', 'invalid_client');
-    }
-
-    public function test_it_invalidates_a_blank_client_id(): void
-    {
-        $accessTokenRequest = new AccessTokenRequest('', '12345', 'authorization_code', '12345', '12345');
-        $violations = $this->validator->validate($accessTokenRequest);
-
-        $this->assertHasViolation($violations, 'clientId', 'invalid_request');
-    }
-
-    public function test_it_invalidates_a_blank_code_identifier(): void
-    {
-        $this->createApp();
-
-        $accessTokenRequest = new AccessTokenRequest($this->clientId, '12345', 'authorization_code', '', '12345');
-        $violations = $this->validator->validate($accessTokenRequest);
-
-        $this->assertHasViolation($violations, 'codeIdentifier', 'invalid_request');
-    }
-
-    public function test_it_invalidates_a_blank_code_challenge(): void
+    public function test_to_get_again_the_access_token(): void
     {
         $this->createApp();
+        $authCode = $this->getAuthCode();
 
-        $accessTokenRequest = new AccessTokenRequest($this->clientId, '12345', 'authorization_code', '12345', '');
-        $violations = $this->validator->validate($accessTokenRequest);
+        $this->featureFlagMarketplaceActivate->enable();
+        $this->client->request(
+            'POST',
+            '/connect/apps/v1/oauth2/token',
+            [
+                'client_id' => $this->clientId,
+                'code' => $authCode,
+                'code_identifier' => 'any_code',
+                'code_challenge' => 'code_challenge_hash',
+                'grant_type' => 'authorization_code',
+            ]
+        );
+        $creationResponse = $this->client->getResponse();
+        Assert::assertEquals(Response::HTTP_OK, $creationResponse->getStatusCode());
+        $creationContent = json_decode($creationResponse->getContent(), true);
+        Assert::assertArrayHasKey('access_token', $creationContent);
+        Assert::assertIsString($creationContent['access_token']);
+        $createdToken = $creationContent['access_token'];
 
-        $this->assertHasViolation($violations, 'codeChallenge', 'invalid_request');
+        $secondResponse = $this->client->getResponse();
+        $content = json_decode($secondResponse->getContent(), true);
+
+        Assert::assertIsArray($content);
+        Assert::assertArrayHasKey('access_token', $content);
+        Assert::assertSame($createdToken, $content['access_token']);
     }
 
-    public function test_it_invalidates_a_blank_authorization_code(): void
+    public function test_to_get_a_bad_request_if_the_request_is_wrong(): void
     {
         $this->createApp();
+        $authCode = $this->getAuthCode();
 
-        $accessTokenRequest = new AccessTokenRequest($this->clientId, '', 'authorization_code', '12345', '12345');
-        $violations = $this->validator->validate($accessTokenRequest);
+        $this->featureFlagMarketplaceActivate->enable();
+        $this->client->request(
+            'POST',
+            '/connect/apps/v1/oauth2/token',
+            [
+                // No client_id
+                'code' => $authCode,
+                'code_identifier' => 'any_code',
+                'code_challenge' => 'code_challenge_hash',
+                'grant_type' => 'authorization_code',
+            ]
+        );
+        $response = $this->client->getResponse();
+        $content = json_decode($response->getContent(), true);
 
-        $this->assertHasViolation($violations, 'authorizationCode', 'invalid_request');
-    }
-
-    public function test_it_invalidates_a_not_known_authorization_code(): void
-    {
-        $this->createApp();
-
-        $accessTokenRequest = new AccessTokenRequest($this->clientId, 'unknown_auth_code', 'authorization_code', '12345', '12345');
-        $violations = $this->validator->validate($accessTokenRequest);
-
-        $this->assertHasViolation($violations, 'authorizationCode', 'invalid_grant');
-    }
-
-    public function test_it_invalidates_the_grant_type(): void
-    {
-        $this->createApp();
-
-        $accessTokenRequest = new AccessTokenRequest($this->clientId, '12345', 'wrong_grant_type', '12345', '12345');
-        $violations = $this->validator->validate($accessTokenRequest);
-
-        $this->assertHasViolation($violations, 'grantType', 'unsupported_grant_type');
-    }
-
-    public function test_it_invalidates_a_wrong_code_challenge(): void
-    {
-        $this->webMarketplaceApi->setCodeChallengeResult(false);
-        $this->createApp();
-
-        $accessTokenRequest = new AccessTokenRequest($this->clientId, '12345', 'authorization_code', '12345', '12345');
-        $violations = $this->validator->validate($accessTokenRequest);
-
-        $this->assertHasViolation($violations, 'codeChallenge', 'invalid_client');
+        Assert::assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        Assert::assertSame('invalid_request', $content['error']);
     }
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->validator = $this->get('validator');
-
         $this->webMarketplaceApi = $this->get('akeneo_connectivity.connection.marketplace.web_marketplace_api');
         $this->featureFlagMarketplaceActivate = $this->get('akeneo_connectivity.connection.marketplace_activate.feature');
         $this->clientProvider = $this->get(ClientProvider::class);
+        $this->generateAsymmetricKeysHandler = $this->get(GenerateAsymmetricKeysHandler::class);
         $this->appAuthorizationHandler = $this->get(RequestAppAuthorizationHandler::class);
         $this->clientId = '90741597-54c5-48a1-98da-a68e7ee0a715';
-        $this->get('akeneo_connectivity.connection.marketplace_fake_apps.feature')->disable();
         $this->loadAppsFixtures();
     }
 
@@ -144,22 +139,6 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
         $this->authenticateAsAdmin();
         $app = App::fromWebMarketplaceValues($this->webMarketplaceApi->getApp($appId));
         $this->clientProvider->findOrCreateClient($app);
-    }
-
-    private function assertHasViolation(
-        ConstraintViolationList $constraintViolationList,
-        string $propertyPath,
-        string $message
-    ): void {
-        $violationFound = false;
-        foreach ($constraintViolationList as $violation) {
-            if ($violation->getPropertyPath() === $propertyPath && $violation->getMessage() === $message) {
-                $violationFound = true;
-                break;
-            }
-        }
-
-        Assert::assertTrue($violationFound, sprintf('The violation at property path "%s" has not been found.', $propertyPath));
     }
 
     private function getAuthCode(): string
@@ -196,6 +175,8 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
 
     private function loadAppsFixtures(): void
     {
+        $this->generateAsymmetricKeysHandler->handle(new GenerateAsymmetricKeysCommand());
+
         $apps = [
             [
                 'id' => $this->clientId,

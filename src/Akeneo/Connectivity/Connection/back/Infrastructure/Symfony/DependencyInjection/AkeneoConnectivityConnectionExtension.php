@@ -20,7 +20,15 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $container->setParameter('connectivity.marketplace_fixtures_directory', __DIR__ . '/../Resources/fixtures/');
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('apps.yml');
+        $loader->load('Apps/commands.yml');
+        $loader->load('Apps/controllers.yml');
+        $loader->load('Apps/handlers.yml');
+        $loader->load('Apps/install.yml');
+        $loader->load('Apps/normalizers.yml');
+        $loader->load('Apps/oauth.yml');
+        $loader->load('Apps/queries.yml');
+        $loader->load('Apps/services.yml');
+        $loader->load('Apps/validators.yml');
         $loader->load('cli.yml');
         $loader->load('controllers.yml');
         $loader->load('event_normalizers.yml');
