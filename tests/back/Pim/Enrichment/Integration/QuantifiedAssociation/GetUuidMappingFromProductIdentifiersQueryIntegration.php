@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetUuidMappingFromProductIdentifiersQueryInterface;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
+use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -17,8 +18,7 @@ use Ramsey\Uuid\UuidInterface;
  */
 class GetUuidMappingFromProductIdentifiersQueryIntegration extends TestCase
 {
-    /** @var GetUuidMappingFromProductIdentifiersQueryInterface */
-    private $getUuidMappingFromProductIdentifiersQuery;
+    private GetUuidMappingFromProductIdentifiersQueryInterface $getUuidMappingFromProductIdentifiersQuery;
 
     protected function setUp(): void
     {
@@ -38,13 +38,14 @@ class GetUuidMappingFromProductIdentifiersQueryIntegration extends TestCase
         }
 
         $productIdentifier = 'product_1';
+        Assert::assertTrue($this->uuidColumnExists());
         $this->createProduct($productIdentifier);
 
         $idMapping = $this->getUuidMappingFromProductIdentifiersQuery->execute([$productIdentifier]);
 
-        $actualUuid = $idMapping->getUuid($productIdentifier);
-
         $expectedUuid = $this->getProductUuid($productIdentifier);
+        Assert::assertTrue($idMapping->hasUuid($productIdentifier));
+        $actualUuid = $idMapping->getUuid($productIdentifier);
 
         self::assertEquals($expectedUuid->toString(), $actualUuid->toString());
 
@@ -62,6 +63,7 @@ class GetUuidMappingFromProductIdentifiersQueryIntegration extends TestCase
         }
 
         $productIdentifier = 'product_1';
+        Assert::assertFalse($this->uuidColumnExists());
         $this->createProduct($productIdentifier);
 
         $idMapping = $this->getUuidMappingFromProductIdentifiersQuery->execute([$productIdentifier]);
