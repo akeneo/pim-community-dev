@@ -22,7 +22,6 @@ class JobInstanceServerCredentials
         private string $password,
         private int $port,
         private bool $isSecure,
-        private ?string $workingDirectory,
     ) {
     }
 
@@ -34,7 +33,6 @@ class JobInstanceServerCredentials
             $jobInstanceServerCredentials['password'],
             (int)$jobInstanceServerCredentials['port'],
             (bool)$jobInstanceServerCredentials['is_secure'],
-            $jobInstanceServerCredentials['working_directory']
         );
     }
 
@@ -46,7 +44,6 @@ class JobInstanceServerCredentials
             'password' => $this->password,
             'port' => $this->port,
             'is_secure' => (int)$this->isSecure,
-            'working_directory' => $this->workingDirectory,
         ];
     }
 }

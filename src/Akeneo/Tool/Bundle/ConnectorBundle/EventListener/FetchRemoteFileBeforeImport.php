@@ -61,7 +61,7 @@ final class FetchRemoteFileBeforeImport implements EventSubscriberInterface
         $localFilePath = $workingDirectory.DIRECTORY_SEPARATOR.basename($jobFileLocation->path());
 
         $fileSystem = $this->getFileSystem($jobFileLocation, $jobExecution);
-        $remoteStream =  $fileSystem->readStream($jobFileLocation->path());
+        $remoteStream = $fileSystem->readStream($jobFileLocation->path());
 
         file_put_contents($localFilePath, $remoteStream);
         fclose($remoteStream);

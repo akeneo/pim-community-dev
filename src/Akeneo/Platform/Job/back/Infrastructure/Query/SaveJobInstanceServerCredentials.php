@@ -23,9 +23,8 @@ INSERT INTO akeneo_batch_job_instance_server_credentials (
     password,
     port,
     is_secure,
-    working_directory
 )
-VALUES (:job_instance_code, :host, :user, :password, :port, :is_secure, :working_directory)
+VALUES (:job_instance_code, :host, :user, :password, :port, :is_secure)
 ON DUPLICATE KEY UPDATE 
     job_instance_code = :job_instance_code,
     host = :host,
@@ -33,7 +32,6 @@ ON DUPLICATE KEY UPDATE
     password = :password,
     port = :port,
     is_secure = :is_secure,
-    working_directory = :working_directory
 SQL;
 
         $this->connection->executeQuery($sql, $jobInstanceServerCredentials->normalize());

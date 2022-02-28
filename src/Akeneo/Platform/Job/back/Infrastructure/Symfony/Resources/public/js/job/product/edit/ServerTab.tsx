@@ -13,7 +13,6 @@ type ServerCredentials = {
   password: string;
   port: number;
   is_secure: boolean;
-  working_directory: string | null;
 };
 
 const getDefaultServerCredentials = (): Omit<ServerCredentials, 'job_instance_code'> => ({
@@ -22,7 +21,6 @@ const getDefaultServerCredentials = (): Omit<ServerCredentials, 'job_instance_co
   password: '',
   port: 21,
   is_secure: false,
-  working_directory: null,
 });
 
 const ServerTab = ({jobInstanceCode}: ServerTabProps) => {
@@ -97,11 +95,6 @@ const ServerTab = ({jobInstanceCode}: ServerTabProps) => {
           onChange={(port: string) => setServerCredentials(serverCredentials => ({...serverCredentials, port: parseInt(port)}))}
         />
       </Field>
-      <TextField
-        label="Working directory"
-        value={serverCredentials.working_directory ?? ''}
-        onChange={(working_directory: string) => setServerCredentials(serverCredentials => ({...serverCredentials, working_directory}))}
-      />
     </Section>
   );
 };

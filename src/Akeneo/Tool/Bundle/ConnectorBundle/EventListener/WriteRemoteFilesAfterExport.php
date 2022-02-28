@@ -8,19 +8,20 @@ use Akeneo\Platform\Job\Infrastructure\Query\GetJobInstanceServerCredentials;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
-use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Ftp\FtpAdapter;
 use League\Flysystem\Ftp\FtpConnectionOptions;
+use League\Flysystem\Ftp\FtpConnectionProvider;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\UnableToReadFile;
+use League\Flysystem\UnableToWriteFile;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Filesystem\Exception\IOException;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -31,7 +32,6 @@ class WriteRemoteFilesAfterExport implements EventSubscriberInterface
     public function __construct(
         private JobRegistry $jobRegistry,
         private FilesystemProvider $filesystemProvider,
-        private FileFetcherInterface $fileFetcher,
         private GetJobInstanceServerCredentials $getJobInstanceServerCredentials,
         private LoggerInterface $logger
     ) {
@@ -47,7 +47,28 @@ class WriteRemoteFilesAfterExport implements EventSubscriberInterface
     public function writeRemoteFiles(JobExecutionEvent $event): void
     {
         $jobExecution = $event->getJobExecution();
+        if (JobInstance::TYPE_EXPORT !== $jobExecution->getJobInstance()->getType()) {
+            return;
+        }
+
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
+        $serverCredentials = $this->getJobInstanceServerCredentials->byJobInstanceCode($jobExecution->getJobInstance()->getCode());
+        if ($serverCredentials === null) {
+            return;
+        }
+
+        $normalizedServerCredentials = $serverCredentials->normalize();
+        $destinationOptions = FtpConnectionOptions::fromArray([
+            'host' => $normalizedServerCredentials['host'],
+            'root' => '',
+            'username' => $normalizedServerCredentials['user'],
+            'password' => $normalizedServerCredentials['password'],
+            'port' => $normalizedServerCredentials['port'],
+        ]);
+
+        $ftpFilesystem = new Filesystem(new FtpAdapter($destinationOptions));
+        $connectionProvider = new FtpConnectionProvider();
+        $connectionProvider->createConnection($destinationOptions);
 
         foreach ($job->getSteps() as $step) {
             if (!$step instanceof ItemStep) {
@@ -61,20 +82,6 @@ class WriteRemoteFilesAfterExport implements EventSubscriberInterface
 
             $outputDirectory = \dirname($writer->getPath());
             foreach ($writer->getWrittenFiles() as $writtenFile) {
-                $serverCredentials = $this->getJobInstanceServerCredentials->byJobInstanceCode($jobExecution->getJobInstance()->getCode());
-                $serverCredentials = $serverCredentials->normalize();
-
-                $ftpAdapter = new FtpAdapter(
-                    FtpConnectionOptions::fromArray([
-                        'host' => $serverCredentials['host'],
-                        'root' => '',
-                        'username' => $serverCredentials['user'],
-                        'password' => $serverCredentials['password'],
-                        'port' => $serverCredentials['port'],
-                    ])
-                );
-                $ftpFilesystem = new Filesystem($ftpAdapter);
-
                 if ($writtenFile->isLocalFile()) {
                     $localAdepter = new LocalFilesystemAdapter('/');
                     $sourceFilesystem = new Filesystem($localAdepter);
@@ -126,9 +133,9 @@ class WriteRemoteFilesAfterExport implements EventSubscriberInterface
 
         try {
             $destinationFilesystem->writeStream($destinationFilePath, $stream);
-        } catch (IOException $e) {
+        } catch (UnableToWriteFile $e) {
             throw new FileTransferException(
-                sprintf('Unable to fetch the file "%s" from the destination filesystem.', $destinationFilePath),
+                sprintf('Unable to write the file "%s" from the destination filesystem.', $destinationFilePath),
                 $e->getCode(),
                 $e
             );

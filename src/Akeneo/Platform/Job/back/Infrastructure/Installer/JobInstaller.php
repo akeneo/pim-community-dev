@@ -53,7 +53,6 @@ CREATE TABLE akeneo_batch_job_instance_server_credentials (
     password VARCHAR(255) NOT NULL,
     port INTEGER DEFAULT 21,
     is_secure TINYINT(1) NOT NULL DEFAULT 0,
-    working_directory VARCHAR(255) DEFAULT NULL,
     PRIMARY KEY (job_instance_code)
 );
 SQL;
