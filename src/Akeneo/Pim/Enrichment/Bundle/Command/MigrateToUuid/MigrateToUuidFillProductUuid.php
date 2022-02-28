@@ -48,7 +48,7 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
         return (bool) $this->connection->fetchOne($sql);
     }
 
-    public function addMissing(bool $dryRun, OutputInterface $output): void
+    public function addMissing(bool $dryRun, OutputInterface $output): bool
     {
         $count = $this->getMissingProductUuidCount();
         while ($count > 0) {
@@ -61,6 +61,8 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
                 $count = 0;
             }
         }
+
+        return true;
     }
 
     private function getMissingProductUuidCount(): int

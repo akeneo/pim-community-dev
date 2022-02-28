@@ -31,13 +31,16 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
                 continue;
             }
 
-            $isColumnExist = $this->columnExists($tableName, $columnNames[1]);
+            if (!$this->columnExists($tableName, $columnNames[1])) {
+                return true;
+            }
+
             $sql = <<<SQL
                 SELECT EXISTS (
                     SELECT 1
                     FROM {table_name}
                     WHERE {column_name} 
-                    IS {not} NULL
+                    IS NULL
                     {extra_condition}
                     LIMIT 1
                 ) as missing
@@ -45,8 +48,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
 
             $query = \strtr($sql, [
                 '{table_name}' => $tableName,
-                '{column_name}' => $isColumnExist ? $columnNames[1] : $columnNames[0],
-                '{not}' => $isColumnExist ? '' : 'NOT',
+                '{column_name}' => $columnNames[1],
                 '{extra_condition}' => $tableName === 'pim_versioning_version'
                     ? ' AND resource_name="Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"'
                     : '',
@@ -71,7 +73,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
         return $count;
     }
 
-    public function addMissing(bool $dryRun, OutputInterface $output): void
+    public function addMissing(bool $dryRun, OutputInterface $output): bool
     {
         foreach ($this->getTablesWithoutProductTable() as $tableName => $columnNames) {
             $count = $this->getMissingForeignUuidCount($tableName, $columnNames[1], $columnNames[0]);
@@ -87,6 +89,8 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
                 }
             }
         }
+
+        return true;
     }
 
     private function getMissingForeignUuidCount(string $tableName, string $uuidColumnName, string $idColumnName): int
@@ -104,6 +108,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
 
     private function getNullCellCount(string $tableName, string $columnName, bool $not = false): int
     {
+        // TODO Try with COUNT(1)
         $sql = <<<SQL
             SELECT COUNT(*)
             FROM {table_name}

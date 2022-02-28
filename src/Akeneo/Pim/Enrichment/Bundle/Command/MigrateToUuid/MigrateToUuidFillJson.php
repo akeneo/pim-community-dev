@@ -38,6 +38,7 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
 
     public function shouldBeExecuted(): bool
     {
+        // TODO Add "if there is no quantified_associations type, continue"
         $sql = <<<SQL
             SELECT EXISTS(
                 SELECT 1
@@ -75,11 +76,14 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         return $count;
     }
 
-    public function addMissing(bool $dryRun, OutputInterface $output): void
+    public function addMissing(bool $dryRun, OutputInterface $output): bool
     {
+        $allItemsMigrated = true;
         foreach (self::TABLE_NAMES as $tableName) {
-            $this->addMissingForTable($dryRun, $output, $tableName);
+            $allItemsMigrated = $this->addMissingForTable($dryRun, $output, $tableName) && $allItemsMigrated;
         }
+
+        return $allItemsMigrated;
     }
 
     private function updateProductAssociations($productAssociations): void
@@ -182,8 +186,9 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         return $result;
     }
 
-    private function addMissingForTable(bool $dryRun, OutputInterface $output, string $tableName): void
+    private function addMissingForTable(bool $dryRun, OutputInterface $output, string $tableName): bool
     {
+        $allItemsMigrated = true;
         $previousEntityId = -1;
         $associations = $this->getFormerAssociations($tableName, $previousEntityId);
         while (count($associations) > 0) {
@@ -194,16 +199,19 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
                 $productId = $associations[$pi]['id'];
                 $notFound = false;
                 foreach ($formerAssociation as $associationName => $entityAssociations) {
-                    for ($i = 0; $i < count($entityAssociations['products']); $i++) {
-                        $associatedProductId = $entityAssociations['products'][$i]['id'];
-                        if (array_key_exists($associatedProductId, $productIdToUuidMap)) {
-                            $associatedProductUuid = $productIdToUuidMap[$associatedProductId];
-                            $formerAssociation[$associationName]['products'][$i]['uuid'] = $associatedProductUuid;
-                        } else {
-                            if (!$dryRun) {
-                                $output->writeln(sprintf('    <comment>Associated product uuid %d not found for product %d</comment>', $associatedProductId, $productId));
+                    if (array_key_exists('products', $entityAssociations)) {
+                        for ($i = 0; $i < count($entityAssociations['products']); $i++) {
+                            $associatedProductId = $entityAssociations['products'][$i]['id'];
+                            if (array_key_exists($associatedProductId, $productIdToUuidMap)) {
+                                $associatedProductUuid = $productIdToUuidMap[$associatedProductId];
+                                if ($associatedProductUuid === null) {
+                                    $output->writeln(sprintf('    <comment>Associated product uuid %d not found for product %d</comment>', $associatedProductId, $productId));
+                                    $notFound = true;
+                                    $allItemsMigrated = false;
+                                } else {
+                                    $formerAssociation[$associationName]['products'][$i]['uuid'] = $associatedProductUuid;
+                                }
                             }
-                            $notFound = true;
                         }
                     }
                 }
@@ -226,5 +234,7 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
                 $associations = [];
             }
         }
+
+        return $allItemsMigrated;
     }
 }

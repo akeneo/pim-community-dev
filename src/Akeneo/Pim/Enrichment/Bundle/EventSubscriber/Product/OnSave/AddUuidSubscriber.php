@@ -55,9 +55,15 @@ class AddUuidSubscriber implements EventSubscriberInterface
             return;
         }
 
+        // TODO Improve this query by using INSERT
         foreach ($identifiers as $identifier) {
             $this->connection->executeQuery(
-                'UPDATE pim_catalog_product SET uuid=UUID_TO_BIN(:uuid) WHERE identifier=:identifier',
+                <<<SQL
+                    UPDATE pim_catalog_product 
+                    SET uuid=UUID_TO_BIN(:uuid)
+                    WHERE identifier=:identifier
+                    AND uuid IS NOT NULL;
+                SQL,
                 [
                     'uuid' => Uuid::uuid4()->toString(),
                     'identifier' => $identifier
