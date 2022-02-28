@@ -79,7 +79,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $this->valuesUserIntent()->shouldReturn($valuesUserIntents);
     }
 
-    function it_can_be_constructed_with_a_set_measurement_value_intent()
+    function it_can_be_constructed_with_a_set_metric_value_intent()
     {
         $valuesUserIntents = [new SetMetricValue('power', null, null, '100', 'KILOWATT')];
         $this->beConstructedWith(

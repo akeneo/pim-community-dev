@@ -150,8 +150,8 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_throws_an_exception_when_a_metric_amount_is_not_numeric(): void
     {
-        $this->expectException(LegacyViolationsException::class);
-        $this->expectExceptionMessage('The a_metric attribute requires a number, and the submitted michel value is not.');
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('This value should be of type numeric.');
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
             new SetMetricValue('a_metric', null, null, 'michel', 'KILOWATT'),
         ]);
