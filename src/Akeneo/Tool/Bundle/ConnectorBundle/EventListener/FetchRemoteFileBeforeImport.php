@@ -60,7 +60,7 @@ final class FetchRemoteFileBeforeImport implements EventSubscriberInterface
         $workingDirectory = $jobExecution->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
         $localFilePath = $workingDirectory.DIRECTORY_SEPARATOR.basename($jobFileLocation->path());
 
-        $fileSystem = $this->getFileSystem($jobFileLocation, $jobParameters, $jobExecution);
+        $fileSystem = $this->getFileSystem($jobFileLocation, $jobExecution);
         $remoteStream =  $fileSystem->readStream($jobFileLocation->path());
 
         file_put_contents($localFilePath, $remoteStream);
@@ -69,32 +69,23 @@ final class FetchRemoteFileBeforeImport implements EventSubscriberInterface
         $jobParameters->set('filePath', $localFilePath);
     }
 
-    private function getFileSystem($jobFileLocation, $jobParameters, JobExecution $jobExecution): ?FilesystemReader
+    private function getFileSystem(JobFileLocation $jobFileLocation, JobExecution $jobExecution): ?FilesystemReader
     {
         if (true === $jobFileLocation->isRemote()) {
             return $this->filesystem;
         }
 
-        if ('ftp' === $jobParameters->get('fileSource')) {
+        if ('ftp' === 'ftp') {
             $serverCredentials = $this->getJobInstanceServerCredentials->byJobInstanceCode($jobExecution->getJobInstance()->getCode());
             $serverCredentials = $serverCredentials->normalize();
 
             $adapter = new FtpAdapter(
                 FtpConnectionOptions::fromArray([
-                    'host' => $serverCredentials['host'], // required
-                    'root' => $serverCredentials['working_directory'], // required
-                    'username' => $serverCredentials['user'], // required
-                    'password' => $serverCredentials['password'], // required
+                    'host' => $serverCredentials['host'],
+                    'root' => '',
+                    'username' => $serverCredentials['user'],
+                    'password' => $serverCredentials['password'],
                     'port' => $serverCredentials['port'],
-//                    'ssl' => false,
-//                    'timeout' => 90,
-//                    'utf8' => false,
-//                    'passive' => true,
-//                    'transferMode' => FTP_BINARY,
-//                    'systemType' => null, // 'windows' or 'unix'
-//                    'ignorePassiveAddress' => null, // true or false
-//                    'timestampsOnUnixListingsEnabled' => false, // true or false
-//                    'recurseManually' => true // true
                 ])
             );
 
