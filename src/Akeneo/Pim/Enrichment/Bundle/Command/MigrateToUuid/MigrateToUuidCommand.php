@@ -43,8 +43,12 @@ class MigrateToUuidCommand extends Command
     {
         $dryRun = $input->getOption('dry-run');
         $withStats = $input->getOption('with-stats');
+        $itemNotMigrated = false;
 
         foreach ($this->steps as $stepIndex => $step) {
+            if ($itemNotMigrated) {
+                continue;
+            }
             $output->writeln(sprintf('<info>Step %d: %s</info>', $stepIndex + 1, $step->getDescription()));
             if ($withStats) {
                 $missingCount = $step->getMissingCount();
@@ -52,9 +56,16 @@ class MigrateToUuidCommand extends Command
             }
 
             if ($step->shouldBeExecuted()) {
+                // TODO Add the with-stats to not count anything in the next steps
+                // TODO Add timing for each migration
                 $output->writeln('    Add missing items... ');
-                $step->addMissing($dryRun, $output);
-                $output->writeln('    Step done');
+                $allItemsMigrated = $step->addMissing($dryRun, $output);
+                if ($allItemsMigrated) {
+                    $output->writeln('    Step done');
+                } else {
+                    $output->writeln('    An item can not be migrated. Stop here.');
+                    $itemNotMigrated = true;
+                }
             } else {
                 $output->writeln('    No items to migrate, skip.');
             }
@@ -63,6 +74,6 @@ class MigrateToUuidCommand extends Command
 
         $output->writeln('<info>Migration done!</info>');
 
-        return Command::SUCCESS;
+        return $itemNotMigrated ? Command::FAILURE : Command::SUCCESS;
     }
 }

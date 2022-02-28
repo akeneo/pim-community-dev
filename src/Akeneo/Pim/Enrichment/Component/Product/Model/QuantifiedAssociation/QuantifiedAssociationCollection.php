@@ -204,14 +204,14 @@ class QuantifiedAssociationCollection
                     'id' => $mappedProductIdentifiers->getId($normalizedQuantifiedLink['identifier']),
                     'quantity' => $normalizedQuantifiedLink['quantity']
                 ];
-                try {
+                if ($uuidMappedProductIdentifiers->hasUuid($normalizedQuantifiedLink['identifier'])) {
                     $uuid = $uuidMappedProductIdentifiers->getUuid($normalizedQuantifiedLink['identifier']);
                     $resultWithUuid[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY][] = [
                         'id' => $mappedProductIdentifiers->getId($normalizedQuantifiedLink['identifier']),
                         'uuid' => $uuid->toString(),
                         'quantity' => $normalizedQuantifiedLink['quantity']
                     ];
-                } catch (\InvalidArgumentException) {
+                } else {
                     $atLeastOneUuidWasNotFound = true;
                 }
             }
