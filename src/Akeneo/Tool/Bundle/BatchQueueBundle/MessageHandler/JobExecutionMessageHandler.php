@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\MessageHandler;
@@ -52,7 +53,17 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
                 [$pathFinder->find(), $console, 'akeneo:batch:job', '--quiet'],
                 $this->extractArgumentsFromMessage($jobExecutionMessage)
             );
-            $process = new Process($arguments);
+            $tenantId = $jobExecutionMessage->tenantId;
+            $env = [
+                'APP_TENANT_ID' => $tenantId,
+            ];
+            if (preg_match('/^srnt-(.*)/', $tenantId, $matches)) {
+                $env['APP_DATABASE_HOST'] = sprintf('pim-mysql-srnt-%s', $matches[1]);
+                $env['APP_INDEX_HOSTS'] = sprintf('elasticsearch-client-srnt-%s', $matches[1]);
+                $env['SYMFONY_DOTENV_VARS'] = '';
+            }
+
+            $process = new Process($arguments, null, $env);
             $process->setTimeout(null);
 
             $this->logger->notice('Launching job execution "{job_execution_id}".', [
@@ -82,7 +93,8 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
     private function executeProcess(Process $process, JobExecutionMessageInterface $jobExecutionMessage): void
     {
         $this->executionManager->updateHealthCheck($jobExecutionMessage);
-        $process->start();
+        $env = [];
+        $process->start(null, $env);
 
         $nbIterationBeforeUpdatingHealthCheck = self::HEALTH_CHECK_INTERVAL * 1000000 / self::RUNNING_PROCESS_CHECK_INTERVAL;
         $iteration = 1;
