@@ -7,7 +7,7 @@ namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
-use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectHourlyIntervalsToRefreshQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectHourlyIntervalsToRefreshQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\AuditLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
