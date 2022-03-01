@@ -48,21 +48,38 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
         return (bool) $this->connection->fetchOne($sql);
     }
 
-    public function addMissing(bool $dryRun, OutputInterface $output): bool
+    public function addMissing(Context $context, OutputInterface $output): bool
     {
-        $count = $this->getMissingProductUuidCount();
-        while ($count > 0) {
-            $output->writeln(sprintf('    Will add %d uuids (still missing: %d)', min(self::BATCH_SIZE, $count), $count));
-            if (!$dryRun) {
+        while ($this->shouldContinue($context, $output) > 0) {
+            if (!$context->dryRun()) {
                 $this->fillMissingProductUuids();
-                $count = $this->getMissingProductUuidCount();
             } else {
                 $output->writeln(sprintf('    Option --dry-run is set, will continue to next step.'));
-                $count = 0;
+                break;
             }
         }
 
         return true;
+    }
+
+    private function shouldContinue(Context $context, OutputInterface $output): bool
+    {
+        if ($context->withStats()) {
+            $count = $this->getMissingProductUuidCount();
+            $shouldBeExecuted = $count > 0;
+            if ($shouldBeExecuted) {
+                $output->writeln(sprintf('    Will add %d uuids (still missing: %d)', min(self::BATCH_SIZE, $count), $count));
+            }
+
+            return $shouldBeExecuted;
+        }
+
+        $shouldBeExecuted = $this->shouldBeExecuted();
+        if ($shouldBeExecuted) {
+            $output->writeln(sprintf('    Will add up to %d uuids', self::BATCH_SIZE));
+        }
+
+        return $shouldBeExecuted;
     }
 
     private function getMissingProductUuidCount(): int
