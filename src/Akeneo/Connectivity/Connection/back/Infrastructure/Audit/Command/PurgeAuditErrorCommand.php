@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Cli;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Audit\Command;
 
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\PurgeAuditErrorQuery;
 use Symfony\Component\Console\Command\Command;
@@ -21,12 +21,9 @@ class PurgeAuditErrorCommand extends Command
      */
     protected static $defaultName = 'akeneo:connectivity-audit:purge-error-count';
 
-    private PurgeAuditErrorQuery $purgeAuditErrorsQuery;
-
-    public function __construct(PurgeAuditErrorQuery $purgeAuditErrorsQuery)
+    public function __construct(private PurgeAuditErrorQuery $purgeAuditErrorsQuery)
     {
         parent::__construct();
-        $this->purgeAuditErrorsQuery = $purgeAuditErrorsQuery;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
