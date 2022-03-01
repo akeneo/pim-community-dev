@@ -83,7 +83,7 @@ class DbalWrongCredentialsCombinationRepositoryIntegration extends TestCase
         $this->repository->create(new Write\WrongCredentialsCombination('erp', 'admin'));
         $previous = $this->dbalConnection->executeQuery($sql)->fetchAllAssociative();
 
-        sleep(1);
+        \sleep(1);
 
         $this->repository->create(new Write\WrongCredentialsCombination('erp', 'admin'));
         $current = $this->dbalConnection->executeQuery($sql)->fetchAllAssociative();

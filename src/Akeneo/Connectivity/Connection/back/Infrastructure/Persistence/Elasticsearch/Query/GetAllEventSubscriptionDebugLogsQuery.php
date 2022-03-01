@@ -33,7 +33,7 @@ class GetAllEventSubscriptionDebugLogsQuery implements GetAllEventSubscriptionDe
     public function execute(string $connectionCode): \Generator
     {
         $nowTimestamp = $this->clock->now()->getTimestamp();
-        $lastNoticeAndInfoIdentifiers = iterator_to_array($this->findLastNoticeAndInfoIdentifiers($connectionCode));
+        $lastNoticeAndInfoIdentifiers = \iterator_to_array($this->findLastNoticeAndInfoIdentifiers($connectionCode));
 
         $query = [
             'size' => 1000,
@@ -71,7 +71,7 @@ class GetAllEventSubscriptionDebugLogsQuery implements GetAllEventSubscriptionDe
             foreach ($rows['hits']['hits'] as $hit) {
                 yield $hit['_source'];
             }
-            $query['search_after'] = end($rows['hits']['hits'])['sort'];
+            $query['search_after'] = \end($rows['hits']['hits'])['sort'];
 
             $rows = $this->elasticsearchClient->search($query);
         }

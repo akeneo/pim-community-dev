@@ -23,7 +23,7 @@ final class MarketplaceUrlGenerator implements MarketplaceUrlGeneratorInterface
         string $envUrl,
         GetUserProfileQueryInterface $getUserProfileQuery
     ) {
-        if (false === filter_var($marketplaceUrl, FILTER_VALIDATE_URL)) {
+        if (false === \filter_var($marketplaceUrl, FILTER_VALIDATE_URL)) {
             throw new \InvalidArgumentException('$marketplaceUrl must be a valid URL.');
         }
         $this->marketplaceUrl = $marketplaceUrl;
@@ -57,7 +57,7 @@ final class MarketplaceUrlGenerator implements MarketplaceUrlGeneratorInterface
                 break;
         }
 
-        $query = http_build_query($queryToBuild);
+        $query = \http_build_query($queryToBuild);
 
         return $this->marketplaceUrl . $edition . self::START_QUERY . $query;
     }

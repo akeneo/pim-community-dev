@@ -31,7 +31,7 @@ final class InMemoryUserPermissionsRepository
             }
         }
 
-        throw new \InvalidArgumentException(sprintf('Role `%s` not found', $identifier));
+        throw new \InvalidArgumentException(\sprintf('Role `%s` not found', $identifier));
     }
 
     /**
@@ -45,7 +45,7 @@ final class InMemoryUserPermissionsRepository
             }
         }
 
-        throw new \InvalidArgumentException(sprintf('Group `%s` not found', $identifier));
+        throw new \InvalidArgumentException(\sprintf('Group `%s` not found', $identifier));
     }
 
     public function setUserPermissions(int $userId, int $roleId, int $groupId): void

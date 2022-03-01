@@ -26,7 +26,7 @@ trait PeriodEventCountTrait
         array $connectionCodes,
         array $data
     ): array {
-        $hourlyEventCountsPerConnection = array_reduce(
+        $hourlyEventCountsPerConnection = \array_reduce(
             $data,
             function (array $data, array $row) {
                 $connectionCode = $row['connection_code'];

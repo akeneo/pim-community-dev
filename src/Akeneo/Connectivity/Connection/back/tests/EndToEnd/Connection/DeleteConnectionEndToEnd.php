@@ -22,7 +22,7 @@ class DeleteConnectionEndToEnd extends WebTestCase
 
         $this->authenticateAsAdmin();
         $this->client->request('DELETE', '/rest/connections/franklin');
-        $result = json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true);
 
         $expectedResult = null;
 
@@ -34,7 +34,7 @@ class DeleteConnectionEndToEnd extends WebTestCase
     {
         $this->authenticateAsAdmin();
         $this->client->request('DELETE', '/rest/connections/unknown_connection');
-        $result = json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true);
 
         $expectedResult = [
             'message' => 'Connection with code "unknown_connection" does not exist'

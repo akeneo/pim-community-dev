@@ -51,7 +51,7 @@ class GetProductAssociationsByProductIdentifiersIntegration extends TestCase
         $entityBuilder->createProduct('productG', 'aFamily', []);
         $rootProductModel = $entityBuilder->createProductModel('root_product_model', 'familyVariantWithTwoLevels', null, $this->getAssociationsFormatted(['productF'], ['productA', 'productC']));
         $subProductModel1 = $entityBuilder->createProductModel('sub_product_model_1', 'familyVariantWithTwoLevels', $rootProductModel, $this->getAssociationsFormatted(['productD'], [], ['productB']));
-        $entityBuilder->createVariantProduct('variant_product_1', 'aFamily', 'familyVariantWithTwoLevels', $subProductModel1, $this->getAssociationsFormatted([], ['productG'], [], ['productE']));
+        $entityBuilder->createVariantProduct('variant_product_1', 'aFamily', 'familyVariantWithTwoLevels', $subProductModel1, $this->getAssociationsFormatted(['productF'], ['productG'], [], ['productE']));
 
         $this->givenAssociationTypes(['A_NEW_TYPE']);
     }

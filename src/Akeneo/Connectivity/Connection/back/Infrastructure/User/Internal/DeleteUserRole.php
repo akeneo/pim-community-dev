@@ -28,7 +28,7 @@ class DeleteUserRole implements DeleteUserRoleInterface
         $userRole = $this->repository->findOneByIdentifier($role);
 
         if (null === $userRole) {
-            throw new \LogicException(sprintf('User role "%s" not found.', $role));
+            throw new \LogicException(\sprintf('User role "%s" not found.', $role));
         }
 
         $this->remover->remove($userRole);

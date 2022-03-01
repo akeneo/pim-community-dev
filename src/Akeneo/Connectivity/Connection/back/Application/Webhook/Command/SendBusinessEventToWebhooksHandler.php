@@ -54,7 +54,7 @@ class SendBusinessEventToWebhooksHandler
     {
         $webhooks = $this->selectActiveWebhooksQuery->execute();
 
-        if (0 === count($webhooks)) {
+        if (0 === \count($webhooks)) {
             return;
         }
 
@@ -79,7 +79,7 @@ class SendBusinessEventToWebhooksHandler
                         ]
                     );
 
-                    if (0 === count($apiEvents)) {
+                    if (0 === \count($apiEvents)) {
                         continue;
                     }
 
@@ -101,7 +101,7 @@ class SendBusinessEventToWebhooksHandler
         string $username,
         BulkEventInterface $bulkEvent
     ): ?BulkEventInterface {
-        $events = array_filter(
+        $events = \array_filter(
             $bulkEvent->getEvents(),
             function (EventInterface $event) use ($username, $webhook) {
                 if ($username === $event->getAuthor()->name()) {
@@ -118,7 +118,7 @@ class SendBusinessEventToWebhooksHandler
             }
         );
 
-        if (count($events) === 0) {
+        if (\count($events) === 0) {
             return null;
         }
 

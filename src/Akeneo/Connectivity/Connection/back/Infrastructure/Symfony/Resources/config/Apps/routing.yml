@@ -1,0 +1,49 @@
+akeneo_connectivity_connection_apps_rest_get_app_activate_url:
+    path: '/activate/{id}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetAppActivateUrlAction
+    methods: [GET]
+
+akeneo_connectivity_connection_apps_rest_get_wizard_data:
+    path: '/load-wizard-data/{clientId}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetWizardDataAction
+    methods: [GET]
+
+akeneo_connectivity_connection_apps_rest_confirm_authorization:
+    path: '/confirm-authorization/{clientId}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\ConfirmAuthorizationAction
+    methods: [POST]
+
+akeneo_connectivity_connection_apps_rest_confirm_authentication:
+    path: '/confirm-authentication/{clientId}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\ConfirmAuthenticationAction
+    methods: [POST]
+
+akeneo_connectivity_connection_apps_rest_get_all_connected_app_scope_messages:
+    path: '/connected-apps/{connectionCode}/scope-messages'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetAllConnectedAppScopeMessagesAction
+    methods: [GET]
+
+akeneo_connectivity_connection_apps_rest_get_connected_app:
+    path: '/connected-apps/{connectionCode}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetConnectedAppAction
+    methods: [GET]
+
+akeneo_connectivity_connection_apps_rest_get_all_connected_apps:
+    path: '/connected-apps'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetAllConnectedAppsAction
+    methods: [GET]
+
+akeneo_connectivity_connection_apps_rest_delete:
+    path: '/connected-apps/{connectionCode}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\DeleteAppAction
+    methods: [DELETE]
+
+akeneo_connectivity_connection_apps_rest_get_connected_app_monitoring_settings:
+    path: '/connected-apps/{connectionCode}/monitoring-settings'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetConnectedAppMonitoringSettingsAction
+    methods: [GET]
+
+akeneo_connectivity_connection_apps_rest_update_connected_app_monitoring_settings:
+    path: '/connected-apps/{connectionCode}/monitoring-settings'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\UpdateConnectedAppMonitoringSettingsAction
+    methods: [POST]

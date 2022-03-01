@@ -15,18 +15,18 @@ class ConnectionCode
 
     public function __construct(string $code)
     {
-        $code = trim($code);
+        $code = \trim($code);
 
         if (empty($code)) {
             throw new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.code.required');
         }
-        if (mb_strlen($code) < 3) {
+        if (\mb_strlen($code) < 3) {
             throw new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.code.too_short');
         }
-        if (mb_strlen($code) > 100) {
+        if (\mb_strlen($code) > 100) {
             throw new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.code.too_long');
         }
-        if (!preg_match('/^\w+$/', $code)) {
+        if (!\preg_match('/^\w+$/', $code)) {
             throw new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.code.invalid');
         }
 

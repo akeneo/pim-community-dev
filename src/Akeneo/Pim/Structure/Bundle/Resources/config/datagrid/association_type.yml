@@ -1,7 +1,7 @@
 datagrid:
     association-type-grid:
         options:
-            entityHint: association type
+            entityHint: association_type
             locale_parameter: localeCode
             manageFilters: false
         source:

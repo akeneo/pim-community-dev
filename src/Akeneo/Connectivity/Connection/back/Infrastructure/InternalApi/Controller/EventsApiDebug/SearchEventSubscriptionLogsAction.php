@@ -31,7 +31,7 @@ final class SearchEventSubscriptionLogsAction
 
         $connectionCode = $request->query->get('connection_code');
         $searchAfter = $request->query->get('search_after');
-        $filters = json_decode($request->query->get('filters', ''), true) ?: [];
+        $filters = \json_decode($request->query->get('filters', ''), true) ?: [];
 
         $logs = $this->searchEventSubscriptionDebugLogsQuery->execute($connectionCode, $searchAfter, $filters);
 

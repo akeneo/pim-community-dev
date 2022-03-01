@@ -11,6 +11,7 @@ pim_menu:
     connection_audit: Tableau de bord des connexions
     connection_settings: Connexions
     connection_settings_edit: Paramètres de connexion
+    connection_monitoring: Surveillance des erreurs
     connection_webhook_edit: Souscription aux événements
     connection_webhook_event_logs: Journal des événements
     data_flows: Flux de données
@@ -22,6 +23,7 @@ pim_title:
   akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
   akeneo_connectivity_connection_connect_apps_activate: Connecter
   akeneo_connectivity_connection_connect_apps_authorize: Connecter
+  akeneo_connectivity_connection_connect_apps_authenticate: Connecter
   akeneo_connectivity_connection_settings_index: Paramètres des connexions
   akeneo_connectivity_connection_settings_edit: Paramètres de connexion
   akeneo_connectivity_connection_settings_any: Paramètres de connexion
@@ -36,6 +38,8 @@ pim_title:
   akeneo_connectivity_connection_connect_connected_apps: Apps
   akeneo_connectivity_connection_connect_connected_apps_edit: Paramètres des apps
   akeneo_connectivity_connection_connect_connected_apps_delete: Suppression de l'app
+  akeneo_connectivity_connection_connect_marketplace_test_app_create: Créer une application de test
+  akeneo_connectivity_connection_connect_marketplace_test_app_delete: Supprimer l'application de test
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -48,6 +52,7 @@ akeneo_connectivity.connection:
         description: Ce n'est qu'une vue d'ensemble. Pour plus de détails, jetez un coup d'œil à notre marché web.
         link: Aller sur la Marketplace web
       card:
+        developed_by: 'Développé par {{ author }}'
         read_more: en savoir plus
         more_info: Plus d'info
         connect: Connecter
@@ -63,11 +68,25 @@ akeneo_connectivity.connection:
       unreachable: La marketplace est injoignable, veuillez revenir plus tard.
       scroll_to_top: Haut de la page
       test_apps:
+        title: Mes applications de test
+        removed_user: Utilisateur supprimé
+        create_a_test_app: Créer une application de test
         modal:
+          subtitle: Créer une application de test
+          app_information:
+            title: Informations sur l'application
+            description: Si vous avez besoin d'aide, veuillez consulter notre article
+            link: Comment tester mon application avant de la publier ?
+            fields:
+              name: Nom
           credentials:
             title: Identifiants
         delete:
+          subtitle: Applications
           title: Confirmer la suppression
+          flash:
+            success: L'application de test a bien été supprimée.
+            error: Une erreur s'est produite lors de la suppression de l'application de test.
     connected_apps:
       list:
         apps:
@@ -76,12 +95,16 @@ akeneo_connectivity.connection:
           empty: Aucune app connectée pour le moment.
           check_marketplace: 'Rendez-vous sur la {{ marketplaceLink }} pour parcourir les extensions disponibles et connecter votre première app.'
           marketplace_link_anchor: Marketplace
+        test_apps:
+          title: Mes applications de test
+          removed_user: Utilisateur supprimé
         helper:
           title: '[0,1] Votre PIM est connecté à {{ count }} app.|[2,Inf] Votre PIM est connecté à {{ count }} apps.'
           description_1: De nouvelles apps sont publiées régulièrement. Consultez notre page Marketplace fréquemment pour découvrir comment connecter votre PIM.
           description_2: Vous voulez en savoir plus sur les apps ?
           link: Consultez notre Help Center pour plus d'informations.
         card:
+          developed_by: 'Développé par {{ author }}'
           manage_app: Paramètres
           open_app: Ouvrir l'app
         flash:
@@ -91,16 +114,24 @@ akeneo_connectivity.connection:
         tabs:
           settings: Général
           permissions: Permissions
+          error_monitoring: Surveillance des erreurs
         settings:
+          monitoring:
+            title: Paramètres généraux
           authorizations:
             title: Autorisations
             information: 'Pour en savoir plus sur les autorisations liées aux apps, consultez notre article: {{ link }}.'
             information_link_anchor: Article sur le Help Center
             no_scope: Aucune autorisation spécifique n'a été demandée.
         error_monitoring:
+          error: Oups, quelque chose a mal tourné !
+          helper:
+            description: Ici, vous pouvez voir le détail de chaque erreur pour cette application au cours des 7 derniers jours. Le nombre d'erreurs est limité à 100.
+          not_data_source: Pour l'instant, la page de suivi n'est disponible que pour l'application source.
           not_auditable:
+            title: Application non surveillée
             description:
-              1: To track errors on this app,
+              1: Pour suivre les erreurs sur cette application,
               2: activer la surveillance
               3: dans les paramètres.
         flash:
@@ -188,6 +219,7 @@ akeneo_connectivity.connection:
   connections: Connexions
   secondary_actions:
     title: Autres actions
+  developer_mode: Mode Développeur
   connection:
     code: Code
     label: Libellé
@@ -348,7 +380,7 @@ akeneo_connectivity.connection:
         data_source: Envie de suivre vos connexions source à l'aide de beaux graphiques ?
         data_destination: Envie de suivre vos connexions destination à l'aide de beaux graphiques ?
       message_with_permission:
-        message: Créez-en une et activez son suivi
+        message: Créez-en une et activez son suivi 
         link: ici !
       message_without_permission:
         message: Demandez à votre administrateur d'en créer une.
@@ -370,7 +402,7 @@ akeneo_connectivity.connection:
       wrong_url: Cette valeur n'est pas une URL valide.
       required: Ce champ est obligatoire.
       not_found: Vous essayez de mettre à jour une connexion qui n'existe pas.
-      limit_reached: Vous avez atteint le nombre maximal de souscriptions aux événements activées.
+      limit_reached: Vous avez atteint le nombre maximal de souscriptions aux événements activées. 
       not_allowed_url: Cette url n'est pas autorisée.
     flash:
       success: La souscription aux événements a bien été mise à jour.
@@ -385,7 +417,7 @@ akeneo_connectivity.connection:
         success: Le secret lié à la souscription aux événements a été régénéré avec succès.
         error: Désolé, une erreur s'est produite lors du renouvellement du secret lié à la souscription aux événements.
     active_event_subscriptions_limit_reached:
-      message: Vous pouvez activer la souscription aux événements sur {{ limit }} connexions maximum et vous avez atteint cette limite.
+      message: Vous pouvez activer la souscription aux événements sur {{ limit }} connexions maximum et vous avez atteint cette limite. 
       link: En savoir plus sur la configuration de la souscription aux événements.
     event_logs:
       title: Journal des événements
@@ -417,7 +449,7 @@ akeneo_connectivity.connection:
           all: Toutes
         info:
           title: Vous trouverez ici les logs liés à tous les événements envoyés vers cette connexion.
-          content: Cette page affiche les logs d'erreur et d'avertissement pour les 72 dernières heures, ainsi que les 100 derniers logs de niveau info et notice.
+          content: Cette page affiche les logs d'erreur et d'avertissement pour les 72 dernières heures, ainsi que les 100 derniers logs de niveau info et notice. 
           link: En savoir plus sur les logs liés aux événements
         headers:
           datetime: Date / heure

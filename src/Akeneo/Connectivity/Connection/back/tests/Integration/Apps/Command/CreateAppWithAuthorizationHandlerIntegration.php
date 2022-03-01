@@ -217,10 +217,10 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
         $acls = $this->scopeMapperRegistry->getAcls($scopes);
 
         foreach ($acls as $acl) {
-            $action = sprintf('action:%s', $acl);
+            $action = \sprintf('action:%s', $acl);
             Assert::assertTrue(
                 $permissions[$action],
-                sprintf('ACL %s was not granted for the scopes "%s"', $acl, implode(' ', $scopes))
+                \sprintf('ACL %s was not granted for the scopes "%s"', $acl, \implode(' ', $scopes))
             );
         }
     }

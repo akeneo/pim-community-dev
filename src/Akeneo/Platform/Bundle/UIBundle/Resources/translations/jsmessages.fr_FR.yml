@@ -104,16 +104,17 @@ oro_config:
           title: Système
       group:
         localization:
-          title: Localisation
-          system_locale: Langue
+          fields:
+            system_locale:
+              label: Langue
         notification:
-          title: Notifications
-          system_notification: Notifications de nouvelles versions
+          fields:
+            enabler:
+              label: Activé
         loading_message:
-          title: Messages de chargement
-          label: Activer les messages au chargement
-        loading_messages:
-          label: Messages de chargement disponibles
+          fields:
+            enabler:
+              label: Activer les messages au chargement
 pim_ui:
   flash:
     unsaved_changes: 'Vous avez des modifications non enregistrées, êtes-vous sûr de vouloir quitter ?'

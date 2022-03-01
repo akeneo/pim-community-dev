@@ -23,8 +23,8 @@ class FlowType
     public function __construct(string $flowType)
     {
         /** @var FlowType::* $flowType */
-        if (!in_array($flowType, [self::DATA_DESTINATION, self::DATA_SOURCE, self::OTHER])) {
-            throw new \InvalidArgumentException(sprintf(self::CONSTRAINT_KEY, 'invalid'));
+        if (!\in_array($flowType, [self::DATA_DESTINATION, self::DATA_SOURCE, self::OTHER])) {
+            throw new \InvalidArgumentException(\sprintf(self::CONSTRAINT_KEY, 'invalid'));
         }
 
         $this->flowType = $flowType;

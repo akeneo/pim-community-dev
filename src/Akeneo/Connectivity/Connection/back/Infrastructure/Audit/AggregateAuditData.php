@@ -32,7 +32,7 @@ final class AggregateAuditData
      */
     public static function normalize(array $periodEventCounts, \DateTimeZone $dateTimeZone): array
     {
-        return array_reduce(
+        return \array_reduce(
             $periodEventCounts,
             function (array $data, PeriodEventCount $periodEventCount) use ($dateTimeZone): array {
                 $dailyEventCounts = self::groupHourlyEventCountByDay(
@@ -47,13 +47,13 @@ final class AggregateAuditData
                     $periodEventCount->upToDateTime()->setTimezone($dateTimeZone),
                 );
 
-                $previousWeekEventCounts = array_slice($dailyEventCounts, 0, 1);
-                $currentWeekEventCounts = array_slice($dailyEventCounts, 1);
+                $previousWeekEventCounts = \array_slice($dailyEventCounts, 0, 1);
+                $currentWeekEventCounts = \array_slice($dailyEventCounts, 1);
 
                 $data[$periodEventCount->connectionCode()] = [
                     'previous_week' => $previousWeekEventCounts,
                     'current_week' => $currentWeekEventCounts,
-                    'current_week_total' => array_sum($currentWeekEventCounts)
+                    'current_week_total' => \array_sum($currentWeekEventCounts)
                 ];
 
                 return $data;
@@ -69,7 +69,7 @@ final class AggregateAuditData
      */
     private static function groupHourlyEventCountByDay(array $hourlyEventCounts, \DateTimeZone $dateTimeZone): array
     {
-        return array_reduce(
+        return \array_reduce(
             $hourlyEventCounts,
             function (array $dailyEventCounts, HourlyEventCount $hourlyEventCount) use ($dateTimeZone): array {
                 $eventDate = $hourlyEventCount->dateTime()->setTimezone($dateTimeZone)->format('Y-m-d');

@@ -16,9 +16,9 @@ class ErrorType
 
     public function __construct(string $type)
     {
-        if (!in_array($type, ErrorTypes::getAll())) {
+        if (!\in_array($type, ErrorTypes::getAll())) {
             throw new \InvalidArgumentException(
-                sprintf('The given error type "%s" is unknown.', $type)
+                \sprintf('The given error type "%s" is unknown.', $type)
             );
         }
         $this->type = $type;
