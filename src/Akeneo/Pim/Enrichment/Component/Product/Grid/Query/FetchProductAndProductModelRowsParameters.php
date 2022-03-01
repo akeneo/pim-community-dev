@@ -18,7 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FetchProductAndProductModelRowsParameters
+final class FetchProductAndProductModelRowsParameters
 {
     /** @var ProductQueryBuilderInterface */
     private $productQueryBuilder;

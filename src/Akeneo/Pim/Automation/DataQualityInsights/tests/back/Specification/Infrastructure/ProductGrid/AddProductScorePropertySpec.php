@@ -12,6 +12,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -23,16 +24,27 @@ class AddProductScorePropertySpec extends ObjectBehavior
         $this->beConstructedWith($getProductScores);
     }
 
-    public function it_returns_no_rows_when_given_no_rows(FetchProductAndProductModelRowsParameters $queryParameters)
+    public function it_returns_no_rows_when_given_no_rows(ProductQueryBuilderInterface $productQueryBuilder)
     {
+        $queryParameters = new FetchProductAndProductModelRowsParameters(
+            $productQueryBuilder->getWrappedObject(),
+            [],
+            'ecommerce',
+            'en_US'
+        );
         $this->add($queryParameters, [])->shouldReturn([]);
     }
 
 
-    public function it_returns_row_with_additional_property_DQI_score($getProductScores, FetchProductAndProductModelRowsParameters $queryParameters)
+    public function it_returns_row_with_additional_property_DQI_score($getProductScores, ProductQueryBuilderInterface $productQueryBuilder)
     {
-        $queryParameters->channelCode()->willReturn('ecommerce');
-        $queryParameters->localeCode()->willReturn('en_US');
+        $queryParameters = new FetchProductAndProductModelRowsParameters(
+            $productQueryBuilder->getWrappedObject(),
+            [],
+            'ecommerce',
+            'en_US'
+        );
+
         $getProductScores->byProductIds(Argument::any())->willReturn(
             [
                 (new ChannelLocaleRateCollection())
@@ -42,24 +54,6 @@ class AddProductScorePropertySpec extends ObjectBehavior
         );
 
         $this->add($queryParameters, [$this->makeRow(1), $this->makeRow(4)])->shouldHaveScoreProperties();
-    }
-
-    public function getMatchers(): array
-    {
-        return [
-            'haveScoreProperties' => function (array $rows) {
-                foreach ($rows as $index => $row) {
-                    $properties = iterator_to_array($row->additionalProperties()->getIterator());
-                    $values = array_filter($properties, function ($property) {
-                        return $property->name() === 'data_quality_insights_score';
-                    });
-                    if (count($values) === 0) {
-                        throw new FailureException("Property not found for Row at index " . $index);
-                    }
-                }
-                return true;
-            }
-        ];
     }
 
     private function makeRow(int $id): Row
@@ -78,5 +72,23 @@ class AddProductScorePropertySpec extends ObjectBehavior
             null, // parentCode,
             new WriteValueCollection() // values,
         );
+    }
+
+    public function getMatchers(): array
+    {
+        return [
+            'haveScoreProperties' => function (array $rows) {
+                foreach ($rows as $index => $row) {
+                    $properties = iterator_to_array($row->additionalProperties()->getIterator());
+                    $values = array_filter($properties, function ($property) {
+                        return $property->name() === 'data_quality_insights_score';
+                    });
+                    if (count($values) === 0) {
+                        throw new FailureException("Property not found for Row at index " . $index);
+                    }
+                }
+                return true;
+            }
+        ];
     }
 }

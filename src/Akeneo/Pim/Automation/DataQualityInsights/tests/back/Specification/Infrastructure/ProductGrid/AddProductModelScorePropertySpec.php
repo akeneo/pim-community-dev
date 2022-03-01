@@ -12,6 +12,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -23,15 +24,22 @@ class AddProductModelScorePropertySpec extends ObjectBehavior
         $this->beConstructedWith($getProductModelScores);
     }
 
-    public function it_returns_no_rows_when_given_no_rows(FetchProductAndProductModelRowsParameters $queryParameters)
+    public function it_returns_no_rows_when_given_no_rows(ProductQueryBuilderInterface $productQueryBuilder)
     {
+        $queryParameters = new FetchProductAndProductModelRowsParameters(
+            $productQueryBuilder->getWrappedObject(),
+            [],
+            'ecommerce',
+            'en_US'
+        );
+
         $this->add($queryParameters, [])->shouldReturn([]);
     }
 
 
     public function it_returns_row_with_additional_property_DQI_score(
         $getProductModelScores,
-        FetchProductAndProductModelRowsParameters $queryParameters
+        ProductQueryBuilderInterface $productQueryBuilder
     )
     {
         $getProductModelScores->byProductModelIds(Argument::any())->willReturn(
@@ -41,8 +49,12 @@ class AddProductModelScorePropertySpec extends ObjectBehavior
                     ->addRate(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), new Rate(36)),
             ],
         );
-        $queryParameters->channelCode()->willReturn('ecommerce');
-        $queryParameters->localeCode()->willReturn('en_US');
+        $queryParameters = new FetchProductAndProductModelRowsParameters(
+            $productQueryBuilder->getWrappedObject(),
+            [],
+            'ecommerce',
+            'en_US'
+        );
 
         $this->add($queryParameters, [$this->makeRow(1), $this->makeRow(4)])->shouldHaveScoreProperties();
     }
