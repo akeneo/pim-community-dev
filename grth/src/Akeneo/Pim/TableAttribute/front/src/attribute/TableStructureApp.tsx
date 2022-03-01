@@ -78,6 +78,7 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
   const [savedColumnIds, setSavedColumnIds] = React.useState<string[]>([]);
 
   React.useEffect(() => {
+    LocaleRepository.clearCache();
     LocaleRepository.findActivated(router).then((activeLocales: Locale[]) => setActiveLocales(activeLocales));
   }, [router]);
 

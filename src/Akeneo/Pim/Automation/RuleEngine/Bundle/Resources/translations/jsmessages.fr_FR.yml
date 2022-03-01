@@ -175,7 +175,6 @@ pimee_catalog_rule:
           subtitle: Sélectionnez votre famille
         set_attribute:
           title: DEFINIR une valeur d'attribut
-          helper: Pour définir des valeurs à votre attribut, veuillez commencer par sélectionner votre attribut cible, puis ajoutez la valeur souhaitée.
           target_subtitle: Sélectionnez votre destination
           value_subtitle: Définissez votre valeur
           attribute_label: Attribut

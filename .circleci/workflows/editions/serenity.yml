@@ -3,6 +3,10 @@ orbs:
     cypress: cypress-io/cypress@1
 
 aliases:
+    - &client-to-clone-srnt
+        ["srnt-madeira", "srnt-pim-pce", "srnt-cto-pim", "srnt-iteshop"]
+    - &client-to-clone-grth
+        ["grth-sirius-staging"]
     - &slack-fail-post-step-srnt
         post-steps:
             - slack/status:
@@ -118,6 +122,25 @@ workflows:
                       - test_deploy
                       - test_upgrade_from_last_release
 
+
+# Resume :
+#    on_demand_check_update_against_client workfow clones (on demand) existing clients and updates them with your code/migrations
+#    This workflow allows you to check your migrations/jobs timings and have a feedback/monitoring/observability with datadog
+#
+# Description :
+#    Cloned instances are accessibles from web with url : https://<namespace>.dev.cloud.akeneo.com with login "adminakeneo"
+#    and password can be found in "Jenkins upgrade" job's log in "[<grth|srnt>] Upgrade <client>" workflow, then it can be found
+#    by seeking "adminakeneo" in full logs
+#
+# Default clients and theirs specifities :
+#   - most products :
+#     - srnt-madeira
+#   - most product values :
+#      - srnt-pim-pce
+#   - most product models :
+#     - srnt-cto-pim
+#   - most product variants :
+#     - srnt-iteshop (iteshop is 2nd in variants count (cto-pim first) but has been selected to check against more clients)
     on_demand_check_update_against_client:
         when:
             not:
@@ -140,21 +163,30 @@ workflows:
                   name: "[grth] Build"
                   requires:
                       - "checkout"
+            - clone_and_upgrade?:
+                name: "[grth] Clone and upgrade << matrix.CLIENT >> ?"
+                type: approval
+                matrix:
+                    parameters:
+                        CLIENT: *client-to-clone-grth
+                        PRODUCT_TYPE: ["grth"]
+                requires:
+                    - "[<< matrix.PRODUCT_TYPE >>] Build"
             - test_clone_from_customer_db:
                   name: "[<< matrix.PRODUCT_TYPE >>] Clone << matrix.SOURCE_PFID >>"
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["grth"]
-                          SOURCE_PFID: ["grth-sirius-staging"]
+                          SOURCE_PFID: *client-to-clone-grth
                           LONG_TTL_INSTANCE: [true]
                   requires:
-                      - "[<< matrix.PRODUCT_TYPE >>] Build"
+                      - "[grth] Clone and upgrade << matrix.SOURCE_PFID >> ?"
             - test_upgrade_from_last_release:
                   name: "[<< matrix.PRODUCT_TYPE >>] Upgrade << matrix.INSTANCE_NAME >>"
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["grth"]
-                          INSTANCE_NAME: ["grth-sirius-staging"]
+                          INSTANCE_NAME: *client-to-clone-grth
                           REMOVE_ENV: [false]
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Clone << matrix.INSTANCE_NAME >>"
@@ -164,7 +196,7 @@ workflows:
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["grth"]
-                          INSTANCE_NAME: ["grth-sirius-staging"]
+                          INSTANCE_NAME: *client-to-clone-grth
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Upgrade << matrix.INSTANCE_NAME >>"
             - delete_pr_environment:
@@ -172,26 +204,33 @@ workflows:
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["grth"]
-                          INSTANCE_NAME: ["grth-sirius-staging"]
+                          INSTANCE_NAME: *client-to-clone-grth
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Delete environment << matrix.INSTANCE_NAME >> ?"
+            - clone_and_upgrade?:
+                name: "[srnt] Clone and upgrade << matrix.CLIENT >> ?"
+                type: approval
+                matrix:
+                    parameters:
+                        CLIENT: *client-to-clone-srnt
+                        PRODUCT_TYPE: ["srnt"]
+                requires:
+                    - "[<< matrix.PRODUCT_TYPE >>] Build"
             - test_clone_from_customer_db:
                   name: "[<< matrix.PRODUCT_TYPE >>] Clone << matrix.SOURCE_PFID >>"
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["srnt"]
-                          #                        SOURCE_PFID: ["srnt-madeira-production", "srnt-petra", "srnt-rdoequipment-prod", "srnt-electrodepot", "srnt-distributionnow-prod"]
-                          SOURCE_PFID: ["srnt-petra"]
+                          SOURCE_PFID: *client-to-clone-srnt
                           LONG_TTL_INSTANCE: [true]
                   requires:
-                      - "[<< matrix.PRODUCT_TYPE >>] Build"
+                      - "[srnt] Clone and upgrade << matrix.SOURCE_PFID >> ?"
             - test_upgrade_from_last_release:
                   name: "[<< matrix.PRODUCT_TYPE >>] Upgrade << matrix.INSTANCE_NAME >>"
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["srnt"]
-                          #                        INSTANCE_NAME: ["srnt-madeira-production", "srnt-petra", "srnt-rdoequipment-prod", "srnt-electrodepot", "srnt-distributionnow-prod"]
-                          INSTANCE_NAME: ["srnt-petra"]
+                          INSTANCE_NAME: *client-to-clone-srnt
                           REMOVE_ENV: [false]
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Clone << matrix.INSTANCE_NAME >>"
@@ -201,8 +240,7 @@ workflows:
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["srnt"]
-                          #                      INSTANCE_NAME: ["srnt-madeira-production", "srnt-petra", "srnt-rdoequipment-prod", "srnt-electrodepot", "srnt-distributionnow-prod"]
-                          INSTANCE_NAME: ["srnt-petra"]
+                          INSTANCE_NAME: *client-to-clone-srnt
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Upgrade << matrix.INSTANCE_NAME >>"
             - delete_pr_environment:
@@ -210,11 +248,9 @@ workflows:
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["srnt"]
-                          #                      INSTANCE_NAME: ["srnt-madeira-production", "srnt-petra", "srnt-rdoequipment-prod", "srnt-electrodepot", "srnt-distributionnow-prod"]
-                          INSTANCE_NAME: ["srnt-petra"]
+                          INSTANCE_NAME: *client-to-clone-srnt
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Delete environment << matrix.INSTANCE_NAME >> ?"
-
 
     on_demand_deployment_validation:
         when:
@@ -485,22 +521,18 @@ workflows:
                   requires:
                       - "[srnt] test_upgrade_from-<< matrix.SOURCE_PFID >>"
 
-    nightly_beta:
+    clone_and_upgrade_flex_customers:
         when:
             and:
                 - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
-                - equal: [ "nightly_beta", << pipeline.schedule.name >> ]
+                - equal: [ "clone_and_upgrade_flex_customers", << pipeline.schedule.name >> ]
         jobs:
             - checkout
-            - test_helm_generated_k8s_files:
-                  name: "[<< matrix.PRODUCT_TYPE >>][<< matrix.CLUSTER_VERSION >>] Test helm generated k8s files"
+            - build_env_vars:
+                  name: "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["srnt"]
-                          CLUSTER_VERSION: ["1.19.0", "1.20.0", "1.21.0", "1.22.0"]
-                  requires:
-                      - checkout
-            - build_srnt_prod:
                   requires:
                       - checkout
             - test_migrate_from_flex_customer_db:
@@ -510,7 +542,7 @@ workflows:
                           PRODUCT_TYPE: ["flex"]
                           SOURCE_PFID_SOURCE_PROJECT_ID: ["assa-abloy-dev##akecld-assa-abloy", "curacao-production##akecld-curacao-pim"]
                   requires:
-                      - build_srnt_prod
+                      - build_env_vars
             - test_upgrade_from_customer_db:
                   name: "[flex] test_upgrade_from-<< matrix.SOURCE_PFID >>"
                   matrix:
@@ -526,6 +558,45 @@ workflows:
                           SOURCE_PFID: ["assa-abloy-dev##akecld-assa-abloy", "curacao-production##akecld-curacao-pim"]
                   requires:
                       - "[flex] test_upgrade_from-<< matrix.SOURCE_PFID >>"
+
+    clone_and_test_migrate_flex_customers:
+        when:
+            and:
+                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                - equal: [ "clone_and_test_migrate_flex_customers", << pipeline.schedule.name >> ]
+        jobs:
+            - checkout
+            - build_env_vars:
+                  name: "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                  requires:
+                      - checkout
+            - test_migrate_flex:
+                  name: "[<< matrix.PRODUCT_TYPE >>] test_migrate-<< matrix.SOURCE_PFID_SOURCE_PROJECT_ID >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["flex"]
+                          SOURCE_PFID_SOURCE_PROJECT_ID: ["assa-abloy-dev##akecld-assa-abloy", "curacao-production##akecld-curacao-pim"]
+                  requires:
+                      - build_env_vars
+
+    nightly_beta:
+        when:
+            and:
+                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                - equal: [ "nightly_beta", << pipeline.schedule.name >> ]
+        jobs:
+            - checkout
+            - test_helm_generated_k8s_files:
+                  name: "[<< matrix.PRODUCT_TYPE >>][<< matrix.CLUSTER_VERSION >>] Test helm generated k8s files"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                          CLUSTER_VERSION: ["1.19.0", "1.20.0", "1.21.0", "1.22.0"]
+                  requires:
+                      - checkout
 
     nightly_next_cluster:
         when:

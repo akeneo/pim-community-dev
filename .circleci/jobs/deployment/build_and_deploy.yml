@@ -322,7 +322,7 @@ jobs:
                       RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
                       PRODUCT_REFERENCE_TYPE="serenity_instance"
                       PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
-                      
+
                       echo export TYPE=${TYPE} >> $BASH_ENV
                       echo export TYPE_LONG=${TYPE_LONG} >> $BASH_ENV
                       echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
@@ -331,7 +331,7 @@ jobs:
                       echo export RELEASE_NAME=${RELEASE_NAME} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
-                      
+
                       echo "Image tag: ${IMAGE_TAG}"
                       echo "Serenity release name: ${RELEASE_NAME}"
             - run:
@@ -391,7 +391,7 @@ jobs:
                           PRODUCT_REFERENCE_CODE="growth_edition_${ENV_NAME}"
                           RELEASE_NAME="${TYPE_LONG}-${RELEASE_NAME}"
                       fi
-                      
+
                       echo export TYPE=${TYPE} > persisted_env_vars
                       echo export TYPE_LONG=${TYPE_LONG} >> persisted_env_vars
                       echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
@@ -400,7 +400,7 @@ jobs:
                       echo export RELEASE_NAME=${RELEASE_NAME} >> persisted_env_vars
                       echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
                       echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
-                      
+
                       echo "Image tag: ${IMAGE_TAG}"
                       echo "Release name: ${RELEASE_NAME}"
             - persist_to_workspace:
@@ -439,7 +439,7 @@ jobs:
                                   CE_BRANCH=master
                                   CE_COMMIT_HASH=HEAD
                                 fi
-                                
+
                                 echo export CE_BRANCH=${CE_BRANCH} >> $BASH_ENV
                                 echo export CE_COMMIT_HASH=${CE_COMMIT_HASH} >> $BASH_ENV
             - when:
@@ -452,7 +452,7 @@ jobs:
                                 docker run --rm -v ${PWD}/last_good_ce:/app composer composer install
                                 CE_BRANCH=master
                                 CE_COMMIT_HASH=$(docker run --rm -v ${PWD}/last_good_ce:/app composer php get_last_good_ce_revision.php)
-                                
+
                                 echo export CE_BRANCH=${CE_BRANCH} >> $BASH_ENV
                                 echo export CE_COMMIT_HASH=${CE_COMMIT_HASH} >> $BASH_ENV
             - run:
@@ -466,7 +466,7 @@ jobs:
                       RELEASE_NAME="growth-v$(date +%Y%m%d%H%M%S)"
                       PRODUCT_REFERENCE_TYPE="growth_edition_instance"
                       PRODUCT_REFERENCE_CODE="growth_edition_${ENV_NAME}"
-                      
+
                       echo export TYPE=${TYPE} >> $BASH_ENV
                       echo export TYPE_LONG=${TYPE_LONG} >> $BASH_ENV
                       echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
@@ -475,7 +475,7 @@ jobs:
                       echo export RELEASE_NAME=${RELEASE_NAME} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
-                      
+
                       echo "CE Branch used: ${CE_BRANCH}"
                       echo "CE Commit hash used: ${CE_COMMIT_HASH}"
                       echo "Image tag: ${IMAGE_TAG}"
@@ -544,7 +544,7 @@ jobs:
                                   CE_BRANCH=master
                                   CE_COMMIT_HASH=HEAD
                                 fi
-                                
+
                                 echo export CE_BRANCH=${CE_BRANCH} >> $BASH_ENV
                                 echo export CE_COMMIT_HASH=${CE_COMMIT_HASH} >> $BASH_ENV
             - when:
@@ -557,7 +557,7 @@ jobs:
                                 docker run --rm -v ${PWD}/last_good_ce:/app composer composer install
                                 CE_BRANCH=master
                                 CE_COMMIT_HASH=$(docker run --rm -v ${PWD}/last_good_ce:/app composer php get_last_good_ce_revision.php)
-                                
+
                                 echo export CE_BRANCH=${CE_BRANCH} >> $BASH_ENV
                                 echo export CE_COMMIT_HASH=${CE_COMMIT_HASH} >> $BASH_ENV
             - run:
@@ -571,7 +571,7 @@ jobs:
                       RELEASE_NAME="trial-v$(date +%Y%m%d%H%M%S)"
                       PRODUCT_REFERENCE_TYPE="pim_trial_instance"
                       PRODUCT_REFERENCE_CODE="pim_trial_${ENV_NAME}"
-                      
+
                       echo export TYPE=${TYPE} >> $BASH_ENV
                       echo export TYPE_LONG=${TYPE_LONG} >> $BASH_ENV
                       echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
@@ -580,7 +580,7 @@ jobs:
                       echo export RELEASE_NAME=${RELEASE_NAME} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
-                      
+
                       echo "CE Branch used: ${CE_BRANCH}"
                       echo "CE Commit hash used: ${CE_COMMIT_HASH}"
                       echo "Image tag: ${IMAGE_TAG}"
@@ -622,7 +622,6 @@ jobs:
     ##################
     # Tests          #
     ##################
-
     test_grth:
         machine:
             image: *executor-machine
@@ -795,7 +794,7 @@ jobs:
                   command: |
                       TYPE="<<parameters.PRODUCT_TYPE>>"
                       K8S_CLUSTER_VERSION=<< parameters.CLUSTER_VERSION >>
-                      
+
                       echo export TYPE=${TYPE} >> $BASH_ENV
                       echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
                       echo export K8S_CLUSTER_VERSION=${K8S_CLUSTER_VERSION} >> $BASH_ENV
@@ -860,10 +859,10 @@ jobs:
                   command: |
                       INSTANCE_NAME_PREFIX=pimci
                       INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
-                      
+
                       echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
-                      
+
                       echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                       echo "Instance name: ${INSTANCE_NAME}"
                       echo "Image tag: ${IMAGE_TAG}"
@@ -943,11 +942,11 @@ jobs:
                       fi
                       INSTANCE_NAME_PREFIX=pimup
                       INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
-                      
+
                       echo export LATEST_RELEASE=${LATEST_RELEASE} >> $BASH_ENV
                       echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
-                      
+
                       echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                       echo "Instance name: ${INSTANCE_NAME}"
                       echo "Image tag: ${IMAGE_TAG}"
@@ -1122,11 +1121,11 @@ jobs:
                       SOURCE_PFID=<< parameters.SOURCE_PFID >>
                       INSTANCE_NAME_PREFIX=pimci<<# parameters.LONG_TTL_INSTANCE >>-long<</ parameters.LONG_TTL_INSTANCE >>-duplic
                       INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-$(echo "${SOURCE_PFID}" | cut -c1-15)-${CIRCLE_BUILD_NUM}
-                      
+
                       echo export SOURCE_PFID=${SOURCE_PFID} >> $BASH_ENV
                       echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
-                      
+
                       echo "Source PFID: ${SOURCE_PFID}"
                       echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                       echo "Instance name: ${INSTANCE_NAME}"
@@ -1170,6 +1169,73 @@ jobs:
                   paths:
                       - project/persisted_env_vars
 
+    test_migrate_flex:
+        parameters:
+            PRODUCT_TYPE:
+                type: string
+                default: "srnt"
+            SOURCE_PFID_SOURCE_PROJECT_ID:
+                type: string
+                default: ""
+        environment:
+            <<: *envVarsDeployDev
+        <<: *dockerCloudDeployerNext
+        resource_class: small
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - add_ssh_keys:
+                  fingerprints:
+                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+            - set_gcloud_config_dev
+            - restore_persisted_env_vars
+            - run:
+                  name: Define value for next steps
+                  command: |
+                      RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
+                      SOURCE_PFID_SOURCE_PROJECT_ID=<< parameters.SOURCE_PFID_SOURCE_PROJECT_ID >>
+                      SOURCE_PFID="${SOURCE_PFID_SOURCE_PROJECT_ID%%##*}"
+                      SOURCE_PROJECT_ID="${SOURCE_PFID_SOURCE_PROJECT_ID##*##}"
+                      INSTANCE_NAME_PREFIX=pimci-duplic
+                      INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-$(echo "${SOURCE_PFID}" | cut -c1-20)-${CIRCLE_BUILD_NUM}
+
+                      echo export RELEASE_TO_DEPLOY=${RELEASE_TO_DEPLOY} >> $BASH_ENV
+                      echo export SOURCE_PFID=${SOURCE_PFID} >> $BASH_ENV
+                      echo export SOURCE_PROJECT_ID=${SOURCE_PROJECT_ID} >> $BASH_ENV
+                      echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                      echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+
+                      echo "Source PFID: ${SOURCE_PFID}"
+                      echo "Source project ID: ${SOURCE_PROJECT_ID}"
+                      echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                      echo "Instance name: ${INSTANCE_NAME}"
+                      echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
+            - run:
+                  name: DATADOG deployment Livetail logs page
+                  command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+            - run:
+                  name: Migrate Flex
+                  command: |
+                      ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      IMAGE_TAG=${RELEASE_TO_DEPLOY} make -C deployments/ migrate_flexibility
+                      make -C deployments/ commit-instance
+            - run:
+                  name: Prepare infrastructure artifacts
+                  command: make -C deployments/ prepare-infrastructure-artifacts
+                  when: on_fail
+            - store_artifacts:
+                  path: ~/artifacts/infra
+            - run:
+                  name: Remove env on kubernetes
+                  command: |
+                      ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      UNCOMMIT_INSTANCE_STATUS_CODE=0
+                      for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
+                      exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
+                  when: always
+
     test_migrate_from_flex_customer_db:
         parameters:
             PRODUCT_TYPE:
@@ -1199,13 +1265,13 @@ jobs:
                       SOURCE_PROJECT_ID="${SOURCE_PFID_SOURCE_PROJECT_ID##*##}"
                       INSTANCE_NAME_PREFIX=pimci-duplic
                       INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-$(echo "${SOURCE_PFID}" | cut -c1-20)-${CIRCLE_BUILD_NUM}
-                      
+
                       echo export RELEASE_TO_DEPLOY=${RELEASE_TO_DEPLOY} >> $BASH_ENV
                       echo export SOURCE_PFID=${SOURCE_PFID} >> $BASH_ENV
                       echo export SOURCE_PROJECT_ID=${SOURCE_PROJECT_ID} >> $BASH_ENV
                       echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
-                      
+
                       echo "Source PFID: ${SOURCE_PFID}"
                       echo "Source project ID: ${SOURCE_PROJECT_ID}"
                       echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
@@ -1274,9 +1340,9 @@ jobs:
                       if [[ "${TYPE}" == "grth" ]]; then
                           RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="tags~^growth-v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
                       fi
-                      
+
                       echo export IMAGE_TAG=${RELEASE_TO_DEPLOY} >> $BASH_ENV
-                      
+
                       echo "Release to deploy: ${IMAGE_TAG}"
             - run:
                   name: Prepare the environment
@@ -1404,14 +1470,14 @@ jobs:
                       PRODUCT_REFERENCE_TYPE="serenity_instance"
                       PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
                       ACTIVATE_MONITORING=true
-                      
+
                       echo export TYPE=${TYPE} >> $BASH_ENV
                       echo export RELEASE_TO_DEPLOY=${RELEASE_TO_DEPLOY} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
                       echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
-                      
+
                       echo "Instance name: ${INSTANCE_NAME}"
                       echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
             - run:
@@ -1461,7 +1527,7 @@ jobs:
                       PRODUCT_REFERENCE_TYPE="growth_edition_instance"
                       PRODUCT_REFERENCE_CODE="growth_edition_${ENV_NAME}"
                       ACTIVATE_MONITORING=true
-                      
+
                       echo export TYPE=${TYPE} >> $BASH_ENV
                       echo export RELEASE_TO_DEPLOY=${RELEASE_TO_DEPLOY} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
@@ -1518,14 +1584,14 @@ jobs:
                       PRODUCT_REFERENCE_TYPE="serenity_instance"
                       PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
                       ACTIVATE_MONITORING=true
-                      
+
                       echo export TYPE=${TYPE} >> $BASH_ENV
                       echo export RELEASE_TO_DEPLOY=${RELEASE_TO_DEPLOY} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
                       echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
-                      
+
                       echo "Instance name: ${INSTANCE_NAME}"
                       echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
             - run:
@@ -1583,14 +1649,14 @@ jobs:
                       PRODUCT_REFERENCE_TYPE="serenity_instance"
                       PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
                       ACTIVATE_MONITORING=true
-                      
+
                       echo export TYPE=${TYPE} >> $BASH_ENV
                       echo export RELEASE_TO_DEPLOY=${RELEASE_TO_DEPLOY} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
                       echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
-                      
+
                       echo "Instance name: ${INSTANCE_NAME}"
                       echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
             - run:
@@ -1647,14 +1713,14 @@ jobs:
                       fi
                       INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${CIRCLE_PULL_REQUEST##*/}
                       ACTIVATE_MONITORING=true
-                      
+
                       echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
                       echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                       echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
                       echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
-                      
+
                       echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                       echo "Instance name: ${INSTANCE_NAME}"
                       echo "Image tag: ${IMAGE_TAG}"
@@ -1724,9 +1790,9 @@ jobs:
                   command: |
                       TYPE="<<parameters.PRODUCT_TYPE>>"
                       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                      
+
                       export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-                      
+
                       TYPE=${TYPE} make -C deployments/ delete_environments_hourly
 
     delete_pr_environment:
@@ -2049,7 +2115,7 @@ commands:
                             name: BIG COMMERCE CONNECTOR - Get last tagged connector version ready for production
                             command: |
                                 CONNECTOR_BC_BRANCH=$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags git@github.com:akeneo/bigcommerce-connector.git 'v*' | tail -n1 | cut -d'/' -f3)
-                                
+
                                 echo export CONNECTOR_BC_BRANCH=${CONNECTOR_BC_BRANCH} >> $BASH_ENV
             - run:
                   name: BIG COMMERCE CONNECTOR - Checkout BigCommerce Connector

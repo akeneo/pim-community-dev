@@ -1,3 +1,4 @@
+batch_jobs.akeneo_shared_catalog.label: An gemeinsame Kataloge senden
 pim_common:
   recipients: Empfänger
   branding: Branding
@@ -9,13 +10,26 @@ shared_catalog:
     placeholder: betty@akeneo.com
     email: E‐Mail‐Adresse
     invalid_email: Dies ist eine ungültige E-Mail-Adresse.
+    duplicate_email: Einige Empfänger sind bereits in der Liste, sie werden ignoriert.
     helper: "Fügen Sie Empfänger hinzu, um ihnen Zugriff auf Ihren neuen freigegebenen Katalog zu gewähren. Sie können eine Adressliste mit Trennzeichen ausfüllen: Leerzeichen, Komma, Semikolon & Zeilenumbrüche."
     no_result: Es tut uns leid, keine E-Mail entspricht Ihrer Suche
     no_data: Noch keine E-Mail-Adresse angegeben
     max_limit_reached: Sie haben das Limit von 500 Empfängern erreicht.
   branding:
+    upload_placeholder: "Drag & Drop einer Datei oder hier klicken"
+    uploading: Hochladen...
     validation:
       invalid_extension: "Ungültige Dateierweiterung, erlaubte Dateiendungen sind: {{ allowed_extensions }}"
       filesize_too_large: Die von Ihnen angegebene Datei ist zu groß, die maximale Größe beträgt 2 MB
+      invalid_file: Die Datei ist ungültig
+      invalid_color: Dieser Wert ist keine gültige CSS Farbe.
+    color:
+      label: Farbe für Branding festlegen
+    logo:
+      label: Logo hochladen
+      file_information_helper: "Maximale Größe: 2 MB; Dateiformat: PNG oder JPG"
+    cover:
+      label: Cover hochladen
+      file_information_helper: Dieses Bild wird auf der Katalog-Login-Seite und auf dem Cover der PDF-Exporte verwendet. Bitte beachten Sie, dass die Cover-Seite nach dem Drucken nur korrekt erscheint wenn die Abmessungen über 1600px x 2227px liegen.
   button:
     save: Speichern und teilen
