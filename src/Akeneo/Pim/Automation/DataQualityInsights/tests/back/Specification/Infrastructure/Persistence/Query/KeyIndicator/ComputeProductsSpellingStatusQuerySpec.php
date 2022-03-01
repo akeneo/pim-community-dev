@@ -32,7 +32,7 @@ final class ComputeProductsSpellingStatusQuerySpec extends ObjectBehavior
         $productIdCollection = ProductIdCollection::fromInts([13, 42, 999]);
         $criterionCode = new CriterionCode(EvaluateSpelling::CRITERION_CODE);
 
-        $getEvaluationRatesByProductAndCriterionQuery->toArrayInt($productIdCollection, $criterionCode)->willReturn([
+        $getEvaluationRatesByProductAndCriterionQuery->execute($productIdCollection, $criterionCode)->willReturn([
             13 => [
                 'ecommerce' => [
                     'en_US' => 100,
