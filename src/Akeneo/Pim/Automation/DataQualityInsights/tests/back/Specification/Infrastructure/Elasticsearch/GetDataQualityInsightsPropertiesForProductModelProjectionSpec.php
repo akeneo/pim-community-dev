@@ -125,7 +125,7 @@ final class GetDataQualityInsightsPropertiesForProductModelProjectionSpec extend
                 ],
             ],
             'product_model_without_rates' => [
-                'data_quality_insights' => ['scores' => []],
+                'data_quality_insights' => ['scores' => [], 'key_indicators' => []],
             ],
         ]);
     }
