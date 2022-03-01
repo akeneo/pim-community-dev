@@ -15,7 +15,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class AttributeValueShouldBeEditableValidator extends ConstraintValidator
+final class AttributeGroupShouldBeEditableValidator extends ConstraintValidator
 {
     public function __construct(private IsAttributeEditable $isAttributeEditable)
     {
@@ -23,7 +23,7 @@ final class AttributeValueShouldBeEditableValidator extends ConstraintValidator
 
     public function validate($valueUserIntent, Constraint $constraint): void
     {
-        Assert::isInstanceOf($constraint, AttributeValueShouldBeEditable::class);
+        Assert::isInstanceOf($constraint, AttributeGroupShouldBeEditable::class);
         Assert::isInstanceOf($valueUserIntent, ValueUserIntent::class);
 
         $command = $this->context->getRoot();

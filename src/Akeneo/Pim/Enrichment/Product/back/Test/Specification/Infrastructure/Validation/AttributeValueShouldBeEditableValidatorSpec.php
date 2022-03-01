@@ -4,8 +4,8 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
-use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeValueShouldBeEditable;
-use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeValueShouldBeEditableValidator;
+use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeGroupShouldBeEditable;
+use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeGroupShouldBeEditableValidator;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeEditable;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -25,7 +25,7 @@ class AttributeValueShouldBeEditableValidatorSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldImplement(ConstraintValidatorInterface::class);
-        $this->shouldHaveType(AttributeValueShouldBeEditableValidator::class);
+        $this->shouldHaveType(AttributeGroupShouldBeEditableValidator::class);
     }
 
     function it_can_only_validate_the_right_constraint(): void
@@ -40,7 +40,7 @@ class AttributeValueShouldBeEditableValidatorSpec extends ObjectBehavior
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [
             new \stdClass(),
-            new AttributeValueShouldBeEditable(),
+            new AttributeGroupShouldBeEditable(),
         ]);
     }
 
@@ -64,7 +64,7 @@ class AttributeValueShouldBeEditableValidatorSpec extends ObjectBehavior
 
         $this->validate(
             new SetTextValue('attributeCode', null, null, 'foo'),
-            new AttributeValueShouldBeEditable()
+            new AttributeGroupShouldBeEditable()
         );
     }
 
@@ -80,7 +80,7 @@ class AttributeValueShouldBeEditableValidatorSpec extends ObjectBehavior
 
         $this->validate(
             new SetTextValue('attributeCode', null, null, 'foo'),
-            new AttributeValueShouldBeEditable()
+            new AttributeGroupShouldBeEditable()
         );
     }
 }
