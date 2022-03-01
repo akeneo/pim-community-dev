@@ -2,8 +2,9 @@
 
 ## Bug fixes
 
-- RAC-1221: [Backport] Fix duplicated mask returned by query for table attribute
-- RAC-1222: [Backport] Tailored Export - asset collection: "main media" is not selectable
+- RAC-1221: [Backport PIM-10236] Fix duplicated mask returned by query for table attribute
+- RAC-1222: [Backport PIM-10252] Tailored Export - asset collection: "main media" is not selectable
+- RAC-1220: [Backport PIM-10238] Add permissions to view mass delete assets, mass edit assets and mass delete records job logs
 
 # 6.0.7 (2022-02-25)
 
