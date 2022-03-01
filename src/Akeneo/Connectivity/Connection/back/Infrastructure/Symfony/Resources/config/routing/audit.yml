@@ -1,18 +1,18 @@
 weekly:
     path: '/weekly'
-    controller: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Audit\GetWeeklyAuditAction
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Audit\Controller\Internal\GetWeeklyAuditAction
     methods: [GET]
     requirements:
         event_type: '[a-zA-Z_]+'
 
 weekly_error:
     path: '/weekly-error'
-    controller: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Audit\GetWeeklyErrorAuditAction
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Audit\Controller\Internal\GetWeeklyErrorAuditAction
     methods: [GET]
 
 error_count_per_connection:
     path: '/error-count-per-connection'
-    controller: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Audit\GetErrorCountPerConnectionAction
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Audit\Controller\Internal\GetErrorCountPerConnectionAction
     methods: [GET]
     requirements:
         error_type: '[a-zA-Z_]+'

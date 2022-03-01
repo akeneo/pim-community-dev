@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Audit;
+namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Audit\Controller\Internal;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class WeeklyAuditEndToEnd extends WebTestCase
+class GetWeeklyAuditActionEndToEnd extends WebTestCase
 {
     public function test_it_get_weekly_audit_for_created_product()
     {
