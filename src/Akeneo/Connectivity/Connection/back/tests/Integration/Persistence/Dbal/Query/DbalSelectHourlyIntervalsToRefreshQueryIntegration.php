@@ -99,6 +99,6 @@ class DbalSelectHourlyIntervalsToRefreshQueryIntegration extends TestCase
 
     private function getSelectHourlyIntervalsToRefreshQuery(): DbalSelectHourlyIntervalsToRefreshQuery
     {
-        return $this->get('akeneo_connectivity_connection.persistence.query.select_hourly_intervals_to_refresh');
+        return $this->get(DbalSelectHourlyIntervalsToRefreshQuery::class);
     }
 }

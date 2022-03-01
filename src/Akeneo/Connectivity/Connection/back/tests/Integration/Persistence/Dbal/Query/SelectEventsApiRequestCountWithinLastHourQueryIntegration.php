@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectEventsApiRequestCountWithinLastHourQueryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectEventsApiRequestCountWithinLastHourQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\EventsApiRequestCountLoader;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
@@ -25,9 +26,7 @@ class SelectEventsApiRequestCountWithinLastHourQueryIntegration extends TestCase
         $this->eventsApiRequestCountLoader = $this->get(
             'akeneo_connectivity.connection.fixtures.events_api_request_count_loader'
         );
-        $this->eventsApiRequestCountWithinLastHour = $this->get(
-            'akeneo_connectivity.connection.persistence.query.select_events_api_request_count_within_last_hour_query'
-        );
+        $this->eventsApiRequestCountWithinLastHour = $this->get(DbalSelectEventsApiRequestCountWithinLastHourQuery::class);
     }
 
     public function test_it_returns_an_empty_array_if_there_is_no_events_api_request_count_during_last_hour()

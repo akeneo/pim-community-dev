@@ -29,7 +29,7 @@ class DbalPurgeAuditErrorQueryIntegration extends TestCase
         parent::setUp();
 
         $this->auditErrorLoader = $this->get('akeneo_connectivity.connection.fixtures.audit_error_loader');
-        $this->purge = $this->get('akeneo_connectivity_connection.persistence.query.purge_audit_error');
+        $this->purge = $this->get(PurgeAuditErrorQuery::class);
         $this->connection = $this->get('database_connection');
     }
 

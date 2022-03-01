@@ -48,28 +48,28 @@ services:
     akeneo_connectivity.connection.application.audit.handler.get_period_event_count_per_connection:
         class: 'Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodEventCountPerConnectionHandler'
         arguments:
-            - '@akeneo_connectivity.connection.persistence.query.select_period_event_count_per_connection'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectPeriodEventCountPerConnectionQuery'
 
     akeneo_connectivity.connection.application.audit.handler.update_data_source_product_event_count:
         class: Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataSourceProductEventCountHandler
         arguments:
-            - '@akeneo_connectivity.connection.persistence.query.extract_connections_product_event_count'
-            - '@akeneo_connectivity.connection.persistence.repository.event_count'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalExtractConnectionsProductEventCountQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalEventCountRepository'
 
     akeneo_connectivity.connection.application.audit.handler.update_data_destination_product_event_count:
         class: Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountHandler
         arguments:
-            - '@akeneo_connectivity.connection.persistence.repository.event_count'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalEventCountRepository'
 
     akeneo_connectivity.connection.application.audit.handler.get_error_count_per_connection:
         class: Akeneo\Connectivity\Connection\Application\Audit\Query\GetErrorCountPerConnectionHandler
         arguments:
-            - '@akeneo_connectivity_connection.persistence.query.select_error_count_per_connection'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectErrorCountPerConnectionQuery'
 
     akeneo_connectivity.connection.application.audit.handler.get_period_error_count_per_connection:
         class: Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodErrorCountPerConnectionHandler
         arguments:
-            - '@akeneo_connectivity_connection.persistence.query.select_period_error_count_per_connection'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectPeriodErrorCountPerConnectionQuery'
 
     akeneo_connectivity.connection.application.error_management.handler.get_connection_business_errors:
         class: Akeneo\Connectivity\Connection\Application\ErrorManagement\Query\GetConnectionBusinessErrorsHandler

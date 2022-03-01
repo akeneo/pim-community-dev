@@ -7,6 +7,7 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\PurgeAuditProductQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
+use Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalPurgeAuditProductQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\AuditLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -29,7 +30,7 @@ class DbalPurgeAuditProductQueryIntegration extends TestCase
         parent::setUp();
 
         $this->auditLoader = $this->get('akeneo_connectivity.connection.fixtures.audit_loader');
-        $this->purge = $this->get('akeneo_connectivity_connection.persistence.query.purge_audit_product');
+        $this->purge = $this->get(DbalPurgeAuditProductQuery::class);
         $this->connection = $this->get('database_connection');
     }
 

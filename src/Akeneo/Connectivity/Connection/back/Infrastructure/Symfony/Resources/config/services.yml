@@ -91,7 +91,7 @@ services:
     akeneo_connectivity.connection.webhook.get_delay_until_next_request:
         class: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\GetDelayUntilNextRequest
         arguments:
-            - '@akeneo_connectivity.connection.persistence.query.select_events_api_request_count_within_last_hour_query'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectEventsApiRequestCountWithinLastHourQuery'
 
     akeneo_connectivity.connection.webhook.sleep:
         class: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\Sleep

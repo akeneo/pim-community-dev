@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCountRepositoryInterface;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
+use Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalEventCountRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection as DbalConnection;
@@ -112,6 +113,6 @@ SQL;
 
     private function getEventCountRepository(): EventCountRepositoryInterface
     {
-        return $this->get('akeneo_connectivity.connection.persistence.repository.event_count');
+        return $this->get(DbalEventCountRepository::class);
     }
 }
