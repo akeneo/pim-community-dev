@@ -58,7 +58,7 @@ SQL;
         }
 
         $rates = json_decode($evaluationResult['rates'], true, 512, JSON_THROW_ON_ERROR);
-        $rates = $this->transformCriterionEvaluationResultIds->transformToCodes(([TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => $rates]));
+        $rates = $this->transformCriterionEvaluationResultIds->transformToCodes([TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => $rates]);
 
         return $rates['rates'] ?? [];
     }

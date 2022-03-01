@@ -13,13 +13,15 @@ use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transfo
 use Doctrine\DBAL\Connection;
 
 /**
- * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 final class GetEvaluationRatesByProductModelsAndCriterionQuery implements GetEvaluationRatesByProductsAndCriterionQueryInterface
 {
-    public function __construct(private Connection $dbConnection, private TransformCriterionEvaluationResultIds $transformCriterionEvaluationResultIds)
-    {
+    public function __construct(
+        private Connection $dbConnection,
+        private TransformCriterionEvaluationResultIds $transformCriterionEvaluationResultIds
+    ) {
     }
 
     public function toArrayInt(ProductIdCollection $productIdCollection, CriterionCode $criterionCode): array
@@ -58,7 +60,7 @@ SQL;
         }
 
         $rates = json_decode($evaluationResult['rates'], true, 512, JSON_THROW_ON_ERROR);
-        $rates = $this->transformCriterionEvaluationResultIds->transformToCodes(([TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => $rates]));
+        $rates = $this->transformCriterionEvaluationResultIds->transformToCodes([TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => $rates]);
 
         return $rates['rates'] ?? [];
     }
