@@ -41,12 +41,12 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
         return $count;
     }
 
-    public function addMissing(bool $dryRun, OutputInterface $output): bool
+    public function addMissing(Context $context, OutputInterface $output): bool
     {
         foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
             if ($this->tableExists($tableName) && !$this->columnExists($tableName, $columnNames[self::UUID_COLUMN_INDEX])) {
                 $output->writeln(sprintf('    Will add %s', $tableName));
-                if (!$dryRun) {
+                if (!$context->dryRun()) {
                     $this->addUuidColumnAndIndexOnUuid(
                         $tableName,
                         $columnNames[self::UUID_COLUMN_INDEX],
