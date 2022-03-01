@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping;
 
-use Akeneo\Platform\TailoredImport\Application\Common\DataMappingCollection;
-use Akeneo\Platform\TailoredImport\Application\Common\Row;
+use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
+use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)

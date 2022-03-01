@@ -26,23 +26,35 @@ parameters:
 #        - 'pim_catalog_textarea'
 
 services:
-    akeneo.tailored_import.query.find_system_targets:
-        class: Akeneo\Platform\TailoredImport\Infrastructure\Query\InMemoryFindSystemTargets
-        arguments:
-            - '%akeneo.tailored_import.supported_system_properties%'
-            - '@translator'
-
-    akeneo.tailored_import.query.find_viewable_attributes:
-        class: Akeneo\Platform\TailoredImport\Infrastructure\Query\FindViewableAttributes
+    akeneo.tailored_import.query.attribute.find_viewable_attributes:
+        class: Akeneo\Platform\TailoredImport\Infrastructure\Query\Attribute\FindViewableAttributes
         arguments:
             - '@akeneo.pim.structure.query.find_flatten_attributes'
             - '@pimee_security.query.get_viewable_attribute_codes_for_user'
             - '@security.token_storage'
             - '%akeneo.tailored_import.supported_attribute_types%'
 
+    akeneo.tailored_import.query.filesystem.store_file:
+        class: Akeneo\Platform\TailoredImport\Infrastructure\Query\Filesystem\StoreFile
+        arguments:
+            - '@akeneo_file_storage.repository.file_info'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+
+    akeneo.tailored_import.query.filesystem.read_file_headers:
+        class: Akeneo\Platform\TailoredImport\Infrastructure\Query\Filesystem\ReadFileHeaders
+        arguments:
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@akeneo.tailored_import.spout.file_reader.factory'
+
+    akeneo.tailored_import.query.find_system_targets:
+        class: Akeneo\Platform\TailoredImport\Infrastructure\Query\InMemoryFindSystemTargets
+        arguments:
+            - '%akeneo.tailored_import.supported_system_properties%'
+            - '@translator'
+
     akeneo.tailored_import.query.get_grouped_targets:
         class: Akeneo\Platform\TailoredImport\Infrastructure\Query\GetGroupedTargets
         arguments:
-            - '@akeneo.tailored_import.query.find_viewable_attributes'
+            - '@akeneo.tailored_import.query.attribute.find_viewable_attributes'
             - '@akeneo.tailored_import.query.find_system_targets'
             - '@translator'

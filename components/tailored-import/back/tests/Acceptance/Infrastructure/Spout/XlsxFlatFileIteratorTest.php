@@ -15,10 +15,10 @@ namespace Akeneo\Platform\TailoredImport\Test\Acceptance\Infrastructure\Spout;
 
 use Akeneo\Platform\TailoredImport\Domain\Exception\FileNotFoundException;
 use Akeneo\Platform\TailoredImport\Domain\Exception\SheetNotFoundException;
-use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FileHeaderCollection;
-use Akeneo\Platform\TailoredImport\Infrastructure\Spout\XlsxFlatFileIterator;
+use Akeneo\Platform\TailoredImport\Domain\Model\File\FileHeaderCollection;
+use Akeneo\Platform\TailoredImport\Domain\Model\File\FileStructure;
+use Akeneo\Platform\TailoredImport\Infrastructure\Spout\XlsxFileIterator;
 use Akeneo\Platform\TailoredImport\Test\Acceptance\AcceptanceTestCase;
-use Akeneo\Tool\Component\Batch\Job\JobParameters;
 
 class XlsxFlatFileIteratorTest extends AcceptanceTestCase
 {
@@ -104,7 +104,7 @@ class XlsxFlatFileIteratorTest extends AcceptanceTestCase
      */
     public function it_throw_an_exception_when_sheet_is_not_found(): void
     {
-        $this->expectException(SheetNotFoundException::class);
+        $this->expectExceptionObject(new SheetNotFoundException('unknown sheet'));
         $this->getFlatFileIterator(sheetName: 'unknown sheet');
     }
 
@@ -130,17 +130,14 @@ class XlsxFlatFileIteratorTest extends AcceptanceTestCase
         int $firstColumn = 0,
         int $productLine = 1,
         string $sheetName = 'Products'
-    ): XlsxFlatFileIterator {
-        $jobParameters = new JobParameters([
-            'file_structure' => [
-                'header_line' => $headerLine,
-                'first_column' => $firstColumn,
-                'product_line' => $productLine,
-                'sheet_name' => $sheetName,
-            ],
-            'filePath' => $filePath,
+    ): XlsxFileIterator {
+        $fileStructure = FileStructure::createFromNormalized([
+            'header_line' => $headerLine,
+            'first_column' => $firstColumn,
+            'product_line' => $productLine,
+            'sheet_name' => $sheetName,
         ]);
 
-        return $this->get('akeneo.tailored_import.spout.file_reader.factory')->create('xlsx', $jobParameters);
+        return $this->get('akeneo.tailored_import.spout.file_reader.factory')->create('xlsx', $filePath, $fileStructure);
     }
 }

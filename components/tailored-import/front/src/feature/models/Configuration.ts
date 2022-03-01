@@ -1,5 +1,6 @@
-import {uuid} from 'akeneo-design-system';
 import {DataMapping} from './DataMapping';
+
+const MAX_COLUMN_COUNT = 500;
 
 type ColumnIdentifier = string;
 
@@ -9,31 +10,34 @@ type Column = {
   label: string;
 };
 
+type FileStructure = {
+  header_line: number;
+  first_column: number;
+  product_line: number;
+  sheet_name: string | null;
+};
+
+type ErrorAction = 'skip_value' | 'skip_product';
+
+const isValidErrorAction = (errorAction: string): errorAction is ErrorAction =>
+  ['skip_value', 'skip_product'].includes(errorAction);
+
 type StructureConfiguration = {
-  columns: Column[];
-  data_mappings: DataMapping[];
+  import_structure: {
+    columns: Column[];
+    data_mappings: DataMapping[];
+  };
+  file_key: string | null;
+  error_action: ErrorAction;
+  // file_structure: FileStructure;
 };
 
-const MAX_COLUMN_COUNT = 500;
-const extractColumnLabels = (sheetContent: string): string[] => {
-  const rows = sheetContent.split('\n');
-
-  const firstRow = rows[0];
-  if ('' === firstRow.trim()) {
-    return [];
-  }
-
-  return firstRow.split('\t');
-};
-
-const generateColumns = (sheetContent: string): Column[] => {
-  const columnLabels = extractColumnLabels(sheetContent);
-  return columnLabels.slice(0, MAX_COLUMN_COUNT).map((label, index) => ({
-    uuid: uuid(),
-    index,
-    label,
-  }));
-};
+const getDefaultFileStructure = (): FileStructure => ({
+  header_line: 0,
+  first_column: 0,
+  product_line: 1,
+  sheet_name: null,
+});
 
 const generateExcelColumnLetter = (index: number): string => {
   if (index <= 25) {
@@ -52,5 +56,5 @@ const generateColumnName = ({index, label}: Column): string => {
   return `${label} (${columnLetter})`;
 };
 
-export type {StructureConfiguration, Column, ColumnIdentifier};
-export {extractColumnLabels, generateColumns, generateColumnName, MAX_COLUMN_COUNT};
+export type {StructureConfiguration, Column, ColumnIdentifier, FileStructure, ErrorAction};
+export {generateColumnName, MAX_COLUMN_COUNT, getDefaultFileStructure, isValidErrorAction};

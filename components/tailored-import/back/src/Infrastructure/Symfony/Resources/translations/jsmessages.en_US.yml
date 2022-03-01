@@ -1,15 +1,24 @@
 batch_jobs.xlsx_tailored_product_import.label: Tailored product import in XLSX
 
 akeneo.tailored_import:
-  column_initialization:
-    button: Initialize columns
-    max_column_count_reached: You have reached the limit columns, only {{ limit }} first columns will be imported.
+  global_settings:
+    error_action:
+      label: Operation error management
+      skip_product: Skip product
+      skip_value: Skip value
+      helper_message: Define the behavior in case of an error in an operation.
+  file_structure:
+    placeholder:
+      title: Logoden biniou degemer mat an penn ar bed kuzuliañ
+      button: Initialize file structure
     modal:
-      title: Sample data
-      subtitle: Column initialization
-      columns:
-        label: Columns
-        placeholder: Copy and paste here your columns
+      title: Define your file structure
+      subtitle: Import profiles
+      helper: Logoden biniou degemer mat an penn ar bed kalet lonkañ Perros-Gireg speredek sae uhelder, tavañjer kartoñs doujañs amezeg trizek.
+      upload:
+        placeholder: Drop your file here or browse your disk
+        uploading: Uploading...
+        error: An error occurred while uploading your file. Please check your file and try again.
   data_mapping_list:
     title: Data mappings
     no_sources: No sources
@@ -32,7 +41,7 @@ akeneo.tailored_import:
           title: Import structure
   validation:
     columns:
-      max_count_reached: You have reached the limit of {{ limit }} columns, you can no longer add columns to your import.
+      max_count_reached: Your file must not contain more than {{ limit }} columns.
       uuid:
         should_be_unique: This column UUID already exists, please enter a new one.
       index:
@@ -65,3 +74,8 @@ akeneo.tailored_import:
       locale_should_be_blank: The attribute {{ attribute_code }} does not have a value per locale anymore. Please either delete then recreate it or choose a different target.
       channel_should_be_blank: The attribute {{ attribute_code }} does not have a value per channel anymore. Please either delete then recreate it or choose a different target.
       invalid_specific_locale: The attribute {{ attribute_code }} is locale specific. Please select another locale.
+    file_key:
+      does_not_exist: The file {{ file_key }} was not found.
+    uploaded_file:
+      max_size: The file is too big. The maximum size is {{ limit }}{{ suffix }}.
+      not_allowed_mime_type: The file must be an Excel spreadsheet.

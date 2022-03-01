@@ -8,8 +8,8 @@ import userEvent from '@testing-library/user-event';
 const propertyTarget: PropertyTarget = {
   code: 'description',
   type: 'property',
-  action: 'set',
-  if_empty: 'skip',
+  action_if_not_empty: 'set',
+  action_if_empty: 'skip',
 };
 
 test('it can change the if_empty case when hitting the checkbox', async () => {
@@ -21,6 +21,6 @@ test('it can change the if_empty case when hitting the checkbox', async () => {
 
   expect(handleTargetChange).toHaveBeenCalledWith({
     ...propertyTarget,
-    if_empty: 'clear',
+    action_if_empty: 'clear',
   });
 });

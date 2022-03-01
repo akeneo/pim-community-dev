@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Processor;
 
-use Akeneo\Platform\TailoredImport\Application\Common\DataMappingCollection;
-use Akeneo\Platform\TailoredImport\Application\Common\Row;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingHandler;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingQuery;
+use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
+use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
+use Akeneo\Platform\TailoredImport\Infrastructure\Connector\RowPayload;
+use Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\DataMappingCollectionHydrator;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -23,18 +26,22 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
 
     public function __construct(
         private ExecuteDataMappingHandler $executeDataMappingHandler,
+        private GetAttributes $getAttributes,
+        private DataMappingCollectionHydrator $dataMappingHydrator,
     ) {
     }
 
     public function process($item)
     {
-        if (!$item instanceof Row) {
+        if (!$item instanceof RowPayload) {
             throw new \RuntimeException('Invalid type of item');
         }
 
-        $query = new ExecuteDataMappingQuery($item, $this->getDataMappingCollection());
+        $query = new ExecuteDataMappingQuery($item->getRow(), $this->getDataMappingCollection());
 
-        return $this->executeDataMappingHandler->handle($query);
+        $item->setUpsertProductCommand($this->executeDataMappingHandler->handle($query));
+
+        return $item;
     }
 
     private function getDataMappingCollection(): DataMappingCollection
@@ -45,11 +52,23 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             }
 
             $normalizedDataMappings = $this->stepExecution->getJobParameters()->get('import_structure')['data_mappings'];
-            // TODO: introduce hydrators?
-            $this->dataMappingCollection = DataMappingCollection::createFromNormalized($normalizedDataMappings);
+            $indexedAttributes = $this->getIndexedAttributes($normalizedDataMappings);
+            $this->dataMappingCollection = $this->dataMappingHydrator->hydrate($normalizedDataMappings, $indexedAttributes);
         }
 
         return $this->dataMappingCollection;
+    }
+
+    private function getIndexedAttributes(array $dataMappings): array
+    {
+        $attributeCodes = [];
+        foreach ($dataMappings as $dataMapping) {
+            if (TargetAttribute::TYPE === $dataMapping['target']['type']) {
+                $attributeCodes[] = $dataMapping['target']['code'];
+            }
+        }
+
+        return array_filter($this->getAttributes->forCodes(array_unique($attributeCodes)));
     }
 
     public function setStepExecution(StepExecution $stepExecution): void

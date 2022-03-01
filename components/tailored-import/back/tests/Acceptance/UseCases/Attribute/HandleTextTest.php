@@ -15,9 +15,11 @@ namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\Attribute;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
-use Akeneo\Platform\TailoredImport\Application\Common\DataMappingCollection;
-use Akeneo\Platform\TailoredImport\Application\Common\Row;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingQuery;
+use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
+use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
+use Akeneo\Platform\TailoredImport\Domain\Model\Row;
+use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
 use PHPUnit\Framework\Assert;
 
 final class HandleTextTest extends AttributeTestCase
@@ -32,7 +34,7 @@ final class HandleTextTest extends AttributeTestCase
     ): void {
         $executeDataMappingQuery = new ExecuteDataMappingQuery(
             new Row($row),
-            DataMappingCollection::createFromNormalized($dataMappings),
+            DataMappingCollection::create($dataMappings),
         );
 
         $upsertProductCommand = $this->getExecuteDataMappingHandler()->handle($executeDataMappingQuery);
@@ -50,48 +52,48 @@ final class HandleTextTest extends AttributeTestCase
                     '2d9e967a-4efa-4a31-a254-99f7c50a145c' => 'this is a description',
                 ],
                 'data_mappings' => [
-                    [
-                        'uuid' => 'b244c45c-d5ec-4993-8cff-7ccd04e82fef',
-                        'target' => [
-                            'type' => 'attribute',
-                            'code' => 'sku',
-                            'channel' => null,
-                            'locale' => null,
-                            'action' => 'set',
-                            'if_empty' => 'skip',
-                        ],
-                        'sources' => ['25621f5a-504f-4893-8f0c-9f1b0076e53e'],
-                        'operations' => [],
-                        'sample_data' => [],
-                    ],
-                    [
-                        'uuid' => 'b244c45c-d5ec-4993-8cff-7ccd04e82feb',
-                        'target' => [
-                            'type' => 'attribute',
-                            'code' => 'name',
-                            'channel' => null,
-                            'locale' => null,
-                            'action' => 'set',
-                            'if_empty' => 'skip',
-                        ],
-                        'sources' => ['2d9e967a-5efa-4a31-a254-99f7c50a145c'],
-                        'operations' => [],
-                        'sample_data' => [],
-                    ],
-                    [
-                        'uuid' => 'b244c45c-d5ec-4993-8cff-7ccd04e82fec',
-                        'target' => [
-                            'type' => 'attribute',
-                            'code' => 'description',
-                            'channel' => 'ecommerce',
-                            'locale' => 'fr_FR',
-                            'action' => 'set',
-                            'if_empty' => 'skip',
-                        ],
-                        'sources' => ['2d9e967a-4efa-4a31-a254-99f7c50a145c'],
-                        'operations' => [],
-                        'sample_data' => [],
-                    ],
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82fef',
+                        TargetAttribute::create(
+                            'sku',
+                            'pim_catalog_identifier',
+                            null,
+                            null,
+                            'set',
+                            'skip',
+                        ),
+                        ['25621f5a-504f-4893-8f0c-9f1b0076e53e'],
+                        [],
+                        [],
+                    ),
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82feb',
+                        TargetAttribute::create(
+                            'name',
+                            'pim_catalog_text',
+                            null,
+                            null,
+                            'set',
+                            'skip',
+                        ),
+                        ['2d9e967a-5efa-4a31-a254-99f7c50a145c'],
+                        [],
+                        [],
+                    ),
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82fec',
+                        TargetAttribute::create(
+                            'description',
+                            'pim_catalog_text',
+                            'ecommerce',
+                            'fr_FR',
+                            'set',
+                            'skip',
+                        ),
+                        ['2d9e967a-4efa-4a31-a254-99f7c50a145c'],
+                        [],
+                        [],
+                    ),
                 ],
                 'expected' => new UpsertProductCommand(
                     userId: 1,

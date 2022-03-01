@@ -20,14 +20,12 @@ class CellsFormatter
      *
      * @return array<string>
      */
-    public function format(array $cells): array
+    public function formatCells(array $cells): array
     {
-        return array_map(function ($cell) {
-            return $this->formatCell($cell);
-        }, $cells);
+        return array_map(fn ($cell) => $this->formatCell($cell), $cells);
     }
 
-    private function formatCell(mixed $cell): string
+    public function formatCell(mixed $cell): string
     {
         switch (true) {
             case $cell instanceof \DateTime:
