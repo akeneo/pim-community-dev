@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Cli;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Audit\Command;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataSourceProductEventCountCommand;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataSourceProductEventCountHandler;
@@ -25,22 +25,12 @@ class UpdateAuditDataCommand extends Command
      */
     protected static $defaultName = 'akeneo:connectivity-audit:update-data';
 
-    private UpdateDataSourceProductEventCountHandler $updateDataSourceProductEventCountHandler;
-
-    private DbalSelectHourlyIntervalsToRefreshQuery $selectHourlyIntervalsToRefreshQuery;
-
-    private PurgeAuditProductQueryInterface $purgeQuery;
-
     public function __construct(
-        UpdateDataSourceProductEventCountHandler $updateDataSourceProductEventCountHandler,
-        DbalSelectHourlyIntervalsToRefreshQuery $selectHourlyIntervalsToRefreshQuery,
-        PurgeAuditProductQueryInterface $purgeQuery
+        private UpdateDataSourceProductEventCountHandler $updateDataSourceProductEventCountHandler,
+        private DbalSelectHourlyIntervalsToRefreshQuery $selectHourlyIntervalsToRefreshQuery,
+        private PurgeAuditProductQueryInterface $purgeQuery
     ) {
         parent::__construct();
-
-        $this->updateDataSourceProductEventCountHandler = $updateDataSourceProductEventCountHandler;
-        $this->selectHourlyIntervalsToRefreshQuery = $selectHourlyIntervalsToRefreshQuery;
-        $this->purgeQuery = $purgeQuery;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

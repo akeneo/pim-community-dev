@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Audit;
+namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Audit\Command;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\CommandTestCase;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
@@ -22,14 +22,9 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class UpdateAuditDataCommandEndToEnd extends CommandTestCase
 {
-    /** @var Command */
-    private $command;
-
-    /** @var DbalConnection */
-    private $dbalConnection;
-
-    /** @var string */
-    private $productClass;
+    private Command $command;
+    private DbalConnection $dbalConnection;
+    private string $productClass;
 
     protected function setUp(): void
     {
