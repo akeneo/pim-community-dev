@@ -39,9 +39,8 @@ final class MigrateToUuidReindexElasticsearch implements MigrateToUuidStep
 
             return false;
         }
-        
+
         $productIdentifiers = $this->getProductIdentifiersToIndex();
-        $output->writeln('lezg');
         while (count($productIdentifiers) > 0) {
             $output->writeln(sprintf('    Will reindex %d products...', count($productIdentifiers)));
             $this->productIndexer->indexFromProductIdentifiers($productIdentifiers, [
@@ -65,6 +64,10 @@ final class MigrateToUuidReindexElasticsearch implements MigrateToUuidStep
 
     private function getEsResult(): array
     {
+        /**
+         * The document to reindex still have the previous id in the product_123 format, with 123 as mysql id.
+         * The new documents will have an id like product_1e40-4c55-a415-89c7958b270d, with their uuid.
+         */
         return $this->esClient->search([
             'query' => [
                 'regexp' => [
