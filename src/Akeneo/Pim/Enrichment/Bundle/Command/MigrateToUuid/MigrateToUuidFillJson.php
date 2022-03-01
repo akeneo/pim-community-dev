@@ -208,6 +208,9 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
                                 } else {
                                     $formerAssociation[$associationName]['products'][$i]['uuid'] = $associatedProductUuid;
                                 }
+                            } else {
+                                // former association is cleared since product does not exist anymore
+                                \array_splice($formerAssociation[$associationName]['products'], $i, 1);
                             }
                         }
                     }
