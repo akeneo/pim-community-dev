@@ -1,3 +1,5 @@
 akeneo_connectivity.connection:
   acl.manage_settings: Verbindungseinstellungen verwalten
   acl.manage_apps: Apps verwalten
+  acl.manage_test_apps: Test-Apps verwalten
+  acl.open_apps: Apps öffnen

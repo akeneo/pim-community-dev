@@ -34,7 +34,7 @@ class ClientProviderIntegration extends TestCase
         parent::setUp();
 
         $this->connection = $this->get('database_connection');
-        $this->clientProvider = $this->get('akeneo_connectivity.connection.service.apps.client_provider');
+        $this->clientProvider = $this->get(ClientProvider::class);
         $this->clientManager = $this->get('fos_oauth_server.client_manager.default');
     }
 

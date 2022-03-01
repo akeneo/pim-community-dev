@@ -25,7 +25,6 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
     public function let(UserProviderInterface $userProvider, UserCheckerInterface $userChecker, EncoderFactoryInterface $encoderFactory, UserManager $userManager)
     {
         $this->beConstructedWith($userProvider, $userChecker, self::PROVIDER_KEY, $encoderFactory, $userManager, self::ACCOUNT_LOCK_DURATION, self::ALLOWED_FAILED_ATTEMPTS, false);
-
     }
 
     public function it_is_initializable()
@@ -68,6 +67,32 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
         $this->shouldNotChangeState($userManager);
     }
 
+    public function it_rejects_authentication_when_user_just_reach_max_attempt(
+        UserInterface $user,
+        UserProviderInterface $userProvider,
+        UsernamePasswordToken $usernamePasswordToken,
+        PasswordEncoderInterface $passwordEncoder,
+        EncoderFactoryInterface $encoderFactory
+    ) {
+        $this->initUser(
+            $user,
+            self::ALLOWED_FAILED_ATTEMPTS - 1,
+            $this->initialFailedAttemptDateBackFromNow(self::ACCOUNT_LOCK_DURATION - 1)
+        );
+
+        $user->setConsecutiveAuthenticationFailureCounter(10)->shouldBeCalled()->will(function () {
+            $this->getConsecutiveAuthenticationFailureCounter()->willReturn(20);
+        });
+
+        $this->initUsernamePasswordToken($usernamePasswordToken);
+        $userProvider->loadUserByIdentifier(self::USERNAME)->shouldBeCalled()->willReturn($user);
+        $passwordEncoder->isPasswordValid(Argument::any(), Argument::any(), Argument::any())->willReturn(false);
+        $encoderFactory->getEncoder(Argument::any())->willReturn($passwordEncoder);
+
+        $this->shouldThrow(LockedAccountException::class)
+            ->duringAuthenticate($usernamePasswordToken);
+    }
+
     public function it_increase_failed_attempts_counter(
         EncoderFactoryInterface $encoderFactory,
         UserManager $userManager,
@@ -75,8 +100,7 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
         PasswordEncoderInterface $passwordEncoder,
         UserInterface $user,
         UsernamePasswordToken $usernamePasswordToken
-    )
-    {
+    ) {
         $this->initUser(
             $user,
             self::ALLOWED_FAILED_ATTEMPTS - 1,
@@ -87,7 +111,6 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
         $userProvider->loadUserByIdentifier(self::USERNAME)->shouldBeCalled()->willReturn($user);
         $passwordEncoder->isPasswordValid(Argument::any(), Argument::any(), Argument::any())->willReturn(false);
         $encoderFactory->getEncoder(Argument::any())->willReturn($passwordEncoder);
-
         $this->shouldThrow(BadCredentialsException::class)
             ->duringAuthenticate($usernamePasswordToken);
 
@@ -112,7 +135,6 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
         $this->checkLockStateReset($user, $userManager);
 
         $this->checkLockStateInitialized($userManager, $user);
-
     }
 
     private static function initialFailedAttemptDateBackFromNow(int $secondsBehind): \DateTime
@@ -132,7 +154,6 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
         $user->setConsecutiveAuthenticationFailureCounter(1)->shouldHaveBeenCalledOnce();
         $user->setAuthenticationFailureResetDate()->shouldNotBeCalled();
         $userManager->updateUser(Argument::any())->shouldHaveBeenCalled();
-
     }
 
     private function initUsernamePasswordToken(UsernamePasswordToken $usernamePasswordToken)
@@ -182,5 +203,4 @@ class CustomDaoAuthenticationProviderSpec extends ObjectBehavior
         $user->setAuthenticationFailureResetDate(null)->shouldHaveBeenCalled();
         $userManager->updateUser($user)->shouldHaveBeenCalled();
     }
-
 }

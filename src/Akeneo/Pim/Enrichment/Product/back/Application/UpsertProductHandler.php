@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsExceptio
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
@@ -97,6 +98,22 @@ final class UpsertProductHandler
                                     'locale' => $valueUserIntent->localeCode(),
                                     'scope' => $valueUserIntent->channelCode(),
                                     'data' => $valueUserIntent->value(),
+                                ],
+                            ],
+                        ],
+                    ]);
+                } elseif ($valueUserIntent instanceof SetMetricValue) {
+                    $found = true;
+                    $this->productUpdater->update($product, [
+                        'values' => [
+                            $valueUserIntent->attributeCode() => [
+                                [
+                                    'locale' => $valueUserIntent->localeCode(),
+                                    'scope' => $valueUserIntent->channelCode(),
+                                    'data' => [
+                                        'amount' => $valueUserIntent->amount(),
+                                        'unit' => $valueUserIntent->unit(),
+                                    ],
                                 ],
                             ],
                         ],
