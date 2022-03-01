@@ -4,3 +4,8 @@ services:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\SupplierDatabaseRepository
         arguments:
             - '@database_connection'
+
+    # Command/Handlers
+    Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler:
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\SupplierRepository'
