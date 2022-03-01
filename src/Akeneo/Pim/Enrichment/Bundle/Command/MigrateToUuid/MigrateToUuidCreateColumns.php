@@ -59,7 +59,8 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
         return true;
     }
 
-    private function addUuidColumnAndIndexOnUuid(string $tableName, string $uuidColumName, string $idColumnName): void {
+    private function addUuidColumnAndIndexOnUuid(string $tableName, string $uuidColumName, string $idColumnName): void
+    {
         $addUuidColumnAndIndexOnUuidSql = <<<SQL
             ALTER TABLE `{table_name}`
                 ADD `{uuid_column_name}` BINARY(16) DEFAULT NULL AFTER `{id_column_name}`,
