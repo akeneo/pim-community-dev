@@ -86,45 +86,30 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         return $allItemsMigrated;
     }
 
-    private function updateProductAssociations($productAssociations): void
+    private function updateAssociations(string $tableName, array $productAssociations): void
     {
-        $values = array_map(fn (array $productAssociation): string => \strtr(
-            '({product_id}, \'{quantified_associations}\', 1, CONCAT(md5(rand()), md5(rand())), "{}", NOW(), NOW())',
-            [
-                '{product_id}' => $productAssociation['id'],
-                '{quantified_associations}' => \json_encode($productAssociation['quantified_associations']),
-            ]
-        ), $productAssociations);
+        $rows = \array_map(
+            fn (array $productAssociation): string => \sprintf(
+                "ROW(%d, '%s')",
+                $productAssociation['id'],
+                \json_encode($productAssociation['quantified_associations'])
+            ),
+            $productAssociations
+        );
 
-        $insertSql = <<<SQL
-            INSERT INTO pim_catalog_product (id, quantified_associations, is_enabled, identifier, raw_values, created, updated)
-            VALUES {values}
-            ON DUPLICATE KEY UPDATE quantified_associations=VALUES(quantified_associations)
+        $sql = <<<SQL
+        WITH
+        new_quantified_associations AS (
+            SELECT * FROM (VALUES {rows}) as t(id, quantified_associations)
+        )
+        UPDATE {tableName} p, new_quantified_associations nqa
+        SET p.quantified_associations = nqa.quantified_associations
+        WHERE p.id = nqa.id
         SQL;
 
-        $this->connection->executeQuery(\strtr($insertSql, [
-            '{values}' => implode(', ', $values),
-        ]));
-    }
-
-    private function updateProductModelAssociations($productAssociations): void
-    {
-        $values = array_map(fn (array $productAssociation): string => \strtr(
-            '({product_model_id}, \'{quantified_associations}\', CONCAT(md5(rand()), md5(rand())), "{}", NOW(), NOW())',
-            [
-                '{product_model_id}' => $productAssociation['id'],
-                '{quantified_associations}' => \json_encode($productAssociation['quantified_associations']),
-            ]
-        ), $productAssociations);
-
-        $insertSql = <<<SQL
-            INSERT INTO pim_catalog_product_model (id, quantified_associations, code, raw_values, created, updated)
-            VALUES {values}
-            ON DUPLICATE KEY UPDATE quantified_associations=VALUES(quantified_associations)
-        SQL;
-
-        $this->connection->executeQuery(\strtr($insertSql, [
-            '{values}' => implode(', ', $values),
+        $this->connection->executeQuery(\strtr($sql, [
+            '{rows}' => implode(',', $rows),
+            '{tableName}' => $tableName,
         ]));
     }
 
@@ -223,11 +208,7 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
 
             $output->writeln(sprintf('    Will update %s entities in %s table', count($associations), $tableName));
             if (!$dryRun) {
-                if ($tableName === 'pim_catalog_product') {
-                    $this->updateProductAssociations($associations);
-                } else {
-                    $this->updateProductModelAssociations($associations);
-                }
+                $this->updateAssociations($tableName, $associations);
                 $associations = $this->getFormerAssociations($tableName, $previousEntityId);
             } else {
                 $output->writeln(sprintf('    Option --dry-run is set, will continue to next step.'));
