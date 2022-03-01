@@ -203,17 +203,20 @@ const CategoryEditPage: FC = () => {
           >
             {translate('pim_common.properties')}
           </TabBar.Tab>
-          {formData && formData.permissions && permissionFeatureFlagIsEnabled && isGranted('pimee_enrich_category_edit_permissions') && (
-            <TabBar.Tab
-              isActive={isCurrent(permissionTabName)}
-              onClick={() => {
-                setActiveTab(permissionTabName);
-                switchTo(permissionTabName);
-              }}
-            >
-              {translate('pim_common.permissions')}
-            </TabBar.Tab>
-          )}
+          {formData &&
+            formData.permissions &&
+            permissionFeatureFlagIsEnabled &&
+            isGranted('pimee_enrich_category_edit_permissions') && (
+              <TabBar.Tab
+                isActive={isCurrent(permissionTabName)}
+                onClick={() => {
+                  setActiveTab(permissionTabName);
+                  switchTo(permissionTabName);
+                }}
+              >
+                {translate('pim_common.permissions')}
+              </TabBar.Tab>
+            )}
           {isGranted('pim_enrich_product_category_history') && (
             <TabBar.Tab
               isActive={isCurrent(historyTabName)}

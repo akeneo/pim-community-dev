@@ -13,19 +13,11 @@ use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
  */
 class AttributeTypeRegistry
 {
-    /** @var AttributeTypeInterface[] */
-    protected $types = [];
+    /** @var array<string,string> */
+    private $types = [];
 
-    protected FeatureFlags $featureFlags;
-
-    /**
-     * Constructor with feature flag
-     *
-     * @param FeatureFlags $featureFlags
-     */
-    public function __construct(FeatureFlags $featureFlags)
+    public function __construct(private FeatureFlags $featureFlags)
     {
-        $this->featureFlags = $featureFlags;
     }
 
     /**
@@ -36,11 +28,11 @@ class AttributeTypeRegistry
      *
      * @return AttributeTypeRegistry
      */
-    public function register($alias, AttributeTypeInterface $type, $feature = null)
+    public function register(string $alias, AttributeTypeInterface $type, ?string $feature = null)
     {
         $this->types[$alias] = [
-            $type,
-            $feature
+            'attribute_type' => $type,
+            'feature' => $feature
         ];
 
         return $this;
@@ -58,14 +50,13 @@ class AttributeTypeRegistry
     public function get($alias)
     {
         if (
-            !isset($this->types[$alias]) || (null !== $this->types[$alias][1] &&
-                !$this->featureFlags->isEnabled($this->types[$alias][1])
-            )
+            !isset($this->types[$alias]) ||
+            (null !== $this->types[$alias]['feature'] && !$this->featureFlags->isEnabled($this->types[$alias]['feature']))
         ) {
             throw new \LogicException(sprintf('Attribute type "%s" is not registered', $alias));
         }
 
-        return $this->types[$alias][0];
+        return $this->types[$alias]['attribute_type'];
     }
 
     /**
@@ -75,10 +66,12 @@ class AttributeTypeRegistry
      */
     public function getAliases()
     {
+        $aliases = array_keys($this->types);
+
         return array_filter(
-            array_keys($this->types),
+            $aliases,
             function ($alias) {
-                return null === $this->types[$alias][1] || $this->featureFlags->isEnabled($this->types[$alias][1]);
+                return null === $this->types[$alias]['feature'] || $this->featureFlags->isEnabled($this->types[$alias]['feature']);
             }
         );
     }

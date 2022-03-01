@@ -38,7 +38,7 @@ class JobInstanceRepository extends EntityRepository implements DatagridReposito
     public function createDatagridQueryBuilder()
     {
         $jobName = array_map(
-            fn(JobInterface $job) => $job->getName(),
+            fn (JobInterface $job) => $job->getName(),
             $this->jobRegistry->all()
         );
 
