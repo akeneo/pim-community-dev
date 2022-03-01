@@ -393,6 +393,11 @@ SQL;
         return $rowsIndexedByProductIdentifier;
     }
 
+    public function clearCache(): void
+    {
+        $this->columnExistsCache = null;
+    }
+
     private function columnExists(string $tableName, string $columnName): bool
     {
         if ($this->columnExistsCache === null) {
