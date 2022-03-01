@@ -27,7 +27,7 @@ const SourceListPlaceholder = styled.span`
   width: 100%;
 `;
 
-const RemoveCell = styled(Table.Cell)`
+const RemoveCell = styled(Table.ActionCell)`
   width: 50px;
 `;
 

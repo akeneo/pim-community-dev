@@ -23,6 +23,7 @@ akeneo.tailored_import:
     title: Data mappings
     no_sources: No sources
     add: Add a data mapping
+    remove: Are you sure you want to remove this data mapping?
   data_mapping:
     title: Data mapping
     no_data_mapping_selected: No data mapping selected

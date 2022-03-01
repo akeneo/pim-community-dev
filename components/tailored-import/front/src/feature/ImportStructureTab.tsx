@@ -77,6 +77,18 @@ const ImportStructureTab = ({
     handleDataMappingSelected(dataMapping.uuid);
   };
 
+  const handleDataMappingRemoved = (dataMappingUuid: string): void => {
+    onStructureConfigurationChange({
+      ...structureConfiguration,
+      import_structure: {
+        ...structureConfiguration.import_structure,
+        data_mappings: structureConfiguration.import_structure.data_mappings.filter(
+          dataMapping => dataMapping.uuid !== dataMappingUuid
+        ),
+      },
+    });
+  };
+
   return (
     <>
       {null === structureConfiguration.file_key ? (
@@ -90,6 +102,7 @@ const ImportStructureTab = ({
             validationErrors={filterErrors(validationErrors, `[data_mappings]`)}
             onDataMappingAdded={handleDataMappingAdded}
             onDataMappingSelected={handleDataMappingSelected}
+            onDataMappingRemoved={handleDataMappingRemoved}
           />
           {null === selectedDataMapping ? (
             <DataMappingDetailsPlaceholder />

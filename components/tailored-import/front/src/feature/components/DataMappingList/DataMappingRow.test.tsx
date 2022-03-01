@@ -8,7 +8,7 @@ import userEvent from '@testing-library/user-event';
 const dataMapping: DataMapping = {
   uuid: '04839ab3-3ef3-4e80-8117-a2522552a20f',
   target: {
-    code: 'sku',
+    code: 'parent',
     type: 'property',
     action_if_not_empty: 'set',
     action_if_empty: 'skip',
@@ -36,8 +36,9 @@ const columns = [
   },
 ];
 
-test('it call handler when user click on row', () => {
+test('it calls handler when user selects the row', () => {
   const handleSelect = jest.fn();
+
   renderWithProviders(
     <table>
       <tbody>
@@ -47,13 +48,62 @@ test('it call handler when user click on row', () => {
           onSelect={handleSelect}
           hasError={false}
           isSelected={false}
+          isIdentifierDataMapping={false}
+          onRemove={jest.fn()}
         />
       </tbody>
     </table>
   );
 
-  userEvent.click(screen.getByText('sku'));
+  userEvent.click(screen.getByText('parent'));
   expect(handleSelect).toHaveBeenCalledWith('04839ab3-3ef3-4e80-8117-a2522552a20f');
+});
+
+test('it calls remove handler after confirming removal', () => {
+  const handleRemove = jest.fn();
+
+  renderWithProviders(
+    <table>
+      <tbody>
+        <DataMappingRow
+          columns={columns}
+          dataMapping={dataMapping}
+          onSelect={jest.fn()}
+          hasError={false}
+          isSelected={false}
+          isIdentifierDataMapping={false}
+          onRemove={handleRemove}
+        />
+      </tbody>
+    </table>
+  );
+
+  userEvent.click(screen.getByTitle('pim_common.remove'));
+  userEvent.click(screen.getByText('pim_common.confirm'));
+
+  expect(handleRemove).toHaveBeenCalledWith('04839ab3-3ef3-4e80-8117-a2522552a20f');
+});
+
+test('it does not display a remove button on identifier data mapping', () => {
+  const handleRemove = jest.fn();
+
+  renderWithProviders(
+    <table>
+      <tbody>
+        <DataMappingRow
+          columns={columns}
+          dataMapping={dataMapping}
+          onSelect={jest.fn()}
+          hasError={false}
+          isSelected={false}
+          isIdentifierDataMapping={true}
+          onRemove={handleRemove}
+        />
+      </tbody>
+    </table>
+  );
+
+  expect(screen.queryByTitle('pim_common.remove')).not.toBeInTheDocument();
 });
 
 test('it displays a data mapping row', () => {
@@ -66,19 +116,21 @@ test('it displays a data mapping row', () => {
           hasError={false}
           columns={columns}
           isSelected={false}
+          isIdentifierDataMapping={false}
+          onRemove={jest.fn()}
         />
       </tbody>
     </table>
   );
 
   expect(screen.queryByRole('alert')).not.toBeInTheDocument();
-  expect(screen.getByText('sku')).toBeInTheDocument();
+  expect(screen.getByText('parent')).toBeInTheDocument();
   expect(
     screen.getByText('akeneo.tailored_import.data_mapping.sources.title: Source 1 (A) Source 3 (C)')
   ).toBeInTheDocument();
 });
 
-test('it displays a pill when there is an validation error', () => {
+test('it displays a pill when there is a validation error', () => {
   renderWithProviders(
     <table>
       <tbody>
@@ -88,6 +140,8 @@ test('it displays a pill when there is an validation error', () => {
           hasError={true}
           columns={columns}
           isSelected={false}
+          isIdentifierDataMapping={false}
+          onRemove={jest.fn()}
         />
       </tbody>
     </table>

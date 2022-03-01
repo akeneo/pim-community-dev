@@ -1,5 +1,5 @@
 import {act} from '@testing-library/react-hooks';
-import {useAttribute, useAttributes} from './useAttributes';
+import {useAttribute, useAttributes, useIdentifierAttribute} from './useAttributes';
 import {Attribute} from '../models/Attribute';
 import {renderHookWithProviders} from 'feature/tests';
 
@@ -177,4 +177,27 @@ test('It returns attributes only if hook is mounted', async () => {
 test('It returns attribute only if hook is mounted', async () => {
   const {unmount} = renderHookWithProviders(() => useAttribute('release_date'));
   unmount();
+});
+
+test('it fetches the identifier attribute', async () => {
+  const {result} = renderHookWithProviders(() => useIdentifierAttribute());
+
+  await act(async () => {
+    await flushPromises();
+  });
+
+  const [isFetching, attribute] = result.current;
+
+  expect(attribute?.code).toEqual('sku');
+  expect(isFetching).toBe(false);
+});
+
+test('it sets the state only when mounted', async () => {
+  const {result, unmount} = renderHookWithProviders(() => useIdentifierAttribute());
+
+  unmount();
+
+  const [, attribute] = result.current;
+
+  expect(attribute).toBeNull();
 });
