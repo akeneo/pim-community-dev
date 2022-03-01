@@ -88,11 +88,11 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         return $count;
     }
 
-    public function addMissing(bool $dryRun, OutputInterface $output): bool
+    public function addMissing(Context $context, OutputInterface $output): bool
     {
         $allItemsMigrated = true;
         foreach (self::TABLE_NAMES as $tableName) {
-            $allItemsMigrated = $this->addMissingForTable($dryRun, $output, $tableName) && $allItemsMigrated;
+            $allItemsMigrated = $this->addMissingForTable($context->dryRun(), $output, $tableName) && $allItemsMigrated;
         }
 
         return $allItemsMigrated;
