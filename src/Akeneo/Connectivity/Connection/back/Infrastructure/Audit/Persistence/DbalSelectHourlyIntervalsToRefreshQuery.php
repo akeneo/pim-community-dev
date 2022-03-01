@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Doctrine\DBAL\Connection;
