@@ -32,16 +32,12 @@ final class MigrateToUuidAddTriggers implements MigrateToUuidStep
     public function getMissingCount(): int
     {
         $count = 0;
-        foreach (self::TABLES as $tableName => $columnNames) {
-            if ('pim_catalog_product' === $tableName || !$this->tableExists($tableName)) {
-                continue;
-            }
-
-            if (!$this->triggerExists($this->getInsertTrigger($tableName))) {
+        foreach ($this->getTablesToMigrate() as $tableName => $columnNames) {
+            if (!$this->triggerExists($this->getInsertTriggerName($tableName))) {
                 $count++;
             }
 
-            if (!$this->triggerExists($this->getUpdateTrigger($tableName))) {
+            if (!$this->triggerExists($this->getUpdateTriggerName($tableName))) {
                 $count++;
             }
         }
@@ -51,21 +47,16 @@ final class MigrateToUuidAddTriggers implements MigrateToUuidStep
 
     public function addMissing(bool $dryRun, OutputInterface $output): bool
     {
-        /** @todo Fix the privilege issues :sad_dog: */
-
         $templateSql = <<<SQL
-CREATE TRIGGER {trigger_name} /*+ SET_VAR( log_bin_trust_function_creators = 1) */
-    AFTER {action} ON {table_name} FOR EACH ROW
-    UPDATE {table_name} t, pim_catalog_product p SET t.{uuid_column_name} = p.uuid
-    WHERE p.id = t.{id_column_name} AND p.uuid IS NOT NULL;
-SQL;
+        CREATE TRIGGER {trigger_name}
+        AFTER {action} ON {table_name} FOR EACH ROW
+        UPDATE {table_name} t, pim_catalog_product p
+        SET t.{uuid_column_name} = p.uuid
+        WHERE p.id = t.{id_column_name} AND t.{uuid_column_name} IS NULL AND p.uuid IS NOT NULL;
+        SQL;
 
-        foreach (self::TABLES as $tableName => $columnNames) {
-            if ('pim_catalog_product' === $tableName || !$this->tableExists($tableName)) {
-                continue;
-            }
-
-            $insertTriggerName = $this->getInsertTrigger($tableName);
+        foreach ($this->getTablesToMigrate() as $tableName => $columnNames) {
+            $insertTriggerName = $this->getInsertTriggerName($tableName);
             if (!$this->triggerExists($insertTriggerName)) {
                 $output->writeln(sprintf('    Will add %s trigger on "%s" table', $insertTriggerName, $tableName));
                 if (!$dryRun) {
@@ -76,12 +67,11 @@ SQL;
                         '{uuid_column_name}' => $columnNames[self::UUID_COLUMN_INDEX],
                         '{id_column_name}' => $columnNames[self::ID_COLUMN_INDEX],
                     ]);
-                    $this->connection->executeQuery('set global log_bin_trust_function_creators=1;');
                     $this->connection->executeQuery($insertTriggerSql);
                 }
             }
 
-            $updateTriggerName = $this->getUpdateTrigger($tableName);
+            $updateTriggerName = $this->getUpdateTriggerName($tableName);
             if (!$this->triggerExists($insertTriggerName)) {
                 $output->writeln(sprintf('    Will add %s trigger on "%s" table', $updateTriggerName, $tableName));
                 if (!$dryRun) {
@@ -92,7 +82,6 @@ SQL;
                         '{uuid_column_name}' => $columnNames[self::UUID_COLUMN_INDEX],
                         '{id_column_name}' => $columnNames[self::ID_COLUMN_INDEX],
                     ]);
-                    $this->connection->executeQuery('set global log_bin_trust_function_creators=1;');
                     $this->connection->executeQuery($updateTriggerSql);
                 }
             }
@@ -101,13 +90,24 @@ SQL;
         return true;
     }
 
-    private function getInsertTrigger(string $tableName): string
+    private function getTablesToMigrate(): array
     {
-        return $tableName . '_trigger_uuid_insert';
+        return \array_filter(
+            self::TABLES,
+            fn (string $tableName): bool => 'pim_catalog_product' !== $tableName && $this->tableExists($tableName),
+            ARRAY_FILTER_USE_KEY
+        );
     }
 
-    private function getUpdateTrigger(string $tableName): string
+    private function getInsertTriggerName(string $tableName): string
     {
-        return $tableName . '_trigger_uuid_update';
+        // DQI tables are too long (trigger names are limited to 64 characters)
+        return \str_replace('data_quality_insights', 'dqi', $tableName) . '_uuid_insert';
+    }
+
+    private function getUpdateTriggerName(string $tableName): string
+    {
+        // DQI tables are too long (trigger names are limited to 64 characters)
+        return \str_replace('data_quality_insights', 'dqi', $tableName) . '_uuid_update';
     }
 }
