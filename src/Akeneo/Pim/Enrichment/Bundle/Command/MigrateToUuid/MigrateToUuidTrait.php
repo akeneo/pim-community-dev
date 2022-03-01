@@ -39,12 +39,14 @@ trait MigrateToUuidTrait
 
     protected function triggerExists(string $triggerName): bool
     {
+        $schema = $this->connection->getDatabase();
         $sql = <<<SQL
             SELECT EXISTS (
-                SELECT TRIGGER_NAME FROM INFORMATION_SCHEMA.TRIGGERS where TRIGGER_NAME = :triggerName
+                SELECT TRIGGER_NAME FROM INFORMATION_SCHEMA.TRIGGERS
+                WHERE TRIGGER_NAME = :triggerName AND TRIGGER_SCHEMA = :schema
             ) AS is_existing
         SQL;
 
-        return (bool) $this->connection->fetchOne($sql, ['triggerName' => $triggerName]);
+        return (bool) $this->connection->fetchOne($sql, ['triggerName' => $triggerName, 'schema' => $schema]);
     }
 }

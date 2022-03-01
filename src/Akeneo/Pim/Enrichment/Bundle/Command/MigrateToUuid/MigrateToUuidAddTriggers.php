@@ -49,10 +49,12 @@ final class MigrateToUuidAddTriggers implements MigrateToUuidStep
     {
         $templateSql = <<<SQL
         CREATE TRIGGER {trigger_name}
-        AFTER {action} ON {table_name} FOR EACH ROW
-        UPDATE {table_name} t, pim_catalog_product p
-        SET t.{uuid_column_name} = p.uuid
-        WHERE p.id = t.{id_column_name} AND t.{uuid_column_name} IS NULL AND p.uuid IS NOT NULL;
+        BEFORE {action} ON {table_name}
+        FOR EACH ROW SET NEW.{uuid_column_name} = (
+            SELECT p.uuid
+            FROM pim_catalog_product p
+            WHERE p.uuid IS NOT NULL AND p.id = NEW.{id_column_name}
+        );
         SQL;
 
         foreach ($this->getTablesToMigrate() as $tableName => $columnNames) {
@@ -60,29 +62,27 @@ final class MigrateToUuidAddTriggers implements MigrateToUuidStep
             if (!$this->triggerExists($insertTriggerName)) {
                 $output->writeln(sprintf('    Will add %s trigger on "%s" table', $insertTriggerName, $tableName));
                 if (!$dryRun) {
-                    $insertTriggerSql = strtr($templateSql, [
+                    $this->connection->executeQuery(\strtr($templateSql, [
                         '{trigger_name}' => $insertTriggerName,
                         '{action}' => 'INSERT',
                         '{table_name}' => $tableName,
                         '{uuid_column_name}' => $columnNames[self::UUID_COLUMN_INDEX],
                         '{id_column_name}' => $columnNames[self::ID_COLUMN_INDEX],
-                    ]);
-                    $this->connection->executeQuery($insertTriggerSql);
+                    ]));
                 }
             }
 
             $updateTriggerName = $this->getUpdateTriggerName($tableName);
-            if (!$this->triggerExists($insertTriggerName)) {
+            if (!$this->triggerExists($updateTriggerName)) {
                 $output->writeln(sprintf('    Will add %s trigger on "%s" table', $updateTriggerName, $tableName));
                 if (!$dryRun) {
-                    $updateTriggerSql = strtr($templateSql, [
+                    $this->connection->executeQuery(\strtr($templateSql, [
                         '{trigger_name}' => $updateTriggerName,
                         '{action}' => 'UPDATE',
                         '{table_name}' => $tableName,
                         '{uuid_column_name}' => $columnNames[self::UUID_COLUMN_INDEX],
                         '{id_column_name}' => $columnNames[self::ID_COLUMN_INDEX],
-                    ]);
-                    $this->connection->executeQuery($updateTriggerSql);
+                    ]));
                 }
             }
         }
@@ -99,15 +99,25 @@ final class MigrateToUuidAddTriggers implements MigrateToUuidStep
         );
     }
 
-    private function getInsertTriggerName(string $tableName): string
+    public static function getInsertTriggerName(string $tableName): string
     {
-        // DQI tables are too long (trigger names are limited to 64 characters)
-        return \str_replace('data_quality_insights', 'dqi', $tableName) . '_uuid_insert';
+        // Some tables are too long, so we shorten them (trigger names are limited to 64 characters)
+        $trigger_prefix = \strtr($tableName, [
+            'data_quality_insights' => 'dqi',
+            'teamwork_assistant' => 'twa',
+        ]);
+
+        return $trigger_prefix . '_uuid_insert';
     }
 
-    private function getUpdateTriggerName(string $tableName): string
+    public static function getUpdateTriggerName(string $tableName): string
     {
-        // DQI tables are too long (trigger names are limited to 64 characters)
-        return \str_replace('data_quality_insights', 'dqi', $tableName) . '_uuid_update';
+        // Some tables are too long, so we shorten them (trigger names are limited to 64 characters)
+        $trigger_prefix = \strtr($tableName, [
+            'data_quality_insights' => 'dqi',
+            'teamwork_assistant' => 'twa',
+        ]);
+
+        return $trigger_prefix . '_uuid_update';
     }
 }

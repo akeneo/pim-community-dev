@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
+use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidAddTriggers;
 use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidStep;
 use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidTrait;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
@@ -42,6 +43,7 @@ final class MigrateToUuidCommandIntegration extends TestCase
         $this->assertTheColumnsExist();
         $this->assertAllProductsHaveUuid();
         $this->assertJsonHaveUuid();
+        $this->assertTriggersWork();
     }
 
     private function clean(): void
@@ -50,6 +52,7 @@ final class MigrateToUuidCommandIntegration extends TestCase
             if ($this->tableExists($tableName)) {
                 $this->removeColumn($tableName, $columnNames[MigrateToUuidStep::UUID_COLUMN_INDEX]);
             }
+            $this->removeTriggers($tableName);
         }
     }
 
@@ -122,6 +125,31 @@ final class MigrateToUuidCommandIntegration extends TestCase
         }
     }
 
+    private function assertTriggersWork(): void
+    {
+        // create associations
+        $product = $this->get('pim_catalog.builder.product')->createProduct('new_product');
+        $this->get('pim_catalog.updater.product')->update($product, ['associations' => [
+            'X_SELL' => ['products' => ['identifier1']],
+        ]]);
+        $this->get('pim_catalog.validator.product')->validate($product);
+        $this->get('pim_catalog.saver.product')->save($product);
+        $ownerdUuids = $this->connection->executeQuery('SELECT DISTINCT BIN_TO_UUID(owner_uuid) FROM pim_catalog_association')->fetchFirstColumn();
+        // Does not working because of subscriber
+//        Assert::assertSame([$this->getProductUuid('new_product')], $ownerdUuids);
+
+        sleep(5);
+
+        // update associations
+        $this->get('pim_catalog.updater.product')->update($product, ['associations' => [
+            'PACK' => ['products' => ['identifier2']],
+        ]]);
+        $this->get('pim_catalog.validator.product')->validate($product);
+        $this->get('pim_catalog.saver.product')->save($product);
+        $ownerdUuids = $this->connection->executeQuery('SELECT DISTINCT BIN_TO_UUID(owner_uuid) FROM pim_catalog_association')->fetchFirstColumn();
+        Assert::assertSame([$this->getProductUuid('new_product')], $ownerdUuids);
+    }
+
     private function removeColumn(string $tableName, string $columnName): void
     {
         if ($this->tableExists($tableName) && $this->columnExists($tableName, $columnName)) {
@@ -160,5 +188,20 @@ final class MigrateToUuidCommandIntegration extends TestCase
         );
 
         return count($rows) >= 1;
+    }
+
+    private function removeTriggers(string $tableName): void
+    {
+        $sql = \sprintf('DROP TRIGGER IF EXISTS %s.{trigger_name}', $this->connection->getDatabase());
+
+        $this->connection->executeQuery(\str_replace('{trigger_name}', MigrateToUuidAddTriggers::getInsertTriggerName($tableName), $sql));
+        $this->connection->executeQuery(\str_replace('{trigger_name}', MigrateToUuidAddTriggers::getUpdateTriggerName($tableName), $sql));
+    }
+
+    private function getProductUuid(string $identifier): ?string
+    {
+        $sql = 'SELECT uuid FROM pim_catalog_product WHERE identifier = :identifier';
+
+        return $this->connection->executeQuery($sql, ['identifier' => $identifier])->fetchOne();
     }
 }
