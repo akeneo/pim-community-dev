@@ -10,7 +10,7 @@ use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
-class CreateTestAppsActionEndToEnd extends WebTestCase
+class CreateTestAppActionEndToEnd extends WebTestCase
 {
     private FakeFeatureFlag $featureFlagTestApp;
 

@@ -7,7 +7,7 @@ import {useRouter} from '../../shared/router/use-router';
 import {CreateTestAppForm} from '../components/TestApp/CreateTestAppForm';
 import {TestAppCredentials} from '../../model/Apps/test-app-credentials';
 import {CreateTestAppCredentials} from '../components/TestApp/CreateTestAppCredentials';
-import {useFeatureFlags} from '../../shared/feature-flags';
+import {useAppDeveloperMode} from '../hooks/use-app-developer-mode';
 
 const Subtitle = styled.h3`
     color: ${getColor('brand', 100)};
@@ -51,18 +51,17 @@ const ErrorMessage = styled.div`
 `;
 
 export const TestAppCreatePage = () => {
-    const featureFlag = useFeatureFlags();
     const history = useHistory();
     const generateUrl = useRouter();
     const translate = useTranslate();
     const [credentials, setCredentials] = useState<TestAppCredentials | null>(null);
+    const isDeveloperModeEnabled = useAppDeveloperMode();
 
     const handleCloseModal = useCallback(() => {
         history.push(generateUrl('akeneo_connectivity_connection_connect_marketplace'));
     }, [history, generateUrl]);
-    const isGranted = featureFlag.isEnabled('marketplace_activate') && featureFlag.isEnabled('app_developer_mode');
 
-    if (!isGranted) {
+    if (!isDeveloperModeEnabled) {
         return (
             <InfoBlock>
                 <IllustrationContainer>

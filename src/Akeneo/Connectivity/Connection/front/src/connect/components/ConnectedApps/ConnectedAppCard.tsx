@@ -111,6 +111,14 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
         item.author ?? translate('akeneo_connectivity.connection.connect.connected_apps.list.test_apps.removed_user');
     const logo = item.logo ? <Logo src={item.logo} alt={item.name} /> : <AppIllustration width={100} height={100} />;
 
+    const canManageApp =
+        (!item.is_test_app && security.isGranted('akeneo_connectivity_connection_manage_apps')) ||
+        (item.is_test_app && security.isGranted('akeneo_connectivity_connection_manage_test_apps'));
+
+    const canOpenApp =
+        (!item.is_test_app && security.isGranted('akeneo_connectivity_connection_open_apps')) ||
+        (item.is_test_app && security.isGranted('akeneo_connectivity_connection_manage_test_apps'));
+
     return (
         <CardContainer>
             <LogoContainer> {logo} </LogoContainer>
@@ -124,21 +132,13 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
                 {item.categories.length > 0 && <Tag>{item.categories[0]}</Tag>}
             </TextInformation>
             <Actions>
-                <Button
-                    ghost
-                    level='tertiary'
-                    href={connectedAppUrl}
-                    disabled={!security.isGranted('akeneo_connectivity_connection_manage_apps') && !item.is_test_app}
-                >
+                <Button ghost level='tertiary' href={connectedAppUrl} disabled={!canManageApp}>
                     {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')}
                 </Button>
                 <Button
                     level='secondary'
                     href={item.activate_url}
-                    disabled={
-                        !item.activate_url ||
-                        (!security.isGranted('akeneo_connectivity_connection_open_apps') && !item.is_test_app)
-                    }
+                    disabled={!item.activate_url || !canOpenApp}
                     target='_blank'
                 >
                     {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.open_app')}

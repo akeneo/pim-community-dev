@@ -7,7 +7,7 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApp
 use Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command\CreateTestAppCommand;
 use Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command\CreateTestAppCommandHandler;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\TestApps\Persistence\GetTestAppSecretQueryInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\InternalApi\CreateTestAppsAction;
+use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\InternalApi\CreateTestAppAction;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -25,7 +25,7 @@ use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class CreateTestAppsActionSpec extends ObjectBehavior
+class CreateTestAppActionSpec extends ObjectBehavior
 {
     public function let(
         FeatureFlag $appDevFeatureFlag,
@@ -47,9 +47,9 @@ class CreateTestAppsActionSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_a_create_test_apps_action(): void
+    public function it_is_a_create_test_app_action(): void
     {
-        $this->shouldHaveType(CreateTestAppsAction::class);
+        $this->shouldHaveType(CreateTestAppAction::class);
     }
 
     public function it_answers_that_the_entity_has_not_been_created_because_the_secret_can_not_be_retrieved(
