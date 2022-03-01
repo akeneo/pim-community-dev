@@ -1,0 +1,18 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Audit\Controller\Internal\GetErrorCountPerConnectionAction:
+        public: true
+        arguments:
+            - '@pim_user.context.user'
+            - '@akeneo_connectivity.connection.application.audit.handler.get_error_count_per_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Audit\Controller\Internal\GetWeeklyAuditAction:
+        public: true
+        arguments:
+            - '@pim_user.context.user'
+            - '@akeneo_connectivity.connection.application.audit.handler.get_period_event_count_per_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Audit\Controller\Internal\GetWeeklyErrorAuditAction:
+        public: true
+        arguments:
+            - '@pim_user.context.user'
+            - '@akeneo_connectivity.connection.application.audit.handler.get_period_error_count_per_connection'
