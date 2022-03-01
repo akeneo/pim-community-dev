@@ -9,7 +9,7 @@ use Akeneo\OnboarderSerenity\Domain\Supplier\Supplier;
 use Akeneo\OnboarderSerenity\Domain\Supplier\SupplierRepository;
 use JetBrains\PhpStorm\Pure;
 
-final class InMemorySupplierRepository implements SupplierRepository
+class InMemorySupplierRepository implements SupplierRepository
 {
     private array $suppliers = [];
 
