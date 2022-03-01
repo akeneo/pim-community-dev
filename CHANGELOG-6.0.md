@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - RAC-1221: [Backport] Fix duplicated mask returned by query for table attribute
+- RAC-1222: [Backport] Tailored Export - asset collection: "main media" is not selectable
 
 # 6.0.7 (2022-02-25)
 

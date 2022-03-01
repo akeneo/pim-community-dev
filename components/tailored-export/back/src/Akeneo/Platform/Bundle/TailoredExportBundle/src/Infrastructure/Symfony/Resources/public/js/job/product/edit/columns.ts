@@ -18,16 +18,7 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
 const __ = require('oro/translator');
 const fetcherRegistry = require('pim/fetcher-registry');
-
-let assetFamilyFetcher = {
-  fetch: (_identifier: string) => {
-    return Promise.resolve({assetFamily: {attributes: [], attributeAsMainMedia: '', identifier: ''}});
-  }
-};
-
-try {
-  assetFamilyFetcher = require('akeneoassetmanager/infrastructure/fetcher/asset-family');
-} catch (err) {}
+const router = require('pim/router');
 
 class ColumnView extends BaseView {
   public config: any;
@@ -108,51 +99,36 @@ class ColumnView extends BaseView {
                 attribute: {
                   fetchByIdentifiers: (identifiers: string[]): Promise<Attribute[]> => {
                     return new Promise(resolve =>
-                      fetcherRegistry
-                        .getFetcher('attribute')
-                        .fetchByIdentifiers(identifiers)
-                        .then(resolve)
+                      fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(identifiers).then(resolve)
                     );
                   },
                 },
                 channel: {
                   fetchAll: (): Promise<Channel[]> => {
-                    return new Promise(resolve =>
-                      fetcherRegistry
-                        .getFetcher('channel')
-                        .fetchAll()
-                        .then(resolve)
-                    );
+                    return new Promise(resolve => fetcherRegistry.getFetcher('channel').fetchAll().then(resolve));
                   },
                 },
                 associationType: {
                   fetchByCodes: (codes: string[]): Promise<AssociationType[]> => {
                     return new Promise(resolve =>
-                      fetcherRegistry
-                        .getFetcher('association-type')
-                        .fetchByIdentifiers(codes)
-                        .then(resolve)
+                      fetcherRegistry.getFetcher('association-type').fetchByIdentifiers(codes).then(resolve)
                     );
                   },
                 },
                 measurementFamily: {
                   fetchByCode: (code: string): Promise<MeasurementFamily | undefined> => {
-                    return new Promise(resolve =>
-                      fetcherRegistry
-                        .getFetcher('measure')
-                        .fetch(code)
-                        .then(resolve)
-                    );
+                    return new Promise(resolve => fetcherRegistry.getFetcher('measure').fetch(code).then(resolve));
                   },
                 },
                 assetFamily: {
                   fetchByIdentifier: async (identifier: string): Promise<AssetFamily | undefined> => {
-                    const {assetFamily} = await assetFamilyFetcher.fetch(identifier);
-                    return {
-                      identifier: assetFamily.identifier,
-                      attribute_as_main_media: assetFamily.attributeAsMainMedia,
-                      attributes: assetFamily.attributes,
-                    };
+                    const route = router.generate('akeneo_asset_manager_asset_family_get_rest', {identifier});
+                    const response = await fetch(route);
+                    if (!response.ok) {
+                      return undefined;
+                    }
+
+                    return await response.json();
                   },
                 },
               },
