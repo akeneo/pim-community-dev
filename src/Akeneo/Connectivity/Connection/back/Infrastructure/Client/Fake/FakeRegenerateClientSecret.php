@@ -33,6 +33,6 @@ class FakeRegenerateClientSecret implements RegenerateClientSecretInterface
             }
         }
 
-        throw new \InvalidArgumentException(sprintf('Client id "%s" not found!', $clientId->id()));
+        throw new \InvalidArgumentException(\sprintf('Client id "%s" not found!', $clientId->id()));
     }
 }

@@ -28,7 +28,7 @@ class DeleteUserGroup implements DeleteUserGroupInterface
         $userGroup = $this->repository->findOneByIdentifier($name);
 
         if (null === $userGroup) {
-            throw new \LogicException(sprintf('User group with name "%s" not found.', $name));
+            throw new \LogicException(\sprintf('User group with name "%s" not found.', $name));
         }
 
         $this->remover->remove($userGroup);

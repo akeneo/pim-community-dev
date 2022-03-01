@@ -42,7 +42,7 @@ class DbalSelectPeriodErrorCountPerConnectionQuery implements SelectPeriodErrorC
         return $this->createPeriodEventCountPerConnection(
             $period,
             $connectionCodes,
-            array_merge($perConnection, $forAllConnections)
+            \array_merge($perConnection, $forAllConnections)
         );
     }
 

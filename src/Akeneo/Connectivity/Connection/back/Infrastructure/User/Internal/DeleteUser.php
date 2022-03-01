@@ -31,7 +31,7 @@ class DeleteUser implements DeleteUserInterface
         $user = $this->repository->find($userId->id());
 
         if (null === $user) {
-            throw new \InvalidArgumentException(sprintf('User with id "%s" does not exist.', $userId->id()));
+            throw new \InvalidArgumentException(\sprintf('User with id "%s" does not exist.', $userId->id()));
         }
 
         $this->remover->remove($user);

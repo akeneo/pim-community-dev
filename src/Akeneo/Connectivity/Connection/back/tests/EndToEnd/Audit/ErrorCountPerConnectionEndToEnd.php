@@ -51,7 +51,7 @@ class ErrorCountPerConnectionEndToEnd extends WebTestCase
                 'end_date' => '2020-01-07'
             ],
         );
-        $result = json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true);
 
         $expectedResult = [
             'bynder' => 15,

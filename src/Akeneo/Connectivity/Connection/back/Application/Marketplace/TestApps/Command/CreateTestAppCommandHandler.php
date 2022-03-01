@@ -22,7 +22,7 @@ class CreateTestAppCommandHandler
 
     public function handle(CreateTestAppCommand $command): void
     {
-        $clientSecret = substr($this->randomCodeGenerator->generate(), 0, 100);
+        $clientSecret = \substr($this->randomCodeGenerator->generate(), 0, 100);
 
         $this->createTestAppQuery->execute(
             $command->getClientId(),

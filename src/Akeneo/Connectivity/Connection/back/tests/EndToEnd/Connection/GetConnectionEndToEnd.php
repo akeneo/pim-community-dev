@@ -22,9 +22,9 @@ class GetConnectionEndToEnd extends WebTestCase
 
         $this->authenticateAsAdmin();
         $this->client->request('GET', '/rest/connections/franklin');
-        $result = json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true);
 
-        $expectedResult = array_merge($connection->normalize(), ['password' => null]);
+        $expectedResult = \array_merge($connection->normalize(), ['password' => null]);
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         Assert::assertEquals($expectedResult, $result);
@@ -34,7 +34,7 @@ class GetConnectionEndToEnd extends WebTestCase
     {
         $this->authenticateAsAdmin();
         $this->client->request('GET', '/rest/connections/unknown_connection');
-        $result = json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true);
 
         $expectedResult = [];
 

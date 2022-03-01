@@ -52,7 +52,7 @@ class DownloadEventSubscriptionLogsEndToEnd extends WebTestCase
 
         $this->authenticateAsAdmin();
 
-        ob_start();
+        \ob_start();
 
         $this->client->request(
             'GET',
@@ -61,9 +61,9 @@ class DownloadEventSubscriptionLogsEndToEnd extends WebTestCase
         );
 
         $response = $this->client->getResponse();
-        $content = ob_get_contents();
+        $content = \ob_get_contents();
 
-        ob_end_clean();
+        \ob_end_clean();
 
         $expectedContent = <<<EOF
 2021/03/02 03:30:09 WARNING Foo bar {"foo":"bar"}

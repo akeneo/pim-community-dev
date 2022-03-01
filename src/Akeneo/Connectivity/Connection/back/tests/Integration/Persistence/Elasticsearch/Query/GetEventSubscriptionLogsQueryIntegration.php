@@ -53,7 +53,7 @@ class GetEventSubscriptionLogsQueryIntegration extends TestCase
 
         $result = $this->getEventSubscriptionLogsQuery->execute('a_connection_code');
 
-        Assert::assertEquals(100, iterator_count($result));
+        Assert::assertEquals(100, \iterator_count($result));
     }
 
     public function test_it_returns_only_the_newest_notice_and_info_logs()
@@ -78,9 +78,9 @@ class GetEventSubscriptionLogsQueryIntegration extends TestCase
             $countOfGeneratedLogs
         );
 
-        $logs = iterator_to_array($this->getEventSubscriptionLogsQuery->execute('a_connection_code'));
+        $logs = \iterator_to_array($this->getEventSubscriptionLogsQuery->execute('a_connection_code'));
 
-        $timestamps = array_map(
+        $timestamps = \array_map(
             function ($log) {
                 return $log['timestamp'];
             },
@@ -132,7 +132,7 @@ class GetEventSubscriptionLogsQueryIntegration extends TestCase
 
         $result = $this->getEventSubscriptionLogsQuery->execute('whatever');
 
-        Assert::assertEquals(2, iterator_count($result));
+        Assert::assertEquals(2, \iterator_count($result));
     }
 
     public function test_it_returns_logs_ordered_by_date_asc()
@@ -179,7 +179,7 @@ class GetEventSubscriptionLogsQueryIntegration extends TestCase
             ]
         );
 
-        $logs = iterator_to_array($this->getEventSubscriptionLogsQuery->execute('a_connection_code'));
+        $logs = \iterator_to_array($this->getEventSubscriptionLogsQuery->execute('a_connection_code'));
 
         Assert::assertEquals($timestampNow - 5, $logs[0]['timestamp']);
         Assert::assertEquals($timestampNow - 4, $logs[1]['timestamp']);
@@ -218,9 +218,9 @@ class GetEventSubscriptionLogsQueryIntegration extends TestCase
             ]
         );
 
-        $logs = iterator_to_array($this->getEventSubscriptionLogsQuery->execute('a_connection_code'));
+        $logs = \iterator_to_array($this->getEventSubscriptionLogsQuery->execute('a_connection_code'));
 
-        Assert::assertEquals(2, count($logs));
+        Assert::assertEquals(2, \count($logs));
 
         foreach ($logs as $log) {
             Assert::assertContains($log['connection_code'], ['a_connection_code', null]);
@@ -229,7 +229,7 @@ class GetEventSubscriptionLogsQueryIntegration extends TestCase
 
     private function generateLogs(callable $generator, int $number): void
     {
-        $this->insertLogs(array_map($generator, range(0, $number - 1)));
+        $this->insertLogs(\array_map($generator, \range(0, $number - 1)));
     }
 
     private function insertLogs(array $logs): void

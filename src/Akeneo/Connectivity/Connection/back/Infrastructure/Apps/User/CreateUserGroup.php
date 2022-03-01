@@ -42,13 +42,13 @@ class CreateUserGroup implements CreateUserGroupInterface
         $this->userGroupUpdater->update($group, ['name' => $groupName, 'type' => self::APP_USER_GROUP_TYPE]);
 
         $errors = $this->validator->validate($group);
-        if (0 < count($errors)) {
+        if (0 < \count($errors)) {
             $errorMessages = [];
             foreach ($errors as $error) {
                 $errorMessages[] = $error->getPropertyPath() . ': ' . $error->getMessage();
             }
 
-            throw new \LogicException('The user group creation failed :\n' . implode('\n', $errorMessages));
+            throw new \LogicException('The user group creation failed :\n' . \implode('\n', $errorMessages));
         }
 
         $this->userGroupSaver->save($group);

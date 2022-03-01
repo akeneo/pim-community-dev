@@ -34,7 +34,7 @@ SQL;
         Assert::assertEquals('Pimgento', $results[0]['first_name']);
         Assert::assertEquals(' ', $results[0]['last_name']);
         Assert::assertMatchesRegularExpression('/^pimgento_[0-9]{4}$/', $results[0]['username']);
-        Assert::assertEquals(sprintf('%s@example.com', $results[0]['username']), $results[0]['email']);
+        Assert::assertEquals(\sprintf('%s@example.com', $results[0]['username']), $results[0]['email']);
         Assert::assertEquals(User::TYPE_API, $results[0]['user_type']);
         Assert::assertEquals(true, $results[0]['enabled']);
     }
@@ -54,7 +54,7 @@ SQL;
         Assert::assertEquals('Pim_Ecom', $results[0]['first_name']);
         Assert::assertEquals('Pim_Ecom', $results[0]['last_name']);
         Assert::assertMatchesRegularExpression('/^pimgento_[0-9]{4}$/', $results[0]['username']);
-        Assert::assertEquals(sprintf('%s@example.com', $results[0]['username']), $results[0]['email']);
+        Assert::assertEquals(\sprintf('%s@example.com', $results[0]['username']), $results[0]['email']);
         Assert::assertEquals(User::TYPE_API, $results[0]['user_type']);
         Assert::assertEquals(true, $results[0]['enabled']);
     }

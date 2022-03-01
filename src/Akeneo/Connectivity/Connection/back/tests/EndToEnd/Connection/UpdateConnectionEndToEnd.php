@@ -37,9 +37,9 @@ class UpdateConnectionEndToEnd extends WebTestCase
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
-            json_encode($data)
+            \json_encode($data)
         );
-        $result = json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true);
 
         $expectedResult = null;
 
@@ -68,9 +68,9 @@ class UpdateConnectionEndToEnd extends WebTestCase
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
-            json_encode($data)
+            \json_encode($data)
         );
-        $result = json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true);
 
         $expectedResult = [
             "message" => "akeneo_connectivity.connection.constraint_violation_list_exception",

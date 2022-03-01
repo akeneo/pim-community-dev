@@ -99,7 +99,7 @@ class UpdateConnectedAppMonitoringSettingsActionSpec extends ObjectBehavior
         $findAConnectionHandler->handle(new FindAConnectionQuery('foo'))->willReturn($connection);
         $connection->type()->willReturn(ConnectionType::APP_TYPE);
         $request->getContent()->willReturn(
-            json_encode([
+            \json_encode([
                 'flowType' => 0,
                 'auditable' => true,
             ])
@@ -124,7 +124,7 @@ class UpdateConnectedAppMonitoringSettingsActionSpec extends ObjectBehavior
         $findAConnectionHandler->handle(new FindAConnectionQuery('foo'))->willReturn($connection);
         $connection->type()->willReturn(ConnectionType::APP_TYPE);
         $request->getContent()->willReturn(
-            json_encode([
+            \json_encode([
                 'flowType' => 'other',
                 'auditable' => 'should be a bool',
             ])

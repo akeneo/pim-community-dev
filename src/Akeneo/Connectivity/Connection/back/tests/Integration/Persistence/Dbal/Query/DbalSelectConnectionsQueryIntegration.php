@@ -37,9 +37,9 @@ class DbalSelectConnectionsQueryIntegration extends TestCase
     public function test_it_fetches_connections()
     {
         $this->connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_DESTINATION, false);
-        sleep(1); // Avoid having the same creation datetime
+        \sleep(1); // Avoid having the same creation datetime
         $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::OTHER, false);
-        sleep(1);
+        \sleep(1);
         $this->connectionLoader->createConnection('app', 'App', FlowType::OTHER, false, 'app');
 
         $connections = $this->selectConnectionsQuery->execute([ConnectionType::DEFAULT_TYPE]);

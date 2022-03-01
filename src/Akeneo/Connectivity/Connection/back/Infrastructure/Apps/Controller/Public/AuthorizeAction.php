@@ -121,7 +121,7 @@ final class AuthorizeAction
             return new RedirectResponse(
                 '/#' . $this->router->generate('akeneo_connectivity_connection_connect_apps_authenticate', [
                     'client_id' => $e->getAppId(),
-                    'new_authentication_scopes' => implode(',', $e->getNewAuthenticationScopes()),
+                    'new_authentication_scopes' => \implode(',', $e->getNewAuthenticationScopes()),
                 ])
             );
         }

@@ -68,7 +68,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
                 ],
             ],
             'authenticationScopes' => ['email', 'profile'],
-        ], json_decode($response->getContent(), true));
+        ], \json_decode($response->getContent(), true));
     }
 
     public function test_it_throws_an_exception_when_app_not_found_into_session(): void
@@ -155,7 +155,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
                 ],
             ],
             'authenticationScopes' => [],
-        ], json_decode($response->getContent(), true));
+        ], \json_decode($response->getContent(), true));
     }
 
     public function test_authorization_scopes_are_empty(): void
@@ -190,7 +190,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
             'appUrl' => 'https://marketplace.akeneo.com/extension/akeneo-shopware-6-connector-eikona-media',
             'scopeMessages' => [],
             'authenticationScopes' => [],
-        ], json_decode($response->getContent(), true));
+        ], \json_decode($response->getContent(), true));
     }
 
     protected function setUp(): void

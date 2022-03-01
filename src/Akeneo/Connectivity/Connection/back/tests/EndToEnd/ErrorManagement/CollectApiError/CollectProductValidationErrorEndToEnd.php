@@ -69,7 +69,7 @@ class CollectProductValidationErrorEndToEnd extends ApiTestCase
             $connection->password()
         );
 
-        $content = json_encode([
+        $content = \json_encode([
             'identifier' => 'high-top_sneakers',
             'family' => 'shoes',
             'values' => [

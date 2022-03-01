@@ -25,7 +25,7 @@ final class EventNormalizer implements EventNormalizerInterface
         return [
             'action' => $event->getName(),
             'event_id' => $event->getUuid(),
-            'event_datetime' => date(\DateTimeInterface::ATOM, $event->getTimestamp()),
+            'event_datetime' => \date(\DateTimeInterface::ATOM, $event->getTimestamp()),
             'author' => $event->getAuthor()->name(),
             'author_type' => $event->getAuthor()->type(),
         ];

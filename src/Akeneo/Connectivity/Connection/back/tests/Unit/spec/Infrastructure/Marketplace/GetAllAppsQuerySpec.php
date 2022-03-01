@@ -102,7 +102,7 @@ class GetAllAppsQuerySpec extends ObjectBehavior
 
     public function it_execute_and_returns_app_result()
     {
-        $this->execute()->shouldBeLike(GetAllAppsResult::create(3, array_map(function ($item) {
+        $this->execute()->shouldBeLike(GetAllAppsResult::create(3, \array_map(function ($item) {
             return App::fromWebMarketplaceValues($item);
         }, $this->items)));
     }
@@ -118,7 +118,7 @@ class GetAllAppsQuerySpec extends ObjectBehavior
         $this->items[1]['connected'] = false;
         $this->items[2]['connected'] = true;
 
-        $this->execute()->shouldBeLike(GetAllAppsResult::create(3, array_map(function ($item) {
+        $this->execute()->shouldBeLike(GetAllAppsResult::create(3, \array_map(function ($item) {
             return App::fromWebMarketplaceValues($item);
         }, $this->items)));
     }
