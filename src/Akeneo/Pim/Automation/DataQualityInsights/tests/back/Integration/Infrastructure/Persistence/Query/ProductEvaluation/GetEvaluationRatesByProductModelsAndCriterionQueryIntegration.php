@@ -50,7 +50,7 @@ final class GetEvaluationRatesByProductModelsAndCriterionQueryIntegration extend
         $productIdCollection = ProductIdCollection::fromInts($productModelIds);
 
         $evaluationRates = $this->get(GetEvaluationRatesByProductModelsAndCriterionQuery::class)
-            ->toArrayInt($productIdCollection, new CriterionCode('spelling'));
+            ->execute($productIdCollection, new CriterionCode('spelling'));
 
         $this->assertEquals($expectedEvaluationRates, $evaluationRates);
     }

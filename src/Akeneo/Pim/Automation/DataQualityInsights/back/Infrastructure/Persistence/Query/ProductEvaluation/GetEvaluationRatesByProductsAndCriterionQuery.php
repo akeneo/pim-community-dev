@@ -22,7 +22,7 @@ final class GetEvaluationRatesByProductsAndCriterionQuery implements GetEvaluati
     {
     }
 
-    public function toArrayInt(ProductIdCollection $productIdCollection, CriterionCode $criterionCode): array
+    public function execute(ProductIdCollection $productIdCollection, CriterionCode $criterionCode): array
     {
         $ratesPath = sprintf('$."%s"', TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates']);
 
