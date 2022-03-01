@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- RAC-1221: [Backport] Fix duplicated mask returned by query for table attribute
+
 # 6.0.7 (2022-02-25)
 
 # 6.0.6 (2022-02-21)
