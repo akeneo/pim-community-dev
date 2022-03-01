@@ -55,21 +55,28 @@ class AddUuidSubscriber implements EventSubscriberInterface
             return;
         }
 
-        // TODO Improve this query by using INSERT
-        foreach ($identifiers as $identifier) {
-            $this->connection->executeQuery(
-                <<<SQL
-                    UPDATE pim_catalog_product 
-                    SET uuid=UUID_TO_BIN(:uuid)
-                    WHERE identifier=:identifier
-                    AND uuid IS NULL;
-                SQL,
-                [
-                    'uuid' => Uuid::uuid4()->toString(),
-                    'identifier' => $identifier
-                ]
-            );
-        }
+        $rows = \array_map(
+            static fn (string $identifier): string => \sprintf("ROW(?, '%s')", Uuid::uuid4()->toString()),
+            $identifiers
+        );
+
+        $sql = <<<SQL
+        WITH
+        new_product_uuid AS (
+            SELECT * FROM (VALUES
+                {rows}
+            ) as t(identifier, uuid)
+        )
+        UPDATE pim_catalog_product p, new_product_uuid
+        SET p.uuid = UUID_TO_BIN(new_product_uuid.uuid)
+        WHERE p.identifier = new_product_uuid.identifier AND p.uuid IS NULL;
+        SQL;
+
+        $sql = \strtr($sql, [
+            '{rows}' => \implode(',', $rows),
+        ]);
+
+        $this->connection->executeQuery($sql, $identifiers);
     }
 
     private function columnExists(string $tableName, string $columnName): bool
