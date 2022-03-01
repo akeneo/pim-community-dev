@@ -27,34 +27,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
     public function shouldBeExecuted(): bool
     {
         foreach ($this->getTablesWithoutProductTable() as $tableName => $columnNames) {
-            if (!$this->tableExists($tableName)) {
-                continue;
-            }
-
-            if (!$this->columnExists($tableName, $columnNames[1])) {
-                return true;
-            }
-
-            $sql = <<<SQL
-                SELECT EXISTS (
-                    SELECT 1
-                    FROM {table_name}
-                    WHERE {column_name} 
-                    IS NULL
-                    {extra_condition}
-                    LIMIT 1
-                ) as missing
-            SQL;
-
-            $query = \strtr($sql, [
-                '{table_name}' => $tableName,
-                '{column_name}' => $columnNames[1],
-                '{extra_condition}' => $tableName === 'pim_versioning_version'
-                    ? ' AND resource_name="Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"'
-                    : '',
-            ]);
-
-            if ((bool) $this->connection->fetchOne($query)) {
+            if ($this->shouldBeExecutedForTable($tableName, $columnNames[self::UUID_COLUMN_INDEX])) {
                 return true;
             }
         }
@@ -73,24 +46,78 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
         return $count;
     }
 
-    public function addMissing(bool $dryRun, OutputInterface $output): bool
+    public function addMissing(Context $context, OutputInterface $output): bool
     {
         foreach ($this->getTablesWithoutProductTable() as $tableName => $columnNames) {
-            $count = $this->getMissingForeignUuidCount($tableName, $columnNames[1], $columnNames[0]);
-            $output->writeln(sprintf('    Missing %d foreign uuids in "%s" table', $count, $tableName));
-            while ($count > 0) {
-                $output->writeln(sprintf('    Will add %d foreign uuids in "%s" table', min($count, self::BATCH_SIZE), $tableName));
-                if (!$dryRun) {
+            while ($this->shouldContinue($context, $output, $tableName, $columnNames[self::ID_COLUMN_INDEX], $columnNames[self::UUID_COLUMN_INDEX])) {
+                if (!$context->dryRun()) {
                     $this->fillMissingForeignUuidInsert($tableName, $columnNames[0], $columnNames[1]);
-                    $count = $this->getMissingForeignUuidCount($tableName, $columnNames[1], $columnNames[0]);
                 } else {
                     $output->writeln(sprintf('    Option --dry-run is set, will continue to next step.'));
-                    $count = 0;
+                    break;
                 }
             }
         }
 
         return true;
+    }
+
+    private function shouldContinue(
+        Context $context,
+        OutputInterface $output,
+        string $tableName,
+        string $idColumnName,
+        string $uuidColumnName
+    ): bool {
+        if ($context->withStats()) {
+            $count = $this->getMissingForeignUuidCount($tableName, $uuidColumnName, $idColumnName);
+            $output->writeln(sprintf('    Missing %d foreign uuids in "%s" table', $count, $tableName));
+            if ($count > 0) {
+                $output->writeln(sprintf('    Will add %d foreign uuids in "%s" table', min($count, self::BATCH_SIZE), $tableName));
+                return true;
+            }
+
+            return false;
+        }
+
+        $shouldContinue = $this->shouldBeExecutedForTable($tableName, $uuidColumnName);
+        if ($shouldContinue) {
+            $output->writeln(sprintf('    Will add up to %d foreign uuids in "%s" table', self::BATCH_SIZE, $tableName));
+        }
+
+        return $shouldContinue;
+    }
+
+    private function shouldBeExecutedForTable($tableName, $uuidColumnName): bool
+    {
+        if (!$this->tableExists($tableName)) {
+            return false;
+        }
+
+        if (!$this->columnExists($tableName, $uuidColumnName)) {
+            return true;
+        }
+
+        $sql = <<<SQL
+            SELECT EXISTS (
+                SELECT 1
+                FROM {table_name}
+                WHERE {column_name} 
+                IS NULL
+                {extra_condition}
+                LIMIT 1
+            ) as missing
+        SQL;
+
+        $query = \strtr($sql, [
+            '{table_name}' => $tableName,
+            '{column_name}' => $uuidColumnName,
+            '{extra_condition}' => $tableName === 'pim_versioning_version'
+                ? ' AND resource_name="Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"'
+                : '',
+        ]);
+
+        return (bool) $this->connection->fetchOne($query);
     }
 
     private function getMissingForeignUuidCount(string $tableName, string $uuidColumnName, string $idColumnName): int
