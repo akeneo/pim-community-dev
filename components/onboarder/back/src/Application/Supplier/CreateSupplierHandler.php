@@ -9,12 +9,7 @@ use Akeneo\OnboarderSerenity\Domain\Supplier\SupplierRepository;
 
 final class CreateSupplierHandler
 {
-    private SupplierRepository $supplierRepository;
-
-    public function __construct(SupplierRepository $supplierRepository)
-    {
-        $this->supplierRepository = $supplierRepository;
-    }
+    public function __construct(private SupplierRepository $supplierRepository){}
 
     public function __invoke(CreateSupplier $createSupplier): void
     {

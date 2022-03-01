@@ -8,9 +8,7 @@ final class Label
 {
     private const MAX_LENGTH = 200;
 
-    private string $label;
-
-    private function __construct(string $label)
+    private function __construct(private string $label)
     {
         if ('' === $label) {
             throw new \InvalidArgumentException('The supplier label cannot be empty.');
@@ -24,8 +22,6 @@ final class Label
                 )
             );
         }
-
-        $this->label = $label;
     }
 
     public static function fromString(string $label): self

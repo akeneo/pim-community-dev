@@ -8,9 +8,7 @@ use Ramsey\Uuid\Uuid;
 
 final class Identifier
 {
-    private string $identifier;
-
-    private function __construct(string $identifier)
+    private function __construct(private string $identifier)
     {
         if ('' === $identifier) {
             throw new \InvalidArgumentException('The supplier identifier cannot be empty.');
@@ -24,8 +22,6 @@ final class Identifier
                 )
             );
         }
-
-        $this->identifier = $identifier;
     }
 
     public static function fromString(string $identifier): self

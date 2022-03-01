@@ -8,9 +8,7 @@ final class Code
 {
     private const MAX_LENGTH = 200;
 
-    private string $code;
-
-    private function __construct(string $code)
+    private function __construct(private string $code)
     {
         if ('' === $code) {
             throw new \InvalidArgumentException('The supplier code cannot be empty.');

@@ -11,12 +11,7 @@ use Doctrine\DBAL\Connection;
 
 final class SupplierDatabaseRepository implements SupplierRepository
 {
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
-    {
-        $this->connection = $connection;
-    }
+    public function __construct(private Connection $connection){}
 
     public function save(Supplier $supplier): void
     {
