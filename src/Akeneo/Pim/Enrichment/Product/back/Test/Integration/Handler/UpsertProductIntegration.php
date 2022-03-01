@@ -132,7 +132,7 @@ final class UpsertProductIntegration extends TestCase
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
         // Update product with number value
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
             new SetMetricValue('a_metric', null, null, '100', 'KILOWATT'),
         ]);
         $this->messageBus->dispatch($command);
@@ -152,7 +152,7 @@ final class UpsertProductIntegration extends TestCase
     {
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('This value should be of type numeric.');
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
             new SetMetricValue('a_metric', null, null, 'michel', 'KILOWATT'),
         ]);
         $this->messageBus->dispatch($command);
@@ -163,7 +163,7 @@ final class UpsertProductIntegration extends TestCase
     {
         $this->expectException(LegacyViolationsException::class);
         $this->expectExceptionMessage('Please specify a valid metric unit');
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
             new SetMetricValue('a_metric', null, null, '1275', 'unknown'),
         ]);
         $this->messageBus->dispatch($command);

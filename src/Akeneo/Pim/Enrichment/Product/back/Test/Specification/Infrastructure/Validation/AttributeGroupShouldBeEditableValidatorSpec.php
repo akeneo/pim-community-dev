@@ -14,7 +14,7 @@ use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContext;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
-class AttributeValueShouldBeEditableValidatorSpec extends ObjectBehavior
+class AttributeGroupShouldBeEditableValidatorSpec extends ObjectBehavior
 {
     function let(IsAttributeEditable $isAttributeEditable, ExecutionContext $executionContext)
     {
