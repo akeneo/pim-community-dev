@@ -9,6 +9,8 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthentica
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthenticationException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAppConfirmationQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider;
@@ -37,7 +39,8 @@ final class ConfirmAuthenticationAction
         private ConnectedPimUserProvider $connectedPimUserProvider,
         private ConsentAppAuthenticationHandler $consentAppAuthenticationHandler,
         private LoggerInterface $logger,
-        private ViolationListNormalizer $violationListNormalizer
+        private ViolationListNormalizer $violationListNormalizer,
+        private GetAppQueryInterface $getAppQuery,
     ) {
     }
 
@@ -47,13 +50,22 @@ final class ConfirmAuthenticationAction
             throw new NotFoundHttpException();
         }
 
-        if (!$this->security->isGranted('akeneo_connectivity_connection_open_apps')) {
-            throw new AccessDeniedHttpException();
-        }
-
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
+
+        $app = $this->getAppQuery->execute($clientId);
+        if (null === $app) {
+            return new JsonResponse([
+                'errors' => [
+                    [
+                        'message' => 'akeneo_connectivity.connection.connect.apps.error.app_not_found',
+                    ],
+                ],
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $this->denyAccessUnlessGrantedToOpen($app);
 
         $connectedPimUserId = $this->connectedPimUserProvider->getCurrentUserId();
 
@@ -88,5 +100,16 @@ final class ConfirmAuthenticationAction
         return new JsonResponse([
             'redirectUrl' => $redirectUrl,
         ]);
+    }
+
+    private function denyAccessUnlessGrantedToOpen(App $app): void
+    {
+        if (!$app->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_open_apps')) {
+            throw new AccessDeniedHttpException();
+        }
+
+        if ($app->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')) {
+            throw new AccessDeniedHttpException();
+        }
     }
 }

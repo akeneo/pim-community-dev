@@ -153,7 +153,6 @@ class AuthorizeActionSpec extends ObjectBehavior
         ]);
         $getAppQuery->execute($clientId)->willReturn($app);
 
-        $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(false);
         $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(false);
 
         $this
