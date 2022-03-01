@@ -13,7 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyId;
+
 interface GetFamilyIdsToEvaluateQueryInterface
 {
+    /**
+     * @return \Iterator<int, array<FamilyId>>
+     */
     public function execute(int $bulkSize): \Iterator;
 }

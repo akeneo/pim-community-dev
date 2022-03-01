@@ -15,6 +15,7 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Elasticsear
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 
 final class GetProductIdsByAttributeOptionCodeQueryIntegration extends AbstractGetProductIdsByAttributeOptionCodeQueryIntegration
 {
@@ -76,7 +77,8 @@ final class GetProductIdsByAttributeOptionCodeQueryIntegration extends AbstractG
         $this->assertCount(2, $productIds[0]);
         $this->assertCount(1, $productIds[1]);
 
-        $productIds = array_merge(...$productIds);
-        $this->assertEqualsCanonicalizing($expectedProductIds, $productIds);
+        $productIds = array_map(fn (ProductIdCollection $collection) => $collection->toArray(), $productIds);
+
+        $this->assertEqualsCanonicalizing($expectedProductIds, array_merge(...$productIds));
     }
 }

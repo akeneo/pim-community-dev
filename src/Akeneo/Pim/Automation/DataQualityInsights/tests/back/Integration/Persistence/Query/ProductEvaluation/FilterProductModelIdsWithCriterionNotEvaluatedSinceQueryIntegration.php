@@ -20,6 +20,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluat
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
 final class FilterProductModelIdsWithCriterionNotEvaluatedSinceQueryIntegration extends DataQualityInsightsTestCase
@@ -59,9 +60,9 @@ final class FilterProductModelIdsWithCriterionNotEvaluatedSinceQueryIntegration 
         $this->givenAProductModelCriterionEvaluatedAt($productModelIdsToFilter[3], $criterionCode, $evaluatedSince->modify('-3 DAY'));
 
         $productModelIds = $this->get('akeneo.pim.automation.data_quality_insights.query.filter_product_model_ids_with_criterion_not_evaluated_since')
-            ->execute($productModelIdsToFilter, $evaluatedSince, $criterionCode);
+            ->execute(ProductIdCollection::fromProductIds($productModelIdsToFilter), $evaluatedSince, $criterionCode);
 
-        $this->assertEqualsCanonicalizing([$productModelIdsToFilter[2], $productModelIdsToFilter[3]], $productModelIds);
+        $this->assertEqualsCanonicalizing([$productModelIdsToFilter[2], $productModelIdsToFilter[3]], $productModelIds->toArray());
     }
 
     private function givenAPendingProductModelCriterion(ProductId $productModelId, CriterionCode $criterionCode, \DateTimeImmutable $evaluatedAt): void

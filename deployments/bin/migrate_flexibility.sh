@@ -107,8 +107,7 @@ yq w -i ${DESTINATION_PATH}/values.yaml mysql.mysql.userPassword "${MYSQL_USER_P
 yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.email "${PIM_USER}"
 yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.login "${PIM_USER}"
 yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.password "${PIM_PASSWORD}"
-# Copy the values.yaml file to be use when applying SRNT chart
-cp ${DESTINATION_PATH}/values.yaml /tmp/values.yaml
+
 yq d -i ${DESTINATION_PATH}/values.yaml "elasticsearch"
 
 yq d -i ${PED_DIR}/deployments/terraform/pim/values.yaml "elasticsearch"
@@ -186,13 +185,6 @@ terraform apply -input=false -auto-approve
 
 
 echo "#########################################################################"
-echo "- Copy the asset and catalog storages"
-FLEX_DISK_NAME=${FLEX_DISK_NAME} PFID=${PFID} NAMESPACE=${PFID} envsubst < ${BINDIR}/../share/asset-move.yaml.tpl | kubectl -n ${PFID} apply -f -
-kubectl -n ${PFID} wait --for=condition=complete --timeout=9m job/asset-move
-FLEX_DISK_NAME=${FLEX_DISK_NAME} PFID=${PFID} NAMESPACE=${PFID} envsubst < ${BINDIR}/../share/asset-move.yaml.tpl | kubectl -n ${PFID} delete -f -
-
-
-echo "#########################################################################"
 echo "- Upgrade the instance by using the same commands as the upgrader hook"
 POD_MYSQL=$(kubectl get pods --namespace=${PFID} -l component=mysql | awk '/mysql/ {print $1}')
 POD_DAEMON=$(kubectl get pods --no-headers --namespace=${PFID} -l component=pim-daemon-webhook-consumer-process | awk 'NR==1{print $1}')
@@ -214,90 +206,6 @@ kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c 'bin/console pim:user:
 SQL_COMMAND=$(cat ${BINDIR}/add_user_to_all_groups.sql)
 # _ "${SQL_COMMAND}" -> allow to pass parameter
 kubectl exec -it -n ${PFID} ${POD_MYSQL} -- /bin/bash -c 'mysql -u root -p$(cat /mysql_temp/root_password.txt) -D akeneo_pim -e "$@"' _ "${SQL_COMMAND}"
-
-
-echo "#########################################################################"
-echo "- Check ES indexation"
-(kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c 'bin/es_sync_checker --only-count') || true
-
-
-echo "#########################################################################"
-echo "- Take an ES snapshot"
-ES_SNAPSHOT_NAME_JOB="elasticsearch-snapshotter"
-ES_SNAPSHOT_REPOSITORY="pim_gcs_repository"
-kubectl create job ${ES_SNAPSHOT_NAME_JOB}-manually --from=cronjob/${ES_SNAPSHOT_NAME_JOB} --namespace=${PFID}
-# Get the ES snapshot name
-echo "curl 'elasticsearch-client:9200/_snapshot/${ES_SNAPSHOT_REPOSITORY}/_all?format=json&pretty'"
-SNAPSHOT_LIST=$(kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c "curl 'elasticsearch-client:9200/_snapshot/${ES_SNAPSHOT_REPOSITORY}/_all?format=json&pretty'")
-
-CONTINUE=true
-RETRY_LEFT=10
-while ${CONTINUE}; do
-  SNAPSHOT_LIST=$(kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c "curl 'elasticsearch-client:9200/_snapshot/${ES_SNAPSHOT_REPOSITORY}/_all?format=json&pretty'")
-  STATE=$(echo ${SNAPSHOT_LIST} | jq --raw-output '.snapshots[-1].state')
-  if [[ "${STATE}" == "SUCCESS" ]]; then
-    CONTINUE=false
-    break
-  else
-    sleep 30s
-  fi
-  if [[ "${RETRY_LEFT}" -eq 0 ]]; then
-    CONTINUE=false
-    break
-  fi
-  RETRY_LEFT=$((RETRY_LEFT-1))
-done
-# Get the last ES snapshot (snapshot are sort by startDate)
-ES_SNAPSHOT=$(echo ${SNAPSHOT_LIST} | jq --raw-output '.snapshots[-1].snapshot')
-
-
-echo "#########################################################################"
-echo "- Get back SRNT chart"
-rm -rf ${PED_DIR}/deployments/terraform
-BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/serenity-edition-dev/${PED_TAG}/deployments/terraform ${PED_DIR}/deployments/
-# Remove hook_upgrade_pim.yaml file, cannot be use right now as ES is still mono node
-rm -rf ${PED_DIR}/deployments/terraform/pim/templates/hook_upgrade_pim.yaml
-# Copy back the initial generated values.yaml file
-cp /tmp/values.yaml ${DESTINATION_PATH}/values.yaml
-
-
-echo "#########################################################################"
-echo "- Terraform init and apply"
-cd ${DESTINATION_PATH}
-terraform init
-terraform apply -input=false -auto-approve
-
-
-echo "#########################################################################"
-echo "- Check indices before restore"
-kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c "curl 'elasticsearch-client:9200/_cat/indices?format=json&pretty'"
-
-
-echo "#########################################################################"
-echo "- Restore the ES snapshot"
-echo "curl -X POST 'elasticsearch-client:9200/_snapshot/${ES_SNAPSHOT_REPOSITORY}/${ES_SNAPSHOT}/_restore' -H 'Content-Type: application/json' -d' {\"indices\": \"*,-.*\"}'"
-kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c "curl -X POST 'elasticsearch-client:9200/_snapshot/${ES_SNAPSHOT_REPOSITORY}/${ES_SNAPSHOT}/_restore' -H 'Content-Type: application/json' -d' {\"indices\": \"*,-.*\"}'"
-kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c "curl 'elasticsearch-client:9200/_cat/indices?format=json&pretty'"
-# Wait untill the restore is finished
-CONTINUE=true
-RETRY_LEFT=10
-while ${CONTINUE}; do
-  kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c "curl 'elasticsearch-client:9200/_cat/recovery?format=json&pretty'" > /tmp/snapshot_recovery.json
-  STATE=$(cat /tmp/snapshot_recovery.json | jq --raw-output '(.[] | select(.type=="snapshot") | .stage)' | grep -v done) || true
-  if [[ "${STATE}" == "" ]]; then
-    rm /tmp/snapshot_recovery.json
-    CONTINUE=false
-    break
-  else
-    sleep 30s
-  fi
-  if [[ "${RETRY_LEFT}" -eq 0 ]]; then
-    CONTINUE=false
-    break
-  fi
-  RETRY_LEFT=$((RETRY_LEFT-1))
-done
-kubectl exec -it -n ${PFID} ${POD_DAEMON} -- /bin/bash -c "curl 'elasticsearch-client:9200/_cat/indices?format=json&pretty'"
 
 
 echo "#########################################################################"

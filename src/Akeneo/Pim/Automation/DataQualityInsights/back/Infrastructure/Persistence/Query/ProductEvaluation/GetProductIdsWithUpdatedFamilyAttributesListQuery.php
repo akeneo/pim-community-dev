@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Cons
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\UpdatedFamily;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsWithUpdatedFamilyAttributesListQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetFamiliesWithUpdatedAttributesListQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Doctrine\DBAL\Connection;
 
 final class GetProductIdsWithUpdatedFamilyAttributesListQuery implements GetProductIdsWithUpdatedFamilyAttributesListQueryInterface
@@ -35,7 +35,10 @@ final class GetProductIdsWithUpdatedFamilyAttributesListQuery implements GetProd
         $this->getFamiliesWithUpdatedAttributesListQuery = $getFamiliesWithUpdatedAttributesListQuery;
     }
 
-    public function updatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Iterator
+    /**
+     * @return \Generator<int, ProductIdCollection>
+     */
+    public function updatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Generator
     {
         $updatedFamilies = $this->getFamiliesWithUpdatedAttributesListQuery->updatedSince($updatedSince);
 
@@ -61,17 +64,17 @@ SQL;
             ]);
 
             while ($productId = $stmt->fetchColumn()) {
-                $productIds[] = new ProductId(intval($productId));
+                $productIds[] = $productId;
 
                 if (count($productIds) >= $bulkSize) {
-                    yield $productIds;
+                    yield ProductIdCollection::fromStrings($productIds);
                     $productIds = [];
                 }
             }
         }
 
         if (!empty($productIds)) {
-            yield $productIds;
+            yield ProductIdCollection::fromStrings($productIds);
         }
     }
 }

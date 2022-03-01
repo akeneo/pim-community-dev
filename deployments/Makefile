@@ -522,6 +522,11 @@ clone_saas_instance:
 	TYPE=$(TYPE) INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files
 	SOURCE_PFID=$(SOURCE_PFID) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) DESTINATION_PATH=$(INSTANCE_DIR) BUCKET=$(BUCKET) bash $(DEPLOYMENT_DIR)/bin/clone_saas_instance.sh
 
+.PHONY: migrate_flexibility
+migrate_flexibility:
+	TYPE=$(TYPE) INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files
+	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) SOURCE_PROJECT_ID=$(SOURCE_PROJECT_ID) PED_TAG=$(IMAGE_TAG) INSTANCE_NAME=$(INSTANCE_NAME) BUCKET=$(BUCKET) bash $(DEPLOYMENT_DIR)/bin/migrate_flexibility.sh
+
 .PHONY: migrate_flexibility_to_serenity
 migrate_flexibility_to_serenity:
 	TYPE=$(TYPE) INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files
