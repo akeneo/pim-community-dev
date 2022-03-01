@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Audit;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Audit\Controller\Internal;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
