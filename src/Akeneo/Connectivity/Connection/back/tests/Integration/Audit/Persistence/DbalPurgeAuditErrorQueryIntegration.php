@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Audit\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
@@ -10,7 +10,6 @@ use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\AuditErrorLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 use PHPUnit\Framework\Assert;
 
 class DbalPurgeAuditErrorQueryIntegration extends TestCase
