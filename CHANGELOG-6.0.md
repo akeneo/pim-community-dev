@@ -3,6 +3,7 @@
 ## Bug fixes
 - PLG-776: Fix Option page broken issue with small screen when creating a new option
 - PIM-10305: Do not allow disabled user to login
+- PLG-781: Fix migration task related to calculating product quality scores to be independent of the JobExecution implementation
 
 # 6.0.7 (2022-02-25)
 
