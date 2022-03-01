@@ -84,16 +84,16 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         $result = $this->elasticsearchClient->search($query);
 
         return [
-            'results' => array_map(
+            'results' => \array_map(
                 function ($hit) {
                     return $hit['_source'];
                 },
                 $result['hits']['hits']
             ),
             'search_after' => $this->encrypter->encrypt(
-                json_encode(
+                \json_encode(
                     [
-                        'search_after' => end($result['hits']['hits'])['sort'] ?? null,
+                        'search_after' => \end($result['hits']['hits'])['sort'] ?? null,
                         'first_notice_and_info_id' => $lastNoticeAndInfoIds['first_id'],
                         'first_notice_and_info_search_after' => $lastNoticeAndInfoIds['first_search_after'],
                     ]
@@ -195,7 +195,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
             $constraints[] = [
                 'query_string' => [
                     'fields' => ['message', 'context_flattened'],
-                    'query'=> $this->formatTextSearch(strtolower($filters['text'])),
+                    'query'=> $this->formatTextSearch(\strtolower($filters['text'])),
                     'fuzziness' => 0,
                     'default_operator' => 'AND'
                 ],
@@ -227,11 +227,11 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
     {
         $regex = '#[-+=|!&(){}\[\]^"~*<>?:/\\\]#';
 
-        $escaped =  preg_replace($regex, '\\\$0', $value);
-        $split = preg_split('/ /', $escaped);
+        $escaped =  \preg_replace($regex, '\\\$0', $value);
+        $split = \preg_split('/ /', $escaped);
         $formatted = '';
         foreach ($split as $item) {
-            $formatted .= sprintf('*%s* ', $item);
+            $formatted .= \sprintf('*%s* ', $item);
         }
 
         return $formatted;
@@ -257,7 +257,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         }
 
         $decryptedSearchAfter = $this->encrypter->decrypt($encryptedSearchAfter);
-        $parameters = json_decode($decryptedSearchAfter, true);
+        $parameters = \json_decode($decryptedSearchAfter, true);
 
         return $parameters;
     }
@@ -305,7 +305,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         return [
             'first_id' => $result['hits']['hits'][0]['_id'] ?? null,
             'first_search_after' => $result['hits']['hits'][0]['sort'] ?? null,
-            'ids' => array_map(
+            'ids' => \array_map(
                 fn ($hit) => $hit['_id'],
                 $result['hits']['hits']
             ),
@@ -341,9 +341,9 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         return [
             'first_id' => $firstId,
             'first_search_after' => $firstSearchAfter,
-            'ids' => array_merge(
+            'ids' => \array_merge(
                 [$firstId],
-                array_map(
+                \array_map(
                     fn ($hit) => $hit['_id'],
                     $result['hits']['hits']
                 )
@@ -372,12 +372,12 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
                     return true;
                 }
 
-                if (!is_array($levels)) {
+                if (!\is_array($levels)) {
                     return false;
                 }
 
                 foreach ($levels as $level) {
-                    if (!in_array($level, EventsApiDebugLogLevels::ALL)) {
+                    if (!\in_array($level, EventsApiDebugLogLevels::ALL)) {
                         return false;
                     }
                 }
@@ -388,14 +388,14 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
 
         // If all the levels are selected, replace by `null`
         $resolver->setNormalizer('levels', function ($options, $value) {
-            if (is_array($value) && empty(array_diff(EventsApiDebugLogLevels::ALL, $value))) {
+            if (\is_array($value) && empty(\array_diff(EventsApiDebugLogLevels::ALL, $value))) {
                 return null;
             }
 
             return $value;
         });
         $resolver->setNormalizer('text', function ($options, $value) {
-            if (is_string($value) && '' === trim($value)) {
+            if (\is_string($value) && '' === \trim($value)) {
                 return null;
             }
 

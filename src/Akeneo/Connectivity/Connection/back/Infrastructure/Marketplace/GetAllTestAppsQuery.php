@@ -40,8 +40,8 @@ SQL;
         $rows = $this->connection->fetchAllAssociative($query);
 
         return GetAllTestAppsResult::create(
-            count($rows),
-            array_map(function ($row) {
+            \count($rows),
+            \array_map(function ($row) {
                 $row['connected'] = (bool) $row['connected'];
 
                 return App::fromTestAppValues($row);

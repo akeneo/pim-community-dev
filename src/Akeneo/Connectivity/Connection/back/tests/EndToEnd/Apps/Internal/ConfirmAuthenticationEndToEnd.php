@@ -91,7 +91,7 @@ class ConfirmAuthenticationEndToEnd extends WebTestCase
 
         $this->client->request(
             'POST',
-            sprintf('/rest/apps/confirm-authentication/%s', $this->clientId),
+            \sprintf('/rest/apps/confirm-authentication/%s', $this->clientId),
             [],
             [],
             [

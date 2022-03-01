@@ -64,7 +64,7 @@ class FindOneConnectedAppByConnectionCodeQueryIntegration extends TestCase
 
         $retrievedApp = $this->query->execute('bynder');
 
-        Assert::assertEquals(serialize($createdApp), serialize($retrievedApp));
+        Assert::assertEquals(\serialize($createdApp), \serialize($retrievedApp));
     }
 
     public function test_it_can_retrieve_a_connected_app_by_connection_code_related_to_a_test_app(): void
@@ -91,7 +91,7 @@ class FindOneConnectedAppByConnectionCodeQueryIntegration extends TestCase
 
         $retrievedApp = $this->query->execute('bynder');
 
-        Assert::assertEquals(serialize($createdApp), serialize($retrievedApp));
+        Assert::assertEquals(\serialize($createdApp), \serialize($retrievedApp));
     }
 
     private function createTestApp(string $id): void

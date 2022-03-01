@@ -51,7 +51,7 @@ final class GetWeeklyAuditAction extends AbstractAuditAction
         $retroCompatibleData = [];
         foreach ($data as $connectionCode => $connectionData) {
             $retroCompatibleData[$connectionCode] = [
-                'daily' => array_merge($connectionData['previous_week'], $connectionData['current_week']),
+                'daily' => \array_merge($connectionData['previous_week'], $connectionData['current_week']),
                 'weekly_total' => $connectionData['current_week_total']
             ];
         }

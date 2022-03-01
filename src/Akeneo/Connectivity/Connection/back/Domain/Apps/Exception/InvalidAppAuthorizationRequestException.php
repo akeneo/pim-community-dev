@@ -21,7 +21,7 @@ class InvalidAppAuthorizationRequestException extends \ErrorException
      */
     public function __construct(ConstraintViolationListInterface $constraintViolationList)
     {
-        $message = count($constraintViolationList) > 0 ? (string) $constraintViolationList->get(0)->getMessage() : '';
+        $message = \count($constraintViolationList) > 0 ? (string) $constraintViolationList->get(0)->getMessage() : '';
 
         parent::__construct($message);
 

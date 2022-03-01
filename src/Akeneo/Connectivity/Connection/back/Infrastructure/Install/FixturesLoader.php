@@ -225,11 +225,11 @@ class FixturesLoader
 
         $this->userUpdater->update(
             $user,
-            array_merge(
+            \array_merge(
                 [
                     'first_name' => $data['username'],
                     'last_name' => $data['username'],
-                    'email' => sprintf('%s@example.com', $data['username']),
+                    'email' => \sprintf('%s@example.com', $data['username']),
                 ],
                 $data
             )
@@ -244,7 +244,7 @@ class FixturesLoader
     {
         $this->dbalConnection->insert(
             'pim_api_client',
-            array_merge(
+            \array_merge(
                 [
                     'allowed_grant_types' => [OAuth2::GRANT_TYPE_USER_CREDENTIALS, OAuth2::GRANT_TYPE_REFRESH_TOKEN],
                     'redirect_uris' => [],
@@ -283,10 +283,10 @@ class FixturesLoader
             }
 
             throw new \InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'Object "%s" is not valid, cf following constraint violations "%s"',
-                    get_class($object),
-                    implode(', ', $messages)
+                    \get_class($object),
+                    \implode(', ', $messages)
                 )
             );
         }

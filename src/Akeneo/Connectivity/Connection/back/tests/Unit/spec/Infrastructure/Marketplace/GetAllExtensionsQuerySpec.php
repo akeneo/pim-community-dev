@@ -90,7 +90,7 @@ class GetAllExtensionsQuerySpec extends ObjectBehavior
             ],
         ]);
 
-        $this->execute()->shouldBeLike(GetAllExtensionsResult::create(3, array_map(function ($item) {
+        $this->execute()->shouldBeLike(GetAllExtensionsResult::create(3, \array_map(function ($item) {
             return Extension::fromWebMarketplaceValues($item);
         }, $items)));
     }

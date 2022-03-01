@@ -81,9 +81,9 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
         do {
             $result = $this->query->execute('a_connection_code', $searchAfter);
-            $count += count($result['results']);
+            $count += \count($result['results']);
             $searchAfter = $result['search_after'];
-        } while (count($result['results']) === 25);
+        } while (\count($result['results']) === 25);
 
         Assert::assertEquals(100, $count);
         Assert::assertEquals(100, $result['total']);
@@ -113,9 +113,9 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         ];
         do {
             $result = $this->query->execute('a_connection_code', $searchAfter, $filters);
-            $count += count($result['results']);
+            $count += \count($result['results']);
             $searchAfter = $result['search_after'];
-        } while (count($result['results']) === 25);
+        } while (\count($result['results']) === 25);
 
         Assert::assertEquals(100, $count);
         Assert::assertEquals(100, $result['total']);
@@ -353,10 +353,10 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
         $result = $this->query->execute('a_connection_code', null, $filters);
 
-        usort(
+        \usort(
             $result['results'],
             function ($a, $b) {
-                return strcmp($a['level'], $b['level']);
+                return \strcmp($a['level'], $b['level']);
             }
         );
 
@@ -416,10 +416,10 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
         $result = $this->query->execute('a_connection_code', null, $filters);
 
-        usort(
+        \usort(
             $result['results'],
             function ($a, $b) {
-                return strcmp($a['level'], $b['level']);
+                return \strcmp($a['level'], $b['level']);
             }
         );
 
@@ -470,7 +470,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
         $result = $this->query->execute('a_connection_code', null, $filters);
 
-        usort(
+        \usort(
             $result['results'],
             function ($a, $b) {
                 if ($a['timestamp'] === $b['timestamp']) {
@@ -531,7 +531,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
         $result = $this->query->execute('a_connection_code', null, $filters);
 
-        usort(
+        \usort(
             $result['results'],
             function ($a, $b) {
                 if ($a['timestamp'] === $b['timestamp']) {
@@ -602,13 +602,13 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
         $result = $this->query->execute('a_connection_code', null, $filters);
 
-        $resultTimestamps = array_map(
+        $resultTimestamps = \array_map(
             function ($log) {
                 return $log['timestamp'];
             },
             $result['results']
         );
-        sort($resultTimestamps);
+        \sort($resultTimestamps);
 
         Assert::assertEquals(2, $result['total']);
         Assert::assertEquals($firstTimestampToFind, $resultTimestamps[0]);
@@ -685,13 +685,13 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
         $result = $this->query->execute('a_connection_code', null, $filters);
 
-        $resultTimestamps = array_map(
+        $resultTimestamps = \array_map(
             function ($log) {
                 return $log['timestamp'];
             },
             $result['results']
         );
-        sort($resultTimestamps);
+        \sort($resultTimestamps);
 
         Assert::assertEquals(2, $result['total']);
         Assert::assertEquals($firstTimestampToFind, $resultTimestamps[0]);
@@ -700,7 +700,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
     private function generateLogs(callable $generator, int $number): void
     {
-        $this->insertLogs(array_map($generator, range(0, $number - 1)));
+        $this->insertLogs(\array_map($generator, \range(0, $number - 1)));
     }
 
     private function insertLogs(array $logs): void

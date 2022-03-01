@@ -35,7 +35,7 @@ final class SaveAsymmetricKeysQuery implements SaveAsymmetricKeysQueryInterface
 
         $this->connection->executeQuery($query, [
             'code' => self::OPTION_CODE,
-            'asymmetricKeys' => array_merge($asymmetricKeys->normalize(), ['updated_at' => $updatedAt]),
+            'asymmetricKeys' => \array_merge($asymmetricKeys->normalize(), ['updated_at' => $updatedAt]),
         ], [
             'code' => Types::STRING,
             'asymmetricKeys' => Types::JSON,

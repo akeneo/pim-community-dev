@@ -66,7 +66,7 @@ class App
     {
         foreach (self::MARKETPLACE_REQUIRED_KEYS as $key) {
             if (!isset($values[$key])) {
-                throw new \InvalidArgumentException(sprintf('Missing property "%s" in given app', $key));
+                throw new \InvalidArgumentException(\sprintf('Missing property "%s" in given app', $key));
             }
         }
 
@@ -102,7 +102,7 @@ class App
     {
         foreach (self::TEST_APP_REQUIRED_KEYS as $key) {
             if (!isset($values[$key])) {
-                throw new \InvalidArgumentException(sprintf('Missing property "%s" in given app', $key));
+                throw new \InvalidArgumentException(\sprintf('Missing property "%s" in given app', $key));
             }
         }
 
@@ -170,12 +170,12 @@ class App
      */
     private static function appendQueryParametersToUrl(string $url, array $queryParameters): string
     {
-        $query = http_build_query($queryParameters);
+        $query = \http_build_query($queryParameters);
 
-        if (parse_url($url, PHP_URL_QUERY)) {
-            $url = sprintf('%s&%s', $url, $query);
+        if (\parse_url($url, PHP_URL_QUERY)) {
+            $url = \sprintf('%s&%s', $url, $query);
         } else {
-            $url = sprintf('%s?%s', $url, $query);
+            $url = \sprintf('%s?%s', $url, $query);
         }
 
         return $url;

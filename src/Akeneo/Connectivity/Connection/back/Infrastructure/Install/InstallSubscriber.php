@@ -58,7 +58,7 @@ class InstallSubscriber implements EventSubscriberInterface
     {
         $this->addOpenIdKeys();
 
-        if (substr($installerEvent->getArgument('catalog'), -strlen(self::ICECAT_DEMO_DEV)) !== self::ICECAT_DEMO_DEV) {
+        if (\substr($installerEvent->getArgument('catalog'), -\strlen(self::ICECAT_DEMO_DEV)) !== self::ICECAT_DEMO_DEV) {
             return;
         }
 

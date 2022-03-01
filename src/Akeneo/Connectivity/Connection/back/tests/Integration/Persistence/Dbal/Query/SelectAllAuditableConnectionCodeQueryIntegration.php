@@ -26,7 +26,7 @@ class SelectAllAuditableConnectionCodeQueryIntegration extends TestCase
 
         $codes = $this->selectAuditableConnectionsCodeQuery->execute();
         Assert::assertCount(2, $codes);
-        sort($codes);
+        \sort($codes);
         Assert::assertEquals('erp', $codes[0]);
         Assert::assertEquals('translation', $codes[1]);
     }

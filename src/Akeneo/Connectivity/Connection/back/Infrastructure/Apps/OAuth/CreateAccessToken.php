@@ -85,7 +85,7 @@ class CreateAccessToken implements CreateAccessTokenInterface
         /** @var UserInterface|null */
         $appUser = $this->userRepository->find($appUserId);
         if (null === $appUser) {
-            throw new \LogicException(sprintf('User %s not found', $appUserId));
+            throw new \LogicException(\sprintf('User %s not found', $appUserId));
         }
 
         return $appUser;

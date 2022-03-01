@@ -56,7 +56,7 @@ abstract class WebTestCase extends TestCase
 
         $token = new UsernamePasswordToken($user, null, $firewallName, $user->getRoles());
         $session = $this->getSession();
-        $session->set('_security_' . $firewallContext, serialize($token));
+        $session->set('_security_' . $firewallContext, \serialize($token));
         $session->save();
 
         $cookie = new Cookie($session->getName(), $session->getId());
@@ -88,10 +88,10 @@ abstract class WebTestCase extends TestCase
         $roleWithPermissionsSaver = $this->get('pim_user.saver.role_with_permissions');
 
         $roleWithPermissions = $roleWithPermissionsRepository->findOneByIdentifier($roleCode);
-        assert(null !== $roleWithPermissions);
+        \assert(null !== $roleWithPermissions);
 
         $permissions = $roleWithPermissions->permissions();
-        $permissions[sprintf('action:%s', $acl)] = $enabled;
+        $permissions[\sprintf('action:%s', $acl)] = $enabled;
         $roleWithPermissions->setPermissions($permissions);
 
         $roleWithPermissionsSaver->saveAll([$roleWithPermissions]);
