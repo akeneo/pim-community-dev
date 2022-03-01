@@ -15,7 +15,7 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetUserProfileQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliases'
             - '@pim_framework.service.pim_url'
-            -
+
     Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator:
         arguments:
             - '@pim_framework.service.pim_url'
