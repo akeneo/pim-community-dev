@@ -13,6 +13,7 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectPeriodEv
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\DateTimePeriod;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
+use Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectPeriodEventCountPerConnectionQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\AuditLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Test\Integration\Configuration;
@@ -41,7 +42,7 @@ class DbalSelectPeriodEventCountPerConnectionQueryIntegration extends TestCase
 
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
         $this->auditLoader = $this->get('akeneo_connectivity.connection.fixtures.audit_loader');
-        $this->selectPeriodEventCountPerConnectionQuery = $this->get('akeneo_connectivity.connection.persistence.query.select_period_event_count_per_connection');
+        $this->selectPeriodEventCountPerConnectionQuery = $this->get(DbalSelectPeriodEventCountPerConnectionQuery::class);
     }
 
     public function test_it_gets_data_for_connections_with_audit_data(): void

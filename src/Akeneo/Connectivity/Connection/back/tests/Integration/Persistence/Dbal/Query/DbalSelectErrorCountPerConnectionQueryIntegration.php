@@ -10,6 +10,7 @@ use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\ErrorType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
+use Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectErrorCountPerConnectionQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\AuditErrorLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Test\Integration\Configuration;
@@ -38,7 +39,7 @@ class DbalSelectErrorCountPerConnectionQueryIntegration extends TestCase
 
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
         $this->auditErrorLoader = $this->get('akeneo_connectivity.connection.fixtures.audit_error_loader');
-        $this->selectErrorCountPerConnectionQuery = $this->get('akeneo_connectivity_connection.persistence.query.select_error_count_per_connection');
+        $this->selectErrorCountPerConnectionQuery = $this->get(DbalSelectErrorCountPerConnectionQuery::class);
     }
 
     public function test_it_gets_error_count_per_connection()

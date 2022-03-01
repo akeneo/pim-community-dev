@@ -1,47 +1,38 @@
 services:
-    akeneo_connectivity_connection.persistence.query.purge_audit_product:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalPurgeAuditProductQuery
+    Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalPurgeAuditProductQuery:
         arguments:
             - '@database_connection'
 
-    akeneo_connectivity_connection.persistence.query.select_error_count_per_connection:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectErrorCountPerConnectionQuery
+    Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectErrorCountPerConnectionQuery:
         arguments:
             - '@database_connection'
 
-    akeneo_connectivity_connection.persistence.query.select_hourly_intervals_to_refresh:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectHourlyIntervalsToRefreshQuery
+    Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectHourlyIntervalsToRefreshQuery:
         arguments:
             - '@database_connection'
 
-    akeneo_connectivity_connection.persistence.query.purge_audit_error:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\PurgeAuditErrorQuery
+    Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\PurgeAuditErrorQuery:
         arguments:
             - '@database_connection'
 
-    akeneo_connectivity_connection.persistence.query.select_period_error_count_per_connection:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectPeriodErrorCountPerConnectionQuery
+    Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectPeriodErrorCountPerConnectionQuery:
         arguments:
             - '@database_connection'
 
-    akeneo_connectivity.connection.persistence.query.select_period_event_count_per_connection:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectPeriodEventCountPerConnectionQuery
+    Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectPeriodEventCountPerConnectionQuery:
         arguments:
             - '@database_connection'
 
-    akeneo_connectivity.connection.persistence.query.extract_connections_product_event_count:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalExtractConnectionsProductEventCountQuery
+    Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalExtractConnectionsProductEventCountQuery:
         arguments:
             - '@database_connection'
             - '%pim_catalog.entity.product.class%'
 
-    akeneo_connectivity.connection.persistence.query.select_events_api_request_count_within_last_hour_query:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectEventsApiRequestCountWithinLastHourQuery
+    Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectEventsApiRequestCountWithinLastHourQuery:
         arguments:
             - '@database_connection'
 
     # To split into queries
-    akeneo_connectivity.connection.persistence.repository.event_count:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalEventCountRepository
+    Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalEventCountRepository:
         arguments:
             - '@database_connection'
