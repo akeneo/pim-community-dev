@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Attributes\AttributesInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Channels\ChannelsInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Locales\LocalesInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -31,17 +34,12 @@ final class TransformCriterionEvaluationResultCodes
         CriterionEvaluationResultStatus::NOT_APPLICABLE => 4,
     ];
 
-    private Attributes $attributes;
-
-    private Channels $channels;
-
-    private Locales $locales;
-
-    public function __construct(Attributes $attributes, Channels $channels, Locales $locales)
+    public function __construct(
+        private AttributesInterface $attributes,
+        private ChannelsInterface $channels,
+        private LocalesInterface $locales
+    )
     {
-        $this->attributes = $attributes;
-        $this->channels = $channels;
-        $this->locales = $locales;
     }
 
     public function transformToIds(array $evaluationResult): array
