@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation;
+namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Locales;
 
 use Doctrine\DBAL\Connection;
 
@@ -10,7 +10,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Locales
+final class SqlLocales implements LocalesInterface
 {
     private array $localeIdsByCodes;
 
