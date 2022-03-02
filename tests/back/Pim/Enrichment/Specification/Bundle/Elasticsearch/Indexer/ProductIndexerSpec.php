@@ -35,12 +35,11 @@ class ProductIndexerSpec extends ObjectBehavior
         GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
     ) {
         $identifier = 'foobar';
-        $getElasticsearchProductProjection->fromProductIdentifiers([$identifier])->willYield([$this->getElasticSearchProjection('identifier_1')]);
+        $iterable = [$this->getElasticSearchProjection('identifier_1')];
+        $getElasticsearchProductProjection->fromProductIdentifiers([$identifier])->willReturn($iterable);
         $productAndProductModelIndexClient
             ->bulkIndexes(
-                Argument::that(function ($projections) {
-                    return \iterator_to_array($projections) === [$this->getElasticSearchProjection('identifier_1')->toArray()];
-                }),
+                $iterable,
                 'id',
                 Refresh::disable()
             )->shouldBeCalled();
@@ -54,16 +53,11 @@ class ProductIndexerSpec extends ObjectBehavior
     ) {
         $identifiers = ['foo', 'bar', 'unknown'];
 
-        $getElasticsearchProductProjection->fromProductIdentifiers($identifiers)
-            ->willYield([$this->getElasticSearchProjection('identifier_1'), $this->getElasticSearchProjection('identifier_2')]);
+        $iterable = [$this->getElasticSearchProjection('identifier_1'), $this->getElasticSearchProjection('identifier_2')];
+        $getElasticsearchProductProjection->fromProductIdentifiers($identifiers)->willReturn($iterable);
 
         $productAndProductModelIndexClient->bulkIndexes(
-            Argument::that(function ($projections) {
-                return \iterator_to_array($projections) === [
-                    $this->getElasticSearchProjection('identifier_1')->toArray(),
-                    $this->getElasticSearchProjection('identifier_2')->toArray(),
-                ];
-            }),
+            $iterable,
             'id',
             Refresh::disable()
         )->shouldBeCalled();
@@ -78,16 +72,16 @@ class ProductIndexerSpec extends ObjectBehavior
         $identifiers = $this->getRangeIdentifiers(1, 1502);
 
         $getElasticsearchProductProjection->fromProductIdentifiers($this->getRangeIdentifiers(1, 500))
-            ->willYield([$this->getElasticSearchProjection('identifier_1')]);
+            ->willReturn([$this->getElasticSearchProjection('identifier_1')]);
         $getElasticsearchProductProjection->fromProductIdentifiers($this->getRangeIdentifiers(501, 1000))
-            ->willYield([$this->getElasticSearchProjection('identifier_2')]);
+            ->willReturn([$this->getElasticSearchProjection('identifier_2')]);
         $getElasticsearchProductProjection->fromProductIdentifiers($this->getRangeIdentifiers(1001, 1500))
-            ->willYield([$this->getElasticSearchProjection('identifier_3')]);
+            ->willReturn([$this->getElasticSearchProjection('identifier_3')]);
         $getElasticsearchProductProjection->fromProductIdentifiers($this->getRangeIdentifiers(1501, 1502))
-            ->willYield([$this->getElasticSearchProjection('identifier_4')]);
+            ->willReturn([$this->getElasticSearchProjection('identifier_4')]);
 
         $productAndProductModelIndexClient->bulkIndexes(
-            Argument::type(\Traversable::class),
+            Argument::any(),
             'id',
             Refresh::disable()
         )->shouldBeCalledTimes(4);
@@ -124,16 +118,13 @@ class ProductIndexerSpec extends ObjectBehavior
         Client $productAndProductModelIndexClient,
         GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
     ) {
+        $iterable = [$this->getElasticSearchProjection('identifier_1')];
         $getElasticsearchProductProjection
             ->fromProductIdentifiers(['identifier_1'])
-            ->willReturn([$this->getElasticSearchProjection('identifier_1')]);
+            ->willReturn($iterable);
 
         $productAndProductModelIndexClient->bulkIndexes(
-            Argument::that(function ($projections) {
-                return \iterator_to_array($projections) === [
-                    $this->getElasticSearchProjection('identifier_1')->toArray(),
-                ];
-            }),
+            $iterable,
             'id',
             Refresh::waitFor()
         )->shouldBeCalled();
@@ -147,16 +138,12 @@ class ProductIndexerSpec extends ObjectBehavior
     ) {
         $identifiers = ['foo', 'bar', 'unknown'];
 
+        $iterable = [$this->getElasticSearchProjection('identifier_1'), $this->getElasticSearchProjection('identifier_2')];
         $getElasticsearchProductProjection->fromProductIdentifiers($identifiers)
-            ->willReturn([$this->getElasticSearchProjection('identifier_1'), $this->getElasticSearchProjection('identifier_2')]);
+            ->willReturn($iterable);
 
         $productAndProductModelIndexClient->bulkIndexes(
-            Argument::that(function ($projections) {
-                return \iterator_to_array($projections) === [
-                    $this->getElasticSearchProjection('identifier_1')->toArray(),
-                    $this->getElasticSearchProjection('identifier_2')->toArray(),
-                ];
-            }),
+            $iterable,
             'id',
             Refresh::disable()
         )->shouldBeCalled();
@@ -170,16 +157,12 @@ class ProductIndexerSpec extends ObjectBehavior
     ) {
         $identifiers = ['foo', 'bar', 'unknown'];
 
+        $iterable = [$this->getElasticSearchProjection('identifier_1'), $this->getElasticSearchProjection('identifier_2')];
         $getElasticsearchProductProjection->fromProductIdentifiers($identifiers)
-            ->willReturn([$this->getElasticSearchProjection('identifier_1'), $this->getElasticSearchProjection('identifier_2')]);
+            ->willReturn($iterable);
 
         $productAndProductModelIndexClient->bulkIndexes(
-            Argument::that(function ($projections) {
-                return \iterator_to_array($projections) === [
-                    $this->getElasticSearchProjection('identifier_1')->toArray(),
-                    $this->getElasticSearchProjection('identifier_2')->toArray(),
-                ];
-            }),
+            $iterable,
             'id',
             Refresh::enable()
         )->shouldBeCalled();
@@ -191,6 +174,7 @@ class ProductIndexerSpec extends ObjectBehavior
     {
         return new ElasticsearchProductProjection(
             '1',
+            '1e40-4c55-a415-89c7958b270d',
             $identifier,
             new \DateTimeImmutable('2019-03-16 12:03:00', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-03-16 12:03:00', new \DateTimeZone('UTC')),
