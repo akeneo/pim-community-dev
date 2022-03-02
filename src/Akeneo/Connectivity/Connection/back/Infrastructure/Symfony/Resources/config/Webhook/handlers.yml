@@ -1,0 +1,32 @@
+services:
+    Akeneo\Connectivity\Connection\Application\Webhook\Command\CheckWebhookReachabilityHandler:
+        arguments:
+            - '@akeneo_connectivity.connection.webhook.service.url_reachability_checker'
+
+    Akeneo\Connectivity\Connection\Application\Webhook\Query\GetAConnectionWebhookHandler:
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.query.get_connection_webhook'
+            - '%webhook_active_event_subscriptions_limit%'
+            - '@akeneo_connectivity.connection.persistence.query.count_active_event_subscriptions'
+
+    Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler:
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.query.select_active_webhooks'
+            - '@akeneo_connectivity.connection.webhook.webhook_user_authenticator'
+            - '@akeneo_connectivity.connection.webhook.webhook_client'
+            - '@akeneo_connectivity.connection.webhook.webhook_event_builder'
+            - '@monolog.logger.event_api'
+            - '@akeneo_connectivity.connection.webhook.events_api_debug_logger'
+            - '%env(AKENEO_PIM_URL)%'
+
+    Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateWebhookHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\UpdateConnectionWebhookQuery'
+            - '@validator'
+            - '@akeneo_connectivity.connection.persistence.query.select_webhook_secret'
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\Command\GenerateWebhookSecretHandler'
+
+    Akeneo\Connectivity\Connection\Application\Webhook\Command\GenerateWebhookSecretHandler:
+        arguments:
+            - '@akeneo_connectivity.connection.webhook.generate_secret'
+            - '@akeneo_connectivity.connection.persistence.query.save_webhook_secret'

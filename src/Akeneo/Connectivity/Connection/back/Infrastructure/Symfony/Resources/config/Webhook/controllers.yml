@@ -2,20 +2,20 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Webhook\Controller\Internal\GetWebhookAction:
         public: true
         arguments:
-            - '@akeneo_connectivity.connection.application.webhook.handler.get_connection_webhook'
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\Query\GetAConnectionWebhookHandler'
 
     Akeneo\Connectivity\Connection\Infrastructure\Webhook\Controller\Internal\RegenerateSecretAction:
         public: true
         arguments:
-            - '@akeneo_connectivity.connection.application.webhook.handler.generate_webhook_secret'
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\Command\GenerateWebhookSecretHandler'
 
     Akeneo\Connectivity\Connection\Infrastructure\Webhook\Controller\Internal\CheckWebhookReachabilityAction:
         public: true
         arguments:
-            - '@akeneo_connectivity.connection.application.webhook.handler.check_url_reachability'
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\Command\CheckWebhookReachabilityHandler'
 
     Akeneo\Connectivity\Connection\Infrastructure\Webhook\Controller\Internal\UpdateWebhookAction:
         public: true
         arguments:
-            - '@akeneo_connectivity.connection.application.webhook.handler.update_connection_webhook'
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateWebhookHandler'
             - '@oro_security.security_facade'

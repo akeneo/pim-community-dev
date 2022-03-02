@@ -43,6 +43,7 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('Marketplace/services.yml');
 
         $loader->load('Webhook/controllers.yml');
+        $loader->load('Webhook/handlers.yml');
 
         $loader->load('cli.yml');
         $loader->load('controllers.yml');
