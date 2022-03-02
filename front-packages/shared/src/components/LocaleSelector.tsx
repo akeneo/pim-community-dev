@@ -45,7 +45,7 @@ const LocaleSelector = ({value, values, completeValues, onChange}: LocaleSelecto
   const [isOpen, open, close] = useBooleanState();
   const selectedLocale: Locale = values.find(locale => locale.code === value) || values[0];
 
-  if(!selectedLocale) {
+  if (!selectedLocale) {
     return null;
   }
 
