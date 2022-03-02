@@ -1,5 +1,5 @@
 services:
-    Akeneo\OnboarderSerenity\Infrastructure\Tool\InstallOnboarderSerenityTables:
+    Akeneo\OnboarderSerenity\Infrastructure\Install\InstallOnboarderSerenityTables:
         arguments:
             - '@database_connection'
         tags:
