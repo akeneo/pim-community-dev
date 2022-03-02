@@ -153,7 +153,7 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         return $result;
     }
 
-    private function getProductIdToUuidMap(array $productFormerAssociations)
+    private function getProductIdToUuidMap(array $productFormerAssociations, bool $dryRun)
     {
         $productIds = [];
         foreach ($productFormerAssociations as $formerAssociation) {
@@ -169,6 +169,13 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
             FROM pim_catalog_product 
             WHERE id IN (:productIds)
         SQL;
+        if ($dryRun) {
+            $sql = <<<SQL
+            SELECT id, NULL as uuid 
+            FROM pim_catalog_product 
+            WHERE id IN (:productIds)
+        SQL;
+        }
         $products = $this->connection->fetchAllAssociative($sql, [
             'productIds' => $productIds,
         ], [
@@ -187,50 +194,111 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
     {
         $allItemsMigrated = true;
         $previousEntityId = -1;
-        $associations = $this->getFormerAssociations($tableName, $previousEntityId);
-        while (count($associations) > 0) {
-            $productIdToUuidMap = $dryRun ? [] : $this->getProductIdToUuidMap($associations);
+        $formerAssociations = $this->getFormerAssociations($tableName, $previousEntityId);
 
-            for ($pi = 0; $pi < count($associations); $pi++) {
-                $formerAssociation = $associations[$pi]['quantified_associations'];
-                $productId = $associations[$pi]['id'];
-                $notFound = false;
-                foreach ($formerAssociation as $associationName => $entityAssociations) {
-                    if (array_key_exists('products', $entityAssociations)) {
-                        for ($i = 0; $i < count($entityAssociations['products']); $i++) {
-                            $associatedProductId = $entityAssociations['products'][$i]['id'];
-                            if (array_key_exists($associatedProductId, $productIdToUuidMap)) {
-                                $associatedProductUuid = $productIdToUuidMap[$associatedProductId];
-                                if ($associatedProductUuid === null) {
-                                    $output->writeln(sprintf('    <comment>Associated product uuid %d not found for product %d</comment>', $associatedProductId, $productId));
-                                    $notFound = true;
-                                    $allItemsMigrated = false;
-                                } else {
-                                    $formerAssociation[$associationName]['products'][$i]['uuid'] = $associatedProductUuid;
-                                }
-                            } else {
-                                // former association is cleared since product does not exist anymore
-                                \array_splice($formerAssociation[$associationName]['products'], $i, 1);
-                            }
-                        }
-                    }
-                }
-                if (!$notFound) {
-                    $associations[$pi]['quantified_associations'] = $formerAssociation;
-                }
-                $previousEntityId = $productId;
-            }
+        while (count($formerAssociations) > 0) {
+            $productIdToUuidMap = $this->getProductIdToUuidMap($formerAssociations, $dryRun);
+            $newAssociations = $this->getNewAssociationsAndIds($output, $formerAssociations, $productIdToUuidMap);
 
-            $output->writeln(sprintf('    Will update %s entities in %s table', count($associations), $tableName));
+            $allItemsMigrated = $allItemsMigrated && \count($newAssociations) === \count($formerAssociations);
+
+            $output->writeln(\sprintf('    Will update %s entities in %s table', \count($newAssociations), $tableName));
             if (!$dryRun) {
-                $this->updateAssociations($tableName, $associations);
-                $associations = $this->getFormerAssociations($tableName, $previousEntityId);
+                $this->updateAssociations($tableName, $newAssociations);
+                $previousEntityId = \array_keys($formerAssociations)[\count($formerAssociations) - 1];
+                $formerAssociations = $this->getFormerAssociations($tableName, $previousEntityId);
             } else {
-                $output->writeln(sprintf('    Option --dry-run is set, will continue to next step.'));
-                $associations = [];
+                $output->writeln(\sprintf('    Option --dry-run is set, will continue to next step.'));
+                $formerAssociations = [];
             }
         }
 
         return $allItemsMigrated;
+    }
+
+    /**
+     * Example of $formerAssociationsAndIds: [
+     *     [
+     *         'id' => 1234,
+     *         'quantified_associations' => [
+     *            "X_SELL": ["products": [{"id": 100, "quantity": 1}, {"id": 1000, "quantity": 1}], "product_models": []]
+     *            "PACK": ["products": [{"id": 100, "quantity": 1}, {"id": 1000, "quantity": 1}], "product_models": []]
+     *         ],
+     *     ],
+     *     [
+     *         'id' => 3456,
+     *         'quantified_associations' => [
+     *            "X_SELL": ["products": [{"id": 100, "quantity": 1}, {"id": 1000, "quantity": 1}], "product_models": []]
+     *            "PACK": ["products": [{"id": 100, "quantity": 1}, {"id": 1000, "quantity": 1}], "product_models": []]
+     *         ],
+     *     ]
+     * ]
+     */
+    private function getNewAssociationsAndIds(OutputInterface $output, array $formerAssociationsAndIds, array $productIdToUuidMap) : array
+    {
+        $newAssociationsAndIds = [];
+
+        foreach ($formerAssociationsAndIds as $formerAssociationAndId) {
+            $formerAssociations = $formerAssociationAndId['quantified_associations'];
+            $productId = $formerAssociationAndId['id'];
+            try {
+                $newAssociationsAndIds[] = [
+                    'quantified_associations' => $this->getNewAssociations($formerAssociations, $productIdToUuidMap),
+                    'id' => $productId
+                ];
+            } catch (UuidNotFoundException) {
+                $output->writeln(\sprintf('    <comment>Missing product uuid in product %d</comment>', $productId));
+            }
+        }
+
+        return $newAssociationsAndIds;
+    }
+
+    /**
+     * Example of $formerAssociations: [
+     *     "X_SELL": ["products": [{"id": 100, "quantity": 1}, {"id": 1000, "quantity": 1}], "product_models": []]
+     *     "PACK": ["products": [{"id": 100, "quantity": 1}, {"id": 1000, "quantity": 1}], "product_models": []]
+     * ]
+     */
+    private function getNewAssociations(array $formerAssociations, array $productIdToUuidMap): array
+    {
+        $newAssociations = [];
+        foreach ($formerAssociations as $associationType => $associationsByType) {
+            $newAssociations[$associationType] = [];
+            if (\array_key_exists('product_models', $associationsByType)) {
+                $newAssociations[$associationType]['product_models'] = $associationsByType['product_models'];
+            }
+            if (\array_key_exists('products', $associationsByType)) {
+                $newAssociations[$associationType]['products'] = $this->getNewProductAssociations($associationsByType['products'], $productIdToUuidMap);
+            }
+        }
+
+        return $newAssociations;
+    }
+
+    /**
+     * Example of $formerProductAssociations: [{"id": 100, "quantity": 1}, {"id": 1000, "quantity": 1}]
+     */
+    private function getNewProductAssociations(array $formerProductAssociations, array $productIdToUuidMap): array
+    {
+        $newProductAssociations = [];
+        foreach ($formerProductAssociations as $formerProductAssociation) {
+            $associatedProductId = $formerProductAssociation['id'];
+            if (array_key_exists($associatedProductId, $productIdToUuidMap)) {
+                // the product exists
+                $associatedProductUuid = $productIdToUuidMap[$associatedProductId];
+                if ($associatedProductUuid === null) {
+                    // uuid does not exist yet
+                    throw new UuidNotFoundException();
+                }
+                $newProductAssociations[] = [
+                    'id' => $associatedProductId,
+                    'uuid' => $associatedProductUuid,
+                    'quantity' => $formerProductAssociation['quantity']
+                ];
+            }
+        }
+
+        return $newProductAssociations;
     }
 }
