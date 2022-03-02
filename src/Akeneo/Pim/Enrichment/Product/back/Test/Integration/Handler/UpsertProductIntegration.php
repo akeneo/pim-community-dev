@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsExceptio
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
@@ -270,6 +271,26 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertNull($product->getValue('a_text_area', null, null));
         Assert::assertNull($product->getValue('a_yes_no', null, null));
         Assert::assertNull($product->getValue('an_image', null, null));
+    }
+
+    /** @test */
+    public function it_creates_a_product_with_a_boolean_value(): void
+    {
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
+            new SetBooleanValue('a_yes_no', null, null, true),
+        ]);
+        $this->messageBus->dispatch($command);
+
+        $this->clearDoctrineUoW();
+
+        $this->assertProductHasCorrectValueByAttributeCode('a_yes_no', true);
+    }
+
+    /** @test */
+    public function it_updates_a_product_with_a_boolean_value(): void
+    {
+        $this->updateProduct(new SetBooleanValue('a_yes_no', null, null, true));
+        $this->assertProductHasCorrectValueByAttributeCode('a_yes_no', true);
     }
 
     private function getUserId(string $username): int
