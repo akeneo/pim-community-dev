@@ -1,4 +1,5 @@
 services:
+    # WEBHOOKS
     Akeneo\Connectivity\Connection\Infrastructure\Webhook\Controller\Internal\GetWebhookAction:
         public: true
         arguments:
@@ -18,4 +19,17 @@ services:
         public: true
         arguments:
             - '@Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateWebhookHandler'
+            - '@oro_security.security_facade'
+
+    # EVENTS API DEBUG
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Controller\Internal\SearchEventSubscriptionLogsAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\SearchEventSubscriptionDebugLogsQuery'
+            - '@oro_security.security_facade'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Controller\Internal\DownloadEventSubscriptionLogsAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\GetAllEventSubscriptionDebugLogsQuery'
             - '@oro_security.security_facade'

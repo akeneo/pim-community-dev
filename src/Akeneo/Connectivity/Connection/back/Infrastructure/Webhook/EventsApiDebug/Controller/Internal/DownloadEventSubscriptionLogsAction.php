@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\EventsApiDebug;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Controller\Internal;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetAllEventSubscriptionDebugLogsQueryInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;

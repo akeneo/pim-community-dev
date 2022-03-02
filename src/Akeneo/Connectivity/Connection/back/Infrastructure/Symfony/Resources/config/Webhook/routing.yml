@@ -1,3 +1,4 @@
+# WEBHOOKS
 akeneo_connectivity_connection_webhook_rest_regenerate_secret:
     path: /rest/connections/{code}/webhook/regenerate-secret
     controller: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Controller\Internal\RegenerateSecretAction
@@ -22,3 +23,18 @@ akeneo_connectivity_connection_webhook_rest_update:
     methods: [POST]
     requirements:
         code: '[a-zA-Z0-9_]+'
+
+# EVENTS API DEBUG
+akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs:
+    path: /rest/events-api-debug/search-event-subscription-logs
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Controller\Internal\SearchEventSubscriptionLogsAction
+    methods: [GET]
+    requirements:
+        connection_code: '[a-zA-Z0-9_]+'
+
+akeneo_connectivity_connection_events_api_debug_rest_download_event_subscription_logs:
+    path: /rest/events-api-debug/download-event-subscription-logs
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Controller\Internal\DownloadEventSubscriptionLogsAction
+    methods: [GET]
+    requirements:
+        connection_code: '[a-zA-Z0-9_]+'
