@@ -65,9 +65,9 @@ classDiagram
   
   
   EvaluateProducts --> "dispatchEvent" UpdateProductsIndexSubscriber
-  EvaluateProducts --o "evaluatePendingProductCriteria" EvaluatePendingCriteria
-  EvaluateProducts --o "consolidateProductScores" ConsolidateProductScores
-  EvaluateProducts --o "eventDispatcher" EventDispatcherInterface 
+  EvaluateProducts o-- "evaluatePendingProductCriteria" EvaluatePendingCriteria
+  EvaluateProducts o-- "consolidateProductScores" ConsolidateProductScores
+  EvaluateProducts o-- "eventDispatcher" EventDispatcherInterface 
   
 ```
 
