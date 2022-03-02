@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- PIM-10305 Do not allow disabled user to login
+
 # 6.0.7 (2022-02-25)
 
 # 6.0.6 (2022-02-21)
