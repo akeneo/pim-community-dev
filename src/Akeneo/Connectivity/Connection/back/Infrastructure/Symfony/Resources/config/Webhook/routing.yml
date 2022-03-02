@@ -1,0 +1,24 @@
+akeneo_connectivity_connection_webhook_rest_regenerate_secret:
+    path: /rest/connections/{code}/webhook/regenerate-secret
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Controller\Internal\RegenerateSecretAction
+    methods: [GET]
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+akeneo_connectivity_connection_webhook_rest_get:
+    path: /rest/connections/{code}/webhook
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Controller\Internal\GetWebhookAction
+    methods: [GET]
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+akeneo_connectivity_connection_webhook_rest_check_reachability:
+    path: /rest/connections/{code}/webhook/check-reachability
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Controller\Internal\CheckWebhookReachabilityAction
+
+akeneo_connectivity_connection_webhook_rest_update:
+    path: /rest/connections/{code}/webhook
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Controller\Internal\UpdateWebhookAction
+    methods: [POST]
+    requirements:
+        code: '[a-zA-Z0-9_]+'

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Webhook;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Controller\Internal;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Query\GetAConnectionWebhookHandler;
 use Akeneo\Connectivity\Connection\Application\Webhook\Query\GetAConnectionWebhookQuery;
