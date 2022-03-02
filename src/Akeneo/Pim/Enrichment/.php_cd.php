@@ -26,6 +26,8 @@ $rules = [
         'Dompdf\Options',
         'Webmozart\Assert\Assert',
         'Psr\Log\LoggerInterface',
+        'Ramsey\Uuid',
+        'Monolog\Processor\ProcessorInterface', //TODO Cleanup when moving Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StackedContextProcessor to LoggingBundle
         // TODO the feature use the datagrid
         'Oro\Bundle\DataGridBundle',
         'Oro\Bundle\PimDataGridBundle',
@@ -142,7 +144,7 @@ $rules = [
         'Webmozart\Assert\Assert',
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
         'Psr\Log\LoggerInterface',
-
+        'Ramsey\Uuid',
         // Event API
         'Akeneo\Platform\Component\EventQueue',
         'Akeneo\Platform\Component\Webhook',
