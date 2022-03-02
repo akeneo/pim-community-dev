@@ -104,6 +104,18 @@ workflows:
                   <<: *slack-fail-post-step-srnt
                   requires:
                       - build_srnt_dev
+            - test_onboarder_integration_back:
+                  <<: *slack-fail-post-step-srnt
+                  requires:
+                      - build_srnt_dev
+            - test_onboarder_unit_back:
+                  <<: *slack-fail-post-step-srnt
+                  requires:
+                      - build_srnt_dev
+            - test_onboarder_coupling:
+                  <<: *slack-fail-post-step-srnt
+                  requires:
+                      - build_srnt_dev
             - release:
                   <<: *slack-post-step-srnt
                   matrix:
@@ -121,6 +133,9 @@ workflows:
                       - test_back_data_migrations
                       - test_deploy
                       - test_upgrade_from_last_release
+                      - test_onboarder_unit_back
+                      - test_onboarder_integration_back
+                      - test_onboarder_coupling
 
 
 # Resume :
@@ -386,6 +401,16 @@ workflows:
             - test_back_data_migrations:
                   requires:
                       - "[srnt] Build dev"
+            - test_onboarder_unit_back:
+                  requires:
+                      - "[srnt] Build dev"
+            - test_onboarder_integration_back:
+                  requires:
+                      - "[srnt] Build dev"
+            - test_onboarder_coupling:
+                  <<: *slack-fail-post-step-srnt
+                  requires:
+                      - "[srnt] Build dev"
             - test_cronjobs_existence:
                   name: "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
                   matrix:
@@ -431,6 +456,9 @@ workflows:
                       - test_back_performance
                       - test_back_behat_legacy
                       - test_back_data_migrations
+                      - test_onboarder_unit_back
+                      - test_onboarder_integration_back
+                      - test_onboarder_coupling
             - release:
                   name: "[<< matrix.PRODUCT_TYPE >>] Release"
                   matrix:
