@@ -118,7 +118,7 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
 
         Assert::assertEquals(Response::HTTP_BAD_REQUEST, $result->getStatusCode()->getWrappedObject());
         Assert::assertEquals(
-            json_encode([
+            \json_encode([
                 'errors' => $normalizedConstraintViolationList,
             ]),
             $result->getContent()->getWrappedObject()
@@ -179,7 +179,7 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
 
         Assert::assertEquals(Response::HTTP_BAD_REQUEST, $result->getStatusCode()->getWrappedObject());
         Assert::assertEquals(
-            json_encode([
+            \json_encode([
                 'errors' => $normalizedConstraintViolationList,
             ]),
             $result->getContent()->getWrappedObject()

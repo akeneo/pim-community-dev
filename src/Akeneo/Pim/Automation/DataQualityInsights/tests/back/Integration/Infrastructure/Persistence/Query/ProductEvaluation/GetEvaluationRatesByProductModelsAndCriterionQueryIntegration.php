@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\P
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
 /**
- * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 final class GetEvaluationRatesByProductModelsAndCriterionQueryIntegration extends DataQualityInsightsTestCase
@@ -50,7 +50,7 @@ final class GetEvaluationRatesByProductModelsAndCriterionQueryIntegration extend
         $productIdCollection = ProductIdCollection::fromInts($productModelIds);
 
         $evaluationRates = $this->get(GetEvaluationRatesByProductModelsAndCriterionQuery::class)
-            ->toArrayInt($productIdCollection, new CriterionCode('spelling'));
+            ->execute($productIdCollection, new CriterionCode('spelling'));
 
         $this->assertEquals($expectedEvaluationRates, $evaluationRates);
     }

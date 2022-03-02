@@ -13,5 +13,5 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollec
  */
 interface GetEvaluationRatesByProductsAndCriterionQueryInterface
 {
-    public function toArrayInt(ProductIdCollection $productIdCollection, CriterionCode $criterionCode): array;
+    public function execute(ProductIdCollection $productIdCollection, CriterionCode $criterionCode): array;
 }

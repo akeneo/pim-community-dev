@@ -29,7 +29,7 @@ class Encrypter
     ) {
         $this->method = $method;
         $this->key = $key;
-        $this->initializationVector = str_pad(substr($initializationVector, 0, 16), 16, "0", STR_PAD_LEFT);
+        $this->initializationVector = \str_pad(\substr($initializationVector, 0, 16), 16, "0", STR_PAD_LEFT);
     }
 
     /**
@@ -37,11 +37,11 @@ class Encrypter
      */
     public function encrypt(string $value): string
     {
-        return openssl_encrypt($value, $this->method, $this->key, 0, $this->initializationVector);
+        return \openssl_encrypt($value, $this->method, $this->key, 0, $this->initializationVector);
     }
 
     public function decrypt(string $value): string
     {
-        return openssl_decrypt($value, $this->method, $this->key, 0, $this->initializationVector);
+        return \openssl_decrypt($value, $this->method, $this->key, 0, $this->initializationVector);
     }
 }

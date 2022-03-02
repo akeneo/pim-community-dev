@@ -30,7 +30,7 @@ final class GetUserConsentedAuthenticationUuidQuery implements GetUserConsentedA
         ]);
 
         if (!$uuid) {
-            throw new \LogicException(sprintf('Consent doesn\'t exist for user %s on app %s', $userId, $appId));
+            throw new \LogicException(\sprintf('Consent doesn\'t exist for user %s on app %s', $userId, $appId));
         }
 
         return $uuid;

@@ -63,7 +63,7 @@ class AuthorizeEndToEnd extends WebTestCase
         $response = $this->client->getResponse();
 
         Assert::assertEquals(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
-        assert($response instanceof RedirectResponse);
+        \assert($response instanceof RedirectResponse);
         Assert::assertEquals('/#/connect/apps/authorize?error=akeneo_connectivity.connection.connect.apps.constraint.client_id.not_blank', $response->getTargetUrl());
     }
 
@@ -88,7 +88,7 @@ class AuthorizeEndToEnd extends WebTestCase
         $response = $this->client->getResponse();
 
         Assert::assertEquals(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
-        assert($response instanceof RedirectResponse);
+        \assert($response instanceof RedirectResponse);
         Assert::assertEquals('/#/connect/apps/authorize?client_id=90741597-54c5-48a1-98da-a68e7ee0a715', $response->getTargetUrl());
 
         $authorizationInSession = $this->session->get('_app_auth_90741597-54c5-48a1-98da-a68e7ee0a715');
@@ -99,7 +99,7 @@ class AuthorizeEndToEnd extends WebTestCase
             'authentication_scope' => 'openid profile',
             'redirect_uri' => 'http://shopware.example.com/callback',
             'state' => 'foo',
-        ], json_decode($authorizationInSession, true));
+        ], \json_decode($authorizationInSession, true));
     }
 
     public function test_it_is_redirected_to_the_app_when_already_authorized(): void
@@ -131,7 +131,7 @@ class AuthorizeEndToEnd extends WebTestCase
         $response = $this->client->getResponse();
 
         Assert::assertEquals(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
-        assert($response instanceof RedirectResponse);
+        \assert($response instanceof RedirectResponse);
         Assert::matchesRegularExpression('^http:\/\/shopware\.example\.com\/callback\?code=[a-zA-Z0-9@=]+&state=foo$');
     }
 

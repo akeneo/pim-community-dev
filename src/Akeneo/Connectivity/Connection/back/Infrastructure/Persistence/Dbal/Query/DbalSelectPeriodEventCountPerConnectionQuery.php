@@ -45,7 +45,7 @@ class DbalSelectPeriodEventCountPerConnectionQuery implements SelectPeriodEventC
         return $this->createPeriodEventCountPerConnection(
             $period,
             $connectionCodes,
-            array_merge($perConnection, $forAllConnections),
+            \array_merge($perConnection, $forAllConnections),
         );
     }
 
@@ -159,7 +159,7 @@ SQL;
                 break;
             default:
                 throw new \LogicException(
-                    sprintf('$eventType must be "product_created", "product_updated" or "product_read", but "%s" given.', $eventType)
+                    \sprintf('$eventType must be "product_created", "product_updated" or "product_read", but "%s" given.', $eventType)
                 );
         }
 

@@ -63,17 +63,17 @@ SQL;
             ]
         )->fetchAllAssociative();
 
-        if (0 === count($data)) {
+        if (0 === \count($data)) {
             return null;
         }
 
         // If there is more than one line, remove the one with the default user group (null).
-        if (count($data) > 1) {
-            $data = array_filter($data, function (array $row) {
+        if (\count($data) > 1) {
+            $data = \array_filter($data, function (array $row) {
                 return null !== $row['group_id'];
             });
         }
-        $row = array_pop($data);
+        $row = \array_pop($data);
 
         return new ConnectionWithCredentials(
             $row['code'],

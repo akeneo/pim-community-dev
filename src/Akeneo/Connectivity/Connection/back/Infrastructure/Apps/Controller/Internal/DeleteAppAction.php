@@ -48,7 +48,7 @@ final class DeleteAppAction
 
         if (null === $connectedApp) {
             throw new NotFoundHttpException(
-                sprintf('Connected app with connection code "%s" does not exist.', $connectionCode)
+                \sprintf('Connected app with connection code "%s" does not exist.', $connectionCode)
             );
         }
 

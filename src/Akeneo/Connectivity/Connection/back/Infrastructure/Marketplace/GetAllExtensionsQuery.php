@@ -42,7 +42,7 @@ class GetAllExtensionsQuery implements GetAllExtensionsQueryInterface
             foreach ($result['items'] as $item) {
                 $extensions[] = Extension::fromWebMarketplaceValues($item);
             }
-        } while (count($result['items']) > 0 && count($extensions) < $result['total'] && $requests < self::MAX_REQUESTS);
+        } while (\count($result['items']) > 0 && \count($extensions) < $result['total'] && $requests < self::MAX_REQUESTS);
 
         return GetAllExtensionsResult::create($result['total'], $extensions);
     }

@@ -159,7 +159,7 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
             }
         }
 
-        Assert::assertTrue($violationFound, sprintf('The violation at property path "%s" has not been found.', $propertyPath));
+        Assert::assertTrue($violationFound, \sprintf('The violation at property path "%s" has not been found.', $propertyPath));
     }
 
     private function getAuthCode(): string
@@ -174,7 +174,7 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
 
         $this->client->request(
             'POST',
-            sprintf('/rest/apps/confirm-authorization/%s', $appId),
+            \sprintf('/rest/apps/confirm-authorization/%s', $appId),
             [],
             [],
             [
@@ -183,13 +183,13 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
         );
 
         $response = $this->client->getResponse();
-        $responseContent = json_decode($response->getContent(), true);
+        $responseContent = \json_decode($response->getContent(), true);
 
         Assert::assertEquals(Response::HTTP_OK, $response->getStatusCode());
         Assert::assertArrayHasKey('redirectUrl', $responseContent);
 
-        $query = parse_url($responseContent['redirectUrl'], PHP_URL_QUERY);
-        parse_str($query, $params);
+        $query = \parse_url($responseContent['redirectUrl'], PHP_URL_QUERY);
+        \parse_str($query, $params);
 
         return $params['code'];
     }

@@ -64,7 +64,7 @@ class SearchEventSubscriptionLogsEndToEnd extends WebTestCase
             ]
         );
 
-        $response = json_decode($this->client->getResponse()->getContent(), true);
+        $response = \json_decode($this->client->getResponse()->getContent(), true);
 
         Assert::assertCount(25, $response['results']);
         Assert::assertEquals(30, $response['total']);
@@ -77,7 +77,7 @@ class SearchEventSubscriptionLogsEndToEnd extends WebTestCase
             ['connection_code' => $sapConnection->code(), 'search_after' => $searchAfter, 'filters' => '{}']
         );
 
-        $response = json_decode($this->client->getResponse()->getContent(), true);
+        $response = \json_decode($this->client->getResponse()->getContent(), true);
 
         Assert::assertCount(5, $response['results']);
     }
@@ -117,11 +117,11 @@ class SearchEventSubscriptionLogsEndToEnd extends WebTestCase
             '/rest/events-api-debug/search-event-subscription-logs',
             [
                 'connection_code' => $sapConnection->code(),
-                'filters' => json_encode($filters),
+                'filters' => \json_encode($filters),
             ],
         );
 
-        $response = json_decode($this->client->getResponse()->getContent(), true);
+        $response = \json_decode($this->client->getResponse()->getContent(), true);
 
         Assert::assertCount(1, $response['results']);
         Assert::assertEquals(1, $response['total']);
@@ -129,7 +129,7 @@ class SearchEventSubscriptionLogsEndToEnd extends WebTestCase
 
     private function generateLogs(callable $generator, int $number): void
     {
-        $this->eventSubscriptionLogLoader->bulkInsert(array_map($generator, range(0, $number - 1)));
+        $this->eventSubscriptionLogLoader->bulkInsert(\array_map($generator, \range(0, $number - 1)));
     }
 
     private function insertLogs(array $logs): void
