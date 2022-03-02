@@ -19,6 +19,7 @@ $finder = new DefaultFinder();
 $builder = new RuleBuilder();
 
 $rules = [
+    // src
     $builder->only(
         [
             // Onboarder coupling
@@ -57,6 +58,31 @@ $rules = [
             'Symfony\Component\HttpKernel\Bundle\Bundle',
         ],
     )->in('Akeneo\OnboarderSerenity\Infrastructure'),
+
+
+    // tests
+    $builder->only(
+        [
+            // Onboarder coupling
+            'Akeneo\OnboarderSerenity\Domain',
+            // PIM coupling
+            // External dependencies coupling
+            'Doctrine\DBAL\Connection',
+            'Symfony\Bundle\FrameworkBundle\Test\KernelTestCase',
+        ],
+    )->in('Akeneo\OnboarderSerenity\Test\Integration'),
+
+    $builder->only(
+        [
+            // Onboarder coupling
+            'Akeneo\OnboarderSerenity\Domain',
+            'Akeneo\OnboarderSerenity\Application\Supplier',
+            'Akeneo\OnboarderSerenity\Test\Common\Fake\InMemorySupplierRepository',
+            // PIM coupling
+            // External dependencies coupling
+            'Symfony\Bundle\FrameworkBundle\Test\KernelTestCase',
+        ],
+    )->in('Akeneo\OnboarderSerenity\Test\Unit'),
 ];
 
 return new Configuration($rules, $finder);
