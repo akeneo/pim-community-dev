@@ -46,6 +46,7 @@ class AkeneoTailoredExportExtension extends Extension
      */
     private function configureAssetManagerRelatedServices(ContainerBuilder $container): void
     {
+        /** @var array $bundles */
         $bundles = $container->getParameter('kernel.bundles');
         if (isset($bundles['AkeneoAssetManagerBundle'])) {
             $loader =  new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config/asset_manager'));
@@ -62,6 +63,7 @@ class AkeneoTailoredExportExtension extends Extension
      */
     private function configureReferenceEntityRelatedServices(ContainerBuilder $container): void
     {
+        /** @var array $bundles */
         $bundles = $container->getParameter('kernel.bundles');
         if (isset($bundles['AkeneoReferenceEntityBundle'])) {
             $loader =  new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config/reference_entity'));
