@@ -2,10 +2,10 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\ProductAndProductModel;
 
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductSaver;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
@@ -45,7 +45,7 @@ class ReindexAffectedByMigrationProductIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function getProductSaver(): ProductSaver
+    private function getProductSaver(): SaverInterface
     {
         return $this->get('pim_catalog.saver.product');
     }
