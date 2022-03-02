@@ -74,7 +74,7 @@ final class MigrateToUuidCommandIntegration extends TestCase
     protected function tearDown(): void
     {
         parent::tearDown();
-//        $this->clean();
+        $this->clean();
     }
 
     /** @test */
@@ -89,7 +89,7 @@ final class MigrateToUuidCommandIntegration extends TestCase
         $this->assertTheColumnsExist();
         $this->assertAllProductsHaveUuid();
         $this->assertJsonHaveUuid();
-        $this->assertTriggersWork();
+        $this->assertTriggersExistAndWork();
     }
 
     private function clean(): void
@@ -171,8 +171,19 @@ final class MigrateToUuidCommandIntegration extends TestCase
         }
     }
 
-    private function assertTriggersWork(): void
+    private function assertTriggersExistAndWork(): void
     {
+        foreach (\array_keys(MigrateToUuidStep::TABLES) as $tableName) {
+            if ($tableName === 'pim_catalog_product' || !$this->tableExists($tableName)) {
+                continue;
+            }
+
+            $insertTriggerName = MigrateToUuidAddTriggers::getInsertTriggerName($tableName);
+            Assert::assertTrue($this->triggerExists($insertTriggerName), \sprintf('The %s trigger does not exist', $insertTriggerName));
+            $updateTriggerName = MigrateToUuidAddTriggers::getUpdateTriggerName($tableName);
+            Assert::assertTrue($this->triggerExists($updateTriggerName), \sprintf('The %s trigger does not exist', $updateTriggerName));
+        }
+
         /**
          * Create product
          */
