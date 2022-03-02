@@ -57,7 +57,7 @@ final class ProductContext implements Context
     }
 
     /**
-     * @Given  /^a set text value intent on the "([^"]*)" attribute with the "([^"]*)" text value$/
+     * @Given /^a set text value intent on the "([^"]*)" attribute with the "([^"]*)" text value$/
      */
     public function aSetTextValueIntentOnTheAttributeWithTheTextValue(string $attribute, string $text): void
     {
@@ -78,7 +78,7 @@ final class ProductContext implements Context
         $command = new UpsertProductCommand(
             userId: $this->getUserId($username),
             productIdentifier: $identifier,
-            valuesUserIntent: $this->valueUserIntents,
+            valueUserIntents: $this->valueUserIntents,
         );
         $this->valueUserIntents = [];
         $this->upsertProduct($command);

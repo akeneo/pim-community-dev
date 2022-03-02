@@ -28,6 +28,11 @@ services:
             - '@pim_catalog.repository.category'
             - '@Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories'
 
+    Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ChannelContext:
+        public: true
+        arguments:
+            - '@Akeneo\Channel\Locale\API\Query\GetEditableLocaleCodes'
+
     # Queries
     Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes:
         class: Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetCategoryCodes
@@ -36,5 +41,10 @@ services:
 
     Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories:
         class: Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetOwnedCategories
+        arguments:
+            - '@pim_user.repository.user'
+
+    Akeneo\Channel\Locale\API\Query\GetEditableLocaleCodes:
+        class: Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetEditableLocaleCodes
         arguments:
             - '@pim_user.repository.user'

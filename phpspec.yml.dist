@@ -15,13 +15,6 @@ suites:
         src_path: src/Akeneo/Channel
         spec_prefix: Specification
 
-    ChannelLocaleAcceptance:
-        namespace: Akeneo\Test\Channel\Locale\Acceptance
-        psr4_prefix: Akeneo\Test\Channel\Locale\Acceptance
-        src_path: src/Akeneo/Channel/Locale/back/Test/Acceptance
-        spec_path: src/Akeneo/Channel/Locale/back/Test/Acceptance
-        spec_prefix: Specification
-
     ## Structure context
     Structure:
         namespace: Akeneo\Pim\Structure

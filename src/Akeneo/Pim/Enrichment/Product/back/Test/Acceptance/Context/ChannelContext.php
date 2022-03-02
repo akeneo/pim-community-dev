@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Channel\Locale\Acceptance\Context;
+namespace Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context;
 
-use Akeneo\Test\Channel\Locale\Acceptance\InMemory\InMemoryGetEditableLocaleCodes;
+use Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetEditableLocaleCodes;
 use Behat\Behat\Context\Context;
 
 /**
