@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- PIM-10305: Reject disabled user when coming from SAML auth
+
 # 6.0.7 (2022-02-25)
 
 # 6.0.6 (2022-02-21)
