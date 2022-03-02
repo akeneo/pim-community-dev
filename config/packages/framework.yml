@@ -26,3 +26,11 @@ framework:
         pools:
             name:
                 adapter: cache.adapter.apcu
+
+    http_client:
+        scoped_clients:
+            flagship.client:
+                base_uri: 'https://decision.flagship.io/v2/%env(FLAGSHIP_ENV_ID)%/campaigns?mode=full&exposeAllKeys=true'
+                headers:
+                    'x-api-key': '%env(FLAGSHIP_API_KEY)%'
+                    'Content-Type': 'application/json'
