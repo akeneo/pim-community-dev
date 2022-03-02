@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Domain\Model\AffectedByMigrationProjection;
 use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\Assert;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -14,45 +16,18 @@ use PhpSpec\ObjectBehavior;
  */
 class ElasticsearchProductProjectionSpec extends ObjectBehavior
 {
-    function let()
-    {
-        $this->beConstructedWith(
-            '1',
-            'identifier',
-            new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
-            new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
-            new \DateTimeImmutable('2019-04-24 15:55:50', new \DateTimeZone('UTC')),
-            true,
-            'family_code',
-            ['family_label_1', 'family_label_2'],
-            'family_variant_code',
-            ['category_code_1', 'category_code_2'],
-            ['category_code_of_ancestors_1', 'category_code_of_ancestors_2'],
-            ['group_code_1', 'group_code_2'],
-            ['completeness_key' => 'completeness_value'],
-            'parent_product_model_code',
-            [
-                'key1' => 'value1',
-                'key2' => 'value2',
-            ],
-            ['id_pm_1', 'id_pm_2'],
-            ['code_pm_1', 'code_pm_2'],
-            ['<all_channels>' => ['<all_locales>' => 'bar']],
-            ['attribute_for_ancestor1'],
-            ['attribute_for_this_level1', 'attribute_for_this_level2'],
-            ['additional_key' => 'value']
-        );
-    }
-
     function it_is_an_elastic_search_projection()
     {
+        $this->beConstructedWith(...$this->getParams());
         $this->shouldBeAnInstanceOf(ElasticsearchProductProjection::class);
+        $this->shouldImplement(AffectedByMigrationProjection::class);
     }
 
     function it_can_be_converted_in_array()
     {
+        $this->beConstructedWith(...$this->getParams());
         $this->toArray()->shouldReturn([
-            'id' => 'product_1',
+            'id' => 'product_1e40-4c55-a415-89c7958b270d',
             'identifier' => 'identifier',
             'created' => (new \DateTime('2019-04-23 15:55:50', new \DateTimeZone('UTC')))->format('c'),
             'updated' => (new \DateTime('2019-04-25 15:55:50', new \DateTimeZone('UTC')))->format('c'),
@@ -84,14 +59,27 @@ class ElasticsearchProductProjectionSpec extends ObjectBehavior
             'in_group' => ['group_code_1' => true, 'group_code_2' => true],
             'additional_key' => 'value'
         ]);
+
+        Assert::assertTrue($this->getWrappedObject()->shouldBeMigrated());
+        $this->getFormerDocumentId()->shouldReturn('product_1');
+    }
+
+    function it_should_not_be_migrated()
+    {
+        $this->beConstructedWith(...$this->getParams(false));
+
+        Assert::assertFalse($this->getWrappedObject()->shouldBeMigrated());
+        $this->getFormerDocumentId()->shouldReturn('product_1');
     }
 
     function it_adds_additional_data()
     {
+        $this->beConstructedWith(...$this->getParams());
         $this->addAdditionalData(['key1' => 'values1'])
             ->addAdditionalData(['key2' => ['array']])->shouldBeLike(
             new ElasticsearchProductProjection(
                 '1',
+                '1e40-4c55-a415-89c7958b270d',
                 'identifier',
                 new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
                 new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -117,5 +105,36 @@ class ElasticsearchProductProjectionSpec extends ObjectBehavior
                 ['additional_key' => 'value', 'key1' => 'values1', 'key2' => ['array'],]
             )
         );
+    }
+
+    private function getParams(bool $withUuid = true): array
+    {
+        return [
+            '1',
+            $withUuid ? '1e40-4c55-a415-89c7958b270d' : null,
+            'identifier',
+            new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2019-04-24 15:55:50', new \DateTimeZone('UTC')),
+            true,
+            'family_code',
+            ['family_label_1', 'family_label_2'],
+            'family_variant_code',
+            ['category_code_1', 'category_code_2'],
+            ['category_code_of_ancestors_1', 'category_code_of_ancestors_2'],
+            ['group_code_1', 'group_code_2'],
+            ['completeness_key' => 'completeness_value'],
+            'parent_product_model_code',
+            [
+                'key1' => 'value1',
+                'key2' => 'value2',
+            ],
+            ['id_pm_1', 'id_pm_2'],
+            ['code_pm_1', 'code_pm_2'],
+            ['<all_channels>' => ['<all_locales>' => 'bar']],
+            ['attribute_for_ancestor1'],
+            ['attribute_for_this_level1', 'attribute_for_this_level2'],
+            ['additional_key' => 'value']
+        ];
     }
 }
