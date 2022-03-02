@@ -214,3 +214,8 @@ services:
             - '@database_connection'
             - '@doctrine'
             - '%pim_catalog.entity.locale.class%'
+
+    Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeEditable:
+        class: Akeneo\Pim\Permission\Bundle\Persistence\Cache\LRUCachedIsAttributeEditable
+        arguments:
+            - '@database_connection'
