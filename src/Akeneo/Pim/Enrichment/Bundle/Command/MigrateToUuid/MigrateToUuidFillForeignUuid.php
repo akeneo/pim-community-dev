@@ -54,9 +54,9 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
                     $stepStartTime = \microtime(true);
                     $this->fillMissingForeignUuidInsert($tableName, $columnNames[0], $columnNames[1]);
                     $stepDuration = \microtime(true) - $stepStartTime;
-                    $output->writeln(sprintf(' : done in %0.2f seconds', $stepDuration));
+                    $output->writeln(\sprintf(' : done in %0.2f seconds', $stepDuration));
                 } else {
-                    $output->writeln(sprintf('    Option --dry-run is set, will continue to next step.'));
+                    $output->writeln("\n    Option --dry-run is set, will continue to next step.");
                     break;
                 }
             }
@@ -74,9 +74,9 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
     ): bool {
         if ($context->withStats()) {
             $count = $this->getMissingForeignUuidCount($tableName, $uuidColumnName, $idColumnName);
-            $output->writeln(sprintf('    Missing %d foreign uuids in "%s" table', $count, $tableName));
+            $output->writeln(\sprintf('    Missing %d foreign uuids in "%s" table', $count, $tableName));
             if ($count > 0) {
-                $output->writeln(sprintf('    Will add %d foreign uuids in "%s" table', min($count, self::BATCH_SIZE), $tableName));
+                $output->write(\sprintf('    Will add %d foreign uuids in "%s" table', min($count, self::BATCH_SIZE), $tableName));
                 return true;
             }
 
@@ -85,7 +85,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
 
         $shouldContinue = $this->shouldBeExecutedForTable($tableName, $uuidColumnName);
         if ($shouldContinue) {
-            $output->writeln(sprintf('    Will add up to %d foreign uuids in "%s" table', self::BATCH_SIZE, $tableName));
+            $output->write(sprintf('    Will add up to %d foreign uuids in "%s" table', self::BATCH_SIZE, $tableName));
         }
 
         return $shouldContinue;
