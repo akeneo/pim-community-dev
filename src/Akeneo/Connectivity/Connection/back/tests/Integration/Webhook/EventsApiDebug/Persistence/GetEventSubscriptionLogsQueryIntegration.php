@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Tests\Integration\Persistence\Elasticsearch\Query;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Webhook\EventsApiDebug\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
-use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\GetAllEventSubscriptionDebugLogsQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\GetAllEventSubscriptionDebugLogsQuery;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PHPUnit\Framework\Assert;
@@ -25,9 +25,7 @@ class GetEventSubscriptionLogsQueryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->getEventSubscriptionLogsQuery = $this->get(
-            'akeneo_connectivity.connection.persistence.query.get_event_subscription_logs_query'
-        );
+        $this->getEventSubscriptionLogsQuery = $this->get(GetAllEventSubscriptionDebugLogsQuery::class);
         $this->elasticsearchClient = $this->get('akeneo_connectivity.client.events_api_debug');
         $this->clock = $this->get('akeneo_connectivity.connection.clock');
 

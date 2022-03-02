@@ -1,10 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Webhook\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectWebhookSecretQueryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalSelectWebhookSecretQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\WebhookLoader;
 use Akeneo\Test\Integration\Configuration;
@@ -66,6 +67,6 @@ class DbalSelectWebhookSecretQueryIntegration extends TestCase
 
         $this->webhookLoader = $this->get('akeneo_connectivity.connection.fixtures.webhook_loader');
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
-        $this->selectWebhookSecret = $this->get('akeneo_connectivity.connection.persistence.query.select_webhook_secret');
+        $this->selectWebhookSecret = $this->get(DbalSelectWebhookSecretQuery::class);
     }
 }

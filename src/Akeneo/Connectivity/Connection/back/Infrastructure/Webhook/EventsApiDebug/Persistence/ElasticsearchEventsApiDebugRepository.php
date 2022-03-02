@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Repository;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;

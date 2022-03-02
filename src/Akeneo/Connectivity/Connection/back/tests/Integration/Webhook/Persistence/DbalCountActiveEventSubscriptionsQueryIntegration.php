@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Webhook\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\CountActiveEventSubscriptionsQueryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalCountActiveEventSubscriptionsQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\WebhookLoader;
 use Akeneo\Test\Integration\Configuration;
@@ -24,7 +25,7 @@ class DbalCountActiveEventSubscriptionsQueryIntegration extends TestCase
 
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
         $this->webhookLoader = $this->get('akeneo_connectivity.connection.fixtures.webhook_loader');
-        $this->countActiveEventSubscriptionQuery = $this->get('akeneo_connectivity.connection.persistence.query.count_active_event_subscriptions');
+        $this->countActiveEventSubscriptionQuery = $this->get(DbalCountActiveEventSubscriptionsQuery::class);
     }
 
     public function test_it_counts_active_event_subscriptions(): void

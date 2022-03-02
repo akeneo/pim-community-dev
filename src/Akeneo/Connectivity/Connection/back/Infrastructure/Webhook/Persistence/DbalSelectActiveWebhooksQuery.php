@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQueryInterface;

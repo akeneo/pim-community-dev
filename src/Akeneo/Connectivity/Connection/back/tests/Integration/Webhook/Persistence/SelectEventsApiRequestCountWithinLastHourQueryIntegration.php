@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Webhook\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectEventsApiRequestCountWithinLastHourQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectEventsApiRequestCountWithinLastHourQuery;

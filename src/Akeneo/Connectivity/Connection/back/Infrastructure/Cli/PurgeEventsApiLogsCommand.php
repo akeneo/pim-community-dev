@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Cli;
 
-use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\PurgeEventsApiErrorLogsQuery;
-use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\PurgeEventsApiSuccessLogsQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\PurgeEventsApiErrorLogsQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\PurgeEventsApiSuccessLogsQuery;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

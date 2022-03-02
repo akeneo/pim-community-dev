@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;

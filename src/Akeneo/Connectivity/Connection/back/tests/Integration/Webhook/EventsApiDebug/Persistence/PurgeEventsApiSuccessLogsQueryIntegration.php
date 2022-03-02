@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Elasticsearch\Query;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Webhook\EventsApiDebug\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
-use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\PurgeEventsApiSuccessLogsQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\PurgeEventsApiSuccessLogsQuery;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -71,7 +71,7 @@ class PurgeEventsApiSuccessLogsQueryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->purgeQuery = $this->get('akeneo_connectivity_connection.persistence.query.purge_events_api_success_logs');
+        $this->purgeQuery = $this->get(PurgeEventsApiSuccessLogsQuery::class);
         $this->esClient = $this->get('akeneo_connectivity.client.events_api_debug');
     }
 

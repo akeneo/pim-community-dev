@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiRequestCountRepositoryInterface;
 use Doctrine\DBAL\Connection as DbalConnection;

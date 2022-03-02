@@ -33,7 +33,7 @@ services:
     akeneo_connectivity.connection.validators.webhook.event_subscriptions_limit:
         class: Akeneo\Connectivity\Connection\Application\Webhook\Validation\EventSubscriptionsLimitValidator
         arguments:
-            - '@akeneo_connectivity.connection.persistence.query.select_active_webhooks'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalSelectActiveWebhooksQuery'
             - '%webhook_active_event_subscriptions_limit%'
         tags:
             - { name: validator.constraint_validator }

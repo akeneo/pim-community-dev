@@ -40,7 +40,7 @@ services:
     akeneo_connectivity.connection.webhook.events_api_debug_logger:
         class: Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger
         arguments:
-            - '@akeneo_connectivity.connection.persistence.repository.events_api_debug'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\ElasticsearchEventsApiDebugRepository'
             - '@akeneo_connectivity.connection.clock'
             - !tagged akeneo_connectivity.connection.webhook.event_normalizer
 

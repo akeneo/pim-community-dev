@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Elasticsearch\Repository;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Webhook\EventsApiDebug\Persistence;
 
-use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Repository\ElasticsearchEventsApiDebugRepository;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\ElasticsearchEventsApiDebugRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -23,7 +23,7 @@ class ElasticsearchEventsApiDebugRepositoryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->elasticsearchEventsApiDebugRepository = $this->get('akeneo_connectivity.connection.persistence.repository.events_api_debug');
+        $this->elasticsearchEventsApiDebugRepository = $this->get(ElasticsearchEventsApiDebugRepository::class);
         $this->elasticsearchClient = $this->get('akeneo_connectivity.client.events_api_debug');
     }
 

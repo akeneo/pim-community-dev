@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Webhook\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ConnectionWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetAConnectionWebhookQueryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalGetAConnectionWebhookQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\WebhookLoader;
 use Akeneo\Test\Integration\Configuration;
@@ -65,7 +66,7 @@ class DbalGetAConnectionWebhookQueryIntegration extends TestCase
         parent::setUp();
 
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
-        $this->getAConnectionWebhookQuery = $this->get('akeneo_connectivity.connection.persistence.query.get_connection_webhook');
+        $this->getAConnectionWebhookQuery = $this->get(DbalGetAConnectionWebhookQuery::class);
         $this->webhookLoader = $this->get('akeneo_connectivity.connection.fixtures.webhook_loader');
     }
 

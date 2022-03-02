@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Tests\Integration\Persistence\Elasticsearch\Query;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Webhook\EventsApiDebug\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
-use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\SearchEventSubscriptionDebugLogsQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\SearchEventSubscriptionDebugLogsQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\EventSubscriptionLogLoader;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
@@ -25,9 +25,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->query = $this->get(
-            'akeneo_connectivity.connection.persistence.query.search_event_subscription_debug_logs_query'
-        );
+        $this->query = $this->get(SearchEventSubscriptionDebugLogsQuery::class);
         $this->eventSubscriptionLogLoader = $this->get(
             'akeneo_connectivity.connection.fixtures.event_subscription_log_loader'
         );

@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Webhook\Persistence;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionCommand;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQueryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalSelectActiveWebhooksQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -39,7 +40,7 @@ class DbalSelectConnectionsWebhookQueryIntegration extends TestCase
         parent::setUp();
 
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
-        $this->selectActiveWebhooksQuery = $this->get('akeneo_connectivity.connection.persistence.query.select_active_webhooks');
+        $this->selectActiveWebhooksQuery = $this->get(DbalSelectActiveWebhooksQuery::class);
         $this->dbalConnection = $this->get('database_connection');
         $this->updateConnectionHandler = $this->get('akeneo_connectivity.connection.application.handler.update_connection');
     }

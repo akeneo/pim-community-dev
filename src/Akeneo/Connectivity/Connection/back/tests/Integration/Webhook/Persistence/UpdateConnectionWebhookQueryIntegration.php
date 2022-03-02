@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Tests\Integration\Persistence\Dbal\Query;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Webhook\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Write\ConnectionWebhook;
-use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\UpdateConnectionWebhookQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\UpdateConnectionWebhookQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
