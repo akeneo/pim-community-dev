@@ -23,6 +23,7 @@ services:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelScoresQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductModelIdsFromProductModelCodesQuery'
+            - '@akeneo.pim.automation.data_quality_insights.compute_products_key_indicators'
         tags:
             - { name: 'akeneo.pim.enrichment.product_model.query.indexing_additional_properties' }
 
