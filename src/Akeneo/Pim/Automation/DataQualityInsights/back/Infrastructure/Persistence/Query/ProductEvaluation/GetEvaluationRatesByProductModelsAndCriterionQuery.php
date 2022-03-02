@@ -13,13 +13,15 @@ use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transfo
 use Doctrine\DBAL\Connection;
 
 /**
- * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetEvaluationRatesByProductsAndCriterionQuery implements GetEvaluationRatesByProductsAndCriterionQueryInterface
+final class GetEvaluationRatesByProductModelsAndCriterionQuery implements GetEvaluationRatesByProductsAndCriterionQueryInterface
 {
-    public function __construct(private Connection $dbConnection, private TransformCriterionEvaluationResultIds $transformCriterionEvaluationResultIds)
-    {
+    public function __construct(
+        private Connection $dbConnection,
+        private TransformCriterionEvaluationResultIds $transformCriterionEvaluationResultIds
+    ) {
     }
 
     public function execute(ProductIdCollection $productIdCollection, CriterionCode $criterionCode): array
@@ -28,7 +30,7 @@ final class GetEvaluationRatesByProductsAndCriterionQuery implements GetEvaluati
 
         $query = <<<SQL
 SELECT product_id, JSON_EXTRACT(result, '$ratesPath') AS rates
-FROM pim_data_quality_insights_product_criteria_evaluation
+FROM pim_data_quality_insights_product_model_criteria_evaluation
 WHERE product_id IN (:productIds) AND criterion_code = :criterionCode;
 SQL;
 

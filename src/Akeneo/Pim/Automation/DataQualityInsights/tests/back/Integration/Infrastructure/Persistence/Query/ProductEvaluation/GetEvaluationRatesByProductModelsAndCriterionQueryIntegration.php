@@ -13,49 +13,51 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationRatesByProductsAndCriterionQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationRatesByProductModelsAndCriterionQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
 /**
- * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetEvaluationRatesByProductsAndCriterionQueryIntegration extends DataQualityInsightsTestCase
+final class GetEvaluationRatesByProductModelsAndCriterionQueryIntegration extends DataQualityInsightsTestCase
 {
-    private CriterionEvaluationRepositoryInterface $productCriterionEvaluationRepository;
+    private CriterionEvaluationRepositoryInterface $productModelCriterionEvaluationRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->productCriterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation');
+        $this->productModelCriterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_model_criterion_evaluation');
+
+        $this->createMinimalFamilyAndFamilyVariant('a_family', 'a_family_variant');
     }
 
-    public function test_it_gives_the_evaluation_rates_of_a_given_product_and_criterion()
+    public function test_it_gives_the_evaluation_rates_of_a_given_product_model_and_criterion()
     {
         $this->createChannel('ecommerce', ['locales' => ['en_US', 'fr_FR']]);
         $this->createChannel('mobile', ['locales' => ['en_US']]);
 
         $expectedEvaluationRates = [];
-        $expectedEvaluationRates += $this->givenSampleA();
-        $expectedEvaluationRates += $this->givenSampleB();
-        $expectedEvaluationRates += $this->givenAProductNotEvaluatedYet('spelling');
+        $expectedEvaluationRates += $this->givenProductModelA();
+        $expectedEvaluationRates += $this->givenProductModelB();
+        $expectedEvaluationRates += $this->givenAProductModelNotEvaluatedYet('spelling');
 
-        $this->givenANotInvolvedProduct();
+        $this->givenANotInvolvedProductModel();
 
-        $productIds = array_keys($expectedEvaluationRates);
-        $productIds[] = 12345; // Unknown product
-        $productIds = ProductIdCollection::fromInts($productIds);
+        $productModelIds = array_keys($expectedEvaluationRates);
+        $productModelIds[] = 12345; // Unknown product
+        $productIdCollection = ProductIdCollection::fromInts($productModelIds);
 
-        $evaluationRates = $this->get(GetEvaluationRatesByProductsAndCriterionQuery::class)
-            ->execute($productIds, new CriterionCode('spelling'));
+        $evaluationRates = $this->get(GetEvaluationRatesByProductModelsAndCriterionQuery::class)
+            ->execute($productIdCollection, new CriterionCode('spelling'));
 
         $this->assertEquals($expectedEvaluationRates, $evaluationRates);
     }
 
-    private function givenSampleA(): array
+    private function givenProductModelA(): array
     {
-        $product = $this->createProductWithoutEvaluations('product_A');
+        $productModel = $this->createProductModelWithoutEvaluations('product_model_A', 'a_family_variant');
 
         $expectedRates = [
             'ecommerce' => [
@@ -77,14 +79,14 @@ final class GetEvaluationRatesByProductsAndCriterionQueryIntegration extends Dat
             ]
         ]);
 
-        $this->saveEvaluationResults($product->getId(), $evaluationResults);
+        $this->saveEvaluationResults($productModel->getId(), $evaluationResults);
 
-        return [$product->getId() => $expectedRates];
+        return [$productModel->getId() => $expectedRates];
     }
 
-    private function givenSampleB(): array
+    private function givenProductModelB(): array
     {
-        $product = $this->createProductWithoutEvaluations('product_B');
+        $productModel = $this->createProductModelWithoutEvaluations('product_model_B', 'a_family_variant');
 
         $expectedRates = [
             'ecommerce' => [
@@ -97,14 +99,14 @@ final class GetEvaluationRatesByProductsAndCriterionQueryIntegration extends Dat
         ];
         $evaluationResults['spelling'] = $this->buildEvaluationResult($expectedRates);
 
-        $this->saveEvaluationResults($product->getId(), $evaluationResults);
+        $this->saveEvaluationResults($productModel->getId(), $evaluationResults);
 
-        return [$product->getId() => $expectedRates];
+        return [$productModel->getId() => $expectedRates];
     }
 
-    private function givenANotInvolvedProduct(): void
+    private function givenANotInvolvedProductModel(): void
     {
-        $product = $this->createProductWithoutEvaluations('whatever');
+        $productModel = $this->createProductModelWithoutEvaluations('whatever', 'a_family_variant');
 
         $evaluationResults['spelling'] = $this->buildEvaluationResult([
             'ecommerce' => [
@@ -116,29 +118,29 @@ final class GetEvaluationRatesByProductsAndCriterionQueryIntegration extends Dat
             ]
         ]);
 
-        $this->saveEvaluationResults($product->getId(), $evaluationResults);
+        $this->saveEvaluationResults($productModel->getId(), $evaluationResults);
     }
 
-    private function givenAProductNotEvaluatedYet(string $criterionCode): array
+    private function givenAProductModelNotEvaluatedYet(string $criterionCode): array
     {
-        $productId = $this->createProduct('not_evaluated_product')->getId();
+        $productModelId = $this->createProductModel('not_evaluated_product', 'a_family_variant')->getId();
 
         $this->get('database_connection')->executeQuery(<<<SQL
-REPLACE INTO pim_data_quality_insights_product_criteria_evaluation (product_id, criterion_code, evaluated_at, status, result) 
+REPLACE INTO pim_data_quality_insights_product_model_criteria_evaluation (product_id, criterion_code, evaluated_at, status, result) 
 VALUES (:productId, :criterionCode, null, 'pending', null);
 SQL,
             [
-                'productId' => $productId,
+                'productId' => $productModelId,
                 'criterionCode' => $criterionCode,
             ]
         );
 
-        return [$productId => []];
+        return [$productModelId => []];
     }
 
-    private function saveEvaluationResults(int $productId, array $evaluationResults): void
+    private function saveEvaluationResults(int $productModelId, array $evaluationResults): void
     {
-        $productId = new ProductId($productId);
+        $productId = new ProductId($productModelId);
         $evaluations = new Write\CriterionEvaluationCollection();
 
         foreach ($evaluationResults as $criterion => $evaluationResult) {
@@ -151,8 +153,8 @@ SQL,
             $evaluations->add($evaluation);
         }
 
-        $this->productCriterionEvaluationRepository->create($evaluations);
-        $this->productCriterionEvaluationRepository->update($evaluations);
+        $this->productModelCriterionEvaluationRepository->create($evaluations);
+        $this->productModelCriterionEvaluationRepository->update($evaluations);
     }
 
     private function buildEvaluationResult(array $rates): Write\CriterionEvaluationResult
