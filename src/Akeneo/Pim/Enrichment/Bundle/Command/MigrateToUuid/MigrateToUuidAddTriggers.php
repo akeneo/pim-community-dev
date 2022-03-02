@@ -45,7 +45,7 @@ final class MigrateToUuidAddTriggers implements MigrateToUuidStep
         return $count;
     }
 
-    public function addMissing(bool $dryRun, OutputInterface $output): bool
+    public function addMissing(Context $context, OutputInterface $output): bool
     {
         $templateSql = <<<SQL
         CREATE TRIGGER {trigger_name}
@@ -61,7 +61,7 @@ final class MigrateToUuidAddTriggers implements MigrateToUuidStep
             $insertTriggerName = $this->getInsertTriggerName($tableName);
             if (!$this->triggerExists($insertTriggerName)) {
                 $output->writeln(sprintf('    Will add %s trigger on "%s" table', $insertTriggerName, $tableName));
-                if (!$dryRun) {
+                if (!$context->dryRun()) {
                     $this->connection->executeQuery(\strtr($templateSql, [
                         '{trigger_name}' => $insertTriggerName,
                         '{action}' => 'INSERT',
@@ -75,7 +75,7 @@ final class MigrateToUuidAddTriggers implements MigrateToUuidStep
             $updateTriggerName = $this->getUpdateTriggerName($tableName);
             if (!$this->triggerExists($updateTriggerName)) {
                 $output->writeln(sprintf('    Will add %s trigger on "%s" table', $updateTriggerName, $tableName));
-                if (!$dryRun) {
+                if (!$context->dryRun()) {
                     $this->connection->executeQuery(\strtr($templateSql, [
                         '{trigger_name}' => $updateTriggerName,
                         '{action}' => 'UPDATE',
