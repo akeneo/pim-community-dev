@@ -60,9 +60,6 @@ const Container = styled.div<{currentScore: string | null}>`
   display: flex;
   position: relative;
   top: 1px;
-  border-right: 1px ${({theme}) => theme.color.grey80} solid;
-  padding-right: 20px;
-  margin-right: 20px;
   padding-top: 2px;
   height: 25px;
   cursor: pointer;
