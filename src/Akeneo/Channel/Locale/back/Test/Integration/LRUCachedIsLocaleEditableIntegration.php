@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace AkeneoEnterprise\Test\Channel\Locale\Integration;
 
-use Akeneo\Channel\Locale\API\Query\GetEditableLocaleCodes;
+use Akeneo\Channel\Locale\API\Query\IsLocaleEditable;
 use Akeneo\Test\Channel\Locale\Integration\ChannelTestCase;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PHPUnit\Framework\Assert;
 
-final class SqlGetEditableLocaleCodesIntegration extends ChannelTestCase
+final class LRUCachedIsLocaleEditableIntegration extends ChannelTestCase
 {
+    private IsLocaleEditable $isLocaleEditable;
     private UserInterface $userWithPermission;
     private UserInterface $userWithoutPermission;
 
@@ -29,7 +30,7 @@ final class SqlGetEditableLocaleCodesIntegration extends ChannelTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->sqlGetEditableLocaleCodes = $this->get(GetEditableLocaleCodes::class);
+        $this->isLocaleEditable = $this->get(IsLocaleEditable::class);
         $this->loadChannelFunctionalFixtures();
 
         $this->userWithPermission = $this->createUser('user_with_locale_permission', ['ROLE_USER'], ['Redactor']);
@@ -39,19 +40,11 @@ final class SqlGetEditableLocaleCodesIntegration extends ChannelTestCase
     /** @test */
     public function it_returns_all_activated_locale_codes_editable_by_user(): void
     {
-        Assert::assertEqualsCanonicalizing(
-            ['en_US', 'fr_FR'],
-            $this->sqlGetEditableLocaleCodes->forUserId($this->userWithPermission->getId())
-        );
-
-        Assert::assertEqualsCanonicalizing(
-            [],
-            $this->sqlGetEditableLocaleCodes->forUserId($this->userWithoutPermission->getId())
-        );
-
-        Assert::assertEqualsCanonicalizing(
-            [],
-            $this->sqlGetEditableLocaleCodes->forUserId(-10)
-        );
+        Assert::assertTrue($this->isLocaleEditable->forUserId('en_US', $this->userWithPermission->getId()));
+        Assert::assertTrue($this->isLocaleEditable->forUserId('fr_FR', $this->userWithPermission->getId()));
+        Assert::assertFalse($this->isLocaleEditable->forUserId('en_US', $this->userWithoutPermission->getId()));
+        Assert::assertFalse($this->isLocaleEditable->forUserId('fr_FR', $this->userWithoutPermission->getId()));
+        Assert::assertFalse($this->isLocaleEditable->forUserId('en_US', -10));
+        Assert::assertFalse($this->isLocaleEditable->forUserId('fr_FR', -10));
     }
 }
