@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
+use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StackedContextProcessor;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -21,7 +23,9 @@ class MigrateToUuidCommand extends Command
         MigrateToUuidStep $migrateToUuidCreateColumns,
         MigrateToUuidStep $migrateToUuidFillProductUuid,
         MigrateToUuidStep $migrateToUuidFillForeignUuid,
-        MigrateToUuidStep $migrateToUuidFillJson
+        MigrateToUuidStep $migrateToUuidFillJson,
+        private LoggerInterface $logger,
+        private StackedContextProcessor $contextProcessor
     ) {
         parent::__construct();
         $this->steps = [
@@ -49,30 +53,31 @@ class MigrateToUuidCommand extends Command
             if ($itemNotMigrated) {
                 continue;
             }
-            $output->writeln(sprintf('<info>Step %d: %s</info>', $stepIndex + 1, $step->getDescription()));
+            $this->contextProcessor->push(['step'=> $stepIndex + 1]);
+            $this->logger->notice($step->getDescription());
             if ($withStats) {
                 $missingCount = $step->getMissingCount();
-                $output->writeln(sprintf('    Missing %d items', $missingCount));
+                $this->logger->notice('Missing items', ['missing_item_counts'=>$missingCount]);
             }
 
             if ($step->shouldBeExecuted()) {
                 // TODO Add the with-stats to not count anything in the next steps
                 // TODO Add timing for each migration
-                $output->writeln('    Add missing items... ');
-                $allItemsMigrated = $step->addMissing($dryRun, $output);
+                $this->logger->notice('Add missing items');
+                $allItemsMigrated = $step->addMissing($dryRun);
                 if ($allItemsMigrated) {
-                    $output->writeln('    Step done');
+                    $this->logger->notice('Step done');
                 } else {
-                    $output->writeln('    An item can not be migrated. Stop here.');
+                    $this->logger->notice('An item can not be migrated. Step stopped!');
                     $itemNotMigrated = true;
                 }
             } else {
-                $output->writeln('    No items to migrate, skip.');
+                $this->logger->notice('No items to migrate, Step skipped.');
             }
-            $output->writeln('');
+            $this->contextProcessor->pop();
         }
 
-        $output->writeln('<info>Migration done!</info>');
+        $this->logger->notice('Migration done');
 
         return $itemNotMigrated ? Command::FAILURE : Command::SUCCESS;
     }

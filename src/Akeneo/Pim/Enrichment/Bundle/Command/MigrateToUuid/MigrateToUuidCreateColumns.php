@@ -2,7 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
+use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StackedContextProcessor;
 use Doctrine\DBAL\Connection;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -15,7 +17,7 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
 
     private const INDEX_NAME = 'product_uuid';
 
-    public function __construct(private Connection $connection)
+    public function __construct(private Connection $connection, private LoggerInterface $logger, private  StackedContextProcessor $contextProcessor)
     {
     }
 
@@ -41,11 +43,11 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
         return $count;
     }
 
-    public function addMissing(bool $dryRun, OutputInterface $output): bool
+    public function addMissing(bool $dryRun): bool
     {
         foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
             if ($this->tableExists($tableName) && !$this->columnExists($tableName, $columnNames[self::UUID_COLUMN_INDEX])) {
-                $output->writeln(sprintf('    Will add %s', $tableName));
+                $this->logger->notice(sprintf('Will add table %s', $tableName));
                 if (!$dryRun) {
                     $this->addUuidColumnAndIndexOnUuid(
                         $tableName,

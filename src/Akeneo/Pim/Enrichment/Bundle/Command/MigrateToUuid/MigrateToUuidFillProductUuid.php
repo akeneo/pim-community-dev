@@ -2,7 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
+use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StackedContextProcessor;
 use Doctrine\DBAL\Connection;
+use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -16,7 +18,7 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
 
     private const BATCH_SIZE = 1000;
 
-    public function __construct(private Connection $connection)
+    public function __construct(private Connection $connection, private LoggerInterface $logger, private  StackedContextProcessor $contextProcessor)
     {
     }
 
@@ -48,19 +50,22 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
         return (bool) $this->connection->fetchOne($sql);
     }
 
-    public function addMissing(bool $dryRun, OutputInterface $output): bool
+    public function addMissing(bool $dryRun): bool
     {
         $count = $this->getMissingProductUuidCount();
+        $this->contextProcessor->push(['missing_total_product_uuid_counter' => $count]);
+        $processedItems = 0;
         while ($count > 0) {
-            $output->writeln(sprintf('    Will add %d uuids (still missing: %d)', min(self::BATCH_SIZE, $count), $count));
+            $processedItems += min(self::BATCH_SIZE, $count);
+            $this->logger->notice('Will add uuids ', ['processed_uuids_counter'=>$processedItems]);
             if (!$dryRun) {
                 $this->fillMissingProductUuids();
                 $count = $this->getMissingProductUuidCount();
             } else {
-                $output->writeln(sprintf('    Option --dry-run is set, will continue to next step.'));
                 $count = 0;
             }
         }
+        $this->contextProcessor->pop();
 
         return true;
     }

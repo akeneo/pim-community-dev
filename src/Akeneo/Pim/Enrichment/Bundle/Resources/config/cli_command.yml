@@ -26,21 +26,24 @@ services:
         tags:
             - { name: 'console.command' }
 
-    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCreateColumns:
+    migration.step:
+        abstract: true
         arguments:
             - '@database_connection'
+            - '@monolog.logger'
+            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StackedContextProcessor'
+
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCreateColumns:
+        parent: 'migration.step'
 
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillProductUuid:
-        arguments:
-            - '@database_connection'
+        parent: 'migration.step'
 
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillForeignUuid:
-        arguments:
-            - '@database_connection'
+        parent: 'migration.step'
 
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillJson:
-        arguments:
-            - '@database_connection'
+        parent: 'migration.step'
 
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCommand:
         arguments:
@@ -48,5 +51,11 @@ services:
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillProductUuid'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillForeignUuid'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillJson'
+            - '@monolog.logger'
+            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StackedContextProcessor'
         tags:
             - { name: 'console.command' }
+
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StackedContextProcessor: #to be moved to LoggingBundle
+        tags:
+            - { name: monolog.processor }

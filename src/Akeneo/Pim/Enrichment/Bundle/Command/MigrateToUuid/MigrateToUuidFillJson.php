@@ -2,7 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
+use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StackedContextProcessor;
 use Doctrine\DBAL\Connection;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -27,7 +29,7 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         'pim_catalog_product_model'
     ];
 
-    public function __construct(private Connection $connection)
+    public function __construct(private Connection $connection, private LoggerInterface $logger, private  StackedContextProcessor $contextProcessor)
     {
     }
 
@@ -88,11 +90,13 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         return $count;
     }
 
-    public function addMissing(bool $dryRun, OutputInterface $output): bool
+    public function addMissing(bool $dryRun): bool
     {
         $allItemsMigrated = true;
         foreach (self::TABLE_NAMES as $tableName) {
-            $allItemsMigrated = $this->addMissingForTable($dryRun, $output, $tableName) && $allItemsMigrated;
+            $this->contextProcessor->push(['missing_foreign_uuid_table' => $tableName, ]);
+            $allItemsMigrated = $this->addMissingForTable($dryRun, $tableName) && $allItemsMigrated;
+            $this->contextProcessor->pop();
         }
 
         return $allItemsMigrated;
@@ -183,7 +187,7 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         return $result;
     }
 
-    private function addMissingForTable(bool $dryRun, OutputInterface $output, string $tableName): bool
+    private function addMissingForTable(bool $dryRun, string $tableName): bool
     {
         $allItemsMigrated = true;
         $previousEntityId = -1;
@@ -202,7 +206,7 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
                             if (array_key_exists($associatedProductId, $productIdToUuidMap)) {
                                 $associatedProductUuid = $productIdToUuidMap[$associatedProductId];
                                 if ($associatedProductUuid === null) {
-                                    $output->writeln(sprintf('    <comment>Associated product uuid %d not found for product %d</comment>', $associatedProductId, $productId));
+                                    $this->logger->warning('Associated product uuid not found for product', ['associated_product_id'=>$associatedProductId, 'product_id'=>$productId]);
                                     $notFound = true;
                                     $allItemsMigrated = false;
                                 } else {
@@ -218,12 +222,11 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
                 $previousEntityId = $productId;
             }
 
-            $output->writeln(sprintf('    Will update %s entities in %s table', count($associations), $tableName));
+            $this->logger->notice('Will update entities ', ['updated_associations_counter' => count($associations)]);//Counter should be decreasing.
             if (!$dryRun) {
                 $this->updateAssociations($tableName, $associations);
                 $associations = $this->getFormerAssociations($tableName, $previousEntityId);
             } else {
-                $output->writeln(sprintf('    Option --dry-run is set, will continue to next step.'));
                 $associations = [];
             }
         }

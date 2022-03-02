@@ -2,7 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
+use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StackedContextProcessor;
 use Doctrine\DBAL\Connection;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -15,7 +17,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
 
     private const BATCH_SIZE = 50000;
 
-    public function __construct(private Connection $connection)
+    public function __construct(private Connection $connection, private LoggerInterface $logger, private  StackedContextProcessor $contextProcessor)
     {
     }
 
@@ -73,21 +75,23 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
         return $count;
     }
 
-    public function addMissing(bool $dryRun, OutputInterface $output): bool
+    public function addMissing(bool $dryRun): bool
     {
         foreach ($this->getTablesWithoutProductTable() as $tableName => $columnNames) {
             $count = $this->getMissingForeignUuidCount($tableName, $columnNames[1], $columnNames[0]);
-            $output->writeln(sprintf('    Missing %d foreign uuids in "%s" table', $count, $tableName));
+            $this->contextProcessor->push(['missing_foreign_uuid_table' => $tableName, 'total_missing_foreign_uuids_counter'=> $count]);
+            $processedItems = 0;
             while ($count > 0) {
-                $output->writeln(sprintf('    Will add %d foreign uuids in "%s" table', min($count, self::BATCH_SIZE), $tableName));
+                $processedItems += min($count, self::BATCH_SIZE);
+                $this->logger->notice('Foreign uuids in table under process', ['processed_foreign_uuids_counter'=>$processedItems]);
                 if (!$dryRun) {
                     $this->fillMissingForeignUuidInsert($tableName, $columnNames[0], $columnNames[1]);
                     $count = $this->getMissingForeignUuidCount($tableName, $columnNames[1], $columnNames[0]);
                 } else {
-                    $output->writeln(sprintf('    Option --dry-run is set, will continue to next step.'));
                     $count = 0;
                 }
             }
+            $this->contextProcessor->pop();
         }
 
         return true;
