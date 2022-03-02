@@ -91,7 +91,7 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
         $context->getRoot()->willReturn(new UpsertProductCommand(
             userId: 1,
             productIdentifier: 'foo',
-            valuesUserIntent: [$valueUserIntent]
+            valueUserIntents: [$valueUserIntent]
         ));
         $isLocaleEditable->forUserId(Argument::any())->shouldNotBeCalled();
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
