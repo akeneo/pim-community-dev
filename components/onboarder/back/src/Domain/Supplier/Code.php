@@ -23,7 +23,7 @@ final class Code
             );
         }
 
-        $code = trim($code);
+        $code = strtolower(trim($code));
 
         if (!preg_match('/^[a-z0-9_]+$/', $code)) {
             throw new \InvalidArgumentException(
@@ -37,11 +37,6 @@ final class Code
     public static function fromString(string $code): self
     {
         return new self($code);
-    }
-
-    public function equals(self $other): bool
-    {
-        return $this->code === $other->code;
     }
 
     public function __toString(): string

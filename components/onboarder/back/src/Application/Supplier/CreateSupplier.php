@@ -10,5 +10,6 @@ final class CreateSupplier
         public string $identifier,
         public string $code,
         public string $label
-    ) {}
+    ) {
+    }
 }

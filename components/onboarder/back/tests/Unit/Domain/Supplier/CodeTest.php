@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Test\Unit\Domain\Supplier;
 
-use Akeneo\OnboarderSerenity\Domain\Supplier\Code;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Akeneo\OnboarderSerenity\Domain\Supplier;
+use PHPUnit\Framework\TestCase;
 
-final class CodeTest extends KernelTestCase
+final class CodeTest extends TestCase
 {
     /** @test */
     public function itDoesNotCreateASupplierCodeIfItsEmpty(): void
     {
         static::expectExceptionObject(new \InvalidArgumentException('The supplier code cannot be empty.'));
 
-        Code::fromString('');
+        Supplier\Code::fromString('');
     }
 
     /** @test */
@@ -26,7 +26,7 @@ final class CodeTest extends KernelTestCase
             )
         );
 
-        Code::fromString(str_repeat('a', 201));
+        Supplier\Code::fromString(str_repeat('a', 201));
     }
 
     /** @test */
@@ -38,24 +38,33 @@ final class CodeTest extends KernelTestCase
             )
         );
 
-        Code::fromString('$uppli€rCØde');
+        Supplier\Code::fromString('$uppli€rCØde');
     }
 
     /** @test */
     public function itCreatesAndGetsASupplierCodeIfItsValid(): void
     {
-        $code = Code::fromString('valid_supplier_code');
+        $code = Supplier\Code::fromString('valid_supplier_code');
 
-        static::assertInstanceOf(Code::class, $code);
+        static::assertInstanceOf(Supplier\Code::class, $code);
         static::assertSame('valid_supplier_code', (string) $code);
     }
 
     /** @test */
     public function itTrimsExtraWhitespaces(): void
     {
-        $code = Code::fromString('valid_supplier_code_with_extra_whitespace ');
+        $code = Supplier\Code::fromString('valid_supplier_code_with_extra_whitespace ');
 
-        static::assertInstanceOf(Code::class, $code);
+        static::assertInstanceOf(Supplier\Code::class, $code);
         static::assertSame('valid_supplier_code_with_extra_whitespace', (string) $code);
+    }
+
+    /** @test */
+    public function itLowersUpperCases(): void
+    {
+        $code = Supplier\Code::fromString('SUPPLIER_CODE');
+
+        static::assertInstanceOf(Supplier\Code::class, $code);
+        static::assertSame('supplier_code', (string) $code);
     }
 }

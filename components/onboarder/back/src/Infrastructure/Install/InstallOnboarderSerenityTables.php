@@ -10,7 +10,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class InstallOnboarderSerenityTables implements EventSubscriberInterface
 {
-    public function __construct(private Connection $connection){}
+    public function __construct(private Connection $connection)
+    {
+    }
 
     public static function getSubscribedEvents(): array
     {

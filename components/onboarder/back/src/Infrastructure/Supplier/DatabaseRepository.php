@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier;
 
-use Akeneo\OnboarderSerenity\Domain\Supplier\Identifier;
-use Akeneo\OnboarderSerenity\Domain\Supplier\Supplier;
-use Akeneo\OnboarderSerenity\Domain\Supplier\SupplierRepository;
+use Akeneo\OnboarderSerenity\Domain\Supplier;
 use Doctrine\DBAL\Connection;
 
-final class SupplierDatabaseRepository implements SupplierRepository
+final class DatabaseRepository implements Supplier\Repository
 {
-    public function __construct(private Connection $connection){}
+    public function __construct(private Connection $connection)
+    {
+    }
 
-    public function save(Supplier $supplier): void
+    public function save(Supplier\Supplier $supplier): void
     {
         $sql = <<<SQL
             REPLACE INTO `akeneo_onboarder_serenity_supplier` (identifier, code, label)
@@ -30,7 +30,7 @@ final class SupplierDatabaseRepository implements SupplierRepository
         );
     }
 
-    public function find(Identifier $identifier): ?Supplier
+    public function find(Supplier\Identifier $identifier): ?Supplier\Supplier
     {
         $sql = <<<SQL
             SELECT identifier, code, label
@@ -45,7 +45,7 @@ final class SupplierDatabaseRepository implements SupplierRepository
             ]
         )->fetchAssociative();
 
-        return false !== $row ? Supplier::create(
+        return false !== $row ? Supplier\Supplier::create(
             $row['identifier'],
             $row['code'],
             $row['label']

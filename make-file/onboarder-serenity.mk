@@ -2,11 +2,11 @@ DOCKER_COMPOSE_RUN_PHP_TEST_ENV = $(DOCKER_COMPOSE) run -u www-data --rm -e APP_
 
 .PHONY: unit-back
 unit-back: #Doc: Run unit back tests for Onboarder
-	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Onboarder_Serenity_Unit_Test --configuration components/onboarder/back/tests/phpunit.xml.dist ${IO}
+	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Onboarder_Serenity_Unit_Test --configuration components/onboarder/back/tests/phpunit.xml.dist ${ARGS}
 
 .PHONY: integration
 integration: #Doc: Run integration tests for Onboarder
-	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Onboarder_Serenity_Integration_Test --configuration components/onboarder/back/tests/phpunit.xml.dist ${IO}
+	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Onboarder_Serenity_Integration_Test --configuration components/onboarder/back/tests/phpunit.xml.dist ${ARGS}
 
 .PHONY: coupling
 coupling: #Doc: Run coupling detector for Onboarder

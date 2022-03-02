@@ -4,19 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Test\Unit\Domain\Supplier;
 
-use Akeneo\OnboarderSerenity\Domain\Supplier\Identifier;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Akeneo\OnboarderSerenity\Domain\Supplier;
+use PHPUnit\Framework\TestCase;
 
-final class IdentifierTest extends KernelTestCase
+final class IdentifierTest extends TestCase
 {
-    /** @test */
-    public function itDoesNotCreateASupplierIdentifierIfItsEmpty(): void
-    {
-        static::expectExceptionObject(new \InvalidArgumentException('The supplier identifier cannot be empty.'));
-
-        Identifier::fromString('');
-    }
-
     /** @test */
     public function itDoesNotCreateASupplierIdentifierIfItIsNotAValidUuid(): void
     {
@@ -26,15 +18,15 @@ final class IdentifierTest extends KernelTestCase
             )
         );
 
-        Identifier::fromString('foo');
+        Supplier\Identifier::fromString('foo');
     }
 
     /** @test */
     public function itCreatesASupplierIdentifierIfItsValid(): void
     {
-        $uuid = Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02');
+        $uuid = Supplier\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02');
 
-        static::assertInstanceOf(Identifier::class, $uuid);
+        static::assertInstanceOf(Supplier\Identifier::class, $uuid);
         static::assertSame('44ce8069-8da1-4986-872f-311737f46f02', (string) $uuid);
     }
 }

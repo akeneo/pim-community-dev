@@ -33,9 +33,4 @@ final class Label
     {
         return $this->label;
     }
-
-    public function equals(self $other): bool
-    {
-        return $this->label === $other->label;
-    }
 }

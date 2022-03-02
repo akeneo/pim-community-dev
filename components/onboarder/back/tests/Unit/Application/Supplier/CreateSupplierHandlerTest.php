@@ -6,16 +6,16 @@ namespace Akeneo\OnboarderSerenity\Test\Unit\Application\Supplier;
 
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler;
-use Akeneo\OnboarderSerenity\Domain\Supplier\Identifier;
-use Akeneo\OnboarderSerenity\Test\Common\Fake\InMemorySupplierRepository;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Akeneo\OnboarderSerenity\Domain\Supplier;
+use Akeneo\OnboarderSerenity\Infrastructure\Supplier\InMemoryRepository;
+use PHPUnit\Framework\TestCase;
 
-final class CreateSupplierHandlerTest extends KernelTestCase
+final class CreateSupplierHandlerTest extends TestCase
 {
     /** @test */
     public function itCreatesANewSupplier(): void
     {
-        $supplierRepository = new InMemorySupplierRepository();
+        $supplierRepository = new InMemoryRepository();
 
         $sut = new CreateSupplierHandler($supplierRepository);
         ($sut)(new CreateSupplier(
@@ -24,8 +24,13 @@ final class CreateSupplierHandlerTest extends KernelTestCase
             'Supplier label'
         ));
 
-        static::assertNotNull(
-            $supplierRepository->find(Identifier::fromString('01319d4c-81c4-4f60-a992-41ea3546824c'))
+        $supplier = $supplierRepository->find(
+            Supplier\Identifier::fromString(
+                '01319d4c-81c4-4f60-a992-41ea3546824c'
+            )
         );
+
+        static::assertSame('supplier_code', $supplier->code());
+        static::assertSame('Supplier label', $supplier->label());
     }
 }

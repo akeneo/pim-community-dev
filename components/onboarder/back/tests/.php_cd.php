@@ -50,12 +50,7 @@ $rules = [
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
             // External dependencies coupling
             'Doctrine\DBAL\Connection',
-            'Symfony\Component\Config\FileLocator',
-            'Symfony\Component\DependencyInjection\ContainerBuilder',
-            'Symfony\Component\DependencyInjection\Loader\YamlFileLoader',
-            'Symfony\Component\HttpKernel\DependencyInjection\Extension',
-            'Symfony\Component\EventDispatcher\EventSubscriberInterface',
-            'Symfony\Component\HttpKernel\Bundle\Bundle',
+            'Symfony',
         ],
     )->in('Akeneo\OnboarderSerenity\Infrastructure'),
 
@@ -68,7 +63,7 @@ $rules = [
             // PIM coupling
             // External dependencies coupling
             'Doctrine\DBAL\Connection',
-            'Symfony\Bundle\FrameworkBundle\Test\KernelTestCase',
+            'Symfony',
         ],
     )->in('Akeneo\OnboarderSerenity\Test\Integration'),
 
@@ -77,10 +72,10 @@ $rules = [
             // Onboarder coupling
             'Akeneo\OnboarderSerenity\Domain',
             'Akeneo\OnboarderSerenity\Application\Supplier',
-            'Akeneo\OnboarderSerenity\Test\Common\Fake\InMemorySupplierRepository',
+            'Akeneo\OnboarderSerenity\Infrastructure\Supplier\InMemoryRepository',
             // PIM coupling
             // External dependencies coupling
-            'Symfony\Bundle\FrameworkBundle\Test\KernelTestCase',
+            'PHPUnit\Framework\TestCase',
         ],
     )->in('Akeneo\OnboarderSerenity\Test\Unit'),
 ];

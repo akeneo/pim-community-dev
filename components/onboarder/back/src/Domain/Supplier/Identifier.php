@@ -10,10 +10,6 @@ final class Identifier
 {
     private function __construct(private string $identifier)
     {
-        if ('' === $identifier) {
-            throw new \InvalidArgumentException('The supplier identifier cannot be empty.');
-        }
-
         if (!Uuid::isValid($identifier)) {
             throw new \InvalidArgumentException(
                 sprintf(
@@ -32,10 +28,5 @@ final class Identifier
     public function __toString(): string
     {
         return $this->identifier;
-    }
-
-    public function equals(self $other): bool
-    {
-        return (string) $other === (string) $this;
     }
 }
