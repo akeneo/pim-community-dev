@@ -55,9 +55,9 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
                 $stepStartTime = \microtime(true);
                 $this->fillMissingProductUuids();
                 $stepDuration = \microtime(true) - $stepStartTime;
-                $output->writeln(sprintf(' : done in %0.2f seconds', $stepDuration));
+                $output->writeln(\sprintf(' : done in %0.2f seconds', $stepDuration));
             } else {
-                $output->writeln(sprintf('    Option --dry-run is set, will continue to next step.'));
+                $output->writeln("\n    Option --dry-run is set, will continue to next step.");
                 break;
             }
         }
@@ -71,7 +71,7 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
             $count = $this->getMissingProductUuidCount();
             $shouldBeExecuted = $count > 0;
             if ($shouldBeExecuted) {
-                $output->writeln(sprintf('    Will add %d uuids (still missing: %d)', min(self::BATCH_SIZE, $count), $count));
+                $output->write(\sprintf('    Will add %d uuids (still missing: %d)', min(self::BATCH_SIZE, $count), $count));
             }
 
             return $shouldBeExecuted;
@@ -79,7 +79,7 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
 
         $shouldBeExecuted = $this->shouldBeExecuted();
         if ($shouldBeExecuted) {
-            $output->writeln(sprintf('    Will add up to %d uuids', self::BATCH_SIZE));
+            $output->write(\sprintf('    Will add up to %d uuids', self::BATCH_SIZE));
         }
 
         return $shouldBeExecuted;
