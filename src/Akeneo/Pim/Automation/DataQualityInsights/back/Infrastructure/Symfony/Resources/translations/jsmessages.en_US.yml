@@ -159,5 +159,8 @@ akeneo_data_quality_insights:
             "yes": "Yes"
             "no": "No"
 
+    quality_score:
+        pending: In progress
+
 pim_title:
     akeneo_data_quality_insights_dashboard: Data Quality Insights

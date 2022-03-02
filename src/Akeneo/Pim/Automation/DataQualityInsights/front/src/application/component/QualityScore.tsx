@@ -1,6 +1,7 @@
 import React, {FC, HTMLAttributes} from 'react';
 import styled, {css} from 'styled-components';
-import {AkeneoThemedProps, getColor, Override} from 'akeneo-design-system';
+import {AkeneoThemedProps, Badge, getColor, Override} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 type Rounded = 'all' | 'left' | 'right' | 'none';
 
@@ -72,8 +73,10 @@ const colorProperties: ColorProperty = {
  *
  */
 const QualityScore: FC<Props> = ({score, size = 'normal', rounded = 'all', stacked = false, ...props}) => {
+  const translate = useTranslate();
+
   if (score === 'N/A' || score === null) {
-    return <>N/A</>;
+    return <Badge level="tertiary">{translate('akeneo_data_quality_insights.quality_score.pending')}</Badge>;
   }
 
   return stacked ? (
