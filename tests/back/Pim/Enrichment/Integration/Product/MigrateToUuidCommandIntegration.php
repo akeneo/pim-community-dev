@@ -340,7 +340,7 @@ final class MigrateToUuidCommandIntegration extends TestCase
         $this->createQuantifiedAssociationType('SOIREEFOOD10');
 
         foreach (range(1, 10) as $i) {
-            ($this->get(UpsertProductHandler::class))(new UpsertProductCommand(
+            $this->get('pim_enrich.product.message_bus')->dispatch(new UpsertProductCommand(
                 userId: $adminUser->getId(),
                 productIdentifier: 'identifier' . $i
             ));
