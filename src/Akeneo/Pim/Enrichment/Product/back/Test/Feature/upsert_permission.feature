@@ -21,21 +21,21 @@ Feature: Upsert a product
     And the print category
 
   Scenario: Can create a product without category
-    Given a set text value intent on the "a_text-null-null" attribute with the "test" text value
+    Given a set text value intent on the "a_text" attribute with the "test" text value
     When the "marie" user upserts the "foo" product
     Then there is no violation
 
   Scenario: Update a product when user group is owner
     Given the Manager user group is owner on the master category
     And a product with foo identifier in the master category
-    And a set text value intent on the "a_text-null-null" attribute with the "test" text value
+    And a set text value intent on the "a_text" attribute with the "test" text value
     When the "julia" user upserts the "foo" product
     Then there is no violation
 
   Scenario: Update a product when user group is not owner
     Given the Manager user group is owner on the master category
     And a product with foo identifier in the print category
-    And a set text value intent on the "a_text-null-null" attribute with the "test" text value
+    And a set text value intent on the "a_text" attribute with the "test" text value
     When the "julia" user upserts the "foo" product
     Then there is a violation with message: You don't have access to products in any tree, please contact your administrator
 
@@ -43,7 +43,7 @@ Feature: Upsert a product
     Given the Manager user group is owner on the master category
     And the Manager user group has editable permission on the en_US locale
     And a product with foo identifier in the master category
-    And a set text value intent on the "localizable_scopable_text-ecommerce-en_US" attribute with the "test" text value
+    And a set text value intent on the "localizable_scopable_text" attribute, the "ecommerce" channel and the "en_US" locale with the "test" text value
     When the "julia" user upserts the "foo" product with the previous intent
     Then there is no violation
 
@@ -51,6 +51,6 @@ Feature: Upsert a product
     Given the Manager user group is owner on the master category
     And the Manager user group has editable permission on the en_US locale
     And a product with foo identifier in the master category
-    And a set text value intent on the "localizable_scopable_text-ecommerce-fr_FR" attribute with the "test" text value
+    And a set text value intent on the "localizable_scopable_text" attribute, the "ecommerce" channel and the "fr_FR" locale with the "test" text value
     When the "julia" user upserts the "foo" product with the previous intent
     Then there is a violation with message: You don't have access to product data in any activated locale, please contact your administrator

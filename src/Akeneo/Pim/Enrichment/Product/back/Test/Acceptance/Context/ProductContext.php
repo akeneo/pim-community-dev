@@ -57,16 +57,14 @@ final class ProductContext implements Context
     }
 
     /**
-     * @Given /^a set text value intent on the "([^"]*)" attribute with the "([^"]*)" text value$/
+     * @Given /^a set text value intent on the "(?P<attribute>(?:[^"]|\\")*)" attribute with the "(?P<text>(?:[^"]|\\")*)" text value$/
+     * @Given /^a set text value intent on the "(?P<attribute>(?:[^"]|\\")*)" attribute and the "(?P<locale>(?:[^"]|\\")*)" locale with the "(?P<text>(?:[^"]|\\")*)" text value$/
+     * @Given /^a set text value intent on the "(?P<attribute>(?:[^"]|\\")*)" attribute and the "(?P<channel>(?:[^"]|\\")*)" channel with the "(?P<text>(?:[^"]|\\")*)" text value$/
+     * @Given /^a set text value intent on the "(?P<attribute>(?:[^"]|\\")*)" attribute, the "(?P<channel>(?:[^"]|\\")*)" channel and the "(?P<locale>(?:[^"]|\\")*)" locale with the "(?P<text>(?:[^"]|\\")*)" text value$/
      */
-    public function aSetTextValueIntentOnTheAttributeWithTheTextValue(string $attribute, string $text): void
+    public function aSetTextValueIntentOnTheAttributeWithTheTextValue(string $attribute, string $text, ?string $channel = null, ?string $locale = null): void
     {
-        $attributeInfo = \explode('-', $attribute);
-        Assert::count($attributeInfo, 3);
-        $channelCode = $attributeInfo[1] === 'null' ? null : $attributeInfo[1];
-        $localeCode = $attributeInfo[2] === 'null' ? null : $attributeInfo[2];
-
-        $this->valueUserIntents[] = new SetTextValue($attributeInfo[0], $channelCode, $localeCode, $text);
+        $this->valueUserIntents[] = new SetTextValue($attribute, $channel, $locale, $text);
     }
 
     /**
