@@ -60,7 +60,6 @@ const Container = styled.div<{currentScore: string | null}>`
   display: flex;
   position: relative;
   top: 1px;
-  padding-right: 20px;
   padding-top: 2px;
   height: 25px;
   cursor: pointer;
