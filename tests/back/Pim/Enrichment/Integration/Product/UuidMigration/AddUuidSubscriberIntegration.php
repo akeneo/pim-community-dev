@@ -7,29 +7,15 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Product\UuidMigration;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Bundle\BatchBundle\Command\BatchCommand;
-use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class AddUuidSubscriberIntegration extends TestCase
+final class AddUuidSubscriberIntegration extends AbstractMigrateToUuidTestCase
 {
-    private Connection $connection;
-
-    protected function getConfiguration(): Configuration
-    {
-        return $this->catalog->useMinimalCatalog();
-    }
-
     /** @test */
     public function it_adds_a_uuid_during_product_creation(): void
     {
@@ -75,33 +61,5 @@ final class AddUuidSubscriberIntegration extends TestCase
         $uuidAfterUpdate = $this->connection->executeQuery($sql)->fetchOne();
         Assert::assertNotNull($uuidAfterUpdate);
         Assert::assertSame($uuid, $uuidAfterUpdate);
-    }
-
-    private function launchMigrationCommand(): void
-    {
-        $application = new Application($this->get('kernel'));
-        $application->setAutoExit(false);
-
-        $input = new ArrayInput([
-            'command' => 'pim:product:migrate-to-uuid',
-            '-v' => true,
-        ]);
-        $output = new BufferedOutput();
-        $exitCode = $application->run($input, $output);
-
-        if (BatchCommand::EXIT_SUCCESS_CODE !== $exitCode) {
-            throw new \Exception(sprintf('Command failed: %s.', $output->fetch()));
-        }
-    }
-
-    private function createAttribute(array $data)
-    {
-        $data['group'] = $data['group'] ?? 'other';
-
-        $attribute = $this->get('pim_catalog.factory.attribute')->create();
-        $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
-        $constraints = $this->get('validator')->validate($attribute);
-        $this->assertCount(0, $constraints);
-        $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Enrichment\Integration\Product;
+namespace AkeneoTest\Pim\Enrichment\Integration\Product\UuidMigration;
 
 use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidAddTriggers;
 use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidStep;
@@ -88,7 +88,7 @@ abstract class AbstractMigrateToUuidTestCase extends TestCase
             ['tableName' => $tableName]
         );
 
-        return count($rows) >= 1;
+        return \count($rows) >= 1;
     }
 
     protected function removeTriggers(string $tableName): void
@@ -140,6 +140,7 @@ abstract class AbstractMigrateToUuidTestCase extends TestCase
 
     protected function createAttribute(array $data = []): AttributeInterface
     {
+        $data['group'] = $data['group'] ?? 'other';
         $attribute = $this->get('pim_catalog.factory.attribute')->create();
         $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
         $violations = $this->get('validator')->validate($attribute);
