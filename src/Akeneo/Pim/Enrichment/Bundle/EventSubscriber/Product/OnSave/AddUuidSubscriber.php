@@ -4,90 +4,49 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Doctrine\Common\EventSubscriber;
 use Doctrine\DBAL\Connection;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Events;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
-class AddUuidSubscriber implements EventSubscriberInterface
+/**
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+final class AddUuidSubscriber implements EventSubscriber
 {
     public function __construct(private Connection $connection)
     {
     }
 
-    public static function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
-        return [
-            StorageEvents::POST_SAVE => 'fillSingleUuid',
-            StorageEvents::POST_SAVE_ALL => 'fillMultipleUuid',
-        ];
+        return [Events::postPersist];
     }
 
-    public function fillSingleUuid(GenericEvent $event): void
+    public function postPersist(LifecycleEventArgs $lifecycleEventArgs): void
     {
-        $product = $event->getSubject();
-        $unitary = $event->getArguments()['unitary'] ?? false;
-        if (false === $unitary || !$product instanceof ProductInterface) {
-            return;
+        $entity = $lifecycleEventArgs->getObject();
+        if ($entity instanceof Product && $this->uuidColumnExists()) {
+            $sql = <<<SQL
+            UPDATE pim_catalog_product
+            SET uuid = UUID_TO_BIN(:uuid)
+            WHERE identifier = :identifier AND uuid IS NULL;
+            SQL;
+
+            $this->connection->executeQuery($sql, [
+                'uuid' => Uuid::uuid4()->toString(),
+                'identifier' => $entity->getIdentifier(),
+            ]);
         }
-        $this->fillUuids([$product->getIdentifier()]);
     }
 
-    public function fillMultipleUuid(GenericEvent $event): void
+    private function uuidColumnExists(): bool
     {
-        $products = $event->getSubject();
-        if (!reset($products) instanceof ProductInterface) {
-            return;
-        }
+        $rows = $this->connection->fetchAllAssociative("SHOW COLUMNS FROM pim_catalog_product LIKE 'uuid'");
 
-        $identifiers = [];
-        foreach ($products as $product) {
-            $identifiers[] = $product->getIdentifier();
-        }
-        $this->fillUuids($identifiers);
-    }
-
-    private function fillUuids(array $identifiers): void
-    {
-        if (!$this->columnExists('pim_catalog_product', 'uuid')) {
-            return;
-        }
-
-        $rows = \array_map(
-            static fn (string $identifier): string => \sprintf("ROW(?, '%s')", Uuid::uuid4()->toString()),
-            $identifiers
-        );
-
-        $sql = <<<SQL
-        WITH
-        new_product_uuid AS (
-            SELECT * FROM (VALUES
-                {rows}
-            ) as t(identifier, uuid)
-        )
-        UPDATE pim_catalog_product p, new_product_uuid
-        SET p.uuid = UUID_TO_BIN(new_product_uuid.uuid)
-        WHERE p.identifier = new_product_uuid.identifier AND p.uuid IS NULL;
-        SQL;
-
-        $sql = \strtr($sql, [
-            '{rows}' => \implode(',', $rows),
-        ]);
-
-        $this->connection->executeQuery($sql, $identifiers);
-    }
-
-    private function columnExists(string $tableName, string $columnName): bool
-    {
-        $rows = $this->connection->fetchAllAssociative(
-            sprintf('SHOW COLUMNS FROM %s LIKE :columnName', $tableName),
-            [
-                'columnName' => $columnName,
-            ]
-        );
-
-        return count($rows) >= 1;
+        return \count($rows) >= 1;
     }
 }

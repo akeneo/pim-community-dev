@@ -267,7 +267,7 @@ services:
         arguments:
             - '@database_connection'
         tags:
-            - { name: kernel.event_subscriber }
+            - { name: 'doctrine.event_subscriber' }
 
     Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Family\FamilyAttributeAsLabelChangedSubscriber:
         arguments:
