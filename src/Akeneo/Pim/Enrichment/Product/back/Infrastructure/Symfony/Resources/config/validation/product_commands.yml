@@ -9,13 +9,15 @@ Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand:
         productIdentifier:
             - NotBlank:
                   message: pim_enrich.product.validation.upsert.product_identifier_empty
-        valuesUserIntent:
+        valueUserIntents:
             - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelShouldBeConsistent: ~
             - Valid:
                   traverse: true
+            - All:
+                - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeGroupShouldBeEditable: ~
+                - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUser: ~
     constraints:
         - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\IsUserOwnerOfTheProduct: ~
-        - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUser: ~
 
 Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue:
     properties:

@@ -96,37 +96,6 @@ services:
             - '@akeneo_connectivity.connection.persistence.query.search_event_subscription_debug_logs_query'
             - '@oro_security.security_facade'
 
-    Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Marketplace\GetWebMarketplaceUrlAction:
-        public: true
-        arguments:
-            - '@akeneo_connectivity.connection.marketplace.url_generator'
-            - '@pim_user.context.user'
-
-    Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Marketplace\GetAllExtensionsAction:
-        public: true
-        arguments:
-            - '@akeneo_connectivity.connection.marketplace.get_all_extensions_query'
-            - '@akeneo_connectivity.connection.marketplace.analytics_generator'
-            - '@pim_user.context.user'
-            - '@logger'
-
-    Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Marketplace\GetAllAppsAction:
-        public: true
-        arguments:
-            - '@akeneo_connectivity.connection.marketplace.app_url_generator'
-            - '@akeneo_connectivity.connection.marketplace.get_all_apps_query'
-            - '@akeneo_connectivity.connection.marketplace.analytics_generator'
-            - '@pim_user.context.user'
-            - '@logger'
-            - '@akeneo_connectivity.connection.marketplace_activate.feature'
-
-    Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Marketplace\GetAllTestAppsAction:
-        public: true
-        arguments:
-            - '@akeneo_connectivity.connection.app_developer_mode.feature'
-            - '@akeneo_connectivity.connection.marketplace.app_url_generator'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllTestAppsQuery'
-
     Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\IsConnectionsNumberLimitReachedAction:
         public: true
         arguments:
