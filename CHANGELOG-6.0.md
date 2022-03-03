@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- CPM-543: [Backport PIM-10249] Fix error message when importing YML rule containing a reference entity record with numeric value
 - PIM-10305: Reject disabled user when coming from SAML auth
 
 # 6.0.7 (2022-02-25)
