@@ -60,11 +60,14 @@ required_table_column AS (
     SELECT
         required_table_attribute_in_family.attribute_id,
         required_table_attribute_in_family.channel_id,
+        required_table_attribute_in_family.family_id,
         GROUP_CONCAT(table_column.id ORDER BY table_column.id SEPARATOR '-') AS concatenated_column_ids
     FROM required_table_attribute_in_family
         JOIN pim_catalog_table_column table_column ON table_column.attribute_id = required_table_attribute_in_family.attribute_id
     WHERE table_column.is_required_for_completeness = '1' OR table_column.column_order = 0
-    GROUP BY required_table_attribute_in_family.attribute_id, required_table_attribute_in_family.channel_id
+    GROUP BY required_table_attribute_in_family.attribute_id,
+             required_table_attribute_in_family.channel_id,
+             required_table_attribute_in_family.family_id
 )
 SELECT
     family.code AS family_code,
@@ -87,6 +90,7 @@ FROM required_table_attribute_in_family rtaif
     JOIN pim_catalog_attribute attribute ON rtaif.attribute_id = attribute.id
     JOIN required_table_column ON required_table_column.attribute_id = rtaif.attribute_id
                               AND required_table_column.channel_id = channel_locale.channel_id
+                              AND required_table_column.family_id = rtaif.family_id
     LEFT JOIN pim_catalog_attribute_locale pcal ON attribute.id = pcal.attribute_id
 WHERE
     (pcal.locale_id IS NULL OR pcal.locale_id = channel_locale.locale_id)
