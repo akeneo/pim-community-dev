@@ -4,6 +4,9 @@ import {QualityScore} from '@akeneo-pim-community/data-quality-insights/src/appl
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {
+  QualityScorePending
+} from "@akeneo-pim-community/data-quality-insights/src/application/component/QualityScorePending";
 
 const StringCell = require('oro/datagrid/string-cell');
 
@@ -14,10 +17,12 @@ class QualityScoreBadgeCell extends StringCell {
       stacked: this.model.attributes.document_type === 'product_model',
     };
 
+    const isPending = (qualityScoreProps.score === 'N/A' || qualityScoreProps.score === null)
+
     ReactDOM.render(
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
-          <QualityScore {...qualityScoreProps} />
+          {isPending ? <QualityScorePending/> : <QualityScore {...qualityScoreProps} />}
         </ThemeProvider>
       </DependenciesProvider>,
       this.el

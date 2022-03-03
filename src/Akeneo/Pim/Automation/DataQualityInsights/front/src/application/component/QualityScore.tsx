@@ -1,14 +1,15 @@
 import React, {FC, HTMLAttributes} from 'react';
 import styled, {css} from 'styled-components';
-import {AkeneoThemedProps, Badge, getColor, Override} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {AkeneoThemedProps, getColor, Override} from 'akeneo-design-system';
+// import {AkeneoThemedProps, Badge, getColor, Override} from 'akeneo-design-system';
+// import {useTranslate} from '@akeneo-pim-community/shared';
 
 type Rounded = 'all' | 'left' | 'right' | 'none';
 
 type Props = Override<
   HTMLAttributes<HTMLDivElement>,
   {
-    score: string | null;
+    score: string;
     size?: 'normal' | 'big';
     stacked?: boolean;
     rounded?: Rounded;
@@ -73,11 +74,11 @@ const colorProperties: ColorProperty = {
  *
  */
 const QualityScore: FC<Props> = ({score, size = 'normal', rounded = 'all', stacked = false, ...props}) => {
-  const translate = useTranslate();
+  // const translate = useTranslate();
 
-  if (score === 'N/A' || score === null) {
-    return <Badge level="tertiary">{translate('akeneo_data_quality_insights.quality_score.pending')}</Badge>;
-  }
+  // if (score === 'N/A' || score === null) {
+  //   return <Badge level="tertiary">{translate('akeneo_data_quality_insights.quality_score.pending')}</Badge>;
+  // }
 
   return stacked ? (
     <Wrapper size={size}>
