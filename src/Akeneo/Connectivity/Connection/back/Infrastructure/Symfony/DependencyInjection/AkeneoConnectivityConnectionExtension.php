@@ -44,6 +44,7 @@ class AkeneoConnectivityConnectionExtension extends Extension
 
         $loader->load('Webhook/commands.yml');
         $loader->load('Webhook/controllers.yml');
+        $loader->load('Webhook/event_normalizers.yml');
         $loader->load('Webhook/event_subscribers.yml');
         $loader->load('Webhook/handlers.yml');
         $loader->load('Webhook/install.yml');
@@ -53,7 +54,6 @@ class AkeneoConnectivityConnectionExtension extends Extension
 
         $loader->load('cli.yml');
         $loader->load('controllers.yml');
-        $loader->load('event_normalizers.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('feature_flag.yml');
         $loader->load('handlers.yml');
