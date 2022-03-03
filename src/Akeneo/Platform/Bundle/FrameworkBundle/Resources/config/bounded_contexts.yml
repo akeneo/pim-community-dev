@@ -27,7 +27,9 @@ parameters:
         'Akeneo\Platform\Bundle\ImportExportBundle': 'Enrichment'
         'Akeneo\Platform\Bundle\UIBundle': 'Enrichment'
         'Akeneo\Platform\CommunicationChannel': 'CommunicationChannel'
+        'Akeneo\Platform\Job': 'Job'
         'Akeneo\Platform\TailoredExport': 'Tailored Export'
+        'Akeneo\Platform\TailoredImport': 'Tailored Import'
         'Akeneo\Platform': 'Platform'
 
         'Akeneo\ReferenceEntity': 'Reference Entity'

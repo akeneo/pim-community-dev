@@ -19,6 +19,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Entit
 class AttributeLocaleQuality
 {
     public $attributeCode;
+    public $attribute;
     public $locale;
     public $quality;
 }

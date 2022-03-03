@@ -16,7 +16,6 @@ namespace Akeneo\AssetManager\Infrastructure\Symfony\Command\MigrationPAM;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Webmozart\Assert\Assert;
@@ -72,6 +71,6 @@ class AssetCollectionValueFactory implements ValueFactory
 
     public function supportedAttributeType(): string
     {
-        return AttributeTypes::LEGACY_ASSET_COLLECTION;
+        return 'pim_assets_collection';
     }
 }

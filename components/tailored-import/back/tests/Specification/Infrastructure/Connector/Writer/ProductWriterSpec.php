@@ -47,7 +47,7 @@ class ProductWriterSpec extends ObjectBehavior
 
     public function it_execute_upsert_command(MessageBusInterface $messageBus)
     {
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: "identifier", valuesUserIntent: []);
+        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: "identifier", valueUserIntents: []);
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
         $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willReturn(new Envelope(new \stdClass()));
         $this->write([$this->rowPayload]);
@@ -58,7 +58,7 @@ class ProductWriterSpec extends ObjectBehavior
         $constraintViolation->getParameters()->willReturn([]);
         $constraintViolation->getMessage()->willReturn("error");
         $constraintViolation->__toString()->willReturn("error");
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: "identifier", valuesUserIntent: []);
+        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: "identifier", valueUserIntents: []);
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
         $messageBus->dispatch($upsertProductCommand)->willThrow(new LegacyViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])));
         $stepExecution->addWarning("error", [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1'], 0))->shouldBeCalled();
@@ -70,7 +70,7 @@ class ProductWriterSpec extends ObjectBehavior
         $constraintViolation->getParameters()->willReturn([]);
         $constraintViolation->getMessage()->willReturn("error");
         $constraintViolation->__toString()->willReturn("error");
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: "identifier", valuesUserIntent: []);
+        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: "identifier", valueUserIntents: []);
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
         $messageBus->dispatch($upsertProductCommand)->willThrow(new ViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])));
         $stepExecution->addWarning("error", [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1'], 0))->shouldBeCalled();
