@@ -15,3 +15,11 @@ coupling: #Doc: Run coupling detector for Onboarder
 .PHONY: coupling-list-unused-requirements
 coupling-list-unused-requirements: #Doc: List unused coupling detector requirements
 	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/php-coupling-detector list-unused-requirements --config-file=components/onboarder/back/tests/.php_cd.php components/onboarder/back
+
+.PHONY: lint-back
+lint-back: #Doc: launch PHPStan for Onboarder Serenity
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=components/onboarder/back/tests/.php_cs.php components/onboarder/back
+
+.PHONY: fix-lint-back
+fix-lint-back: #Doc: launch PHP CS fixer for Onboarder Serenity
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=components/onboarder/back/tests/.php_cs.php components/onboarder/back
