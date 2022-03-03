@@ -282,7 +282,7 @@ services:
     akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.get_asset_collection_type_adapter:
         class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\GetAssetCollectionTypeAdapter
         arguments:
-            - '@pim_catalog.repository.attribute'
+            - '@akeneo.pim.structure.query.sql_get_attributes'
 
     Akeneo\AssetManager\Infrastructure\Validation\Asset\EditTargetValueValidator:
         arguments:

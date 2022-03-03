@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader;
 
-use Akeneo\Platform\TailoredImport\Application\Common\ColumnCollection;
-use Akeneo\Platform\TailoredImport\Application\Common\Row;
-use Akeneo\Platform\TailoredImport\Domain\Exception\MismatchedFileHeadersException;
-use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FileHeaderCollection;
-use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FlatFileIteratorFactory;
-use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FlatFileIteratorInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\ColumnCollection;
+use Akeneo\Platform\TailoredImport\Domain\Model\File\FileStructure;
+use Akeneo\Platform\TailoredImport\Domain\Model\Row;
+use Akeneo\Platform\TailoredImport\Infrastructure\Connector\RowPayload;
+use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FileIteratorFactory;
+use Akeneo\Platform\TailoredImport\Infrastructure\Spout\FileIteratorInterface;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
@@ -31,12 +31,12 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 class FileReader implements ItemReaderInterface, StepExecutionAwareInterface, InitializableInterface, FlushableInterface, TrackableItemReaderInterface
 {
     private ?StepExecution $stepExecution;
-    private ?FlatFileIteratorInterface $fileIterator = null;
+    private ?FileIteratorInterface $fileIterator = null;
     private ?ColumnCollection $columnCollection = null;
 
     public function __construct(
         private string $fileType,
-        private FlatFileIteratorFactory $flatFileIteratorFactory,
+        private FileIteratorFactory $flatFileIteratorFactory,
     ) {
     }
 
@@ -58,10 +58,15 @@ class FileReader implements ItemReaderInterface, StepExecutionAwareInterface, In
             return null;
         }
 
+        $rowPosition = $this->fileIterator->key();
         $this->fileIterator->next();
         $this->checkColumnNumber($currentProductLine);
 
-        return new Row(array_combine($this->columnCollection->columnUuids(), $currentProductLine));
+        return new RowPayload(
+            new Row(array_combine($this->columnCollection->getColumnUuids(), $currentProductLine)),
+            $this->columnCollection,
+            $rowPosition
+        );
     }
 
     public function setStepExecution(StepExecution $stepExecution): void
@@ -77,7 +82,7 @@ class FileReader implements ItemReaderInterface, StepExecutionAwareInterface, In
             $this->columnCollection = ColumnCollection::createFromNormalized($normalizedColumns);
 
             $fileHeaders = $this->fileIterator->getHeaders();
-            $this->checkFileHeaders($fileHeaders);
+            $fileHeaders->assertColumnMatch($this->columnCollection);
         }
     }
 
@@ -86,17 +91,14 @@ class FileReader implements ItemReaderInterface, StepExecutionAwareInterface, In
         $this->fileIterator = null;
     }
 
-    private function checkFileHeaders(FileHeaderCollection $fileHeaders): void
-    {
-        if (!$fileHeaders->matchToColumnCollection($this->columnCollection)) {
-            throw new MismatchedFileHeadersException();
-        }
-    }
-
-    private function createFileIterator(): FlatFileIteratorInterface
+    private function createFileIterator(): FileIteratorInterface
     {
         $jobParameters = $this->stepExecution->getJobParameters();
-        $fileIterator = $this->flatFileIteratorFactory->create($this->fileType, $jobParameters);
+        $fileIterator = $this->flatFileIteratorFactory->create(
+            $this->fileType,
+            $jobParameters->get('filePath'),
+            FileStructure::createFromNormalized($jobParameters->get('file_structure')),
+        );
         $fileIterator->rewind();
 
         return $fileIterator;

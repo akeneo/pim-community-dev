@@ -49,7 +49,7 @@ const AttributeTargetParameters = ({target, validationErrors, onTargetChange}: A
   };
 
   const handleClearIfEmptyChange = (clearIfEmpty: boolean) =>
-    onTargetChange({...target, if_empty: clearIfEmpty ? 'clear' : 'skip'});
+    onTargetChange({...target, action_if_empty: clearIfEmpty ? 'clear' : 'skip'});
 
   // TODO: add skeleton
   if (isFetching) return null;
@@ -92,7 +92,7 @@ const AttributeTargetParameters = ({target, validationErrors, onTargetChange}: A
           )}
         </LocaleDropdown>
       )}
-      <Checkbox checked={'clear' === target.if_empty} onChange={handleClearIfEmptyChange}>
+      <Checkbox checked={'clear' === target.action_if_empty} onChange={handleClearIfEmptyChange}>
         {translate('akeneo.tailored_import.data_mapping.target.clear_if_empty')}
       </Checkbox>
     </Container>

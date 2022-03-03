@@ -9,6 +9,7 @@ import {
   getFontSize,
   ImportXlsxIllustration,
   TabBar,
+  useTabBar,
 } from 'akeneo-design-system';
 import {
   filterErrors,
@@ -19,6 +20,7 @@ import {
   ValidationError,
 } from '@akeneo-pim-community/shared';
 import {ImportStructureTab, StructureConfiguration} from './feature';
+import {GlobalSettings, GlobalSettingsTab} from './feature/GlobalSettingsTab';
 
 const JOB_CODE = 'tailoredimport';
 
@@ -64,9 +66,7 @@ const SaveButton = styled(Button)`
 
 type JobConfiguration = {
   code: string;
-  configuration: {
-    import_structure: StructureConfiguration;
-  };
+  configuration: StructureConfiguration;
 };
 
 const FakePIM = () => {
@@ -76,6 +76,7 @@ const FakePIM = () => {
   const saveRoute = useRoute('pim_enrich_job_instance_rest_import_put', {identifier: JOB_CODE});
   const notify = useNotify();
   const translate = useTranslate();
+  const [isCurrent, switchTo] = useTabBar('import_structure');
 
   const saveJobConfiguration = async () => {
     setValidationErrors([]);
@@ -121,14 +122,21 @@ const FakePIM = () => {
   if (null === jobConfiguration) return null;
 
   const handleStructureConfigurationChange = (newStructureConfiguration: StructureConfiguration): void => {
+    setJobConfiguration(jobConfiguration => ({
+      ...jobConfiguration,
+      configuration: {
+        ...jobConfiguration.configuration,
+        ...newStructureConfiguration,
+      },
+    }));
+  };
+
+  const handleGlobalSettingsChange = (newGlobalSettings: GlobalSettings) => {
     setJobConfiguration({
       ...jobConfiguration,
       configuration: {
         ...jobConfiguration.configuration,
-        import_structure: {
-          ...jobConfiguration.configuration.import_structure,
-          ...newStructureConfiguration,
-        },
+        error_action: newGlobalSettings.error_action,
       },
     });
   };
@@ -152,15 +160,30 @@ const FakePIM = () => {
         <TabBar moreButtonTitle={translate('pim_common.more')}>
           <TabBar.Tab isActive={false}>Properties</TabBar.Tab>
           <TabBar.Tab isActive={false}>Permissions</TabBar.Tab>
-          <TabBar.Tab isActive={false}>Global settings</TabBar.Tab>
-          <TabBar.Tab isActive={true}>Import structure</TabBar.Tab>
+          <TabBar.Tab isActive={isCurrent('global_settings')} onClick={() => switchTo('global_settings')}>
+            Global settings
+          </TabBar.Tab>
+          <TabBar.Tab isActive={isCurrent('import_structure')} onClick={() => switchTo('import_structure')}>
+            Import structure
+          </TabBar.Tab>
           <TabBar.Tab isActive={false}>History</TabBar.Tab>
         </TabBar>
-        <ImportStructureTab
-          structureConfiguration={jobConfiguration.configuration.import_structure}
-          validationErrors={filterErrors(validationErrors, '[import_structure]')}
-          onStructureConfigurationChange={handleStructureConfigurationChange}
-        />
+        {isCurrent('global_settings') && (
+          <GlobalSettingsTab
+            globalSettings={{
+              error_action: jobConfiguration.configuration.error_action,
+            }}
+            validationErrors={validationErrors}
+            onGlobalSettingsChange={handleGlobalSettingsChange}
+          />
+        )}
+        {isCurrent('import_structure') && (
+          <ImportStructureTab
+            structureConfiguration={jobConfiguration.configuration}
+            validationErrors={filterErrors(validationErrors, '[import_structure]')}
+            onStructureConfigurationChange={handleStructureConfigurationChange}
+          />
+        )}
       </Page>
     </Container>
   );

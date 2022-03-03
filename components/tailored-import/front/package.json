@@ -71,7 +71,9 @@
     ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/src/index.tsx",
-      "<rootDir>/src/FakePIM.tsx"
+      "<rootDir>/src/FakePIM.tsx",
+      "<rootDir>/src/feature/tests",
+      "<rootDir>/src/feature/ImportStructureTab.tsx"
     ],
     "coverageThreshold": {
       "global": {

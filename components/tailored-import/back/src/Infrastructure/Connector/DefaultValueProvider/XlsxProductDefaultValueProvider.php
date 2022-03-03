@@ -21,7 +21,7 @@ class XlsxProductDefaultValueProvider implements DefaultValuesProviderInterface
     public function __construct(
         private DefaultValuesProviderInterface $simpleProvider,
         /** @var string[] */
-        private array $supportedJobNames
+        private array $supportedJobNames,
     ) {
     }
 
@@ -31,9 +31,17 @@ class XlsxProductDefaultValueProvider implements DefaultValuesProviderInterface
     public function getDefaultValues(): array
     {
         $defaultValues = $this->simpleProvider->getDefaultValues();
+        $defaultValues['error_action'] = 'skip_product';
         $defaultValues['import_structure'] = [
             'columns' => [],
             'data_mappings' => [],
+        ];
+        $defaultValues['file_key'] = null;
+        $defaultValues['file_structure'] = [
+            'header_line' => 0,
+            'first_column' => 0,
+            'product_line' => 1,
+            'sheet_name' => null,
         ];
 
         return $defaultValues;

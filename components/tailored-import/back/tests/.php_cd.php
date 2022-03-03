@@ -43,15 +43,18 @@ $rules = [
             'Symfony\Component',
             'Symfony\Contracts',
             'Webmozart\Assert\Assert',
+            'Ramsey\Uuid\Uuid',
             'Akeneo\Platform\TailoredImport\Application',
             'Akeneo\Platform\TailoredImport\Domain',
 
             'Akeneo\Channel\Component\Query\PublicApi',
             'Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand',
-            'Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler',
+            'Akeneo\Pim\Enrichment\Product\API\UpsertProductHandlerInterface',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
             'Akeneo\Tool',
             'Akeneo\UserManagement\Component\Model\UserInterface',
+            'Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException',
+            'Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException'
         ],
     )->in('Akeneo\Platform\TailoredImport\Infrastructure'),
 ];

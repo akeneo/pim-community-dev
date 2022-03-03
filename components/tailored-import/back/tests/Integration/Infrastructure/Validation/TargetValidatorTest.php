@@ -50,8 +50,8 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'type' => 'attribute',
                     'channel' => null,
                     'locale' => null,
-                    'action' => 'set',
-                    'if_empty' => 'skip',
+                    'action_if_not_empty' => 'set',
+                    'action_if_empty' => 'skip',
                 ]
             ],
             'a valid attribute target' => [
@@ -60,16 +60,16 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'type' => 'attribute',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
-                    'action' => 'set',
-                    'if_empty' => 'skip',
+                    'action_if_not_empty' => 'set',
+                    'action_if_empty' => 'skip',
                 ]
             ],
             'a valid property target' => [
                 [
                     'code' => 'categories',
                     'type' => 'property',
-                    'action' => 'add',
-                    'if_empty' => 'skip',
+                    'action_if_not_empty' => 'add',
+                    'action_if_empty' => 'skip',
                 ]
             ],
         ];
@@ -85,8 +85,8 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'type' => 'attribute',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
-                    'action' => 'set',
-                    'if_empty' => 'skip',
+                    'action_if_not_empty' => 'set',
+                    'action_if_empty' => 'skip',
                 ],
             ],
             'a target with missing type' => [
@@ -96,8 +96,8 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'code' => 'description',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
-                    'action' => 'set',
-                    'if_empty' => 'skip',
+                    'action_if_not_empty' => 'set',
+                    'action_if_empty' => 'skip',
                 ],
             ],
             'a target with invalid type' => [
@@ -108,8 +108,8 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'type' => 'invalid',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
-                    'action' => 'set',
-                    'if_empty' => 'skip',
+                    'action_if_not_empty' => 'set',
+                    'action_if_empty' => 'skip',
                 ],
             ],
             'an attribute target with invalid code' => [
@@ -120,8 +120,8 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'type' => 'attribute',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
-                    'action' => 'set',
-                    'if_empty' => 'skip',
+                    'action_if_not_empty' => 'set',
+                    'action_if_empty' => 'skip',
                 ],
             ],
             'a property target with invalid code' => [
@@ -130,8 +130,8 @@ final class TargetValidatorTest extends AbstractValidationTest
                 [
                     'code' => 'invalid_property',
                     'type' => 'property',
-                    'action' => 'set',
-                    'if_empty' => 'skip',
+                    'action_if_not_empty' => 'set',
+                    'action_if_empty' => 'skip',
                 ],
             ],
             'an attribute target without channel when attribute is scopable' => [
@@ -141,8 +141,8 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'code' => 'a_scopable_image',
                     'type' => 'attribute',
                     'locale' => 'en_US',
-                    'action' => 'set',
-                    'if_empty' => 'skip',
+                    'action_if_not_empty' => 'set',
+                    'action_if_empty' => 'skip',
                 ],
             ],
             'an attribute target without locale when attribute is localizable' => [
@@ -152,8 +152,8 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'code' => 'a_localizable_image',
                     'type' => 'attribute',
                     'channel' => 'ecommerce',
-                    'action' => 'set',
-                    'if_empty' => 'skip',
+                    'action_if_not_empty' => 'set',
+                    'action_if_empty' => 'skip',
                 ],
             ],
             'an attribute target with invalid channel' => [
@@ -164,8 +164,8 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'type' => 'attribute',
                     'channel' => 'perlinpinpin',
                     'locale' => 'en_US',
-                    'action' => 'set',
-                    'if_empty' => 'skip',
+                    'action_if_not_empty' => 'set',
+                    'action_if_empty' => 'skip',
                 ],
             ],
             'an attribute target with invalid locale' => [
@@ -176,54 +176,54 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'type' => 'attribute',
                     'channel' => 'ecommerce',
                     'locale' => 'ru_RU',
-                    'action' => 'set',
-                    'if_empty' => 'skip',
+                    'action_if_not_empty' => 'set',
+                    'action_if_empty' => 'skip',
                 ],
             ],
-            'a target with missing action' => [
+            'a target with missing action_if_not_empty' => [
                 'This field is missing.',
-                '[action]',
+                '[action_if_not_empty]',
                 [
                     'code' => 'a_localized_and_scopable_text_area',
                     'type' => 'attribute',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
-                    'if_empty' => 'skip',
+                    'action_if_empty' => 'skip',
                 ]
             ],
-            'a target with invalid action' => [
+            'a target with invalid action_if_not_empty' => [
                 'The value you selected is not a valid choice.',
-                '[action]',
+                '[action_if_not_empty]',
                 [
                     'code' => 'a_localized_and_scopable_text_area',
                     'type' => 'attribute',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
-                    'action' => 'invalid',
-                    'if_empty' => 'skip',
+                    'action_if_not_empty' => 'invalid',
+                    'action_if_empty' => 'skip',
                 ]
             ],
-            'a target with missing if_empty' => [
+            'a target with missing action_if_empty' => [
                 'This field is missing.',
-                '[if_empty]',
+                '[action_if_empty]',
                 [
                     'code' => 'a_localized_and_scopable_text_area',
                     'type' => 'attribute',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
-                    'action' => 'set',
+                    'action_if_not_empty' => 'set',
                 ]
             ],
-            'a target with invalid if_empty' => [
+            'a target with invalid action_if_empty' => [
                 'The value you selected is not a valid choice.',
-                '[if_empty]',
+                '[action_if_empty]',
                 [
                     'code' => 'a_localized_and_scopable_text_area',
                     'type' => 'attribute',
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
-                    'action' => 'set',
-                    'if_empty' => 'invalid',
+                    'action_if_not_empty' => 'set',
+                    'action_if_empty' => 'invalid',
                 ]
             ],
         ];

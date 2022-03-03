@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
-use Akeneo\Platform\TailoredImport\Application\Common\DataMapping;
-use Akeneo\Platform\TailoredImport\Application\Common\Row;
-use Akeneo\Platform\TailoredImport\Application\Common\TargetAttribute;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentAggregator\UserIntentAggregatorInterface;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry;
+use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -17,53 +16,40 @@ use Akeneo\Platform\TailoredImport\Application\Common\TargetAttribute;
  */
 class ExecuteDataMappingHandler
 {
+    public function __construct(
+        private OperationApplier $operationApplier,
+        private UserIntentRegistry $userIntentRegistry,
+        private UserIntentAggregatorInterface $userIntentAggregator,
+    ) {
+    }
+
     public function handle(ExecuteDataMappingQuery $executeDataMappingQuery): UpsertProductCommand
     {
-        /** @var array<ValueUserIntent> $valueUserIntents */
-        $valueUserIntents = [];
-
-        $dataMappingCollection = $executeDataMappingQuery->getDataMappingCollection();
+        $row = $executeDataMappingQuery->getRow();
         $identifierAttributeCode = $this->getIdentifierAttributeCode();
+        $userIntents = [];
         $productIdentifier = null;
 
-        /** @var DataMapping $dataMapping */
-        foreach ($dataMappingCollection->iterator() as $dataMapping) {
-            $target = $dataMapping->target();
+        foreach ($executeDataMappingQuery->getDataMappingCollection() as $dataMapping) {
+            $target = $dataMapping->getTarget();
+            $sources = $dataMapping->getSources();
 
-            /**
-             * How do we structure the code to determine the type of target property OR attribute,
-             *  - Attribute: deal with action type set OR add, and ValueUserIntent based on primitive type of the cellData value
-             *  - Property:  Determine the correct user intent
-             */
-            $cellData = $this->mergeCellData($executeDataMappingQuery->getRow(), $dataMapping->sources());
-            /** TODO Iterate over operation */
-            if ($target instanceof TargetAttribute) {
-                if ($identifierAttributeCode === $target->code()) {
-                    $productIdentifier = $cellData;
-                } else {
-                    $valueUserIntents[] = new SetTextValue(
-                        $target->code(),
-                        $target->channel(),
-                        $target->locale(),
-                        $cellData,
-                    );
-                }
+            $value = $this->operationApplier->applyOperations($dataMapping->getOperations(), $row, $sources[0]);
+            if ($target instanceof TargetAttribute && $target->getCode() === $identifierAttributeCode) {
+                $productIdentifier = $value;
+            } else {
+                $userIntentFactory = $this->userIntentRegistry->getUserIntentFactory($target);
+                $userIntents[] = $userIntentFactory->create($target, $value);
             }
         }
 
-        return new UpsertProductCommand(
-            userId: 1,
-            productIdentifier: $productIdentifier,
-            valuesUserIntent: $valueUserIntents,
-        );
-    }
+        $userIntents = $this->userIntentAggregator->aggregateByTarget($userIntents);
 
-    private function mergeCellData(Row $row, array $sources): string
-    {
-        return implode('', array_map(
-            static fn (string $uuid) => $row->getCellData($uuid),
-            $sources,
-        ));
+        return UpsertProductCommand::createFromCollection(
+            1,
+            $productIdentifier,
+            $userIntents,
+        );
     }
 
     // TODO: use the upcoming get by attribute type public api query

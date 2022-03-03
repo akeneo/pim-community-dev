@@ -1,8 +1,12 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import {Button, useBooleanState} from 'akeneo-design-system';
-import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {DataMappingDetails, DataMappingDetailsPlaceholder, DataMappingList, InitializeColumnsModal} from './components';
+import {filterErrors, ValidationError} from '@akeneo-pim-community/shared';
+import {
+  DataMappingDetails,
+  DataMappingDetailsPlaceholder,
+  DataMappingList,
+  InitializeFileStructure,
+} from './components';
 import {Column, createDefaultDataMapping, DataMapping, StructureConfiguration, updateDataMapping} from './models';
 import {useFetchers} from './contexts';
 
@@ -24,32 +28,37 @@ const ImportStructureTab = ({
   validationErrors,
   onStructureConfigurationChange,
 }: ImportStructureTabProps) => {
-  const [isInitModalOpen, openInitModal, closeInitModal] = useBooleanState();
-  const translate = useTranslate();
   const [selectedDataMappingUuid, setSelectedDataMappingUuid] = useState<string | null>(null);
   const selectedDataMapping =
-    structureConfiguration.data_mappings.find(dataMapping => dataMapping.uuid === selectedDataMappingUuid) ?? null;
+    structureConfiguration.import_structure.data_mappings.find(
+      dataMapping => dataMapping.uuid === selectedDataMappingUuid
+    ) ?? null;
   const attributeFetcher = useFetchers().attribute;
 
-  const handleConfirm = async (generatedColumns: Column[]): Promise<void> => {
+  const handleFileStructureInitialized = async (fileKey: string, columns: Column[]): Promise<void> => {
     const attributeIdentifier = await attributeFetcher.fetchAttributeIdentifier();
 
     if (attributeIdentifier) {
-      const dataMapping = createDefaultDataMapping(attributeIdentifier, generatedColumns);
+      const dataMapping = createDefaultDataMapping(attributeIdentifier, columns);
       onStructureConfigurationChange({
         ...structureConfiguration,
-        columns: generatedColumns,
-        data_mappings: [dataMapping],
+        import_structure: {
+          ...structureConfiguration.import_structure,
+          columns,
+          data_mappings: [dataMapping],
+        },
+        file_key: fileKey,
       });
     }
-
-    closeInitModal();
   };
 
   const handleDataMappingChange = (dataMapping: DataMapping) => {
     onStructureConfigurationChange({
       ...structureConfiguration,
-      data_mappings: updateDataMapping(structureConfiguration.data_mappings, dataMapping),
+      import_structure: {
+        ...structureConfiguration.import_structure,
+        data_mappings: updateDataMapping(structureConfiguration.import_structure.data_mappings, dataMapping),
+      },
     });
   };
 
@@ -60,22 +69,23 @@ const ImportStructureTab = ({
   const handleDataMappingAdded = (dataMapping: DataMapping): void => {
     onStructureConfigurationChange({
       ...structureConfiguration,
-      data_mappings: [...structureConfiguration.data_mappings, dataMapping],
+      import_structure: {
+        ...structureConfiguration.import_structure,
+        data_mappings: [...structureConfiguration.import_structure.data_mappings, dataMapping],
+      },
     });
     handleDataMappingSelected(dataMapping.uuid);
   };
 
   return (
     <>
-      {0 === structureConfiguration.columns.length ? (
-        <Button level="primary" onClick={openInitModal}>
-          {translate('akeneo.tailored_import.column_initialization.button')}
-        </Button>
+      {null === structureConfiguration.file_key ? (
+        <InitializeFileStructure onConfirm={handleFileStructureInitialized} />
       ) : (
         <Container>
           <DataMappingList
-            dataMappings={structureConfiguration.data_mappings}
-            columns={structureConfiguration.columns}
+            dataMappings={structureConfiguration.import_structure.data_mappings}
+            columns={structureConfiguration.import_structure.columns}
             selectedDataMappingUuid={selectedDataMappingUuid}
             validationErrors={filterErrors(validationErrors, `[data_mappings]`)}
             onDataMappingAdded={handleDataMappingAdded}
@@ -85,7 +95,7 @@ const ImportStructureTab = ({
             <DataMappingDetailsPlaceholder />
           ) : (
             <DataMappingDetails
-              columns={structureConfiguration.columns}
+              columns={structureConfiguration.import_structure.columns}
               dataMapping={selectedDataMapping}
               validationErrors={filterErrors(validationErrors, `[data_mappings][${selectedDataMapping.uuid}]`)}
               onDataMappingChange={handleDataMappingChange}
@@ -93,7 +103,6 @@ const ImportStructureTab = ({
           )}
         </Container>
       )}
-      {isInitModalOpen && <InitializeColumnsModal onConfirm={handleConfirm} onCancel={closeInitModal} />}
     </>
   );
 };

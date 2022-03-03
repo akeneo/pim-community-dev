@@ -1,6 +1,6 @@
 services:
   akeneo.tailored_import.spout.file_reader.factory:
-    class: Akeneo\Platform\TailoredImport\Infrastructure\Spout\FlatFileIteratorFactory
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Spout\FileIteratorFactory
     arguments:
       - '@akeneo.tailored_import.spout.cell_formatter'
 
