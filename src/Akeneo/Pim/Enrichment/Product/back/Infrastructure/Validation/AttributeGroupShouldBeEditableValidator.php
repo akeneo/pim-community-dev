@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
-use Akeneo\Channel\Locale\API\Query\IsLocaleEditable;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeEditable;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
@@ -15,26 +15,27 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class LocaleShouldBeEditableByUserValidator extends ConstraintValidator
+final class AttributeGroupShouldBeEditableValidator extends ConstraintValidator
 {
-    public function __construct(private IsLocaleEditable $isLocaleEditable)
+    public function __construct(private IsAttributeEditable $isAttributeEditable)
     {
     }
 
     public function validate($valueUserIntent, Constraint $constraint): void
     {
+        Assert::isInstanceOf($constraint, AttributeGroupShouldBeEditable::class);
         Assert::isInstanceOf($valueUserIntent, ValueUserIntent::class);
-        Assert::isInstanceOf($constraint, LocaleShouldBeEditableByUser::class);
 
         $command = $this->context->getRoot();
         Assert::isInstanceOf($command, UpsertProductCommand::class);
 
-        $localeCode = $valueUserIntent->localeCode();
-        $userId = $command->userId();
-        if (!empty($localeCode) && !$this->isLocaleEditable->forUserId($localeCode, $userId)) {
-            $this->context
-                ->buildViolation($constraint->message, ['{{ locale_code }}' => $localeCode])
-                ->addViolation();
+        $isEditable = $this->isAttributeEditable->forCode($valueUserIntent->attributeCode(), $command->userId());
+
+        if (!$isEditable) {
+            $this->context->buildViolation(
+                $constraint->message,
+                [ '{{ attributeCode }}' => $valueUserIntent->attributeCode()]
+            )->addViolation();
         }
     }
 }
