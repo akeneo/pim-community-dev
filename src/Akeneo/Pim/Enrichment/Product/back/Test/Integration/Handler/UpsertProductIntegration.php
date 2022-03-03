@@ -19,6 +19,10 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
+use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
+use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
+use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
@@ -335,6 +339,82 @@ final class UpsertProductIntegration extends TestCase
         $product = $this->productRepository->findOneByIdentifier('product_with_asset');
         Assert::assertNotNull($product);
         Assert::assertNull($product->getValue('packshot_attr', null, null));
+    }
+
+    /** @test */
+    public function it_clears_reference_entity_value(): void
+    {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
+
+        $validator = $this->get('validator');
+        $createBrandCommand = new CreateReferenceEntityCommand('brand', []);
+        $violations = $validator->validate($createBrandCommand);
+        Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
+        ($this->get('akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'))($createBrandCommand);
+
+        $createAkeneoRecord = new CreateRecordCommand('brand', 'Akeneo', []);
+        $violations = $validator->validate($createAkeneoRecord);
+        Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
+        ($this->get('akeneo_referenceentity.application.record.create_record_handler'))($createAkeneoRecord);
+
+        $createOtherRecord = new CreateRecordCommand('brand', 'Other', []);
+        $violations = $validator->validate($createOtherRecord);
+        Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
+        ($this->get('akeneo_referenceentity.application.record.create_record_handler'))($createOtherRecord);
+
+        // create single reference entity link attribute
+        $attribute = $this->get('pim_catalog.factory.attribute')->create();
+        $this->get('pim_catalog.updater.attribute')->update(
+            $attribute,
+            [
+                'code' => 'a_reference_entity_attribute',
+                'type' => ReferenceEntityType::REFERENCE_ENTITY,
+                'group' => 'other',
+                'reference_data_name' => 'brand',
+            ]
+        );
+        $attributeViolations = $this->get('validator')->validate($attribute);
+        Assert::assertCount(0, $attributeViolations, \sprintf('The attribute is invalid: %s', $attributeViolations));
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
+
+        // create a multiple reference entity link attribute
+        $attribute2 = $this->get('pim_catalog.factory.attribute')->create();
+        $this->get('pim_catalog.updater.attribute')->update(
+            $attribute2,
+            [
+                'code' => 'a_reference_entity_collection_attribute',
+                'type' => ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION,
+                'group' => 'other',
+                'reference_data_name' => 'brand',
+            ]
+        );
+        $attributeViolations = $this->get('validator')->validate($attribute2);
+        Assert::assertCount(0, $attributeViolations, \sprintf('The attribute is invalid: %s', $attributeViolations));
+        $this->get('pim_catalog.saver.attribute')->save($attribute2);
+
+        $this->createProduct('product_with_ref_entities', 'other',
+        [
+            'a_reference_entity_attribute' => [['scope' => null, 'locale' => null, 'data' => 'Akeneo']],
+            'a_reference_entity_collection_attribute' => [['scope' => null, 'locale' => null, 'data' => ['Akeneo', 'Other']]]
+        ]);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
+        $product = $this->productRepository->findOneByIdentifier('product_with_ref_entities');
+        Assert::assertNotNull($product);
+        Assert::assertNotNull($product->getValue('a_reference_entity_attribute', null, null));
+
+        // Update product with clear values
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'product_with_ref_entities', valueUserIntents: [
+            new ClearValue('a_reference_entity_attribute', null, null),
+            new ClearValue('a_reference_entity_collection_attribute', null, null),
+        ]);
+
+        $this->messageBus->dispatch($command);
+        $this->clearDoctrineUoW();
+
+        $product = $this->productRepository->findOneByIdentifier('product_with_ref_entities');
+        Assert::assertNotNull($product);
+        Assert::assertNull($product->getValue('a_reference_entity_attribute', null, null));
+        Assert::assertNull($product->getValue('a_reference_entity_collection_attribute', null, null));
     }
 
     /** @test */
