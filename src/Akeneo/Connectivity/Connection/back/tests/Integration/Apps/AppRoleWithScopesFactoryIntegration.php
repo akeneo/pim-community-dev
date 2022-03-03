@@ -83,7 +83,7 @@ SQL;
         $token = new UsernamePasswordToken('username', null, 'main', [$role]);
 
         foreach ($acls as $acl => $expectedValue) {
-            assert(is_bool($expectedValue));
+            \assert(\is_bool($expectedValue));
 
             $isAllowed = $this->accessDecisionManager->decide($token, ['EXECUTE'], new ObjectIdentity('action', $acl));
             $this->assertEquals($expectedValue, $isAllowed);

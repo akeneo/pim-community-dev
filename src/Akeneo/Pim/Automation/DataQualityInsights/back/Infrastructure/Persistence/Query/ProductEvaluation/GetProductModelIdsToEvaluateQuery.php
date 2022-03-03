@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsToEvaluateQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -21,7 +22,10 @@ final class GetProductModelIdsToEvaluateQuery implements GetProductIdsToEvaluate
         $this->db = $db;
     }
 
-    public function execute(int $limit, int $bulkSize): \Iterator
+    /**
+     * @return \Generator<int, ProductIdCollection>
+     */
+    public function execute(int $limit, int $bulkSize): \Generator
     {
         $sql = <<<SQL
 SELECT DISTINCT product_id
@@ -34,16 +38,16 @@ SQL;
 
         $productIds = [];
         while ($productId = $stmt->fetchOne()) {
-            $productIds[] = intval($productId);
+            $productIds[] = $productId;
 
             if (count($productIds) >= $bulkSize) {
-                yield $productIds;
+                yield ProductIdCollection::fromStrings($productIds);
                 $productIds = [];
             }
         }
 
         if (!empty($productIds)) {
-            yield $productIds;
+            yield ProductIdCollection::fromStrings($productIds);
         }
     }
 }

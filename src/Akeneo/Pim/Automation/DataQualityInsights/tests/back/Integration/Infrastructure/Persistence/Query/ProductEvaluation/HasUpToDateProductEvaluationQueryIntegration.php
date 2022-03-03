@@ -6,6 +6,7 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastruct
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\HasUpToDateProductEvaluationQuery;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -79,16 +80,21 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         $outdatedProductVariantId = $this->givenAProductVariantWithAnOutdatedEvaluationComparedToItsParent($today);
         $this->givenAProductWithAnUpToDateEvaluation($today);
 
-        $productIdsWithUpToDateEvaluation = $this->query->forProductIds([$outdatedProductId, $outdatedProductVariantId, $expectedProductIdA, $expectedProductIdB]);
-        $this->assertEqualsCanonicalizing([$expectedProductIdA, $expectedProductIdB], $productIdsWithUpToDateEvaluation);
+        $productIdsWithUpToDateEvaluation = $this->query->forProductIdCollection(ProductIdCollection::fromProductIds(
+            [$outdatedProductId, $outdatedProductVariantId, $expectedProductIdA, $expectedProductIdB]
+        ));
+        $this->assertEqualsCanonicalizing(
+            ProductIdCollection::fromProductIds([$expectedProductIdA, $expectedProductIdB]),
+            $productIdsWithUpToDateEvaluation
+        );
     }
 
-    public function test_it_returns_an_empty_array_if_no_product_has_up_to_date_evaluation()
+    public function test_it_returns_null_if_no_product_has_up_to_date_evaluation()
     {
         $today = new \DateTimeImmutable('2020-03-02 11:34:27');
         $outdatedProductId = $this->givenAnUpdatedProductWithAnOutdatedEvaluation($today);
 
-        $this->assertSame([], $this->query->forProductIds([$outdatedProductId]));
+        $this->assertNull($this->query->forProductIdCollection(ProductIdCollection::fromProductId($outdatedProductId)));
     }
 
     private function createProduct(): ProductId

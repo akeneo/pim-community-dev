@@ -4,6 +4,7 @@ import {useCallback} from 'react';
 type Result = {
     appName: string;
     appLogo: string;
+    appUrl: string | null;
     scopeMessages: Array<{
         icon: string;
         type: string;

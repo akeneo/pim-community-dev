@@ -1,0 +1,40 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider:
+        arguments:
+            - '@security.token_storage'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry:
+        arguments:
+            - !tagged_iterator pim_api.security.scope_mapper
+
+    # SERVICES
+    Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateConnectedAppQuery'
+
+    Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection:
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.repository.connection'
+            - '@akeneo_connectivity.connection.persistence.query.select_connection_with_credentials_by_code'
+
+    # OTHERS
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession:
+        arguments:
+            - '@session'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\AppRoleWithScopesFactory:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
+            - '@pim_user.factory.role'
+            - '@pim_user.saver.role_with_permissions'
+        public: true
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\AsymmetricKeysGenerator:
+        public: true
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup:
+        arguments:
+            - '@pim_user.factory.group'
+            - '@pim_user.updater.group'
+            - '@pim_user.saver.group'
+            - '@validator'

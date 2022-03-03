@@ -30,6 +30,6 @@ SQL;
 
         $count = $this->dbalConnection->executeQuery($selectSQL, ['filePath' => $filePath])->fetchAssociative()['count'];
 
-        return boolval($count);
+        return \boolval($count);
     }
 }

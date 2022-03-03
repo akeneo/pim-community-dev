@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema\Tests;
 
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\SaveAsymmetricKeysQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveAsymmetricKeysQuery;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 

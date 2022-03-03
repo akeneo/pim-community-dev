@@ -35,7 +35,7 @@ class DeleteClient implements DeleteClientInterface
         $fosClient = $this->clientManager->findClientBy(['id' => $clientId->id()]);
         if (null === $fosClient) {
             throw new \InvalidArgumentException(
-                sprintf('Client with id "%s" not found.', $clientId->id())
+                \sprintf('Client with id "%s" not found.', $clientId->id())
             );
         }
 

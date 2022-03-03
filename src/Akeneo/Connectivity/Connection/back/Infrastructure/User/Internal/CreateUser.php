@@ -53,9 +53,9 @@ class CreateUser implements CreateUserInterface
         $userPayload = [
             'username' => $username,
             'password' => $password,
-            'first_name' => strtr($firstname, '<>&"', '____'),
-            'last_name' => strtr($lastname, '<>&"', '____'),
-            'email' => sprintf('%s@example.com', $username),
+            'first_name' => \strtr($firstname, '<>&"', '____'),
+            'last_name' => \strtr($lastname, '<>&"', '____'),
+            'email' => \sprintf('%s@example.com', $username),
         ];
 
         if (null !== $groups) {
@@ -71,13 +71,13 @@ class CreateUser implements CreateUserInterface
         $this->userUpdater->update($user, $userPayload);
 
         $errors = $this->validator->validate($user);
-        if (0 < count($errors)) {
+        if (0 < \count($errors)) {
             $errorMessages = [];
             foreach ($errors as $error) {
                 $errorMessages[] = $error->getPropertyPath() . ': ' . $error->getMessage();
             }
 
-            throw new \LogicException("The user creation failed :\n" . implode("\n", $errorMessages));
+            throw new \LogicException("The user creation failed :\n" . \implode("\n", $errorMessages));
         }
 
         $this->userSaver->save($user);
@@ -87,13 +87,13 @@ class CreateUser implements CreateUserInterface
 
     private function generatePassword(): string
     {
-        return str_shuffle(ucfirst(substr(uniqid(), 0, 9)));
+        return \str_shuffle(\ucfirst(\substr(\uniqid(), 0, 9)));
     }
 
     private function generateUsername(string $username): string
     {
-        $randomNumberString = str_pad((string) rand(1, 9999), 4, "0", STR_PAD_LEFT);
+        $randomNumberString = \str_pad((string) \rand(1, 9999), 4, "0", STR_PAD_LEFT);
 
-        return sprintf('%s_%s', $username, $randomNumberString);
+        return \sprintf('%s_%s', $username, $randomNumberString);
     }
 }

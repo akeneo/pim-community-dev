@@ -33,7 +33,7 @@ final class UpdateConnectionAction
             throw new AccessDeniedException();
         }
 
-        $data = json_decode($request->getContent(), true);
+        $data = \json_decode($request->getContent(), true);
         // TODO: Valid JSON format
 
         $command = new UpdateConnectionCommand(

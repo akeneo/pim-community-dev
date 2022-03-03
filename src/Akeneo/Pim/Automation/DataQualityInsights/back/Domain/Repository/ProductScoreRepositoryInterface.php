@@ -13,7 +13,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductScores;
 interface ProductScoreRepositoryInterface
 {
     /**
-     * @param ProductScores[] $productsScores
+     * @param array<ProductScores> $productsScores
      */
     public function saveAll(array $productsScores): void;
 

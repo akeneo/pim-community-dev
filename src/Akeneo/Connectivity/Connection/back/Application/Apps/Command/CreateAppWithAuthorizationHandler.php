@@ -38,7 +38,7 @@ class CreateAppWithAuthorizationHandler
     public function handle(CreateAppWithAuthorizationCommand $command): void
     {
         $violations = $this->validator->validate($command);
-        if (count($violations) > 0) {
+        if (\count($violations) > 0) {
             throw new InvalidAppAuthorizationRequestException($violations);
         }
 
@@ -97,6 +97,6 @@ class CreateAppWithAuthorizationHandler
 
     private function generateRandomCode(int $maxLength = 30, string $prefix = ''): string
     {
-        return substr(sprintf('%s%s', $prefix, base_convert(bin2hex(random_bytes(16)), 16, 36)), 0, $maxLength);
+        return \substr(\sprintf('%s%s', $prefix, \base_convert(\bin2hex(\random_bytes(16)), 16, 36)), 0, $maxLength);
     }
 }

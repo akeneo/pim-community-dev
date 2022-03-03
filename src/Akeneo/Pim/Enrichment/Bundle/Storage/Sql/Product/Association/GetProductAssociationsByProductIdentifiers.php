@@ -61,7 +61,7 @@ FROM (
                        LEFT JOIN pim_catalog_product associated_product ON associated_product.id = association_to_product.product_id
                   WHERE product.identifier IN (?) 
                   AND association_type.is_quantified = false
-                  UNION ALL
+                  UNION DISTINCT
                   SELECT
                       product.identifier as product_identifier,
                       association_type.code as association_type_code,
@@ -74,7 +74,7 @@ FROM (
                        INNER JOIN pim_catalog_product associated_product ON associated_product.id = association_to_product.product_id
                   WHERE product.identifier IN (?)
                   AND association_type.is_quantified = false
-                  UNION ALL
+                  UNION DISTINCT
                   SELECT
                       product.identifier as product_identifier,
                       association_type.code as association_type_code,

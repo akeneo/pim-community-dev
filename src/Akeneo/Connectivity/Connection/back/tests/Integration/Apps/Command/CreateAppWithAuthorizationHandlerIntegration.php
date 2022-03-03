@@ -11,8 +11,9 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizat
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByIdQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
+use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -40,7 +41,7 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
     private UserManager $userManager;
     private PropertyAccessor $propertyAccessor;
     private FakeWebMarketplaceApi $webMarketplaceApi;
-    private DbalConnectedAppRepository $appRepository;
+    private FindOneConnectedAppByIdQuery $findOneConnectedAppByIdQuery;
     private ConnectionRepositoryInterface $connectionRepository;
     private RoleWithPermissionsRepository $roleWithPermissionsRepository;
     private ScopeMapperRegistry $scopeMapperRegistry;
@@ -54,13 +55,13 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->webMarketplaceApi = $this->get('akeneo_connectivity.connection.marketplace.web_marketplace_api');
+        $this->webMarketplaceApi = $this->get(WebMarketplaceApi::class);
         $this->handler = $this->get(CreateAppWithAuthorizationHandler::class);
         $this->appAuthorizationHandler = $this->get(RequestAppAuthorizationHandler::class);
         $this->clientManager = $this->get('fos_oauth_server.client_manager.default');
         $this->userManager = $this->get('pim_user.manager');
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
-        $this->appRepository = $this->get(DbalConnectedAppRepository::class);
+        $this->findOneConnectedAppByIdQuery = $this->get(FindOneConnectedAppByIdQuery::class);
         $this->connectionRepository = $this->get('akeneo_connectivity.connection.persistence.repository.connection');
         $this->roleWithPermissionsRepository = $this->get('pim_user.repository.role_with_permissions');
         $this->scopeMapperRegistry = $this->get(ScopeMapperRegistry::class);
@@ -174,7 +175,7 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
 
         $this->handler->handle(new CreateAppWithAuthorizationCommand($appId));
 
-        $foundApp = $this->appRepository->findOneById($appId);
+        $foundApp = $this->findOneConnectedAppByIdQuery->execute($appId);
         Assert::assertNotNull($foundApp, 'No persisted app found');
         Assert::assertEquals($appId, $foundApp->getId());
 
@@ -217,10 +218,10 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
         $acls = $this->scopeMapperRegistry->getAcls($scopes);
 
         foreach ($acls as $acl) {
-            $action = sprintf('action:%s', $acl);
+            $action = \sprintf('action:%s', $acl);
             Assert::assertTrue(
                 $permissions[$action],
-                sprintf('ACL %s was not granted for the scopes "%s"', $acl, implode(' ', $scopes))
+                \sprintf('ACL %s was not granted for the scopes "%s"', $acl, \implode(' ', $scopes))
             );
         }
     }

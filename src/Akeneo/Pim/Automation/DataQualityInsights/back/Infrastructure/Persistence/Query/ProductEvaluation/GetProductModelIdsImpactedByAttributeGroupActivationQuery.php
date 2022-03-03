@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Result;
 
@@ -24,15 +25,18 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQuery implements
         $this->dbConnection = $dbConnection;
     }
 
-    public function updatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Iterator
+    /**
+     * @return \Generator<int, ProductIdCollection>
+     */
+    public function updatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Generator
     {
         $productModelIds = [];
         $stmtRootProductModels = $this->executeQueryToRetrieveImpactedRootProductModels($updatedSince);
 
         while ($productModelId = $stmtRootProductModels->fetchOne()) {
-            $productModelIds[] = new ProductId(intval($productModelId));
+            $productModelIds[] = $productModelId;
             if (count($productModelIds) >= $bulkSize) {
-                yield $productModelIds;
+                yield ProductIdCollection::fromStrings($productModelIds);
                 $productModelIds = [];
             }
         }
@@ -40,16 +44,16 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQuery implements
         $stmtSubProductModels = $this->executeQueryToRetrieveImpactedSubProductModels($updatedSince);
 
         while ($productModelId = $stmtSubProductModels->fetchOne()) {
-            $productModelIds[] = new ProductId(intval($productModelId));
+            $productModelIds[] = $productModelId;
             if (count($productModelIds) >= $bulkSize) {
-                yield $productModelIds;
+                yield ProductIdCollection::fromStrings($productModelIds);
                 $productModelIds = [];
             }
         }
 
 
         if (!empty($productModelIds)) {
-            yield $productModelIds;
+            yield ProductIdCollection::fromStrings($productModelIds);
         }
     }
 

@@ -24,10 +24,10 @@ class InMemoryConnectionRepository implements ConnectionRepositoryInterface
             'flow_type' => (string) $connection->flowType(),
             'client_id' => $connection->clientId()->id(),
             'user_id' => $connection->userId()->id(),
-            'random_id' => uniqid(),
-            'secret' => uniqid(),
+            'random_id' => \uniqid(),
+            'secret' => \uniqid(),
             'username' => (string) $connection->code(),
-            'password' => uniqid(),
+            'password' => \uniqid(),
             'image' => null,
             'auditable' => $connection->auditable(),
             'type' => (string) $connection->type(),
@@ -56,7 +56,7 @@ class InMemoryConnectionRepository implements ConnectionRepositoryInterface
     public function update(Connection $connection): void
     {
         if (!isset($this->dataRows[(string) $connection->code()])) {
-            throw new \LogicException(sprintf('Connection "%s" never persisted!', (string) $connection->code()));
+            throw new \LogicException(\sprintf('Connection "%s" never persisted!', (string) $connection->code()));
         }
 
         $this->dataRows[(string) $connection->code()]['label'] = (string) $connection->label();
@@ -74,6 +74,6 @@ class InMemoryConnectionRepository implements ConnectionRepositoryInterface
 
     public function count(): int
     {
-        return count($this->dataRows);
+        return \count($this->dataRows);
     }
 }

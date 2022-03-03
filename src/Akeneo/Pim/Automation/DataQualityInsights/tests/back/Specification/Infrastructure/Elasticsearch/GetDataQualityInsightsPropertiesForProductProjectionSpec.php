@@ -11,6 +11,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
 
@@ -48,7 +49,7 @@ final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends Obj
         $localeEn = new LocaleCode('en_US');
         $localeFr = new LocaleCode('fr_FR');
 
-        $getProductScoresQuery->byProductIds($productIds)->willReturn([
+        $getProductScoresQuery->byProductIds(ProductIdCollection::fromProductIds([$productId42, $productId123, $productId456]))->willReturn([
             42 => (new ChannelLocaleRateCollection)
                 ->addRate($channelMobile, $localeEn, new Rate(81))
                 ->addRate($channelMobile, $localeFr, new Rate(30))
@@ -96,7 +97,7 @@ final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends Obj
             ],
         ];
 
-        $computeProductsKeyIndicators->compute($productIds)->willReturn($productsKeyIndicators);
+        $computeProductsKeyIndicators->compute(ProductIdCollection::fromProductIds($productIds))->willReturn($productsKeyIndicators);
 
         $this->fromProductIdentifiers($productIdentifiers)->shouldReturn([
             'product_1' => [

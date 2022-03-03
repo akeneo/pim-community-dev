@@ -106,7 +106,7 @@ class WebhookEventBuilder
             $data = $eventDataCollection->getEventData($pimEvent);
 
             if (null === $data) {
-                throw new \LogicException(sprintf('Event %s should have event data', $pimEvent->getUuid()));
+                throw new \LogicException(\sprintf('Event %s should have event data', $pimEvent->getUuid()));
             }
 
             if ($data instanceof \Throwable) {
@@ -121,7 +121,7 @@ class WebhookEventBuilder
             $apiEvents[] = new WebhookEvent(
                 $pimEvent->getName(),
                 $pimEvent->getUuid(),
-                date(\DateTimeInterface::ATOM, $pimEvent->getTimestamp()),
+                \date(\DateTimeInterface::ATOM, $pimEvent->getTimestamp()),
                 $pimEvent->getAuthor(),
                 $context['pim_source'],
                 $data,

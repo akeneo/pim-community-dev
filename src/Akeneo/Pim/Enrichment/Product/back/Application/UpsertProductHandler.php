@@ -7,13 +7,20 @@ namespace Akeneo\Pim\Enrichment\Product\Application;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\LegacyViolationsException;
-use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\ViolationsException;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\Domain\Event\ProductWasCreated;
+use Akeneo\Pim\Enrichment\Product\Domain\Event\ProductWasUpdated;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -32,7 +39,8 @@ final class UpsertProductHandler
         private ProductBuilderInterface $productBuilder,
         private SaverInterface $productSaver,
         private ObjectUpdaterInterface $productUpdater,
-        private ValidatorInterface $productValidator
+        private ValidatorInterface $productValidator,
+        private EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -48,7 +56,9 @@ final class UpsertProductHandler
         }
 
         $product = $this->productRepository->findOneByIdentifier($command->productIdentifier());
+        $isCreation = false;
         if (null === $product) {
+            $isCreation = true;
             $product = $this->productBuilder->createProduct($command->productIdentifier());
         }
 
@@ -61,15 +71,25 @@ final class UpsertProductHandler
             throw new LegacyViolationsException($violations);
         }
 
+        $isUpdate = $product->isDirty();
         $this->productSaver->save($product);
+
+        if ($isCreation) {
+            $this->eventDispatcher->dispatch(new ProductWasCreated($product->getIdentifier()));
+        } elseif ($isUpdate) {
+            $this->eventDispatcher->dispatch(new ProductWasUpdated($product->getIdentifier()));
+        }
     }
 
-    private function updateProduct(ProductInterface $product, UpsertProductCommand $command)
+    private function updateProduct(ProductInterface $product, UpsertProductCommand $command): void
     {
-        foreach ($command->valuesUserIntent() as $index => $valueUserIntent) {
+        foreach ($command->valueUserIntents() as $index => $valueUserIntent) {
             $found = false;
             try {
-                if ($valueUserIntent instanceof SetTextValue) {
+                if ($valueUserIntent instanceof SetTextValue
+                    || $valueUserIntent instanceof SetNumberValue
+                    || $valueUserIntent instanceof SetTextareaValue
+                ) {
                     $found = true;
                     $this->productUpdater->update($product, [
                         'values' => [
@@ -82,6 +102,35 @@ final class UpsertProductHandler
                             ],
                         ],
                     ]);
+                } elseif ($valueUserIntent instanceof SetMetricValue) {
+                    $found = true;
+                    $this->productUpdater->update($product, [
+                        'values' => [
+                            $valueUserIntent->attributeCode() => [
+                                [
+                                    'locale' => $valueUserIntent->localeCode(),
+                                    'scope' => $valueUserIntent->channelCode(),
+                                    'data' => [
+                                        'amount' => $valueUserIntent->amount(),
+                                        'unit' => $valueUserIntent->unit(),
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ]);
+                } elseif ($valueUserIntent instanceof ClearValue) {
+                    $found = true;
+                    $this->productUpdater->update($product, [
+                        'values' => [
+                            $valueUserIntent->attributeCode() => [
+                                [
+                                    'locale' => $valueUserIntent->localeCode(),
+                                    'scope' => $valueUserIntent->channelCode(),
+                                    'data' => null,
+                                ],
+                            ],
+                        ],
+                    ]);
                 }
             } catch (PropertyException $e) {
                 $violations = new ConstraintViolationList([
@@ -90,12 +139,12 @@ final class UpsertProductHandler
                         $e->getMessage(),
                         [],
                         $command,
-                        "valueUserIntent[$index]",
+                        "valueUserIntents[$index]",
                         $valueUserIntent
                     ),
                 ]);
 
-                throw new LegacyViolationsException($violations);
+                throw new ViolationsException($violations);
             }
 
             if (!$found) {

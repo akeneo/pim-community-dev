@@ -1,0 +1,55 @@
+services:
+    # MARKETPLACE
+    ## INTERNAL
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Controller\Internal\GetWebMarketplaceUrlAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Marketplace\MarketplaceUrlGenerator'
+            - '@pim_user.context.user'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Controller\Internal\GetAllExtensionsAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAllExtensionsQuery'
+            - '@Akeneo\Connectivity\Connection\Application\Marketplace\MarketplaceAnalyticsGenerator'
+            - '@pim_user.context.user'
+            - '@logger'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Controller\Internal\GetAllAppsAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAllAppsQuery'
+            - '@Akeneo\Connectivity\Connection\Application\Marketplace\MarketplaceAnalyticsGenerator'
+            - '@pim_user.context.user'
+            - '@logger'
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Controller\Internal\GetAllTestAppsAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.app_developer_mode.feature'
+            - '@Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAllTestAppsQuery'
+
+    # TEST APPS
+    ## INTERNAL
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\Internal\CreateTestAppAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.app_developer_mode.feature'
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@validator'
+            - '@security.token_storage'
+            - '@Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command\CreateTestAppCommandHandler'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppSecretQuery'
+            - '@oro_security.security_facade'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\Internal\DeleteTestAppAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.app_developer_mode.feature'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command\DeleteTestAppHandler'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppQuery'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler'

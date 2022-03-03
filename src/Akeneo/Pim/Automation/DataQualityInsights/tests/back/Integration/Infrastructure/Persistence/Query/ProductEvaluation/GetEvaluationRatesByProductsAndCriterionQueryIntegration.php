@@ -11,6 +11,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationRatesByProductsAndCriterionQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
@@ -44,7 +45,7 @@ final class GetEvaluationRatesByProductsAndCriterionQueryIntegration extends Dat
 
         $productIds = array_keys($expectedEvaluationRates);
         $productIds[] = 12345; // Unknown product
-        $productIds = array_map(fn(int $productId) => new ProductId($productId), $productIds);
+        $productIds = ProductIdCollection::fromInts($productIds);
 
         $evaluationRates = $this->get(GetEvaluationRatesByProductsAndCriterionQuery::class)
             ->toArrayInt($productIds, new CriterionCode('spelling'));

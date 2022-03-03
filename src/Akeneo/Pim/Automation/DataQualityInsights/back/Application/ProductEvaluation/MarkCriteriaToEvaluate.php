@@ -40,15 +40,15 @@ final class MarkCriteriaToEvaluate implements MarkCriteriaToEvaluateInterface
 
     private function markCriteriaForProductsUpdatedSince(\DateTimeImmutable $updatedSince, int $batchSize): void
     {
-        foreach ($this->getUpdatedProductIdsQuery->since($updatedSince, $batchSize) as $productIds) {
-            $this->createProductsCriteriaEvaluations->createAll($productIds);
+        foreach ($this->getUpdatedProductIdsQuery->since($updatedSince, $batchSize) as $productIdCollection) {
+            $this->createProductsCriteriaEvaluations->createAll($productIdCollection);
         }
     }
 
     private function markCriteriaForProductsImpactedByAttributeGroupActivationUpdatedSince(\DateTimeImmutable $updatedSince, int $batchSize): void
     {
-        foreach ($this->getProductIdsImpactedByAttributeGroupActivationQuery->updatedSince($updatedSince, $batchSize) as $productIds) {
-            $this->createProductsCriteriaEvaluations->createAll($productIds);
+        foreach ($this->getProductIdsImpactedByAttributeGroupActivationQuery->updatedSince($updatedSince, $batchSize) as $productIdCollection) {
+            $this->createProductsCriteriaEvaluations->createAll($productIdCollection);
         }
     }
 }

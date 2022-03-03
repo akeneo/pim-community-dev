@@ -119,7 +119,7 @@ class GetProductModelsAssociationsByProductModelCodesIntegration extends TestCas
                 'sub_product_models' => [
                     'sub_product_model_1_1' => [
                         'associations' => [
-                            'X_SELL' => ['product_models' => ['productModelD']],
+                            'X_SELL' => ['product_models' => ['productModelD', 'productModelF']],
                             'SUBSTITUTION' => ['product_models' => ['productModelB']],
                         ],
                     ],

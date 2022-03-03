@@ -20,7 +20,20 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $container->setParameter('connectivity.marketplace_fixtures_directory', __DIR__ . '/../Resources/fixtures/');
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('apps.yml');
+        $loader->load('Apps/commands.yml');
+        $loader->load('Apps/controllers.yml');
+        $loader->load('Apps/handlers.yml');
+        $loader->load('Apps/install.yml');
+        $loader->load('Apps/normalizers.yml');
+        $loader->load('Apps/oauth.yml');
+        $loader->load('Apps/queries.yml');
+        $loader->load('Apps/services.yml');
+        $loader->load('Apps/validators.yml');
+        $loader->load('Marketplace/controllers.yml');
+        $loader->load('Marketplace/handlers.yml');
+        $loader->load('Marketplace/install.yml');
+        $loader->load('Marketplace/queries.yml');
+        $loader->load('Marketplace/services.yml');
         $loader->load('cli.yml');
         $loader->load('controllers.yml');
         $loader->load('event_normalizers.yml');
@@ -28,7 +41,6 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('feature_flag.yml');
         $loader->load('handlers.yml');
         $loader->load('install.yml');
-        $loader->load('marketplace.yml');
         $loader->load('message_handler.yml');
         $loader->load('queries.yml');
         $loader->load('repositories.yml');

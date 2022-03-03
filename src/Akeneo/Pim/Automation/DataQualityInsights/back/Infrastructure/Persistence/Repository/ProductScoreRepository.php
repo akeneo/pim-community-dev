@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductScoreRepositoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 
@@ -45,6 +42,9 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
         $this->dbConnection = $dbConnection;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function saveAll(array $productsScores): void
     {
         if (empty($productsScores)) {
@@ -55,7 +55,6 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
         $queriesParameters = [];
         $queriesParametersTypes = [];
 
-        /** @var Write\ProductScores $productScore */
         foreach ($productsScores as $index => $productScore) {
             Assert::isInstanceOf($productScore, Write\ProductScores::class);
             $productId = sprintf('productId_%d', $index);
@@ -70,7 +69,7 @@ SQL;
             $queriesParameters[$productId] = $productScore->getProductId()->toInt();
             $queriesParametersTypes[$productId] = \PDO::PARAM_INT;
             $queriesParameters[$evaluatedAt] = $productScore->getEvaluatedAt()->format('Y-m-d');
-            $queriesParameters[$scores] = $this->formatScores($productScore->getScores());
+            $queriesParameters[$scores] = \json_encode($productScore->getScores()->toNormalizedRates());
         }
 
         $this->dbConnection->executeQuery($queries, $queriesParameters, $queriesParametersTypes);
@@ -91,17 +90,5 @@ SQL;
             $query,
             ['purge_date' => $date->format('Y-m-d')]
         );
-    }
-
-    private function formatScores(ChannelLocaleRateCollection $scores): string
-    {
-        $formattedScores = $scores->mapWith(function (Rate $score) {
-            return [
-                'rank' => Rank::fromRate($score)->toInt(),
-                'value' => $score->toInt(),
-            ];
-        });
-
-        return json_encode($formattedScores);
     }
 }

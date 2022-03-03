@@ -2,29 +2,20 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2022 Akeneo SAS (https://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Test\Pim\Enrichment\Product\Integration\Handler;
 
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\ViolationsException;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
-use Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 final class UpsertProductWithPermissionIntegration extends EnrichmentProductTestCase
 {
-    private UpsertProductHandler $upsertProductHandler;
+    private MessageBusInterface $messageBus;
     private ProductRepositoryInterface $productRepository;
 
     /**
@@ -37,7 +28,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
 
         $this->loadEnrichmentProductFunctionalFixtures();
 
-        $this->upsertProductHandler = $this->get(UpsertProductHandler::class);
+        $this->messageBus = $this->get('pim_enrich.product.message_bus');
         $this->productRepository = $this->get('pim_catalog.repository.product');
     }
 
@@ -54,19 +45,31 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('You don\'t have access to products in any tree, please contact your administrator');
 
-        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'identifier', valueUserIntents: [
             new SetTextValue('a_text', null, null, 'foo'),
         ]);
-        ($this->upsertProductHandler)($command);
+        $this->messageBus->dispatch($command);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_user_locale_is_not_granted(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('You don\'t have access to product data in any activated locale, please contact your administrator');
+
+        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'identifier', valueUserIntents: [
+            new SetTextValue('name', null, 'en_GB', 'foo'),
+        ]);
+        $this->messageBus->dispatch($command);
     }
 
     /** @test */
     public function it_creates_a_new_uncategorized_product(): void
     {
-        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'new_product', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'new_product', valueUserIntents: [
             new SetTextValue('name', null, null, 'foo'),
         ]);
-        ($this->upsertProductHandler)($command);
+        $this->messageBus->dispatch($command);
 
         $this->clearDoctrineUoW();
         $product = $this->productRepository->findOneByIdentifier('new_product');

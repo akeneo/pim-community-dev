@@ -26,13 +26,13 @@ class ElasticsearchBusinessErrorRepository implements BusinessErrorRepositoryInt
 
     public function bulkInsert(ConnectionCode $connectionCode, array $businessErrors): void
     {
-        if (0 === count($businessErrors)) {
+        if (0 === \count($businessErrors)) {
             return;
         }
 
         $code = (string) $connectionCode;
-        $documents = array_map(function (BusinessError $businessError) use ($code) {
-            return array_merge(['connection_code' => $code], $businessError->normalize());
+        $documents = \array_map(function (BusinessError $businessError) use ($code) {
+            return \array_merge(['connection_code' => $code], $businessError->normalize());
         }, $businessErrors);
 
         $this->errorClient->bulkIndexes($documents);

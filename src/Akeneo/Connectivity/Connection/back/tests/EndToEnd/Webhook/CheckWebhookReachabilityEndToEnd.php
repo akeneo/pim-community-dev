@@ -37,14 +37,14 @@ class CheckWebhookReachabilityEndToEnd extends WebTestCase
 
         $this->client->request(
             'POST',
-            sprintf('/rest/connections/%s/webhook/check-reachability', $sapConnection->code()),
+            \sprintf('/rest/connections/%s/webhook/check-reachability', $sapConnection->code()),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
-            json_encode(['url' => 'http://www.get-response-200.com'])
+            \json_encode(['url' => 'http://www.get-response-200.com'])
         );
 
-        $result = json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true);
 
         Assert::assertIsArray($result);
         Assert::assertEquals(['success' => true, 'message' => '200 OK'], $result);
@@ -57,14 +57,14 @@ class CheckWebhookReachabilityEndToEnd extends WebTestCase
 
         $this->client->request(
             'POST',
-            sprintf('/rest/connections/%s/webhook/check-reachability', $sapConnection->code()),
+            \sprintf('/rest/connections/%s/webhook/check-reachability', $sapConnection->code()),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
-            json_encode(['url' => 'I_AM_NOT_AN_URL'])
+            \json_encode(['url' => 'I_AM_NOT_AN_URL'])
         );
 
-        $result = json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true);
 
         Assert::assertIsArray($result);
         Assert::assertEquals(['success' => false, 'message' => 'This value is not a valid URL.'], $result);
@@ -77,14 +77,14 @@ class CheckWebhookReachabilityEndToEnd extends WebTestCase
 
         $this->client->request(
             'POST',
-            sprintf('/rest/connections/%s/webhook/check-reachability', $sapConnection->code()),
+            \sprintf('/rest/connections/%s/webhook/check-reachability', $sapConnection->code()),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
-            json_encode(['url' => ''])
+            \json_encode(['url' => ''])
         );
 
-        $result = json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true);
 
         Assert::assertIsArray($result);
         Assert::assertEquals(['success' => false, 'message' => 'This value should not be blank.'], $result);
@@ -110,14 +110,14 @@ class CheckWebhookReachabilityEndToEnd extends WebTestCase
 
         $this->client->request(
             'POST',
-            sprintf('/rest/connections/%s/webhook/check-reachability', $sapConnection->code()),
+            \sprintf('/rest/connections/%s/webhook/check-reachability', $sapConnection->code()),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
-            json_encode(['url' => 'http://www.get-response-451.com'])
+            \json_encode(['url' => 'http://www.get-response-451.com'])
         );
 
-        $result = json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true);
 
         Assert::assertIsArray($result);
         Assert::assertEquals(['success' => false, 'message' => '451 Unavailable For Legal Reasons'], $result);
@@ -142,14 +142,14 @@ class CheckWebhookReachabilityEndToEnd extends WebTestCase
 
         $this->client->request(
             'POST',
-            sprintf('/rest/connections/%s/webhook/check-reachability', $sapConnection->code()),
+            \sprintf('/rest/connections/%s/webhook/check-reachability', $sapConnection->code()),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
-            json_encode(['url' => 'http://www.get-response-451.com'])
+            \json_encode(['url' => 'http://www.get-response-451.com'])
         );
 
-        $result = json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true);
 
         Assert::assertIsArray($result);
         Assert::assertEquals(['success' => false, 'message' => 'Failed to connect to server'], $result);

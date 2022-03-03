@@ -15,8 +15,8 @@ use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DbalConnectedAppRepository;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\GetUserConsentedAuthenticationScopesQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateConnectedAppQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetUserConsentedAuthenticationScopesQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup;
 use Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUser;
@@ -38,7 +38,7 @@ class ConsentAppAuthenticationHandlerIntegration extends TestCase
     private PropertyAccessor $propertyAccessor;
     private ConsentAppAuthenticationHandler $handler;
     private AppAuthorizationSession $appAuthorizationSession;
-    private DbalConnectedAppRepository $repository;
+    private CreateConnectedAppQuery $createConnectedAppQuery;
     private CreateConnection $createConnection;
     private ClientProvider $clientProvider;
     private CreateUserGroup $createUserGroup;
@@ -58,9 +58,9 @@ class ConsentAppAuthenticationHandlerIntegration extends TestCase
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
         $this->handler = $this->get(ConsentAppAuthenticationHandler::class);
         $this->appAuthorizationSession = $this->get(AppAuthorizationSession::class);
-        $this->repository = $this->get(DbalConnectedAppRepository::class);
+        $this->createConnectedAppQuery = $this->get(CreateConnectedAppQuery::class);
         $this->createConnection = $this->get(CreateConnection::class);
-        $this->clientProvider = $this->get('akeneo_connectivity.connection.service.apps.client_provider');
+        $this->clientProvider = $this->get(ClientProvider::class);
         $this->createUserGroup = $this->get(CreateUserGroup::class);
         $this->createUser = $this->get('akeneo_connectivity.connection.service.user.create_user');
         $this->getUserConsentedAuthenticationScopesQuery = $this->get(GetUserConsentedAuthenticationScopesQuery::class);
@@ -216,7 +216,7 @@ class ConsentAppAuthenticationHandlerIntegration extends TestCase
             $user->id()
         );
 
-        $this->repository->create(
+        $this->createConnectedAppQuery->execute(
             new ConnectedApp(
                 $appPublicId,
                 'App',
