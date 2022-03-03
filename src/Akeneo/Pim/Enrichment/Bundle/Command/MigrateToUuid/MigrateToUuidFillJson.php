@@ -2,7 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
+use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StackedContextProcessor;
 use Doctrine\DBAL\Connection;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -27,13 +29,23 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         'pim_catalog_product_model'
     ];
 
-    public function __construct(private Connection $connection)
-    {
+    private int $cumulatedUpdatedJson; // cumulative counter of updated json through all tables
+
+    public function __construct(
+        private Connection $connection,
+        private LoggerInterface $logger,
+        private StackedContextProcessor $contextProcessor
+    ) {
     }
 
     public function getDescription(): string
     {
         return 'Adds product_uuid field in JSON objects';
+    }
+
+    public function getName(): string
+    {
+        return 'fill_json';
     }
 
     public function shouldBeExecuted(): bool
@@ -91,8 +103,11 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
     public function addMissing(Context $context, OutputInterface $output): bool
     {
         $allItemsMigrated = true;
+        $this->cumulatedUpdatedJson = 0;
         foreach (self::TABLE_NAMES as $tableName) {
+            $this->contextProcessor->push(['substep' => $tableName]);
             $allItemsMigrated = $this->addMissingForTable($context->dryRun(), $output, $tableName) && $allItemsMigrated;
+            $this->contextProcessor->pop(); //pop substep name
         }
 
         return $allItemsMigrated;
@@ -196,6 +211,8 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         $previousEntityId = -1;
         $formerAssociations = $this->getFormerAssociations($tableName, $previousEntityId);
 
+        $this->contextProcessor->push(['total_missing_associations_counter' => count($associations)]);
+        $updatedAssociationsCount = 0;
         while (count($formerAssociations) > 0) {
             $productIdToUuidMap = $this->getProductIdToUuidMap($formerAssociations, $dryRun);
             $newAssociations = $this->getNewAssociationsAndIds($output, $formerAssociations, $productIdToUuidMap);
