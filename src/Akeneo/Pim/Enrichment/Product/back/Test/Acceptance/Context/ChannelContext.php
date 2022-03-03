@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context;
 
-use Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetEditableLocaleCodes;
+use Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryIsLocaleEditable;
 use Behat\Behat\Context\Context;
 
 /**
@@ -13,7 +13,7 @@ use Behat\Behat\Context\Context;
  */
 final class ChannelContext implements Context
 {
-    public function __construct(private InMemoryGetEditableLocaleCodes $getEditableLocaleCodes)
+    public function __construct(private InMemoryIsLocaleEditable $isLocaleEditable)
     {
     }
 
@@ -22,6 +22,6 @@ final class ChannelContext implements Context
      */
     public function theUserGroupHasEditablePermissionOnLocale(string $groupName, string $localeCode): void
     {
-        $this->getEditableLocaleCodes->addOwnedCategoryCode($groupName, $localeCode);
+        $this->isLocaleEditable->addEditableLocaleCodeForGroup($groupName, $localeCode);
     }
 }

@@ -31,7 +31,7 @@ services:
     Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ChannelContext:
         public: true
         arguments:
-            - '@Akeneo\Channel\Locale\API\Query\GetEditableLocaleCodes'
+            - '@Akeneo\Channel\Locale\API\Query\IsLocaleEditable'
 
     # Queries
     Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes:
@@ -44,7 +44,7 @@ services:
         arguments:
             - '@pim_user.repository.user'
 
-    Akeneo\Channel\Locale\API\Query\GetEditableLocaleCodes:
-        class: Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetEditableLocaleCodes
+    Akeneo\Channel\Locale\API\Query\IsLocaleEditable:
+        class: Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryIsLocaleEditable
         arguments:
             - '@pim_user.repository.user'

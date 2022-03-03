@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory;
 
-use Akeneo\Channel\Locale\API\Query\GetEditableLocaleCodes;
-use Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetEditableLocaleCodes;
+use Akeneo\Channel\Locale\API\Query\IsLocaleEditable;
+use Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryIsLocaleEditable;
 use Akeneo\Test\Acceptance\User\InMemoryUserRepository;
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
 
-class InMemoryGetEditableLocaleCodesSpec extends ObjectBehavior
+class InMemoryIsLocaleEditableSpec extends ObjectBehavior
 {
     function let()
     {
@@ -43,20 +43,27 @@ class InMemoryGetEditableLocaleCodesSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(InMemoryGetEditableLocaleCodes::class);
-        $this->shouldImplement(GetEditableLocaleCodes::class);
+        $this->shouldHaveType(InMemoryIsLocaleEditable::class);
+        $this->shouldImplement(IsLocaleEditable::class);
     }
 
     function it_returns_all_activated_locale_codes()
     {
-        $this->forUserId(1)->shouldReturn([]);
-        $this->forUserId(2)->shouldReturn([]);
-        $this->forUserId(3)->shouldReturn([]);
+        $this->forUserId('en_US', 1)->shouldReturn(false);
+        $this->forUserId('fr_FR', 1)->shouldReturn(false);
+        $this->forUserId('en_US', 2)->shouldReturn(false);
+        $this->forUserId('fr_FR', 2)->shouldReturn(false);
+        $this->forUserId('en_US', 3)->shouldReturn(false);
+        $this->forUserId('fr_FR', 3)->shouldReturn(false);
+        $this->forUserId('en_US', 99)->shouldReturn(false);
 
-        $this->addOwnedCategoryCode('admin', 'fr_FR');
         $this->addOwnedCategoryCode('admin', 'en_US');
-        $this->forUserId(1)->shouldReturn([]);
-        $this->forUserId(2)->shouldReturn(['fr_FR', 'en_US']);
-        $this->forUserId(3)->shouldReturn([]);
+        $this->forUserId('en_US', 1)->shouldReturn(false);
+        $this->forUserId('fr_FR', 1)->shouldReturn(false);
+        $this->forUserId('en_US', 2)->shouldReturn(true);
+        $this->forUserId('fr_FR', 2)->shouldReturn(false);
+        $this->forUserId('en_US', 3)->shouldReturn(false);
+        $this->forUserId('fr_FR', 3)->shouldReturn(false);
+        $this->forUserId('en_US', 99)->shouldReturn(false);
     }
 }
