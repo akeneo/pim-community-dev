@@ -6,7 +6,6 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Install;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler;
-use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionEventsApiRequestCountTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateWrongCredentialsCombinationQuery;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
@@ -45,7 +44,6 @@ class InstallSubscriber implements EventSubscriberInterface
     {
         $this->dbalConnection->executeStatement(CreateConnectionTableQuery::QUERY);
         $this->dbalConnection->executeStatement(CreateWrongCredentialsCombinationQuery::QUERY);
-        $this->dbalConnection->executeStatement(CreateConnectionEventsApiRequestCountTableQuery::QUERY);
     }
 
     public function loadFixtures(InstallerEvent $installerEvent): void
