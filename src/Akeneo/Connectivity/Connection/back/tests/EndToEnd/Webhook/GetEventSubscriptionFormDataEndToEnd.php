@@ -46,9 +46,9 @@ class GetEventSubscriptionFormDataEndToEnd extends WebTestCase
         $this->authenticateAsAdmin();
         $this->client->request(
             'GET',
-            sprintf('/rest/connections/%s/webhook', $erpConnection->code()),
+            \sprintf('/rest/connections/%s/webhook', $erpConnection->code()),
         );
-        $result = json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true);
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         Assert::assertEquals(

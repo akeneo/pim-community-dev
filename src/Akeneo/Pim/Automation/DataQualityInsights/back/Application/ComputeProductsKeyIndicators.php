@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\ComputeProductsKeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -26,17 +26,17 @@ class ComputeProductsKeyIndicators
     }
 
     /**
-     * @param ProductId[] $productIds
+     * @param ProductIdCollection $productIdCollection
      *
      * @return array
      */
-    public function compute(array $productIds): array
+    public function compute(ProductIdCollection $productIdCollection): array
     {
         $localesByChannel = $this->getLocalesByChannelQuery->getArray();
-        $keyIndicatorsResultsByName = $this->executeAllKeyIndicatorsQueries($productIds);
+        $keyIndicatorsResultsByName = $this->executeAllKeyIndicatorsQueries($productIdCollection);
 
         $productsKeyIndicators = [];
-        foreach ($productIds as $productId) {
+        foreach ($productIdCollection as $productId) {
             $productId = $productId->toInt();
             foreach ($localesByChannel as $channel => $locales) {
                 foreach ($locales as $locale) {
@@ -50,11 +50,11 @@ class ComputeProductsKeyIndicators
         return $productsKeyIndicators;
     }
 
-    private function executeAllKeyIndicatorsQueries(array $productIds): array
+    private function executeAllKeyIndicatorsQueries(ProductIdCollection $productIdCollection): array
     {
         $keyIndicatorsResults = [];
         foreach ($this->keyIndicatorQueries as $keyIndicatorQuery) {
-            $keyIndicatorResult = $keyIndicatorQuery->compute($productIds);
+            $keyIndicatorResult = $keyIndicatorQuery->compute($productIdCollection);
             if (! empty($keyIndicatorResult)) {
                 $keyIndicatorsResults[$keyIndicatorQuery->getName()] = $keyIndicatorResult;
             }

@@ -2,17 +2,17 @@
 
 akeneo_connectivity_connection_connect_apps_v1_authorize:
     path: '/connect/apps/v1/authorize'
-    controller: akeneo_connectivity.connection.public.controller.apps.authorize
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\AuthorizeAction
     methods: [ GET ]
 
 akeneo_connectivity_connection_connect_apps_v1_token:
     path: '/connect/apps/v1/oauth2/token'
-    controller: akeneo_connectivity.connection.public.controller.apps.token
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\RequestAccessTokenAction
     methods: [ POST ]
 
 akeneo_connectivity_connection_connect_apps_v1_openid_public_key:
     path: '/connect/apps/v1/openid/public-key'
-    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\GetOpenIdPublicKeyAction
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\GetOpenIdPublicKeyAction
     methods: [ GET ]
 
 # Internal API
@@ -44,11 +44,10 @@ akeneo_connectivity_connection_events_api_debug_rest:
     prefix: /rest/events-api-debug
 
 akeneo_connectivity_connection_marketplace_rest:
-    resource: ./routing/marketplace.yml
-    prefix: /rest/marketplace
+    resource: ./Marketplace/routing.yml
 
 akeneo_connectivity_connection_apps:
-    resource: ./routing/apps.yml
+    resource: ./Apps/routing.yml
     prefix: /rest/apps
 
 # Frontend

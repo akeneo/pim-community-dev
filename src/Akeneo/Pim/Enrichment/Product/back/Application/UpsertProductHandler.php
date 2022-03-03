@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsExceptio
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
@@ -82,7 +83,7 @@ final class UpsertProductHandler
 
     private function updateProduct(ProductInterface $product, UpsertProductCommand $command): void
     {
-        foreach ($command->valuesUserIntent() as $index => $valueUserIntent) {
+        foreach ($command->valueUserIntents() as $index => $valueUserIntent) {
             $found = false;
             try {
                 if ($valueUserIntent instanceof SetTextValue
@@ -97,6 +98,22 @@ final class UpsertProductHandler
                                     'locale' => $valueUserIntent->localeCode(),
                                     'scope' => $valueUserIntent->channelCode(),
                                     'data' => $valueUserIntent->value(),
+                                ],
+                            ],
+                        ],
+                    ]);
+                } elseif ($valueUserIntent instanceof SetMetricValue) {
+                    $found = true;
+                    $this->productUpdater->update($product, [
+                        'values' => [
+                            $valueUserIntent->attributeCode() => [
+                                [
+                                    'locale' => $valueUserIntent->localeCode(),
+                                    'scope' => $valueUserIntent->channelCode(),
+                                    'data' => [
+                                        'amount' => $valueUserIntent->amount(),
+                                        'unit' => $valueUserIntent->unit(),
+                                    ],
                                 ],
                             ],
                         ],
@@ -122,12 +139,12 @@ final class UpsertProductHandler
                         $e->getMessage(),
                         [],
                         $command,
-                        "valueUserIntent[$index]",
+                        "valueUserIntents[$index]",
                         $valueUserIntent
                     ),
                 ]);
 
-                throw new LegacyViolationsException($violations);
+                throw new ViolationsException($violations);
             }
 
             if (!$found) {

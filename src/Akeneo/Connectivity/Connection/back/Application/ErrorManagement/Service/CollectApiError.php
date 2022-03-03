@@ -108,7 +108,7 @@ class CollectApiError
             $errorCounts[] = new HourlyErrorCount(
                 (string) $connection->code(),
                 HourlyInterval::createFromDateTime($now),
-                count($errors),
+                \count($errors),
                 $errorType
             );
         }

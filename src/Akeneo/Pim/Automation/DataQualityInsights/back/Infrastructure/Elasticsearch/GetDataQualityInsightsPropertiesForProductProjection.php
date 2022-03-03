@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdsFromProductIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductScoresQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface;
 
 /**
@@ -32,16 +33,21 @@ final class GetDataQualityInsightsPropertiesForProductProjection implements GetA
     }
 
     /**
-     * @inheritDoc
+     * @param array<string> $productIdentifiers
+     * @param array<string, mixed> $context
+     *
+     * @return array<string, array{data_quality_insights: array{scores: array, key_indicators: array}}>
      */
     public function fromProductIdentifiers(array $productIdentifiers, array $context = []): array
     {
-        $productIds = $this->getProductIdsFromProductIdentifiersQuery->execute($productIdentifiers);
-        $productScores = $this->getProductScoresQuery->byProductIds($productIds);
-        $productKeyIndicators = $this->getProductsKeyIndicators->compute($productIds);
+        $productIdentifierIds = $this->getProductIdsFromProductIdentifiersQuery->execute($productIdentifiers);
+
+        $productIdCollection = ProductIdCollection::fromProductIds(array_values($productIdentifierIds));
+        $productScores = $this->getProductScoresQuery->byProductIds($productIdCollection);
+        $productKeyIndicators = $this->getProductsKeyIndicators->compute($productIdCollection);
 
         $additionalProperties = [];
-        foreach ($productIds as $productIdentifier => $productId) {
+        foreach ($productIdentifierIds as $productIdentifier => $productId) {
             $productId = $productId->toInt();
             $additionalProperties[$productIdentifier] = [
                 'data_quality_insights' => [

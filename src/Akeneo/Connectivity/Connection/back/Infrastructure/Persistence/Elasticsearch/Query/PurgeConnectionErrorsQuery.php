@@ -27,7 +27,7 @@ class PurgeConnectionErrorsQuery
      */
     public function execute(array $connectionCodes, int $nbOfErrorsToKeep = 100, int $nbOfDaysToKeep = 8): void
     {
-        if (0 === count($connectionCodes)) {
+        if (0 === \count($connectionCodes)) {
             return;
         }
 
@@ -63,7 +63,7 @@ class PurgeConnectionErrorsQuery
         int $nbOfErrorsToKeep,
         int $nbOfDaysToKeep
     ): array {
-        $daysToKeepQuery = sprintf('now-%sd', $nbOfDaysToKeep);
+        $daysToKeepQuery = \sprintf('now-%sd', $nbOfDaysToKeep);
 
         return [
             '_source' => ['id'],

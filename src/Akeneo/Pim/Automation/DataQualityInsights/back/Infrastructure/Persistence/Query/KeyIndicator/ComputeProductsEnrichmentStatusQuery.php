@@ -9,7 +9,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enri
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithGoodEnrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\ComputeProductsKeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Channels;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Locales;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultCodes;
@@ -23,24 +23,12 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
 {
     private const GOOD_ENRICHMENT_RATIO = 80;
 
-    private Connection $db;
-
-    private GetLocalesByChannelQueryInterface $getLocalesByChannelQuery;
-
-    private Channels $channels;
-
-    private Locales $locales;
-
     public function __construct(
-        Connection $db,
-        GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
-        Channels $channels,
-        Locales $locales
+        private Connection                        $db,
+        private GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
+        private Channels                          $channels,
+        private Locales                           $locales
     ) {
-        $this->db = $db;
-        $this->getLocalesByChannelQuery = $getLocalesByChannelQuery;
-        $this->channels = $channels;
-        $this->locales = $locales;
     }
 
     public function getName(): string
@@ -48,12 +36,11 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
         return ProductsWithGoodEnrichment::CODE;
     }
 
-    public function compute(array $productIds): array
+    public function compute(ProductIdCollection $productIdCollection): array
     {
-        $productIds = array_map(fn (ProductId $productId) => $productId->toInt(), $productIds);
         $channelsLocales = $this->getLocalesByChannelQuery->getArray();
+        $productIds = $productIdCollection->toArrayInt();
         $productsEvaluations = $this->getProductsEvaluations($productIds);
-
         $productsEnrichmentStatus = [];
         foreach ($productIds as $productId) {
             if (!isset($productsEvaluations[$productId])) {

@@ -26,13 +26,13 @@ class RegenerateUserPassword implements RegenerateUserPasswordInterface
     {
         foreach ($this->connectionRepository->dataRows as $connectionCode => $connectionData) {
             if ($userId->id() === (int) $connectionData['user_id']) {
-                $newPassword = uniqid('pwd_');
+                $newPassword = \uniqid('pwd_');
                 $this->connectionRepository->dataRows[$connectionCode]['password'] = $newPassword;
 
                 return $newPassword;
             }
         }
 
-        throw new \InvalidArgumentException(sprintf('User id "%s" not found!', $userId->id()));
+        throw new \InvalidArgumentException(\sprintf('User id "%s" not found!', $userId->id()));
     }
 }

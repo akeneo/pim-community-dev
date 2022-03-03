@@ -34,6 +34,6 @@ class ReachRequestLimitLogger
                 ->format(\DateTimeInterface::ATOM)
         ];
 
-        $this->logger->info(json_encode($log, JSON_THROW_ON_ERROR));
+        $this->logger->info(\json_encode($log, JSON_THROW_ON_ERROR));
     }
 }

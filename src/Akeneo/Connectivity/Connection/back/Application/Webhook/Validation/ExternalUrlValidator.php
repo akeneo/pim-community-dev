@@ -40,7 +40,7 @@ class ExternalUrlValidator extends ConstraintValidator
     ) {
         $this->dnsLookup = $dnsLookup;
         $this->ipMatcher = $ipMatcher;
-        $this->networkWhitelist = empty($networkWhitelist) ? [] : explode(',', $networkWhitelist);
+        $this->networkWhitelist = empty($networkWhitelist) ? [] : \explode(',', $networkWhitelist);
     }
 
     public function validate($value, Constraint $constraint): void
@@ -54,12 +54,12 @@ class ExternalUrlValidator extends ConstraintValidator
             return;
         }
 
-        $host = parse_url($value, \PHP_URL_HOST);
-        if (empty($host) || !is_string($host)) {
+        $host = \parse_url($value, \PHP_URL_HOST);
+        if (empty($host) || !\is_string($host)) {
             return;
         }
 
-        if (in_array($host, self::DOMAIN_BLACKLIST)) {
+        if (\in_array($host, self::DOMAIN_BLACKLIST)) {
             $this->context->buildViolation($constraint->message)->addViolation();
 
             return;
@@ -92,7 +92,7 @@ class ExternalUrlValidator extends ConstraintValidator
 
     private function isInPrivateRange(string $ip): bool
     {
-        return !filter_var($ip, \FILTER_VALIDATE_IP, \FILTER_FLAG_NO_PRIV_RANGE | \FILTER_FLAG_NO_RES_RANGE);
+        return !\filter_var($ip, \FILTER_VALIDATE_IP, \FILTER_FLAG_NO_PRIV_RANGE | \FILTER_FLAG_NO_RES_RANGE);
     }
 
     /**
@@ -104,7 +104,7 @@ class ExternalUrlValidator extends ConstraintValidator
             return $value;
         }
 
-        if (\is_object($value) && method_exists($value, '__toString')) {
+        if (\is_object($value) && \method_exists($value, '__toString')) {
             return $value->__toString();
         }
 

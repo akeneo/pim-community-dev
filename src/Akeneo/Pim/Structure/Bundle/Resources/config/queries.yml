@@ -189,3 +189,6 @@ services:
 
     pimee_security.query.get_viewable_attribute_codes_for_user:
         class: Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUser
+
+    Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeEditable:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Permission\DummyIsAttributeEditable

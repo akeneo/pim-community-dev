@@ -36,7 +36,7 @@ final class DownloadEventSubscriptionLogsAction
 
         $disposition = HeaderUtils::makeDisposition(
             HeaderUtils::DISPOSITION_ATTACHMENT,
-            sprintf('events_api_logs_%s.txt', date('Ymd_His'))
+            \sprintf('events_api_logs_%s.txt', \date('Ymd_His'))
         );
 
         $response = new StreamedResponse();
@@ -55,19 +55,19 @@ final class DownloadEventSubscriptionLogsAction
                  * } $log
                  */
                 foreach ($logs as $log) {
-                    echo sprintf(
+                    echo \sprintf(
                         '%s %s %s %s%s',
                         \DateTime::createFromFormat(
                             'U',
                             (string)$log['timestamp'],
                             new \DateTimeZone('UTC')
                         )->format('Y/m/d H:i:s'),
-                        strtoupper($log['level']),
+                        \strtoupper($log['level']),
                         $log['message'],
-                        json_encode($log['context']),
+                        \json_encode($log['context']),
                         PHP_EOL
                     );
-                    flush();
+                    \flush();
                 }
             }
         );

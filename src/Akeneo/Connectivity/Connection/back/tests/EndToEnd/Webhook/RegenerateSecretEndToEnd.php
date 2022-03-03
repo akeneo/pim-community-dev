@@ -23,7 +23,7 @@ class RegenerateSecretEndToEnd extends WebTestCase
         $this->authenticateAsAdmin();
         $this->client->request(
             'GET',
-            sprintf('/rest/connections/%s/webhook/regenerate-secret', $connection->code()),
+            \sprintf('/rest/connections/%s/webhook/regenerate-secret', $connection->code()),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json']

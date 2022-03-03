@@ -65,7 +65,7 @@ SQL;
         foreach ($rows as $rawCriterionEvaluation) {
             $criteriaEvaluations->add(new Read\CriterionEvaluation(
                 new CriterionCode($rawCriterionEvaluation['criterion_code']),
-                new ProductId(intval($rawCriterionEvaluation['product_id'])),
+                ProductId::fromString($rawCriterionEvaluation['product_id']),
                 null !== $rawCriterionEvaluation['evaluated_at'] ? $this->clock->fromString($rawCriterionEvaluation['evaluated_at']) : null,
                 new CriterionEvaluationStatus($rawCriterionEvaluation['status']),
                 $this->hydrateCriterionEvaluationResult($rawCriterionEvaluation['result']),

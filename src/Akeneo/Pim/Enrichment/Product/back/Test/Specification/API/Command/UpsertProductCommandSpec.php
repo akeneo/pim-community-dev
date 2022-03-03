@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\API\Command;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
@@ -40,7 +41,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
 
     function it_can_be_constructed_with_a_set_text_value_intent()
     {
-        $valuesUserIntents = [new SetTextValue('name', null, null, 'foo')];
+        $valueUserIntents = [new SetTextValue('name', null, null, 'foo')];
         $this->beConstructedWith(
             1,
             'identifier1',
@@ -51,16 +52,16 @@ class UpsertProductCommandSpec extends ObjectBehavior
             null,
             null,
             null,
-            $valuesUserIntents
+            $valueUserIntents
         );
         $this->userId()->shouldReturn(1);
         $this->productIdentifier()->shouldReturn('identifier1');
-        $this->valuesUserIntent()->shouldReturn($valuesUserIntents);
+        $this->valueUserIntents()->shouldReturn($valueUserIntents);
     }
 
     function it_can_be_constructed_with_a_set_number_value_intent()
     {
-        $valuesUserIntents = [new SetNumberValue('name', null, null, 10)];
+        $valueUserIntents = [new SetNumberValue('name', null, null, 10)];
         $this->beConstructedWith(
             1,
             'identifier1',
@@ -71,16 +72,36 @@ class UpsertProductCommandSpec extends ObjectBehavior
             null,
             null,
             null,
-            $valuesUserIntents
+            $valueUserIntents
         );
         $this->userId()->shouldReturn(1);
         $this->productIdentifier()->shouldReturn('identifier1');
-        $this->valuesUserIntent()->shouldReturn($valuesUserIntents);
+        $this->valueUserIntents()->shouldReturn($valueUserIntents);
+    }
+
+    function it_can_be_constructed_with_a_set_metric_value_intent()
+    {
+        $valueUserIntents = [new SetMetricValue('power', null, null, '100', 'KILOWATT')];
+        $this->beConstructedWith(
+            1,
+            'identifier1',
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            $valueUserIntents
+        );
+        $this->userId()->shouldReturn(1);
+        $this->productIdentifier()->shouldReturn('identifier1');
+        $this->valueUserIntents()->shouldReturn($valueUserIntents);
     }
 
     function it_can_be_constructed_with_a_set_textarea_value_intent()
     {
-        $valuesUserIntents = [new SetTextareaValue('name', null, null, "<p><span style=\"font-weight: bold;\">title</span></p><p>text</p>")];
+        $valueUserIntents = [new SetTextareaValue('name', null, null, "<p><span style=\"font-weight: bold;\">title</span></p><p>text</p>")];
         $this->beConstructedWith(
             1,
             'identifier1',
@@ -91,16 +112,16 @@ class UpsertProductCommandSpec extends ObjectBehavior
             null,
             null,
             null,
-            $valuesUserIntents
+            $valueUserIntents
         );
         $this->userId()->shouldReturn(1);
         $this->productIdentifier()->shouldReturn('identifier1');
-        $this->valuesUserIntent()->shouldReturn($valuesUserIntents);
+        $this->valueUserIntents()->shouldReturn($valueUserIntents);
     }
 
     function it_can_be_constructed_with_a_clear_value_intent()
     {
-        $valuesUserIntents = [new ClearValue('name', null, null)];
+        $valueUserIntents = [new ClearValue('name', null, null)];
         $this->beConstructedWith(
             1,
             'identifier1',
@@ -111,11 +132,11 @@ class UpsertProductCommandSpec extends ObjectBehavior
             null,
             null,
             null,
-            $valuesUserIntents
+            $valueUserIntents
         );
         $this->userId()->shouldReturn(1);
         $this->productIdentifier()->shouldReturn('identifier1');
-        $this->valuesUserIntent()->shouldReturn($valuesUserIntents);
+        $this->valueUserIntents()->shouldReturn($valueUserIntents);
     }
 
     function it_cannot_be_constructed_with_bad_value_user_intent()

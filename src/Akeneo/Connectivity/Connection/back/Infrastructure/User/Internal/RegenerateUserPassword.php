@@ -47,7 +47,7 @@ class RegenerateUserPassword implements RegenerateUserPasswordInterface
         $user = $this->userManager->findUserBy(['id' => $userId->id()]);
         if (null === $user) {
             throw new \InvalidArgumentException(
-                sprintf('User with id "%s" not found.', $userId->id())
+                \sprintf('User with id "%s" not found.', $userId->id())
             );
         }
 
@@ -56,7 +56,7 @@ class RegenerateUserPassword implements RegenerateUserPasswordInterface
 
     private function generatePassword(): string
     {
-        return str_shuffle(ucfirst(substr(uniqid(), 0, 9)));
+        return \str_shuffle(\ucfirst(\substr(\uniqid(), 0, 9)));
     }
 
     private function deleteApiToken(UserId $userId): void

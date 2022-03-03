@@ -7,6 +7,7 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\Pr
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -29,7 +30,7 @@ final class EvaluateOutdatedProductModelSpec extends ObjectBehavior
         $productModelId = new ProductId(42);
 
         $hasUpToDateEvaluationQuery->forProductId($productModelId)->willReturn(false);
-        $evaluateProductModels->__invoke([42])->shouldBeCalled();
+        $evaluateProductModels->__invoke(ProductIdCollection::fromProductId($productModelId))->shouldBeCalled();
 
         $this->__invoke($productModelId);
     }
@@ -41,7 +42,7 @@ final class EvaluateOutdatedProductModelSpec extends ObjectBehavior
         $productModelId = new ProductId(42);
 
         $hasUpToDateEvaluationQuery->forProductId($productModelId)->willReturn(true);
-        $evaluateProductModels->__invoke([42])->shouldNotBeCalled();
+        $evaluateProductModels->__invoke(ProductIdCollection::fromProductId($productModelId))->shouldNotBeCalled();
 
         $this->__invoke($productModelId);
     }

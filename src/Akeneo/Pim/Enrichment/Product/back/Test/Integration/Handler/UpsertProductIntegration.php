@@ -6,9 +6,11 @@ namespace Akeneo\Test\Pim\Enrichment\Product\Integration\Handler;
 
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
@@ -61,7 +63,7 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_creates_a_product_with_a_text_value(): void
     {
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
             new SetTextValue('a_text', null, null, 'foo'),
         ]);
         $this->messageBus->dispatch($command);
@@ -82,7 +84,7 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_creates_a_product_with_a_number_value(): void
     {
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
             new SetNumberValue('a_number_integer', null, null, 10),
         ]);
         $this->messageBus->dispatch($command);
@@ -102,7 +104,7 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_creates_a_product_with_a_textarea_value(): void
     {
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
             new SetTextareaValue('a_text_area', null, null, self::TEXT_AREA_VALUE),
         ]);
         $this->messageBus->dispatch($command);
@@ -120,12 +122,60 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
+    public function it_updates_a_product_with_a_metric_value(): void
+    {
+        // Creates empty product
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier');
+        $this->messageBus->dispatch($command);
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
+
+        // Update product with number value
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
+            new SetMetricValue('a_metric', null, null, '100', 'KILOWATT'),
+        ]);
+        $this->messageBus->dispatch($command);
+
+        $this->clearDoctrineUoW();
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        $value = $product->getValue('a_metric', null, null);
+        Assert::assertNotNull($value);
+
+        Assert::assertEquals(100, $value->getData()->getData());
+        Assert::assertEquals('KILOWATT', $value->getData()->getUnit());
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_a_metric_amount_is_not_numeric(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('This value should be of type numeric.');
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
+            new SetMetricValue('a_metric', null, null, 'michel', 'KILOWATT'),
+        ]);
+        $this->messageBus->dispatch($command);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_a_metric_unit_is_unknown(): void
+    {
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('Please specify a valid metric unit');
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
+            new SetMetricValue('a_metric', null, null, '1275', 'unknown'),
+        ]);
+        $this->messageBus->dispatch($command);
+    }
+
+    /** @test */
     public function it_throws_an_exception_when_giving_a_locale_for_a_non_localizable_product(): void
     {
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('The a_text attribute does not require a locale, "en_US" was detected');
 
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
             new SetTextValue('a_text', null, 'en_US', 'foo'),
         ]);
         $this->messageBus->dispatch($command);
@@ -137,7 +187,7 @@ final class UpsertProductIntegration extends TestCase
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('The "0" user does not exist');
 
-        $command = new UpsertProductCommand(userId: 0, productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: 0, productIdentifier: 'identifier', valueUserIntents: [
             new SetTextValue('a_text', null, null, 'foo'),
         ]);
         $this->messageBus->dispatch($command);
@@ -149,7 +199,7 @@ final class UpsertProductIntegration extends TestCase
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('The product identifier requires a non empty string');
 
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: '', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: '', valueUserIntents: [
             new SetTextValue('a_text', null, null, 'foo'),
         ]);
         $this->messageBus->dispatch($command);
@@ -181,7 +231,7 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertNotNull($product->getValue('a_text', null, null));
 
         // Update product with clear values
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
             new ClearValue('a_date', null, null),
             new ClearValue('a_file', null, null),
             new ClearValue('a_metric', null, null),
@@ -249,7 +299,7 @@ final class UpsertProductIntegration extends TestCase
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
         // Update product with userIntent value
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
             $userIntent
         ]);
         $this->messageBus->dispatch($command);
