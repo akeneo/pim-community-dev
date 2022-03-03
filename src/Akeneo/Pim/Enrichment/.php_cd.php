@@ -27,6 +27,7 @@ $rules = [
         'Webmozart\Assert\Assert',
         'Psr\Log\LoggerInterface',
         'Ramsey\Uuid',
+        'Monolog\Processor\ProcessorInterface', //TODO Cleanup when moving Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StackedContextProcessor to LoggingBundle
         // TODO the feature use the datagrid
         'Oro\Bundle\DataGridBundle',
         'Oro\Bundle\PimDataGridBundle',

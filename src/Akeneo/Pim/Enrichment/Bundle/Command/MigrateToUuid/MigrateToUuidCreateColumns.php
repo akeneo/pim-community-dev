@@ -2,7 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
+use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StackedContextProcessor;
 use Doctrine\DBAL\Connection;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -15,13 +17,21 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
 
     private const INDEX_NAME = 'product_uuid';
 
-    public function __construct(private Connection $connection)
-    {
+    public function __construct(
+        private Connection $connection,
+        private LoggerInterface $logger,
+        private StackedContextProcessor $contextProcessor
+    ) {
     }
 
     public function getDescription(): string
     {
         return 'Add uuid columns for pim_catalog_product table and every foreign tables';
+    }
+
+    public function getName(): string
+    {
+        return 'create_uuid_columns';
     }
 
     public function shouldBeExecuted(): bool
@@ -43,9 +53,11 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
 
     public function addMissing(Context $context, OutputInterface $output): bool
     {
+        $updatedItems = 0;
         foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
+            $this->contextProcessor->push(['substep' => $tableName]);
             if ($this->tableExists($tableName) && !$this->columnExists($tableName, $columnNames[self::UUID_COLUMN_INDEX])) {
-                $output->write(sprintf('    Will add %s', $tableName));
+                $this->logger->notice(sprintf('Will add %s', $tableName));
                 if (!$context->dryRun()) {
                     $stepStartTime = \microtime(true);
                     $this->addUuidColumnAndIndexOnUuid(
@@ -54,11 +66,10 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
                         $columnNames[self::ID_COLUMN_INDEX]
                     );
                     $stepDuration = \microtime(true) - $stepStartTime;
-                    $output->writeln(\sprintf(' - done in %0.2f seconds', $stepDuration));
-                } else {
-                    $output->writeln('');
+                    $this->logger->notice(\sprintf('Done in %0.2f seconds', $stepDuration), ['updated_items_count' => $updatedItems+=1]);
                 }
             }
+            $this->contextProcessor->pop(); //pop sustep name
         }
 
         return true;
