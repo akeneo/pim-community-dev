@@ -2,7 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
+use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StackedContextProcessor;
 use Doctrine\DBAL\Connection;
+use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -16,13 +18,21 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
 
     private const BATCH_SIZE = 1000;
 
-    public function __construct(private Connection $connection)
-    {
+    public function __construct(
+        private Connection $connection,
+        private LoggerInterface $logger,
+        private StackedContextProcessor $contextProcessor
+    ) {
     }
 
     public function getDescription(): string
     {
         return 'Generates uuid4 for every product';
+    }
+
+    public function getName(): string
+    {
+        return 'fill_product_uuid';
     }
 
     public function getMissingCount(): int
@@ -33,7 +43,7 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
     public function shouldBeExecuted(): bool
     {
         if (!$this->columnExists('pim_catalog_product', 'uuid')) {
-            return true;
+            return true; //TODO should return false instead ?
         }
 
         $sql = <<<SQL
@@ -50,14 +60,24 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
 
     public function addMissing(Context $context, OutputInterface $output): bool
     {
+        $batchesCount = 0;
+        $processedItems = 0;
         while ($this->shouldContinue($context, $output) > 0) {
+            $this->contextProcessor->push(['substep' => 'missing_product_uuid_batch_' . $batchesCount++]);
             if (!$context->dryRun()) {
                 $stepStartTime = \microtime(true);
                 $this->fillMissingProductUuids();
                 $stepDuration = \microtime(true) - $stepStartTime;
-                $output->writeln(\sprintf(' : done in %0.2f seconds', $stepDuration));
+                $count = $this->getMissingProductUuidCount(); //TODO warning: called here and in shouldContinue()
+                $processedItems += min($count, self::BATCH_SIZE);
+                $this->logger->notice(
+                    \sprintf('batch done in %0.2f seconds', $stepDuration),
+                    ['processed_uuids_counter' => $processedItems]
+                );
+                $this->contextProcessor->pop(); //pop substep name
             } else {
-                $output->writeln("\n    Option --dry-run is set, will continue to next step.");
+                $this->logger->notice("Option --dry-run is set, will continue to next step.");
+                $this->contextProcessor->pop(); //pop substep name
                 break;
             }
         }
@@ -71,7 +91,7 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
             $count = $this->getMissingProductUuidCount();
             $shouldBeExecuted = $count > 0;
             if ($shouldBeExecuted) {
-                $output->write(\sprintf('    Will add %d uuids (still missing: %d)', min(self::BATCH_SIZE, $count), $count));
+                $this->logger->notice('Will add uuids', ['product_id_to_fill_count' => min(self::BATCH_SIZE, $count)]);
             }
 
             return $shouldBeExecuted;
@@ -79,7 +99,7 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
 
         $shouldBeExecuted = $this->shouldBeExecuted();
         if ($shouldBeExecuted) {
-            $output->write(\sprintf('    Will add up to %d uuids', self::BATCH_SIZE));
+            $this->logger->notice('Will add uuids', ['product_id_to_fill_count' => self::BATCH_SIZE]);
         }
 
         return $shouldBeExecuted;
