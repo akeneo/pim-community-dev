@@ -1,7 +1,7 @@
 services:
     Akeneo\Connectivity\Connection\Application\Webhook\Command\CheckWebhookReachabilityHandler:
         arguments:
-            - '@akeneo_connectivity.connection.webhook.service.url_reachability_checker'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\WebhookReachabilityChecker'
 
     Akeneo\Connectivity\Connection\Application\Webhook\Query\GetAConnectionWebhookHandler:
         arguments:
@@ -12,11 +12,11 @@ services:
     Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalSelectActiveWebhooksQuery'
-            - '@akeneo_connectivity.connection.webhook.webhook_user_authenticator'
-            - '@akeneo_connectivity.connection.webhook.webhook_client'
-            - '@akeneo_connectivity.connection.webhook.webhook_event_builder'
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client\GuzzleWebhookClient'
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder'
             - '@monolog.logger.event_api'
-            - '@akeneo_connectivity.connection.webhook.events_api_debug_logger'
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger'
             - '%env(AKENEO_PIM_URL)%'
 
     Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateWebhookHandler:
@@ -28,5 +28,5 @@ services:
 
     Akeneo\Connectivity\Connection\Application\Webhook\Command\GenerateWebhookSecretHandler:
         arguments:
-            - '@akeneo_connectivity.connection.webhook.generate_secret'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\GenerateSecret'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalSaveWebhookSecretQuery'

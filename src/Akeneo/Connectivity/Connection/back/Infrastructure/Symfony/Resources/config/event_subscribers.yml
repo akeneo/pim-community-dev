@@ -21,11 +21,11 @@ services:
 
     Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiRequestsLimitEventSubscriber:
         arguments:
-            - '@akeneo_connectivity.connection.webhook.get_delay_until_next_request'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\GetDelayUntilNextRequest'
             - '%webhook_requests_limit%'
-            - '@akeneo_connectivity.connection.webhook.sleep'
-            - '@akeneo_connectivity.connection.webhook.reach_request_limit_logger'
-            - '@akeneo_connectivity.connection.webhook.events_api_debug_logger'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\Sleep'
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\ReachRequestLimitLogger'
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\ElasticsearchEventsApiDebugRepository'
         tags:
             - { name: kernel.event_subscriber }
@@ -38,7 +38,7 @@ services:
 
     Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiClearCacheSubscriber:
         arguments:
-            - '@akeneo_connectivity.connection.webhook.cache_clearer'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\CacheClearer'
         tags:
             - { name: kernel.event_subscriber }
 
