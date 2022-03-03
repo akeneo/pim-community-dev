@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Webhook;
+namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Webhook\Controller\Internal;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
