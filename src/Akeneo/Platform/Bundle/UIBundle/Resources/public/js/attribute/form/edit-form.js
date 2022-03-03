@@ -18,6 +18,12 @@ define(['pim/form/common/edit-form'], function (BaseEditForm) {
       return BaseEditForm.prototype.configure.apply(this, arguments);
     },
 
+    render: function () {
+      this.$el.addClass('attribute');
+
+      return BaseEditForm.prototype.render.apply(this, arguments);
+    },
+
     /**
      * Sets the attribute code for dynamic tree building purpose at configuration time.
      *

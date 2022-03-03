@@ -1,8 +1,8 @@
 # 6.0.x
 
 ## Bug fixes
-
-- PIM-10305 Do not allow disabled user to login
+- PLG-776: Fix Option page broken issue with small screen when creating a new option
+- PIM-10305: Do not allow disabled user to login
 
 # 6.0.7 (2022-02-25)
 
