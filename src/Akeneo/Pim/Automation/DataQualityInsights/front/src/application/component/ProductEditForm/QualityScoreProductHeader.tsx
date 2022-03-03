@@ -5,23 +5,25 @@ import {DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB} from '../../listener';
 import {useCatalogContext, useFetchQualityScore} from '../../../infrastructure/hooks';
 import {getColor, getFontFamily, getFontSize} from 'akeneo-design-system';
 import styled from 'styled-components';
-import {useTranslate} from "@akeneo-pim-community/shared";
-import {QualityScorePending} from "../QualityScorePending";
+import {useTranslate} from '@akeneo-pim-community/shared';
+import {QualityScorePending} from '../QualityScorePending';
 
 const QualityScoreProductHeader = () => {
   const translate = useTranslate();
   const {channel, locale} = useCatalogContext();
   const {score, productType, isLoading} = useFetchQualityScore(channel, locale);
   const redirectToDqiTab = () => window.dispatchEvent(new CustomEvent(DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB));
+  const isPending = score === 'N/A' || score === null;
 
   let qualityScoreComponent: JSX.Element;
   if (isLoading) {
     qualityScoreComponent = <QualityScoreLoader />;
-  } else if (score === 'N/A' || score === null) {
+  } else if (isPending) {
     qualityScoreComponent = <QualityScorePending />;
   } else {
-    qualityScoreComponent =
-      <QualityScoreBar currentScore={score} stacked={productType === 'product_model'} onClick={redirectToDqiTab} />;
+    qualityScoreComponent = (
+      <QualityScoreBar currentScore={score} stacked={productType === 'product_model'} onClick={redirectToDqiTab} />
+    );
   }
 
   return (

@@ -1,22 +1,19 @@
 import React, {FC, HTMLAttributes} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, Override} from 'akeneo-design-system';
-// import {AkeneoThemedProps, Badge, getColor, Override} from 'akeneo-design-system';
-// import {useTranslate} from '@akeneo-pim-community/shared';
+import {allScoreValues, QualityScoreValue} from '../../domain';
 
 type Rounded = 'all' | 'left' | 'right' | 'none';
 
 type Props = Override<
   HTMLAttributes<HTMLDivElement>,
   {
-    score: string;
+    score: QualityScoreValue;
     size?: 'normal' | 'big';
     stacked?: boolean;
     rounded?: Rounded;
   }
 >;
-
-const defaultScores = ['A', 'B', 'C', 'D', 'E'];
 
 const roundedProperties = {
   all: '4px',
@@ -62,10 +59,6 @@ const colorProperties: ColorProperty = {
 };
 
 /**
- * <QualityScore score={null} />
- *
- * <QualityScore score={'N/A'} />
- *
  * <QualityScore score={'A'} />
  *
  * <QualityScore score={'A'} size={'big'} />
@@ -74,12 +67,6 @@ const colorProperties: ColorProperty = {
  *
  */
 const QualityScore: FC<Props> = ({score, size = 'normal', rounded = 'all', stacked = false, ...props}) => {
-  // const translate = useTranslate();
-
-  // if (score === 'N/A' || score === null) {
-  //   return <Badge level="tertiary">{translate('akeneo_data_quality_insights.quality_score.pending')}</Badge>;
-  // }
-
   return stacked ? (
     <Wrapper size={size}>
       <EmptyContainer score={score} size={size} top={-2} left={4} data-testid="empty-container-back" />
@@ -102,12 +89,12 @@ const Wrapper = styled.div<{size: string}>`
   margin: -2px 2px 0 -2px;
 `;
 
-const containerStackedStyled = css<{score: string; size: string}>`
+const containerStackedStyled = css<{score: QualityScoreValue; size: string}>`
   position: absolute;
   top: 2px;
   left: 2px;
   border: 1px solid
-    ${({theme, score}) => defaultScores.includes(score) && theme.color[colorProperties[score].stackedBorderColor]};
+    ${({theme, score}) => allScoreValues.includes(score) && theme.color[colorProperties[score].stackedBorderColor]};
   border-radius: ${roundedProperties['all']};
 
   ${({size}) =>
@@ -117,7 +104,7 @@ const containerStackedStyled = css<{score: string; size: string}>`
     `};
 `;
 
-const Container = styled.div<{score: string; size: string; rounded: Rounded; stacked?: boolean}>`
+const Container = styled.div<{score: QualityScoreValue; size: string; rounded: Rounded; stacked?: boolean}>`
   text-align: center;
   display: inline-block;
   text-transform: uppercase;
@@ -126,8 +113,8 @@ const Container = styled.div<{score: string; size: string; rounded: Rounded; sta
   height: 20px;
   font-size: 13px;
   background-color: ${({theme, score}) =>
-    defaultScores.includes(score) && theme.color[colorProperties[score].backgroundColor]};
-  color: ${({theme, score}) => defaultScores.includes(score) && theme.color[colorProperties[score].color]};
+    allScoreValues.includes(score) && theme.color[colorProperties[score].backgroundColor]};
+  color: ${({theme, score}) => allScoreValues.includes(score) && theme.color[colorProperties[score].color]};
   border-radius: ${({rounded}) => roundedProperties[rounded]};
 
   ${({size}) =>
@@ -150,7 +137,9 @@ Container.defaultProps = {
   rounded: 'all',
 };
 
-const EmptyContainer = styled.div<{score: string; size: string; top: number; left: number} & AkeneoThemedProps>`
+const EmptyContainer = styled.div<
+  {score: QualityScoreValue; size: string; top: number; left: number} & AkeneoThemedProps
+>`
   top: ${({top}) => top}px;
   left: ${({left}) => left}px;
   position: absolute;
@@ -159,7 +148,7 @@ const EmptyContainer = styled.div<{score: string; size: string; top: number; lef
   height: ${({size}) => (size === 'big' ? '25px' : '20px')};
   border-radius: 4px !important;
   border: 1px solid
-    ${({theme, score}) => defaultScores.includes(score) && theme.color[colorProperties[score].stackedBorderColor]};
+    ${({theme, score}) => allScoreValues.includes(score) && theme.color[colorProperties[score].stackedBorderColor]};
   background-color: ${getColor('white')};
 `;
 

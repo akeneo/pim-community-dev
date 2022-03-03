@@ -3,7 +3,7 @@ import {useSelector} from 'react-redux';
 import {fetchProductQualityScore} from '../../fetcher/ProductEditForm/fetchProductQualityScore';
 import {fetchProductModelQualityScore} from '../../fetcher/ProductEditForm/fetchProductModelQualityScore';
 import {ProductEditFormState} from '../../store';
-import {QualityScore} from '../../../domain/QualityScore';
+import {QualityScoreModel} from '../../../domain';
 
 const MAXIMUM_RETRIES = 10;
 const RETRY_MILLISECONDS_DELAY = 500;
@@ -30,7 +30,7 @@ const getRetryDelay = (retry: number) => {
 
 const useFetchQualityScore = (channel: string | undefined, locale: string | undefined) => {
   const [retries, setRetries] = useState<number>(0);
-  const [qualityScore, setQualityScore] = useState<QualityScore | null>(null);
+  const [qualityScore, setQualityScore] = useState<QualityScoreModel | null>(null);
   const [needsUpdate, setNeedsUpdate] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
