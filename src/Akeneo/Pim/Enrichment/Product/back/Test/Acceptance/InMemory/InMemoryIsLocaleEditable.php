@@ -32,7 +32,6 @@ final class InMemoryIsLocaleEditable implements IsLocaleEditable
             return false;
         }
 
-        $user->getGroupNames();
         foreach ($user->getGroupNames() as $groupName) {
             if (\in_array($localeCode, $this->editableLocalesPerUserGroupName[$groupName] ?? [])) {
                 return true;

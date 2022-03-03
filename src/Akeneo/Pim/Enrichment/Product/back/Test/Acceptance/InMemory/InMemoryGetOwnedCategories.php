@@ -33,7 +33,6 @@ final class InMemoryGetOwnedCategories implements GetOwnedCategories
         }
 
         $ownedCategoryCodes = [];
-        $user->getGroupNames();
         foreach ($user->getGroupNames() as $groupName) {
             $ownedCategoryCodes = \array_merge(
                 $ownedCategoryCodes,
