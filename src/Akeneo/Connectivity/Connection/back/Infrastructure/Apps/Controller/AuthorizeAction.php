@@ -134,8 +134,7 @@ final class AuthorizeAction
 
         if (
             $app->isTestApp() &&
-            !$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps') &&
-            !$this->security->isGranted('akeneo_connectivity_connection_open_apps')
+            !$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')
         ) {
             throw new AccessDeniedHttpException();
         }
