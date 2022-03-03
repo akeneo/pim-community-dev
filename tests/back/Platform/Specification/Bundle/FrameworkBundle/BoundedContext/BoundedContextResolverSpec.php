@@ -93,7 +93,7 @@ class BoundedContextResolverSpec extends ObjectBehavior
         $this->fromRequest($request)->shouldReturn('Unknown request context: no controller in request');
     }
 
-    function it_cannot_resolves_context_when_controller_cannot_be_instantiate(
+    function it_cannot_resolve_context_when_controller_cannot_be_instantiated(
         ControllerResolverInterface $controllerResolver,
         Request $request,
         ParameterBag $parameterBag
@@ -110,6 +110,6 @@ class BoundedContextResolverSpec extends ObjectBehavior
 
         $this->beConstructedWith($controllerResolver, $boundedContexts);
 
-        $this->fromRequest($request)->shouldReturn('Unable to instantiate the controller');
+        $this->fromRequest($request)->shouldReturn('Unknown request context: unable to instantiate the controller');
     }
 }

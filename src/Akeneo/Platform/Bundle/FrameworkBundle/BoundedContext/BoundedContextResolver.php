@@ -42,7 +42,7 @@ class BoundedContextResolver
         try {
             $controller = $this->controllerResolver->getController($request);
         } catch (\Error) {
-            return 'Unable to instantiate the controller';
+            return 'Unknown request context: unable to instantiate the controller';
         }
 
         if (false === $controller) {
