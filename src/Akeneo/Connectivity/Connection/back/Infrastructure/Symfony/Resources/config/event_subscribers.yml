@@ -19,35 +19,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiRequestsLimitEventSubscriber:
-        arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\GetDelayUntilNextRequest'
-            - '%webhook_requests_limit%'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\Sleep'
-            - '@Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\ReachRequestLimitLogger'
-            - '@Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\ElasticsearchEventsApiDebugRepository'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiRequestsLimitIncrementSubscriber:
-        arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalEventsApiRequestCountRepository'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiClearCacheSubscriber:
-        arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\CacheClearer'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiLoggingSubscriber:
-        arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\ElasticsearchEventsApiDebugRepository'
-        tags:
-            - { name: kernel.event_subscriber }
-
     Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\AclPrivilegesEventSubscriber:
         arguments:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'

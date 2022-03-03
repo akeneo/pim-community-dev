@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventSubscribers;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\MessageProcessedEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepositoryInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiLoggingSubscriber;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventSubscribers\EventsApiLoggingSubscriber;
 use PhpSpec\ObjectBehavior;
 
 /**

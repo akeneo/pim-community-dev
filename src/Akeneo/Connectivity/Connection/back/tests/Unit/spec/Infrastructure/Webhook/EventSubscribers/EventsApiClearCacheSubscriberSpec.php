@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventSubscribers;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\MessageProcessedEvent;
-use Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiClearCacheSubscriber;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventSubscribers\EventsApiClearCacheSubscriber;
 use PhpSpec\ObjectBehavior;
 
 /**
