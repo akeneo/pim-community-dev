@@ -1,6 +1,6 @@
 import React, {FC, RefObject} from 'react';
 import {FlyoutProps} from 'victory';
-import {ScoreDistributionChartDataset} from '../../../../../domain';
+import {QualityScoreValue, ScoreDistributionChartDataset} from '../../../../../domain';
 import {Summary} from './Summary';
 
 type Props = FlyoutProps & {
@@ -16,8 +16,8 @@ type Props = FlyoutProps & {
 const SUMMARY_CONTAINER_WIDTH = 190;
 const SUMMARY_CONTAINER_HEIGHT = 350;
 
-const calculateAverageGrade = (data: any, datum: any) => {
-  const letterRankMap = new Map([
+const calculateAverageGrade = (data: any, datum: any): QualityScoreValue | undefined => {
+  const letterRankMap = new Map<number, QualityScoreValue>([
     [1, 'E'],
     [2, 'D'],
     [3, 'C'],

@@ -5,7 +5,7 @@ import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {QualityScorePending} from '@akeneo-pim-community/data-quality-insights/src/application/component/QualityScorePending';
-import {QualityScoreValue} from '../../../../../../../../../front/src/domain';
+import {QualityScoreValue} from '@akeneo-pim-community/data-quality-insights/src/domain';
 
 const StringCell = require('oro/datagrid/string-cell');
 
