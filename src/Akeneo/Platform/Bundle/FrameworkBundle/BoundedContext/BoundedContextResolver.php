@@ -39,10 +39,11 @@ class BoundedContextResolver
             return 'Unknown request context: no controller in request';
         }
 
-        $controller = false;
         try {
             $controller = $this->controllerResolver->getController($request);
-        } catch (\Error $exception) {}
+        } catch (\Error) {
+            return 'Unable to instantiate the controller';
+        }
 
         if (false === $controller) {
             return 'Unknown request context: no controller in request';
