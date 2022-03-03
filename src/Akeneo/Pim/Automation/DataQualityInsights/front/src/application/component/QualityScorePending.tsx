@@ -5,7 +5,10 @@ import {Badge} from 'akeneo-design-system';
 const QualityScorePending = () => {
   const translate = useTranslate();
 
-  return <Badge level="tertiary">{translate('akeneo_data_quality_insights.quality_score.pending')}</Badge>;
+  return <Badge
+    level="tertiary"
+    data-testid="quality-score-pending">{translate('akeneo_data_quality_insights.quality_score.pending')}
+  </Badge>;
 };
 
 export {QualityScorePending};

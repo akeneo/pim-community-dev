@@ -15,29 +15,32 @@ const QualityScoreProductHeader = () => {
   const redirectToDqiTab = () => window.dispatchEvent(new CustomEvent(DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB));
   const isPending = score === 'N/A' || score === null;
 
+  let alignItems: 'baseline' | 'center' = 'center';
+
   let qualityScoreComponent: JSX.Element;
   if (isLoading) {
     qualityScoreComponent = <QualityScoreLoader />;
   } else if (isPending) {
     qualityScoreComponent = <QualityScorePending />;
   } else {
+    alignItems = 'baseline';
     qualityScoreComponent = (
-      <QualityScoreBar currentScore={score} stacked={productType === 'product_model'} onClick={redirectToDqiTab} />
+      <QualityScoreBar score={score} stacked={productType === 'product_model'} onClick={redirectToDqiTab} />
     );
   }
 
   return (
-    <Wrapper>
+    <Wrapper alignItems={alignItems}>
       <Label>{translate('akeneo_data_quality_insights.quality_score.title')}</Label>
       {qualityScoreComponent}
     </Wrapper>
   );
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{alignItems: 'baseline' | 'center'}>`
   display: flex;
   flex-flow: row nowrap;
-  align-items: baseline;
+  align-items: ${({alignItems}) => alignItems};
   padding-right: 20px;
   margin-right: 20px;
   height: 20px;

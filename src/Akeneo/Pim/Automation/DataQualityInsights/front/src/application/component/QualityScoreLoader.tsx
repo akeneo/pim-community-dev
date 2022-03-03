@@ -4,7 +4,7 @@ import {SkeletonPlaceholder} from 'akeneo-design-system';
 
 const QualityScoreLoader = () => {
   return (
-    <Container>
+    <Container data-testid="quality-score-loader">
       <Skeleton />
     </Container>
   );
