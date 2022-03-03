@@ -28,27 +28,31 @@ const QualityScoreProductHeader = () => {
 
   return (
     <Wrapper>
-      <Input>{translate('akeneo_data_quality_insights.quality_score.title')}</Input>
+      <Label>{translate('akeneo_data_quality_insights.quality_score.title')}</Label>
       {qualityScoreComponent}
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  display: inline-flex;
+  display: flex;
   flex-flow: row nowrap;
-  align-content: center;
+  align-items: baseline;
   padding-right: 20px;
   margin-right: 20px;
+  height: 20px;
+  overflow: visible;
   border-right: 1px ${({theme}) => theme.color.grey80} solid;
 `;
 
-const Input = styled.div`
+const Label = styled.div`
   padding-right: 0.4em;
   color: ${getColor('grey', 140)};
   font-size: ${getFontSize('default')};
   font-family: ${getFontFamily('default')};
   font-weight: normal;
+  white-space: nowrap;
+  height: 100%;
 `;
 
 export {QualityScoreProductHeader};
