@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Enrichment\Product\Integration\Handler;
 
+use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand;
+use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
+use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
@@ -18,6 +21,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -271,6 +275,66 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertNull($product->getValue('a_text_area', null, null));
         Assert::assertNull($product->getValue('a_yes_no', null, null));
         Assert::assertNull($product->getValue('an_image', null, null));
+    }
+
+    /** @test */
+    public function it_clears_asset_collection_value(): void
+    {
+        FeatureHelper::skipIntegrationTestWhenAssetFeatureIsNotActivated();
+
+        // create a packshot asset family
+        ($this->get('akeneo_assetmanager.application.asset_family.create_asset_family_handler'))(
+            new CreateAssetFamilyCommand('packshot', ['en_US' => 'Packshot'])
+        );
+        // create a packshot asset
+        ($this->get('akeneo_assetmanager.application.asset.create_asset_handler'))(
+            new CreateAssetCommand('packshot', 'packshot1', ['en_US' => 'Packshot 1'])
+        );
+
+        // create an asset collection attribute
+        $attribute = $this->get('pim_catalog.factory.attribute')->create();
+        $this->get('pim_catalog.updater.attribute')->update(
+            $attribute,
+            [
+                'code' => 'packshot_attr',
+                'type' => AssetCollectionType::ASSET_COLLECTION,
+                'group' => 'other',
+                'reference_data_name' => 'packshot',
+            ]
+        );
+        $attributeViolations = $this->get('validator')->validate($attribute);
+        Assert::assertCount(0, $attributeViolations, \sprintf('The attribute is invalid: %s', $attributeViolations));
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
+
+        // create a family with asset collection attribute
+        $family = $this->get('pim_catalog.factory.family')->create();
+        $this->get('pim_catalog.updater.family')->update($family, ['code' => 'test', 'attributes' => ['packshot_attr']]);
+        $familyViolations = $this->get('validator')->validate($family);
+        Assert::assertCount(0, $familyViolations, \sprintf('The family is not valid: %s', $familyViolations));
+        $this->get('pim_catalog.saver.family')->save($family);
+
+        // create products with asset values
+        $this->createProduct(
+            'product_with_asset','test',
+            ['packshot_attr' => [['scope' => null, 'locale' => null, 'data' => ['packshot1']]]]
+        );
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
+
+        $product = $this->productRepository->findOneByIdentifier('product_with_asset');
+        Assert::assertNotNull($product);
+        Assert::assertNotNull($product->getValue('packshot_attr', null, null));
+
+        // Update product with clear values
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'product_with_asset', valueUserIntents: [
+            new ClearValue('packshot_attr', null, null),
+        ]);
+
+        $this->messageBus->dispatch($command);
+        $this->clearDoctrineUoW();
+
+        $product = $this->productRepository->findOneByIdentifier('product_with_asset');
+        Assert::assertNotNull($product);
+        Assert::assertNull($product->getValue('packshot_attr', null, null));
     }
 
     /** @test */
