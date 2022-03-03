@@ -1,5 +1,8 @@
 # 6.0.x
 
+## Bug fixes
+- PLG-776: Fix Option page broken issue with small screen when creating a new option
+
 # 6.0.7 (2022-02-25)
 
 # 6.0.6 (2022-02-21)
