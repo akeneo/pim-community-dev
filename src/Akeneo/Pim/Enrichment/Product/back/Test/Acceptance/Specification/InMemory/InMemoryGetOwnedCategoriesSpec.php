@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory;
 
-use Akeneo\Channel\Locale\API\Query\IsLocaleEditable;
-use Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryIsLocaleEditable;
+use Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories;
+use Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetOwnedCategories;
 use Akeneo\Test\Acceptance\User\InMemoryUserRepository;
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
 
-class InMemoryIsLocaleEditableSpec extends ObjectBehavior
+class InMemoryGetOwnedCategoriesSpec extends ObjectBehavior
 {
     function let()
     {
@@ -43,20 +43,23 @@ class InMemoryIsLocaleEditableSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(InMemoryIsLocaleEditable::class);
-        $this->shouldImplement(IsLocaleEditable::class);
+        $this->shouldBeAnInstanceOf(InMemoryGetOwnedCategories::class);
+        $this->shouldImplement(GetOwnedCategories::class);
     }
 
-    function it_returns_all_activated_locale_codes()
+    function it_returns_owned_category_codes()
     {
-        $this->addOwnedCategoryCode('admin', 'en_US');
+        $this->addOwnedCategoryCode('admin', 'master');
+        $this->addOwnedCategoryCode('all', 'master');
+        $this->addOwnedCategoryCode('admin', 'print');
 
-        $this->forUserId('en_US', 1)->shouldReturn(false);
-        $this->forUserId('fr_FR', 1)->shouldReturn(false);
-        $this->forUserId('en_US', 2)->shouldReturn(true);
-        $this->forUserId('fr_FR', 2)->shouldReturn(false);
-        $this->forUserId('en_US', 3)->shouldReturn(false);
-        $this->forUserId('fr_FR', 3)->shouldReturn(false);
-        $this->forUserId('en_US', 99)->shouldReturn(false);
+        $this->forUserId(['master', 'print', 'unknown'], 1)->shouldReturn([]);
+        $this->forUserId(['master', 'print', 'unknown'], 2)->shouldReturn(['master', 'print']);
+        $this->forUserId(['master', 'print', 'unknown'], 3)->shouldReturn(['master']);
+        $this->forUserId(['master', 'print', 'unknown'], 99)->shouldReturn([]);
+
+        $this->forUserId(['print'], 2)->shouldReturn(['print']);
+        $this->forUserId([], 2)->shouldReturn([]);
+
     }
 }

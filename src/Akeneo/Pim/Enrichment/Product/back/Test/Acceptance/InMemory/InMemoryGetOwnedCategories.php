@@ -41,10 +41,10 @@ final class InMemoryGetOwnedCategories implements GetOwnedCategories
             );
         }
 
-        return \array_filter(
+        return \array_values(\array_filter(
             \array_unique($ownedCategoryCodes),
             static fn (string $ownedCategoryCode): bool => \in_array($ownedCategoryCode, $categoryCodes)
-        );
+        ));
     }
 
     public function addOwnedCategoryCode(string $groupName, string $categoryCode): void
