@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Webhook;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Infrastructure\MessageHandler\BusinessEventHandler;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\MessageHandler\BusinessEventHandler;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductLoader;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
@@ -120,7 +120,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
             ]
         );
 
-        /** @var $businessEventHandler BusinessEventHandler */
+        /** @var $businessEventHandler \Akeneo\Connectivity\Connection\Infrastructure\Webhook\MessageHandler\BusinessEventHandler */
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);
 
@@ -155,7 +155,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
             ]
         );
 
-        /** @var $businessEventHandler BusinessEventHandler */
+        /** @var $businessEventHandler \Akeneo\Connectivity\Connection\Infrastructure\Webhook\MessageHandler\BusinessEventHandler */
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);
 
@@ -193,7 +193,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
             ]
         );
 
-        /** @var $businessEventHandler BusinessEventHandler */
+        /** @var $businessEventHandler \Akeneo\Connectivity\Connection\Infrastructure\Webhook\MessageHandler\BusinessEventHandler */
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);
 
