@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- CPM-543: [Backport PIM-10249] Fix error message when importing YML rule containing a reference entity record with numeric value
+
 # 6.0.7 (2022-02-25)
 
 # 6.0.6 (2022-02-21)
