@@ -43,4 +43,6 @@ interface MigrateToUuidStep
     public function shouldBeExecuted(): bool;
 
     public function getDescription(): string;
+
+    public function getName(): string;
 }
