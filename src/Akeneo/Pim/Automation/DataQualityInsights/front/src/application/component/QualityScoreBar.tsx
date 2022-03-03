@@ -1,9 +1,10 @@
 import React, {FC, SyntheticEvent} from 'react';
 import styled, {css} from 'styled-components';
+import {QualityScoreValue} from '../../domain';
 import {QualityScore} from './QualityScore';
 
 type Props = {
-  currentScore: string | null;
+  currentScore: QualityScoreValue;
   onClick?: (event: SyntheticEvent) => void;
   stacked?: boolean;
 };
