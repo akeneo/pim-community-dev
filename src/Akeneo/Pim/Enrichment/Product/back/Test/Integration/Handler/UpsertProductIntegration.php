@@ -6,7 +6,6 @@ namespace Akeneo\Test\Pim\Enrichment\Product\Integration\Handler;
 
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand;
 use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
-use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
@@ -19,8 +18,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
-use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
-use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
 use Akeneo\Test\Integration\Configuration;
@@ -286,46 +283,33 @@ final class UpsertProductIntegration extends TestCase
     {
         FeatureHelper::skipIntegrationTestWhenAssetFeatureIsNotActivated();
 
-        // create a packshot asset family
         ($this->get('akeneo_assetmanager.application.asset_family.create_asset_family_handler'))(
+            /** @phpstan-ignore-next-line */
             new CreateAssetFamilyCommand('packshot', ['en_US' => 'Packshot'])
         );
-        // create a packshot asset
+
         ($this->get('akeneo_assetmanager.application.asset.create_asset_handler'))(
+            /** @phpstan-ignore-next-line */
             new CreateAssetCommand('packshot', 'packshot1', ['en_US' => 'Packshot 1'])
         );
 
-        // create an asset collection attribute
-        $attribute = $this->get('pim_catalog.factory.attribute')->create();
-        $this->get('pim_catalog.updater.attribute')->update(
-            $attribute,
+        $this->createAttribute(
             [
                 'code' => 'packshot_attr',
-                'type' => AssetCollectionType::ASSET_COLLECTION,
+                'type' => 'pim_catalog_asset_collection',
                 'group' => 'other',
                 'reference_data_name' => 'packshot',
             ]
         );
-        $attributeViolations = $this->get('validator')->validate($attribute);
-        Assert::assertCount(0, $attributeViolations, \sprintf('The attribute is invalid: %s', $attributeViolations));
-        $this->get('pim_catalog.saver.attribute')->save($attribute);
 
-        // create a family with asset collection attribute
-        $family = $this->get('pim_catalog.factory.family')->create();
-        $this->get('pim_catalog.updater.family')->update($family, ['code' => 'test', 'attributes' => ['packshot_attr']]);
-        $familyViolations = $this->get('validator')->validate($family);
-        Assert::assertCount(0, $familyViolations, \sprintf('The family is not valid: %s', $familyViolations));
-        $this->get('pim_catalog.saver.family')->save($family);
-
-        // create products with asset values
         $this->createProduct(
-            'product_with_asset','test',
+            'product_with_asset',
+            'other',
             ['packshot_attr' => [['scope' => null, 'locale' => null, 'data' => ['packshot1']]]]
         );
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
         $product = $this->productRepository->findOneByIdentifier('product_with_asset');
-        Assert::assertNotNull($product);
         Assert::assertNotNull($product->getValue('packshot_attr', null, null));
 
         // Update product with clear values
@@ -337,7 +321,6 @@ final class UpsertProductIntegration extends TestCase
         $this->clearDoctrineUoW();
 
         $product = $this->productRepository->findOneByIdentifier('product_with_asset');
-        Assert::assertNotNull($product);
         Assert::assertNull($product->getValue('packshot_attr', null, null));
     }
 
@@ -346,60 +329,54 @@ final class UpsertProductIntegration extends TestCase
     {
         FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
 
-        $validator = $this->get('validator');
+        /** @phpstan-ignore-next-line */
         $createBrandCommand = new CreateReferenceEntityCommand('brand', []);
+        $validator = $this->get('validator');
         $violations = $validator->validate($createBrandCommand);
         Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
-        ($this->get('akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'))($createBrandCommand);
+        ($this->get('akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'))(
+            $createBrandCommand
+        );
 
+        /** @phpstan-ignore-next-line */
         $createAkeneoRecord = new CreateRecordCommand('brand', 'Akeneo', []);
         $violations = $validator->validate($createAkeneoRecord);
         Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
         ($this->get('akeneo_referenceentity.application.record.create_record_handler'))($createAkeneoRecord);
 
+        /** @phpstan-ignore-next-line */
         $createOtherRecord = new CreateRecordCommand('brand', 'Other', []);
         $violations = $validator->validate($createOtherRecord);
         Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
         ($this->get('akeneo_referenceentity.application.record.create_record_handler'))($createOtherRecord);
 
-        // create single reference entity link attribute
-        $attribute = $this->get('pim_catalog.factory.attribute')->create();
-        $this->get('pim_catalog.updater.attribute')->update(
-            $attribute,
+        $this->createAttribute(
             [
                 'code' => 'a_reference_entity_attribute',
-                'type' => ReferenceEntityType::REFERENCE_ENTITY,
+                'type' => 'akeneo_reference_entity',
                 'group' => 'other',
                 'reference_data_name' => 'brand',
             ]
         );
-        $attributeViolations = $this->get('validator')->validate($attribute);
-        Assert::assertCount(0, $attributeViolations, \sprintf('The attribute is invalid: %s', $attributeViolations));
-        $this->get('pim_catalog.saver.attribute')->save($attribute);
-
-        // create a multiple reference entity link attribute
-        $attribute2 = $this->get('pim_catalog.factory.attribute')->create();
-        $this->get('pim_catalog.updater.attribute')->update(
-            $attribute2,
+        $this->createAttribute(
             [
                 'code' => 'a_reference_entity_collection_attribute',
-                'type' => ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION,
+                'type' => 'akeneo_reference_entity_collection',
                 'group' => 'other',
                 'reference_data_name' => 'brand',
             ]
         );
-        $attributeViolations = $this->get('validator')->validate($attribute2);
-        Assert::assertCount(0, $attributeViolations, \sprintf('The attribute is invalid: %s', $attributeViolations));
-        $this->get('pim_catalog.saver.attribute')->save($attribute2);
 
-        $this->createProduct('product_with_ref_entities', 'other',
-        [
-            'a_reference_entity_attribute' => [['scope' => null, 'locale' => null, 'data' => 'Akeneo']],
-            'a_reference_entity_collection_attribute' => [['scope' => null, 'locale' => null, 'data' => ['Akeneo', 'Other']]]
-        ]);
+        $this->createProduct(
+            'product_with_ref_entities',
+            'other',
+            [
+                'a_reference_entity_attribute' => [['scope' => null, 'locale' => null, 'data' => 'Akeneo']],
+                'a_reference_entity_collection_attribute' => [['scope' => null, 'locale' => null, 'data' => ['Akeneo', 'Other']]]
+            ]
+        );
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
         $product = $this->productRepository->findOneByIdentifier('product_with_ref_entities');
-        Assert::assertNotNull($product);
         Assert::assertNotNull($product->getValue('a_reference_entity_attribute', null, null));
 
         // Update product with clear values
@@ -412,7 +389,6 @@ final class UpsertProductIntegration extends TestCase
         $this->clearDoctrineUoW();
 
         $product = $this->productRepository->findOneByIdentifier('product_with_ref_entities');
-        Assert::assertNotNull($product);
         Assert::assertNull($product->getValue('a_reference_entity_attribute', null, null));
         Assert::assertNull($product->getValue('a_reference_entity_collection_attribute', null, null));
     }
@@ -452,6 +428,16 @@ final class UpsertProductIntegration extends TestCase
         $value = $product->getValue($attributeCode, null, null);
         Assert::assertNotNull($value);
         Assert::assertSame($expectedValue, $value->getData());
+    }
+
+    private function createAttribute(array $data): void
+    {
+        $attribute = $this->get('pim_catalog.factory.attribute')->create();
+        $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
+
+        $attributeViolations = $this->get('validator')->validate($attribute);
+        Assert::assertCount(0, $attributeViolations, \sprintf('The attribute is invalid: %s', $attributeViolations));
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 
     private function updateProduct(ValueUserIntent $userIntent): void
