@@ -7,7 +7,6 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\MessageHandler;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksCommand;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\MessageProcessedEvent;
-use Akeneo\Connectivity\Connection\Infrastructure\MessageHandler\BusinessEventHandler;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use PhpSpec\ObjectBehavior;
@@ -31,7 +30,7 @@ class BusinessEventHandlerSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(BusinessEventHandler::class);
+        $this->shouldHaveType(\Akeneo\Connectivity\Connection\Infrastructure\Webhook\MessageHandler\BusinessEventHandler::class);
         $this->shouldImplement(MessageSubscriberInterface::class);
     }
 

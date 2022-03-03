@@ -1,6 +1,0 @@
-services:
-    Akeneo\Connectivity\Connection\Infrastructure\MessageHandler\BusinessEventHandler:
-        arguments:
-            - '@Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler'
-            - '@event_dispatcher'
-        tags: [messenger.message_handler]
