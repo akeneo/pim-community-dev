@@ -81,7 +81,7 @@ services:
             - '@database_connection'
 
     # TestApps
-    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\InternalApi\CreateTestAppsAction:
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\InternalApi\CreateTestAppAction:
         public: true
         arguments:
             - '@akeneo_connectivity.connection.app_developer_mode.feature'

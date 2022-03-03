@@ -1,7 +1,7 @@
 import {useCreateTestApp} from '@src/connect/hooks/use-create-test-app';
 import {renderHook} from '@testing-library/react-hooks';
 import fetchMock from 'jest-fetch-mock';
-import {fetchMockResponseOnce, mockFetchResponses, MockFetchResponses} from '../../../test-utils';
+import {mockFetchResponses} from '../../../test-utils';
 
 beforeEach(() => {
     fetchMock.resetMocks();

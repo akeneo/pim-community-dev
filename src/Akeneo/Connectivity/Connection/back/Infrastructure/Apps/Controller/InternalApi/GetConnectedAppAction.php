@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\InternalApi;
 
+use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Repository\ConnectedAppRepositoryInterface;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,32 +22,21 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 final class GetConnectedAppAction
 {
-    private FeatureFlag $featureFlag;
-    private SecurityFacade $security;
-    private ConnectedAppRepositoryInterface $connectedAppRepository;
-
     public function __construct(
-        FeatureFlag $featureFlag,
-        SecurityFacade $security,
-        ConnectedAppRepositoryInterface $connectedAppRepository
+        private FeatureFlag $marketplaceActivateFeatureFlag,
+        private SecurityFacade $security,
+        private ConnectedAppRepositoryInterface $connectedAppRepository,
     ) {
-        $this->featureFlag = $featureFlag;
-        $this->security = $security;
-        $this->connectedAppRepository = $connectedAppRepository;
     }
 
     public function __invoke(Request $request, string $connectionCode): Response
     {
-        if (!$this->featureFlag->isEnabled()) {
+        if (!$this->marketplaceActivateFeatureFlag->isEnabled()) {
             throw new NotFoundHttpException();
         }
 
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
-        }
-
-        if (!$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
-            throw new AccessDeniedHttpException();
         }
 
         $connectedApp = $this->connectedAppRepository->findOneByConnectionCode($connectionCode);
@@ -54,6 +45,19 @@ final class GetConnectedAppAction
             throw new NotFoundHttpException("Connected app with connection code $connectionCode does not exist.");
         }
 
+        $this->denyAccessUnlessGrantedToManage($connectedApp);
+
         return new JsonResponse($connectedApp->normalize());
+    }
+
+    private function denyAccessUnlessGrantedToManage(ConnectedApp $connectedApp): void
+    {
+        if (!$connectedApp->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
+            throw new AccessDeniedHttpException();
+        }
+
+        if ($connectedApp->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')) {
+            throw new AccessDeniedHttpException();
+        }
     }
 }
