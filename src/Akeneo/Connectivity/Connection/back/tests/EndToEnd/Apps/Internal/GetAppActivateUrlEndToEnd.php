@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Apps\Internal;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
+use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
@@ -24,7 +25,7 @@ class GetAppActivateUrlEndToEnd extends WebTestCase
     {
         parent::setUp();
 
-        $this->webMarketplaceApi = $this->get('akeneo_connectivity.connection.marketplace.web_marketplace_api');
+        $this->webMarketplaceApi = $this->get(WebMarketplaceApi::class);
         $this->featureFlagMarketplaceActivate = $this->get('akeneo_connectivity.connection.marketplace_activate.feature');
         $this->loadAppsFixtures();
     }

@@ -83,7 +83,7 @@ final class UpsertProductHandler
 
     private function updateProduct(ProductInterface $product, UpsertProductCommand $command): void
     {
-        foreach ($command->valuesUserIntent() as $index => $valueUserIntent) {
+        foreach ($command->valueUserIntents() as $index => $valueUserIntent) {
             $found = false;
             try {
                 if ($valueUserIntent instanceof SetTextValue
@@ -139,12 +139,12 @@ final class UpsertProductHandler
                         $e->getMessage(),
                         [],
                         $command,
-                        "valueUserIntent[$index]",
+                        "valueUserIntents[$index]",
                         $valueUserIntent
                     ),
                 ]);
 
-                throw new LegacyViolationsException($violations);
+                throw new ViolationsException($violations);
             }
 
             if (!$found) {

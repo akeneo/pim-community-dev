@@ -277,6 +277,8 @@ $rules = [
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Platform\VersionProviderInterface',
             'Akeneo\UserManagement\Component\Model\UserInterface',
+            'Akeneo\UserManagement\Bundle\Context\UserContext',
+            'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
 
             'Symfony\Component',
             'Doctrine\DBAL\Connection',

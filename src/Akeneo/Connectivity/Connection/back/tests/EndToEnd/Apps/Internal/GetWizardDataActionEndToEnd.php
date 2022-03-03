@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizat
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider;
+use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
@@ -197,7 +198,7 @@ class GetWizardDataActionEndToEnd extends WebTestCase
     {
         parent::setUp();
 
-        $this->webMarketplaceApi = $this->get('akeneo_connectivity.connection.marketplace.web_marketplace_api');
+        $this->webMarketplaceApi = $this->get(WebMarketplaceApi::class);
         $this->clientProvider = $this->get(ClientProvider::class);
         $this->appAuthorizationHandler = $this->get(RequestAppAuthorizationHandler::class);
         $this->get('akeneo_connectivity.connection.marketplace_activate.feature')->enable();

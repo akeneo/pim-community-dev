@@ -45,7 +45,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('You don\'t have access to products in any tree, please contact your administrator');
 
-        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'identifier', valueUserIntents: [
             new SetTextValue('a_text', null, null, 'foo'),
         ]);
         $this->messageBus->dispatch($command);
@@ -57,7 +57,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('You don\'t have access to product data in any activated locale, please contact your administrator');
 
-        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'identifier', valueUserIntents: [
             new SetTextValue('name', null, 'en_GB', 'foo'),
         ]);
         $this->messageBus->dispatch($command);
@@ -66,7 +66,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     /** @test */
     public function it_creates_a_new_uncategorized_product(): void
     {
-        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'new_product', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'new_product', valueUserIntents: [
             new SetTextValue('name', null, null, 'foo'),
         ]);
         $this->messageBus->dispatch($command);
