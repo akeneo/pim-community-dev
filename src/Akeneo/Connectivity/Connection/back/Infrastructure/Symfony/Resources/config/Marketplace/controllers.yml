@@ -34,10 +34,11 @@ services:
 
     # TEST APPS
     ## INTERNAL
-    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\Internal\CreateTestAppsAction:
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\Internal\CreateTestAppAction:
         public: true
         arguments:
             - '@akeneo_connectivity.connection.app_developer_mode.feature'
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
             - '@validator'
             - '@security.token_storage'
             - '@Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command\CreateTestAppCommandHandler'

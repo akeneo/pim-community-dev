@@ -90,7 +90,7 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
 
         $this->client->request(
             'POST',
-            '/rest/apps/confirm-authorization/test',
+            '/rest/apps/confirm-authorization/unknown-id',
             [],
             [],
             [
@@ -100,7 +100,7 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
 
         $response = $this->client->getResponse();
 
-        Assert::assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        Assert::assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
         $content = \json_decode($response->getContent(), true);
         Assert::assertArrayHasKey('errors', $content);
         Assert::assertGreaterThan(0, \count($content['errors']));
