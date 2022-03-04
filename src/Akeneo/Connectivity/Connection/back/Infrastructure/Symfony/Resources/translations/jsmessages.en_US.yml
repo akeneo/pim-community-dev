@@ -17,12 +17,12 @@ pim_menu:
         connection_webhook_event_logs: Event logs
         data_flows: Data flows
         connect_connection_settings: Connection settings
-        marketplace: Marketplace
+        marketplace: App Store
         connected_apps: Apps
 
 pim_title:
-    akeneo_connectivity_connection_connect_marketplace: Marketplace
-    akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
+    akeneo_connectivity_connection_connect_marketplace: App Store
+    akeneo_connectivity_connection_connect_marketplace_profile: App Store
     akeneo_connectivity_connection_connect_apps_activate: Connect
     akeneo_connectivity_connection_connect_apps_authorize: Connect
     akeneo_connectivity_connection_connect_apps_authenticate: Connect
@@ -45,13 +45,13 @@ akeneo_connectivity.connection:
     connect:
         marketplace:
             title: Want to connect your PIM with another application? 🤟
-            sub_title: Check our marketplace to see which application can be connected with Akeneo PIM.
-            link: Access the marketplace
+            sub_title: Check our App Store to see which application can be connected with Akeneo PIM.
+            link: Access the App Store
             helper:
                 title: '{0} There is no apps or connectors compatible with your PIM version.|{1} There is {{ count }} app or connector compatible with your PIM version.|[2,Inf] There are {{ count }} apps and connectors compatible with your PIM version.'
                 title_without_apps: '{0} There is no connectors compatible with your PIM version.|{1} There is {{ count }} connector compatible with your PIM version.|[2,Inf] There are {{ count }} connectors compatible with your PIM version.'
-                description: This is just an overview. For more details, take a look at our web marketplace.
-                link: Go to web marketplace
+                description: This is just an overview. For more details, take a look at our web App Store.
+                link: Go to web App Store
             card:
                 developed_by: Developed by
                 read_more: read more
@@ -66,7 +66,7 @@ akeneo_connectivity.connection:
                 title: Apps
                 total: '{0} No apps|{1} 1 app|[2,Inf] {{ total }} apps'
                 empty: No apps compatible with your version
-            unreachable: We can't reach the marketplace, please come back later.
+            unreachable: We can't reach the App Store, please come back later.
             scroll_to_top: Scroll to the top
         connected_apps:
             list:
@@ -75,10 +75,10 @@ akeneo_connectivity.connection:
                     total: '{0} No apps|{1} 1 app|[2,Inf] {{ total }} apps'
                     empty: No apps connected yet.
                     check_marketplace: 'Check the {{ marketplaceLink }} to browse all the available content and install your first app.'
-                    marketplace_link_anchor: Marketplace
+                    marketplace_link_anchor: App Store
                 helper:
                     title: '[0,1] Your PIM is connected with {{ count }} app.|[2,Inf] Your PIM is connected with {{ count }} apps.'
-                    description_1: New apps are developed regularly, so stay tuned and check our Marketplace page frequently to discover how to connect your PIM.
+                    description_1: New apps are developed regularly, so stay tuned and check our App Store page frequently to discover how to connect your PIM.
                     description_2: Eager to know more about Apps ?
                     link: Check out our Help Center for more information.
                 card:

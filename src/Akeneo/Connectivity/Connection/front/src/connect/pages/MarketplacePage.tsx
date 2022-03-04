@@ -30,7 +30,7 @@ export const MarketplacePage: FC = () => {
     useEffect(() => {
         const profile = user.get<string | null>('profile');
         if (null === profile) {
-            history.push('/connect/marketplace/profile');
+            history.push('/connect/app-store/profile');
         } else {
             setUserProfile(profile);
         }
