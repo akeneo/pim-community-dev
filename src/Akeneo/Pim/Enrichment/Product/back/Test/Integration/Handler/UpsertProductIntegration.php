@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
@@ -20,6 +21,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
@@ -426,6 +428,24 @@ final class UpsertProductIntegration extends TestCase
         $this->messageBus->dispatch($command);
     }
 
+    /** @test */
+    public function it_enables_and_disables_a_product(): void
+    {
+        $this->updateProduct(new SetEnabled(false));
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+
+        Assert::assertFalse($product->isEnabled());
+
+        $this->updateProduct(new SetEnabled(true));
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+
+        Assert::assertTrue($product->isEnabled());
+    }
+
     private function getUserId(string $username): int
     {
         $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
@@ -453,7 +473,7 @@ final class UpsertProductIntegration extends TestCase
         $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 
-    private function updateProduct(ValueUserIntent $userIntent): void
+    private function updateProduct(UserIntent $userIntent): void
     {
         // Creates empty product
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier');
@@ -463,9 +483,7 @@ final class UpsertProductIntegration extends TestCase
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
         // Update product with userIntent value
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
-            $userIntent
-        ]);
+        $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('admin'), productIdentifier: 'identifier', userIntents: [$userIntent]);
         $this->messageBus->dispatch($command);
 
         $this->clearDoctrineUoW();
