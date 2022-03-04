@@ -30,7 +30,6 @@ services:
         arguments:
             - '@database_connection'
             - '@monolog.logger'
-            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StackedContextProcessor'
         abstract: true
 
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCreateColumns:
@@ -52,12 +51,5 @@ services:
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillForeignUuid'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillJson'
             - '@monolog.logger'
-            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StackedContextProcessor'
         tags:
             - { name: 'console.command' }
-
-    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StackedContextProcessor: #to be moved to LoggingBundle
-        arguments: #todo remove
-            - '@monolog.logger'
-        tags:
-            - { name: monolog.processor }
