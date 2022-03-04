@@ -49,6 +49,7 @@ final class UpsertProductCommand
             }
 
             if ($userIntent instanceof SetEnabled) {
+                Assert::null($enabledUserIntent, "Only one SetEnabled intent can be sent to the command.");
                 $enabledUserIntent = $userIntent;
             }
         }
