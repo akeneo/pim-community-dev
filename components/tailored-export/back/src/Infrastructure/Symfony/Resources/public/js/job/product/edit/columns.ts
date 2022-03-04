@@ -99,41 +99,25 @@ class ColumnView extends BaseView {
                 attribute: {
                   fetchByIdentifiers: (identifiers: string[]): Promise<Attribute[]> => {
                     return new Promise(resolve =>
-                      fetcherRegistry
-                        .getFetcher('attribute')
-                        .fetchByIdentifiers(identifiers)
-                        .then(resolve)
+                      fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(identifiers).then(resolve)
                     );
                   },
                 },
                 channel: {
                   fetchAll: (): Promise<Channel[]> => {
-                    return new Promise(resolve =>
-                      fetcherRegistry
-                        .getFetcher('channel')
-                        .fetchAll()
-                        .then(resolve)
-                    );
+                    return new Promise(resolve => fetcherRegistry.getFetcher('channel').fetchAll().then(resolve));
                   },
                 },
                 associationType: {
                   fetchByCodes: (codes: string[]): Promise<AssociationType[]> => {
                     return new Promise(resolve =>
-                      fetcherRegistry
-                        .getFetcher('association-type')
-                        .fetchByIdentifiers(codes)
-                        .then(resolve)
+                      fetcherRegistry.getFetcher('association-type').fetchByIdentifiers(codes).then(resolve)
                     );
                   },
                 },
                 measurementFamily: {
                   fetchByCode: (code: string): Promise<MeasurementFamily | undefined> => {
-                    return new Promise(resolve =>
-                      fetcherRegistry
-                        .getFetcher('measure')
-                        .fetch(code)
-                        .then(resolve)
-                    );
+                    return new Promise(resolve => fetcherRegistry.getFetcher('measure').fetch(code).then(resolve));
                   },
                 },
                 assetFamily: {
