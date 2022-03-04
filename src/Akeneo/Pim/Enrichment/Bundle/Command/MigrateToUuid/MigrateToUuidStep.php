@@ -45,4 +45,18 @@ interface MigrateToUuidStep
     public function getDescription(): string;
 
     public function getName(): string;
+
+    public function getStatus(): string;
+
+    public function getDuration(): ?float;
+
+    public function setStatusInProgress(): void;
+
+    public function setStatusInError(): void;
+
+    public function setStatusDone(): void;
+
+    public function setStatusCountMissing(): void;
+
+    public function setStatusSkipped(): void;
 }

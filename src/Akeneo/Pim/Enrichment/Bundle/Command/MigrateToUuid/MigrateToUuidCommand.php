@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
-use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StackedContextProcessor;
+use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\LogContext;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -24,8 +24,7 @@ class MigrateToUuidCommand extends Command
         MigrateToUuidStep $migrateToUuidFillProductUuid,
         MigrateToUuidStep $migrateToUuidFillForeignUuid,
         MigrateToUuidStep $migrateToUuidFillJson,
-        private LoggerInterface $logger,
-        private StackedContextProcessor $contextProcessor
+        private LoggerInterface $logger
     ) {
         parent::__construct();
         $this->steps = [
@@ -48,38 +47,39 @@ class MigrateToUuidCommand extends Command
         $withStats = $input->getOption('with-stats');
         $context = new Context($input->getOption('dry-run'), $withStats);
 
+        $startMigrationTime = \time();
+        $this->logger->notice('Migration start');
+
         foreach ($this->steps as $step) {
-            $this->contextProcessor->push(['step' => $step->getName()]);
-            $this->logger->notice($step->getDescription());
+            $logContext = new LogContext($step);
+            $context->logContext = $logContext;
 
             if ($withStats) {
                 $missingCount = $step->getMissingCount();
-                $this->contextProcessor->push(['total_missing_items_count' => $missingCount]);
-                $this->logger->notice('Missing items');
+                $logContext->addContext('total_missing_items_count', $missingCount);
+                $this->logger->notice('Missing items', $logContext->toArray());
             } else {
-                $this->contextProcessor->push(['total_missing_items_count' => 0]); // TODO is 0 ok?
+                $logContext->addContext('total_missing_items_count', null);
             }
 
             if ($step->shouldBeExecuted()) {
-                $this->logger->notice('Add missing items');
-                $stepStartTime = \microtime(true);
+                $step->setStatusInProgress();
+                $this->logger->notice('Start add missing items', $logContext->toArray());
                 if (!$step->addMissing($context, $output)) {
-                    $this->logger->notice('An item can not be migrated. Step stopped.');
-
+                    $step->setStatusInError();
+                    $this->logger->error('An item can not be migrated. Step stopped.', $logContext->toArray());
+                    $this->logger->notice('Migration stopped', ['migration_duration_in_second' => time() - $startMigrationTime]);
                     return Command::FAILURE;
                 }
-                $stepDuration = \microtime(true) - $stepStartTime;
-
-                $this->logger->notice(\sprintf('Step done in %0.2f seconds', $stepDuration));
+                $step->setStatusDone();
+                $this->logger->notice(\sprintf('Step done in %0.2f seconds', $step->getDuration()), $logContext->toArray());
             } else {
-                $this->logger->notice('No items to migrate. Step skipped.');
+                $step->setStatusSkipped();
+                $this->logger->notice('No items to migrate. Step skipped.', $logContext->toArray());
             }
-
-            $this->contextProcessor->pop(); //pop total missing items count
-            $this->contextProcessor->pop(); //pop step name
         }
 
-        $this->logger->notice('Migration done!');
+        $this->logger->notice('Migration done!', ['migration_duration_in_second' => time() - $startMigrationTime]);
 
         return Command::SUCCESS;
     }
