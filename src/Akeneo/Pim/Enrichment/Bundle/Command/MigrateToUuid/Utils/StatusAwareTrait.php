@@ -34,11 +34,6 @@ trait StatusAwareTrait
         $this->status = 'in_error';
     }
 
-    public function setStatusCountMissing(): void
-    {
-        $this->status = 'count_missing';
-    }
-
     public function setStatusSkipped(): void
     {
         $this->status = 'skipped';

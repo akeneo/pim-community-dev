@@ -65,7 +65,7 @@ class MigrateToUuidCommand extends Command
             if ($step->shouldBeExecuted()) {
                 $step->setStatusInProgress();
                 $this->logger->notice('Start add missing items', $logContext->toArray());
-                if (!$step->addMissing($context, $output)) {
+                if (!$step->addMissing($context)) {
                     $step->setStatusInError();
                     $this->logger->error('An item can not be migrated. Step stopped.', $logContext->toArray());
                     $this->logger->notice('Migration stopped', ['migration_duration_in_second' => time() - $startMigrationTime]);

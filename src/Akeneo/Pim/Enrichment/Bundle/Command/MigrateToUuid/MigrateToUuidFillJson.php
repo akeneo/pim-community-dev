@@ -6,7 +6,6 @@ use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\LogContext;
 use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StatusAwareTrait;
 use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  *  Queries to try this migration:
@@ -102,14 +101,14 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         return $count;
     }
 
-    public function addMissing(Context $context, OutputInterface $output): bool
+    public function addMissing(Context $context): bool
     {
         $this->logContext = $context->logContext;
         $allItemsMigrated = true;
         $this->cumulatedUpdatedJson = 0;
         foreach (self::TABLE_NAMES as $tableName) {
             $this->logContext->addContext('substep', $tableName);
-            $allItemsMigrated = $this->addMissingForTable($context->dryRun(), $output, $tableName) && $allItemsMigrated;
+            $allItemsMigrated = $this->addMissingForTable($context->dryRun(), $tableName) && $allItemsMigrated;
         }
 
         return $allItemsMigrated;
@@ -207,27 +206,29 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         return $result;
     }
 
-    private function addMissingForTable(bool $dryRun, OutputInterface $output, string $tableName): bool
+    private function addMissingForTable(bool $dryRun, string $tableName): bool
     {
         $allItemsMigrated = true;
         $previousEntityId = -1;
         $associations = $this->getFormerAssociations($tableName, $previousEntityId);
-        $this->logContext->addContext('total_missing_associations_counter', count($associations));
+        $this->logContext->addContext('table_missing_associations_counter', count($associations));
 
-        $updatedAssociationsCount = 0;
         while (count($formerAssociations) > 0) {
             $productIdToUuidMap = $this->getProductIdToUuidMap($formerAssociations, $dryRun);
-            $newAssociations = $this->getNewAssociationsAndIds($output, $formerAssociations, $productIdToUuidMap);
+            $newAssociations = $this->getNewAssociationsAndIds($formerAssociations, $productIdToUuidMap);
 
             $allItemsMigrated = $allItemsMigrated && \count($newAssociations) === \count($formerAssociations);
+            $this->logger->info(
+                'Will update associations',
+                $this->logContext->toArray(['table_association_to_update_counter' => \count($newAssociations)])
+            );
 
-            $output->writeln(\sprintf('    Will update %s entities in %s table', \count($newAssociations), $tableName));
             if (!$dryRun) {
                 $this->updateAssociations($tableName, $newAssociations);
                 $previousEntityId = \array_keys($formerAssociations)[\count($formerAssociations) - 1];
                 $formerAssociations = $this->getFormerAssociations($tableName, $previousEntityId);
             } else {
-                $output->writeln(\sprintf('    Option --dry-run is set, will continue to next step.'));
+                $this->logger->info('Option --dry-run is set, will continue to next step.', $this->logContext->toArray());
                 $formerAssociations = [];
             }
         }
@@ -253,7 +254,7 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
      *     ]
      * ]
      */
-    private function getNewAssociationsAndIds(OutputInterface $output, array $formerAssociationsAndIds, array $productIdToUuidMap) : array
+    private function getNewAssociationsAndIds(array $formerAssociationsAndIds, array $productIdToUuidMap) : array
     {
         $newAssociationsAndIds = [];
 
@@ -266,7 +267,7 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
                     'id' => $productId
                 ];
             } catch (UuidNotFoundException) {
-                $output->writeln(\sprintf('    <comment>Missing product uuid in product %d</comment>', $productId));
+                $this->logger->warning('Missing product uuid', $this->logContext->toArray(['product_id' => $productId]));
             }
         }
 

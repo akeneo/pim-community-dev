@@ -5,7 +5,6 @@ namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StatusAwareTrait;
 use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -56,13 +55,13 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
         return $count;
     }
 
-    public function addMissing(Context $context, OutputInterface $output): bool
+    public function addMissing(Context $context): bool
     {
         $logContext = $context->logContext;
         $processedItems = 0;
         foreach ($this->getTablesWithoutProductTable() as $tableName => $columnNames) {
             $logContext->addContext('substep', $tableName);
-            while ($this->shouldContinue($context, $output, $tableName, $columnNames[self::ID_COLUMN_INDEX], $columnNames[self::UUID_COLUMN_INDEX])) {
+            while ($this->shouldContinue($context, $tableName, $columnNames[self::ID_COLUMN_INDEX], $columnNames[self::UUID_COLUMN_INDEX])) {
                 if (!$context->dryRun()) {
                     $count = $this->getMissingForeignUuidCount($tableName, $columnNames[1], $columnNames[0]);
                     $processedItems += min($count, self::BATCH_SIZE);
@@ -86,7 +85,6 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
 
     private function shouldContinue(
         Context $context,
-        OutputInterface $output,
         string $tableName,
         string $idColumnName,
         string $uuidColumnName
