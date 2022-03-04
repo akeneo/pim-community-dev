@@ -86,9 +86,7 @@ config:
         pim/controller/asset-family/edit: akeneoassetmanager/infrastructure/controller/asset-family/edit.tsx
         pim/controller/asset/edit: akeneoassetmanager/infrastructure/controller/asset/edit.tsx
 
-        # TODO RAC-546
-        pim/attribute-edit-form/properties/asset-family: akeneoassetmanager/infrastructure/attribute/asset-single-link-field.ts
-
+        pim/attribute-edit-form/properties/asset-family: akeneoassetmanager/infrastructure/attribute/asset-family-field.ts
         pim/export/asset-family-field: akeneoassetmanager/infrastructure/export/asset-family-field.ts
 
         oro/datafilter/asset-family-collection-filter: akeneoassetmanager/infrastructure/product-grid/filter/attribute/asset-family-collection

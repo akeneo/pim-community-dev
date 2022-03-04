@@ -19,5 +19,6 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Entit
 class AttributeQuality
 {
     public $attributeCode;
+    public $attribute;
     public $quality;
 }

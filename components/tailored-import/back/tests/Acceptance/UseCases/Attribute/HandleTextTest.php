@@ -98,7 +98,7 @@ final class HandleTextTest extends AttributeTestCase
                 'expected' => new UpsertProductCommand(
                     userId: 1,
                     productIdentifier: 'this-is-a-sku',
-                    valuesUserIntent: [
+                    valueUserIntents: [
                         new SetTextValue('name', null, null, 'this is a name'),
                         new SetTextValue('description', 'ecommerce', 'fr_FR', 'this is a description'),
                     ],

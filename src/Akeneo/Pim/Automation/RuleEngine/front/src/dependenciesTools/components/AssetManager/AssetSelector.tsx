@@ -3,6 +3,7 @@ const BaseAssetSelector =
   require('akeneoassetmanager/application/component/app/asset-selector')
     .default;
 import * as React from 'react';
+import {useBackboneRouter} from '../../hooks';
 
 type AssetCode = string;
 type AssetFamilyIdentifier = string;
@@ -36,8 +37,10 @@ export const AssetSelector: React.FC<AssetSelectorProps> = ({
   onChange,
   dropdownCssClass,
 }) => {
+  const router = useBackboneRouter();
   return (
     <BaseAssetSelector
+      router={router}
       value={value || (multiple ? [] : null)}
       assetFamilyIdentifier={assetFamilyIdentifier}
       multiple={multiple}
