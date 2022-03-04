@@ -42,6 +42,8 @@ describe('Test Asset create modal component', () => {
         context={{locale: 'en_US', channel: 'ecommerce'}}
         isSelected={false}
         onSelectionChange={() => {}}
+        shouldGeneratePreview={true}
+        handlePreviewGenerated={jest.fn()}
       />
     );
 
@@ -67,6 +69,8 @@ describe('Test Asset create modal component', () => {
         context={{locale: 'en_US', channel: 'ecommerce'}}
         isSelected={isSelected}
         onSelectionChange={() => {}}
+        shouldGeneratePreview={true}
+        handlePreviewGenerated={jest.fn()}
       />
     );
 
@@ -84,6 +88,28 @@ describe('Test Asset create modal component', () => {
     expect(screen.getByText(asset.labels.en_US)).toBeInTheDocument();
   });
 
+  test('It displays asset card with ungenerated preview', async () => {
+    const isSelected = true;
+    renderWithProviders(
+      <AssetCard
+        asset={asset}
+        context={{locale: 'en_US', channel: 'ecommerce'}}
+        isSelected={isSelected}
+        onSelectionChange={() => {}}
+        shouldGeneratePreview={false}
+        handlePreviewGenerated={jest.fn()}
+      />
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    const image = screen.getByRole('img') as HTMLImageElement;
+
+    expect(image.src).toEqual('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"/>');
+  });
+
   test('it can be selected when clicking on the checkbox', async () => {
     const handleSelectionChange = jest.fn();
 
@@ -93,6 +119,8 @@ describe('Test Asset create modal component', () => {
         context={{locale: 'en_US', channel: 'ecommerce'}}
         isSelected={false}
         onSelectionChange={handleSelectionChange}
+        shouldGeneratePreview={true}
+        handlePreviewGenerated={jest.fn()}
       />
     );
 
@@ -113,6 +141,8 @@ describe('Test Asset create modal component', () => {
         context={{locale: 'en_US', channel: 'ecommerce'}}
         isSelected={false}
         onSelectionChange={handleSelectionChange}
+        shouldGeneratePreview={true}
+        handlePreviewGenerated={jest.fn()}
       />
     );
 
@@ -135,6 +165,8 @@ describe('Test Asset create modal component', () => {
         isSelected={false}
         onClick={handleClick}
         onSelectionChange={handleSelectionChange}
+        shouldGeneratePreview={true}
+        handlePreviewGenerated={jest.fn()}
       />
     );
 
@@ -161,6 +193,8 @@ describe('Test Asset create modal component', () => {
         context={{locale: 'en_US', channel: 'ecommerce'}}
         isSelected={isSelected}
         onSelectionChange={() => {}}
+        shouldGeneratePreview={true}
+        handlePreviewGenerated={jest.fn()}
       />
     );
 
