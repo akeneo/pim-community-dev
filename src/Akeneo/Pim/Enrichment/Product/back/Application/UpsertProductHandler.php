@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
@@ -52,10 +53,6 @@ final class UpsertProductHandler
 
     public function __invoke(UpsertProductCommand $command): void
     {
-        /**
-         * TODO CPM-492: validate permissions is required here.
-         * If we can do that, then the permission are ok for the rest of the code (= use "without permissions" services)
-         */
         $violations = $this->validator->validate($command);
         if (0 < $violations->count()) {
             throw new ViolationsException($violations);
@@ -217,11 +214,10 @@ final class UpsertProductHandler
 
         $familyUserIntent = $command->familyUserIntent();
         if (null !== $familyUserIntent) {
-            if ($familyUserIntent instanceof SetFamily) {
+            if ($familyUserIntent instanceof SetFamily || $familyUserIntent instanceof RemoveFamily) {
                 try {
-                    $this->productUpdater->update($product, [
-                        'family' => $familyUserIntent->familyCode(),
-                    ]);
+                    $familyData = $familyUserIntent instanceof SetFamily ? $familyUserIntent->familyCode() : null;
+                    $this->productUpdater->update($product, ['family' => $familyData]);
                 } catch (PropertyException $e) {
                     $violations = new ConstraintViolationList([
                         new ConstraintViolation(

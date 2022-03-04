@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
@@ -526,7 +527,7 @@ final class UpsertProductIntegration extends TestCase
         $this->clearDoctrineUoW();
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
-        Assert::assertSame(null, $product->getFamily());
+        Assert::assertNull($product->getFamily());
 
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
         $command = new UpsertProductCommand(
@@ -551,6 +552,18 @@ final class UpsertProductIntegration extends TestCase
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
         Assert::assertSame('familyA1', $product->getFamily()->getCode());
+
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            familyUserIntent: new RemoveFamily()
+        );
+        $this->messageBus->dispatch($command);
+        $this->clearDoctrineUoW();
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertNull($product->getFamily());
     }
 
     /** @test */
