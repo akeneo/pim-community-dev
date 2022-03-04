@@ -14,6 +14,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\Domain\Event\ProductWasCreated;
@@ -91,6 +92,7 @@ final class UpsertProductHandler
                     || $valueUserIntent instanceof SetNumberValue
                     || $valueUserIntent instanceof SetTextareaValue
                     || $valueUserIntent instanceof SetBooleanValue
+                    || $valueUserIntent instanceof SetSimpleSelectValue
                 ) {
                     $found = true;
                     $this->productUpdater->update($product, [

@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
@@ -291,6 +292,22 @@ final class UpsertProductIntegration extends TestCase
     {
         $this->updateProduct(new SetBooleanValue('a_yes_no', null, null, true));
         $this->assertProductHasCorrectValueByAttributeCode('a_yes_no', true);
+    }
+
+    /** @test */
+    public function it_updates_a_product_with_a_simple_select_value(): void
+    {
+        $this->updateProduct(new SetSimpleSelectValue('a_simple_select', null, null, 'optionA'));
+        $this->assertProductHasCorrectValueByAttributeCode('a_simple_select', 'optionA');
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_single_select_option_does_not_exist(): void
+    {
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('The toto value is not in the a_simple_select attribute option list.');
+
+        $this->updateProduct(new SetSimpleSelectValue('a_simple_select', null, null, 'toto'));
     }
 
     /** @test */
