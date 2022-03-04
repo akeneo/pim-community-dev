@@ -6,7 +6,6 @@ use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StatusAwareTrait;
 use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -58,12 +57,12 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
         return (bool) $this->connection->fetchOne($sql);
     }
 
-    public function addMissing(Context $context, OutputInterface $output): bool
+    public function addMissing(Context $context): bool
     {
         $logContext = $context->logContext;
         $batchesCount = 0;
         $processedItems = 0;
-        while ($this->shouldContinue($context, $output) > 0) {
+        while ($this->shouldContinue($context) > 0) {
             $logContext->addContext('substep', 'missing_product_uuid_batch_' . $batchesCount++);
             if (!$context->dryRun()) {
                 $count = $this->getMissingProductUuidCount();
@@ -86,7 +85,7 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
         return true;
     }
 
-    private function shouldContinue(Context $context, OutputInterface $output): bool
+    private function shouldContinue(Context $context): bool
     {
         $logContext = $context->logContext;
         if ($context->withStats()) {
