@@ -58,6 +58,7 @@ const Mosaic = ({
   const [previewsToGenerate, setPreviewsToGenerate] = useState<AssetCode[]>([]);
   const [generatedPreviews, setGeneratedPreviews] = useState<AssetCode[]>([]);
 
+  /* istanbul ignore next */
   const handlePreviewGenerated = (assetCode: AssetCode): void => {
     setGeneratedPreviews(generatedPreviews => [...generatedPreviews, assetCode]);
   };
