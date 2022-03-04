@@ -44,4 +44,10 @@ class SetSimpleSelectValueSpec extends ObjectBehavior
     {
         $this->value()->shouldReturn('M');
     }
+
+    function it_is_not_initializable_with_an_empty_value()
+    {
+        $this->beConstructedWith('name', 'ecommerce', 'en_US', '');
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
 }

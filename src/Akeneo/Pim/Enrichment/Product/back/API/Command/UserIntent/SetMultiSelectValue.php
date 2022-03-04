@@ -10,15 +10,20 @@ namespace Akeneo\Pim\Enrichment\Product\API\Command\UserIntent;
 
 use Webmozart\Assert\Assert;
 
-class SetSimpleSelectValue implements ValueUserIntent
+class SetMultiSelectValue implements ValueUserIntent
 {
+    /**
+     * @param array<string> $values
+     */
     public function __construct(
         private string $attributeCode,
         private ?string $channelCode,
         private ?string $localeCode,
-        private string $value
+        private array $values
     ) {
-        Assert::stringNotEmpty($value);
+        Assert::notEmpty($values);
+        Assert::allString($values);
+        Assert::allStringNotEmpty($values);
     }
 
     public function attributeCode(): string
@@ -36,8 +41,11 @@ class SetSimpleSelectValue implements ValueUserIntent
         return $this->channelCode;
     }
 
-    public function value(): string
+    /**
+     * @return array<string>
+     */
+    public function values(): array
     {
-        return $this->value;
+        return $this->values;
     }
 }
