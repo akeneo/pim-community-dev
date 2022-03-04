@@ -293,6 +293,19 @@ final class UpsertProductIntegration extends TestCase
         $this->assertProductHasCorrectValueByAttributeCode('a_yes_no', true);
     }
 
+    /** @test */
+    public function it_throws_an_exception_when_two_intents_modify_the_same_value(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('The value for attribute a_text is being updated multiple times');
+
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
+            new SetTextValue('a_text', null, null, 'foo'),
+            new SetTextValue('a_text', null, null, 'bar'),
+        ]);
+        $this->messageBus->dispatch($command);
+    }
+
     private function getUserId(string $username): int
     {
         $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);

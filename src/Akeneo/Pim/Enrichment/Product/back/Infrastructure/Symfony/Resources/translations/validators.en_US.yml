@@ -6,6 +6,7 @@ pim_enrich.product:
             locale_no_access_to_products: You don't have access to product data in any activated locale, please contact your administrator
             attribute_group_no_access_to_attributes: You don't have access to the {{ attributeCode }} attribute of this product. Please contact your administrator.
             product_identifier_empty: The product identifier requires a non empty string
+            duplicated_user_intents: The value for attribute {{ attributeCode }} is being updated multiple times
             set_value:
                 no_channel_code_provided_for_scopable_attribute: 'The {{ attributeCode }} attribute requires a channel'
                 channel_code_provided_for_non_scopable_attribute: 'The {{ attributeCode }} attribute does not require a channel, "{{ channelCode }}" was detected'
