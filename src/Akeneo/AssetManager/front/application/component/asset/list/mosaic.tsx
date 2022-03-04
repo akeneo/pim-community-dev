@@ -53,24 +53,30 @@ const Mosaic = ({
 
   /**
    * PIM-10306: Batch the preview generation
-   * We want to generate the preview for the first 5 assets, then the next 5, and so on.
+   * We want to generate the preview for the first batch of assets, then the next batch, and so on.
    */
   const [previewsToGenerate, setPreviewsToGenerate] = useState<AssetCode[]>([]);
   const [generatedPreviews, setGeneratedPreviews] = useState<AssetCode[]>([]);
 
-  const handlePreviewGenerated = (assetCode: AssetCode) => {
+  const handlePreviewGenerated = (assetCode: AssetCode): void => {
     setGeneratedPreviews(generatedPreviews => [...generatedPreviews, assetCode]);
   };
 
+  // We initialize the previews to generate with the first batch of assets
   useEffect(() => {
-    if (0 === previewsToGenerate.length || 0 === generatedPreviews.length % GENERATE_PREVIEW_BATCH_SIZE) {
+    setGeneratedPreviews([]);
+    const previewsToGenerate = assetCollection.slice(0, GENERATE_PREVIEW_BATCH_SIZE).map(asset => asset.code);
+    setPreviewsToGenerate(previewsToGenerate);
+  }, [context, assetCollection]);
+
+  // When a preview is generated and if the current batch is generated, we generate the next batch
+  useEffect(() => {
+    if (0 === generatedPreviews.length % GENERATE_PREVIEW_BATCH_SIZE) {
       const nextPreviewsToGenerate = assetCollection
         .slice(generatedPreviews.length, generatedPreviews.length + GENERATE_PREVIEW_BATCH_SIZE)
         .map(asset => asset.code);
 
-      if (0 < nextPreviewsToGenerate.length) {
-        setPreviewsToGenerate(nextPreviewsToGenerate);
-      }
+      setPreviewsToGenerate(nextPreviewsToGenerate);
     }
   }, [generatedPreviews]);
 
