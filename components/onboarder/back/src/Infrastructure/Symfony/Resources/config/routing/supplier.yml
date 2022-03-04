@@ -1,0 +1,4 @@
+onboarder_serenity_supplier_list:
+    path: /
+    defaults: { _controller: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierList, _format: json }
+    methods: [GET]

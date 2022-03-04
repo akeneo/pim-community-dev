@@ -9,3 +9,9 @@ services:
     Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler:
         arguments:
             - '@Akeneo\OnboarderSerenity\Domain\Supplier\Repository'
+
+    # Queries
+    Akeneo\OnboarderSerenity\Domain\Supplier\GetSupplierList:
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Sql\GetSupplierList
+        arguments:
+            - '@database_connection'
