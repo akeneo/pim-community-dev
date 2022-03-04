@@ -2,7 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
-use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StackedContextProcessor;
+use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\LogContext;
+use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StatusAwareTrait;
 use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,6 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class MigrateToUuidFillJson implements MigrateToUuidStep
 {
     use MigrateToUuidTrait;
+    use StatusAwareTrait;
 
     private const BATCH_SIZE = 1000;
     private const TABLE_NAMES = [
@@ -30,11 +32,11 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
     ];
 
     private int $cumulatedUpdatedJson; // cumulative counter of updated json through all tables
+    private LogContext $logContext;
 
     public function __construct(
         private Connection $connection,
-        private LoggerInterface $logger,
-        private StackedContextProcessor $contextProcessor
+        private LoggerInterface $logger
     ) {
     }
 
@@ -102,12 +104,12 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
 
     public function addMissing(Context $context, OutputInterface $output): bool
     {
+        $this->logContext = $context->logContext;
         $allItemsMigrated = true;
         $this->cumulatedUpdatedJson = 0;
         foreach (self::TABLE_NAMES as $tableName) {
-            $this->contextProcessor->push(['substep' => $tableName]);
+            $this->logContext->addContext('substep', $tableName);
             $allItemsMigrated = $this->addMissingForTable($context->dryRun(), $output, $tableName) && $allItemsMigrated;
-            $this->contextProcessor->pop(); //pop substep name
         }
 
         return $allItemsMigrated;
@@ -209,9 +211,9 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
     {
         $allItemsMigrated = true;
         $previousEntityId = -1;
-        $formerAssociations = $this->getFormerAssociations($tableName, $previousEntityId);
+        $associations = $this->getFormerAssociations($tableName, $previousEntityId);
+        $this->logContext->addContext('total_missing_associations_counter', count($associations));
 
-        $this->contextProcessor->push(['total_missing_associations_counter' => count($associations)]);
         $updatedAssociationsCount = 0;
         while (count($formerAssociations) > 0) {
             $productIdToUuidMap = $this->getProductIdToUuidMap($formerAssociations, $dryRun);
