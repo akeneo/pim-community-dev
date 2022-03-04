@@ -12,7 +12,7 @@ use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidStep;
  */
 class LogContext
 {
-    private array $context;
+    private array $context = [];
 
     public function __construct(private MigrateToUuidStep $step)
     {
