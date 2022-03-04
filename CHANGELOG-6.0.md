@@ -1,5 +1,13 @@
 # 6.0.x
 
+## Bug fixes
+
+- RAC-1221: [Backport PIM-10236] Fix duplicated mask returned by query for table attribute
+- RAC-1222: [Backport PIM-10252] Tailored Export - asset collection: "main media" is not selectable
+- RAC-1220: [Backport PIM-10238] Add permissions to view mass delete assets, mass edit assets and mass delete records job logs
+- CPM-543: [Backport PIM-10249] Fix error message when importing YML rule containing a reference entity record with numeric value
+- PIM-10305: Reject disabled user when coming from SAML auth
+
 # 6.0.7 (2022-02-25)
 
 # 6.0.6 (2022-02-21)
