@@ -14,6 +14,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
@@ -212,6 +213,32 @@ final class UpsertProductHandler
             $this->productUpdater->update($product, [
                 'enabled' => $command->enabledUserIntent()->enabled(),
             ]);
+        }
+
+        $familyUserIntent = $command->familyUserIntent();
+        if (null !== $familyUserIntent) {
+            if ($familyUserIntent instanceof SetFamily) {
+                try {
+                    $this->productUpdater->update($product, [
+                        'family' => $familyUserIntent->familyCode(),
+                    ]);
+                } catch (PropertyException $e) {
+                    $violations = new ConstraintViolationList([
+                        new ConstraintViolation(
+                            $e->getMessage(),
+                            $e->getMessage(),
+                            [],
+                            $command,
+                            "familyUserIntent",
+                            $familyUserIntent
+                        ),
+                    ]);
+
+                    throw new ViolationsException($violations);
+                }
+            } else {
+                throw new \InvalidArgumentException(\sprintf('The "%s" intent cannot be handled.', get_class($familyUserIntent)));
+            }
         }
     }
 }

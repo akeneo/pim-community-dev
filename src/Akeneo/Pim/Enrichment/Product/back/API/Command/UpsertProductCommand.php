@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\API\Command;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\FamilyUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Webmozart\Assert\Assert;
@@ -24,7 +25,7 @@ final class UpsertProductCommand
         private int $userId,
         private string $productIdentifier,
         private mixed $identifierUserIntent = null,
-        private mixed $familyUserIntent = null,
+        private ?FamilyUserIntent $familyUserIntent = null,
         private mixed $categoryUserIntent = null,
         private mixed $parentUserIntent = null,
         private mixed $groupsUserIntent = null,
@@ -42,21 +43,23 @@ final class UpsertProductCommand
     {
         $valueUserIntents = [];
         $enabledUserIntent = null;
-
+        $familyUserIntent = null;
         foreach ($userIntents as $userIntent) {
             if ($userIntent instanceof ValueUserIntent) {
                 $valueUserIntents[] = $userIntent;
-            }
-
-            if ($userIntent instanceof SetEnabled) {
+            } elseif ($userIntent instanceof SetEnabled) {
                 Assert::null($enabledUserIntent, "Only one SetEnabled intent can be sent to the command.");
                 $enabledUserIntent = $userIntent;
+            } elseif ($userIntent instanceof FamilyUserIntent) {
+                Assert::null($familyUserIntent, 'A family user intent cannot be defined twice');
+                $familyUserIntent = $userIntent;
             }
         }
 
         return new self(
             userId: $userId,
             productIdentifier: $productIdentifier,
+            familyUserIntent: $familyUserIntent,
             enabledUserIntent: $enabledUserIntent,
             valueUserIntents: $valueUserIntents
         );
@@ -70,6 +73,11 @@ final class UpsertProductCommand
     public function productIdentifier(): string
     {
         return $this->productIdentifier;
+    }
+
+    public function familyUserIntent(): ?FamilyUserIntent
+    {
+        return $this->familyUserIntent;
     }
 
     /**

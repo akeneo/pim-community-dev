@@ -16,6 +16,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
@@ -512,6 +513,72 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertNotNull($product);
 
         Assert::assertTrue($product->isEnabled());
+    }
+
+    /** @test */
+    public function it_set_a_family_on_a_product(): void
+    {
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier'
+        );
+        $this->messageBus->dispatch($command);
+        $this->clearDoctrineUoW();
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertSame(null, $product->getFamily());
+
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            familyUserIntent: new SetFamily('familyA')
+        );
+        $this->messageBus->dispatch($command);
+        $this->clearDoctrineUoW();
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertSame('familyA', $product->getFamily()->getCode());
+
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            familyUserIntent: new SetFamily('familyA1')
+        );
+        $this->messageBus->dispatch($command);
+        $this->clearDoctrineUoW();
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertSame('familyA1', $product->getFamily()->getCode());
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_family_does_not_exist(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('The unknown family does not exist in your PIM.');
+
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            familyUserIntent: new SetFamily('unknown')
+        );
+        $this->messageBus->dispatch($command);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_family_code_is_blank(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('The family code requires a non empty string');
+
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            familyUserIntent: new SetFamily('')
+        );
+        $this->messageBus->dispatch($command);
     }
 
     private function getUserId(string $username): int
