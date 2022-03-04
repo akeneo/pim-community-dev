@@ -72,10 +72,16 @@ class MigrateToUuidCommand extends Command
                     return Command::FAILURE;
                 }
                 $step->setStatusDone();
-                $this->logger->notice(\sprintf('Step done in %0.2f seconds', $step->getDuration()), $logContext->toArray());
+                $this->logger->notice(
+                    \sprintf('Step done in %0.2f seconds', $step->getDuration()),
+                    $logContext->toArray(['migration_duration_in_second' => time() - $startMigrationTime])
+                );
             } else {
                 $step->setStatusSkipped();
-                $this->logger->notice('No items to migrate. Step skipped.', $logContext->toArray());
+                $this->logger->notice(
+                    'No items to migrate. Step skipped.',
+                    $logContext->toArray(['migration_duration_in_second' => time() - $startMigrationTime])
+                );
             }
         }
 
