@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\API\Command;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
@@ -154,5 +155,25 @@ class UpsertProductCommandSpec extends ObjectBehavior
             [new \stdClass]
         );
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    function it_can_be_constructed_with_a_set_boolean_value_intent()
+    {
+        $valueUserIntents = [new SetBooleanValue('name', null, null, true)];
+        $this->beConstructedWith(
+            1,
+            'identifier1',
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            $valueUserIntents
+        );
+        $this->userId()->shouldReturn(1);
+        $this->productIdentifier()->shouldReturn('identifier1');
+        $this->valueUserIntents()->shouldReturn($valueUserIntents);
     }
 }
