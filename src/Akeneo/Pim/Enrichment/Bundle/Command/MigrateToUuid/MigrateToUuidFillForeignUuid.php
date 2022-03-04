@@ -127,26 +127,47 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
         }
 
         if ($this->columnExists($tableName, $uuidColumnName)) {
-            return $this->getNullCellCount($tableName, $uuidColumnName);
+            return $this->getNullForeignUuidCellsCount($tableName, $uuidColumnName, $idColumnName);
         }
 
-        return $this->getNullCellCount($tableName, $idColumnName, true);
+        return $this->getNotNullForeignIdCellsCount($tableName, $idColumnName);
     }
 
-    private function getNullCellCount(string $tableName, string $columnName, bool $not = false): int
+    private function getNullForeignUuidCellsCount(string $tableName, string $uuidColumnName, string $idColumnName): int
     {
-        // TODO Try with COUNT(1)
         $sql = <<<SQL
             SELECT COUNT(*)
             FROM {table_name}
-            WHERE {column_name} IS {not} NULL
+            INNER JOIN pim_catalog_product p ON p.id = {table_name}.{id_column_name}
+            WHERE {table_name}.{uuid_column_name} IS NULL
             {extra_condition}
         SQL;
 
         $query = \strtr($sql, [
             '{table_name}' => $tableName,
-            '{column_name}' => $columnName,
-            '{not}' => $not ? 'NOT' : '',
+            '{uuid_column_name}' => $uuidColumnName,
+            '{id_column_name}' => $idColumnName,
+            '{extra_condition}' => ($tableName === 'pim_versioning_version') ?
+                ' AND resource_name="Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"' :
+                ''
+        ]);
+
+        return (int) $this->connection->fetchOne($query);
+    }
+
+    private function getNotNullForeignIdCellsCount(string $tableName, string $idColumnName): int
+    {
+        $sql = <<<SQL
+            SELECT COUNT(*)
+            FROM {table_name}
+            INNER JOIN pim_catalog_product p ON p.id = {table_name}.{id_column_name}
+            WHERE {table_name}.{id_column_name} IS NOT NULL
+            {extra_condition}
+        SQL;
+
+        $query = \strtr($sql, [
+            '{table_name}' => $tableName,
+            '{id_column_name}' => $idColumnName,
             '{extra_condition}' => ($tableName === 'pim_versioning_version') ?
                 ' AND resource_name="Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"' :
                 ''

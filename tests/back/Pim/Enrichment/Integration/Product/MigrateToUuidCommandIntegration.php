@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\BatchBundle\Command\BatchCommand;
+use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -20,6 +21,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 final class MigrateToUuidCommandIntegration extends TestCase
 {
     use MigrateToUuidTrait;
+    use QuantifiedAssociationsTestCaseTrait;
 
     private Connection $connection;
 
@@ -39,6 +41,7 @@ final class MigrateToUuidCommandIntegration extends TestCase
         $this->launchMigrationCommand();
         $this->assertTheColumnsExist();
         $this->assertAllProductsHaveUuid();
+        $this->assertJsonHaveUuid();
     }
 
     private function clean(): void
@@ -100,6 +103,25 @@ final class MigrateToUuidCommandIntegration extends TestCase
         Assert::assertSame(0, $result, \sprintf('%s product(s) does not have an uuid after migration.', $result));
     }
 
+    private function assertJsonHaveUuid(): void
+    {
+        $query = 'SELECT BIN_TO_UUID(uuid) as uuid, quantified_associations FROM pim_catalog_product';
+
+        $result = $this->connection->fetchAllAssociative($query);
+
+        foreach (range(1, 10) as $i) {
+            $quantifiedAssociations = \json_decode($result[$i - 1]['quantified_associations'], true);
+            if ($i === 1) {
+                // the first product is linked to a non existing product and is cleaned
+                Assert::assertEquals(["SOIREEFOOD10" => ["products" => []]], $quantifiedAssociations);
+            } else {
+                Assert::assertEquals(["SOIREEFOOD10" => ["products" => [
+                    ['id' => $i - 1, 'uuid' => $result[$i - 2]['uuid'], 'quantity' => 1000]
+                ]]], $quantifiedAssociations);
+            }
+        }
+    }
+
     private function removeColumn(string $tableName, string $columnName): void
     {
         if ($this->tableExists($tableName) && $this->columnExists($tableName, $columnName)) {
@@ -110,11 +132,23 @@ final class MigrateToUuidCommandIntegration extends TestCase
     private function loadFixtures(): void
     {
         $adminUser = $this->createAdminUser();
+
+        $this->createQuantifiedAssociationType('SOIREEFOOD10');
+
         foreach (range(1, 10) as $i) {
             ($this->get(UpsertProductHandler::class))(new UpsertProductCommand(
                 userId: $adminUser->getId(),
                 productIdentifier: 'identifier' . $i
             ));
+
+            $this->connection->executeQuery(\strtr(<<<SQL
+                UPDATE pim_catalog_product
+                SET quantified_associations = '{"SOIREEFOOD10":{"products":[{"id":{associated_product_id},"quantity":1000}]}}'
+                WHERE id = {product_id}
+            SQL, [
+                '{product_id}' => $i,
+                '{associated_product_id}' => $i - 1,
+            ]));
         }
     }
 
