@@ -9,9 +9,8 @@ default:
                 - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\UserContext
                 - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\CategoryContext
                 - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ChannelContext
-                - test.channel.context
-                - test.locale.context
-                - test.attribute.context
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\LocaleContext
+                - Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\AttributeContext
             filters:
                 tags: '@acceptance-back'
     extensions:

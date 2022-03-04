@@ -31,7 +31,23 @@ services:
     Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ChannelContext:
         public: true
         arguments:
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.currency'
+
+    Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\LocaleContext:
+        public: true
+        arguments:
+            - '@pim_catalog.repository.locale'
             - '@Akeneo\Channel\Locale\API\Query\IsLocaleEditable'
+
+    Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\AttributeContext:
+        public: true
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@pim_catalog.repository.attribute_group'
 
     # Queries
     Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes:

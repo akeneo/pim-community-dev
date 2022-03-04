@@ -4,7 +4,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context;
 
-use Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryIsLocaleEditable;
+use Akeneo\Channel\Component\Model\Channel;
+use Akeneo\Channel\Component\Model\Currency;
+use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository;
+use Akeneo\Test\Acceptance\Channel\InMemoryChannelRepository;
+use Akeneo\Test\Acceptance\Common\ListOfCodes;
+use Akeneo\Test\Acceptance\Currency\InMemoryCurrencyRepository;
+use Akeneo\Test\Acceptance\Locale\InMemoryLocaleRepository;
 use Behat\Behat\Context\Context;
 
 /**
@@ -13,15 +21,43 @@ use Behat\Behat\Context\Context;
  */
 final class ChannelContext implements Context
 {
-    public function __construct(private InMemoryIsLocaleEditable $isLocaleEditable)
-    {
+    public function __construct(
+        private InMemoryLocaleRepository $localeRepository,
+        private InMemoryCategoryRepository $categoryRepository,
+        private InMemoryChannelRepository $channelRepository,
+        private InMemoryCurrencyRepository $currencyRepository
+    ) {
     }
 
     /**
-     * @Given the :groupName user group has editable permission on the :localeCode locale
+     * @Given the following :channelCode channel with locales :localeCodes
      */
-    public function theUserGroupHasEditablePermissionOnLocale(string $groupName, string $localeCode): void
+    public function theFollowingChannel(string $channelCode, string $localeCodes)
     {
-        $this->isLocaleEditable->addEditableLocaleCodeForGroup($groupName, $localeCode);
+        $localeCodes = new ListOfCodes($localeCodes);
+
+        $masterCategory = new Category();
+        $masterCategory->setCode('master');
+        $this->categoryRepository->save($masterCategory);
+
+        $currency = new Currency();
+        $currency->setCode('EUR');
+        $this->currencyRepository->save($currency);
+
+        $channel = new Channel();
+        $channel->setCode($channelCode);
+
+        $channel->setCategory($masterCategory);
+        $channel->addCurrency($currency);
+        foreach ($localeCodes->explode() as $localeCode) {
+            $locale = $this->localeRepository->findOneByIdentifier($localeCode);
+            if (null === $locale) {
+                $locale = new Locale();
+                $locale->setCode($localeCode);
+                $this->localeRepository->save($locale);
+            }
+            $channel->addLocale($locale);
+        }
+        $this->channelRepository->save($channel);
     }
 }
