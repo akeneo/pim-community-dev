@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
-use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StackedContextProcessor;
+use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StatusAwareTrait;
 use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,13 +14,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 class MigrateToUuidCreateColumns implements MigrateToUuidStep
 {
     use MigrateToUuidTrait;
+    use StatusAwareTrait;
 
     private const INDEX_NAME = 'product_uuid';
 
     public function __construct(
         private Connection $connection,
-        private LoggerInterface $logger,
-        private StackedContextProcessor $contextProcessor
+        private LoggerInterface $logger
     ) {
     }
 
@@ -53,23 +53,24 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
 
     public function addMissing(Context $context, OutputInterface $output): bool
     {
+        $logContext = $context->logContext;
+
         $updatedItems = 0;
         foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
-            $this->contextProcessor->push(['substep' => $tableName]);
+            $logContext->addContext('substep', $tableName);
             if ($this->tableExists($tableName) && !$this->columnExists($tableName, $columnNames[self::UUID_COLUMN_INDEX])) {
-                $this->logger->notice(sprintf('Will add %s', $tableName));
+                $this->logger->notice(sprintf('Will add %s', $tableName), $logContext->toArray());
                 if (!$context->dryRun()) {
-                    $stepStartTime = \microtime(true);
+                    $subStepStartTime = \microtime(true);
                     $this->addUuidColumnAndIndexOnUuid(
                         $tableName,
                         $columnNames[self::UUID_COLUMN_INDEX],
                         $columnNames[self::ID_COLUMN_INDEX]
                     );
-                    $stepDuration = \microtime(true) - $stepStartTime;
-                    $this->logger->notice(\sprintf('Done in %0.2f seconds', $stepDuration), ['updated_items_count' => $updatedItems+=1]);
+                    $subStepDuration = \microtime(true) - $subStepStartTime;
+                    $this->logger->notice(\sprintf('Done in %0.2f seconds', $subStepDuration), $logContext->toArray(['updated_items_count' => $updatedItems+=1]));
                 }
             }
-            $this->contextProcessor->pop(); //pop sustep name
         }
 
         return true;
