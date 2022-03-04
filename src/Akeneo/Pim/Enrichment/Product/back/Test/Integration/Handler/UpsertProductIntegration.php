@@ -517,50 +517,19 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_set_a_family_on_a_product(): void
+    public function it_can_set_and_remove_a_family_on_a_product(): void
     {
-        $command = new UpsertProductCommand(
-            userId: $this->getUserId('admin'),
-            productIdentifier: 'identifier'
-        );
-        $this->messageBus->dispatch($command);
-        $this->clearDoctrineUoW();
-        $product = $this->productRepository->findOneByIdentifier('identifier');
-        Assert::assertNotNull($product);
-        Assert::assertNull($product->getFamily());
-
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
-        $command = new UpsertProductCommand(
-            userId: $this->getUserId('admin'),
-            productIdentifier: 'identifier',
-            familyUserIntent: new SetFamily('familyA')
-        );
-        $this->messageBus->dispatch($command);
-        $this->clearDoctrineUoW();
+        $this->updateProduct(new SetFamily('familyA'));
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
         Assert::assertSame('familyA', $product->getFamily()->getCode());
 
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
-        $command = new UpsertProductCommand(
-            userId: $this->getUserId('admin'),
-            productIdentifier: 'identifier',
-            familyUserIntent: new SetFamily('familyA1')
-        );
-        $this->messageBus->dispatch($command);
-        $this->clearDoctrineUoW();
+        $this->updateProduct(new SetFamily('familyA1'));
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
         Assert::assertSame('familyA1', $product->getFamily()->getCode());
 
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
-        $command = new UpsertProductCommand(
-            userId: $this->getUserId('admin'),
-            productIdentifier: 'identifier',
-            familyUserIntent: new RemoveFamily()
-        );
-        $this->messageBus->dispatch($command);
-        $this->clearDoctrineUoW();
+        $this->updateProduct(new RemoveFamily());
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
         Assert::assertNull($product->getFamily());
@@ -623,11 +592,16 @@ final class UpsertProductIntegration extends TestCase
 
     private function updateProduct(UserIntent $userIntent): void
     {
-        // Creates empty product
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier');
-        $this->messageBus->dispatch($command);
+        $this->clearDoctrineUoW();
         $product = $this->productRepository->findOneByIdentifier('identifier');
-        Assert::assertNotNull($product);
+        if (null === $product) {
+            // Creates empty product
+            $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier');
+            $this->messageBus->dispatch($command);
+            $product = $this->productRepository->findOneByIdentifier('identifier');
+            Assert::assertNotNull($product);
+        }
+
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
         // Update product with userIntent value
