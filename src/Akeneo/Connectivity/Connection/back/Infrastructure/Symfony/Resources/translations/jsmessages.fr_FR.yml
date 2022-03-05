@@ -11,6 +11,7 @@ pim_menu:
     connection_audit: Tableau de bord des connexions
     connection_settings: Connexions
     connection_settings_edit: Paramètres de connexion
+    connection_monitoring: Surveillance des erreurs
     connection_webhook_edit: Souscription aux événements
     connection_webhook_event_logs: Journal des événements
     data_flows: Flux de données
@@ -22,6 +23,7 @@ pim_title:
   akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
   akeneo_connectivity_connection_connect_apps_activate: Connecter
   akeneo_connectivity_connection_connect_apps_authorize: Connecter
+  akeneo_connectivity_connection_connect_apps_authenticate: Connecter
   akeneo_connectivity_connection_settings_index: Paramètres des connexions
   akeneo_connectivity_connection_settings_edit: Paramètres de connexion
   akeneo_connectivity_connection_settings_any: Paramètres de connexion
@@ -36,6 +38,8 @@ pim_title:
   akeneo_connectivity_connection_connect_connected_apps: Apps
   akeneo_connectivity_connection_connect_connected_apps_edit: Paramètres des apps
   akeneo_connectivity_connection_connect_connected_apps_delete: Suppression de l'app
+  akeneo_connectivity_connection_connect_marketplace_test_app_create: Créer une application de test
+  akeneo_connectivity_connection_connect_marketplace_test_app_delete: Supprimer l'application de test
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -64,14 +68,25 @@ akeneo_connectivity.connection:
       unreachable: La marketplace est injoignable, veuillez revenir plus tard.
       scroll_to_top: Haut de la page
       test_apps:
+        title: Mes applications de test
+        removed_user: Utilisateur supprimé
+        create_a_test_app: Créer une application de test
         modal:
+          subtitle: Créer une application de test
           app_information:
+            title: Informations sur l'application
+            description: Si vous avez besoin d'aide, veuillez consulter notre article
+            link: Comment tester mon application avant de la publier ?
             fields:
               name: Nom
           credentials:
             title: Identifiants
         delete:
+          subtitle: Applications
           title: Confirmer la suppression
+          flash:
+            success: L'application de test a bien été supprimée.
+            error: Une erreur s'est produite lors de la suppression de l'application de test.
     connected_apps:
       list:
         apps:
@@ -80,12 +95,16 @@ akeneo_connectivity.connection:
           empty: Aucune app connectée pour le moment.
           check_marketplace: 'Rendez-vous sur la {{ marketplaceLink }} pour parcourir les extensions disponibles et connecter votre première app.'
           marketplace_link_anchor: Marketplace
+        test_apps:
+          title: Mes applications de test
+          removed_user: Utilisateur supprimé
         helper:
           title: '[0,1] Votre PIM est connecté à {{ count }} app.|[2,Inf] Votre PIM est connecté à {{ count }} apps.'
           description_1: De nouvelles apps sont publiées régulièrement. Consultez notre page Marketplace fréquemment pour découvrir comment connecter votre PIM.
           description_2: Vous voulez en savoir plus sur les apps ?
           link: Consultez notre Help Center pour plus d'informations.
         card:
+          developed_by: 'Développé par {{ author }}'
           manage_app: Paramètres
           open_app: Ouvrir l'app
         flash:
@@ -95,16 +114,24 @@ akeneo_connectivity.connection:
         tabs:
           settings: Général
           permissions: Permissions
+          error_monitoring: Surveillance des erreurs
         settings:
+          monitoring:
+            title: Paramètres généraux
           authorizations:
             title: Autorisations
             information: 'Pour en savoir plus sur les autorisations liées aux apps, consultez notre article: {{ link }}.'
             information_link_anchor: Article sur le Help Center
             no_scope: Aucune autorisation spécifique n'a été demandée.
         error_monitoring:
+          error: Oups, quelque chose a mal tourné !
+          helper:
+            description: Ici, vous pouvez voir le détail de chaque erreur pour cette application au cours des 7 derniers jours. Le nombre d'erreurs est limité à 100.
+          not_data_source: Pour l'instant, la page de suivi n'est disponible que pour l'application source.
           not_auditable:
+            title: Application non surveillée
             description:
-              1: To track errors on this app,
+              1: Pour suivre les erreurs sur cette application,
               2: activer la surveillance
               3: dans les paramètres.
         flash:
