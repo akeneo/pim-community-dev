@@ -168,8 +168,6 @@ akeneo_connectivity.connection:
         authentication:
           title: 'L''app {{ app_name }} a besoin de '
           helper_link: Comment connecter mon PIM à des Apps ?
-          scope_profile: Voir votre prénom et votre nom de famille
-          scope_email: Voir votre adresse e-mail
         authorize:
           title: '{{ app_name }} a besoin de'
           no_scope_title: 'L''app {{ app_name }} voudrait accéder à votre PIM.'
