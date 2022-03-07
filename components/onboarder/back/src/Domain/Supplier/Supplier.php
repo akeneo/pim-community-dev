@@ -43,4 +43,13 @@ final class Supplier
     {
         return (string) $this->label;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'identifier' => $this->identifier(),
+            'code' => $this->code(),
+            'label' => $this->label(),
+        ];
+    }
 }

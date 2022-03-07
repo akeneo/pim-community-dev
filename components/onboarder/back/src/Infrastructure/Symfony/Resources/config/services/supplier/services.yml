@@ -10,8 +10,19 @@ services:
         arguments:
             - '@Akeneo\OnboarderSerenity\Domain\Supplier\Repository'
 
+    # Query/Handlers
+    Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliersHandler:
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\GetSupplierList'
+
     # Queries
     Akeneo\OnboarderSerenity\Domain\Supplier\GetSupplierList:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Sql\DatabaseGetSupplierList
         arguments:
             - '@database_connection'
+
+    # Controllers
+    Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierList:
+        public: true
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliersHandler'
