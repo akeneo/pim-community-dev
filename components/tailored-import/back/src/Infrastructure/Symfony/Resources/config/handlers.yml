@@ -22,6 +22,11 @@ services:
       - '@akeneo.tailored_import.user_intent_registry'
       - '@akeneo.tailored_import.user_intent_aggregator'
 
+  akeneo.tailored_import.handler.get_file_template_information_handler:
+    class: Akeneo\Platform\TailoredImport\Application\GetFileTemplateInformation\GetFileTemplateInformationHandler
+    arguments:
+      - '@akeneo.tailored_import.spout.remote_file_reader.factory'
+
   akeneo.tailored_import.operation_applier:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier
 

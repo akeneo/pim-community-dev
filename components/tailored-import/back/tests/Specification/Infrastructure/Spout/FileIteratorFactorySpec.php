@@ -16,6 +16,7 @@ namespace Specification\Akeneo\Platform\TailoredImport\Infrastructure\Spout;
 use Akeneo\Platform\TailoredImport\Domain\Model\File\FileStructure;
 use Akeneo\Platform\TailoredImport\Infrastructure\Spout\CellsFormatter;
 use Akeneo\Platform\TailoredImport\Infrastructure\Spout\XlsxFileIterator;
+use Akeneo\Platform\TailoredImport\Infrastructure\Spout\XlsxFileReader;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -32,9 +33,9 @@ class FileIteratorFactorySpec extends ObjectBehavior
 
         $filePath = 'components/tailored-import/back/tests/Common/simple_import.xlsx';
         $fileStructure = FileStructure::createFromNormalized([
-            'header_line' => 0,
+            'header_line' => 1,
             'first_column' => 0,
-            'product_line' => 1,
+            'product_line' => 2,
             'sheet_name' => 'Products',
         ]);
 
@@ -45,9 +46,9 @@ class FileIteratorFactorySpec extends ObjectBehavior
     {
         $filePath = 'path-to-xlsx-file.ods';
         $fileStructure = FileStructure::createFromNormalized([
-            'header_line' => 0,
+            'header_line' => 1,
             'first_column' => 0,
-            'product_line' => 1,
+            'product_line' => 2,
             'sheet_name' => 'Products',
         ]);
 

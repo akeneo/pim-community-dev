@@ -51,7 +51,7 @@ class FileReaderTest extends AcceptanceTestCase
                     'f3a1e9f4-e17d-4345-af4d-a9f1be778180' => '14.4'
                 ]),
                 ColumnCollection::createFromNormalized(self::DEFAULT_COLUMN_CONFIGURATION),
-                0
+                1
             ),
             new RowPayload(
                 new Row([
@@ -63,7 +63,7 @@ class FileReaderTest extends AcceptanceTestCase
                     'f3a1e9f4-e17d-4345-af4d-a9f1be778180' => ''
                 ]),
                 ColumnCollection::createFromNormalized(self::DEFAULT_COLUMN_CONFIGURATION),
-                1
+                2
             ),
             new RowPayload(
                 new Row([
@@ -75,7 +75,7 @@ class FileReaderTest extends AcceptanceTestCase
                     'f3a1e9f4-e17d-4345-af4d-a9f1be778180' => '19.2'
                 ]),
                 ColumnCollection::createFromNormalized(self::DEFAULT_COLUMN_CONFIGURATION),
-                2
+                3
             )
         ];
 
@@ -136,9 +136,9 @@ class FileReaderTest extends AcceptanceTestCase
     ): StepExecution {
         $jobParameters = new JobParameters([
             'file_structure' => [
-                'header_line' => 0,
+                'header_line' => 1,
                 'first_column' => 0,
-                'product_line' => 1,
+                'product_line' => 2,
                 'sheet_name' => $sheetName,
             ],
             'filePath' => 'components/tailored-import/back/tests/Common/simple_import.xlsx',

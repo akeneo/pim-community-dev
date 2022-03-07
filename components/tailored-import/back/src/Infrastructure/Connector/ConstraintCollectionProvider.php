@@ -46,6 +46,7 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
             'header_line' => new Type('int'),
             'first_column' => new Type('int'),
             'product_line' => new Type('int'),
+            'column_identifier_position' => new Type('int'),
             'sheet_name' => [
                 new Type('string'),
                 new NotBlank(['allowNull' => true]),

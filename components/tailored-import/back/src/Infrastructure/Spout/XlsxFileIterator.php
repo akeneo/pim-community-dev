@@ -83,7 +83,7 @@ class XlsxFileIterator implements FileIteratorInterface
 
     public function key(): int
     {
-        return $this->rows->key() - 1 - $this->fileStructure->getProductLine();
+        return $this->rows->key() - $this->fileStructure->getProductLine() + 1;
     }
 
     public function valid(): bool
@@ -138,7 +138,7 @@ class XlsxFileIterator implements FileIteratorInterface
         $rowIterator->rewind();
 
         $headersRowIndex = $this->fileStructure->getHeaderLine();
-        while (1 + $headersRowIndex !== $rowIterator->key()) { // Iterator keys starts from 1
+        while ($headersRowIndex !== $rowIterator->key()) {
             $rowIterator->next();
         }
 
@@ -160,7 +160,7 @@ class XlsxFileIterator implements FileIteratorInterface
     {
         $firstProductLine = $this->fileStructure->getProductLine();
         foreach ($this->rows as $index => $row) {
-            if ($index - 1 === $firstProductLine) {
+            if ($index === $firstProductLine) {
                 return;
             }
         }

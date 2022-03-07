@@ -17,6 +17,8 @@ use Akeneo\Platform\TailoredImport\Domain\Model\File\FileStructure;
 
 class FileIteratorFactory
 {
+    const FILE_TYPE_XLSX = "xlsx";
+
     public function __construct(
         private CellsFormatter $cellsFormatter,
     ) {
@@ -25,7 +27,7 @@ class FileIteratorFactory
     public function create(string $fileType, string $filePath, FileStructure $fileStructure): FileIteratorInterface
     {
         return match ($fileType) {
-            'xlsx' => new XlsxFileIterator($filePath, $fileStructure, $this->cellsFormatter),
+            self::FILE_TYPE_XLSX => new XlsxFileIterator($filePath, $fileStructure, $this->cellsFormatter),
             default => throw new \InvalidArgumentException(sprintf('Unsupported file type "%s"', $fileType)),
         };
     }

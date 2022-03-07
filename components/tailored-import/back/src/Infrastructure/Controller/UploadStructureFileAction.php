@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class UploadStructureFileAction
+final class UploadStructureFileAction
 {
     public function __construct(
         private UploadStructureFileHandler $uploadFlatFileHandler,

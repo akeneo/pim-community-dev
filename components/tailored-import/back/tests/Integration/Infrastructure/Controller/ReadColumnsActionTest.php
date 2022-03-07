@@ -39,9 +39,9 @@ class ReadColumnsActionTest extends ControllerIntegrationTestCase
     {
         $fileKey = $this->storeFile(__DIR__ . '/../../../Common/simple_import.xlsx');
         $fileStructure = [
-            'header_line' => 0,
+            'header_line' => 1,
             'first_column' => 0,
-            'product_line' => 1,
+            'product_line' => 2,
             'sheet_name' => 'Products',
         ];
 

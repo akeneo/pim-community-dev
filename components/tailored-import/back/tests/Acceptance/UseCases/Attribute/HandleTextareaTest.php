@@ -98,7 +98,7 @@ final class HandleTextareaTest extends AttributeTestCase
                 'expected' => new UpsertProductCommand(
                     userId: 1,
                     productIdentifier: 'this-is-a-sku',
-                    valuesUserIntent: [
+                    valueUserIntents: [
                         new SetTextareaValue('textarea_attribute', null, null, 'this is a textarea attribute'),
                         new SetTextareaValue('description', 'ecommerce', 'fr_FR', 'this is a description'),
                     ],
