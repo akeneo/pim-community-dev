@@ -2,8 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
+use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StatusAwareTrait;
 use Doctrine\DBAL\Connection;
-use Symfony\Component\Console\Output\OutputInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -12,16 +13,24 @@ use Symfony\Component\Console\Output\OutputInterface;
 class MigrateToUuidCreateColumns implements MigrateToUuidStep
 {
     use MigrateToUuidTrait;
+    use StatusAwareTrait;
 
     private const INDEX_NAME = 'product_uuid';
 
-    public function __construct(private Connection $connection)
-    {
+    public function __construct(
+        private Connection $connection,
+        private LoggerInterface $logger
+    ) {
     }
 
     public function getDescription(): string
     {
         return 'Add uuid columns for pim_catalog_product table and every foreign tables';
+    }
+
+    public function getName(): string
+    {
+        return 'create_uuid_columns';
     }
 
     public function shouldBeExecuted(): bool
@@ -41,17 +50,22 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
         return $count;
     }
 
-    public function addMissing(Context $context, OutputInterface $output): bool
+    public function addMissing(Context $context): bool
     {
+        $logContext = $context->logContext;
+
+        $updatedItems = 0;
         foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
+            $logContext->addContext('substep', $tableName);
             if ($this->tableExists($tableName) && !$this->columnExists($tableName, $columnNames[self::UUID_COLUMN_INDEX])) {
-                $output->writeln(sprintf('    Will add %s', $tableName));
+                $this->logger->notice(sprintf('Will add %s', $tableName), $logContext->toArray());
                 if (!$context->dryRun()) {
                     $this->addUuidColumnAndIndexOnUuid(
                         $tableName,
                         $columnNames[self::UUID_COLUMN_INDEX],
                         $columnNames[self::ID_COLUMN_INDEX]
                     );
+                    $this->logger->notice('Substep done', $logContext->toArray(['updated_items_count' => $updatedItems+=1]));
                 }
             }
         }

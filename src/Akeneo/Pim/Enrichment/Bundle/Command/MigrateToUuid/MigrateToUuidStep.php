@@ -2,8 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
-use Symfony\Component\Console\Output\OutputInterface;
-
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -35,7 +33,7 @@ interface MigrateToUuidStep
      */
     public function getMissingCount(): int;
 
-    public function addMissing(Context $context, OutputInterface $output): bool;
+    public function addMissing(Context $context): bool;
 
     /**
      * Returns if the migration has to be executed or not
@@ -43,4 +41,18 @@ interface MigrateToUuidStep
     public function shouldBeExecuted(): bool;
 
     public function getDescription(): string;
+
+    public function getName(): string;
+
+    public function getStatus(): string;
+
+    public function getDuration(): ?float;
+
+    public function setStatusInProgress(): void;
+
+    public function setStatusInError(): void;
+
+    public function setStatusDone(): void;
+
+    public function setStatusSkipped(): void;
 }

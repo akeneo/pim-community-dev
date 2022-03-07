@@ -2,8 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
+use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StatusAwareTrait;
 use Doctrine\DBAL\Connection;
-use Symfony\Component\Console\Output\OutputInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -12,16 +13,24 @@ use Symfony\Component\Console\Output\OutputInterface;
 class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
 {
     use MigrateToUuidTrait;
+    use StatusAwareTrait;
 
     private const BATCH_SIZE = 50000;
 
-    public function __construct(private Connection $connection)
-    {
+    public function __construct(
+        private Connection $connection,
+        private LoggerInterface $logger
+    ) {
     }
 
     public function getDescription(): string
     {
         return 'Fill foreign tables with product uuids';
+    }
+
+    public function getName(): string
+    {
+        return 'fill_foreign_uuid';
     }
 
     public function shouldBeExecuted(): bool
@@ -46,14 +55,23 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
         return $count;
     }
 
-    public function addMissing(Context $context, OutputInterface $output): bool
+    public function addMissing(Context $context): bool
     {
+        $logContext = $context->logContext;
+        $processedItems = 0;
         foreach ($this->getTablesWithoutProductTable() as $tableName => $columnNames) {
-            while ($this->shouldContinue($context, $output, $tableName, $columnNames[self::ID_COLUMN_INDEX], $columnNames[self::UUID_COLUMN_INDEX])) {
+            $logContext->addContext('substep', $tableName);
+            while ($this->shouldContinue($context, $tableName, $columnNames[self::ID_COLUMN_INDEX], $columnNames[self::UUID_COLUMN_INDEX])) {
                 if (!$context->dryRun()) {
+                    $processedItems += self::BATCH_SIZE;
+                    $this->logger->notice('Foreign uuids in table under process', $logContext->toArray());
                     $this->fillMissingForeignUuidInsert($tableName, $columnNames[0], $columnNames[1]);
+                    $this->logger->notice(
+                        'Substep done',
+                        $logContext->toArray(['processed_foreign_uuids_count' => $processedItems])
+                    );
                 } else {
-                    $output->writeln(sprintf('    Option --dry-run is set, will continue to next step.'));
+                    $this->logger->notice("Option --dry-run is set, will continue to next step.", $logContext->toArray());
                     break;
                 }
             }
@@ -64,28 +82,20 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
 
     private function shouldContinue(
         Context $context,
-        OutputInterface $output,
         string $tableName,
         string $idColumnName,
         string $uuidColumnName
     ): bool {
         if ($context->withStats()) {
             $count = $this->getMissingForeignUuidCount($tableName, $uuidColumnName, $idColumnName);
-            $output->writeln(sprintf('    Missing %d foreign uuids in "%s" table', $count, $tableName));
             if ($count > 0) {
-                $output->writeln(sprintf('    Will add %d foreign uuids in "%s" table', min($count, self::BATCH_SIZE), $tableName));
                 return true;
             }
 
             return false;
         }
 
-        $shouldContinue = $this->shouldBeExecutedForTable($tableName, $uuidColumnName);
-        if ($shouldContinue) {
-            $output->writeln(sprintf('    Will add up to %d foreign uuids in "%s" table', self::BATCH_SIZE, $tableName));
-        }
-
-        return $shouldContinue;
+        return $this->shouldBeExecutedForTable($tableName, $uuidColumnName);
     }
 
     private function shouldBeExecutedForTable($tableName, $uuidColumnName): bool
