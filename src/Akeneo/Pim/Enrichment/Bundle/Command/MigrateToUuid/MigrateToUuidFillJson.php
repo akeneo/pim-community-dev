@@ -218,7 +218,7 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
             $newAssociations = $this->getNewAssociationsAndIds($formerAssociations, $productIdToUuidMap);
 
             $allItemsMigrated = $allItemsMigrated && \count($newAssociations) === \count($formerAssociations);
-            $this->logger->info(
+            $this->logger->notice(
                 'Will update associations',
                 $this->logContext->toArray(['table_association_to_update_counter' => \count($newAssociations)])
             );
@@ -228,7 +228,7 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
                 $previousEntityId = \array_keys($formerAssociations)[\count($formerAssociations) - 1];
                 $formerAssociations = $this->getFormerAssociations($tableName, $previousEntityId);
             } else {
-                $this->logger->info('Option --dry-run is set, will continue to next step.', $this->logContext->toArray());
+                $this->logger->notice('Option --dry-run is set, will continue to next step.', $this->logContext->toArray());
                 $formerAssociations = [];
             }
         }
