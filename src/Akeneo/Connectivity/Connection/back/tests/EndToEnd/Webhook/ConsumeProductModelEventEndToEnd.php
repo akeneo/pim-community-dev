@@ -57,7 +57,7 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
             ]
         );
 
-        /** @var $businessEventHandler \Akeneo\Connectivity\Connection\Infrastructure\Webhook\MessageHandler\BusinessEventHandler */
+        /** @var $businessEventHandler BusinessEventHandler */
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);
 
@@ -90,7 +90,7 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
             ]
         );
 
-        /** @var $businessEventHandler \Akeneo\Connectivity\Connection\Infrastructure\Webhook\MessageHandler\BusinessEventHandler */
+        /** @var $businessEventHandler BusinessEventHandler */
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);
 
