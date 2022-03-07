@@ -30,7 +30,6 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
         'pim_catalog_product_model'
     ];
 
-    private int $cumulatedUpdatedJson; // cumulative counter of updated json through all tables
     private LogContext $logContext;
 
     public function __construct(
@@ -105,7 +104,6 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
     {
         $this->logContext = $context->logContext;
         $allItemsMigrated = true;
-        $this->cumulatedUpdatedJson = 0;
         foreach (self::TABLE_NAMES as $tableName) {
             $this->logContext->addContext('substep', $tableName);
             $allItemsMigrated = $this->addMissingForTable($context->dryRun(), $tableName) && $allItemsMigrated;
