@@ -60,21 +60,14 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
     public function addMissing(Context $context): bool
     {
         $logContext = $context->logContext;
-        $batchesCount = 0;
         $processedItems = 0;
         while ($this->shouldContinue($context) > 0) {
-            $logContext->addContext('substep', 'missing_product_uuid_batch_' . $batchesCount++);
+            $logContext->addContext('substep', 'missing_product_uuid_batch');
             if (!$context->dryRun()) {
-                $count = $this->getMissingProductUuidCount();
-                $processedItems += min($count, self::BATCH_SIZE);
-
-                $stepStartTime = \microtime(true);
                 $this->fillMissingProductUuids();
-                $stepDuration = \microtime(true) - $stepStartTime;
-
                 $this->logger->notice(
-                    \sprintf('batch done in %0.2f seconds', $stepDuration),
-                    $logContext->toArray(['processed_uuids_counter' => $processedItems])
+                    'Substep done',
+                    $logContext->toArray(['processed_uuids_counter' => $processedItems += self::BATCH_SIZE])
                 );
             } else {
                 $this->logger->notice("Option --dry-run is set, will continue to next step.", $logContext->toArray());
@@ -87,23 +80,10 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
 
     private function shouldContinue(Context $context): bool
     {
-        $logContext = $context->logContext;
         if ($context->withStats()) {
-            $count = $this->getMissingProductUuidCount();
-            $shouldBeExecuted = $count > 0;
-            if ($shouldBeExecuted) {
-                $this->logger->notice('Will add uuids', $logContext->toArray(['product_id_to_fill_count' => min(self::BATCH_SIZE, $count)]));
-            }
-
-            return $shouldBeExecuted;
+            return $this->getMissingProductUuidCount() > 0;
         }
-
-        $shouldBeExecuted = $this->shouldBeExecuted();
-        if ($shouldBeExecuted) {
-            $this->logger->notice('Will add uuids', $logContext->toArray(['product_id_to_fill_count' => self::BATCH_SIZE]));
-        }
-
-        return $shouldBeExecuted;
+        return $this->shouldBeExecuted();
     }
 
     private function getMissingProductUuidCount(): int
