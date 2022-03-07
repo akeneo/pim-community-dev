@@ -54,7 +54,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
     }, [fetchWizardData]);
 
     const redirectToMarketplace = useCallback(() => {
-        history.push('/connect/marketplace');
+        history.push('/connect/app-store');
     }, [history]);
 
     const handleConfirm = useCallback(async () => {
