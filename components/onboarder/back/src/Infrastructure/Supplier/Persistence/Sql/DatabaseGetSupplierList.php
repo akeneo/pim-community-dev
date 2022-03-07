@@ -19,7 +19,7 @@ final class DatabaseGetSupplierList implements GetSupplierListInterface
         $this->connection = $connection;
     }
 
-    public function __invoke(int $page = 1, string $search = '', string $labelSortDirection = 'ASC'): array
+    public function __invoke(int $page = 1, string $search = ''): array
     {
         $page = max($page, 1);
         $sql = <<<SQL

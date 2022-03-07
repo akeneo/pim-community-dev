@@ -78,40 +78,17 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
 
         $supplierRepository->save(Supplier\Supplier::create(
             (string)Uuid::uuid4(),
-            'supplier_code_a',
-            'Supplier A label',
+            'supplier_code_b',
+            'Supplier B label',
         ));
 
         $supplierRepository->save(Supplier\Supplier::create(
             (string)Uuid::uuid4(),
-            'supplier_code_b',
-            'Supplier B label',
+            'supplier_code_a',
+            'Supplier A label',
         ));
 
         $suppliers = $this->get(GetSupplierList::class)();
-
-        static::assertSame('supplier_code_a', $suppliers[0]->code());
-        static::assertSame('supplier_code_b', $suppliers[1]->code());
-    }
-
-    /** @test */
-    public function itSortsTheSupplierListInADownwardDirection(): void
-    {
-        $supplierRepository = $this->get(Supplier\Repository::class);
-
-        $supplierRepository->save(Supplier\Supplier::create(
-            (string)Uuid::uuid4(),
-            'supplier_code_a',
-            'Supplier A label',
-        ));
-
-        $supplierRepository->save(Supplier\Supplier::create(
-            (string)Uuid::uuid4(),
-            'supplier_code_b',
-            'Supplier B label',
-        ));
-
-        $suppliers = $this->get(GetSupplierList::class)(1, '', 'DESC');
 
         static::assertSame('supplier_code_a', $suppliers[0]->code());
         static::assertSame('supplier_code_b', $suppliers[1]->code());

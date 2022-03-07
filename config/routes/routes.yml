@@ -134,3 +134,4 @@ akeneo_channel:
 
 onboarder_serenity:
     resource: "@AkeneoOnboarderSerenityBundle/Resources/config/routing.yml"
+    prefix: /onboarder
