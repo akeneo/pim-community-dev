@@ -21,6 +21,6 @@ lint-back: #Doc: Run PHPStan for Onboarder Serenity
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration components/onboarder/back/tests/phpstan.neon
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=components/onboarder/back/tests/.php_cs.php components/onboarder/back
 
-.PHONY: fix-lint-back
-fix-lint-back: #Doc: Run PHP-CS-Fixer for Onboarder Serenity
+.PHONY: fix-phpcs
+fix-phpcs: #Doc: Run PHP-CS-Fixer for Onboarder Serenity
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=components/onboarder/back/tests/.php_cs.php components/onboarder/back
