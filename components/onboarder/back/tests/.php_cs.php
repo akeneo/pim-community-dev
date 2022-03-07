@@ -9,7 +9,8 @@ return (new PhpCsFixer\Config())
             'no_unused_imports' => true, // Unused use statements must be removed.
             'yoda_style' => [
                 'always_move_variable' => true, // Whether variables should always be on non assignable side when applying Yoda style.
-            ]
+            ],
+            'protected_to_private' => true,
         ]
     )
     ->setCacheFile('var/php_cs.cache')
