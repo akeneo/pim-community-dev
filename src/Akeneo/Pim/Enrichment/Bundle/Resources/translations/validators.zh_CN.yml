@@ -122,3 +122,16 @@ pim_datagrid:
   column_configurator:
     label:
       unique_message: 标签必须是唯一的
+#TODO: move elsewhere?
+pim_enrich.product:
+  validation:
+    upsert:
+      set_value:
+        no_channel_code_provided_for_scopable_attribute: '属性 {{ attributeCode }} 需要渠道'
+        channel_code_provided_for_non_scopable_attribute: '属性 {{ attributeCode }} 不需要渠道，检测到“{{ channelCode }}” '
+        no_locale_code_provided_for_localizable_attribute: '属性 {{ attributeCode }} 需要区域'
+        locale_code_provided_for_non_localizable_attribute: '属性 {{ attributeCode }} 不需要区域，检测到“{{ localeCode }}”'
+        invalid_locale_code_for_locale_specific_attribute: '属性 {{ attributeCode }} 需要以下区域之一：{{ availableLocales }}；检测到“{{ localeCode }}”'
+        channel_does_not_exist: '渠道 {{ channelCode }} 不存在'
+        locale_is_not_active: '区域 {{ localeCode }} 不存在或未激活'
+        locale_not_activated_for_channel: '区域 {{ localeCode }} 对于渠道 {{ channelCode }} 未激活'
