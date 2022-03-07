@@ -60,14 +60,12 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
             if ($this->tableExists($tableName) && !$this->columnExists($tableName, $columnNames[self::UUID_COLUMN_INDEX])) {
                 $this->logger->notice(sprintf('Will add %s', $tableName), $logContext->toArray());
                 if (!$context->dryRun()) {
-                    $subStepStartTime = \microtime(true);
                     $this->addUuidColumnAndIndexOnUuid(
                         $tableName,
                         $columnNames[self::UUID_COLUMN_INDEX],
                         $columnNames[self::ID_COLUMN_INDEX]
                     );
-                    $subStepDuration = \microtime(true) - $subStepStartTime;
-                    $this->logger->notice(\sprintf('Done in %0.2f seconds', $subStepDuration), $logContext->toArray(['updated_items_count' => $updatedItems+=1]));
+                    $this->logger->notice('Substep done', $logContext->toArray(['updated_items_count' => $updatedItems+=1]));
                 }
             }
         }

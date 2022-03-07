@@ -63,14 +63,11 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
             $logContext->addContext('substep', $tableName);
             while ($this->shouldContinue($context, $tableName, $columnNames[self::ID_COLUMN_INDEX], $columnNames[self::UUID_COLUMN_INDEX])) {
                 if (!$context->dryRun()) {
-                    $count = $this->getMissingForeignUuidCount($tableName, $columnNames[1], $columnNames[0]);
-                    $processedItems += min($count, self::BATCH_SIZE);
+                    $processedItems += self::BATCH_SIZE;
                     $this->logger->notice('Foreign uuids in table under process', $logContext->toArray());
-                    $subStepStartTime = \microtime(true);
                     $this->fillMissingForeignUuidInsert($tableName, $columnNames[0], $columnNames[1]);
-                    $subStepDuration = \microtime(true) - $subStepStartTime;
                     $this->logger->notice(
-                        \sprintf('Done in %0.2f seconds', $subStepDuration),
+                        'Substep done',
                         $logContext->toArray(['processed_foreign_uuids_count' => $processedItems])
                     );
                 } else {
@@ -89,24 +86,16 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
         string $idColumnName,
         string $uuidColumnName
     ): bool {
-        $logContext = $context->logContext;
         if ($context->withStats()) {
             $count = $this->getMissingForeignUuidCount($tableName, $uuidColumnName, $idColumnName);
-            $this->logger->notice('Missing foreign uuids in table', $logContext->toArray(['missing_uuid_in_table' => $count]));
             if ($count > 0) {
-                $this->logger->notice('Will add foreign uuids', $logContext->toArray(['foreign_uuid_batch' => min($count, self::BATCH_SIZE)]));
                 return true;
             }
 
             return false;
         }
 
-        $shouldContinue = $this->shouldBeExecutedForTable($tableName, $uuidColumnName);
-        if ($shouldContinue) {
-            $this->logger->notice('Will add foreign uuids', $logContext->toArray(['foreign_uuid_batch' => self::BATCH_SIZE]));
-        }
-
-        return $shouldContinue;
+        return $this->shouldBeExecutedForTable($tableName, $uuidColumnName);
     }
 
     private function shouldBeExecutedForTable($tableName, $uuidColumnName): bool

@@ -31,13 +31,27 @@ class LogContextSpec extends ObjectBehavior
 
     function it_adds_data_in_context()
     {
-        $this->addContext('newElement', 'value');
-        $this->toArray()->shouldReturn(['newElement' => 'value', 'step' => 'myStepName', 'step_status' => 'myStepStatus', 'step_duration' => 5.123]);
+        $this->addContext('newElement', 'value1');
+        $this->addContext('anotherElement', 'value2');
+        $this->toArray()
+            ->shouldReturn(['newElement' => 'value1', 'anotherElement' =>'value2', 'step' => 'myStepName', 'step_status' => 'myStepStatus', 'step_duration' => 5.123]);
     }
 
     function it_displays_extra_values_but_does_not_add_them_in_content()
     {
-        $this->toArray(['extraElement' => 'value'])->shouldReturn(['extraElement' => 'value', 'step' => 'myStepName', 'step_status' => 'myStepStatus', 'step_duration' => 5.123]);
+        $this->toArray(['extraElement' => 'value'])
+            ->shouldReturn(['extraElement' => 'value', 'step' => 'myStepName', 'step_status' => 'myStepStatus', 'step_duration' => 5.123]);
         $this->toArray()->shouldReturn(['step' => 'myStepName', 'step_status' => 'myStepStatus', 'step_duration' => 5.123]);
+    }
+
+    function it_cannot_override_default_context_keys()
+    {
+        $this->addContext('step', 'overridenStepName');
+        $this->addContext('step_status', 'overridenStepStatus');
+        $this->addContext('step_duration', 13.987);
+        $this->toArray()
+            ->shouldReturn(['step' => 'myStepName', 'step_status' => 'myStepStatus', 'step_duration' => 5.123]);
+        $this->toArray(['step' => 'overridenStepName', 'step_status' => 'overridenStepStatus', 'step_duration' => 13.987])
+            ->shouldReturn(['step' => 'myStepName', 'step_status' => 'myStepStatus', 'step_duration' => 5.123]);
     }
 }
