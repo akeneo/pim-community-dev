@@ -1,0 +1,36 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Akeneo\OnboarderSerenity\Test\Unit\Application\Supplier;
+
+use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplier;
+use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler;
+use Akeneo\OnboarderSerenity\Domain\Supplier;
+use Akeneo\OnboarderSerenity\Infrastructure\Supplier\InMemoryRepository;
+use PHPUnit\Framework\TestCase;
+
+final class CreateSupplierHandlerTest extends TestCase
+{
+    /** @test */
+    public function itCreatesANewSupplier(): void
+    {
+        $supplierRepository = new InMemoryRepository();
+
+        $sut = new CreateSupplierHandler($supplierRepository);
+        ($sut)(new CreateSupplier(
+            '01319d4c-81c4-4f60-a992-41ea3546824c',
+            'supplier_code',
+            'Supplier label'
+        ));
+
+        $supplier = $supplierRepository->find(
+            Supplier\Identifier::fromString(
+                '01319d4c-81c4-4f60-a992-41ea3546824c'
+            )
+        );
+
+        static::assertSame('supplier_code', $supplier->code());
+        static::assertSame('Supplier label', $supplier->label());
+    }
+}
