@@ -153,5 +153,11 @@ final class UpsertProductHandler
                 throw new \InvalidArgumentException(\sprintf('The "%s" intent cannot be handled.', get_class($valueUserIntent)));
             }
         }
+
+        if (null !== $command->enabledUserIntent()) {
+            $this->productUpdater->update($product, [
+                'enabled' => $command->enabledUserIntent()->enabled(),
+            ]);
+        }
     }
 }
