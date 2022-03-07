@@ -11,6 +11,7 @@ Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand:
                   message: pim_enrich.product.validation.upsert.product_identifier_empty
         valueUserIntents:
             - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelShouldBeConsistent: ~
+            - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserIntentsShouldBeUnique: ~
             - Valid:
                   traverse: true
             - All:

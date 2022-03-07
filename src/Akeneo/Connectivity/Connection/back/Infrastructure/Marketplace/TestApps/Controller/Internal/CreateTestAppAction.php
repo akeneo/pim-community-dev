@@ -25,10 +25,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class CreateTestAppsAction
+final class CreateTestAppAction
 {
     public function __construct(
         private FeatureFlag $appDevModeFeatureFlag,
+        private FeatureFlag $marketplaceActivateFeatureFlag,
         private ValidatorInterface $validator,
         private TokenStorageInterface $tokenStorage,
         private CreateTestAppCommandHandler $createTestAppCommandHandler,
@@ -39,7 +40,7 @@ final class CreateTestAppsAction
 
     public function __invoke(Request $request): Response
     {
-        if (!$this->appDevModeFeatureFlag->isEnabled()) {
+        if (!$this->appDevModeFeatureFlag->isEnabled() || !$this->marketplaceActivateFeatureFlag->isEnabled()) {
             throw new NotFoundHttpException();
         }
 

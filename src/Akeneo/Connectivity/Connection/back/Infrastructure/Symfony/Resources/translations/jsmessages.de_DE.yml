@@ -197,8 +197,6 @@ akeneo_connectivity.connection:
           title: '{{ app_name }} muss'
           helper: Um mehr über die App-Authentifizierung zu erfahren, überprüfen Sie bitte unseren Artikel
           helper_link: Wie verbinde ich mein PIM mit Apps?
-          scope_profile: Zeige deinen Vornamen und Nachnamen
-          scope_email: Deine E-Mail-Adresse anzeigen
           consent:
             label: 'Ich stimme den Datenschutzbestimmungen und Nutzungsbedingungen dieser App zu, die auf {{ app_marketplace_page }} eingesehen werden können.'
             app_marketplace_page: App Marktplatz Seite

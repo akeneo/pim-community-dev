@@ -11,8 +11,11 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsExceptio
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\Domain\Event\ProductWasCreated;
@@ -89,6 +92,8 @@ final class UpsertProductHandler
                 if ($valueUserIntent instanceof SetTextValue
                     || $valueUserIntent instanceof SetNumberValue
                     || $valueUserIntent instanceof SetTextareaValue
+                    || $valueUserIntent instanceof SetBooleanValue
+                    || $valueUserIntent instanceof SetSimpleSelectValue
                 ) {
                     $found = true;
                     $this->productUpdater->update($product, [
@@ -114,6 +119,19 @@ final class UpsertProductHandler
                                         'amount' => $valueUserIntent->amount(),
                                         'unit' => $valueUserIntent->unit(),
                                     ],
+                                ],
+                            ],
+                        ],
+                    ]);
+                } elseif ($valueUserIntent instanceof SetMultiSelectValue) {
+                    $found = true;
+                    $this->productUpdater->update($product, [
+                        'values' => [
+                            $valueUserIntent->attributeCode() => [
+                                [
+                                    'locale' => $valueUserIntent->localeCode(),
+                                    'scope' => $valueUserIntent->channelCode(),
+                                    'data' => $valueUserIntent->values(),
                                 ],
                             ],
                         ],
@@ -150,6 +168,12 @@ final class UpsertProductHandler
             if (!$found) {
                 throw new \InvalidArgumentException(\sprintf('The "%s" intent cannot be handled.', get_class($valueUserIntent)));
             }
+        }
+
+        if (null !== $command->enabledUserIntent()) {
+            $this->productUpdater->update($product, [
+                'enabled' => $command->enabledUserIntent()->enabled(),
+            ]);
         }
     }
 }

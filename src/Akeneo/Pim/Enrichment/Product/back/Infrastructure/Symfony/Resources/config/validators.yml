@@ -30,3 +30,7 @@ services:
             - '@Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeEditable'
         tags:
             - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserIntentsShouldBeUnique:
+        tags:
+            - { name: validator.constraint_validator }

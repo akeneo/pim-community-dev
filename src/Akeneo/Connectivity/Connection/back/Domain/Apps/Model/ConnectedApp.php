@@ -85,6 +85,11 @@ final class ConnectedApp
         return $this->certified;
     }
 
+    public function isTestApp(): bool
+    {
+        return $this->isTestApp;
+    }
+
     /**
      * @return array{
      *  id: string,

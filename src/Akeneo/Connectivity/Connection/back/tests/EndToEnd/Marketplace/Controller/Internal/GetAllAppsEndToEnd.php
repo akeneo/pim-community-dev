@@ -54,6 +54,7 @@ class GetAllAppsEndToEnd extends WebTestCase
                 'activate_url' => 'http://shopware.example.com/activate?pim_url=http%3A%2F%2Flocalhost%3A8080',
                 'callback_url' => 'http://shopware.example.com/callback',
                 'connected' => false,
+                'isTestApp' => false,
             ],
             [
                 'id' => 'b18561ff-378e-41a5-babb-ca0ec0af569a',
@@ -70,6 +71,7 @@ class GetAllAppsEndToEnd extends WebTestCase
                 'activate_url' => 'http://shopify.example.com/activate?pim_url=http%3A%2F%2Flocalhost%3A8080',
                 'callback_url' => 'http://shopify.example.com/callback',
                 'connected' => false,
+                'isTestApp' => false,
             ],
         ];
 

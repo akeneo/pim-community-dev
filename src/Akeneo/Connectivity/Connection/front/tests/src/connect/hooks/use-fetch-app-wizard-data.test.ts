@@ -7,7 +7,7 @@ beforeEach(() => {
     fetchMock.resetMocks();
 });
 
-test('it fetchs the wizard data', async () => {
+test('it fetches the wizard data', async () => {
     const expectedData = {
         appName: 'a_name',
         appLogo: 'a_logo',
