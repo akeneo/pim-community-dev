@@ -8,7 +8,7 @@ use Akeneo\OnboarderSerenity\Domain\Supplier\GetSupplierList as GetSupplierListI
 use Akeneo\OnboarderSerenity\Domain\Supplier;
 use Doctrine\DBAL\Connection;
 
-final class GetSupplierList implements GetSupplierListInterface
+final class DatabaseGetSupplierList implements GetSupplierListInterface
 {
     const NUMBER_OF_SUPPLIERS_PER_PAGE = 50;
 
@@ -19,14 +19,16 @@ final class GetSupplierList implements GetSupplierListInterface
         $this->connection = $connection;
     }
 
-    public function __invoke(int $page = 1, string $search = ''): array
+    public function __invoke(int $page = 1, string $search = '', string $labelSortDirection = 'ASC'): array
     {
+        $page = max($page, 1);
         $sql = <<<SQL
             SELECT identifier, code, label
             FROM `akeneo_onboarder_serenity_supplier`
-            WHERE label LIKE '%:search%'
-            OFFSET :offset
+            WHERE label LIKE :search
+            ORDER BY label
             LIMIT :limit
+            OFFSET :offset
         SQL;
 
         return array_map(fn(array $supplier) => Supplier\Supplier::create(
@@ -36,8 +38,8 @@ final class GetSupplierList implements GetSupplierListInterface
         ), $this->connection->executeQuery(
             $sql,
             [
-                'search' => $search,
-                'offset' => self::NUMBER_OF_SUPPLIERS_PER_PAGE * $page - 1,
+                'search' => "%$search%",
+                'offset' => self::NUMBER_OF_SUPPLIERS_PER_PAGE * ($page - 1),
                 'limit' => self::NUMBER_OF_SUPPLIERS_PER_PAGE,
             ],
             [

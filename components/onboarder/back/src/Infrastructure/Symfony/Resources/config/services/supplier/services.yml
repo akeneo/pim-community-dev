@@ -12,6 +12,6 @@ services:
 
     # Queries
     Akeneo\OnboarderSerenity\Domain\Supplier\GetSupplierList:
-        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Sql\GetSupplierList
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Sql\DatabaseGetSupplierList
         arguments:
             - '@database_connection'
