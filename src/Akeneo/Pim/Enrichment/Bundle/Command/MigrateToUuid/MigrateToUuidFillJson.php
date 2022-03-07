@@ -210,8 +210,8 @@ class MigrateToUuidFillJson implements MigrateToUuidStep
     {
         $allItemsMigrated = true;
         $previousEntityId = -1;
-        $associations = $this->getFormerAssociations($tableName, $previousEntityId);
-        $this->logContext->addContext('table_missing_associations_counter', count($associations));
+        $formerAssociations = $this->getFormerAssociations($tableName, $previousEntityId);
+        $this->logContext->addContext('table_missing_associations_counter', count($formerAssociations));
 
         while (count($formerAssociations) > 0) {
             $productIdToUuidMap = $this->getProductIdToUuidMap($formerAssociations, $dryRun);
