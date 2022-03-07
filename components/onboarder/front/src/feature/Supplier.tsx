@@ -11,7 +11,7 @@ const Container = styled.div``;
 const Supplier = () => {
     const translate = useTranslate();
     const [searchValue, setSearchValue] = useState('');
-    const [page, setPage] = useState<number>(1);
+    const [page, setPage] = useState<number>(0);
     const [suppliers, totalSuppliers, refreshSuppliers] = useSuppliers(searchValue, page);
 
     return (
@@ -33,7 +33,7 @@ const Supplier = () => {
             </PageHeader>
             <PageContent>
                 {
-                    0 === suppliers.length ?
+                    0 === suppliers.length && '' === searchValue ?
                     <EmptySupplierList onSupplierCreated={refreshSuppliers} /> :
                     <SupplierList
                         suppliers={suppliers}

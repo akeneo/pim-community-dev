@@ -21,8 +21,14 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\OnboarderSerenity\Domain\Supplier\GetSupplierCount:
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Sql\DatabaseGetSupplierCount
+        arguments:
+            - '@database_connection'
+
     # Controllers
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierList:
         public: true
         arguments:
             - '@Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliersHandler'
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\GetSupplierCount'

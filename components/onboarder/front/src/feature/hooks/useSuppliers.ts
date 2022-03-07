@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
+import {useRoute} from "@akeneo-pim-community/shared";
 
 type SupplierRow = {
     code: string;
@@ -10,26 +11,29 @@ export const SUPPLIERS_PER_PAGE = 50;
 
 const useSuppliers = (search: string, page: number): [SupplierRow[], number, () => void] => {
     const [suppliers, setSuppliers] = useState<SupplierRow[]>(
-        [...Array(152)].map(
-            (_e, i) => (
-                {code: `supplier-${i}`, label: `Supplier ${i}`, contributorsCount: Math.floor(Math.random() * 10)}
-            )
-        )
+        []
     );
-    const [filteredSuppliers, setFilteredSuppliers] = useState<SupplierRow[]>(suppliers);
+    const [totalNumberOfSuppliers, setTotalNumberOfSuppliers] = useState<number>(0);
+
+    const getSuppliersRoute = useRoute('onboarder_serenity_supplier_list');
 
     useEffect(() => {
-        console.log(page * SUPPLIERS_PER_PAGE);
-        setFilteredSuppliers(suppliers
-            .filter(supplier => supplier.label.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase()))
-            .slice(page === 1 ? 0 : (page - 1) * SUPPLIERS_PER_PAGE, ((page - 1) * SUPPLIERS_PER_PAGE) + SUPPLIERS_PER_PAGE)
-        );
-    }, [search, page]);
+        (async () => {
+            const response = await fetch(`${getSuppliersRoute}?page=${page}&search=${search}`, {
+                method: 'GET',
+                headers: {},
+            });
+
+            const responseBody = await response.json();
+            setSuppliers(responseBody['suppliers']);
+            setTotalNumberOfSuppliers(responseBody['total']);
+        })()
+    }, [page, search]);
 
     return [
-        filteredSuppliers,
-        suppliers.length,
-        () => setSuppliers([{code: 'toto', label: "Supplier 1", contributorsCount: 10}])
+        suppliers,
+        totalNumberOfSuppliers,
+        () => {}
     ];
 };
 

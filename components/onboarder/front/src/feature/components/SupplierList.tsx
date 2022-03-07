@@ -3,6 +3,7 @@ import {SupplierRow, SUPPLIERS_PER_PAGE} from '../hooks/useSuppliers';
 import {DeleteIcon, EditIcon, Pagination, pimTheme, Table, Search} from 'akeneo-design-system';
 import {useTranslate} from "@akeneo-pim-community/shared";
 import styled from "styled-components";
+import {EmptySupplierList} from "./EmptySupplierList";
 
 type SupplierListProps = {
     suppliers: SupplierRow[];
@@ -20,32 +21,38 @@ const SupplierList = ({suppliers, onSearchChange, searchValue, totalSuppliers, o
         <>
             <Search onSearchChange={onSearchChange} searchValue={searchValue} placeholder={translate('onboarder.supplier.search_by_supplier')}/>
 
-            <Pagination
-                followPage={onChangePage}
-                currentPage={currentPage}
-                totalItems={totalSuppliers}
-                itemsPerPage={SUPPLIERS_PER_PAGE}
-            />
+            {
+                0 === totalSuppliers && '' !== searchValue
+                    ? <EmptySupplierList onSupplierCreated={() => {}} />
+                    : <>
+                        <Pagination
+                            followPage={onChangePage}
+                            currentPage={currentPage}
+                            totalItems={totalSuppliers}
+                            itemsPerPage={SUPPLIERS_PER_PAGE}
+                        />
 
-            <Table>
-                <Table.Header>
-                    <Table.HeaderCell>Supplier</Table.HeaderCell>
-                    <Table.HeaderCell>Number of contributors</Table.HeaderCell>
-                    <Table.HeaderCell>Actions</Table.HeaderCell>
-                </Table.Header>
-                <Table.Body>
-                    {suppliers.map((supplier: SupplierRow) => (
-                        <Table.Row key={supplier.code}>
-                            <Table.Cell>{supplier.label}</Table.Cell>
-                            <Table.Cell>{supplier.contributorsCount}</Table.Cell>
-                            <Table.ActionCell>
-                                <StyledEditIcon color={pimTheme.color.grey100}/>
-                                <StyledDeleteIcon color={pimTheme.color.grey100}/>
-                            </Table.ActionCell>
-                        </Table.Row>
-                    ))}
-                </Table.Body>
-            </Table>
+                        <Table>
+                            <Table.Header>
+                                <Table.HeaderCell>Supplier</Table.HeaderCell>
+                                <Table.HeaderCell>Number of contributors</Table.HeaderCell>
+                                <Table.HeaderCell>Actions</Table.HeaderCell>
+                            </Table.Header>
+                            <Table.Body>
+                                {suppliers.map((supplier: SupplierRow) => (
+                                    <Table.Row key={supplier.code}>
+                                        <Table.Cell>{supplier.label}</Table.Cell>
+                                        <Table.Cell>{supplier.contributorsCount}</Table.Cell>
+                                        <Table.ActionCell>
+                                            <StyledEditIcon color={pimTheme.color.grey100}/>
+                                            <StyledDeleteIcon color={pimTheme.color.grey100}/>
+                                        </Table.ActionCell>
+                                    </Table.Row>
+                                ))}
+                            </Table.Body>
+                        </Table>
+                    </>
+            }
         </>
     );
 };

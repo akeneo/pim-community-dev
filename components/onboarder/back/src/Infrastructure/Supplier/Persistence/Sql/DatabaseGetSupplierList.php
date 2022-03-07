@@ -10,8 +10,6 @@ use Doctrine\DBAL\Connection;
 
 final class DatabaseGetSupplierList implements GetSupplierListInterface
 {
-    const NUMBER_OF_SUPPLIERS_PER_PAGE = 50;
-
     private Connection $connection;
 
     public function __construct(Connection $connection)
