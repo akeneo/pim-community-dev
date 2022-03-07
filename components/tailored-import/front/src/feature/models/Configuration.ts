@@ -14,6 +14,7 @@ type FileStructure = {
   header_line: number;
   first_column: number;
   product_line: number;
+  column_identifier_position: number;
   sheet_name: string | null;
 };
 
@@ -29,14 +30,15 @@ type StructureConfiguration = {
   };
   file_key: string | null;
   error_action: ErrorAction;
-  // file_structure: FileStructure;
+  file_structure: FileStructure;
 };
 
 const getDefaultFileStructure = (): FileStructure => ({
-  header_line: 0,
+  header_line: 1,
   first_column: 0,
-  product_line: 1,
+  product_line: 2,
   sheet_name: null,
+  column_identifier_position: 0,
 });
 
 const generateExcelColumnLetter = (index: number): string => {
@@ -50,7 +52,7 @@ const generateExcelColumnLetter = (index: number): string => {
   return `${generateExcelColumnLetter(nextIndex - 1)}${String.fromCharCode(modulo + 65)}`;
 };
 
-const generateColumnName = ({index, label}: Column): string => {
+const generateColumnName = (index: number, label: string): string => {
   const columnLetter = generateExcelColumnLetter(index);
 
   return `${label} (${columnLetter})`;

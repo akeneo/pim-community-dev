@@ -19,6 +19,11 @@ akeneo.tailored_import:
         placeholder: Drop your file here or browse your disk
         uploading: Uploading...
         error: An error occurred while uploading your file. Please check your file and try again.
+      sheet: Sheet
+      header_position: Header position
+      product_position: First product position
+      column_position: First column position
+      column_identifier_position: Identifier position
   data_mapping_list:
     title: Data mappings
     no_sources: No sources
