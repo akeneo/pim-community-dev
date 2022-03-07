@@ -27,7 +27,7 @@ class LogContext
         ));
     }
 
-    public function addContext(string $key, string $value): void
+    public function addContext(string $key, ?string $value): void
     {
         $this->context[$key] = $value;
     }
