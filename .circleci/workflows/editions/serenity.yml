@@ -594,7 +594,7 @@ workflows:
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["srnt"]
-                          CLUSTER_VERSION: ["1.19.0", "1.20.0", "1.21.0", "1.22.0"]
+                          CLUSTER_VERSION: ["1.20.0", "1.21.0", "1.22.0", "1.23.0"]
                   requires:
                       - checkout
 

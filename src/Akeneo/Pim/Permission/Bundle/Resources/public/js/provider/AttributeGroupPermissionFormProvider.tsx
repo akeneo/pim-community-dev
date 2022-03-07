@@ -61,7 +61,9 @@ type Option = {
 
 const fetchAttributeGroupsByIdentifiers = (identifiers: string[]): Promise<Option[]> => {
   return FetcherRegistry.getFetcher('attribute-group')
-    .fetchByIdentifiers(identifiers)
+    .fetchByIdentifiers(identifiers, {
+      apply_filters: false,
+    })
     .then((results: any) =>
       results.map((attributeGroup: any) => ({
         id: attributeGroup.code,
