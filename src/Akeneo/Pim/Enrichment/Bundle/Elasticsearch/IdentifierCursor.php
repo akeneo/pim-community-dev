@@ -20,6 +20,7 @@ final class IdentifierCursor implements CursorInterface, ResultAwareInterface
     protected ?array $items = null;
     protected int $count;
     private array $searchAfter = [];
+    private ?ResultInterface $result;
 
     public function __construct(private Client $esClient, private array $esQuery, private int $pageSize)
     {
