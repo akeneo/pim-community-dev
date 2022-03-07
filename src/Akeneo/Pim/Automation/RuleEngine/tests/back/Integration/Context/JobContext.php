@@ -81,16 +81,16 @@ final class JobContext implements Context
     }
 
     /**
-     * @Then there is :number skipped product
+     * @Then :count products? should have been skipped with no update
      */
-    public function thereIsSkippedProduct(int $number):void
+    public function productsShouldHaveBeenWithNoUpdate(int $count):void
     {
         $jobExecution = $this->executionRepository->findOneBy(['id' => $this->jobExecution->getId()]);
         $stepExecutions = $jobExecution->getStepExecutions();
         foreach ($stepExecutions as $stepExecution) {
             $skippedNoDiff = $stepExecution->getSummary()['skipped_no_diff'] ?? null;
             if(null !== $skippedNoDiff) {
-                Assert::same($skippedNoDiff, $number);
+                Assert::same($skippedNoDiff, $count);
                 return;
             }
         }

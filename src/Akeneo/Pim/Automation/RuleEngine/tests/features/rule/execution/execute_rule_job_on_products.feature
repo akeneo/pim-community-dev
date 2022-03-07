@@ -39,4 +39,4 @@ Feature: Execute all rules on a set of products
     And the fr_FR mobile description of "navy_blue" should be ""
     And the en_US mobile description of "light_blue" should be "Nice description"
     And the fr_FR mobile description of "light_blue" should be ""
-    And there is 1 skipped product
+    And 1 product should have been skipped with no update

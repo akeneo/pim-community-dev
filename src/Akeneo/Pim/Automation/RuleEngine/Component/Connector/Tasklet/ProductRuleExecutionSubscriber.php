@@ -54,8 +54,8 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
             RuleEvents::POST_SAVE_SUBJECTS => 'postSave',
             RuleEvents::SKIP => 'skipInvalid',
             SkippedActionForSubjectEvent::class => 'skipAction',
-            ProductsWereSkippedDuringSave::class => 'skippedSaveAction',
-            ProductModelsWereSkippedDuringSave::class => 'skippedSaveAction',
+            ProductsWereSkippedDuringSave::class => 'skippedProductsSaveAction',
+            ProductModelsWereSkippedDuringSave::class => 'skippedProductModelsSaveAction',
         ];
     }
 
@@ -66,10 +66,17 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
         $this->currentRule = $event->getSubject();
     }
 
-    public function skippedSaveAction(ProductsWereSkippedDuringSave $event): void
+    public function skippedProductsSaveAction(ProductsWereSkippedDuringSave $event): void
     {
-        $subjectSet = $event->getSubjectSet();
-        $this->stepExecution->incrementSummaryInfo('skipped_no_diff', \count($subjectSet));
+        $skippedProducts = $event->getSkippedProducts();
+        $this->stepExecution->incrementSummaryInfo('skipped_no_diff', \count($skippedProducts));
+        $this->jobRepository->updateStepExecution($this->stepExecution);
+    }
+
+    public function skippedProductModelsSaveAction(ProductModelsWereSkippedDuringSave $event): void
+    {
+        $skippedProductModels = $event->getSkippedProductModels();
+        $this->stepExecution->incrementSummaryInfo('skipped_no_diff', \count($skippedProductModels));
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
