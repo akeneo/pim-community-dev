@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
+use Akeneo\Pim\Enrichment\Bundle\Event\ProductModelsWereSkippedDuringSave;
 use Akeneo\Pim\Enrichment\Bundle\Event\ProductsWereSkippedDuringSave;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -54,6 +55,7 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
             RuleEvents::SKIP => 'skipInvalid',
             SkippedActionForSubjectEvent::class => 'skipAction',
             ProductsWereSkippedDuringSave::class => 'skippedSaveAction',
+            ProductModelsWereSkippedDuringSave::class => 'skippedSaveAction',
         ];
     }
 
