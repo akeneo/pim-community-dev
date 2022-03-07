@@ -17,7 +17,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierCursorFactory'
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
-            - '1000'
+            - 500
 
     pim_catalog.factory.product_search_after_size_cursor:
         class: '%akeneo_elasticsearch.cursor.search_after_size_cursor_factory.class%'
