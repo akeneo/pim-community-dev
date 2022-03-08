@@ -1,0 +1,14 @@
+framework:
+    messenger:
+        default_bus: messenger.bus.default
+        buses:
+            messenger.bus.default:
+                default_middleware: true
+            onboarder.command.bus:
+                # Alternatively, we can define as our middlewares instead of using the default ones
+                # see Messenger middleware docs: https://symfony.com/doc/current/messenger.html#middleware
+                default_middleware: true
+            onboarder.query.bus:
+                # Alternatively, we can define as our middlewares instead of using the default ones
+                # see Messenger middleware docs: https://symfony.com/doc/current/messenger.html#middleware
+                default_middleware: true

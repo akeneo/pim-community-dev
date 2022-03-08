@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema;
 
@@ -39,7 +41,7 @@ SQL;
         return 1 === (int) $result['is_existing'];
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         $sql = <<<SQL
 INSERT INTO pimee_security_job_profile_access (job_profile_id, user_group_id, execute_job_profile, edit_job_profile)
@@ -59,7 +61,7 @@ SQL;
         }
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }
