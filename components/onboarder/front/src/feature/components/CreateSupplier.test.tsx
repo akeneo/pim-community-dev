@@ -17,7 +17,7 @@ test('it renders the modal when clicking on the create button', () => {
         <CreateSupplier onSupplierCreated={() => {}} createButtonlabel={'create'}/>
     );
     openModal();
-    assertModalIsOpen()
+    assertModalIsOpen();
 });
 
 test('it can save a supplier', async () => {
@@ -39,6 +39,37 @@ test('it can save a supplier', async () => {
 
     expect(onSupplierCreated).toHaveBeenCalledTimes(1);
     assertModalIsClosed();
+});
+
+test('The supplier code can be generated from the supplier label', () => {
+    renderWithProviders(
+        <CreateSupplier onSupplierCreated={() => {}} createButtonlabel={'create'}/>
+    );
+
+    openModal();
+    userEvent.type(screen.getByPlaceholderText('onboarder.supplier.supplier_create.modal.label.label'), '  Supplier #1     ');
+
+    expect(screen.getByPlaceholderText('onboarder.supplier.supplier_create.modal.code.label')).toHaveValue('supplier__1');
+});
+
+test('The supplier code is not generated anymore after typing a label', () => {
+    renderWithProviders(
+        <CreateSupplier onSupplierCreated={() => {}} createButtonlabel={'create'}/>
+    );
+
+    openModal();
+
+    const codeField = screen.getByPlaceholderText('onboarder.supplier.supplier_create.modal.code.label');
+    const labelField = screen.getByPlaceholderText('onboarder.supplier.supplier_create.modal.label.label');
+
+    userEvent.type(labelField, 'Supplier 1');
+    //type() appends instead of replacing. See https://testing-library.com/docs/ecosystem-user-event/#typeelement-text-options
+    userEvent.clear(codeField);
+    userEvent.type(codeField, 'supplier1');
+    userEvent.clear(labelField);
+    userEvent.type(labelField, 'Supplier number 1');
+
+    expect(codeField).toHaveValue('supplier1');
 });
 
 function openModal() {
