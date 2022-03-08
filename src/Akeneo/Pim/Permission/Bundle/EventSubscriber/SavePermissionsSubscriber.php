@@ -18,6 +18,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobInstanceEvents;
 use Akeneo\Platform\Bundle\ImportExportBundle\Exception\JobInstanceCannotBeUpdatedException;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -86,10 +87,13 @@ class SavePermissionsSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $currentViewUserGroups = $this->attributeGroupAccessManager->getViewUserGroups($attributeGroup);
+        $currentEditUserGroups = $this->attributeGroupAccessManager->getEditUserGroups($attributeGroup);
+
         $this->attributeGroupAccessManager->setAccess(
             $attributeGroup,
-            $this->getGroups($data['permissions']['view']),
-            $this->getGroups($data['permissions']['edit'])
+            array_merge($this->getGroups($data['permissions']['view']), $this->filterHiddenGroups($currentViewUserGroups)),
+            array_merge($this->getGroups($data['permissions']['edit']), $this->filterHiddenGroups($currentEditUserGroups)),
         );
     }
 
@@ -144,6 +148,18 @@ class SavePermissionsSubscriber implements EventSubscriberInterface
     {
         return array_filter($this->userGroupRepository->findAll(), function ($group) use ($groupNames) {
             return in_array($group->getName(), $groupNames);
+        });
+    }
+
+    /**
+     * @param GroupInterface[] $groups
+     *
+     * @return GroupInterface[]
+     */
+    private function filterHiddenGroups(array $groups): array
+    {
+        return array_filter($groups, function ($group) {
+            return $group->getType() !== Group::TYPE_DEFAULT;
         });
     }
 }

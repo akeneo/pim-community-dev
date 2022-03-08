@@ -7,6 +7,8 @@
 - RAC-1220: [Backport PIM-10238] Add permissions to view mass delete assets, mass edit assets and mass delete records job logs
 - CPM-543: [Backport PIM-10249] Fix error message when importing YML rule containing a reference entity record with numeric value
 - PIM-10305: Reject disabled user when coming from SAML auth
+- OCT-25: [Backport OCT-19] fix attribute group permissions forms
+- OCT-26: [Backport OCT-23] Locale permissions are removed from App when edited through settings menu
 - OCT-27: [Backport OCT-24] Prevent non-default usergroups from losing permissions on categories
 
 # 6.0.7 (2022-02-25)
