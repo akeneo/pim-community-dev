@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\ExtractConnectionsProductEventCountQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
+use Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalExtractConnectionsProductEventCountQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\Configuration;
@@ -41,7 +42,7 @@ class DbalExtractConnectionsProductEventCountQueryIntegration extends TestCase
         parent::setUp();
 
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
-        $this->extractConnectionsProductEventCountQuery = $this->get('akeneo_connectivity.connection.persistence.query.extract_connections_product_event_count');
+        $this->extractConnectionsProductEventCountQuery = $this->get(DbalExtractConnectionsProductEventCountQuery::class);
         $this->dbalConnection = self::$container->get('database_connection');
         $this->productClass = self::$container->getParameter('pim_catalog.entity.product.class');
     }

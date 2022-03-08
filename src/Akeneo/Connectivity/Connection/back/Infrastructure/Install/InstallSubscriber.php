@@ -6,8 +6,6 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Install;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler;
-use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionAuditErrorTableQuery;
-use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionAuditTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionEventsApiRequestCountTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateWrongCredentialsCombinationQuery;
@@ -46,9 +44,7 @@ class InstallSubscriber implements EventSubscriberInterface
     public function createConnectionsTable(): void
     {
         $this->dbalConnection->executeStatement(CreateConnectionTableQuery::QUERY);
-        $this->dbalConnection->executeStatement(CreateConnectionAuditTableQuery::QUERY);
         $this->dbalConnection->executeStatement(CreateWrongCredentialsCombinationQuery::QUERY);
-        $this->dbalConnection->executeStatement(CreateConnectionAuditErrorTableQuery::QUERY);
         $this->dbalConnection->executeStatement(CreateConnectionEventsApiRequestCountTableQuery::QUERY);
     }
 

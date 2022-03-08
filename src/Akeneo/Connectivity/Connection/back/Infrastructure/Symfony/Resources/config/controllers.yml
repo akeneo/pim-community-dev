@@ -40,24 +40,6 @@ services:
             - '@akeneo_connectivity.connection.application.handler.regenerate_connection_password'
             - '@oro_security.security_facade'
 
-    Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Audit\GetErrorCountPerConnectionAction:
-        public: true
-        arguments:
-            - '@pim_user.context.user'
-            - '@akeneo_connectivity.connection.application.audit.handler.get_error_count_per_connection'
-
-    Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Audit\GetWeeklyAuditAction:
-        public: true
-        arguments:
-            - '@pim_user.context.user'
-            - '@akeneo_connectivity.connection.application.audit.handler.get_period_event_count_per_connection'
-
-    Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Audit\GetWeeklyErrorAuditAction:
-        public: true
-        arguments:
-            - '@pim_user.context.user'
-            - '@akeneo_connectivity.connection.application.audit.handler.get_period_error_count_per_connection'
-
     Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\ErrorManagement\ErrorManagementAction:
         public: true
         arguments:
