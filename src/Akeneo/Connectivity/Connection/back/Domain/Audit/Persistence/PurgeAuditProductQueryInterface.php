@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query;
+namespace Akeneo\Connectivity\Connection\Domain\Audit\Persistence;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>

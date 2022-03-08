@@ -1,20 +1,19 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Audit\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCountRepositoryInterface;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\BulkInsertEventCountsQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
-use Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalEventCountRepository;
+use Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalBulkInsertEventCountsQuery;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection as DbalConnection;
 use PHPUnit\Framework\Assert;
 
-class DbalEventCountRepositoryIntegration extends TestCase
+class DbalBulkInsertEventCountsQueryIntegration extends TestCase
 {
     public function test_it_creates_many_hourly_event_count(): void
     {
@@ -34,7 +33,7 @@ class DbalEventCountRepositoryIntegration extends TestCase
             500,
             EventTypes::PRODUCT_UPDATED
         );
-        $this->getEventCountRepository()->bulkInsert([$event1, $event2]);
+        $this->getBulkInsertEventCountsQuery()->execute([$event1, $event2]);
 
         $sql = <<<SQL
 SELECT connection_code, event_datetime, event_count, event_type, updated
@@ -58,7 +57,7 @@ SQL;
             100,
             EventTypes::PRODUCT_CREATED
         );
-        $this->getEventCountRepository()->bulkInsert([$event1]);
+        $this->getBulkInsertEventCountsQuery()->execute([$event1]);
 
         $event2 = new HourlyEventCount(
             'erp',
@@ -68,7 +67,7 @@ SQL;
             200,
             EventTypes::PRODUCT_CREATED
         );
-        $this->getEventCountRepository()->bulkInsert([$event2]);
+        $this->getBulkInsertEventCountsQuery()->execute([$event2]);
 
         $sql = <<<SQL
 SELECT connection_code, event_datetime, event_count, event_type, updated
@@ -111,8 +110,8 @@ SQL;
         return $this->get('database_connection');
     }
 
-    private function getEventCountRepository(): EventCountRepositoryInterface
+    private function getBulkInsertEventCountsQuery(): BulkInsertEventCountsQueryInterface
     {
-        return $this->get(DbalEventCountRepository::class);
+        return $this->get(DbalBulkInsertEventCountsQuery::class);
     }
 }

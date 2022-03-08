@@ -6,11 +6,11 @@ services:
     Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataSourceProductEventCountHandler:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalExtractConnectionsProductEventCountQuery'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalEventCountRepository'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalBulkInsertEventCountsQuery'
 
     Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountHandler:
         arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalEventCountRepository'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalUpsertEventCountQuery'
 
     Akeneo\Connectivity\Connection\Application\Audit\Query\GetErrorCountPerConnectionHandler:
         arguments:
