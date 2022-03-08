@@ -122,7 +122,7 @@ test('The wizard redirect to the marketplace when closed', async () => {
         userEvent.click(screen.getByTitle('akeneo_connectivity.connection.connect.apps.wizard.action.cancel'));
     });
 
-    expect(historyMock.history.location.pathname).toBe('/connect/marketplace');
+    expect(historyMock.history.location.pathname).toBe('/connect/app-store');
 });
 
 test('The wizard display a notification and redirects on success', async done => {
