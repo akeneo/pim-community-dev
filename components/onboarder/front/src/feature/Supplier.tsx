@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Breadcrumb} from 'akeneo-design-system';
 import {useTranslate, PageContent, PageHeader, PimView} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
@@ -14,6 +14,10 @@ const Supplier = () => {
     const [searchValue, setSearchValue] = useState('');
     const [page, setPage] = useState<number>(0);
     const [suppliers, totalSuppliers, refreshSuppliers] = useSuppliers(searchValue, page);
+
+    useEffect(() => {
+        totalSuppliers > 0 && setPage(1);
+    }, [totalSuppliers]);
 
     return (
         <Container>
