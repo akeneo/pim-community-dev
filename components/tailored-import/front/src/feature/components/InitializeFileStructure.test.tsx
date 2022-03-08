@@ -3,12 +3,13 @@ import {screen, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {useUploader} from '@akeneo-pim-community/shared';
 import {renderWithProviders} from 'feature/tests';
-import {useReadColumns} from 'feature/hooks';
-import {Column} from 'feature/models';
+import {useReadColumns, useFileTemplateInformationFetcher} from 'feature/hooks';
+import {Column, FileTemplateInformation} from 'feature/models';
 import {InitializeFileStructure} from './InitializeFileStructure';
 
 const mockedUseUploader = useUploader as jest.Mock;
 const mockedUseReadColumns = useReadColumns as jest.Mock;
+const mockedUseFileTemplateInformationFetcher = useFileTemplateInformationFetcher as jest.Mock;
 
 const mockedColumns: Column[] = [
   {
@@ -26,6 +27,10 @@ jest.mock('../hooks/useReadColumns', () => ({
   useReadColumns: jest.fn(),
 }));
 
+jest.mock('../hooks/useFileTemplateInformationFetcher', () => ({
+  useFileTemplateInformationFetcher: jest.fn(),
+}));
+
 beforeEach(() => {
   mockedUseUploader.mockImplementation(() => [
     jest.fn().mockResolvedValue({
@@ -34,6 +39,17 @@ beforeEach(() => {
     }),
   ]);
   mockedUseReadColumns.mockImplementation(() => (): Column[] => mockedColumns);
+  mockedUseFileTemplateInformationFetcher.mockImplementation(() => () => Promise.resolve(
+      {
+        file_info: {
+          originalFilename: 'foo.xlsx',
+          filePath: 'path/to/foo.xlsx'
+        },
+        current_sheet: 'currentTestSheet',
+        sheets: ['currentTestSheet', 'anotherTestSheet'],
+        header_cells: []
+      } as FileTemplateInformation
+  ));
 });
 
 test('it displays a placeholder and a button when the file is not yet uploaded', async () => {
@@ -64,7 +80,13 @@ test('it can upload and send back a list of columns', async () => {
     userEvent.click(screen.getByText('pim_common.confirm'));
   });
 
-  expect(handleConfirm).toHaveBeenCalledWith('path/to/foo.xlsx', mockedColumns);
+  expect(handleConfirm).toHaveBeenCalledWith('path/to/foo.xlsx', mockedColumns, mockedColumns[0], {
+    header_line: 1,
+    first_column: 0,
+    product_line: 2,
+    sheet_name: "currentTestSheet",
+    column_identifier_position: 0,
+  });
 });
 
 test('it clears the uploaded file when the user closes the modal', async () => {

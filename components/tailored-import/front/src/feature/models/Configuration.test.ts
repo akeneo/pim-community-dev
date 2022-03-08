@@ -14,9 +14,10 @@ test('it generates column name', () => {
 
 test('it can get the default file structure', () => {
   expect(getDefaultFileStructure()).toEqual({
-    header_line: 0,
+    column_identifier_position: 0,
+    header_line: 1,
     first_column: 0,
-    product_line: 1,
+    product_line: 2,
     sheet_name: null,
   });
 });

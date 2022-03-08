@@ -75,7 +75,6 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
         onConfirm(fileTemplateInformation.file_info.filePath, columns, columnIdentifier, fileStructure);
         closeModal();
       } catch (validationErrors: any) {
-        console.log(validationErrors);
         setValidationErrors(formatParameters(validationErrors));
       }
     }
