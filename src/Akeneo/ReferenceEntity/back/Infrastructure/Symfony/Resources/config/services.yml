@@ -50,6 +50,15 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\EventSubscriber\RemoveNonExistentReferenceEntityValuesSubscriber:
+        arguments:
+            - '@security.token_storage'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }
+
     akeneo_referenceentity.updater.adder.reference_entity_collection:
         class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Updater\Adder\ReferenceEntityCollectionAdder
         arguments:
