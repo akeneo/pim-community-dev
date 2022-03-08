@@ -9,7 +9,7 @@ services:
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelScoresQuery'
-            - '@akeneo.pim.automation.data_quality_insights.compute_products_key_indicators'
+            - '@akeneo.pim.automation.data_quality_insights.compute_product_models_key_indicators'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\GetDataQualityInsightsPropertiesForProductProjection:
         arguments:
@@ -23,7 +23,7 @@ services:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelScoresQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductModelIdsFromProductModelCodesQuery'
-            - '@akeneo.pim.automation.data_quality_insights.compute_products_key_indicators'
+            - '@akeneo.pim.automation.data_quality_insights.compute_product_models_key_indicators'
         tags:
             - { name: 'akeneo.pim.enrichment.product_model.query.indexing_additional_properties' }
 
