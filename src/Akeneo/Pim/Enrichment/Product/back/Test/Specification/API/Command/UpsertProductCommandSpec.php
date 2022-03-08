@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Product\API\Command;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
@@ -181,6 +182,26 @@ class UpsertProductCommandSpec extends ObjectBehavior
     function it_can_be_constructed_with_a_set_date_value_intent()
     {
         $valueUserIntents = [new SetDateValue('name', null, null, new \DateTime("2022-03-04T09:35:24+00:00"))];
+        $this->beConstructedWith(
+            1,
+            'identifier1',
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            $valueUserIntents
+        );
+        $this->userId()->shouldReturn(1);
+        $this->productIdentifier()->shouldReturn('identifier1');
+        $this->valueUserIntents()->shouldReturn($valueUserIntents);
+    }
+
+    function it_can_be_constructed_with_a_add_multi_select_value_intent()
+    {
+        $valueUserIntents = [new AddMultiSelectValue('name', null, null, ['optionA'])];
         $this->beConstructedWith(
             1,
             'identifier1',
