@@ -503,7 +503,7 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
         $id = $normalizedProductProjection->toArray()['id'];
         $split = preg_match('/^product_(?P<uuid>.*)$/', $id, $matches);
 
-        Assert::equalTo($split, 1);
+        Assert::assertSame(1, $split);
         Assert::assertTrue(Uuid::isValid($matches['uuid']));
         Assert::assertTrue($normalizedProductProjection->shouldBeMigrated());
 
@@ -527,7 +527,7 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
         $id = $normalizedProductProjection->toArray()['id'];
         $split = preg_match('/^product_(?P<id>\d*)$/', $id);
 
-        Assert::equalTo($split, 1);
+        Assert::assertSame(1, $split);
         Assert::assertFalse($normalizedProductProjection->shouldBeMigrated());
 
         if ($wasColumnDropped) {

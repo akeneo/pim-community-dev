@@ -8,6 +8,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 class ReindexAffectedByMigrationProductIntegration extends TestCase
 {
@@ -22,15 +23,19 @@ class ReindexAffectedByMigrationProductIntegration extends TestCase
         $product = $this->getProductBuilder()->createProduct('foo');
         $this->getProductSaver()->save($product);
         $this->getElasticSearchClient()->refreshIndex();
-        Assert::equalTo($this->getElasticSearchClient()->count([])['count'], 1);
+        Assert::assertSame(1, $this->getElasticSearchClient()->count([])['count']);
         $formerProductId = $this->getElasticSearchClient()->search([])['hits']['hits'][0]['_id'];
 
         $this->addUuidColumn();
 
         $this->getElasticSearchProductProjection()->clearCache();
+        $this->getConnection()->executeQuery(strtr(<<<SQL
+        UPDATE pim_catalog_product
+        SET uuid=UUID_TO_BIN('{uuid}');
+        SQL, ['{uuid}' => Uuid::uuid4()->toString()]));
         $this->getProductSaver()->save($product, ['force_save' => true]);
         $this->getElasticSearchClient()->refreshIndex();
-        Assert::equalTo($this->getElasticSearchClient()->count([])['count'], 1);
+        Assert::assertSame(1, $this->getElasticSearchClient()->count([])['count']);
         $newProductId = $this->getElasticSearchClient()->search([])['hits']['hits'][0]['_id'];
 
         Assert::assertNotEquals($formerProductId, $newProductId);
