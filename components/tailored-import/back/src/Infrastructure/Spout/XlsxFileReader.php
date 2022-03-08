@@ -15,12 +15,8 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Spout;
 
 use Akeneo\Platform\TailoredImport\Domain\Exception\FileNotFoundException;
 use Akeneo\Platform\TailoredImport\Domain\Exception\SheetNotFoundException;
-use Akeneo\Platform\TailoredImport\Domain\Model\File\FileHeaderCollection;
-use Akeneo\Platform\TailoredImport\Domain\Model\File\FileStructure;
 use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\XlsxFileReaderInterface;
-use Box\Spout\Common\Entity\Cell;
 use Box\Spout\Reader\Common\Creator\ReaderFactory;
-use Box\Spout\Reader\IteratorInterface;
 use Box\Spout\Reader\ReaderInterface;
 use Box\Spout\Reader\SheetInterface;
 use Box\Spout\Reader\XLSX\Reader;
@@ -35,7 +31,7 @@ class XlsxFileReader implements XlsxFileReaderInterface
         private CellsFormatter $cellsFormatter,
     ) {
         $this->fileReader = $this->openFile();
-        $this->selectSheet(null);
+        $this->sheet = $this->fileReader->getSheetIterator()->current();
     }
 
     public function __destruct()
@@ -59,15 +55,10 @@ class XlsxFileReader implements XlsxFileReaderInterface
         return $fileReader;
     }
 
-    public function selectSheet(?string $sheetName): void
+    public function selectSheet(string $sheetName): void
     {
         $sheetIterator = $this->fileReader->getSheetIterator();
         $sheetIterator->rewind();
-
-        if (null === $sheetName) {
-            $this->sheet = $sheetIterator->current();
-            return;
-        }
 
         foreach ($sheetIterator as $sheet) {
             if ($sheet->getName() === $sheetName) {
@@ -91,7 +82,7 @@ class XlsxFileReader implements XlsxFileReaderInterface
         return [];
     }
 
-    public function getSheetList(): array
+    public function getSheetNames(): array
     {
         $sheetList = [];
 

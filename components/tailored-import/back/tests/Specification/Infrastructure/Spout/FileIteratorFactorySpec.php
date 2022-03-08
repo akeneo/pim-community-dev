@@ -16,7 +16,6 @@ namespace Specification\Akeneo\Platform\TailoredImport\Infrastructure\Spout;
 use Akeneo\Platform\TailoredImport\Domain\Model\File\FileStructure;
 use Akeneo\Platform\TailoredImport\Infrastructure\Spout\CellsFormatter;
 use Akeneo\Platform\TailoredImport\Infrastructure\Spout\XlsxFileIterator;
-use Akeneo\Platform\TailoredImport\Infrastructure\Spout\XlsxFileReader;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

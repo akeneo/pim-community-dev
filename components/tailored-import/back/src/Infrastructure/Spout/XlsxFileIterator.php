@@ -168,8 +168,7 @@ class XlsxFileIterator implements FileIteratorInterface
 
     private function addTrimmedCells(array $formattedCells): array
     {
-        $firstColumn = $this->fileStructure->getFirstColumn();
-        $expectedValueCount = $this->headers->count() - $firstColumn;
+        $expectedValueCount = $this->headers->count();
 
         return array_replace(array_fill(0, $expectedValueCount, ''), $formattedCells);
     }

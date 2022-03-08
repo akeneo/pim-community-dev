@@ -18,7 +18,6 @@ use Akeneo\Platform\TailoredImport\Domain\Exception\SheetNotFoundException;
 use Akeneo\Platform\TailoredImport\Domain\Model\File\FileHeaderCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\File\FileStructure;
 use Akeneo\Platform\TailoredImport\Infrastructure\Spout\XlsxFileIterator;
-use Akeneo\Platform\TailoredImport\Infrastructure\Spout\XlsxFileReader;
 use Akeneo\Platform\TailoredImport\Test\Acceptance\AcceptanceTestCase;
 
 class XlsxFlatFileIteratorTest extends AcceptanceTestCase
@@ -84,7 +83,7 @@ class XlsxFlatFileIteratorTest extends AcceptanceTestCase
         $actualFileContent = iterator_to_array($flatFileIterator);
         $expectedFileContent = [
             1 => ['ref1', 'Produit 1', '12', 'TRUE', '3/22/2022', '14.4'],
-            2 => ['ref2', 'Produit 2', '13.87', 'FALSE', '5/23/2022', '16.644'],
+            2 => ['ref2', 'Produit 2', '13.87', 'FALSE', '5/23/2022', ''],
             3 => ['ref3', 'Produit 3', '16', 'TRUE', '10/5/2015', '19.2'],
         ];
 
