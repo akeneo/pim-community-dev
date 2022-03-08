@@ -39,6 +39,7 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
         closeModal();
         setCode('');
         setLabel('');
+        setCodeHasBeenChangedManually(false);
     };
 
     const saveSupplier = async () => {
@@ -78,7 +79,7 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
                         <TextInput onChange={onChangeLabel} maxLength={LABEL_MAX_LENGTH} value={label} placeholder={translate('onboarder.supplier.supplier_create.modal.label.label')}/>
                     </StyledField>
                     <Modal.BottomButtons>
-                        <Button level="tertiary" onClick={closeModal}>
+                        <Button level="tertiary" onClick={onCloseModal}>
                             {translate('pim_common.cancel')}
                         </Button>
                         <Button level="primary" onClick={saveSupplier}>
