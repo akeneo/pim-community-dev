@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Sql;
 
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList;
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Read\Supplier\Supplier;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseGetSupplierList implements GetSupplierList
@@ -29,7 +29,7 @@ final class DatabaseGetSupplierList implements GetSupplierList
             OFFSET :offset
         SQL;
 
-        return array_map(fn(array $supplier) => Supplier\Supplier::create(
+        return array_map(fn(array $supplier) => new Supplier(
             $supplier['identifier'],
             $supplier['code'],
             $supplier['label'],

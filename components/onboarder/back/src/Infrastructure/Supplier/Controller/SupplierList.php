@@ -8,7 +8,7 @@ use Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliers;
 use Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliersHandler;
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierCount;
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList;
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Read\Supplier\Supplier;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -32,7 +32,7 @@ final class SupplierList
                 fn (Supplier $supplier) => $supplier->toArray(),
                 $suppliers
             ),
-            'total' => ($this->getSupplierCount)($search), // @todo Query count suppliers
+            'total' => ($this->getSupplierCount)($search),
             'items_per_page' => GetSupplierList::NUMBER_OF_SUPPLIERS_PER_PAGE
         ]);
     }
