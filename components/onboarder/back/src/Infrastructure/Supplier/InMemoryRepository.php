@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier;
 
-use Akeneo\OnboarderSerenity\Domain\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
 use Symfony\Component\DependencyInjection\Attribute\When;
 
 #[When(env: 'test')]

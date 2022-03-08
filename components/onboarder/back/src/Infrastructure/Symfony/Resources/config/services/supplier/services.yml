@@ -1,6 +1,6 @@
 services:
     # Repositories
-    Akeneo\OnboarderSerenity\Domain\Supplier\Repository:
+    Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\DatabaseRepository
         arguments:
             - '@database_connection'
@@ -8,20 +8,20 @@ services:
     # Command/Handlers
     Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler:
         arguments:
-            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Repository'
+            - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
 
     # Query/Handlers
     Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliersHandler:
         arguments:
-            - '@Akeneo\OnboarderSerenity\Domain\Supplier\GetSupplierList'
+            - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList'
 
     # Queries
-    Akeneo\OnboarderSerenity\Domain\Supplier\GetSupplierList:
+    Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Sql\DatabaseGetSupplierList
         arguments:
             - '@database_connection'
 
-    Akeneo\OnboarderSerenity\Domain\Supplier\GetSupplierCount:
+    Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierCount:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Sql\DatabaseGetSupplierCount
         arguments:
             - '@database_connection'
@@ -31,4 +31,4 @@ services:
         public: true
         arguments:
             - '@Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliersHandler'
-            - '@Akeneo\OnboarderSerenity\Domain\Supplier\GetSupplierCount'
+            - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierCount'

@@ -34,7 +34,7 @@ $rules = [
     $builder->only(
         [
             // Onboarder coupling
-            'Akeneo\OnboarderSerenity\Domain\Supplier',
+            'Akeneo\OnboarderSerenity\Domain',
 
             // PIM coupling
 
@@ -45,7 +45,8 @@ $rules = [
     $builder->only(
         [
             // Onboarder coupling
-            'Akeneo\OnboarderSerenity\Domain\Supplier',
+            'Akeneo\OnboarderSerenity\Domain',
+            'Akeneo\OnboarderSerenity\Application',
             // PIM coupling
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
             // External dependencies coupling
@@ -64,6 +65,7 @@ $rules = [
             // External dependencies coupling
             'Doctrine\DBAL\Connection',
             'Symfony',
+            'Ramsey\Uuid\Uuid',
         ],
     )->in('Akeneo\OnboarderSerenity\Test\Integration'),
 

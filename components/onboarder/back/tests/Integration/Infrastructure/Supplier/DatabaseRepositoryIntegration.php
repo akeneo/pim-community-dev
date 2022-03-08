@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Test\Integration\Infrastructure\Supplier;
 
-use Akeneo\OnboarderSerenity\Domain\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
 use Akeneo\OnboarderSerenity\Test\Integration\SqlIntegrationTestCase;
 
 final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier;
 
-use Akeneo\OnboarderSerenity\Domain\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseRepository implements Supplier\Repository

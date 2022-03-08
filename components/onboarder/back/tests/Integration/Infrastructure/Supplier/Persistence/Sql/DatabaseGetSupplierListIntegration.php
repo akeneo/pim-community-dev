@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Test\Integration\Infrastructure\Supplier\Persistence\Sql;
 
-use Akeneo\OnboarderSerenity\Domain\Supplier\GetSupplierList;
-use Akeneo\OnboarderSerenity\Domain\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList;
+use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
 use Akeneo\OnboarderSerenity\Test\Integration\SqlIntegrationTestCase;
 use Ramsey\Uuid\Uuid;
 

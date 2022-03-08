@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Application\Supplier;
 
-use Akeneo\OnboarderSerenity\Domain\Supplier\GetSupplierList;
+use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList;
 
 final class GetSuppliersHandler
 {

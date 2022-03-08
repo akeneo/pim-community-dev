@@ -1,4 +1,4 @@
 services:
     # Repositories
-    Akeneo\OnboarderSerenity\Domain\Supplier\Repository:
+    Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\InMemoryRepository

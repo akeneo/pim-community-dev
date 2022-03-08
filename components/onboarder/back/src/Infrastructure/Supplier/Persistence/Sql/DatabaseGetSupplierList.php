@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Sql;
 
-use Akeneo\OnboarderSerenity\Domain\Supplier\GetSupplierList as GetSupplierListInterface;
-use Akeneo\OnboarderSerenity\Domain\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList;
+use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
 use Doctrine\DBAL\Connection;
 
-final class DatabaseGetSupplierList implements GetSupplierListInterface
+final class DatabaseGetSupplierList implements GetSupplierList
 {
     private Connection $connection;
 
