@@ -1,7 +1,7 @@
 import React from 'react';
 import {SupplierRow, SUPPLIERS_PER_PAGE} from '../hooks/useSuppliers';
-import {DeleteIcon, EditIcon, Pagination, pimTheme, Table, Search} from 'akeneo-design-system';
-import {useTranslate} from "@akeneo-pim-community/shared";
+import {CityIllustration, DeleteIcon, EditIcon, Pagination, pimTheme, Table, Search} from 'akeneo-design-system';
+import {NoDataSection, NoDataText, useTranslate} from "@akeneo-pim-community/shared";
 import styled from "styled-components";
 import {EmptySupplierList} from "./EmptySupplierList";
 
@@ -25,43 +25,47 @@ const SupplierList = ({suppliers, onSearchChange, searchValue, totalSuppliers, o
                 placeholder={translate('onboarder.supplier.supplier_list.search_by_supplier')}
             />
 
-            {
-                0 === totalSuppliers && '' !== searchValue
-                    ? <EmptySupplierList onSupplierCreated={() => {}} />
-                    : <>
-                        <Pagination
-                            followPage={onChangePage}
-                            currentPage={currentPage}
-                            totalItems={totalSuppliers}
-                            itemsPerPage={SUPPLIERS_PER_PAGE}
-                        />
+            {0 === totalSuppliers && '' !== searchValue &&
+                <StyledNoDataSection>
+                    <CityIllustration size={256}/>
+                    <StyledNoDataText>{translate('onboarder.supplier.supplier_list.no_search_result')}</StyledNoDataText>
+                </StyledNoDataSection>
+            }
+            {0 === totalSuppliers && '' === searchValue && <EmptySupplierList onSupplierCreated={() => {}} />}
+            {0 < totalSuppliers && <>
+                <Pagination
+                    followPage={onChangePage}
+                    currentPage={currentPage}
+                    totalItems={totalSuppliers}
+                    itemsPerPage={SUPPLIERS_PER_PAGE}
+                />
 
-                        <Table>
-                            <Table.Header>
-                                <Table.HeaderCell>
-                                    {translate('onboarder.supplier.supplier_list.columns.supplier')}
-                                </Table.HeaderCell>
-                                <Table.HeaderCell>
-                                    {translate('onboarder.supplier.supplier_list.columns.number_of_contributors')}
-                                </Table.HeaderCell>
-                                <Table.HeaderCell>
-                                    {translate('onboarder.supplier.supplier_list.columns.actions')}
-                                </Table.HeaderCell>
-                            </Table.Header>
-                            <Table.Body>
-                                {suppliers.map((supplier: SupplierRow) => (
-                                    <Table.Row key={supplier.code}>
-                                        <Table.Cell>{supplier.label}</Table.Cell>
-                                        <Table.Cell>{supplier.contributorsCount}</Table.Cell>
-                                        <Table.ActionCell>
-                                            <StyledEditIcon color={pimTheme.color.grey100}/>
-                                            <StyledDeleteIcon color={pimTheme.color.grey100}/>
-                                        </Table.ActionCell>
-                                    </Table.Row>
-                                ))}
-                            </Table.Body>
-                        </Table>
-                    </>
+                <Table>
+                    <Table.Header>
+                        <Table.HeaderCell>
+                            {translate('onboarder.supplier.supplier_list.columns.supplier')}
+                        </Table.HeaderCell>
+                        <Table.HeaderCell>
+                            {translate('onboarder.supplier.supplier_list.columns.number_of_contributors')}
+                        </Table.HeaderCell>
+                        <Table.HeaderCell>
+                            {translate('onboarder.supplier.supplier_list.columns.actions')}
+                        </Table.HeaderCell>
+                    </Table.Header>
+                    <Table.Body>
+                        {suppliers.map((supplier: SupplierRow) => (
+                            <Table.Row key={supplier.code}>
+                                <Table.Cell>{supplier.label}</Table.Cell>
+                                <Table.Cell>{supplier.contributorsCount}</Table.Cell>
+                                <Table.ActionCell>
+                                    <StyledEditIcon color={pimTheme.color.grey100}/>
+                                    <StyledDeleteIcon color={pimTheme.color.grey100}/>
+                                </Table.ActionCell>
+                            </Table.Row>
+                        ))}
+                    </Table.Body>
+                </Table>
+            </>
             }
         </>
     );
@@ -73,6 +77,17 @@ const StyledEditIcon = styled(EditIcon)`
 `;
 const StyledDeleteIcon = styled(DeleteIcon)`
     cursor: pointer;
+`;
+const StyledNoDataText = styled(NoDataText)`
+    font-size: 13px;
+`;
+const StyledNoDataSection = styled(NoDataSection)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  margin-top: 0;
 `;
 
 export {SupplierList};

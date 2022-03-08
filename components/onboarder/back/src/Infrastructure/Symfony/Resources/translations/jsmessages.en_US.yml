@@ -19,6 +19,7 @@ onboarder:
             title: "]-Inf, 1]{{ count }} supplier|]1, Inf[{{ count }} suppliers"
             no_supplier: There are no suppliers yet.
             search_by_supplier: Search by Supplier
+            no_search_result: There are no suppliers matching this search.
             columns:
                 supplier: Supplier
                 number_of_contributors: Number of contributors

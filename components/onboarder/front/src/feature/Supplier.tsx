@@ -50,7 +50,7 @@ const Supplier = () => {
                     }
                 </PageHeader.Title>
             </PageHeader>
-            <PageContent>
+            <StyledPageContent>
                 {
                     0 === suppliers.length && '' === searchValue ?
                     <EmptySupplierList onSupplierCreated={refreshSuppliers} /> :
@@ -63,9 +63,14 @@ const Supplier = () => {
                         currentPage={page}
                     />
                 }
-            </PageContent>
+            </StyledPageContent>
         </Container>
     );
 };
+
+const StyledPageContent = styled(PageContent)`
+    display: flex;
+    flex-direction: column;
+`;
 
 export {Supplier};

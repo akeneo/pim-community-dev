@@ -5,9 +5,12 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 
 const Container = styled.div`
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  margin-top: 0;
 `;
 
 type EmptySupplierProps = {

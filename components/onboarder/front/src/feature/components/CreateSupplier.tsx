@@ -54,7 +54,7 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
         });
         onSupplierCreated();
         notify(
-            NotificationLevel.SUCCESS, 
+            NotificationLevel.SUCCESS,
             translate('onboarder.supplier.supplier_create.notification.title'),
             translate('onboarder.supplier.supplier_create.notification.content'),
         );
