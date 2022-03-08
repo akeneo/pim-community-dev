@@ -21,6 +21,7 @@ class MigrateToUuidCommand extends Command
 
     public function __construct(
         MigrateToUuidStep $migrateToUuidCreateColumns,
+        MigrateToUuidStep $migrateToUuidAddTriggers,
         MigrateToUuidStep $migrateToUuidFillProductUuid,
         MigrateToUuidStep $migrateToUuidFillForeignUuid,
         MigrateToUuidStep $migrateToUuidFillJson,
@@ -29,6 +30,7 @@ class MigrateToUuidCommand extends Command
         parent::__construct();
         $this->steps = [
             $migrateToUuidCreateColumns,
+            $migrateToUuidAddTriggers,
             $migrateToUuidFillProductUuid,
             $migrateToUuidFillForeignUuid,
             $migrateToUuidFillJson,
