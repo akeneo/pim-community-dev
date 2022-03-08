@@ -1,11 +1,31 @@
-type KeyIndicator = {
-  ratioGood: number;
+export type Counts = {
+  totalGood: number;
   totalToImprove: number;
   extraData?: KeyIndicatorExtraData;
 };
 
-type keyIndicatorMap = {
-  [keyIndicator: string]: KeyIndicator;
+export const makeCounts = (): Counts => ({
+  totalGood: 0,
+  totalToImprove: 0,
+});
+
+export type CountsByProductType = {
+  [entitityKind in 'products' | 'product_models']: Counts;
+};
+
+export const makeCountsByProductType = (): CountsByProductType => ({
+  products: makeCounts(),
+  product_models: makeCounts(),
+});
+
+export const areAllCountsZero = (c: CountsByProductType) =>
+  c.products.totalGood === 0 &&
+  c.products.totalToImprove === 0 &&
+  c.product_models.totalGood === 0 &&
+  c.product_models.totalToImprove === 0;
+
+export type KeyIndicatorMap = {
+  [keyIndicatorCode: string]: CountsByProductType;
 };
 
 type Tip = {
@@ -18,11 +38,9 @@ type KeyIndicatorTips = {
 };
 
 type KeyIndicatorsTips = {
-  [keyIndicatorName: string]: KeyIndicatorTips;
+  [keyIndicatorCode: string]: KeyIndicatorTips;
 };
 
-type KeyIndicatorExtraData = {
+export type KeyIndicatorExtraData = {
   impactedFamilies: string[];
 };
-
-export {KeyIndicator, keyIndicatorMap, Tip, KeyIndicatorTips, KeyIndicatorsTips, KeyIndicatorExtraData};

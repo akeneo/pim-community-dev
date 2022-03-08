@@ -9,14 +9,26 @@ import '@testing-library/jest-dom/extend-expect';
 jest.mock('@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks');
 
 test('It displays 2 key indicators', async () => {
-  useFetchKeyIndicators.mockReturnValueOnce({
+  (useFetchKeyIndicators as jest.Mock).mockReturnValueOnce({
     has_image: {
-      ratioGood: 25.65,
-      totalToImprove: 5000,
+      // products: {
+      //   totalGood: 25,
+      //   totalToImprove: 5000,
+      // },
+      // product_models: {
+      //   totalGood: 30,
+      //   totalToImprove: 3000,
+      // },
     },
     good_enrichment: {
-      ratioGood: 25.65,
-      totalToImprove: 5000,
+      // products: {
+      //   totalGood: 25,
+      //   totalToImprove: 5000,
+      // },
+      // product_models: {
+      //   totalGood: 30,
+      //   totalToImprove: 3000,
+      // },
     },
   });
 
@@ -32,7 +44,7 @@ test('It displays 2 key indicators', async () => {
 });
 
 test('It displays a loading when key indicators have not been loaded yet', async () => {
-  useFetchKeyIndicators.mockReturnValueOnce(null);
+  (useFetchKeyIndicators as jest.Mock).mockReturnValueOnce(null);
 
   const {queryByText, queryByTestId} = renderComponent();
 

@@ -12,8 +12,9 @@ import {keyIndicatorsTips} from '../../helper/Dashboard/KeyIndicatorsTips';
 import {redirectToProductGridFilteredByKeyIndicator} from '../../../infrastructure/ProductGridRouter';
 
 import {DashboardContextProvider} from '../../context/DashboardContext';
-import {TimePeriod} from '../../../domain';
+import {makeCountsByProductType, TimePeriod} from '../../../domain';
 import {QualityScoreEvolutionSection} from './QualityScoreEvolutionSection';
+import {ProductType} from '../../../domain/Product.interface';
 
 interface DataQualityInsightsDashboardProps {
   timePeriod: TimePeriod;
@@ -44,6 +45,8 @@ const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({
           code: categoryCode,
           rootCategoryId,
         };
+
+  const defaultCounts = makeCountsByProductType();
 
   return (
     <DependenciesProvider>
@@ -78,10 +81,11 @@ const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({
                       <KeyIndicator
                         type="has_image"
                         title={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.has_image.title'}
-                        resultsMessage={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.products_to_work_on'}
+                        counts={defaultCounts}
                         followResults={(
                           channelCode: string,
                           localeCode: string,
+                          productType: ProductType,
                           familyCode: string | null,
                           categoryId: string | null,
                           rootCategoryId: string | null
@@ -90,6 +94,7 @@ const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({
                             'data_quality_insights_images_quality',
                             channelCode,
                             localeCode,
+                            productType,
                             familyCode,
                             categoryId,
                             rootCategoryId
@@ -102,10 +107,11 @@ const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({
                       <KeyIndicator
                         type="good_enrichment"
                         title={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.good_enrichment.title'}
-                        resultsMessage={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.products_to_work_on'}
+                        counts={defaultCounts}
                         followResults={(
                           channelCode: string,
                           localeCode: string,
+                          productType: ProductType,
                           familyCode: string | null,
                           categoryId: string | null,
                           rootCategoryId: string | null
@@ -114,6 +120,7 @@ const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({
                             'data_quality_insights_enrichment_quality',
                             channelCode,
                             localeCode,
+                            productType,
                             familyCode,
                             categoryId,
                             rootCategoryId

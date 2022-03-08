@@ -25,6 +25,7 @@ import {KeyIndicator, keyIndicatorMap, KeyIndicatorTips, KeyIndicatorsTips, Tip}
 
 export * from './QualityScoreModel';
 export * from './KeyIndicator';
+export * from './IntegerPercent';
 
 export {
   Family,

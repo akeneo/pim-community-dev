@@ -1,47 +1,59 @@
 import React, {FC, useCallback} from 'react';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
+import {roughCount, computeTipMessage, getProgressBarLevel} from '../../../helper/Dashboard/KeyIndicator';
 import {
-  computeProductsNumberToWorkOn,
-  computeTipMessage,
-  getProgressBarLevel,
-} from '../../../helper/Dashboard/KeyIndicator';
-import {Tip, KeyIndicatorTips, KeyIndicatorExtraData} from '../../../../domain';
+  Tip,
+  KeyIndicatorTips,
+  CountsByProductType,
+  KeyIndicatorExtraData,
+  areAllCountsZero,
+  computePercent,
+} from '../../../../domain';
 import {useGetKeyIndicatorTips} from '../../../../infrastructure/hooks/Dashboard/UseKeyIndicatorTips';
 import {useDashboardContext} from '../../../context/DashboardContext';
 import {ProgressBar} from 'akeneo-design-system';
 import {FollowKeyIndicatorResultHandler} from '../../../user-actions';
+import {ProductType} from '../../../../domain/Product.interface';
+import {MarkersMapping, messageBuilder} from './messageBuilder';
+import {TextWithLink} from './TextWithLink';
 
 type Props = {
   type: string;
-  ratioGood?: number;
-  totalToImprove?: number;
-  title?: string;
-  resultsMessage?: string;
+  counts: CountsByProductType;
+  title: string;
   followResults?: FollowKeyIndicatorResultHandler;
   extraData?: KeyIndicatorExtraData;
 };
 
-const KeyIndicator: FC<Props> = ({
-  children,
-  type,
-  ratioGood,
-  totalToImprove,
-  title,
-  resultsMessage,
-  followResults,
-  extraData,
-}) => {
+const KeyIndicator: FC<Props> = ({children, type, counts, title, followResults, extraData}) => {
   const translate = useTranslate();
   const tips: KeyIndicatorTips = useGetKeyIndicatorTips(type);
   const userContext = useUserContext();
   const {category, familyCode} = useDashboardContext();
 
-  if (title === undefined) {
-    return <></>;
-  }
+  const handleClickOnCount = useCallback(
+    (productType: ProductType) => (event: React.SyntheticEvent<HTMLButtonElement>) => {
+      event.stopPropagation();
 
-  if (ratioGood === undefined || totalToImprove === undefined) {
+      followResults?.(
+        userContext.get('catalogScope'),
+        userContext.get('catalogLocale'),
+        productType,
+        familyCode,
+        category?.id || null,
+        category?.rootCategoryId || null,
+        extraData || undefined
+      );
+    },
+    [userContext, familyCode, category, extraData]
+  );
+
+  // if (title === undefined) {
+  //   return <></>;
+  // }
+
+  if (areAllCountsZero(counts)) {
     return (
       <Container>
         <Icon>{children}</Icon>
@@ -60,48 +72,72 @@ const KeyIndicator: FC<Props> = ({
     );
   }
 
-  const tip: Tip = computeTipMessage(tips, ratioGood);
+  const {
+    products: {totalGood: nbProductsOK, totalToImprove: nbProductsKO},
+    product_models: {totalGood: nbProductModelsOK, totalToImprove: nbProductModelsKO},
+  } = counts;
 
-  const productsNumberToWorkOn: number = computeProductsNumberToWorkOn(totalToImprove);
+  const percentOK = computePercent(nbProductsOK, nbProductsKO);
 
-  const handleOnClickOnProductsNumber = useCallback(
-    (event: any) => {
-      event.stopPropagation();
-      if (event.target.tagName === 'BUTTON' && followResults) {
-        followResults(
-          userContext.get('catalogScope'),
-          userContext.get('catalogLocale'),
-          familyCode,
-          category?.id || null,
-          category?.rootCategoryId || null,
-          extraData || undefined
-        );
-      }
-    },
-    [userContext, familyCode, category, extraData]
+  const tip: Tip = computeTipMessage(tips, percentOK);
+
+  const roughCountProductsKO: number = roughCount(nbProductsKO);
+  const roughCountProductModelsKO: number = roughCount(nbProductModelsKO);
+
+  const roughCountProductsKOText = translate(
+    'akeneo_data_quality_insights.dqi_dashboard.key_indicators.products',
+    {count: roughCountProductsKO.toString()},
+    roughCountProductsKO
   );
+  const roughCountProductModelsKOText = translate(
+    'akeneo_data_quality_insights.dqi_dashboard.key_indicators.product_models',
+    {count: roughCountProductModelsKO.toString()},
+    roughCountProductModelsKO
+  );
+
+  const productsButton = <button onClick={handleClickOnCount('product')}>{roughCountProductsKOText}</button>;
+
+  const productModelsButton = (
+    <button onClick={handleClickOnCount('product_model')}>{roughCountProductModelsKOText}</button>
+  );
+
+  let messageSourceI18nKey = 'akeneo_data_quality_insights.dqi_dashboard.key_indicators.entities_to_work_on';
+  let markersMapping: MarkersMapping;
+
+  if (nbProductsKO > 0) {
+    if (nbProductModelsKO > 0) {
+      messageSourceI18nKey = 'akeneo_data_quality_insights.dqi_dashboard.key_indicators.entities_to_work_on_2_kinds';
+      markersMapping = {
+        '[A]': productsButton,
+        '[B]': productModelsButton,
+      };
+    } else {
+      markersMapping = {
+        '[A]': productsButton,
+      };
+    }
+  } else {
+    markersMapping = {
+      '[A]': productModelsButton,
+    };
+  }
+
+  const entitiesToWorkOn = messageBuilder(markersMapping)(translate(messageSourceI18nKey));
 
   return (
     <Container>
       <Icon>{children}</Icon>
       <Content>
         <ProgressBar
-          level={getProgressBarLevel(ratioGood)}
-          light={ratioGood === 0 || (ratioGood >= 50 && ratioGood < 80)}
-          percent={ratioGood}
-          progressLabel={Math.round(ratioGood) + '%'}
+          level={getProgressBarLevel(percentOK)}
+          light={percentOK === 0 || (percentOK >= 50 && percentOK < 80)}
+          percent={percentOK}
+          progressLabel={percentOK + '%'}
           size="small"
           title={translate(title)}
         />
         <Text>
-          {totalToImprove > 0 && resultsMessage && (
-            <TextWithLink
-              onClickCapture={(event: any) => handleOnClickOnProductsNumber(event)}
-              dangerouslySetInnerHTML={{
-                __html: translate(resultsMessage, {count: productsNumberToWorkOn.toString()}, productsNumberToWorkOn),
-              }}
-            />
-          )}
+          {entitiesToWorkOn}
           &nbsp;
           <TextWithLink
             dangerouslySetInnerHTML={{
@@ -145,23 +181,6 @@ const Content = styled.div`
 const Text = styled.div`
   color: ${({theme}) => theme.color.grey100};
   margin-top: 10px;
-`;
-
-const TextWithLink = styled.span`
-  a,
-  button {
-    color: ${({theme}) => theme.color.blue100};
-    text-decoration: underline ${({theme}) => theme.color.blue100};
-    cursor: pointer;
-    border: none;
-    background: none;
-    padding: 0;
-    margin: 0;
-
-    :focus {
-      outline: none;
-    }
-  }
 `;
 
 export {KeyIndicator};

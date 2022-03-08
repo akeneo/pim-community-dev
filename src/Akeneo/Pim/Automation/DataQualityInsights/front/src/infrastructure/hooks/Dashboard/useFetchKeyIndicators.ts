@@ -16,7 +16,29 @@ const useFetchKeyIndicators = (
 
   useEffect(() => {
     (async () => {
-      const data = await fetchKeyIndicators(channel, locale, familyCode, categoryCode);
+      //const data = await fetchKeyIndicators(channel, locale, familyCode, categoryCode);
+      const data = {
+        good_enrichment: {
+          products: {
+            totalGood: 16,
+            totalToImprove: 1021,
+          },
+          product_models: {
+            totalGood: 16,
+            totalToImprove: 1021,
+          },
+        },
+        has_image: {
+          products: {
+            totalGood: 219,
+            totalToImprove: 1045,
+          },
+          product_models: {
+            totalGood: 219,
+            totalToImprove: 1045,
+          },
+        },
+      };
       setKeyIndicators(data);
     })();
   }, [channel, locale, familyCode, categoryCode]);

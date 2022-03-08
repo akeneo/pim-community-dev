@@ -1,11 +1,14 @@
 import React, {Children, FC} from 'react';
-import {useFetchKeyIndicators} from '../../../../infrastructure/hooks';
 import styled from 'styled-components';
-import {keyIndicatorMap} from '../../../../domain';
+
+import {useTranslate} from '@akeneo-pim-community/shared';
+import {Helper, LockIcon, useTheme} from 'akeneo-design-system';
+
+import {useFetchKeyIndicators} from '../../../../infrastructure/hooks';
+import {CountsByProductType, keyIndicatorMap, makeCountsByProductType} from '../../../../domain';
+
 import {SectionTitle} from './SectionTitle';
 import {EmptyKeyIndicators} from './EmptyKeyIndicators';
-import {Helper, LockIcon, useTheme} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
 
 const featureFlags = require('pim/feature-flags');
 
@@ -45,20 +48,13 @@ const KeyIndicators: FC<Props> = ({children, channel, locale, family, category})
               return;
             }
 
-            const keyIndicatorData = keyIndicators.hasOwnProperty(child.props.type)
+            const counts: CountsByProductType = keyIndicators.hasOwnProperty(child.props.type)
               ? keyIndicators[child.props.type]
-              : null;
+              : makeCountsByProductType();
 
-            return React.cloneElement(
-              child,
-              keyIndicatorData !== null
-                ? {
-                    ratioGood: parseFloat(keyIndicatorData.ratioGood.toString()),
-                    totalToImprove: keyIndicatorData.totalToImprove,
-                    extraData: keyIndicatorData?.extraData,
-                  }
-                : {}
-            );
+            return React.cloneElement(child, {
+              counts,
+            });
           })}
       </KeyIndicatorContainer>
     </div>
