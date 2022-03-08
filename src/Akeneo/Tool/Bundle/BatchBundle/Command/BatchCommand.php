@@ -15,6 +15,7 @@ use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Tool\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Doctrine\ORM\EntityManagerInterface;
@@ -46,8 +47,7 @@ class BatchCommand extends Command
     const EXIT_WARNING_CODE = 2;
 
 
-    /** @var LoggerInterface */
-    private $logger;
+    private LoggerInterface $logger;
 
     /** @var BatchLogHandler */
     private $batchLogHandler;
@@ -155,8 +155,28 @@ class BatchCommand extends Command
             $this->logger->pushHandler(new ConsoleHandler($output));
         }
 
-        $code = $input->getArgument('code');
-        $jobInstance = $this->getJobManager()->getRepository($this->jobInstanceClass)->findOneBy(['code' => $code]);
+        $executionId = $input->hasArgument('execution') ? $input->getArgument('execution') : null;
+        if (null !== $executionId) {
+            /** @var JobExecution $jobExecution */
+            $jobExecution = $this->getJobManager()->getRepository($this->jobExecutionClass)->find($executionId);
+
+            if (!$jobExecution) {
+                throw new \InvalidArgumentException(sprintf('Could not find job execution "%s".', $executionId));
+            }
+            if (!$jobExecution->getStatus()->isStarting() && !$jobExecution->getStatus()->isStopping()) {
+                throw new \RuntimeException(
+                    sprintf('Job execution "%s" has invalid status: %s', $executionId, $jobExecution->getStatus())
+                );
+            }
+            if (null === $jobExecution->getExecutionContext()) {
+                $jobExecution->setExecutionContext(new ExecutionContext());
+            }
+            $jobInstance = $jobExecution->getJobInstance();
+            $code = $jobInstance->getCode();
+        } else {
+            $code = $input->getArgument('code');
+            $jobInstance = $this->getJobManager()->getRepository($this->jobInstanceClass)->findOneBy(['code' => $code]);
+        }
 
         if (null === $jobInstance) {
             throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $code));
@@ -174,7 +194,6 @@ class BatchCommand extends Command
         }
 
         $job = $this->jobRegistry->get($jobInstance->getJobName());
-        $executionId = $input->hasArgument('execution') ? $input->getArgument('execution') : null;
 
         if (null !== $executionId && null !== $input->getOption('config')) {
             throw new \InvalidArgumentException('Configuration option cannot be specified when launching a job execution.');
@@ -194,19 +213,6 @@ class BatchCommand extends Command
             if (null !== $username) {
                 $jobExecution->setUser($username);
                 $job->getJobRepository()->updateJobExecution($jobExecution);
-            }
-        } else {
-            $jobExecution = $this->getJobManager()->getRepository($this->jobExecutionClass)->find($executionId);
-            if (!$jobExecution) {
-                throw new \InvalidArgumentException(sprintf('Could not find job execution "%s".', $executionId));
-            }
-            if (!$jobExecution->getStatus()->isStarting() && !$jobExecution->getStatus()->isStopping()) {
-                throw new \RuntimeException(
-                    sprintf('Job execution "%s" has invalid status: %s', $executionId, $jobExecution->getStatus())
-                );
-            }
-            if (null === $jobExecution->getExecutionContext()) {
-                $jobExecution->setExecutionContext(new ExecutionContext());
             }
         }
 
