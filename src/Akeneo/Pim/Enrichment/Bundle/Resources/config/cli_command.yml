@@ -36,8 +36,7 @@ services:
         parent: base_uuid_migration_step
 
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidAddTriggers:
-        arguments:
-            - '@database_connection'
+        parent: base_uuid_migration_step
 
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillProductUuid:
         parent: base_uuid_migration_step

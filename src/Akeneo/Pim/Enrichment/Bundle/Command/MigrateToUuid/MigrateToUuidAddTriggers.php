@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
+use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StatusAwareTrait;
 use Doctrine\DBAL\Connection;
-use Symfony\Component\Console\Output\OutputInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -14,9 +15,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class MigrateToUuidAddTriggers implements MigrateToUuidStep
 {
     use MigrateToUuidTrait;
+    use StatusAwareTrait;
 
-    public function __construct(private Connection $connection)
+    public function __construct(private Connection $connection, private LoggerInterface $logger)
     {
+    }
+
+    public function getName(): string
+    {
+        return 'add_triggers';
     }
 
     public function getDescription(): string
@@ -45,8 +52,9 @@ final class MigrateToUuidAddTriggers implements MigrateToUuidStep
         return $count;
     }
 
-    public function addMissing(Context $context, OutputInterface $output): bool
+    public function addMissing(Context $context): bool
     {
+        $logContext = $context->logContext;
         $templateSql = <<<SQL
         CREATE TRIGGER {trigger_name}
         BEFORE {action} ON {table_name}
@@ -58,9 +66,10 @@ final class MigrateToUuidAddTriggers implements MigrateToUuidStep
         SQL;
 
         foreach ($this->getTablesToMigrate() as $tableName => $columnNames) {
+            $logContext->addContext('substep', $tableName);
             $insertTriggerName = $this->getInsertTriggerName($tableName);
             if (!$this->triggerExists($insertTriggerName)) {
-                $output->writeln(sprintf('    Will add %s trigger on "%s" table', $insertTriggerName, $tableName));
+                $this->logger->notice(\sprintf('Will add %s trigger on "%s" table', $insertTriggerName, $tableName), $logContext->toArray());
                 if (!$context->dryRun()) {
                     $this->connection->executeQuery(\strtr($templateSql, [
                         '{trigger_name}' => $insertTriggerName,
@@ -69,12 +78,13 @@ final class MigrateToUuidAddTriggers implements MigrateToUuidStep
                         '{uuid_column_name}' => $columnNames[self::UUID_COLUMN_INDEX],
                         '{id_column_name}' => $columnNames[self::ID_COLUMN_INDEX],
                     ]));
+                    $this->logger->notice(\sprintf('Add %s trigger on "%s" table done', $insertTriggerName, $tableName), $logContext->toArray());
                 }
             }
 
             $updateTriggerName = $this->getUpdateTriggerName($tableName);
             if (!$this->triggerExists($updateTriggerName)) {
-                $output->writeln(sprintf('    Will add %s trigger on "%s" table', $updateTriggerName, $tableName));
+                $this->logger->notice(\sprintf('Will add %s trigger on "%s" table', $updateTriggerName, $tableName), $logContext->toArray());
                 if (!$context->dryRun()) {
                     $this->connection->executeQuery(\strtr($templateSql, [
                         '{trigger_name}' => $updateTriggerName,
@@ -83,6 +93,7 @@ final class MigrateToUuidAddTriggers implements MigrateToUuidStep
                         '{uuid_column_name}' => $columnNames[self::UUID_COLUMN_INDEX],
                         '{id_column_name}' => $columnNames[self::ID_COLUMN_INDEX],
                     ]));
+                    $this->logger->notice(\sprintf('Add %s trigger on "%s" table done', $updateTriggerName, $tableName), $logContext->toArray());
                 }
             }
         }
