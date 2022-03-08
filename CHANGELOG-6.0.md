@@ -3,6 +3,7 @@
 ## Bug fixes
 - PLG-776: Fix Option page broken issue with small screen when creating a new option
 - PIM-10305: Do not allow disabled user to login
+- PIM-10318: [Backport PIM-10259] Add ArPHP library and fix Arabic RTL in PDF Exports
 
 # 6.0.7 (2022-02-25)
 
