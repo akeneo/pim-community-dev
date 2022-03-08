@@ -45,39 +45,6 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.application.error_management.handler.get_connection_business_errors'
 
-    Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Webhook\GetWebhookAction:
-        public: true
-        arguments:
-            - '@akeneo_connectivity.connection.application.webhook.handler.get_connection_webhook'
-
-    Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Webhook\RegenerateSecretAction:
-        public: true
-        arguments:
-            - '@akeneo_connectivity.connection.application.webhook.handler.generate_webhook_secret'
-
-    Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Webhook\CheckWebhookReachabilityAction:
-        public: true
-        arguments:
-            - '@akeneo_connectivity.connection.application.webhook.handler.check_url_reachability'
-
-    Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Webhook\UpdateWebhookAction:
-        public: true
-        arguments:
-            - '@akeneo_connectivity.connection.application.webhook.handler.update_connection_webhook'
-            - '@oro_security.security_facade'
-
-    Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\EventsApiDebug\DownloadEventSubscriptionLogsAction:
-        public: true
-        arguments:
-            - '@akeneo_connectivity.connection.persistence.query.get_event_subscription_logs_query'
-            - '@oro_security.security_facade'
-
-    Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\EventsApiDebug\SearchEventSubscriptionLogsAction:
-        public: true
-        arguments:
-            - '@akeneo_connectivity.connection.persistence.query.search_event_subscription_debug_logs_query'
-            - '@oro_security.security_facade'
-
     Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\IsConnectionsNumberLimitReachedAction:
         public: true
         arguments:
