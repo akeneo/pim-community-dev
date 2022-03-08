@@ -72,10 +72,10 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
                     </Modal.SectionTitle>
                     <Modal.Title>{translate('pim_common.create')}</Modal.Title>
                     <StyledField label={translate('onboarder.supplier.create_supplier.code.label')}>
-                        <TextInput onChange={manuallyUpdateCode} value={code} maxLength={LABEL_MAX_LENGTH} />
+                        <TextInput onChange={manuallyUpdateCode} value={code} maxLength={LABEL_MAX_LENGTH} placeholder={translate('onboarder.supplier.create_supplier.code.label')}/>
                     </StyledField>
                     <StyledField label={translate('onboarder.supplier.create_supplier.label.label')}>
-                        <TextInput onChange={onChangeLabel} maxLength={LABEL_MAX_LENGTH} value={label} />
+                        <TextInput onChange={onChangeLabel} maxLength={LABEL_MAX_LENGTH} value={label} placeholder={translate('onboarder.supplier.create_supplier.label.label')}/>
                     </StyledField>
                     <Modal.BottomButtons>
                         <Button level="tertiary" onClick={closeModal}>
