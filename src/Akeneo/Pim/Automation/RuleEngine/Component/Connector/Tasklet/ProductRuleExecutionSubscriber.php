@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
-use Akeneo\Pim\Enrichment\Bundle\Event\ProductModelsWereSkippedDuringSave;
-use Akeneo\Pim\Enrichment\Bundle\Event\ProductsWereSkippedDuringSave;
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SubjectsWereSkippedWithNoUpdate;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
@@ -54,8 +53,7 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
             RuleEvents::POST_SAVE_SUBJECTS => 'postSave',
             RuleEvents::SKIP => 'skipInvalid',
             SkippedActionForSubjectEvent::class => 'skipAction',
-            ProductsWereSkippedDuringSave::class => 'skippedProductsSaveAction',
-            ProductModelsWereSkippedDuringSave::class => 'skippedProductModelsSaveAction',
+            SubjectsWereSkippedWithNoUpdate::class => 'skippedProductsSaveAction',
         ];
     }
 
@@ -66,17 +64,10 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
         $this->currentRule = $event->getSubject();
     }
 
-    public function skippedProductsSaveAction(ProductsWereSkippedDuringSave $event): void
+    public function skippedProductsSaveAction(SubjectsWereSkippedWithNoUpdate $event): void
     {
-        $skippedProducts = $event->getSkippedProducts();
+        $skippedProducts = $event->getSkippedSubjects();
         $this->stepExecution->incrementSummaryInfo('skipped_no_diff', \count($skippedProducts));
-        $this->jobRepository->updateStepExecution($this->stepExecution);
-    }
-
-    public function skippedProductModelsSaveAction(ProductModelsWereSkippedDuringSave $event): void
-    {
-        $skippedProductModels = $event->getSkippedProductModels();
-        $this->stepExecution->incrementSummaryInfo('skipped_no_diff', \count($skippedProductModels));
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 

@@ -81,7 +81,7 @@ final class JobContext implements Context
     }
 
     /**
-     * @Then :count products? should have been skipped with no update
+     * @Then /^([0-9]+) products? should have been skipped with no update$/
      */
     public function productsShouldHaveBeenWithNoUpdate(int $count):void
     {
@@ -89,7 +89,7 @@ final class JobContext implements Context
         $stepExecutions = $jobExecution->getStepExecutions();
         foreach ($stepExecutions as $stepExecution) {
             $skippedNoDiff = $stepExecution->getSummary()['skipped_no_diff'] ?? null;
-            if(null !== $skippedNoDiff) {
+            if (null !== $skippedNoDiff) {
                 Assert::same($skippedNoDiff, $count);
                 return;
             }
