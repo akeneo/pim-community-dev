@@ -94,7 +94,7 @@ services:
     akeneo_connectivity.connection.fixtures.event_subscription_log_loader:
         class: Akeneo\Connectivity\Connection\Tests\CatalogBuilder\EventSubscriptionLogLoader
         arguments:
-            - '@akeneo_connectivity.connection.persistence.repository.events_api_debug'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\ElasticsearchEventsApiDebugRepository'
 
     Akeneo\Connectivity\Connection\Tests\CatalogBuilder\UserConsentLoader:
         arguments:
