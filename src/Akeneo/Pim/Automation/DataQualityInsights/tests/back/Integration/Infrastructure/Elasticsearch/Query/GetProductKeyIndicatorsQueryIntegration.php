@@ -52,7 +52,7 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
             'has_image' => new KeyIndicator($hasImage, 3, 4),
         ];
 
-        $keyIndicators = $this->get(GetProductKeyIndicatorsQuery::class)->all(new ChannelCode('ecommerce'), new LocaleCode('en_US'), $goodEnrichment, $hasImage);
+        $keyIndicators = $this->get('akeneo.pim.automation.data_quality_insights.infrastructure.elasticsearch.query.get_product_key_indicators_query')->all(new ChannelCode('ecommerce'), new LocaleCode('en_US'), $goodEnrichment, $hasImage);
 
         $this->assertEquals($expectedKeyIndicators, $keyIndicators);
     }
@@ -77,7 +77,7 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
             'has_image' => new KeyIndicator($hasImage, 2, 1),
         ];
 
-        $keyIndicators = $this->get(GetProductKeyIndicatorsQuery::class)
+        $keyIndicators = $this->get('akeneo.pim.automation.data_quality_insights.infrastructure.elasticsearch.query.get_product_key_indicators_query')
             ->byFamily(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new FamilyCode('family_A'), $goodEnrichment, $hasImage);
 
         $this->assertEquals($expectedKeyIndicators, $keyIndicators);
@@ -115,7 +115,7 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
             'has_image' => new KeyIndicator($hasImage, 2, 3),
         ];
 
-        $keyIndicators = $this->get(GetProductKeyIndicatorsQuery::class)
+        $keyIndicators = $this->get('akeneo.pim.automation.data_quality_insights.infrastructure.elasticsearch.query.get_product_key_indicators_query')
             ->byCategory(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new CategoryCode('category_A'), $goodEnrichment, $hasImage);
 
         $this->assertEquals($expectedKeyIndicators, $keyIndicators);

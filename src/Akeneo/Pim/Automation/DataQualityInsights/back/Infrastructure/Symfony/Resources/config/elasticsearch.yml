@@ -35,10 +35,19 @@ services:
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetProductKeyIndicatorsQuery:
+    akeneo.pim.automation.data_quality_insights.infrastructure.elasticsearch.query.get_product_key_indicators_query:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetProductKeyIndicatorsQuery
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@pim_catalog.repository.category'
+            - 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface'
+
+    akeneo.pim.automation.data_quality_insights.infrastructure.elasticsearch.query.get_product_model_key_indicators_query:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetProductKeyIndicatorsQuery
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_catalog.repository.category'
+            - 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter\QualityScoreMultiLocalesFilter:
         tags:
