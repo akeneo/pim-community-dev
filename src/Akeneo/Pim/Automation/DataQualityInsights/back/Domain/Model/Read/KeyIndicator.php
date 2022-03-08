@@ -64,7 +64,6 @@ final class KeyIndicator
     public function toArray(): array
     {
         return [
-            'ratioGood' => $this->getRatioGood(),
             'totalGood' => $this->totalGood,
             'totalToImprove' => $this->totalToImprove,
             'extraData' => $this->extraData,
