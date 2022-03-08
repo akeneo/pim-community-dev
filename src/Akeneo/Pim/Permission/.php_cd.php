@@ -215,6 +215,7 @@ $rules = [
         'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface',
 
         // TODO: review the voters/filters implementation
+        'Akeneo\UserManagement\Component\Model\Group',
         'Akeneo\UserManagement\Component\Model\GroupInterface',
         'Akeneo\UserManagement\Component\Model\UserInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
