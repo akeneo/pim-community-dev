@@ -7,6 +7,8 @@
 - RAC-1220: [Backport PIM-10238] Add permissions to view mass delete assets, mass edit assets and mass delete records job logs
 - CPM-543: [Backport PIM-10249] Fix error message when importing YML rule containing a reference entity record with numeric value
 - PIM-10305: Reject disabled user when coming from SAML auth
+- PIM-10316: [Backport PIM-10255] Fix LocaleCodeContext initialization place for table condition line inside rules
+
 
 # 6.0.7 (2022-02-25)
 
