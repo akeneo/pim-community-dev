@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
+use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StatusAwareTrait;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Doctrine\DBAL\Connection;
-use Symfony\Component\Console\Output\OutputInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -17,11 +18,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class MigrateToUuidReindexElasticsearch implements MigrateToUuidStep
 {
     use MigrateToUuidTrait;
+    use StatusAwareTrait;
 
     private const BATCH_SIZE = 500;
 
     public function __construct(
         private Connection $connection,
+        private LoggerInterface $logger,
         private Client $esClient,
         private ProductIndexerInterface $productIndexer
     ) {
@@ -32,21 +35,35 @@ final class MigrateToUuidReindexElasticsearch implements MigrateToUuidStep
         return $this->getEsResult()['hits']['total']['value'];
     }
 
-    public function addMissing(bool $dryRun, OutputInterface $output): bool
+    public function getName(): string
     {
-        if (!$this->columnExists('pim_catalog_product', 'uuid')) {
-            $output->writeln('Can not execute this migration because there is no uuid column.');
+        return 'reindex_elasticsearch';
+    }
 
+    public function addMissing(Context $context): bool
+    {
+        $logContext = $context->logContext;
+        if (!$this->columnExists('pim_catalog_product', 'uuid')) {
             return false;
         }
 
         $productIdentifiers = $this->getProductIdentifiersToIndex();
+        $processedItems = 0;
         while (count($productIdentifiers) > 0) {
-            $output->writeln(sprintf('    Will reindex %d products...', count($productIdentifiers)));
-            $this->productIndexer->indexFromProductIdentifiers($productIdentifiers, [
-                'index_refresh' => Refresh::enable()
-            ]);
+            $logContext->addContext('substep', 'reindex_product_uuid_batch');
+            if (!$context->dryRun()) {
+                $this->productIndexer->indexFromProductIdentifiers($productIdentifiers, [
+                    'index_refresh' => Refresh::enable()
+                ]);
+            }
+            $this->logger->notice(
+                'Substep done',
+                $logContext->toArray(['reindexed_uuids_counter' => $processedItems += count($productIdentifiers)])
+            );
             $productIdentifiers = $this->getProductIdentifiersToIndex();
+            if ($context->dryRun()) {
+                $productIdentifiers = [];
+            }
         }
 
         return true;
