@@ -40,7 +40,7 @@ export const SelectUserProfilePage: FC = () => {
         const profile = user.get<string | null>('profile');
 
         if (null !== profile) {
-            history.push('/connect/marketplace');
+            history.push('/connect/app-store');
         }
         setUserProfile(profile);
     }, [user]);
@@ -59,7 +59,7 @@ export const SelectUserProfilePage: FC = () => {
         }
         saveUser({profile: userProfile}).then(() => {
             user.refresh().then(() => {
-                history.push('/connect/marketplace');
+                history.push('/connect/app-store');
             });
         });
     };

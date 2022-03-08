@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
@@ -462,6 +463,26 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
+    public function it_creates_a_product_with_a_date_value(): void
+    {
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
+            new SetDateValue('a_date', null, null, new \DateTime("2022-03-04T09:35:24")),
+        ]);
+        $this->messageBus->dispatch($command);
+
+        $this->clearDoctrineUoW();
+
+        $this->assertProductHasCorrectValueByAttributeCode('a_date', new \DateTime("2022-03-04"));
+    }
+
+    /** @test */
+    public function it_updates_a_product_with_a_date_value(): void
+    {
+        $this->updateProduct(new SetDateValue('a_date', null, null, new \DateTime("2022-03-04T09:35:24")));
+        $this->assertProductHasCorrectValueByAttributeCode('a_date', new \DateTime("2022-03-04"));
+    }
+
+    /** @test */
     public function it_enables_and_disables_a_product(): void
     {
         $this->updateProduct(new SetEnabled(false));
@@ -493,7 +514,7 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertNotNull($product);
         $value = $product->getValue($attributeCode, null, null);
         Assert::assertNotNull($value);
-        Assert::assertSame($expectedValue, $value->getData());
+        Assert::assertEquals($expectedValue, $value->getData());
     }
 
     private function createAttribute(array $data): void
