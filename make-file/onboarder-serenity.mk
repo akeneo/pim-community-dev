@@ -15,3 +15,7 @@ coupling: #Doc: Run coupling detector for Onboarder
 .PHONY: coupling-list-unused-requirements
 coupling-list-unused-requirements: #Doc: List unused coupling detector requirements
 	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/php-coupling-detector list-unused-requirements --config-file=components/onboarder/back/tests/.php_cd.php components/onboarder/back
+
+.PHONY: unit-front
+unit-front: #Doc: Run unit front tests for Onboarder
+	$(YARN_RUN) run --cwd=components/onboarder/front test:unit:run
