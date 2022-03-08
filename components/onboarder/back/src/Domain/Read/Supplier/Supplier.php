@@ -19,6 +19,7 @@ final class Supplier
             'identifier' => $this->identifier,
             'code' => $this->code,
             'label' => $this->label,
+            'contributorsCount' => 0, // @todo When we'll implement supplier contributors
         ];
     }
 }

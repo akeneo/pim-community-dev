@@ -32,3 +32,9 @@ services:
         arguments:
             - '@Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliersHandler'
             - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierCount'
+
+    # Controllers
+    Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierCreate:
+        public: true
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler'

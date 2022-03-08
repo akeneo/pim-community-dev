@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 type CreateSupplierProps = {
     onSupplierCreated: () => void;
+    createButtonlabel: string;
 };
 
 const StyledField = styled(Field)`
@@ -14,10 +15,10 @@ const StyledField = styled(Field)`
 // Max length for supplier label and code
 const LABEL_MAX_LENGTH = 200;
 
-const CreateSupplier = ({onSupplierCreated}: CreateSupplierProps) => {
+const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierProps) => {
     const [isOpen, openModal, closeModal] = useBooleanState(false);
     const translate = useTranslate();
-    // const saveRoute = useRoute('');
+    const saveRoute = useRoute('onboarder_serenity_supplier_create');
     const [code, setCode] = useState('');
     const [label, setLabel] = useState('');
     const [codeHasBeenChangedManually, setCodeHasBeenChangedManually] = useState(false);
@@ -34,17 +35,23 @@ const CreateSupplier = ({onSupplierCreated}: CreateSupplierProps) => {
         }
     };
 
-    const saveSupplier = async () => {
-        // const response = await fetch(saveRoute, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'X-Requested-With': 'XMLHttpRequest',
-        //     },
-        //     body: JSON.stringify({code, label}),
-        // });
-        onSupplierCreated();
+    const onCloseModal = () => {
         closeModal();
+        setCode('');
+        setLabel('');
+    };
+
+    const saveSupplier = async () => {
+        await fetch(saveRoute, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: `code=${encodeURIComponent(code)}&label=${encodeURIComponent(label)}`,
+        });
+        onSupplierCreated();
+        onCloseModal();
     }
 
     const cleanCode = (code: string): string => {
@@ -53,10 +60,10 @@ const CreateSupplier = ({onSupplierCreated}: CreateSupplierProps) => {
 
     return (
         <>
-            <Button onClick={openModal}>{translate('onboarder.supplier.create_supplier.create_button.label')}</Button>
+            <Button onClick={openModal}>{createButtonlabel}</Button>
             {isOpen && (
                 <Modal
-                    onClose={closeModal}
+                    onClose={onCloseModal}
                     closeTitle={translate('pim_common.close')}
                     illustration={<NoResultsIllustration />}
                 >

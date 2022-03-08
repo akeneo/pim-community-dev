@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import {useSuppliers} from './hooks/useSuppliers';
 import {SupplierList} from './components/SupplierList';
 import {EmptySupplierList} from './components/EmptySupplierList';
+import {CreateSupplier} from "./components/CreateSupplier";
 
 const Container = styled.div``;
 
@@ -24,6 +25,12 @@ const Supplier = () => {
                     </Breadcrumb>
                 </PageHeader.Breadcrumb>
                 <PageHeader.UserActions>
+                    <PageHeader.Actions>
+                        <CreateSupplier
+                            onSupplierCreated={refreshSuppliers}
+                            createButtonlabel={translate('pim_common.create')}
+                        />
+                    </PageHeader.Actions>
                     <PimView
                         viewName="pim-menu-user-navigation"
                         className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
