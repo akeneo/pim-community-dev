@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {Button, Modal, useBooleanState, NoResultsIllustration, Field, TextInput} from 'akeneo-design-system';
-import {useTranslate, useRoute} from '@akeneo-pim-community/shared';
+import {Button, Field, Modal, NoResultsIllustration, TextInput, useBooleanState} from 'akeneo-design-system';
+import {NotificationLevel, useNotify, useRoute, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 
 type CreateSupplierProps = {
@@ -19,6 +19,7 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
     const [isOpen, openModal, closeModal] = useBooleanState(false);
     const translate = useTranslate();
     const saveRoute = useRoute('onboarder_serenity_supplier_create');
+    const notify = useNotify();
     const [code, setCode] = useState('');
     const [label, setLabel] = useState('');
     const [codeHasBeenChangedManually, setCodeHasBeenChangedManually] = useState(false);
@@ -52,6 +53,11 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
             body: `code=${encodeURIComponent(code)}&label=${encodeURIComponent(label)}`,
         });
         onSupplierCreated();
+        notify(
+            NotificationLevel.SUCCESS, 
+            translate('onboarder.supplier.supplier_create.notification.title'),
+            translate('onboarder.supplier.supplier_create.notification.content'),
+        );
         onCloseModal();
     }
 
