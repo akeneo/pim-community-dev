@@ -13,48 +13,6 @@ use PHPUnit\Framework\Assert;
 
 final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->createProductGroup(['code' => 'groupA', 'type' => 'RELATED']);
-        $this->createProductGroup(['code' => 'groupB', 'type' => 'RELATED']);
-        $this->createCategory(['code' => 'categoryA']);
-        $this->createAttribute([
-            'code' => 'name',
-            'type' => 'pim_catalog_text',
-            'group' => 'other',
-        ]);
-        $this->createAttribute([
-            'code' => 'axe_attr',
-            'type' => 'pim_catalog_boolean',
-            'group' => 'other',
-        ]);
-        $this->createFamily([
-            'code' => 'familyA',
-            'attributes' => ['sku', 'name', 'axe_attr'],
-        ]);
-        $this->createFamilyVariant([
-            'code' => 'familyAVariant',
-            'family' => 'familyA',
-            'variant_attribute_sets' => [
-                [
-                    'level' => 1,
-                    'attributes' => ['name'],
-                    'axes' => ['axe_attr'],
-                ],
-            ],
-        ]);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $this->clean();
-    }
-
     /** @test */
     public function it_migrates_the_database_to_use_uuid(): void
     {
