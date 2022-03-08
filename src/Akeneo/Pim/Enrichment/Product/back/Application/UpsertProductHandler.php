@@ -173,8 +173,8 @@ final class UpsertProductHandler
                     );
 
                     $values = null !== $formerValue ?
-                        \array_merge($formerValue->getData(), $valueUserIntent->values()) :
-                        $valueUserIntent->values();
+                        \array_unique(\array_merge($formerValue->getData(), $valueUserIntent->optionCodes())) :
+                        $valueUserIntent->optionCodes();
 
                     $this->productUpdater->update($product, [
                         'values' => [

@@ -454,11 +454,13 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_updates_a_product_with_an_add_multi_select_value(): void
     {
-        $this->updateProduct(new AddMultiSelectValue('a_multi_select', null, null, ['optionA']));
-        $this->assertProductHasCorrectValueByAttributeCode('a_multi_select', ['optionA']);
+        $this->createAttributeOptions('a_multi_select', 'optionC', ['en_US' => 'C option']);
 
-        $this->updateProduct(new AddMultiSelectValue('a_multi_select', null, null, ['optionB']));
+        $this->updateProduct(new AddMultiSelectValue('a_multi_select', null, null, ['optionA', 'optionB']));
         $this->assertProductHasCorrectValueByAttributeCode('a_multi_select', ['optionA', 'optionB']);
+
+        $this->updateProduct(new AddMultiSelectValue('a_multi_select', null, null, ['optionB', 'optionC']));
+        $this->assertProductHasCorrectValueByAttributeCode('a_multi_select', ['optionA', 'optionB', 'optionC']);
     }
 
     /** @test */
@@ -599,5 +601,20 @@ final class UpsertProductIntegration extends TestCase
         }
 
         throw new \Exception(sprintf('The fixture "%s" does not exist.', $name));
+    }
+
+    private function createAttributeOptions(string $attributeCode, string $optionCode, array $labels): void
+    {
+        $attributeOption = $this->get('pim_catalog.factory.attribute_option')->create();
+        $this->get('pim_catalog.updater.attribute_option')->update($attributeOption, [
+            'code' => $optionCode,
+            'attribute' => $attributeCode,
+            'labels' => $labels,
+        ]);
+        $constraints = $this->get('validator')->validate($attributeOption);
+        if (count($constraints) > 0) {
+            throw new \InvalidArgumentException((string)$constraints);
+        }
+        $this->get('pim_catalog.saver.attribute_option')->save($attributeOption);
     }
 }

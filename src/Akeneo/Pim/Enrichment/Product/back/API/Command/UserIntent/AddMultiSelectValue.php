@@ -13,25 +13,24 @@ use Webmozart\Assert\Assert;
 final class AddMultiSelectValue implements ValueUserIntent
 {
     /**
-     * @param array<string> $values
+     * @param array<string> $optionCodes
      */
     public function __construct(
         private string $attributeCode,
         private ?string $channelCode,
         private ?string $localeCode,
-        private array $values
+        private array $optionCodes
     ) {
-        Assert::notEmpty($values);
-        Assert::allString($values);
-        Assert::allStringNotEmpty($values);
+        Assert::notEmpty($optionCodes);
+        Assert::allStringNotEmpty($optionCodes);
     }
 
     /**
      * @return array<string>
      */
-    public function values(): array
+    public function optionCodes(): array
     {
-        return $this->values;
+        return $this->optionCodes;
     }
 
     public function attributeCode(): string

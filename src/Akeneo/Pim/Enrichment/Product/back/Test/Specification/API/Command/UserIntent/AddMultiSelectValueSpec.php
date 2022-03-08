@@ -40,24 +40,24 @@ class AddMultiSelectValueSpec extends ObjectBehavior
         $this->channelCode()->shouldReturn('ecommerce');
     }
 
-    function it_returns_the_value()
+    function it_returns_the_option_codes()
     {
-        $this->values()->shouldReturn(['option_code_1', 'option_code_2']);
+        $this->optionCodes()->shouldReturn(['option_code_1', 'option_code_2']);
     }
 
-    function it_can_only_be_instanced_with_string_values()
+    function it_can_only_be_instantiated_with_string_option_codes()
     {
         $this->beConstructedWith('name', 'ecommerce', 'en_US', ['test', 12, false]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_cannot_be_instanced_with_empty_values_array()
+    function it_cannot_be_instantiated_with_empty_option_codes()
     {
         $this->beConstructedWith('name', 'ecommerce', 'en_US', []);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_cannot_be_instanced_if_one_of_the_values_is_empty()
+    function it_cannot_be_instantiated_if_one_of_the_option_codes_is_empty()
     {
         $this->beConstructedWith('name', 'ecommerce', 'en_US', ['a', '', 'b']);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
