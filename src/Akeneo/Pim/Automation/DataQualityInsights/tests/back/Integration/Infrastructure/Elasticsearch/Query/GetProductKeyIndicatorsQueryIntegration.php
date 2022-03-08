@@ -29,18 +29,18 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
         $this->esClient = $this->get('akeneo_elasticsearch.client.product_and_product_model');
     }
 
-    public function test_it_retrieves_key_indicators_for_all_the_products()
+    public function test_it_retrieves_key_indicators_for_all_the_products_and_product_models()
     {
         $this->createMinimalFamilyAndFamilyVariant('family_V', 'family_V_1');
         $this->createProductModel('product_model_with_perfect_enrichment', 'family_V_1');
         $this->createProductModel('product_model_with_missing_enrichment', 'family_V_1');
 
-        $this->givenAProductsWithoutValues();
+        $this->givenAProductAndProductModelWithoutValues();
         $this->givenAProductVariantWithoutValues('product_model_with_missing_enrichment');
 
-        $this->givenAProductWithPerfectEnrichmentAndImage();
-        $this->givenAProductWithPerfectEnrichmentButWithoutAttributeImage();
-        $this->givenAProductWithImageButMissingEnrichment();
+        $this->givenAProductAndProductModelWithPerfectEnrichmentAndImage();
+        $this->givenAProductAndProductModelWithPerfectEnrichmentButWithoutAttributeImage();
+        $this->givenAProductAndProductModelWithImageButMissingEnrichment();
         $this->givenAProductVariantWithPerfectEnrichmentAndImage('product_model_with_perfect_enrichment');
         $this->givenAProductVariantWithPerfectEnrichmentButWithoutAttributeImage('product_model_with_perfect_enrichment');
 
@@ -52,9 +52,11 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
             'has_image' => new KeyIndicator($hasImage, 3, 4),
         ];
 
-        $keyIndicators = $this->get('akeneo.pim.automation.data_quality_insights.infrastructure.elasticsearch.query.get_product_key_indicators_query')->all(new ChannelCode('ecommerce'), new LocaleCode('en_US'), $goodEnrichment, $hasImage);
+        $productsKeyIndicators = $this->get('akeneo.pim.automation.data_quality_insights.infrastructure.elasticsearch.query.get_product_key_indicators_query')->all(new ChannelCode('ecommerce'), new LocaleCode('en_US'), $goodEnrichment, $hasImage);
+        $productModelsKeyIndicators = $this->get('akeneo.pim.automation.data_quality_insights.infrastructure.elasticsearch.query.get_product_model_key_indicators_query')->all(new ChannelCode('ecommerce'), new LocaleCode('en_US'), $goodEnrichment, $hasImage);
 
-        $this->assertEquals($expectedKeyIndicators, $keyIndicators);
+        $this->assertEquals($expectedKeyIndicators, $productsKeyIndicators);
+        $this->assertEquals($expectedKeyIndicators, $productModelsKeyIndicators);
     }
 
     public function test_it_retrieves_key_indicators_for_the_products_of_a_given_family()
@@ -62,12 +64,12 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
         $this->createFamily('family_A');
         $this->createFamily('family_B');
 
-        $this->givenAProductsWithoutValues();
-        $this->givenAProductsWithoutValues(['family' => 'family_A']);
-        $this->givenAProductsWithoutValues(['family' => 'family_B']);
-        $this->givenAProductWithPerfectEnrichmentAndImage(['family' => 'family_B']);
-        $this->givenAProductWithImageButMissingEnrichment(['family' => 'family_A']);
-        $this->givenAProductWithImageButMissingEnrichment(['family' => 'family_A']);
+        $this->givenAProductAndProductModelWithoutValues();
+        $this->givenAProductAndProductModelWithoutValues(['family' => 'family_A']);
+        $this->givenAProductAndProductModelWithoutValues(['family' => 'family_B']);
+        $this->givenAProductAndProductModelWithPerfectEnrichmentAndImage(['family' => 'family_B']);
+        $this->givenAProductAndProductModelWithImageButMissingEnrichment(['family' => 'family_A']);
+        $this->givenAProductAndProductModelWithImageButMissingEnrichment(['family' => 'family_A']);
 
         $goodEnrichment = new KeyIndicatorCode('good_enrichment');
         $hasImage = new KeyIndicatorCode('has_image');
@@ -93,12 +95,12 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
         $this->createProductModel('product_model_A', 'family_V_1', ['categories' => ['category_A']]);
         $this->createProductModel('product_model_B', 'family_V_1', ['categories' => ['category_B']]);
 
-        $this->givenAProductsWithoutValues();
-        $this->givenAProductsWithoutValues(['categories' => ['category_A', 'category_B']]);
-        $this->givenAProductsWithoutValues(['categories' => ['category_B']]);
-        $this->givenAProductWithPerfectEnrichmentButWithoutAttributeImage(['categories' => ['category_A']]);
-        $this->givenAProductWithPerfectEnrichmentAndImage(['categories' => ['category_A_1', 'category_B']]);
-        $this->givenAProductWithImageButMissingEnrichment(['categories' => ['category_B']]);
+        $this->givenAProductAndProductModelWithoutValues();
+        $this->givenAProductAndProductModelWithoutValues(['categories' => ['category_A', 'category_B']]);
+        $this->givenAProductAndProductModelWithoutValues(['categories' => ['category_B']]);
+        $this->givenAProductAndProductModelWithPerfectEnrichmentButWithoutAttributeImage(['categories' => ['category_A']]);
+        $this->givenAProductAndProductModelWithPerfectEnrichmentAndImage(['categories' => ['category_A_1', 'category_B']]);
+        $this->givenAProductAndProductModelWithImageButMissingEnrichment(['categories' => ['category_B']]);
 
         // Product variant in category B from itself, and in category A from its parent
         $this->givenAProductVariantWithoutValues('product_model_A', ['categories' => ['category_B']]);
@@ -121,32 +123,52 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
         $this->assertEquals($expectedKeyIndicators, $keyIndicators);
     }
 
-    private function givenAProductsWithoutValues(array $data = []): void
+    private function givenAProductAndProductModelWithoutValues(array $data = []): void
     {
         $product = $this->createProduct($this->getRandomCode(), $data);
 
-        $this->updateProductKeyIndicators($product->getId(), false, false);
+        $this->updateKeyIndicators($product->getId(), false, false, false);
+
+        $this->createMinimalFamilyAndFamilyVariant('family_A', 'family_V_A');
+        $productModel = $this->createProductModel($this->getRandomCode(), 'family_V_A', $data);
+
+        $this->updateKeyIndicators($productModel->getId(), true, false, false);
     }
 
-    private function givenAProductWithPerfectEnrichmentAndImage(array $data = []): void
+    private function givenAProductAndProductModelWithPerfectEnrichmentAndImage(array $data = []): void
     {
         $product = $this->createProduct($this->getRandomCode(), $data);
 
-        $this->updateProductKeyIndicators($product->getId(), true, true);
+        $this->updateKeyIndicators($product->getId(), false, true, true);
+
+        $this->createMinimalFamilyAndFamilyVariant('family_B', 'family_V_B');
+        $productModel = $this->createProductModel($this->getRandomCode(), 'family_V_B', $data);
+
+        $this->updateKeyIndicators($productModel->getId(), true, true, true);
     }
 
-    private function givenAProductWithPerfectEnrichmentButWithoutAttributeImage(array $data = []): void
+    private function givenAProductAndProductModelWithPerfectEnrichmentButWithoutAttributeImage(array $data = []): void
     {
         $product = $this->createProduct($this->getRandomCode(), $data);
 
-        $this->updateProductKeyIndicators($product->getId(), true, false);
+        $this->updateKeyIndicators($product->getId(), false, true, false);
+
+        $this->createMinimalFamilyAndFamilyVariant('family_C', 'family_V_C');
+        $productModel = $this->createProductModel($this->getRandomCode(), 'family_V_C', $data);
+
+        $this->updateKeyIndicators($productModel->getId(), true, true, false);
     }
 
-    private function givenAProductWithImageButMissingEnrichment(array $data = []): void
+    private function givenAProductAndProductModelWithImageButMissingEnrichment(array $data = []): void
     {
         $product = $this->createProduct($this->getRandomCode(), $data);
 
-        $this->updateProductKeyIndicators($product->getId(), false, true);
+        $this->updateKeyIndicators($product->getId(), false, false, true);
+
+        $this->createMinimalFamilyAndFamilyVariant('family_D', 'family_V_D');
+        $productModel = $this->createProductModel($this->getRandomCode(), 'family_V_D', $data);
+
+        $this->updateKeyIndicators($productModel->getId(), true, false, true);
     }
 
     private function givenAProductVariantWithoutValues(string $parent, array $data = []): void
@@ -158,7 +180,7 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
             $data
         );
 
-        $this->updateProductKeyIndicators($productVariant->getId(), false, false);
+        $this->updateKeyIndicators($productVariant->getId(), false, false, false);
     }
 
     private function givenAProductVariantWithPerfectEnrichmentAndImage(string $parent, array $data = []): void
@@ -170,7 +192,7 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
             $data
         );
 
-        $this->updateProductKeyIndicators($productVariant->getId(), true, true);
+        $this->updateKeyIndicators($productVariant->getId(), false, true, true);
     }
 
     private function givenAProductVariantWithPerfectEnrichmentButWithoutAttributeImage(string $parent, array $data = []): void
@@ -182,10 +204,10 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
             $data
         );
 
-        $this->updateProductKeyIndicators($productVariant->getId(), true, false);
+        $this->updateKeyIndicators($productVariant->getId(), false, true, false);
     }
 
-    private function updateProductKeyIndicators(int $productId, bool $goodEnrichment, bool $hasImage): void
+    private function updateKeyIndicators(int $productId, bool $isProductModel, bool $goodEnrichment, bool $hasImage): void
     {
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
@@ -209,6 +231,8 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
         ];
 
         $this->esClient->refreshIndex();
+
+        $updatedId = $isProductModel ? sprintf('product_model_%d', $productId) : sprintf('product_%d', $productId);
         $this->esClient->updateByQuery(
             [
                 'script' => [
@@ -220,7 +244,7 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
                 ],
                 'query' => [
                     'term' => [
-                        'id' => sprintf('product_%d', $productId),
+                        'id' => $updatedId,
                     ],
                 ],
             ]
