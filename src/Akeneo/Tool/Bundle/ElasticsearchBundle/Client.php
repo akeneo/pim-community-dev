@@ -120,12 +120,11 @@ class Client
         ];
         foreach ($documents as $document) {
             $extraActions = [];
-            $documentObject = $document;
             if ($document instanceof AffectedByMigrationProjection) {
-                $document = $document->toArray();
-                if ($documentObject->shouldBeMigrated()) {
-                    $extraActions[] = ['delete' => ['_index' => $this->indexName, '_id' => $documentObject->getFormerDocumentId()]];
+                if ($document->shouldBeMigrated()) {
+                    $extraActions[] = ['delete' => ['_index' => $this->indexName, '_id' => $document->getFormerDocumentId()]];
                 }
+                $document = $document->toArray();
             }
             $action = ['index' => ['_index' => $this->indexName]];
 
