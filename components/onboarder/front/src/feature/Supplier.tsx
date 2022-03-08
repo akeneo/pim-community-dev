@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Breadcrumb} from 'akeneo-design-system';
+import {Breadcrumb, useDebounce} from 'akeneo-design-system';
 import {useTranslate, PageContent, PageHeader, PimView} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {useSuppliers} from './hooks/useSuppliers';
@@ -12,8 +12,9 @@ const Container = styled.div``;
 const Supplier = () => {
     const translate = useTranslate();
     const [searchValue, setSearchValue] = useState('');
+    const debouncedSearchValue = useDebounce(searchValue);
     const [page, setPage] = useState<number>(0);
-    const [suppliers, totalSuppliers, refreshSuppliers] = useSuppliers(searchValue, page);
+    const [suppliers, totalSuppliers, refreshSuppliers] = useSuppliers(debouncedSearchValue, page);
 
     useEffect(() => {
         totalSuppliers > 0 && setPage(1);
