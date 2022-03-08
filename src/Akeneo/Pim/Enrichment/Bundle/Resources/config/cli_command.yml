@@ -50,6 +50,7 @@ services:
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidReindexElasticsearch:
         arguments:
             - '@database_connection'
+            - '@monolog.logger'
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@pim_catalog.elasticsearch.indexer.product'
 
