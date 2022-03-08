@@ -9,7 +9,7 @@ import ListAsset, {ASSET_COLLECTION_LIMIT} from 'akeneoassetmanager/domain/model
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 
 const MAX_DISPLAYED_ASSETS = 500;
-const GENERATE_PREVIEW_BATCH_SIZE = 20;
+const GENERATE_PREVIEW_BATCH_SIZE = 10;
 
 const Container = styled.div`
   height: 100%;
