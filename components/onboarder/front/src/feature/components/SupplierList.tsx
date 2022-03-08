@@ -19,7 +19,11 @@ const SupplierList = ({suppliers, onSearchChange, searchValue, totalSuppliers, o
 
     return (
         <>
-            <Search onSearchChange={onSearchChange} searchValue={searchValue} placeholder={translate('onboarder.supplier.search_by_supplier')}/>
+            <Search
+                onSearchChange={onSearchChange}
+                searchValue={searchValue}
+                placeholder={translate('onboarder.supplier.supplier_list.search_by_supplier')}
+            />
 
             {
                 0 === totalSuppliers && '' !== searchValue
@@ -34,9 +38,15 @@ const SupplierList = ({suppliers, onSearchChange, searchValue, totalSuppliers, o
 
                         <Table>
                             <Table.Header>
-                                <Table.HeaderCell>Supplier</Table.HeaderCell>
-                                <Table.HeaderCell>Number of contributors</Table.HeaderCell>
-                                <Table.HeaderCell>Actions</Table.HeaderCell>
+                                <Table.HeaderCell>
+                                    {translate('onboarder.supplier.supplier_list.columns.supplier')}
+                                </Table.HeaderCell>
+                                <Table.HeaderCell>
+                                    {translate('onboarder.supplier.supplier_list.columns.number_of_contributors')}
+                                </Table.HeaderCell>
+                                <Table.HeaderCell>
+                                    {translate('onboarder.supplier.supplier_list.columns.actions')}
+                                </Table.HeaderCell>
                             </Table.Header>
                             <Table.Body>
                                 {suppliers.map((supplier: SupplierRow) => (

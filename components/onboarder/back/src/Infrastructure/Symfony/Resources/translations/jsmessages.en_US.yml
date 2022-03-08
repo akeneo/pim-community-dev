@@ -1,0 +1,22 @@
+onboarder:
+    supplier:
+        breadcrumb:
+            root: Onboarder settings
+            suppliers: Suppliers
+        supplier_create:
+            modal:
+                title: Supplier
+                code:
+                    label: Code
+                label:
+                    label: Label
+            create_button:
+                label: Create your first supplier
+        supplier_list:
+            title: "]-Inf, 1]{{ count }} supplier|]1, Inf[{{ count }} suppliers"
+            no_supplier: There are no suppliers yet.
+            search_by_supplier: Search by Supplier
+            columns:
+                supplier: Supplier
+                number_of_contributors: Number of contributors
+                actions: Actions

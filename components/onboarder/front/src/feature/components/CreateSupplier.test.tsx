@@ -30,8 +30,8 @@ test('it can save a supplier', async () => {
     );
 
     openModal();
-    userEvent.type(screen.getByPlaceholderText('onboarder.supplier.create_supplier.code.label'), 'supplier1');
-    userEvent.type(screen.getByPlaceholderText('onboarder.supplier.create_supplier.label.label'), 'Supplier 1');
+    userEvent.type(screen.getByPlaceholderText('onboarder.supplier.supplier_create.modal.code.label'), 'supplier1');
+    userEvent.type(screen.getByPlaceholderText('onboarder.supplier.supplier_create.modal.label.label'), 'Supplier 1');
 
     await act(async () => {
         userEvent.click(screen.getByText('pim_common.save'));

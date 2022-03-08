@@ -36,7 +36,14 @@ const Supplier = () => {
                         className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
                     />
                 </PageHeader.UserActions>
-                <PageHeader.Title>{translate('onboarder.supplier.title')}</PageHeader.Title>
+                <PageHeader.Title>
+                    {
+                        translate(
+                            'onboarder.supplier.supplier_list.title',
+                            {count: suppliers.length}, suppliers.length
+                        )
+                    }
+                </PageHeader.Title>
             </PageHeader>
             <PageContent>
                 {
