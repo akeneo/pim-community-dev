@@ -21,6 +21,7 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\UserManagement\Component\Model\Group;
 use Behat\ChainedStepsExtension\Step;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
@@ -43,6 +44,21 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         'Published'     => 'PimEnterprise\Component\Workflow\Model\PublishedProduct',
         'JobProfile'    => 'Akeneo\Tool\Component\Batch\Model\JobInstance',
     ];
+
+    /**
+     * @Given /^an user group "([^"]*)" with type "([^"]*)"$/
+     */
+    public function anUserGroupWithType(string $userGroupName, string $typeName)
+    {
+        $em = $this->getEntityManager();
+
+        $userGroup = new Group();
+        $userGroup->setName($userGroupName);
+        $userGroup->setType($typeName);
+
+        $em->persist($userGroup);
+        $em->flush();
+    }
 
     /**
      * @param string $userGroup

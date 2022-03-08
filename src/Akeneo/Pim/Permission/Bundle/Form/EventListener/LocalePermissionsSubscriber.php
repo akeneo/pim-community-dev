@@ -13,6 +13,8 @@ namespace Akeneo\Pim\Permission\Bundle\Form\EventListener;
 
 use Akeneo\Pim\Permission\Bundle\Form\Type\LocalePermissionsType;
 use Akeneo\Pim\Permission\Bundle\Manager\LocaleAccessManager;
+use Akeneo\UserManagement\Component\Model\Group;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
@@ -100,8 +102,17 @@ class LocalePermissionsSubscriber implements EventSubscriberInterface
 
         $form = $event->getForm();
         if ($form->isValid()) {
-            $viewUserGroups = $form->get('permissions')->get('view')->getData();
-            $editUserGroups = $form->get('permissions')->get('edit')->getData();
+            $currentViewUserGroups = $this->accessManager->getViewUserGroups($event->getData());
+            $currentEditUserGroups = $this->accessManager->getEditUserGroups($event->getData());
+
+            $viewUserGroups = array_merge(
+                $form->get('permissions')->get('view')->getData(),
+                $this->filterHiddenGroups($currentViewUserGroups),
+            );
+            $editUserGroups = array_merge(
+                $form->get('permissions')->get('edit')->getData(),
+                $this->filterHiddenGroups($currentEditUserGroups),
+            );
             $this->accessManager->setAccess($event->getData(), $viewUserGroups, $editUserGroups);
         }
     }
@@ -118,5 +129,17 @@ class LocalePermissionsSubscriber implements EventSubscriberInterface
         return null !== $event->getData()
             && null !== $event->getData()->getId()
             && $this->securityFacade->isGranted('pimee_enrich_locale_edit_permissions');
+    }
+
+    /**
+     * @param GroupInterface[] $groups
+     *
+     * @return GroupInterface[]
+     */
+    private function filterHiddenGroups(array $groups): array
+    {
+        return array_filter($groups, function ($group) {
+            return $group->getType() !== Group::TYPE_DEFAULT;
+        });
     }
 }
