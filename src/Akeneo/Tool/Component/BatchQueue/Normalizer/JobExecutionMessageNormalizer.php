@@ -50,6 +50,6 @@ final class JobExecutionMessageNormalizer implements NormalizerInterface, Denorm
 
     public function denormalize($data, $type, $format = null, array $context = []): JobExecutionMessageInterface
     {
-        return $this->jobExecutionMessageFactory->buildFromNormalized($data);
+        return $this->jobExecutionMessageFactory->buildFromNormalized($data, $type);
     }
 }
