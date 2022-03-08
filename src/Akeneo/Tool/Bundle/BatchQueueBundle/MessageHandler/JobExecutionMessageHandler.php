@@ -120,7 +120,8 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
      */
     private function extractArgumentsFromMessage(JobExecutionMessageInterface $jobExecutionMessage): array
     {
-        $jobInstanceCode = $this->getJobInstanceCode->fromJobExecutionId($jobExecutionMessage->getJobExecutionId());
+        //$jobInstanceCode = $this->getJobInstanceCode->fromJobExecutionId($jobExecutionMessage->getJobExecutionId());
+        $jobInstanceCode = 'daemon_job';
 
         $arguments = [
             $jobInstanceCode,

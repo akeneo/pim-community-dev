@@ -1,9 +1,9 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\BatchQueue\Factory;
 
-use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface;
 use Doctrine\Persistence\ObjectRepository;
@@ -44,15 +44,22 @@ class JobExecutionMessageFactory
         $this->jobMessageTypeFallback = $jobMessageTypeFallback;
     }
 
-    public function buildFromJobInstance(JobInstance $jobInstance, int $jobExecutionId, array $options): JobExecutionMessageInterface
-    {
+    public function buildFromJobInstance(
+        JobInstance $jobInstance,
+        int $jobExecutionId,
+        array $options
+    ): JobExecutionMessageInterface {
         $class = $this->getJobMessageClass($jobInstance->getType() ?? '');
 
         return $class::createJobExecutionMessage($jobExecutionId, $options);
     }
 
-    public function buildFromNormalized(array $normalized): JobExecutionMessageInterface
+    public function buildFromNormalized(array $normalized, ?string $class): JobExecutionMessageInterface
     {
+        if (null !== $class) {
+            return $class::createJobExecutionMessageFromNormalized($normalized);
+        }
+
         Assert::integer($normalized['job_execution_id'] ?? null);
         $jobExecution = $this->jobExecutionRepository->find($normalized['job_execution_id']);
 
