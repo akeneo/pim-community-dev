@@ -1,10 +1,11 @@
 import React from 'react';
+import {FileInfo} from "akeneo-design-system";
 import {screen, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {useUploader} from '@akeneo-pim-community/shared';
 import {renderWithProviders} from 'feature/tests';
 import {useReadColumns, useFileTemplateInformationFetcher} from 'feature/hooks';
-import {Column, FileTemplateInformation} from 'feature/models';
+import {Column, FileStructure, FileTemplateInformation} from 'feature/models';
 import {InitializeFileStructure} from './InitializeFileStructure';
 
 const mockedUseUploader = useUploader as jest.Mock;
@@ -31,6 +32,8 @@ jest.mock('../hooks/useFileTemplateInformationFetcher', () => ({
   useFileTemplateInformationFetcher: jest.fn(),
 }));
 
+let mockFetchFileTemplate = jest.fn();
+
 beforeEach(() => {
   mockedUseUploader.mockImplementation(() => [
     jest.fn().mockResolvedValue({
@@ -39,7 +42,10 @@ beforeEach(() => {
     }),
   ]);
   mockedUseReadColumns.mockImplementation(() => (): Column[] => mockedColumns);
-  mockedUseFileTemplateInformationFetcher.mockImplementation(() => () => Promise.resolve(
+  mockFetchFileTemplate = jest.fn((fileInfo: FileInfo, fileStructure: FileStructure | null) =>
+  {
+    console.log('called', fileInfo, fileStructure);
+    return Promise.resolve(
       {
         file_info: {
           originalFilename: 'foo.xlsx',
@@ -49,7 +55,9 @@ beforeEach(() => {
         sheets: ['currentTestSheet', 'anotherTestSheet'],
         header_cells: []
       } as FileTemplateInformation
-  ));
+    )
+  });
+  mockedUseFileTemplateInformationFetcher.mockImplementation(() => mockFetchFileTemplate);
 });
 
 test('it displays a placeholder and a button when the file is not yet uploaded', async () => {
@@ -174,4 +182,39 @@ test('it displays validation errors when read columns fails', async () => {
 
   expect(screen.getByText('error.key.a_read_columns_error')).toBeInTheDocument();
   mockedConsole.mockRestore();
+});
+
+
+test.only('', async () => {
+  const handleConfirm = jest.fn();
+
+  await renderWithProviders(<InitializeFileStructure onConfirm={handleConfirm} />);
+
+  userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.placeholder.button'));
+
+  await act(async () => {
+    userEvent.upload(
+      screen.getByPlaceholderText('akeneo.tailored_import.file_structure.modal.upload.placeholder'),
+      new File(['foo'], 'foo.xlsx', {type: 'application/vnd.ms-excel'})
+    );
+  });
+
+  await userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.modal.sheet'));
+  await act(async () => {
+    await userEvent.click(screen.getByText('anotherTestSheet'));
+  });
+
+  expect(mockFetchFileTemplate).toHaveBeenCalledWith(
+    {
+      originalFilename: 'foo.xlsx',
+      filePath: 'path/to/foo.xlsx'
+    },
+    {
+      header_line: 1,
+      first_column: 0,
+      product_line: 2,
+      sheet_name: 'anotherTestSheet',
+      column_identifier_position: 0
+    }
+  );
 });
