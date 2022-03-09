@@ -39,7 +39,9 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('ErrorManagement/commands.yml');
         $loader->load('ErrorManagement/controllers.yml');
         $loader->load('ErrorManagement/event_subscribers.yml');
+        $loader->load('ErrorManagement/handlers.yml');
         $loader->load('ErrorManagement/queries.yml');
+        $loader->load('ErrorManagement/services.yml');
 
         $loader->load('Marketplace/controllers.yml');
         $loader->load('Marketplace/handlers.yml');

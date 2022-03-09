@@ -2,4 +2,4 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Controller\Internal\ErrorManagementAction:
         public: true
         arguments:
-            - '@akeneo_connectivity.connection.application.error_management.handler.get_connection_business_errors'
+            - '@Akeneo\Connectivity\Connection\Application\ErrorManagement\Query\GetConnectionBusinessErrorsHandler'
