@@ -19,8 +19,17 @@ class InMemoryRepository implements Supplier\Repository
 
     public function find(Supplier\ValueObject\Identifier $identifier): ?Supplier\Model\Supplier
     {
-        foreach ($this->suppliers as $identifier => $supplier) {
-            if ((string) $identifier === $supplier->identifier()) {
+        if (array_key_exists((string) $identifier, $this->suppliers)) {
+            return $this->suppliers[(string) $identifier];
+        }
+
+        return null;
+    }
+
+    public function findByCode(Supplier\ValueObject\Code $code): ?Supplier\Model\Supplier
+    {
+        foreach ($this->suppliers as $supplier) {
+            if ((string) $code === $supplier->code()) {
                 return $supplier;
             }
         }

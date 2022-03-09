@@ -11,12 +11,12 @@ use PHPUnit\Framework\TestCase;
 final class InMemoryRepositoryTest extends TestCase
 {
     /** @test */
-    public function itCreatesASupplierAndReturnsIt(): void
+    public function itCreatesAndFindsASupplier(): void
     {
         $supplierRepository = new InMemoryRepository();
 
         $supplierRepository->save(
-            Supplier\Supplier::create(
+            Supplier\Model\Supplier::create(
                 '44ce8069-8da1-4986-872f-311737f46f02',
                 'supplier_code',
                 'Supplier code'
@@ -24,10 +24,29 @@ final class InMemoryRepositoryTest extends TestCase
         );
 
         $supplier = $supplierRepository->find(
-            Supplier\Identifier::fromString(
+            Supplier\ValueObject\Identifier::fromString(
                 '44ce8069-8da1-4986-872f-311737f46f02'
             )
         );
+
+        static::assertSame('supplier_code', $supplier->code());
+        static::assertSame('Supplier code', $supplier->label());
+    }
+
+    /** @test */
+    public function itCreatesAndFindsASupplierByItsCode(): void
+    {
+        $supplierRepository = new InMemoryRepository();
+
+        $supplierRepository->save(
+            Supplier\Model\Supplier::create(
+                '44ce8069-8da1-4986-872f-311737f46f02',
+                'supplier_code',
+                'Supplier code'
+            )
+        );
+
+        $supplier = $supplierRepository->findByCode(Supplier\ValueObject\Code::fromString('supplier_code'));
 
         static::assertSame('supplier_code', $supplier->code());
         static::assertSame('Supplier code', $supplier->label());
@@ -39,7 +58,7 @@ final class InMemoryRepositoryTest extends TestCase
         $supplierRepository = new InMemoryRepository();
 
         $supplierRepository->save(
-            Supplier\Supplier::create(
+            Supplier\Model\Supplier::create(
                 '44ce8069-8da1-4986-872f-311737f46f02',
                 'new_supplier_code',
                 'New supplier code'
@@ -47,7 +66,7 @@ final class InMemoryRepositoryTest extends TestCase
         );
 
         $supplier = $supplierRepository->find(
-            Supplier\Identifier::fromString(
+            Supplier\ValueObject\Identifier::fromString(
                 '44ce8069-8da1-4986-872f-311737f46f02'
             )
         );
@@ -61,7 +80,7 @@ final class InMemoryRepositoryTest extends TestCase
     {
         static::assertNull(
             (new InMemoryRepository())
-                ->find(Supplier\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02'))
+                ->find(Supplier\ValueObject\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02'))
         );
     }
 }
