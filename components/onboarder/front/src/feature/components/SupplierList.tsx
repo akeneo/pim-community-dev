@@ -54,7 +54,7 @@ const SupplierList = ({suppliers, onSearchChange, searchValue, totalSuppliers, o
                     </Table.Header>
                     <Table.Body>
                         {suppliers.map((supplier: SupplierRow) => (
-                            <Table.Row key={supplier.code}>
+                            <Table.Row key={supplier.code} data-testid={supplier.code}>
                                 <Table.Cell>{supplier.label}</Table.Cell>
                                 <Table.Cell>{supplier.contributorsCount}</Table.Cell>
                                 <Table.ActionCell>
