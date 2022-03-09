@@ -1,3 +1,6 @@
 services:
     Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories:
         class: Akeneo\Pim\Enrichment\Category\Domain\Query\DummyGetOwnedCategories
+
+    Akeneo\Pim\Enrichment\Category\API\Query\GetReadCategories:
+        class: Akeneo\Pim\Enrichment\Category\Domain\Query\DummyGetReadCategories

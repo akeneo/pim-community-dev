@@ -16,6 +16,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
@@ -561,6 +562,16 @@ final class UpsertProductIntegration extends TestCase
             familyUserIntent: new SetFamily('')
         );
         $this->messageBus->dispatch($command);
+    }
+
+    public function it_updates_a_product_categories(): void
+    {
+        $this->updateProduct(new SetCategories(['categoryA', 'categoryB']));
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+
+        Assert::assertEqualsCanonicalizing(['categoryA', 'categoryB'], $product->getCategoryCodes());
     }
 
     private function getUserId(string $username): int

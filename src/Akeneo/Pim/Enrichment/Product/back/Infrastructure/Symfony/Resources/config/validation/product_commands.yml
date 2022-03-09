@@ -11,6 +11,8 @@ Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand:
                   message: pim_enrich.product.validation.upsert.product_identifier_empty
         familyUserIntent:
             - Valid: ~
+        categoryUserIntent:
+            - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\CategoriesShouldBeEditableByUser: ~
         valueUserIntents:
             - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelShouldBeConsistent: ~
             - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserIntentsShouldBeUnique: ~
