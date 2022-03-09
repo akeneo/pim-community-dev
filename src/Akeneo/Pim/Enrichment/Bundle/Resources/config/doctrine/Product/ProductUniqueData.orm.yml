@@ -21,8 +21,8 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueData:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
             inversedBy: uniqueData
             joinColumns:
-                product_id:
-                    referencedColumnName: id
+                product_uuid:
+                    referencedColumnName: uuid
                     onDelete: CASCADE
                     nullable: false
         attribute:

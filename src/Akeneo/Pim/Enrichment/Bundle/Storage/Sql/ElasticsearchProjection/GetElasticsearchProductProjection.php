@@ -119,6 +119,7 @@ WITH
     product as (
         SELECT
             product.id,
+            product.uuid,
             product.identifier,
             product.is_enabled,
             product.product_model_id AS parent_product_model_id,
@@ -156,7 +157,7 @@ WITH
             JSON_ARRAYAGG(category.code) AS category_codes
         FROM
             product
-            JOIN pim_catalog_category_product category_product ON category_product.product_id = product.id
+            JOIN pim_catalog_category_product category_product ON category_product.product_uuid = product.uuid
             JOIN pim_catalog_category category ON category.id = category_product.category_id
         GROUP BY product.id
     ),

@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Builder;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Factory\VersionFactory;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\Util\ClassUtils;
@@ -45,7 +46,9 @@ class VersionBuilder
     public function buildVersion($versionable, $author, Version $previousVersion = null, $context = null)
     {
         $resourceName = ClassUtils::getClass($versionable);
-        $resourceId = $versionable->getId();
+
+        //TODO: kill it with fire DEDJEULASS
+        $resourceId = ($versionable instanceof ProductInterface) ? $versionable->getUuid() : $versionable->getId();
 
         $versionNumber = $previousVersion ? $previousVersion->getVersion() + 1 : 1;
         $oldSnapshot = $previousVersion ? $previousVersion->getSnapshot() : [];

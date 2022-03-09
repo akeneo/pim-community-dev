@@ -22,7 +22,6 @@ interface MigrateToUuidStep
         'pimee_teamwork_assistant_project_product' => ['product_id', 'product_uuid'],
         'pimee_workflow_product_draft' => ['product_id', 'product_uuid'],
         'pimee_workflow_published_product' => ['original_product_id', 'original_product_uuid'],
-        'pim_versioning_version' => ['resource_id', 'resource_uuid'],
     ];
     public const ID_COLUMN_INDEX = 0;
     public const UUID_COLUMN_INDEX = 1;

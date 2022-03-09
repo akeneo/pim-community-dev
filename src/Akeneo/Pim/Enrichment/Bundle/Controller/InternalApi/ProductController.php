@@ -420,7 +420,7 @@ class ProductController
      */
     protected function findProductOr404($id)
     {
-        $product = $this->productRepository->find($id);
+        $product = $this->productRepository->findBy(['id' => $id]);
 
         if (null === $product) {
             throw new NotFoundHttpException(

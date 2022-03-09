@@ -77,7 +77,7 @@ class CommandExecutor
      */
     protected function getDefaultParams()
     {
-        $defaultParams = ['--no-debug' => true];
+        $defaultParams = ['--no-debug' => false];
 
         if ($this->input->hasOption('env')) {
             $defaultParams['--env'] = $this->input->getOption('env');

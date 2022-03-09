@@ -13,6 +13,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Abstract product
@@ -27,6 +28,8 @@ abstract class AbstractProduct implements ProductInterface
 
     /** @var int|string */
     protected $id;
+
+    protected ?UuidInterface $uuid = null;
 
     protected array $rawValues;
 
@@ -83,6 +86,24 @@ abstract class AbstractProduct implements ProductInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUuid(UuidInterface $uuid): self
+    {
+        $this->uuid = $uuid;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUuid(): ?UuidInterface
+    {
+        return $this->uuid;
     }
 
     /**

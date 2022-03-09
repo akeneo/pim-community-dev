@@ -34,7 +34,7 @@ Akeneo\Tool\Component\Versioning\Model\Version:
         resourceId:
             type: string
             column: resource_id
-            length: 24
+            length: 36
         snapshot:
             type: array
             nullable: true

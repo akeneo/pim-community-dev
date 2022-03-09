@@ -3,12 +3,18 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
     table: pim_catalog_product
     changeTrackingPolicy: DEFERRED_EXPLICIT
     repositoryClass: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductRepository
+    id:
+        uuid:
+            type: uuid_binary
+            generator:
+                strategy: CUSTOM
+            customIdGenerator:
+                class: Ramsey\Uuid\Doctrine\UuidGenerator
     fields:
         id:
             type: integer
-            id: true
-            generator:
-                strategy: AUTO
+            unique: true
+            columnDefinition: INT AUTO_INCREMENT NOT NULL
         enabled:
             type: boolean
             column: is_enabled
@@ -67,8 +73,8 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
             joinTable:
                 name: pim_catalog_category_product
                 joinColumns:
-                    product_id:
-                        referencedColumnName: id
+                    product_uuid:
+                        referencedColumnName: uuid
                         onDelete: CASCADE
                 inverseJoinColumns:
                     category_id:
