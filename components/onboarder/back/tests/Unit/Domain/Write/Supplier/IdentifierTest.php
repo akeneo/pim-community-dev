@@ -18,15 +18,15 @@ final class IdentifierTest extends TestCase
             )
         );
 
-        Supplier\Identifier::fromString('foo');
+        Supplier\ValueObject\Identifier::fromString('foo');
     }
 
     /** @test */
     public function itCreatesASupplierIdentifierIfItsValid(): void
     {
-        $uuid = Supplier\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02');
+        $uuid = Supplier\ValueObject\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02');
 
-        static::assertInstanceOf(Supplier\Identifier::class, $uuid);
+        static::assertInstanceOf(Supplier\ValueObject\Identifier::class, $uuid);
         static::assertSame('44ce8069-8da1-4986-872f-311737f46f02', (string) $uuid);
     }
 }

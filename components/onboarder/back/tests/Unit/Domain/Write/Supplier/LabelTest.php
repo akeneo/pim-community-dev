@@ -14,7 +14,7 @@ final class LabelTest extends TestCase
     {
         static::expectExceptionObject(new \InvalidArgumentException('The supplier label cannot be empty.'));
 
-        Supplier\Label::fromString('');
+        Supplier\ValueObject\Label::fromString('');
     }
 
     /** @test */
@@ -26,15 +26,15 @@ final class LabelTest extends TestCase
             )
         );
 
-        Supplier\Label::fromString(str_repeat('a', 201));
+        Supplier\ValueObject\Label::fromString(str_repeat('a', 201));
     }
 
     /** @test */
     public function itCreatesAndGetsASupplierLabelIfItsValid(): void
     {
-        $label = Supplier\Label::fromString('A valid supplier label');
+        $label = Supplier\ValueObject\Label::fromString('A valid supplier label');
 
-        static::assertInstanceOf(Supplier\Label::class, $label);
+        static::assertInstanceOf(Supplier\ValueObject\Label::class, $label);
         static::assertSame('A valid supplier label', (string) $label);
     }
 }

@@ -25,7 +25,7 @@ final class CreateSupplierHandlerTest extends TestCase
         ));
 
         $supplier = $supplierRepository->find(
-            Supplier\Identifier::fromString(
+            Supplier\ValueObject\Identifier::fromString(
                 '01319d4c-81c4-4f60-a992-41ea3546824c'
             )
         );

@@ -14,7 +14,7 @@ final class CodeTest extends TestCase
     {
         static::expectExceptionObject(new \InvalidArgumentException('The supplier code cannot be empty.'));
 
-        Supplier\Code::fromString('');
+        Supplier\ValueObject\Code::fromString('');
     }
 
     /** @test */
@@ -26,7 +26,7 @@ final class CodeTest extends TestCase
             )
         );
 
-        Supplier\Code::fromString(str_repeat('a', 201));
+        Supplier\ValueObject\Code::fromString(str_repeat('a', 201));
     }
 
     /** @test */
@@ -38,33 +38,33 @@ final class CodeTest extends TestCase
             )
         );
 
-        Supplier\Code::fromString('$uppli€rCØde');
+        Supplier\ValueObject\Code::fromString('$uppli€rCØde');
     }
 
     /** @test */
     public function itCreatesAndGetsASupplierCodeIfItsValid(): void
     {
-        $code = Supplier\Code::fromString('valid_supplier_code');
+        $code = Supplier\ValueObject\Code::fromString('valid_supplier_code');
 
-        static::assertInstanceOf(Supplier\Code::class, $code);
+        static::assertInstanceOf(Supplier\ValueObject\Code::class, $code);
         static::assertSame('valid_supplier_code', (string) $code);
     }
 
     /** @test */
     public function itTrimsExtraWhitespaces(): void
     {
-        $code = Supplier\Code::fromString('valid_supplier_code_with_extra_whitespace ');
+        $code = Supplier\ValueObject\Code::fromString('valid_supplier_code_with_extra_whitespace ');
 
-        static::assertInstanceOf(Supplier\Code::class, $code);
+        static::assertInstanceOf(Supplier\ValueObject\Code::class, $code);
         static::assertSame('valid_supplier_code_with_extra_whitespace', (string) $code);
     }
 
     /** @test */
     public function itLowersUpperCases(): void
     {
-        $code = Supplier\Code::fromString('SUPPLIER_CODE');
+        $code = Supplier\ValueObject\Code::fromString('SUPPLIER_CODE');
 
-        static::assertInstanceOf(Supplier\Code::class, $code);
+        static::assertInstanceOf(Supplier\ValueObject\Code::class, $code);
         static::assertSame('supplier_code', (string) $code);
     }
 }
