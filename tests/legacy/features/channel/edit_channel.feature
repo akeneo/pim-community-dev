@@ -38,6 +38,7 @@ Feature: Edit a channel
     Then the grid should contain 1 elements
     And I should see locales "de_DE"
 
+  @skip
   Scenario: Successfully updates a channel conversion units
     Given I am logged in as "Peter"
     And I am on the "tablet" channel page
