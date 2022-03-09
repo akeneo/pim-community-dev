@@ -95,7 +95,7 @@ SQL;
         return array_map(
             static fn (array $attributeOption) => new AttributeOption(
                 $attributeOption['code'],
-                json_decode($attributeOption['labels'], true),
+                null !== $attributeOption['labels'] ? json_decode($attributeOption['labels'], true) : [],
             ),
             $attributeOptions,
         );
