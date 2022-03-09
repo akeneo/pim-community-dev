@@ -49,7 +49,13 @@ abstract class AbstractMigrateToUuidTestCase extends TestCase
 
     protected function clean(): void
     {
-        foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
+        $tables = \array_filter(
+            MigrateToUuidStep::TABLES,
+            fn (string $tableName): bool => $tableName !== 'pim_catalog_product',
+            ARRAY_FILTER_USE_KEY
+        );
+
+        foreach ($tables as $tableName => $columnNames) {
             if ($this->tableExists($tableName)) {
                 $this->removeColumn($tableName, $columnNames[MigrateToUuidStep::UUID_COLUMN_INDEX]);
             }
