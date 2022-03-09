@@ -38,19 +38,14 @@ final class CategoriesShouldBeEditableByUserValidator extends ConstraintValidato
         }
 
         $ownedCategories = $this->getOwnedCategories->forUserId($categoryCodes, $command->userId());
+        $nonOwnedCategories = \array_values(\array_diff($categoryCodes, $ownedCategories));
 
-        if ([] === $ownedCategories) {
-            $this->context->buildViolation($constraint->message)->addViolation();
-        }
-
-        $nonOwnedCategories = \array_diff($categoryCodes, $ownedCategories);
-
-        if (\empty($nonOwnedCategories)) {
+        if (\count($nonOwnedCategories) === 0) {
             return;
         }
 
         $readCategories = $this->getReadCategories->forUserId($nonOwnedCategories, $command->userId());
-        $nonReadCategories = \array_diff($nonOwnedCategories, $readCategories);
+        $nonReadCategories = \array_values(\array_diff($nonOwnedCategories, $readCategories));
 
         if (\count($nonReadCategories) > 0) {
             $this->context->buildViolation($constraint->message)->addViolation();
