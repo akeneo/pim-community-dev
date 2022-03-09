@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\EventSubscriber;
 
 use Akeneo\Connectivity\Connection\Application\ErrorManagement\Service\CollectApiError;
-use Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\ApiErrorEventSubscriber;
+use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\EventSubscriber\ApiErrorEventSubscriber;
 use Akeneo\Pim\Enrichment\Bundle\Event\ProductValidationErrorEvent;
 use Akeneo\Pim\Enrichment\Bundle\Event\TechnicalErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Event\ProductDomainErrorEvent;
@@ -14,7 +14,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use FOS\RestBundle\Context\Context;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Validator\ConstraintViolationList;
 
