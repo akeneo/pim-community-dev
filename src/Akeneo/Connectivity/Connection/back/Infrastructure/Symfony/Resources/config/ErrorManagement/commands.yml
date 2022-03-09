@@ -1,0 +1,7 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Command\PurgeConnectionErrorsCommand:
+        arguments:
+            - '@akeneo_connectivity_connection.persistence.query.select_all_auditable_connection_code'
+            - '@akeneo_connectivity_connection.persistence.query.purge_connection_errors'
+        tags:
+            - {name: 'console.command'}
