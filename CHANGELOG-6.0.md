@@ -11,6 +11,7 @@
 - OCT-26: [Backport OCT-23] Locale permissions are removed from App when edited through settings menu
 - OCT-27: [Backport OCT-24] Prevent non-default usergroups from losing permissions on categories
 - PIM-10312: [Backport PIM-10284] Clean product values after reference entity removal
+- PIM-10325: [Backport PIM-10229] Enforce lax same-site policy for session cookies
 
 # 6.0.7 (2022-02-25)
 
