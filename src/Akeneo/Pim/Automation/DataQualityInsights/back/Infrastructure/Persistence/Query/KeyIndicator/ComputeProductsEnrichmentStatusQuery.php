@@ -33,6 +33,9 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
         return ProductsWithGoodEnrichment::CODE;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function compute(ProductIdCollection $productIdCollection): array
     {
         $channelsLocales = $this->getLocalesByChannelQuery->getArray();
