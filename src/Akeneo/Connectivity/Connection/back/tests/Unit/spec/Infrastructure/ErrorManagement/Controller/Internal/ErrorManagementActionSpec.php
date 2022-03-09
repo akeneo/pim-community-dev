@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\ErrorManagement;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Controller\Internal;
 
 use Akeneo\Connectivity\Connection\Application\ErrorManagement\Query\GetConnectionBusinessErrorsHandler;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Read\BusinessError;
-use Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\ErrorManagement\ErrorManagementAction;
+use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Controller\Internal\ErrorManagementAction;
 use PhpSpec\ObjectBehavior;
 
 /**
