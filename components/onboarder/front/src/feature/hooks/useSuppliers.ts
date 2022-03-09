@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useState} from "react";
-import {useRoute} from "@akeneo-pim-community/shared";
+import {useNotify, useRoute, useTranslate, NotificationLevel} from "@akeneo-pim-community/shared";
 
 type SupplierRow = {
     code: string;
@@ -14,6 +14,8 @@ const useSuppliers = (search: string, page: number): [SupplierRow[], number, () 
         []
     );
     const [totalNumberOfSuppliers, setTotalNumberOfSuppliers] = useState<number>(0);
+    const notify = useNotify();
+    const translate = useTranslate();
 
     const getSuppliersRoute = useRoute('onboarder_serenity_supplier_list');
     const loadSuppliers = useCallback(async () => {
@@ -21,10 +23,19 @@ const useSuppliers = (search: string, page: number): [SupplierRow[], number, () 
             method: 'GET'
         });
 
+        if (!response.ok) {
+            notify(
+                NotificationLevel.ERROR,
+                translate('onboarder.supplier.supplier_list.error')
+            );
+
+            return;
+        }
+
         const responseBody = await response.json();
         setSuppliers(responseBody['suppliers']);
         setTotalNumberOfSuppliers(responseBody['total']);
-    }, [page, search, getSuppliersRoute]);
+    }, [page, search, getSuppliersRoute, translate, notify]);
 
     useEffect(() => {
         (async () => {

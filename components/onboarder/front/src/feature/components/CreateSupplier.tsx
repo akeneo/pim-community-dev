@@ -44,7 +44,7 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
     };
 
     const saveSupplier = async () => {
-        await fetch(saveRoute, {
+        const response = await fetch(saveRoute, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -52,6 +52,16 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
             },
             body: `code=${encodeURIComponent(code)}&label=${encodeURIComponent(label)}`,
         });
+
+        if (!response.ok) {
+            notify(
+                NotificationLevel.ERROR,
+                translate('onboarder.supplier.supplier_create.error')
+            );
+
+            return;
+        }
+
         onSupplierCreated();
         notify(
             NotificationLevel.SUCCESS,
