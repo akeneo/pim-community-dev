@@ -23,7 +23,7 @@ const EmptySupplierList = ({onSupplierCreated}: EmptySupplierProps) => {
     return (
         <Container>
             <CityIllustration size={256} />
-            <p>{translate('onboarder.supplier.supplier_list.no_supplier')}</p>
+            <NoSupplierText>{translate('onboarder.supplier.supplier_list.no_supplier')}</NoSupplierText>
             <CreateSupplier
                 onSupplierCreated={onSupplierCreated}
                 createButtonlabel={translate('onboarder.supplier.supplier_create.create_button.label')}
@@ -31,5 +31,9 @@ const EmptySupplierList = ({onSupplierCreated}: EmptySupplierProps) => {
         </Container>
     );
 };
+
+const NoSupplierText = styled.div`
+  margin-bottom: 30px;
+`
 
 export {EmptySupplierList};

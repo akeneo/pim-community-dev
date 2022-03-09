@@ -30,17 +30,17 @@ const Supplier = () => {
                     </Breadcrumb>
                 </PageHeader.Breadcrumb>
                 <PageHeader.UserActions>
-                    <PageHeader.Actions>
-                        <CreateSupplier
-                            onSupplierCreated={refreshSuppliers}
-                            createButtonlabel={translate('pim_common.create')}
-                        />
-                    </PageHeader.Actions>
                     <PimView
                         viewName="pim-menu-user-navigation"
                         className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
                     />
                 </PageHeader.UserActions>
+                <PageHeader.Actions>
+                    <CreateSupplier
+                        onSupplierCreated={refreshSuppliers}
+                        createButtonlabel={translate('pim_common.create')}
+                    />
+                </PageHeader.Actions>
                 <PageHeader.Title>
                     {
                         translate(
