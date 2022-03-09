@@ -35,7 +35,8 @@ final class SupplierCreate
                 $supplierIdentifier,
                 $supplierCode,
                 $supplierLabel,
-            ))->toArray()
-        , Response::HTTP_CREATED);
+            ))->toArray(),
+            Response::HTTP_CREATED
+        );
     }
 }

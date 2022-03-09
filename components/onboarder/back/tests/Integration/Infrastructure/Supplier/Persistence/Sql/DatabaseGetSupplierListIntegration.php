@@ -6,7 +6,6 @@ namespace Akeneo\OnboarderSerenity\Test\Integration\Infrastructure\Supplier\Pers
 
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList;
 use Akeneo\OnboarderSerenity\Domain\Write;
-use Akeneo\OnboarderSerenity\Domain\Read;
 use Akeneo\OnboarderSerenity\Test\Integration\SqlIntegrationTestCase;
 use Ramsey\Uuid\Uuid;
 
@@ -25,7 +24,7 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
 
         for ($i = 1; $i <= 60; $i++) {
             $supplierRepository->save(Write\Supplier\Model\Supplier::create(
-                (string)Uuid::uuid4(),
+                (string) Uuid::uuid4(),
                 sprintf('supplier_code_%d', $i),
                 sprintf('Supplier %d label', $i)
             ));
@@ -40,13 +39,13 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
         $supplierRepository = $this->get(Write\Supplier\Repository::class);
 
         $supplierRepository->save(Write\Supplier\Model\Supplier::create(
-            (string)Uuid::uuid4(),
+            (string) Uuid::uuid4(),
             'walter_white',
             'Walter White'
         ));
 
         $supplierRepository->save(Write\Supplier\Model\Supplier::create(
-            (string)Uuid::uuid4(),
+            (string) Uuid::uuid4(),
             'jessie_pinkman',
             'Jessie Pinkman'
         ));
@@ -61,7 +60,7 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
 
         for ($i = 1; $i <= 110; $i++) {
             $supplierRepository->save(Write\Supplier\Model\Supplier::create(
-                (string)Uuid::uuid4(),
+                (string) Uuid::uuid4(),
                 sprintf('supplier_code_%d', $i),
                 sprintf('Supplier %d label', $i)
             ));
@@ -78,13 +77,13 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
         $supplierRepository = $this->get(Write\Supplier\Repository::class);
 
         $supplierRepository->save(Write\Supplier\Model\Supplier::create(
-            (string)Uuid::uuid4(),
+            (string) Uuid::uuid4(),
             'supplier_code_b',
             'Supplier B label',
         ));
 
         $supplierRepository->save(Write\Supplier\Model\Supplier::create(
-            (string)Uuid::uuid4(),
+            (string) Uuid::uuid4(),
             'supplier_code_a',
             'Supplier A label',
         ));

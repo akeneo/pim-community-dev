@@ -4,3 +4,8 @@ Feature: Onboarder Serenity - Suppliers management - create supplier
     Given there is no supplier
     When I create a supplier with code "supplier1" and label "Supplier1"
     Then I should have a supplier with code "supplier1" and label "Supplier1"
+
+  Scenario:
+    Given a supplier "toto"
+    When I create a supplier with code "supplier1"
+    Then an error is thrown because this supplier already exists

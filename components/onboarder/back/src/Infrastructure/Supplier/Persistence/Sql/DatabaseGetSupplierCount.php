@@ -15,7 +15,8 @@ final class DatabaseGetSupplierCount implements GetSupplierCount
 
     public function __invoke(string $search = ''): int
     {
-        return (int) $this->connection->executeQuery(<<<SQL
+        return (int) $this->connection->executeQuery(
+            <<<SQL
             SELECT COUNT(*)
             FROM `akeneo_onboarder_serenity_supplier`
             WHERE label LIKE :search

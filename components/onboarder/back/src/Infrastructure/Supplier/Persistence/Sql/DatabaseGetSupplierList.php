@@ -29,7 +29,7 @@ final class DatabaseGetSupplierList implements GetSupplierList
             OFFSET :offset
         SQL;
 
-        return array_map(fn(array $supplier) => new Supplier(
+        return array_map(fn (array $supplier) => new Supplier(
             $supplier['identifier'],
             $supplier['code'],
             $supplier['label'],

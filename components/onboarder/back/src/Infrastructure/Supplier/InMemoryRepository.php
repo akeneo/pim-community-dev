@@ -27,4 +27,9 @@ class InMemoryRepository implements Supplier\Repository
 
         return null;
     }
+
+    public function count(): int
+    {
+        return count($this->suppliers);
+    }
 }

@@ -1,3 +1,4 @@
 services:
     Akeneo\OnboarderSerenity\Test\Acceptance\Context\SupplierContext:
         - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
+        - '@Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler'
