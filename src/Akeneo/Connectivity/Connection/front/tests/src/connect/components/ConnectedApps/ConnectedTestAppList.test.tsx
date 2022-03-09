@@ -3,26 +3,25 @@ import {screen} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import {ConnectedAppCard} from '@src/connect/components/ConnectedApps/ConnectedAppCard';
 import {renderWithProviders} from '../../../../test-utils';
-import {ConnectedTestAppList} from '@src/connect/components/ConnectedApps/ConnectedTestAppList';
-import {useFeatureFlags} from '@src/shared/feature-flags';
+import {useTranslate} from '@src/shared/translate';
+import {useAppDeveloperMode} from '@src/connect/hooks/use-app-developer-mode';
+import {SectionTitle} from 'akeneo-design-system';
+import {CardGrid} from '@src/connect/components/Section';
 
-beforeEach(() => {
-    jest.clearAllMocks();
-});
+const {ConnectedTestAppList} = jest.requireActual('@src/connect/components/ConnectedApps/ConnectedTestAppList');
 
-jest.mock('@src/shared/feature-flags/use-feature-flags', () => ({
-    ...jest.requireActual('@src/shared/feature-flags/use-feature-flags'),
-    useFeatureFlags: jest.fn(() => {
-        return {
-            isEnabled: () => true,
-        };
-    }),
-}));
+(useTranslate as jest.Mock).mockImplementation(() => (id: string) => id);
+(SectionTitle as unknown as jest.Mock).mockImplementation(({children}) => <>{children}</>);
+(CardGrid.render as unknown as jest.Mock).mockImplementation(({children}) => <section>{children}</section>);
+(ConnectedAppCard as unknown as jest.Mock).mockImplementation(({item}) => <div>{item.name}</div>);
 
-jest.mock('@src/connect/components/ConnectedApps/ConnectedAppCard', () => ({
-    ...jest.requireActual('@src/connect/components/ConnectedApps/ConnectedAppCard'),
-    ConnectedAppCard: jest.fn(() => null),
-}));
+jest.unmock('react');
+jest.unmock('history');
+jest.unmock('styled-components');
+jest.unmock('react-router-dom');
+jest.unmock('@testing-library/react');
+jest.unmock('@testing-library/jest-dom/extend-expect');
+jest.unmock('../../../../test-utils');
 
 const connectedTestApps = [
     {
@@ -56,6 +55,9 @@ const connectedTestApps = [
 ];
 
 test('it renders list of connected apps', () => {
+    // wrong mocked hook, should mock useFeatureFlag
+    (useAppDeveloperMode as jest.Mock).mockReturnValue(true);
+
     renderWithProviders(<ConnectedTestAppList connectedTestApps={connectedTestApps} />);
 
     expect(
@@ -64,9 +66,8 @@ test('it renders list of connected apps', () => {
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.total', {exact: false})
     ).toBeInTheDocument();
-
-    expect(ConnectedAppCard).toHaveBeenNthCalledWith(1, {item: connectedTestApps[0]}, {});
-    expect(ConnectedAppCard).toHaveBeenNthCalledWith(2, {item: connectedTestApps[1]}, {});
+    expect(screen.queryByText(connectedTestApps[0].name)).toBeInTheDocument();
+    expect(screen.queryByText(connectedTestApps[1].name)).toBeInTheDocument();
 });
 
 test('it does not render if list is empty', () => {
@@ -80,7 +81,8 @@ test('it does not render if list is empty', () => {
 });
 
 test('it does not render if feature flag is disabled', () => {
-    (useFeatureFlags as jest.Mock).mockImplementation(() => ({isEnabled: () => false}));
+    // wrong mocked hook, should mock useFeatureFlag
+    (useAppDeveloperMode as jest.Mock).mockReturnValue(false);
 
     renderWithProviders(<ConnectedTestAppList connectedTestApps={connectedTestApps} />);
 

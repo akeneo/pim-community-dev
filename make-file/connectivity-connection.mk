@@ -111,7 +111,7 @@ connectivity-connection-back:
 # Tests Front
 
 connectivity-connection-unit-front:
-	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --ci ${O}
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --ci -runInBand --automock --clearMocks ${O}
 	$(_PERMISSION_FORM_YARN_RUN) jest --ci --coverage ${O}
 
 connectivity-connection-lint-front:
