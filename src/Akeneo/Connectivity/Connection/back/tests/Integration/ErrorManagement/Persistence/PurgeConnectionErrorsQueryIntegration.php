@@ -1,9 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Elasticsearch\Query;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\ErrorManagement\Persistence;
 
-use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\PurgeConnectionErrorsQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\PurgeConnectionErrorsQuery;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -70,7 +71,7 @@ class PurgeConnectionErrorsQueryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->purgeQuery = $this->get('akeneo_connectivity_connection.persistence.query.purge_connection_errors');
+        $this->purgeQuery = $this->get(PurgeConnectionErrorsQuery::class);
         $this->esClient = $this->get('akeneo_connectivity.client.connection_error');
     }
 

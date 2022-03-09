@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
+namespace Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence;
 
 use Doctrine\DBAL\Connection as DbalConnection;
-use Doctrine\DBAL\FetchMode;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>

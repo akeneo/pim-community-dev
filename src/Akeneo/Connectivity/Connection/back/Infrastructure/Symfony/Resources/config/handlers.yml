@@ -48,9 +48,9 @@ services:
     akeneo_connectivity.connection.application.error_management.handler.get_connection_business_errors:
         class: Akeneo\Connectivity\Connection\Application\ErrorManagement\Query\GetConnectionBusinessErrorsHandler
         arguments:
-            - '@akeneo_connectivity_connection.persistence.query.select_last_connection_business_errors'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\ElasticsearchSelectLastConnectionBusinessErrorsQuery'
 
     akeneo_connectivity.connection.application.error_management.handler.update_connection_error_count:
         class: Akeneo\Connectivity\Connection\Application\ErrorManagement\Command\UpdateConnectionErrorCountHandler
         arguments:
-            - '@akeneo_connectivity.connection.persistence.repository.error_count'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\DbalErrorCountRepository'

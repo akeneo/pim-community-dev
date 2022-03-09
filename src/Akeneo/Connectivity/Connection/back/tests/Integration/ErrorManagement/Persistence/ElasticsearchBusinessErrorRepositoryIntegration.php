@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Elasticsearch\Repository;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\ErrorManagement\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\BusinessError;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
-use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Repository\ElasticsearchBusinessErrorRepository;
+use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\ElasticsearchBusinessErrorRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client as ElasticsearchClient;
@@ -17,7 +17,7 @@ class ElasticsearchBusinessErrorRepositoryIntegration extends TestCase
     public function test_it_bulk_inserts(): void
     {
         /** @var ElasticsearchBusinessErrorRepository */
-        $repository = $this->get('akeneo_connectivity.connection.persistence.repository.business_error');
+        $repository = $this->get(ElasticsearchBusinessErrorRepository::class);
 
         $repository->bulkInsert(
             new ConnectionCode('erp'),

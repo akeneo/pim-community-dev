@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query;
+namespace Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 

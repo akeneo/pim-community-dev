@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence;
 
-use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\PurgeConnectionErrorsQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\PurgeConnectionErrorsQuery;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

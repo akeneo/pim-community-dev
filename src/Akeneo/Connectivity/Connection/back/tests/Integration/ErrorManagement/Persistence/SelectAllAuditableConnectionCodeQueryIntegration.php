@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\ErrorManagement\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\SelectAllAuditableConnectionCodeQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\SelectAllAuditableConnectionCodeQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -12,11 +13,8 @@ use PHPUnit\Framework\Assert;
 
 class SelectAllAuditableConnectionCodeQueryIntegration extends TestCase
 {
-    /** @var ConnectionLoader */
-    private $connectionLoader;
-
-    /** @var SelectAllAuditableConnectionCodeQuery */
-    private $selectAuditableConnectionsCodeQuery;
+    private ConnectionLoader $connectionLoader;
+    private SelectAllAuditableConnectionCodeQuery $selectAuditableConnectionsCodeQuery;
 
     public function test_it_selects_only_auditable_connections_code()
     {
@@ -36,7 +34,7 @@ class SelectAllAuditableConnectionCodeQueryIntegration extends TestCase
         parent::setUp();
 
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
-        $this->selectAuditableConnectionsCodeQuery = $this->get('akeneo_connectivity_connection.persistence.query.select_all_auditable_connection_code');
+        $this->selectAuditableConnectionsCodeQuery = $this->get(SelectAllAuditableConnectionCodeQuery::class);
     }
 
     protected function getConfiguration(): Configuration

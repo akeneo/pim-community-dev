@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\ErrorManagement\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Read\BusinessError;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Query\SelectLastConnectionBusinessErrorsQueryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\ElasticsearchSelectLastConnectionBusinessErrorsQuery;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -13,11 +14,8 @@ use PHPUnit\Framework\Assert;
 
 class ElasticsearchSelectLastConnectionBusinessErrorsQueryIntegration extends TestCase
 {
-    /** @var Client */
-    private $esClient;
-
-    /** @var SelectLastConnectionBusinessErrorsQueryInterface */
-    private $selectLastConnectionBusinessErrorsQuery;
+    private Client $esClient;
+    private SelectLastConnectionBusinessErrorsQueryInterface $selectLastConnectionBusinessErrorsQuery;
 
     public function test_it_returns_an_empty_array_when_nothing_is_indexed(): void
     {
@@ -79,9 +77,7 @@ class ElasticsearchSelectLastConnectionBusinessErrorsQueryIntegration extends Te
         parent::setUp();
 
         $this->esClient = $this->get('akeneo_connectivity.client.connection_error');
-        $this->selectLastConnectionBusinessErrorsQuery = $this->get(
-            'akeneo_connectivity_connection.persistence.query.select_last_connection_business_errors'
-        );
+        $this->selectLastConnectionBusinessErrorsQuery = $this->get(ElasticsearchSelectLastConnectionBusinessErrorsQuery::class);
     }
 
     protected function getConfiguration(): Configuration
