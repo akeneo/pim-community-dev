@@ -1,4 +1,5 @@
 DOCKER_COMPOSE_RUN_PHP_TEST_ENV = $(DOCKER_COMPOSE) run -u www-data --rm -e APP_ENV=test php
+DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV = $(DOCKER_COMPOSE) run -u www-data --rm -e APP_ENV=test_fake php
 
 .PHONY: unit-back
 unit-back: #Doc: Run unit back tests for Onboarder
@@ -28,3 +29,7 @@ fix-phpcs: #Doc: Run PHP-CS-Fixer for Onboarder Serenity
 .PHONY: unit-front
 unit-front: #Doc: Run unit front tests for Onboarder
 	$(YARN_RUN) run --cwd=components/onboarder/front test:unit:run
+
+.PHONY: acceptance-back
+acceptance-back: var/tests/behat/onboarder-serenity-acceptance #Doc: launch Behat acceptance tests for Onboarder Serenity
+	$(DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV) vendor/bin/behat --config components/onboarder/back/tests/behat.yml --profile acceptance --format pim --out var/tests/behat/onboarder-serenity-acceptance --format progress --out std --colors $(O)
