@@ -6,7 +6,7 @@ namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller;
 
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler;
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Read\Supplier\Model\Supplier;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,12 +30,12 @@ final class SupplierCreate
             $supplierLabel
         ));
 
-        return new JsonResponse([
-            'supplier' => new Supplier(
+        return new JsonResponse(
+            (new Supplier(
                 $supplierIdentifier,
                 $supplierCode,
                 $supplierLabel,
-            )
-        ], Response::HTTP_CREATED);
+            ))->toArray()
+        , Response::HTTP_CREATED);
     }
 }

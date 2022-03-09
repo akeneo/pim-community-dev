@@ -12,12 +12,12 @@ class InMemoryRepository implements Supplier\Repository
 {
     private array $suppliers = [];
 
-    public function save(Supplier\Supplier $supplier): void
+    public function save(Supplier\Model\Supplier $supplier): void
     {
         $this->suppliers[$supplier->identifier()] = $supplier;
     }
 
-    public function find(Supplier\Identifier $identifier): ?Supplier\Supplier
+    public function find(Supplier\ValueObject\Identifier $identifier): ?Supplier\Model\Supplier
     {
         foreach ($this->suppliers as $identifier => $supplier) {
             if ((string) $identifier === $supplier->identifier()) {

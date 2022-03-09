@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Domain\Write\Supplier;
+namespace Akeneo\OnboarderSerenity\Domain\Write\Supplier\ValueObject;
 
 use Ramsey\Uuid\Uuid;
 

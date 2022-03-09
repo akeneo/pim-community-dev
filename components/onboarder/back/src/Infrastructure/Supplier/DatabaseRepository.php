@@ -13,7 +13,7 @@ final class DatabaseRepository implements Supplier\Repository
     {
     }
 
-    public function save(Supplier\Supplier $supplier): void
+    public function save(Supplier\Model\Supplier $supplier): void
     {
         $sql = <<<SQL
             REPLACE INTO `akeneo_onboarder_serenity_supplier` (identifier, code, label)
@@ -30,7 +30,7 @@ final class DatabaseRepository implements Supplier\Repository
         );
     }
 
-    public function find(Supplier\Identifier $identifier): ?Supplier\Supplier
+    public function find(Supplier\ValueObject\Identifier $identifier): ?Supplier\Model\Supplier
     {
         $sql = <<<SQL
             SELECT identifier, code, label
@@ -45,7 +45,7 @@ final class DatabaseRepository implements Supplier\Repository
             ]
         )->fetchAssociative();
 
-        return false !== $row ? Supplier\Supplier::create(
+        return false !== $row ? Supplier\Model\Supplier::create(
             $row['identifier'],
             $row['code'],
             $row['label']

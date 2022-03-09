@@ -15,7 +15,7 @@ final class CreateSupplierHandler
     public function __invoke(CreateSupplier $createSupplier): void
     {
         $this->supplierRepository->save(
-            Supplier\Supplier::create(
+            Supplier\Model\Supplier::create(
                 $createSupplier->identifier,
                 $createSupplier->code,
                 $createSupplier->label

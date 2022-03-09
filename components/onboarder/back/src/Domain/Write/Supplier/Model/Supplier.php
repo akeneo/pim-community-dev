@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Domain\Write\Supplier;
+namespace Akeneo\OnboarderSerenity\Domain\Write\Supplier\Model;
 
 final class Supplier
 {
