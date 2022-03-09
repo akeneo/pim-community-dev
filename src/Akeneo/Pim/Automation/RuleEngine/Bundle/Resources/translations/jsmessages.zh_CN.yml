@@ -144,7 +144,7 @@ pimee_catalog_rule:
         description: 您将保存当前规则并在后台执行。完成后会通知您。
       duplicate:
         button: 保存与复制
-        title: 复制规则"{{ originalRuleCode }}"
+        title: 复制规则"{{ originalRuleCode }}" 
       actions:
         add_action: 添加操作
         add_category:
@@ -175,7 +175,7 @@ pimee_catalog_rule:
           subtitle: 选择品类
         set_attribute:
           title: 设置属性值
-          helper: 要为您的属性设置值，请先选择目标属性，然后选择要设置的值
+          helper: 要为属性设置值，请先选择目标属性，然后选择要设置的值。所有产品选择中之前的值都将被替换。
           target_subtitle: 选择目标
           value_subtitle: 定义值
           attribute_label: 属性
@@ -183,6 +183,7 @@ pimee_catalog_rule:
           select_reference_entity: 选择参考实体
           select_asset: 选择资产
           select_measurement_unit: 选择单位
+          table_attribute_helper: 此属性以前的值将在您所有的产品选择中被替换
         set_quantified_associations:
           title: SET 量化关联
           helper: 要设置量化关联，请选择您的关联类型，然后选择您想要关联到产品选择的产品、产品模型或组。
@@ -212,7 +213,7 @@ pimee_catalog_rule:
           helper: 要添加关联，请选择关联类型，然后选择想要关联到产品选择的产品、产品模型或组。
         clear_attribute:
           title: 清除属性值
-          subtitle: 选择要清除的属性
+          subtitle: 选择要清除的属性 
           attribute_label: 属性
         clear_associations:
           title: 清除关联
@@ -404,7 +405,7 @@ pimee_catalog_rule:
     edit_unauthorize: 您无权编辑规则
     wrong_date_timespan: 要定义一个有效的时间范围，请确保结束日期不在开始日期之前。
     measurement_family_not_found: 测量单位群“{{ measurement_code }}”不存在
-    unit_not_found: 在测量单位群"{{ measurement_code }}"中没有找到单位"{{ unitCode }}"
+    unit_not_found: 在测量单位群"{{ measurement_code }}"中没有找到单位"{{ unitCode }}" 
     empty_association_warning: 如果让此列表为空，此规则将清除此关联类型。
 pim_enrich:
   entity:
@@ -450,7 +451,7 @@ batch_jobs:
     label: 以 XLSX 格式导入产品模型及规则
 pim_notification:
   types:
-    rule: 规则设置
+    rule: 规则设置 
     mass_edit_rule: 批量编辑规则
     execute_rules: 执行规则
 pim_menu:
