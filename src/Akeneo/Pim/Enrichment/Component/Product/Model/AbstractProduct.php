@@ -30,7 +30,7 @@ abstract class AbstractProduct implements ProductInterface
     /** @var int|string */
     protected $id;
 
-    protected ?UuidInterface $uuid;
+    protected UuidInterface $uuid;
 
     protected array $rawValues;
 
