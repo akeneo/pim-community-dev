@@ -1,13 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Repository;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Settings\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionImage;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionLabel;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
-use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository\DbalConnectionRepository;
+use Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -17,21 +18,16 @@ use PHPUnit\Framework\Assert;
 
 class DbalConnectionRepositoryIntegration extends TestCase
 {
-    /** @var DbalConnection */
-    private $dbalConnection;
-
-    /** @var DbalConnectionRepository */
-    private $repository;
-
-    /** @var ConnectionLoader */
-    private $connectionLoader;
+    private DbalConnection $dbalConnection;
+    private DbalConnectionRepository $repository;
+    private ConnectionLoader $connectionLoader;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->dbalConnection = $this->get('database_connection');
-        $this->repository = $this->get('akeneo_connectivity.connection.persistence.repository.connection');
+        $this->repository = $this->get(DbalConnectionRepository::class);
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
     }
 

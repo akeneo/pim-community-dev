@@ -49,6 +49,8 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('Marketplace/queries.yml');
         $loader->load('Marketplace/services.yml');
 
+        $loader->load('Settings/queries.yml');
+
         $loader->load('Webhook/commands.yml');
         $loader->load('Webhook/controllers.yml');
         $loader->load('Webhook/event_normalizers.yml');
@@ -66,8 +68,6 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('feature_flag.yml');
         $loader->load('handlers.yml');
         $loader->load('install.yml');
-        $loader->load('queries.yml');
-        $loader->load('repositories.yml');
         $loader->load('serializers.yml');
         $loader->load('services.yml');
         $loader->load('validators.yml');

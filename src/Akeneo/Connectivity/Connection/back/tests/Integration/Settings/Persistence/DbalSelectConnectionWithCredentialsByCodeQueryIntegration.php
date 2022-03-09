@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Settings\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionWithCredentialsByCodeQueryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalSelectConnectionWithCredentialsByCodeQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -19,18 +20,15 @@ use PHPUnit\Framework\Assert;
  */
 class DbalSelectConnectionWithCredentialsByCodeQueryIntegration extends TestCase
 {
-    /** @var ConnectionLoader */
-    private $connectionLoader;
-
-    /** @var SelectConnectionWithCredentialsByCodeQueryInterface */
-    private $selectConnectionWithCredentialsByCodeQuery;
+    private ConnectionLoader $connectionLoader;
+    private SelectConnectionWithCredentialsByCodeQueryInterface $selectConnectionWithCredentialsByCodeQuery;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
-        $this->selectConnectionWithCredentialsByCodeQuery = $this->get('akeneo_connectivity.connection.persistence.query.select_connection_with_credentials_by_code');
+        $this->selectConnectionWithCredentialsByCodeQuery = $this->get(DbalSelectConnectionWithCredentialsByCodeQuery::class);
     }
 
     public function test_it_finds_a_connection_with_its_credentials()

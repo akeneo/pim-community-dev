@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
@@ -16,11 +16,8 @@ use Doctrine\DBAL\Types\Types;
  */
 class DbalConnectionRepository implements ConnectionRepositoryInterface
 {
-    private DbalConnection $dbalConnection;
-
-    public function __construct(DbalConnection $dbalConnection)
+    public function __construct(private DbalConnection $dbalConnection)
     {
-        $this->dbalConnection = $dbalConnection;
     }
 
     public function create(Connection $connection): void

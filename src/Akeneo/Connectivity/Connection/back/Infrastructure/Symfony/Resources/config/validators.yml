@@ -5,7 +5,7 @@ services:
     akeneo_connectivity.connection.validators.connection.code_must_be_unique:
         class: Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\CodeMustBeUniqueValidator
         arguments:
-            - '@akeneo_connectivity.connection.persistence.repository.connection'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
         tags:
             - { name: validator.constraint_validator, alias: connection_code_must_be_unique }
 
@@ -18,6 +18,6 @@ services:
 
     Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\IsConnectionsNumberLimitReachedValidator:
         arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\IsConnectionsNumberLimitReachedQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\IsConnectionsNumberLimitReachedQuery'
         tags:
             - { name: validator.constraint_validator }

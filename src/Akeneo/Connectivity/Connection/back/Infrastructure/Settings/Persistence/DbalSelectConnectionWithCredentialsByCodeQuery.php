@@ -2,14 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionWithCredentialsByCodeQueryInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\DBAL\Connection as DbalConnection;
-use Doctrine\DBAL\FetchMode;
-use Doctrine\DBAL\Types\Types;
 
 /**
  * Fetch a connection with credentials and permissions included. Only one `user_role` and `user_group` (not counting the
@@ -21,12 +19,8 @@ use Doctrine\DBAL\Types\Types;
  */
 final class DbalSelectConnectionWithCredentialsByCodeQuery implements SelectConnectionWithCredentialsByCodeQueryInterface
 {
-    /** @var DbalConnection */
-    private $dbalConnection;
-
-    public function __construct(DbalConnection $dbalConnection)
+    public function __construct(private DbalConnection $dbalConnection)
     {
-        $this->dbalConnection = $dbalConnection;
     }
 
     public function execute(string $code): ?ConnectionWithCredentials

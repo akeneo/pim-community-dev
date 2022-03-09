@@ -8,7 +8,7 @@ services:
             - '@Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator'
             - '@oro_security.security_facade'
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\IsConnectionsNumberLimitReachedQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\IsConnectionsNumberLimitReachedQuery'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\ConfirmAuthorizationAction:
         public: true

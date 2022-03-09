@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Settings\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionsQueryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalSelectConnectionsQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -20,18 +21,15 @@ use PHPUnit\Framework\Assert;
  */
 class DbalSelectConnectionsQueryIntegration extends TestCase
 {
-    /** @var ConnectionLoader */
-    private $connectionLoader;
-
-    /** @var SelectConnectionsQueryInterface */
-    private $selectConnectionsQuery;
+    private ConnectionLoader $connectionLoader;
+    private SelectConnectionsQueryInterface $selectConnectionsQuery;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
-        $this->selectConnectionsQuery = $this->get('akeneo_connectivity.connection.persistence.query.select_connections');
+        $this->selectConnectionsQuery = $this->get(DbalSelectConnectionsQuery::class);
     }
 
     public function test_it_fetches_connections()
