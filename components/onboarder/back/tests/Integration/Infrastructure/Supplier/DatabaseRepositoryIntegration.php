@@ -14,25 +14,25 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     {
         $supplierRepository = $this->get(Supplier\Repository::class);
 
-        $supplierRepository->save(Supplier\Supplier::create(
+        $supplierRepository->save(Supplier\Model\Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f02',
             'supplier_code',
             'Supplier code'
         ));
 
-        $supplierRepository->save(Supplier\Supplier::create(
+        $supplierRepository->save(Supplier\Model\Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f03',
             'other_supplier_code',
             'Other supplier code'
         ));
 
         $supplier = $supplierRepository->find(
-            Supplier\Identifier::fromString(
+            Supplier\ValueObject\Identifier::fromString(
                 '44ce8069-8da1-4986-872f-311737f46f02'
             )
         );
 
-        static::assertInstanceOf(Supplier\Supplier::class, $supplier);
+        static::assertInstanceOf(Supplier\Model\Supplier::class, $supplier);
         static::assertSame('supplier_code', $supplier->code());
         static::assertSame('Supplier code', $supplier->label());
     }
@@ -42,20 +42,20 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     {
         $supplierRepository = $this->get(Supplier\Repository::class);
 
-        $supplierRepository->save(Supplier\Supplier::create(
+        $supplierRepository->save(Supplier\Model\Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f02',
             'supplier_code',
             'Supplier code'
         ));
 
-        $supplierRepository->save(Supplier\Supplier::create(
+        $supplierRepository->save(Supplier\Model\Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f02',
             'new_supplier_code',
             'New supplier code'
         ));
 
         $supplier = $supplierRepository->find(
-            Supplier\Identifier::fromString(
+            Supplier\ValueObject\Identifier::fromString(
                 '44ce8069-8da1-4986-872f-311737f46f02'
             )
         );
@@ -69,7 +69,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     {
         static::assertNull(
             $this->get(Supplier\Repository::class)->find(
-                Supplier\Identifier::fromString(
+                Supplier\ValueObject\Identifier::fromString(
                     '44ce8069-8da1-4986-872f-311737f46f02'
                 )
             )

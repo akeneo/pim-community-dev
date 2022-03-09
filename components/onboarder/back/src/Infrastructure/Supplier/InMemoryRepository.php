@@ -7,7 +7,7 @@ namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier;
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
 use Symfony\Component\DependencyInjection\Attribute\When;
 
-#[When(env: 'test')]
+#[When(env: 'test_fake')]
 class InMemoryRepository implements Supplier\Repository
 {
     private array $suppliers = [];

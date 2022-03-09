@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Domain\Write\Supplier\Model;
 
+use Akeneo\OnboarderSerenity\Domain\Write\Supplier\ValueObject;
+
 final class Supplier
 {
-    private Identifier $identifier;
-    private Code $code;
-    private Label $label;
+    private ValueObject\Identifier $identifier;
+    private ValueObject\Code $code;
+    private ValueObject\Label $label;
 
     private function __construct(
         string $identifier,
         string $code,
         string $label
     ) {
-        $this->identifier = Identifier::fromString($identifier);
-        $this->code = Code::fromString($code);
-        $this->label = Label::fromString($label);
+        $this->identifier = ValueObject\Identifier::fromString($identifier);
+        $this->code = ValueObject\Code::fromString($code);
+        $this->label = ValueObject\Label::fromString($label);
     }
 
     public static function create(string $identifier, string $code, string $label): Supplier
