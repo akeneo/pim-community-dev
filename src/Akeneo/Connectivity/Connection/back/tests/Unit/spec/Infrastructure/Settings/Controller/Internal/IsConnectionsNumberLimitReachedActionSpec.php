@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Settings\Controller\Internal;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\IsConnectionsNumberLimitReachedQueryInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\IsConnectionsNumberLimitReachedAction;
+use Akeneo\Connectivity\Connection\Infrastructure\Settings\Controller\Internal\IsConnectionsNumberLimitReachedAction;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;

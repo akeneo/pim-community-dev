@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Settings\Controller\Internal;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\IsConnectionsNumberLimitReachedQueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

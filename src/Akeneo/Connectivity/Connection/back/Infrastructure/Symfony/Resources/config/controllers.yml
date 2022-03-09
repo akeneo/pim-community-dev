@@ -39,8 +39,3 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.application.handler.regenerate_connection_password'
             - '@oro_security.security_facade'
-
-    Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\IsConnectionsNumberLimitReachedAction:
-        public: true
-        arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\IsConnectionsNumberLimitReachedQuery'
