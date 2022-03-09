@@ -1,0 +1,16 @@
+extensions:
+    pim-menu-connect-onboarder-block:
+        module: pim/menu/navigation-block
+        parent: pim-menu-connect-column
+        targetZone: navigation
+        position: 100
+        config:
+            title: onboarder.menu_block_title
+
+    pim-menu-connect-onboarder-supplier-list:
+        module: pim/menu/item
+        parent: pim-menu-connect-onboarder-block
+        position: 10
+        config:
+            title: onboarder.supplier.supplier_list.menu_item
+            to: onboarder_serenity_supplier_list
