@@ -10,7 +10,7 @@ jobs:
                     name: Create yarn cache folder
                     command: mkdir -p  ~/.cache/yarn
             -   run:
-                    name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                     command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
             -   run:
                     name: Pull docker image for node
@@ -33,7 +33,7 @@ jobs:
             -   attach_workspace:
                     at: ~/
             -   run:
-                    name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                     command: sudo chown -R 1000:1000 ../project
             -   run:
                     name: Pull docker image for php
@@ -104,7 +104,7 @@ jobs:
             - attach_workspace:
                   at: ~/
             - run:
-                  name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+                  name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                   command: sudo chown -R 1000:1000 ../project
             - run:
                   name: PHP Insights results
