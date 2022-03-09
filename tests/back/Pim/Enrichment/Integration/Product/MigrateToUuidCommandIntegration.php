@@ -35,7 +35,13 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
 
     private function assertTheIndexesDoNotExist(): void
     {
-        foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
+        $tables = \array_filter(
+            MigrateToUuidStep::TABLES,
+            fn (string $tableName): bool => $tableName !== 'pim_catalog_product',
+            ARRAY_FILTER_USE_KEY
+        );
+
+        foreach ($tables as $tableName => $columnNames) {
             if ($this->tableExists($tableName)) {
                 Assert::assertFalse(
                     $this->indexExists($tableName, 'product_uuid'),
