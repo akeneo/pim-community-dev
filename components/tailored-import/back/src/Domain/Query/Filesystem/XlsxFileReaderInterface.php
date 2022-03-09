@@ -15,9 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Domain\Query\Filesystem;
 
 interface XlsxFileReaderInterface
 {
-    public function selectSheet(string $sheetName): void;
-
-    public function readLine(int $line): array;
+    public function readLine(?string $sheetName, int $line): array;
 
     public function getSheetNames(): array;
 }

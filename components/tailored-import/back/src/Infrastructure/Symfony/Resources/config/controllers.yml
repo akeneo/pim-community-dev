@@ -26,3 +26,5 @@ services:
     public: true
     arguments:
       - '@akeneo.tailored_import.handler.get_file_template_information_handler'
+      - '@validator'
+      - '@serializer'

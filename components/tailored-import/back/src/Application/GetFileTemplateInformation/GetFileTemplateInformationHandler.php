@@ -20,8 +20,7 @@ final class GetFileTemplateInformationHandler
     public function handle(GetFileTemplateInformationQuery $getFileTemplateQuery): FileTemplateInformationResult
     {
         $fileReader = $this->xlsxFileReaderFactory->create($getFileTemplateQuery->fileKey);
-        $fileReader->selectSheet($getFileTemplateQuery->sheetName);
-        $headerValues = $fileReader->readLine($getFileTemplateQuery->headerLine);
+        $headerValues = $fileReader->readLine($getFileTemplateQuery->sheetName, $getFileTemplateQuery->headerLine);
 
         return FileTemplateInformationResult::create(
             $fileReader->getSheetNames(),

@@ -24,14 +24,12 @@ use Box\Spout\Reader\XLSX\Reader;
 class XlsxFileReader implements XlsxFileReaderInterface
 {
     private ReaderInterface $fileReader;
-    private SheetInterface $sheet;
 
     public function __construct(
         private string $filePath,
         private CellsFormatter $cellsFormatter,
     ) {
         $this->fileReader = $this->openFile();
-        $this->sheet = $this->fileReader->getSheetIterator()->current();
     }
 
     public function __destruct()
@@ -55,24 +53,10 @@ class XlsxFileReader implements XlsxFileReaderInterface
         return $fileReader;
     }
 
-    public function selectSheet(string $sheetName): void
+    public function readLine(?string $sheetName, int $line): array
     {
-        $sheetIterator = $this->fileReader->getSheetIterator();
-        $sheetIterator->rewind();
-
-        foreach ($sheetIterator as $sheet) {
-            if ($sheet->getName() === $sheetName) {
-                $this->sheet = $sheet;
-                return;
-            }
-        }
-
-        throw new SheetNotFoundException($sheetName);
-    }
-
-    public function readLine(int $line): array
-    {
-        $rowIterator = $this->sheet->getRowIterator();
+        $sheet = $this->selectSheet($sheetName);
+        $rowIterator = $sheet->getRowIterator();
         foreach ($rowIterator as $index => $row) {
             if ($index === $line) {
                 return $this->cellsFormatter->formatCells($row->toArray());
@@ -94,5 +78,24 @@ class XlsxFileReader implements XlsxFileReaderInterface
         }
 
         return $sheetList;
+    }
+
+
+    private function selectSheet(?string $sheetName): SheetInterface
+    {
+        $sheetIterator = $this->fileReader->getSheetIterator();
+        $sheetIterator->rewind();
+
+        if ($sheetName === null) {
+            return $sheetIterator->current();
+        }
+
+        foreach ($sheetIterator as $sheet) {
+            if ($sheet->getName() === $sheetName) {
+                return $sheet;
+            }
+        }
+
+        throw new SheetNotFoundException($sheetName);
     }
 }

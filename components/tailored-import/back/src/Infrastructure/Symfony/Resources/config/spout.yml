@@ -8,7 +8,7 @@ services:
     class: Akeneo\Platform\TailoredImport\Infrastructure\Spout\RemoteXlsxFileReaderFactory
     arguments:
       - '@akeneo.tailored_import.spout.cell_formatter'
-      - '@oneup_flysystem.tailored_import_storage_filesystem'
+      - '@akeneo_file_storage.file_storage.filesystem_provider'
 
   akeneo.tailored_import.spout.cell_formatter:
     class: Akeneo\Platform\TailoredImport\Infrastructure\Spout\CellsFormatter

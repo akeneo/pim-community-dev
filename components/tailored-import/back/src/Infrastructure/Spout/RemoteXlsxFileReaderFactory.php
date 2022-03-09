@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Spout;
 
+use Akeneo\Platform\TailoredImport\Domain\Model\Filesystem\Storage;
 use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\XlsxFileReaderFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\XlsxFileReaderInterface;
-use League\Flysystem\FilesystemReader;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 
 class RemoteXlsxFileReaderFactory implements XlsxFileReaderFactoryInterface
 {
@@ -23,7 +24,7 @@ class RemoteXlsxFileReaderFactory implements XlsxFileReaderFactoryInterface
 
     public function __construct(
         private CellsFormatter $cellsFormatter,
-        private FilesystemReader $filesystemReader
+        private FilesystemProvider $filesystemProvider
     ) {
     }
 
@@ -36,7 +37,8 @@ class RemoteXlsxFileReaderFactory implements XlsxFileReaderFactoryInterface
             \basename($filePath),
         );
 
-        $remoteStream = $this->filesystemReader->readStream($filePath);
+        $fileSystem = $this->filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
+        $remoteStream = $fileSystem->readStream($filePath);
 
         \file_put_contents($this->localFilePath, $remoteStream);
         \fclose($remoteStream);
@@ -46,7 +48,7 @@ class RemoteXlsxFileReaderFactory implements XlsxFileReaderFactoryInterface
 
     public function __destruct()
     {
-        if ($this->localFilePath) {
+        if ($this->localFilePath && file_exists($this->localFilePath)) {
             \unlink($this->localFilePath);
         }
     }
