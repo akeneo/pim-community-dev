@@ -12,6 +12,7 @@
 - OCT-27: [Backport OCT-24] Prevent non-default usergroups from losing permissions on categories
 - PIM-10309: [Backport PIM-10291] Fix table attribute edit blocked when locale recently deleted from channel
 - PIM-10312: [Backport PIM-10284] Clean product values after reference entity removal
+- PIM-10326: [Bakport PIM-10228] Fix Asset transformations job crashing when having cache resources exhausted
 
 # 6.0.7 (2022-02-25)
 
