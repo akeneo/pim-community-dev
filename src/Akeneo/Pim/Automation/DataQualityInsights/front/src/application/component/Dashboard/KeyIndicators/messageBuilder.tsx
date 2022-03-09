@@ -1,5 +1,5 @@
 import React from 'react';
-import {TextWithLink} from './TextWithLink';
+import {TextWithLink} from './styled';
 
 export type MarkersMapping = {
   [marker: string]: JSX.Element;

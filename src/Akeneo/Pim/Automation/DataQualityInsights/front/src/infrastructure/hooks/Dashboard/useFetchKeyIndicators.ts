@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {fetchKeyIndicators} from '../../fetcher';
-import {keyIndicatorMap} from '../../../domain';
+import {KeyIndicatorMap} from '../../../domain';
 
 const useFetchKeyIndicators = (
   channel: string,
@@ -8,7 +8,7 @@ const useFetchKeyIndicators = (
   familyCode: string | null,
   categoryCode: string | null
 ) => {
-  const [keyIndicators, setKeyIndicators] = useState<keyIndicatorMap | null>(null);
+  const [keyIndicators, setKeyIndicators] = useState<KeyIndicatorMap | null>(null);
 
   useEffect(() => {
     setKeyIndicators(null);
@@ -16,29 +16,7 @@ const useFetchKeyIndicators = (
 
   useEffect(() => {
     (async () => {
-      //const data = await fetchKeyIndicators(channel, locale, familyCode, categoryCode);
-      const data = {
-        good_enrichment: {
-          products: {
-            totalGood: 16,
-            totalToImprove: 1021,
-          },
-          product_models: {
-            totalGood: 16,
-            totalToImprove: 1021,
-          },
-        },
-        has_image: {
-          products: {
-            totalGood: 219,
-            totalToImprove: 1045,
-          },
-          product_models: {
-            totalGood: 219,
-            totalToImprove: 1045,
-          },
-        },
-      };
+      const data = await fetchKeyIndicators(channel, locale, familyCode, categoryCode);
       setKeyIndicators(data);
     })();
   }, [channel, locale, familyCode, categoryCode]);

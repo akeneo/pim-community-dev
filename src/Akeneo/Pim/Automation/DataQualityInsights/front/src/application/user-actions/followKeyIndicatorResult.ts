@@ -4,7 +4,7 @@ import {ProductType} from '../../domain/Product.interface';
 export type FollowKeyIndicatorResultHandler = (
   channelCode: string,
   localeCode: string,
-  productType: ProductType,
+  entityType: ProductType | 'attribute',
   familyCode?: string | null,
   categoryId?: string | null,
   rootCategoryId?: string | null,

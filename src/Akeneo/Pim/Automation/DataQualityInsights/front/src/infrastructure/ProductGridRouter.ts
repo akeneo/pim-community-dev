@@ -47,8 +47,8 @@ const buildFilters = ({
   channelCode,
   productType,
   familyCode,
-  categoryId,
-  rootCategoryId,
+  categoryId = null,
+  rootCategoryId = null,
   keyIndicator,
 }: BuildFilterParams) => {
   let filters = ['s[updated]=1', `f[scope][value]=${channelCode}`, 't=product-grid'];

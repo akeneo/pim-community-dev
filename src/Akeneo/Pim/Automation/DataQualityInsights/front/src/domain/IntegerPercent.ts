@@ -1,4 +1,4 @@
-type IntegerPercent = number;
+export type IntegerPercent = number;
 type PositiveInteger = number;
 
 /**
