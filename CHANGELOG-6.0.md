@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- PIM-10321: [Backport PIM-10241] Fix user account disabled can connect regression
+
 # 6.0.15 (2022-03-23)
 
 # 6.0.14 (2022-03-22)

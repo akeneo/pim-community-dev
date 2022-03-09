@@ -11,6 +11,7 @@ use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Security\Core\User\InMemoryUser;
 
 class UserSpec extends ObjectBehavior
 {
@@ -139,5 +140,51 @@ class UserSpec extends ObjectBehavior
         $this->setFirstName('Mary');
         $this->setLastName('Smith');
         $this->getFullName()->shouldEqual('Mary Smith');
+    }
+
+    function it_is_not_equal_if_not_same_class() {
+        $this->isEqualTo(new InMemoryUser('user','password'))->shouldEqual(false);
+    }
+
+    function it_is_equal_if_duplicated() {
+        $this->setRoles([new Role('role')]);
+        $duplicate = $this->duplicate();
+        $duplicate->setRoles([new Role('role')]);
+        $this->isEqualTo($duplicate);
+    }
+
+    function it_is_not_equal_if_not_same_password() {
+        $this->setPassword('p1');
+        $duplicate = $this->duplicate();
+        $duplicate->setPassword('p2');
+        $this->isEqualTo($duplicate)->shouldEqual(false);
+    }
+
+    function it_is_not_equal_if_not_same_salt() {
+        $this->setSalt('s1');
+        $duplicate = $this->duplicate();
+        $duplicate->setSalt('s2');
+        $this->isEqualTo($duplicate)->shouldEqual(false);
+    }
+
+    function it_is_not_equal_if_changed_identifier() {
+        $this->setUserName('i1');
+        $duplicate = $this->duplicate();
+        $duplicate->setUserName('i2');
+        $this->isEqualTo($duplicate)->shouldEqual(false);
+    }
+
+    function it_is_not_equal_if_account_locked() {
+        $this->setEnabled(true);
+        $duplicate = $this->duplicate();
+        $duplicate->setEnabled(false);
+        $this->isEqualTo($duplicate)->shouldEqual(false);
+    }
+
+    function it_is_not_equal_if_account_disabled() {
+        $this->setEnabled(true);
+        $duplicate = $this->duplicate();
+        $duplicate->setEnabled(false);
+        $this->isEqualTo($duplicate)->shouldEqual(false);
     }
 }
