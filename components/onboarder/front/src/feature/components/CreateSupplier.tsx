@@ -54,9 +54,17 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
         });
 
         if (!response.ok) {
+            if (response.status === 409) {
+                notify(
+                    NotificationLevel.ERROR,
+                    translate('onboarder.supplier.supplier_create.error.supplier_already_exists', {supplierCode: code})
+                );
+                return;
+            }
+
             notify(
                 NotificationLevel.ERROR,
-                translate('onboarder.supplier.supplier_create.error')
+                translate('onboarder.supplier.supplier_create.error.unknown_error')
             );
 
             return;

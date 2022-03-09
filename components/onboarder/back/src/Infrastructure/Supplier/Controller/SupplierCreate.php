@@ -7,6 +7,7 @@ namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller;
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler;
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\Model\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Write\Supplier\Exception\SupplierAlreadyExistsException;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,11 +25,15 @@ final class SupplierCreate
         $supplierCode = $request->get('code');
         $supplierLabel = $request->get('label');
 
-        ($this->createSupplierHandler)(new CreateSupplier(
-            $supplierIdentifier,
-            $supplierCode,
-            $supplierLabel
-        ));
+        try {
+            ($this->createSupplierHandler)(new CreateSupplier(
+                $supplierIdentifier,
+                $supplierCode,
+                $supplierLabel
+            ));
+        } catch (SupplierAlreadyExistsException) {
+            return new JsonResponse(null, Response::HTTP_CONFLICT);
+        }
 
         return new JsonResponse(
             (new Supplier(

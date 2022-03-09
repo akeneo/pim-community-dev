@@ -15,7 +15,7 @@ final class CreateSupplierHandler
 
     public function __invoke(CreateSupplier $createSupplier): void
     {
-        if ($this->supplierRepository->find(ValueObject\Identifier::fromString($createSupplier->identifier))) {
+        if ($this->supplierRepository->findByCode(ValueObject\Code::fromString($createSupplier->code))) {
             throw new Supplier\Exception\SupplierAlreadyExistsException($createSupplier->code);
         }
 

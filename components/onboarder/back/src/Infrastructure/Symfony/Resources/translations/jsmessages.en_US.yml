@@ -15,7 +15,9 @@ onboarder:
             notification:
                 title: The supplier has been created.
                 content: You can now edit it in the supplier management section.
-            error: An error occured while creating the supplier.
+            error:
+                unknown_error: An error occured while creating the supplier.
+                supplier_already_exists: 'A supplier with code "{{ supplierCode }}" already exists.'
         supplier_list:
             title: "]-Inf, 1]{{ count }} supplier|]1, Inf[{{ count }} suppliers"
             no_supplier: There are no suppliers yet.
