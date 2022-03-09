@@ -113,4 +113,4 @@ const FileTemplateConfigurator = ({
   );
 };
 
-export {FileTemplateConfigurator};
+export { FileTemplateConfigurator };
