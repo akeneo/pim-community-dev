@@ -3,6 +3,7 @@
 ## Bug fixes
 - PLG-776: Fix Option page broken issue with small screen when creating a new option
 - PIM-10305: Do not allow disabled user to login
+- PIM-10325: [Backport PIM-10229] Enforce strict samesite policy for session cookies
 
 # 6.0.7 (2022-02-25)
 
