@@ -62,7 +62,7 @@ class DompdfBuilder implements PdfBuilderInterface
         ]);
         $this->dompdf = new Dompdf($options);
 
-        if(null !== $this->arabicHtmlFormatter) {
+        if (null !== $this->arabicHtmlFormatter) {
             $html = $this->arabicHtmlFormatter->formatHtml($html);
         }
 
