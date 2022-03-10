@@ -1,22 +1,7 @@
 executor-machine: &executor-machine 'ubuntu-2004:202111-02'
 
 jobs:
-    test_onboarder_unit_back:
-        machine:
-            image: *executor-machine
-        steps:
-            -   attach_workspace:
-                    at: ~/
-            -   run:
-                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
-                    command: sudo chown -R 1000:1000 ../project
-            -   run:
-                        name: Load archived docker PHP image
-                        command: docker load -i php-pim-image.tar
-            -   run:
-                    name: Launch Back Unit tests for Onboarder Serenity
-                    command: PIM_CONTEXT=onboarder-serenity make unit-back
-    test_onboarder_integration_back:
+    test_onboarder_lint_back:
         machine:
             image: *executor-machine
         steps:
@@ -28,19 +13,9 @@ jobs:
             -   run:
                     name: Load archived docker PHP image
                     command: docker load -i php-pim-image.tar
-            - run:
-                name: Start containers
-                command: |
-                    APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
-                    docker/wait_docker_up.sh
-            - run:
-                name: Install database
-                command: APP_ENV=test make database
             -   run:
-                    name: Launch Back Integration tests for Onboarder Serenity
-                    command: PIM_CONTEXT=onboarder-serenity make integration
-            - store_test_results:
-                path: var/tests/phpunit
+                    name: Launch lint back for Onboarder Serenity
+                    command: PIM_CONTEXT=onboarder-serenity make lint-back
     test_onboarder_coupling:
         machine:
             image: *executor-machine
@@ -59,3 +34,73 @@ jobs:
             -   run:
                     name: Run unused requirements detector for Onboarder
                     command: PIM_CONTEXT=onboarder-serenity make coupling-list-unused-requirements
+    test_onboarder_unit_back:
+        machine:
+            image: *executor-machine
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project
+            -   run:
+                        name: Load archived docker PHP image
+                        command: docker load -i php-pim-image.tar
+            -   run:
+                    name: Launch Back Unit tests for Onboarder Serenity
+                    command: PIM_CONTEXT=onboarder-serenity make unit-back
+    test_onboarder_unit_front:
+        machine:
+            image: *executor-machine
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project
+            -   run:
+                    name: Load archived docker PHP image
+                    command: docker load -i php-pim-image.tar
+            -   run:
+                    name: Launch Front Unit tests for Onboarder Serenity
+                    command: PIM_CONTEXT=onboarder-serenity make unit-front
+    test_onboarder_acceptance_back:
+        machine:
+            image: *executor-machine
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project
+            -   run:
+                    name: Load archived docker PHP image
+                    command: docker load -i php-pim-image.tar
+            -   run:
+                    name: Launch Acceptance back tests for Onboarder Serenity
+                    command: PIM_CONTEXT=onboarder-serenity make acceptance-back
+    test_onboarder_integration_back:
+        machine:
+            image: *executor-machine
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project
+            -   run:
+                    name: Load archived docker PHP image
+                    command: docker load -i php-pim-image.tar
+            -   run:
+                    name: Start containers
+                    command: |
+                        APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
+                        docker/wait_docker_up.sh
+            -   run:
+                    name: Install database
+                    command: APP_ENV=test make database
+            -   run:
+                    name: Launch Back Integration tests for Onboarder Serenity
+                    command: PIM_CONTEXT=onboarder-serenity make integration
+            - store_test_results:
+                path: var/tests/phpunit
