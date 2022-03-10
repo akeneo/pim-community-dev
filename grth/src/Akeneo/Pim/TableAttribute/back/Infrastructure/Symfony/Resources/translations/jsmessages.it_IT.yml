@@ -144,6 +144,8 @@ pim_table_attribute:
       column_code: Codice colonna
       properties_helper: Devi definire la struttura della tabella e almeno 2 colonne, prima di poter salvare l'attributo tabella
       table_structure_helper_text: Un attributo tabella deve contenere almeno 2 colonne. Il primo è sempre una colonna di tipo "seleziona". Una volta creata la  prima colonna, devi aggiungere delle opzioni. Per farlo, fai clic su "Gestisci le opzioni" e inserisci un massimo di {{ limit }} opzioni! In seguito potrai usare queste opzioni come righe nelle tabelle di prodotti.
+      table_structure_helper_text_with_reference_entity: Un attributo tabella deve contenere almeno 2 colonne. Una volta creata la prima, utilizzando i tipi di colonna “Seleziona” o “Entità di riferimento” puoi definire e gestire le righe in base alle opzioni o ai record.
+      table_structure_helper_link: Consulta il nostro Help Center per ulteriori informazioni.
       limit_option_reached: Hai raggiunto il limite di {{ limit }} opzioni.
       template_label: Seleziona lo standard della tabella "{{ templateLabel }}"
       delete_column_helper: Se elimini questa colonna, tutti i suoi valori verranno rimossi da tutti i prodotti che utilizzano l'attributo tabella "{{ attributeLabel }}".
@@ -153,11 +155,17 @@ pim_table_attribute:
       no_options: Nessuna opzione trovata
       please_try_again: Per favore, riprova
       first_column_type_helper: La prima colonna di una Tabella è sempre una colonna di tipo Seleziona.
+      first_column_type_helper_with_reference_entity: La prima colonna di una tabella è un tipo di colonna "Seleziona" o "Entità di riferimento".
       discard_changes: Se lasci la pagina perderai le modifiche alle opzioni di selezione.
       completeness: Completamento
       required_for_completeness: Richiesto per il completamento
       completeness_helper_text: "Per scoprire come funziona il completamento per un attributo di tabella,"
       completeness_helper_link: consulta il nostro Help Center.
+      reference_entity: Entità di riferimento
+      import_from_existing_attribute: Importa da attributo esistente
+      option_count: "{0,1}{{ count }} opzione|]1, Inf[{{ count }} opzioni"
+      measurement_family: Famiglia di unità di misura
+      measurement_default_unit: Unità di misura predefinita
     product:
       items_per_page: Elementi per pagina
       current_items: "{{ minItem }}-{{ maxItem }} di {{ itemCount }}"
@@ -165,9 +173,13 @@ pim_table_attribute:
       no_search_result: "Spiacenti, non ci sono righe corrispondenti alla tua ricerca!"
       no_rows_title: "La tabella {{ attributeLabel }} è vuota."
       no_rows_subtitle: Aggiungi righe per definire nuove proprietà
+      no_rows_subtitle_no_permission: Per modificare questo attributo, vai alla pagina di impostazione degli attributi oppure contatta il tuo amministratore PIM.
       no_results: Non ci sono risultati
       no_options: Non ci sono opzioni
+      no_records: Non ci sono record
       no_add_options_unallowed: Contatta l'amministratore PIM per gestire le opzioni "{{ attributeLabel }}"
+      edit_records_unallowed: Contatta il tuo amministratore PIM per gestire l'entità di riferimento "{{ referenceEntityLabel }}"
+      manage_records: Gestisci i record
       actions:
         delete_row: Elimina questa riga
         clear_row: Cancella questa riga
@@ -182,6 +194,8 @@ pim_table_attribute:
       number: Numero
       boolean: Sì/No
       select: Seleziona
+      reference_entity: Entità di riferimento
+      measurement: Misura
   validations:
     column_code_must_be_filled: È necessario indicare il codice
     not_available_code: Questo codice di colonna non è disponibile

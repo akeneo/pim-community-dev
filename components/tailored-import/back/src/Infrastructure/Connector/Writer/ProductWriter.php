@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector\Writer;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Platform\TailoredImport\Domain\Model\Column;
+use Akeneo\Platform\TailoredImport\Domain\UpsertProductCommandCleaner;
 use Akeneo\Platform\TailoredImport\Infrastructure\Connector\RowPayload;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
@@ -40,15 +41,33 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface
 
         /** @var RowPayload $rowPayload */
         foreach ($items as $rowPayload) {
-            try {
-                if (null === $rowPayload->getUpsertProductCommand()) {
-                    throw new \RuntimeException("RowPayload wrongly formed missing UpsertCommand");
+            $this->upsertProduct($rowPayload);
+        }
+    }
+
+    private function upsertProduct(RowPayload $rowPayload): void
+    {
+        try {
+            if (null === $rowPayload->getUpsertProductCommand()) {
+                throw new \RuntimeException('RowPayload wrongly formed missing UpsertCommand');
+            }
+
+            $this->messageBus->dispatch($rowPayload->getUpsertProductCommand());
+        } catch (LegacyViolationsException | ViolationsException $violationsException) {
+            $this->addWarning($violationsException->violations(), $rowPayload);
+
+            if ('skip_value' === $this->stepExecution->getJobParameters()->get('error_action')
+                && $violationsException instanceof ViolationsException
+            ) {
+                $initialUserIntentsCount = count($rowPayload->getUpsertProductCommand()->valueUserIntents());
+
+                $rowPayload->setUpsertProductCommand(
+                    UpsertProductCommandCleaner::removeInvalidUserIntents($violationsException, $rowPayload->getUpsertProductCommand())
+                );
+
+                if (count($rowPayload->getUpsertProductCommand()->valueUserIntents()) < $initialUserIntentsCount) {
+                    $this->upsertProduct($rowPayload);
                 }
-                $this->messageBus->dispatch($rowPayload->getUpsertProductCommand());
-            } catch (LegacyViolationsException $legacyViolationsException) {
-                $this->addWarning($legacyViolationsException->violations(), $rowPayload);
-            } catch (ViolationsException $violationsException) {
-                $this->addWarning($violationsException->violations(), $rowPayload);
             }
         }
     }
