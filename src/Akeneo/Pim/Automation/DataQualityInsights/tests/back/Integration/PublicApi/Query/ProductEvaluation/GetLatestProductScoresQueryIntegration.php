@@ -47,7 +47,7 @@ final class GetLatestProductScoresQueryIntegration extends DataQualityInsightsTe
             ]),
         ];
 
-        $productScoreCollections = $this->get(GetLatestProductScoresQuery::class)->byProductIdentifiers([
+        $productScoreCollections = $this->get('akeneo.pim.automation.data_quality_insights.public_api.get_latest_product_score_query')->byProductIdentifiers([
             $productA->getIdentifier(),
             $productB->getIdentifier(),
             $productD->getIdentifier(),
