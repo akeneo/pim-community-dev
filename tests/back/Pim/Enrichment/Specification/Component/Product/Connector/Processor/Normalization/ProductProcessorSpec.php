@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Proces
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\GetNormalizedProductQualityScores;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -31,7 +32,7 @@ class ProductProcessorSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
         FillMissingValuesInterface $fillMissingProductModelValues,
-        GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
+        GetNormalizedProductQualityScores $getNormalizedProductQualityScores,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
@@ -39,7 +40,7 @@ class ProductProcessorSpec extends ObjectBehavior
             $channelRepository,
             $attributeRepository,
             $fillMissingProductModelValues,
-            $getProductsWithQualityScores
+            $getNormalizedProductQualityScores
         );
 
         $this->setStepExecution($stepExecution);
@@ -193,7 +194,7 @@ class ProductProcessorSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
-        GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
+        GetNormalizedProductQualityScores $getNormalizedProductQualityScores,
         StepExecution $stepExecution,
         ChannelInterface $channel,
         LocaleInterface $locale,
@@ -263,8 +264,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $getProductsWithQualityScores->fromNormalizedProduct('a_product', Argument::any(), 'mobile', ['en_US', 'fr_FR'])
-            ->willReturn($normalizedProductWithQualityScores);
+        $getNormalizedProductQualityScores->__invoke('a_product','mobile', ['en_US', 'fr_FR'])
+            ->willReturn($normalizedProductWithQualityScores['quality_scores']);
 
         $this->process($product)->shouldBeLike($normalizedProductWithQualityScores);
     }
