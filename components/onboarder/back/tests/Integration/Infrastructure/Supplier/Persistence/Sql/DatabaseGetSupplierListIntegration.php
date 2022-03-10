@@ -24,7 +24,7 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
 
         for ($i = 1; $i <= 60; $i++) {
             $supplierRepository->save(Write\Supplier\Model\Supplier::create(
-                (string) Uuid::uuid4(),
+                Uuid::uuid4()->toString(),
                 sprintf('supplier_code_%d', $i),
                 sprintf('Supplier %d label', $i)
             ));
@@ -39,13 +39,13 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
         $supplierRepository = $this->get(Write\Supplier\Repository::class);
 
         $supplierRepository->save(Write\Supplier\Model\Supplier::create(
-            (string) Uuid::uuid4(),
+            Uuid::uuid4()->toString(),
             'walter_white',
             'Walter White'
         ));
 
         $supplierRepository->save(Write\Supplier\Model\Supplier::create(
-            (string) Uuid::uuid4(),
+            Uuid::uuid4()->toString(),
             'jessie_pinkman',
             'Jessie Pinkman'
         ));
@@ -60,7 +60,7 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
 
         for ($i = 1; $i <= 110; $i++) {
             $supplierRepository->save(Write\Supplier\Model\Supplier::create(
-                (string) Uuid::uuid4(),
+                Uuid::uuid4()->toString(),
                 sprintf('supplier_code_%d', $i),
                 sprintf('Supplier %d label', $i)
             ));
@@ -77,13 +77,13 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
         $supplierRepository = $this->get(Write\Supplier\Repository::class);
 
         $supplierRepository->save(Write\Supplier\Model\Supplier::create(
-            (string) Uuid::uuid4(),
+            Uuid::uuid4()->toString(),
             'supplier_code_b',
             'Supplier B label',
         ));
 
         $supplierRepository->save(Write\Supplier\Model\Supplier::create(
-            (string) Uuid::uuid4(),
+            Uuid::uuid4()->toString(),
             'supplier_code_a',
             'Supplier A label',
         ));

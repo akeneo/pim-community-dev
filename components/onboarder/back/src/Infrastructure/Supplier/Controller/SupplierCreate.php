@@ -21,7 +21,7 @@ final class SupplierCreate
 
     public function __invoke(Request $request): JsonResponse
     {
-        $supplierIdentifier = (string) Uuid::uuid4();
+        $supplierIdentifier = Uuid::uuid4()->toString();
         $supplierCode = $request->get('code');
         $supplierLabel = $request->get('label');
 

@@ -22,7 +22,7 @@ final class SupplierContext implements Context
         private InMemoryRepository $supplierRepository,
         private CreateSupplierHandler $createSupplierHandler,
     ) {
-        $this->supplierIdentifier = (string) Uuid::uuid4();
+        $this->supplierIdentifier = Uuid::uuid4()->toString();
     }
 
     /**
@@ -37,7 +37,7 @@ final class SupplierContext implements Context
      * @When I create a supplier with code ":code" and label ":label"
      * @When I create a supplier with code ":code"
      */
-    public function iCreateASupplierWithACodeAndALabel(string $code, ?string $label = null)
+    public function iCreateASupplierWithACodeAndALabel(string $code, ?string $label = null): void
     {
         try {
             ($this->createSupplierHandler)(new CreateSupplier($this->supplierIdentifier, $code, $label ?: $code));
@@ -49,7 +49,7 @@ final class SupplierContext implements Context
     /**
      * @Then I should have a supplier with code ":code" and label ":label"
      */
-    public function iShouldHaveASupplierWithCodeAndLabel(string $code, string $label)
+    public function iShouldHaveASupplierWithCodeAndLabel(string $code, string $label): void
     {
         $supplier = $this->supplierRepository->find(
             Supplier\ValueObject\Identifier::fromString($this->supplierIdentifier)
@@ -62,7 +62,7 @@ final class SupplierContext implements Context
     /**
      * @Given a supplier ":code"
      */
-    public function aSupplier(string $code)
+    public function aSupplier(string $code): void
     {
         $this->supplierRepository->save(Supplier\Model\Supplier::create(
             $this->supplierIdentifier,
@@ -74,7 +74,7 @@ final class SupplierContext implements Context
     /**
      * @Then an error is thrown because this supplier already exists
      */
-    public function aSupplierAlreadyExistsExceptionShouldBeThrown()
+    public function aSupplierAlreadyExistsExceptionShouldBeThrown(): void
     {
         Assert::assertInstanceOf(Supplier\Exception\SupplierAlreadyExistsException::class, $this->exception);
     }

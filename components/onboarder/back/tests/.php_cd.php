@@ -51,6 +51,7 @@ $rules = [
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
             // External dependencies coupling
             'Doctrine\DBAL\Connection',
+            'Ramsey\Uuid\Uuid',
             'Symfony',
         ],
     )->in('Akeneo\OnboarderSerenity\Infrastructure'),
@@ -64,8 +65,8 @@ $rules = [
             // PIM coupling
             // External dependencies coupling
             'Doctrine\DBAL\Connection',
-            'Symfony',
             'Ramsey\Uuid\Uuid',
+            'Symfony',
         ],
     )->in('Akeneo\OnboarderSerenity\Test\Integration'),
 
@@ -74,12 +75,27 @@ $rules = [
             // Onboarder coupling
             'Akeneo\OnboarderSerenity\Domain',
             'Akeneo\OnboarderSerenity\Application\Supplier',
-            'Akeneo\OnboarderSerenity\Infrastructure\Supplier\InMemoryRepository',
+            'Akeneo\OnboarderSerenity\Infrastructure\Supplier',
             // PIM coupling
             // External dependencies coupling
-            'PHPUnit\Framework\TestCase',
+            'PHPUnit\Framework',
+            'Ramsey\Uuid\Uuid',
         ],
     )->in('Akeneo\OnboarderSerenity\Test\Unit'),
+
+    $builder->only(
+        [
+            // Onboarder coupling
+            'Akeneo\OnboarderSerenity\Domain',
+            'Akeneo\OnboarderSerenity\Application\Supplier',
+            'Akeneo\OnboarderSerenity\Infrastructure\Supplier',
+            // PIM coupling
+            // External dependencies coupling
+            'Behat\Behat\Context\Context',
+            'PHPUnit\Framework',
+            'Ramsey\Uuid\Uuid',
+        ],
+    )->in('Akeneo\OnboarderSerenity\Test\Acceptance'),
 ];
 
 return new Configuration($rules, $finder);
