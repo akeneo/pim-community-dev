@@ -29,7 +29,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     protected IdentifiableObjectRepositoryInterface $channelRepository;
     protected AttributeRepositoryInterface $attributeRepository;
     protected FillMissingValuesInterface $fillMissingProductModelValues;
-    private ?GetProductsWithQualityScoresInterface $getProductsWithQualityScores;
+    private ?GetNormalizedProductQualityScores $getNormalizedProductQualityScores;
 
     protected ?StepExecution $stepExecution = null;
 
@@ -38,13 +38,13 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         IdentifiableObjectRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
         FillMissingValuesInterface $fillMissingProductModelValues,
-        ?GetProductsWithQualityScoresInterface $getProductsWithQualityScores = null
+        ?GetNormalizedProductQualityScores $getNormalizedProductQualityScores = null
     ) {
         $this->normalizer          = $normalizer;
         $this->channelRepository   = $channelRepository;
         $this->attributeRepository = $attributeRepository;
         $this->fillMissingProductModelValues = $fillMissingProductModelValues;
-        $this->getProductsWithQualityScores = $getProductsWithQualityScores;
+        $this->getNormalizedProductQualityScores = $getNormalizedProductQualityScores;
     }
 
     /**
@@ -85,10 +85,9 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             );
         }
 
-        if (null !== $this->getProductsWithQualityScores && $product instanceof ProductInterface && $this->hasFilterOnQualityScore($parameters)) {
-            $productStandard = $this->getProductsWithQualityScores->fromNormalizedProduct(
+        if (null !== $this->getNormalizedProductQualityScores && $product instanceof ProductInterface && $this->hasFilterOnQualityScore($parameters)) {
+            $productStandard['quality_scores'] = ($this->getNormalizedProductQualityScores)(
                 $product->getIdentifier(),
-                $productStandard,
                 $structure['scope'] ?? null,
                 $structure['locales'] ?? []
             );
