@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Repository;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiRequestCountRepositoryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalEventsApiRequestCountRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection as DbalConnection;
@@ -83,6 +84,6 @@ SQL;
 
     private function getEventsApiRequestCountRepository(): EventsApiRequestCountRepositoryInterface
     {
-        return $this->get('akeneo_connectivity.connection.persistence.repository.events_api_request_count');
+        return $this->get(DbalEventsApiRequestCountRepository::class);
     }
 }

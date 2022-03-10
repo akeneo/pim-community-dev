@@ -110,7 +110,7 @@ akeneo_connectivity.connection:
                     subtitle: Apps
                     title: Confirm deletion
                     description: You are about to delete your test app from this PIM.
-                    warning: By confirming the deletion, you will delete the test app on the marketplace page and the related connected app.
+                    warning: By confirming the deletion, you will delete the test app on the App Store page and the related connected app.
                     flash:
                         success: Test app successfully deleted.
                         error: Sorry, an error occured while deleting the test app.
@@ -204,8 +204,8 @@ akeneo_connectivity.connection:
                     scope_email: 'View your {{ email }} address'
                     consent:
                         label: 'I agree to this App’s Privacy Policy and Terms of Use, which can be viewed on the {{ app_marketplace_page }}.'
-                        app_marketplace_page: App marketplace page
-                        subtext: 'You acknowledge and agree that you will be redirected to a third party app. Akeneo is not responsible and cannot be held responsible for the content of this app. If you have any problems while visiting the marketplace, please {{ contact_us }}.'
+                        app_marketplace_page: App Store page
+                        subtext: 'You acknowledge and agree that you will be redirected to a third party app. Akeneo is not responsible and cannot be held responsible for the content of this app. If you have any problems while visiting the Akeneo App Store, please {{ contact_us }}.'
                         contact_us: contact us
                     firstname: firstname
                     lastname: lastname
