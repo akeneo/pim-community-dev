@@ -41,6 +41,7 @@ workflows:
                 checkout_ours: 'src/Akeneo/Platform/CommunityVersion.php **/translations/*.yml'
                 github_token: MICHEL_TAG_TOKEN
                 github_username: "micheltag"
+                slack_webhook: "${SLACK_URL_PULL_UP}"
                 filters:
                     branches:
                         only:
