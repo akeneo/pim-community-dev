@@ -56,8 +56,9 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
                 'APP_TENANT_ID' => $tenantId,
             ];
             if (preg_match('/^srnt-(.*)/', $tenantId, $matches)) {
-                $env['APP_DATABASE_HOST'] = sprintf('pim-mysql-srnt-%s', $matches[1]);
-                $env['APP_INDEX_HOSTS'] = sprintf('elasticsearch-client-srnt-%s', $matches[1]);
+                $env['APP_DATABASE_HOST'] = sprintf('pim-mysql.srnt-%s'.svc.cluster.local, $matches[1]);
+                $env['APP_INDEX_HOSTS'] = sprintf('elasticsearch-client.srnt-%s.svc.cluster.local', $matches[1]);
+                $env['MEMCACHED_SVC'] = sprintf('memcached.srnt-%s.svc.cluster.local', $matches[1]);
                 $env['SYMFONY_DOTENV_VARS'] = '';
             }
 
