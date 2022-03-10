@@ -5,8 +5,8 @@ services:
     akeneo_connectivity.connection.fixtures.connection_loader:
         class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader'
         arguments:
-            - '@akeneo_connectivity.connection.application.handler.create_connection'
-            - '@akeneo_connectivity.connection.application.handler.update_connection'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler'
 
     akeneo_connectivity.connection.fixtures.audit_loader:
         class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\AuditLoader'

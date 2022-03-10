@@ -1,46 +1,39 @@
 services:
-    akeneo_connectivity.connection.application.handler.create_connection:
-        class: 'Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler'
+    Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler:
         public: true
         arguments:
             - '@validator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
             - '@akeneo_connectivity.connection.service.client.create_client'
             - '@akeneo_connectivity.connection.service.user.create_user'
-            - '@akeneo_connectivity.connection.application.handler.find_a_connection'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHandler'
 
-    akeneo_connectivity.connection.application.handler.fetch_connections:
-        class: 'Akeneo\Connectivity\Connection\Application\Settings\Query\FetchConnectionsHandler'
+    Akeneo\Connectivity\Connection\Application\Settings\Query\FetchConnectionsHandler:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalSelectConnectionsQuery'
 
-    akeneo_connectivity.connection.application.handler.find_a_connection:
-        class: 'Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHandler'
+    Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHandler:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalSelectConnectionWithCredentialsByCodeQuery'
 
-    akeneo_connectivity.connection.application.handler.update_connection:
-        class: 'Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler'
+    Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler:
         arguments:
             - '@validator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
             - '@akeneo_connectivity.connection.service.user.update_user_permissions'
 
-    akeneo_connectivity.connection.application.handler.delete_connection:
-        class: 'Akeneo\Connectivity\Connection\Application\Settings\Command\DeleteConnectionHandler'
+    Akeneo\Connectivity\Connection\Application\Settings\Command\DeleteConnectionHandler:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
             - '@akeneo_connectivity.connection.service.client.delete_client'
             - '@akeneo_connectivity.connection.service.user.delete_user'
 
-    akeneo_connectivity.connection.application.handler.regenerate_connection_secret:
-        class: 'Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionSecretHandler'
+    Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionSecretHandler:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
             - '@akeneo_connectivity.connection.service.client.regenerate_client_secret'
 
-    akeneo_connectivity.connection.application.handler.regenerate_connection_password:
-        class: 'Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionPasswordHandler'
+    Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionPasswordHandler:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
             - '@akeneo_connectivity.connection.service.user.regenerate_user_password'
