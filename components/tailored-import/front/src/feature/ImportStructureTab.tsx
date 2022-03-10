@@ -13,7 +13,7 @@ import {
   DataMapping,
   FileStructure,
   StructureConfiguration,
-  updateDataMapping
+  updateDataMapping,
 } from './models';
 import {useFetchers} from './contexts';
 
@@ -46,7 +46,7 @@ const ImportStructureTab = ({
     fileKey: string,
     columns: Column[],
     identifierColumn: Column | null,
-    fileStructure: FileStructure,
+    fileStructure: FileStructure
   ): Promise<void> => {
     const attributeIdentifier = await attributeFetcher.fetchAttributeIdentifier();
 
@@ -60,7 +60,7 @@ const ImportStructureTab = ({
           data_mappings: [dataMapping],
         },
         file_key: fileKey,
-        file_structure: fileStructure
+        file_structure: fileStructure,
       });
     }
   };

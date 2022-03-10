@@ -12,11 +12,9 @@ import {
 } from 'akeneo-design-system';
 import Products from 'akeneo-design-system/static/illustrations/Products.svg';
 import {useTranslate, useUploader, ValidationError, formatParameters} from '@akeneo-pim-community/shared';
-import {useReadColumns} from '../hooks';
-import {Column, FileStructure, getDefaultFileStructure} from '../models';
-import {FileTemplateConfigurator} from './FileTemplateConfigurator/FileTemplateConfigurator';
-import {FileTemplateInformation} from '../models/FileTemplateInformation';
-import {useFileTemplateInformationFetcher} from '../hooks/useFileTemplateInformationFetcher';
+import {useReadColumns, useFileTemplateInformationFetcher} from '../hooks';
+import {Column, FileStructure, FileTemplateInformation, getDefaultFileStructure} from '../models';
+import {FileTemplateConfigurator} from '../components';
 
 const Container = styled.div`
   width: 100%;
@@ -39,7 +37,12 @@ const Content = styled.div`
 `;
 
 type InitializeFileStructureProps = {
-  onConfirm: (fileKey: string, columns: Column[], identifierColumn: Column | null, fileStructure: FileStructure) => void;
+  onConfirm: (
+    fileKey: string,
+    columns: Column[],
+    identifierColumn: Column | null,
+    fileStructure: FileStructure
+  ) => void;
 };
 
 const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
@@ -71,7 +74,8 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
       try {
         const columns = await readColumns(fileTemplateInformation.file_info.filePath, fileStructure);
 
-        const columnIdentifier = columns.find(column => column.index === fileStructure.column_identifier_position) ?? null;
+        const columnIdentifier =
+          columns.find(column => column.index === fileStructure.column_identifier_position) ?? null;
         onConfirm(fileTemplateInformation.file_info.filePath, columns, columnIdentifier, fileStructure);
         closeModal();
       } catch (validationErrors: any) {
@@ -88,23 +92,23 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
   };
 
   const handleSheetChange = async (sheetName: string) => {
-    if (!fileTemplateInformation) return;
-
-    const newFileStructure = {...getDefaultFileStructure(), sheet_name: sheetName};
-    setFileStructure(newFileStructure);
-    setFileTemplateInformation(
-      await fileTemplateInformationFetcher(fileTemplateInformation.file_info, newFileStructure)
-    );
+    if (fileTemplateInformation) {
+      const newFileStructure = {...getDefaultFileStructure(), sheet_name: sheetName};
+      setFileStructure(newFileStructure);
+      setFileTemplateInformation(
+        await fileTemplateInformationFetcher(fileTemplateInformation.file_info, newFileStructure)
+      );
+    }
   };
 
   const handleHeaderPositionChange = async (headerPosition: number) => {
-    if (!fileTemplateInformation) return;
-
-    const newFileStructure = {...fileStructure, header_line: headerPosition};
-    setFileStructure(newFileStructure);
-    setFileTemplateInformation(
-      await fileTemplateInformationFetcher(fileTemplateInformation.file_info, newFileStructure)
-    );
+    if (fileTemplateInformation) {
+      const newFileStructure = {...fileStructure, header_line: headerPosition};
+      setFileStructure(newFileStructure);
+      setFileTemplateInformation(
+        await fileTemplateInformationFetcher(fileTemplateInformation.file_info, newFileStructure)
+      );
+    }
   };
 
   const handleClose = () => {

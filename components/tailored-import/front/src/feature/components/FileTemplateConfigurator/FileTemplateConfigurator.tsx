@@ -1,6 +1,5 @@
 import React from 'react';
-import {FileStructure, generateColumnName} from '../../models';
-import {FileTemplateInformation} from '../../models/FileTemplateInformation';
+import {FileStructure, FileTemplateInformation, generateColumnName} from '../../models';
 import {NumberInput, SelectInput, Field} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
@@ -59,7 +58,6 @@ const FileTemplateConfigurator = ({
           ))}
         </SelectInput>
       </Field>
-      {/*header line vs header position to choose*/}
       <Field label={translate('akeneo.tailored_import.file_structure.modal.header_position')}>
         <NumberInput
           onChange={(headerPosition: string) => onHeaderPositionChange(parseInt(headerPosition))}
@@ -76,7 +74,6 @@ const FileTemplateConfigurator = ({
           max={500}
         />
       </Field>
-      {/** column position vs first column */}
       <Field label={translate('akeneo.tailored_import.file_structure.modal.column_position')}>
         <SelectInput
           readOnly={fileTemplateInformation.header_cells.length === 0}
@@ -99,7 +96,11 @@ const FileTemplateConfigurator = ({
           clearable={false}
           emptyResultLabel={translate('pim_common.no_result')}
           onChange={handleColumnIdentifierPositionChange}
-          value={identifierCellValue !== null ? generateColumnName(fileStructure.column_identifier_position, identifierCellValue) : null}
+          value={
+            identifierCellValue !== null
+              ? generateColumnName(fileStructure.column_identifier_position, identifierCellValue)
+              : null
+          }
           openLabel={translate('pim_common.open')}
         >
           {fileTemplateInformation.header_cells.map((headerCell, index) => (
@@ -113,4 +114,4 @@ const FileTemplateConfigurator = ({
   );
 };
 
-export { FileTemplateConfigurator };
+export {FileTemplateConfigurator};

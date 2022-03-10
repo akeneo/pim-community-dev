@@ -1,5 +1,5 @@
 import React from 'react';
-import {FileInfo} from "akeneo-design-system";
+import {FileInfo} from 'akeneo-design-system';
 import {screen, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {useUploader} from '@akeneo-pim-community/shared';
@@ -42,20 +42,16 @@ beforeEach(() => {
     }),
   ]);
   mockedUseReadColumns.mockImplementation(() => (): Column[] => mockedColumns);
-  mockFetchFileTemplate = jest.fn((fileInfo: FileInfo, fileStructure: FileStructure | null) =>
-  {
-    console.log('called', fileInfo, fileStructure);
-    return Promise.resolve(
-      {
-        file_info: {
-          originalFilename: 'foo.xlsx',
-          filePath: 'path/to/foo.xlsx'
-        },
-        current_sheet: 'currentTestSheet',
-        sheets: ['currentTestSheet', 'anotherTestSheet'],
-        header_cells: []
-      } as FileTemplateInformation
-    )
+  mockFetchFileTemplate = jest.fn((fileInfo: FileInfo, fileStructure: FileStructure | null) => {
+    return Promise.resolve({
+      file_info: {
+        originalFilename: 'foo.xlsx',
+        filePath: 'path/to/foo.xlsx',
+      },
+      current_sheet: 'currentTestSheet',
+      sheets: ['currentTestSheet', 'anotherTestSheet'],
+      header_cells: [],
+    } as FileTemplateInformation);
   });
   mockedUseFileTemplateInformationFetcher.mockImplementation(() => mockFetchFileTemplate);
 });
@@ -92,7 +88,7 @@ test('it can upload and send back a list of columns', async () => {
     header_line: 1,
     first_column: 0,
     product_line: 2,
-    sheet_name: "currentTestSheet",
+    sheet_name: 'currentTestSheet',
     column_identifier_position: 0,
   });
 });
@@ -184,8 +180,7 @@ test('it displays validation errors when read columns fails', async () => {
   mockedConsole.mockRestore();
 });
 
-
-test.only('', async () => {
+test('it refresh file information when sheet changed', async () => {
   const handleConfirm = jest.fn();
 
   await renderWithProviders(<InitializeFileStructure onConfirm={handleConfirm} />);
@@ -207,14 +202,48 @@ test.only('', async () => {
   expect(mockFetchFileTemplate).toHaveBeenCalledWith(
     {
       originalFilename: 'foo.xlsx',
-      filePath: 'path/to/foo.xlsx'
+      filePath: 'path/to/foo.xlsx',
     },
     {
       header_line: 1,
       first_column: 0,
       product_line: 2,
       sheet_name: 'anotherTestSheet',
-      column_identifier_position: 0
+      column_identifier_position: 0,
+    }
+  );
+});
+
+test('it refresh file information when header line changed', async () => {
+  const handleConfirm = jest.fn();
+
+  await renderWithProviders(<InitializeFileStructure onConfirm={handleConfirm} />);
+
+  userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.placeholder.button'));
+  await act(async () => {
+    userEvent.upload(
+      screen.getByPlaceholderText('akeneo.tailored_import.file_structure.modal.upload.placeholder'),
+      new File(['foo'], 'foo.xlsx', {type: 'application/vnd.ms-excel'})
+    );
+  });
+
+  await act(async () => {
+    const input = screen.getByLabelText('akeneo.tailored_import.file_structure.modal.header_position') as HTMLInputElement;
+    await userEvent.clear(input);
+    await userEvent.type(input, "2");
+  });
+
+  expect(mockFetchFileTemplate).toHaveBeenCalledWith(
+    {
+      originalFilename: 'foo.xlsx',
+      filePath: 'path/to/foo.xlsx',
+    },
+    {
+      header_line: 2,
+      first_column: 0,
+      product_line: 2,
+      sheet_name: 'currentTestSheet',
+      column_identifier_position: 0,
     }
   );
 });

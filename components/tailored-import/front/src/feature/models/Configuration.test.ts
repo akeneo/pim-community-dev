@@ -6,9 +6,7 @@ test('it generates column name', () => {
   expect(generateColumnName(26, 'Name')).toEqual('Name (AA)');
   expect(generateColumnName(51, 'Ref')).toEqual('Ref (AZ)');
   expect(generateColumnName(52, 'EAN')).toEqual('EAN (BA)');
-  expect(generateColumnName(1023, 'Far far away column')).toEqual(
-    'Far far away column (AMJ)'
-  );
+  expect(generateColumnName(1023, 'Far far away column')).toEqual('Far far away column (AMJ)');
   expect(generateColumnName(702, 'Triple')).toEqual('Triple (AAA)');
 });
 
