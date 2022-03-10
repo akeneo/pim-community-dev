@@ -7,7 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventSubscribers
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestFailedEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceededEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\MessageProcessedEvent;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiRequestCountRepositoryInterface;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\UpdateEventsApiRequestCountQueryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -16,12 +16,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 final class EventsApiRequestsLimitIncrementSubscriber implements EventSubscriberInterface
 {
-    private EventsApiRequestCountRepositoryInterface $repository;
     private int $count;
 
-    public function __construct(EventsApiRequestCountRepositoryInterface $repository)
+    public function __construct(private UpdateEventsApiRequestCountQueryInterface $updateEventsApiRequestCountQuery)
     {
-        $this->repository = $repository;
         $this->count = 0;
     }
 
@@ -45,7 +43,7 @@ final class EventsApiRequestsLimitIncrementSubscriber implements EventSubscriber
             return;
         }
 
-        $this->repository->upsert(new \DateTimeImmutable('now', new \DateTimeZone('UTC')), $this->count);
+        $this->updateEventsApiRequestCountQuery->execute(new \DateTimeImmutable('now', new \DateTimeZone('UTC')), $this->count);
         $this->count = 0;
     }
 }

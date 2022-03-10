@@ -1,24 +1,21 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence;
 
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiRequestCountRepositoryInterface;
-use Doctrine\DBAL\Connection as DbalConnection;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\UpdateEventsApiRequestCountQueryInterface;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 
 /**
- * @author    Pierre Jolly <pierre.jolly@akeneo.com>
- * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DbalEventsApiRequestCountRepository implements EventsApiRequestCountRepositoryInterface
+class DbalUpdateEventsApiRequestCountQuery implements UpdateEventsApiRequestCountQueryInterface
 {
-    private DbalConnection $dbalConnection;
-
-    public function __construct(DbalConnection $dbalConnection)
+    public function __construct(private Connection $dbalConnection)
     {
-        $this->dbalConnection = $dbalConnection;
     }
 
     /**
@@ -26,7 +23,7 @@ class DbalEventsApiRequestCountRepository implements EventsApiRequestCountReposi
      * `$dateTime` minute is used to determine the minute to update and to set the last `updated` date.
      * If the previous `updated` date is not from the current hour, then the count is reinitialized with the new count.
      */
-    public function upsert(\DateTimeImmutable $dateTime, int $eventCount): int
+    public function execute(\DateTimeImmutable $dateTime, int $eventCount): int
     {
         $upsertQuery = <<<SQL
 INSERT INTO akeneo_connectivity_connection_events_api_request_count (event_minute, event_count, updated)
@@ -36,10 +33,10 @@ ON DUPLICATE KEY UPDATE
     updated = :updated
 SQL;
 
-        return $this->dbalConnection->executeUpdate(
+        return $this->dbalConnection->executeStatement(
             $upsertQuery,
             [
-                'event_minute' => (int)$dateTime->format('i'),
+                'event_minute' => (int) $dateTime->format('i'),
                 'event_count' => $eventCount,
                 'updated' => $dateTime,
             ],
