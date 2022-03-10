@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 final class AkeneoOnboarderSerenityExtension extends Extension
 {
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $fileLocator = new FileLocator(__DIR__ . '/../Resources/config/');
         $loader = new DirectoryLoader($container, $fileLocator);

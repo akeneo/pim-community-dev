@@ -30,7 +30,7 @@ akeneo_data_quality_insights:
     quality:
       to_improve: 개선하려면
       good: 우수
-      in_progress: 처리 중
+      in_progress: 처리중
       n_a: 해당 사항 없음
   attribute_edit_form:
     quality_summary: 이 특성을 개선하면 {{ count }}개 제품의 전반적 품질이 개선됩니다.
