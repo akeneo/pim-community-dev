@@ -71,6 +71,15 @@ services:
         tags:
             - { name: console.command }
 
+    Akeneo\Tool\Bundle\BatchQueueBundle\Command\TenantWatchdogLauncherCommand:
+        arguments:
+            - '@monolog.logger'
+            - '@akeneo_batch_queue.manager.job_execution_manager'
+            - '%kernel.project_dir%'
+        tags:
+            - { name: console.command }
+            - { name: monolog.logger, channel: job_queue }
+
     Akeneo\Tool\Bundle\BatchQueueBundle\Command\MigrateJobMessagesFromOldQueueCommand:
         arguments:
             - '@akeneo_batch_queue.factory.job_execution_message'
