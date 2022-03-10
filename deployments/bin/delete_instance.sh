@@ -142,19 +142,7 @@ sleep 30
 
 gsutil rm -r gs://akecld-terraform${TF_BUCKET}/saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${PFID} || echo "FAILED : gsutil rm -r gs://akecld-terraform${TF_BUCKET}/saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${PFID}"
 
-echo "4 - Delete PV, PVC and PD"
-
-# Remove PV
-# Empty list is not an error
-LIST_PV_NAME=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" '[.items[] | select(.spec.claimRef.namespace == $PFID) | .metadata.name] | unique | .[]' || echo "")
-echo "PV list : "
-echo "${LIST_PV_NAME}"
-if [[ -n "${LIST_PV_NAME}" ]]; then
-  for PV_NAME in ${LIST_PV_NAME}; do
-    echo "Delete pv ${PV_NAME}"
-    kubectl delete pv ${PV_NAME}
-  done
-fi
+echo "4 - Delete PVC, PV and PD"
 
 # Remove PVC
 # Empty list is not an error
@@ -165,6 +153,18 @@ if [[ -n "${LIST_PVC_NAME}" ]]; then
   for PVC_NAME in ${LIST_PVC_NAME}; do
     echo "Delete pvc ${PVC_NAME}"
     kubectl delete pvc ${PVC_NAME} -n ${PFID}
+  done
+fi
+
+# Remove PV
+# Empty list is not an error
+LIST_PV_NAME=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" '[.items[] | select(.spec.claimRef.namespace == $PFID) | .metadata.name] | unique | .[]' || echo "")
+echo "PV list : "
+echo "${LIST_PV_NAME}"
+if [[ -n "${LIST_PV_NAME}" ]]; then
+  for PV_NAME in ${LIST_PV_NAME}; do
+    echo "Delete pv ${PV_NAME}"
+    kubectl delete pv ${PV_NAME}
   done
 fi
 
