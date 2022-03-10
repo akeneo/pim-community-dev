@@ -30,42 +30,6 @@ class ValidateQuantifiedAssociationsInProductModelEndToEnd extends AbstractProdu
     /**
      * @test
      */
-    public function it_returns_an_error_if_the_quantified_associations_format_is_invalid(): void
-    {
-        $client = $this->createAuthenticatedClient();
-        $code = 'garden_table_set';
-
-        $data = <<<JSON
-{
-    "code": "$code",
-    "family_variant": "familyVariantA1",
-    "quantified_associations": [
-        {"identifier": "chair", "quantity": 4}
-    ]
-}
-JSON;
-
-        $client->request('POST', '/api/rest/v1/product-models', [], [], [], $data);
-
-        $expectedContent = [
-            'code' => 422,
-            'message' => 'Property "quantified_associations" expects an array with valid data, association type code should be a string. Check the expected format on the API documentation.',
-            '_links' => [
-                'documentation' => [
-                    'href' => 'http://api.akeneo.com/api-reference.html#post_product_models'
-                ],
-            ],
-        ];
-
-        $response = $client->getResponse();
-
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
     public function it_returns_an_error_if_the_quantified_associations_data_is_invalid(): void
     {
         $client = $this->createAuthenticatedClient();
