@@ -56,7 +56,7 @@ final class UpsertProductCommand
                 Assert::null($familyUserIntent, 'A family user intent cannot be defined twice');
                 $familyUserIntent = $userIntent;
             } elseif ($userIntent instanceof CategoryUserIntent) {
-                Assert::null($enabledUserIntent, "Only one Category intent can be sent to the command.");
+                Assert::null($categoryUserIntent, 'Only one Category intent can be sent to the command.');
                 $categoryUserIntent = $userIntent;
             }
         }

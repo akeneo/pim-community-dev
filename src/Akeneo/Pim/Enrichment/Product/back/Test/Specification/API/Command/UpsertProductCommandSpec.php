@@ -8,7 +8,9 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
@@ -128,5 +130,33 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $this->productIdentifier()->shouldReturn('identifier1');
         $this->familyUserIntent()->shouldReturn($familyUserIntent);
         $this->valueUserIntents()->shouldReturn([$setTextValue, $setNumberValue, $setDateValue, $addMultiSelectValue]);
+    }
+
+    function it_cannot_be_constructed_with_multiple_set_enabled_intents()
+    {
+        $this->beConstructedThrough('createFromCollection', [
+            1,
+            'identifier1',
+            [
+                new SetEnabled(true),
+                new SetEnabled(false),
+            ]
+        ]);
+
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    function it_cannot_be_constructed_with_multiple_set_categories_intents()
+    {
+        $this->beConstructedThrough('createFromCollection', [
+            1,
+            'identifier1',
+            [
+                new SetCategories(['foo']),
+                new SetCategories(['bar']),
+            ]
+        ]);
+
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 }
