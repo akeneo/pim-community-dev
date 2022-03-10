@@ -14,6 +14,8 @@ namespace Akeneo\Pim\Permission\Bundle\Form\EventListener;
 use Akeneo\Pim\Permission\Bundle\Form\Type\CategoryPermissionsType;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\UserManagement\Component\Model\Group;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -90,15 +92,18 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
         $form = $event->getForm()->get('permissions');
 
         $viewRoles = $this->accessManager->getViewUserGroups($event->getData());
+        $viewRoles = $this->keepOnlyPublicGroups($viewRoles);
         $form->get('view')->setData($viewRoles);
         $this->previousRoles['view'] = ($viewRoles instanceof ArrayCollection) ? $viewRoles->toArray() : $viewRoles;
 
         $editRoles = $this->accessManager->getEditUserGroups($event->getData());
+        $editRoles = $this->keepOnlyPublicGroups($editRoles);
         $form->get('edit')->setData($editRoles);
         $this->previousRoles['edit'] = ($editRoles instanceof ArrayCollection) ? $editRoles->toArray() : $editRoles;
 
         if (isset($this->previousRoles['own'])) {
             $ownRoles = $this->accessManager->getOwnUserGroups($event->getData());
+            $ownRoles = $this->keepOnlyPublicGroups($ownRoles);
             $form->get('own')->setData($ownRoles);
             $this->previousRoles['own'] = ($ownRoles instanceof ArrayCollection) ? $ownRoles->toArray() : $ownRoles;
         }
@@ -117,9 +122,22 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
 
         $form = $event->getForm();
         if ($form->isValid()) {
-            $viewRoles = $form->get('permissions')->get('view')->getData();
-            $editRoles = $form->get('permissions')->get('edit')->getData();
-            $ownRoles = isset($this->previousRoles['own']) ? $form->get('permissions')->get('own')->getData() : [];
+            $currentViewRoles = $this->accessManager->getViewUserGroups($event->getData());
+            $currentEditRoles = $this->accessManager->getEditUserGroups($event->getData());
+            $currentOwnRoles = $this->accessManager->getOwnUserGroups($event->getData());
+
+            $hiddenViewRoles = $this->keepOnlyHiddenGroups($currentViewRoles);
+            $hiddenEditRoles = $this->keepOnlyHiddenGroups($currentEditRoles);
+            $hiddenOwnRoles = $this->keepOnlyHiddenGroups($currentOwnRoles);
+
+            $submittedViewRoles = $form->get('permissions')->get('view')->getData();
+            $submittedEditRoles = $form->get('permissions')->get('edit')->getData();
+            $submittedOwnRoles = isset($this->previousRoles['own']) ? $form->get('permissions')->get('own')->getData() : [];
+
+            $viewRoles = array_merge($submittedViewRoles, $hiddenViewRoles);
+            $editRoles = array_merge($submittedEditRoles, $hiddenEditRoles);
+            $ownRoles = array_merge($submittedOwnRoles, $hiddenOwnRoles);
+
             $this->accessManager->setAccess($event->getData(), $viewRoles, $editRoles, $ownRoles);
 
             $updateChildren = $form->get('permissions')->get('apply_on_children')->getData();
@@ -186,5 +204,29 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
         return null !== $event->getData()
             && null !== $event->getData()->getId()
             && $this->securityFacade->isGranted('pimee_enrich_category_edit_permissions');
+    }
+
+    /**
+     * @param GroupInterface[] $groups
+     *
+     * @return GroupInterface[]
+     */
+    private function keepOnlyPublicGroups(array $groups): array
+    {
+        return array_filter($groups, function ($group) {
+            return $group->getType() === Group::TYPE_DEFAULT;
+        });
+    }
+
+    /**
+     * @param GroupInterface[] $groups
+     *
+     * @return GroupInterface[]
+     */
+    private function keepOnlyHiddenGroups(array $groups): array
+    {
+        return array_filter($groups, function ($group) {
+            return $group->getType() !== Group::TYPE_DEFAULT;
+        });
     }
 }
