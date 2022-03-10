@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\OnboarderSerenity\Test\Unit\Infrastructure\Supplier\Persistence\InMemory;
 
 use Akeneo\OnboarderSerenity\Domain\Write;
-use Akeneo\OnboarderSerenity\Infrastructure\Supplier\InMemoryRepository;
-use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\InMemory\InMemoryGetSupplierList;
+use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Query\InMemory\InMemoryGetSupplierList;
+use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 

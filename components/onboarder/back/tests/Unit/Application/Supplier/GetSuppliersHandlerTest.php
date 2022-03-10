@@ -7,8 +7,8 @@ namespace Akeneo\OnboarderSerenity\Test\Unit\Application\Supplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliers;
 use Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliersHandler;
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier\Model\Supplier;
-use Akeneo\OnboarderSerenity\Infrastructure\Supplier\InMemoryRepository;
-use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\InMemory\InMemoryGetSupplierList;
+use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Query\InMemory\InMemoryGetSupplierList;
+use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 

@@ -1,7 +1,7 @@
 services:
     # Repositories
     Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository:
-        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\DatabaseRepository
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Repository\Sql\DatabaseRepository
         arguments:
             - '@database_connection'
 
@@ -17,12 +17,12 @@ services:
 
     # Queries
     Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList:
-        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Sql\DatabaseGetSupplierList
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Query\Sql\DatabaseGetSupplierList
         arguments:
             - '@database_connection'
 
     Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierCount:
-        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Sql\DatabaseGetSupplierCount
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Query\Sql\DatabaseGetSupplierCount
         arguments:
             - '@database_connection'
 

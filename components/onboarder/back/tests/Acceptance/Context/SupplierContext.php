@@ -8,9 +8,9 @@ use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler;
 use Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliers;
 use Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliersHandler;
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
 use Akeneo\OnboarderSerenity\Domain\Read;
-use Akeneo\OnboarderSerenity\Infrastructure\Supplier\InMemoryRepository;
+use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
+use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Repository\InMemory\InMemoryRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
@@ -64,7 +64,7 @@ final class SupplierContext implements Context
     }
 
     /**
-     * @When I retrieve suppliers
+     * @When I retrieve the suppliers
      */
     public function iRetrieveSuppliers()
     {
