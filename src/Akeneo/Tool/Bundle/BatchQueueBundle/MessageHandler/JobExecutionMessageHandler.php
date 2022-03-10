@@ -25,7 +25,6 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
     /** Interval in microseconds before checking if the process is still running. */
     private const RUNNING_PROCESS_CHECK_INTERVAL = 200000;
 
-    private GetJobInstanceCode $getJobInstanceCode;
     private JobExecutionManager $executionManager;
     private LoggerInterface $logger;
     private string $projectDir;
@@ -46,11 +45,10 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
     {
         $pathFinder = new PhpExecutableFinder();
         $console = sprintf('%s%sbin%sconsole', $this->projectDir, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
-
         $startTime = time();
         try {
             $arguments = array_merge(
-                [$pathFinder->find(), $console, 'akeneo:batch:job', '--quiet'],
+                [$pathFinder->find(), $console, 'akeneo:batch:watchdog', '--quiet'],
                 $this->extractArgumentsFromMessage($jobExecutionMessage)
             );
             $tenantId = $jobExecutionMessage->tenantId;
@@ -66,52 +64,29 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
             $process = new Process($arguments, null, $env);
             $process->setTimeout(null);
 
-            $this->logger->notice('Launching job execution "{job_execution_id}".', [
+            $this->logger->notice('Start job execution loop', [
+                'tenant_id' => $tenantId,
                 'job_execution_id' => $jobExecutionMessage->getJobExecutionId(),
             ]);
-            $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
+            $this->logger->debug('Start job execution loop', [
+                'tenant_id' => $tenantId,
+                'job_execution_id' => $jobExecutionMessage->getJobExecutionId(),
+                'command' => sprintf('Command line: "%s"', $process->getCommandLine()),
+            ]);
 
-            $this->executeProcess($process, $jobExecutionMessage);
+            $process->run();
         } catch (\Throwable $t) {
-            $this->logger->error(sprintf('An error occurred: %s', $t->getMessage()));
-            $this->logger->error($t->getTraceAsString());
-        } finally {
-            // update status if the job execution failed due to an uncatchable error as a fatal error
-            $exitStatus = $this->executionManager->getExitStatus($jobExecutionMessage);
-            if ($exitStatus && $exitStatus->isRunning()) {
-                $this->executionManager->markAsFailed($jobExecutionMessage->getJobExecutionId());
-            }
+            $this->logger->error('Job execution loop', [
+                'exception_message' => $t->getMessage(),
+                'trace' => $t->getTraceAsString(),
+            ]);
         }
 
         $executionTimeInSec = time() - $startTime;
-        $this->logger->notice('Job execution "{job_execution_id}" is finished in {execution_time_in_sec} seconds.', [
+        $this->logger->notice('Job execution finished', [
             'job_execution_id' => $jobExecutionMessage->getJobExecutionId(),
             'execution_time_in_sec' => $executionTimeInSec,
         ]);
-    }
-
-    private function executeProcess(Process $process, JobExecutionMessageInterface $jobExecutionMessage): void
-    {
-        $this->executionManager->updateHealthCheck($jobExecutionMessage);
-        $env = [];
-        $process->start(null, $env);
-
-        $nbIterationBeforeUpdatingHealthCheck = self::HEALTH_CHECK_INTERVAL * 1000000 / self::RUNNING_PROCESS_CHECK_INTERVAL;
-        $iteration = 1;
-        while ($process->isRunning()) {
-            if ($iteration < $nbIterationBeforeUpdatingHealthCheck) {
-                $iteration++;
-                usleep(self::RUNNING_PROCESS_CHECK_INTERVAL);
-
-                continue;
-            }
-
-            $this->writeProcessOutput($process);
-            $this->executionManager->updateHealthCheck($jobExecutionMessage);
-            $iteration = 1;
-        }
-
-        $this->writeProcessOutput($process);
     }
 
     /**
@@ -120,11 +95,7 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
      */
     private function extractArgumentsFromMessage(JobExecutionMessageInterface $jobExecutionMessage): array
     {
-        //$jobInstanceCode = $this->getJobInstanceCode->fromJobExecutionId($jobExecutionMessage->getJobExecutionId());
-        $jobInstanceCode = 'daemon_job';
-
         $arguments = [
-            $jobInstanceCode,
             $jobExecutionMessage->getJobExecutionId(),
         ];
 
@@ -137,13 +108,5 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
         }
 
         return $arguments;
-    }
-
-    private function writeProcessOutput(Process $process): void
-    {
-        $errors = $process->getIncrementalErrorOutput();
-        if ($errors) {
-            $this->logger->error($errors);
-        }
     }
 }

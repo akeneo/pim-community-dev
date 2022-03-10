@@ -62,12 +62,12 @@ class JobExecutionManager
     /**
      * Get the exit status of job execution associated to a job execution message.
      */
-    public function getExitStatus(JobExecutionMessageInterface $jobExecutionMessage): ?ExitStatus
+    public function getExitStatus(int $executionId): ?ExitStatus
     {
         $sql = 'SELECT je.exit_code FROM akeneo_batch_job_execution je WHERE je.id = :id';
 
         $stmt = $this->connection->prepare($sql);
-        $stmt->bindValue('id', $jobExecutionMessage->getJobExecutionId());
+        $stmt->bindValue('id', $executionId);
         $row = $stmt->executeQuery()->fetchAssociative();
 
         return isset($row['exit_code']) ? new ExitStatus($row['exit_code']) : null;
@@ -79,43 +79,43 @@ class JobExecutionManager
     public function markAsFailed(int $jobExecutionId): void
     {
         $sql = <<<SQL
-UPDATE 
-    akeneo_batch_job_execution je
-SET 
-    je.status = :status,
-    je.exit_code = :exit_code,
-    je.updated_time = :updated_time
-WHERE
-    je.id = :id;
-SQL;
+        UPDATE 
+            akeneo_batch_job_execution je
+        SET 
+            je.status = :status,
+            je.exit_code = :exit_code,
+            je.updated_time = :updated_time
+        WHERE
+            je.id = :id;
+        SQL;
 
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('id', $jobExecutionId);
         $stmt->bindValue('status', BatchStatus::FAILED);
         $stmt->bindValue('exit_code', ExitStatus::FAILED);
         $stmt->bindValue('updated_time', new \DateTime('now', new \DateTimeZone('UTC')), Types::DATETIME_MUTABLE);
-        $stmt->execute();
+        $stmt->executeStatement();
     }
 
     /**
      * Update the health check of the job execution associated to a job execution message.
      */
-    public function updateHealthCheck(JobExecutionMessageInterface $jobExecutionMessage): void
+    public function updateHealthCheck(int $jobExecutionId): void
     {
         $sql = <<<SQL
-UPDATE 
-    akeneo_batch_job_execution je
-SET 
-    je.health_check_time = :health_check_time,
-    je.updated_time = :updated_time
-WHERE
-    je.id = :id;
-SQL;
+        UPDATE 
+            akeneo_batch_job_execution je
+        SET 
+            je.health_check_time = :health_check_time,
+            je.updated_time = :updated_time
+        WHERE
+            je.id = :id;
+        SQL;
 
         $stmt = $this->connection->prepare($sql);
-        $stmt->bindValue('id', $jobExecutionMessage->getJobExecutionId());
+        $stmt->bindValue('id', $jobExecutionId);
         $stmt->bindValue('health_check_time', new \DateTime('now', new \DateTimeZone('UTC')), Types::DATETIME_MUTABLE);
         $stmt->bindValue('updated_time', new \DateTime('now', new \DateTimeZone('UTC')), Types::DATETIME_MUTABLE);
-        $stmt->execute();
+        $stmt->executeStatement();
     }
 }

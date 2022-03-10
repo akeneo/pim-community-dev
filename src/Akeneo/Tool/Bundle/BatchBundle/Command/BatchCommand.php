@@ -41,69 +41,26 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class BatchCommand extends Command
 {
     protected static $defaultName = 'akeneo:batch:job';
+    protected static $defaultDescription = '[DEPRECATED] Please use "akeneo:batch:publish-job-to-queue" to launch a registered job instance';
 
     const EXIT_SUCCESS_CODE = 0;
     const EXIT_ERROR_CODE = 1;
     const EXIT_WARNING_CODE = 2;
 
-
-    private LoggerInterface $logger;
-
-    /** @var BatchLogHandler */
-    private $batchLogHandler;
-
-    /** @var JobRepositoryInterface */
-    private $jobRepository;
-
-    private ManagerRegistry $doctrine;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var Notifier */
-    private $notifier;
-
-    /** @var JobRegistry */
-    private $jobRegistry;
-
-    /** @var JobParametersFactory */
-    private $jobParametersFactory;
-
-    /** @var JobParametersValidator */
-    private $jobParametersValidator;
-
-    /** @var string */
-    private $jobInstanceClass;
-
-    /** @var string */
-    private $jobExecutionClass;
-
     public function __construct(
-        LoggerInterface $logger,
-        BatchLogHandler $batchLogHandler,
-        JobRepositoryInterface $jobRepository,
-        ManagerRegistry $doctrine,
-        ValidatorInterface $validator,
-        Notifier $notifier,
-        JobRegistry $jobRegistry,
-        JobParametersFactory $jobParametersFactory,
-        JobParametersValidator $jobParametersValidator,
-        string $jobInstanceClass,
-        string $jobExecutionClass
+        private LoggerInterface $logger,
+        private BatchLogHandler $batchLogHandler,
+        private JobRepositoryInterface $jobRepository,
+        private ManagerRegistry $doctrine,
+        private ValidatorInterface $validator,
+        private Notifier $notifier,
+        private JobRegistry $jobRegistry,
+        private JobParametersFactory $jobParametersFactory,
+        private JobParametersValidator $jobParametersValidator,
+        private string $jobInstanceClass,
+        private string $jobExecutionClass
     ) {
         parent::__construct();
-
-        $this->logger = $logger;
-        $this->batchLogHandler = $batchLogHandler;
-        $this->jobRepository = $jobRepository;
-        $this->doctrine = $doctrine;
-        $this->validator = $validator;
-        $this->notifier = $notifier;
-        $this->jobRegistry = $jobRegistry;
-        $this->jobParametersFactory = $jobParametersFactory;
-        $this->jobParametersValidator = $jobParametersValidator;
-        $this->jobInstanceClass = $jobInstanceClass;
-        $this->jobExecutionClass = $jobExecutionClass;
     }
 
     /**
@@ -112,9 +69,6 @@ class BatchCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription(
-                '[DEPRECATED] Please use "akeneo:batch:publish-job-to-queue" to launch a registered job instance'
-            )
             ->addArgument('code', InputArgument::REQUIRED, 'Job instance code')
             ->addArgument('execution', InputArgument::OPTIONAL, 'Job execution id')
             ->addOption(
