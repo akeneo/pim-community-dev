@@ -33,7 +33,6 @@ class PopulateProductModelScoresAndKeyIndicatorsCommand extends Command
 
     protected function configure() :void
     {
-        $this->setHidden(true);
         $this->setDescription('Populate scores and key indicators for existing product models');
     }
 
