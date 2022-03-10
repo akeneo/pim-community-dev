@@ -12,15 +12,15 @@ use Webmozart\Assert\Assert;
  */
 final class SetCategories implements CategoryUserIntent
 {
-    /** @param array<string> $categoriesCodes */
-    public function __construct(private array $categoriesCodes)
+    /** @param array<string> $categoryCodes */
+    public function __construct(private array $categoryCodes)
     {
-        Assert::allStringNotEmpty($this->categoriesCodes);
+        Assert::allStringNotEmpty($this->categoryCodes);
     }
 
     /** @return array<string> */
-    public function categoriesCodes(): array
+    public function categoryCodes(): array
     {
-        return $this->categoriesCodes;
+        return $this->categoryCodes;
     }
 }

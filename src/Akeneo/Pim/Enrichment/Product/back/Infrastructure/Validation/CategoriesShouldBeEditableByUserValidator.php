@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
 use Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories;
-use Akeneo\Pim\Enrichment\Category\API\Query\GetReadCategories;
+use Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\CategoryUserIntent;
 use Symfony\Component\Validator\Constraint;
@@ -20,19 +20,22 @@ final class CategoriesShouldBeEditableByUserValidator extends ConstraintValidato
 {
     public function __construct(
         private GetOwnedCategories $getOwnedCategories,
-        private GetReadCategories $getReadCategories
+        private GetViewableCategories $getViewableCategories
     ) {
     }
 
     public function validate($categoryUserIntent, Constraint $constraint): void
     {
+        if(null === $categoryUserIntent) {
+            return;
+        }
         Assert::isInstanceOf($categoryUserIntent, CategoryUserIntent::class);
         Assert::isInstanceOf($constraint, CategoriesShouldBeEditableByUser::class);
 
         $command = $this->context->getRoot();
         Assert::isInstanceOf($command, UpsertProductCommand::class);
 
-        $categoryCodes = $categoryUserIntent->categoriesCodes();
+        $categoryCodes = $categoryUserIntent->categoryCodes();
         if ([] === $categoryCodes) {
             return;
         }
@@ -44,7 +47,7 @@ final class CategoriesShouldBeEditableByUserValidator extends ConstraintValidato
             return;
         }
 
-        $readCategories = $this->getReadCategories->forUserId($nonOwnedCategories, $command->userId());
+        $readCategories = $this->getViewableCategories->forUserId($nonOwnedCategories, $command->userId());
         $nonReadCategories = \array_values(\array_diff($nonOwnedCategories, $readCategories));
 
         if (\count($nonReadCategories) > 0) {

@@ -34,3 +34,10 @@ services:
     Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserIntentsShouldBeUnique:
         tags:
             - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\CategoriesShouldBeEditableByUserValidator:
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories'
+            - '@Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories'
+        tags:
+            - { name: validator.constraint_validator }

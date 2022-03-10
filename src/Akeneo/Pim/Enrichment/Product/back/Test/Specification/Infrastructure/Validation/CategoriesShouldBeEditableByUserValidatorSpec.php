@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
 use Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories;
-use Akeneo\Pim\Enrichment\Category\API\Query\GetReadCategories;
+use Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\CategoriesShouldBeEditableByUser;
@@ -20,11 +20,11 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 class CategoriesShouldBeEditableByUserValidatorSpec extends ObjectBehavior
 {
     function let(
-        GetOwnedCategories $getOwnedCategories,
-        GetReadCategories $getReadCategories,
-        ExecutionContext  $context
+        GetOwnedCategories    $getOwnedCategories,
+        GetViewableCategories $getViewableCategories,
+        ExecutionContext      $context
     ) {
-        $this->beConstructedWith($getOwnedCategories, $getReadCategories);
+        $this->beConstructedWith($getOwnedCategories, $getViewableCategories);
         $this->initialize($context);
     }
 
@@ -65,7 +65,7 @@ class CategoriesShouldBeEditableByUserValidatorSpec extends ObjectBehavior
     function it_allows_adding_a_read_access_category(
         ExecutionContext $context,
         GetOwnedCategories $getOwnedCategories,
-        GetReadCategories $getReadCategories
+        GetViewableCategories $getViewableCategories
     ) {
         $categoryUserIntent = new SetCategories(['master']);
 
@@ -75,7 +75,7 @@ class CategoriesShouldBeEditableByUserValidatorSpec extends ObjectBehavior
             categoryUserIntent: $categoryUserIntent
         ));
         $getOwnedCategories->forUserId(['master'], 1)->willReturn([]);
-        $getReadCategories->forUserId(['master'], 1)->willReturn(['master']);
+        $getViewableCategories->forUserId(['master'], 1)->willReturn(['master']);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate($categoryUserIntent, new CategoriesShouldBeEditableByUser());
@@ -84,7 +84,7 @@ class CategoriesShouldBeEditableByUserValidatorSpec extends ObjectBehavior
     function it_allows_adding_both_read_and_own_access_category(
         ExecutionContext $context,
         GetOwnedCategories $getOwnedCategories,
-        GetReadCategories $getReadCategories
+        GetViewableCategories $getViewableCategories
     ) {
         $categoryUserIntent = new SetCategories(['master', 'print', 'ecommerce']);
 
@@ -94,16 +94,16 @@ class CategoriesShouldBeEditableByUserValidatorSpec extends ObjectBehavior
             categoryUserIntent: $categoryUserIntent
         ));
         $getOwnedCategories->forUserId(['master', 'print', 'ecommerce'], 1)->willReturn(['print']);
-        $getReadCategories->forUserId(['master', 'ecommerce'], 1)->willReturn(['master', 'ecommerce']);
+        $getViewableCategories->forUserId(['master', 'ecommerce'], 1)->willReturn(['master', 'ecommerce']);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate($categoryUserIntent, new CategoriesShouldBeEditableByUser());
     }
 
     function it_adds_a_violation_when_adding_a_category_with_no_access(
-        ExecutionContext $context,
-        GetOwnedCategories $getOwnedCategories,
-        GetReadCategories $getReadCategories,
+        ExecutionContext                    $context,
+        GetOwnedCategories                  $getOwnedCategories,
+        GetViewableCategories               $getViewableCategories,
         ConstraintViolationBuilderInterface $constraintViolationBuilder
     ) {
         $constraint = new CategoriesShouldBeEditableByUser();
@@ -115,7 +115,7 @@ class CategoriesShouldBeEditableByUserValidatorSpec extends ObjectBehavior
             categoryUserIntent: $categoryUserIntent
         ));
         $getOwnedCategories->forUserId(['master'], 1)->willReturn([]);
-        $getReadCategories->forUserId(['master'], 1)->willReturn([]);
+        $getViewableCategories->forUserId(['master'], 1)->willReturn([]);
         $context->buildViolation($constraint->message)->shouldBeCalledOnce()->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalledOnce();
 

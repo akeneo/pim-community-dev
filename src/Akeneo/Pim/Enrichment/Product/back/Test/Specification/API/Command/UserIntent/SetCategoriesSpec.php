@@ -24,7 +24,7 @@ class SetCategoriesSpec extends ObjectBehavior
         $this->shouldHaveType(SetCategories::class);
         $this->shouldImplement(CategoryUserIntent::class);
 
-        $this->categoriesCodes()->shouldReturn(['categoryA', 'categoryB']);
+        $this->categoryCodes()->shouldReturn(['categoryA', 'categoryB']);
     }
 
     function it_requires_non_empty_values_in_array()

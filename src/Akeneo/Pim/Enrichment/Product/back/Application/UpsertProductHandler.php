@@ -230,7 +230,7 @@ final class UpsertProductHandler
 
         if ($command->categoryUserIntent() instanceof SetCategories) {
             $this->productUpdater->update($product, [
-                'categories' => $command->categoryUserIntent()->categoriesCodes(),
+                'categories' => $command->categoryUserIntent()->categoryCodes(),
             ]);
         }
     }

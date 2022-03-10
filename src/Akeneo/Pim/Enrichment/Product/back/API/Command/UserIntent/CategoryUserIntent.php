@@ -11,5 +11,5 @@ namespace Akeneo\Pim\Enrichment\Product\API\Command\UserIntent;
 interface CategoryUserIntent extends UserIntent
 {
     /** @return array<string> */
-    public function categoriesCodes(): array;
+    public function categoryCodes(): array;
 }
