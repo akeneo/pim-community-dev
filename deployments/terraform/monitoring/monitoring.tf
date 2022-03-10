@@ -26,8 +26,8 @@ resource "google_logging_metric" "login-response-time-distribution" {
 
 resource "google_monitoring_uptime_check_config" "https" {
   display_name = replace(var.dns_external, "/\\.$/", "")
-  timeout      = "30s"
-  period       = "60s"
+  timeout      = "60s"
+  period       = "300s"
   project      = var.google_project_id
 
   http_check {
