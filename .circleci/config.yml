@@ -1,16 +1,7 @@
 version: 2.1
 
 orbs:
-  slack: circleci/slack@3.4.2
   pull-up: akeneo-orbs/pull-up@1.0
-
-aliases:
-  - &slack-fail-post-step
-      post-steps:
-        - slack/status:
-            channel: ci
-            webhook: $SLACK_NIGHTLY_STATUS
-            fail_only: true
 
 jobs:
   checkout:
@@ -793,9 +784,6 @@ workflows:
           - test_back_phpunit:
                 requires:
                     - build_dev
-          - test_back_performance:
-                requires:
-                    - build_dev
           - test_back_data_migrations:
                 requires:
                     - build_dev
@@ -824,7 +812,6 @@ workflows:
                     - build_dev
           - pull_request_success:
                 requires:
-                    - test_back_performance
                     - test_back_behat_legacy
                     - test_onboarder_bundle
                     - test_database
@@ -838,47 +825,36 @@ workflows:
       jobs:
           - checkout
           - build_dev:
-                <<: *slack-fail-post-step
                 requires:
                     - checkout
           - test_front_code_style:
-                <<: *slack-fail-post-step
                 requires:
                     - build_dev
           - test_back_static_and_acceptance:
-                <<: *slack-fail-post-step
                 requires:
                     - build_dev
           - test_front_static_acceptance_and_integration:
-                <<: *slack-fail-post-step
                 requires:
                     - build_dev
           - test_back_phpunit:
-                <<: *slack-fail-post-step
                 requires:
                     - build_dev
           - test_back_integration_bounded_contexts:
-                <<: *slack-fail-post-step
                 requires:
                     - build_dev
           - test_back_integration_reference_entities:
-                <<: *slack-fail-post-step
                 requires:
                     - build_dev
           - test_back_performance:
-                <<: *slack-fail-post-step
                 requires:
                     - build_dev
           - test_onboarder_bundle:
-                <<: *slack-fail-post-step
                 requires:
                     - build_dev
           - test_back_behat_legacy:
-                <<: *slack-fail-post-step
                 requires:
                     - build_dev
           - test_back_data_migrations:
-                <<: *slack-fail-post-step
                 requires:
                     - build_dev
   pull_up:
