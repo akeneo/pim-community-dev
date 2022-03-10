@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query;
+namespace Akeneo\Connectivity\Connection\Domain\Audit\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\DateTimePeriod;
