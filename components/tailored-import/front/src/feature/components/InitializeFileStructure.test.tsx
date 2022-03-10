@@ -49,7 +49,7 @@ beforeEach(() => {
         filePath: 'path/to/foo.xlsx',
       },
       current_sheet: 'currentTestSheet',
-      sheets: ['currentTestSheet', 'anotherTestSheet'],
+      sheet_names: ['currentTestSheet', 'anotherTestSheet'],
       header_cells: [],
     } as FileTemplateInformation);
   });

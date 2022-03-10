@@ -25,7 +25,7 @@ test('it display correct value when provided with a templateInformation', async 
         {
           file_info: fileInfo,
           current_sheet: 'currentTestSheet',
-          sheets: ['currentTestSheet', 'anotherTestSheet'],
+          sheet_names: ['currentTestSheet', 'anotherTestSheet'],
           header_cells: ['sku', 'name', 'description'],
         } as FileTemplateInformation
       }
@@ -53,7 +53,7 @@ test('it dispatch an event when sheet is changed', async () => {
         {
           file_info: fileInfo,
           current_sheet: 'currentTestSheet',
-          sheets: ['currentTestSheet', 'anotherTestSheet'],
+          sheet_names: ['currentTestSheet', 'anotherTestSheet'],
           header_cells: ['sku', 'name', 'description'],
         } as FileTemplateInformation
       }
@@ -79,7 +79,7 @@ test('it dispatch an event when header position change', async () => {
         {
           file_info: fileInfo,
           current_sheet: 'currentTestSheet',
-          sheets: ['currentTestSheet', 'anotherTestSheet'],
+          sheet_names: ['currentTestSheet', 'anotherTestSheet'],
           header_cells: ['sku', 'name', 'description'],
         } as FileTemplateInformation
       }
@@ -105,7 +105,7 @@ test('it dispatch event when product position change', async () => {
         {
           file_info: fileInfo,
           current_sheet: 'currentTestSheet',
-          sheets: ['currentTestSheet', 'anotherTestSheet'],
+          sheet_names: ['currentTestSheet', 'anotherTestSheet'],
           header_cells: ['sku', 'name', 'description'],
         } as FileTemplateInformation
       }
@@ -131,7 +131,7 @@ test('it dispatch an event when column position change', async () => {
         {
           file_info: fileInfo,
           current_sheet: 'currentTestSheet',
-          sheets: ['currentTestSheet', 'anotherTestSheet'],
+          sheet_names: ['currentTestSheet', 'anotherTestSheet'],
           header_cells: ['sku', 'name', 'description'],
         } as FileTemplateInformation
       }
@@ -157,7 +157,7 @@ test('it dispatch an event when column identifier change', async () => {
         {
           file_info: fileInfo,
           current_sheet: 'currentTestSheet',
-          sheets: ['currentTestSheet', 'anotherTestSheet'],
+          sheet_names: ['currentTestSheet', 'anotherTestSheet'],
           header_cells: ['sku', 'name', 'description'],
         } as FileTemplateInformation
       }

@@ -51,7 +51,7 @@ const FileTemplateConfigurator = ({
           value={fileStructure.sheet_name}
           openLabel={translate('pim_common.open')}
         >
-          {fileTemplateInformation.sheets.map((sheetName: string) => (
+          {fileTemplateInformation.sheet_names.map((sheetName: string) => (
             <SelectInput.Option key={sheetName} value={sheetName}>
               {sheetName}
             </SelectInput.Option>

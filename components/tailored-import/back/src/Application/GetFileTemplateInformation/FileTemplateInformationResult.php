@@ -24,7 +24,7 @@ class FileTemplateInformationResult
     public function normalize(): array
     {
         return [
-          'sheets' => $this->sheetNames,
+          'sheet_names' => $this->sheetNames,
           'header_cells' => $this->headerCells,
         ];
     }
