@@ -1,16 +1,11 @@
-parameters:
-    akeneo_connectivity.connection.max_limit: 50
-
 services:
-    akeneo_connectivity.connection.validators.connection.code_must_be_unique:
-        class: Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\CodeMustBeUniqueValidator
+    Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\CodeMustBeUniqueValidator:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
         tags:
             - { name: validator.constraint_validator, alias: connection_code_must_be_unique }
 
-    akeneo_connectivity.connection.validators.connection.image_must_exist:
-        class: Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\ImageMustExistValidator
+    Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\ImageMustExistValidator:
         arguments:
             - '@akeneo_connectivity.connection.service.file_info.does_image_exist'
         tags:

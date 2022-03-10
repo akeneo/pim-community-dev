@@ -1,3 +1,6 @@
+parameters:
+    akeneo_connectivity.connection.max_limit: 50
+
 services:
     akeneo_connectivity.connection.service.client.create_client:
         class: Akeneo\Connectivity\Connection\Infrastructure\Client\Fos\CreateClient
