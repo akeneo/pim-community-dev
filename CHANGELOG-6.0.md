@@ -11,6 +11,7 @@
 - OCT-26: [Backport OCT-23] Locale permissions are removed from App when edited through settings menu
 - OCT-27: [Backport OCT-24] Prevent non-default usergroups from losing permissions on categories
 - PIM-10309: [Backport PIM-10291] Fix table attribute edit blocked when locale recently deleted from channel
+- PIM-10310: [Backport PIM-10289] DQI purge don't purge pimee_dqi_attribute_locale_quality table
 - PIM-10312: [Backport PIM-10284] Clean product values after reference entity removal
 
 # 6.0.7 (2022-02-25)

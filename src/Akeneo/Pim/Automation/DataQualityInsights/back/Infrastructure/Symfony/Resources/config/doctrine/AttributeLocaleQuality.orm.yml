@@ -15,3 +15,10 @@ Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Entity\Attribut
             column: quality
             type: string
             length: 20
+    manyToOne:
+        attribute:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\Attribute
+            joinColumn:
+                name: attribute_code
+                referencedColumnName: code
+                onDelete: CASCADE
