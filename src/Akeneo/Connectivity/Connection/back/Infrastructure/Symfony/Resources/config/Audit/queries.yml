@@ -32,7 +32,10 @@ services:
         arguments:
             - '@database_connection'
 
-    # To split into queries
-    Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalEventCountRepository:
+    Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalBulkInsertEventCountsQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalUpsertEventCountQuery:
         arguments:
             - '@database_connection'

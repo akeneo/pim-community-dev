@@ -7,7 +7,7 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventSubscr
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestFailedEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceededEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\MessageProcessedEvent;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiRequestCountRepositoryInterface;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\UpdateEventsApiRequestCountQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventSubscribers\EventsApiRequestsLimitIncrementSubscriber;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -19,9 +19,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class EventsApiRequestsLimitIncrementSubscriberSpec extends ObjectBehavior
 {
-    public function let(EventsApiRequestCountRepositoryInterface $repository): void
+    public function let(UpdateEventsApiRequestCountQueryInterface $eventsApiRequestCountQuery): void
     {
-        $this->beConstructedWith($repository);
+        $this->beConstructedWith($eventsApiRequestCountQuery);
     }
 
     public function it_is_initializable(): void
@@ -49,18 +49,19 @@ class EventsApiRequestsLimitIncrementSubscriberSpec extends ObjectBehavior
             ->shouldReturn(2);
     }
 
-    public function it_saves_request_count($repository): void
+    public function it_saves_request_count(UpdateEventsApiRequestCountQueryInterface $eventsApiRequestCountQuery): void
     {
-        $repository->upsert(Argument::type(\DateTimeImmutable::class), 1)
+        $eventsApiRequestCountQuery->execute(Argument::type(\DateTimeImmutable::class), 1)
             ->shouldBeCalled();
 
         $this->incrementRequestCount();
         $this->saveRequestCount();
     }
 
-    public function it_resets_the_request_count_to_zero_after_saving_it($repository): void
-    {
-        $repository->upsert(Argument::cetera())
+    public function it_resets_the_request_count_to_zero_after_saving_it(
+        UpdateEventsApiRequestCountQueryInterface $eventsApiRequestCountQuery
+    ): void {
+        $eventsApiRequestCountQuery->execute(Argument::cetera())
             ->shouldBeCalled();
 
         $this->incrementRequestCount();
@@ -70,9 +71,10 @@ class EventsApiRequestsLimitIncrementSubscriberSpec extends ObjectBehavior
             ->shouldReturn(1);
     }
 
-    public function it_doesnt_save_request_count_of_zero($repository): void
-    {
-        $repository->upsert(Argument::cetera())
+    public function it_doesnt_save_request_count_of_zero(
+        UpdateEventsApiRequestCountQueryInterface $eventsApiRequestCountQuery
+    ): void {
+        $eventsApiRequestCountQuery->execute(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->saveRequestCount();

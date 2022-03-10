@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Repository;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Webhook\Persistence;
 
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiRequestCountRepositoryInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalEventsApiRequestCountRepository;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\UpdateEventsApiRequestCountQueryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalUpdateEventsApiRequestCountQuery;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection as DbalConnection;
@@ -15,27 +15,27 @@ use PHPUnit\Framework\Assert;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DbalEventsApiRequestCountRepositoryIntegration extends TestCase
+class DbalUpdateEventsApiRequestCountQueryIntegration extends TestCase
 {
     public function test_it_updates_event_api_request_count_on_duplicate(): void
     {
-        $this->getEventsApiRequestCountRepository()->upsert(
+        $this->getUpdateEventsApiRequestCountQuery()->execute(
             new \DateTimeImmutable('2020-12-09 17:01:00', new \DateTimeZone('UTC')),
             6
         );
-        $this->getEventsApiRequestCountRepository()->upsert(
+        $this->getUpdateEventsApiRequestCountQuery()->execute(
             new \DateTimeImmutable('2020-12-09 17:02:12', new \DateTimeZone('UTC')),
             12
         );
-        $this->getEventsApiRequestCountRepository()->upsert(
+        $this->getUpdateEventsApiRequestCountQuery()->execute(
             new \DateTimeImmutable('2020-12-09 17:02:59', new \DateTimeZone('UTC')),
             18
         );
-        $this->getEventsApiRequestCountRepository()->upsert(
+        $this->getUpdateEventsApiRequestCountQuery()->execute(
             new \DateTimeImmutable('2020-12-09 18:03:00', new \DateTimeZone('UTC')),
             24
         );
-        $this->getEventsApiRequestCountRepository()->upsert(
+        $this->getUpdateEventsApiRequestCountQuery()->execute(
             new \DateTimeImmutable('2020-12-11 18:03:12', new \DateTimeZone('UTC')),
             24
         );
@@ -82,8 +82,8 @@ SQL;
         return $this->get('database_connection');
     }
 
-    private function getEventsApiRequestCountRepository(): EventsApiRequestCountRepositoryInterface
+    private function getUpdateEventsApiRequestCountQuery(): UpdateEventsApiRequestCountQueryInterface
     {
-        return $this->get(DbalEventsApiRequestCountRepository::class);
+        return $this->get(DbalUpdateEventsApiRequestCountQuery::class);
     }
 }

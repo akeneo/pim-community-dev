@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Tests\CatalogBuilder;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCountRepositoryInterface;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\BulkInsertEventCountsQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Doctrine\DBAL\Connection as DbalConnection;
 use Doctrine\DBAL\Types\Types;
@@ -17,23 +17,17 @@ use Doctrine\DBAL\Types\Types;
  */
 class AuditLoader
 {
-    /** @var DbalConnection */
-    private $dbalConnection;
-
-    /** @var EventCountRepositoryInterface */
-    private $eventCountRepository;
-
-    public function __construct(DbalConnection $dbalConnection, EventCountRepositoryInterface $eventCountRepository)
-    {
-        $this->dbalConnection = $dbalConnection;
-        $this->eventCountRepository = $eventCountRepository;
+    public function __construct(
+        private DbalConnection $dbalConnection,
+        private BulkInsertEventCountsQueryInterface $bulkInsertEventCountsQuery,
+    ) {
     }
 
     public function insert(
         HourlyEventCount $hourlyEventCount,
         \DateTimeInterface $updated = null
     ): void {
-        $this->eventCountRepository->bulkInsert([
+        $this->bulkInsertEventCountsQuery->execute([
             $hourlyEventCount
         ]);
 
