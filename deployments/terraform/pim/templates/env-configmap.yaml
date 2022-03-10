@@ -39,6 +39,7 @@ data:
   FLAG_ONBOARDER_ENABLED: "1"
   GCP_PROJECT_ID: {{ .Values.common.gcpProjectID | quote }}
   GOOGLE_APPLICATION_CREDENTIALS: /var/secrets/google/key.json
+  ONBOARDER_GOOGLE_APPLICATION_CREDENTIALS: /var/secrets/google/key.json
   ONBOARDER_TOPIC_NAME_FOR_PUBLICATION_TO_MIDDLEWARE: {{ .Values.onboarder.pubsub.topicPubMiddleware | quote }}
   ONBOARDER_TOPIC_NAME_FOR_PUBLICATION_TO_ONBOARDER: {{ .Values.onboarder.pubsub.topicPubOnboarder | quote }}
   ONBOARDER_TOPIC_NAME_FOR_CONSUMPTION: {{ .Values.onboarder.pubsub.topicCon | quote }}
