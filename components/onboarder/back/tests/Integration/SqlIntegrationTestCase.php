@@ -25,7 +25,7 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
         SQL);
     }
 
-    protected function get(string $service)
+    protected function get(string $service): ?object
     {
         return static::getContainer()->get($service);
     }

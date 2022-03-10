@@ -35,6 +35,17 @@ class Version_7_0_20220221151255_data_quality_insights_purge_attribute_quality_I
         $this->assertAttributHasNoQuality('pimee_dqi_attribute_quality');
     }
 
+    public function test_it_adds_foreign_key_on_data_quality_insights_attribute_tables_once(): void
+    {
+        $this->assertForeignKeyExists('pimee_dqi_attribute_locale_quality');
+        $this->assertForeignKeyExists('pimee_dqi_attribute_quality');
+
+        $this->reExecuteMigration(self::MIGRATION_LABEL);
+
+        $this->assertForeignKeyExists('pimee_dqi_attribute_locale_quality');
+        $this->assertForeignKeyExists('pimee_dqi_attribute_quality');
+    }
+
     private function getForeignKey(string $tableName): ?string
     {
         $sql = <<<SQL

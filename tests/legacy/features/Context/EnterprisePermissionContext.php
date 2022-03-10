@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Context;
 
+use Akeneo\Channel\Bundle\Doctrine\Repository\LocaleRepository;
+use Akeneo\Pim\Permission\Bundle\Manager\LocaleAccessManager;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
@@ -107,5 +110,44 @@ class EnterprisePermissionContext extends PimContext
     private function closeBackdrop()
     {
         $this->getSession()->executeScript("document.querySelector('[data-testid=backdrop]').click()");
+    }
+
+    /**
+     * @Then /^user group "([^"]*)" should have the following locale permissions:$/
+     */
+    public function userGroupShouldHaveTheFollowingLocalePermissions(string $userGroupName, TableNode $table)
+    {
+        /** @var LocaleRepository $localRepository */
+        $localeRepository = $this->getMainContext()->getContainer()->get('pim_catalog.repository.locale');
+
+        /** @var LocaleAccessManager $accessManager */
+        $localeAccessManager = $this->getMainContext()->getContainer()->get('pimee_security.manager.locale_access');
+
+        foreach ($table->getHash() as $data) {
+            $locale = $localeRepository->findOneByIdentifier($data['locale']);
+
+            $localeViewUserGroupsNames = array_map(
+                fn (GroupInterface $userGroup) => $userGroup->getName(),
+                $localeAccessManager->getViewUserGroups($locale),
+            );
+            $localeEditUserGroupsNames = array_map(
+                fn (GroupInterface $userGroup) => $userGroup->getName(),
+                $localeAccessManager->getEditUserGroups($locale),
+            );
+
+            $currentAccesses = [];
+            if (in_array($userGroupName, $localeViewUserGroupsNames)) {
+                $currentAccesses[] = 'view';
+            }
+            if (in_array($userGroupName, $localeEditUserGroupsNames)) {
+                $currentAccesses[] = 'edit';
+            }
+            sort($currentAccesses);
+
+            $expectedAccesses = 'none' === $data['accesses'] ? [] : array_map('trim', explode(',', $data['accesses']));
+            sort($expectedAccesses);
+
+            Assert::same($expectedAccesses, $currentAccesses);
+        }
     }
 }

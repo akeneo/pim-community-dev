@@ -1,7 +1,4 @@
-version: 2.1
 workflows:
-    version: 2
-
     blackhawks_dev_pull_request:
         when:
             not:

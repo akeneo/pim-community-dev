@@ -22,7 +22,9 @@ jobs:
             - run:
                   name: Merge all files
                   command: |
-                      yq eval-all '. as $item ireduce ({}; . *+ $item )' .circleci/jobs/*/*.yml .circleci/workflows/*.yml .circleci/workflows/*/*.yml > .circleci/merged_config.yml
+                      #     aliases.yml should be the first and last file merged in order to have a coherent configuration for aliases
+                      #       Because of this, the content of aliases.yml will be in top of the merged file, this requirement in needed by yaml file to call anchors
+                      yq eval-all '. as $item ireduce ({}; . *+ $item )' .circleci/*/aliases.yml .circleci/jobs/commands.yml .circleci/jobs/*/*.yml .circleci/jobs/*/*/*.yml .circleci/workflows/*.yml .circleci/workflows/*/*.yml .circleci/*/aliases.yml  > .circleci/merged_config.yml
                       cat .circleci/merged_config.yml
             - continuation/continue:
                   configuration_path: .circleci/merged_config.yml
