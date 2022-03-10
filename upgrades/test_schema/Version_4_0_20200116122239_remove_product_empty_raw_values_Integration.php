@@ -21,14 +21,14 @@ class Version_4_0_20200116122239_remove_product_empty_raw_values_Integration ext
     {
         $this->getConnection()->executeQuery('DELETE FROM pim_catalog_product');
         $sql = <<<SQL
-INSERT INTO pim_catalog_product (id, family_id, product_model_id, family_variant_id, is_enabled, identifier, raw_values, created, updated) VALUES
-    (NULL, NULL, NULL, NULL, 1, 'product1', '{"name": {"<all_channels>": {"<all_locales>": ""}}}', NOW(), NOW()),
-    (NULL, NULL, NULL, NULL, 1, 'product2', '{"name": {"<all_channels>": {"<all_locales>": []}}}', NOW(), NOW()),
-    (NULL, NULL, NULL, NULL, 1, 'product3', '{"name": {"<all_channels>": {"<all_locales>": [""]}}}', NOW(), NOW()),
-    (NULL, NULL, NULL, NULL, 1, 'product4', '{"name": {"<all_channels>": {"<all_locales>": null}}}', NOW(), NOW()),
-    (NULL, NULL, NULL, NULL, 1, 'product5', '{"name": {"<all_channels>": {"<all_locales>": ""}}, "foo": {"<all_channels>": {"<all_locales>": "bar"}}}', NOW(), NOW()),
-    (NULL, NULL, NULL, NULL, 1, 'product6', '{"name": {"<all_channels>": {"fr_FR": "", "en_US": "bar"}}}', NOW(), NOW()),
-    (NULL, NULL, NULL, NULL, 1, 'product7', '{"name": {"ecommerce": {"<all_locales>": ""}, "mobile": {"<all_locales>": "bar"}}}', NOW(), NOW())
+INSERT INTO pim_catalog_product (id, uuid, family_id, product_model_id, family_variant_id, is_enabled, identifier, raw_values, created, updated) VALUES
+    (NULL, UUID_TO_BIN(UUID()), NULL, NULL, NULL, 1, 'product1', '{"name": {"<all_channels>": {"<all_locales>": ""}}}', NOW(), NOW()),
+    (NULL, UUID_TO_BIN(UUID()), NULL, NULL, NULL, 1, 'product2', '{"name": {"<all_channels>": {"<all_locales>": []}}}', NOW(), NOW()),
+    (NULL, UUID_TO_BIN(UUID()), NULL, NULL, NULL, 1, 'product3', '{"name": {"<all_channels>": {"<all_locales>": [""]}}}', NOW(), NOW()),
+    (NULL, UUID_TO_BIN(UUID()), NULL, NULL, NULL, 1, 'product4', '{"name": {"<all_channels>": {"<all_locales>": null}}}', NOW(), NOW()),
+    (NULL, UUID_TO_BIN(UUID()), NULL, NULL, NULL, 1, 'product5', '{"name": {"<all_channels>": {"<all_locales>": ""}}, "foo": {"<all_channels>": {"<all_locales>": "bar"}}}', NOW(), NOW()),
+    (NULL, UUID_TO_BIN(UUID()), NULL, NULL, NULL, 1, 'product6', '{"name": {"<all_channels>": {"fr_FR": "", "en_US": "bar"}}}', NOW(), NOW()),
+    (NULL, UUID_TO_BIN(UUID()), NULL, NULL, NULL, 1, 'product7', '{"name": {"ecommerce": {"<all_locales>": ""}, "mobile": {"<all_locales>": "bar"}}}', NOW(), NOW())
 SQL;
 
         $this->getConnection()->executeQuery($sql);
