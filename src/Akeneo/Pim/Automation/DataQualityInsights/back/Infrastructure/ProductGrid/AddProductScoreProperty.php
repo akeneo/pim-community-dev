@@ -19,11 +19,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\AdditionalProperty;
  */
 final class AddProductScoreProperty implements AddAdditionalProductProperties
 {
-    private GetLatestProductScoresQueryInterface $getProductScores;
-
-    public function __construct(GetLatestProductScoresQueryInterface $getProductScores)
+    public function __construct(private GetLatestProductScoresQueryInterface $getProductScores)
     {
-        $this->getProductScores = $getProductScores;
     }
 
     /**

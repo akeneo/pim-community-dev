@@ -1,11 +1,14 @@
 import {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {fetchProductQualityScore} from '../../fetcher/ProductEditForm/fetchProductQualityScore';
+import {fetchProductModelQualityScore} from '../../fetcher/ProductEditForm/fetchProductModelQualityScore';
 import {ProductEditFormState} from '../../store';
-import {ProductQualityScore} from '../../../domain';
+import {QualityScoreModel} from '../../../domain';
 
 const MAXIMUM_RETRIES = 10;
 const RETRY_MILLISECONDS_DELAY = 500;
+
+type ProductType = 'product' | 'product_model';
 
 /**
  * @example
@@ -25,17 +28,18 @@ const getRetryDelay = (retry: number) => {
   return Math.pow(retry, 2) * RETRY_MILLISECONDS_DELAY;
 };
 
-const useFetchProductQualityScore = (channel: string | undefined, locale: string | undefined) => {
+const useFetchQualityScore = (channel: string | undefined, locale: string | undefined) => {
   const [retries, setRetries] = useState<number>(0);
-  const [qualityScore, setQualityScore] = useState<ProductQualityScore | null>(null);
+  const [qualityScore, setQualityScore] = useState<QualityScoreModel | null>(null);
   const [needsUpdate, setNeedsUpdate] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const {productId, productUpdatedDate, isProductEvaluating} = useSelector((state: ProductEditFormState) => {
+  const {productId, productUpdatedDate, isEvaluating, productType} = useSelector((state: ProductEditFormState) => {
     return {
       productId: state.product.meta.id,
+      productType: state.product.meta.model_type as ProductType,
       productUpdatedDate: state.product.updated,
-      isProductEvaluating: state.pageContext.isProductEvaluating,
+      isEvaluating: state.pageContext.isProductEvaluating,
     };
   });
 
@@ -48,12 +52,12 @@ const useFetchProductQualityScore = (channel: string | undefined, locale: string
   }, []);
 
   useEffect(() => {
-    if (isProductEvaluating && null !== productUpdatedDate) {
+    if (isEvaluating && null !== productUpdatedDate) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [isProductEvaluating]);
+  }, [isEvaluating]);
 
   useEffect(() => {
     setNeedsUpdate(true);
@@ -62,7 +66,7 @@ const useFetchProductQualityScore = (channel: string | undefined, locale: string
 
   useEffect(() => {
     if (productId && needsUpdate) {
-      loadProductQualityScore(productId, retries);
+      loadQualityScore(productId, retries);
     }
     if (false === needsUpdate) {
       setIsLoading(false);
@@ -85,10 +89,11 @@ const useFetchProductQualityScore = (channel: string | undefined, locale: string
     }
   }, [qualityScore, productId]);
 
-  const loadProductQualityScore = (productId: number, retries: number) => {
+  const loadQualityScore = (productId: number, retries: number) => {
     setTimeout(() => {
       (async () => {
-        const score = await fetchProductQualityScore(productId);
+        const fetcher = productType === 'product' ? fetchProductQualityScore : fetchProductModelQualityScore;
+        const score = await fetcher(productId);
         if (productId) {
           setQualityScore(score);
         }
@@ -101,7 +106,8 @@ const useFetchProductQualityScore = (channel: string | undefined, locale: string
   return {
     score,
     isLoading,
+    productType,
   };
 };
 
-export {useFetchProductQualityScore};
+export {useFetchQualityScore};

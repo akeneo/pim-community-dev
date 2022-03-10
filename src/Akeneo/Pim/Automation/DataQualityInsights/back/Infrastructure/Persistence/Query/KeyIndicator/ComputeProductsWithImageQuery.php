@@ -17,8 +17,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollec
  */
 final class ComputeProductsWithImageQuery implements ComputeProductsKeyIndicator
 {
-    public function __construct(private GetEvaluationRatesByProductsAndCriterionQueryInterface $getEvaluationRatesByProductAndCriterionQuery)
-    {
+    public function __construct(
+        private GetEvaluationRatesByProductsAndCriterionQueryInterface $getEvaluationRatesByProductAndCriterionQuery
+    ) {
     }
 
     public function getName(): string
@@ -28,7 +29,7 @@ final class ComputeProductsWithImageQuery implements ComputeProductsKeyIndicator
 
     public function compute(ProductIdCollection $productIdCollection): array
     {
-        $productsWithImageRates = $this->getEvaluationRatesByProductAndCriterionQuery->toArrayInt(
+        $productsWithImageRates = $this->getEvaluationRatesByProductAndCriterionQuery->execute(
             $productIdCollection,
             new CriterionCode(EvaluateImageEnrichment::CRITERION_CODE)
         );

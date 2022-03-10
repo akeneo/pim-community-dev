@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductModelScores;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductModelsIndex;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Symfony\Component\Console\Command\Command;
@@ -17,22 +19,21 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PopulateProductModelScoresCommand extends Command
+class PopulateProductModelScoresAndKeyIndicatorsCommand extends Command
 {
     private const BULK_SIZE = 1000;
-    protected static $defaultName = 'pim:data-quality-insights:populate-product-models-scores';
+    protected static $defaultName = 'pim:data-quality-insights:populate-product-models-scores-and-ki';
 
     public function __construct(
         private Connection $dbConnection,
-        private ConsolidateProductModelScores $consolidateProductModelScores,
-        private UpdateProductModelsIndex $updateProductModelsIndex,
+        private CreateCriteriaEvaluations $createCriteriaEvaluations
     ) {
         parent::__construct();
     }
 
     protected function configure() :void
     {
-        $this->setDescription('Populate scores for existing product models');
+        $this->setDescription('Populate scores and key indicators for existing product models');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -47,11 +48,20 @@ class PopulateProductModelScoresCommand extends Command
 
         $lastProductModelId = 0;
 
+        /**
+         * The criteria on completeness need to be re-evaluated in order to persist a missing data necessary for computing the enrichment status KI.
+         * By doing so, the scores of the product models will re-calculated, and they will be re-indexed after the evaluation, and so the key indicators will be computed too.
+         * So there's no need to manually force the calculation of the scores and the re-indexation here.
+         */
+        $completenessCriteria = [
+            new CriterionCode(EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE),
+            new CriterionCode(EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE),
+        ];
+
         while ($productModelIds = $this->getNextProductModelIds($lastProductModelId)) {
             try {
                 $productModelIdsCollection = ProductIdCollection::fromInts($productModelIds);
-                $this->consolidateProductModelScores->consolidate($productModelIdsCollection);
-                $this->updateProductModelsIndex->execute($productModelIdsCollection);
+                $this->createCriteriaEvaluations->create($completenessCriteria, $productModelIdsCollection);
                 $lastProductModelId = end($productModelIds);
             } catch (\Throwable $e) {
                 //Removes line in pim_one_time_task in order to be able to re-run the command if it previously failed
