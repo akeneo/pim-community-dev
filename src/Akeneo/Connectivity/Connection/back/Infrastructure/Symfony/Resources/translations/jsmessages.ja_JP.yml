@@ -16,11 +16,7 @@ pim_menu:
     connection_webhook_event_logs: イベントログ
     data_flows: データフロー
     connect_connection_settings: 接続設定
-    marketplace: マーケットプレイス
-    connected_apps: アプリ
 pim_title:
-  akeneo_connectivity_connection_connect_marketplace: マーケットプレイス
-  akeneo_connectivity_connection_connect_marketplace_profile: マーケットプレイス
   akeneo_connectivity_connection_connect_apps_activate: 接続
   akeneo_connectivity_connection_connect_apps_authorize: 接続
   akeneo_connectivity_connection_connect_apps_authenticate: 接続
@@ -35,7 +31,6 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: イベントサブスクリプション
   akeneo_connectivity_connection_webhook_event_logs: イベントログ
   akeneo_connectivity_connection_settings_redirect: 接続
-  akeneo_connectivity_connection_connect_connected_apps: アプリ
   akeneo_connectivity_connection_connect_connected_apps_edit: アプリの設定
   akeneo_connectivity_connection_connect_connected_apps_delete: アプリの削除
   akeneo_connectivity_connection_connect_marketplace_test_app_create: テストアプリを作成
@@ -44,13 +39,9 @@ akeneo_connectivity.connection:
   connect:
     marketplace:
       title: PIM を別のアプリケーションに接続しますか？🤟
-      sub_title: どのアプリケーションを Akeneo PIM に接続できるのか、マーケットプレイスでご覧ください。
-      link: マーケットプレイスにアクセス
       helper:
         title: '{0} お使いの PIM バージョンと互換性のあるアプリまたはコネクターがありません。|{1} お使いの PIM バージョンと互換性のあるアプリまたはコネクターが {{ count }} 個あります。|[2,Inf] お使いの PIM バージョンと互換性のあるアプリとコネクターが {{ count }} 個あります。'
         title_without_apps: '{0} お使いの PIM バージョンと互換性のあるコネクターがありません。|{1} お使いの PIM バージョンと互換性のあるコネクターが {{ count }} 個あります。|[2,Inf] お使いの PIM バージョンと互換性のあるコネクターが {{ count }} 個あります。'
-        description: これは概要です。詳細については Web マーケットプレイスをご覧ください。
-        link: ' Web マーケットプレイスに移動'
       card:
         developed_by: '開発者: {{ author }}'
         read_more: 続きを読む
@@ -65,7 +56,6 @@ akeneo_connectivity.connection:
         title: アプリ
         total: '{0} アプリなし|{1} 1 個のアプリ|[2,Inf] {{ total }} 個のアプリ'
         empty: お使いのバージョンと互換性のあるアプリがありません
-      unreachable: マーケットに接続できません。後でもう一度確認してください。
       scroll_to_top: 上までスクロール
       test_apps:
         title: マイテストアプリ
@@ -107,7 +97,6 @@ akeneo_connectivity.connection:
           subtitle: アプリ
           title: 削除を確認
           description: このPIMからテストアプリを削除しようとしています。
-          warning: 削除を確認すると、マーケットプレイスページのテストアプリと関連する接続アプリが削除されます。
           flash:
             success: テストアプリが正常に削除されました。
             error: 申し訳ございません、テストアプリを削除中にエラーが発生しました。
@@ -118,13 +107,11 @@ akeneo_connectivity.connection:
           total: '{0} アプリなし|{1} 1個のアプリ|[2,Inf] {{ total }} 個のアプリ'
           empty: 接続されているアプリがまだありません。
           check_marketplace: '使用可能なすべてのコンテンツを参照し、最初のアプリをインストールするには {{ marketplaceLink }} をチェックしてください。'
-          marketplace_link_anchor: マーケットプレイス
         test_apps:
           title: マイテストアプリ
           removed_user: 削除済みのユーザー
         helper:
           title: '[0,1] PIMは {{ count }} 個のアプリに接続されています。|[2,Inf] PIMは {{ count }} 個のアプリに接続されています。'
-          description_1: 新しいアプリが定期的に開発されているため、PIMの接続方法についてマーケットプレイスのページを頻繁にチェックし、最新情報をご確認ください。
           description_2: アプリに関する詳しい情報をご要望ですか？
           link: 詳細についてはヘルプセンターをご確認ください。
         card:
@@ -199,8 +186,6 @@ akeneo_connectivity.connection:
           helper_link: PIMにアプリで接続する方法
           consent:
             label: 'このアプリのプライバシーポリシーと利用規約に同意します。これらについては{{ app_marketplace_page }}でご覧いただけます。'
-            app_marketplace_page: アプリのマーケットプレイスページ
-            subtext: 'サードパーティのアプリにリダイレクトされることに同意したことになります。Akeneo はこのアプリのコンテンツについて一切の責任を負いません。マーケットプレイスで問題が発生した場合は、{{ contact_us }}ください。'
             contact_us: お問い合わせ
         authorize:
           title: '{{ app_name }} には以下が必要です:'

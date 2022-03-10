@@ -30,7 +30,6 @@ pim_enrich:
 pim_user.profile:
   caption: Afin de vous proposer un contenu plus pertinent et apprendre à mieux vous connaitre, dites-nous quelle est votre mission principale.
   why_is_it_needed: Pourquoi avons-nous besoin de ces informations ?
-  save_button: Enregistrer et accéder à la marketplace
   selector:
     placeholder: Sélectionnez une option
     not_found: Aucun résultat
