@@ -14,7 +14,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 
-final class GetNormalizedProductQualityScores implements GetNormalizedQualityScoresInterface
+class GetNormalizedProductQualityScores implements GetNormalizedQualityScoresInterface
 {
     public function __construct(
         private GetLatestProductScoresQueryInterface $getLatestProductScoresQuery,
