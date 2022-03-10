@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier;
+namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Repository\InMemory;
 
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
-use Symfony\Component\DependencyInjection\Attribute\When;
 
-#[When(env: 'test_fake')]
 class InMemoryRepository implements Supplier\Repository
 {
     private array $suppliers = [];
@@ -40,5 +38,10 @@ class InMemoryRepository implements Supplier\Repository
     public function count(): int
     {
         return count($this->suppliers);
+    }
+
+    public function findAll(): array
+    {
+        return $this->suppliers;
     }
 }

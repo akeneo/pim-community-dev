@@ -7,7 +7,7 @@ namespace Akeneo\OnboarderSerenity\Test\Unit\Application\Supplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler;
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
-use Akeneo\OnboarderSerenity\Infrastructure\Supplier\InMemoryRepository;
+use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
 
 final class CreateSupplierHandlerTest extends TestCase

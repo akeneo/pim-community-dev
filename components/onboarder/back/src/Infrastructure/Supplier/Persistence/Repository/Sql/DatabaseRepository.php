@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier;
+namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Repository\Sql;
 
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
 use Doctrine\DBAL\Connection;

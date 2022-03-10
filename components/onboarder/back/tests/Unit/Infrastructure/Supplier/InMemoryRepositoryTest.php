@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Test\Unit\Domain\Write\Supplier;
+namespace Akeneo\OnboarderSerenity\Test\Unit\Infrastructure\Supplier;
 
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
-use Akeneo\OnboarderSerenity\Infrastructure\Supplier\InMemoryRepository;
+use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
 
 final class InMemoryRepositoryTest extends TestCase
