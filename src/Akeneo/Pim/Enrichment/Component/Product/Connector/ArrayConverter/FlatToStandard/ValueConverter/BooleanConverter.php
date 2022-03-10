@@ -43,6 +43,8 @@ class BooleanConverter extends AbstractValueConverter
                 ],
                 'validators'
             ));
+        } else {
+            $data = $value;
         }
 
         return [$attributeFieldInfo['attribute']->getCode() => [[
