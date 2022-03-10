@@ -115,7 +115,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $familyUserIntent = new SetFamily('accessories');
         $setTextValue = new SetTextValue('name', null, null, 'foo');
         $setNumberValue = new SetNumberValue('name', null, null, 10);
-        $setDateValue = new SetDateValue('name', null, null, new \DateTime("2022-03-04T09:35:24+00:00"))
+        $setDateValue = new SetDateValue('name', null, null, new \DateTime("2022-03-04T09:35:24+00:00"));
         $addMultiSelectValue = new AddMultiSelectValue('name', null, null, ['optionA']);
 
         $this->beConstructedThrough('createFromCollection', [
