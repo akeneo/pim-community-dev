@@ -36,7 +36,7 @@ final class ComputeProductsSpellingStatusQuery implements ComputeProductsKeyIndi
 
     public function compute(ProductIdCollection $productIdCollection): array
     {
-        $productsSpellingRates = $this->getEvaluationRatesByProductAndCriterionQuery->toArrayInt(
+        $productsSpellingRates = $this->getEvaluationRatesByProductAndCriterionQuery->execute(
             $productIdCollection,
             new CriterionCode(EvaluateSpelling::CRITERION_CODE)
         );
