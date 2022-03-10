@@ -16,11 +16,7 @@ pim_menu:
     connection_webhook_event_logs: 이벤트 로그
     data_flows: 데이터 흐름
     connect_connection_settings: 연결 설정
-    marketplace: 마켓플레이스
-    connected_apps: 앱
 pim_title:
-  akeneo_connectivity_connection_connect_marketplace: 마켓플레이스
-  akeneo_connectivity_connection_connect_marketplace_profile: 마켓플레이스
   akeneo_connectivity_connection_connect_apps_activate: 연결
   akeneo_connectivity_connection_connect_apps_authorize: 연결
   akeneo_connectivity_connection_connect_apps_authenticate: 연결
@@ -35,7 +31,6 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: 이벤트 구독
   akeneo_connectivity_connection_webhook_event_logs: 이벤트 로그
   akeneo_connectivity_connection_settings_redirect: 연결
-  akeneo_connectivity_connection_connect_connected_apps: 앱
   akeneo_connectivity_connection_connect_connected_apps_edit: 앱 설정
   akeneo_connectivity_connection_connect_connected_apps_delete: 앱 삭제
   akeneo_connectivity_connection_connect_marketplace_test_app_create: 테스트 앱 만들기
@@ -44,13 +39,9 @@ akeneo_connectivity.connection:
   connect:
     marketplace:
       title: PIM을 다른 애플리케이션과 연결하시겠습니까? 🤟
-      sub_title: Akeneo 마켓플레이스에서 Akeneo PIM에 연결 가능한 애플리케이션을 확인해보십시오.
-      link: 마켓플레이스에 액세스
       helper:
         title: '{0} 사용 중인 PIM 버전과 호환되는 앱 또는 커넥터가 없습니다.|{1} 사용 중인 PIM 버전과 호환되는 앱 또는 커넥터가 {{ count }}개 있습니다.|[2,Inf] 사용 중인 PIM 버전과 호환되는 앱 및 커넥터가 {{ count }}개 있습니다.'
         title_without_apps: '{0} 사용 중인 PIM 버전과 호환되는 커넥터가 없습니다.|{1} 사용 중인 PIM 버전과 호환되는 커넥터가 {{ count }}개 있습니다.|[2,Inf] 사용 중인 PIM 버전과 호환되는 커넥터가 {{ count }}개 있습니다.'
-        description: 이는 간단한 개요입니다. 자세한 정보는 마켓플레이스에서 살펴보십시오.
-        link: 웹 마켓플레이스로 이동
       card:
         developed_by: '개발자: {{ author }}'
         read_more: 더보기
@@ -65,7 +56,6 @@ akeneo_connectivity.connection:
         title: 앱
         total: '{0} 앱 없음|{1} 1개 앱|[2,Inf] {{ total }}개 앱'
         empty: 사용 중인 버전과 호환되는 앱이 없습니다
-      unreachable: 마켓플레이스에 연결할 수 없습니다. 잠시 후 다시 시도하십시오.
       scroll_to_top: 맨 위로 스크롤
       test_apps:
         title: 내 테스트 앱
@@ -108,7 +98,6 @@ akeneo_connectivity.connection:
           subtitle: 앱
           title: 삭제 확인
           description: 이 PIM에서 테스트 앱을 삭제하려고 합니다.
-          warning: 삭제를 확인하면 마켓플레이스 페이지 및 관련된 연결 앱에서 테스트 앱이 삭제됩니다.
           flash:
             success: 테스트 앱이 삭제되었습니다.
             error: 죄송합니다. 테스트 앱을 삭제하는 동안 오류가 발생했습니다.
@@ -119,13 +108,11 @@ akeneo_connectivity.connection:
           total: '{0} 앱 없음|{1} 1개 앱|[2,Inf] {{ total }}개 앱'
           empty: 아직 연결된 앱이 없습니다.
           check_marketplace: '{{ marketplaceLink }}에서 제공되는 모든 콘텐츠를 살펴보고 첫 앱을 설치해보십시오.'
-          marketplace_link_anchor: 마켓플레이스
         test_apps:
           title: 내 테스트 앱
           removed_user: 제거된 사용자
         helper:
           title: '[0,1] PIM이 {{ count }}개 앱에 연결되어 있습니다.|[2,Inf] PIM이 {{ count }}개 앱에 연결되어 있습니다'
-          description_1: 새로운 앱이 꾸준히 개발되고 있으므로 계속 지켜봐주시고 마켓플레이스 페이지를 자주 확인하여 PIM을 연결하는 방법을 알아보십시오.
           description_2: 앱에 대해 더 알아보고 싶으십니까?
           link: 자세한 내용은 도움말 센터를 확인하십시오.
         card:
@@ -202,8 +189,6 @@ akeneo_connectivity.connection:
           scope_email: '{{ email }} 주소 확인'
           consent:
             label: '{{ app_marketplace_page }}에 나온 이 앱의 개인정보보호 및 이용약관에 동의합니다.'
-            app_marketplace_page: 앱 마켓플레이스 페이지
-            subtext: '귀하는 본인이 타사 앱으로 리디렉션된다는 사실을 확인하고 이에 동의합니다. Akeneo는 이 앱의 콘텐츠에 대해 어떠한 책임도 지지 않습니다. 마켓플레이스를 방문하는 동안 문제가 발생한 경우 {{ contact_us }}(으)로 문의하십시오.'
             contact_us: 문의하기
           firstname: 이름
           lastname: 성
