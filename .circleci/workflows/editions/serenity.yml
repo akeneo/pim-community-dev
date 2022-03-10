@@ -104,29 +104,9 @@ workflows:
                   <<: *slack-fail-post-step-srnt
                   requires:
                       - build_srnt_dev
-            - test_onboarder_lint_back:
-                  <<: *slack-fail-post-step-srnt
-                  requires:
-                      - build_srnt_dev
-            - test_onboarder_coupling:
-                  <<: *slack-fail-post-step-srnt
-                  requires:
-                      - build_srnt_dev
-            - test_onboarder_unit_back:
-                  <<: *slack-fail-post-step-srnt
-                  requires:
-                      - build_srnt_dev
-            - test_onboarder_unit_front:
-                  <<: *slack-fail-post-step-srnt
-                  requires:
-                      - build_srnt_dev
-            - test_onboarder_acceptance_back:
-                  <<: *slack-fail-post-step-srnt
-                  requires:
-                      - build_srnt_dev
-            - test_onboarder_integration_back:
-                  <<: *slack-fail-post-step-srnt
-                  requires:
+            - test_onboarder:
+                    <<: *slack-fail-post-step-srnt
+                    requires:
                       - build_srnt_dev
             - release:
                   <<: *slack-post-step-srnt
@@ -145,13 +125,7 @@ workflows:
                       - test_back_data_migrations
                       - test_deploy
                       - test_upgrade_from_last_release
-                      - test_onboarder_lint_back
-                      - test_onboarder_coupling
-                      - test_onboarder_unit_back
-                      - test_onboarder_unit_front
-                      - test_onboarder_acceptance_back
-                      - test_onboarder_integration_back
-
+                      - test_onboarder
 
 # Resume :
 #    on_demand_check_update_against_client workfow clones (on demand) existing clients and updates them with your code/migrations
@@ -416,22 +390,7 @@ workflows:
             - test_back_data_migrations:
                   requires:
                       - "[srnt] Build dev"
-            - test_onboarder_lint_back:
-                  requires:
-                      - "[srnt] Build dev"
-            - test_onboarder_coupling:
-                  requires:
-                      - "[srnt] Build dev"
-            - test_onboarder_unit_back:
-                  requires:
-                      - "[srnt] Build dev"
-            - test_onboarder_unit_front:
-                  requires:
-                      - "[srnt] Build dev"
-            - test_onboarder_acceptance_back:
-                  requires:
-                      - "[srnt] Build dev"
-            - test_onboarder_integration_back:
+            - test_onboarder:
                   requires:
                       - "[srnt] Build dev"
             - test_cronjobs_existence:
@@ -479,12 +438,7 @@ workflows:
                       - test_back_performance
                       - test_back_behat_legacy
                       - test_back_data_migrations
-                      - test_onboarder_lint_back
-                      - test_onboarder_coupling
-                      - test_onboarder_unit_back
-                      - test_onboarder_unit_front
-                      - test_onboarder_acceptance_back
-                      - test_onboarder_integration_back
+                      - test_onboarder
             - release:
                   name: "[<< matrix.PRODUCT_TYPE >>] Release"
                   matrix:

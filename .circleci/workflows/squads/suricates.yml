@@ -21,29 +21,9 @@ workflows:
       - build_srnt_dev:
           requires:
             - checkout
-      - test_onboarder_lint_back:
+      - test_onboarder:
            requires:
-            - build_srnt_dev
-      - test_onboarder_coupling:
-           requires:
-            - build_srnt_dev
-      - test_onboarder_unit_back:
-          requires:
-            - build_srnt_dev
-      - test_onboarder_unit_front:
-          requires:
-            - build_srnt_dev
-      - test_onboarder_acceptance_back:
-          requires:
-            - build_srnt_dev
-      - test_onboarder_integration_back:
-          requires:
             - build_srnt_dev
       - pull_request_success:
           requires:
-            - test_onboarder_lint_back
-            - test_onboarder_coupling
-            - test_onboarder_unit_back
-            - test_onboarder_unit_front
-            - test_onboarder_acceptance_back
-            - test_onboarder_integration_back
+            - test_onboarder
