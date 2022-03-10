@@ -5,35 +5,57 @@ declare(strict_types=1);
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\InMemory;
 
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList;
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Read;
+use Akeneo\OnboarderSerenity\Domain\Write;
+use Akeneo\OnboarderSerenity\Infrastructure\Supplier\InMemoryRepository;
 
 final class InMemoryGetSupplierList implements GetSupplierList
 {
-    private array $suppliers = [];
-
-    public function save(Supplier\Model\Supplier $supplier): void
+    public function __construct(private InMemoryRepository $repository)
     {
-        $this->suppliers[$supplier->identifier()] = $supplier;
     }
 
     public function __invoke(int $page = 1, string $search = ''): array
     {
-        return '' === $search
-            ?
-            array_slice(
-                $this->suppliers,
-                self::NUMBER_OF_SUPPLIERS_PER_PAGE * ($page - 1),
-                self::NUMBER_OF_SUPPLIERS_PER_PAGE
-            )
-            :
-            array_slice(
-                array_filter(
-                    $this->suppliers,
-                    fn (Supplier\Model\Supplier $supplier) => 1 <= strpos($supplier->label(), $search)
-                ),
-                self::NUMBER_OF_SUPPLIERS_PER_PAGE * ($page - 1),
-                self::NUMBER_OF_SUPPLIERS_PER_PAGE
-            )
+        $suppliers = $this->repository->findAll();
+
+        $suppliers = '' === $search ?
+            $this->paginateSuppliers($suppliers, $page) :
+            $this->paginateSuppliers($this->filterSuppliers($suppliers, $search), $page)
         ;
+        $this->sortByLabel($suppliers);
+
+        return $this->buildReadModels($suppliers);
+    }
+
+    private function paginateSuppliers(array $suppliers, int $page): array
+    {
+        return array_slice(
+            $suppliers,
+            self::NUMBER_OF_SUPPLIERS_PER_PAGE * ($page - 1),
+            self::NUMBER_OF_SUPPLIERS_PER_PAGE
+        );
+    }
+
+    private function filterSuppliers(array $suppliers, string $search): array
+    {
+        return array_filter(
+            $suppliers,
+            fn (Write\Supplier\Model\Supplier $supplier) => 1 <= strpos($supplier->label(), $search)
+        );
+    }
+
+    private function sortByLabel(array &$suppliers)
+    {
+        uasort($suppliers, function (Write\Supplier\Model\Supplier $supplier1, Write\Supplier\Model\Supplier $supplier2) {
+            return strcmp($supplier1->label(), $supplier2->label());
+        });
+    }
+
+    private function buildReadModels(array $suppliers): array
+    {
+        return array_map(function (Write\Supplier\Model\Supplier $supplier) {
+            return new Read\Supplier\Model\Supplier($supplier->identifier(), $supplier->code(), $supplier->label());
+        }, $suppliers);
     }
 }

@@ -41,4 +41,9 @@ class InMemoryRepository implements Supplier\Repository
     {
         return count($this->suppliers);
     }
+
+    public function findAll(): array
+    {
+        return $this->suppliers;
+    }
 }
