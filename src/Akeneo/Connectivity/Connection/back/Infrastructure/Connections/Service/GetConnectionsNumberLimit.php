@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Connections;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Connections\Service;
 
 /**
  * The following class is introduced to ease testability of classes that might require it.

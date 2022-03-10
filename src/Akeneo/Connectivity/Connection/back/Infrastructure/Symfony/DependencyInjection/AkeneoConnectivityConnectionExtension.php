@@ -37,6 +37,8 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('Audit/install.yml');
         $loader->load('Audit/queries.yml');
 
+        $loader->load('Connections/services.yml');
+
         $loader->load('ErrorManagement/commands.yml');
         $loader->load('ErrorManagement/controllers.yml');
         $loader->load('ErrorManagement/event_subscribers.yml');
