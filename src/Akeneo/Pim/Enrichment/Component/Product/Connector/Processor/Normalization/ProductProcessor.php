@@ -24,26 +24,15 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
-    protected NormalizerInterface $normalizer;
-    protected IdentifiableObjectRepositoryInterface $channelRepository;
-    protected AttributeRepositoryInterface $attributeRepository;
-    protected FillMissingValuesInterface $fillMissingProductModelValues;
-    private ?GetNormalizedProductQualityScores $getNormalizedProductQualityScores;
-
     protected ?StepExecution $stepExecution = null;
 
     public function __construct(
-        NormalizerInterface $normalizer,
-        IdentifiableObjectRepositoryInterface $channelRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        FillMissingValuesInterface $fillMissingProductModelValues,
-        ?GetNormalizedProductQualityScores $getNormalizedProductQualityScores = null
+        protected NormalizerInterface $normalizer,
+        protected IdentifiableObjectRepositoryInterface $channelRepository,
+        protected AttributeRepositoryInterface $attributeRepository,
+        protected FillMissingValuesInterface $fillMissingProductModelValues,
+        private GetNormalizedQualityScoresInterface $getNormalizedQualityScores
     ) {
-        $this->normalizer          = $normalizer;
-        $this->channelRepository   = $channelRepository;
-        $this->attributeRepository = $attributeRepository;
-        $this->fillMissingProductModelValues = $fillMissingProductModelValues;
-        $this->getNormalizedProductQualityScores = $getNormalizedProductQualityScores;
     }
 
     /**
@@ -84,9 +73,9 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             );
         }
 
-        if (null !== $this->getNormalizedProductQualityScores && $product instanceof ProductInterface && $this->hasFilterOnQualityScore($parameters)) {
-            $productStandard['quality_scores'] = ($this->getNormalizedProductQualityScores)(
-                $product->getIdentifier(),
+        if ($this->hasFilterOnQualityScore($parameters)) {
+            $productStandard['quality_scores'] = ($this->getNormalizedQualityScores)(
+                $product instanceof ProductModelInterface ? $product->getCode() : $product->getIdentifier(),
                 $structure['scope'] ?? null,
                 $structure['locales'] ?? []
             );

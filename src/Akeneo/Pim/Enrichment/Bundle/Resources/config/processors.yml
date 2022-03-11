@@ -95,6 +95,7 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.product_model.fill_missing_values'
+            - '@pim_connector.processor.normalization.get_normalized_product_model_quality_scores'
 
     pim_connector.processor.attribute_filter.product_model:
         class: 'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\ProductModelAttributeFilter'
