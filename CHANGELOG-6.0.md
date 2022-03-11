@@ -8,6 +8,7 @@
 - PIM-10305: Do not allow disabled user to login
 - PLG-781: Fix migration task related to calculating product quality scores to be independent of the JobExecution implementation
 - RAC-1223: [Backport] RAC-1215: fix error when attributeOption doesn't have label
+- PIM-10308: [Backport PIM-10292] Fix error 500 when role page contain a validation errors
 
 # 6.0.7 (2022-02-25)
 
@@ -201,7 +202,6 @@
 
 - PIM-9716: Autoselect last element of pasted list in choice filter
 - PIM-9985: Improve channels sentence display in the settings menu
-- PIM-10307: [Backport PIM-10293] add batch-size option to pim:completness:calculate command
 
 # Technical Improvements
 
