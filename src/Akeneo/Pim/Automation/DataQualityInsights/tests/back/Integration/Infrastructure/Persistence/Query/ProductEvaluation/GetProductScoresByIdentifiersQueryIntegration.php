@@ -19,7 +19,7 @@ use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsigh
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetLatestProductScoresByIdentifiersQueryIntegration extends DataQualityInsightsTestCase
+final class GetProductScoresByIdentifiersQueryIntegration extends DataQualityInsightsTestCase
 {
     public function test_it_returns_the_latest_scores_by_product_identifiers()
     {
