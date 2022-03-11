@@ -19,24 +19,6 @@ jobs:
                     name: Load archived docker PHP image
                     command: docker load -i php-pim-image.tar
             -   run:
-                    name: Run lint back for Onboarder Serenity
-                    command: PIM_CONTEXT=onboarder-serenity make lint-back
-            -   run:
-                    name: Run coupling detector for Onboarder Serenity
-                    command: PIM_CONTEXT=onboarder-serenity make coupling
-            -   run:
-                    name: Run unused requirements detector for Onboarder Serenity
-                    command: PIM_CONTEXT=onboarder-serenity make coupling-list-unused-requirements
-            -   run:
-                    name: Run Back Unit tests for Onboarder Serenity
-                    command: PIM_CONTEXT=onboarder-serenity make unit-back
-            -   run:
-                    name: Run Front Unit tests for Onboarder Serenity
-                    command: PIM_CONTEXT=onboarder-serenity make unit-front
-            -   run:
-                    name: Run Acceptance back tests for Onboarder Serenity
-                    command: PIM_CONTEXT=onboarder-serenity make acceptance-back
-            -   run:
                     name: Start containers
                     command: |
                         APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
@@ -45,7 +27,7 @@ jobs:
                     name: Install database
                     command: APP_ENV=test make database
             -   run:
-                    name: Run Back Integration tests for Onboarder Serenity
-                    command: PIM_CONTEXT=onboarder-serenity make integration
+                    name: Run tests for Onboarder Serenity
+                    command: PIM_CONTEXT=onboarder-serenity make -j tests-onboarder
             - store_test_results:
-                path: var/tests/phpunit
+                path: var/tests/onboarder
