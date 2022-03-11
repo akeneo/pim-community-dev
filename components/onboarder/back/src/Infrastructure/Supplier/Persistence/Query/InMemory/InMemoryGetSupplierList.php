@@ -45,7 +45,7 @@ final class InMemoryGetSupplierList implements GetSupplierList
         );
     }
 
-    private function sortByLabel(array &$suppliers)
+    private function sortByLabel(array &$suppliers): void
     {
         uasort($suppliers, function (Write\Supplier\Model\Supplier $supplier1, Write\Supplier\Model\Supplier $supplier2) {
             return strcmp($supplier1->label(), $supplier2->label());

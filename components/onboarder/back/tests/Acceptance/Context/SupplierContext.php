@@ -66,7 +66,7 @@ final class SupplierContext implements Context
     /**
      * @When I retrieve the suppliers
      */
-    public function iRetrieveSuppliers()
+    public function iRetrieveSuppliers(): void
     {
         $this->suppliers = ($this->getSuppliersHandler)(new GetSuppliers());
     }
@@ -95,11 +95,11 @@ final class SupplierContext implements Context
     /**
      * @Then I should have the following suppliers:
      */
-    public function iShouldHaveTheFollowingSuppliers(TableNode $properties)
+    public function iShouldHaveTheFollowingSuppliers(TableNode $properties): void
     {
-        $expectecSuppliers = $properties->getHash();
+        $expectedSuppliers = $properties->getHash();
         $actualSuppliers = array_map(fn (Read\Supplier\Model\Supplier $supplier) => ['code' => $supplier->code, 'label' => $supplier->label], $this->suppliers);
 
-        Assert::assertSame($expectecSuppliers, array_values($actualSuppliers));
+        Assert::assertSame($expectedSuppliers, array_values($actualSuppliers));
     }
 }
