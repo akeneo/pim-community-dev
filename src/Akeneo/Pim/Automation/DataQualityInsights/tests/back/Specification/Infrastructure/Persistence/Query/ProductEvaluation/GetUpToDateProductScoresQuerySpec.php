@@ -29,7 +29,7 @@ final class GetUpToDateProductScoresQuerySpec extends ObjectBehavior
         $this->beConstructedWith($hasUpToDateEvaluationQuery, $getProductScoresQuery);
     }
 
-    public function it_returns_the_latest_product_scores_if_the_evaluation_of_the_product_is_up_to_date(
+    public function it_returns_the_product_scores_if_the_evaluation_of_the_product_is_up_to_date(
         $hasUpToDateEvaluationQuery,
         $getProductScoresQuery
     )
@@ -59,7 +59,7 @@ final class GetUpToDateProductScoresQuerySpec extends ObjectBehavior
         $this->byProductId($productId)->shouldBeLike(new ChannelLocaleRateCollection());
     }
 
-    public function it_returns_the_latest_product_scores_only_for_up_to_date_products(
+    public function it_returns_the_product_scores_only_for_up_to_date_products(
         $hasUpToDateEvaluationQuery,
         $getProductScoresQuery
     )
