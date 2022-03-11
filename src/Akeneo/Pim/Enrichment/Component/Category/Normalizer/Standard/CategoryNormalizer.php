@@ -16,16 +16,10 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    /** @var TranslationNormalizer */
-    protected $translationNormalizer;
-
+    protected TranslationNormalizer $translationNormalizer;
     private DateTimeNormalizer $dateTimeNormalizer;
-
     private ApiResourceRepositoryInterface $repository;
 
-    /**
-     * @param TranslationNormalizer $translationNormalizer
-     */
     public function __construct(
         TranslationNormalizer $translationNormalizer,
         DateTimeNormalizer $dateTimeNormalizer,

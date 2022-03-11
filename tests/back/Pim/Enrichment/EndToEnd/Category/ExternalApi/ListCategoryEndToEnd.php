@@ -114,7 +114,23 @@ JSON;
     "items_count": 4,
     "_embedded": {
         "items": [
-            {$categories['categoryA1']},
+            {
+                "_links": {
+                    "self": {
+                        "href": "http://localhost/api/rest/v1/categories/categoryA1"
+                    }
+                },
+                "code": "categoryA1",
+                "root": "master",
+                "parent": "categoryA",
+                "updated" : "2016-06-14T13:12:50+02:00",
+                "labels": {},
+                "nested_tree_node": {
+                    "depth": 2,
+                    "left": 3,
+                    "right": 8
+                }
+            },
             {
                 "_links": {
                     "self": {
@@ -122,9 +138,15 @@ JSON;
                     }
                 },
                 "code": "categoryA1-1",
+                "root": "master",
                 "parent": "categoryA1",
                 "updated" : "2016-06-14T13:12:50+02:00",
-                "labels": {}
+                "labels": {},
+                "nested_tree_node": {
+                    "depth": 3,
+                    "left": 4,
+                    "right": 7
+                }
             },
             {
                 "_links": {
@@ -133,11 +155,33 @@ JSON;
                     }
                 },
                 "code": "categoryA1-1-1",
+                "root": "master",
                 "parent": "categoryA1-1",
                 "updated" : "2016-06-14T13:12:50+02:00",
-                "labels": {}
+                "labels": {},
+                "nested_tree_node": {
+                    "depth": 4,
+                    "left": 5,
+                    "right": 6
+                }
             },
-            {$categories['categoryA2']}
+            {
+                "_links": {
+                "self": {
+                    "href": "http://localhost/api/rest/v1/categories/categoryA2"
+                }
+            },
+                "code": "categoryA2",
+                "root": "master",
+                "parent": "categoryA",
+                "updated" : "2016-06-14T13:12:50+02:00",
+                "labels": {},
+                "nested_tree_node": {
+                    "depth": 2,
+                    "left": 9,
+                    "right": 10
+                }
+            }
         ]
     }
 }
@@ -265,9 +309,15 @@ JSON;
         }
     },
     "code": "master",
+    "root": "master",
     "parent": null,
     "updated" : "2016-06-14T13:12:50+02:00",
-    "labels": {}
+    "labels": {},
+    "nested_tree_node": {
+        "depth": 0,
+        "left": 1,
+        "right": 12
+    }
 }
 JSON;
         $categories['categoryA'] = <<<JSON
@@ -278,11 +328,17 @@ JSON;
         }
     },
     "code": "categoryA",
+    "root": "master",
     "parent": "master",
     "updated" : "2016-06-14T13:12:50+02:00",
     "labels": {
         "en_US": "Category A",
         "fr_FR": "Catégorie A"
+    },
+    "nested_tree_node": {
+        "depth": 1,
+        "left": 2,
+        "right": 7
     }
 }
 JSON;
@@ -294,9 +350,15 @@ JSON;
         }
     },
     "code": "categoryA1",
+    "root": "master",
     "parent": "categoryA",
     "updated" : "2016-06-14T13:12:50+02:00",
-    "labels": {}
+    "labels": {},
+    "nested_tree_node": {
+        "depth": 2,
+        "left": 3,
+        "right": 4
+    }
 }
 JSON;
         $categories['categoryA2'] = <<<JSON
@@ -307,9 +369,15 @@ JSON;
         }
     },
     "code": "categoryA2",
+    "root": "master",
     "parent": "categoryA",
     "updated" : "2016-06-14T13:12:50+02:00",
-    "labels": {}
+    "labels": {},
+    "nested_tree_node": {
+        "depth": 2,
+        "left": 5,
+        "right": 6
+    }
 }
 JSON;
         $categories['categoryB'] = <<<JSON
@@ -320,9 +388,15 @@ JSON;
         }
     },
     "code": "categoryB",
+    "root": "master",
     "parent": "master",
     "updated" : "2016-06-14T13:12:50+02:00",
-    "labels": {}
+    "labels": {},
+    "nested_tree_node": {
+        "depth": 1,
+        "left": 8,
+        "right": 9
+    }
 }
 JSON;
         $categories['categoryC'] = <<<JSON
@@ -333,9 +407,15 @@ JSON;
         }
     },
     "code": "categoryC",
+    "root": "master",
     "parent": "master",
     "updated" : "2016-06-14T13:12:50+02:00",
-    "labels": {}
+    "labels": {},
+    "nested_tree_node": {
+        "depth": 1,
+        "left": 10,
+        "right": 11
+    }
 }
 JSON;
         $categories['master_china'] = <<<JSON
@@ -346,16 +426,23 @@ JSON;
         }
     },
     "code": "master_china",
+    "root": "master_china",
     "parent": null,
     "updated" : "2016-06-14T13:12:50+02:00",
-    "labels": {}
+    "labels": {},
+    "nested_tree_node": {
+        "depth": 0,
+        "left": 1,
+        "right": 2
+    }
 }
 JSON;
 
         return $categories;
     }
 
-    private function assertSameResponse(string $expectedJson, Response $actualResponse) {
+    private function assertSameResponse(string $expectedJson, Response $actualResponse)
+    {
         $this->assertSame(Response::HTTP_OK, $actualResponse->getStatusCode());
 
         $responseContent = json_decode($actualResponse->getContent(), true);
@@ -367,7 +454,8 @@ JSON;
         $this->assertEquals($expectedContent, $responseContent);
     }
 
-    private function normalizeCategories(array &$categories) {
+    private function normalizeCategories(array &$categories)
+    {
         foreach ($categories as &$category) {
             NormalizedCategoryCleaner::clean($category);
         }

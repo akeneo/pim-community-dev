@@ -20,15 +20,21 @@ class GetCategoryEndToEnd extends ApiTestCase
 
         $expectedCategory = [
             'code' => 'master',
+            'root' => 'master',
             'parent' => null,
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [],
+            'nested_tree_node' => [
+                'depth' => 0,
+                'left' => 1,
+                'right' => 12,
+            ],
         ];
 
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertResponse($response,$expectedCategory );
+        $this->assertResponse($response, $expectedCategory);
     }
 
     public function testGetACompleteCategory()
@@ -39,11 +45,17 @@ class GetCategoryEndToEnd extends ApiTestCase
 
         $expectedCategory = [
             'code' => 'categoryA',
+            'root' => 'master',
             'parent' => 'master',
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [
-                'en_US'=> 'Category A',
-                'fr_FR'=> 'Catégorie A',
+                'en_US' => 'Category A',
+                'fr_FR' => 'Catégorie A',
+            ],
+            'nested_tree_node' => [
+                'depth' => 1,
+                'left' => 2,
+                'right' => 7,
             ],
         ];
 
