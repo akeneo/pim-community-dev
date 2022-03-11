@@ -12,6 +12,7 @@ Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand:
         familyUserIntent:
             - Valid: ~
         categoryUserIntent:
+            - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\CategoriesShouldExist: ~
             - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\CategoriesShouldBeEditableByUser: ~
         valueUserIntents:
             - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelShouldBeConsistent: ~

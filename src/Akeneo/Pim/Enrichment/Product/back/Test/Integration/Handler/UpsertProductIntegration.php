@@ -574,6 +574,15 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertEqualsCanonicalizing(['categoryA', 'categoryB'], $product->getCategoryCodes());
     }
 
+    /** @test */
+    public function it_throws_an_exception_if_category_doesnt_exist(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('The category toto does not exist');
+
+        $this->updateProduct(new SetCategories(['toto', 'michel']));
+    }
+
     private function getUserId(string $username): int
     {
         $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);

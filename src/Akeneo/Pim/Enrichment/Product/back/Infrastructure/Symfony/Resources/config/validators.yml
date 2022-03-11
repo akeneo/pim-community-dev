@@ -35,6 +35,12 @@ services:
         tags:
             - { name: validator.constraint_validator }
 
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\CategoriesShouldExistValidator:
+        arguments:
+            - '@pim_catalog.repository.category'
+        tags:
+            - { name: validator.constraint_validator }
+
     Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\CategoriesShouldBeEditableByUserValidator:
         arguments:
             - '@Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories'

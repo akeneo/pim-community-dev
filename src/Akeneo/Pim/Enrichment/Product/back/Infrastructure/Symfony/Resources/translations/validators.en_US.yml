@@ -8,6 +8,7 @@ pim_enrich.product:
             product_identifier_empty: The product identifier requires a non empty string
             duplicated_user_intents: The value for attribute {{ attributeCode }} is being updated multiple times
             family_code_empty: The family code requires a non empty string
+            category_does_not_exist: The {{ categoryCode }} category does not exist
             no_own_access_on_category: You don't own any of the categories
             no_view_access_on_category: You don't have view access to all of the categories provided
             set_value:
