@@ -12,7 +12,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ProductScore;
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ProductScoreCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetLatestProductScoresQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductScoresQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
@@ -47,7 +47,7 @@ final class GetLatestProductScoresQueryIntegration extends DataQualityInsightsTe
             ]),
         ];
 
-        $productScoreCollections = $this->get(GetLatestProductScoresQuery::class)->byProductIdentifiers([
+        $productScoreCollections = $this->get(GetProductScoresQuery::class)->byProductIdentifiers([
             $productA->getIdentifier(),
             $productB->getIdentifier(),
             $productD->getIdentifier(),
@@ -67,7 +67,7 @@ final class GetLatestProductScoresQueryIntegration extends DataQualityInsightsTe
                 ],
         ]);
 
-        $productScoreCollection = $this->get(GetLatestProductScoresQuery::class)->byProductIdentifier($productA->getIdentifier());
+        $productScoreCollection = $this->get(GetProductScoresQuery::class)->byProductIdentifier($productA->getIdentifier());
 
         $this->assertEqualsCanonicalizing($expectedProductsScoreCollection, $productScoreCollection);
     }

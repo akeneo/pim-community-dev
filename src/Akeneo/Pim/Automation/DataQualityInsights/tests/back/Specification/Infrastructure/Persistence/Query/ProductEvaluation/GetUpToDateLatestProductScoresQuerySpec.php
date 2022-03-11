@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductScoresQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -23,7 +23,7 @@ final class GetUpToDateLatestProductScoresQuerySpec extends ObjectBehavior
 {
     public function let(
         HasUpToDateEvaluationQueryInterface  $hasUpToDateEvaluationQuery,
-        GetLatestProductScoresQueryInterface $getLatestProductScoresQuery
+        GetProductScoresQueryInterface $getLatestProductScoresQuery
     )
     {
         $this->beConstructedWith($hasUpToDateEvaluationQuery, $getLatestProductScoresQuery);

@@ -6,7 +6,7 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductScoresQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -20,7 +20,7 @@ use PhpSpec\ObjectBehavior;
  */
 final class GetProductScoresSpec extends ObjectBehavior
 {
-    public function let(GetLatestProductScoresQueryInterface $getLatestProductScoresQuery, GetLocalesByChannelQueryInterface $getLocalesByChannelQuery)
+    public function let(GetProductScoresQueryInterface $getLatestProductScoresQuery, GetLocalesByChannelQueryInterface $getLocalesByChannelQuery)
     {
         $this->beConstructedWith($getLatestProductScoresQuery, $getLocalesByChannelQuery);
     }

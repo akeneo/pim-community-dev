@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductScoresByIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresByIdentifiersQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 
 final class GetProductsWithQualityScores implements GetProductsWithQualityScoresInterface
 {
-    private GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery;
+    private GetProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery;
 
     private FeatureFlag $dataQualityInsightsFeature;
 
     public function __construct(
-        GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
-        FeatureFlag $dataQualityInsightsFeature
+        GetProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
+        FeatureFlag                                 $dataQualityInsightsFeature
     ) {
         $this->getLatestProductScoresByIdentifiersQuery = $getLatestProductScoresByIdentifiersQuery;
         $this->dataQualityInsightsFeature = $dataQualityInsightsFeature;

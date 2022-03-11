@@ -10,8 +10,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetLatestProductScoresByIdentifiersQuery;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetLatestProductScoresQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductScoresByIdentifiersQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductScoresQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
@@ -79,7 +79,7 @@ final class GetLatestProductScoresByIdentifiersQueryIntegration extends DataQual
             $productB->getIdentifier() => $productsScores['product_B_latest_scores']->getScores(),
         ];
 
-        $productScores = $this->get(GetLatestProductScoresByIdentifiersQuery::class)->byProductIdentifiers([
+        $productScores = $this->get(GetProductScoresByIdentifiersQuery::class)->byProductIdentifiers([
             $productA->getIdentifier(),
             $productB->getIdentifier(),
             $productD->getIdentifier(),

@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvalu
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetLatestProductScoresByIdentifiersQuery as DqiGetLatestProductScoresByIdentifiersQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductScoresByIdentifiersQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ProductScore;
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ProductScoreCollection;
 
@@ -14,18 +14,14 @@ use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ProductScoreCollec
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetLatestProductScoresQuery implements GetLatestProductScoresQueryInterface
+class GetProductScoresQuery implements GetProductScoresQueryInterface
 {
-    private DqiGetLatestProductScoresByIdentifiersQuery $dqiGetLatestProductScoresByIdentifiersQuery;
-
-    public function __construct(DqiGetLatestProductScoresByIdentifiersQuery $dqiGetLatestProductScoresByIdentifiersQuery)
-    {
-        $this->dqiGetLatestProductScoresByIdentifiersQuery = $dqiGetLatestProductScoresByIdentifiersQuery;
+    public function __construct(private GetProductScoresByIdentifiersQuery $getProductScoresByIdentifiersQuery) {
     }
 
     public function byProductIdentifiers(array $productIdentifiers): array
     {
-        $channelLocaleRateCollections = $this->dqiGetLatestProductScoresByIdentifiersQuery->byProductIdentifiers($productIdentifiers);
+        $channelLocaleRateCollections = $this->getProductScoresByIdentifiersQuery->byProductIdentifiers($productIdentifiers);
         return array_map(
             fn (ChannelLocaleRateCollection $channelLocaleRateCollection) => $this->productScoreCollection($channelLocaleRateCollection),
             $channelLocaleRateCollections
@@ -34,7 +30,7 @@ class GetLatestProductScoresQuery implements GetLatestProductScoresQueryInterfac
 
     public function byProductIdentifier(string $productIdentifier): ProductScoreCollection
     {
-        $channelLocaleRateCollection = $this->dqiGetLatestProductScoresByIdentifiersQuery->byProductIdentifier($productIdentifier);
+        $channelLocaleRateCollection = $this->getProductScoresByIdentifiersQuery->byProductIdentifier($productIdentifier);
         return $this->productScoreCollection($channelLocaleRateCollection);
     }
 

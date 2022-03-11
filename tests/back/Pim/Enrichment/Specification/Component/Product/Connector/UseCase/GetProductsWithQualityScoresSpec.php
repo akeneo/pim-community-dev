@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductScoresByIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresByIdentifiersQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
@@ -15,15 +15,15 @@ use PhpSpec\ObjectBehavior;
 class GetProductsWithQualityScoresSpec extends ObjectBehavior
 {
     function let(
-        GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
-        FeatureFlag $dataQualityInsightsFeature
+        GetProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
+        FeatureFlag                                 $dataQualityInsightsFeature
     ) {
         $this->beConstructedWith($getLatestProductScoresByIdentifiersQuery, $dataQualityInsightsFeature);
     }
 
     function it_does_nothing_if_feature_flag_is_disabled(
-        GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
-        FeatureFlag $dataQualityInsightsFeature
+        GetProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
+        FeatureFlag                                 $dataQualityInsightsFeature
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(false);
 
@@ -46,8 +46,8 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
     }
 
     function it_return_a_new_connector_product_with_quality_scores(
-        GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
-        FeatureFlag $dataQualityInsightsFeature
+        GetProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
+        FeatureFlag                                 $dataQualityInsightsFeature
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
@@ -62,8 +62,8 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
     }
 
     function it_return_a_list_of_connector_product_with_quality_scores(
-        GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
-        FeatureFlag $dataQualityInsightsFeature
+        GetProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
+        FeatureFlag                                 $dataQualityInsightsFeature
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
@@ -90,8 +90,8 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
     }
 
     function it_return_a_list_of_connector_product_with_quality_scores_filtered_by_channel(
-        GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
-        FeatureFlag $dataQualityInsightsFeature
+        GetProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
+        FeatureFlag                                 $dataQualityInsightsFeature
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
@@ -124,8 +124,8 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
     }
 
     function it_return_a_list_of_connector_product_with_quality_scores_filtered_by_locales(
-        GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
-        FeatureFlag $dataQualityInsightsFeature
+        GetProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
+        FeatureFlag                                 $dataQualityInsightsFeature
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
@@ -158,8 +158,8 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
     }
 
     function it_return_a_list_of_connector_product_with_quality_scores_filtered_by_channel_and_locales(
-        GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
-        FeatureFlag $dataQualityInsightsFeature
+        GetProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
+        FeatureFlag                                 $dataQualityInsightsFeature
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
@@ -192,8 +192,8 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
     }
 
     public function it_returns_a_normalized_product_with_quality_scores(
-        GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
-        FeatureFlag $dataQualityInsightsFeature
+        GetProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
+        FeatureFlag                                 $dataQualityInsightsFeature
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 

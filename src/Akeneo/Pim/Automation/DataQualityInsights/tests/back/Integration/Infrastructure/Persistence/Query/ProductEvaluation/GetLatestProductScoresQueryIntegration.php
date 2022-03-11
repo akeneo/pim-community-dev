@@ -11,7 +11,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetLatestProductScoresQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductScoresQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
@@ -79,7 +79,7 @@ final class GetLatestProductScoresQueryIntegration extends DataQualityInsightsTe
             $productIdB => $productsScores['product_B_latest_scores']->getScores(),
         ];
 
-        $productAxesRates = $this->get(GetLatestProductScoresQuery::class)
+        $productAxesRates = $this->get(GetProductScoresQuery::class)
             ->byProductIds(ProductIdCollection::fromProductIds(
                 [new ProductId($productIdA), new ProductId($productIdB), new ProductId($productIdD)])
             );
