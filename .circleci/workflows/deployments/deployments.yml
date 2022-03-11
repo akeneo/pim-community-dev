@@ -1,0 +1,22 @@
+workflows:
+    # Description :
+    #    Nightly upgrade reference environment to the latest release
+    nightly_deployments:
+        when:
+            and:
+                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                - equal: [ "nightly_deployments", << pipeline.schedule.name >> ]
+        jobs:
+            - checkout
+            - deploy_srnt_helpdesk_environment:
+                  requires:
+                      - checkout
+            - deploy_grth_helpdesk_environment:
+                  requires:
+                      - checkout
+            - deploy_pm_environment:
+                  requires:
+                      - checkout
+            - deploy_bh_environment:
+                  requires:
+                      - checkout

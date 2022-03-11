@@ -1,0 +1,6 @@
+parameters:
+  level: 6
+  paths:
+    - %rootDir%/../../../components/onboarder/back
+  checkMissingIterableValueType: false # Allow array typehint instead of int[]
+  treatPhpDocTypesAsCertain: false # https://phpstan.org/config-reference#treatphpdoctypesascertain

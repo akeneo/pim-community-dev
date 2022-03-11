@@ -144,6 +144,8 @@ pim_table_attribute:
       column_code: 열 코드
       properties_helper: 테이블 특성을 저장하려면 테이블 구조와 2개 이상의 열을 먼저 정의해야 합니다
       table_structure_helper_text: 테이블 특성에는 열이 2개 이상 있어야 합니다. 첫 번째 열은 항상 '선택' 열 유형이어야 합니다. 첫 번째 열을 생성한 후에는 옵션을 추가해야 합니다. 추가하려면 '옵션 관리'를 클릭하고 최대 {{ limit }}개의 옵션을 추가하십시오. 그런 다음, 이 각각의 옵션을 제품 테이블의 열로 사용할 수 있습니다.
+      table_structure_helper_text_with_reference_entity: 테이블 특성의 열은 2개 이상이어야 합니다. 첫 번째 열을 생성한 후에는 '선택'이나 '참조 엔터티' 열 유형을 사용해 옵션 또는 레코드에 따라 행을 정의 및 관리합니다.
+      table_structure_helper_link: 자세한 내용은 도움말 센터를 확인하십시오.
       limit_option_reached: '{{ limit }}개 옵션 제한에 도달했습니다.'
       template_label: 기본 '{{ templateLabel }}' 테이블 선택
       delete_column_helper: 이 열을 삭제하면 '{{ attributeLabel }}' 테이블 특성을 사용하는 모든 제품에서 해당 열의 모든 값이 제거됩니다.
@@ -153,11 +155,17 @@ pim_table_attribute:
       no_options: 옵션을 찾을 수 없습니다.
       please_try_again: 다시 시도하십시오.
       first_column_type_helper: 테이블의 첫 번째 열은 항상 '셀렉트' 열 유형입니다.
+      first_column_type_helper_with_reference_entity: 테이블의 첫 번째 열은 '선택' 또는 '참조 엔터티' 열 유형입니다.
       discard_changes: 이 페이지를 나가면 셀렉트 옵션에 대한 변경 사항이 손실됩니다.
       completeness: 완성도
       required_for_completeness: 완성도를 위해 필요
       completeness_helper_text: "완성도가 테이블 특성에서 작동하는 방식을 알아보려면,"
       completeness_helper_link: 도움말을 확인하십시오.
+      reference_entity: 참조 엔터티
+      import_from_existing_attribute: 기존 특성에서 가져오기
+      option_count: "{0,1}{{ count }}개 옵션|]1, Inf[{{ count }}개 옵션"
+      measurement_family: 측정 패밀리
+      measurement_default_unit: 측정 기본 단위
     product:
       items_per_page: 페이지당 항목 수
       current_items: "{{ minItem }}~{{ maxItem }}/{{ itemCount }}"
@@ -165,9 +173,13 @@ pim_table_attribute:
       no_search_result: "죄송합니다. 검색할 라인이 없습니다."
       no_rows_title: "{{ attributeLabel }} 테이블이 비어 있습니다."
       no_rows_subtitle: 행을 추가하여 새 속성 정의
+      no_rows_subtitle_no_permission: 이 특성을 편집하려면 특성 설정 페이지로 이동하거나 PIM 관리자에게 문의하십시오.
       no_results: 결과가 없습니다
       no_options: 옵션이 없습니다
+      no_records: 레코드가 없습니다
       no_add_options_unallowed: '''{{ attributeLabel }}'' 옵션을 관리하려면 PIM 관리자에게 문의하십시오'
+      edit_records_unallowed: '''{{ referenceEntityLabel }}'' 참조 엔터티를 관리하려면 PIM 관리자에게 문의하십시오'
+      manage_records: 레코드 관리
       actions:
         delete_row: 이 행 삭제
         clear_row: 이 행 지우기
@@ -182,6 +194,8 @@ pim_table_attribute:
       number: 숫자
       boolean: 예/아니요
       select: 선택
+      reference_entity: 참조 엔터티
+      measurement: 측정
   validations:
     column_code_must_be_filled: 코드를 입력해야 합니다
     not_available_code: 이 열 코드는 사용할 수 없습니다

@@ -1,10 +1,9 @@
 services:
-    akeneo_enterprise_connectivity.connection.webhook.cache_clearer:
-        class: AkeneoEnterprise\Connectivity\Connection\Infrastructure\Webhook\CacheClearer
-        decorates: akeneo_connectivity.connection.webhook.cache_clearer
-        decoration_inner_name: akeneo_connectivity.connection.webhook.community_cache_clearer
+    AkeneoEnterprise\Connectivity\Connection\Infrastructure\Webhook\CacheClearer:
+        decorates: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\CacheClearer
+        decoration_inner_name: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\CacheClearer.inner
         arguments:
-            - '@akeneo_connectivity.connection.webhook.community_cache_clearer'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\CacheClearer.inner'
             - '@pimee_security.query.get_all_viewable_locales_for_user'
             - '@pimee_security.query.get_viewable_attribute_codes_for_user'
 

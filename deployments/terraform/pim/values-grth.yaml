@@ -103,7 +103,7 @@ pim:
         requests:
           cpu: "10m"
           memory: "10Mi"
-    populate-product-models-scores:
+    populate-product-models-scores-and-ki:
       enabled: true
-      pimCommand: "pim:data-quality-insights:populate-product-models-scores --no-interaction"
+      pimCommand: "pim:data-quality-insights:populate-product-models-scores-and-ki --no-interaction"
       schedule: "30 2 * * *"

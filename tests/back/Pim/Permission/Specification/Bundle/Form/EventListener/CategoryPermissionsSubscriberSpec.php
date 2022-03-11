@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Permission\Bundle\Form\EventListener;
 
+use Akeneo\UserManagement\Component\Model\Group;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
@@ -73,15 +74,22 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         $viewForm,
         $editForm,
         $ownForm,
-        $accessManager
+        $accessManager,
+        Group $groupA,
+        Group $groupB,
+        Group $groupC
     ) {
-        $accessManager->getViewUserGroups($category)->willReturn(['foo', 'bar', 'baz']);
-        $accessManager->getEditUserGroups($category)->willReturn(['bar', 'baz']);
-        $accessManager->getOwnUserGroups($category)->willReturn(['bar', 'baz']);
+        $groupA->getType()->willReturn(Group::TYPE_DEFAULT);
+        $groupB->getType()->willReturn(Group::TYPE_DEFAULT);
+        $groupC->getType()->willReturn(Group::TYPE_DEFAULT);
 
-        $viewForm->setData(['foo', 'bar', 'baz'])->shouldBeCalled();
-        $editForm->setData(['bar', 'baz'])->shouldBeCalled();
-        $ownForm->setData(['bar', 'baz'])->shouldBeCalled();
+        $accessManager->getViewUserGroups($category)->willReturn([$groupA, $groupB, $groupC]);
+        $accessManager->getEditUserGroups($category)->willReturn([$groupB, $groupC]);
+        $accessManager->getOwnUserGroups($category)->willReturn([$groupB, $groupC]);
+
+        $viewForm->setData([$groupA, $groupB, $groupC])->shouldBeCalled();
+        $editForm->setData([$groupB, $groupC])->shouldBeCalled();
+        $ownForm->setData([$groupB, $groupC])->shouldBeCalled();
 
         $this->postSetData($event);
     }
@@ -95,6 +103,10 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         $applyForm,
         $accessManager
     ) {
+        $accessManager->getViewUserGroups($category)->willReturn([]);
+        $accessManager->getEditUserGroups($category)->willReturn([]);
+        $accessManager->getOwnUserGroups($category)->willReturn([]);
+
         $viewForm->getData()->willReturn(['one', 'two']);
         $editForm->getData()->willReturn(['three']);
         $ownForm->getData()->willReturn(['three']);
@@ -114,6 +126,10 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         $applyForm,
         $accessManager
     ) {
+        $accessManager->getViewUserGroups($category)->willReturn([]);
+        $accessManager->getEditUserGroups($category)->willReturn([]);
+        $accessManager->getOwnUserGroups($category)->willReturn([]);
+
         $viewForm->getData()->willReturn(['one', 'two']);
         $editForm->getData()->willReturn(['three']);
         $ownForm->getData()->willReturn(['three']);
