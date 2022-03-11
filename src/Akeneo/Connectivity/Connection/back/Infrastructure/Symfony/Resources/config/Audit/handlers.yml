@@ -1,0 +1,21 @@
+services:
+    Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodEventCountPerConnectionHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectPeriodEventCountPerConnectionQuery'
+
+    Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataSourceProductEventCountHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalExtractConnectionsProductEventCountQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalBulkInsertEventCountsQuery'
+
+    Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalUpsertEventCountQuery'
+
+    Akeneo\Connectivity\Connection\Application\Audit\Query\GetErrorCountPerConnectionHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectErrorCountPerConnectionQuery'
+
+    Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodErrorCountPerConnectionHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectPeriodErrorCountPerConnectionQuery'

@@ -29,25 +29,41 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('Apps/queries.yml');
         $loader->load('Apps/services.yml');
         $loader->load('Apps/validators.yml');
+
+        $loader->load('Audit/commands.yml');
+        $loader->load('Audit/controllers.yml');
+        $loader->load('Audit/handlers.yml');
+        $loader->load('Audit/install.yml');
+        $loader->load('Audit/queries.yml');
+
         $loader->load('Marketplace/controllers.yml');
         $loader->load('Marketplace/handlers.yml');
         $loader->load('Marketplace/install.yml');
         $loader->load('Marketplace/queries.yml');
         $loader->load('Marketplace/services.yml');
+
+        $loader->load('Webhook/commands.yml');
+        $loader->load('Webhook/controllers.yml');
+        $loader->load('Webhook/event_normalizers.yml');
+        $loader->load('Webhook/event_subscribers.yml');
+        $loader->load('Webhook/handlers.yml');
+        $loader->load('Webhook/install.yml');
+        $loader->load('Webhook/message_handlers.yml');
+        $loader->load('Webhook/queries.yml');
+        $loader->load('Webhook/services.yml');
+        $loader->load('Webhook/validators.yml');
+
         $loader->load('cli.yml');
         $loader->load('controllers.yml');
-        $loader->load('event_normalizers.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('feature_flag.yml');
         $loader->load('handlers.yml');
         $loader->load('install.yml');
-        $loader->load('message_handler.yml');
         $loader->load('queries.yml');
         $loader->load('repositories.yml');
         $loader->load('serializers.yml');
         $loader->load('services.yml');
         $loader->load('validators.yml');
-        $loader->load('webhook.yml');
         $loader->load('wrong_credentials_connection.yml');
     }
 }
