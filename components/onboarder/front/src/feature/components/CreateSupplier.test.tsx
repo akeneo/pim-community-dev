@@ -1,6 +1,6 @@
 import React from 'react';
 import {act, screen} from '@testing-library/react';
-import {mockedDependencies, renderWithProviders} from '@akeneo-pim-community/shared';
+import {mockedDependencies, renderWithProviders, NotificationLevel} from '@akeneo-pim-community/shared';
 import {CreateSupplier} from './CreateSupplier';
 import userEvent from '@testing-library/user-event';
 
@@ -57,7 +57,7 @@ test('it renders an error notification when a supplier with the same code alread
 
     expect(onSupplierCreated).not.toHaveBeenCalled();
     assertModalIsOpen();
-    expect(notify).toBeCalled();
+    expect(notify).toHaveBeenNthCalledWith(1, NotificationLevel.ERROR, 'onboarder.supplier.supplier_create.error.supplier_already_exists');
 });
 
 test('The supplier code can be generated from the supplier label', () => {

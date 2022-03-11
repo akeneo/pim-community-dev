@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Query\InMemory;
+namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory;
 
 use Akeneo\OnboarderSerenity\Domain\Read;
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList;
 use Akeneo\OnboarderSerenity\Domain\Write;
-use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Repository\InMemory\InMemoryRepository;
+use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 
-final class InMemoryGetSupplierList implements GetSupplierList
+class InMemoryGetSupplierList implements GetSupplierList
 {
     public function __construct(private InMemoryRepository $repository)
     {

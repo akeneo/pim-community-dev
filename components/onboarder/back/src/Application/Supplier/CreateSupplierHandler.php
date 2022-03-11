@@ -6,6 +6,7 @@ namespace Akeneo\OnboarderSerenity\Application\Supplier;
 
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier\ValueObject;
+use Akeneo\OnboarderSerenity\Domain\Write\Supplier\Exception\SupplierAlreadyExistsException;
 
 final class CreateSupplierHandler
 {
@@ -16,7 +17,7 @@ final class CreateSupplierHandler
     public function __invoke(CreateSupplier $createSupplier): void
     {
         if ($this->supplierRepository->findByCode(ValueObject\Code::fromString($createSupplier->code))) {
-            throw new Supplier\Exception\SupplierAlreadyExistsException($createSupplier->code);
+            throw new SupplierAlreadyExistsException($createSupplier->code);
         }
 
         $this->supplierRepository->save(

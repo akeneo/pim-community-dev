@@ -1,10 +1,10 @@
 services:
     # Repositories
     Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository:
-        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Repository\InMemory\InMemoryRepository
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository
 
     # Queries
     Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList:
-        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Query\InMemory\InMemoryGetSupplierList
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierList
         arguments:
             - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'

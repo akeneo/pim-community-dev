@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Test\Integration\Infrastructure\Supplier\Persistence\Sql;
+namespace Akeneo\OnboarderSerenity\Test\Integration\Infrastructure\Supplier\Query\Sql;
 
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList;
 use Akeneo\OnboarderSerenity\Domain\Write;
@@ -72,7 +72,7 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
     }
 
     /** @test */
-    public function itSortsTheSupplierListInAnUpwardDirection(): void
+    public function itSortsTheSupplierListInAnAscendingDirection(): void
     {
         $supplierRepository = $this->get(Write\Supplier\Repository::class);
 

@@ -35,13 +35,6 @@ final class SupplierCreate
             return new JsonResponse(null, Response::HTTP_CONFLICT);
         }
 
-        return new JsonResponse(
-            (new Supplier(
-                $supplierIdentifier,
-                $supplierCode,
-                $supplierLabel,
-            ))->toArray(),
-            Response::HTTP_CREATED
-        );
+        return new JsonResponse(null, Response::HTTP_CREATED);
     }
 }
