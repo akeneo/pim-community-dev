@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.8 (2022-03-11)
+
 ## Bug fixes
 
 - RAC-1221: [Backport PIM-10236] Fix duplicated mask returned by query for table attribute
