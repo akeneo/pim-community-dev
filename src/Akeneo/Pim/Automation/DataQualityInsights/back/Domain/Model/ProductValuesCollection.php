@@ -10,10 +10,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ProductValuesCollection implements \IteratorAggregate
+final class ProductValuesCollection implements \IteratorAggregate,\Countable
 {
-    /** @var array */
-    private $productValuesByAttribute;
+    /** @var array{string, ProductValues} */
+    private array $productValuesByAttribute;
 
     public function __construct()
     {
@@ -22,7 +22,7 @@ final class ProductValuesCollection implements \IteratorAggregate
 
     public function add(ProductValues $productValues): self
     {
-        $this->productValuesByAttribute[strval($productValues->getAttribute()->getCode())] = $productValues;
+        $this->productValuesByAttribute[(string) $productValues->getAttribute()->getCode()] = $productValues;
 
         return $this;
     }
@@ -88,5 +88,10 @@ final class ProductValuesCollection implements \IteratorAggregate
     public function getIterator()
     {
         return new \ArrayIterator($this->productValuesByAttribute);
+    }
+
+    public function count()
+    {
+        return count($this->productValuesByAttribute);
     }
 }
