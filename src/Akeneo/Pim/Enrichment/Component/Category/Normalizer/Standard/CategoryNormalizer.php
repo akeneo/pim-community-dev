@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Category\Normalizer\Standard;
 
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
+use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -20,13 +21,19 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
 
     private DateTimeNormalizer $dateTimeNormalizer;
 
+    private ApiResourceRepositoryInterface $repository;
+
     /**
      * @param TranslationNormalizer $translationNormalizer
      */
-    public function __construct(TranslationNormalizer $translationNormalizer, DateTimeNormalizer $dateTimeNormalizer)
-    {
+    public function __construct(
+        TranslationNormalizer $translationNormalizer,
+        DateTimeNormalizer $dateTimeNormalizer,
+        ApiResourceRepositoryInterface $repository
+    ) {
         $this->translationNormalizer = $translationNormalizer;
         $this->dateTimeNormalizer = $dateTimeNormalizer;
+        $this->repository = $repository;
     }
 
     /**
@@ -34,11 +41,19 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
      */
     public function normalize($category, $format = null, array $context = [])
     {
+        $rootCategory = $this->repository->find($category->getRoot());
+
         return [
             'code' => $category->getCode(),
+            'root' => null !== $rootCategory ? $rootCategory->getCode() : null,
             'parent' => null !== $category->getParent() ? $category->getParent()->getCode() : null,
             'updated' => $this->dateTimeNormalizer->normalize($category->getUpdated(), $format),
             'labels' => $this->translationNormalizer->normalize($category, 'standard', $context),
+            'nested_tree_node' => [
+                'depth' => $category->getLevel(),
+                'left' => $category->getLeft(),
+                'right' => $category->getRight(),
+            ],
         ];
     }
 

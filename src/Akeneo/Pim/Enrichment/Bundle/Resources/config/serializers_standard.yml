@@ -106,6 +106,7 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.translation'
             - '@pim_catalog.normalizer.standard.datetime'
+            - '@pim_api.repository.category'
         tags:
             - { name: pim_standard_format_serializer.normalizer, priority: 90 }
 
