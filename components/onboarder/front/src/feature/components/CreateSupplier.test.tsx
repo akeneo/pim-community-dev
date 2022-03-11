@@ -1,8 +1,9 @@
 import React from 'react';
 import {act, screen} from '@testing-library/react';
-import {renderWithProviders} from '@akeneo-pim-community/shared';
+import {mockedDependencies, renderWithProviders} from '@akeneo-pim-community/shared';
 import {CreateSupplier} from "./CreateSupplier";
 import userEvent from '@testing-library/user-event';
+import {NotificationLevel} from "@akeneo-pim-community/connectivity-connection/src/shared/notify";
 
 test('it renders only the button by default', () => {
     renderWithProviders(
@@ -21,7 +22,10 @@ test('it renders the modal when clicking on the create button', () => {
 });
 
 test('it can save a supplier', async () => {
-    global.fetch = jest.fn();
+    global.fetch = jest.fn().mockImplementation(async () => ({
+        ok: true,
+        json: async () => {},
+    }));
 
     const onSupplierCreated = jest.fn();
 
@@ -39,6 +43,30 @@ test('it can save a supplier', async () => {
 
     expect(onSupplierCreated).toHaveBeenCalledTimes(1);
     assertModalIsClosed();
+});
+
+test('it renders an error notification when a supplier with the same code already exists', async () => {
+    global.fetch = jest.fn().mockImplementation(async () => ({
+        ok: false,
+        status: 409
+    }));
+
+    const onSupplierCreated = jest.fn();
+    const notify = jest.spyOn(mockedDependencies, 'notify');
+
+    renderWithProviders(
+        <CreateSupplier onSupplierCreated={onSupplierCreated} createButtonlabel={'create'}/>
+    );
+
+    openModal();
+
+    await act(async () => {
+        userEvent.click(screen.getByText('pim_common.save'));
+    });
+
+    expect(onSupplierCreated).not.toHaveBeenCalled()
+    assertModalIsOpen();
+    expect(notify).toBeCalled();
 });
 
 test('The supplier code can be generated from the supplier label', () => {
