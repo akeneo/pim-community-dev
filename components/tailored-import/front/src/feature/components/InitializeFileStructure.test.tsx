@@ -228,9 +228,11 @@ test('it refresh file information when header line changed', async () => {
   });
 
   await act(async () => {
-    const input = screen.getByLabelText('akeneo.tailored_import.file_structure.modal.header_position') as HTMLInputElement;
+    const input = screen.getByLabelText(
+      'akeneo.tailored_import.file_structure.modal.header_position'
+    ) as HTMLInputElement;
     await userEvent.clear(input);
-    await userEvent.type(input, "2");
+    await userEvent.type(input, '2');
   });
 
   expect(mockFetchFileTemplate).toHaveBeenCalledWith(

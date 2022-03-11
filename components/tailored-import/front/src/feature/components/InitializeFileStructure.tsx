@@ -87,7 +87,10 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
   const handleFileUpload = async (file: FileInfo | null) => {
     const fileTemplateInformation = file ? await fileTemplateInformationFetcher(file, null) : null;
 
-    setFileStructure(fileStructure => ({...fileStructure, sheet_name: fileTemplateInformation?.sheet_names[0] ?? null}));
+    setFileStructure(fileStructure => ({
+      ...fileStructure,
+      sheet_name: fileTemplateInformation?.sheet_names[0] ?? null,
+    }));
     setFileTemplateInformation(fileTemplateInformation);
   };
 
