@@ -19,19 +19,19 @@ use Prophecy\Argument;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetUpToDateLatestProductScoresQuerySpec extends ObjectBehavior
+final class GetUpToDateProductScoresQuerySpec extends ObjectBehavior
 {
     public function let(
         HasUpToDateEvaluationQueryInterface  $hasUpToDateEvaluationQuery,
-        GetProductScoresQueryInterface $getLatestProductScoresQuery
+        GetProductScoresQueryInterface $getProductScoresQuery
     )
     {
-        $this->beConstructedWith($hasUpToDateEvaluationQuery, $getLatestProductScoresQuery);
+        $this->beConstructedWith($hasUpToDateEvaluationQuery, $getProductScoresQuery);
     }
 
     public function it_returns_the_latest_product_scores_if_the_evaluation_of_the_product_is_up_to_date(
         $hasUpToDateEvaluationQuery,
-        $getLatestProductScoresQuery
+        $getProductScoresQuery
     )
     {
         $productId = new ProductId(42);
@@ -41,27 +41,27 @@ final class GetUpToDateLatestProductScoresQuerySpec extends ObjectBehavior
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), new Rate(80));
 
         $hasUpToDateEvaluationQuery->forProductId($productId)->willReturn(true);
-        $getLatestProductScoresQuery->byProductId($productId)->willReturn($productScores);
+        $getProductScoresQuery->byProductId($productId)->willReturn($productScores);
 
         $this->byProductId($productId)->shouldReturn($productScores);
     }
 
     public function it_returns_empty_scores_if_the_evaluation_of_the_product_is_outdated(
         $hasUpToDateEvaluationQuery,
-        $getLatestProductScoresQuery
+        $getProductScoresQuery
     )
     {
         $productId = new ProductId(42);
 
         $hasUpToDateEvaluationQuery->forProductId($productId)->willReturn(false);
-        $getLatestProductScoresQuery->byProductId($productId)->shouldNotBeCalled();
+        $getProductScoresQuery->byProductId($productId)->shouldNotBeCalled();
 
         $this->byProductId($productId)->shouldBeLike(new ChannelLocaleRateCollection());
     }
 
     public function it_returns_the_latest_product_scores_only_for_up_to_date_products(
         $hasUpToDateEvaluationQuery,
-        $getLatestProductScoresQuery
+        $getProductScoresQuery
     )
     {
         $productIdA = new ProductId(42);
@@ -77,20 +77,20 @@ final class GetUpToDateLatestProductScoresQuerySpec extends ObjectBehavior
         ];
 
         $hasUpToDateEvaluationQuery->forProductIdCollection($productIdCollection)->willReturn($upToDateProductIdCollection);
-        $getLatestProductScoresQuery->byProductIds($upToDateProductIdCollection)->willReturn($productsScores);
+        $getProductScoresQuery->byProductIds($upToDateProductIdCollection)->willReturn($productsScores);
 
         $this->byProductIds($productIdCollection)->shouldReturn($productsScores);
     }
 
     public function it_returns_empty_array_if_there_are_no_up_to_date_products(
         $hasUpToDateEvaluationQuery,
-        $getLatestProductScoresQuery
+        $getProductScoresQuery
     )
     {
         $products = ProductIdCollection::fromInts([42, 123]);
 
         $hasUpToDateEvaluationQuery->forProductIdCollection($products)->willReturn(null);
-        $getLatestProductScoresQuery->byProductIds(Argument::any())->shouldNotBeCalled();
+        $getProductScoresQuery->byProductIds(Argument::any())->shouldNotBeCalled();
 
         $this->byProductIds($products)->shouldReturn([]);
     }

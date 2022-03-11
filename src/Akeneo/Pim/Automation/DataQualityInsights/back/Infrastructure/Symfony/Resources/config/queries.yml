@@ -93,7 +93,7 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateLatestProductScoresQuery:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateProductScoresQuery:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\HasUpToDateProductEvaluationQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductScoresQuery'
@@ -245,7 +245,7 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\GetUpToDateProductModelScoresQuery:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateProductModelScoresQuery:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\HasUpToDateProductModelEvaluationQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelScoresQuery'

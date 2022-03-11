@@ -14,19 +14,19 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
  */
 final class GetProductScores
 {
-    private GetProductScoresQueryInterface $getLatestProductScoresQuery;
+    private GetProductScoresQueryInterface $getProductScoresQuery;
 
     private GetLocalesByChannelQueryInterface $getLocalesByChannelQuery;
 
-    public function __construct(GetProductScoresQueryInterface $getLatestProductScoresQuery, GetLocalesByChannelQueryInterface $getLocalesByChannelQuery)
+    public function __construct(GetProductScoresQueryInterface $getProductScoresQuery, GetLocalesByChannelQueryInterface $getLocalesByChannelQuery)
     {
-        $this->getLatestProductScoresQuery = $getLatestProductScoresQuery;
+        $this->getProductScoresQuery = $getProductScoresQuery;
         $this->getLocalesByChannelQuery = $getLocalesByChannelQuery;
     }
 
     public function get(ProductId $productId): array
     {
-        $productScores = $this->getLatestProductScoresQuery->byProductId($productId);
+        $productScores = $this->getProductScoresQuery->byProductId($productId);
 
         $formattedProductScores = [];
         foreach ($this->getLocalesByChannelQuery->getChannelLocaleCollection() as $channelCode => $locales) {

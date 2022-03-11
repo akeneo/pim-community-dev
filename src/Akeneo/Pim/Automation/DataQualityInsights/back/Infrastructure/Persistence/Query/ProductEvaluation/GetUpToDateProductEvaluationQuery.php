@@ -14,19 +14,19 @@ final class GetUpToDateProductEvaluationQuery implements GetProductEvaluationQue
 {
     private GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery;
 
-    private GetProductScoresQueryInterface $getLatestProductScoresQuery;
+    private GetProductScoresQueryInterface $getProductScoresQuery;
 
     public function __construct(
         GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
-        GetProductScoresQueryInterface $getLatestProductScoresQuery
+        GetProductScoresQueryInterface $getProductScoresQuery
     ) {
         $this->getCriteriaEvaluationsByProductIdQuery = $getCriteriaEvaluationsByProductIdQuery;
-        $this->getLatestProductScoresQuery = $getLatestProductScoresQuery;
+        $this->getProductScoresQuery = $getProductScoresQuery;
     }
 
     public function execute(ProductId $productId): ProductEvaluation
     {
-        $productScores = $this->getLatestProductScoresQuery->byProductId($productId);
+        $productScores = $this->getProductScoresQuery->byProductId($productId);
         $productCriteriaEvaluations = $this->getCriteriaEvaluationsByProductIdQuery->execute($productId);
 
         return new ProductEvaluation($productId, $productScores, $productCriteriaEvaluations);
