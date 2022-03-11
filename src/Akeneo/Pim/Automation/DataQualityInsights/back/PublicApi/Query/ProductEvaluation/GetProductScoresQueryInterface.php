@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ProductScoreCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -14,9 +14,9 @@ interface GetProductScoresQueryInterface
 {
     /**
      * @param string[] $productIdentifiers
-     * @return ProductScoreCollection[]
+     * @return QualityScoreCollection[]
      */
     public function byProductIdentifiers(array $productIdentifiers): array;
 
-    public function byProductIdentifier(string $productIdentifier): ProductScoreCollection;
+    public function byProductIdentifier(string $productIdentifier): QualityScoreCollection;
 }

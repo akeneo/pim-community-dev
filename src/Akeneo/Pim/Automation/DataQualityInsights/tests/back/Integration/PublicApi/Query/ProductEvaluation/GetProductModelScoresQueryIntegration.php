@@ -11,8 +11,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductModelScoreRepository;
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ProductModelScore;
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ProductModelScoreCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScore;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductModelScoresQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
@@ -22,48 +22,48 @@ use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsigh
  */
 final class GetProductModelScoresQueryIntegration extends DataQualityInsightsTestCase
 {
-    public function test_it_returns_the_scores_by_product_model_codes(): void
+    public function test_it_returns_the_quality_scores_by_product_model_codes(): void
     {
         [$productModelA, $productModelB, $productModelC, $productModelD] = $this->loadProductModelScores();
 
-        $expectedProductModelsScoreCollections = [
-            $productModelA->getCode() => new ProductModelScoreCollection([
+        $expectedQualityScoreCollections = [
+            $productModelA->getCode() => new QualityScoreCollection([
                 'mobile' => [
-                    'en_US' => new ProductModelScore('A', 95),
-                    'fr_FR' => new ProductModelScore('A', 100),
+                    'en_US' => new QualityScore('A', 95),
+                    'fr_FR' => new QualityScore('A', 100),
                 ],
             ]),
-            $productModelB->getCode() => new ProductModelScoreCollection([
+            $productModelB->getCode() => new QualityScoreCollection([
                 'mobile' => [
-                    'en_US' => new ProductModelScore('D', 67),
-                    'fr_FR' => new ProductModelScore('C', 76),
+                    'en_US' => new QualityScore('D', 67),
+                    'fr_FR' => new QualityScore('C', 76),
                 ],
             ]),
         ];
 
-        $productModelScoreCollections = $this->get(GetProductModelScoresQuery::class)->byProductModelCodes([
+        $qualityScoreCollections = $this->get(GetProductModelScoresQuery::class)->byProductModelCodes([
             $productModelA->getCode(),
             $productModelB->getCode(),
             $productModelD->getCode(),
         ]);
 
-        $this->assertEqualsCanonicalizing($expectedProductModelsScoreCollections, $productModelScoreCollections);
+        $this->assertEqualsCanonicalizing($expectedQualityScoreCollections, $qualityScoreCollections);
     }
 
-    public function test_it_returns_the_scores_by_product_model_code(): void
+    public function test_it_returns_the_quality_scores_by_product_model_code(): void
     {
         [$productModelA] = $this->loadProductModelScores();
 
-        $expectedProductModelsScoreCollection = new ProductModelScoreCollection([
+        $expectedQualityScoreCollections = new QualityScoreCollection([
                 'mobile' => [
-                    'en_US' => new ProductModelScore('C', 76),
-                    'fr_FR' => new ProductModelScore('D', 67),
+                    'en_US' => new QualityScore('C', 76),
+                    'fr_FR' => new QualityScore('D', 67),
                 ],
         ]);
 
-        $productModelScoreCollection = $this->get(GetProductModelScoresQuery::class)->byProductModelCode($productModelA->getCode());
+        $qualityScoreCollections = $this->get(GetProductModelScoresQuery::class)->byProductModelCode($productModelA->getCode());
 
-        $this->assertEqualsCanonicalizing($expectedProductModelsScoreCollection, $productModelScoreCollection);
+        $this->assertEqualsCanonicalizing($expectedQualityScoreCollections, $qualityScoreCollections);
     }
 
     private function loadProductModelScores(): array {

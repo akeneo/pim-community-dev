@@ -7,8 +7,8 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvalu
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelScoresByCodesQuery;
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ProductModelScore;
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ProductModelScoreCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScore;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -24,20 +24,20 @@ class GetProductModelScoresQuery implements GetProductModelScoresQueryInterface
     {
         $channelLocaleRateCollections = $this->getProductModelScoresByCodesQuery->byProductModelCodes($productModelCodes);
         return array_map(
-            fn (ChannelLocaleRateCollection $channelLocaleRateCollection) => $this->productModelScoreCollection($channelLocaleRateCollection),
+            fn (ChannelLocaleRateCollection $channelLocaleRateCollection) => $this->qualityScoreCollection($channelLocaleRateCollection),
             $channelLocaleRateCollections
         );
     }
 
-    public function byProductModelCode(string $productModelCode): ProductModelScoreCollection
+    public function byProductModelCode(string $productModelCode): QualityScoreCollection
     {
         $channelLocaleRateCollection = $this->getProductModelScoresByCodesQuery->byProductModelCode($productModelCode);
-        return $this->productModelScoreCollection($channelLocaleRateCollection);
+        return $this->qualityScoreCollection($channelLocaleRateCollection);
     }
 
-    private function productModelScoreCollection(ChannelLocaleRateCollection $channelLocaleRateCollection): ProductModelScoreCollection
+    private function qualityScoreCollection(ChannelLocaleRateCollection $channelLocaleRateCollection): QualityScoreCollection
     {
-        $productModelScores = $channelLocaleRateCollection->mapWith(static fn (Rate $rate) => new ProductModelScore($rate->toLetter(), $rate->toInt()));
-        return new ProductModelScoreCollection($productModelScores);
+        $productModelScores = $channelLocaleRateCollection->mapWith(static fn (Rate $rate) => new QualityScore($rate->toLetter(), $rate->toInt()));
+        return new QualityScoreCollection($productModelScores);
     }
 }
