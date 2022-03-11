@@ -25,6 +25,7 @@ abstract class EnrichmentProductTestCase extends TestCase
     protected function loadEnrichmentProductFunctionalFixtures(): void
     {
         $this->createUser('mary', ['ROLE_USER'], ['Redactor']);
+        $this->createUser('betty', ['ROLE_USER'], ['Editor']);
 
         $this->createCategory(['code' => 'print']);
         $this->createCategory(['code' => 'suppliers']);
@@ -40,6 +41,11 @@ abstract class EnrichmentProductTestCase extends TestCase
                 'own' => ['all' => false, 'identifiers' => []],
                 'edit' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales']],
                 'view' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales']],
+            ]);
+            $this->get('Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver')->save('Editor', [
+                'own' => ['all' => false, 'identifiers' => ['print']],
+                'edit' => ['all' => false, 'identifiers' => ['print']],
+                'view' => ['all' => false, 'identifiers' => ['print']],
             ]);
         }
 

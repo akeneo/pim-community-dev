@@ -47,41 +47,7 @@ class CategoriesShouldBeEditableByUserValidatorSpec extends ObjectBehavior
             ->during('validate', [new \stdClass(), new CategoriesShouldBeEditableByUser([])]);
     }
 
-    function it_allows_editing_a_product_in_a_owned_category(ExecutionContext $context, GetOwnedCategories $getOwnedCategories)
-    {
-        $categoryUserIntent = new SetCategories(['master']);
-
-        $context->getRoot()->willReturn(new UpsertProductCommand(
-            userId: 1,
-            productIdentifier: 'foo',
-            categoryUserIntent: $categoryUserIntent
-        ));
-        $getOwnedCategories->forUserId(['master'], 1)->willReturn(['master']);
-        $context->buildViolation(Argument::any())->shouldNotBeCalled();
-
-        $this->validate($categoryUserIntent, new CategoriesShouldBeEditableByUser());
-    }
-
-    function it_allows_adding_a_read_access_category(
-        ExecutionContext $context,
-        GetOwnedCategories $getOwnedCategories,
-        GetViewableCategories $getViewableCategories
-    ) {
-        $categoryUserIntent = new SetCategories(['master']);
-
-        $context->getRoot()->willReturn(new UpsertProductCommand(
-            userId: 1,
-            productIdentifier: 'foo',
-            categoryUserIntent: $categoryUserIntent
-        ));
-        $getOwnedCategories->forUserId(['master'], 1)->willReturn([]);
-        $getViewableCategories->forUserId(['master'], 1)->willReturn(['master']);
-        $context->buildViolation(Argument::any())->shouldNotBeCalled();
-
-        $this->validate($categoryUserIntent, new CategoriesShouldBeEditableByUser());
-    }
-
-    function it_allows_adding_both_read_and_own_access_category(
+    function it_allows_adding_categories_if_user_has_access(
         ExecutionContext $context,
         GetOwnedCategories $getOwnedCategories,
         GetViewableCategories $getViewableCategories
@@ -94,19 +60,18 @@ class CategoriesShouldBeEditableByUserValidatorSpec extends ObjectBehavior
             categoryUserIntent: $categoryUserIntent
         ));
         $getOwnedCategories->forUserId(['master', 'print', 'ecommerce'], 1)->willReturn(['print']);
-        $getViewableCategories->forUserId(['master', 'ecommerce'], 1)->willReturn(['master', 'ecommerce']);
+        $getViewableCategories->forUserId(['master', 'print', 'ecommerce'], 1)->willReturn(['master', 'print', 'ecommerce']);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate($categoryUserIntent, new CategoriesShouldBeEditableByUser());
     }
 
-    function it_adds_a_violation_when_adding_a_category_with_no_access(
+    function it_adds_a_violation_when_adding_a_category_with_no_own_access(
         ExecutionContext                    $context,
         GetOwnedCategories                  $getOwnedCategories,
         GetViewableCategories               $getViewableCategories,
         ConstraintViolationBuilderInterface $constraintViolationBuilder
     ) {
-        $constraint = new CategoriesShouldBeEditableByUser();
         $categoryUserIntent = new SetCategories(['master']);
 
         $context->getRoot()->willReturn(new UpsertProductCommand(
@@ -115,8 +80,31 @@ class CategoriesShouldBeEditableByUserValidatorSpec extends ObjectBehavior
             categoryUserIntent: $categoryUserIntent
         ));
         $getOwnedCategories->forUserId(['master'], 1)->willReturn([]);
-        $getViewableCategories->forUserId(['master'], 1)->willReturn([]);
-        $context->buildViolation($constraint->message)->shouldBeCalledOnce()->willReturn($constraintViolationBuilder);
+        $getViewableCategories->forUserId(['master'], 1)->willReturn(['master']);
+
+        $context->buildViolation('pim_enrich.product.validation.upsert.no_own_access_on_category')->shouldBeCalledOnce()->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->addViolation()->shouldBeCalledOnce();
+
+        $this->validate($categoryUserIntent, new CategoriesShouldBeEditableByUser());
+    }
+
+    function it_throws_an_exception_if_the_user_cannot_read_all_categories(
+        ExecutionContext $context,
+        GetOwnedCategories $getOwnedCategories,
+        GetViewableCategories $getViewableCategories,
+        ConstraintViolationBuilderInterface $constraintViolationBuilder
+    ) {
+        $categoryUserIntent = new SetCategories(['master', 'print']);
+
+        $context->getRoot()->willReturn(new UpsertProductCommand(
+            userId: 1,
+            productIdentifier: 'foo',
+            categoryUserIntent: $categoryUserIntent
+        ));
+        $getOwnedCategories->forUserId(['master', 'print'], 1)->willReturn(['master']);
+        $getViewableCategories->forUserId(['master', 'print'], 1)->willReturn(['master']);
+
+        $context->buildViolation('pim_enrich.product.validation.upsert.no_view_access_on_category')->shouldBeCalledOnce()->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalledOnce();
 
         $this->validate($categoryUserIntent, new CategoriesShouldBeEditableByUser());

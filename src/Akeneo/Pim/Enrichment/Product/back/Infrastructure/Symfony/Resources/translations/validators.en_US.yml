@@ -8,6 +8,8 @@ pim_enrich.product:
             product_identifier_empty: The product identifier requires a non empty string
             duplicated_user_intents: The value for attribute {{ attributeCode }} is being updated multiple times
             family_code_empty: The family code requires a non empty string
+            no_own_access_on_category: You don't own any of the categories
+            no_view_access_on_category: You don't have view access to all of the categories provided
             set_value:
                 no_channel_code_provided_for_scopable_attribute: 'The {{ attributeCode }} attribute requires a channel'
                 channel_code_provided_for_non_scopable_attribute: 'The {{ attributeCode }} attribute does not require a channel, "{{ channelCode }}" was detected'

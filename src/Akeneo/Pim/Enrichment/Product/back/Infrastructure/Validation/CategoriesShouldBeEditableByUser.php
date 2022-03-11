@@ -12,8 +12,6 @@ use Symfony\Component\Validator\Constraint;
  */
 final class CategoriesShouldBeEditableByUser extends Constraint
 {
-    public string $message = 'pim_enrich.product.validation.upsert.no_access_on_category';
-
     /**
      * {@inheritDoc}
      */

@@ -40,18 +40,28 @@ final class CategoriesShouldBeEditableByUserValidator extends ConstraintValidato
             return;
         }
 
-        $ownedCategories = $this->getOwnedCategories->forUserId($categoryCodes, $command->userId());
-        $nonOwnedCategories = \array_values(\array_diff($categoryCodes, $ownedCategories));
-
-        if (\count($nonOwnedCategories) === 0) {
+        if (!$this->checkUserIsStillOwner($command->userId(), $categoryCodes)) {
+            $this->context->buildViolation('pim_enrich.product.validation.upsert.no_own_access_on_category')->addViolation();
             return;
         }
 
-        $readCategories = $this->getViewableCategories->forUserId($nonOwnedCategories, $command->userId());
-        $nonReadCategories = \array_values(\array_diff($nonOwnedCategories, $readCategories));
-
-        if (\count($nonReadCategories) > 0) {
-            $this->context->buildViolation($constraint->message)->addViolation();
+        if (!$this->checkCategoriesAreViewable($command->userId(), $categoryCodes)) {
+            $this->context->buildViolation('pim_enrich.product.validation.upsert.no_view_access_on_category')->addViolation();
         }
+    }
+
+    private function checkUserIsStillOwner($userId, $categoryCodes): bool
+    {
+        $ownedCategories = $this->getOwnedCategories->forUserId($categoryCodes, $userId);
+
+        return \count($ownedCategories) > 0;
+    }
+
+    private function checkCategoriesAreViewable($userId, $categoryCodes): bool
+    {
+        $viewableCategories = $this->getViewableCategories->forUserId($categoryCodes, $userId);
+
+        return \count($viewableCategories) === \count($categoryCodes);
+
     }
 }
