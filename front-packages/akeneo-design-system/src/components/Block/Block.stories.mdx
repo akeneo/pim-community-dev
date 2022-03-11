@@ -1,0 +1,55 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {action} from '@storybook/addon-actions';
+import {Block} from './Block';
+
+<Meta
+  title="Components/Block"
+  component={Block}
+  argTypes={{
+    removable: {control: {type: 'boolean'}},
+    onRemove: {action: 'Remove block'},
+    children: {control: {type: 'text'}},
+  }}
+  args={{
+    children: 'I am a block',
+  }}
+/>
+
+# Block
+
+## Usage
+
+TODO
+
+## Playground
+
+Use this playground to test the block component
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <Block {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on removable and onRemove
+
+<Canvas>
+  <Story name="Disabled">
+    {args => {
+      return (
+        <>
+          <Block {...args}>
+            Non removable block
+          </Block>
+          <Block {...args} removable={true} onRemove={action('Remove block')}>
+            Removable block
+          </Block>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
