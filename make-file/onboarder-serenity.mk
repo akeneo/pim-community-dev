@@ -10,8 +10,8 @@ lint-back: #Doc: Run PHPStan for Onboarder Serenity
 fix-phpcs: #Doc: Run PHP-CS-Fixer for Onboarder Serenity
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=components/onboarder/back/tests/.php_cs.php components/onboarder/back
 
-lint-front:
-	$(YARN_RUN) run --cwd=components/tailored-import/front lint:check
+lint-front: #Doc: Run Prettier and Eslint for Onboarder Serenity
+	$(YARN_RUN) run --cwd=components/onboarder/front lint:check
 
 .PHONY: coupling
 coupling: #Doc: Run coupling detector for Onboarder Serenity
