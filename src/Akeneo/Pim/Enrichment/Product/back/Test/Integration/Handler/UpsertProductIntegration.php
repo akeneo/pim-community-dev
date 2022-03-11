@@ -11,8 +11,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
@@ -446,6 +448,19 @@ final class UpsertProductIntegration extends TestCase
         $this->expectExceptionMessage('The toto values are not in the a_multi_select attribute option list.');
 
         $this->updateProduct(new SetMultiSelectValue('a_multi_select', null, null, ['toto']));
+        $this->updateProduct(new AddMultiSelectValue('a_multi_select', null, null, ['toto']));
+    }
+
+    /** @test */
+    public function it_updates_a_product_with_an_add_multi_select_value(): void
+    {
+        $this->createAttributeOptions('a_multi_select', 'optionC', ['en_US' => 'C option']);
+
+        $this->updateProduct(new AddMultiSelectValue('a_multi_select', null, null, ['optionA', 'optionB']));
+        $this->assertProductHasCorrectValueByAttributeCode('a_multi_select', ['optionA', 'optionB']);
+
+        $this->updateProduct(new AddMultiSelectValue('a_multi_select', null, null, ['optionB', 'optionC']));
+        $this->assertProductHasCorrectValueByAttributeCode('a_multi_select', ['optionA', 'optionB', 'optionC']);
     }
 
     /** @test */
@@ -459,6 +474,26 @@ final class UpsertProductIntegration extends TestCase
             new SetTextValue('a_text', null, null, 'bar'),
         ]);
         $this->messageBus->dispatch($command);
+    }
+
+    /** @test */
+    public function it_creates_a_product_with_a_date_value(): void
+    {
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
+            new SetDateValue('a_date', null, null, new \DateTime("2022-03-04T09:35:24")),
+        ]);
+        $this->messageBus->dispatch($command);
+
+        $this->clearDoctrineUoW();
+
+        $this->assertProductHasCorrectValueByAttributeCode('a_date', new \DateTime("2022-03-04"));
+    }
+
+    /** @test */
+    public function it_updates_a_product_with_a_date_value(): void
+    {
+        $this->updateProduct(new SetDateValue('a_date', null, null, new \DateTime("2022-03-04T09:35:24")));
+        $this->assertProductHasCorrectValueByAttributeCode('a_date', new \DateTime("2022-03-04"));
     }
 
     /** @test */
@@ -493,7 +528,7 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertNotNull($product);
         $value = $product->getValue($attributeCode, null, null);
         Assert::assertNotNull($value);
-        Assert::assertSame($expectedValue, $value->getData());
+        Assert::assertEquals($expectedValue, $value->getData());
     }
 
     private function createAttribute(array $data): void
@@ -566,5 +601,20 @@ final class UpsertProductIntegration extends TestCase
         }
 
         throw new \Exception(sprintf('The fixture "%s" does not exist.', $name));
+    }
+
+    private function createAttributeOptions(string $attributeCode, string $optionCode, array $labels): void
+    {
+        $attributeOption = $this->get('pim_catalog.factory.attribute_option')->create();
+        $this->get('pim_catalog.updater.attribute_option')->update($attributeOption, [
+            'code' => $optionCode,
+            'attribute' => $attributeCode,
+            'labels' => $labels,
+        ]);
+        $constraints = $this->get('validator')->validate($attributeOption);
+        if (count($constraints) > 0) {
+            throw new \InvalidArgumentException((string)$constraints);
+        }
+        $this->get('pim_catalog.saver.attribute_option')->save($attributeOption);
     }
 }

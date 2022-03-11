@@ -16,11 +16,7 @@ pim_menu:
     connection_webhook_event_logs: 事件日志
     data_flows: 数据流
     connect_connection_settings: 连接设置
-    marketplace: 商城
-    connected_apps: 应用
 pim_title:
-  akeneo_connectivity_connection_connect_marketplace: 商城
-  akeneo_connectivity_connection_connect_marketplace_profile: 商城
   akeneo_connectivity_connection_connect_apps_activate: 连接
   akeneo_connectivity_connection_connect_apps_authorize: 连接
   akeneo_connectivity_connection_connect_apps_authenticate: 连接
@@ -35,7 +31,6 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: 事件订阅
   akeneo_connectivity_connection_webhook_event_logs: 事件日志
   akeneo_connectivity_connection_settings_redirect: 连接
-  akeneo_connectivity_connection_connect_connected_apps: 应用
   akeneo_connectivity_connection_connect_connected_apps_edit: 应用设置
   akeneo_connectivity_connection_connect_connected_apps_delete: 删除应用
   akeneo_connectivity_connection_connect_marketplace_test_app_create: 创建测试应用
@@ -44,13 +39,9 @@ akeneo_connectivity.connection:
   connect:
     marketplace:
       title: 想要将您的 PIM 连接到另一个应用程序？🤟
-      sub_title: 请检查我们的商城以查看哪些应用程序可以与 Akeneo PIM 连接。
-      link: 访问商城
       helper:
         title: '{0} 没有与您的 PIM 版本兼容的应用或连接器。{1} 有 {{ count }} 个应用或连接器与您的 PIM 版本兼容。[2,Inf] 有 {{ count }} 个应用和连接器与您的 PIM 版本兼容。'
         title_without_apps: '{0} 没有与您的 PIM 版本兼容的连接器。|{1} 有 {{ count }} 个连接器与您的 PIM 版本兼容。[2,Inf] 有 {{ count }} 个连接器与您的 PIM 版本兼容。'
-        description: 这只是概览，还有更多内容，请探索我们的网上商城。
-        link: 前往网上商城
       card:
         developed_by: '开发者：{{ author }}'
         read_more: 阅读更多
@@ -65,7 +56,6 @@ akeneo_connectivity.connection:
         title: 应用
         total: '{0} 没有应用 |{1} 1 个应用 |[2,Inf] {{ total }} 个应用'
         empty: 没有与您的版本兼容的应用
-      unreachable: 无法访问商城，请稍后再试。
       scroll_to_top: 滚动到顶部
       test_apps:
         title: 我的测试应用
@@ -107,7 +97,6 @@ akeneo_connectivity.connection:
           subtitle: 应用
           title: 确认删除 
           description: 您将要从该 PIM 中删除您的测试应用。
-          warning: 确认删除后，商城页面上的测试应用以及相关的连接应用都将被删除。
           flash:
             success: 测试应用已成功删除。
             error: 抱歉，删除测试应用时出现错误。
@@ -118,13 +107,11 @@ akeneo_connectivity.connection:
           total: '{0} 没有应用 |{1} 1 个应用 |[2,Inf] {{ total }} 个应用'
           empty: 尚未连接任何应用。
           check_marketplace: '检查 {{ marketplaceLink }} 以浏览所有可用的内容并安装您的第一个应用。'
-          marketplace_link_anchor: 商城
         test_apps:
           title: 我的测试应用
           removed_user: 已移除用户
         helper:
           title: '[0,1] 您的 PIM 已与 {{ count }} 个应用连接。|[2,Inf] 您的 PIM 已与 {{ count }} 个应用连接。'
-          description_1: 我们定期开发新的应用，请随时关注并查看我们的商城页面以探索如何连接您的 PIM。
           description_2: 想了解更多关于应用的信息？
           link: 查看我们的“帮助中心”获取更多信息。
         card:
@@ -199,8 +186,6 @@ akeneo_connectivity.connection:
           helper_link: 如何将我的 PIM 与 App 进行连接？
           consent:
             label: '我同意该应用的隐私政策和使用条款（可在 {{ app_marketplace_page }} 上查看）。'
-            app_marketplace_page: 应用商城页面
-            subtext: '您确认知晓并同意您将被重定向到第三方应用。Akeneo 对该应用的内容不负责也无法负责。如果您在访问商城时遇到任何问题，请{{ contact_us }}。'
             contact_us: 联系我们
         authorize:
           title: '{{ app_name }} 需要'

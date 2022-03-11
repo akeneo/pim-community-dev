@@ -10,8 +10,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
@@ -145,6 +147,42 @@ final class UpsertProductHandler
                                     'locale' => $valueUserIntent->localeCode(),
                                     'scope' => $valueUserIntent->channelCode(),
                                     'data' => null,
+                                ],
+                            ],
+                        ],
+                    ]);
+                } elseif ($valueUserIntent instanceof SetDateValue) {
+                    $found = true;
+                    $this->productUpdater->update($product, [
+                        'values' => [
+                            $valueUserIntent->attributeCode() => [
+                                [
+                                    'locale' => $valueUserIntent->localeCode(),
+                                    'scope' => $valueUserIntent->channelCode(),
+                                    'data' => $valueUserIntent->value()->format('Y-m-d'),
+                                ],
+                            ],
+                        ],
+                    ]);
+                } elseif ($valueUserIntent instanceof AddMultiSelectValue) {
+                    $found = true;
+                    $formerValue = $product->getValue(
+                        $valueUserIntent->attributeCode(),
+                        $valueUserIntent->localeCode(),
+                        $valueUserIntent->channelCode()
+                    );
+
+                    $values = null !== $formerValue ?
+                        \array_unique(\array_merge($formerValue->getData(), $valueUserIntent->optionCodes())) :
+                        $valueUserIntent->optionCodes();
+
+                    $this->productUpdater->update($product, [
+                        'values' => [
+                            $valueUserIntent->attributeCode() => [
+                                [
+                                    'locale' => $valueUserIntent->localeCode(),
+                                    'scope' => $valueUserIntent->channelCode(),
+                                    'data' => $values,
                                 ],
                             ],
                         ],

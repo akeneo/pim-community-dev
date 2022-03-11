@@ -65,10 +65,9 @@ services:
         tags:
             - { name: 'console.command' }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\PopulateProductModelScoresCommand:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\PopulateProductModelScoresAndKeyIndicatorsCommand:
         arguments:
             - '@database_connection'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductModelScores'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductModelsIndex'
+            - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
         tags:
             - { name: 'console.command' }

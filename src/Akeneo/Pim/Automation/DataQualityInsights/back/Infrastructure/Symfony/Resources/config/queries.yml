@@ -191,20 +191,16 @@ services:
     akeneo.pim.automation.data_quality_insights.query.compute_products_enrichment_status_query:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator\ComputeProductsEnrichmentStatusQuery
         arguments:
-            - '@database_connection'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Channels'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Locales'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationResultsByProductsAndCriterionQuery'
         tags:
             - { name:  akeneo.pim.automation.data_quality_insights.compute_product_key_indicator_query}
 
     akeneo.pim.automation.data_quality_insights.query.compute_product_models_enrichment_status_query:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator\ComputeProductsEnrichmentStatusQuery
         arguments:
-            - '@database_connection'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Channels'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Locales'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationResultsByProductModelsAndCriterionQuery'
         tags:
             - { name: akeneo.pim.automation.data_quality_insights.compute_product_model_key_indicator_query }
 
@@ -250,10 +246,12 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\HasUpToDateProductModelEvaluationQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelScoresQuery'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductsEvaluationsDataByCriterion:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationResultsByProductsAndCriterionQuery:
         arguments:
             - '@database_connection'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelsEvaluationsDataByCriterion:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationResultsByProductModelsAndCriterionQuery:
         arguments:
             - '@database_connection'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds'

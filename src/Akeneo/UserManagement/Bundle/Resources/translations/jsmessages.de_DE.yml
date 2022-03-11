@@ -30,7 +30,6 @@ pim_enrich:
 pim_user.profile:
   caption: Sagen Sie uns zunächst, was Ihre Hauptaufgabe ist, damit wir Ihnen mit den wichtigsten Inhalten helfen können.
   why_is_it_needed: Warum brauchen wir diese Informationen?
-  save_button: Speichern und Zugriff auf den Marktplatz
   selector:
     placeholder: Wähle eine Option aus
     not_found: Kein Ergebnis gefunden
