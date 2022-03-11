@@ -1,9 +1,12 @@
 # 6.0.x
 
 ## Bug fixes
+
 - PLG-776: Fix Option page broken issue with small screen when creating a new option
 - PIM-10305: Do not allow disabled user to login
-- PIM-10292: Fix error 500 when role page contain a validation errors
+- PLG-781: Fix migration task related to calculating product quality scores to be independent of the JobExecution implementation
+- RAC-1223: [Backport] RAC-1215: fix error when attributeOption doesn't have label
+- PIM-10308: [Backport PIM-10292] Fix error 500 when role page contain a validation errors
 
 # 6.0.7 (2022-02-25)
 
