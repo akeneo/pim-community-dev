@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet\ExecuteRulesTasklet;
+use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonRunnableException;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSet;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
@@ -280,6 +281,58 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
 
         $stepExecution->addError('Rule "my_rule_code": error message')->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('errored_rules')->shouldBeCalled();
+
+        $ruleRunner->run($ruleDefinition2)->shouldBeCalled();
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
+
+        $this->execute();
+    }
+
+    function it_keeps_running_rules_execution_when_rule_is_not_runnable_in_non_strict_mode(
+        RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
+        RunnerInterface $ruleRunner,
+        DryRunnerInterface $dryRuleRunner,
+        RuleSubjectSetInterface $ruleSubjectSet1,
+        RuleSubjectSetInterface $ruleSubjectSet2,
+        CursorInterface $dryRunCursor1,
+        CursorInterface $dryRunCursor2,
+        JobParameters $jobParameters,
+        StepExecution $stepExecution,
+        RuleDefinition $ruleDefinition1,
+        RuleDefinition $ruleDefinition2,
+        JobStopper $jobStopper
+    ) {
+        $ruleDefinition1->getCode()->willReturn('my_rule_code');
+        $ruleDefinition1->getContent()->willReturn(['normalized rule content']);
+        $ruleDefinitionRepository->findEnabledOrderedByPriority()->willReturn([$ruleDefinition1, $ruleDefinition2]);
+        $jobParameters->get('rule_codes')->willReturn([]);
+        $jobParameters->get('dry_run')->willReturn(false);
+        $jobParameters->get('stop_on_error')->willReturn(false);
+
+        $dryRuleRunner
+            ->dryRun(Argument::type(RuleDefinition::class))
+            ->shouldBeCalledTimes(2)
+            ->willReturn($ruleSubjectSet1, $ruleSubjectSet2);
+
+        $ruleSubjectSet1->getSubjectsCursor()->willReturn($dryRunCursor1);
+        $ruleSubjectSet2->getSubjectsCursor()->willReturn($dryRunCursor2);
+
+        $dryRunCursor1->count()->willReturn(10);
+        $dryRunCursor2->count()->willReturn(20);
+
+        $stepExecution->setTotalItems(30)->shouldBeCalledOnce();
+        $stepExecution->setSummary(Argument::type('array'))->shouldBeCalled();
+
+        $ruleRunner->run($ruleDefinition1)->willThrow(new NonRunnableException('error message'));
+
+        $stepExecution->addWarning(
+            'The "{{ ruleCode }}" rule could not be executed: {{ error }}',
+            ['{{ ruleCode }}' => 'my_rule_code', '{{ error }}' => 'error message'],
+            new DataInvalidItem(['code' => 'my_rule_code', 'content' => ['normalized rule content']])
+        )->shouldBeCalled();
+
+        $stepExecution->addError(Argument::any())->shouldNotBeCalled();
+        $stepExecution->incrementSummaryInfo('errored_rules')->shouldBeCalledOnce();
 
         $ruleRunner->run($ruleDefinition2)->shouldBeCalled();
         $jobStopper->isStopping($stepExecution)->willReturn(false);
