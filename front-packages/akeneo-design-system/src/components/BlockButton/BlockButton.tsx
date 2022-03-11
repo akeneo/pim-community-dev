@@ -2,20 +2,21 @@ import React, {isValidElement, ReactNode, Ref, SyntheticEvent} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
-import {CloseIcon, IconProps} from '../../icons';
+import {ArrowDownIcon, IconProps} from '../../icons';
 
-type BlockProps = Override<
+type BlockButtonProps = Override<
   React.ButtonHTMLAttributes<HTMLButtonElement> & React.AnchorHTMLAttributes<HTMLAnchorElement>,
   {
-    /**
-     * Define if the block is removable.
-     */
-    removable?: boolean;
 
     /**
-     * Function called when the user clicks on the remove button.
+     * Use when the user cannot proceed or until an input is collected.
      */
-    onRemove?: () => void;
+    disabled?: boolean;
+
+    /**
+     * Function called when the user clicks on the button or hit enter when focused.
+     */
+    onClick?: (event: SyntheticEvent) => void;
 
     /**
      * Accessibility label to describe shortly the button.
@@ -39,19 +40,27 @@ type BlockProps = Override<
   }
 >;
 
-const getColorStyle = () => {
+const getColorStyle = ({
+  disabled,
+}: {disabled: boolean} & AkeneoThemedProps) => {
+  if (disabled) {
+    return css`
+      border-color: ${getColor('grey', 100)};
+      color: ${getColor('grey', 100)};
+    `;
+  }
   return css`
     background-color: ${getColor('white')};
-    border-color: ${getColor('grey', 80)};
-    color: ${getColor('grey', 140)};
-    
-    &:hover {
-      background-color: ${getColor('grey', 20)};
-    }
+    border-color: ${getColor('blue', 100)};
+    color: ${getColor('blue', 100)};
   `;
 };
 
-const Container = styled.div<AkeneoThemedProps>`
+const Container = styled.button<
+  {
+    disabled: boolean;
+  } & AkeneoThemedProps
+>`
   padding: 15px;
   border-style: solid;
   border-width: 1px;
@@ -63,62 +72,63 @@ const Container = styled.div<AkeneoThemedProps>`
   font-weight: 400;
   outline-style: none;
   text-decoration: none;
+  cursor: ${({disabled}) => (disabled ? 'not-allowed' : 'pointer')};
+  outline-style: none;
+  text-decoration: none;
+  
+  &:focus {
+    box-shadow: 0 0 0 2px ${getColor('blue', 40)};
+  }
 
   ${getColorStyle}
 `;
 
-const ContentContainer = styled.div``;
-
-const ActionsContainer = styled.div``;
-
 /**
  * TODO
  */
-const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
+const BlockButton = React.forwardRef<HTMLButtonElement, BlockButtonProps>(
   (
     {
-      removable = false,
-      onRemove,
+      disabled = false,
       ariaDescribedBy,
       ariaLabel,
       ariaLabelledBy,
       children,
       onClick,
       ...rest
-    }: BlockProps,
+    }: BlockButtonProps,
     forwardedRef: Ref<HTMLButtonElement>
   ) => {
-    const handleRemove = (event: SyntheticEvent) => {
-      event.preventDefault();
-      if (onRemove) {
-        onRemove();
-      }
+    const handleAction = (event: SyntheticEvent) => {
+      if (disabled || undefined === onClick) return;
+
+      onClick(event);
     };
 
     return (
       <Container
+        disabled={disabled}
         aria-describedby={ariaDescribedBy}
+        aria-disabled={disabled}
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledBy}
         ref={forwardedRef}
+        role="button"
+        onClick={handleAction}
         {...rest}
       >
-        <ContentContainer>
-          {React.Children.map(children, child => {
-            if (isValidElement<IconProps>(child)) {
-              return React.cloneElement(child, {size: child.props.size ?? 18});
-            }
+        {React.Children.map(children, child => {
+          if (isValidElement<IconProps>(child)) {
+            return React.cloneElement(child, {size: child.props.size ?? 18});
+          }
 
-            return child;
-          })}
-        </ContentContainer>
-        <ActionsContainer>
-          {removable && <CloseIcon size={18} onClick={handleRemove}/>}
-        </ActionsContainer>
+          return child;
+        })}
+        <ArrowDownIcon size={18} />
       </Container>
     );
   }
 );
 
-export {Block};
-export type {BlockProps};
+export {BlockButton};
+export type {BlockButtonProps};

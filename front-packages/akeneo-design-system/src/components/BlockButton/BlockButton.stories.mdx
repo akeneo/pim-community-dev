@@ -1,0 +1,78 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {action} from '@storybook/addon-actions';
+import {BlockButton} from './BlockButton';
+import {ArrowDownIcon} from '../../icons';
+
+<Meta
+  title="Components/BlockButton"
+  component={BlockButton}
+  argTypes={{
+    disabled: {control: {type: 'boolean'}},
+    onClick: {action: 'Clicked'},
+    children: {control: {type: 'text'}},
+  }}
+  args={{
+    children: 'Add block',
+  }}
+/>
+
+# BlockButton
+
+## Usage
+
+TODO
+
+## Playground
+
+Use this playground to test the blocks component
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <BlockButton {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on disabled
+
+<Canvas>
+  <Story name="Disabled">
+    {args => {
+      return (
+        <>
+          <BlockButton {...args} disabled={false}>
+            Default
+          </BlockButton>
+          <BlockButton {...args} disabled={true}>
+            Disabled
+          </BlockButton>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With an Icon
+
+<Canvas>
+  <Story name="With an Icon">
+    {() => {
+      return (
+        <>
+          <BlockButton>
+            After <ArrowDownIcon />
+          </BlockButton>
+          <BlockButton>
+            <ArrowDownIcon /> Before
+          </BlockButton>
+          <BlockButton>
+            Alone
+          </BlockButton>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

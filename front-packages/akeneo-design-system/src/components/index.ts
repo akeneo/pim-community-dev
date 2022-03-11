@@ -1,4 +1,5 @@
 export * from './Badge/Badge';
+export * from './Block/Block';
 export * from './Breadcrumb/Breadcrumb';
 export * from './Button/Button';
 export * from './Card/Card';
