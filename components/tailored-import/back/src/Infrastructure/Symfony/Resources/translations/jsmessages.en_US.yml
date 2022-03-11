@@ -20,10 +20,10 @@ akeneo.tailored_import:
         uploading: Uploading...
         error: An error occurred while uploading your file. Please check your file and try again.
       sheet: Sheet
-      header_position: Header position
-      product_position: First product position
-      column_position: First column position
-      column_identifier_position: Identifier position
+      header_position: Header row
+      product_position: First product row
+      column_position: First product column
+      column_identifier_position: Unique identifier column
   data_mapping_list:
     title: Data mappings
     no_sources: No sources
