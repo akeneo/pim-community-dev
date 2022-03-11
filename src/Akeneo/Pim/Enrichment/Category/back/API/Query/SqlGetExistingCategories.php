@@ -26,7 +26,7 @@ final class SqlGetExistingCategories implements GetExistingCategories
             return [];
         }
 
-        Assert::allString($categoryCodes);
+        Assert::allStringNotEmpty($categoryCodes);
 
         $query = <<<SQL
 SELECT code from pim_catalog_category WHERE code IN (:codes);
