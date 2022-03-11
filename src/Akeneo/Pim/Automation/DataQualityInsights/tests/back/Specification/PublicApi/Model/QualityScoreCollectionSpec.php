@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model;
 
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ProductScore;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScore;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -13,18 +13,18 @@ use PhpSpec\ObjectBehavior;
  */
 final class QualityScoreCollectionSpec extends ObjectBehavior
 {
-    public function it_can_be_constructed_and_returns_product_score()
+    public function it_can_be_constructed_and_returns_quality_score()
     {
-        $expectedQualityScore = new ProductScore('A', 95);
+        $expectedQualityScore = new QualityScore('A', 95);
 
         $qualityScores = [
             'ecommerce' => [
                 'fr_FR' => $expectedQualityScore,
-                'en_US' => new ProductScore('B', 70),
+                'en_US' => new QualityScore('B', 70),
             ],
             'print' => [
-                'fr_FR' => new ProductScore('B', 70),
-                'en_US' => new ProductScore('A', 95),
+                'fr_FR' => new QualityScore('B', 70),
+                'en_US' => new QualityScore('A', 95),
             ],
         ];
 
