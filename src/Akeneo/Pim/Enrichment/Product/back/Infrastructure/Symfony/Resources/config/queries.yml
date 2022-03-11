@@ -3,3 +3,8 @@ services:
         class: Akeneo\Pim\Enrichment\Product\Infrastructure\Query\SqlGetCategoryCodes
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Category\API\Query\GetExistingCategories:
+        class: Akeneo\Pim\Enrichment\Category\API\Query\SqlGetExistingCategories
+        arguments:
+            - '@database_connection'

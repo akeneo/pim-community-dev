@@ -15,8 +15,8 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
@@ -578,7 +578,7 @@ final class UpsertProductIntegration extends TestCase
     public function it_throws_an_exception_if_category_doesnt_exist(): void
     {
         $this->expectException(ViolationsException::class);
-        $this->expectExceptionMessage('The category toto does not exist');
+        $this->expectExceptionMessage('The categories "toto, michel" do not exist');
 
         $this->updateProduct(new SetCategories(['toto', 'michel']));
     }

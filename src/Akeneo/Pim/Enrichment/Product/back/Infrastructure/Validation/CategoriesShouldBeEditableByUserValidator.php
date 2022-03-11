@@ -26,7 +26,7 @@ final class CategoriesShouldBeEditableByUserValidator extends ConstraintValidato
 
     public function validate($categoryUserIntent, Constraint $constraint): void
     {
-        if(null === $categoryUserIntent) {
+        if (null === $categoryUserIntent) {
             return;
         }
         Assert::isInstanceOf($categoryUserIntent, CategoryUserIntent::class);
@@ -50,18 +50,23 @@ final class CategoriesShouldBeEditableByUserValidator extends ConstraintValidato
         }
     }
 
-    private function checkUserIsStillOwner($userId, $categoryCodes): bool
+    /**
+     * @param array<string> $categoryCodes
+     */
+    private function checkUserIsStillOwner(int $userId, array $categoryCodes): bool
     {
         $ownedCategories = $this->getOwnedCategories->forUserId($categoryCodes, $userId);
 
         return \count($ownedCategories) > 0;
     }
 
-    private function checkCategoriesAreViewable($userId, $categoryCodes): bool
+    /**
+     * @param array<string> $categoryCodes
+     */
+    private function checkCategoriesAreViewable(int $userId, array $categoryCodes): bool
     {
         $viewableCategories = $this->getViewableCategories->forUserId($categoryCodes, $userId);
 
         return \count($viewableCategories) === \count($categoryCodes);
-
     }
 }

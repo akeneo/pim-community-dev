@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
+use Akeneo\Pim\Enrichment\Category\API\Query\GetExistingCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\CategoryUserIntent;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
@@ -17,13 +17,13 @@ use Webmozart\Assert\Assert;
  */
 final class CategoriesShouldExistValidator extends ConstraintValidator
 {
-    public function __construct(private CategoryRepositoryInterface $categoryRepository)
+    public function __construct(private GetExistingCategories $getExistingCategories)
     {
     }
 
     public function validate($categoryUserIntent, Constraint $constraint): void
     {
-        if(null === $categoryUserIntent) {
+        if (null === $categoryUserIntent) {
             return;
         }
         Assert::isInstanceOf($categoryUserIntent, CategoryUserIntent::class);
@@ -34,13 +34,16 @@ final class CategoriesShouldExistValidator extends ConstraintValidator
 
         $categoryCodes = $categoryUserIntent->categoryCodes();
 
-        foreach ($categoryCodes as $categoryCode) {
-            $category = $this->categoryRepository->findOneByIdentifier($categoryCode);
+        $nonExistingCategories = \array_diff($categoryCodes, $this->getExistingCategories->forCodes($categoryCodes));
 
-            if (null === $category) {
-                $this->context->buildViolation($constraint->message, ['{{ categoryCode }}' => $categoryCode])->addViolation();
-                return;
-            }
+        if (\count($nonExistingCategories) > 0) {
+            $this->context->buildViolation(
+                $constraint->message,
+                [
+                    '{{ categoryCodes }}' => \implode(', ', $nonExistingCategories),
+                    '%count%' => \count($nonExistingCategories),
+                ]
+            )->addViolation();
         }
     }
 }
