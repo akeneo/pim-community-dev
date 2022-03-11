@@ -17,6 +17,7 @@ bin/console pimee:data-quality-insights:migrate-product-criterion-evaluation    
 # Cli commands for DQI in EE
 
 ```shell
+bin/console pim:data-quality-insights:evaluations                                             #Launch the evaluations of products and structure (EE)
 bin/console pim:data-quality-insights:populate-product-models-scores                          #Populate scores for existing product models
 bin/console pimee:data-quality-insights:demo-helper                                           #DO NOT USE IN PRODUCTION - Command to help generate data quality data for several weeks.
 bin/console pimee:data-quality-insights:generate-aspell-dictionary-from-product-values        #Extract most present words in the product values to create a spelling dictionary
