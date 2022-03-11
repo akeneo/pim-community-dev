@@ -3,7 +3,8 @@
 namespace Specification\Akeneo\Pim\Permission\Component\Connector;
 
 use Akeneo\Channel\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUserInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScore;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
@@ -70,34 +71,6 @@ class GetProductsWithQualityScoresWithPermissionsSpec extends ObjectBehavior
         );
     }
 
-    public function it_applies_permissions_on_quality_scores_of_a_normalized_product(
-        GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
-        GetAllViewableLocalesForUserInterface $getAllViewableLocalesForUser
-    ) {
-        $normalizedProduct = [
-            'enabled'    => true,
-            'categories' => ['cat1', 'cat2'],
-        ];
-        $normalizedProductWithScores = array_merge($normalizedProduct, [
-            'quality_scores' => [
-                'ecommerce' => [
-                    'fr_FR' => 'C'
-                ]
-            ]
-        ]);
-
-        $getAllViewableLocalesForUser->fetchAll(1)->willReturn(['fr_FR', 'it_IT']);
-
-        $getProductsWithQualityScores->fromNormalizedProduct('a_product', $normalizedProduct, 'ecommerce', ['fr_FR'])
-            ->willReturn($normalizedProductWithScores);
-
-        $this->fromNormalizedProduct('a_product', $normalizedProduct, 'ecommerce', ['en_US', 'fr_FR'])
-            ->shouldReturn($normalizedProductWithScores);
-
-        $this->fromNormalizedProduct('without_granted_locales', $normalizedProduct, 'ecommerce', ['en_US', 'de_DE'])
-            ->shouldReturn($normalizedProduct);
-    }
-
     private function buildConnectorProduct($identifier, $qualityScore): ConnectorProduct
     {
         return new ConnectorProduct(
@@ -119,34 +92,34 @@ class GetProductsWithQualityScoresWithPermissionsSpec extends ObjectBehavior
         );
     }
 
-    private function buildProductWithQualityScores(ConnectorProduct $connectorProduct)
+    private function buildProductWithQualityScores(ConnectorProduct $connectorProduct): ConnectorProduct
     {
-        return $connectorProduct->buildWithQualityScores(ChannelLocaleRateCollection::fromArrayInt([
-            'ecommerce' => [
-                'de_DE' => 15,
-                'fr_FR' => 15,
-                'en_US' => 15,
-            ],
-            'print' => [
-                'de_DE' => 15,
-                'fr_FR' => 91,
-            ],
-            'tablet' => [
-                'de_DE' => 45,
-            ],
-        ]));
+        return $connectorProduct->buildWithQualityScores(
+            new QualityScoreCollection([
+                'ecommerce' => [
+                    'de_DE' => new QualityScore('E', 15),
+                    'fr_FR' => new QualityScore('E', 15),
+                    'en_US' => new QualityScore('E', 15),
+                ],
+                'print' => [
+                    'de_DE' => new QualityScore('E', 15),
+                    'fr_FR' => new QualityScore('A', 91),
+                ],
+                'tablet' => [
+                    'de_DE' => new QualityScore('D', 65),
+                ],
+            ])
+        );
     }
 
     private function buildExpectedProductWithFilteredQualityScores(ConnectorProduct $connectorProduct): ConnectorProduct
     {
-        return $connectorProduct->buildWithQualityScores(ChannelLocaleRateCollection::fromArrayInt([
-            'ecommerce' => [
-                'fr_FR' => 15,
-            ],
-            'print' => [
-                'fr_FR' => 91,
-            ],
-            'tablet' => [],
-        ]));
+        return $connectorProduct->buildWithQualityScores(
+            new QualityScoreCollection([
+                'ecommerce' => ['fr_FR' => new QualityScore('E', 15)],
+                'print' => ['fr_FR' => new QualityScore('A', 91)],
+                'tablet' => [],
+            ])
+        );
     }
 }
