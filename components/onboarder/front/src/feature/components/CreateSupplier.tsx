@@ -27,7 +27,7 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
     const manuallyUpdateCode = (code: string) => {
         setCodeHasBeenChangedManually(true);
         setCode(cleanCode(code));
-    }
+    };
 
     const onChangeLabel = (label: string) => {
         setLabel(label);
@@ -62,10 +62,7 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
                 return;
             }
 
-            notify(
-                NotificationLevel.ERROR,
-                translate('onboarder.supplier.supplier_create.error.unknown_error')
-            );
+            notify(NotificationLevel.ERROR, translate('onboarder.supplier.supplier_create.error.unknown_error'));
 
             return;
         }
@@ -74,14 +71,17 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
         notify(
             NotificationLevel.SUCCESS,
             translate('onboarder.supplier.supplier_create.notification.title'),
-            translate('onboarder.supplier.supplier_create.notification.content'),
+            translate('onboarder.supplier.supplier_create.notification.content')
         );
         onCloseModal();
-    }
+    };
 
     const cleanCode = (code: string): string => {
-        return code.trim().toLowerCase().replace(/[^a-z0-9]/g, '_');
-    }
+        return code
+            .trim()
+            .toLowerCase()
+            .replace(/[^a-z0-9]/g, '_');
+    };
 
     return (
         <>
@@ -97,10 +97,20 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
                     </Modal.SectionTitle>
                     <Modal.Title>{translate('pim_common.create')}</Modal.Title>
                     <StyledField label={translate('onboarder.supplier.supplier_create.modal.code.label')}>
-                        <TextInput onChange={manuallyUpdateCode} value={code} maxLength={LABEL_MAX_LENGTH} placeholder={translate('onboarder.supplier.supplier_create.modal.code.label')}/>
+                        <TextInput
+                            onChange={manuallyUpdateCode}
+                            value={code}
+                            maxLength={LABEL_MAX_LENGTH}
+                            placeholder={translate('onboarder.supplier.supplier_create.modal.code.label')}
+                        />
                     </StyledField>
                     <StyledField label={translate('onboarder.supplier.supplier_create.modal.label.label')}>
-                        <TextInput onChange={onChangeLabel} maxLength={LABEL_MAX_LENGTH} value={label} placeholder={translate('onboarder.supplier.supplier_create.modal.label.label')}/>
+                        <TextInput
+                            onChange={onChangeLabel}
+                            maxLength={LABEL_MAX_LENGTH}
+                            value={label}
+                            placeholder={translate('onboarder.supplier.supplier_create.modal.label.label')}
+                        />
                     </StyledField>
                     <Modal.BottomButtons>
                         <Button level="tertiary" onClick={onCloseModal}>

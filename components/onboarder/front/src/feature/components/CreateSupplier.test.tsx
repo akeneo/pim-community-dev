@@ -1,22 +1,17 @@
 import React from 'react';
 import {act, screen} from '@testing-library/react';
 import {mockedDependencies, renderWithProviders} from '@akeneo-pim-community/shared';
-import {CreateSupplier} from "./CreateSupplier";
+import {CreateSupplier} from './CreateSupplier';
 import userEvent from '@testing-library/user-event';
-import {NotificationLevel} from "@akeneo-pim-community/connectivity-connection/src/shared/notify";
 
 test('it renders only the button by default', () => {
-    renderWithProviders(
-        <CreateSupplier onSupplierCreated={() => {}} createButtonlabel={'create'}/>
-    );
+    renderWithProviders(<CreateSupplier onSupplierCreated={() => {}} createButtonlabel={'create'} />);
     expect(screen.getByText('create')).toBeInTheDocument();
     assertModalIsClosed();
 });
 
 test('it renders the modal when clicking on the create button', () => {
-    renderWithProviders(
-        <CreateSupplier onSupplierCreated={() => {}} createButtonlabel={'create'}/>
-    );
+    renderWithProviders(<CreateSupplier onSupplierCreated={() => {}} createButtonlabel={'create'} />);
     openModal();
     assertModalIsOpen();
 });
@@ -29,9 +24,7 @@ test('it can save a supplier', async () => {
 
     const onSupplierCreated = jest.fn();
 
-    renderWithProviders(
-        <CreateSupplier onSupplierCreated={onSupplierCreated} createButtonlabel={'create'}/>
-    );
+    renderWithProviders(<CreateSupplier onSupplierCreated={onSupplierCreated} createButtonlabel={'create'} />);
 
     openModal();
     userEvent.type(screen.getByPlaceholderText('onboarder.supplier.supplier_create.modal.code.label'), 'supplier1');
@@ -48,15 +41,13 @@ test('it can save a supplier', async () => {
 test('it renders an error notification when a supplier with the same code already exists', async () => {
     global.fetch = jest.fn().mockImplementation(async () => ({
         ok: false,
-        status: 409
+        status: 409,
     }));
 
     const onSupplierCreated = jest.fn();
     const notify = jest.spyOn(mockedDependencies, 'notify');
 
-    renderWithProviders(
-        <CreateSupplier onSupplierCreated={onSupplierCreated} createButtonlabel={'create'}/>
-    );
+    renderWithProviders(<CreateSupplier onSupplierCreated={onSupplierCreated} createButtonlabel={'create'} />);
 
     openModal();
 
@@ -64,26 +55,27 @@ test('it renders an error notification when a supplier with the same code alread
         userEvent.click(screen.getByText('pim_common.save'));
     });
 
-    expect(onSupplierCreated).not.toHaveBeenCalled()
+    expect(onSupplierCreated).not.toHaveBeenCalled();
     assertModalIsOpen();
     expect(notify).toBeCalled();
 });
 
 test('The supplier code can be generated from the supplier label', () => {
-    renderWithProviders(
-        <CreateSupplier onSupplierCreated={() => {}} createButtonlabel={'create'}/>
-    );
+    renderWithProviders(<CreateSupplier onSupplierCreated={() => {}} createButtonlabel={'create'} />);
 
     openModal();
-    userEvent.type(screen.getByPlaceholderText('onboarder.supplier.supplier_create.modal.label.label'), '  Supplier #1     ');
+    userEvent.type(
+        screen.getByPlaceholderText('onboarder.supplier.supplier_create.modal.label.label'),
+        '  Supplier #1     '
+    );
 
-    expect(screen.getByPlaceholderText('onboarder.supplier.supplier_create.modal.code.label')).toHaveValue('supplier__1');
+    expect(screen.getByPlaceholderText('onboarder.supplier.supplier_create.modal.code.label')).toHaveValue(
+        'supplier__1'
+    );
 });
 
 test('The supplier code is not generated anymore after typing a label', () => {
-    renderWithProviders(
-        <CreateSupplier onSupplierCreated={() => {}} createButtonlabel={'create'}/>
-    );
+    renderWithProviders(<CreateSupplier onSupplierCreated={() => {}} createButtonlabel={'create'} />);
 
     openModal();
 

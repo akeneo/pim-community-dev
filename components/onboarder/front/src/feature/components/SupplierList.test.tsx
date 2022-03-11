@@ -1,7 +1,7 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
-import {SupplierList} from "./SupplierList";
+import {SupplierList} from './SupplierList';
 
 test('it renders no result wording when there is no supplier matching the search', () => {
     renderWithProviders(
@@ -37,12 +37,10 @@ test('it informs when there is no supplier', () => {
 test('it renders the supplier list if there are some', () => {
     renderWithProviders(
         <SupplierList
-            suppliers={
-                [
-                    {code: 'foo', label: 'Foo', contributorsCount: 0},
-                    {code: 'bar', label: 'Bar', contributorsCount: 0},
-                ]
-            }
+            suppliers={[
+                {code: 'foo', label: 'Foo', contributorsCount: 0},
+                {code: 'bar', label: 'Bar', contributorsCount: 0},
+            ]}
             onSearchChange={() => {}}
             searchValue={''}
             totalSuppliers={2}
@@ -53,4 +51,4 @@ test('it renders the supplier list if there are some', () => {
 
     expect(screen.getByTestId('foo')).toBeInTheDocument();
     expect(screen.getByTestId('bar')).toBeInTheDocument();
-})
+});
