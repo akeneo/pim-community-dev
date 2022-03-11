@@ -38,8 +38,7 @@ final class TransformCriterionEvaluationResultCodes
         private AttributesInterface $attributes,
         private ChannelsInterface $channels,
         private LocalesInterface $locales
-    )
-    {
+    ) {
     }
 
     public function transformToIds(array $evaluationResult): array

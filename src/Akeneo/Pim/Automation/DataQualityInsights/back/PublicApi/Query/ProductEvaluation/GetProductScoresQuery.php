@@ -16,7 +16,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ProductScoreCollec
  */
 class GetProductScoresQuery implements GetProductScoresQueryInterface
 {
-    public function __construct(private GetProductScoresByIdentifiersQuery $getProductScoresByIdentifiersQuery) {
+    public function __construct(private GetProductScoresByIdentifiersQuery $getProductScoresByIdentifiersQuery)
+    {
     }
 
     public function byProductIdentifiers(array $productIdentifiers): array

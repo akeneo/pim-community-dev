@@ -11,7 +11,6 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model;
  */
 class ProductModelScoreCollection
 {
-
     public function __construct(public array $productModelScores = [])
     {
     }
