@@ -156,8 +156,8 @@ $rules = [
 
         // Required to add quality scores into external API normalized products.
         'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
-        'Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresByIdentifiersQueryInterface',
-        'Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection',
+        'Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query',
+        'Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model',
 
         // TIP-915: PIM/Enrichment should not be linked to AttributeOption
         // TIP-916: Do not check if entities exist in PQB filters or sorters

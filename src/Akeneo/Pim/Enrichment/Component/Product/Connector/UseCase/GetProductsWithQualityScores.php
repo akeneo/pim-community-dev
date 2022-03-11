@@ -4,34 +4,28 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresByIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 
 final class GetProductsWithQualityScores implements GetProductsWithQualityScoresInterface
 {
-    private GetProductScoresByIdentifiersQueryInterface $getProductScoresByIdentifiersQuery;
-
-    private FeatureFlag $dataQualityInsightsFeature;
-
     public function __construct(
-        GetProductScoresByIdentifiersQueryInterface $getProductScoresByIdentifiersQuery,
-        FeatureFlag                                 $dataQualityInsightsFeature
+        private GetProductScoresQueryInterface $getProductScoresQuery,
+        private FeatureFlag $dataQualityInsightsFeature
     ) {
-        $this->getProductScoresByIdentifiersQuery = $getProductScoresByIdentifiersQuery;
-        $this->dataQualityInsightsFeature = $dataQualityInsightsFeature;
     }
 
     public function fromConnectorProduct(ConnectorProduct $product): ConnectorProduct
     {
         if (!$this->dataQualityInsightsFeature->isEnabled()) {
-            return $product->buildWithQualityScores(new ChannelLocaleRateCollection());
+            return $product->buildWithQualityScores(new QualityScoreCollection([]));
         }
 
         return $product->buildWithQualityScores(
-            $this->getProductScoresByIdentifiersQuery->byProductIdentifier($product->identifier())
+            $this->getProductScoresQuery->byProductIdentifier($product->identifier())
         );
     }
 
@@ -49,21 +43,10 @@ final class GetProductsWithQualityScores implements GetProductsWithQualityScores
                 return $product->buildWithQualityScores($productQualityScores);
             }
 
-            return $product->buildWithQualityScores(new ChannelLocaleRateCollection());
+            return $product->buildWithQualityScores(new QualityScoreCollection([]));
         }, $connectorProductList->connectorProducts());
 
         return new ConnectorProductList($connectorProductList->totalNumberOfProducts(), $productsWithQualityScores);
-    }
-
-    public function fromNormalizedProduct(string $productIdentifier, array $normalizedProduct, ?string $channel = null, array $locales = []): array
-    {
-        if ($this->dataQualityInsightsFeature->isEnabled()) {
-            $productScores = $this->getProductScoresByIdentifiersQuery->byProductIdentifier($productIdentifier);
-            $productScores = $this->filterProductQualityScores($productScores, $channel, $locales);
-            $normalizedProduct['quality_scores'] = $productScores->toArrayLetter();
-        }
-
-        return $normalizedProduct;
     }
 
     private function returnProductsWithEmptyQualityScores(ConnectorProductList $connectorProductList): ConnectorProductList
@@ -71,7 +54,7 @@ final class GetProductsWithQualityScores implements GetProductsWithQualityScores
         return new ConnectorProductList(
             $connectorProductList->totalNumberOfProducts(),
             array_map(
-                fn (ConnectorProduct $product) => $product->buildWithQualityScores(new ChannelLocaleRateCollection()),
+                fn (ConnectorProduct $product) => $product->buildWithQualityScores(new QualityScoreCollection([])),
                 $connectorProductList->connectorProducts()
             )
         );
@@ -84,27 +67,27 @@ final class GetProductsWithQualityScores implements GetProductsWithQualityScores
             $connectorProductList->connectorProducts()
         );
 
-        return $this->getProductScoresByIdentifiersQuery->byProductIdentifiers($productIdentifiers);
+        return $this->getProductScoresQuery->byProductIdentifiers($productIdentifiers);
     }
 
-    private function filterProductQualityScores(ChannelLocaleRateCollection $productQualityScores, ?string $channel, array $locales): ChannelLocaleRateCollection
+    private function filterProductQualityScores(QualityScoreCollection $productQualityScores, ?string $channel, array $locales): QualityScoreCollection
     {
         if (null === $channel && empty($locales)) {
             return $productQualityScores;
         }
 
         $filteredQualityScores = [];
-        foreach ($productQualityScores->toArrayInt() as $scoreChannel => $scoresLocales) {
+        foreach ($productQualityScores->qualityScores as $scoreChannel => $scoresLocales) {
             if ($channel !== null && $channel !== $scoreChannel) {
                 continue;
             }
-            foreach ($scoresLocales as $scoreLocale => $scoreRate) {
+            foreach ($scoresLocales as $scoreLocale => $score) {
                 if (empty($locales) || in_array($scoreLocale, $locales)) {
-                    $filteredQualityScores[$scoreChannel][$scoreLocale] = $scoreRate;
+                    $filteredQualityScores[$scoreChannel][$scoreLocale] = $score;
                 }
             }
         }
 
-        return ChannelLocaleRateCollection::fromArrayInt($filteredQualityScores);
+        return new QualityScoreCollection($filteredQualityScores);
     }
 }
