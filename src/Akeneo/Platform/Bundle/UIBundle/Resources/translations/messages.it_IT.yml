@@ -158,7 +158,7 @@ pim_enrich:
       manage: Gestisci le connessioni API
   acl_group:
     association_type: Tipi di associazione
-    attribute: Atributi
+    attribute: Attributi
     attribute_group: Gruppi di attributi
     category: Categorie
     channel: Canali
