@@ -11,10 +11,10 @@ pim_asset_manager:
   result_counter: '{0} Nessun risultato|{1} {{ count }} risultato|]1,Inf] {{ count }} risultati'
   asset_counter: '{0} Nessun asset|{1} {{ count }} asset|]1,Inf] {{ count }} asset'
   asset_collection:
-    add_asset: 'Aggiungi attività'
+    add_asset: 'Aggiungi asset'
     upload_asset: 'Carica asset'
     add_asset_title: 'Apri il selettore attività per aggiungere attività alla raccolta'
-    no_asset_in_collection: 'Spiacenti, non c''è alcuna attività in questa raccolta.'
+    no_asset_in_collection: 'Spiacenti, non c''è nessun asset in questa raccolta.'
     helper:
       title: 'Benvenuto nel tuo nuovissimo spazio di gestione asset prodotto!'
       text: 'Nessuna raccolta asset presente per questa famiglia. Per partecipare a questa nuova esperienza, basta aggiungere un attributo di raccolta asset nelle impostazioni.'
@@ -24,7 +24,7 @@ pim_asset_manager:
     notification:
       product_rule: 'Questa raccolta può essere aggiornata da una regola di prodotto:'
       limit: 'Hai raggiunto il limite di {{ limit }} attività per raccolta, non puoi più aggiungere attività alla tua raccolta.'
-    edit_asset: Modifica attività
+    edit_asset: Modifica asset
     remove_asset: Rimuovi asset
     remove_one_asset: Rimuovi attività {{ assetName }} dalla raccolta attività
     remove_all_assets: Rimuovi tutte le attività
@@ -37,7 +37,7 @@ pim_asset_manager:
       moved_to_assets_tab: Per vedere la raccolta di attività {{ label }}, vai alla sezione attività del prodotto.
       is_missing_required: La raccolta di attività {{ label }} è richiesta. Arricchiscila nella sezione attività del prodotto.
   asset_picker:
-    title: Aggiungi attività al tuo prodotto
+    title: Aggiungi assets al tuo prodotto
     sub_title: Scegli le attività che vuoi allegare al tuo prodotto {{ productLabel }} nella raccolta {{ attributeLabel }}
     no_result:
       title: Spiacenti, non ci sono attività per la tua ricerca
@@ -54,7 +54,7 @@ pim_asset_manager:
     next: Attività successiva
     empty_main_media: Questo asset non ha media.
     other_main_media: Impossibile generare l'anteprima di questo asset.
-    edit_asset: Modifica attività
+    edit_asset: Modifica asset
     download: Scarica
     copy_url: Copia URl
     error: Si è verificato un errore durante la generazione dell'anteprima
@@ -122,11 +122,11 @@ pim_asset_manager:
       execute_naming_convention: Esegui convenzione di denominazione
     permission:
       title: Permessi famiglia asset
-    title: Attività
+    title: Assets
     breadcrumb: Famiglie di asset
     img: Il media principale della famiglia di asset denominato "{{ label }}"
     tab:
-      assets: Attività
+      assets: Assets
       attribute: Attributi
       properties: Proprietà
       permission: Permessi
@@ -290,10 +290,10 @@ pim_asset_manager:
       title: Attributi asset
       code: Codice
       label: Etichetta
-      edit_subsection: Modifica attività
+      edit_subsection: Modifica asset
       product_subsection: Prodotti collegati
       main_media_preview: Anteprima media principale
-    title: Attività
+    title: Assets
     create:
       header:
         title: Crea
@@ -557,4 +557,4 @@ batch_jobs:
     execute_naming_convention: Esegui convenzione di denominazione per famiglia di asset
 job_execution:
   summary:
-    assets: Attività
+    assets: Assets
