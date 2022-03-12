@@ -112,7 +112,7 @@ confirmation:
   product:
     publish: Sei sicuro di voler pubblicare questo prodotto?
     unpublish: Sei sicuro di voler annullare la pubblicazione di questo prodotto?
-Attributes.title: Atributi
+Attributes.title: Attributi
 Completeness.title: Completamento
 publish_product.steps.publish_product_tasklet.title: Pubblica prodotto
 unpublish_product.steps.unpublish_product_tasklet.title: Annulla la pubblicazione del prodotto
