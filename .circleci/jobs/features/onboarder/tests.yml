@@ -4,6 +4,7 @@ jobs:
     test_onboarder:
         machine:
             image: *executor-machine
+            docker_layer_caching: true
         steps:
             -   attach_workspace:
                     at: ~/
