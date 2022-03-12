@@ -16,11 +16,11 @@ pim_menu:
     connection_webhook_event_logs: Journal des événements
     data_flows: Flux de données
     connect_connection_settings: Paramètres de connexion
-    marketplace: Marketplace
+    marketplace: App Store
     connected_apps: Apps
 pim_title:
-  akeneo_connectivity_connection_connect_marketplace: Marketplace
-  akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
+  akeneo_connectivity_connection_connect_marketplace: App Store
+  akeneo_connectivity_connection_connect_marketplace_profile: App Store
   akeneo_connectivity_connection_connect_apps_activate: Connecter
   akeneo_connectivity_connection_connect_apps_authorize: Connecter
   akeneo_connectivity_connection_connect_apps_authenticate: Connecter
@@ -35,7 +35,7 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: Souscription aux événements
   akeneo_connectivity_connection_webhook_event_logs: Journal des événements
   akeneo_connectivity_connection_settings_redirect: Connexions
-  akeneo_connectivity_connection_connect_connected_apps: Apps
+  akeneo_connectivity_connection_connect_connected_apps: Apps connectées
   akeneo_connectivity_connection_connect_connected_apps_edit: Paramètres des apps
   akeneo_connectivity_connection_connect_connected_apps_delete: Suppression de l'app
   akeneo_connectivity_connection_connect_marketplace_test_app_create: Créer une application de test
@@ -44,12 +44,12 @@ akeneo_connectivity.connection:
   connect:
     marketplace:
       title: Vous voulez connecter votre PIM avec une autre application ? 🤟
-      sub_title: Consultez notre marketplace pour voir quelles applications peuvent être connectées avec Akeneo PIM.
-      link: Accéder à la marketplace
+      sub_title: Consultez notre App Store pour voir quelles applications peuvent être connectées avec Akeneo PIM.
+      link: Accéder à l'Akeneo App Store
       helper:
         title: '{0} Il n''y a aucune app ou connecteur compatible avec votre version du PIM.{1} Il y a {{ count }} app ou connecteur compatible avec votre version du PIM. |[2,Inf] Il y a {{ count }} apps ou connecteurs compatibles avec votre version du PIM.'
         title_without_apps: '{0} Il n''y a aucun connecteur compatible avec votre version du PIM.{1} Il y a {{ count }} connecteur compatible avec votre version du PIM. |[2,Inf] Il y a {{ count }} connecteurs compatibles avec votre version du PIM.'
-        description: Ce n'est qu'une vue d'ensemble. Pour plus de détails, jetez un coup d'œil à notre marché web.
+        description: Ce n'est qu'une vue d'ensemble. Pour plus de détails, jetez un coup d'œil à notre App Store
         link: Aller sur la Marketplace web
       card:
         developed_by: 'Développé par {{ author }}'
@@ -68,11 +68,11 @@ akeneo_connectivity.connection:
       unreachable: La marketplace est injoignable, veuillez revenir plus tard.
       scroll_to_top: Haut de la page
       test_apps:
-        title: Mes applications de test
+        title: Mes apps de test
         removed_user: Utilisateur supprimé
-        create_a_test_app: Créer une application de test
+        create_a_test_app: Créer une app de test
         modal:
-          subtitle: Créer une application de test
+          subtitle: Créer une app de test
           app_information:
             title: Informations sur l'application
             description: Si vous avez besoin d'aide, veuillez consulter notre article
@@ -181,7 +181,7 @@ akeneo_connectivity.connection:
           error: Désolé, une erreur s'est produite lors de la connexion à l'app.
         permission:
           helper: Si vous avez besoin d'aide, veuillez consulter notre article
-          helper_link: How to set-up app permissions?
+          helper_link: Comment configurer les autorisations des apps ?
       title: Connecter
       activate:
         flash:
