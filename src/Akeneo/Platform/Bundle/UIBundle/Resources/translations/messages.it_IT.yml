@@ -157,7 +157,7 @@ pim_enrich:
       index: Visualizza il tracker di processo
   acl_group:
     association_type: Tipi di associazione
-    attribute: Atributi
+    attribute: Attributi
     attribute_group: Gruppi di attributi
     category: Categorie
     channel: Canali
