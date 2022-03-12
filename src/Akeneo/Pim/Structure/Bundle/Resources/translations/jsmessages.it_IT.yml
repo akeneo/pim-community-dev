@@ -143,7 +143,7 @@ pim_enrich.entity.group_type:
       confirm: Sei sicuro di voler eliminare questo tipo di gruppo?
 pim_enrich.entity.attribute:
   label: attributo
-  plural_label: Atributi
+  plural_label: Attributi
   flash:
     update:
       success: Attributo aggiornato con successo.
