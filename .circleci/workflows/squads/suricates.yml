@@ -21,9 +21,13 @@ workflows:
       - build_srnt_dev:
           requires:
             - checkout
-      - test_onboarder:
+      - test_front_onboarder:
+           requires:
+            - build_srnt_dev
+      - test_back_onboarder:
            requires:
             - build_srnt_dev
       - pull_request_success:
           requires:
-            - test_onboarder
+            - test_front_onboarder
+            - test_back_onboarder

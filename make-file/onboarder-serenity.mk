@@ -30,15 +30,21 @@ unit-front: #Doc: Run unit front tests for Onboarder Serenity
 	$(YARN_RUN) run --cwd=components/onboarder/front test:unit:run
 
 .PHONY: acceptance-back
-acceptance-back: var/tests/behat/onboarder-serenity-acceptance #Doc: Run Behat acceptance tests for Onboarder Serenity
+acceptance-back: var/tests/behat/onboarder-serenity-acceptance #Doc: Run Behat acceptance back tests for Onboarder Serenity
 	$(DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV) vendor/bin/behat --config components/onboarder/back/tests/behat.yml --profile acceptance --format pim --out var/tests/behat/onboarder-serenity-acceptance --format progress --out std --colors $(O)
 
-.PHONY: integration
-integration: #Doc: Run integration tests for Onboarder Serenity
+.PHONY: integration-back
+integration-back: #Doc: Run integration back tests for Onboarder Serenity
 	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Onboarder_Serenity_Integration_Test --configuration components/onboarder/back/tests/phpunit.xml.dist ${ARGS}
 
 .PHONY: lint
 lint: lint-back lint-front
 
 .PHONY: tests-onboarder
-tests-onboarder: lint coupling coupling-list-unused-requirements unit-front unit-back acceptance-back integration
+tests-onboarder: tests-front-onboarder tests-back-onboarder
+
+.PHONY: tests-back-onboarder
+tests-back-onboarder: coupling coupling-list-unused-requirements unit-back acceptance-back integration-back
+
+.PHONY: tests-front-onboarder
+tests-front-onboarder: lint-front unit-front

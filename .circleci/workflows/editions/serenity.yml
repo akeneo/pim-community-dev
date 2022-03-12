@@ -104,9 +104,13 @@ workflows:
                   <<: *slack-fail-post-step-srnt
                   requires:
                       - build_srnt_dev
-            - test_onboarder:
-                    <<: *slack-fail-post-step-srnt
-                    requires:
+            - test_front_onboarder:
+                  <<: *slack-fail-post-step-srnt
+                  requires:
+                      - build_srnt_dev
+            - test_back_onboarder:
+                  <<: *slack-fail-post-step-srnt
+                  requires:
                       - build_srnt_dev
             - release:
                   <<: *slack-post-step-srnt
@@ -125,7 +129,8 @@ workflows:
                       - test_back_data_migrations
                       - test_deploy
                       - test_upgrade_from_last_release
-                      - test_onboarder
+                      - test_front_onboarder
+                      - test_back_onboarder
 
 # Resume :
 #    on_demand_check_update_against_client workfow clones (on demand) existing clients and updates them with your code/migrations
@@ -390,7 +395,10 @@ workflows:
             - test_back_data_migrations:
                   requires:
                       - "[srnt] Build dev"
-            - test_onboarder:
+            - test_front_onboarder:
+                  requires:
+                      - "[srnt] Build dev"
+            - test_back_onboarder:
                   requires:
                       - "[srnt] Build dev"
             - test_cronjobs_existence:
@@ -438,7 +446,8 @@ workflows:
                       - test_back_performance
                       - test_back_behat_legacy
                       - test_back_data_migrations
-                      - test_onboarder
+                      - test_back_onboarder
+                      - test_front_onboarder
             - release:
                   name: "[<< matrix.PRODUCT_TYPE >>] Release"
                   matrix:
