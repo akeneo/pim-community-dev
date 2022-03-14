@@ -82,7 +82,11 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     /** @test */
     public function it_sets_categories_for_the_product(): void
     {
-        $command = new UpsertProductCommand(userId: $this->getUserId('betty'), productIdentifier: 'identifier', categoryUserIntent: new SetCategories(['print']));
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('betty'),
+            productIdentifier: 'identifier',
+            categoryUserIntent: new SetCategories(['print'])
+        );
         $this->messageBus->dispatch($command);
 
         $this->clearDoctrineUoW();

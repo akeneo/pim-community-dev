@@ -575,10 +575,10 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_throws_an_exception_if_category_doesnt_exist(): void
+    public function it_throws_an_exception_when_category_doesnt_exist(): void
     {
         $this->expectException(ViolationsException::class);
-        $this->expectExceptionMessage('The categories "toto, michel" do not exist');
+        $this->expectExceptionMessage('The "toto, michel" categories do not exist');
 
         $this->updateProduct(new SetCategories(['toto', 'michel']));
     }

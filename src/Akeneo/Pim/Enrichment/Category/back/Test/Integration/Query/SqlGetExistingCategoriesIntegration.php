@@ -4,30 +4,33 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Enrichment\Category\Integration\Query;
 
-use Akeneo\Pim\Enrichment\Category\API\Query\GetExistingCategories;
-use Akeneo\Pim\Enrichment\Category\API\Query\SqlGetExistingCategories;
-use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
+use Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories;
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
-final class SqlGetExistingCategoriesIntegration extends EnrichmentProductTestCase
+final class SqlGetExistingCategoriesIntegration extends TestCase
 {
-    private SqlGetExistingCategories $getExistingCategories;
+    private GetViewableCategories $getViewableCategories;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->getExistingCategories = $this->get(GetExistingCategories::class);
+        $this->getViewableCategories = $this->get(GetViewableCategories::class);
     }
 
     /** @test */
-    public function it_returns_category_codes_for_products()
+    public function it_returns_existing_category_codes()
     {
         $this->createCategory(['code' => 'uno']);
         $this->createCategory(['code' => 'dos']);
         $this->createCategory(['code' => 'tres']);
 
-        Assert::assertSame([], $this->getExistingCategories->forCodes([]));
-        Assert::assertEqualsCanonicalizing(['uno', 'dos'], $this->getExistingCategories->forCodes(['uno', 'dos', 'cinco']));
+        Assert::assertSame([], $this->getViewableCategories->forUserId([], 1));
+        Assert::assertEqualsCanonicalizing(
+            ['uno', 'dos'],
+            $this->getViewableCategories->forUserId(['uno', 'dos', 'cinco'], 99)
+        );
     }
 
     /** @test */
@@ -36,15 +39,11 @@ final class SqlGetExistingCategoriesIntegration extends EnrichmentProductTestCas
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Expected a string. Got: integer');
 
-        $this->getExistingCategories->forCodes(['toto', 42]);
+        $this->getViewableCategories->forUserId(['toto', 42], 1);
     }
 
-    /** @test */
-    public function it_throws_exceptions_on_empty_value()
+    protected function getConfiguration(): Configuration
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Expected a different value than "".');
-
-        $this->getExistingCategories->forCodes(['toto', '']);
+        return $this->catalog->useMinimalCatalog();
     }
 }

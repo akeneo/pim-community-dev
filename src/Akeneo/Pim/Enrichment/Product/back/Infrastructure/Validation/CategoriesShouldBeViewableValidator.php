@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
 use Akeneo\Pim\Enrichment\Category\API\Query\GetExistingCategories;
+use Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\CategoryUserIntent;
 use Symfony\Component\Validator\Constraint;
@@ -15,9 +16,9 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class CategoriesShouldExistValidator extends ConstraintValidator
+final class CategoriesShouldBeViewableValidator extends ConstraintValidator
 {
-    public function __construct(private GetExistingCategories $getExistingCategories)
+    public function __construct(private GetViewableCategories $getViewableCategories)
     {
     }
 
@@ -27,21 +28,26 @@ final class CategoriesShouldExistValidator extends ConstraintValidator
             return;
         }
         Assert::isInstanceOf($categoryUserIntent, CategoryUserIntent::class);
-        Assert::isInstanceOf($constraint, CategoriesShouldExist::class);
+        Assert::isInstanceOf($constraint, CategoriesShouldBeViewable::class);
 
+        $categoryCodes = \array_unique($categoryUserIntent->categoryCodes());
+        if ([] === $categoryCodes) {
+            return;
+        }
         $command = $this->context->getRoot();
         Assert::isInstanceOf($command, UpsertProductCommand::class);
 
-        $categoryCodes = $categoryUserIntent->categoryCodes();
+        $notViewableCategoryCodes = \array_diff(
+            $categoryCodes,
+            $this->getViewableCategories->forUserId($categoryCodes, $command->userId())
+        );
 
-        $nonExistingCategories = \array_diff($categoryCodes, $this->getExistingCategories->forCodes($categoryCodes));
-
-        if (\count($nonExistingCategories) > 0) {
+        if ([] !== $notViewableCategoryCodes) {
             $this->context->buildViolation(
                 $constraint->message,
                 [
-                    '{{ categoryCodes }}' => \implode(', ', $nonExistingCategories),
-                    '%count%' => \count($nonExistingCategories),
+                    '{{ categoryCodes }}' => \implode(', ', $notViewableCategoryCodes),
+                    '%count%' => \count($notViewableCategoryCodes),
                 ]
             )->addViolation();
         }

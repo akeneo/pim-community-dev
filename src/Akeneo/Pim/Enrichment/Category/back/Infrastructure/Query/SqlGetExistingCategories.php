@@ -2,16 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Category\API\Query;
+namespace Akeneo\Pim\Enrichment\Category\Infrastructure\Query;
 
+use Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories;
 use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 
 /**
+ * In community, viewable categories are the existing ones.
+ *
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class SqlGetExistingCategories implements GetExistingCategories
+final class SqlGetExistingCategories implements GetViewableCategories
 {
     public function __construct(private Connection $connection)
     {
@@ -20,18 +23,14 @@ final class SqlGetExistingCategories implements GetExistingCategories
     /**
      * @inheritDoc
      */
-    public function forCodes(array $categoryCodes): array
+    public function forUserId(array $categoryCodes, int $userId): array
     {
         if ([] === $categoryCodes) {
             return [];
         }
 
-        Assert::allStringNotEmpty($categoryCodes);
-
-        $query = <<<SQL
-SELECT code from pim_catalog_category WHERE code IN (:codes);
-SQL;
-
+        Assert::allString($categoryCodes);
+        $query = 'SELECT code from pim_catalog_category WHERE code IN (:codes)';
 
         return $this->connection->executeQuery(
             $query,

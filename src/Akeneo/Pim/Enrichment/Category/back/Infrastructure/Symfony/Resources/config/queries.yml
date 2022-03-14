@@ -3,4 +3,6 @@ services:
         class: Akeneo\Pim\Enrichment\Category\Domain\Query\DummyGetOwnedCategories
 
     Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories:
-        class: Akeneo\Pim\Enrichment\Category\Domain\Query\DummyGetViewableCategories
+        class: Akeneo\Pim\Enrichment\Category\Infrastructure\Query\SqlGetExistingCategories
+        arguments:
+            - '@database_connection'

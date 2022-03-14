@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
 use Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
 use Symfony\Component\Validator\Constraint;
@@ -37,12 +38,19 @@ final class IsUserOwnerOfTheProductValidator extends ConstraintValidator
             return;
         }
 
-        $productCategoryCodes = $this->getCategoryCodes->fromProductIdentifiers([$productIdentifier])[$productIdentifier->asString()] ?? null;
+        $categoryUserIntent = $command->categoryUserIntent();
+        if (null === $categoryUserIntent) {
+            $productCategoryCodes = $this->getCategoryCodes->fromProductIdentifiers([$productIdentifier])[$productIdentifier->asString()] ?? null;
+        } elseif ($categoryUserIntent instanceof SetCategories) {
+            $productCategoryCodes = $categoryUserIntent->categoryCodes();
+        } else {
+            throw new \LogicException('Not implemented');
+        }
+
         if (null === $productCategoryCodes || [] === $productCategoryCodes) {
             // null => product does not exist
             // [] => product exists and has no category
             // A new product without category is always granted (from a category permission point of view).
-            // TODO later: if we create/add with a category, we have to check the category is granted
             return;
         }
 
