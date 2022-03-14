@@ -91,7 +91,7 @@ $rules = [
             'Akeneo\OnboarderSerenity\Infrastructure\Supplier',
             // PIM coupling
             // External dependencies coupling
-            'Behat\Behat\Context\Context',
+            'Behat',
             'PHPUnit\Framework',
             'Ramsey\Uuid\Uuid',
         ],

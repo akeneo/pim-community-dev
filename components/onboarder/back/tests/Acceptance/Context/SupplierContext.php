@@ -10,7 +10,7 @@ use Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliers;
 use Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliersHandler;
 use Akeneo\OnboarderSerenity\Domain\Read;
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
-use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Repository\InMemory\InMemoryRepository;
+use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
@@ -18,7 +18,7 @@ use Ramsey\Uuid\Uuid;
 
 final class SupplierContext implements Context
 {
-    private ?\Exception $exception;
+    private ?\Exception $lastException;
 
     private array $suppliers;
 
@@ -59,14 +59,14 @@ final class SupplierContext implements Context
         try {
             ($this->createSupplierHandler)(new CreateSupplier(Uuid::uuid4()->toString(), $code, $label ?: $code));
         } catch (Supplier\Exception\SupplierAlreadyExistsException $e) {
-            $this->exception = $e;
+            $this->lastException = $e;
         }
     }
 
     /**
      * @When I retrieve the suppliers
      */
-    public function iRetrieveSuppliers()
+    public function iRetrieveSuppliers(): void
     {
         $this->suppliers = ($this->getSuppliersHandler)(new GetSuppliers());
     }
@@ -89,17 +89,17 @@ final class SupplierContext implements Context
      */
     public function aSupplierAlreadyExistsExceptionShouldBeThrown(): void
     {
-        Assert::assertInstanceOf(Supplier\Exception\SupplierAlreadyExistsException::class, $this->exception);
+        Assert::assertInstanceOf(Supplier\Exception\SupplierAlreadyExistsException::class, $this->lastException);
     }
 
     /**
      * @Then I should have the following suppliers:
      */
-    public function iShouldHaveTheFollowingSuppliers(TableNode $properties)
+    public function iShouldHaveTheFollowingSuppliers(TableNode $properties): void
     {
-        $expectecSuppliers = $properties->getHash();
+        $expectedSuppliers = $properties->getHash();
         $actualSuppliers = array_map(fn (Read\Supplier\Model\Supplier $supplier) => ['code' => $supplier->code, 'label' => $supplier->label], $this->suppliers);
 
-        Assert::assertSame($expectecSuppliers, array_values($actualSuppliers));
+        Assert::assertSame($expectedSuppliers, array_values($actualSuppliers));
     }
 }

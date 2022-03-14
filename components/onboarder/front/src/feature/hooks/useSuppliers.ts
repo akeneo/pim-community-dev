@@ -1,7 +1,7 @@
-import {useCallback, useEffect, useState} from "react";
-import {useNotify, useRoute, useTranslate, NotificationLevel} from "@akeneo-pim-community/shared";
+import {useCallback, useEffect, useState} from 'react';
+import {useNotify, useRoute, useTranslate, NotificationLevel} from '@akeneo-pim-community/shared';
 
-type SupplierRow = {
+export type SupplierRow = {
     code: string;
     label: string;
     contributorsCount: number;
@@ -10,9 +10,7 @@ type SupplierRow = {
 export const SUPPLIERS_PER_PAGE = 50;
 
 const useSuppliers = (search: string, page: number): [SupplierRow[], number, () => void] => {
-    const [suppliers, setSuppliers] = useState<SupplierRow[]>(
-        []
-    );
+    const [suppliers, setSuppliers] = useState<SupplierRow[]>([]);
     const [totalNumberOfSuppliers, setTotalNumberOfSuppliers] = useState<number>(0);
     const notify = useNotify();
     const translate = useTranslate();
@@ -20,14 +18,11 @@ const useSuppliers = (search: string, page: number): [SupplierRow[], number, () 
     const getSuppliersRoute = useRoute('onboarder_serenity_supplier_list');
     const loadSuppliers = useCallback(async () => {
         const response = await fetch(`${getSuppliersRoute}?page=${page}&search=${search}`, {
-            method: 'GET'
+            method: 'GET',
         });
 
         if (!response.ok) {
-            notify(
-                NotificationLevel.ERROR,
-                translate('onboarder.supplier.supplier_list.error')
-            );
+            notify(NotificationLevel.ERROR, translate('onboarder.supplier.supplier_list.error'));
 
             return;
         }
@@ -40,15 +35,10 @@ const useSuppliers = (search: string, page: number): [SupplierRow[], number, () 
     useEffect(() => {
         (async () => {
             await loadSuppliers();
-        })()
+        })();
     }, [loadSuppliers]);
 
-    return [
-        suppliers,
-        totalNumberOfSuppliers,
-        loadSuppliers
-    ];
+    return [suppliers, totalNumberOfSuppliers, loadSuppliers];
 };
 
-export type {SupplierRow};
 export {useSuppliers};

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import {useSuppliers} from './hooks/useSuppliers';
 import {SupplierList} from './components/SupplierList';
 import {EmptySupplierList} from './components/EmptySupplierList';
-import {CreateSupplier} from "./components/CreateSupplier";
+import {CreateSupplier} from './components/CreateSupplier';
 
 const Container = styled.div``;
 
@@ -42,18 +42,13 @@ const Supplier = () => {
                     />
                 </PageHeader.Actions>
                 <PageHeader.Title>
-                    {
-                        translate(
-                            'onboarder.supplier.supplier_list.title',
-                            {count: suppliers.length}, suppliers.length
-                        )
-                    }
+                    {translate('onboarder.supplier.supplier_list.title', {count: suppliers.length}, suppliers.length)}
                 </PageHeader.Title>
             </PageHeader>
             <StyledPageContent>
-                {
-                    0 === suppliers.length && '' === searchValue ?
-                    <EmptySupplierList onSupplierCreated={refreshSuppliers} /> :
+                {0 === suppliers.length && '' === searchValue ? (
+                    <EmptySupplierList onSupplierCreated={refreshSuppliers} />
+                ) : (
                     <SupplierList
                         suppliers={suppliers}
                         onSearchChange={setSearchValue}
@@ -62,7 +57,7 @@ const Supplier = () => {
                         onChangePage={setPage}
                         currentPage={page}
                     />
-                }
+                )}
             </StyledPageContent>
         </Container>
     );

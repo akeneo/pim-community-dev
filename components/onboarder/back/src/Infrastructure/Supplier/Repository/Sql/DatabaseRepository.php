@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Repository\Sql;
+namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\Sql;
 
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
 use Doctrine\DBAL\Connection;
@@ -42,28 +42,6 @@ final class DatabaseRepository implements Supplier\Repository
             $sql,
             [
                 'identifier' => (string) $identifier,
-            ]
-        )->fetchAssociative();
-
-        return false !== $row ? Supplier\Model\Supplier::create(
-            $row['identifier'],
-            $row['code'],
-            $row['label']
-        ) : null;
-    }
-
-    public function findByCode(Supplier\ValueObject\Code $code): ?Supplier\Model\Supplier
-    {
-        $sql = <<<SQL
-            SELECT identifier, code, label
-            FROM `akeneo_onboarder_serenity_supplier`
-            WHERE code = :code
-        SQL;
-
-        $row = $this->connection->executeQuery(
-            $sql,
-            [
-                'code' => (string) $code,
             ]
         )->fetchAssociative();
 

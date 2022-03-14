@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Query\Sql;
+namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql;
 
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierCount;
 use Doctrine\DBAL\Connection;

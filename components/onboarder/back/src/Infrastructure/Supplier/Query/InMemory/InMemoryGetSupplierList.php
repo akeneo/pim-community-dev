@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Query\InMemory;
+namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory;
 
 use Akeneo\OnboarderSerenity\Domain\Read;
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList;
 use Akeneo\OnboarderSerenity\Domain\Write;
-use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Persistence\Repository\InMemory\InMemoryRepository;
+use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 
-final class InMemoryGetSupplierList implements GetSupplierList
+class InMemoryGetSupplierList implements GetSupplierList
 {
     public function __construct(private InMemoryRepository $repository)
     {
@@ -45,7 +45,7 @@ final class InMemoryGetSupplierList implements GetSupplierList
         );
     }
 
-    private function sortByLabel(array &$suppliers)
+    private function sortByLabel(array &$suppliers): void
     {
         uasort($suppliers, function (Write\Supplier\Model\Supplier $supplier1, Write\Supplier\Model\Supplier $supplier2) {
             return strcmp($supplier1->label(), $supplier2->label());

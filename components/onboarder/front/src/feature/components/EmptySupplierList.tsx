@@ -5,12 +5,12 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  flex: 1;
-  margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    margin-top: 0;
 `;
 
 type EmptySupplierProps = {
@@ -33,7 +33,7 @@ const EmptySupplierList = ({onSupplierCreated}: EmptySupplierProps) => {
 };
 
 const NoSupplierText = styled.div`
-  margin-bottom: 30px;
-`
+    margin-bottom: 30px;
+`;
 
 export {EmptySupplierList};
