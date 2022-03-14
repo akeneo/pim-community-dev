@@ -2,8 +2,10 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Category\Connector\ArrayConverter\FlatToStandard;
 
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
+use Akeneo\Tool\Component\Connector\Exception\StructureArrayConversionException;
 
 /**
  * Category Flat Converter
@@ -17,12 +19,19 @@ class Category implements ArrayConverterInterface
     /** @var FieldsRequirementChecker */
     protected $fieldChecker;
 
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
+
     /**
      * @param FieldsRequirementChecker $fieldChecker
      */
-    public function __construct(FieldsRequirementChecker $fieldChecker)
+    public function __construct(
+        FieldsRequirementChecker $fieldChecker,
+        LocaleRepositoryInterface $localeRepository
+    )
     {
         $this->fieldChecker = $fieldChecker;
+        $this->localeRepository = $localeRepository;
     }
 
     /**
@@ -50,8 +59,7 @@ class Category implements ArrayConverterInterface
      */
     public function convert(array $item, array $options = [])
     {
-        $this->fieldChecker->checkFieldsPresence($item, ['code']);
-        $this->fieldChecker->checkFieldsFilling($item, ['code']);
+        $this->validate($item);
 
         $convertedItem = ['labels' => []];
         foreach ($item as $field => $data) {
@@ -81,5 +89,35 @@ class Category implements ArrayConverterInterface
         }
 
         return $convertedItem;
+    }
+
+    /**
+     * @param array $item
+     * @return void
+     * @throws StructureArrayConversionException
+     */
+    protected function validate(array $item)
+    {
+        $requiredFields = ['code'];
+
+        $this->fieldChecker->checkFieldsPresence($item, $requiredFields);
+        $this->fieldChecker->checkFieldsFilling($item, $requiredFields);
+
+        $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
+        foreach ($localeCodes as $code) {
+            $requiredFields[] = 'label-' . $code;
+        }
+
+        foreach (array_keys($item) as $field) {
+            if (!in_array($field, $requiredFields)) {
+                throw new StructureArrayConversionException(
+                    sprintf(
+                        'Field "%s" is provided, authorized fields are: "%s"',
+                        $field,
+                        implode(', ', $requiredFields)
+                    )
+                );
+            }
+        }
     }
 }
