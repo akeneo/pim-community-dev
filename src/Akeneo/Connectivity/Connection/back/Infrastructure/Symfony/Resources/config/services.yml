@@ -61,8 +61,8 @@ services:
     akeneo_connectivity.connection.service.connection_context:
         class: Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext
         arguments:
-            - '@akeneo_connectivity.connection.persistence.query.are_credentials_valid_combination'
-            - '@akeneo_connectivity.connection.persistence.query.select_connection_code_by_client_id'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Connections\WrongCredentialsCombination\Persistence\DbalAreCredentialsValidCombinationQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Connections\Persistence\DbalSelectConnectionCodeByClientIdQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
 
     akeneo_connectivity.connection.clock:

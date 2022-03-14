@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Connections\WrongCredentialsCombination\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\AreCredentialsValidCombinationQueryInterface;
 use Doctrine\DBAL\Connection;

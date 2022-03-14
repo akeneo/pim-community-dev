@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Repository;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Connections\WrongCredentialsCombination\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Read;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Write;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Repository\WrongCredentialsCombinationRepositoryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Connections\WrongCredentialsCombination\Persistence\DbalWrongCredentialsCombinationRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection as DbalConnection;
@@ -18,18 +19,15 @@ use PHPUnit\Framework\Assert;
  */
 class DbalWrongCredentialsCombinationRepositoryIntegration extends TestCase
 {
-    /** @var WrongCredentialsCombinationRepositoryInterface */
-    private $repository;
-
-    /** @var DbalConnection */
-    private $dbalConnection;
+    private WrongCredentialsCombinationRepositoryInterface $repository;
+    private DbalConnection $dbalConnection;
 
     public function setUp(): void
     {
         parent::setUp();
 
         $this->dbalConnection = $this->get('database_connection');
-        $this->repository = $this->get('akeneo_connectivity.connection.persistence.repository.wrong_credentials_combination');
+        $this->repository = $this->get(DbalWrongCredentialsCombinationRepository::class);
     }
 
     public function getConfiguration(): Configuration

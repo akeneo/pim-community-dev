@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Connections\WrongCredentialsCombination\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Read\WrongCredentialsCombinations;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Write\WrongCredentialsCombination;
@@ -16,12 +16,8 @@ use Doctrine\DBAL\Connection;
  */
 class DbalWrongCredentialsCombinationRepository implements WrongCredentialsCombinationRepositoryInterface
 {
-    /** @var Connection */
-    private $dbalConnection;
-
-    public function __construct(Connection $dbalConnection)
+    public function __construct(private Connection $dbalConnection)
     {
-        $this->dbalConnection = $dbalConnection;
     }
 
     public function create(WrongCredentialsCombination $wrongCredentialsCombination): void

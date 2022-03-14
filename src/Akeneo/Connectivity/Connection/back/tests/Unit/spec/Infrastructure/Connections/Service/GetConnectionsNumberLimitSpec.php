@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Connections;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Connections\Service;
 
 use PhpSpec\ObjectBehavior;
 

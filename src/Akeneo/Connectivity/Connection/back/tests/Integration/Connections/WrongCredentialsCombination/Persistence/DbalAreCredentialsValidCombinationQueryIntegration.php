@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Tests\Integration\Persistence\Dbal\Query;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Connections\WrongCredentialsCombination\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalAreCredentialsValidCombinationQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Connections\WrongCredentialsCombination\Persistence\DbalAreCredentialsValidCombinationQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -25,7 +25,7 @@ class DbalAreCredentialsValidCombinationQueryIntegration extends TestCase
         parent::setUp();
 
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
-        $this->query = $this->get('akeneo_connectivity.connection.persistence.query.are_credentials_valid_combination');
+        $this->query = $this->get(DbalAreCredentialsValidCombinationQuery::class);
     }
 
     protected function getConfiguration(): Configuration

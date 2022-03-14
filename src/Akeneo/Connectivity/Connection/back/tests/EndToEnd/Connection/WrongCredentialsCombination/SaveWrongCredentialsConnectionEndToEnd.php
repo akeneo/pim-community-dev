@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\WrongCredentialsConnection;
+namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Connection\WrongCredentialsCombination;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Read\WrongCredentialsCombinations;
+use Akeneo\Connectivity\Connection\Infrastructure\Connections\WrongCredentialsCombination\Persistence\DbalWrongCredentialsCombinationRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use PHPUnit\Framework\Assert;
@@ -80,7 +81,7 @@ class SaveWrongCredentialsConnectionEndToEnd extends ApiTestCase
 
     private function findAllWrongCredentialsCombination(): WrongCredentialsCombinations
     {
-        $repository = $this->get('akeneo_connectivity.connection.persistence.repository.wrong_credentials_combination');
+        $repository = $this->get(DbalWrongCredentialsCombinationRepository::class);
 
         return $repository->findAll(new \DateTimeImmutable('now - 1 day', new \DateTimeZone('UTC')));
     }

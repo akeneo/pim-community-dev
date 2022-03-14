@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-
-namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Connections\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\SelectConnectionCodeByClientIdQueryInterface;
 use Doctrine\DBAL\Connection;
