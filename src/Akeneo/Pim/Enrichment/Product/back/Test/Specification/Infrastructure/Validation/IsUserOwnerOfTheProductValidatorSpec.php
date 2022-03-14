@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
 use Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\IsUserOwnerOfTheProduct;
@@ -90,8 +91,68 @@ class IsUserOwnerOfTheProductValidatorSpec extends ObjectBehavior
 
         $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_with_category');
         $getOwnedCategories->forUserId(['master', 'print'], 1)->willReturn([]);
-        $context->buildViolation($constraint->message)->shouldBeCalledOnce()->willReturn($constraintViolationBuilder);
+        $context->buildViolation($constraint->noAccessMessage)->shouldBeCalledOnce()
+            ->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalledOnce();
+
+        $this->validate($command, $constraint);
+    }
+
+    function it_adds_a_violation_when_the_product_will_not_have_owned_category_after_update(
+        GetOwnedCategories $getOwnedCategories,
+        ExecutionContext $context,
+        ConstraintViolationBuilderInterface $constraintViolationBuilder
+    ) {
+        $constraint = new IsUserOwnerOfTheProduct();
+
+        $command = new UpsertProductCommand(
+            userId: 1,
+            productIdentifier: 'product_with_category',
+            categoryUserIntent: new SetCategories(['non_owned_category'])
+        );
+        $getOwnedCategories->forUserId(['master', 'print'], 1)->willReturn(['master']);
+        $getOwnedCategories->forUserId(['non_owned_category'], 1)->willReturn([]);
+
+        $context->buildViolation($constraint->shouldKeepOneOwnedCategoryMessage)->shouldBeCalledOnce()
+            ->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->addViolation()->shouldBeCalledOnce();
+
+        $this->validate($command, $constraint);
+    }
+
+    function it_validates_when_the_product_will_still_have_owned_category_after_update(
+        GetOwnedCategories $getOwnedCategories,
+        ExecutionContext $context
+    ) {
+        $constraint = new IsUserOwnerOfTheProduct();
+
+        $command = new UpsertProductCommand(
+            userId: 1,
+            productIdentifier: 'product_with_category',
+            categoryUserIntent: new SetCategories(['owned_category'])
+        );
+        $getOwnedCategories->forUserId(['master', 'print'], 1)->willReturn(['master']);
+        $getOwnedCategories->forUserId(['owned_category'], 1)->willReturn(['owned_category']);
+
+        $context->buildViolation(Argument::any())->shouldNotBeCalled();
+
+        $this->validate($command, $constraint);
+    }
+
+    function it_validates_when_the_product_will_will_become_uncategorized_after_update(
+        GetOwnedCategories $getOwnedCategories,
+        ExecutionContext $context
+    ) {
+        $constraint = new IsUserOwnerOfTheProduct();
+
+        $command = new UpsertProductCommand(
+            userId: 1,
+            productIdentifier: 'product_with_category',
+            categoryUserIntent: new SetCategories([])
+        );
+        $getOwnedCategories->forUserId(['master', 'print'], 1)->willReturn(['master']);
+
+        $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate($command, $constraint);
     }
