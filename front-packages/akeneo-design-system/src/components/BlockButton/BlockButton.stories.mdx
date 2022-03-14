@@ -1,7 +1,9 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
-import {action} from '@storybook/addon-actions';
 import {BlockButton} from './BlockButton';
 import {PlusIcon} from '../../icons';
+import {Dropdown, Block} from '../../components';
+import {useBooleanState} from '../../hooks';
+import {useState} from 'react';
 
 <Meta
   title="Components/BlockButton"
@@ -24,7 +26,7 @@ TODO
 
 ## Playground
 
-Use this playground to test the blocks component
+Use this playground to test the BlockButton component
 
 <Canvas>
   <Story name="Standard">
@@ -43,7 +45,7 @@ Use this playground to test the blocks component
     {args => {
       return (
         <>
-          <BlockButton {...args} disabled={false}>
+          <BlockButton {...args}>
             Default
           </BlockButton>
           <BlockButton {...args} disabled={true}>
@@ -59,18 +61,54 @@ Use this playground to test the blocks component
 
 <Canvas>
   <Story name="With an Icon">
-    {() => {
+    {args => {
       return (
         <>
-          <BlockButton>
+          <BlockButton {...args}>
+              <PlusIcon /> Before
+          </BlockButton>
+          <BlockButton {...args}>
             After <PlusIcon />
           </BlockButton>
-          <BlockButton>
-            <PlusIcon /> Before
-          </BlockButton>
-          <BlockButton>
-            Alone
-          </BlockButton>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With Dropdown and Blocks
+
+<Canvas>
+  <Story name="With Dropdown and Blocks">
+    {args => {
+      const [blockValues, setBlockValues] = useState([]);
+      const [isOpen, open, close] = useBooleanState(false);
+      return (
+        <>
+            {blockValues.map(blockValue => (
+                <Block key={blockValue} removable={true} onRemove={() => setBlockValues(blockValues.filter(current => current !== blockValue))}>
+                    {blockValue}
+                </Block>
+            ))}
+            <Dropdown>
+                <BlockButton onClick={open}>
+                    Add a block
+                </BlockButton>
+                {isOpen && (
+                    <Dropdown.Overlay verticalPosition="down" onClose={close}>
+                        <Dropdown.Header>
+                            <Dropdown.Title>Blocks</Dropdown.Title>
+                        </Dropdown.Header>
+                        <Dropdown.ItemCollection>
+                            {['Block 1', 'Block 2', 'Block 3'].filter(blockValue => !blockValues.includes(blockValue)).map(option => (
+                                <Dropdown.Item key={option} onClick={() => setBlockValues(blockValues => [...blockValues, option])}>
+                                    {option}
+                                </Dropdown.Item>
+                            ))}
+                        </Dropdown.ItemCollection>
+                    </Dropdown.Overlay>
+                )}
+            </Dropdown>
         </>
       );
     }}
