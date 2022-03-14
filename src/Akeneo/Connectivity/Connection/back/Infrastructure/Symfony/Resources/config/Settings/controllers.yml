@@ -3,4 +3,3 @@ services:
         public: true
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\IsConnectionsNumberLimitReachedQuery'
-
