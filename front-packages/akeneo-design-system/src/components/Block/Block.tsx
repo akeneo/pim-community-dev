@@ -1,5 +1,5 @@
 import React, {isValidElement, ReactNode, Ref, SyntheticEvent} from 'react';
-import styled, {css} from 'styled-components';
+import styled from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
 import {CloseIcon, IconProps} from '../../icons';
@@ -39,20 +39,13 @@ type BlockProps = Override<
   }
 >;
 
-const getColorStyle = () => {
-  return css`
-    background-color: ${getColor('white')};
-    border-color: ${getColor('grey', 80)};
-    color: ${getColor('grey', 140)};
-    
-    &:hover {
-      background-color: ${getColor('grey', 20)};
-    }
-  `;
-};
+const ActionsContainer = styled.div`
+  display: none;
+  align-items: center;
+`;
 
 const Container = styled.div<AkeneoThemedProps>`
-  padding: 15px;
+  padding: 14px 20px;
   border-style: solid;
   border-width: 1px;
   border-radius: 2px;
@@ -64,12 +57,17 @@ const Container = styled.div<AkeneoThemedProps>`
   outline-style: none;
   text-decoration: none;
 
-  ${getColorStyle}
+  background-color: ${getColor('white')};
+  border-color: ${getColor('grey', 80)};
+  color: ${getColor('grey', 140)};
+  
+  &:hover {
+    background-color: ${getColor('grey', 20)};
+    ${ActionsContainer} {
+      display: flex;
+    }
+  }
 `;
-
-const ContentContainer = styled.div``;
-
-const ActionsContainer = styled.div``;
 
 /**
  * TODO
@@ -103,7 +101,7 @@ const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
         ref={forwardedRef}
         {...rest}
       >
-        <ContentContainer>
+        <div>
           {React.Children.map(children, child => {
             if (isValidElement<IconProps>(child)) {
               return React.cloneElement(child, {size: child.props.size ?? 18});
@@ -111,9 +109,9 @@ const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
 
             return child;
           })}
-        </ContentContainer>
+        </div>
         <ActionsContainer>
-          {removable && <CloseIcon size={18} onClick={handleRemove}/>}
+          {removable && <CloseIcon size={18} onClick={handleRemove} />}
         </ActionsContainer>
       </Container>
     );

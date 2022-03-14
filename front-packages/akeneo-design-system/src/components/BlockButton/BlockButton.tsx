@@ -61,7 +61,8 @@ const Container = styled.button<
     disabled: boolean;
   } & AkeneoThemedProps
 >`
-  padding: 15px;
+  width: 100%;
+  padding: 14px 20px;
   border-style: solid;
   border-width: 1px;
   border-radius: 2px;
@@ -81,6 +82,16 @@ const Container = styled.button<
   }
 
   ${getColorStyle}
+`;
+
+const ChildrenContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const ActionsContainer = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 /**
@@ -117,14 +128,18 @@ const BlockButton = React.forwardRef<HTMLButtonElement, BlockButtonProps>(
         onClick={handleAction}
         {...rest}
       >
-        {React.Children.map(children, child => {
-          if (isValidElement<IconProps>(child)) {
-            return React.cloneElement(child, {size: child.props.size ?? 18});
-          }
+        <ChildrenContainer>
+          {React.Children.map(children, child => {
+            if (isValidElement<IconProps>(child)) {
+              return React.cloneElement(child, {size: child.props.size ?? 18});
+            }
 
-          return child;
-        })}
-        <ArrowDownIcon size={18} />
+            return child;
+          })}
+        </ChildrenContainer>
+        <ActionsContainer>
+          <ArrowDownIcon size={18} />
+        </ActionsContainer>
       </Container>
     );
   }
