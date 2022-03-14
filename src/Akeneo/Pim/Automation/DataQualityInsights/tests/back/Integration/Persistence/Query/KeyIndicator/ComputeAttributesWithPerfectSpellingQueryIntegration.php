@@ -31,6 +31,11 @@ final class ComputeAttributesWithPerfectSpellingQueryIntegration extends DataQua
     {
         $this->clearAttributeLocaleQualities();
 
+        $this->createAttribute('name');
+        $this->createAttribute('title');
+        $this->createAttribute('color');
+        $this->createAttribute('image');
+
         $this->givenAnAttributeLocaleQuality('name', 'en_US', Quality::good());
         $this->givenAnAttributeLocaleQuality('name', 'fr_FR', Quality::toImprove());
         $this->givenAnAttributeLocaleQuality('title', 'en_US', Quality::toImprove());
