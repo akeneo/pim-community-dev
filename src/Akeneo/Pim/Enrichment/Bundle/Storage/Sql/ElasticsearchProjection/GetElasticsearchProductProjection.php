@@ -56,8 +56,8 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
             $rows
         );
         $diffIdentifiers = \array_diff(
-            array_map(fn (string $id): string => strtolower($id), $productIdentifiers),
-            array_map(fn (string $id): string => strtolower($id), $rowIdentifiers)
+            array_map('strtolower', $productIdentifiers),
+            array_map('strtolower', $rowIdentifiers)
         );
         if (\count($diffIdentifiers) > 0) {
             throw new ObjectNotFoundException(\sprintf('Product identifiers "%s" were not found.', \implode(',', $diffIdentifiers)));
