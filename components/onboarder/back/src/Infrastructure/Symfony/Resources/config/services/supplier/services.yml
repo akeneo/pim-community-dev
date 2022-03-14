@@ -9,6 +9,7 @@ services:
     Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler:
         arguments:
             - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
+            - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\SupplierExists'
 
     # Query/Handlers
     Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliersHandler:
@@ -23,6 +24,11 @@ services:
 
     Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierCount:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplierCount
+        arguments:
+            - '@database_connection'
+
+    Akeneo\OnboarderSerenity\Domain\Read\Supplier\SupplierExists:
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql\DatabaseSupplierExists
         arguments:
             - '@database_connection'
 

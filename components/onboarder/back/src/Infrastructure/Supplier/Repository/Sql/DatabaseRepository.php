@@ -51,26 +51,4 @@ final class DatabaseRepository implements Supplier\Repository
             $row['label']
         ) : null;
     }
-
-    public function findByCode(Supplier\ValueObject\Code $code): ?Supplier\Model\Supplier
-    {
-        $sql = <<<SQL
-            SELECT identifier, code, label
-            FROM `akeneo_onboarder_serenity_supplier`
-            WHERE code = :code
-        SQL;
-
-        $row = $this->connection->executeQuery(
-            $sql,
-            [
-                'code' => (string) $code,
-            ]
-        )->fetchAssociative();
-
-        return false !== $row ? Supplier\Model\Supplier::create(
-            $row['identifier'],
-            $row['code'],
-            $row['label']
-        ) : null;
-    }
 }

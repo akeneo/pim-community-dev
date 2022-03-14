@@ -6,7 +6,6 @@ namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller;
 
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler;
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\Model\Supplier;
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier\Exception\SupplierAlreadyExistsException;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;

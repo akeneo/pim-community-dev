@@ -8,3 +8,8 @@ services:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierList
         arguments:
             - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
+
+    Akeneo\OnboarderSerenity\Domain\Read\Supplier\SupplierExists:
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemorySupplierExists
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
