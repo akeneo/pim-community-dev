@@ -63,6 +63,7 @@ class GetAllTestAppsActionEndToEnd extends WebTestCase
                     'activate_url' => 'http://shopware.example.com/activate?pim_url=http%3A%2F%2Flocalhost%3A8080',
                     'callback_url' => 'http://shopware.example.com/callback',
                     'connected' => false,
+                    'isPending' => false,
                     'isTestApp' => true,
                 ]
             ]
