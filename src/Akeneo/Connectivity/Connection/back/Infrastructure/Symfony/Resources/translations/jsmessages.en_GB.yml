@@ -11,13 +11,19 @@ pim_menu:
     connection_audit: Connection dashboard
     connection_settings: Connections
     connection_settings_edit: Connection settings
+    connection_monitoring: Error monitoring
     connection_webhook_edit: Event subscription
     connection_webhook_event_logs: Event logs
     data_flows: Data flows
     connect_connection_settings: Connection settings
     marketplace: Marketplace
+    connected_apps: Apps
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: Marketplace
+  akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
+  akeneo_connectivity_connection_connect_apps_activate: Connect
+  akeneo_connectivity_connection_connect_apps_authorize: Connect
+  akeneo_connectivity_connection_connect_apps_authenticate: Connect
   akeneo_connectivity_connection_settings_index: Connections settings
   akeneo_connectivity_connection_settings_edit: Connection settings
   akeneo_connectivity_connection_settings_any: Connection settings
@@ -29,14 +35,32 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: Event subscription
   akeneo_connectivity_connection_webhook_event_logs: Event logs
   akeneo_connectivity_connection_settings_redirect: Connections
+  akeneo_connectivity_connection_connect_connected_apps: Apps
+  akeneo_connectivity_connection_connect_connected_apps_edit: App settings
+  akeneo_connectivity_connection_connect_connected_apps_delete: App delete
+  akeneo_connectivity_connection_connect_marketplace_test_app_create: Create a test app
+  akeneo_connectivity_connection_connect_marketplace_test_app_delete: Delete test app
 akeneo_connectivity.connection:
   connect:
     marketplace:
       title: Want to connect your PIM with another application? 🤟
       sub_title: Check our marketplace to see which application can be connected with Akeneo PIM.
       link: Access the marketplace
+      helper:
+        title: '{0} There is no apps or connectors compatible with your PIM version.|{1} There is {{ count }} app or connector compatible with your PIM version.|[2,Inf] There are {{ count }} apps and connectors compatible with your PIM version.'
+        title_without_apps: '{0} There is no connectors compatible with your PIM version.|{1} There is {{ count }} connector compatible with your PIM version.|[2,Inf] There are {{ count }} connectors compatible with your PIM version.'
+        description: This is just an overview. For more details, take a look at our web marketplace.
+        link: Go to web marketplace
+      card:
+        developed_by: 'Developed by {{ author }}'
+        read_more: read more
+        more_info: More info
+        connect: Connect
+        connected: Connected
       extensions:
+        title: Connectors
         total: '{0} No connectors|{1} 1 connector|[2,Inf] {{ total }} connectors'
+        empty: No connectors compatible with your version
       apps:
         total: '{0} No apps|{1} 1 app|[2,Inf] {{ total }} apps'
       test_apps:

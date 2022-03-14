@@ -1,10 +1,14 @@
 # 6.0.x
 
+# 6.0.8 (2022-03-11)
+
 ## Bug fixes
 - PLG-776: Fix Option page broken issue with small screen when creating a new option
 - PIM-10305: Do not allow disabled user to login
 - PLG-781: Fix migration task related to calculating product quality scores to be independent of the JobExecution implementation
 - RAC-1223: [Backport] RAC-1215: fix error when attributeOption doesn't have label
+- PIM-10308: [Backport PIM-10292] Fix error 500 when role page contain a validation errors
+- PIM-10315: [Backport PIM-10264] Optimize variant product ratio query
 - PIM-10318: [Backport PIM-10259] Add ArPHP library and fix Arabic RTL in PDF Exports
 
 # 6.0.7 (2022-02-25)
