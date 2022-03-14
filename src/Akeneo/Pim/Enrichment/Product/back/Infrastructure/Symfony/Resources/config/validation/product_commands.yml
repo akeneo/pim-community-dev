@@ -1,6 +1,7 @@
 Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand:
     group_sequence:
         - User
+        - Category
         - UpsertProductCommand
     properties:
         userId:
@@ -12,7 +13,8 @@ Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand:
         familyUserIntent:
             - Valid: ~
         categoryUserIntent:
-            - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\CategoriesShouldBeViewable: ~
+            - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\CategoriesShouldBeViewable:
+                  groups: [Category]
         valueUserIntents:
             - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelShouldBeConsistent: ~
             - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserIntentsShouldBeUnique: ~

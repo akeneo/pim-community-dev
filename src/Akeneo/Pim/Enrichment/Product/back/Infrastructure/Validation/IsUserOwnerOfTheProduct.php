@@ -12,7 +12,8 @@ use Symfony\Component\Validator\Constraint;
  */
 final class IsUserOwnerOfTheProduct extends Constraint
 {
-    public string $message = 'pim_enrich.product.validation.upsert.category_no_access_to_products';
+    public string $noAccessMessage = 'pim_enrich.product.validation.upsert.category_no_access_to_products';
+    public string $shouldKeepOneOwnedCategoryMessage = 'pim_enrich.product.validation.upsert.should_keep_one_owned_category';
 
     /**
      * {@inheritDoc}

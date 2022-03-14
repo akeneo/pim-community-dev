@@ -3,6 +3,7 @@ pim_enrich.product:
         upsert:
             unknown_user: 'The "{{ user_id }}" user does not exist'
             category_no_access_to_products: You don't have access to products in any tree, please contact your administrator
+            should_keep_one_owned_category: You should at least keep your product in one category on which you have an own permission
             locale_no_access_to_products: You don't have access to product data in any activated locale, please contact your administrator
             attribute_group_no_access_to_attributes: You don't have access to the {{ attributeCode }} attribute of this product. Please contact your administrator.
             product_identifier_empty: The product identifier requires a non empty string
