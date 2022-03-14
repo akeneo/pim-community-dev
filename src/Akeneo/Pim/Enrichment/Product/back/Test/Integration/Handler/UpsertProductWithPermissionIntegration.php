@@ -163,9 +163,9 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     }
 
     /** @test */
-    public function it_updates_categories_when_user_has_access_to_at_least_one_category(): void
+    public function it_merges_not_viewable_category_on_update(): void
     {
-        $this->createProduct('my_product', ['categories' => ['print', 'suppliers', 'suppliers']]);
+        $this->createProduct('my_product', ['categories' => ['print', 'suppliers']]); // "suppliers" is not viewable for Betty
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
         $command = new UpsertProductCommand(

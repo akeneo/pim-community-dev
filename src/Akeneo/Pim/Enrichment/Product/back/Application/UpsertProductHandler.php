@@ -14,9 +14,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
@@ -228,10 +226,8 @@ final class UpsertProductHandler
             }
         }
 
-        if ($command->categoryUserIntent() instanceof SetCategories) {
-            $this->productUpdater->update($product, [
-                'categories' => $command->categoryUserIntent()->categoryCodes(),
-            ]);
-        }
+//        if ($command->categoryUserIntent() instanceof SetCategories) {
+//            $this->setCategoriesApplier->apply($product, $command->categoryUserIntent(), $command->userId());
+//        }
     }
 }
