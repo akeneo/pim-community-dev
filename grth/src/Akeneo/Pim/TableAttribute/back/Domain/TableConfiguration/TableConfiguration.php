@@ -96,6 +96,14 @@ final class TableConfiguration
         ));
     }
 
+    public function requiredColumns(): array
+    {
+        return \array_filter(
+            $this->columnDefinitions,
+            fn(ColumnDefinition $columnDefinition) => $columnDefinition->isRequiredForCompleteness()->asBoolean()
+        );
+    }
+
     public function getFirstColumnId(): ColumnId
     {
         reset($this->columnDefinitions);

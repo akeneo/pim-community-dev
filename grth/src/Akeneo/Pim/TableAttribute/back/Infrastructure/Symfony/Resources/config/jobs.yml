@@ -165,6 +165,21 @@ services:
                 type: 'clean_table_values_following_deleted_options'
             -   name: akeneo_batch.job.not_visible
 
+    pim_table_attribute.job.compute_completeness_following_updated_completeness_conditions:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'compute_completeness_following_updated_completeness_conditions'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_table_attribute.step.compute_completeness_following_updated_completeness_conditions'
+        public: false
+        tags:
+            - name: akeneo_batch.job
+              connector: 'internal'
+              type: 'compute_completeness_following_updated_completeness_conditions'
+            - name: akeneo_batch.job.not_visible
+
     # Steps
     pim_table_attribute.step.csv_option_export:
         class: '%pim_connector.step.item_step.class%'
@@ -317,6 +332,14 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet\CleanTableValuesWithDeletedOptionsTasklet'
+
+    pim_table_attribute.step.compute_completeness_following_updated_completeness_conditions:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'compute_completeness'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet\ComputeCompletenessOfTableAttributeProductsTasklet'
 
     # readers
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\Reader\Database\SelectOptionDetailsReader:
@@ -594,3 +617,10 @@ services:
             - '@pim_catalog.saver.product'
             - '@pim_catalog.saver.product_model'
             - '%pim_job_product_batch_size%'
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet\ComputeCompletenessOfTableAttributeProductsTasklet:
+        arguments:
+            - '@pim_catalog.query.product_query_builder_search_after_size_factory_external_api'
+            - '@pim_catalog.completeness.calculator'
+            - '@akeneo.pim.enrichment.product.query.save_product_completenesses'
+            - '@akeneo_batch.job_repository'
