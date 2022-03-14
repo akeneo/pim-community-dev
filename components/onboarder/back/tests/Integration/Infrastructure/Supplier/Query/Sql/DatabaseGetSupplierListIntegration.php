@@ -66,9 +66,9 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
             ));
         }
 
-        $suppliers = $this->get(GetSupplierList::class)(2);
+        $suppliers = $this->get(GetSupplierList::class)(3);
 
-        static::assertCount(50, $suppliers);
+        static::assertCount(10, $suppliers);
     }
 
     /** @test */
