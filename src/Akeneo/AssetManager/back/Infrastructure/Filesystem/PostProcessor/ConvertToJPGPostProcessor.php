@@ -31,6 +31,7 @@ class ConvertToJPGPostProcessor implements PostProcessorInterface
         Assert::keyExists($options, 'quality');
 
         $image = new \Imagick();
+
         try {
             $image->readImageBlob($binary->getContent());
         } catch (\ImagickException $e) {
@@ -41,9 +42,10 @@ class ConvertToJPGPostProcessor implements PostProcessorInterface
         $image->setImageCompressionQuality($options['quality']);
         $isSuccess = $image->setImageFormat('jpeg');
 
-        return $isSuccess
-            ? new Binary($image->__toString(), static::MIME_TYPE, 'jpg')
-            : $binary
-            ;
+        $binary = $isSuccess ? new Binary($image->__toString(), static::MIME_TYPE, 'jpg') : $binary;
+        $image->clear();
+        $image->destroy();
+
+        return $binary;
     }
 }
