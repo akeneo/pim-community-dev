@@ -56,8 +56,6 @@ define([
         .fetch(this.getFilters().structure.scope)
         .always(
           function (scope) {
-            console.log(this.getParent().getValidationErrorsForField('locales'));
-
             this.$el.html(
               this.template({
                 isEditable: this.isEditable(),
