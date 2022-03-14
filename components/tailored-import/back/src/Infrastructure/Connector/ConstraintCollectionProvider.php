@@ -15,6 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Connector;
 
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\FileKey;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\ImportStructure;
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\IsValidFileStructure;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\Choice;
@@ -41,17 +42,7 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
 
         $constraintFields['import_structure'] = new ImportStructure();
         $constraintFields['file_key'] = new FileKey();
-        //TODO RAB-523: use an custom constraint to assert the file structure is valid
-        $constraintFields['file_structure'] = new Collection(['fields' => [
-            'header_line' => new Type('int'),
-            'first_column' => new Type('int'),
-            'product_line' => new Type('int'),
-            'column_identifier_position' => new Type('int'),
-            'sheet_name' => [
-                new Type('string'),
-                new NotBlank(['allowNull' => true]),
-            ],
-        ]]);
+        $constraintFields['file_structure'] = new IsValidFileStructure();
         $constraintFields['error_action'] = new Choice(['skip_value', 'skip_product']);
 
         return new Collection(['fields' => $constraintFields]);

@@ -20,10 +20,10 @@ akeneo.tailored_import:
         uploading: Uploading...
         error: An error occurred while uploading your file. Please check your file and try again.
       sheet: Sheet
-      header_position: Header row
-      product_position: First product row
-      column_position: First product column
-      column_identifier_position: Unique identifier column
+      header_row: Header row
+      first_product_row: First product row
+      first_column: First product column
+      unique_identifier_column: Unique identifier column
   data_mapping_list:
     title: Data mappings
     no_sources: No sources
@@ -85,3 +85,6 @@ akeneo.tailored_import:
     uploaded_file:
       max_size: The file is too big. The maximum size is {{ limit }}{{ suffix }}.
       not_allowed_mime_type: The file must be an Excel spreadsheet.
+    file_structure:
+      first_product_row_should_be_after_header_row: First product row should be after header row.
+      unique_identifier_column_should_be_after_first_column_message: Unique identifier column should be after first column.
