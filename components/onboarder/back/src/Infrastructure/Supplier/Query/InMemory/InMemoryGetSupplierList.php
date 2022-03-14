@@ -41,7 +41,8 @@ class InMemoryGetSupplierList implements GetSupplierList
     {
         return array_filter(
             $suppliers,
-            fn (Write\Supplier\Model\Supplier $supplier) => 1 <= strpos($supplier->label(), $search)
+            fn (Write\Supplier\Model\Supplier $supplier) =>
+                1 <= strpos(strtolower($supplier->label()), strtolower($search))
         );
     }
 
