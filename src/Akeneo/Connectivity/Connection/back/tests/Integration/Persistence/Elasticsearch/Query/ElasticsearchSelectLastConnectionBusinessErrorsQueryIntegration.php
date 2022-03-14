@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Persistence\Elasticsearch\Query;
 
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Read\BusinessError;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Query\SelectLastConnectionBusinessErrorsQueryInterface;

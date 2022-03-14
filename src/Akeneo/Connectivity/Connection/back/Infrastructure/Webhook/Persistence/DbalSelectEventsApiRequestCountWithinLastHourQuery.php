@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence;
 
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectEventsApiRequestCountWithinLastHourQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectEventsApiRequestCountWithinLastHourQueryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 

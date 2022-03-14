@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Elasticsearch\Query;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Persistence\Elasticsearch\Query;
 
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Elasticsearch\Query\PurgeConnectionErrorsQuery;
 use Akeneo\Test\Integration\Configuration;

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Persistence\Dbal\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\SelectAllAuditableConnectionCodeQuery;

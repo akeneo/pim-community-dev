@@ -12,7 +12,7 @@ use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
-class DbalPurgeAuditErrorQueryIntegration extends TestCase
+class PurgeAuditErrorQueryIntegration extends TestCase
 {
     /** @var AuditErrorLoader */
     private $auditErrorLoader;

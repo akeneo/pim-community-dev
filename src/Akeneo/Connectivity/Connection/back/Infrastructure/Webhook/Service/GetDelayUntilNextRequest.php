@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service;
 
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectEventsApiRequestCountWithinLastHourQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectEventsApiRequestCountWithinLastHourQueryInterface;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
