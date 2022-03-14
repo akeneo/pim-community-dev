@@ -103,18 +103,19 @@ class Category implements ArrayConverterInterface
         $this->fieldChecker->checkFieldsPresence($item, $requiredFields);
         $this->fieldChecker->checkFieldsFilling($item, $requiredFields);
 
+        $authorizedFields = array_merge($requiredFields, ['parent']);
         $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
         foreach ($localeCodes as $code) {
-            $requiredFields[] = 'label-' . $code;
+            $authorizedFields[] = 'label-' . $code;
         }
 
         foreach (array_keys($item) as $field) {
-            if (!in_array($field, $requiredFields)) {
+            if (!in_array($field, $authorizedFields)) {
                 throw new StructureArrayConversionException(
                     sprintf(
                         'Field "%s" is provided, authorized fields are: "%s"',
                         $field,
-                        implode(', ', $requiredFields)
+                        implode(', ', $authorizedFields)
                     )
                 );
             }
