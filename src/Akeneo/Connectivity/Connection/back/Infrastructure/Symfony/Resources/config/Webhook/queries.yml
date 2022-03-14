@@ -24,7 +24,7 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalEventsApiRequestCountRepository:
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalUpdateEventsApiRequestCountQuery:
         arguments:
             - '@database_connection'
 

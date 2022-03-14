@@ -13,9 +13,11 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
@@ -514,6 +516,53 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertTrue($product->isEnabled());
     }
 
+    /** @test */
+    public function it_can_set_and_remove_a_family_on_a_product(): void
+    {
+        $this->updateProduct(new SetFamily('familyA'));
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertSame('familyA', $product->getFamily()->getCode());
+
+        $this->updateProduct(new SetFamily('familyA1'));
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertSame('familyA1', $product->getFamily()->getCode());
+
+        $this->updateProduct(new RemoveFamily());
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertNull($product->getFamily());
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_family_does_not_exist(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('The unknown family does not exist in your PIM.');
+
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            familyUserIntent: new SetFamily('unknown')
+        );
+        $this->messageBus->dispatch($command);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_family_code_is_blank(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('The family code requires a non empty string');
+
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            familyUserIntent: new SetFamily('')
+        );
+        $this->messageBus->dispatch($command);
+    }
+
     private function getUserId(string $username): int
     {
         $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
@@ -543,11 +592,16 @@ final class UpsertProductIntegration extends TestCase
 
     private function updateProduct(UserIntent $userIntent): void
     {
-        // Creates empty product
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier');
-        $this->messageBus->dispatch($command);
+        $this->clearDoctrineUoW();
         $product = $this->productRepository->findOneByIdentifier('identifier');
-        Assert::assertNotNull($product);
+        if (null === $product) {
+            // Creates empty product
+            $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier');
+            $this->messageBus->dispatch($command);
+            $product = $this->productRepository->findOneByIdentifier('identifier');
+            Assert::assertNotNull($product);
+        }
+
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
         // Update product with userIntent value

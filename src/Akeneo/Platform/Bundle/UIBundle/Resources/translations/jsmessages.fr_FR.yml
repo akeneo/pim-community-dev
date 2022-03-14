@@ -102,19 +102,29 @@ oro_config:
       tab:
         system:
           title: Système
+      save_ok: Configuration enregistrée avec succès
+      save_error: Désolé, impossible d'enregistrer la configuration ({{ reason }})
       group:
         localization:
+          title: Paramètres de la page de connexion
           fields:
             system_locale:
               label: Langue
         notification:
+          title: Notifications de nouvelle version
+          helper: Lorsque cette option est activée, vous recevez une notification quand une nouvelle version est disponible pour vous.
           fields:
             enabler:
               label: Activé
         loading_message:
+          title: Messages de chargement personnalisés
+          helper: Divertissez vos utilisateurs avec des messages personnalisés pour le chargement des écrans.
+          placeholder: Veuillez écrire votre propre message à afficher sur votre écran de chargement
           fields:
             enabler:
               label: Activer les messages au chargement
+            messages:
+              label: Ajouter vos propres messages de chargement
 pim_ui:
   flash:
     unsaved_changes: 'Vous avez des modifications non enregistrées, êtes-vous sûr de vouloir quitter ?'

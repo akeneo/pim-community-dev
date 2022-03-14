@@ -210,6 +210,7 @@ services:
         parent: pim_connector.array_converter.flat_to_standard.product.value_converter.abstract
         arguments:
             - ['pim_catalog_boolean']
+            - '@translator'
         tags:
             - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
 

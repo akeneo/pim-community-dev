@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Application\Audit\Command;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCountRepositoryInterface;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\UpsertEventCountQueryInterface;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -15,11 +15,8 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCoun
  */
 class UpdateDataDestinationProductEventCountHandler
 {
-    private EventCountRepositoryInterface $eventCountRepository;
-
-    public function __construct(EventCountRepositoryInterface $eventCountRepository)
+    public function __construct(private UpsertEventCountQueryInterface $upsertEventCountQuery)
     {
-        $this->eventCountRepository = $eventCountRepository;
     }
 
     public function handle(UpdateDataDestinationProductEventCountCommand $command): void
@@ -31,6 +28,6 @@ class UpdateDataDestinationProductEventCountHandler
             EventTypes::PRODUCT_READ
         );
 
-        $this->eventCountRepository->upsert($hourlyEventCount);
+        $this->upsertEventCountQuery->execute($hourlyEventCount);
     }
 }

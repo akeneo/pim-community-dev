@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Audit\Command;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataSourceProductEventCountCommand;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataSourceProductEventCountHandler;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\PurgeAuditProductQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\PurgeAuditProductQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectHourlyIntervalsToRefreshQuery;
 use Symfony\Component\Console\Command\Command;
@@ -28,7 +28,7 @@ class UpdateAuditDataCommand extends Command
     public function __construct(
         private UpdateDataSourceProductEventCountHandler $updateDataSourceProductEventCountHandler,
         private DbalSelectHourlyIntervalsToRefreshQuery $selectHourlyIntervalsToRefreshQuery,
-        private PurgeAuditProductQueryInterface $purgeQuery
+        private PurgeAuditProductQueryInterface $purgeQuery,
     ) {
         parent::__construct();
     }

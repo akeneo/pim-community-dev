@@ -1,0 +1,5 @@
+pim_enrich.product:
+  validation:
+    upsert:
+      locale_no_access_to_products: U heeft in geen enkele geactiveerde taal toegang tot productgegevens. Neem contact op met uw beheerder
+      attribute_group_no_access_to_attributes: U heeft geen toegang tot het attribuut {{ attributeCode }} van dit product. Neem contact op met uw beheerder.

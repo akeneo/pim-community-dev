@@ -122,16 +122,3 @@ pim_datagrid:
   column_configurator:
     label:
       unique_message: 레이블은 고유해야 합니다.
-#TODO: move elsewhere?
-pim_enrich.product:
-  validation:
-    upsert:
-      set_value:
-        no_channel_code_provided_for_scopable_attribute: '{{ attributeCode }} 특성에 채널이 필요합니다'
-        channel_code_provided_for_non_scopable_attribute: '{{ attributeCode }} 특성에는 채널이 필요하지 않습니다. ''{{ channelCode }}''이(가) 탐지되었습니다'
-        no_locale_code_provided_for_localizable_attribute: '{{ attributeCode }} 특성에 로케일이 필요합니다.'
-        locale_code_provided_for_non_localizable_attribute: '{{ attributeCode }} 특성에는 로케일이 필요하지 않습니다. ''{{ localeCode }}''이(가) 탐지되었습니다'
-        invalid_locale_code_for_locale_specific_attribute: '{{ attributeCode }}에는 {{ availableLocales }} 중 하나의 로케일이 필요합니다. ''{{ localeCode }}''이(가) 탐지되었습니다'
-        channel_does_not_exist: '{{ channelCode }} 채널이 없습니다'
-        locale_is_not_active: '{{ localeCode }} 로케일이 없거나 활성화되지 않았습니다'
-        locale_not_activated_for_channel: '{{ localeCode }} 로케일이 {{ channelCode }} 채널에서 활성화되지 않았습니다'

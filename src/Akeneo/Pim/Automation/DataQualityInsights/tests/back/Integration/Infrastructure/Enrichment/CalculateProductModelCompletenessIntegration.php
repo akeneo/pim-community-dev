@@ -75,6 +75,8 @@ class CalculateProductModelCompletenessIntegration extends CompletenessTestCase
 
         $expectedMissingAttributes = ['ecommerce' => ['en_US' => ['a_required_text', 'a_required_textarea']]];
         $this->assertEquals($expectedMissingAttributes, $completenessResult->getMissingAttributes()->toArray());
+        $expectedTotalNumberOfAttributes = ['ecommerce' => ['en_US' => 2]];
+        $this->assertEquals($expectedTotalNumberOfAttributes, $completenessResult->getTotalNumberOfAttributes()->toArray());
 
         $expectedRates = ['ecommerce' => ['en_US' => 0]];
         $this->assertEquals($expectedRates, $completenessResult->getRates()->toArrayInt());
@@ -97,6 +99,7 @@ class CalculateProductModelCompletenessIntegration extends CompletenessTestCase
 
         $expectedMissingAttributes = ['ecommerce' => ['en_US' => ['a_required_textarea']]];
         $this->assertEquals($expectedMissingAttributes, $completenessResult->getMissingAttributes()->toArray());
+        $this->assertEquals($expectedTotalNumberOfAttributes, $completenessResult->getTotalNumberOfAttributes()->toArray());
 
         $expectedRates = ['ecommerce' => ['en_US' => 50]];
         $this->assertEquals($expectedRates, $completenessResult->getRates()->toArrayInt());

@@ -188,10 +188,17 @@ services:
     akeneo.pim.automation.data_quality_insights.synchronous_criterion_evaluations_filter:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\SynchronousCriterionEvaluationsFilter
 
-    Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators:
+    akeneo.pim.automation.data_quality_insights.compute_products_key_indicators:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
-            - !tagged akeneo.pim.automation.data_quality_insights.compute_key_indicator_query
+            - !tagged akeneo.pim.automation.data_quality_insights.compute_product_key_indicator_query
+
+    akeneo.pim.automation.data_quality_insights.compute_product_models_key_indicators:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
+            - !tagged akeneo.pim.automation.data_quality_insights.compute_product_model_key_indicator_query
 
     akeneo.pim.automation.data_quality_insights.get_key_indicators:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\GetKeyIndicators

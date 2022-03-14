@@ -130,6 +130,9 @@ $rules = [
             'Akeneo\Tool\Component\Classification\Model\CategoryInterface',
             'Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface',
 
+            // Necessary for the particular AddProductModelScoreProperty
+            'Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row',
+
             //Security
             'Oro\Bundle\SecurityBundle\SecurityFacade',
 
