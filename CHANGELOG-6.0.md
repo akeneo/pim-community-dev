@@ -15,6 +15,7 @@
 - PIM-10309: [Backport PIM-10291] Fix table attribute edit blocked when locale recently deleted from channel
 - PIM-10310: [Backport PIM-10289] DQI purge don't purge pimee_dqi_attribute_locale_quality table
 - PIM-10312: [Backport PIM-10284] Clean product values after reference entity removal
+- PIM-10316: [Backport PIM-10255] Fix LocaleCodeContext initialization place for table condition line inside rules
 
 # 6.0.7 (2022-02-25)
 
