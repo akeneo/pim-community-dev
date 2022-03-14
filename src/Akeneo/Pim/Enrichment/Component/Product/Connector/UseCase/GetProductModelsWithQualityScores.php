@@ -42,12 +42,12 @@ final class GetProductModelsWithQualityScores implements GetProductModelsWithQua
         $productModelsQualityScores = $this->getProductsQualityScores($connectorProductModelList);
 
         $productModelsWithQualityScores = array_map(function (ConnectorProductModel $productModel) use ($productModelsQualityScores, $channel, $locales) {
-            if (isset($productModelsQualityScores[$productModel->code()])) {
-                $productQualityScores = $this->filterProductModelQualityScores($productModelsQualityScores[$productModel->code()], $channel, $locales);
-                return $productModel->buildWithQualityScores($productQualityScores);
+            if (!isset($productModelsQualityScores[$productModel->code()])) {
+                return $productModel->buildWithQualityScores(new QualityScoreCollection([]));
             }
 
-            return $productModel->buildWithQualityScores(new QualityScoreCollection([]));
+            $productQualityScores = $this->filterProductModelQualityScores($productModelsQualityScores[$productModel->code()], $channel, $locales);
+            return $productModel->buildWithQualityScores($productQualityScores);
         }, $connectorProductModelList->connectorProductModels());
 
         return new ConnectorProductModelList($connectorProductModelList->totalNumberOfProductModels(), $productModelsWithQualityScores);
