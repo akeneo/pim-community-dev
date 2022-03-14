@@ -404,6 +404,7 @@ mysql:
 
 memcached:
   image: memcached:1.6.12
+  imagePullPolicy: IfNotPresent
   fullnameOverride: memcached
   replicaCount: 1
   resources:
