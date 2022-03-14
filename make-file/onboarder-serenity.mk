@@ -30,12 +30,20 @@ unit-front: #Doc: Run unit front tests for Onboarder Serenity
 	$(YARN_RUN) run --cwd=components/onboarder/front test:unit:run
 
 .PHONY: acceptance-back
-acceptance-back: var/tests/behat/onboarder-serenity-acceptance #Doc: Run Behat acceptance back tests for Onboarder Serenity
+acceptance-back: #Doc: Run Behat acceptance back tests for Onboarder Serenity
+ifeq ($(CI),true)
 	$(DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV) vendor/bin/behat --config components/onboarder/back/tests/behat.yml --profile acceptance --format pim --out var/tests/behat/onboarder-serenity-acceptance --format progress --out std --colors $(O)
+else
+	$(DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV) vendor/bin/behat --config components/onboarder/back/tests/behat.yml --profile acceptance ${ARGS}
+endif
 
 .PHONY: integration-back
 integration-back: #Doc: Run integration back tests for Onboarder Serenity
+ifeq ($(CI),true)
+	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php Onboarder_Serenity_Integration_Test
+else
 	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Onboarder_Serenity_Integration_Test --configuration components/onboarder/back/tests/phpunit.xml.dist ${ARGS}
+endif
 
 .PHONY: lint
 lint: lint-back lint-front

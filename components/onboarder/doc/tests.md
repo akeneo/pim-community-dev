@@ -41,3 +41,8 @@ Run all the Onboarder Serenity acceptance tests:
 ```
 PIM_CONTEXT=onboarder-serenity make acceptance-back
 ```
+
+Run a single Onboarder Serenity acceptance test:
+```
+PIM_CONTEXT=onboarder-serenity make acceptance-back ARGS="path/to/the/test/from/ee-root-directory"
+```
