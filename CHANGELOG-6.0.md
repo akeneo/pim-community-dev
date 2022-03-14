@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.10 (2022-03-14)
+
 ## Bug fixes
 
 - BH-986: Fix standard build configuration for dev
