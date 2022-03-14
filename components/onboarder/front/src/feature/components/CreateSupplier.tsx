@@ -12,8 +12,7 @@ const StyledField = styled(Field)`
     margin-bottom: 20px;
 `;
 
-// Max length for supplier label and code
-const LABEL_MAX_LENGTH = 200;
+const LABEL_AND_CODE_MAX_LENGTH = 200;
 
 const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierProps) => {
     const [isOpen, openModal, closeModal] = useBooleanState(false);
@@ -100,14 +99,14 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
                         <TextInput
                             onChange={manuallyUpdateCode}
                             value={code}
-                            maxLength={LABEL_MAX_LENGTH}
+                            maxLength={LABEL_AND_CODE_MAX_LENGTH}
                             placeholder={translate('onboarder.supplier.supplier_create.modal.code.label')}
                         />
                     </StyledField>
                     <StyledField label={translate('onboarder.supplier.supplier_create.modal.label.label')}>
                         <TextInput
                             onChange={onChangeLabel}
-                            maxLength={LABEL_MAX_LENGTH}
+                            maxLength={LABEL_AND_CODE_MAX_LENGTH}
                             value={label}
                             placeholder={translate('onboarder.supplier.supplier_create.modal.label.label')}
                         />

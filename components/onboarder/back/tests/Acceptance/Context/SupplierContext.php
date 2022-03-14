@@ -38,7 +38,7 @@ final class SupplierContext implements Context
     }
 
     /**
-     * @Given there is a supplier with code ":code" and label ":label"
+     * @Given a supplier with code ":code" and label ":label"
      * @Given a supplier ":code"
      */
     public function thereIsASupplier(string $code, ?string $label = null): void
