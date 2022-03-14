@@ -1,4 +1,4 @@
-executor-machine: &executor-machine 'ubuntu-2004:202111-02'
+executor-machine: &executor-machine
 
 jobs:
     test_back_onboarder:

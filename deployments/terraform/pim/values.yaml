@@ -323,9 +323,9 @@ pim:
         requests:
           cpu: "10m"
           memory: "10Mi"
-    populate-product-models-scores:
+    populate-product-models-scores-and-ki:
       enabled: true
-      pimCommand: "pim:data-quality-insights:populate-product-models-scores --no-interaction"
+      pimCommand: "pim:data-quality-insights:populate-product-models-scores-and-ki --no-interaction"
       schedule: "30 2 * * *"
 
 # Onboarder
@@ -404,6 +404,7 @@ mysql:
 
 memcached:
   image: memcached:1.6.12
+  imagePullPolicy: IfNotPresent
   fullnameOverride: memcached
   replicaCount: 1
   resources:

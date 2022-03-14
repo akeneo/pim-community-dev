@@ -69,6 +69,7 @@ final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInt
                 'read_rules' => 0,
                 'selected_entities' => 0,
                 'skipped_invalid' => 0,
+                'skipped_no_diff' => 0,
                 'updated_entities' => 0,
                 'executed_rules' => 0,
             ]

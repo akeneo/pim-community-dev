@@ -17,12 +17,14 @@ pim_table_configuration:
       too_long_option_label: "Het optielabel is te lang: het moet 255 tekens of minder zijn"
       duplicated_column_code: '[0,1]Elke kolom vereist een unieke code. "%duplicateCodes%" is al gebruikt ]1,Inf[Elke kolom vereist een unieke code. "%duplicateCodes%" worden al gebruikt'
       column_type_must_be_a_string: Het kolomgegevenstype moet een tekenreeks zijn
+      unknown_data_type: 'Het gegevenstype van de kolom is onbekend. Kies een van de volgende: {{ allowed_data_types }}'
       column_label_must_be_a_string: Het kolomlabel moet een tekenreeks zijn
       option_label_must_be_a_string: Het optielabel moet een tekenreeks zijn
       label_locale_does_not_exist_or_is_not_activated: De "{{ locale_code }}" taal bestaat niet of is niet geactiveerd
       invalid_labels_format: De kolomlabels moeten een sleutel-/waarde-object zijn
       invalid_option_labels_format: De optie labels moeten een sleutel/waarde object zijn
       must_not_be_filled: Het type %type% staat geen tabel_configuration toe
+      first_column_should_be_valid: '{1}Het eerste kolomtype moet altijd "{{ allowed_data_types }}" zijn, het huidige type is "{{ data_type }}". ]1,Inf[Het eerste kolomtype kan ofwel {{ allowed_data_types_except_last }} of "{{ last_allowed_data_types }} zijn, het huidige type is "{{ data_type }}".'
       first_column_code_cannot_be_changed: De code van uw eerste kolom kan niet worden gewijzigd.
       unknown_field: 'Zorg ervoor dat u alleen de verwachte velden gebruikt, het huidige veld: {{ field }}'
       attribute_does_not_exist: Het "{{ attribute }}" attribuut bestaat niet
@@ -31,6 +33,10 @@ pim_table_configuration:
       not_select_column: De "{{ column }}" kolom van het "{{ attribute }}" attribuut is geen "selectie"
       max_should_be_greater_than_min: De maximale waarde moet groter zijn dan de minimumwaarde.
       options_cannot_be_set: Opties kunnen niet worden ingesteld voor een "{{ data_type }}" kolomtype
+      reference_entity_identifier_cannot_be_set: Voor een kolom van type "{{ data_type }}" kan geen ID voor referentie-entiteit worden ingesteld 
+      reference_entity_identifier_must_be_filled: De ID voor de referentie-entiteit moet worden ingevuld
+      reference_entity_identifier_should_exist: Controleer of de referentie-entiteit "{{ reference_entity_identifier }}" bestaat voordat u deze aan de tabel toevoegt
+      reference_entity_identifier_is_immutable: De ID voor de referentie-entiteit kan niet worden bijgewerkt
       no_validations_allowed: 'Gebruik geen validaties op een "{{ columnType }}" kolom, huidige kolom: "{{ given }}"'
       invalid_validation_key: 'De "{{ given }}" Validaties werken niet op een "{{ columnType }}" kolom, toegestaan: "{{ expected }}"'
       too_many_table_attributes: U hebt het maximum aantal tabelattributen binnen uw PIM ({{ limit }} ) bereikt
@@ -45,5 +51,8 @@ pim_table_configuration:
       value_integer_required: 'De vereiste waarde is een geheel getal'
       max_length_validation: Deze waarde is te lang. Hij mag {{ limit }} tekens of minder bevatten.
       too_many_rows: U heeft het maximum aantal rijen in uw tabel bereikt ({{ limit }}).
+      record_should_exist: 'Het record "{{ recordCode }}" in de referentie-entiteit "{{ referenceEntityIdentifier }}" bestaat niet'
     product_value_collection:
       too_many_cells: U heeft het maximum aantal tabelcellen in uw product bereikt ({{ count }} cellen, slechts {{ limit }} toegestaan).
+    reference_entity:
+      should_not_be_linked: 'Deze referentie-entiteit wordt gebruikt in een productattribuut en kan daarom niet verwijderd worden.'
