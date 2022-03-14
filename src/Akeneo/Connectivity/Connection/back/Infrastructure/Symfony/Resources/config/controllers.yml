@@ -40,11 +40,6 @@ services:
             - '@akeneo_connectivity.connection.application.handler.regenerate_connection_password'
             - '@oro_security.security_facade'
 
-    Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\ErrorManagement\ErrorManagementAction:
-        public: true
-        arguments:
-            - '@akeneo_connectivity.connection.application.error_management.handler.get_connection_business_errors'
-
     Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\IsConnectionsNumberLimitReachedAction:
         public: true
         arguments:
