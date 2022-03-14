@@ -9,4 +9,5 @@ interface Repository
 {
     public function save(Supplier $supplier): void;
     public function find(Identifier $identifier): ?Supplier;
+    public function delete(Identifier $identifier): void;
 }

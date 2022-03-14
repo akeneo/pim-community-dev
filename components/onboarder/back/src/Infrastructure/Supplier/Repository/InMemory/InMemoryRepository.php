@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory;
 
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Write\Supplier\ValueObject\Identifier;
 
 class InMemoryRepository implements Supplier\Repository
 {
@@ -22,6 +23,13 @@ class InMemoryRepository implements Supplier\Repository
         }
 
         return null;
+    }
+
+    public function delete(Identifier $identifier): void
+    {
+        if (array_key_exists((string) $identifier, $this->suppliers)) {
+            unset($this->suppliers[(string) $identifier]);
+        }
     }
 
     public function findByCode(Supplier\ValueObject\Code $code): ?Supplier\Model\Supplier

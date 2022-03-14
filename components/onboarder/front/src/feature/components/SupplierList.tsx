@@ -1,9 +1,10 @@
 import React from 'react';
 import {SupplierRow, SUPPLIERS_PER_PAGE} from '../hooks/useSuppliers';
-import {CityIllustration, DeleteIcon, EditIcon, Pagination, onboarderTheme, Table, Search} from 'akeneo-design-system';
+import {CityIllustration, EditIcon, Pagination, onboarderTheme, Table, Search} from 'akeneo-design-system';
 import {NoDataSection, NoDataText, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {EmptySupplierList} from './EmptySupplierList';
+import {DeleteSupplier} from "./DeleteSupplier";
 
 type SupplierListProps = {
     suppliers: SupplierRow[];
@@ -12,6 +13,7 @@ type SupplierListProps = {
     totalSuppliers: number;
     onChangePage: (pageNumber: number) => void;
     currentPage: number;
+    onSupplierDeleted: () => void;
 };
 
 const SupplierList = ({
@@ -21,6 +23,7 @@ const SupplierList = ({
     totalSuppliers,
     onChangePage,
     currentPage,
+    onSupplierDeleted,
 }: SupplierListProps) => {
     const translate = useTranslate();
 
@@ -69,7 +72,7 @@ const SupplierList = ({
                                     <Table.Cell>{supplier.contributorsCount}</Table.Cell>
                                     <Table.ActionCell>
                                         <StyledEditIcon color={onboarderTheme.color.grey100} />
-                                        <StyledDeleteIcon color={onboarderTheme.color.grey100} />
+                                        <DeleteSupplier identifier={supplier.identifier} onSupplierDeleted={onSupplierDeleted}/>
                                     </Table.ActionCell>
                                 </Table.Row>
                             ))}
@@ -84,9 +87,6 @@ const SupplierList = ({
 const StyledEditIcon = styled(EditIcon)`
     cursor: pointer;
     margin-right: 20px;
-`;
-const StyledDeleteIcon = styled(DeleteIcon)`
-    cursor: pointer;
 `;
 const StyledNoDataText = styled(NoDataText)`
     font-size: 13px;

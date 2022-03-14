@@ -6,6 +6,8 @@ namespace Akeneo\OnboarderSerenity\Test\Acceptance\Context;
 
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler;
+use Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplier;
+use Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler;
 use Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliers;
 use Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliersHandler;
 use Akeneo\OnboarderSerenity\Domain\Read;
@@ -26,7 +28,9 @@ final class SupplierContext implements Context
         private InMemoryRepository $supplierRepository,
         private CreateSupplierHandler $createSupplierHandler,
         private GetSuppliersHandler $getSuppliersHandler,
+        private DeleteSupplierHandler $deleteSuppliersHandler,
     ) {
+        $this->suppliers = [];
     }
 
     /**
@@ -68,7 +72,16 @@ final class SupplierContext implements Context
      */
     public function iRetrieveSuppliers(): void
     {
-        $this->suppliers = ($this->getSuppliersHandler)(new GetSuppliers());
+        $this->loadSuppliers();
+    }
+
+    /**
+     * @When I delete the supplier ":code"
+     */
+    public function iDeleteTheSupplier(string $code)
+    {
+        $supplier = $this->supplierRepository->findByCode(Supplier\ValueObject\Code::fromString($code));
+        ($this->deleteSuppliersHandler)(new DeleteSupplier($supplier->identifier()));
     }
 
     /**
@@ -97,9 +110,18 @@ final class SupplierContext implements Context
      */
     public function iShouldHaveTheFollowingSuppliers(TableNode $properties): void
     {
+        if (0 === \count($this->suppliers)) {
+            $this->loadSuppliers();
+        }
+
         $expectedSuppliers = $properties->getHash();
         $actualSuppliers = array_map(fn (Read\Supplier\Model\Supplier $supplier) => ['code' => $supplier->code, 'label' => $supplier->label], $this->suppliers);
 
         Assert::assertSame($expectedSuppliers, array_values($actualSuppliers));
+    }
+
+    private function loadSuppliers(): void
+    {
+        $this->suppliers = ($this->getSuppliersHandler)(new GetSuppliers());
     }
 }

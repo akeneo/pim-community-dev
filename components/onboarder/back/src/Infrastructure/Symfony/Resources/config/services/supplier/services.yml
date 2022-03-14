@@ -17,6 +17,10 @@ services:
             - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
             - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\SupplierExists'
 
+    Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler:
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
+
     # Query/Handlers
     Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliersHandler:
         arguments:
@@ -49,3 +53,8 @@ services:
         public: true
         arguments:
             - '@Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler'
+
+    Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierDelete:
+        public: true
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler'

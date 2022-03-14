@@ -56,6 +56,7 @@ const Supplier = () => {
                         totalSuppliers={totalSuppliers}
                         onChangePage={setPage}
                         currentPage={page}
+                        onSupplierDeleted={refreshSuppliers}
                     />
                 )}
             </StyledPageContent>
