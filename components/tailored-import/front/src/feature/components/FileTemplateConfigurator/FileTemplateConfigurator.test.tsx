@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import {FileTemplateConfigurator} from './FileTemplateConfigurator';
 import {renderWithProviders} from 'feature/tests';
 import {FileStructure, FileTemplateInformation} from '../../models';
+import {ValidationError} from "@akeneo-pim-community/shared";
 
 const fileInfo = {
   originalFilename: 'foo.xlsx',
@@ -11,10 +12,10 @@ const fileInfo = {
 };
 
 const fileStructure = {
-  header_line: 1,
+  header_row: 1,
   first_column: 1,
-  product_line: 2,
-  column_identifier_position: 1,
+  first_product_row: 2,
+  unique_identifier_column: 1,
   sheet_name: 'currentTestSheet',
 } as FileStructure;
 
@@ -31,16 +32,17 @@ test('it display correct value when provided with a templateInformation', async 
       }
       fileStructure={fileStructure}
       onFileStructureChange={jest.fn()}
-      onHeaderPositionChange={jest.fn()}
+      onHeaderRowChange={jest.fn()}
       onSheetChange={jest.fn()}
+      validationErrors={[]}
     />
   );
 
-  expect(screen.getByText('akeneo.tailored_import.file_structure.modal.header_position')).toBeInTheDocument();
-  expect(screen.getByText('akeneo.tailored_import.file_structure.modal.product_position')).toBeInTheDocument();
-  expect(screen.getByText('akeneo.tailored_import.file_structure.modal.column_position')).toBeInTheDocument();
+  expect(screen.getByText('akeneo.tailored_import.file_structure.modal.header_row')).toBeInTheDocument();
+  expect(screen.getByText('akeneo.tailored_import.file_structure.modal.first_product_row')).toBeInTheDocument();
+  expect(screen.getByText('akeneo.tailored_import.file_structure.modal.first_column')).toBeInTheDocument();
   expect(
-    screen.getByText('akeneo.tailored_import.file_structure.modal.column_identifier_position')
+    screen.getByText('akeneo.tailored_import.file_structure.modal.unique_identifier_column')
   ).toBeInTheDocument();
 });
 
@@ -59,8 +61,9 @@ test('it dispatch an event when sheet is changed', async () => {
       }
       fileStructure={fileStructure}
       onFileStructureChange={jest.fn()}
-      onHeaderPositionChange={jest.fn()}
+      onHeaderRowChange={jest.fn()}
       onSheetChange={handleSheetChange}
+      validationErrors={[]}
     />
   );
 
@@ -70,8 +73,8 @@ test('it dispatch an event when sheet is changed', async () => {
   expect(handleSheetChange).toBeCalledWith('anotherTestSheet');
 });
 
-test('it dispatch an event when header position change', async () => {
-  const handleHeaderPositionChange = jest.fn();
+test('it dispatch an event when header row change', async () => {
+  const handleHeaderRowChange = jest.fn();
 
   await renderWithProviders(
     <FileTemplateConfigurator
@@ -85,18 +88,19 @@ test('it dispatch an event when header position change', async () => {
       }
       fileStructure={fileStructure}
       onFileStructureChange={jest.fn()}
-      onHeaderPositionChange={handleHeaderPositionChange}
+      onHeaderRowChange={handleHeaderRowChange}
       onSheetChange={jest.fn()}
+      validationErrors={[]}
     />
   );
 
-  const input = screen.getByLabelText('akeneo.tailored_import.file_structure.modal.header_position');
+  const input = screen.getByLabelText('akeneo.tailored_import.file_structure.modal.header_row');
 
   fireEvent.change(input, {target: {value: '2'}});
-  expect(handleHeaderPositionChange).toBeCalledWith(2);
+  expect(handleHeaderRowChange).toBeCalledWith(2);
 });
 
-test('it dispatch event when product position change', async () => {
+test('it dispatch event when first product row change', async () => {
   const handleFileStructureChange = jest.fn();
 
   await renderWithProviders(
@@ -111,18 +115,19 @@ test('it dispatch event when product position change', async () => {
       }
       fileStructure={fileStructure}
       onFileStructureChange={handleFileStructureChange}
-      onHeaderPositionChange={jest.fn()}
+      onHeaderRowChange={jest.fn()}
       onSheetChange={jest.fn()}
+      validationErrors={[]}
     />
   );
 
-  const input = screen.getByLabelText('akeneo.tailored_import.file_structure.modal.product_position');
+  const input = screen.getByLabelText('akeneo.tailored_import.file_structure.modal.first_product_row');
 
   fireEvent.change(input, {target: {value: '4'}});
-  expect(handleFileStructureChange).toBeCalledWith({...fileStructure, product_line: 4});
+  expect(handleFileStructureChange).toBeCalledWith({...fileStructure, first_product_row: 4});
 });
 
-test('it dispatch an event when column position change', async () => {
+test('it dispatch an event when first column row change', async () => {
   const handleFileStructureChange = jest.fn();
 
   await renderWithProviders(
@@ -137,12 +142,13 @@ test('it dispatch an event when column position change', async () => {
       }
       fileStructure={fileStructure}
       onFileStructureChange={handleFileStructureChange}
-      onHeaderPositionChange={jest.fn()}
+      onHeaderRowChange={jest.fn()}
       onSheetChange={jest.fn()}
+      validationErrors={[]}
     />
   );
 
-  await userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.modal.column_position'));
+  await userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.modal.first_column'));
   await userEvent.click(screen.getByText('sku (A)'));
 
   expect(handleFileStructureChange).toBeCalledWith({...fileStructure, first_column: 0});
@@ -163,13 +169,78 @@ test('it dispatch an event when column identifier change', async () => {
       }
       fileStructure={fileStructure}
       onFileStructureChange={handleFileStructureChange}
-      onHeaderPositionChange={jest.fn()}
+      onHeaderRowChange={jest.fn()}
       onSheetChange={jest.fn()}
+      validationErrors={[]}
     />
   );
 
-  await userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.modal.column_identifier_position'));
+  await userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.modal.unique_identifier_column'));
   await userEvent.click(screen.getByText('sku (A)'));
 
-  expect(handleFileStructureChange).toBeCalledWith({...fileStructure, column_identifier_position: 0});
+  expect(handleFileStructureChange).toBeCalledWith({...fileStructure, unique_identifier_column: 0});
+});
+
+test('it display validation errors', async () => {
+  const validationErrors: ValidationError[] = [
+    {
+      messageTemplate: 'sheet_error.key.name',
+      invalidValue: '',
+      message: 'this is a sheet validation error',
+      parameters: {},
+      propertyPath: '[sheet_name]',
+    },
+    {
+      messageTemplate: 'header_row_error.key.name',
+      invalidValue: '',
+      message: 'this is a header row validation error',
+      parameters: {},
+      propertyPath: '[header_row]',
+    },
+    {
+      messageTemplate: 'first_product_row_error.key.name',
+      invalidValue: '',
+      message: 'this is a first product row validation error',
+      parameters: {},
+      propertyPath: '[first_product_row]',
+    },
+    {
+      messageTemplate: 'first_column_error.key.name',
+      invalidValue: '',
+      message: 'this is a first column validation error',
+      parameters: {},
+      propertyPath: '[first_column]',
+    },
+    {
+      messageTemplate: 'unique_identifier_column_error.key.name',
+      invalidValue: '',
+      message: 'this is a unique identifier column validation error',
+      parameters: {},
+      propertyPath: '[unique_identifier_column]',
+    },
+  ];
+
+  await renderWithProviders(
+    <FileTemplateConfigurator
+      fileTemplateInformation={
+        {
+          file_info: fileInfo,
+          current_sheet: 'currentTestSheet',
+          sheet_names: ['currentTestSheet', 'anotherTestSheet'],
+          header_cells: ['sku', 'name', 'description'],
+        } as FileTemplateInformation
+      }
+      fileStructure={fileStructure}
+      onFileStructureChange={jest.fn()}
+      onHeaderRowChange={jest.fn()}
+      onSheetChange={jest.fn()}
+      validationErrors={validationErrors}
+    />
+  );
+
+  expect(screen.getByText('first_column_error.key.name')).toBeInTheDocument();
+  expect(screen.getByText('header_row_error.key.name')).toBeInTheDocument();
+  expect(screen.getByText('first_product_row_error.key.name')).toBeInTheDocument();
+  expect(screen.getByText('first_column_error.key.name')).toBeInTheDocument();
+  expect(screen.getByText('unique_identifier_column_error.key.name')).toBeInTheDocument();
 });

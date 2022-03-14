@@ -8,7 +8,7 @@ const useFileTemplateInformationFetcher = () => {
 
   return async (fileInfo: FileInfo, fileStructure: FileStructure | null): Promise<FileTemplateInformation> => {
     const params = fileStructure
-      ? {file_key: fileInfo.filePath, sheet_name: fileStructure.sheet_name, header_line: fileStructure.header_line}
+      ? {file_key: fileInfo.filePath, sheet_name: fileStructure.sheet_name, header_row: fileStructure.header_row}
       : {file_key: fileInfo.filePath};
 
     const route = router.generate('pimee_tailored_import_get_file_template_information_action', params);

@@ -85,11 +85,11 @@ test('it can upload and send back a list of columns', async () => {
   });
 
   expect(handleConfirm).toHaveBeenCalledWith('path/to/foo.xlsx', mockedColumns, mockedColumns[0], {
-    header_line: 1,
+    header_row: 1,
     first_column: 0,
-    product_line: 2,
+    first_product_row: 2,
     sheet_name: 'currentTestSheet',
-    column_identifier_position: 0,
+    unique_identifier_column: 0,
   });
 });
 
@@ -125,7 +125,7 @@ test('it displays validation errors when upload fails', async () => {
             invalidValue: '',
             message: 'this is an upload error',
             parameters: {},
-            propertyPath: '',
+            propertyPath: '[file]',
           },
         ])
       ),
@@ -156,7 +156,7 @@ test('it displays validation errors when read columns fails', async () => {
           invalidValue: '',
           message: 'this is a read columns error',
           parameters: {},
-          propertyPath: '',
+          propertyPath: '[file_structure][sheet_name]',
         },
       ])
   );
@@ -205,11 +205,11 @@ test('it refresh file information when sheet changed', async () => {
       filePath: 'path/to/foo.xlsx',
     },
     {
-      header_line: 1,
+      header_row: 1,
       first_column: 0,
-      product_line: 2,
+      first_product_row: 2,
       sheet_name: 'anotherTestSheet',
-      column_identifier_position: 0,
+      unique_identifier_column: 0,
     }
   );
 });
@@ -229,7 +229,7 @@ test('it refresh file information when header line changed', async () => {
 
   await act(async () => {
     const input = screen.getByLabelText(
-      'akeneo.tailored_import.file_structure.modal.header_position'
+      'akeneo.tailored_import.file_structure.modal.header_row'
     ) as HTMLInputElement;
     await userEvent.clear(input);
     await userEvent.type(input, '2');
@@ -241,11 +241,39 @@ test('it refresh file information when header line changed', async () => {
       filePath: 'path/to/foo.xlsx',
     },
     {
-      header_line: 2,
+      header_row: 2,
       first_column: 0,
-      product_line: 2,
+      first_product_row: 2,
       sheet_name: 'currentTestSheet',
-      column_identifier_position: 0,
+      unique_identifier_column: 0,
     }
   );
+});
+
+test('it clears the file structure information when user click on previous', async () => {
+  await renderWithProviders(<InitializeFileStructure onConfirm={jest.fn()} />);
+
+  userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.placeholder.button'));
+
+  await act(async () => {
+    userEvent.upload(
+      screen.getByPlaceholderText('akeneo.tailored_import.file_structure.modal.upload.placeholder'),
+      new File(['foo'], 'foo.xlsx', {type: 'application/vnd.ms-excel'})
+    );
+  });
+
+  await userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.modal.sheet'));
+  await act(async () => {
+    await userEvent.click(screen.getByText('anotherTestSheet'));
+  });
+
+  userEvent.click(screen.getByText('pim_common.previous'));
+  await act(async () => {
+    userEvent.upload(
+      screen.getByPlaceholderText('akeneo.tailored_import.file_structure.modal.upload.placeholder'),
+      new File(['foo'], 'foo.xlsx', {type: 'application/vnd.ms-excel'})
+    );
+  });
+
+  expect(screen.getByText('currentTestSheet')).toBeInTheDocument();
 });

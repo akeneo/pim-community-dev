@@ -11,10 +11,10 @@ type Column = {
 };
 
 type FileStructure = {
-  header_line: number;
+  header_row: number;
   first_column: number;
-  product_line: number;
-  column_identifier_position: number;
+  first_product_row: number;
+  unique_identifier_column: number;
   sheet_name: string | null;
 };
 
@@ -34,11 +34,11 @@ type StructureConfiguration = {
 };
 
 const getDefaultFileStructure = (): FileStructure => ({
-  header_line: 1,
+  header_row: 1,
   first_column: 0,
-  product_line: 2,
+  first_product_row: 2,
   sheet_name: null,
-  column_identifier_position: 0,
+  unique_identifier_column: 0,
 });
 
 const generateExcelColumnLetter = (index: number): string => {

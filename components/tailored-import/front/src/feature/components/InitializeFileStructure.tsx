@@ -15,6 +15,7 @@ import {useTranslate, useUploader, ValidationError, formatParameters} from '@ake
 import {useReadColumns, useFileTemplateInformationFetcher} from '../hooks';
 import {Column, FileStructure, FileTemplateInformation, getDefaultFileStructure} from '../models';
 import {FileTemplateConfigurator} from '../components';
+import {filterErrors} from "@akeneo-pim-community/shared/lib/models/validation-error";
 
 const Container = styled.div`
   width: 100%;
@@ -54,6 +55,8 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
   const [uploader] = useUploader('pimee_tailored_import_upload_structure_file_action');
   const readColumns = useReadColumns();
   const fileTemplateInformationFetcher = useFileTemplateInformationFetcher();
+  const fileTemplateValidationErrors = filterErrors(validationErrors, '[file]');
+  const fileStructureValidationErrors = filterErrors(validationErrors, '[file_structure]');
 
   const uploadFileTemplate = async (file: File, onProgress: (ratio: number) => void): Promise<FileInfo> => {
     setValidationErrors([]);
@@ -75,7 +78,7 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
         const columns = await readColumns(fileTemplateInformation.file_info.filePath, fileStructure);
 
         const columnIdentifier =
-          columns.find(column => column.index === fileStructure.column_identifier_position) ?? null;
+          columns.find(column => column.index === fileStructure.unique_identifier_column) ?? null;
         onConfirm(fileTemplateInformation.file_info.filePath, columns, columnIdentifier, fileStructure);
         closeModal();
       } catch (validationErrors: any) {
@@ -104,9 +107,9 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
     }
   };
 
-  const handleHeaderPositionChange = async (headerPosition: number) => {
+  const handleHeaderRowChange = async (headerRow: number) => {
     if (fileTemplateInformation) {
-      const newFileStructure = {...fileStructure, header_line: headerPosition};
+      const newFileStructure = {...fileStructure, header_row: headerRow};
       setFileStructure(newFileStructure);
       setFileTemplateInformation(
         await fileTemplateInformationFetcher(fileTemplateInformation.file_info, newFileStructure)
@@ -116,11 +119,28 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
 
   const handleClose = () => {
     setFileTemplateInformation(null);
+    setFileStructure(getDefaultFileStructure());
     closeModal();
   };
 
+  const handleOpenModal = () => {
+    openModal();
+  }
+
+  const handlePrevious = () => {
+    setFileStructure(getDefaultFileStructure());
+    setFileTemplateInformation(null);
+  }
+
   return isModalOpen ? (
     <Modal onClose={handleClose} closeTitle={translate('pim_common.close')}>
+      {fileTemplateInformation && (
+        <Modal.TopLeftButtons>
+          <Button onClick={handlePrevious} level="tertiary">
+            {translate('pim_common.previous')}
+          </Button>
+        </Modal.TopLeftButtons>
+      )}
       <Modal.TopRightButtons>
         <Button disabled={null === fileTemplateInformation} onClick={handleConfirm}>
           {translate('pim_common.confirm')}
@@ -133,7 +153,7 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
         <Modal.Title>{translate('akeneo.tailored_import.file_structure.modal.title')}</Modal.Title>
         <Content>
           <Helper>{translate('akeneo.tailored_import.file_structure.modal.helper')}</Helper>
-          {!fileTemplateInformation || validationErrors.length > 0 ? (
+          {!fileTemplateInformation || fileTemplateValidationErrors.length > 0 ? (
             <>
               <MediaFileInput
                 value={fileTemplateInformation?.file_info ?? null}
@@ -144,9 +164,9 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
                 uploadingLabel={translate('akeneo.tailored_import.file_structure.modal.upload.uploading')}
                 clearTitle={translate('pim_common.clear_value')}
                 uploadErrorLabel={translate('akeneo.tailored_import.file_structure.modal.upload.error')}
-                invalid={0 < validationErrors.length}
+                invalid={0 < fileTemplateValidationErrors.length}
               />
-              {validationErrors.map((error, index) => (
+              {fileTemplateValidationErrors.map((error, index) => (
                 <Helper key={index} inline={true} level="error">
                   {translate(error.messageTemplate, error.parameters)}
                 </Helper>
@@ -158,7 +178,8 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
               fileTemplateInformation={fileTemplateInformation}
               onFileStructureChange={setFileStructure}
               onSheetChange={handleSheetChange}
-              onHeaderPositionChange={handleHeaderPositionChange}
+              onHeaderRowChange={handleHeaderRowChange}
+              validationErrors={fileStructureValidationErrors}
             />
           )}
         </Content>
@@ -170,7 +191,7 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
       title={translate('akeneo.tailored_import.file_structure.placeholder.title')}
       illustration={<AttributesIllustration />}
     >
-      <Button ghost={true} level="secondary" onClick={openModal}>
+      <Button ghost={true} level="secondary" onClick={handleOpenModal}>
         {translate('akeneo.tailored_import.file_structure.placeholder.button')}
       </Button>
     </Placeholder>
