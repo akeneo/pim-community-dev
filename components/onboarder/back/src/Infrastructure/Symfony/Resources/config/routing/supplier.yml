@@ -1,9 +1,13 @@
 onboarder_serenity_supplier_list:
     path: /
-    defaults: { _controller: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierList, _format: json }
+    defaults:
+        _controller: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierList
+        _feature: onboarder_serenity_supplier
     methods: [GET]
 
 onboarder_serenity_supplier_create:
     path: /
-    defaults: { _controller: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierCreate, _format: json }
+    defaults:
+        _controller: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierCreate
+        _feature: onboarder_serenity_supplier
     methods: [POST]

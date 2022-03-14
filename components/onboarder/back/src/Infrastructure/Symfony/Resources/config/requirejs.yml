@@ -1,0 +1,8 @@
+config:
+  config:
+    pim/controller-registry:
+      controllers:
+        onboarder_serenity_supplier_list:
+          module: onboarder/controller/supplier-list
+  paths:
+    onboarder/controller/supplier-list: akeneoonboarderserenity/js/controller/supplier-list.tsx
