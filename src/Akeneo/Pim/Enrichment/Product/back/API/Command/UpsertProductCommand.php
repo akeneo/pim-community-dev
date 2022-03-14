@@ -50,13 +50,13 @@ final class UpsertProductCommand
             if ($userIntent instanceof ValueUserIntent) {
                 $valueUserIntents[] = $userIntent;
             } elseif ($userIntent instanceof SetEnabled) {
-                Assert::null($enabledUserIntent, "Only one SetEnabled intent can be sent to the command.");
+                Assert::null($enabledUserIntent, "Only one enabled intent can be passed to the command.");
                 $enabledUserIntent = $userIntent;
             } elseif ($userIntent instanceof FamilyUserIntent) {
-                Assert::null($familyUserIntent, 'A family user intent cannot be defined twice');
+                Assert::null($familyUserIntent, 'Only one family intent can be passed to the command.');
                 $familyUserIntent = $userIntent;
             } elseif ($userIntent instanceof CategoryUserIntent) {
-                Assert::null($categoryUserIntent, 'Only one Category intent can be sent to the command.');
+                Assert::null($categoryUserIntent, 'Only one category intent can be passed to the command.');
                 $categoryUserIntent = $userIntent;
             }
         }

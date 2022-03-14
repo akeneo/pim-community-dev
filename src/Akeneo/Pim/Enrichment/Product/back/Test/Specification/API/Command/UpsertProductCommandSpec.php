@@ -94,12 +94,13 @@ class UpsertProductCommandSpec extends ObjectBehavior
     function it_can_be_constructed_with_field_user_intents()
     {
         $familyUserIntent = new SetFamily('accessories');
+        $categoryUserIntent = new SetCategories(['master']);
         $this->beConstructedWith(
             1,
             'identifier1',
             null,
             $familyUserIntent,
-            null,
+            $categoryUserIntent,
             null,
             null,
             null,
@@ -109,12 +110,14 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $this->userId()->shouldReturn(1);
         $this->productIdentifier()->shouldReturn('identifier1');
         $this->familyUserIntent()->shouldReturn($familyUserIntent);
+        $this->categoryUserIntent()->shouldReturn($categoryUserIntent);
         $this->valueUserIntents()->shouldReturn([]);
     }
 
     function it_can_be_constructed_from_a_collection_of_user_intents()
     {
         $familyUserIntent = new SetFamily('accessories');
+        $categoryUserIntent = new SetCategories(['master']);
         $setTextValue = new SetTextValue('name', null, null, 'foo');
         $setNumberValue = new SetNumberValue('name', null, null, '10');
         $setDateValue = new SetDateValue('name', null, null, new \DateTime("2022-03-04T09:35:24+00:00"));
@@ -123,12 +126,13 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $this->beConstructedThrough('createFromCollection', [
             10,
             'identifier1',
-            [$familyUserIntent, $setTextValue, $setNumberValue, $setDateValue, $addMultiSelectValue]
+            [$familyUserIntent, $setTextValue, $setNumberValue, $setDateValue, $addMultiSelectValue, $categoryUserIntent]
         ]);
 
         $this->userId()->shouldReturn(10);
         $this->productIdentifier()->shouldReturn('identifier1');
         $this->familyUserIntent()->shouldReturn($familyUserIntent);
+        $this->categoryUserIntent()->shouldReturn($categoryUserIntent);
         $this->valueUserIntents()->shouldReturn([$setTextValue, $setNumberValue, $setDateValue, $addMultiSelectValue]);
     }
 
