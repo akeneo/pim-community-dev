@@ -185,7 +185,10 @@ $rules = [
         'Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductModelsWithQualityScoresInterface',
 
         // Required to add completenesses into external API.
         'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithCompletenessesInterface',
