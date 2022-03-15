@@ -29,7 +29,7 @@ abstract class AbstractProduct implements ProductInterface
     /** @var int|string */
     protected $id;
 
-    protected ?UuidInterface $uuid;
+    protected UuidInterface $uuid;
 
     protected array $rawValues;
 
@@ -99,7 +99,7 @@ abstract class AbstractProduct implements ProductInterface
         return $this;
     }
 
-    public function getUuid(): ?UuidInterface
+    public function getUuid(): UuidInterface
     {
         return $this->uuid;
     }

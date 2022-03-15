@@ -49,8 +49,7 @@ interface ProductInterface extends
      */
     public function setId($id);
 
-    // TODO should not be nullable after UUID migration
-    public function getUuid(): ?UuidInterface;
+    public function getUuid(): UuidInterface;
 
     /**
      * @param string|null $identifierValue
