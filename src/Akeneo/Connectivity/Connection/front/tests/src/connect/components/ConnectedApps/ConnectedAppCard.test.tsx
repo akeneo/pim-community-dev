@@ -256,4 +256,8 @@ test('The connected app card displays a warning when it has a outdated scopes fl
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.warning')
     ).toBeInTheDocument();
+
+    expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.open_app')).toHaveStyle(
+        'background-color: rgb(249, 181, 63)'
+    );
 });
