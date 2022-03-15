@@ -8,7 +8,7 @@ import {GroupsIllustration} from '../../illustrations';
 
 test('it renders its children properly', () => {
   render(
-    <Dropdown>
+    <Dropdown fullWidth={true}>
       <Button>Dropdown</Button>
       <Dropdown.Overlay verticalPosition="down" onClose={jest.fn()}>
         <Dropdown.Header>

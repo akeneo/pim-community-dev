@@ -14,15 +14,16 @@ import {AkeneoThemedProps, CommonStyle, getColor} from '../../../theme';
 
 const BORDER_SHADOW_OFFSET = 2;
 
-const getWidthProperties = ({fullWidth}: {fullWidth: boolean} & AkeneoThemedProps) => {
-  if (fullWidth) {
+const getWidthProperties = ({fixedWidth}: {fixedWidth: number | null} & AkeneoThemedProps) => {
+  if (null !== fixedWidth) {
     return css`
-      width: 100%;
+      width: ${fixedWidth}px;
     `;
   }
+
   return css`
-    max-width: 400px;
     min-width: 150px;
+    max-width: 400px;
   `;
 };
 
@@ -31,7 +32,7 @@ const Container = styled.div<
     visible: boolean;
     top: number;
     left: number;
-    fullWidth: boolean;
+    fixedWidth: number | null;
   } & AkeneoThemedProps
 >`
   ${CommonStyle}
@@ -170,10 +171,19 @@ const Overlay = ({
 
   const [top, left] = overlayPosition;
 
+  const parentWidth = parentRef?.current?.getBoundingClientRect()?.width;
+
   return createPortal(
     <>
       <Backdrop data-testid="backdrop" onClick={onClose} />
-      <Container ref={overlayRef} visible={visible} top={top} left={left} fullWidth={fullWidth} {...rest}>
+      <Container
+        ref={overlayRef}
+        visible={visible}
+        top={top}
+        left={left}
+        fixedWidth={fullWidth ? parentWidth : null}
+        {...rest}
+      >
         {children}
       </Container>
     </>,
