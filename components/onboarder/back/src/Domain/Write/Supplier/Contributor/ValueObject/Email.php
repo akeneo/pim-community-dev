@@ -17,7 +17,7 @@ final class Email
         }
     }
 
-    public function fromString(string $email): self
+    public static function fromString(string $email): self
     {
         return new self($email);
     }
