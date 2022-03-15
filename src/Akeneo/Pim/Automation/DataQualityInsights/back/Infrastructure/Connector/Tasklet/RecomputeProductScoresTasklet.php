@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\RecomputeProductScoresParameters;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
@@ -61,7 +62,7 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
                 if (empty($productIds)) {
                     return;
                 }
-                $this->consolidateProductScores->consolidate($productIds);
+                $this->consolidateProductScores->consolidate(ProductIdCollection::fromInts($productIds));
                 $lastProductId = end($productIds);
             } while ($this->isTimeboxReached($startTime) === false);
         } catch (\Exception $exception) {
@@ -76,6 +77,9 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
         $this->scheduleNextRecomputeProductsScoresJob($lastProductId);
     }
 
+    /**
+     * @return int[]
+     */
     private function getNextProductIds($lastProductId): array
     {
         $stmt = $this->connection->executeQuery(
@@ -87,7 +91,7 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
         );
 
         return array_map(function ($resultRow) {
-            return intval($resultRow['id']);
+            return (int)$resultRow['id'];
         }, $stmt->fetchAllAssociative());
     }
 

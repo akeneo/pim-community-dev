@@ -41,3 +41,9 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductsIndex'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\UpdateProductModelsIndexSubscriber:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductModelsIndex'
+        tags:
+            - { name: kernel.event_subscriber }

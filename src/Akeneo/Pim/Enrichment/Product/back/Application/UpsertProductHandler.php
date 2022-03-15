@@ -10,8 +10,16 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\Domain\Event\ProductWasCreated;
@@ -45,10 +53,6 @@ final class UpsertProductHandler
 
     public function __invoke(UpsertProductCommand $command): void
     {
-        /**
-         * TODO CPM-492: validate permissions is required here.
-         * If we can do that, then the permission are ok for the rest of the code (= use "without permissions" services)
-         */
         $violations = $this->validator->validate($command);
         if (0 < $violations->count()) {
             throw new ViolationsException($violations);
@@ -82,12 +86,14 @@ final class UpsertProductHandler
 
     private function updateProduct(ProductInterface $product, UpsertProductCommand $command): void
     {
-        foreach ($command->valuesUserIntent() as $index => $valueUserIntent) {
+        foreach ($command->valueUserIntents() as $index => $valueUserIntent) {
             $found = false;
             try {
                 if ($valueUserIntent instanceof SetTextValue
                     || $valueUserIntent instanceof SetNumberValue
                     || $valueUserIntent instanceof SetTextareaValue
+                    || $valueUserIntent instanceof SetBooleanValue
+                    || $valueUserIntent instanceof SetSimpleSelectValue
                 ) {
                     $found = true;
                     $this->productUpdater->update($product, [
@@ -97,6 +103,35 @@ final class UpsertProductHandler
                                     'locale' => $valueUserIntent->localeCode(),
                                     'scope' => $valueUserIntent->channelCode(),
                                     'data' => $valueUserIntent->value(),
+                                ],
+                            ],
+                        ],
+                    ]);
+                } elseif ($valueUserIntent instanceof SetMetricValue) {
+                    $found = true;
+                    $this->productUpdater->update($product, [
+                        'values' => [
+                            $valueUserIntent->attributeCode() => [
+                                [
+                                    'locale' => $valueUserIntent->localeCode(),
+                                    'scope' => $valueUserIntent->channelCode(),
+                                    'data' => [
+                                        'amount' => $valueUserIntent->amount(),
+                                        'unit' => $valueUserIntent->unit(),
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ]);
+                } elseif ($valueUserIntent instanceof SetMultiSelectValue) {
+                    $found = true;
+                    $this->productUpdater->update($product, [
+                        'values' => [
+                            $valueUserIntent->attributeCode() => [
+                                [
+                                    'locale' => $valueUserIntent->localeCode(),
+                                    'scope' => $valueUserIntent->channelCode(),
+                                    'data' => $valueUserIntent->values(),
                                 ],
                             ],
                         ],
@@ -114,6 +149,42 @@ final class UpsertProductHandler
                             ],
                         ],
                     ]);
+                } elseif ($valueUserIntent instanceof SetDateValue) {
+                    $found = true;
+                    $this->productUpdater->update($product, [
+                        'values' => [
+                            $valueUserIntent->attributeCode() => [
+                                [
+                                    'locale' => $valueUserIntent->localeCode(),
+                                    'scope' => $valueUserIntent->channelCode(),
+                                    'data' => $valueUserIntent->value()->format('Y-m-d'),
+                                ],
+                            ],
+                        ],
+                    ]);
+                } elseif ($valueUserIntent instanceof AddMultiSelectValue) {
+                    $found = true;
+                    $formerValue = $product->getValue(
+                        $valueUserIntent->attributeCode(),
+                        $valueUserIntent->localeCode(),
+                        $valueUserIntent->channelCode()
+                    );
+
+                    $values = null !== $formerValue ?
+                        \array_unique(\array_merge($formerValue->getData(), $valueUserIntent->optionCodes())) :
+                        $valueUserIntent->optionCodes();
+
+                    $this->productUpdater->update($product, [
+                        'values' => [
+                            $valueUserIntent->attributeCode() => [
+                                [
+                                    'locale' => $valueUserIntent->localeCode(),
+                                    'scope' => $valueUserIntent->channelCode(),
+                                    'data' => $values,
+                                ],
+                            ],
+                        ],
+                    ]);
                 }
             } catch (PropertyException $e) {
                 $violations = new ConstraintViolationList([
@@ -122,16 +193,47 @@ final class UpsertProductHandler
                         $e->getMessage(),
                         [],
                         $command,
-                        "valueUserIntent[$index]",
+                        "valueUserIntents[$index]",
                         $valueUserIntent
                     ),
                 ]);
 
-                throw new LegacyViolationsException($violations);
+                throw new ViolationsException($violations);
             }
 
             if (!$found) {
                 throw new \InvalidArgumentException(\sprintf('The "%s" intent cannot be handled.', get_class($valueUserIntent)));
+            }
+        }
+
+        if (null !== $command->enabledUserIntent()) {
+            $this->productUpdater->update($product, [
+                'enabled' => $command->enabledUserIntent()->enabled(),
+            ]);
+        }
+
+        $familyUserIntent = $command->familyUserIntent();
+        if (null !== $familyUserIntent) {
+            if ($familyUserIntent instanceof SetFamily || $familyUserIntent instanceof RemoveFamily) {
+                try {
+                    $familyData = $familyUserIntent instanceof SetFamily ? $familyUserIntent->familyCode() : null;
+                    $this->productUpdater->update($product, ['family' => $familyData]);
+                } catch (PropertyException $e) {
+                    $violations = new ConstraintViolationList([
+                        new ConstraintViolation(
+                            $e->getMessage(),
+                            $e->getMessage(),
+                            [],
+                            $command,
+                            "familyUserIntent",
+                            $familyUserIntent
+                        ),
+                    ]);
+
+                    throw new ViolationsException($violations);
+                }
+            } else {
+                throw new \InvalidArgumentException(\sprintf('The "%s" intent cannot be handled.', get_class($familyUserIntent)));
             }
         }
     }

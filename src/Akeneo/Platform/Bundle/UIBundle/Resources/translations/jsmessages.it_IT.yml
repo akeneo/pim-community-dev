@@ -102,18 +102,29 @@ oro_config:
       tab:
         system:
           title: Sistema
+      save_ok: Configurazione salvata correttamente
+      save_error: Spiacenti, non è stato possibile salvare la configurazione ({{ reason }})
       group:
         localization:
-          title: Localizzazione
-          system_locale: Lingua
+          title: Impostazione pagina d'accesso
+          fields:
+            system_locale:
+              label: Lingua
         notification:
-          title: Notifiche
-          system_notification: Notifiche di nuove versioni
+          title: Notifiche di nuova versione
+          helper: Se l'opzione è abilitata, ricevi una notifica quando è disponibile una nuova versione.
+          fields:
+            enabler:
+              label: Attivato
         loading_message:
-          title: Messaggi per "caricamento in corso"
-          label: Abilita i messaggi di caricamento
-        loading_messages:
-          label: Messaggi di caricamento disponibili
+          title: Messaggi di caricamento personalizzati
+          helper: Intrattieni i tuoi utenti con messaggi personalizzati sulle schermate di caricamento.
+          placeholder: Scrivi il messaggio che desideri visualizzare sulla tua schermata di caricamento
+          fields:
+            enabler:
+              label: Abilita i messaggi di caricamento
+            messages:
+              label: Aggiungi messaggi di caricamento personalizzati
 pim_ui:
   flash:
     unsaved_changes: 'Hai delle modifiche non salvate, sei sicuro di voler abbandonare?'
@@ -298,7 +309,7 @@ pim_title:
   pim_enrich_categorytree_edit: Categoria {{ category.label }} | Modifica
   pim_enrich_categorytree_create_tree: Strutture di categoria | Crea
   pim_enrich_categorytree_tree: Albero di categoria {{ category.label }} | Modifica
-  pim_enrich_attribute_index: Atributi
+  pim_enrich_attribute_index: Attributi
   pim_enrich_attribute_create: Attributi | Crea
   pim_enrich_attribute_edit: Attributo {{ attribute.label }} | Modifica
   pim_enrich_product_index: Prodotti

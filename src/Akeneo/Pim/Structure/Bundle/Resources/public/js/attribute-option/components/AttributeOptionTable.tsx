@@ -167,6 +167,7 @@ const AttributeOptionTable = ({
         searchValue={searchString}
         onSearchChange={onSearch}
         inputRef={inputRef}
+        sticky={0}
       >
         <Search.ResultCount>
           {translate(
@@ -185,7 +186,7 @@ const AttributeOptionTable = ({
 
             <TableContainer>
               <SpacedTable isDragAndDroppable={isDraggable} onReorder={handleReorder}>
-                <Table.Header sticky={0}>
+                <Table.Header sticky={44}>
                   {!isDraggable && <Table.HeaderCell>&nbsp;</Table.HeaderCell>}
                   <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
                   <Table.HeaderCell>{translate('pim_common.code')}</Table.HeaderCell>
@@ -242,7 +243,6 @@ const SpacedTable = styled(Table)`
 
 const TableContainer = styled.div`
   height: calc(100vh - 394px);
-  overflow-y: auto;
 `;
 
 export default AttributeOptionTable;

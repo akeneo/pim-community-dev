@@ -37,10 +37,10 @@ class FakeWebMarketplaceApi implements WebMarketplaceApiInterface
     public function getExtensions(int $offset = 0, int $limit = 10): array
     {
         return [
-            'total' => count($this->extensions),
+            'total' => \count($this->extensions),
             'offset' => $offset,
             'limit' => $limit,
-            'items' => array_slice($this->extensions, $offset, $limit),
+            'items' => \array_slice($this->extensions, $offset, $limit),
         ];
     }
 
@@ -67,16 +67,16 @@ class FakeWebMarketplaceApi implements WebMarketplaceApiInterface
     public function getApps(int $offset = 0, int $limit = 10): array
     {
         return [
-            'total' => count($this->apps),
+            'total' => \count($this->apps),
             'offset' => $offset,
             'limit' => $limit,
-            'items' => array_slice($this->apps, $offset, $limit),
+            'items' => \array_slice($this->apps, $offset, $limit),
         ];
     }
 
     public function getApp(string $id): ?array
     {
-        return array_filter($this->apps, function (array $app) use ($id) {
+        return \array_filter($this->apps, function (array $app) use ($id) {
             return $app['id'] === $id;
         })[0] ?? null;
     }

@@ -37,7 +37,7 @@ class ProduceEventOnBulkProductUpdateIntegration extends TestCase
         $count = 3;
         $products = [];
         for ($i = 0; $i < $count; $i++) {
-            $products[] = $this->productBuilder->createProduct(sprintf('t-shirt-%s', $i));
+            $products[] = $this->productBuilder->createProduct(\sprintf('t-shirt-%s', $i));
         }
         $this->productSaver->saveAll($products);
 

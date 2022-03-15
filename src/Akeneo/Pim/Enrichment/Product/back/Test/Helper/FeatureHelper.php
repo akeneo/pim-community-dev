@@ -34,4 +34,20 @@ final class FeatureHelper
     {
         return \class_exists('Akeneo\Pim\Permission\Bundle\AkeneoPimPermissionBundle');
     }
+
+    public static function skipIntegrationTestWhenAssetFeatureIsNotActivated(): void
+    {
+        $isAssetFeatureActivated = \class_exists('Akeneo\Pim\Enrichment\AssetManager\Bundle\AkeneoPimEnrichmentAssetManagerBundle');
+        if (!$isAssetFeatureActivated) {
+            Assert::markTestSkipped('Asset feature is not available in this scope');
+        }
+    }
+
+    public static function skipIntegrationTestWhenReferenceEntityIsNotActivated(): void
+    {
+        $isAssetFeatureActivated = \class_exists('Akeneo\ReferenceEntity\Infrastructure\Symfony\AkeneoReferenceEntityBundle');
+        if (!$isAssetFeatureActivated) {
+            Assert::markTestSkipped('Asset feature is not available in this scope');
+        }
+    }
 }

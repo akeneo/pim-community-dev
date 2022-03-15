@@ -42,7 +42,7 @@ final class FindAllConnectedAppsQuery implements FindAllConnectedAppsQueryInterf
 
         $dataRows = $this->connection->executeQuery($selectSQL)->fetchAll();
 
-        $connectedApps = array_map(
+        $connectedApps = \array_map(
             fn ($dataRow) => $this->denormalizeRow($dataRow),
             $dataRows
         );

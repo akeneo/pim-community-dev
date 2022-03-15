@@ -23,6 +23,7 @@ class App
     private string $activateUrl;
     private string $callbackUrl;
     private bool $connected;
+    private bool $isTestApp;
 
     private const MARKETPLACE_REQUIRED_KEYS = [
         'id',
@@ -66,7 +67,7 @@ class App
     {
         foreach (self::MARKETPLACE_REQUIRED_KEYS as $key) {
             if (!isset($values[$key])) {
-                throw new \InvalidArgumentException(sprintf('Missing property "%s" in given app', $key));
+                throw new \InvalidArgumentException(\sprintf('Missing property "%s" in given app', $key));
             }
         }
 
@@ -84,6 +85,7 @@ class App
         $self->activateUrl = $values['activate_url'];
         $self->callbackUrl = $values['callback_url'];
         $self->connected = $values['connected'] ?? false;
+        $self->isTestApp = false;
 
         return $self;
     }
@@ -102,7 +104,7 @@ class App
     {
         foreach (self::TEST_APP_REQUIRED_KEYS as $key) {
             if (!isset($values[$key])) {
-                throw new \InvalidArgumentException(sprintf('Missing property "%s" in given app', $key));
+                throw new \InvalidArgumentException(\sprintf('Missing property "%s" in given app', $key));
             }
         }
 
@@ -120,6 +122,7 @@ class App
         $self->activateUrl = $values['activate_url'];
         $self->callbackUrl = $values['callback_url'];
         $self->connected = $values['connected'] ?? false;
+        $self->isTestApp = true;
 
         return $self;
     }
@@ -170,12 +173,12 @@ class App
      */
     private static function appendQueryParametersToUrl(string $url, array $queryParameters): string
     {
-        $query = http_build_query($queryParameters);
+        $query = \http_build_query($queryParameters);
 
-        if (parse_url($url, PHP_URL_QUERY)) {
-            $url = sprintf('%s&%s', $url, $query);
+        if (\parse_url($url, PHP_URL_QUERY)) {
+            $url = \sprintf('%s&%s', $url, $query);
         } else {
-            $url = sprintf('%s?%s', $url, $query);
+            $url = \sprintf('%s?%s', $url, $query);
         }
 
         return $url;
@@ -195,6 +198,7 @@ class App
      *  activate_url: string,
      *  callback_url: string,
      *  connected: bool,
+     *  isTestApp: bool,
      * }
      */
     public function normalize(): array
@@ -212,6 +216,7 @@ class App
             'activate_url' => $this->activateUrl,
             'callback_url' => $this->callbackUrl,
             'connected' => $this->connected,
+            'isTestApp' => $this->isTestApp,
         ];
     }
 
@@ -271,5 +276,10 @@ class App
     public function getCategories(): array
     {
         return $this->categories;
+    }
+
+    public function isTestApp(): bool
+    {
+        return $this->isTestApp;
     }
 }

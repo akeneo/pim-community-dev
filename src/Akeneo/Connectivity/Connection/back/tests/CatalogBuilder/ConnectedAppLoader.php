@@ -116,9 +116,9 @@ SQL;
             'callback_url' => 'http://example.com/callback',
         ]);
         $client = $this->clientProvider->findOrCreateClient($marketplaceApp);
-        $group = $this->createUserGroup->execute(sprintf('app_%s', $code));
+        $group = $this->createUserGroup->execute(\sprintf('app_%s', $code));
         $role = $this->userRoleLoader->create([
-            'role' => sprintf('ROLE_%s', strtoupper($code)),
+            'role' => \sprintf('ROLE_%s', \strtoupper($code)),
             'label' => $code,
             'type' => 'app',
         ]);

@@ -26,6 +26,26 @@ $rules = [
 
     $builder->only(
         [
+            'Akeneo\Connectivity\Connection\Domain\Apps',
+            'Akeneo\Connectivity\Connection\Domain\Marketplace',
+            'Akeneo\Connectivity\Connection\Domain\Settings',
+            'Akeneo\Connectivity\Connection\Domain\ClockInterface',
+
+            'Akeneo\Connectivity\Connection\Application\Settings',
+            'Akeneo\Connectivity\Connection\Application\User',
+
+            'Oro\Bundle\SecurityBundle\SecurityFacade',
+            'Akeneo\UserManagement\Component\Model\RoleInterface',
+            'Symfony\Component\Validator\Validator\ValidatorInterface',
+
+            // Must be moved
+            'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry',
+            'Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Application\Apps'),
+
+    $builder->only(
+        [
             // Ok
             'Akeneo\Connectivity\Connection\Domain\ErrorManagement',
             'Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval',
@@ -277,6 +297,8 @@ $rules = [
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Platform\VersionProviderInterface',
             'Akeneo\UserManagement\Component\Model\UserInterface',
+            'Akeneo\UserManagement\Bundle\Context\UserContext',
+            'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
 
             'Symfony\Component',
             'Doctrine\DBAL\Connection',

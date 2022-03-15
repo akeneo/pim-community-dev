@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AbstractFieldFilter;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -52,13 +53,13 @@ class QualityScoreFilter extends AbstractFieldFilter implements FieldFilterInter
             throw InvalidPropertyException::dataExpected($field, sprintf('values among "%s"', implode('", "', Rank::LETTERS_MAPPING)), static::class);
         }
 
-        $clause = [
-            'terms' => [
-                sprintf('data_quality_insights.scores.%s.%s', $channel, $locale) => $values
-            ],
-        ];
-
-        $this->searchQueryBuilder->addFilter($clause);
+        $this->searchQueryBuilder->addFilter(
+            [
+                'terms' => [
+                    sprintf('data_quality_insights.scores.%s.%s', $channel, $locale) => $values
+                ]
+            ]
+        );
 
         return $this;
     }

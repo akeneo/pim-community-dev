@@ -111,8 +111,8 @@ connectivity-connection-back:
 # Tests Front
 
 connectivity-connection-unit-front:
-	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --ci
-	$(_PERMISSION_FORM_YARN_RUN) jest --ci --coverage
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --ci ${O}
+	$(_PERMISSION_FORM_YARN_RUN) jest --ci --coverage ${O}
 
 connectivity-connection-lint-front:
 	$(_CONNECTIVITY_CONNECTION_YARN_RUN) eslint
@@ -172,7 +172,7 @@ connectivity-connection-coverage:
 		coverage/Connectivity/Back/Global/
 
 connectivity-connection-insight:
-	$(PHP_RUN) vendor/bin/phpinsights analyse -v --no-interaction -c src/Akeneo/Connectivity/Connection/back/tests/phpinsights.php src/Akeneo/Connectivity/Connection/back
+	$(PHP_RUN) vendor/bin/phpinsights analyse --summary --no-interaction --config-path=src/Akeneo/Connectivity/Connection/back/tests/phpinsights.php src/Akeneo/Connectivity/Connection/back
 
 connectivity-connection-psalm:
 	$(PHP_RUN) vendor/bin/psalm -c src/Akeneo/Connectivity/Connection/back/tests/psalm.xml

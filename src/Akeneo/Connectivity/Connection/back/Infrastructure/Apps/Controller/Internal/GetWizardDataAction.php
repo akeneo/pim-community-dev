@@ -52,7 +52,7 @@ final class GetWizardDataAction
 
         $authorizationScopeMessages = $this->scopeMapperRegistry->getMessages($appAuthorization->getAuthorizationScopes()->getScopes());
 
-        $authenticationScopesThatRequireConsent = array_filter(
+        $authenticationScopesThatRequireConsent = \array_filter(
             $appAuthorization->getAuthenticationScopes()->getScopes(),
             fn (string $scope) => $scope !== AuthenticationScope::SCOPE_OPENID
         );
@@ -62,7 +62,7 @@ final class GetWizardDataAction
             'appLogo' => $app->getLogo(),
             'appUrl' => $app->getUrl(),
             'scopeMessages' => $authorizationScopeMessages,
-            'authenticationScopes' => array_values($authenticationScopesThatRequireConsent)
+            'authenticationScopes' => \array_values($authenticationScopesThatRequireConsent)
         ]);
     }
 }

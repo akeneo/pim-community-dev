@@ -11,6 +11,8 @@ use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthenticatio
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\ConfirmAuthenticationAction;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
@@ -36,7 +38,7 @@ use Symfony\Component\Validator\ConstraintViolationList;
 class ConfirmAuthenticationActionSpec extends ObjectBehavior
 {
     public function let(
-        FeatureFlag $featureFlag,
+        FeatureFlag $marketplaceActivateFeatureFlag,
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         SecurityFacade $security,
         RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
@@ -44,10 +46,11 @@ class ConfirmAuthenticationActionSpec extends ObjectBehavior
         ConnectedPimUserProvider $connectedPimUserProvider,
         ConsentAppAuthenticationHandler $consentAppAuthenticationHandler,
         LoggerInterface $logger,
-        ViolationListNormalizer $violationListNormalizer
+        ViolationListNormalizer $violationListNormalizer,
+        GetAppQueryInterface $getAppQuery,
     ): void {
         $this->beConstructedWith(
-            $featureFlag,
+            $marketplaceActivateFeatureFlag,
             $getAppConfirmationQuery,
             $security,
             $redirectUriWithAuthorizationCodeGenerator,
@@ -55,7 +58,8 @@ class ConfirmAuthenticationActionSpec extends ObjectBehavior
             $connectedPimUserProvider,
             $consentAppAuthenticationHandler,
             $logger,
-            $violationListNormalizer
+            $violationListNormalizer,
+            $getAppQuery,
         );
     }
 
@@ -65,48 +69,110 @@ class ConfirmAuthenticationActionSpec extends ObjectBehavior
     }
 
     public function it_throws_not_found_exception_with_feature_flag_disabled(
-        FeatureFlag $featureFlag,
+        FeatureFlag $marketplaceActivateFeatureFlag,
         Request $request
     ) {
         $clientId = 'a_client_id';
 
-        $featureFlag->isEnabled()->willReturn(false);
+        $marketplaceActivateFeatureFlag->isEnabled()->willReturn(false);
 
         $this->shouldThrow(new NotFoundHttpException())->during('__invoke', [$request, $clientId]);
     }
 
-    public function it_throws_access_denied_exception_with_missing_acl(
-        FeatureFlag $featureFlag,
-        SecurityFacade $security,
-        Request $request
-    ): void {
-        $clientId = 'a_client_id';
-
-        $featureFlag->isEnabled()->willReturn(true);
-        $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(false);
-
-        $this->shouldThrow(new AccessDeniedHttpException())->during('__invoke', [$request, $clientId]);
-    }
-
     public function it_redirects_if_not_xml_http_request(
-        FeatureFlag $featureFlag,
-        SecurityFacade $security,
+        FeatureFlag $marketplaceActivateFeatureFlag,
         Request $request
     ): void {
         $clientId = 'a_client_id';
 
-        $featureFlag->isEnabled()->willReturn(true);
-        $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(true);
+        $marketplaceActivateFeatureFlag->isEnabled()->willReturn(true);
         $request->isXmlHttpRequest()->willReturn(false);
 
         $this->__invoke($request, $clientId)->shouldBeLike(new RedirectResponse('/'));
     }
 
+    public function it_returns_not_found_response_because_there_is_no_app_matching_the_client_id(
+        FeatureFlag $marketplaceActivateFeatureFlag,
+        Request $request,
+        GetAppQueryInterface $getAppQuery,
+    ): void {
+        $marketplaceActivateFeatureFlag->isEnabled()->willReturn(true);
+        $request->isXmlHttpRequest()->willReturn(true);
+
+        $clientId = 'a_client_id';
+        $getAppQuery->execute($clientId)->willReturn(null);
+
+        $result = $this->__invoke($request, $clientId);
+
+        Assert::assertEquals(Response::HTTP_NOT_FOUND, $result->getStatusCode()->getWrappedObject());
+        Assert::assertEquals(
+            \json_encode([
+                'errors' => [
+                    [
+                        'message' => 'akeneo_connectivity.connection.connect.apps.error.app_not_found',
+                    ],
+                ],
+            ]),
+            $result->getContent()->getWrappedObject()
+        );
+    }
+
+    public function it_throws_access_denied_exception_when_the_app_is_found_but_permissions_are_missing(
+        FeatureFlag $marketplaceActivateFeatureFlag,
+        SecurityFacade $security,
+        GetAppQueryInterface $getAppQuery,
+        Request $request
+    ): void {
+        $marketplaceActivateFeatureFlag->isEnabled()->willReturn(true);
+        $request->isXmlHttpRequest()->willReturn(true);
+
+        $clientId = 'a_client_id';
+        $app = App::fromWebMarketplaceValues([
+            'id' => $clientId,
+            'name' => 'some app',
+            'activate_url' => 'http://url.test',
+            'callback_url' => 'http://url.test',
+            'logo' => 'logo',
+            'author' => 'admin',
+            'url' => 'http://manage_app.test',
+            'categories' => ['master'],
+        ]);
+        $getAppQuery->execute($clientId)->willReturn($app);
+
+        $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(false);
+
+        $this->shouldThrow(AccessDeniedHttpException::class)->during('__invoke', [$request, $clientId]);
+    }
+
+    public function it_throws_access_denied_exception_when_the_test_app_is_found_but_permissions_are_missing(
+        FeatureFlag $marketplaceActivateFeatureFlag,
+        SecurityFacade $security,
+        GetAppQueryInterface $getAppQuery,
+        Request $request
+    ): void {
+        $marketplaceActivateFeatureFlag->isEnabled()->willReturn(true);
+        $request->isXmlHttpRequest()->willReturn(true);
+
+        $clientId = 'a_client_id';
+        $app = App::fromTestAppValues([
+            'id' => $clientId,
+            'name' => 'test app',
+            'activate_url' => 'http://url.test',
+            'callback_url' => 'http://url.test',
+        ]);
+        $getAppQuery->execute($clientId)->willReturn($app);
+
+        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(false);
+
+        $this->shouldThrow(AccessDeniedHttpException::class)->during('__invoke', [$request, $clientId]);
+    }
+
     public function it_failed_because_of_consent_app_authentication_validation_error(
-        FeatureFlag $featureFlag,
+        FeatureFlag $marketplaceActivateFeatureFlag,
         ConsentAppAuthenticationHandler $consentAppAuthenticationHandler,
         ViolationListNormalizer $violationListNormalizer,
         SecurityFacade $security,
+        GetAppQueryInterface $getAppQuery,
         ConnectedPimUserProvider $connectedPimUserProvider,
         LoggerInterface $logger,
         Request $request
@@ -123,9 +189,22 @@ class ConfirmAuthenticationActionSpec extends ObjectBehavior
             ],
         ];
 
-        $featureFlag->isEnabled()->willReturn(true);
-        $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(true);
+        $marketplaceActivateFeatureFlag->isEnabled()->willReturn(true);
         $request->isXmlHttpRequest()->willReturn(true);
+
+        $app = App::fromWebMarketplaceValues([
+            'id' => $clientId,
+            'name' => 'some app',
+            'activate_url' => 'http://url.test',
+            'callback_url' => 'http://url.test',
+            'logo' => 'logo',
+            'author' => 'admin',
+            'url' => 'http://manage_app.test',
+            'categories' => ['master'],
+        ]);
+        $getAppQuery->execute($clientId)->willReturn($app);
+
+        $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(true);
 
         $connectedPimUserProvider->getCurrentUserId()->willReturn($connectedPimUserId);
 
@@ -143,7 +222,7 @@ class ConfirmAuthenticationActionSpec extends ObjectBehavior
 
         Assert::assertEquals(Response::HTTP_BAD_REQUEST, $result->getStatusCode()->getWrappedObject());
         Assert::assertEquals(
-            json_encode([
+            \json_encode([
                 'errors' => $normalizedConstraintViolationList,
             ]),
             $result->getContent()->getWrappedObject()
@@ -151,18 +230,32 @@ class ConfirmAuthenticationActionSpec extends ObjectBehavior
     }
 
     public function it_failed_because_of_consent_app_authentication_logic_exception(
-        FeatureFlag $featureFlag,
+        FeatureFlag $marketplaceActivateFeatureFlag,
         ConsentAppAuthenticationHandler $consentAppAuthenticationHandler,
         SecurityFacade $security,
+        GetAppQueryInterface $getAppQuery,
         ConnectedPimUserProvider $connectedPimUserProvider,
         Request $request
     ): void {
         $clientId = 'a_client_id';
         $connectedPimUserId = 1;
 
-        $featureFlag->isEnabled()->willReturn(true);
-        $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(true);
+        $marketplaceActivateFeatureFlag->isEnabled()->willReturn(true);
         $request->isXmlHttpRequest()->willReturn(true);
+
+        $app = App::fromWebMarketplaceValues([
+            'id' => $clientId,
+            'name' => 'some app',
+            'activate_url' => 'http://url.test',
+            'callback_url' => 'http://url.test',
+            'logo' => 'logo',
+            'author' => 'admin',
+            'url' => 'http://manage_app.test',
+            'categories' => ['master'],
+        ]);
+        $getAppQuery->execute($clientId)->willReturn($app);
+
+        $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(true);
         $connectedPimUserProvider->getCurrentUserId()->willReturn($connectedPimUserId);
         $consentAppAuthenticationHandler->handle(
             new ConsentAppAuthenticationCommand($clientId, $connectedPimUserId)
@@ -175,9 +268,10 @@ class ConfirmAuthenticationActionSpec extends ObjectBehavior
     }
 
     public function it_throws_a_logic_exception_because_there_is_no_app_authorization_in_session(
-        FeatureFlag $featureFlag,
+        FeatureFlag $marketplaceActivateFeatureFlag,
         ConsentAppAuthenticationHandler $consentAppAuthenticationHandler,
         SecurityFacade $security,
+        GetAppQueryInterface $getAppQuery,
         ConnectedPimUserProvider $connectedPimUserProvider,
         AppAuthorizationSessionInterface $appAuthorizationSession,
         Request $request
@@ -185,9 +279,22 @@ class ConfirmAuthenticationActionSpec extends ObjectBehavior
         $clientId = 'a_client_id';
         $connectedPimUserId = 1;
 
-        $featureFlag->isEnabled()->willReturn(true);
-        $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(true);
+        $marketplaceActivateFeatureFlag->isEnabled()->willReturn(true);
         $request->isXmlHttpRequest()->willReturn(true);
+
+        $app = App::fromWebMarketplaceValues([
+            'id' => $clientId,
+            'name' => 'some app',
+            'activate_url' => 'http://url.test',
+            'callback_url' => 'http://url.test',
+            'logo' => 'logo',
+            'author' => 'admin',
+            'url' => 'http://manage_app.test',
+            'categories' => ['master'],
+        ]);
+        $getAppQuery->execute($clientId)->willReturn($app);
+
+        $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(true);
         $connectedPimUserProvider->getCurrentUserId()->willReturn($connectedPimUserId);
         $consentAppAuthenticationHandler->handle(
             new ConsentAppAuthenticationCommand($clientId, $connectedPimUserId)
@@ -202,9 +309,10 @@ class ConfirmAuthenticationActionSpec extends ObjectBehavior
     }
 
     public function it_throws_a_logic_exception_because_there_is_no_connected_app(
-        FeatureFlag $featureFlag,
+        FeatureFlag $marketplaceActivateFeatureFlag,
         ConsentAppAuthenticationHandler $consentAppAuthenticationHandler,
         SecurityFacade $security,
+        GetAppQueryInterface $getAppQuery,
         ConnectedPimUserProvider $connectedPimUserProvider,
         AppAuthorizationSessionInterface $appAuthorizationSession,
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
@@ -213,9 +321,22 @@ class ConfirmAuthenticationActionSpec extends ObjectBehavior
         $clientId = 'a_client_id';
         $connectedPimUserId = 1;
 
-        $featureFlag->isEnabled()->willReturn(true);
-        $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(true);
+        $marketplaceActivateFeatureFlag->isEnabled()->willReturn(true);
         $request->isXmlHttpRequest()->willReturn(true);
+
+        $app = App::fromWebMarketplaceValues([
+            'id' => $clientId,
+            'name' => 'some app',
+            'activate_url' => 'http://url.test',
+            'callback_url' => 'http://url.test',
+            'logo' => 'logo',
+            'author' => 'admin',
+            'url' => 'http://manage_app.test',
+            'categories' => ['master'],
+        ]);
+        $getAppQuery->execute($clientId)->willReturn($app);
+
+        $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(true);
         $connectedPimUserProvider->getCurrentUserId()->willReturn($connectedPimUserId);
         $consentAppAuthenticationHandler->handle(
             new ConsentAppAuthenticationCommand($clientId, $connectedPimUserId)

@@ -63,26 +63,27 @@ SQL;
 
         $criteriaEvaluations = new Read\CriterionEvaluationCollection();
         foreach ($rows as $rawCriterionEvaluation) {
+            $criterionCode = new CriterionCode($rawCriterionEvaluation['criterion_code']);
             $criteriaEvaluations->add(new Read\CriterionEvaluation(
-                new CriterionCode($rawCriterionEvaluation['criterion_code']),
-                new ProductId(intval($rawCriterionEvaluation['product_id'])),
+                $criterionCode,
+                ProductId::fromString($rawCriterionEvaluation['product_id']),
                 null !== $rawCriterionEvaluation['evaluated_at'] ? $this->clock->fromString($rawCriterionEvaluation['evaluated_at']) : null,
                 new CriterionEvaluationStatus($rawCriterionEvaluation['status']),
-                $this->hydrateCriterionEvaluationResult($rawCriterionEvaluation['result']),
+                $this->hydrateCriterionEvaluationResult($criterionCode, $rawCriterionEvaluation['result']),
             ));
         }
 
         return $criteriaEvaluations;
     }
 
-    private function hydrateCriterionEvaluationResult($rawResult): ?Read\CriterionEvaluationResult
+    private function hydrateCriterionEvaluationResult(CriterionCode $criterionCode, $rawResult): ?Read\CriterionEvaluationResult
     {
         if (null === $rawResult) {
             return null;
         }
 
         $rawResult = json_decode($rawResult, true, JSON_THROW_ON_ERROR);
-        $rawResult = $this->transformCriterionEvaluationResultIds->transformToCodes($rawResult);
+        $rawResult = $this->transformCriterionEvaluationResultIds->transformToCodes($criterionCode, $rawResult);
 
         return Read\CriterionEvaluationResult::fromArray($rawResult);
     }

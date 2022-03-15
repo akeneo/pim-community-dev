@@ -54,7 +54,7 @@ class DeleteAppHandler
         $connection = $this->connectionRepository->findOneByCode($appDeletion->getConnectionCode());
         if (null === $connection) {
             throw new \InvalidArgumentException(
-                sprintf('Connection with code "%s" does not exist', $appDeletion->getConnectionCode())
+                \sprintf('Connection with code "%s" does not exist', $appDeletion->getConnectionCode())
             );
         }
 

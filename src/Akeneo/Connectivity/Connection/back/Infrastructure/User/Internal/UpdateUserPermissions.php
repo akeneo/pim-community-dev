@@ -46,7 +46,7 @@ final class UpdateUserPermissions implements UpdateUserPermissionsInterface
         $user = $this->userManager->findUserBy(['id' => $userId->id()]);
         if (null === $user) {
             throw new \InvalidArgumentException(
-                sprintf('User with id "%s" not found.', $userId->id())
+                \sprintf('User with id "%s" not found.', $userId->id())
             );
         }
         $data = ['roles' => [], 'groups' => []];
@@ -55,7 +55,7 @@ final class UpdateUserPermissions implements UpdateUserPermissionsInterface
         $role = $this->roleRepository->find($userRoleId);
         if (null === $role) {
             throw new \InvalidArgumentException(
-                sprintf('Role with id "%s" not found.', $userRoleId)
+                \sprintf('Role with id "%s" not found.', $userRoleId)
             );
         }
         $data['roles'][] = $role->getRole();
@@ -65,7 +65,7 @@ final class UpdateUserPermissions implements UpdateUserPermissionsInterface
             $group = $this->groupRepository->find($userGroupId);
             if (null === $group) {
                 throw new \InvalidArgumentException(
-                    sprintf('Group with id "%s" not found.', $userGroupId)
+                    \sprintf('Group with id "%s" not found.', $userGroupId)
                 );
             }
             $data['groups'][] = $group->getName();

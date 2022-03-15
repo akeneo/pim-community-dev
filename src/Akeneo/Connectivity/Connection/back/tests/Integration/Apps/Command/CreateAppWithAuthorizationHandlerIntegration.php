@@ -13,6 +13,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByIdQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
+use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -54,7 +55,7 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->webMarketplaceApi = $this->get('akeneo_connectivity.connection.marketplace.web_marketplace_api');
+        $this->webMarketplaceApi = $this->get(WebMarketplaceApi::class);
         $this->handler = $this->get(CreateAppWithAuthorizationHandler::class);
         $this->appAuthorizationHandler = $this->get(RequestAppAuthorizationHandler::class);
         $this->clientManager = $this->get('fos_oauth_server.client_manager.default');
@@ -217,10 +218,10 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
         $acls = $this->scopeMapperRegistry->getAcls($scopes);
 
         foreach ($acls as $acl) {
-            $action = sprintf('action:%s', $acl);
+            $action = \sprintf('action:%s', $acl);
             Assert::assertTrue(
                 $permissions[$action],
-                sprintf('ACL %s was not granted for the scopes "%s"', $acl, implode(' ', $scopes))
+                \sprintf('ACL %s was not granted for the scopes "%s"', $acl, \implode(' ', $scopes))
             );
         }
     }

@@ -66,7 +66,7 @@ class AuthorizationCodeGenerator implements AuthorizationCodeGeneratorInterface
         $user = $this->userRepository->find($userId);
 
         if (null === $user) {
-            throw new \InvalidArgumentException(sprintf('User with id "%s" does not exist.', $userId));
+            throw new \InvalidArgumentException(\sprintf('User with id "%s" does not exist.', $userId));
         }
 
         return $user;
@@ -77,7 +77,7 @@ class AuthorizationCodeGenerator implements AuthorizationCodeGeneratorInterface
         $client = $this->clientManager->findClientBy(['id' => $fosClientId]);
 
         if (null === $client) {
-            throw new \InvalidArgumentException(sprintf('FOS Client with id "%s" does not exist.', $fosClientId));
+            throw new \InvalidArgumentException(\sprintf('FOS Client with id "%s" does not exist.', $fosClientId));
         }
 
         return $client;

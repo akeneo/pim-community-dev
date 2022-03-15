@@ -19,6 +19,6 @@ class DoesImageExistQuery implements DoesImageExistQueryInterface
 
     public function execute(string $filePath): bool
     {
-        return in_array($filePath, $this->database);
+        return \in_array($filePath, $this->database);
     }
 }

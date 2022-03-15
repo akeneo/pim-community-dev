@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
-use Akeneo\Channel\Locale\API\Query\GetEditableLocaleCodes;
+use Akeneo\Channel\Locale\API\Query\IsLocaleEditable;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
@@ -16,27 +17,24 @@ use Webmozart\Assert\Assert;
  */
 final class LocaleShouldBeEditableByUserValidator extends ConstraintValidator
 {
-    public function __construct(private GetEditableLocaleCodes $getEditableLocaleCodes)
+    public function __construct(private IsLocaleEditable $isLocaleEditable)
     {
     }
 
-    public function validate($command, Constraint $constraint): void
+    public function validate($valueUserIntent, Constraint $constraint): void
     {
-        Assert::isInstanceOf($command, UpsertProductCommand::class);
+        Assert::isInstanceOf($valueUserIntent, ValueUserIntent::class);
         Assert::isInstanceOf($constraint, LocaleShouldBeEditableByUser::class);
 
-        $userEditableLocaleCodes = null;
-        foreach ($command->valuesUserIntent() as $valueUserIntent) {
-            $localeCode = $valueUserIntent->localeCode();
-            if (!empty($localeCode)) {
-                if (null === $userEditableLocaleCodes) {
-                    $userEditableLocaleCodes = $this->getEditableLocaleCodes->forUserId($command->userId());
-                }
+        $command = $this->context->getRoot();
+        Assert::isInstanceOf($command, UpsertProductCommand::class);
 
-                if (!\in_array($localeCode, $userEditableLocaleCodes)) {
-                    $this->context->buildViolation($constraint->message, ['{{ locale_code }}' => $localeCode])->addViolation();
-                }
-            }
+        $localeCode = $valueUserIntent->localeCode();
+        $userId = $command->userId();
+        if (!empty($localeCode) && !$this->isLocaleEditable->forUserId($localeCode, $userId)) {
+            $this->context
+                ->buildViolation($constraint->message, ['{{ locale_code }}' => $localeCode])
+                ->addViolation();
         }
     }
 }

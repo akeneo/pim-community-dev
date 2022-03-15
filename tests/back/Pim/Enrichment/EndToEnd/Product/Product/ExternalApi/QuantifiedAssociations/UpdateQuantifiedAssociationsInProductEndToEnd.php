@@ -35,6 +35,7 @@ class UpdateQuantifiedAssociationsInProductEndToEnd extends AbstractProductTestC
         $client = $this->createAuthenticatedClient();
         $this->createQuantifiedAssociationType('PRODUCTSET_A');
         $this->createQuantifiedAssociationType('PRODUCTSET_B');
+        $this->createQuantifiedAssociationType('1234');
         $this->createProduct('chair', []);
         $identifier = 'garden_table_set';
 
@@ -50,6 +51,11 @@ class UpdateQuantifiedAssociationsInProductEndToEnd extends AbstractProductTestC
         "PRODUCTSET_B": {
             "products": [
                 {"identifier": "chair", "quantity": 4}
+            ]
+        },
+        "1234": {
+            "products": [
+                {"identifier": "chair", "quantity": 2}
             ]
         }
     }
@@ -89,6 +95,12 @@ JSON;
             'updated' => '2016-06-14T13:12:50+02:00',
             'associations' => [],
             'quantified_associations' => [
+                '1234' => [
+                    'products' => [
+                        ['identifier' => 'chair', 'quantity' => 2],
+                    ],
+                    'product_models' => [],
+                ],
                 'PRODUCTSET_A' => [
                     'products' => [
                         ['identifier' => 'chair', 'quantity' => 6],

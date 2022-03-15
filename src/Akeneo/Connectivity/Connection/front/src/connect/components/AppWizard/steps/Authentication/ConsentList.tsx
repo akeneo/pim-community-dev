@@ -34,19 +34,46 @@ type Props = {
 
 export const ConsentList = ({scopes}: Props) => {
     const translate = useTranslate();
-
+    const firstname = translate('akeneo_connectivity.connection.connect.apps.wizard.authentication.firstname');
+    const lastname = translate('akeneo_connectivity.connection.connect.apps.wizard.authentication.lastname');
+    const email = translate('akeneo_connectivity.connection.connect.apps.wizard.authentication.email');
     return (
         <List>
             {scopes.includes('profile') && (
                 <Item>
                     <StyledUserIcon />
-                    {translate('akeneo_connectivity.connection.connect.apps.wizard.authentication.scope_profile')}
+                    <span
+                        dangerouslySetInnerHTML={{
+                            __html: translate(
+                                'akeneo_connectivity.connection.connect.apps.wizard.authentication.scope_profile',
+                                {
+                                    firstname: `
+                                        <span class="AknConnectivityConnection-helper--highlight">
+                                            ${firstname}
+                                        </span>`,
+                                    lastname: `
+                                        <span class="AknConnectivityConnection-helper--highlight">
+                                            ${lastname}
+                                        </span>`,
+                                }
+                            ),
+                        }}
+                    />
                 </Item>
             )}
             {scopes.includes('email') && (
                 <Item>
                     <StyledMailIcon />
-                    {translate('akeneo_connectivity.connection.connect.apps.wizard.authentication.scope_email')}
+                    <span
+                        dangerouslySetInnerHTML={{
+                            __html: translate(
+                                'akeneo_connectivity.connection.connect.apps.wizard.authentication.scope_email',
+                                {
+                                    email: `<span class="AknConnectivityConnection-helper--highlight">${email}</span>`,
+                                }
+                            ),
+                        }}
+                    />
                 </Item>
             )}
         </List>

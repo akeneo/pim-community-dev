@@ -18,7 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInt
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CalculateProductModelCompleteness implements \Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\CalculateProductCompletenessInterface
+class CalculateProductModelCompleteness implements CalculateProductCompletenessInterface
 {
     /** @var GetCompletenessProductMasks */
     private $getCompletenessProductMasks;
@@ -54,6 +54,7 @@ class CalculateProductModelCompleteness implements \Akeneo\Pim\Automation\DataQu
             $localeCode = new LocaleCode($completeness->localeCode());
             $result->addRate($channelCode, $localeCode, new Rate($completeness->ratio()));
             $result->addMissingAttributes($channelCode, $localeCode, $completeness->missingAttributeCodes());
+            $result->addTotalNumberOfAttributes($channelCode, $localeCode, $completeness->requiredCount());
         }
 
         return $result;

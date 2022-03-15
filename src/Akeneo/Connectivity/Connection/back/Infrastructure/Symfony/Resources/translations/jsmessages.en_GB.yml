@@ -11,13 +11,19 @@ pim_menu:
     connection_audit: Connection dashboard
     connection_settings: Connections
     connection_settings_edit: Connection settings
+    connection_monitoring: Error monitoring
     connection_webhook_edit: Event subscription
     connection_webhook_event_logs: Event logs
     data_flows: Data flows
     connect_connection_settings: Connection settings
-    marketplace: Marketplace
+    marketplace: App Store
+    connected_apps: Connected Apps
 pim_title:
-  akeneo_connectivity_connection_connect_marketplace: Marketplace
+  akeneo_connectivity_connection_connect_marketplace: App Store
+  akeneo_connectivity_connection_connect_marketplace_profile: App Store
+  akeneo_connectivity_connection_connect_apps_activate: Connect
+  akeneo_connectivity_connection_connect_apps_authorize: Connect
+  akeneo_connectivity_connection_connect_apps_authenticate: Connect
   akeneo_connectivity_connection_settings_index: Connections settings
   akeneo_connectivity_connection_settings_edit: Connection settings
   akeneo_connectivity_connection_settings_any: Connection settings
@@ -29,37 +35,151 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: Event subscription
   akeneo_connectivity_connection_webhook_event_logs: Event logs
   akeneo_connectivity_connection_settings_redirect: Connections
+  akeneo_connectivity_connection_connect_connected_apps: Connected Apps
+  akeneo_connectivity_connection_connect_connected_apps_edit: App settings
+  akeneo_connectivity_connection_connect_connected_apps_delete: App delete
+  akeneo_connectivity_connection_connect_marketplace_test_app_create: Create a test app
+  akeneo_connectivity_connection_connect_marketplace_test_app_delete: Delete test app
 akeneo_connectivity.connection:
   connect:
     marketplace:
       title: Want to connect your PIM with another application? 🤟
-      sub_title: Check our marketplace to see which application can be connected with Akeneo PIM.
-      link: Access the marketplace
+      sub_title: Check our App Store to see which application can be connected with Akeneo PIM.
+      link: Access the App Store
+      helper:
+        title: '{0} There is no apps or connectors compatible with your PIM version.|{1} There is {{ count }} app or connector compatible with your PIM version.|[2,Inf] There are {{ count }} apps and connectors compatible with your PIM version.'
+        title_without_apps: '{0} There is no connectors compatible with your PIM version.|{1} There is {{ count }} connector compatible with your PIM version.|[2,Inf] There are {{ count }} connectors compatible with your PIM version.'
+        description: This is just an overview. For more details, take a look at the Akeneo App Store.
+        link: Go to the Akeneo App Store
+      card:
+        developed_by: 'Developed by {{ author }}'
+        read_more: read more
+        more_info: More info
+        connect: Connect
+        connected: Connected
       extensions:
+        title: Connectors
         total: '{0} No connectors|{1} 1 connector|[2,Inf] {{ total }} connectors'
+        empty: No connectors compatible with your version
       apps:
+        title: Apps
         total: '{0} No apps|{1} 1 app|[2,Inf] {{ total }} apps'
+        empty: No apps compatible with your version
+      unreachable: We can't reach the App Store, please come back later.
+      scroll_to_top: Scroll to the top
       test_apps:
+        title: My test apps
+        removed_user: Removed user
+        create_a_test_app: Create a test app
         modal:
+          subtitle: Create a test app
+          app_information:
+            title: App information
+            description: If you need help, please check our article
+            link: How to test my App before publishing it?
+            fields:
+              name: Name
+              activate_url: Activate url
+              callback_url: Callback url
           credentials:
             title: Credentials
+            warning: Make sure to save these credentials somewhere as we show them only once here.
+            client_id: Client id
+            client_secret: Client secret
+        errors:
+          page_not_found: Page not found
+          creation:
+            name:
+              min_length: The name of the test app is too short. It must have 3 characters or more.
+              max_length: The name of the test app is too long. It must have 255 characters or less.
+              not_blank: The name of the test app is required.
+            client_id:
+              max_length: The client id of the test app is too long. It must have 36 characters or less.
+              not_blank: The client id is required.
+            activate_url:
+              max_length: The activate url of the test app is too long. It must have 255 characters or less.
+              must_be_url: The activate url must be a valid URL.
+              not_blank: The activate url is required.
+            callback_url:
+              max_length: The callback url of the test app is too long. It must have 255 characters or less.
+              must_be_url: The callback url must be a valid URL.
+              not_blank: The callback url is required.
         delete:
+          subtitle: Apps
           title: Confirm deletion
+          description: You are about to delete your test app from this PIM.
+          warning: By confirming the deletion, you will delete the test app on the App Store page and the related connected app.
+          flash:
+            success: Test app successfully deleted.
+            error: Sorry, an error occured while deleting the test app.
     connected_apps:
+      list:
+        apps:
+          title: Connected apps
+          total: '{0} No apps|{1} 1 app|[2,Inf] {{ total }} apps'
+          empty: No apps connected yet.
+          check_marketplace: 'Check the {{ marketplaceLink }} to browse all the available content and install your first app.'
+          marketplace_link_anchor: App Store
+        test_apps:
+          title: My test apps
+          removed_user: Removed user
+        helper:
+          title: '[0,1] Your PIM is connected with {{ count }} app.|[2,Inf] Your PIM is connected with {{ count }} apps.'
+          description_1: New apps are developed regularly, so stay tuned and check our App Store page frequently to discover how to connect your PIM.
+          description_2: Eager to know more about Apps ?
+          link: Check out our Help Center for more information.
+        card:
+          developed_by: 'Developed by {{ author }}'
+          manage_app: Manage app
+          open_app: Open App
+        flash:
+          error: Sorry, an error occured while fetching the connected apps list.
       edit:
+        not_found: App not found
         tabs:
           settings: Settings
           permissions: Permissions
+          error_monitoring: Error monitoring
+        settings:
+          monitoring:
+            title: General settings
+          authorizations:
+            title: authorizations
+            information: 'To know more about app authorizations, check out our {{ link }}.'
+            information_link_anchor: Help Center article
+            no_scope: No specific authorizations have been requested.
         error_monitoring:
+          error: Oups, something went wrong!
+          helper:
+            description: Here, you can see the detail of each error for this app over the last 7 days. Error number is limited to 100 errors.
+          not_data_source: For now, monitoring page is only available for source app.
           not_auditable:
+            title: Unmonitored app
             description:
               1: To track errors on this app,
               2: activate monitoring
               3: in the settings.
+        flash:
+          load_permissions_error.title: 'To track errors on this app,'
+          load_permissions_error.description: Please retry later.
+          save_permissions_error.title: 'Permissions on {{ entity }} could not be updated.'
+          save_permissions_error.description: Please check the App permission settings.
+          success: App settings successfully updated.
+          monitoring_settings_error.description: Sorry, an error occurred while editing the app.
       delete:
+        subtitle: Apps
         title: Confirm deletion
+        description: Are you sure you want to delete the app? Not sure about the impacts?
         link: Here is what will happen.
+        flash:
+          success: App successfully deleted.
+          error: Sorry, an error occured while deleting the app.
     apps:
+      loader:
+        message: Loading ...
+      flash:
+        permissions_error.title: 'Permissions on {{ entity }} could not be saved.'
+        permissions_error.description: Please check the App permission settings.
       wizard:
         title: Connect
         action:
@@ -68,17 +188,83 @@ akeneo_connectivity.connection:
           previous: Previous
           next: Next
           allow_and_next: Allow and next
+          allow_and_finish: Allow and finish
         progress:
+          authentication: Authentication
           authorizations: Authorizations
           permissions: Permissions
+          summary: Well done!
+        authentication:
+          title: '{{ app_name }} needs to'
+          helper: To know more about App authentication please check our article
+          helper_link: To know more about App authentication please check our article
+          scope_profile: 'View your {{ firstname }} and your {{ lastname }}'
+          scope_email: 'View your {{ email }} address'
+          consent:
+            label: 'I agree to this App’s Privacy Policy and Terms of Use, which can be viewed on the {{ app_marketplace_page }}.'
+            app_marketplace_page: App Store page
+            subtext: 'You acknowledge and agree that you will be redirected to a third party app. Akeneo is not responsible and cannot be held responsible for the content of this app. If you have any problems while visiting the Akeneo App Store, please {{ contact_us }}.'
+            contact_us: contact us
+          firstname: firstname
+          lastname: lastname
+          email: email
+        authorize:
+          title: '{{ app_name }} needs to'
+          no_scope_title: '{{ app_name }} would like to access your PIM.'
+          no_scope: No specific authorizations have been requested.
+          helper: To know more about app authorization,
+          helper_link: check out our Help Center article.
+        flash:
+          success: App successfully configured.
+          error: Sorry, an error occurred while connecting the App.
+        permission:
+          helper: If you need help please check our article
+          helper_link: How to set-up app permissions?
+      title: Connect
+      activate:
+        flash:
+          error: Sorry, an error occurred while connecting the App.
+      scope:
+        type:
+          view: 'View {{ entities }}'
+          edit: 'View and edit {{ entities }}'
+          delete: 'View, edit and delete {{ entities }}'
+        entities:
+          catalog_structure: attributes, attribute groups, families and family variants
+          attribute_options: attribute options
+          categories: categories
+          channel_localization: locales and currencies
+          channel_settings: channels
+          association_types: association types
+          products: products and product models
+          reference_entity: reference entities
+          reference_entity_record: reference entity records
+          asset_families: asset families
+          assets: assets
+      error:
+        sub_text: Please contact the app developer or Akeneo support
+        app_not_found: The client_id does not match any existing app.
+      constraint:
+        client_id:
+          not_blank: The client_id is required.
+          must_be_valid: The client_id does not match any known client.
+          must_have_ongoing_authorization: The client_id do not have any ongoing authorization process at the moment
+        response_type:
+          not_blank: The response_type is required.
+          must_be_code: The response_type must be "code".
+        redirect_uri:
+          not_blank: The redirect_uri is required.
+          must_be_url: The redirect_uri is not a valid url.
   connections: Connections
   secondary_actions:
     title: Other actions
+  developer_mode: Developer mode
   connection:
     code: Code
     label: Label
     flow_type: Flow type
     image: Image
+    auditable: Track in Data flows dashboard
     client_id: Client ID
     secret: Secret
     username: Username
@@ -86,6 +272,7 @@ akeneo_connectivity.connection:
     user_role_id: Role
     user_group_id: Group
     constraint:
+      connections_number_limit_reached: You reached the limit of 50 connections and connected Apps.
       code:
         required: Connection code is required.
         invalid: Connection code may contain only letters, numbers and underscores.
@@ -100,6 +287,9 @@ akeneo_connectivity.connection:
         invalid: Connection flow type can only be 'data_source', 'data_destination' or 'other'.
       image:
         must_exist: The image was not found. Please try again.
+      type:
+        required: Connection type is required.
+        too_long: Connection type is too long. It should have 30 characters or less.
   flow_type:
     data_source: Data source | Data sources
     data_destination: Data destination | Data destinations
@@ -111,6 +301,7 @@ akeneo_connectivity.connection:
     message_link: click here.
   create_connection:
     title: Create a new connection
+    description: You can connect up to 50 third-parties or Apps.
     flash:
       success: You can create up to 50 connections.
       error: Sorry, an error occurred while creating the connection.
@@ -206,6 +397,9 @@ akeneo_connectivity.connection:
       content: Your feedback is really precious to us. Help us choose the next widget by answering this one-question survey!
       button: Let's go!
     connection_selector:
+      title:
+        source: Data connections
+        destination: Destinations
       all: All
     charts:
       inbound: Inbound
@@ -219,10 +413,12 @@ akeneo_connectivity.connection:
     error_management:
       data_source_error_chart:
         section:
+          title: Errors on data sources
           helper: Here you can see the total number of errors, including business errors.
         chart:
           title: Error count per day
       widget:
+        title: Business errors per data source
         over_the_last_seven_days: Over the last 7 days
         business_errors: business errors
     no_connection:
@@ -308,6 +504,7 @@ akeneo_connectivity.connection:
           message: Message
   error_management:
     connection_monitoring:
+      title: Error monitoring
       helper:
         title: '{0} You have {{ count }} error |[1,Inf] You have {{ count }} errors'
         description: Here, you can see the detail of each error for this connection over the last 7 days. Error number is limited to 100 errors.
@@ -345,4 +542,9 @@ pim_permissions:
   widget:
     action:
       all: All
+      clear: Clear
+    level:
+      own: Own
+      edit: Edit
+      view: View
     all: All

@@ -79,7 +79,7 @@ class CreateUserConsentQueryIntegration extends WebTestCase
         $this->assertArrayHasKey('consent_date', $result);
         $this->assertEquals($user->getId(), $result['user_id']);
         $this->assertEquals($appId, $result['app_id']);
-        $this->assertEquals($scopes, array_values(json_decode($result['scopes'])));
+        $this->assertEquals($scopes, \array_values(\json_decode($result['scopes'])));
         $this->assertEquals(
             $this->clock->now()->format(\DateTimeInterface::ATOM),
             (new \DateTime($result['consent_date']))->format(\DateTimeInterface::ATOM)
@@ -139,7 +139,7 @@ class CreateUserConsentQueryIntegration extends WebTestCase
         $this->assertArrayHasKey('consent_date', $result);
         $this->assertEquals($user->getId(), $result['user_id']);
         $this->assertEquals($appId, $result['app_id']);
-        $this->assertEquals($scopes, array_values(json_decode($result['scopes'])));
+        $this->assertEquals($scopes, \array_values(\json_decode($result['scopes'])));
         $this->assertEquals(
             $this->clock->now()->format(\DateTimeInterface::ATOM),
             (new \DateTime($result['consent_date']))->format(\DateTimeInterface::ATOM)
@@ -210,7 +210,7 @@ class CreateUserConsentQueryIntegration extends WebTestCase
         $this->assertArrayHasKey('consent_date', $result);
         $this->assertEquals($user->getId(), $result['user_id']);
         $this->assertEquals($appId, $result['app_id']);
-        $this->assertEquals($newScopes, array_values(json_decode($result['scopes'])));
+        $this->assertEquals($newScopes, \array_values(\json_decode($result['scopes'])));
         $this->assertEquals(
             $this->clock->now()->format(\DateTimeInterface::ATOM),
             (new \DateTime($result['consent_date']))->format(\DateTimeInterface::ATOM)

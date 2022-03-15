@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal
 
 use Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\IsConnectionsNumberLimitReachedQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
@@ -29,7 +30,7 @@ final class GetAppActivateUrlAction
         private ClientProviderInterface $clientProvider,
         private AppUrlGenerator $appUrlGenerator,
         private SecurityFacade $security,
-        private FeatureFlag $featureFlag,
+        private FeatureFlag $marketplaceActivateFeatureFlag,
         private IsConnectionsNumberLimitReachedQueryInterface $isConnectionsNumberLimitReachedQuery,
     ) {
     }
@@ -40,12 +41,8 @@ final class GetAppActivateUrlAction
             return new RedirectResponse('/');
         }
 
-        if (!$this->featureFlag->isEnabled()) {
+        if (!$this->marketplaceActivateFeatureFlag->isEnabled()) {
             throw new NotFoundHttpException();
-        }
-
-        if (!$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
-            throw new AccessDeniedHttpException();
         }
 
         if ($this->isConnectionsNumberLimitReachedQuery->execute()) {
@@ -57,6 +54,8 @@ final class GetAppActivateUrlAction
             throw new NotFoundHttpException("Invalid app identifier");
         }
 
+        $this->denyAccessUnlessGrantedToManage($app);
+
         $app = $app->withPimUrlSource($this->appUrlGenerator->getAppQueryParameters());
 
         $this->clientProvider->findOrCreateClient($app);
@@ -64,5 +63,16 @@ final class GetAppActivateUrlAction
         return new JsonResponse([
             'url' => $app->getActivateUrl(),
         ]);
+    }
+
+    private function denyAccessUnlessGrantedToManage(App $app): void
+    {
+        if (!$app->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
+            throw new AccessDeniedHttpException();
+        }
+
+        if ($app->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')) {
+            throw new AccessDeniedHttpException();
+        }
     }
 }

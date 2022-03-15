@@ -18,14 +18,10 @@ akeneo_connectivity_connection_connect_apps_v1_openid_public_key:
 # Internal API
 
 akeneo_connectivity_connection_error_management_rest:
-    resource: ./routing/error-management.yml
-    name_prefix: akeneo_connectivity_connection_error_management_rest_
-    prefix: /rest/connections
+    resource: ./ErrorManagement/routing.yml
 
 akeneo_connectivity_connection_audit_rest:
-    resource: ./routing/audit.yml
-    name_prefix: akeneo_connectivity_connection_audit_rest_
-    prefix: /rest/connections/audit
+    resource: ./Audit/routing.yml
 
 akeneo_connectivity_connection_rest:
     resource: ./routing/connection.yml
@@ -34,18 +30,10 @@ akeneo_connectivity_connection_rest:
     trailing_slash_on_root: false
 
 akeneo_connectivity_connection_webhook_rest:
-    resource: ./routing/webhook.yml
-    name_prefix: akeneo_connectivity_connection_webhook_rest_
-    prefix: /rest/connections
-
-akeneo_connectivity_connection_events_api_debug_rest:
-    resource: ./routing/events_api_debug.yml
-    name_prefix: akeneo_connectivity_connection_events_api_debug_rest_
-    prefix: /rest/events-api-debug
+    resource: ./Webhook/routing.yml
 
 akeneo_connectivity_connection_marketplace_rest:
-    resource: ./routing/marketplace.yml
-    prefix: /rest/marketplace
+    resource: ./Marketplace/routing.yml
 
 akeneo_connectivity_connection_apps:
     resource: ./Apps/routing.yml
@@ -55,16 +43,16 @@ akeneo_connectivity_connection_apps:
 
 ## Marketplace
 akeneo_connectivity_connection_connect_marketplace:
-    path: '/connect/marketplace'
+    path: '/connect/app-store'
 
 akeneo_connectivity_connection_connect_marketplace_profile:
-    path: '/connect/marketplace/profile'
+    path: '/connect/app-store/profile'
 
 akeneo_connectivity_connection_connect_marketplace_test_app_create:
-    path: '/connect/marketplace/test-apps/create'
+    path: '/connect/app-store/test-apps/create'
 
 akeneo_connectivity_connection_connect_marketplace_test_app_delete:
-    path: '/connect/marketplace/test-apps/{testAppId}/delete'
+    path: '/connect/app-store/test-apps/{testAppId}/delete'
     requirements:
         testAppId: '[a-zA-Z0-9_-]+'
 
@@ -77,15 +65,6 @@ akeneo_connectivity_connection_connect_apps_authorize:
 
 akeneo_connectivity_connection_connect_apps_authenticate:
     path: '/connect/apps/authenticate'
-
-## Error Management
-akeneo_connectivity_connection_error_management_dashboard:
-    path: '/connect/data-flows/business-errors'
-
-akeneo_connectivity_connection_error_management_connection_monitoring:
-    path: '/connect/connection-settings/{code}/monitoring'
-    requirements:
-        code: '[a-zA-Z0-9_]+'
 
 ## Audit
 akeneo_connectivity_connection_audit_index:
