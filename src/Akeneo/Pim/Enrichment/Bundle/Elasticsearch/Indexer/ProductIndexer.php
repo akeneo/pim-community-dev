@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProject
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Indexer responsible for the indexation of product entities. This indexer DOES NOT index product model ancestors that can
@@ -88,11 +89,29 @@ class ProductIndexer implements ProductIndexerInterface
      */
     public function removeFromProductIds(array $productIds): void
     {
+        if (0 === count($productIds)) {
+            return;
+        }
+
         $this->productAndProductModelClient->bulkDelete(array_map(
             function ($productId) {
                 return self::PRODUCT_IDENTIFIER_PREFIX . (string) $productId;
             },
             $productIds
+        ));
+    }
+
+    public function removeFromProductUuids(array $productUuids): void
+    {
+        if (0 === count($productUuids)) {
+            return;
+        }
+
+        $this->productAndProductModelClient->bulkDelete(array_map(
+            function ($productUuid) {
+                return self::PRODUCT_IDENTIFIER_PREFIX . $productUuid->toString();
+            },
+            $productUuids
         ));
     }
 }

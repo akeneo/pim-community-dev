@@ -5,6 +5,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\Prod
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
@@ -45,6 +46,28 @@ class ReindexAffectedByMigrationProductIntegration extends TestCase
         }
     }
 
+    public function test_it_deletes_products_after_uuid_indexation()
+    {
+        $wasColumnAdded = false;
+        if (!$this->uuidColumnExists()) {
+            $this->addUuidColumn();
+            $wasColumnAdded = true;
+        }
+
+        $product = $this->getProductBuilder()->createProduct('foo');
+        $this->getProductSaver()->save($product);
+        $this->getElasticSearchClient()->refreshIndex();
+        Assert::assertSame(1, $this->getElasticSearchClient()->count([])['count']);
+
+        $this->getProductRemover()->remove($product);
+        $this->getElasticSearchClient()->refreshIndex();
+        Assert::assertSame(0, $this->getElasticSearchClient()->count([])['count']);
+
+        if ($wasColumnAdded) {
+            $this->dropUuidColumn();
+        }
+    }
+
     protected function getConfiguration()
     {
         return $this->catalog->useMinimalCatalog();
@@ -73,6 +96,11 @@ class ReindexAffectedByMigrationProductIntegration extends TestCase
     private function getConnection(): Connection
     {
         return $this->get('database_connection');
+    }
+
+    private function getProductRemover(): RemoverInterface
+    {
+        return $this->get('pim_catalog.remover.product');
     }
 
     private function addUuidColumn()

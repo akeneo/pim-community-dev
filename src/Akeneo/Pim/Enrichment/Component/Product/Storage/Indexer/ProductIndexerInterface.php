@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -38,4 +39,9 @@ interface ProductIndexerInterface
      * @param int[] $productIds
      */
     public function removeFromProductIds(array $productIds): void;
+
+    /**
+     * @param UuidInterface[] $productUuids
+     */
+    public function removeFromProductUuids(array $productUuids): void;
 }
