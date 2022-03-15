@@ -24,8 +24,7 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
         TranslationNormalizer          $translationNormalizer,
         DateTimeNormalizer             $dateTimeNormalizer,
         ApiResourceRepositoryInterface $repository
-    )
-    {
+    ) {
         $this->translationNormalizer = $translationNormalizer;
         $this->dateTimeNormalizer = $dateTimeNormalizer;
         $this->repository = $repository;
