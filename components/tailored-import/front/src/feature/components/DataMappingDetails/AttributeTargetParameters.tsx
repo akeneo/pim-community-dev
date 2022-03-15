@@ -14,7 +14,9 @@ import {AttributeTarget, isIdentifierAttribute} from '../../models';
 import {useAttribute, useChannels} from '../../hooks';
 import {ChannelDropdown} from './ChannelDropdown';
 import {LocaleDropdown} from './LocaleDropdown';
-import {NumberConfigurator} from "../TargetDetails/Number/NumberConfigurator";
+import {TextConfigurator} from '../TargetDetails/Text/TextConfigurator';
+import {NumberConfigurator} from '../TargetDetails/Number/NumberConfigurator';
+// import {IdentifierConfigurator} from '../TargetDetails/Identifier/IdentifierConfigurator';
 import {AttributeConfiguratorProps} from "../../models/Configurator";
 
 const Container = styled.div`
@@ -25,7 +27,10 @@ const Container = styled.div`
 `;
 
 const configurators: {[attributeType: string]: FunctionComponent<AttributeConfiguratorProps>} = {
+  pim_catalog_text: TextConfigurator,
+  pim_catalog_textarea: TextConfigurator,
   pim_catalog_number: NumberConfigurator,
+  // pim_catalog_identifier: IdentifierConfigurator,
 };
 
 type AttributeTargetParametersProps = {

@@ -1,15 +1,15 @@
 import React, {useState} from 'react';
 import {Field, SelectInput, Helper, Collapse, Pill} from 'akeneo-design-system';
 import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {availableDecimalSeparators, isDefaultNumberSelection, isNumberDecimalSeparator, NumberSelection} from './model';
+import {isDefaultTextSelection, TextSelection} from './model';
 
-type NumberSelectorProps = {
-  selection: NumberSelection;
+type TextSelectorProps = {
+  selection: TextSelection;
   validationErrors: ValidationError[];
-  onSelectionChange: (updatedSelection: NumberSelection) => void;
+  onSelectionChange: (updatedSelection: TextSelection) => void;
 };
 
-const NumberSelector = ({selection, validationErrors, onSelectionChange}: NumberSelectorProps) => {
+const TextSelector = ({selection, validationErrors, onSelectionChange}: TextSelectorProps) => {
   const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(false);
   const translate = useTranslate();
   const decimalSeparatorErrors = filterErrors(validationErrors, '[decimal_separator]');
@@ -20,7 +20,7 @@ const NumberSelector = ({selection, validationErrors, onSelectionChange}: Number
       label={
         <>
           {translate('akeneo.tailored_import.column_details.sources.selection.title')}
-          {0 === validationErrors.length && !isDefaultNumberSelection(selection) && <Pill level="primary" />}
+          {0 === validationErrors.length && !isDefaultTextSelection(selection) && <Pill level="primary" />}
           {0 < validationErrors.length && <Pill level="danger" />}
         </>
       }
@@ -35,7 +35,7 @@ const NumberSelector = ({selection, validationErrors, onSelectionChange}: Number
           openLabel={translate('pim_common.open')}
           value={selection.decimal_separator}
           onChange={decimal_separator => {
-            if (isNumberDecimalSeparator(decimal_separator)) {
+            if (isTextDecimalSeparator(decimal_separator)) {
               onSelectionChange({...selection, decimal_separator});
             }
           }}
@@ -60,4 +60,4 @@ const NumberSelector = ({selection, validationErrors, onSelectionChange}: Number
   );
 };
 
-export {NumberSelector};
+export {TextSelector};
