@@ -10,6 +10,7 @@ type Attribute = {
   available_locales: LocaleCode[];
   metric_family?: string;
   reference_data_name?: string;
+  decimals_allowed?: boolean;
 };
 
 const isIdentifierAttribute = ({type}: Attribute): boolean => 'pim_catalog_identifier' === type;

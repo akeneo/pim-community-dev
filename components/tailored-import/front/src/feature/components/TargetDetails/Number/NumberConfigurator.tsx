@@ -5,19 +5,21 @@ import {NumberSelector} from './NumberSelector';
 import {AttributeConfiguratorProps} from '../../../models/Configurator';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
 
-const NumberConfigurator = ({target, onTargetChange, validationErrors}: AttributeConfiguratorProps) => {
+const NumberConfigurator = ({target, attribute, onTargetChange, validationErrors}: AttributeConfiguratorProps) => {
   if (!isNumberTarget(target)) {
     throw new InvalidAttributeTargetError(`Invalid target data "${target.code}" for number configurator`);
   }
 
   return (
-    <div>
-      <NumberSelector
-        configuration={target.configuration}
-        validationErrors={filterErrors(validationErrors, '[selection]')}
-        onConfigurationChange={updatedNumberConfiguration => onTargetChange({...target, configuration: updatedNumberConfiguration})}
-      />
-    </div>
+    <>
+      {attribute.decimals_allowed && (
+        <NumberSelector
+          configuration={target.configuration}
+          validationErrors={filterErrors(validationErrors, '[selection]')}
+          onConfigurationChange={updatedNumberConfiguration => onTargetChange({...target, configuration: updatedNumberConfiguration})}
+        />
+      )}
+    </>
   );
 };
 
