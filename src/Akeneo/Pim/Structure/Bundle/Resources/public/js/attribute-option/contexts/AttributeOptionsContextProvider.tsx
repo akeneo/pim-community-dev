@@ -9,7 +9,7 @@ import {
 import {useAttributeContext} from './AttributeContext';
 import {useRoute} from '@akeneo-pim-community/shared';
 import baseFetcher from '../fetchers/baseFetcher';
-import {ATTRIBUTE_EDIT_FORM_DELETED} from '@akeneo-pim-ee/data-quality-insights';
+import {ATTRIBUTE_OPTION_DELETED} from '../model/Events';
 
 type AttributeOptionsState = {
   attributeOptions: AttributeOption[] | null;
@@ -129,7 +129,7 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
       newAttributeOptions.splice(index, 1);
       setAttributeOptions(newAttributeOptions);
       setIsSaving(false);
-      window.dispatchEvent(new CustomEvent(ATTRIBUTE_EDIT_FORM_DELETED));
+      window.dispatchEvent(new CustomEvent(ATTRIBUTE_OPTION_DELETED));
     },
     [attributeOptions, attributeOptionDelete]
   );
