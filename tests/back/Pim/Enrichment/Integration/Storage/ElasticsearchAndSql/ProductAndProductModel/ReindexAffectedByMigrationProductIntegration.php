@@ -5,6 +5,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\Prod
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\DBAL\Connection;
@@ -48,22 +49,28 @@ class ReindexAffectedByMigrationProductIntegration extends TestCase
 
     public function test_it_deletes_products_after_uuid_indexation()
     {
-        $wasColumnAdded = false;
-        if (!$this->uuidColumnExists()) {
-            $this->addUuidColumn();
-            $wasColumnAdded = true;
+        $wasColumnDropped = false;
+        if ($this->uuidColumnExists()) {
+            $this->dropUuidColumn();
+            $wasColumnDropped = true;
         }
 
-        $product = $this->getProductBuilder()->createProduct('foo');
-        $this->getProductSaver()->save($product);
-        $this->getElasticSearchClient()->refreshIndex();
-        Assert::assertSame(1, $this->getElasticSearchClient()->count([])['count']);
+        $productWithoutUuid = $this->getProductBuilder()->createProduct('product_without_uuid');
+        $this->getProductSaver()->save($productWithoutUuid);
 
-        $this->getProductRemover()->remove($product);
+        $this->addUuidColumn();
+
+        $productWithUuid = $this->getProductBuilder()->createProduct('product_with_uuid');
+        $this->getProductSaver()->save($productWithUuid);
+
+        $this->getElasticSearchClient()->refreshIndex();
+        Assert::assertSame(2, $this->getElasticSearchClient()->count([])['count']);
+
+        $this->getProductRemover()->removeAll([$productWithoutUuid, $productWithUuid]);
         $this->getElasticSearchClient()->refreshIndex();
         Assert::assertSame(0, $this->getElasticSearchClient()->count([])['count']);
 
-        if ($wasColumnAdded) {
+        if (!$wasColumnDropped) {
             $this->dropUuidColumn();
         }
     }
@@ -98,7 +105,7 @@ class ReindexAffectedByMigrationProductIntegration extends TestCase
         return $this->get('database_connection');
     }
 
-    private function getProductRemover(): RemoverInterface
+    private function getProductRemover(): BulkRemoverInterface
     {
         return $this->get('pim_catalog.remover.product');
     }
