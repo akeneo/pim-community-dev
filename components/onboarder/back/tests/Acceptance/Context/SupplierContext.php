@@ -72,6 +72,14 @@ final class SupplierContext implements Context
     }
 
     /**
+     * @When I search on :search
+     */
+    public function iSearchOn(string $search): void
+    {
+        $this->suppliers = ($this->getSuppliersHandler)(new GetSuppliers(1, $search));
+    }
+
+    /**
      * @Then I should have a supplier with code ":code" and label ":label"
      */
     public function iShouldHaveASupplierWithCodeAndLabel(string $code, string $label): void
