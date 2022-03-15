@@ -12,8 +12,7 @@ services:
         tags:
             - { name: 'akeneo.pim.enrichment.product.handler', command: 'Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand' }
 
-    Akeneo\Pim\Enrichment\Product\Application\SetCategoriesApplier:
+    Akeneo\Pim\Enrichment\Product\Application\Applier\SetCategoriesApplier:
         arguments:
             - '@pim_catalog.updater.product'
-            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes'
-            - '@Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes'

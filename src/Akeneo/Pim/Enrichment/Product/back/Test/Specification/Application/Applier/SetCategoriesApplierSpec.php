@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Product\Application;
+namespace Specification\Akeneo\Pim\Enrichment\Product\Application\Applier;
 
-use Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
-use Akeneo\Pim\Enrichment\Product\Application\SetCategoriesApplier;
+use Akeneo\Pim\Enrichment\Product\Application\Applier\SetCategoriesApplier;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
-use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -17,10 +16,9 @@ class SetCategoriesApplierSpec extends ObjectBehavior
 {
     function let(
         ObjectUpdaterInterface $productUpdater,
-        GetCategoryCodes $getCategoryCodes,
-        GetViewableCategories $getViewableCategories
+        GetNonViewableCategoryCodes $getNonViewableCategoryCodes
     ) {
-        $this->beConstructedWith($productUpdater, $getCategoryCodes, $getViewableCategories);
+        $this->beConstructedWith($productUpdater, $getNonViewableCategoryCodes);
     }
 
     function it_is_initializable()
@@ -30,28 +28,28 @@ class SetCategoriesApplierSpec extends ObjectBehavior
 
     function it_applies_a_set_categories_user_intent_on_a_new_product(
         ObjectUpdaterInterface $productUpdater,
-        GetCategoryCodes $getCategoryCodes
+        GetNonViewableCategoryCodes $getNonViewableCategoryCodes
     ) {
         $userIntent = new SetCategories(['categoryA', 'categoryB']);
         $product = new Product();
         $product->setIdentifier('foo');
 
-        $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')])->willReturn([]);
+        $getNonViewableCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')], 10)->willReturn([]);
 
         $productUpdater->update($product, ['categories' => ['categoryA', 'categoryB']])->shouldBeCalledOnce();
 
         $this->apply($product, $userIntent, 10);
     }
 
-    function it_applies_a_set_categories_user_intent_on_an_uncategorized_product(
+    function it_applies_a_set_categories_user_intent_when_all_product_categories_are_viewable(
         ObjectUpdaterInterface $productUpdater,
-        GetCategoryCodes $getCategoryCodes
+        GetNonViewableCategoryCodes $getNonViewableCategoryCodes
     ) {
         $userIntent = new SetCategories(['categoryA', 'categoryB']);
         $product = new Product();
         $product->setIdentifier('foo');
 
-        $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')])
+        $getNonViewableCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')], 10)
             ->willReturn(['foo' => []]);
 
         $productUpdater->update($product, ['categories' => ['categoryA', 'categoryB']])->shouldBeCalledOnce();
@@ -59,18 +57,16 @@ class SetCategoriesApplierSpec extends ObjectBehavior
         $this->apply($product, $userIntent, 10);
     }
 
-    function it_merges_non_viewable_categories_when_applying_a_set_categories_user_intent_on_a_categorized_product(
+    function it_merges_non_viewable_categories_when_applying_a_set_categories_user_intent(
         ObjectUpdaterInterface $productUpdater,
-        GetCategoryCodes $getCategoryCodes,
-        GetViewableCategories $getViewableCategories
+        GetNonViewableCategoryCodes $getNonViewableCategoryCodes
     ) {
         $userIntent = new SetCategories(['categoryA', 'categoryB']);
         $product = new Product();
         $product->setIdentifier('foo');
 
-        $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')])
-            ->willReturn(['foo' => ['categoryC', 'categoryD', 'categoryE']]);
-        $getViewableCategories->forUserId(['categoryC', 'categoryD', 'categoryE'], 10)->willReturn(['categoryC']);
+        $getNonViewableCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')], 10)
+            ->willReturn(['foo' => ['categoryD', 'categoryE']]);
 
         $productUpdater->update($product, ['categories' => ['categoryA', 'categoryB', 'categoryD', 'categoryE']])
             ->shouldBeCalledOnce();
