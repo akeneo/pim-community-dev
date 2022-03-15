@@ -44,7 +44,7 @@ const Container = styled.div<
   z-index: 1901;
   top: ${({top}) => top}px;
   left: ${({left}) => left}px;
-  
+
   ${getWidthProperties}
 `;
 

@@ -7,7 +7,6 @@ import {ArrowDownIcon, IconProps} from '../../icons';
 type BlockButtonProps = Override<
   React.ButtonHTMLAttributes<HTMLButtonElement> & React.AnchorHTMLAttributes<HTMLAnchorElement>,
   {
-
     /**
      * Use when the user cannot proceed or until an input is collected.
      */
@@ -40,9 +39,7 @@ type BlockButtonProps = Override<
   }
 >;
 
-const getColorStyle = ({
-  disabled,
-}: {disabled: boolean} & AkeneoThemedProps) => {
+const getColorStyle = ({disabled}: {disabled: boolean} & AkeneoThemedProps) => {
   if (disabled) {
     return css`
       border-color: ${getColor('grey', 100)};
@@ -76,7 +73,7 @@ const Container = styled.button<
   cursor: ${({disabled}) => (disabled ? 'not-allowed' : 'pointer')};
   outline-style: none;
   text-decoration: none;
-  
+
   &:focus {
     box-shadow: 0 0 0 2px ${getColor('blue', 40)};
   }
@@ -99,15 +96,7 @@ const ActionsContainer = styled.div`
  */
 const BlockButton = React.forwardRef<HTMLButtonElement, BlockButtonProps>(
   (
-    {
-      disabled = false,
-      ariaDescribedBy,
-      ariaLabel,
-      ariaLabelledBy,
-      children,
-      onClick,
-      ...rest
-    }: BlockButtonProps,
+    {disabled = false, ariaDescribedBy, ariaLabel, ariaLabelledBy, children, onClick, ...rest}: BlockButtonProps,
     forwardedRef: Ref<HTMLButtonElement>
   ) => {
     const handleAction = (event: SyntheticEvent) => {
