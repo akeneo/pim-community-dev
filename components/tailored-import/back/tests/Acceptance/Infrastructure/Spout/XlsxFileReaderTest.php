@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2021 Akeneo SAS (https://www.akeneo.com)
+ * (c) 2022 Akeneo SAS (https://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -124,7 +124,7 @@ class XlsxFileReaderTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function it_returns_sheets_from_file(): void
+    public function it_returns_sheet_names_from_file(): void
     {
         $xlsxFileReader = $this->getFileReader();
         $actualSheetNames = $xlsxFileReader->getSheetNames();

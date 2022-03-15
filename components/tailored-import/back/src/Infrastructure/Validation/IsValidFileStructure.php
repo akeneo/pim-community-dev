@@ -15,13 +15,8 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation;
 
 use Symfony\Component\Validator\Constraint;
 
-class IsValidFileTemplateInformationQuery extends Constraint
+class IsValidFileStructure extends Constraint
 {
-    public string $fileNotFound = 'akeneo.tailored_import.validation.file_not_found';
-    public string $sheetNotFoundMessage = 'akeneo.tailored_import.validation.sheet_not_found';
-
-    public function validatedBy(): string
-    {
-        return 'akeneo.tailored_import.validation.is_valid_file_template_information_query';
-    }
+    public string $firstProductRowShouldBeAfterHeaderRow = 'akeneo.tailored_import.validation.file_structure.first_product_row_should_be_after_header_row';
+    public string $uniqueIdentifierColumnShouldBeAfterFirstColumnMessage = 'akeneo.tailored_import.validation.file_structure.unique_identifier_column_should_be_after_first_column_message';
 }

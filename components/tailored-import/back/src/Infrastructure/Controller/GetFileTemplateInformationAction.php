@@ -36,7 +36,7 @@ final class GetFileTemplateInformationAction
         $query = new GetFileTemplateInformationQuery();
         $query->fileKey = $request->get('file_key');
         $query->sheetName = $request->get('sheet_name');
-        $query->headerLine = $request->query->getInt('header_line', 1);
+        $query->headerLine = $request->query->getInt('header_row', 1);
 
         $violations = $this->validator->validate($query, new IsValidFileTemplateInformationQuery());
         if ($violations->count() > 0) {

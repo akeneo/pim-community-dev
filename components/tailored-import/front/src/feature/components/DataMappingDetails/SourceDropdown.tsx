@@ -71,7 +71,7 @@ const SourceDropdown = ({columns, onColumnSelected, disabled}: SourceDropdownPro
           >
             {filteredColumns.map(column => (
               <Dropdown.Item key={column.uuid} onClick={() => handleColumnSelected(column)}>
-                {generateColumnName(column)}
+                {generateColumnName(column.index, column.label)}
               </Dropdown.Item>
             ))}
           </Dropdown.ItemCollection>

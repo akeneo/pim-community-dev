@@ -47,8 +47,8 @@ class FileStructure
     {
         return new self(
             (int) $normalizedFileStructure['first_column'],
-            (int) $normalizedFileStructure['header_line'],
-            (int) $normalizedFileStructure['product_line'],
+            (int) $normalizedFileStructure['header_row'],
+            (int) $normalizedFileStructure['first_product_row'],
             $normalizedFileStructure['sheet_name'],
         );
     }

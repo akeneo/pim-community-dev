@@ -7,7 +7,14 @@ import {
   DataMappingList,
   InitializeFileStructure,
 } from './components';
-import {Column, createDefaultDataMapping, DataMapping, StructureConfiguration, updateDataMapping} from './models';
+import {
+  Column,
+  createDefaultDataMapping,
+  DataMapping,
+  FileStructure,
+  StructureConfiguration,
+  updateDataMapping,
+} from './models';
 import {useFetchers} from './contexts';
 
 const Container = styled.div`
@@ -35,11 +42,16 @@ const ImportStructureTab = ({
     ) ?? null;
   const attributeFetcher = useFetchers().attribute;
 
-  const handleFileStructureInitialized = async (fileKey: string, columns: Column[]): Promise<void> => {
+  const handleFileStructureInitialized = async (
+    fileKey: string,
+    columns: Column[],
+    identifierColumn: Column | null,
+    fileStructure: FileStructure
+  ): Promise<void> => {
     const attributeIdentifier = await attributeFetcher.fetchAttributeIdentifier();
 
     if (attributeIdentifier) {
-      const dataMapping = createDefaultDataMapping(attributeIdentifier, columns);
+      const dataMapping = createDefaultDataMapping(attributeIdentifier, identifierColumn);
       onStructureConfigurationChange({
         ...structureConfiguration,
         import_structure: {
@@ -48,6 +60,7 @@ const ImportStructureTab = ({
           data_mappings: [dataMapping],
         },
         file_key: fileKey,
+        file_structure: fileStructure,
       });
     }
   };
