@@ -69,9 +69,6 @@ const Container = styled.div<AkeneoThemedProps>`
   }
 `;
 
-/**
- * TODO
- */
 const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
   (
     {removable = false, onRemove, ariaDescribedBy, ariaLabel, ariaLabelledBy, children, onClick, ...rest}: BlockProps,

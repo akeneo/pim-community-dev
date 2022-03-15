@@ -91,9 +91,6 @@ const ActionsContainer = styled.div`
   align-items: center;
 `;
 
-/**
- * TODO
- */
 const BlockButton = React.forwardRef<HTMLButtonElement, BlockButtonProps>(
   (
     {disabled = false, ariaDescribedBy, ariaLabel, ariaLabelledBy, children, onClick, ...rest}: BlockButtonProps,
