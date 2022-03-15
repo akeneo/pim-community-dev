@@ -17,11 +17,7 @@ class InMemoryRepository implements Supplier\Repository
 
     public function find(Supplier\ValueObject\Identifier $identifier): ?Supplier\Model\Supplier
     {
-        if (array_key_exists((string) $identifier, $this->suppliers)) {
-            return $this->suppliers[(string) $identifier];
-        }
-
-        return null;
+        return \array_key_exists((string) $identifier, $this->suppliers) ? $this->suppliers[(string) $identifier] : null;
     }
 
     public function findByCode(Supplier\ValueObject\Code $code): ?Supplier\Model\Supplier
@@ -37,7 +33,7 @@ class InMemoryRepository implements Supplier\Repository
 
     public function count(): int
     {
-        return count($this->suppliers);
+        return \count($this->suppliers);
     }
 
     public function findAll(): array
