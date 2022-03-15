@@ -6,11 +6,7 @@ import {PlusIcon} from '../../icons';
 
 test('it calls onClick handler when user clicks on button', () => {
   const onClick = jest.fn();
-  render(
-    <BlockButton onClick={onClick}>
-      My block button
-    </BlockButton>
-  );
+  render(<BlockButton onClick={onClick}>My block button</BlockButton>);
 
   const button = screen.getByText('My block button');
   fireEvent.click(button);
@@ -20,11 +16,7 @@ test('it calls onClick handler when user clicks on button', () => {
 
 test('it calls onClick handler when user hits enter key on button', () => {
   const onClick = jest.fn();
-  render(
-    <BlockButton onClick={onClick}>
-      My block button
-    </BlockButton>
-  );
+  render(<BlockButton onClick={onClick}>My block button</BlockButton>);
 
   const button = screen.getByText('My block button');
   button.focus();

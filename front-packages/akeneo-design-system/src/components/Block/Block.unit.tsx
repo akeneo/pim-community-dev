@@ -11,7 +11,9 @@ jest.mock('../../icons', () => ({
 test('it calls onRemove handler when user clicks on remove icon', () => {
   const onRemove = jest.fn();
   render(
-    <Block removable={true} onRemove={onRemove}>My block</Block>
+    <Block removable={true} onRemove={onRemove}>
+      My block
+    </Block>
   );
 
   const removeIcon = screen.getByText('Remove');
