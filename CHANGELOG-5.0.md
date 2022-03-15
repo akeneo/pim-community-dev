@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10335: Fix locale not saved for localizable attribute in product exports
+
 # 5.0.85 (2022-03-17)
 
 ## Bug fixes
