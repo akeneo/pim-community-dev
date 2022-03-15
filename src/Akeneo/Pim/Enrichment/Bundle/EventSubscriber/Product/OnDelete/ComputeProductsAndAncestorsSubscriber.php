@@ -161,7 +161,8 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
 
     private function uuidColumnExists(): bool
     {
-        $rows = $this->connection->fetchAllAssociative(<<<SQL
+        $rows = $this->connection->fetchAllAssociative(
+            <<<SQL
             SHOW COLUMNS FROM pim_catalog_product LIKE 'uuid'
         SQL
         );
