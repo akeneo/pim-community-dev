@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization;
 
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ProductModelScoreCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScore;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 
@@ -22,21 +23,20 @@ class GetNormalizedProductModelQualityScores implements GetNormalizedQualityScor
             return [];
         }
 
-        $productModelScoreCollection = $this->getProductModelScoresQuery->byProductModelCode($code);
-        $productModelScoreCollection = $this->filterProductModelQualityScores($productModelScoreCollection, $channel, $locales);
+        $qualityScoreCollection = $this->getProductModelScoresQuery->byProductModelCode($code);
+        $qualityScoreCollection = $this->filterProductModelQualityScores($qualityScoreCollection, $channel, $locales);
 
-        return $productModelScoreCollection->productModelScores;
+        return $this->normalizeQualityScores($qualityScoreCollection);
     }
 
-
-    private function filterProductModelQualityScores(ProductModelScoreCollection $productModelScoreCollection, string $channel, array $locales): ProductModelScoreCollection
+    private function filterProductModelQualityScores(QualityScoreCollection $qualityScoreCollection, ?string $channel, array $locales): QualityScoreCollection
     {
         if (null === $channel && empty($locales)) {
-            return $productModelScoreCollection;
+            return $qualityScoreCollection;
         }
 
         $filteredQualityScores = [];
-        foreach ($productModelScoreCollection->productModelScores as $scoreChannel => $scoresLocales) {
+        foreach ($qualityScoreCollection->qualityScores as $scoreChannel => $scoresLocales) {
             if ($channel !== null && $channel !== $scoreChannel) {
                 continue;
             }
@@ -47,6 +47,20 @@ class GetNormalizedProductModelQualityScores implements GetNormalizedQualityScor
             }
         }
 
-        return new ProductModelScoreCollection($filteredQualityScores);
+        return new QualityScoreCollection($filteredQualityScores);
+    }
+
+    private function normalizeQualityScores(QualityScoreCollection $qualityScoreCollection): array
+    {
+        $normalizedQualityScores = [];
+
+        foreach ($qualityScoreCollection->qualityScores as $channel => $localesScores) {
+            /** @var QualityScore $score */
+            foreach ($localesScores as $locale => $score) {
+                $normalizedQualityScores[$channel][$locale] = $score->getLetter();
+            }
+        }
+
+        return $normalizedQualityScores;
     }
 }

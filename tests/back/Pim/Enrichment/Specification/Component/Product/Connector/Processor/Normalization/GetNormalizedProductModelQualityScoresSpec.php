@@ -6,7 +6,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Proces
 
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScore;
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductScoresQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;
 
@@ -14,13 +14,13 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetNormalizedProductQualityScoresSpec extends ObjectBehavior
+final class GetNormalizedProductModelQualityScoresSpec extends ObjectBehavior
 {
     public function let(
-        GetProductScoresQueryInterface $getProductScoresQuery,
+        GetProductModelScoresQueryInterface $getProductModelScoresQuery,
         FeatureFlag $dataQualityInsightsFeature
     ) {
-        $this->beConstructedWith($getProductScoresQuery, $dataQualityInsightsFeature);
+        $this->beConstructedWith($getProductModelScoresQuery, $dataQualityInsightsFeature);
     }
 
     public function it_returns_an_empty_array_when_the_feature_dqi_is_disabled(
@@ -28,23 +28,23 @@ final class GetNormalizedProductQualityScoresSpec extends ObjectBehavior
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(false);
 
-        $this->__invoke('a_product')->shouldReturn([]);
+        $this->__invoke('a_product_model')->shouldReturn([]);
     }
 
-    public function it_gets_normalized_quality_scores_without_filters_for_a_product(
-        $getProductScoresQuery,
+    public function it_gets_normalized_quality_scores_without_filters_for_a_product_model(
+        $getProductModelScoresQuery,
         $dataQualityInsightsFeature
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
-        $getProductScoresQuery->byProductIdentifier('a_product')->willReturn(new QualityScoreCollection([
+        $getProductModelScoresQuery->byProductModelCode('a_product_model')->willReturn(new QualityScoreCollection([
             'ecommerce' => [
                 'en_US' => new QualityScore('A', 98),
                 'fr_FR' => new QualityScore('B', 87),
             ]
         ]));
 
-        $this->__invoke('a_product')->shouldBeLike([
+        $this->__invoke('a_product_model')->shouldBeLike([
             'ecommerce' => [
                 'en_US' => 'A',
                 'fr_FR' => 'B',
@@ -52,13 +52,13 @@ final class GetNormalizedProductQualityScoresSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_gets_normalized_quality_scores_with_filters_on_channel_and_locales_for_a_product(
-        $getProductScoresQuery,
+    public function it_gets_normalized_quality_scores_with_filters_on_channel_and_locales_for_a_product_model(
+        $getProductModelScoresQuery,
         $dataQualityInsightsFeature
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
-        $getProductScoresQuery->byProductIdentifier('a_product')->willReturn(new QualityScoreCollection([
+        $getProductModelScoresQuery->byProductModelCode('a_product_model')->willReturn(new QualityScoreCollection([
             'ecommerce' => [
                 'en_US' => new QualityScore('A', 98),
                 'fr_FR' => new QualityScore('B', 87),
@@ -69,7 +69,7 @@ final class GetNormalizedProductQualityScoresSpec extends ObjectBehavior
             ]
         ]));
 
-        $this->__invoke('a_product', 'ecommerce', ['en_US', 'fr_FR'])->shouldBeLike([
+        $this->__invoke('a_product_model', 'ecommerce', ['en_US', 'fr_FR'])->shouldBeLike([
             'ecommerce' => [
                 'en_US' => 'A',
                 'fr_FR' => 'B',
