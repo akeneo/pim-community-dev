@@ -27,7 +27,7 @@ class Category implements ArrayConverterInterface
      */
     public function __construct(
         FieldsRequirementChecker $fieldChecker,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository = null
     ) {
         $this->fieldChecker = $fieldChecker;
         $this->localeRepository = $localeRepository;
@@ -103,9 +103,11 @@ class Category implements ArrayConverterInterface
         $this->fieldChecker->checkFieldsFilling($item, $requiredFields);
 
         $authorizedFields = array_merge($requiredFields, ['parent']);
-        $locales = $this->localeRepository->findAll();
-        foreach ($locales as $locale) {
-            $authorizedFields[] = 'label-' . $locale->getCode();
+        if (null !== $this->localeRepository) {
+            $locales = $this->localeRepository->findAll();
+            foreach ($locales as $locale) {
+                $authorizedFields[] = 'label-' . $locale->getCode();
+            }
         }
 
         foreach (array_keys($item) as $field) {
