@@ -43,7 +43,7 @@ class SetCategoriesApplierSpec extends ObjectBehavior
         $this->apply($product, $userIntent, 10);
     }
 
-    function it_applies_a_set_categories_user_intent_on_a_non_categorized_product(
+    function it_applies_a_set_categories_user_intent_on_an_uncategorized_product(
         ObjectUpdaterInterface $productUpdater,
         GetCategoryCodes $getCategoryCodes
     ) {
@@ -69,10 +69,11 @@ class SetCategoriesApplierSpec extends ObjectBehavior
         $product->setIdentifier('foo');
 
         $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')])
-            ->willReturn(['foo' => ['categoryC', 'categoryD']]);
-        $getViewableCategories->forUserId(['categoryC', 'categoryD'], 10)->willReturn(['categoryC']);
+            ->willReturn(['foo' => ['categoryC', 'categoryD', 'categoryE']]);
+        $getViewableCategories->forUserId(['categoryC', 'categoryD', 'categoryE'], 10)->willReturn(['categoryC']);
 
-        $productUpdater->update($product, ['categories' => ['categoryA', 'categoryB', 'categoryD']])->shouldBeCalledOnce();
+        $productUpdater->update($product, ['categories' => ['categoryA', 'categoryB', 'categoryD', 'categoryE']])
+            ->shouldBeCalledOnce();
 
         $this->apply($product, $userIntent, 10);
     }

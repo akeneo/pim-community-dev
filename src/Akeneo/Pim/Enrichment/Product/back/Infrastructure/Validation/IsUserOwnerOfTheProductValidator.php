@@ -16,6 +16,8 @@ use Webmozart\Assert\Assert;
 
 /**
  * Check the user has own permission on the product
+ *  - if the product exists, we should check the user owns it
+ *  - if new categories are provided for the product, we should check the user still owns it after update.
  *
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)

@@ -80,7 +80,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     }
 
     /** @test */
-    public function it_sets_categories_for_the_product(): void
+    public function it_creates_a_categorized_product(): void
     {
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
@@ -98,21 +98,21 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     }
 
     /** @test */
-    public function it_throws_an_exception_when_create_a_product_without_own_any_category(): void
+    public function it_throws_an_exception_when_creating_a_product_with_non_viewable_category(): void
     {
         $this->expectException(ViolationsException::class);
-        $this->expectExceptionMessage("You should at least keep your product in one category on which you have an own permission");
+        $this->expectExceptionMessage('The "suppliers" category does not exist');
 
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
             productIdentifier: 'identifier',
-            categoryUserIntent: new SetCategories(['sales'])
+            categoryUserIntent: new SetCategories(['suppliers'])
         );
         $this->messageBus->dispatch($command);
     }
 
     /** @test */
-    public function it_throws_an_exception_when_adding_non_viewable_category(): void
+    public function it_throws_an_exception_when_updating_a_product_with_non_viewable_category(): void
     {
         $this->createProduct('my_product', ['categories' => ['print']]);
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
@@ -124,6 +124,20 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             userId: $this->getUserId('betty'),
             productIdentifier: 'identifier',
             categoryUserIntent: new SetCategories(['suppliers'])
+        );
+        $this->messageBus->dispatch($command);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_creating_a_product_without_owned_category(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage("You should at least keep your product in one category on which you have an own permission");
+
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('betty'),
+            productIdentifier: 'identifier',
+            categoryUserIntent: new SetCategories(['sales'])
         );
         $this->messageBus->dispatch($command);
     }
@@ -163,7 +177,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     }
 
     /** @test */
-    public function it_merges_not_viewable_category_on_update(): void
+    public function it_merges_non_viewable_category_on_update(): void
     {
         $this->createProduct('my_product', ['categories' => ['print', 'suppliers']]); // "suppliers" is not viewable for Betty
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product

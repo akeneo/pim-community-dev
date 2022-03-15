@@ -14,7 +14,6 @@ interface GetViewableCategories
      * Returns the category codes given in first parameter that the user has read access to
      *
      * @param string[] $categoryCodes
-     * @param int $userId
      * @return string[]
      */
     public function forUserId(array $categoryCodes, int $userId): array;

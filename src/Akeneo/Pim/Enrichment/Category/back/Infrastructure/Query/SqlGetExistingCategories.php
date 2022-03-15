@@ -9,7 +9,7 @@ use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 
 /**
- * In community, viewable categories are the existing ones.
+ * In CE, viewable categories are the existing ones.
  *
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
