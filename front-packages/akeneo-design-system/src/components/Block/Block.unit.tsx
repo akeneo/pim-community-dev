@@ -25,21 +25,13 @@ test('it displays an anchor when providing a `href`', () => {
 test('Block supports forwardRef', () => {
   const ref = {current: null};
 
-  render(
-    <Block ref={ref}>
-      My block
-    </Block>
-  );
+  render(<Block ref={ref}>My block</Block>);
 
   expect(ref.current).not.toBe(null);
 });
 
 test('Block supports ...rest props', () => {
-  render(
-    <Block data-testid="my_value">
-      My block
-    </Block>
-  );
+  render(<Block data-testid="my_value">My block</Block>);
 
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });

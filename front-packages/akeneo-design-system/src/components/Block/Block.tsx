@@ -60,7 +60,7 @@ const Container = styled.div<AkeneoThemedProps>`
   background-color: ${getColor('white')};
   border-color: ${getColor('grey', 80)};
   color: ${getColor('grey', 140)};
-  
+
   &:hover {
     background-color: ${getColor('grey', 20)};
     ${ActionsContainer} {
@@ -74,16 +74,7 @@ const Container = styled.div<AkeneoThemedProps>`
  */
 const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
   (
-    {
-      removable = false,
-      onRemove,
-      ariaDescribedBy,
-      ariaLabel,
-      ariaLabelledBy,
-      children,
-      onClick,
-      ...rest
-    }: BlockProps,
+    {removable = false, onRemove, ariaDescribedBy, ariaLabel, ariaLabelledBy, children, onClick, ...rest}: BlockProps,
     forwardedRef: Ref<HTMLButtonElement>
   ) => {
     const handleRemove = (event: SyntheticEvent) => {
@@ -110,9 +101,7 @@ const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
             return child;
           })}
         </div>
-        <ActionsContainer>
-          {removable && <CloseIcon size={18} onClick={handleRemove} />}
-        </ActionsContainer>
+        <ActionsContainer>{removable && <CloseIcon size={18} onClick={handleRemove} />}</ActionsContainer>
       </Container>
     );
   }

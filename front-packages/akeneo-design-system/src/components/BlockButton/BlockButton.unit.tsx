@@ -5,11 +5,7 @@ import userEvent from '@testing-library/user-event';
 
 test('it calls onClick handler when user clicks on button', () => {
   const onClick = jest.fn();
-  render(
-    <BlockButton onClick={onClick}>
-      Hello
-    </BlockButton>
-  );
+  render(<BlockButton onClick={onClick}>Hello</BlockButton>);
 
   const button = screen.getByText('Hello');
   fireEvent.click(button);
@@ -19,11 +15,7 @@ test('it calls onClick handler when user clicks on button', () => {
 
 test('it calls onClick handler when user hits enter key on button', () => {
   const onClick = jest.fn();
-  render(
-    <BlockButton onClick={onClick}>
-      Hello
-    </BlockButton>
-  );
+  render(<BlockButton onClick={onClick}>Hello</BlockButton>);
 
   const button = screen.getByText('Hello');
   button.focus();
