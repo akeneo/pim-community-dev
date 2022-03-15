@@ -68,6 +68,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnDelete\ComputeProductsAndAncestorsSubscriber'
         arguments:
             - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
+            - '@database_connection'
         tags:
             - { name: kernel.event_subscriber }
 
