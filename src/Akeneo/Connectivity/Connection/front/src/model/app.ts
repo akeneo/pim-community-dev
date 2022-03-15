@@ -11,6 +11,7 @@ export type App = {
     activate_url: string;
     callback_url: string;
     connected: boolean;
+    isPending: boolean;
 };
 
 export type TestApp = {
