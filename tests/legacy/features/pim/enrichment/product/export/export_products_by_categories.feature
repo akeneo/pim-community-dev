@@ -7,7 +7,7 @@ Feature: Export products from any given categories
   Background:
     Given a "default" catalog configuration
     And the following categories:
-      | code                   | label_en_US               | parent                 |
+      | code                   | label-en_US               | parent                 |
       | toys_games             | Toys & Games              | default                |
       | action_figures         | Action Figures            | toys_games             |
       | dolls                  | Dolls                     | toys_games             |
