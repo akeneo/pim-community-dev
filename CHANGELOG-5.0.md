@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.84 (2022-03-15)
+
 ## Bug fixes
 
 - PIM-10327: Fix process tracker error message after mass executing rules including disabled rules
