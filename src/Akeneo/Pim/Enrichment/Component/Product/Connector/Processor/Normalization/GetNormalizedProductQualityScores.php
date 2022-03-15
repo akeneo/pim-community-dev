@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization;
 
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ProductScoreCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetLatestProductScoresQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 
 class GetNormalizedProductQualityScores implements GetNormalizedQualityScoresInterface
 {
     public function __construct(
-        private GetLatestProductScoresQueryInterface $getLatestProductScoresQuery,
+        private GetProductScoresQueryInterface $getProductScoresQuery,
         private FeatureFlag $dataQualityInsightsFeature
     ) {
     }
@@ -22,21 +22,21 @@ class GetNormalizedProductQualityScores implements GetNormalizedQualityScoresInt
             return [];
         }
 
-        $productScoreCollection = $this->getLatestProductScoresQuery->byProductIdentifier($productIdentifier);
-        $productScoreCollection = $this->filterProductQualityScores($productScoreCollection, $channel, $locales);
+        $qualityScoreCollection = $this->getProductScoresQuery->byProductIdentifier($productIdentifier);
+        $qualityScoreCollection = $this->filterProductQualityScores($qualityScoreCollection, $channel, $locales);
 
-        return $productScoreCollection->productScores;
+        return $qualityScoreCollection->qualityScores;
     }
 
 
-    private function filterProductQualityScores(ProductScoreCollection $productScoreCollection, string $channel, array $locales): ProductScoreCollection
+    private function filterProductQualityScores(QualityScoreCollection $qualityScoreCollection, string $channel, array $locales): QualityScoreCollection
     {
         if (null === $channel && empty($locales)) {
-            return $productScoreCollection;
+            return $qualityScoreCollection;
         }
 
         $filteredQualityScores = [];
-        foreach ($productScoreCollection->productScores as $scoreChannel => $scoresLocales) {
+        foreach ($qualityScoreCollection->qualityScores as $scoreChannel => $scoresLocales) {
             if ($channel !== null && $channel !== $scoreChannel) {
                 continue;
             }
@@ -47,6 +47,6 @@ class GetNormalizedProductQualityScores implements GetNormalizedQualityScoresInt
             }
         }
 
-        return new ProductScoreCollection($filteredQualityScores);
+        return new QualityScoreCollection($filteredQualityScores);
     }
 }
