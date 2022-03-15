@@ -35,10 +35,10 @@ class Version_5_0_20201118133700_migrate_product_axis_rate_to_unique_score_Integ
         $this->getConnection()->executeQuery(<<<SQL
 INSERT IGNORE INTO pim_catalog_product (id, uuid, product_model_id, is_enabled, identifier, raw_values, created, updated)
 VALUES
-    (5000, UUID_TO_BIN(UUID()), null, 1, 'product1', '{"name": {"<all_channels>": {"<all_locales>": ""}}}', NOW(), NOW()),
-    (5001, UUID_TO_BIN(UUID()), null, 1, 'product2', '{"name": {"<all_channels>": {"<all_locales>": []}}}', NOW(), NOW()),
-    (5002, UUID_TO_BIN(UUID()), null, 1, 'product3', '{"name": {"<all_channels>": {"<all_locales>": [""]}}}', NOW(), NOW()),
-    (5003, UUID_TO_BIN(UUID()), null, 1, 'product4', '{"name": {"<all_channels>": {"<all_locales>": ""}}}', NOW(), NOW())
+    (5000, UUID_TO_BIN('a9085535-a595-44af-a9dc-0c7b63bfaf97'), null, 1, 'product1', '{"name": {"<all_channels>": {"<all_locales>": ""}}}', NOW(), NOW()),
+    (5001, UUID_TO_BIN('7354e277-f2b3-4e5e-91c3-58ec3e562102'), null, 1, 'product2', '{"name": {"<all_channels>": {"<all_locales>": []}}}', NOW(), NOW()),
+    (5002, UUID_TO_BIN('7f9675b3-6205-4d13-a91e-a70a93201300'), null, 1, 'product3', '{"name": {"<all_channels>": {"<all_locales>": [""]}}}', NOW(), NOW()),
+    (5003, UUID_TO_BIN('c82140d9-cc33-45d5-b4f4-6a6e5c4d7dc3'), null, 1, 'product4', '{"name": {"<all_channels>": {"<all_locales>": ""}}}', NOW(), NOW())
 SQL);
 
         //CE kind of products with enrichment axis only
