@@ -2,10 +2,15 @@ import React from 'react';
 import {fireEvent, render, screen} from '../../storybook/test-util';
 import {BlockButton} from './BlockButton';
 import userEvent from '@testing-library/user-event';
+import {PlusIcon} from '../../icons';
 
 test('it calls onClick handler when user clicks on button', () => {
   const onClick = jest.fn();
-  render(<BlockButton onClick={onClick}>Hello</BlockButton>);
+  render(
+    <BlockButton onClick={onClick}>
+      <PlusIcon /> Hello
+    </BlockButton>
+  );
 
   const button = screen.getByText('Hello');
   fireEvent.click(button);
@@ -50,12 +55,6 @@ test('it does not call onClick handler when user hits enter key on a disabled bu
   fireEvent.keyDown(button, {key: 'Enter', code: 'Enter'});
 
   expect(onClick).not.toBeCalled();
-});
-
-test('it displays an anchor when providing a `href`', () => {
-  render(<BlockButton href="https://akeneo.com/">Hello</BlockButton>);
-
-  expect(screen.getByText('Hello').closest('a')).toHaveAttribute('href', 'https://akeneo.com/');
 });
 
 test('it does not trigger onClick when disabled', () => {

@@ -65,7 +65,7 @@ Use this playground to test the BlockButton component
       return (
         <>
           <BlockButton {...args}>
-              <PlusIcon /> Before
+            <PlusIcon /> Before
           </BlockButton>
           <BlockButton {...args}>
             After <PlusIcon />
@@ -91,7 +91,7 @@ Use this playground to test the BlockButton component
                 </Block>
             ))}
             <Dropdown fullWidth={true}>
-                <BlockButton onClick={open}>
+                <BlockButton onClick={open} disabled={blockValues.length === 3}>
                     Add a block
                 </BlockButton>
                 {isOpen && (
@@ -101,7 +101,7 @@ Use this playground to test the BlockButton component
                         </Dropdown.Header>
                         <Dropdown.ItemCollection>
                             {['Block 1', 'Block 2', 'Block 3'].filter(blockValue => !blockValues.includes(blockValue)).map(option => (
-                                <Dropdown.Item key={option} onClick={() => setBlockValues(blockValues => [...blockValues, option])}>
+                                <Dropdown.Item key={option} onClick={() => {setBlockValues(blockValues => [...blockValues, option]);close();}}>
                                     {option}
                                 </Dropdown.Item>
                             ))}

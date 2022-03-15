@@ -1,25 +1,26 @@
 import React from 'react';
 import {fireEvent, render, screen} from '../../storybook/test-util';
 import {Block} from './Block';
+import {PlusIcon} from '../../icons';
+
+jest.mock('../../icons', () => ({
+  ...jest.requireActual('../../icons'),
+  CloseIcon: ({onClick}: {onClick: () => void}) => <button onClick={onClick}>Remove</button>,
+}));
 
 test('it calls onRemove handler when user clicks on remove icon', () => {
   const onRemove = jest.fn();
   render(
     <Block removable={true} onRemove={onRemove}>
+      <PlusIcon />
       My block
     </Block>
   );
 
-  const block = screen.getByText('My block');
-  fireEvent.click(block);
+  const removeIcon = screen.getByText('Remove');
+  fireEvent.click(removeIcon);
 
   expect(onRemove).toBeCalled();
-});
-
-test('it displays an anchor when providing a `href`', () => {
-  render(<Block href="https://akeneo.com/">Hello</Block>);
-
-  expect(screen.getByText('Hello').closest('a')).toHaveAttribute('href', 'https://akeneo.com/');
 });
 
 test('Block supports forwardRef', () => {
