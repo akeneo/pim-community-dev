@@ -1,3 +1,4 @@
+batch_jobs.akeneo_shared_catalog.label: Envoyer aux catalogues partagés
 pim_common:
   recipients: Destinataires
   branding: Logo
@@ -14,8 +15,14 @@ shared_catalog:
     no_data: Aucune adresse email déclarée pour le moment
     max_limit_reached: Vous avez atteint la limite de 500 destinataires.
   branding:
+    upload_placeholder: "Glissez et déposez vos ressources ou cliquez ici"
+    uploading: Envoi des données en cours...
     validation:
       invalid_extension: "Extension de fichier non valide, les extensions autorisées sont: {{ allowed_extensions }}"
       filesize_too_large: Le fichier que vous avez fourni est trop grand, la taille maximale est de 2MB
+      invalid_file: Ce fichier est invalide
+      invalid_color: Cette valeur n'est pas une couleur CSS valide.
+    logo:
+      label: Télécharger votre logo
   button:
     save: Enregistrer et partager

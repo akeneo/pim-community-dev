@@ -144,6 +144,8 @@ pim_table_attribute:
       column_code: Code de la colonne
       properties_helper: Vous devez définir la structure du tableau et au moins 2 colonnes avant de pouvoir enregistrer votre attribut tableau
       table_structure_helper_text: Un attribut de type tableau doit contenir au moins 2 colonnes. La première est toujours de type "Colonne à choix unique". Une fois la première colonne créée, vous devez ajouter des options. Pour ce faire, cliquez sur "Gérer les options" et ajoutez jusqu'à {{ limit }} options ! Ensuite, vous aurez la possibilité d'utiliser chacune de ces options comme ligne dans vos tableaux.
+      table_structure_helper_text_with_reference_entity: Un attribut tableau doit contenir au moins 2 colonnes. Une fois que vous avez créé la première, utilisez les types de colonnes « Liste » ou « Entités de référence », définissez et gérez les lignes en fonction des options ou des enregistrements.
+      table_structure_helper_link: Consultez notre Help Center pour plus d'informations.
       limit_option_reached: Vous avez atteint la limite de {{ limit }} options.
       template_label: Sélectionnez le standard de votre tableau "{{ templateLabel }}"
       delete_column_helper: Lorsque vous supprimez cette colonne, toutes ses valeurs sont supprimées de tous les produits utilisant l'attribut tableau "{{ attributeLabel }}".
@@ -153,6 +155,7 @@ pim_table_attribute:
       no_options: Aucune option trouvée.
       please_try_again: Essayez de nouveau
       first_column_type_helper: La première colonne d'un tableau est toujours de type "Colonne à choix unique"
+      first_column_type_helper_with_reference_entity: La première colonne d'un tableau est soit un type de colonne "Liste" ou "Entité référentielle".
       discard_changes: Vous perdrez les modifications effectuées sur les options si vous quittez la page.
       completeness: Complétude
       required_for_completeness: Requis pour la complétude
@@ -170,9 +173,13 @@ pim_table_attribute:
       no_search_result: "Désolé, il n'y a pas de lignes pour votre recherche !"
       no_rows_title: "Votre tableau {{ attributeLabel }} est vide."
       no_rows_subtitle: Ajouter des lignes pour définir de nouvelles propriétés
+      no_rows_subtitle_no_permission: Pour pouvoir modifier cet attribut, allez dans la page de configuration de l'attribut ou contactez votre administrateur PIM.
       no_results: Il n'y a aucun résultat
       no_options: Il n'y a pas d'option
+      no_records: Il n'y a aucun enregistrement.
       no_add_options_unallowed: Contactez votre administrateur PIM pour gérer les options de l'attribut "{{ attributeLabel }}"
+      edit_records_unallowed: Contactez votre administrateur PIM pour gérer l'entité référentielle "{{ referenceEntityLabel }}"
+      manage_records: Gérer les enregistrements
       actions:
         delete_row: Supprimer cette ligne
         clear_row: Effacer le contenu de cette ligne
