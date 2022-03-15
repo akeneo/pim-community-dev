@@ -11,15 +11,11 @@ import {ATTRIBUTE_OPTION_DELETED} from 'akeneopimstructure/js/attribute-option/m
 class DataQualityInsightsApp extends BaseView {
   private renderingCount = 0;
   private overrideTabTitles: OverrideTabTitlesInterface;
-  private attributeEditFormUpdatedHandler: () => void;
   private renderingTabTitle: boolean;
 
   public configure() {
     this.overrideTabTitles = new OverrideTabTitles(this.getRoot());
     this.renderingTabTitle = false;
-    this.attributeEditFormUpdatedHandler = () => {
-      this.renderTabTitles();
-    };
 
     this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:change', (tab: string) => {
       window.dispatchEvent(
@@ -31,13 +27,11 @@ class DataQualityInsightsApp extends BaseView {
       );
     });
 
-    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', () => {
-      this.renderTabTitles();
-    });
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', () => this.renderTabTitles());
 
-    window.addEventListener(ATTRIBUTE_EDIT_FORM_UPDATED, this.attributeEditFormUpdatedHandler);
+    window.addEventListener(ATTRIBUTE_EDIT_FORM_UPDATED, () => this.renderTabTitles());
 
-    window.addEventListener(ATTRIBUTE_OPTION_DELETED, this.attributeEditFormUpdatedHandler);
+    window.addEventListener(ATTRIBUTE_OPTION_DELETED, () => this.renderTabTitles());
 
     return super.configure();
   }
@@ -58,8 +52,8 @@ class DataQualityInsightsApp extends BaseView {
   }
 
   remove() {
-    window.removeEventListener(ATTRIBUTE_EDIT_FORM_UPDATED, this.attributeEditFormUpdatedHandler);
-    window.removeEventListener(ATTRIBUTE_OPTION_DELETED, this.attributeEditFormUpdatedHandler);
+    window.removeEventListener(ATTRIBUTE_EDIT_FORM_UPDATED, () => this.renderTabTitles());
+    window.removeEventListener(ATTRIBUTE_OPTION_DELETED, () => this.renderTabTitles());
     super.remove();
     this.renderingCount = 0;
 
