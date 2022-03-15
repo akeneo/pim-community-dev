@@ -102,18 +102,29 @@ oro_config:
       tab:
         system:
           title: System
+      save_ok: Successfully saved configuration
+      save_error: Sorry, could not save the configuration ({{ reason }})
       group:
         localization:
-          title: Localisation
-          system_locale: Language
+          title: Login page setting
+          fields:
+            system_locale:
+              label: Language
         notification:
-          title: Notifications
-          system_notification: New version notifications
+          title: New version notifications
+          helper: When enabled, you receive a notification when new version is available for you.
+          fields:
+            enabler:
+              label: Enabled
         loading_message:
-          title: Loading messages
-          label: Enable loading messages
-        loading_messages:
-          label: Available loading messages
+          title: Customized loading messages
+          helper: Entertain your users with customized messages for loading screens.
+          placeholder: Please write your own message to be displayed on your loading screen
+          fields:
+            enabler:
+              label: Enable loading messages
+            messages:
+              label: Add your own loading messages
 pim_ui:
   flash:
     unsaved_changes: 'You have unsaved changes. Are you sure that you want to leave?'
@@ -211,6 +222,7 @@ pim_common:
     search: Search...
     no_match: No matches found
     load_more: Loading more results...
+  selected: "{0}None selected|{1}One selected|]1, Inf[{{ itemsCount }} selected"
   status: Status
   to: to
   type: Type
@@ -245,6 +257,7 @@ pim_common:
   products: Products
   product_models: Product models
   more: More
+  public_view: Public view
 error:
   exception: Oh snap! A {{ status_code }} error occurred...
   forbidden: Forbidden. You are not allowed to access this page
@@ -402,3 +415,11 @@ pim_system:
     users: '{0}You have 0 users|{1}You have 1 user|]1, Inf[You have {{ count }} users'
     user_groups: '{0}You have 0 user groups|{1}You have 1 user group|]1, Inf[You have {{ count }} user groups'
     roles: '{0}You have 0 roles|{1}You have 1 role|]1, Inf[You have {{ count }} roles'
+  sso:
+    enabled: SSO enabled
+    disabled: SSO disabled
+    title: SAML-based Single Sign-On
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: Select Action

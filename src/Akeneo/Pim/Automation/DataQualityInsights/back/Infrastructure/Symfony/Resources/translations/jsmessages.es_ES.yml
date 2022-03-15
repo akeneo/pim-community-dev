@@ -152,5 +152,8 @@ akeneo_data_quality_insights:
       to_improve: Para mejorar
       "yes": "Sí"
       "no": "No"
+  quality_score:
+    pending: En progreso
+    title: "Puntuación de calidad:"
 pim_title:
   akeneo_data_quality_insights_dashboard: Información sobre la calidad de los datos

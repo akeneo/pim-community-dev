@@ -309,7 +309,7 @@ pim_title:
   pim_enrich_categorytree_edit: Categoria {{ category.label }} | Modifica
   pim_enrich_categorytree_create_tree: Strutture di categoria | Crea
   pim_enrich_categorytree_tree: Albero di categoria {{ category.label }} | Modifica
-  pim_enrich_attribute_index: Atributi
+  pim_enrich_attribute_index: Attributi
   pim_enrich_attribute_create: Attributi | Crea
   pim_enrich_attribute_edit: Attributo {{ attribute.label }} | Modifica
   pim_enrich_product_index: Prodotti
