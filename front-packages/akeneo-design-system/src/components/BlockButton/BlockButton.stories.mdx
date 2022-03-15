@@ -90,12 +90,12 @@ Use this playground to test the BlockButton component
                     {blockValue}
                 </Block>
             ))}
-            <Dropdown>
+            <Dropdown fullWidth={true}>
                 <BlockButton onClick={open}>
                     Add a block
                 </BlockButton>
                 {isOpen && (
-                    <Dropdown.Overlay verticalPosition="down" onClose={close}>
+                    <Dropdown.Overlay onClose={close}>
                         <Dropdown.Header>
                             <Dropdown.Title>Blocks</Dropdown.Title>
                         </Dropdown.Header>
