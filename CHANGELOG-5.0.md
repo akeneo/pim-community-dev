@@ -169,6 +169,7 @@
 ## Improvements
 
 - PIM-9969: Add queue to lazy load Reference Entity Records thumbnails
+- BH-950: Job instance validation: data referential integrity command. 
 
 ## Bug fixes
 
