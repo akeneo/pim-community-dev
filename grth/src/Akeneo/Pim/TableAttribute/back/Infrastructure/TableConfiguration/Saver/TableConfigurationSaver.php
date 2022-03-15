@@ -96,21 +96,6 @@ class TableConfigurationSaver implements SaverInterface
         }
     }
 
-    /**
-     * @param array<string, mixed> $normalized
-     */
-    private function createColumnDefinitionFromNormalized(array $normalized): ColumnDefinition
-    {
-        Assert::string($normalized['data_type']);
-
-        $class = $this->columnDefinitionMapping[$normalized['data_type']] ?? null;
-        if (null === $class) {
-            throw new \InvalidArgumentException(sprintf('The "%s" type is unknown', $normalized['data_type']));
-        }
-
-        return $class::fromNormalized($normalized);
-    }
-
     private function hasAttributeColumnsCompletenessBeenUpdated(AttributeInterface $newAttribute, TableConfiguration $formerTableConfiguration): bool
     {
         $newTableConfiguration = $newAttribute->getRawTableConfiguration();
@@ -130,7 +115,7 @@ class TableConfigurationSaver implements SaverInterface
 
         $formerRequiredColumns = $formerTableConfiguration->requiredColumns();
         $formerlyRequired = \array_map(
-            fn(ColumnDefinition $column): string =>\implode('-', [$column->code()->asString(), $column->dataType()->asString()]),
+            fn (ColumnDefinition $column): string =>\implode('-', [$column->code()->asString(), $column->dataType()->asString()]),
             $formerRequiredColumns
         );
         \sort($formerlyRequired);

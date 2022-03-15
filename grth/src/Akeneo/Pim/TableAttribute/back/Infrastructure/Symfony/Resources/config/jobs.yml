@@ -165,19 +165,19 @@ services:
                 type: 'clean_table_values_following_deleted_options'
             -   name: akeneo_batch.job.not_visible
 
-    pim_table_attribute.job.compute_completeness_following_updated_completeness_conditions:
+    pim_table_attribute.job.compute_completeness_following_table_update:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
-            - 'compute_completeness_following_updated_completeness_conditions'
+            - 'compute_completeness_following_table_update'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pim_table_attribute.step.compute_completeness_following_updated_completeness_conditions'
+                - '@pim_table_attribute.step.compute_completeness_following_table_update'
         public: false
         tags:
             - name: akeneo_batch.job
               connector: 'internal'
-              type: 'compute_completeness_following_updated_completeness_conditions'
+              type: 'compute_completeness_following_table_update'
             - name: akeneo_batch.job.not_visible
 
     # Steps
@@ -333,10 +333,10 @@ services:
             - '@akeneo_batch.job_repository'
             - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet\CleanTableValuesWithDeletedOptionsTasklet'
 
-    pim_table_attribute.step.compute_completeness_following_updated_completeness_conditions:
+    pim_table_attribute.step.compute_completeness_following_table_update:
         class: '%pim_connector.step.tasklet.class%'
         arguments:
-            - 'compute_completeness'
+            - 'compute_completeness_following_table_update'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet\ComputeCompletenessOfTableAttributeProductsTasklet'
@@ -608,6 +608,11 @@ services:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\Provider\ComputeCompletenessOfTableAttributeProducts:
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
     # Tasklets
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet\CleanTableValuesWithDeletedOptionsTasklet:
         arguments:
@@ -620,7 +625,8 @@ services:
 
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet\ComputeCompletenessOfTableAttributeProductsTasklet:
         arguments:
-            - '@pim_catalog.query.product_query_builder_search_after_size_factory_external_api'
+            - '@pim_catalog.query.product_query_builder_factory'
+#            - '@pim_catalog.query.product_query_builder_search_after_size_factory_external_api'
             - '@pim_catalog.completeness.calculator'
             - '@akeneo.pim.enrichment.product.query.save_product_completenesses'
             - '@akeneo_batch.job_repository'

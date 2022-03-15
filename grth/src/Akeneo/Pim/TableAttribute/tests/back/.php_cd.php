@@ -136,6 +136,9 @@ $rules = [
             'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',
             'Akeneo\Tool\Bundle\MeasureBundle\Application\DeleteMeasurementFamily\DeleteMeasurementFamilyCommand',
             'Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand',
+
+            //Enrichment computing
+            'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];

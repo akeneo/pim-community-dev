@@ -96,11 +96,14 @@ final class TableConfiguration
         ));
     }
 
+    /**
+     * @return ColumnDefinition[]
+     */
     public function requiredColumns(): array
     {
         return \array_filter(
             $this->columnDefinitions,
-            fn(ColumnDefinition $columnDefinition) => $columnDefinition->isRequiredForCompleteness()->asBoolean()
+            fn (ColumnDefinition $columnDefinition) => $columnDefinition->isRequiredForCompleteness()->asBoolean()
         );
     }
 

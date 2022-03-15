@@ -47,6 +47,6 @@ services:
             - '@akeneo_batch.job.job_instance_repository'
             - '@Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance'
             - '@security.token_storage'
-            - 'compute_completeness_following_updated_completeness_conditions'
+            - 'compute_completeness_following_table_update'
         tags:
               - { name: kernel.event_subscriber }

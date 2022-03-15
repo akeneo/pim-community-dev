@@ -43,11 +43,11 @@ class ComputeCompletenessOfTableAttributeProductsTasklet implements TaskletInter
 
     public function execute()
     {
-        $attributeCode = $this->stepExecution->getJobParameters()['attribute_code'];
-        $familyCodes = $this->stepExecution->getJobParameters()['family_codes'];
+        $attributeCode = $this->stepExecution->getJobParameters()->get('attribute_code');
+        $familyCodes = $this->stepExecution->getJobParameters()->get('family_codes');
 
         $productIdentifiers = $this->getProductIdentifiersFromTableAttributeCodes($attributeCode, $familyCodes);
-        if(\count($productIdentifiers) === 0) {
+        if (\count($productIdentifiers) === 0) {
             return;
         }
         $this->stepExecution->setTotalItems($productIdentifiers->count());

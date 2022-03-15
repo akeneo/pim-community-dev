@@ -13,16 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-
 final class TableConfigurationHasBeenUpdated
 {
-     public function __construct(private string $attributeCode)
-     {
-     }
+    public function __construct(private string $attributeCode)
+    {
+    }
 
-     public function getAttributeCode(): string
-     {
-         return $this->attributeCode;
-     }
+    public function getAttributeCode(): string
+    {
+        return $this->attributeCode;
+    }
 }

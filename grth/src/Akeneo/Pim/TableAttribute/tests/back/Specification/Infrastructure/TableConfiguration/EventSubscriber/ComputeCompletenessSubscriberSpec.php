@@ -10,15 +10,12 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\EventSubscriber;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event\TableConfigurationHasBeenUpdated;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
@@ -50,7 +47,7 @@ class ComputeCompletenessSubscriberSpec extends ObjectBehavior
         $jobInstanceRepository,
         $createJobInstance,
         $tokenStorage,
-        'compute_completeness_following_updated_completeness_conditions'
+        'compute_completeness_following_table_update'
         );
     }
 
@@ -97,72 +94,7 @@ class ComputeCompletenessSubscriberSpec extends ObjectBehavior
         $this->launchComputeCompletenessJobIfNeeded($event);
     }
 
-    /*function id_does_nothing_if_no_column_updated_deleted_or_added(
-        GenericEvent $event,
-        Connection $connection,
-        TokenStorageInterface $tokenStorage,
-        AttributeInterface $attribute,
-        Result $result,
-        TableConfigurationRepository $tableConfigurationRepository,
-        TableConfiguration $formerTableConfiguration,
-        TableConfiguration $newTableConfiguration,
-    ) {
-        $attribute->getType()->WillReturn(AttributeTypes::TABLE);
-        $attribute->getCode()->WillReturn('table_attribute_code');
-        $attribute->getRawTableConfiguration()->willReturn($newTableConfiguration);
-        $event->getSubject()->willReturn($attribute);
-
-        $connection->executeQuery(Argument::cetera(), ['attribute_code' => 'table_attribute_code'])
-            ->shouldBeCalledOnce()
-            ->willReturn($result);
-        $result->fetchFirstColumn()->willReturn(['family_code_1']);
-
-        $tableConfigurationRepository->getByAttributeCode('table_attribute_code')
-            ->shouldBeCalledOnce()
-            ->willReturn($formerTableConfiguration);
-    }*/
-
-//    function it_computes_completeness_when_attribute_is_related_to_family(
-//        AttributeInterface $attribute,
-//        Connection $connection,
-//        GenericEvent $event,
-//        JobInstance $jobInstance,
-//        JobLauncherInterface $jobLauncher,
-//        JobInstanceRepository $jobInstanceRepository,
-//        Result $result,
-//        TokenStorageInterface $tokenStorage,
-//        TokenInterface $token,
-//        UserInterface $user,
-//    ) {
-//        $attribute->getType()->WillReturn(AttributeTypes::TABLE);
-//        $attribute->getCode()->WillReturn('table_attribute_code');
-//        $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-//            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
-//            TextColumn::fromNormalized(['id' => ColumnIdGenerator::description(), 'code' => 'description']),
-//        ]);
-//        $attribute->getRawTableConfiguration()->willReturn($tableConfiguration);
-//        $event->getSubject()->willReturn($attribute);
-//
-//        $connection->executeQuery(Argument::cetera(), ['attribute_code' => 'table_attribute_code'])
-//            ->shouldBeCalledOnce()
-//            ->willReturn($result);
-//        $result->fetchFirstColumn()->willReturn(['family_code_1']);
-//
-//        $tokenStorage->getToken()->shouldBeCalledOnce()->willReturn($token);
-//        $token->getUser()->shouldBeCalledOnce()->willReturn($user);
-//
-//        $jobInstanceRepository->findOneByIdentifier('compute_completeness_following_updated_completeness_conditions')
-//            ->shouldBeCalledOnce()
-//            ->willReturn($jobInstance);
-//        $jobLauncher->launch($jobInstance, $user, [
-//            'attribute_code' => 'table_attribute_code',
-//            'family_codes' => ['family_code_1'],
-//        ])->shouldBeCalledOnce();
-//
-//        $this->launchComputeCompletenessJobIfNeeded($event);
-//    }
-
-    function it_does_nothing_if_column_is_added_or_deleted_and_not_required_for_completeness(
+    function it_computes_completeness_when_attribute_is_related_to_family(
         AttributeInterface $attribute,
         Connection $connection,
         GenericEvent $event,
@@ -170,27 +102,29 @@ class ComputeCompletenessSubscriberSpec extends ObjectBehavior
         JobLauncherInterface $jobLauncher,
         JobInstanceRepository $jobInstanceRepository,
         Result $result,
-        TableConfigurationRepository $tableConfigurationRepository,
         TokenStorageInterface $tokenStorage,
         TokenInterface $token,
         UserInterface $user,
     ) {
         $attribute->getType()->WillReturn(AttributeTypes::TABLE);
         $attribute->getCode()->WillReturn('table_attribute_code');
-        $formerTableConfiguration = TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
-            TextColumn::fromNormalized(['id' => ColumnIdGenerator::description(), 'code' => 'description']),
+        $attribute->getRawTableConfiguration()->willReturn([
+            [
+                'id' => ColumnIdGenerator::ingredient(),
+                'code' => 'ingredient',
+                'data_type' => 'select',
+                'labels' => (object) [],
+                'validations' => (object) [],
+                'is_required_for_completeness' => true,
+            ],
+            [
+                'id' => ColumnIdGenerator::description(),
+                'code' => 'description',
+                'data_type' => 'text',
+                'labels' => (object) [],
+                'validations' => (object) [],
+            ],
         ]);
-        $newTableConfiguration = TableConfiguration::fromColumnDefinitions([
-            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
-            TextColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient']),
-        ]);
-
-        $tableConfigurationRepository->getByAttributeCode('table_attribute_code')
-            ->shouldBeCalledOnce()
-            ->willReturn($formerTableConfiguration);
-
-        $attribute->getRawTableConfiguration()->willReturn($newTableConfiguration);
         $event->getSubject()->willReturn($attribute);
 
         $connection->executeQuery(Argument::cetera(), ['attribute_code' => 'table_attribute_code'])
@@ -201,7 +135,7 @@ class ComputeCompletenessSubscriberSpec extends ObjectBehavior
         $tokenStorage->getToken()->shouldBeCalledOnce()->willReturn($token);
         $token->getUser()->shouldBeCalledOnce()->willReturn($user);
 
-        $jobInstanceRepository->findOneByIdentifier('compute_completeness_following_updated_completeness_conditions')
+        $jobInstanceRepository->findOneByIdentifier('compute_completeness_following_table_update')
             ->shouldBeCalledOnce()
             ->willReturn($jobInstance);
         $jobLauncher->launch($jobInstance, $user, [
@@ -209,10 +143,7 @@ class ComputeCompletenessSubscriberSpec extends ObjectBehavior
             'family_codes' => ['family_code_1'],
         ])->shouldBeCalledOnce();
 
+        $this->aTableAttributeCompletenessHasBeenUpdated(new TableConfigurationHasBeenUpdated('table_attribute_code'));
         $this->launchComputeCompletenessJobIfNeeded($event);
     }
-
-    /*function it_does_nothing_if_column_is_updated_but_not_required_for_completeness() {
-
-    }*/
 }

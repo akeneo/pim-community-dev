@@ -20,6 +20,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
 use Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet\ComputeCompletenessOfTableAttributeProductsTasklet;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
@@ -58,8 +59,11 @@ class ComputeCompletenessOfTableAttributeProductsTaskletSpec extends ObjectBehav
         CompletenessCalculator $completenessCalculator,
         JobRepositoryInterface $jobRepository,
         CursorInterface $cursor,
+        JobParameters $jobParameters
     ) {
-        $stepExecution->getJobParameters()->willReturn(['attribute_code' => 'nutrition', 'family_codes' => ['food']]);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('attribute_code')->willReturn('nutrition');
+        $jobParameters->get('family_codes')->willReturn(['food']);
 
         $productQueryBuilderFactory->create()->shouldBeCalled()->willReturn($productQueryBuilder);
         $productQueryBuilder->addFilter('family', Operators::IN_LIST, ['food'])->shouldBeCalled();
@@ -95,8 +99,4 @@ class ComputeCompletenessOfTableAttributeProductsTaskletSpec extends ObjectBehav
 
         $this->execute();
     }
-}
-
-class ProductCursor extends \ArrayIterator implements CursorInterface
-{
 }

@@ -53,7 +53,7 @@ class ComputeCompletenessSubscriber implements EventSubscriberInterface
 
     public function aTableAttributeCompletenessHasBeenUpdated(TableConfigurationHasBeenUpdated $event): void
     {
-        $this->tableAttributesToCompute[] = $event->getAttributeCode();
+        $this->tableAttributesToCompute[$event->getAttributeCode()] = true;
     }
 
     public function launchComputeCompletenessJobIfNeeded(GenericEvent $event): void
@@ -70,7 +70,6 @@ class ComputeCompletenessSubscriber implements EventSubscriberInterface
             return;
         }
 
-        // is attribute required for completeness in family
         $familyCodes = $this->getRequiredFamilyCodesLinkedToAttributeCode($attributeCode);
         if (\count($familyCodes) === 0) {
             return;
@@ -91,7 +90,10 @@ class ComputeCompletenessSubscriber implements EventSubscriberInterface
         $newTableConfiguration = TableConfiguration::fromColumnDefinitions($newAttribute->getRawTableConfiguration()) ;
 
         $formerlyRequired = \array_filter($formerTableConfiguration->normalize(), function (array $value) {
-            return $value->isRequiredForCompleteness();
+            if (isset($value['is_required_for_completeness'])) {
+                return $value['is_required_for_completeness'];
+            }
+            return false;
         });
         $newlyRequired = $newTableConfiguration->requiredColumns();
 
