@@ -16,11 +16,7 @@ pim_menu:
     connection_webhook_event_logs: Registro de eventos
     data_flows: Flujos de datos
     connect_connection_settings: Ajustes de conexión
-    marketplace: Mercado
-    connected_apps: Aplicaciones
 pim_title:
-  akeneo_connectivity_connection_connect_marketplace: Mercado
-  akeneo_connectivity_connection_connect_marketplace_profile: Mercado
   akeneo_connectivity_connection_connect_apps_activate: Conectar
   akeneo_connectivity_connection_connect_apps_authorize: Conectar
   akeneo_connectivity_connection_connect_apps_authenticate: Conectar
@@ -35,7 +31,6 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: Subscripcion al evento
   akeneo_connectivity_connection_webhook_event_logs: Registros de eventos
   akeneo_connectivity_connection_settings_redirect: Conexiones
-  akeneo_connectivity_connection_connect_connected_apps: Aplicaciones
   akeneo_connectivity_connection_connect_connected_apps_edit: Ajustes de la aplicación
   akeneo_connectivity_connection_connect_connected_apps_delete: Eliminación de la aplicación
   akeneo_connectivity_connection_connect_marketplace_test_app_create: Crear una aplicación de prueba
@@ -44,13 +39,9 @@ akeneo_connectivity.connection:
   connect:
     marketplace:
       title: '¿Quiere conectar su PIM con otra aplicación? 🤟'
-      sub_title: Consulte nuestro mercado para ver qué aplicación se puede conectar con el PIM de Akeneo.
-      link: Acceder al mercado
       helper:
         title: '{0} No hay aplicaciones o conectores compatibles con su versión PIM.{1} Hay {{ count }} aplicación o conector compatible con su versión PIM. [2,Inf] Hay {{ count }} aplicaciones y conectores compatibles con tu versión PIM.'
         title_without_apps: '{0} No hay conectores compatibles con su versión PIM.|{1} Hay {{ count }} conector compatible con su versión PIM. [2,Inf] Hay {{ count }} conectores compatibles con su versión PIM.'
-        description: Esto es solo un resumen. Para más detalles, eche un vistazo a nuestro sitio web.
-        link: Ir al mercado web
       card:
         developed_by: 'Desarrollado por {{ author }}'
         read_more: leer más
@@ -65,7 +56,6 @@ akeneo_connectivity.connection:
         title: Aplicaciones
         total: '{0} Ninguna aplicación|{1} 1 aplicación|[2,Inf] {{ total }} aplicaciones'
         empty: No hay aplicaciones compatibles con su versión
-      unreachable: No podemos llegar al mercado, vuelva más tarde.
       scroll_to_top: Desplazar hasta la parte superior
       test_apps:
         title: Mis aplicaciones de prueba
@@ -87,6 +77,7 @@ akeneo_connectivity.connection:
             client_id: ID de cliente
             client_secret: Secreto del cliente
         errors:
+          page_not_found: Página no encontrada
           creation:
             name:
               min_length: El nombre de la aplicación de prueba es demasiado corto. Debe tener 3 caracteres o más.
@@ -107,7 +98,6 @@ akeneo_connectivity.connection:
           subtitle: Aplicaciones
           title: Confirmar la eliminación
           description: Está a punto de eliminar su aplicación de prueba de este PIM.
-          warning: Al confirmar la eliminación, eliminará la aplicación de prueba en la página del mercado y la aplicación conectada relacionada.
           flash:
             success: Aplicación de prueba eliminada con éxito.
             error: Ha ocurrido un error durante la eliminación de la aplicación de prueba.
@@ -118,13 +108,12 @@ akeneo_connectivity.connection:
           total: '{0} Ninguna aplicación|{1} 1 aplicación|[2,Inf] {{ total }} aplicaciones'
           empty: Aún no hay aplicaciones conectadas.
           check_marketplace: 'Comprueba el {{ marketplaceLink }} para navegar por todo el contenido disponible e instalar tu primera aplicación.'
-          marketplace_link_anchor: Mercado
+          marketplace_link_anchor: App Store
         test_apps:
           title: Mis aplicaciones de prueba
           removed_user: Usuario eliminado
         helper:
           title: '[0,1] Su PIM está conectado con {{ count }} aplicación.|[2,Inf] Su PIM está conectado con {{ count }} aplicaciones.'
-          description_1: Se desarrollan nuevas aplicaciones con regularidad, así que esté atento y consulte con frecuencia nuestra página del Mercado para descubrir cómo conectar su PIM.
           description_2: '¿Quiere saber más sobre las aplicaciones?'
           link: Eche un vistazo a nuestro Centro de ayuda para más información.
         card:
@@ -199,9 +188,9 @@ akeneo_connectivity.connection:
           helper_link: '¿Cómo conectar mi PIM con aplicaciones?'
           consent:
             label: 'Acepto la Política de privacidad y las Condiciones de uso de esta aplicación, que pueden consultarse en la página {{ app_marketplace_page }}.'
-            app_marketplace_page: Página del mercado de aplicaciones
-            subtext: 'Usted reconoce y acepta que será redirigido a una aplicación de terceros. Akeneo no es responsable y no puede hacerse responsable del contenido de esta app. Si tiene algún problema al visitar el mercado, {{ contact_us }}.'
             contact_us: contáctenos
+          firstname: nombre
+          lastname: apellido
         authorize:
           title: '{{ app_name }} necesita'
           no_scope_title: '{{ app_name }} desea acceder a su PIM.'

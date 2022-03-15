@@ -21,14 +21,16 @@ class UpdateProductModelsIndexSpec extends ObjectBehavior
     public function let(
         Client                               $esClient,
         GetProductModelScoresQueryInterface $getProductModelScoresQuery,
+        ComputeProductsKeyIndicators         $computeProductsKeyIndicators
     )
     {
-        $this->beConstructedWith($esClient, $getProductModelScoresQuery);
+        $this->beConstructedWith($esClient, $getProductModelScoresQuery, $computeProductsKeyIndicators);
     }
 
     public function it_updates_product_models_index(
         $esClient,
         $getProductModelScoresQuery,
+        $computeProductsKeyIndicators
     )
     {
         $channelEcommerce = new ChannelCode('ecommerce');
@@ -42,11 +44,41 @@ class UpdateProductModelsIndexSpec extends ObjectBehavior
                 ->addRate($channelEcommerce, $localeEn, new Rate(96)),
         ]);
 
+        $productModelsKeyIndicators = [
+            123 => [
+                'ecommerce' => [
+                    'en_US' => [
+                        'good_enrichment' => true,
+                        'has_image' => false,
+                    ],
+                ],
+            ],
+            456 => [
+                'ecommerce' => [
+                    'en_US' => [
+                        'good_enrichment' => true,
+                        'has_image' => true,
+                    ],
+                ],
+            ],
+            42 => [
+                'ecommerce' => [
+                    'en_US' => [
+                        'good_enrichment' => null,
+                        'has_image' => null,
+                    ],
+                ],
+            ],
+        ];
+
+        $computeProductsKeyIndicators->compute($productModelIds)->willReturn($productModelsKeyIndicators);
+
         $esClient->updateByQuery([
             'script' => [
                 'inline' => "ctx._source.data_quality_insights = params;",
                 'params' => [
                     'scores' => ['ecommerce' => ['en_US' => 5]],
+                    'key_indicators' => $productModelsKeyIndicators[123]
                 ],
             ],
             'query' => [
@@ -60,6 +92,7 @@ class UpdateProductModelsIndexSpec extends ObjectBehavior
                 'inline' => "ctx._source.data_quality_insights = params;",
                 'params' => [
                     'scores' => ['ecommerce' => ['en_US' => 1]],
+                    'key_indicators' => $productModelsKeyIndicators[456]
                 ],
             ],
             'query' => [

@@ -12,7 +12,7 @@ services:
 
     Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventSubscribers\EventsApiRequestsLimitIncrementSubscriber:
         arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalEventsApiRequestCountRepository'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalUpdateEventsApiRequestCountQuery'
         tags:
             - { name: kernel.event_subscriber }
 

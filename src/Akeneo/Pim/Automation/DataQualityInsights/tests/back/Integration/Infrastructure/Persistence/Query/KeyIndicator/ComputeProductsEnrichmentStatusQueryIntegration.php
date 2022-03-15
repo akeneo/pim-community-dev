@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\KeyIndicator;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator\ComputeProductsEnrichmentStatusQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
 /**
@@ -50,7 +48,7 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
 
         $productIds = array_keys($expectedProductsEnrichmentStatus);
 
-        $productsEnrichmentStatus = $this->get(ComputeProductsEnrichmentStatusQuery::class)
+        $productsEnrichmentStatus = $this->get('akeneo.pim.automation.data_quality_insights.query.compute_products_enrichment_status_query')
             ->compute(ProductIdCollection::fromInts($productIds));
 
         $this->assertEquals($expectedProductsEnrichmentStatus, $productsEnrichmentStatus);

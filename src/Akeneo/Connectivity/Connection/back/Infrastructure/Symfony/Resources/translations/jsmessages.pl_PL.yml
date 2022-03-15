@@ -16,11 +16,7 @@ pim_menu:
     connection_webhook_event_logs: Dziennik zdarzeń
     data_flows: Przepływy danych
     connect_connection_settings: Ustawienia połączeń
-    marketplace: Rynek
-    connected_apps: Aplikacje
 pim_title:
-  akeneo_connectivity_connection_connect_marketplace: Rynek
-  akeneo_connectivity_connection_connect_marketplace_profile: Rynek
   akeneo_connectivity_connection_connect_apps_activate: Połącz
   akeneo_connectivity_connection_connect_apps_authorize: Połącz
   akeneo_connectivity_connection_connect_apps_authenticate: Połącz
@@ -35,21 +31,19 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: Subskrypcja zdarzeń
   akeneo_connectivity_connection_webhook_event_logs: Dziennik zdarzeń
   akeneo_connectivity_connection_settings_redirect: Połączenia
-  akeneo_connectivity_connection_connect_connected_apps: Aplikacje
   akeneo_connectivity_connection_connect_connected_apps_edit: Ustawienia aplikacji
   akeneo_connectivity_connection_connect_connected_apps_delete: Usuń aplikację
+  akeneo_connectivity_connection_connect_marketplace_test_app_create: Utwórz aplikację testową
+  akeneo_connectivity_connection_connect_marketplace_test_app_delete: Usuń aplikację testową
 akeneo_connectivity.connection:
   connect:
     marketplace:
       title: Chcesz połączyć PIM z inną aplikacją? 🤟
-      sub_title: Sprawdź nasz rynek, aby zobaczyć, którą aplikację można połączyć z Akeneo PIM.
-      link: Dostęp do rynku
       helper:
         title: '{0} Brak aplikacji lub wtyczek kompatybilnych z twoją wersją PIM.|{1} Aplikacje lub wtyczki kompatybilne z twoją wersją PIM: {{ count }}|[2,Inf] Aplikacje lub wtyczki kompatybilne z twoją wersją PIM: {{ count }}'
         title_without_apps: '{0} Brak wtyczek kompatybilnych z twoją wersją PIM.|{1} Wtyczki kompatybilne z twoją wersją PIM: {{ count }}.|[2,Inf] Wtyczki kompatybilne z twoją wersją PIM: {{ count }}'
-        description: To tylko podgląd. Aby uzyskać więcej szczegółów, zobacz nasz rynek internetowy.
-        link: Przejdź do rynku internetowego
       card:
+        developed_by: 'Autor: {{ author }}'
         read_more: czytaj więcej
         more_info: Więcej informacji
         connect: Połącz
@@ -62,14 +56,50 @@ akeneo_connectivity.connection:
         title: Aplikacje
         total: '{0} Brak aplikacji|{1} 1 aplikacja|[2,Inf] Liczba aplikacji: {{ total }}'
         empty: Brak aplikacji kompatybilnych z twoją wersją
-      unreachable: Nie możemy nawiązać połączenia z rynkiem. Spróbuj ponownie później.
       scroll_to_top: Przewiń do początku
       test_apps:
+        title: Moje aplikacje testowe
+        removed_user: Użytkownik usunięty
+        create_a_test_app: Utwórz aplikację testową
         modal:
+          subtitle: Utwórz aplikację testową
+          app_information:
+            title: Informacje o aplikacji
+            description: Jeśli potrzebujesz pomocy, zapoznaj się z naszym artykułem.
+            link: Jak przetestować aplikację przed jej publikacją?
+            fields:
+              name: Nazwa
+              activate_url: Adres URL aktywacji
+              callback_url: Adres URL wywołania zwrotnego
           credentials:
             title: Dane uwierzytelniające
+            warning: Pamiętaj o zapisaniu tych poświadczeń, ponieważ wyświetlamy je tu tylko raz.
+            client_id: Identyfikator klienta
+            client_secret: Sekret klienta
+        errors:
+          creation:
+            name:
+              min_length: Nazwa aplikacji testowej jest za krótka. Musi składać się z co najmniej 3 znaków.
+              max_length: Nazwa aplikacji testowej jest za długa. Może składać się z maksymalnie 255 znaków.
+              not_blank: Nazwa aplikacji testowej jest wymagana.
+            client_id:
+              max_length: Identyfikator klienta jest za długi. Może składać się z maksymalnie 36 znaków.
+              not_blank: Identyfikator klienta jest wymagany.
+            activate_url:
+              max_length: Adres URL aktywacji jest za długi. Może składać się z maksymalnie 255 znaków.
+              must_be_url: Adres URL aktywacji musi być prawidłowym adresem URL.
+              not_blank: Adres URL aktywacji jest wymagany.
+            callback_url:
+              max_length: Adres URL wywołania zwrotnego jest za długi. Może składać się z maksymalnie 255 znaków.
+              must_be_url: Adres URL wywołania zwrotnego musi być prawidłowym adresem URL.
+              not_blank: Adres URL wywołania zwrotnego jest wymagany.
         delete:
+          subtitle: Aplikacje
           title: Potwierdź usunięcie
+          description: Za chwilę usuniesz aplikację testową z tego PIM.
+          flash:
+            success: Aplikacja testowa została usunięta z powodzeniem.
+            error: Przepraszamy, w czasie usuwania aplikacji testowej wystąpił błąd.
     connected_apps:
       list:
         apps:
@@ -77,13 +107,15 @@ akeneo_connectivity.connection:
           total: '{0} Brak aplikacji|{1} 1 aplikacja|[2,Inf] Liczba aplikacji: {{ total }}'
           empty: Nie połączono jeszcze żadnych aplikacji.
           check_marketplace: 'Przejdź na stronę {{ marketplaceLink }}, aby przeglądać całą dostępną treść i zainstalować swoją pierwszą aplikację.'
-          marketplace_link_anchor: Rynek
+        test_apps:
+          title: Moje aplikacje testowe
+          removed_user: Użytkownik usunięty
         helper:
           title: '[0,1] Twój PIM jest połączony z {{ count }} aplikacją.|[2,Inf] Twój PIM jest połączony z {{ count }} aplikacjami.'
-          description_1: Nowe aplikacje powstają regularnie, więc regularnie zaglądaj na stronę Rynek, aby przekonać się, jak możesz połączyć Twój PIM z innymi aplikacjami.
           description_2: Chcesz dowiedzieć się więcej o aplikacjach?
           link: Aby uzyskać więcej informacji, sprawdź nasze Centrum Pomocy.
         card:
+          developed_by: 'Autor: {{ author }}'
           manage_app: Zarządzaj aplikacją
           open_app: Otwórz aplikację
         flash:
@@ -152,8 +184,9 @@ akeneo_connectivity.connection:
           title: 'Aplikacja {{ app_name }} musi'
           helper: Aby dowiedzieć się więcej o uwierzytelnieniu aplikacji, zapoznaj się z naszym artykułem
           helper_link: Jak połączyć PIM z aplikacjami?
-          scope_profile: Wyświetl swoje imię i nazwisko
-          scope_email: Wyświetl swój adres e-mail
+          consent:
+            label: 'Wyrażam zgodę na obowiązywanie Polityki prywatności i Warunków użytkowania Aplikacji, z którymi można zapoznać się na stronie {{ app_marketplace_page }}.'
+            contact_us: skontaktuj się z nami
         authorize:
           title: 'Aplikacja {{ app_name }} musi'
           no_scope_title: 'Aplikacja {{ app_name }} chciałaby uzyskać dostęp do Twojego PIM.'
@@ -217,6 +250,7 @@ akeneo_connectivity.connection:
     user_role_id: Rola
     user_group_id: Grupa
     constraint:
+      connections_number_limit_reached: Osiągnięto limit 50 połaczeń i podłączonych aplikacji.
       code:
         required: Kod połączenia jest wymagany
         invalid: Kod połączenia może zawierać tylko litery, cyfry i podkreślenia.
@@ -245,6 +279,7 @@ akeneo_connectivity.connection:
     message_link: kliknij tutaj.
   create_connection:
     title: Utwórz nowe połączenie
+    description: Możesz podłaczyć maksymalnie 50 podmiotów zewnętrznych lub aplikacji.
     flash:
       success: Połączenie zostało pomyślnie utworzone.
       error: Przepraszamy, wystąpił błąd podczas tworzenia połączenia.

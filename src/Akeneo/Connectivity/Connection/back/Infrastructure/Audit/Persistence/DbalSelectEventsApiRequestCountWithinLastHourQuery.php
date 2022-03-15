@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence;
 
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectEventsApiRequestCountWithinLastHourQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\SelectEventsApiRequestCountWithinLastHourQueryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 

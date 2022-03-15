@@ -12,7 +12,7 @@ services:
         class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\AuditLoader'
         arguments:
             - '@database_connection'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalEventCountRepository'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalBulkInsertEventCountsQuery'
 
     akeneo_connectivity.connection.fixtures.audit_error_loader:
         class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\AuditErrorLoader'

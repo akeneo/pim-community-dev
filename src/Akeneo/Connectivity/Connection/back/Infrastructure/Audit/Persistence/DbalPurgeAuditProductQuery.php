@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence;
 
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\PurgeAuditProductQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\PurgeAuditProductQueryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 

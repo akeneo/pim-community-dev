@@ -11,6 +11,8 @@ services:
             - { name: pim_datagrid.extension.sorter, type: data_quality_insights_score }
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\AddProductModelScoreProperty:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelScoresQuery'
         tags:
           - { name: akeneo.pim.enrichment.product.grid.add_additional_product_model_properties }
 
