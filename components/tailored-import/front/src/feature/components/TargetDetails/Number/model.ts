@@ -5,13 +5,13 @@ import {Attribute, Target, TargetAction, TargetEmptyAction} from '../../../model
 const availableDecimalSeparators = {'.': 'dot', ',': 'comma', '٫‎': 'arabic_comma'};
 
 type NumberSeparator = keyof typeof availableDecimalSeparators;
-type NumberSelection = {decimal_separator: NumberSeparator};
+type NumberConfiguration = {decimal_separator: NumberSeparator};
 
-const getDefaultNumberSelection = (): NumberSelection => ({decimal_separator: '.'});
+const getDefaultNumberConfiguration = (): NumberConfiguration => ({decimal_separator: '.'});
 const getDefaultTargetAction = (): TargetAction => 'set';
 const getDefaultTargetEmptyAction = (): TargetEmptyAction => 'skip';
 
-const isDefaultNumberSelection = (selection?: NumberSelection): boolean => '.' === selection?.decimal_separator;
+const isDefaultNumberConfiguration = (configuration?: NumberConfiguration): boolean => '.' === configuration?.decimal_separator;
 
 type NumberTarget = {
   uuid: string;
@@ -19,7 +19,7 @@ type NumberTarget = {
   channel: ChannelReference;
   locale: LocaleReference;
   type: 'attribute';
-  selection: NumberSelection;
+  configuration: NumberConfiguration;
   action_if_not_empty: TargetAction;
   action_if_empty: TargetEmptyAction;
 };
@@ -34,23 +34,22 @@ const getDefaultNumberTarget = (
   type: 'attribute',
   locale,
   channel,
-  selection: getDefaultNumberSelection(),
+  configuration: getDefaultNumberConfiguration(),
   action_if_not_empty: getDefaultTargetAction(),
   action_if_empty: getDefaultTargetEmptyAction(),
 });
 
-const isNumberSelection = (selection: any): selection is NumberSelection => 'decimal_separator' in selection;
+const isNumberConfiguration = (configuration: any): configuration is NumberConfiguration => 'decimal_separator' in configuration;
 const isNumberDecimalSeparator = (separator: any): separator is NumberSeparator =>
   separator in availableDecimalSeparators;
 
-const isNumberTarget = (target: Target): target is NumberTarget =>
-  isNumberSelection(target.selection);
+const isNumberTarget = (target: Target): target is NumberTarget => isNumberConfiguration(target.configuration);
 
-export type {NumberTarget, NumberSelection};
+export type {NumberTarget, NumberConfiguration};
 export {
   availableDecimalSeparators,
   getDefaultNumberTarget,
-  isDefaultNumberSelection,
+  isDefaultNumberConfiguration,
   isNumberDecimalSeparator,
   isNumberTarget,
 };

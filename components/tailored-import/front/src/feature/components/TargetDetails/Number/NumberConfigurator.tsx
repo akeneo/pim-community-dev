@@ -13,9 +13,9 @@ const NumberConfigurator = ({target, onTargetChange, validationErrors}: Attribut
   return (
     <div>
       <NumberSelector
-        selection={target.selection}
+        configuration={target.configuration}
         validationErrors={filterErrors(validationErrors, '[selection]')}
-        onSelectionChange={updatedNumberSelection => onTargetChange({...target, selection: updatedNumberSelection})}
+        onConfigurationChange={updatedNumberConfiguration => onTargetChange({...target, configuration: updatedNumberConfiguration})}
       />
     </div>
   );

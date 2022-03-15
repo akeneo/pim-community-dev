@@ -2,13 +2,13 @@ import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 import {Attribute, Target, TargetAction, TargetEmptyAction} from '../../../models';
 
-type TextSelection = {decimal_separator: TextSeparator};
+type TextConfiguration = {};
 
-const getDefaultTextSelection = (): TextSelection => ({decimal_separator: '.'});
+const getDefaultTextConfiguration = (): TextConfiguration => ({});
 const getDefaultTargetAction = (): TargetAction => 'set';
 const getDefaultTargetEmptyAction = (): TargetEmptyAction => 'skip';
 
-const isDefaultTextSelection = (selection?: TextSelection): boolean => '.' === selection?.decimal_separator;
+const isDefaultTextConfiguration = (configuration?: TextConfiguration): boolean => ({} === configuration);
 
 type TextTarget = {
   uuid: string;
@@ -16,7 +16,7 @@ type TextTarget = {
   channel: ChannelReference;
   locale: LocaleReference;
   type: 'attribute';
-  selection: TextSelection;
+  configuration: TextConfiguration;
   action_if_not_empty: TargetAction;
   action_if_empty: TargetEmptyAction;
 };
@@ -31,19 +31,18 @@ const getDefaultTextTarget = (
   type: 'attribute',
   locale,
   channel,
-  selection: getDefaultTextSelection(),
+  configuration: getDefaultTextConfiguration(),
   action_if_not_empty: getDefaultTargetAction(),
   action_if_empty: getDefaultTargetEmptyAction(),
 });
 
-const isTextSelection = (selection: any): selection is TextSelection => 'decimal_separator' in selection;
+const isTextConfiguration = (configuration: any): configuration is TextConfiguration => 'decimal_separator' in configuration;
 
-const isTextTarget = (target: Target): target is TextTarget =>
-  isTextSelection(target.selection);
+const isTextTarget = (target: Target): target is TextTarget => isTextConfiguration(target.configuration);
 
-export type {TextTarget, TextSelection};
+export type {TextTarget, TextConfiguration};
 export {
   getDefaultTextTarget,
-  isDefaultTextSelection,
+  isDefaultTextConfiguration,
   isTextTarget,
 };
