@@ -132,9 +132,9 @@ class XlsxFlatFileIteratorTest extends AcceptanceTestCase
         string $sheetName = 'Products'
     ): XlsxFileIterator {
         $fileStructure = FileStructure::createFromNormalized([
-            'header_line' => $headerLine,
+            'header_row' => $headerLine,
             'first_column' => $firstColumn,
-            'product_line' => $productLine,
+            'first_product_row' => $productLine,
             'sheet_name' => $sheetName,
         ]);
 

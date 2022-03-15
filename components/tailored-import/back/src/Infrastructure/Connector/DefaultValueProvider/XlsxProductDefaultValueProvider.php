@@ -38,9 +38,9 @@ class XlsxProductDefaultValueProvider implements DefaultValuesProviderInterface
         ];
         $defaultValues['file_key'] = null;
         $defaultValues['file_structure'] = [
-            'header_line' => 1,
+            'header_row' => 1,
             'first_column' => 0,
-            'product_line' => 2,
+            'first_product_row' => 2,
             'sheet_name' => null,
         ];
 

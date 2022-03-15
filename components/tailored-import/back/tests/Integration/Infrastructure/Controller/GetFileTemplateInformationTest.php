@@ -45,7 +45,7 @@ class GetFileTemplateInformationTest extends ControllerIntegrationTestCase
             'GET',
             [
                 'file_key' => $fileKey,
-                'header_line' => 1,
+                'header_row' => 1,
                 'sheet_name' => 'Products',
             ],
         );
@@ -83,7 +83,7 @@ class GetFileTemplateInformationTest extends ControllerIntegrationTestCase
             'GET',
             [
                 'file_key' => 'invalid_key_file',
-                'header_line' => 1,
+                'header_row' => 1,
                 'sheet_name' => 'Products',
             ],
         );
@@ -102,7 +102,7 @@ class GetFileTemplateInformationTest extends ControllerIntegrationTestCase
             'GET',
             [
                 'file_key' => $fileKey,
-                'header_line' => 1,
+                'header_row' => 1,
                 'sheet_name' => 'Sheet not found',
             ],
         );

@@ -32,9 +32,9 @@ class FileIteratorFactorySpec extends ObjectBehavior
 
         $filePath = 'components/tailored-import/back/tests/Common/simple_import.xlsx';
         $fileStructure = FileStructure::createFromNormalized([
-            'header_line' => 1,
+            'header_row' => 1,
             'first_column' => 0,
-            'product_line' => 2,
+            'first_product_row' => 2,
             'sheet_name' => 'Products',
         ]);
 
@@ -45,9 +45,9 @@ class FileIteratorFactorySpec extends ObjectBehavior
     {
         $filePath = 'path-to-xlsx-file.ods';
         $fileStructure = FileStructure::createFromNormalized([
-            'header_line' => 1,
+            'header_row' => 1,
             'first_column' => 0,
-            'product_line' => 2,
+            'first_product_row' => 2,
             'sheet_name' => 'Products',
         ]);
 

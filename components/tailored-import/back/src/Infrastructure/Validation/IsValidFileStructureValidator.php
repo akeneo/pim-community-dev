@@ -58,7 +58,7 @@ class IsValidFileStructureValidator extends ConstraintValidator
             ],
         ]));
 
-        if ($validator->getViolations()->count() > 0){
+        if ($validator->getViolations()->count() > 0) {
             return;
         }
 

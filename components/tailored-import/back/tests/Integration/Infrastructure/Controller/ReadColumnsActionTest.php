@@ -39,9 +39,10 @@ class ReadColumnsActionTest extends ControllerIntegrationTestCase
     {
         $fileKey = $this->storeFile(__DIR__ . '/../../../Common/simple_import.xlsx');
         $fileStructure = [
-            'header_line' => 1,
+            'header_row' => 1,
             'first_column' => 0,
-            'product_line' => 2,
+            'first_product_row' => 2,
+            'unique_identifier_column' => 1,
             'sheet_name' => 'Products',
         ];
 
@@ -50,10 +51,11 @@ class ReadColumnsActionTest extends ControllerIntegrationTestCase
             self::ROUTE,
             [],
             'POST',
-            [
+            [],
+            json_encode([
                 'file_key' => $fileKey,
                 'file_structure' => $fileStructure,
-            ],
+            ]),
         );
 
         $response = $this->client->getResponse();
@@ -74,9 +76,10 @@ class ReadColumnsActionTest extends ControllerIntegrationTestCase
     public function test_it_returns_a_bad_request_when_file_key_is_missing(): void
     {
         $fileStructure = [
-            'header_line' => 0,
+            'header_row' => 1,
             'first_column' => 0,
-            'product_line' => 1,
+            'first_product_row' => 2,
+            'unique_identifier_column' => 1,
             'sheet_name' => 'Products',
         ];
 
@@ -85,9 +88,10 @@ class ReadColumnsActionTest extends ControllerIntegrationTestCase
             self::ROUTE,
             [],
             'POST',
-            [
+            [],
+            json_encode([
                 'file_structure' => $fileStructure,
-            ],
+            ]),
         );
 
         $response = $this->client->getResponse();

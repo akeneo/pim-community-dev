@@ -24,7 +24,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class IsValidFileTemplateInformationQueryValidator extends ConstraintValidator
 {
-    private const MAX_HEADER_LINES = 500;
+    private const MAX_HEADER_ROWS = 500;
 
     public function __construct(
         private FilesystemProvider $filesystemProvider,
@@ -43,9 +43,9 @@ class IsValidFileTemplateInformationQueryValidator extends ConstraintValidator
         }
 
         $validator = $this->context->getValidator()->inContext($this->context);
-        $validator->atPath('[header_line]')->validate($value->headerLine, [
+        $validator->atPath('[header_row]')->validate($value->headerLine, [
             new Type('int'),
-            new Range(['min' => 1, 'max' => self::MAX_HEADER_LINES]),
+            new Range(['min' => 1, 'max' => self::MAX_HEADER_ROWS]),
         ]);
 
         $fileSystem = $this->filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
