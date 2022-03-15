@@ -6,7 +6,6 @@ use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\EntityWithQuantifiedAssociationTrait;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
@@ -30,7 +29,7 @@ abstract class AbstractProduct implements ProductInterface
     /** @var int|string */
     protected $id;
 
-    protected UuidInterface $uuid;
+    protected ?UuidInterface $uuid;
 
     protected array $rawValues;
 
