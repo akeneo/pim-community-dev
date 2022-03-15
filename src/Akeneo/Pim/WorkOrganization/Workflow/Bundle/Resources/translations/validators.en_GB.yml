@@ -1,0 +1,3 @@
+pimee_workflow:
+  check_removal:
+    product_model_error: This product model has a variant product that has been published. Please, unpublish it and try again.
