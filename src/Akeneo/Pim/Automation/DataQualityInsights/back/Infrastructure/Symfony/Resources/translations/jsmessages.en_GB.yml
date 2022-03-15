@@ -150,5 +150,10 @@ akeneo_data_quality_insights:
     filter_value:
       good: Good
       to_improve: To improve
+      "yes": "Yes"
+      "no": "No"
+  quality_score:
+    pending: In progress
+    title: "Quality score:"
 pim_title:
   akeneo_data_quality_insights_dashboard: Data Quality Insights
