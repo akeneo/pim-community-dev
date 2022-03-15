@@ -21,10 +21,11 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
     private ApiResourceRepositoryInterface $repository;
 
     public function __construct(
-        TranslationNormalizer $translationNormalizer,
-        DateTimeNormalizer $dateTimeNormalizer,
+        TranslationNormalizer          $translationNormalizer,
+        DateTimeNormalizer             $dateTimeNormalizer,
         ApiResourceRepositoryInterface $repository
-    ) {
+    )
+    {
         $this->translationNormalizer = $translationNormalizer;
         $this->dateTimeNormalizer = $dateTimeNormalizer;
         $this->repository = $repository;
@@ -35,7 +36,7 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
      */
     public function normalize($category, $format = null, array $context = [])
     {
-        $rootCategory = $this->repository->find($category->getRoot());
+        $rootCategory = $category->getRoot() ? $this->repository->find($category->getRoot()) : null;
 
         return [
             'code' => $category->getCode(),

@@ -13,7 +13,7 @@ class CreateCategoryEndToEnd extends ApiTestCase
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "new_category_headers"
     }
@@ -33,7 +33,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "new_category_incompleted"
     }
@@ -43,10 +43,16 @@ JSON;
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('new_category_incompleted');
         $categoryStandard = [
-            'code'   => 'new_category_incompleted',
+            'code' => 'new_category_incompleted',
+            'root' => 'new_category_incompleted',
             'parent' => null,
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [],
+            'nested_tree_node' => [
+                'depth' => 0,
+                'left' => 1,
+                'right' => 2
+            ],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.category');
         $categoryNormalized = $normalizer->normalize($category);
@@ -67,7 +73,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "categoryD",
         "parent": "master",
@@ -81,12 +87,18 @@ JSON;
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryD');
         $categoryStandard = [
-            'code'   => 'categoryD',
+            'code' => 'categoryD',
+            'root' => 'master',
             'parent' => 'master',
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [
                 'en_US' => 'Category D',
                 'fr_FR' => 'Catégorie D',
+            ],
+            'nested_tree_node' => [
+                'depth' => 1,
+                'left' => 12,
+                'right' => 13
             ],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.category');
@@ -105,7 +117,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "empty_label_category",
         "parent": "master",
@@ -120,11 +132,17 @@ JSON;
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('empty_label_category');
         $categoryStandard = [
-            'code'   => 'empty_label_category',
+            'code' => 'empty_label_category',
+            'root' => 'master',
             'parent' => 'master',
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [
                 'en_US' => 'US label'
+            ],
+            'nested_tree_node' => [
+                'depth' => 1,
+                'left' => 12,
+                'right' => 13
             ],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.category');
@@ -145,7 +163,7 @@ JSON;
         $data = '';
 
         $expectedContent = [
-            'code'    => 400,
+            'code' => 400,
             'message' => 'Invalid json message received',
         ];
 
@@ -162,7 +180,7 @@ JSON;
         $data = '{';
 
         $expectedContent = [
-            'code'    => 400,
+            'code' => 400,
             'message' => 'Invalid json message received',
         ];
 
@@ -177,19 +195,19 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "categoryA"
     }
 JSON;
 
         $expectedContent = [
-            'code'    => 422,
+            'code' => 422,
             'message' => 'Validation failed.',
-            'errors'  => [
+            'errors' => [
                 [
                     'property' => 'code',
-                    'message'  => 'This value is already used.',
+                    'message' => 'This value is already used.',
                 ]
             ],
         ];
@@ -206,19 +224,19 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": ""
     }
 JSON;
 
         $expectedContent = [
-            'code'    => 422,
+            'code' => 422,
             'message' => 'Validation failed.',
-            'errors'  => [
+            'errors' => [
                 [
                     'property' => 'code',
-                    'message'  => 'This value should not be blank.',
+                    'message' => 'This value should not be blank.',
                 ],
             ],
         ];
@@ -235,7 +253,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "sales",
         "extra_property": ""
@@ -243,9 +261,9 @@ JSON;
 JSON;
 
         $expectedContent = [
-            'code'    => 422,
+            'code' => 422,
             'message' => 'Property "extra_property" does not exist. Check the expected format on the API documentation.',
-            '_links'  => [
+            '_links' => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_categories'
                 ],
@@ -264,16 +282,16 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "labels": null
     }
 JSON;
 
         $expectedContent = [
-            'code'    => 422,
+            'code' => 422,
             'message' => 'Property "labels" expects an array as data, "NULL" given. Check the expected format on the API documentation.',
-            '_links'  => [
+            '_links' => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_categories'
                 ],
@@ -292,7 +310,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "test_empty_locale",
         "labels": {
@@ -302,12 +320,12 @@ JSON;
 JSON;
 
         $expectedContent = [
-            'code'    => 422,
+            'code' => 422,
             'message' => 'Validation failed.',
-            'errors'  => [
+            'errors' => [
                 [
                     'property' => 'labels',
-                    'message'  => 'The locale "" does not exist.',
+                    'message' => 'The locale "" does not exist.',
                 ],
             ],
         ];
@@ -324,7 +342,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "test_unknown_locale",
         "labels": {
@@ -334,12 +352,12 @@ JSON;
 JSON;
 
         $expectedContent = [
-            'code'    => 422,
+            'code' => 422,
             'message' => 'Validation failed.',
-            'errors'  => [
+            'errors' => [
                 [
                     'property' => 'labels',
-                    'message'  => 'The locale "foo" does not exist.',
+                    'message' => 'The locale "foo" does not exist.',
                 ],
             ],
         ];

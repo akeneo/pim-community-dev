@@ -24,17 +24,13 @@ class CategorySaverIntegration extends TestCase
         $category = $this->createCategoryWithoutSaving([
             'code' => 'foo',
         ]);
-        $createdNormalizedCategory = $this->getCategoryNormalizer()->normalize($category);
 
         $this->getCategorySaver()->save($category);
 
         $persistedCategory = $this->getCategoryRepository()->findOneByIdentifier('foo');
-        $persistedNormalizedCategory = $this->getCategoryNormalizer()->normalize($persistedCategory);
 
-        NormalizedCategoryCleaner::clean($createdNormalizedCategory);
-        NormalizedCategoryCleaner::clean($persistedNormalizedCategory);
-
-        self::assertEquals($createdNormalizedCategory, $persistedNormalizedCategory);
+        self::assertInstanceOf(CategoryInterface::class, $persistedCategory);
+        self::assertEquals('foo', $persistedCategory->getCode());
     }
 
     public function test_that_it_saves_a_new_sub_category(): void
@@ -48,17 +44,14 @@ class CategorySaverIntegration extends TestCase
             'code' => 'bar',
             'parent' => 'foo',
         ]);
-        $createdNormalizedCategory = $this->getCategoryNormalizer()->normalize($category);
 
         $this->getCategorySaver()->save($category);
 
         $persistedCategory = $this->getCategoryRepository()->findOneByIdentifier('bar');
-        $persistedNormalizedCategory = $this->getCategoryNormalizer()->normalize($persistedCategory);
 
-        NormalizedCategoryCleaner::clean($createdNormalizedCategory);
-        NormalizedCategoryCleaner::clean($persistedNormalizedCategory);
-
-        self::assertEquals($createdNormalizedCategory, $persistedNormalizedCategory);
+        self::assertInstanceOf(CategoryInterface::class, $persistedCategory);
+        self::assertEquals('bar', $persistedCategory->getCode());
+        self::assertEquals('foo', $persistedCategory->getParent()->getCode());
     }
 
     /**

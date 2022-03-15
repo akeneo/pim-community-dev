@@ -13,7 +13,7 @@ class PartialUpdateCategoryEndToEnd extends ApiTestCase
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "parent": null
     }
@@ -33,7 +33,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "new_category_headers",
         "parent": null
@@ -54,7 +54,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "new_category_incompleted"
     }
@@ -64,10 +64,16 @@ JSON;
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('new_category_incompleted');
         $categoryStandard = [
-            'code'   => 'new_category_incompleted',
+            'code' => 'new_category_incompleted',
+            'root' => 'new_category_incompleted',
             'parent' => null,
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [],
+            'nested_tree_node' => [
+                'depth' => 0,
+                'left' => 1,
+                'right' => 2
+            ],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.category');
         $normalizedCategory = $normalizer->normalize($category);
@@ -90,10 +96,16 @@ JSON;
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('new_category_empty_content');
         $categoryStandard = [
-            'code'   => 'new_category_empty_content',
+            'code' => 'new_category_empty_content',
+            'root' => 'new_category_empty_content',
             'parent' => null,
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [],
+            'nested_tree_node' => [
+                'depth' => 0,
+                'left' => 1,
+                'right' => 2
+            ],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.category');
         $normalizedCategory = $normalizer->normalize($category);
@@ -114,7 +126,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "categoryD",
         "parent": "master",
@@ -128,12 +140,18 @@ JSON;
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryD');
         $categoryStandard = [
-            'code'   => 'categoryD',
+            'code' => 'categoryD',
+            'root' => 'master',
             'parent' => 'master',
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [
                 'en_US' => 'Category D',
                 'fr_FR' => 'Catégorie D',
+            ],
+            'nested_tree_node' => [
+                'depth' => 1,
+                'left' => 12,
+                'right' => 13
             ],
         ];
 
@@ -153,7 +171,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "parent": "master",
         "labels": {
@@ -166,12 +184,18 @@ JSON;
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryD');
         $categoryStandard = [
-            'code'   => 'categoryD',
+            'code' => 'categoryD',
+            'root' => 'master',
             'parent' => 'master',
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [
                 'en_US' => 'Category D',
                 'fr_FR' => 'Catégorie D',
+            ],
+            'nested_tree_node' => [
+                'depth' => 1,
+                'left' => 12,
+                'right' => 13
             ],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.category');
@@ -195,12 +219,18 @@ JSON;
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryA');
         $categoryStandard = [
-            'code'   => 'categoryA',
+            'code' => 'categoryA',
+            'root' => 'master',
             'parent' => 'master',
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [
                 'en_US' => 'Category A',
                 'fr_FR' => 'Catégorie A',
+            ],
+            'nested_tree_node' => [
+                'depth' => 1,
+                'left' => 2,
+                'right' => 7
             ],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.category');
@@ -219,7 +249,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "categoryA",
         "labels": {
@@ -232,12 +262,18 @@ JSON;
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryA');
         $categoryStandard = [
-            'code'   => 'categoryA',
+            'code' => 'categoryA',
+            'root' => 'master',
             'parent' => 'master',
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [
                 'en_US' => 'Category A updated',
                 'fr_FR' => 'Catégorie A',
+            ],
+            'nested_tree_node' => [
+                'depth' => 1,
+                'left' => 2,
+                'right' => 7
             ],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.category');
@@ -256,7 +292,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "parent": "categoryA1",
         "labels": {
@@ -269,11 +305,17 @@ JSON;
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryA2');
         $categoryStandard = [
-            'code'   => 'categoryA2',
+            'code' => 'categoryA2',
+            'root' => 'master',
             'parent' => 'categoryA1',
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [
                 'en_US' => 'Category A2 updated',
+            ],
+            'nested_tree_node' => [
+                'depth' => 3,
+                'left' => 4,
+                'right' => 5
             ],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.category');
@@ -292,7 +334,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "labels": {
             "en_US": null,
@@ -304,10 +346,16 @@ JSON;
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryA');
         $categoryStandard = [
-            'code'   => 'categoryA',
+            'code' => 'categoryA',
+            'root' => 'master',
             'parent' => 'master',
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => [],
+            'nested_tree_node' => [
+                'depth' => 1,
+                'left' => 2,
+                'right' => 7
+            ],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.category');
         $normalizedCategory = $normalizer->normalize($category);
@@ -327,7 +375,7 @@ JSON;
         $data = '';
 
         $expectedContent = [
-            'code'    => 400,
+            'code' => 400,
             'message' => 'Invalid json message received',
         ];
 
@@ -344,7 +392,7 @@ JSON;
         $data = '{';
 
         $expectedContent = [
-            'code'    => 400,
+            'code' => 400,
             'message' => 'Invalid json message received',
         ];
 
@@ -359,19 +407,19 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "new_code"
     }
 JSON;
 
         $expectedContent = [
-            'code'    => 422,
+            'code' => 422,
             'message' => 'Validation failed.',
-            'errors'  => [
+            'errors' => [
                 [
                     'property' => 'code',
-                    'message'  => 'This property cannot be changed.',
+                    'message' => 'This property cannot be changed.',
                 ],
             ],
         ];
@@ -388,16 +436,16 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "extra_property": ""
     }
 JSON;
 
         $expectedContent = [
-            'code'    => 422,
+            'code' => 422,
             'message' => 'Property "extra_property" does not exist. Check the expected format on the API documentation.',
-            '_links'  => [
+            '_links' => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#patch_categories__code_'
                 ],
@@ -416,16 +464,16 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "labels": null
     }
 JSON;
 
         $expectedContent = [
-            'code'    => 422,
+            'code' => 422,
             'message' => 'Property "labels" expects an array as data, "NULL" given. Check the expected format on the API documentation.',
-            '_links'  => [
+            '_links' => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#patch_categories__code_'
                 ],
@@ -444,14 +492,14 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "inconsistent_code2"
     }
 JSON;
 
         $expectedContent = [
-            'code'    => 422,
+            'code' => 422,
             'message' => 'The code "inconsistent_code2" provided in the request body must match the code "inconsistent_code1" provided in the url.',
         ];
 
@@ -483,9 +531,9 @@ JSON;
         $client->request('PATCH', 'api/rest/v1/categories/master', [], [], [], '{"parent": "categoryA"}');
 
         $expectedContent = [
-            'code'    => 422,
+            'code' => 422,
             'message' => 'You can\'t move a category tree linked to a user. Check the expected format on the API documentation.',
-            '_links'  => [
+            '_links' => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#patch_categories__code_'
                 ],

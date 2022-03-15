@@ -16,9 +16,15 @@ class CategoryIntegration extends AbstractFlatNormalizerTestCase
     public function testCategoryRoot()
     {
         $expected = [
-            'code'   => 'master',
+            'code' => 'master',
+            'root' => 'master',
             'parent' => null,
             'updated' => '2016-06-14T13:12:50+02:00',
+            'nested_tree_node' => [
+                'depth' => 0,
+                'left' => 1,
+                'right' => 12
+            ]
         ];
 
         $this->assert('master', $expected);
@@ -27,9 +33,15 @@ class CategoryIntegration extends AbstractFlatNormalizerTestCase
     public function testCategoryWithParent()
     {
         $expected = [
-            'code'        => 'categoryA',
-            'parent'      => 'master',
+            'code' => 'categoryA',
+            'root' => 'master',
+            'parent' => 'master',
             'updated' => '2016-06-14T13:12:50+02:00',
+            'nested_tree_node' => [
+                'depth' => 1,
+                'left' => 2,
+                'right' => 7
+            ],
             'label-en_US' => 'Category A',
             'label-fr_FR' => 'Catégorie A',
         ];

@@ -18,6 +18,12 @@ class CategoryIntegration extends AbstractNormalizerTestCase
             'parent' => null,
             'updated' => '2016-06-14T13:12:50+02:00',
             'labels' => new \StdClass(),
+            'root' => 'master',
+            'nested_tree_node' => [
+                'depth' => 0,
+                'left' => 1,
+                'right' => 12
+            ],
         ];
 
         $this->assert('master', $expected);
@@ -32,7 +38,13 @@ class CategoryIntegration extends AbstractNormalizerTestCase
             'labels' => [
                 'en_US' => 'Category A',
                 'fr_FR' => 'Catégorie A'
-            ]
+            ],
+            'root' => 'master',
+            'nested_tree_node' => [
+                'depth' => 1,
+                'left' => 2,
+                'right' => 7
+            ],
         ];
 
         $this->assert('categoryA', $expected);

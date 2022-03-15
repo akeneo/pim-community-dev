@@ -37,17 +37,29 @@ JSON;
         $expectedCategories = [
             'categoryA2' => [
                 'code'   => 'categoryA2',
+                'root' => 'master',
                 'parent' => 'categoryA',
                 'updated' => '2016-06-14T13:12:50+02:00',
                 'labels' => [
                     'en_US' => 'category A2'
+                ],
+                'nested_tree_node' => [
+                    'depth' => 2,
+                    'left' => 5,
+                    'right' => 6
                 ]
             ],
             'categoryD' => [
                 'code'   => 'categoryD',
+                'root' => 'master',
                 'parent' => 'master',
                 'updated' => '2016-06-14T13:12:50+02:00',
-                'labels' => []
+                'labels' => [],
+                'nested_tree_node' => [
+                    'depth' => 1,
+                    'left' => 12,
+                    'right' => 13
+                ]
             ]
         ];
 
