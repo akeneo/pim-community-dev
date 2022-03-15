@@ -19,7 +19,7 @@ const NumberSelector = ({configuration, validationErrors, onConfigurationChange}
       collapseButtonLabel={isSelectorCollapsed ? translate('pim_common.close') : translate('pim_common.open')}
       label={
         <>
-          {translate('akeneo.tailored_import.column_details.sources.configuration.title')}
+          {translate('akeneo.tailored_import.data_mapping.target.configuration.title')}
           {0 === validationErrors.length && !isDefaultNumberConfiguration(configuration) && <Pill level="primary" />}
           {0 < validationErrors.length && <Pill level="danger" />}
         </>
@@ -27,7 +27,7 @@ const NumberSelector = ({configuration, validationErrors, onConfigurationChange}
       isOpen={isSelectorCollapsed}
       onCollapse={toggleSelectorCollapse}
     >
-      <Field label={translate('akeneo.tailored_import.column_details.sources.configuration.decimal_separator.title')}>
+      <Field label={translate('akeneo.tailored_import.data_mapping.target.configuration.decimal_separator.title')}>
         <SelectInput
           invalid={0 < decimalSeparatorErrors.length}
           clearable={false}
@@ -43,10 +43,10 @@ const NumberSelector = ({configuration, validationErrors, onConfigurationChange}
           {Object.entries(availableDecimalSeparators).map(([separator, name]) => (
             <SelectInput.Option
               key={separator}
-              title={translate(`akeneo.tailored_import.column_details.sources.configuration.decimal_separator.${name}`)}
+              title={translate(`akeneo.tailored_import.data_mapping.target.configuration.decimal_separator.${name}`)}
               value={separator}
             >
-              {translate(`akeneo.tailored_import.column_details.sources.configuration.decimal_separator.${name}`)}
+              {translate(`akeneo.tailored_import.data_mapping.target.configuration.decimal_separator.${name}`)}
             </SelectInput.Option>
           ))}
         </SelectInput>
