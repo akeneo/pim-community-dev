@@ -3,12 +3,18 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
     table: pim_catalog_product
     changeTrackingPolicy: DEFERRED_EXPLICIT
     repositoryClass: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductRepository
+    indexes:
+        product_uuid:
+            columns: [uuid]
     fields:
         id:
             type: integer
             id: true
             generator:
                 strategy: AUTO
+        uuid:
+            type: uuid_binary
+            unique: true
         enabled:
             type: boolean
             column: is_enabled
