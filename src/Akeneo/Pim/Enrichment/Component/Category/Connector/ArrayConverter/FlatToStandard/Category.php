@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Category\Connector\ArrayConverter\FlatToStandard;
 
+use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
@@ -104,9 +105,10 @@ class Category implements ArrayConverterInterface
         $this->fieldChecker->checkFieldsFilling($item, $requiredFields);
 
         $authorizedFields = array_merge($requiredFields, ['parent']);
-        $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
-        foreach ($localeCodes as $code) {
-            $authorizedFields[] = 'label-' . $code;
+        $locales = $this->localeRepository->findAll();
+        /** @var Locale $locale */
+        foreach ($locales as $locale) {
+            $authorizedFields[] = 'label-' . $locale->getCode();
         }
 
         foreach (array_keys($item) as $field) {

@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Category\Connector\ArrayConverter\FlatToStandard;
 
+use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Connector\Exception\StructureArrayConversionException;
 use PhpSpec\ObjectBehavior;
@@ -14,8 +15,14 @@ class CategorySpec extends ObjectBehavior
         $this->beConstructedWith($fieldChecker, $localeRepository);
     }
 
-    function it_converts()
+    function it_converts($localeRepository)
     {
+        $us = new Locale();
+        $us->setCode('en_US');
+        $fr = new Locale();
+        $fr->setCode('fr_FR');
+        $localeRepository->findAll()->willReturn([$us, $fr]);
+
         $fields = [
             'code'        => 'mycode',
             'parent'      => 'master',
@@ -48,7 +55,11 @@ class CategorySpec extends ObjectBehavior
 
     function it_throws_an_exception_if_label_is_wrongly_written($localeRepository)
     {
-        $localeRepository->getActivatedLocaleCodes()->willReturn(['en_US', 'fr_FR']);
+        $us = new Locale();
+        $us->setCode('en_US');
+        $fr = new Locale();
+        $fr->setCode('fr_FR');
+        $localeRepository->findAll()->willReturn([$us, $fr]);
 
         $this
             ->shouldThrow(StructureArrayConversionException::class)
