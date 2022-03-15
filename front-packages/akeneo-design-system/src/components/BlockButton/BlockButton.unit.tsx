@@ -8,11 +8,11 @@ test('it calls onClick handler when user clicks on button', () => {
   const onClick = jest.fn();
   render(
     <BlockButton onClick={onClick}>
-      <PlusIcon /> Hello
+      My block button
     </BlockButton>
   );
 
-  const button = screen.getByText('Hello');
+  const button = screen.getByText('My block button');
   fireEvent.click(button);
 
   expect(onClick).toBeCalled();
@@ -20,9 +20,13 @@ test('it calls onClick handler when user clicks on button', () => {
 
 test('it calls onClick handler when user hits enter key on button', () => {
   const onClick = jest.fn();
-  render(<BlockButton onClick={onClick}>Hello</BlockButton>);
+  render(
+    <BlockButton onClick={onClick}>
+      My block button
+    </BlockButton>
+  );
 
-  const button = screen.getByText('Hello');
+  const button = screen.getByText('My block button');
   button.focus();
   userEvent.type(button, '{enter}');
 
@@ -33,11 +37,11 @@ test('it does not call onClick handler when user clicks on a disabled button', (
   const onClick = jest.fn();
   render(
     <BlockButton disabled={true} onClick={onClick}>
-      Hello
+      My block button
     </BlockButton>
   );
 
-  const button = screen.getByText('Hello');
+  const button = screen.getByText('My block button');
   fireEvent.click(button);
 
   expect(onClick).not.toBeCalled();
@@ -47,11 +51,11 @@ test('it does not call onClick handler when user hits enter key on a disabled bu
   const onClick = jest.fn();
   render(
     <BlockButton disabled={true} onClick={onClick}>
-      Hello
+      My block button
     </BlockButton>
   );
 
-  const button = screen.getByText('Hello');
+  const button = screen.getByText('My block button');
   fireEvent.keyDown(button, {key: 'Enter', code: 'Enter'});
 
   expect(onClick).not.toBeCalled();
@@ -61,11 +65,11 @@ test('it does not trigger onClick when disabled', () => {
   const onClick = jest.fn();
   render(
     <BlockButton disabled={true} onClick={onClick}>
-      Hello
+      My block button
     </BlockButton>
   );
 
-  const button = screen.getByText('Hello');
+  const button = screen.getByText('My block button');
   fireEvent.click(button);
 
   expect(onClick).not.toBeCalled();
@@ -73,9 +77,9 @@ test('it does not trigger onClick when disabled', () => {
 
 test('it does not trigger onClick when onClick is undefined', () => {
   const onClick = jest.fn();
-  render(<BlockButton onClick={undefined}>Hello</BlockButton>);
+  render(<BlockButton onClick={undefined}>My block button</BlockButton>);
 
-  fireEvent.click(screen.getByText('Hello'));
+  fireEvent.click(screen.getByText('My block button'));
 
   expect(onClick).not.toBeCalled();
 });
@@ -85,7 +89,7 @@ test('BlockButton supports forwardRef', () => {
 
   render(
     <BlockButton onClick={jest.fn()} ref={ref}>
-      My button
+      My block button
     </BlockButton>
   );
 
@@ -95,9 +99,20 @@ test('BlockButton supports forwardRef', () => {
 test('BlockButton supports ...rest props', () => {
   render(
     <BlockButton onClick={jest.fn()} data-testid="my_value">
-      My button
+      My block button
     </BlockButton>
   );
 
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
+});
+
+test('it renders children with icon', () => {
+  render(
+    <BlockButton>
+      <PlusIcon data-testid="children-icon" /> My block button
+    </BlockButton>
+  );
+
+  expect(screen.getByText('My block button')).toBeInTheDocument();
+  expect(screen.getByTestId('children-icon')).toBeInTheDocument();
 });
