@@ -29,8 +29,7 @@ class Category implements ArrayConverterInterface
     public function __construct(
         FieldsRequirementChecker $fieldChecker,
         LocaleRepositoryInterface $localeRepository
-    )
-    {
+    ) {
         $this->fieldChecker = $fieldChecker;
         $this->localeRepository = $localeRepository;
     }
