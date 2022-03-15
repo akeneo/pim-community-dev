@@ -565,6 +565,8 @@ akeneo_job_process_tracker:
     asset_manager_execute_naming_convention: Execute Asset Family naming convention
     asset_manager_link_assets_to_products: Link assets to products
     asset_manager_compute_transformations: Compute asset transformations
+    asset_manager_mass_delete_assets: Mass delete assets
+    asset_manager_mass_edit_assets: Mass edit assets
 batch_jobs:
   default_steps:
     execute_naming_convention: Execute Asset Family naming convention

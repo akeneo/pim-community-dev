@@ -62,6 +62,9 @@ pimee_workflow:
         second: Choose operation
         third: Configure
         fourth: Confirm
+  check_removal:
+    product_error: Impossible to remove a published product
+    entity_error: Entities linked to published products cannot be removed.
 btn:
   publish: Publish
   unpublish: Unpublish

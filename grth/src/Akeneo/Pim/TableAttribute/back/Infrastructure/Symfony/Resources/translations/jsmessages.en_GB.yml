@@ -1,0 +1,258 @@
+table_attribute_template:
+  nutrition-europe:
+    average_nutritional_values:
+      label: Average nutritional values
+      options:
+        energy: Energy
+        fat: Fat
+        saturated_fat: Saturated fat
+        carbohydrate: Carbohydrate
+        sugars: Sugar
+        protein: Protein
+        salt: Salt
+    per_100g:
+      label: 'Per 100g'
+    per_serving:
+      label: 'Per serving (x g)'
+    percentage_reference_intake:
+      label: '% of reference intake (per 100g or serving)'
+  nutrition-unitedstates:
+    nutrition_facts:
+      label: Nutrition Facts
+      options:
+        total_fat: Total Fat (g)
+        saturated_fat: Saturated Fat (g)
+        trans_fat: Trans Fat (g)
+        cholesterol: Cholesterol (g)
+        sodium: Sodium (g)
+        total_carbohydrate: Total Carbohydrate (g)
+        dietary_fiber: Dietary Fiber (g)
+        total_sugars: Total Sugars (g)
+        included_added_sugars: Included Added Sugars (g)
+        protein: Protein (g)
+    amount_per_serving:
+      label: Amount per serving
+    percentage_daily_value:
+      label: '% daily value'
+  nutrition-unitedkingdom:
+    nutrition:
+      label: Nutrition
+      options:
+        energy: Energy
+        fat: Fat
+        of_which_saturates: of which saturates
+        carbohydrate: Carbohydrate
+        of_which_sugars: of which sugars
+        fibre: Fibre
+        protein: Protein
+        salt: Salt
+    per_100g:
+      label: Per 100g
+    percentage_reference_intake:
+      label: '% Reference Intake'
+    your_reference_intake:
+      label: 'your Reference Intake 8400kJ 2000kcal'
+  food_composition:
+    composition:
+      label: Composition
+      options:
+        wheat_flour: Wheat flour
+        butter: Butter
+        water: Water
+        sugar: Sugar
+    percentage:
+      label: '%'
+    allergen:
+      label: Allergen
+  clothing_composition:
+    composition:
+      label: Composition
+      options:
+        cotton: Cotton
+        polyester: Polyester
+        elastane: Elastane
+    percentage:
+      label: '%'
+  dimensions-metric:
+    dimensions:
+      label: Dimensions
+      options:
+        length: Length (cm)
+        width: Width (cm)
+        height: Height (cm)
+        weight: Weight (kg)
+    value:
+      label: Value
+  dimensions-imperial:
+    dimensions:
+      label: Dimensions
+      options:
+        length: Length (inch)
+        width: Width (inch)
+        height: Height (inch)
+        weight: Weight (pounds)
+    value:
+      label: Value
+  packaging-metric:
+    parcel:
+      label: Parcel
+      options:
+        parcel1: Parcel 1
+        parcel2: Parcel 2
+        parcel3: Parcel 3
+        parcel4: Parcel 4
+    width:
+      label: Width (cm)
+    length:
+      label: Length (cm)
+    height:
+      label: Height (cm)
+  packaging-imperial:
+    parcel:
+      label: Parcel
+      options:
+        parcel1: Parcel 1
+        parcel2: Parcel 2
+        parcel3: Parcel 3
+        parcel4: Parcel 4
+    width:
+      label: Width (inch)
+    length:
+      label: Length (inch)
+    height:
+      label: Height (inch)
+pim_table_attribute:
+  form:
+    attribute:
+      tab:
+        table_structure: Table structure
+      table_attribute: Table attribute
+      add_column: Add new columns
+      select_type: Select your type
+      data_type: Column type
+      labels: Label translations
+      column_management: Column management
+      please_type: Please type "{{ text }}"
+      confirm_column_delete: Are you sure you want to delete this column?
+      confirm_option_delete: Are you sure you want to delete this option?
+      empty_title: Your table structure is empty.
+      empty_subtitle: The first step is to define your columns.
+      unique_title: Your table attribute is almost ready.
+      unique_subtitle: Define at least 2 columns to start using your table.
+      new_option_placeholder: Write your new option label
+      manage_options: Manage options
+      column_code: Column code
+      properties_helper: You must define the table structure and at least 2 columns before you can save your table attribute
+      table_structure_helper_text: A table attribute must contain at least 2 columns. The first one is always a “select” column type. Once you’ve created the first column, you must add options. To do so, click on “manage options” and add up to {{ limit }} options! Then, you’ll be able to use each of these options as rows in your product tables.
+      table_structure_helper_text_with_reference_entity: A table attribute must contain at least 2 columns. Once you've created the first one, using either “Select“ or “Reference Entities“ column types, define and manage rows based on options or records.
+      table_structure_helper_link: Check out our help center for more information.
+      limit_option_reached: You reached the limit of {{ limit }} options.
+      template_label: Select the standard of your "{{ templateLabel }}" table
+      delete_column_helper: When you delete this column, all of its values are removed from all the products using the "{{ attributeLabel }}" table attribute.
+      delete_first_column_option_helper: When you delete this option, the entire row will be deleted for all the products using the "{{ attributeLabel }}" table attribute.
+      delete_other_column_option_helper: When you delete this option, the cell value will be removed for all the products using the "{{ attributeLabel }}" table attribute.
+      no_options_helper: Please add your first option.
+      no_options: No options found
+      please_try_again: Please try again
+      first_column_type_helper: The first column of a Table is always a Select column type.
+      first_column_type_helper_with_reference_entity: The first column of a Table is either a "Select" or "Reference Entity" column type.
+      discard_changes: You will lose changes to the select options if you leave the page.
+      completeness: Completeness
+      required_for_completeness: Required for completeness
+      completeness_helper_text: "To discover how completeness works for a table attribute,"
+      completeness_helper_link: check out our help center.
+      reference_entity: Reference entity
+      import_from_existing_attribute: Import from existing attribute
+      option_count: "{0,1}{{ count }} option|]1, Inf[{{ count }} options"
+      measurement_family: Measurement family
+      measurement_default_unit: Measurement default unit
+    product:
+      items_per_page: Items per page
+      current_items: "{{ minItem }}-{{ maxItem }} of {{ itemCount }}"
+      current_page: "Page {{ currentPage }} / {{ pageCount }}"
+      no_search_result: "Sorry, there are no lines for your search!"
+      no_rows_title: "Your {{ attributeLabel }} table is empty."
+      no_rows_subtitle: Add rows to define new properties
+      no_rows_subtitle_no_permission: To be able to edit this attribute, go to the attribute setting page or contact your PIM administrator.
+      no_results: There are no results
+      no_options: There are no options
+      no_records: There are no records
+      no_add_options_unallowed: Contact your PIM administrator to manage the "{{ attributeLabel }}" options
+      edit_records_unallowed: Contact your PIM administrator to manage the "{{ referenceEntityLabel }}" reference entity
+      manage_records: Manage records
+      actions:
+        delete_row: Delete this row
+        clear_row: Clear this row
+        move_first: Move to first position
+        move_last: Move to last position
+      order: Order
+      save_options_error: An error occured while saving the options
+      save_options_success: Options successfully updated
+  properties:
+    data_type:
+      text: Text
+      number: Number
+      boolean: Yes/No
+      select: Select
+      reference_entity: Reference entity
+      measurement: Measurement
+  validations:
+    column_code_must_be_filled: The code must be filled
+    not_available_code: This column code is not available
+    column_data_type_must_be_filled: The data type must be filled
+    invalid_column_code: The column code can only contain letters, numbers and underscores
+    invalid_code: The code can only contain letters, numbers and underscores
+    duplicated_column_code: "Each column requires a unique code. {{ duplicateCode }} is already used\n"
+    duplicated_select_code: Each code requires a unique code
+    max_greater_than_min: Max should be greater than min
+    max_length: Maximum number of characters (up to 100)
+    min: Minimum value
+    max: Maximum value
+    decimals_allowed: Decimals values allowed
+    max_length_range: Please define a maximum number of characters lower than or equal to {{ maximum }}
+  templates:
+    choose_template: Choose your template
+    choose_template_subtitle: These templates are only examples, not regulatory. You can edit them before saving your attribute structure.
+    empty_table: Empty table
+    nutrition: Nutrition
+    nutrition-unitedkingdom: Nutrition (United Kingdom)
+    nutrition-europe: Average nutritional values (Europe)
+    nutrition-unitedstates: Nutrition Facts (United States)
+    food_composition: Food composition
+    clothing_composition: Clothing composition
+    dimensions: Product dimensions
+    dimensions-metric: Dimensions (Metric system)
+    dimensions-imperial: Dimensions (Imperial system)
+    packaging: Packaging dimensions
+    packaging-metric: Packaging dimensions (Metric system)
+    packaging-imperial: Packaging dimensions (Imperial system)
+  product_edit_form:
+    add_rows: Add rows
+    search: Search
+  datagrid:
+    placeholder: Preview unavailable, open the product page to access the table attribute values
+    any: Any 
+    select_your_column: Select your column
+    select_your_row: Select your row
+    select_your_operator: Select your operator
+    select_your_value: Select your value
+    any_row: Any row
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_catalog_table: Table
+batch_jobs:
+  csv_table_attribute_options_export.label: Table attribute select options export in CSV
+  xlsx_table_attribute_options_export.label: Table attribute select options export in XLSX
+  csv_table_attribute_options_import.label: Table attribute select options import in CSV
+  xlsx_table_attribute_options_import.label: Table attribute select options import in XLSX
+  csv_product_table_values_export.label: Product table values export in CSV
+  xlsx_product_table_values_export.label: Product table values export in XLSX
+  csv_product_model_table_values_export.label: Product model table values export in CSV
+  xlsx_product_model_table_values_export.label: Product model table values export in XLSX
+  csv_product_table_values_import.label: Product table values import in CSV
+  xlsx_product_table_values_import.label: Product table values import in XLSX
+  csv_product_model_table_values_import.label: Product model table values import in CSV
+  xlsx_product_model_table_values_import.label: Product model table values import in XLSX
