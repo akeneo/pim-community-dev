@@ -1,12 +1,12 @@
 import {
   AttributeEditFormApp,
   ATTRIBUTE_EDIT_FORM_TAB_CHANGED_EVENT,
-  ATTRIBUTE_EDIT_FORM_DELETED,
 } from '@akeneo-pim-ee/data-quality-insights';
 import OverrideTabTitles, {OverrideTabTitlesInterface} from './override-tab-titles';
 
 import BaseView from 'pimui/js/view/base';
 import {ATTRIBUTE_EDIT_FORM_UPDATED} from '@akeneo-pim-ee/data-quality-insights/src/application/constant';
+import {ATTRIBUTE_OPTION_DELETED} from 'akeneopimstructure/js/attribute-option/model/Events';
 
 class DataQualityInsightsApp extends BaseView {
   private renderingCount = 0;
@@ -37,7 +37,7 @@ class DataQualityInsightsApp extends BaseView {
 
     window.addEventListener(ATTRIBUTE_EDIT_FORM_UPDATED, this.attributeEditFormUpdatedHandler);
 
-    window.addEventListener(ATTRIBUTE_EDIT_FORM_DELETED, this.attributeEditFormUpdatedHandler);
+    window.addEventListener(ATTRIBUTE_OPTION_DELETED, this.attributeEditFormUpdatedHandler);
 
     return super.configure();
   }
@@ -59,7 +59,7 @@ class DataQualityInsightsApp extends BaseView {
 
   remove() {
     window.removeEventListener(ATTRIBUTE_EDIT_FORM_UPDATED, this.attributeEditFormUpdatedHandler);
-    window.removeEventListener(ATTRIBUTE_EDIT_FORM_DELETED, this.attributeEditFormUpdatedHandler);
+    window.removeEventListener(ATTRIBUTE_OPTION_DELETED, this.attributeEditFormUpdatedHandler);
     super.remove();
     this.renderingCount = 0;
 
