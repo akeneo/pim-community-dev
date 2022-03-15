@@ -43,9 +43,7 @@ CREATE TABLE pimee_dqi_attribute_option_spellcheck (
     to_improve TINYINT NULL,
     result JSON NOT NULL,
     PRIMARY KEY attribute_option_key (attribute_code, attribute_option_code),
-    INDEX evaluated_at_index (evaluated_at),
-    CONSTRAINT FK_dqi_attribute_code FOREIGN KEY (attribute_code) REFERENCES pim_catalog_attribute (code) ON DELETE CASCADE,
-    CONSTRAINT FK_dqi_attribute_option_code FOREIGN KEY (attribute_option_code) REFERENCES pim_catalog_attribute_option (code) ON DELETE CASCADE
+    INDEX evaluated_at_index (evaluated_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE pimee_dqi_family_criteria_evaluation (
