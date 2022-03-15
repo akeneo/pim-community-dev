@@ -43,48 +43,41 @@ const KeyIndicators: FC<Props> = ({channel, locale, family, category, keyIndicat
   const theme = useTheme();
   const translate = useTranslate();
 
-  let keyIndicatorContents: React.ReactNode;
-  if (countsMap === null) {
-    keyIndicatorContents = <div data-testid={'dqi-key-indicator-loading'} className="AknLoadingMask" />;
-  } else {
+  let keyIndicatorContents: React.ReactNode = (function () {
+    if (countsMap === null) {
+      return <div data-testid={'dqi-key-indicator-loading'} className="AknLoadingMask" />;
+    }
     const codes = Object.keys(countsMap) as (KeyIndicatorProducts | KeyIndicatorAttributes)[];
     if (codes.length === 0) {
-      keyIndicatorContents = <EmptyKeyIndicators />;
-    } else {
-      keyIndicatorContents = codes.map((code: KeyIndicatorProducts | KeyIndicatorAttributes) => {
-        const {[code]: descriptor} = keyIndicatorDescriptors;
-        if (!descriptor) {
-          return null;
-        }
-
-        if (isKeyIndicatorProducts(code)) {
-          return (
-            <KeyIndicatorAboutProducts
-              key={code}
-              type={code}
-              counts={countsMap[code]!}
-              title={descriptor.titleI18nKey}
-              followResults={descriptor.followResults}
-            >
-              {descriptor.icon}
-            </KeyIndicatorAboutProducts>
-          );
-        } else {
-          return (
-            <KeyIndicatorAboutAttributes
-              key={code}
-              type={code}
-              counts={countsMap[code]!}
-              title={descriptor.titleI18nKey}
-              followResults={descriptor.followResults}
-            >
-              {descriptor.icon}
-            </KeyIndicatorAboutAttributes>
-          );
-        }
-      });
+      return <EmptyKeyIndicators />;
     }
-  }
+    return codes.map((code: KeyIndicatorProducts | KeyIndicatorAttributes) => {
+      const {[code]: descriptor} = keyIndicatorDescriptors;
+      if (!descriptor) {
+        return null;
+      }
+
+      const childProps = {
+        key: code,
+        title: descriptor.titleI18nKey,
+        followResults: descriptor.followResults,
+      };
+
+      if (isKeyIndicatorProducts(code)) {
+        return (
+          <KeyIndicatorAboutProducts {...{...childProps, type: code, counts: countsMap[code]!}}>
+            {descriptor.icon}
+          </KeyIndicatorAboutProducts>
+        );
+      } else {
+        return (
+          <KeyIndicatorAboutAttributes {...{...childProps, type: code, counts: countsMap[code]!}}>
+            {descriptor.icon}
+          </KeyIndicatorAboutAttributes>
+        );
+      }
+    });
+  })();
 
   return (
     <div>

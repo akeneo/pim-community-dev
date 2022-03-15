@@ -51,25 +51,21 @@ const buildFilters = ({
   rootCategoryId = null,
   keyIndicator,
 }: BuildFilterParams) => {
-  let filters = ['s[updated]=1', `f[scope][value]=${channelCode}`, 't=product-grid'];
-  if (productType === 'product_model') {
-    filters = filters.concat(['f[product_typology][value]=variant']);
-  } else if (productType === 'product') {
-    filters = filters.concat(['f[entity_type][value]=product']);
-  }
-  if (familyCode) {
-    filters = filters.concat([`f[family][value][]=${familyCode}`, 'f[family][type]=in']);
-  }
-  if (keyIndicator) {
-    filters = filters.concat([`f[${keyIndicator}][value]=0`]);
-  }
-  filters = filters.concat([
+  return [
+    's[updated]=1',
+    `f[scope][value]=${channelCode}`,
+    't=product-grid',
+    productType === 'product_model' && 'f[product_typology][value]=variant',
+    productType === 'product' && 'f[entity_type][value]=product',
+    familyCode && `f[family][value][]=${familyCode}`,
+    familyCode && 'f[family][type]=in',
+    keyIndicator && `f[${keyIndicator}][value]=0`,
     `f[category][value][treeId]=${rootCategoryId}`,
     `f[category][value][categoryId]=${categoryId}`,
     'f[category][type]=1',
-  ]);
-
-  return filters.join('&');
+  ]
+    .filter(Boolean)
+    .join('&');
 };
 
 const redirectToFilteredProductGrid = (

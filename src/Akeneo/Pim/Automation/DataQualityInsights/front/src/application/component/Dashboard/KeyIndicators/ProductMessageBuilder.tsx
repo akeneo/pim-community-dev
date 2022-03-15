@@ -38,36 +38,24 @@ export const ProductMessageBuilder = (props: Props) => {
 
   const productModelsButton = <button onClick={onClickOnProductModels}>{roughCountProductModelsKOText}</button>;
 
-  let messageSourceI18nKey = 'akeneo_data_quality_insights.dqi_dashboard.key_indicators.entities_to_work_on';
-  let markersMapping: MarkersMapping = {};
+  let messageSourceI18nKey =
+    nbProductsKO > 0 && nbProductModelsKO > 0
+      ? 'akeneo_data_quality_insights.dqi_dashboard.key_indicators.entities_to_work_on_2_kinds'
+      : 'akeneo_data_quality_insights.dqi_dashboard.key_indicators.entities_to_work_on';
 
-  let entitiesToWorkOn: JSX.Element | undefined;
+  const [buttonA, buttonB] = [
+    nbProductsKO > 0 ? productsButton : undefined,
+    nbProductModelsKO > 0 ? productModelsButton : undefined,
+  ].filter(Boolean);
 
-  if (nbProductsKO > 0) {
-    if (nbProductModelsKO > 0) {
-      messageSourceI18nKey = 'akeneo_data_quality_insights.dqi_dashboard.key_indicators.entities_to_work_on_2_kinds';
-      markersMapping = {
-        '<button_a/>': productsButton,
-        '<button_b/>': productModelsButton,
-      };
-    } else {
-      markersMapping = {
-        '<button_a/>': productsButton,
-      };
-    }
-  } else {
-    if (nbProductModelsKO > 0) {
-      markersMapping = {
-        '<button_a/>': productModelsButton,
-      };
-    } else {
-      entitiesToWorkOn = <></>;
-    }
-  }
+  const markersMapping: MarkersMapping = {
+    '<button_a/>': buttonA,
+    '<button_b/>': buttonB,
+  };
 
-  if (entitiesToWorkOn === undefined) {
-    entitiesToWorkOn = <>{messageBuilder(markersMapping)(translate(messageSourceI18nKey))} </>;
-  }
-
-  return entitiesToWorkOn;
+  return nbProductsKO > 0 || nbProductModelsKO > 0 ? (
+    <>{messageBuilder(markersMapping)(translate(messageSourceI18nKey))} </>
+  ) : (
+    <></>
+  );
 };

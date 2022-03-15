@@ -2,7 +2,7 @@ import React from 'react';
 import {TextWithLink} from './styled';
 
 export type MarkersMapping = {
-  [marker: string]: JSX.Element;
+  [marker: string]: JSX.Element | undefined;
 };
 
 /**
